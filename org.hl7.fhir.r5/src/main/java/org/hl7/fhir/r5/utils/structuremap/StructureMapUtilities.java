@@ -94,6 +94,8 @@ import java.util.*;
  * analyse(appInfo, map) - generate profiles and other analysis artifacts for the targets of the transform
  * map generateMapFromMappings(StructureDefinition) - build a mapping from a structure definition with logical mappings
  *
+ * See also: documentation/structuremap-and-fhirpath-constants.md
+ * 
  * @author Grahame Grieve
  */
 @MarkedToMoveToAdjunctPackage
@@ -1684,12 +1686,23 @@ public class StructureMapUtilities {
         result.add(v);
   }
 
+  /**
+   * The main entry point for the transformer. It will transform the source into the target according to the rules in the map.
+   * @param appInfo the application-specific context information (note: this is NOT the same as the objContext used in the fhirpath engine functions/interfaces)
+   * @param source input resource or element to be transformed
+   * @param map the structure map that defines the transformation rules
+   * @param target the target resource or element to be populated by the transformation
+   * @throws FHIRException
+   */
   public void transform(Object appInfo, Base source, StructureMap map, Base target) throws FHIRException {
     TransformContext context = new TransformContext(appInfo);
     log("Start Transform " + map.getUrl());
     StructureMapGroupComponent g = map.getGroup().get(0);
 
     Variables vars = new Variables();
+    if (map.hasConst()) {
+      vars.setConstants(new StructureMapConstantResolver(map, fpe));
+    }
     vars.add(VariableMode.INPUT, getInputName(g, StructureMapInputMode.SOURCE, "source"), source);
     if (target != null)
       vars.add(VariableMode.OUTPUT, getInputName(g, StructureMapInputMode.TARGET, "target"), target);

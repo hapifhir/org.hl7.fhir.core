@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
+import org.hl7.fhir.r5.fhirpath.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -353,6 +354,55 @@ public class StructureMapValidator extends BaseValidator {
       cc++;
     }
     
+    // Evaluate any constant (let) variables defined in the structure map
+    VariableSet constantVars = new VariableSet(); 
+    List<Element> constants = src.getChildrenByName("const");
+    for (Element constant : constants) {
+      // Process each constant as needed
+      String name = constant.getChildValue("name");
+      String value = constant.getChildValue("value");
+      VariableDefn v = null;
+      TypeDetails td = null;
+      String type = null;
+
+      // validate the constant properties
+      if (name == null || name.isEmpty()) {
+        hint(errors, "2026-09-01", IssueType.INVALID, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_NAME_MISSING);
+        ok = false;
+      } else {
+        v = constantVars.add(name, "source");
+      }
+      if (value == null || value.isEmpty()) {
+        hint(errors, "2026-09-01", IssueType.INVALID, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_VALUE_MISSING, name);
+        ok = false;
+      } else {
+        // Determine the datatype of the constant value using FHIRPath
+        try {
+          td = fpe.check(constantVars, (String)null, (String)null, null, fpe.parse(value));
+          if (td.getTypes().size() == 1) {
+            type = td.getType();
+            if (type != null && type.startsWith(TypeDetails.FP_NS)) {
+              type = type.substring(TypeDetails.FP_NS.length()+7).toLowerCase();
+              StructureDefinition sdt = this.context.fetchTypeDefinition(type);
+              if (sdt != null) {
+                type = sdt.getType();
+              }
+            }
+            if (type == null) {
+              hint(errors, "2026-09-01", IssueType.VALUE, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_TYPE_UNDETERMINED, name, value);
+              ok = false;
+            }
+          }
+        } catch (FHIRLexerException e) {
+          hint(errors, "2026-09-01", IssueType.VALUE, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_TYPE_UNDETERMINED, name, value);
+          ok = false;
+        }
+        if (v != null && type != null) {
+          v.setType(type);
+        }
+      }
+    }
+
     List<String> grpNames = new ArrayList<>();
     List<Element> groups = src.getChildrenByName("group");
     // we iterate the groups repeatedly, validating them if they have stated types or found types, until nothing happens
@@ -365,7 +415,7 @@ public class StructureMapValidator extends BaseValidator {
           if (hasInputTypes(group) || group.hasUserData(UserDataNames.map_parameters)) {
             group.setUserData(UserDataNames.map_validated, true);
             fired = true;
-            ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
+            ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames, constantVars) && ok;
           }
         }
         cc++;
@@ -376,7 +426,7 @@ public class StructureMapValidator extends BaseValidator {
     for (Element group : groups) {
       if (!group.hasUserData(UserDataNames.map_validated)) {
         hint(errors, "2023-03-01", IssueType.INFORMATIONAL, group.line(), group.col(), stack.push(group, cc, null, null).getLiteralPath(), ok, I18nConstants.SM_ORPHAN_GROUP, group.getChildValue("name"));
-        ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
+        ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames, constantVars) && ok;
       }
       cc++;
     }            
@@ -409,7 +459,7 @@ public class StructureMapValidator extends BaseValidator {
     return true;
   }
 
-  private boolean validateGroup(ValidationContext valContext, List<ValidationMessage> errors, Element src, Element group, NodeStack stack, List<String> grpNames) {
+  private boolean validateGroup(ValidationContext valContext, List<ValidationMessage> errors, Element src, Element group, NodeStack stack, List<String> grpNames, VariableSet constantVars) {
     String name = group.getChildValue("name");
     boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, group.line(), group.col(), stack.getLiteralPath(), idIsValid(name), I18nConstants.SM_NAME_INVALID, name);
     if (!rule(errors, "2023-03-01", IssueType.INVALID, group.line(), group.col(), stack.getLiteralPath(), !grpNames.contains(name), I18nConstants.SM_GROUP_NAME_DUPLICATE, name)) {
@@ -426,7 +476,8 @@ public class StructureMapValidator extends BaseValidator {
       }
     }
     
-    VariableSet variables = new VariableSet(); 
+    // clone the constant variables for the group's source variables, so that any constant variables defined in the group don't affect other groups
+    VariableSet variables = constantVars.copy();
     VariableSet pvars = (VariableSet) group.getUserData(UserDataNames.map_parameters);
 
     // first, load all the inputs
@@ -985,7 +1036,7 @@ public class StructureMapValidator extends BaseValidator {
   
   }
 
-  private boolean checkParamExistsOrPrimitive(List<ValidationMessage> errors, Element e, String string, String string2, Element target, VariableSet variables, NodeStack stack, boolean ok, boolean mandatory) {
+  private boolean checkParamExistsOrPrimitive(List<ValidationMessage> errors, Element e, String transform, String parameterName, Element target, VariableSet variables, NodeStack stack, boolean ok, boolean mandatory) {
     if (!mandatory && e == null) {
       return ok;
     } else if (rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, "system")) {
