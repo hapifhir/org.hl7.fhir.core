@@ -939,6 +939,13 @@ public class StructureMapValidator extends BaseValidator {
                       TypeDetails td = fpe.check(variables, null, v.getSd().getUrl(), v.getEd().getPath(), fpe.parse(exp));
                       if (td.getTypes().size() == 1) {
                         type = td.getType();
+if (type != null && type.startsWith(TypeDetails.FP_NS)) {
+                          type = type.substring(TypeDetails.FP_NS.length()+7).toLowerCase(); // strip off the namespace and `System.`
+                          StructureDefinition sdt = this.context.fetchTypeDefinition(type);
+                          if (sdt != null) {
+                            type = sdt.getType();
+                          }
+                        }
                       }
                     } catch (Exception e) {
                       rule(errors, "2023-03-01", IssueType.INVALID, params.get(0).line(), params.get(0).col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_EXPRESSION_ERROR, e.getMessage());
