@@ -2968,6 +2968,11 @@ public class StructureMapUtilities {
           throw new FHIRException("Transform " + tgt.getTransform().toCode() + " requires exactly 1 parameter");
         String p = getParamString(vars, tgtParameters.get(0));
         return new TypeDetails(CollectionStatus.SINGLETON, p);
+      case CAST:
+        if (tgtParameters.size() == 0 || tgtParameters.size() > 2)
+          throw new FHIRException("Transform " + tgt.getTransform().toCode() + " requires a source parameter, and optionally an output type");
+        String castType = getParamString(vars, tgtParameters.get(1));
+        return new TypeDetails(CollectionStatus.SINGLETON, castType);
       case COPY:
         return getParam(vars, tgtParameters.get(0));
       case EVALUATE:
@@ -2997,10 +3002,16 @@ public class StructureMapUtilities {
             res.addBinding(td.getBinding());
         }
         return new TypeDetails(CollectionStatus.SINGLETON, res);
+      case ID:
+        return new TypeDetails(CollectionStatus.SINGLETON, "Identifier");
+      case CP:
+        return new TypeDetails(CollectionStatus.SINGLETON, "ContactPoint");
       case C:
         return new TypeDetails(CollectionStatus.SINGLETON, "Coding");
       case QTY:
         return new TypeDetails(CollectionStatus.SINGLETON, "Quantity");
+      case TRUNCATE:
+        return new TypeDetails(CollectionStatus.SINGLETON, "string");
       case REFERENCE:
         VariableForProfiling vrs = vars.get(VariableMode.OUTPUT, getParamId(vars, tgt.getParameterFirstRep()));
         if (vrs == null)
