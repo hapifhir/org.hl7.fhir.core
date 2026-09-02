@@ -251,10 +251,7 @@ public class BundleValidator extends BaseValidator {
     ElementUtilities.findSignatures(bundle, signatureProvenances);
     for (Element resource : signatureProvenances) {
       for (Element sig : resource.getChildrenByName("signature")) {
-        if (sig.hasChild("data") && "application/jose".equals(sig.getNamedChildValue("sigFormat"))) {
-          ok = validateSignature(errors, bundle, signatureProvenances, sig, stack) && ok;
-        }
-        if (sig.hasChild("data") && "application/pkcs7-signature".equals(sig.getNamedChildValue("sigFormat"))) {
+        if (sig.hasChild("data") && ("application/jose".equals(sig.getNamedChildValue("sigFormat")) || "application/pkcs7-signature".equals(sig.getNamedChildValue("sigFormat")))) {
           ok = validateSignature(errors, bundle, signatureProvenances, sig, stack) && ok;
         }
       }

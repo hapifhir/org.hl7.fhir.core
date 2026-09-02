@@ -4378,7 +4378,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (src.startsWith("#")) {
         String ref = src.substring(1);
         valContext.getInternalRefs().add(ref);
-        int count = countFragmentMatches(resource, ref);
+        int count = countFragmentMatches(resource, ref); // todo (GDG Sept 2026): should this pass in NodeStack?
         if (count == 0) {
           rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_RESOLVE_IMG, src, xpath);
         } else if (count > 1) {

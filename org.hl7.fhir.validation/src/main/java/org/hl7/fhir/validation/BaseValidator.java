@@ -1175,7 +1175,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         return null;
       } else if (el.size() == 1) {
         if (fragment != null) {
-          int i = countFragmentMatches(el.get(0), fragment);
+          int i = countFragmentMatches(el.get(0), fragment); // todo (GDG Sept 2026): should this pass in NodeStack?
           if (i == 0) {
             source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
             hintOrError(isNLLink, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT, ref, fragment, name);
