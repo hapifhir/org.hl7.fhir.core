@@ -1087,7 +1087,7 @@ public class BundleValidator extends BaseValidator {
         hint(errors, "2025-06-13", IssueType.NOTSUPPORTED, stack, false, I18nConstants.BUNDLE_SIGNATURE_NOT_CHECKED_KIND, sigFormat);      
       }
     }
-    return false;
+    return ok;
   }
 
   private boolean validateSignatureJose(List<ValidationMessage> errors, Element bundle, NodeStack stack, Element signature, List<Element> excludedElements, String d) {
@@ -1268,11 +1268,6 @@ public class BundleValidator extends BaseValidator {
           if (settings.isDebug()) {
             e.printStackTrace();
           }
-        }
-        try {
-          FileUtilities.bytesToFile(toVerify, "/Users/grahame/temp/signatures/to-verify.json");
-        } catch (IOException e) {
-          // nothing
         }
 
         // finally, we get to verifying the signature

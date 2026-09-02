@@ -3232,13 +3232,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ok = rule(errors, "2024-02-28", IssueType.INVALID, child.line(), child.col(), path, !"value".equals(child.getName()), I18nConstants.ILLEGAL_PROPERTY, "value") && ok;
     }
 
-    String actualValue = e.primitiveValue();
-    if (isBlank(actualValue)) {
-      if (actualValue == null)
+    final String elementValue = e.primitiveValue();
+    if (isBlank(elementValue)) {
+      if (elementValue == null)
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_VALUEEXT) && ok;
-      else if (actualValue.length() == 0)
+      else if (elementValue.length() == 0)
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY) && ok;
-      else if (Utilities.isAllWhitespace(actualValue))
+      else if (Utilities.isAllWhitespace(elementValue))
         warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS);
       if (context.hasBinding() && context.getBinding().getStrength() == BindingStrength.REQUIRED) {
         // if there's a x-version extension, what we say is different
@@ -3262,17 +3262,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       return ok;
     } else {
-      boolean hasBiDiControls = UnicodeUtilities.hasBiDiChars(actualValue);
+      boolean hasBiDiControls = UnicodeUtilities.hasBiDiChars(elementValue);
       if (hasBiDiControls) {
-        if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, e.line(), e.col(), path, !noUnicodeBiDiControlChars, I18nConstants.UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED, UnicodeUtilities.replaceBiDiChars(actualValue))) {
-          String msg = UnicodeUtilities.checkUnicodeWellFormed(actualValue);
+        if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, e.line(), e.col(), path, !noUnicodeBiDiControlChars, I18nConstants.UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED, UnicodeUtilities.replaceBiDiChars(elementValue))) {
+          String msg = UnicodeUtilities.checkUnicodeWellFormed(elementValue);
           warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.UNICODE_BIDI_CONTROLS_CHARS_MATCH, msg);
         } else {
           ok = false;
         }
       }
       Set<String> badChars = new HashSet<>();
-      for (char ch : actualValue.toCharArray()) {
+      for (char ch : elementValue.toCharArray()) {
         if (ch < 32 && !(ch == '\r' || ch == '\n' || ch == '\t')) {
           // can't get to here with xml - the parser fails if you try
           badChars.add(Integer.toHexString(ch));
@@ -3281,51 +3281,51 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       warningPlural(errors, "2023-07-26", IssueType.INVALID, e.line(), e.col(), path, badChars.isEmpty(), badChars.size(), I18nConstants.UNICODE_XML_BAD_CHARS, badChars.toString());      
     }
     
-    if (valContext.isMatchetype() && actualValue.startsWith("$")) {
-      switch (actualValue) {
+    if (valContext.isMatchetype() && elementValue.startsWith("$")) {
+      switch (elementValue) {
       case "$semver$": 
-        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "code"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, actualValue);
+        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "code"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, elementValue);
         break;
       case "$url$": 
-        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "url", "uri", "uuid", "oid", "canonical"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, actualValue);
+        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "url", "uri", "uuid", "oid", "canonical"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, elementValue);
         break;
       case "$token$": 
-        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "code"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, actualValue);
+        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "code"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, elementValue);
         break;
       case "$string$": 
-        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "string"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, actualValue);
+        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "string"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, elementValue);
         break;
       case "$date$": 
-        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "date", "dateTime"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, actualValue);
+        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "date", "dateTime"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, elementValue);
         break;
       case "$version$":
-        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "code"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, actualValue);
+        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "code"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, elementValue);
         break;
       case "$id$": 
-        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "id"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, actualValue);
+        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "id"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, elementValue);
         break;
       case "$instant$": 
-        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "dateTime", "instant"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, actualValue);
+        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "dateTime", "instant"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, elementValue);
         break;
       case "$uuid$":
-        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "url", "uri", "uuid", "canonical"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, actualValue);
+        warning(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(type, "url", "uri", "uuid", "canonical"), I18nConstants.RESOURCE_MATCHETYPE_SUSPECT_TYPE, type, elementValue);
         break;
       case "$$":
         break;
       default:
-        if (actualValue.startsWith("$external:")) {
+        if (elementValue.startsWith("$external:")) {
 
-        } else if (actualValue.startsWith("$choice:")) {
+        } else if (elementValue.startsWith("$choice:")) {
 
-        } else if (actualValue.startsWith("$fragments:")) {
+        } else if (elementValue.startsWith("$fragments:")) {
 
         } else {
-          rule(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.RESOURCE_MATCHETYPE_UNKNOWN_PATTERN, actualValue);
+          rule(errors, "2025-01-28", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.RESOURCE_MATCHETYPE_UNKNOWN_PATTERN, elementValue);
         }
       }
     } else {
       if (context.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH) && e.hasPrimitiveValue()) {
-        int length = actualValue.length();
+        int length = elementValue.length();
         int spec = ExtensionUtilities.readIntegerExtension(context, ExtensionDefinitions.EXT_MIN_LENGTH, 0);
         ok = rule(errors, "2024-11-02", IssueType.INVALID, e.line(), e.col(), path, length >= spec, I18nConstants.PRIMITIVE_TOO_SHORT, length, spec) && ok;
       }
@@ -3344,8 +3344,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         try {
           @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
           //False positive: RegexTimeout.matches is the approved timeout wrapper
-          boolean matches = RegexTimeout.matches(actualValue, regex);
-          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, matches, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX, actualValue, regex) && ok;
+          boolean matches = RegexTimeout.matches(elementValue, regex);
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, matches, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX, elementValue, regex) && ok;
         } catch (java.util.concurrent.TimeoutException te) {
           ok = rule(errors, "2026-04-30", IssueType.EXCEPTION, e.line(), e.col(), path, false, I18nConstants.REGEX_MATCH_TIMED_OUT, regex) && ok;
         }
@@ -3353,28 +3353,28 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
       if (!"xhtml".equals(type)) {
         if (securityChecks) {
-          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !HTMLUtilities.containsHtmlTags(actualValue), I18nConstants.SECURITY_STRING_CONTENT_ERROR) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !HTMLUtilities.containsHtmlTags(elementValue), I18nConstants.SECURITY_STRING_CONTENT_ERROR) && ok;
         } else if (!"markdown".equals(type)){
           if (parentNode == null || parentNode.getElement() == null || !"Extension".equals(parentNode.getElement().fhirType()) ||
               !ExtensionDefinitions.EXT_XHTML_RENDERING.equals(parentNode.getElement().getNamedChildValue("url"))) {
-            hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !HTMLUtilities.containsHtmlTags(actualValue), I18nConstants.SECURITY_STRING_CONTENT_WARNING);
+            hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !HTMLUtilities.containsHtmlTags(elementValue), I18nConstants.SECURITY_STRING_CONTENT_WARNING);
           }
         }
       }
 
 
       if (type.equals("boolean")) {
-        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, "true".equals(actualValue) || "false".equals(actualValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BOOLEAN_VALUE) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, "true".equals(elementValue) || "false".equals(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BOOLEAN_VALUE) && ok;
       }
       if (type.equals("uri") || type.equals("oid") || type.equals("uuid") || type.equals("url") || type.equals("canonical")) {
-        String url = actualValue;
+        String url = elementValue;
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !url.startsWith("oid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_OID) && ok;
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !url.startsWith("uuid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_UUID) && ok;
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, url.equals(Utilities.trimWS(url).replace(" ", ""))
             // work around an old invalid example in a core package
             || "http://www.acme.com/identifiers/patient or urn:ietf:rfc:3986 if the Identifier.value itself is a full uri".equals(url), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_WS, url) && ok;
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || url.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
-        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || actualValue.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || elementValue.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
 
         if (type.equals("oid")) {
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("urn:oid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_START) && ok;
@@ -3386,7 +3386,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("#") || Utilities.isAbsoluteUrl(url), I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE, url) && ok;        
         }
 
-        if (url != null && url.startsWith("urn:uuid:")) {
+        if (url.startsWith("urn:uuid:")) {
 
           String s = url;
           if (s.contains("#")) {
@@ -3398,7 +3398,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           s = s.substring(9);
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, UUIDUtilities.isValidUUID(s), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VALID, s) && ok;
         }
-        if (url != null && url.startsWith("urn:oid:")) {
+        if (url.startsWith("urn:oid:")) {
           String oidPortion = url.substring(8);
           if ("canonical".equals(type) && oidPortion.contains("|")) {
             oidPortion = oidPortion.substring(0, oidPortion.indexOf("|"));
@@ -3421,16 +3421,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equals(ID) && !"Resource.id".equals(context.getBase().getPath())) {
         // work around an old issue with ElementDefinition.id
         if (!context.getPath().equals("ElementDefinition.id")) {
-          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.isValidId(actualValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ID_VALID, actualValue) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.isValidId(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ID_VALID, elementValue) && ok;
         }
       }
       if (type.equalsIgnoreCase("string") && e.hasPrimitiveValue()) {
-        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, actualValue == null || actualValue.length() > 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY)) {
-          if (warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, actualValue == null || !Utilities.isAllWhitespace(actualValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS_ALL, prepWSPresentation(actualValue))) {
-            warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, actualValue == null || Utilities.trimWS(actualValue).equals(actualValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS, prepWSPresentation(actualValue));
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, elementValue.length() > 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY)) {
+          if (warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !Utilities.isAllWhitespace(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS_ALL, prepWSPresentation(elementValue))) {
+            warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.trimWS(elementValue).equals(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS, prepWSPresentation(elementValue));
           }
-          if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, actualValue.length() <= 1048576, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_LENGTH)) {
-            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || actualValue.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
+          if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, elementValue.length() <= 1048576, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_LENGTH)) {
+            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || elementValue.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
           } else {
             ok = false;
           }
@@ -3442,20 +3442,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //anchored, non-overlapping alternation; FHIR dateTime format, safe
         boolean dok = ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
-            actualValue
-            .matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, actualValue) && ok;
+            elementValue
+            .matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, elementValue) && ok;
         if (isCoreDefinition(profile) || (context.hasExtension(ExtensionDefinitions.EXT_DATE_RULES) && ExtensionUtilities.readStringExtension(context, ExtensionDefinitions.EXT_DATE_RULES).contains("tz-for-time"))) {
-          dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !hasTime(actualValue) || hasTimeZone(actualValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_TZ) && dok;
+          dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !hasTime(elementValue) || hasTimeZone(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_TZ) && dok;
         }
         if (dok) {
           dok = checkMinMaxValueDateTime(errors, path, context, e, node) && dok;
         }
-        dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || actualValue.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && dok;
+        dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || elementValue.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && dok;
         if (dok) {
           try {
-            DateTimeType dt = new DateTimeType(actualValue);
+            new DateTimeType(elementValue);
             if (isCoreDefinition(profile) || !context.hasExtension(ExtensionDefinitions.EXT_DATE_RULES) || ExtensionUtilities.readStringExtension(context, ExtensionDefinitions.EXT_DATE_RULES).contains("year-valid")) {
-              warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(actualValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, actualValue);
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, elementValue);
             }
           } catch (Exception ex) {
             rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, ex.getMessage());
@@ -3467,7 +3467,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equals("time")) {
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //fixed-width, non-overlapping; FHIR time format, safe
-        boolean timeValid = actualValue.matches("([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)");
+        boolean timeValid = elementValue.matches("([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)");
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, timeValid, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_TIME_VALID) && ok;
         if (ok) {
           try {
@@ -3476,11 +3476,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             ok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueTimeType() || !context.getMinValueTimeType().hasValue() || !context.getMinValueTimeType().after(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DT_LT, (context.hasMinValueTimeType() ? context.getMinValueTimeType().primitiveValue() : "")) && ok;
           } catch (Exception ex) {
             ok = false;
-            rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, actualValue);
+            rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, elementValue);
           }
         }
         try {
-          TimeType dt = new TimeType(actualValue);
+          new TimeType(elementValue);
         } catch (Exception ex) {
           rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_TIME_VALID, ex.getMessage());
           ok = false;
@@ -3489,17 +3489,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equals("date")) {
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //anchored, non-overlapping alternation; FHIR date format, safe
-        boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, actualValue.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"),
-          I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, actualValue);
+        boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, elementValue.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"),
+          I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, elementValue);
         if (dok) {
           dok = checkMinMaxValueDate(errors, path, context, e, node) && dok;
         }
-        dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || actualValue.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && dok;
+        dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || elementValue.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && dok;
         if (dok) {
           try {
-            DateType dt = new DateType(actualValue);
+            DateType dt = new DateType(elementValue);
             if (isCoreDefinition(profile) || (context.hasExtension(ExtensionDefinitions.EXT_DATE_RULES) && ExtensionUtilities.readStringExtension(context, ExtensionDefinitions.EXT_DATE_RULES).contains("year-valid"))) {
-              warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(actualValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, actualValue);
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, elementValue);
             }
           } catch (Exception ex) {
             rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, ex.getMessage());
@@ -3509,16 +3509,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = ok && dok;
       }
       if (type.equals("base64Binary")) {
-        String encoded = actualValue;
-        if (isNotBlank(encoded)) {
+        if (isNotBlank(elementValue)) {
           boolean bok = true;
           if (!session.getSessionId().equals(e.getUserString(UserDataNames.VALIDATION_FLAG_BASE64))) {
-            bok = Base64Util.isValidBase64(encoded);
+            bok = Base64Util.isValidBase64(elementValue);
             if (!bok) {
-              String value = encoded.length() < 100 ? encoded : "(snip)";
+              String value = elementValue.length() < 100 ? elementValue : "(snip)";
               ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID, value) && ok;
             } else {
-              boolean wsok = !Base64Util.base64HasWhitespace(encoded);
+              boolean wsok = !Base64Util.base64HasWhitespace(elementValue);
               if (VersionUtilities.isR5Plus(this.context.getVersion())) {
                 ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR) && ok;
               } else {
@@ -3528,14 +3527,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             e.setUserData(UserDataNames.VALIDATION_FLAG_BASE64, session.getSessionId());
           }
           if (bok && context.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE)) {
-            int size = Base64Util.countBase64DecodedBytes(encoded);
+            int size = Base64Util.countBase64DecodedBytes(elementValue);
             long def = Long.parseLong(ExtensionUtilities.readStringExtension(context, ExtensionDefinitions.EXT_MAX_SIZE));
             ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, e.line(), e.col(), path, size <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_TOO_LONG, size, def) && ok;
           }
         }
       }
       if (type.equals("integer") || type.equals("unsignedInt") || type.equals("positiveInt")) {
-        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isInteger(actualValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_VALID, actualValue)) {
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isInteger(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_VALID, elementValue)) {
           Integer v = Integer.valueOf(e.getValue());
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueIntegerType() || !context.getMaxValueIntegerType().hasValue() || (context.getMaxValueIntegerType().getValue() >= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_GT, (context.hasMaxValueIntegerType() ? context.getMaxValueIntegerType().primitiveValue() : "")) && ok;
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueIntegerType() || !context.getMinValueIntegerType().hasValue() || (context.getMinValueIntegerType().getValue() <= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT, (context.hasMinValueIntegerType() ? context.getMinValueIntegerType().primitiveValue() : "")) && ok;
@@ -3548,46 +3547,41 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
       if (type.equals("integer64")) {
-        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isLong(actualValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER64_VALID, actualValue)) {
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isLong(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER64_VALID, elementValue)) {
           Long v = Long.valueOf(e.getValue());
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueInteger64Type() || !context.getMaxValueInteger64Type().hasValue() || (context.getMaxValueInteger64Type().getValue() >= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_GT, (context.hasMaxValueInteger64Type() ? context.getMaxValueInteger64Type().primitiveValue() : "")) && ok;
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueInteger64Type() || !context.getMinValueInteger64Type().hasValue() || (context.getMinValueInteger64Type().getValue() <= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT, (context.hasMinValueInteger64Type() ? context.getMinValueInteger64Type().primitiveValue() : "")) && ok;
-          if (type.equals("unsignedInt"))
-            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, v >= 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT0) && ok;
-          if (type.equals("positiveInt"))
-            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, v > 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT1) && ok;
         } else {
           ok = false;
         }
       }
       if (type.equals("decimal")) {
-        if (actualValue != null) {
-          DecimalStatus ds = Utilities.checkDecimal(actualValue, true, false);
-          if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, ds == DecimalStatus.OK || ds == DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_VALID, actualValue)) {
-            warning(errors, NO_RULE_DATE, IssueType.VALUE, e.line(), e.col(), path, ds != DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_RANGE, actualValue);
-            try {            
-              Decimal v = new Decimal(e.getValue());
-              if (context.hasMaxValueDecimalType() && context.getMaxValueDecimalType().hasValue()) {
-                ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMaxValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, context.getMaxValueDecimalType()) && ok;
-              } else if (context.hasMaxValueIntegerType() && context.getMaxValueIntegerType().hasValue()) {
-                // users can also provide a max integer type. It's not clear whether that's actually valid, but we'll check for it anyway
-                ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMaxValue(v, new BigDecimal(context.getMaxValueIntegerType().getValue())), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, context.getMaxValueIntegerType()) && ok;
-              }
-
-              if (context.hasMinValueDecimalType() && context.getMinValueDecimalType().hasValue()) {
-                ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, context.getMinValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMinValueDecimalType()) && ok;
-              } else if (context.hasMinValueIntegerType() && context.getMinValueIntegerType().hasValue()) {
-                ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, new BigDecimal(context.getMinValueIntegerType().getValue())), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMinValueIntegerType()) && ok;
-              }
-            } catch (Exception ex) {
-              // should never happen?
+        DecimalStatus ds = Utilities.checkDecimal(elementValue, true, false);
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, ds == DecimalStatus.OK || ds == DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_VALID, elementValue)) {
+          warning(errors, NO_RULE_DATE, IssueType.VALUE, e.line(), e.col(), path, ds != DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_RANGE, elementValue);
+          try {
+            Decimal v = new Decimal(e.getValue());
+            if (context.hasMaxValueDecimalType() && context.getMaxValueDecimalType().hasValue()) {
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMaxValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, context.getMaxValueDecimalType()) && ok;
+            } else if (context.hasMaxValueIntegerType() && context.getMaxValueIntegerType().hasValue()) {
+              // users can also provide a max integer type. It's not clear whether that's actually valid, but we'll check for it anyway
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMaxValue(v, new BigDecimal(context.getMaxValueIntegerType().getValue())), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, context.getMaxValueIntegerType()) && ok;
             }
-          } else {
-            ok = false;
+
+            if (context.hasMinValueDecimalType() && context.getMinValueDecimalType().hasValue()) {
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, context.getMinValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMinValueDecimalType()) && ok;
+            } else if (context.hasMinValueIntegerType() && context.getMinValueIntegerType().hasValue()) {
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, new BigDecimal(context.getMinValueIntegerType().getValue())), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMinValueIntegerType()) && ok;
+            }
+          } catch (Exception ex) {
+            // should never happen?
           }
+        } else {
+          ok = false;
         }
+
         if (context.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS)) {
-          int dp = actualValue.contains(".") ? actualValue.substring(actualValue.indexOf(".")+1).length() : 0;
+          int dp = elementValue.contains(".") ? elementValue.substring(elementValue.indexOf(".") + 1).length() : 0;
           int def = Integer.parseInt(ExtensionUtilities.readStringExtension(context, ExtensionDefinitions.EXT_MAX_DECIMALS));
           ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, e.line(), e.col(), path, dp <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_CHARS, dp, def) && ok;
         }
@@ -3596,16 +3590,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //anchored, non-overlapping alternation; FHIR instant format, safe
         boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
-            actualValue.matches("-?[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REGEX, actualValue);
+            elementValue.matches("-?[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REGEX, elementValue);
         if (dok) {
           dok = checkMinMaxValueDateTime(errors, path, context, e, node) && dok;
         }
 
         if (dok) {
           try {
-            InstantType dt = new InstantType(actualValue);
+            InstantType dt = new InstantType(elementValue);
             if (isCoreDefinition(profile) || (context.hasExtension(ExtensionDefinitions.EXT_DATE_RULES) && ExtensionUtilities.readStringExtension(context, ExtensionDefinitions.EXT_DATE_RULES).contains("year-valid"))) {
-              warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(actualValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, actualValue);
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, elementValue);
             }
           } catch (Exception ex) {
             rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INSTANT_VALID, ex.getMessage());
@@ -3615,14 +3609,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = ok && dok;
       }
 
-      if (type.equals("code") && actualValue != null) {
+      if (type.equals("code")) {
         // Technically, a code is restricted to string which has at least one character and no leading or trailing whitespace, and where there is no whitespace
         // other than single spaces in the contents
-        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, passesCodeWhitespaceRules(actualValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CODE_WS, actualValue) && ok;
-        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || actualValue.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, passesCodeWhitespaceRules(elementValue), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CODE_WS, elementValue) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || elementValue.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
       }
 
-      if (context.hasBinding() && actualValue != null) {
+      if (context.hasBinding()) {
         // special cases
         if ("StructureDefinition.type".equals(context.getPath()) && "http://hl7.org/fhir/StructureDefinition/StructureDefinition".equals(profile.getUrl())) {
           ok = checkTypeValue(errors, path, e, parentNode.getElement());
@@ -3632,20 +3626,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       if (type.equals("markdown") && htmlInMarkdownCheck != HtmlInMarkdownCheck.NONE) {
-        if (!(path.endsWith(".comment") && parentNode.getElement().hasChild("path") && parentNode.getElement().getNamedChildValue("path").endsWith(".text.div"))) { 
-          String raw = actualValue;
-          String processed = MarkDownProcessor.preProcess(raw);
-          if (!raw.equals(processed)) {
+        if (!(path.endsWith(".comment") && parentNode.getElement().hasChild("path") && parentNode.getElement().getNamedChildValue("path").endsWith(".text.div"))) {
+          String processed = MarkDownProcessor.preProcess(elementValue);
+          if (!elementValue.equals(processed)) {
             int i = 0;
-            while (i < raw.length() && raw.charAt(i) == processed.charAt(i)) {
+            while (i < elementValue.length() && elementValue.charAt(i) == processed.charAt(i)) {
               i++;
             }
-            if (i < raw.length()-1 ) {
-              if (!warningOrError(htmlInMarkdownCheck == HtmlInMarkdownCheck.ERROR, errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML, raw.subSequence(i, i+2))) {
+            if (i < elementValue.length()-1 ) {
+              if (!warningOrError(htmlInMarkdownCheck == HtmlInMarkdownCheck.ERROR, errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML, elementValue.subSequence(i, i+2))) {
                 ok = (htmlInMarkdownCheck != HtmlInMarkdownCheck.ERROR) && ok;
               }
             } else {
-              if (!warningOrError(htmlInMarkdownCheck == HtmlInMarkdownCheck.ERROR, errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML, raw)) {
+              if (!warningOrError(htmlInMarkdownCheck == HtmlInMarkdownCheck.ERROR, errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML, elementValue)) {
                 ok = (htmlInMarkdownCheck != HtmlInMarkdownCheck.ERROR) && ok;
               }
             }
@@ -3670,20 +3663,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         String regext = FHIRPathExpressionFixer.fixRegex(getRegexFromType(e.fhirType()));
         if (regext != null) {
           try {
-            String pt = actualValue;
             String ptFmt = null;
             if (e.getProperty().getDefinition().hasExtension(ExtensionDefinitions.EXT_DATE_FORMAT)) {
-              ptFmt = convertForDateFormatToExternal(ExtensionUtilities.readStringExtension(e.getProperty().getDefinition(), ExtensionDefinitions.EXT_DATE_FORMAT), pt);
+              ptFmt = convertForDateFormatToExternal(ExtensionUtilities.readStringExtension(e.getProperty().getDefinition(), ExtensionDefinitions.EXT_DATE_FORMAT), elementValue);
             }
             try {
               @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
               //False positive: RegexTimeout.matches is the approved timeout wrapper
-              boolean matches = RegexTimeout.matches(pt, regext) || (ptFmt != null && RegexTimeout.matches(ptFmt,regext));
+              boolean matches = RegexTimeout.matches(elementValue, regext) || (ptFmt != null && RegexTimeout.matches(ptFmt,regext));
               if (!matches) {
                 if (ptFmt == null) {
-                  ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, matches, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE, pt, e.fhirType(), regext) && ok;
+                  ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, matches, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE, elementValue, e.fhirType(), regext) && ok;
                 } else {
-                  ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, matches, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE_ALT, pt, ptFmt, e.fhirType(), regext) && ok;
+                  ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, matches, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE_ALT, elementValue, ptFmt, e.fhirType(), regext) && ok;
                 }
               }
             } catch (TimeoutException te) {
@@ -4745,7 +4737,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // getting the content means decoding all of Attachment.data, or fetching Attachment.url; that is done once 
     // per session (see AttachmentContent) since this element is validated once per profile. The checks below 
     // still run on every pass, since max comes from the profile
-    AttachmentContent content = getAttachmentContent(element, size > -1 || max > -1 || hash != null);
+    AttachmentContent content = getAttachmentContent(element, size >= 0 || max >= 0 || hash != null);
+    if (content.hasFetchError()) {
+      warning(errors, "2025-06-25", IssueType.STRUCTURE, theStack, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_FETCH_ERROR, "data", content.getFetchError());
+    }
+
     if (content.hasDecodeError()) {
       rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL, "data", content.getDecodeError());
       ok = false;
@@ -4792,7 +4788,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     private long length;
     private byte[] sha1;
     private String decodeError;
-    private String fetchError; // not reported to the user - see getAttachmentContent()
+    private String fetchError;
 
     protected AttachmentContent(String sessionId) {
       this.sessionId = sessionId;
@@ -4816,6 +4812,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     protected String getDecodeError() {
       return decodeError;
+    }
+
+    protected boolean hasFetchError() {
+      return fetchError != null;
+    }
+
+    protected String getFetchError() {
+      return fetchError;
     }
   }
 
