@@ -4441,8 +4441,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       this.executionId = executionId;
       this.path = path;
       this.ok = ok;
-      this.messages = messages;
-      this.internalRefs = internalRefs;
+      this.messages = List.copyOf(messages);
+      this.internalRefs = Set.copyOf(internalRefs);
     }
 
     protected boolean isFor(String executionId, String path) {
@@ -4739,7 +4739,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // still run on every pass, since max comes from the profile
     AttachmentContent content = getAttachmentContent(element, size >= 0 || max >= 0 || hash != null);
     if (content.hasFetchError()) {
-      warning(errors, "2025-06-25", IssueType.STRUCTURE, theStack, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_FETCH_ERROR, "data", content.getFetchError());
+      warning(errors, "2025-06-25", IssueType.STRUCTURE, theStack, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_FETCH_ERROR,  content.getFetchError());
     }
 
     if (content.hasDecodeError()) {
