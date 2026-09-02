@@ -165,7 +165,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     Set<String> result = new HashSet<String>();
     for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
       if (sd.getKind() != StructureDefinitionKind.LOGICAL && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION &&
-        VersionUtilities.versionMatches(context.getVersion(), sd.getFhirVersion().toCode())) {
+        VersionUtilities.versionMatches(context.getFHIRVersion(), sd.getFhirVersion().toCode())) {
         result.add(sd.getName());
       }
     }

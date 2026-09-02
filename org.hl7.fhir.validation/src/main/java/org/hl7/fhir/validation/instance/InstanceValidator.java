@@ -2356,7 +2356,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
             txWarning(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl, valueset, BindingContext.BASE, null), vr.getMessage(), value);
           else {
-            ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_11, describeReference(maxVSUrl, valueset, BindingContext.BASE, null), vr.getMessage()) && ok;
+            ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_11, describeReference(maxVSUrl, valueset, BindingContext.BASE, null), null, value, vr.getMessage()) && ok;
           }
         }
       } catch (Exception e) {

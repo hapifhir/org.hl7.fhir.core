@@ -1567,6 +1567,18 @@ public class FHIRPathEngine {
     return res;
   }
 
+  /**
+   * A FHIR primitive can have extensions but no value (e.g. when the data-absent-reason extension is used).
+   * Such an element is present in the tree - so exists() is true - but it has no value in the FHIRPath type
+   * system, so anything that needs the value gets nothing (see hasValue() and getValue() in the FHIR spec)
+   *
+   * @param list the focus or an operand
+   * @return true if the list is a single primitive that has no value
+   */
+  private boolean hasNoPrimitiveValue(List<Base> list) {
+    return list.size() == 1 && list.get(0).isPrimitive() && list.get(0).primitiveValue() == null;
+  }
+
   private TypeDetails executeTypeName(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, boolean atEntry) throws PathEngineException, DefinitionException {
     return new TypeDetails(CollectionStatus.SINGLETON, exp.getName());
   }
@@ -2409,6 +2421,9 @@ public class FHIRPathEngine {
   private List<Base> opLessThan(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
+    if (hasNoPrimitiveValue(left) || hasNoPrimitiveValue(right)) {
+      return makeNull();
+    }
 
     if (left.size() == 1 && right.size() == 1 && left.get(0).isPrimitive() && right.get(0).isPrimitive()) {
       Base l = left.get(0);
@@ -2457,6 +2472,9 @@ public class FHIRPathEngine {
   private List<Base> opGreater(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
+    if (hasNoPrimitiveValue(left) || hasNoPrimitiveValue(right)) {
+      return makeNull();
+    }
     if (left.size() == 1 && right.size() == 1 && left.get(0).isPrimitive() && right.get(0).isPrimitive()) {
       Base l = left.get(0);
       Base r = right.get(0);
@@ -2504,6 +2522,9 @@ public class FHIRPathEngine {
   private List<Base> opLessOrEqual(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) { 
       return new ArrayList<Base>();
+    }
+    if (hasNoPrimitiveValue(left) || hasNoPrimitiveValue(right)) {
+      return makeNull();
     }
     if (left.size() == 1 && right.size() == 1 && left.get(0).isPrimitive() && right.get(0).isPrimitive()) {
       Base l = left.get(0);
@@ -2554,6 +2575,9 @@ public class FHIRPathEngine {
   private List<Base> opGreaterOrEqual(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) { 
       return new ArrayList<Base>();
+    }
+    if (hasNoPrimitiveValue(left) || hasNoPrimitiveValue(right)) {
+      return makeNull();
     }
     if (left.size() == 1 && right.size() == 1 && left.get(0).isPrimitive() && right.get(0).isPrimitive()) {
       Base l = left.get(0);
@@ -4443,7 +4467,7 @@ public class FHIRPathEngine {
 
     List<Base> result = new ArrayList<Base>();
 
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && focus.get(0).primitiveValue() != null) {
       String cnt = focus.get(0).primitiveValue();
       if ("hex".equals(param)) {
         result.add(new StringType(bytesToHex(cnt.getBytes())));        
@@ -4463,7 +4487,7 @@ public class FHIRPathEngine {
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && focus.get(0).primitiveValue() != null) {
       String cnt = focus.get(0).primitiveValue();
       if ("hex".equals(param)) {
         result.add(new StringType(new String(hexStringToByteArray(cnt))));        
@@ -4483,7 +4507,7 @@ public class FHIRPathEngine {
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && focus.get(0).primitiveValue() != null) {
       String cnt = focus.get(0).primitiveValue();
       if ("html".equals(param)) {
         result.add(new StringType(Utilities.escapeXml(cnt)));        
@@ -4504,7 +4528,7 @@ public class FHIRPathEngine {
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && focus.get(0).primitiveValue() != null) {
       String cnt = focus.get(0).primitiveValue();
       if ("html".equals(param)) {
         result.add(new StringType(Utilities.unescapeXml(cnt)));        
@@ -4522,7 +4546,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcTrim(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && focus.get(0).primitiveValue() != null) {
       String cnt = focus.get(0).primitiveValue();
       result.add(new StringType(cnt.trim()));
     }
@@ -4872,11 +4896,12 @@ public class FHIRPathEngine {
     if (focus.size() == 0 || regexB.size() == 0 || replB.size() == 0) {
       // no-op
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
-      if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
+      String f = convertToString(focus.get(0));
+      if ((focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) && f != null) {
         try {
           @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
           //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
-          String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl);
+          String replaced = RegexTimeout.replaceAll(f, regex, repl);
           result.add(new StringType(replaced).noExtensions());
         } catch (TimeoutException te) {
           throw new FHIRException("Timeout evaluating regex: " + regex, te);
@@ -4901,8 +4926,9 @@ public class FHIRPathEngine {
     } else if (Utilities.noString(sw)) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-      if (focus.size() == 1 && !Utilities.noString(sw)) {
-        result.add(new BooleanType(convertToString(focus.get(0)).endsWith(sw)).noExtensions());
+      String s = convertToString(focus.get(0));
+      if (focus.size() == 1 && !Utilities.noString(sw) && s != null) {
+        result.add(new BooleanType(s.endsWith(sw)).noExtensions());
       } else {
         result.add(new BooleanType(false).noExtensions());
       }
@@ -5768,7 +5794,9 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String s = convertToString(focus.get(0));
-      result.add(new IntegerType(s.length()).noExtensions());
+      if (s != null) {
+        result.add(new IntegerType(s.length()).noExtensions());
+      }
     }
     return result;
   }
@@ -5832,8 +5860,10 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String s = convertToString(focus.get(0));
-      for (char c : s.toCharArray()) {  
-        result.add(new StringType(String.valueOf(c)).noExtensions());
+      if (s != null) {
+        for (char c : s.toCharArray()) {  
+          result.add(new StringType(String.valueOf(c)).noExtensions());
+        }
       }
     }
     return result;
@@ -5877,7 +5907,7 @@ public class FHIRPathEngine {
     if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String sw = convertToString(focus.get(0));
       String s;
-      if (i1 < 0 || i1 >= sw.length()) {
+      if (sw == null || i1 < 0 || i1 >= sw.length()) {
         return new ArrayList<Base>();
       }
       if (exp.parameterCount() == 2) {
@@ -5932,7 +5962,8 @@ public class FHIRPathEngine {
     } else if (focus.get(0) instanceof BooleanType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType(Utilities.existsInList(convertToString(focus.get(0)).toLowerCase(), "true", "false")).noExtensions());
+      String s = convertToString(focus.get(0));
+      result.add(new BooleanType(s != null && Utilities.existsInList(s.toLowerCase(), "true", "false")).noExtensions());
     } else { 
       result.add(new BooleanType(false).noExtensions());
     }
@@ -5946,8 +5977,9 @@ public class FHIRPathEngine {
     } else if (focus.get(0) instanceof DateTimeType || focus.get(0) instanceof DateType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches
-          (RegexConstants.DATE_TIME_REGEX))).noExtensions());
+      String s = convertToString(focus.get(0));
+      result.add(new BooleanType(s != null && s.matches
+          (RegexConstants.DATE_TIME_REGEX)).noExtensions());
     } else { 
       result.add(new BooleanType(false).noExtensions());
     }
@@ -5961,8 +5993,9 @@ public class FHIRPathEngine {
     } else if (focus.get(0) instanceof DateTimeType || focus.get(0) instanceof DateType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches
-          (RegexConstants.DATE_TIME_REGEX))).noExtensions()); // FIXME Why is this regex not DATE_REGEX? Tests fail if the 'correct' regex is used.
+      String s = convertToString(focus.get(0));
+      result.add(new BooleanType(s != null && s.matches
+          (RegexConstants.DATE_TIME_REGEX)).noExtensions()); // FIXME Why is this regex not DATE_REGEX? Tests fail if the 'correct' regex is used.
     } else { 
       result.add(new BooleanType(false).noExtensions());
     }
@@ -5990,8 +6023,9 @@ public class FHIRPathEngine {
     } else if (focus.get(0) instanceof TimeType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches
-          ("(T)?([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"))).noExtensions());
+      String s = convertToString(focus.get(0));
+      result.add(new BooleanType(s != null && s.matches
+          ("(T)?([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?")).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
     }

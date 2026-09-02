@@ -835,6 +835,13 @@ public class ExtensionDefinitions {
   public static final String CANONICAL_RESOLUTION_METHOD = "http://hl7.org/fhir/StructureDefinition/version-resolution-method";
   public static final String EXT_JSON_NAME_DEPRECATED = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-json-name";
   public static final String EXT_XML_NAME_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";
+  public static final String EXT_CS_ALTERNATE_USE = "http://hl7.org/fhir/StructureDefinition/alternate-code-use";
+  public static final String EXT_VALUESET_SYSTEM = "http://hl7.org/fhir/StructureDefinition/valueset-system";
+  public static final String EXT_ISSUE_INNER_MESSAGE = "http://hl7.org/fhir/tools/StructureDefinition/operationoutcome-inner-message";
+  public static final String EXT_FEATURE = "http://hl7.org/fhir/uv/application-feature/StructureDefinition/feature";
+  public static final String FEATURE_TX_TEST_VERSION = "http://hl7.org/fhir/uv/tx-tests/FeatureDefinition/test-version";
+  public static final String FEATURE_TX_CS_PARAMS = "http://hl7.org/fhir/uv/tx-ecosystem/FeatureDefinition/CodeSystemAsParameter";
+  public static final String EXT_UNCLOSED_REASON = "http://hl7.org/fhir/StructureDefinition/valueset-unclosed-reason";
 
 
   // special cases: defined in earlier versions and still used, but no longer defined

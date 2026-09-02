@@ -30,4 +30,12 @@
     case NULL: return true;
     default: return false;
     }
-  }  
+  }
+
+  public void resetPath(String root, String newRoot) {
+    for (StringType st : getExpressionList()) {
+      if (st.hasValue() && st.getValue().startsWith(root+".")) {
+        st.setValue(newRoot+st.getValue().substring(root.length()));
+      }
+    }
+  }

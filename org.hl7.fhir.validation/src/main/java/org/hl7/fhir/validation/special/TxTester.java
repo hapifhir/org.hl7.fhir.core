@@ -141,6 +141,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
   private final List<String> fails = new CopyOnWriteArrayList<>();
 
   @Getter
+  // Warnings are recorded from CompareUtilities ($optional$ items marked
+  // "warning:..." that were absent from the response) but they do NOT make a test
+  // fail, and no longer cause the expected/actual pair to be written out either -
+  // a passing test should leave no diff output behind.
   private final List<String> warnings = new CopyOnWriteArrayList<>();
   private CapabilityStatement capabilityStatement;
   private TerminologyCapabilities terminologyCapabilities;
@@ -586,10 +590,32 @@ public class TxTester implements ITerminologyRequestIdProvider {
 
   private boolean passesVersion(JsonObject item) {
     if (item.has("version") && version != null) {
-      return VersionUtilities.versionMatches(version, item.asString("version"));
+      return versionGateMatches(item.asString("version"), version);
     } else {
       return true;
     }
+  }
+
+  /**
+   * Does a suite's or test's "version" gate let it run against this FHIR version?
+   *
+   * The gate is a major.minor prefix - "4.0" runs only on R4 - optionally negated with
+   * a leading "!", so "!4.0" runs on everything except R4. Negation is handled here
+   * rather than in VersionUtilities, which has no notion of it.
+   *
+   * This is a deliberate prefix test rather than VersionUtilities.versionMatches: the
+   * gate is written as major.minor, but the version it is matched against may be either
+   * major.minor ("4.0") or a full version ("4.0.1"), and versionMatches counts the
+   * missing patch part as a mismatch in both directions.
+   */
+  public static boolean versionGateMatches(String gate, String ver) {
+    if (gate == null || ver == null) {
+      return true;
+    }
+    if (gate.startsWith("!")) {
+      return !versionGateMatches(gate.substring(1), ver);
+    }
+    return ver.equals(gate) || ver.startsWith(gate + ".");
   }
 
   private ResultInformation runTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, List<Resource> setup, Set<String> modes, String filter,
@@ -635,6 +661,14 @@ public class TxTester implements ITerminologyRequestIdProvider {
         conversionLogger.testName.set(testName);
         String reqFile = chooseParam(test, "request", modes);
         Resource req = reqFile == null ? null : loader.loadResource(reqFile);
+        // A test can ask for a particular display validation mode rather than
+        // carrying the parameter in its request file, so the same request can be
+        // run both ways (see snomed-inactive-display-lenient / -notlenient).
+        // The parameter only means anything to the two $validate-code operations.
+        if (test.has("lenient-display") && req instanceof Parameters
+            && Utilities.existsInList(test.asString("operation"), "validate-code", "cs-validate-code")) {
+          ((Parameters) req).addParameter("lenient-display-validation", test.asBoolean("lenient-display"));
+        }
 
         String fn = chooseParam(test, "response", modes);
         String resp = FileUtilities.bytesToString(loader.loadContent(fn));
@@ -724,7 +758,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -741,7 +775,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(csj, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -802,7 +836,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -837,7 +871,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -881,7 +915,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, vsj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -928,7 +962,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -968,7 +1002,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -1019,7 +1053,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -1059,7 +1093,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -1106,7 +1140,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, bj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));

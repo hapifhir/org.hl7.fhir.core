@@ -10,7 +10,7 @@ public interface IModelContext {
    * This returns the main/core version that is in use - a draft version of R6 or more recent
    * @return
    */
-  public String getVersion();
+  public String getFHIRVersion();
 
   /**
    * Handle to a class that holds information about the support for the FHIR standard in this

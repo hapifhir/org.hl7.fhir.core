@@ -748,7 +748,7 @@ public class FmlParser extends ParserBase {
   }
 
   private void parseParameter(Element ref, FHIRLexer lexer, boolean isTarget) throws FHIRLexer.FHIRLexerException, FHIRFormatError {
-    boolean r5 = VersionUtilities.isR5Plus(context.getVersion());
+    boolean r5 = VersionUtilities.isR5Plus(context.getFHIRVersion());
     String name = r5 || isTarget ? "parameter" : "variable";
     if (ref.hasChildren(name) && !ref.getChildByName(name).isList()) {
       throw lexer.error("variable on target is not a list, so can't add an element");

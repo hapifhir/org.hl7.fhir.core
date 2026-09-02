@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv43_50;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
+import org.hl7.fhir.convertors.context.ConversionContext43_50;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.model.Enumerations.FHIRAllTypes;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Enumerations.FHIRTypes;
@@ -67,6 +69,43 @@ public class Utilities43_50 {
       tgt.setValueAsString(src.asStringValue());
     }
     
+  }
+
+
+  /**
+   * doseNumber[x] and seriesDoses[x] are positiveInt|string choices in R4B, but plain strings in R5.
+   * The conversion is done element by element, not value by value, so that the id and any extensions
+   * survive - including on an element that has no value at all (e.g. one that carries only a data absent
+   * reason). Where the source is a positiveInt, that is recorded in an extension so that the original type
+   * can be restored converting the other way
+   */
+  public static org.hl7.fhir.r5.model.StringType convertPositiveIntOrStringToString(org.hl7.fhir.r4b.model.DataType src) throws FHIRException {
+    if (src == null) {
+      return null;
+    }
+    org.hl7.fhir.r5.model.StringType tgt = src.primitiveValue() != null ? new org.hl7.fhir.r5.model.StringType(src.primitiveValue()) : new org.hl7.fhir.r5.model.StringType();
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+    if (src instanceof org.hl7.fhir.r4b.model.PositiveIntType) {
+      tgt.addExtension(new Extension(VersionConvertorConstants.EXT_ORIGINAL_DATATYPE, new CodeType("positiveInt")));
+    }
+    return tgt;
+  }
+
+  /**
+   * The other half of convertPositiveIntOrStringToString: rebuild the R4B choice from the R5 string,
+   * using the recorded original type where there is one, and defaulting to string where there isn't
+   */
+  public static org.hl7.fhir.r4b.model.DataType convertStringToPositiveIntOrString(org.hl7.fhir.r5.model.StringType src) throws FHIRException {
+    if (src == null) {
+      return null;
+    }
+    org.hl7.fhir.r4b.model.PrimitiveType<?> tgt = "positiveInt".equals(src.getExtensionString(VersionConvertorConstants.EXT_ORIGINAL_DATATYPE)) ?
+        new org.hl7.fhir.r4b.model.PositiveIntType() : new org.hl7.fhir.r4b.model.StringType();
+    if (src.hasValue()) {
+      tgt.setValueAsString(src.getValue());
+    }
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt, VersionConvertorConstants.EXT_ORIGINAL_DATATYPE);
+    return tgt;
   }
 
 }
