@@ -427,3 +427,115 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://hl7.org/fhir/sid/cvx",
+    "code" : "210"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "SARS-COV-2 (COVID-19) vaccine, vector non-replicating, recombinant spike protein-ChAdOx1, preservative free, 0.5 mL",
+  "code" : "210",
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#210 (\"undefined\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#210\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"210\" found in http://hl7.org/fhir/sid/cvx|20250715",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://hl7.org/fhir/sid/cvx",
+    "code" : "207"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose",
+  "code" : "207",
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#207 (\"undefined\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#207\"\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"207\" found in http://hl7.org/fhir/sid/cvx|20250715",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "code" : "210"
+}, "url": "http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx", "version": "0.6.2", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "SARS-COV-2 (COVID-19) vaccine, vector non-replicating, recombinant spike protein-ChAdOx1, preservative free, 0.5 mL",
+  "code" : "210",
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Analysing http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2 for validation purposes\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Prepare include[0]: \"(http://hl7.org/fhir/sid/cvx)\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: \"http://hl7.org/fhir/sid/cvx|20250715\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Validate \"[http://hl7.org/fhir/sid/cvx#210 (\"undefined\")]\"\n3ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Check \"http://hl7.org/fhir/sid/cvx#210\"\n3ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx\n3ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: check code in (http://hl7.org/fhir/sid/cvx) at Coding\n3ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Code \"210\" found in http://hl7.org/fhir/sid/cvx|20250715",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "code" : "207"
+}, "url": "http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx", "version": "0.6.2", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose",
+  "code" : "207",
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Analysing http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2 for validation purposes\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Prepare include[0]: \"(http://hl7.org/fhir/sid/cvx)\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: \"http://hl7.org/fhir/sid/cvx|20250715\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Validate \"[http://hl7.org/fhir/sid/cvx#207 (\"undefined\")]\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Check \"http://hl7.org/fhir/sid/cvx#207\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: check code in (http://hl7.org/fhir/sid/cvx) at Coding\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Code \"207\" found in http://hl7.org/fhir/sid/cvx|20250715",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

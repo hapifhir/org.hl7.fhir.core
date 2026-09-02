@@ -1,3 +1,11 @@
+
+  /**
+   * Read-only access to the modifier extensions, for code that only searches them.
+   * See Element.getExtensionsForRead().
+   */
+  public List<Extension> getModifierExtensionsForRead() {
+    return this.modifierExtensionList == null ? java.util.Collections.<Extension>emptyList() : this.modifierExtensionList;
+  }
   public void checkNoModifiers(String noun, String verb) throws FHIRException {
         if (hasModifierExtension()) {
           throw new FHIRException("Found unknown Modifier Exceptions on "+noun+" doing "+verb);
@@ -7,7 +15,7 @@
 
 
   public boolean hasExtension(String... theUrls) {
-    for (Extension next : getModifierExtensionList()) {
+    for (Extension next : getModifierExtensionsForRead()) {
       if (Utilities.existsInList(next.getUrl(), theUrls)) {
         return true;
       }
@@ -48,7 +56,7 @@
   public List<Extension> getExtensionsByUrl(String... theUrls) {
     ArrayList<Extension> retVal = new ArrayList<>();
 
-    for (Extension next : getModifierExtension()) {
+    for (Extension next : getModifierExtensionsForRead()) {
       if (Utilities.existsInList(next.getUrl(), theUrls)) {
         retVal.add(next);
       }

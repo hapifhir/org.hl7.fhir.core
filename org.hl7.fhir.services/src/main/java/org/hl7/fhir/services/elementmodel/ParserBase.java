@@ -30,6 +30,8 @@ package org.hl7.fhir.services.elementmodel;
  */
 
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.services.context.ContextUtilities;
 import org.hl7.fhir.services.context.IWorkerContext;
@@ -55,6 +57,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -97,6 +100,7 @@ public abstract class ParserBase {
   private ProfileUtilities profileUtilities;
   private ContextUtilities contextUtilities;
   protected Set<String> canonicalFilter = new HashSet<>();
+  @Getter @Setter protected Set<Element> setElementsToIgnore = new HashSet<>();
 
 	public ParserBase(IWorkerContext context, ProfileUtilities utilities) {
 		super();
@@ -295,7 +299,33 @@ public abstract class ParserBase {
     this.idPolicy = idPolicy;
   }
 
+  /**
+   * true if this element is in the set of elements that the caller has asked not to be serialised
+   */
+  protected boolean isIgnored(Element e) {
+    return !setElementsToIgnore.isEmpty() && setElementsToIgnore.contains(e);
+  }
+
+  /**
+   * the members of list that aren't in setElementsToIgnore (the list itself, if there's nothing to ignore)
+   */
+  protected List<Element> removeIgnored(List<Element> list) {
+    if (setElementsToIgnore.isEmpty()) {
+      return list;
+    }
+    List<Element> res = new ArrayList<>();
+    for (Element e : list) {
+      if (!setElementsToIgnore.contains(e)) {
+        res.add(e);
+      }
+    }
+    return res;
+  }
+
   protected boolean wantCompose(String path, Element e) {
+    if (isIgnored(e)) {
+      return false;
+    }
     if (!"id".equals(e.getName())) {
       return true;
     }
