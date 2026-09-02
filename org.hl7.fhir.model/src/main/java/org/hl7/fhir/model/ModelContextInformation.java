@@ -199,21 +199,18 @@ public class ModelContextInformation {
   }
 
   private int shapeId() {
-    int s = shapeId;
-    if (s == STALE) {
+    if (shapeId == STALE) {
       String cf = canonicalForm();
-      Integer known = SHAPES.get(cf);
-      if (known != null) {
-        s = known;
-      } else if (SHAPES.size() >= MAX_SHAPES) {
-        s = UNINTERNED;
-      } else {
-        s = SHAPES.computeIfAbsent(cf, k -> SHAPE_IDS.incrementAndGet());
-      }
-      // benign race: two threads canonicalising at once compute the same id
-      shapeId = s;
+      // existing == null and size() >= MAX_SHAPES are both evaluated while SHAPES holds
+      // its lock on cf's bin, so a fresh entry for this exact cf can't slip in between
+      // the "is it known" check and the "insert a new id" decision
+      Integer computedId = SHAPES.compute(cf, (k, existing) ->
+          existing != null ? existing
+              : SHAPES.size() >= MAX_SHAPES ? null
+              : SHAPE_IDS.incrementAndGet());
+      shapeId = computedId != null ? computedId : UNINTERNED;
     }
-    return s;
+    return shapeId;
   }
 
   /**
