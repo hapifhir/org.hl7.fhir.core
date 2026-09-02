@@ -392,13 +392,14 @@ public class StructureMapValidator extends BaseValidator {
               hint(errors, "2026-09-01", IssueType.VALUE, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_TYPE_UNDETERMINED, name, value);
               ok = false;
             }
+            if (v != null && type != null) {
+              int max = td.getCollectionStatus() == org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus.SINGLETON ? 1 : Integer.MAX_VALUE;
+              v.setType(max, this.context.fetchTypeDefinition(type), null, type);
+            }
           }
         } catch (FHIRLexerException e) {
           hint(errors, "2026-09-01", IssueType.VALUE, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_TYPE_UNDETERMINED, name, value);
           ok = false;
-        }
-        if (v != null && type != null) {
-          v.setType(type);
         }
       }
     }
