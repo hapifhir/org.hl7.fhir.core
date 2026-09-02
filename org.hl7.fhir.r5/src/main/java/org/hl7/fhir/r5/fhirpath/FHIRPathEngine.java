@@ -7116,6 +7116,20 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
 
+  private String fixedExtensionUrl(StructureDefinition sd, ElementDefinition ed) throws DefinitionException {
+    for (ElementDefinition child : profileUtilities.getChildMap(sd, ed, false).getList()) {
+      if (child.getPath().endsWith(".url")) {
+        if (child.hasFixed() && child.getFixed().isPrimitive()) {
+          return child.getFixed().primitiveValue();
+        }
+        if (child.hasPattern() && child.getPattern().isPrimitive()) {
+          return child.getPattern().primitiveValue();
+        }
+      }
+    }
+    return null;
+  }
+
   /** given an element definition in a profile, what element contains the differentiating fixed 
    * for the element, given the differentiating expression. The expression is only allowed to 
    * use a subset of FHIRPath
@@ -7197,10 +7211,15 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
               focus = new TypedElementDefinition(t);
               break;
             }
+            if (exsd == null && targetUrl.equals(fixedExtensionUrl(sd, t))) { // sub-extension defined inline, identified by its fixed url
+              focus = new TypedElementDefinition(t);
+              break;
+            }
           }
         }
         if (focus == null) { 
-          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION, expr.toString(), targetUrl, element.getElement().getId(), sd.getUrl());
+          // the extension is absent on this slice, so the discriminator contributes an empty value (R5 5.1.0.13)
+          okToNotResolve = true;
         }
       } else if ("ofType".equals(expr.getName())) {
         if (!element.getElement().hasType()) {
