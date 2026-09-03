@@ -393,12 +393,18 @@ public class ValueSetUtilities extends TerminologyUtilities {
     }
     for (ValueSetExpansionPropertyComponent p : vs.getExpansion().getProperty()) {
       if (p.hasCode() && p.getCode().equals(code)) {
-        p.setUri(url);
+        if (url != null) {
+          // a code system property need not have a uri, and when it doesn't, the declaration is by
+          // code alone - which must not clear a uri that another source provided
+          p.setUri(url);
+        }
         return code;
       }
     }
     ValueSetExpansionPropertyComponent p = vs.getExpansion().addProperty();
-    p.setUri(url);
+    if (url != null) {
+      p.setUri(url);
+    }
     p.setCode(code);
     return code;  
   }
