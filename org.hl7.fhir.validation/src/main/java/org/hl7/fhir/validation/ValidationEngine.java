@@ -215,7 +215,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   }
 
-  @Getter @Setter private SimpleWorkerContext context;
+  @Getter private SimpleWorkerContext context;
   @Getter @Setter private Map<String, ByteProvider> binaries = new HashMap<>();
   @Getter @Setter private boolean doNative;
   @Getter @Setter private boolean displayWarnings;

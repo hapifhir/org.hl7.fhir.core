@@ -68,4 +68,18 @@ class ValidationEngineCopyTests {
     assertNull(base.getContext().fetchResource(ValueSet.class, URL),
       "the resource must not leak into the original engine's context");
   }
+
+  @Test
+  @DisplayName("Replacing the context rebinds the IgLoader to the new context")
+  void setContextRebindsTheLoader() throws Exception {
+    ValidationEngine engine = new ValidationEngine(base);
+    org.hl7.fhir.r5.context.SimpleWorkerContext replacement =
+      new org.hl7.fhir.r5.context.SimpleWorkerContext(engine.getContext());
+
+    engine.setContext(replacement);
+
+    assertSame(replacement, engine.getContext());
+    assertSame(replacement, engine.getIgLoader().getContext(),
+      "after setContext the loader must be bound to the new context");
+  }
 }
