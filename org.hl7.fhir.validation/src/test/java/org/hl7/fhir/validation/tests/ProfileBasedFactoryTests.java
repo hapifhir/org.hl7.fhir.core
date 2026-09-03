@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.tests;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,6 +30,9 @@ import org.junit.jupiter.api.Test;
  * FHIRPath {@code expression}. The literal is used as-is, which avoids having to quote a
  * constant as a FHIRPath string.
  *
+ * {@code requiredOnly} restricts generation to the elements the profile makes mandatory at
+ * the resource's top level, except where a mapping targets the element or a descendant of it.
+ *
  * Note: generateTestData() downloads the FHIR base test-data SQLite file (~30MB) on first
  * invocation. Subsequent runs reuse the cached copy.
  */
@@ -55,6 +59,11 @@ class ProfileBasedFactoryTests {
 
   private static JsonObject generate(String profileUrl, JsonArray mappings) throws Exception {
     byte[] bytes = engine.generateTestData(profileUrl, oneEmptyRow(), mappings, FhirFormat.JSON, false);
+    return JsonParser.parseObject(new String(bytes, StandardCharsets.UTF_8));
+  }
+
+  private static JsonObject generate(String profileUrl, JsonArray mappings, boolean requiredOnly) throws Exception {
+    byte[] bytes = engine.generateTestData(profileUrl, oneEmptyRow(), mappings, FhirFormat.JSON, false, requiredOnly);
     return JsonParser.parseObject(new String(bytes, StandardCharsets.UTF_8));
   }
 
@@ -123,5 +132,56 @@ class ProfileBasedFactoryTests {
     // must be decodable - the generated fallback value, not the rejected literal
     assertDoesNotThrow(() -> Base64.getDecoder().decode(data.replace("\r", "").replace("\n", "")),
       "photo.data should be valid Base64");
+  }
+
+  @Test
+  @DisplayName("requiredOnly skips optional elements at the resource top level")
+  void requiredOnly_skipsOptionalElements() throws Exception {
+    JsonObject patient = generate(PATIENT, null, true);
+
+    assertEquals("Patient", patient.asString("resourceType"));
+    // Patient has no mandatory elements, so nothing optional should survive
+    assertFalse(patient.has("photo"), "photo (optional) should be skipped");
+    assertFalse(patient.has("identifier"), "identifier (optional) should be skipped");
+    assertFalse(patient.has("name"), "name (optional) should be skipped");
+    assertFalse(patient.has("telecom"), "telecom (optional) should be skipped");
+  }
+
+  @Test
+  @DisplayName("requiredOnly keeps a mandatory element and its content")
+  void requiredOnly_keepsMandatoryElement() throws Exception {
+    JsonObject allergy = generate(
+      "http://hl7.org/fhir/StructureDefinition/AllergyIntolerance", null, true);
+
+    assertEquals("AllergyIntolerance", allergy.asString("resourceType"));
+    // AllergyIntolerance.patient is min=1, so it survives - with usable content, not an empty object
+    assertTrue(allergy.has("patient"), "patient (min=1) must be generated");
+    assertNotNull(allergy.getJsonObject("patient").asString("reference"),
+      "patient.reference should be populated");
+  }
+
+  @Test
+  @DisplayName("requiredOnly keeps an optional element that a mapping targets a descendant of")
+  void requiredOnly_keepsOptionalParentOfMappedDescendant() throws Exception {
+    // AllergyIntolerance.clinicalStatus is min=0, so requiredOnly would drop it - but the
+    // mapping targets clinicalStatus.coding, so the parent has to be generated anyway.
+    JsonArray mappings = new JsonArray();
+    JsonObject m = mapping("AllergyIntolerance.clinicalStatus.coding");
+    JsonArray parts = new JsonArray();
+    parts.add(part("system", "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical"));
+    parts.add(part("code", "active"));
+    m.add("parts", parts);
+    mappings.add(m);
+
+    JsonObject allergy = generate(
+      "http://hl7.org/fhir/StructureDefinition/AllergyIntolerance", mappings, true);
+
+    assertTrue(allergy.has("clinicalStatus"),
+      "clinicalStatus should survive because a mapping targets a descendant of it");
+    JsonArray coding = allergy.getJsonObject("clinicalStatus").getJsonArray("coding");
+    assertTrue(coding.size() > 0, "clinicalStatus.coding must have an entry");
+    JsonObject c = coding.get(0).asJsonObject();
+    assertEquals("http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical", c.asString("system"));
+    assertEquals("active", c.asString("code"));
   }
 }

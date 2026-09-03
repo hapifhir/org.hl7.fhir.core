@@ -65,6 +65,7 @@ public class ProfileBasedFactory {
   private PrintStream log;
   private boolean testing;
   private boolean markProfile;
+  private boolean requiredOnly;
   
   private static class LogSet {
     public LogSet(String msg) {
@@ -149,10 +150,33 @@ public class ProfileBasedFactory {
     if (definition.types().size() == 1) {
       for (PEDefinition pe : definition.directChildren(true)) {
         if (pe.max() > 0 && (!isIgnoredElement(pe.definition().getBase().getPath()) || pe.hasFixedValue())) {
+          // requiredOnly prunes at the resource's top level only. Deeper optional elements are
+          // left to the normal path, which already drops the ones that end up with no content.
+          if (requiredOnly && level == 0 && pe.min() == 0 && !pe.hasFixedValue() && !hasMappingFor(pe)
+              && (values == null || !values.containsKey(pe.schemaName()))) {
+            continue;
+          }
           populateElement(element, pe, level, path, values);
         }
       }
     }
+  }
+
+  private boolean hasMappingFor(PEDefinition pe) {
+    if (mappings == null) return false;
+    String defId = pe.definition().getId();
+    String defPath = pe.definition().getPath();
+    String pePath = pe.path();
+    for (JsonObject entry : mappings.asJsonObjects()) {
+      String p = entry.asString("path");
+      if (p != null) {
+        if (p.equals(defId) || p.equals(defPath) || p.equals(pePath)) return true;
+        if (defPath != null && p.startsWith(defPath + ".")) return true;
+        if (pePath != null && p.startsWith(pePath + ".")) return true;
+        if (defId != null && p.startsWith(defId + ".")) return true;
+      }
+    }
+    return false;
   }
 
   private boolean isIgnoredElement(String path) {
@@ -669,6 +693,14 @@ public class ProfileBasedFactory {
 
   public void setMarkProfile(boolean markProfile) {
     this.markProfile = markProfile;
+  }
+
+  public boolean isRequiredOnly() {
+    return requiredOnly;
+  }
+
+  public void setRequiredOnly(boolean requiredOnly) {
+    this.requiredOnly = requiredOnly;
   }
   
   

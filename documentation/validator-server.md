@@ -209,6 +209,8 @@ used.
 ```
 
 `bundle` is compared as the *string* `"true"`, so a JSON boolean `true` does not switch it on.
+`requiredOnly` works the same way, and restricts generation to the elements the profile makes
+mandatory at the resource's top level.
 
 ### POST /loadIG
 

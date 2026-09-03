@@ -923,6 +923,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public byte[] generateTestData(String profileUrl, org.hl7.fhir.utilities.json.model.JsonArray data,
       org.hl7.fhir.utilities.json.model.JsonArray mappings, FhirFormat outputFormat, boolean asBundle) throws Exception {
+    return generateTestData(profileUrl, data, mappings, outputFormat, asBundle, false);
+  }
+
+  public byte[] generateTestData(String profileUrl, org.hl7.fhir.utilities.json.model.JsonArray data,
+      org.hl7.fhir.utilities.json.model.JsonArray mappings, FhirFormat outputFormat, boolean asBundle,
+      boolean requiredOnly) throws Exception {
     StructureDefinition profile = context.fetchResource(StructureDefinition.class, profileUrl);
     if (profile == null) {
       throw new FHIRException("Profile not found: " + profileUrl);
@@ -965,6 +971,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         baseDataPath, tbl, new HashMap<>(),
         mappings != null ? mappings : new org.hl7.fhir.utilities.json.model.JsonArray());
     factory.setTesting(true);
+    factory.setRequiredOnly(requiredOnly);
 
     if (asBundle) {
       Element bundle = Manager.parse(context,
