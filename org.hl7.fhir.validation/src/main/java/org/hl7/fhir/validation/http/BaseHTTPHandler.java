@@ -5,6 +5,7 @@ import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
@@ -63,6 +64,31 @@ public class BaseHTTPHandler {
       }
       return buffer.toByteArray();
     }
+  }
+
+  /**
+   * For a POST that carries a body, require the caller to declare a JSON or XML content type.
+   * <p>
+   * A browser can send a request to this server from any web page without a preflight only as a
+   * CORS "simple" request, and a simple request cannot carry {@code application/json} or an XML
+   * type - so insisting on one turns those requests away while affecting no real client, which
+   * always declares what it is sending. An empty body is left alone so the handler's own
+   * missing-body check still reports it.
+   *
+   * @return true to continue; false when a 415 has already been sent
+   */
+  protected boolean requireDeclaredBodyType(HttpExchange exchange, byte[] body) throws IOException {
+    if (body == null || body.length == 0) {
+      return true;
+    }
+    String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
+    String lower = contentType == null ? "" : contentType.toLowerCase();
+    if (lower.contains("json") || lower.contains("xml")) {
+      return true;
+    }
+    sendOperationOutcome(exchange, 415, OperationOutcomeUtilities.createError(
+      "A request body must declare a JSON or XML Content-Type"), getAcceptHeader(exchange));
+    return false;
   }
 
   protected  Manager.FhirFormat determineFormat(String contentType) {
