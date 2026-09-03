@@ -55,7 +55,7 @@ tags:
   - name: Conversion
     description: Format and FHIR version conversion
   - name: Profile Operations
-    description: StructureDefinition operations
+    description: StructureDefinition and canonical artifact operations
   - name: Resource Operations
     description: Operations that rewrite a resource
   - name: StructureMap
@@ -601,6 +601,52 @@ paths:
               schema: { type: object }
             application/fhir+xml:
               schema: { type: string }
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '500':
+          $ref: '#/components/responses/ServerError'
+  /questionnaire:
+    get:
+      tags: [Profile Operations]
+      summary: Generate a Questionnaire from a profile
+      description: >-
+        Builds a Questionnaire from the profile's snapshot, generating the snapshot on the fly if
+        the profile does not carry one, and expands the ValueSets of coded elements into answer
+        options. The profile must already be loaded (server start up `-ig`, or `/loadIG`).
+        `select` prunes the Questionnaire to the elements the expressions match, together with
+        their ancestors and descendants, so the item tree stays connected.
+      parameters:
+        - name: profile
+          in: query
+          required: true
+          description: Canonical URL of the StructureDefinition to build from.
+          schema: { type: string, format: uri }
+        - name: select
+          in: query
+          description: >-
+            A JSON array of FHIRPath expressions, evaluated against every `ElementDefinition` of
+            the snapshot; an element is selected when any expression is true. Omit to keep the
+            whole Questionnaire. MustSupport filtering is not a special case - pass
+            `mustSupport = true` as an expression.
+          schema: { type: string }
+          example: '["mustSupport = true"]'
+        - name: format
+          in: query
+          description: Format of the returned Questionnaire. `Accept` is not consulted.
+          schema: { type: string, enum: [json, xml], default: json }
+      responses:
+        '200':
+          description: The generated Questionnaire.
+          content:
+            application/fhir+json:
+              schema: { type: object }
+            application/fhir+xml:
+              schema: { type: string }
+        '400':
+          description: Missing `profile` parameter.
+          content:
+            application/fhir+json:
+              schema: { $ref: '#/components/schemas/OperationOutcome' }
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':

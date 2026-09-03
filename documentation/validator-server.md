@@ -73,8 +73,9 @@ else - including a missing header - means JSON.
 
 **Output format** comes from `Accept`: a media type containing `xml` means XML, anything else
 means JSON. `/convert` and `/transform` use this to pick their output format. `/snapshot`,
-`/narrative` and `/version` return the same format they were given, and `/testdata` uses the
-`format` field in its body.
+`/narrative` and `/version` return the same format they were given, `/testdata` uses the
+`format` field in its body, and `/questionnaire` ignores `Accept` in favour of a `format`
+query parameter.
 
 **Errors** are FHIR `OperationOutcome` resources, served as `application/fhir+json` or
 `application/fhir+xml`. The one exception is a wrong HTTP method, which returns `405` with a
@@ -100,6 +101,7 @@ the HTTP status.
 | POST | `/convert` | Convert a resource between JSON and XML |
 | POST | `/version` | Convert a resource between FHIR versions |
 | POST | `/snapshot` | Generate the snapshot for a StructureDefinition |
+| GET | `/questionnaire` | Generate a Questionnaire from a profile |
 | POST | `/narrative` | Generate the narrative for a resource |
 | POST | `/transform` | Run a StructureMap over a resource |
 | GET | `/compile` | Fetch a StructureMap by canonical URL |
@@ -242,6 +244,26 @@ StructureMap-based conversion is not available here and a resource without a `ur
 `/snapshot` takes a StructureDefinition with a differential and returns it with the snapshot
 generated (the base definition must be loaded). `/narrative` returns the posted resource with a
 generated narrative in `text.div`. Both echo the format they were given.
+
+### GET /questionnaire
+
+Builds a Questionnaire from a profile's snapshot, generating the snapshot if the profile does not
+carry one, and expands the ValueSets of coded elements into answer options. The profile must
+already be loaded.
+
+```sh
+curl 'http://localhost:8080/questionnaire?profile=http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient'
+```
+
+`select` takes a JSON array of FHIRPath expressions, evaluated against every `ElementDefinition`
+of the snapshot. An element is kept when any expression is true, along with its ancestors and
+descendants so that the item tree stays connected. MustSupport filtering is not a special case:
+
+```sh
+curl -G 'http://localhost:8080/questionnaire'   --data-urlencode 'profile=http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient'   --data-urlencode 'select=["mustSupport = true"]'
+```
+
+`format` (`json` or `xml`, default `json`) picks the output format; `Accept` is not consulted.
 
 ### POST /transform and GET /compile
 

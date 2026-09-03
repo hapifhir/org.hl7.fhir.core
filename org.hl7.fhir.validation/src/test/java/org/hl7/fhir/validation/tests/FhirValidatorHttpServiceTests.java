@@ -1179,6 +1179,82 @@ class FhirValidatorHttpServiceTest {
         throw new RuntimeException(e);
       }
     }
+
+    @Test
+    @DisplayName("Questionnaire - Generate from base Patient profile (legacy GET endpoint)")
+    void testQuestionnaireGenerateLegacy() throws Exception {
+      setUpService(getValidationEngine());
+
+      String profile = java.net.URLEncoder.encode(
+        "http://hl7.org/fhir/StructureDefinition/Patient", "UTF-8");
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/questionnaire?profile=" + profile))
+        .GET()
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+      assertTrue(response.body().contains("\"resourceType\""));
+      assertTrue(response.body().contains("Questionnaire"),
+        "response should be a Questionnaire resource");
+    }
+
+    @Test
+    @DisplayName("Questionnaire - select filter (FHIRPath expressions) still yields a valid Questionnaire")
+    void testQuestionnaireSelectFilter() throws Exception {
+      setUpService(getValidationEngine());
+
+      String profile = java.net.URLEncoder.encode(
+        "http://hl7.org/fhir/StructureDefinition/Patient", "UTF-8");
+      // select = ["path = 'Patient.name'", "path = 'Patient.birthDate'"]
+      String select = java.net.URLEncoder.encode(
+        "[\"path = 'Patient.name'\",\"path = 'Patient.birthDate'\"]", "UTF-8");
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/questionnaire?profile=" + profile + "&select=" + select))
+        .GET()
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+      org.hl7.fhir.utilities.json.model.JsonObject q =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(response.body());
+      assertEquals("Questionnaire", q.asString("resourceType"));
+      assertTrue(q.has("item"), "selected Questionnaire should still have items");
+    }
+
+    @Test
+    @DisplayName("Questionnaire - Missing profile parameter returns 400")
+    void testQuestionnaireMissingProfile() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/questionnaire"))
+        .GET()
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(400, response.statusCode());
+      assertTrue(response.body().contains("Missing required query parameter: profile"));
+    }
+
+    @Test
+    @DisplayName("Questionnaire - POST method not allowed")
+    void testQuestionnairePostNotAllowed() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/questionnaire?profile=x"))
+        .POST(HttpRequest.BodyPublishers.ofString(""))
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(405, response.statusCode());
+    }
+
   }
 
 }
