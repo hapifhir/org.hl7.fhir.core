@@ -74,6 +74,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.r5.utils.ResourceDependencyWalker;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
@@ -996,6 +997,154 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Manager.compose(context, e, baos, outputFormat, OutputStyle.PRETTY, null);
     return baos.toByteArray();
+  }
+
+  /**
+   * CRMI {@code $package}-style operation: given a root canonical artifact, build a
+   * {@code collection} Bundle containing that artifact plus every artifact it transitively
+   * references — profiles, extensions, ValueSets, CodeSystems, Library, ActivityDefinition,
+   * PlanDefinition, ConceptMap, NamingSystem, etc. Core FHIR resources
+   * ({@code hl7.fhir.r5.core}) are not included.
+   *
+   * <p>Dependency discovery uses {@link ResourceDependencyWalker}. When
+   * {@code expandValueSets} is true, each ValueSet entry is replaced by its expansion
+   * (best effort — an unexpandable ValueSet is included unexpanded).</p>
+   *
+   * <p>Not implemented (a subset of the full CRMI {@code $package} parameter surface):
+   * paging ({@code count}/{@code offset}), {@code contentEndpoint}/{@code terminologyEndpoint},
+   * {@code packageOnly}, {@code manifest}, and capability-based filtering.</p>
+   *
+   * @param rootUrl         canonical URL of the root artifact to package
+   * @param expandValueSets when true, ValueSet entries are expanded
+   * @param outputFormat    format of the returned bytes (JSON or XML)
+   */
+  public byte[] packageResource(String rootUrl, boolean expandValueSets, FhirFormat outputFormat)
+      throws FHIRException, IOException {
+    return packageResource(rootUrl, expandValueSets, false, outputFormat);
+  }
+
+  /**
+   * Same as {@link #packageResource(String, boolean, FhirFormat)} but with the option to
+   * also follow rule-level canonical references inside {@link org.hl7.fhir.r5.model.StructureMap}
+   * resources — notably ConceptMap URLs used by {@code translate(...)} transforms. Defaults
+   * to {@code false} on the 3-arg overload because rule-walking can pull in a long tail of
+   * additional artifacts that some callers don't want.
+   */
+  public byte[] packageResource(String rootUrl, boolean expandValueSets, boolean includeRuleReferences, FhirFormat outputFormat)
+      throws FHIRException, IOException {
+    Resource root = context.fetchResource(Resource.class, rootUrl);
+    if (root == null) {
+      throw new FHIRException("Resource not found: " + rootUrl);
+    }
+
+    final java.util.LinkedHashSet<Resource> collected = new java.util.LinkedHashSet<>();
+    final List<String> brokenLinks = new ArrayList<>();
+    ResourceDependencyWalker walker = new ResourceDependencyWalker(context,
+        new ResourceDependencyWalker.IResourceDependencyNotifier() {
+          @Override
+          public void seeResource(Resource resource, String summaryId) {
+            collected.add(resource);
+          }
+          @Override
+          public void brokenLink(String link) {
+            brokenLinks.add(link);
+          }
+        });
+    walker.setIncludeRuleReferences(includeRuleReferences);
+    walker.walk(root);
+
+    Bundle bundle = new Bundle();
+    bundle.setType(Bundle.BundleType.COLLECTION);
+    bundle.getMeta().setLastUpdated(new Date());
+    for (Resource r : collected) {
+      Resource toAdd = r;
+      if (expandValueSets && r instanceof ValueSet) {
+        try {
+          org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome outcome =
+              context.expandVS((ValueSet) r, true, false);
+          if (outcome.isOk() && outcome.getValueset() != null) {
+            toAdd = outcome.getValueset();
+          }
+        } catch (Exception e) {
+          // best effort: keep the unexpanded ValueSet if expansion fails
+        }
+      }
+      BundleEntryComponent entry = bundle.addEntry();
+      entry.setResource(toAdd);
+      if (toAdd instanceof CanonicalResource && ((CanonicalResource) toAdd).hasUrl()) {
+        entry.setFullUrl(((CanonicalResource) toAdd).getUrl());
+      } else if (toAdd.hasId()) {
+        entry.setFullUrl(toAdd.fhirType() + "/" + toAdd.getIdPart());
+      }
+    }
+    for (String broken : brokenLinks) {
+      if (isLikelyNonCanonical(broken)) {
+        log.debug("$package: ignoring non-canonical reference " + broken);
+        continue;
+      }
+      log.warn("$package: could not resolve dependency " + broken);
+    }
+
+    // Same version-matching as parseStructureMap: a Bundle returned to an R4-mode caller
+    // must be serialised as R4 so its StructureMaps round-trip cleanly through
+    // /loadResource. Without this, every StructureMap in the Bundle would emit
+    // dependent.parameter (R5-only) and silently lose variables on re-read.
+    String effectiveVersion = version != null ? version : (context != null ? context.getVersion() : null);
+    return serialiseBundleForVersion(bundle, effectiveVersion, outputFormat);
+  }
+
+  /**
+   * Convert {@code bundle} (an R5 Bundle) to the version matching {@code targetVersion}
+   * and serialise it. Mirrors {@link #serialiseStructureMapForVersion} but for the whole
+   * Bundle so every entry — including nested StructureMaps reached via $package's
+   * dependency walker — gets the same version conversion treatment.
+   */
+  private static byte[] serialiseBundleForVersion(Bundle bundle, String targetVersion, FhirFormat outputFormat) throws FHIRException, IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (targetVersion == null || targetVersion.startsWith("5.") || targetVersion.startsWith("6.")) {
+      if (outputFormat == FhirFormat.XML) new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+      else                                new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+    } else if (targetVersion.startsWith("4.0")) {
+      org.hl7.fhir.r4.model.Resource r4 = org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50.convertResource(bundle);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.r4.formats.XmlParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(baos, r4);
+      else                                new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(baos, r4);
+    } else if (targetVersion.startsWith("4.3")) {
+      org.hl7.fhir.r4b.model.Resource r4b = org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50.convertResource(bundle);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.r4b.formats.XmlParser().setOutputStyle(org.hl7.fhir.r4b.formats.IParser.OutputStyle.PRETTY).compose(baos, r4b);
+      else                                new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4b.formats.IParser.OutputStyle.PRETTY).compose(baos, r4b);
+    } else if (targetVersion.startsWith("3.")) {
+      org.hl7.fhir.dstu3.model.Resource r3 = org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50.convertResource(bundle);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.dstu3.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(baos, r3);
+      else                                new org.hl7.fhir.dstu3.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(baos, r3);
+    } else {
+      if (outputFormat == FhirFormat.XML) new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+      else                                new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+    }
+    return baos.toByteArray();
+  }
+
+  /**
+   * URLs the dependency walker sometimes hands us that aren't FHIR canonicals — terminology
+   * concept identifiers, OIDs, UUIDs, etc. These can show up inside e.g. {@code useContext.valueReference}
+   * and trigger spurious "broken link" warnings. Drop them quietly.
+   *
+   * <p>Walker reports the URL as {@code "<url> from <pkg.id>#<version>"}; we strip the suffix
+   * before testing.</p>
+   */
+  private static boolean isLikelyNonCanonical(String brokenLinkKey) {
+    if (brokenLinkKey == null) return true;
+    String url = brokenLinkKey;
+    int idx = url.indexOf(" from ");
+    if (idx > 0) url = url.substring(0, idx);
+    if (url.startsWith("urn:oid:")) return true;
+    if (url.startsWith("urn:uuid:")) return true;
+    if (url.startsWith("urn:ietf:")) return true;
+    if (url.startsWith("mailto:")) return true;
+    if (url.startsWith("tel:")) return true;
+    if (url.startsWith("http://snomed.info/id/")) return true;          // SNOMED concept IRI
+    if (url.startsWith("http://snomed.info/sct/") && url.length() > 22  // SNOMED edition / module URI (numeric)
+        && Character.isDigit(url.charAt(22))) return true;
+    return false;
   }
 
   public byte[] generateSnapshot(byte[] resource, FhirFormat format) throws FHIRException, IOException {

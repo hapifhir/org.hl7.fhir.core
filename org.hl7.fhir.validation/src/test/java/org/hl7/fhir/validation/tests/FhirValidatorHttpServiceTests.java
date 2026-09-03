@@ -1179,6 +1179,62 @@ class FhirValidatorHttpServiceTest {
         throw new RuntimeException(e);
       }
     }
+
+    @Test
+    @DisplayName("Package - bundle a canonical artifact and its dependencies (legacy GET /package)")
+    void testPackageLegacy() throws Exception {
+      setUpService(getValidationEngine());
+
+      // A base CodeSystem — minimal canonical dependencies, fast + predictable.
+      String url = java.net.URLEncoder.encode("http://hl7.org/fhir/administrative-gender", "UTF-8");
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/package?url=" + url))
+        .GET()
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+      org.hl7.fhir.utilities.json.model.JsonObject bundle =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(response.body());
+      assertEquals("Bundle", bundle.asString("resourceType"));
+      assertEquals("collection", bundle.asString("type"));
+      org.hl7.fhir.utilities.json.model.JsonArray entries = bundle.getJsonArray("entry");
+      assertTrue(entries != null && entries.size() >= 1,
+        "package Bundle should contain at least the root artifact");
+    }
+
+    @Test
+    @DisplayName("Package - Missing url parameter returns 400")
+    void testPackageMissingUrl() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/package"))
+        .GET()
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(400, response.statusCode());
+      assertTrue(response.body().contains("Missing required query parameter: url"));
+    }
+
+    @Test
+    @DisplayName("Package - POST method not allowed")
+    void testPackagePostNotAllowed() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/package?url=x"))
+        .POST(HttpRequest.BodyPublishers.ofString(""))
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(405, response.statusCode());
+    }
+
   }
 
 }

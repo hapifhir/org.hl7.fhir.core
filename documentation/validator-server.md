@@ -102,6 +102,7 @@ the HTTP status.
 | POST | `/snapshot` | Generate the snapshot for a StructureDefinition |
 | POST | `/narrative` | Generate the narrative for a resource |
 | POST | `/transform` | Run a StructureMap over a resource |
+| GET | `/package` | Package an artifact with its dependencies |
 | GET | `/compile` | Fetch a StructureMap by canonical URL |
 | GET | `/txTest` | Run one terminology ecosystem test against a server |
 | POST | `/stop` | Shut the server down |
@@ -259,6 +260,32 @@ curl 'http://localhost:8080/compile?url=http://example.org/StructureMap/Example'
 ```
 
 `/compile` does not check the HTTP method, so POST and other methods behave the same as GET.
+
+### GET /package
+
+The CRMI `$package` operation: returns a `collection` Bundle holding the artifact at `url` and
+everything it transitively depends on. Core FHIR resources are not included, and the root artifact
+must already be loaded.
+
+```sh
+curl 'http://localhost:8080/package?url=http://example.org/StructureDefinition/MyProfile&expand=true'
+```
+
+| Parameter | Required | Default |
+| --- | --- | --- |
+| `url` | yes | - |
+| `expand` | no | `false` |
+| `includeRules` | no | `false` |
+| `format` | no | `json` |
+
+`expand=true` replaces each ValueSet entry by its expansion, best effort - a ValueSet that cannot
+be expanded is included unexpanded. `includeRules=true` also follows canonical references inside
+StructureMap rules, notably the ConceptMaps used by `translate(...)`; it is off by default because
+rule-walking can pull in a long tail of extra artifacts.
+
+Only part of the CRMI parameter surface is implemented: paging (`count`/`offset`),
+`contentEndpoint`/`terminologyEndpoint`, `packageOnly`, `manifest` and capability-based filtering
+are not.
 
 ### GET /txTest
 
