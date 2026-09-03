@@ -68,8 +68,10 @@ your responsibility.
 
 ## Request and response conventions
 
-**Input format** comes from `Content-Type`: a media type containing `xml` means XML, anything
-else - including a missing header - means JSON.
+**Input format** comes from `Content-Type`: a media type containing `xml` means XML and one
+containing `json` means JSON. A request body that declares neither - including a body sent with
+no `Content-Type` at all - is refused with `415`, so that a browser cannot drive the server from
+another page with a CORS-simple request. An empty body is not subject to this check.
 
 **Output format** comes from `Accept`: a media type containing `xml` means XML, anything else
 means JSON. `/convert` and `/transform` use this to pick their output format. `/snapshot`,
