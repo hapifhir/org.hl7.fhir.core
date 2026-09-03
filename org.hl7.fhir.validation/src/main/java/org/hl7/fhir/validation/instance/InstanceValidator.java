@@ -5176,6 +5176,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       boolean test = isSearchUrl(context, ref);
           //("^\\?([\\w-]+(=[\\w-]*)?(&[\\w-]+(=[\\w-]*)?)*)?$"),
       ok = rule(errors, "2023-02-20", IssueType.INVALID, element.line(), element.col(), path, test, I18nConstants.REFERENCE_REF_QUERY_INVALID, ref) && ok;
+      ok = rule(errors, "2026-09-03", IssueType.INVALID, element.line(), element.col(), path, inTransaction(valContext), I18nConstants.REFERENCE_REF_QUERY_NOT_TRANSACTION, ref) && ok;
     } else if (stop.ok()) {
       hint(errors, "2025-04-08", IssueType.INFORMATIONAL, element.line(), element.col(), path, false, I18nConstants.REFERENCE_REF_REL_UNSOLVEABLE, ref);      
     } else if (pol.checkExists()) {
@@ -5216,6 +5217,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String ft;
     if (we != null) {
       ft = we.getType();
+    } else if (conditional) {
+      // a conditional reference names its type before the '?', and conditional is only true
+      // because that name is a known resource type. Parsing it as a path instead splits on the
+      // '/'s inside the search parameter values, which is nonsense (see #2474)
+      ft = ref.substring(0, ref.indexOf("?"));
     } else {
       ft = tryParse(ref);
     }
@@ -5504,7 +5510,26 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return null;
   }
 
+  /**
+   * Conditional references are only defined for transactions - see https://hl7.org/fhir/http.html#trules.
+   * Anywhere else there is nothing for the server to resolve the search against, so a search URL in
+   * Reference.reference is an error rather than a reference (see #2474).
+   */
+  private boolean inTransaction(ValidationContext valContext) {
+    for (Element e : new Element[] {valContext.getGroupingResource(), valContext.getRootResource(), valContext.getResource()}) {
+      if (e != null && "Bundle".equals(e.fhirType())) {
+        return "transaction".equals(e.getNamedChildValue("type", false));
+      }
+    }
+    return false;
+  }
+
   private String checkResourceType(String type) {
+    if (Utilities.noString(type)) {
+      // no caller should ask for this, but if one does, don't ask the context for
+      // "http://hl7.org/fhir/StructureDefinition/" - not every context survives it (see #2474)
+      return null;
+    }
     long t = System.nanoTime();
     try {
       if (context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + type, IWorkerContext.VersionResolutionRules.defaultRule()) != null)
