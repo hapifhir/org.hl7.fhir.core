@@ -137,9 +137,9 @@ public abstract class FormatUtilities {
      */
     try {
       if ("XML".equalsIgnoreCase(format))
-         return (ParserBase) Class.forName("org.hl7.fhir.r5.formats.XmlParser").getConstructor().newInstance();
+         return (ParserBase) Class.forName("org.hl7.fhir.services.formats.XmlParser").getConstructor().newInstance();
       if ("JSON".equalsIgnoreCase(format))
-        return (ParserBase) Class.forName("org.hl7.fhir.r5.formats.JsonParser").getConstructor().newInstance();
+        return (ParserBase) Class.forName("org.hl7.fhir.services.formats.JsonParser").getConstructor().newInstance();
       if ("TURTLE".equalsIgnoreCase(format))
         throw new Error("unsupported Format " + format.toString()); // return new TurtleParser();
       if ("JSONLD".equalsIgnoreCase(format))

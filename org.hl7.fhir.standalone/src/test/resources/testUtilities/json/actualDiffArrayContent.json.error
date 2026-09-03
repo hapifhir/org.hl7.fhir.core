@@ -1,0 +1,3 @@
+string property values differ at .expectedArray[0]
+Expected:"expectedValue 1" for expected.json
+Actual  :"unexpectedValue 1"

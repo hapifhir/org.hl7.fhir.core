@@ -3318,6 +3318,27 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://id.who.int/icd/entity",
+    "version" : [{
+      "code" : "2026-01"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/icf",
+    "version" : [{
+      "code" : "2026-01"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/mms",
+    "version" : [{
+      "code" : "2026-01"
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
     "version" : [{
       "code" : "1.5.0"

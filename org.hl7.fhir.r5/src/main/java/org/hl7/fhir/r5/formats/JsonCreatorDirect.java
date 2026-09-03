@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.hl7.fhir.utilities.Utilities;
@@ -48,23 +49,56 @@ import org.hl7.fhir.utilities.Utilities;
  */
 public class JsonCreatorDirect implements JsonCreator {
 
+  /**
+   * Composition is a long run of tiny writes, so the output is collected here and handed to the writer in
+   * blocks. Small on purpose: this buffer is allocated per composition, and most compositions are small
+   * (a Coding for a cache key, an element for a diff). At 8192 chars the allocation and zeroing of the
+   * buffer cost more than everything else in a small composition put together - it was about 2us of the
+   * 3.2us it took to compose an empty Coding. Larger buffers do not measurably help large documents
+   */
+  private static final int BUFFER_SIZE = 256;
+
+  /**
+   * "\r\n" followed by two spaces per level, for the depths a resource actually reaches. Writing the
+   * newline and the indent as one string beats a loop that writes "  " once per level
+   */
+  private static final String[] INDENTS = makeIndents(64);
+
+  private static String[] makeIndents(int depth) {
+    String[] res = new String[depth];
+    StringBuilder b = new StringBuilder("\r\n");
+    for (int i = 0; i < depth; i++) {
+      res[i] = b.toString();
+      b.append("  ");
+    }
+    return res;
+  }
+
   private Writer writer;
   private boolean pretty;
   private boolean comments;
   private boolean named;
-  private List<Boolean> valued = new ArrayList<Boolean>();
   private int indent;
   private List<String> commentList = new ArrayList<>(); 
+
+  private final char[] buffer = new char[BUFFER_SIZE];
+  private int length;
+
+  /**
+   * whether the object or array at each depth has had a value written yet, so checkState knows if it owes a
+   * comma. A stack, pushed and popped at every brace - it used to be an ArrayList&lt;Boolean&gt; indexed at
+   * 0, which meant an arraycopy of the whole stack on every push and pop
+   */
+  private boolean[] valued = new boolean[64];
+  private int depth;
   
   public JsonCreatorDirect(Writer writer, boolean pretty, boolean comments) {
     super();
-    // Buffer here rather than at each call site: composition emits many tiny
-    // write() calls (every brace, name, value, indent), and an unbuffered
-    // OutputStreamWriter runs the charset encoder - allocating a HeapCharBuffer -
-    // on every one. A BufferedWriter coalesces them into one encode per flush.
-    // finish() flushes, so every caller that finishes is safe (note:
-    // JsonCreatorCanonical must call jj.finish()). Don't double-wrap.
-    this.writer = writer instanceof BufferedWriter ? writer : new BufferedWriter(writer);
+    // No BufferedWriter: this class buffers into its own char[] (see BUFFER_SIZE), which costs neither a
+    // synchronized call nor a charset encode per token, and does not allocate a BufferedWriter's 8192 char
+    // buffer per composition. finish() flushes, so every caller that finishes is safe (note:
+    // JsonCreatorCanonical must call jj.finish())
+    this.writer = writer;
     this.pretty = pretty;
     this.comments = pretty && comments;
   }
@@ -76,26 +110,76 @@ public class JsonCreatorDirect implements JsonCreator {
     }
   }
 
+  private void append(String s) throws IOException {
+    int n = s.length();
+    if (length + n > BUFFER_SIZE) {
+      flushBuffer();
+      if (n > BUFFER_SIZE) {
+        writer.write(s);
+        return;
+      }
+    }
+    s.getChars(0, n, buffer, length);
+    length = length + n;
+  }
+
+  private void flushBuffer() throws IOException {
+    if (length > 0) {
+      writer.write(buffer, 0, length);
+      length = 0;
+    }
+  }
+
+  private void push() {
+    if (depth == valued.length) {
+      valued = Arrays.copyOf(valued, valued.length * 2);
+    }
+    valued[depth++] = false;
+  }
+
+  private void pop() {
+    if (depth > 0) {
+      depth--;
+    }
+  }
+
+  private boolean valued() {
+    return depth > 0 && valued[depth - 1];
+  }
+
+  private void setValued(boolean value) {
+    if (depth > 0) {
+      valued[depth - 1] = value;
+    }
+  }
+
+  private void writeIndent() throws IOException {
+    append(indent < INDENTS.length ? INDENTS[indent] : makeIndent(indent));
+  }
+
+  private String makeIndent(int level) {
+    StringBuilder b = new StringBuilder("\r\n");
+    for (int i = 0; i < level; i++) {
+      b.append("  ");
+    }
+    return b.toString();
+  }
+
   @Override
   public void beginObject() throws IOException {
     checkState();
-    writer.write("{");
+    append("{");
     stepIn();
-    if (!valued.isEmpty()) {
-      valued.set(0, true);      
-    }
-    valued.add(0, false);
+    setValued(true);
+    push();
   }
 
   private void commitComments() throws IOException {
     if (comments) {
       for (String s : commentList) {
-        writer.write("// ");
-        writer.write(s);
-        writer.write("\r\n");
-        for (int i = 0; i < indent; i++) {
-          writer.write("  ");
-        }
+        append("// ");
+        append(s);
+        writeIndent();
       }
       commentList.clear();
     }
@@ -105,132 +189,123 @@ public class JsonCreatorDirect implements JsonCreator {
   public void stepIn() throws IOException {
     if (pretty) {
       indent++;
-      writer.write("\r\n");
-      for (int i = 0; i < indent; i++) {
-        writer.write("  ");
-      }
+      writeIndent();
     }
   }
 
   public void stepOut() throws IOException {
     if (pretty) {
       indent--;
-      writer.write("\r\n");
-      for (int i = 0; i < indent; i++) {
-        writer.write("  ");
-      }
+      writeIndent();
     }
   }
 
   private void checkState() throws IOException {
     commitComments();
     if (named) {
-      if (pretty)
-        writer.write(" : ");
-      else
-        writer.write(":");
+      append(pretty ? " : " : ":");
       named = false;
     }
-    if (!valued.isEmpty() && valued.get(0)) {
-      writer.write(",");
+    if (valued()) {
+      append(",");
       if (pretty) {
-        writer.write("\r\n");
-        for (int i = 0; i < indent; i++) {
-          writer.write("  ");
-        }        
+        writeIndent();
       }
-      valued.set(0, false);
+      setValued(false);
     }
   }
 
   @Override
   public void endObject() throws IOException {
     stepOut();
-    writer.write("}");    
-    valued.remove(0);
+    append("}");
+    pop();
   }
 
   @Override
   public void nullValue() throws IOException {
     checkState();
-    writer.write("null");
-    valued.set(0, true);
+    append("null");
+    setValued(true);
   }
 
   @Override
   public void name(String name) throws IOException {
     checkState();
-    writer.write("\""+name+"\"");
+    append("\"");
+    append(name);
+    append("\"");
     named = true;
   }
 
   @Override
   public void value(String value) throws IOException {
     checkState();
-    writer.write("\""+Utilities.escapeJson(value)+"\"");    
-    valued.set(0, true);
+    append("\"");
+    append(Utilities.escapeJson(value));
+    append("\"");
+    setValued(true);
   }
 
   @Override
   public void value(Boolean value) throws IOException {
     checkState();
     if (value == null)
-      writer.write("null");
+      append("null");
     else if (value.booleanValue())
-      writer.write("true");
+      append("true");
     else
-      writer.write("false");
-    valued.set(0, true);
+      append("false");
+    setValued(true);
   }
 
   @Override
   public void value(BigDecimal value) throws IOException {
     checkState();
     if (value == null)
-      writer.write("null");
+      append("null");
     else 
-      writer.write(value.toString());    
-    valued.set(0, true);
+      append(value.toString());
+    setValued(true);
   }
 
   @Override
   public void valueNum(String value) throws IOException {
     checkState();
     if (value == null)
-      writer.write("null");
+      append("null");
     else 
-      writer.write(value);    
-    valued.set(0, true);
+      append(value);
+    setValued(true);
   }
 
   @Override
   public void value(Integer value) throws IOException {
     checkState();
     if (value == null)
-      writer.write("null");
+      append("null");
     else 
-      writer.write(value.toString());    
-    valued.set(0, true);
+      append(value.toString());
+    setValued(true);
   }
 
   @Override
   public void beginArray() throws IOException {
     checkState();
-    writer.write("[");    
-    if (!valued.isEmpty()) {
-      valued.set(0, true);      
-    }
-    valued.add(0, false);
+    append("[");
+    setValued(true);
+    push();
   }
 
   @Override
   public void endArray() throws IOException {
-    writer.write("]");        
-    valued.remove(0);
+    append("]");
+    pop();
   }
 
   @Override
   public void finish() throws IOException {
+    flushBuffer();
     writer.flush();
   }
 

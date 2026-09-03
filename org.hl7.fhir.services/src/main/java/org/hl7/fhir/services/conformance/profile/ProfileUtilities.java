@@ -4995,9 +4995,20 @@ public class ProfileUtilities {
   }
 
   private Map<String, List<Property>> propertyCache = new HashMap<>();
-  
+
+  // The XML parser has to try the properties of an element longest name first, so that
+  // e.g. requestOrganizationReference is considered before request[x]. That order depends
+  // only on the list, not on the node being matched, but it was re-sorted for every child
+  // element parsed. The lists here are the ones propertyCache hands out (by identity), so
+  // this holds nothing alive that propertyCache does not already hold.
+  private Map<List<Property>, List<Property>> sortedPropertyCache = new IdentityHashMap<>();
+
   public Map<String, List<Property>> getCachedPropertyList() {
     return propertyCache;
+  }
+
+  public Map<List<Property>, List<Property>> getCachedSortedPropertyList() {
+    return sortedPropertyCache;
   }
 
   public void checkExtensions(ElementDefinition outcome) {

@@ -133,7 +133,7 @@ public Parameters addParameter(String name, int i) {
 
 
 public void addParameters(Parameters expParameters) {
-  addParameters(expParameters.getParameter());
+  addParameters(expParameters.getParameterList());
 }
 
 private void addParameters(List<ParametersParameterComponent> parameters) {

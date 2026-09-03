@@ -1,3 +1,12 @@
+
+  /**
+   * Read-only access to the extensions, for code that only searches them. Unlike
+   * getExtensionList() this does not create (and store) an empty BaseList when there are none,
+   * which both allocates and mutates elements that callers treat as read-only.
+   */
+  public List<Extension> getExtensionsForRead() {
+    return this.extensionList == null ? java.util.Collections.<Extension>emptyList() : this.extensionList;
+  }
  @Override
   public String getIdBase() {
     return getId();
@@ -29,7 +38,7 @@
    public Extension getExtensionByUrl(String theUrl) {
      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
      ArrayList<Extension> retVal = new ArrayList<Extension>();
-     for (Extension next : getExtensionList()) {
+     for (Extension next : getExtensionsForRead()) {
        if (theUrl.equals(next.getUrl())) {
          retVal.add(next);
        }
@@ -86,9 +95,13 @@
     * @return an unmodifiable list containing all extensions on this element which match the given URL
     */
    public List<Extension> getExtensionsByUrl(String theUrl) {
-     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
-     ArrayList<Extension> retVal = new ArrayList<Extension>();
-     for (Extension next : getExtensionList()) {
+     if (theUrl == null) {
+       throw new NullPointerException("theUrl must not be null");
+     } else if (theUrl.length() == 0) {
+       throw new IllegalArgumentException("theUrl must not be empty");
+     }
+     ArrayList<Extension> retVal = new ArrayList<>();
+     for (Extension next : getExtensionsForRead()) {
        if (theUrl.equals(next.getUrl())) {
          retVal.add(next);
        }
@@ -113,7 +126,7 @@
     */
    public Extension getExtensionByUrl(String... theUrls) {
      ArrayList<Extension> retVal = new ArrayList<Extension>();
-     for (Extension next : getExtensionList()) {
+     for (Extension next : getExtensionsForRead()) {
        if (Utilities.existsInList(next.getUrl(), theUrls)) {
          retVal.add(next);
        }
@@ -132,7 +145,7 @@
     * Note: BackboneElements override this to check Modifier Extensions too
     */
    public boolean hasExtension(String... theUrls) {
-     for (Extension next : getExtensionList()) {
+     for (Extension next : getExtensionsForRead()) {
        if (Utilities.existsInList(next.getUrl(), theUrls)) {
          return true;
        }
@@ -167,7 +180,12 @@
    }
 
    public boolean hasExtension(String theUrl) {
-     return !getExtensionsByUrl(theUrl).isEmpty(); 
+     for (Extension next : getExtensionsForRead()) {
+       if (theUrl.equals(next.getUrl())) {
+         return true;
+       }
+     }
+     return false;
    }
 
    /**
@@ -177,15 +195,44 @@
     * 
     * @param theUrl The URL. Must not be blank or null.
     */
+
+   /**
+    * The single extension matching the URL, or null if there is none. Scans in place rather
+    * than building a list, because getExtensionString is on hot paths (getWorkingCode calls it
+    * for every FHIRPath System.* type reference). Subclasses that also expose modifier
+    * extensions override this alongside getExtensionsByUrl.
+    */
+   protected Extension getSingleExtensionByUrl(String theUrl) throws FHIRException {
+     if (theUrl == null) {
+       throw new NullPointerException("theUrl must not be null");
+     } else if (theUrl.length() == 0) {
+       throw new IllegalArgumentException("theUrl must not be empty");
+     }
+     return soleExtension(getExtensionsForRead(), theUrl, null);
+   }
+
+   /**
+    * @param found an extension already matched by a caller scanning another list, or null
+    */
+   protected static Extension soleExtension(List<Extension> list, String theUrl, Extension found) throws FHIRException {
+     for (Extension next : list) {
+       if (theUrl.equals(next.getUrl())) {
+         if (found != null) {
+           throw new FHIRException("Multiple matching extensions found for extension '"+theUrl+"'");
+         }
+         found = next;
+       }
+     }
+     return found;
+   }
+
    public String getExtensionString(String theUrl) throws FHIRException {
-     List<Extension> ext = getExtensionsByUrl(theUrl); 
-     if (ext.isEmpty()) 
-       return null; 
-     if (ext.size() > 1) 
-       throw new FHIRException("Multiple matching extensions found for extension '"+theUrl+"'");
-     if (!ext.get(0).getValue().isPrimitive())
+     Extension ext = getSingleExtensionByUrl(theUrl);
+     if (ext == null)
+       return null;
+     if (!ext.getValue().isPrimitive())
        throw new FHIRException("Extension '"+theUrl+"' could not be converted to a string");
-     return ext.get(0).getValue().primitiveValue();
+     return ext.getValue().primitiveValue();
    }
 
 
@@ -229,7 +276,7 @@
    public List<Extension> getExtensionsByUrl(String... theUrls) {
      ArrayList<Extension> retVal = new ArrayList<>();
 
-     for (Extension next : getExtension()) {
+     for (Extension next : getExtensionsForRead()) {
        if (Utilities.existsInList(next.getUrl(), theUrls)) {
          retVal.add(next);
        }

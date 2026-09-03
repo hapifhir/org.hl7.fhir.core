@@ -377,7 +377,9 @@ public class ValidationResult {
 
   public ValidationResult setStatus(boolean inactive, String status) {
     this.inactive = inactive;
-    if (!"inactive".equals(status)) {
+    // 'active' and 'inactive' say nothing that the inactive flag doesn't already say, so they're
+    // not worth reporting. status is for the statuses that add something: retired, deprecated...
+    if (!"inactive".equals(status) && !"active".equals(status)) {
       this.status = status;
     }
     return this;

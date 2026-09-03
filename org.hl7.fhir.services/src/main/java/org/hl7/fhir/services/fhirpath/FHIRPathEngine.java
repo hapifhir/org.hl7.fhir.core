@@ -289,12 +289,13 @@ public class FHIRPathEngine {
         }
       }
     }
-    Base[] list = item.getNamedValue(name, false);
-    if (list != null) {
-      for (Base v : list) {
-        if (v != null && (tn == null || v.fhirType().equalsIgnoreCase(tn))) {
-          result.add(filterIdType(v));
-        }
+    // getChildValues, not getNamedValue: getNamedValue is the raw per-element switch generated
+    // onto each class, and it does not implement the "*" wildcard that children() and
+    // descendants() pass in here. getChildValues is the accessor that does (and it filters
+    // nulls, and never returns null itself)
+    for (Base v : item.getChildValues(name, false)) {
+      if (tn == null || v.fhirType().equalsIgnoreCase(tn)) {
+        result.add(filterIdType(v));
       }
     }
   }

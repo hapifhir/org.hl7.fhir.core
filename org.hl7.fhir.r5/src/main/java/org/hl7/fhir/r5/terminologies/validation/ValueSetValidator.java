@@ -1170,8 +1170,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
         issues.get(0).setUserData(UserDataNames.IGNORE_ISSUE_MESSAGE, true);
         return new ValidationResult(IssueSeverity.WARNING, null, issues).setVersion(cs.getVersion());
       } else {
-        String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE_IN_VERSION, code.getCode(), cs.getUrl(), cs.getVersion());
-        return new ValidationResult(IssueSeverity.ERROR, null, makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path + ".code", msg, OpIssueCode.InvalidCode, null, I18nConstants.UNKNOWN_CODE_IN_VERSION));
+        // not every code system states a version, and UNKNOWN_CODE_IN_VERSION renders a missing
+        // one as the literal text version 'null'
+        String msgId = cs.hasVersion() ? I18nConstants.UNKNOWN_CODE_IN_VERSION : I18nConstants.UNKNOWN_CODE_IN;
+        String msg = cs.hasVersion() ? context.formatMessage(msgId, code.getCode(), cs.getUrl(), cs.getVersion()) : context.formatMessage(msgId, code.getCode(), cs.getUrl());
+        return new ValidationResult(IssueSeverity.ERROR, null, makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path + ".code", msg, OpIssueCode.InvalidCode, null, msgId));
       }
     } else {
       if (!cc.getCode().equals(code.getCode())) {
@@ -2252,6 +2255,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return d != null && f.getValue().equals(d.primitiveValue());
     case ISNOTA: return !codeInConceptIsAFilter(cs, f, code, false);
     case DESCENDENTOF: return codeInConceptIsAFilter(cs, f, code, true); 
+    case CHILDOF: return codeInConceptChildOfFilter(cs, f, code);
     default:
       log.error("todo: handle concept filters with op = "+f.getOp());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__CONCEPT_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
@@ -2264,6 +2268,42 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       DataType d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
       return d != null && f.getValue().equals(d.primitiveValue());
+  }
+
+  /**
+   * child-of: the direct children of the filter value, and only those - not the value itself, and
+   * not its grandchildren (which is what makes it different from descendent-of). The expansion
+   * does the same thing by passing a depth limit of 0 to addCodeAndDescendents.
+   */
+  private boolean codeInConceptChildOfFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) {
+    ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), f.getValue(), cs.getCaseSensitive(), altCodeParams);
+    if (cc == null) {
+      return false;
+    }
+    for (ConceptDefinitionComponent child : childrenOf(cc)) {
+      if (codeMatches(cs, child, code)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * The direct children of a concept, from both sources the hierarchy can come from: nested
+   * concepts, and the cross-links built from the #parent property by crossLinkCodeSystem().
+   */
+  @SuppressWarnings("unchecked")
+  private List<ConceptDefinitionComponent> childrenOf(ConceptDefinitionComponent cc) {
+    List<ConceptDefinitionComponent> res = new ArrayList<>(cc.getConcept());
+    if (cc.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
+      res.addAll((List<ConceptDefinitionComponent>) cc.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK));
+    }
+    return res;
+  }
+
+  private boolean codeMatches(CodeSystem cs, ConceptDefinitionComponent cd, String code) {
+    return code.equals(cd.getCode()) || (!cs.getCaseSensitive() && code.equalsIgnoreCase(cd.getCode()))
+        || Utilities.existsInList(code, alternateCodes(cd, altCodeParams));
   }
 
   private boolean codeInConceptIsAFilter(CodeSystem cs, ConceptSetFilterComponent f, String code, boolean excludeRoot) {

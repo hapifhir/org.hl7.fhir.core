@@ -90,6 +90,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -1174,7 +1175,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         return null;
       } else if (el.size() == 1) {
         if (fragment != null) {
-          int i = countFragmentMatches(el.get(0), fragment);
+          int i = countFragmentMatches(el.get(0), fragment); // todo (GDG Sept 2026): should this pass in NodeStack?
           if (i == 0) {
             source.setUserData(UserDataNames.validation_bundle_error, session.getSessionId());
             hintOrError(isNLLink, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT, ref, fragment, name);
@@ -1338,14 +1339,113 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return null;
   }
 
-  protected List<Element> getFragmentMatches(Element element, String fragment) {
-    List<Element> result = new ArrayList<>();
-    if (fragment.equals(element.getIdBase())) {
-      result.add(element);
+  /**
+   * The kinds of thing a fragment reference (#id) can find. They're not all counted by all the callers - a 
+   * narrative anchor name is a legitimate target for a link in the narrative, but not for a Reference
+   */
+  protected enum FragmentMatchKind { ELEMENT_ID, XHTML_ID, XHTML_NAME }
+
+  /**
+   * One place a fragment reference matched: what kind of match it is, where it is (a path relative to the 
+   * element the index was built for) and, for an id on an element, the element itself
+   */
+  protected static class FragmentMatch {
+    private final FragmentMatchKind kind;
+    private final String path;
+    private final Element element;
+
+    protected FragmentMatch(FragmentMatchKind kind, String path, Element element) {
+      this.kind = kind;
+      this.path = path;
+      this.element = element;
+    }
+
+    public FragmentMatchKind getKind() {
+      return kind;
+    }
+
+    public String getPath() {
+      return path;
+    }
+
+    public Element getElement() {
+      return element;
+    }
+  }
+
+  /**
+   * Everywhere the fragment could resolve to inside the element, in document order. The returned list belongs 
+   * to the index - don't modify it.
+   * <p>
+   * This is asked once per reference, and a resource (or worse, a bundle) can hold a great many references, so 
+   * rather than walk the tree looking for one fragment at a time, we walk it once and index every id and 
+   * narrative anchor in it by name. The index hangs off the element for the session, since what it describes 
+   * doesn't change while the element is being validated
+   */
+  @SuppressWarnings("unchecked")
+  protected List<FragmentMatch> findFragmentMatches(Element element, String fragment) {
+    Map<String, List<FragmentMatch>> index = null;
+    if (session.getSessionId().equals(element.getUserString(UserDataNames.VALIDATION_FRAGMENT_INDEX_ID))) {
+      index = (Map<String, List<FragmentMatch>>) element.getUserData(UserDataNames.VALIDATION_FRAGMENT_INDEX);
+    }
+    if (index == null) {
+      index = new HashMap<String, List<FragmentMatch>>();
+      indexFragments(index, element, "");
+      element.setUserData(UserDataNames.VALIDATION_FRAGMENT_INDEX, index);
+      element.setUserData(UserDataNames.VALIDATION_FRAGMENT_INDEX_ID, session.getSessionId());
+    }
+    List<FragmentMatch> res = index.get(fragment);
+    return res == null ? new ArrayList<FragmentMatch>() : res;
+  }
+
+  private void indexFragments(Map<String, List<FragmentMatch>> index, Element element, String path) {
+    if (element.getIdBase() != null) {
+      addFragmentMatch(index, element.getIdBase(), new FragmentMatch(FragmentMatchKind.ELEMENT_ID, path+"/id", element));
+    }
+    if (element.getXhtml() != null) {
+      indexXhtmlFragments(index, element.getXhtml(), path+"/");
     }
     if (element.hasChildren()) {
       for (Element child : element.getChildren()) {
-        result.addAll(getFragmentMatches(child, fragment));
+        indexFragments(index, child, path+"/"+child.getName());
+      }
+    }
+  }
+
+  private void indexXhtmlFragments(Map<String, List<FragmentMatch>> index, XhtmlNode x, String path) {
+    if (x.getNodeType() == NodeType.Element) {
+      if (x.getAttribute("id") != null) {
+        addFragmentMatch(index, x.getAttribute("id"), new FragmentMatch(FragmentMatchKind.XHTML_ID, path+"@id", null));
+      }
+      if ("a".equals(x.getName()) && x.getAttribute("name") != null) {
+        addFragmentMatch(index, x.getAttribute("name"), new FragmentMatch(FragmentMatchKind.XHTML_NAME, path+"@name", null));
+      }
+      if (x.hasChildren()) {
+        for (int i = 0; i < x.getChildNodes().size(); i++) {
+          XhtmlNode child = x.getChildNodes().get(i);
+          String cn = child.getPathName();
+          int total = x.countByPathName(child);
+          int ndx = x.indexByPathName(child);
+          indexXhtmlFragments(index, child, path + cn + (total > 1 ? "[" + ndx + "]" : "") + "/");
+        }
+      }
+    }
+  }
+
+  private void addFragmentMatch(Map<String, List<FragmentMatch>> index, String fragment, FragmentMatch match) {
+    List<FragmentMatch> list = index.get(fragment);
+    if (list == null) {
+      list = new ArrayList<FragmentMatch>();
+      index.put(fragment, list);
+    }
+    list.add(match);
+  }
+
+  protected List<Element> getFragmentMatches(Element element, String fragment) {
+    List<Element> result = new ArrayList<>();
+    for (FragmentMatch match : findFragmentMatches(element, fragment)) {
+      if (match.getKind() == FragmentMatchKind.ELEMENT_ID) {
+        result.add(match.getElement());
       }
     }
     return result;
@@ -1353,28 +1453,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
 
   protected int countFragmentMatches(Element element, String fragment) {
     int count = 0;
-    if (fragment.equals(element.getIdBase())) {
-      count++;
-    }
-    if (element.getXhtml() != null) {
-      count = count + countFragmentMatches(element.getXhtml(), fragment);
-    }
-    if (element.hasChildren()) {
-      for (Element child : element.getChildren()) {
-        count = count + countFragmentMatches(child, fragment);
-      }
-    }
-    return count;
-  }
-
-  private int countFragmentMatches(XhtmlNode node, String fragment) {
-    int count = 0;
-    if (fragment.equals(node.getAttribute("id"))) {
-      count++;
-    }
-    if (node.hasChildren()) {
-      for (XhtmlNode child : node.getChildNodes()) {
-        count = count + countFragmentMatches(child, fragment);
+    for (FragmentMatch match : findFragmentMatches(element, fragment)) {
+      // an anchor name is not an id, and this counts ids
+      if (match.getKind() != FragmentMatchKind.XHTML_NAME) {
+        count++;
       }
     }
     return count;
@@ -1806,7 +1888,9 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   private boolean isContext(Coding use, Coding value, UsageContext usage) {
-    return usage.getValue() instanceof Coding && context.subsumes(settings, usage.getCode(), use) && context.subsumes(settings, (Coding) usage.getValue(), value);
+    // subsumes() returns null when it can't tell - there's no usable definition for the code
+    // system, and no terminology server to ask - so don't unbox it; treat unknown as no match
+    return usage.getValue() instanceof Coding && Boolean.TRUE.equals(context.subsumes(settings, usage.getCode(), use)) && Boolean.TRUE.equals(context.subsumes(settings, (Coding) usage.getValue(), value));
   }
 
 

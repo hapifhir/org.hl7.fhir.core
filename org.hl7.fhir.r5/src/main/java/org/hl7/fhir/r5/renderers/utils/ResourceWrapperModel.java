@@ -191,7 +191,6 @@ public class ResourceWrapperModel extends ResourceWrapper {
       }
       div.setXhtml(x);
     }
-    div.setValue(new XhtmlComposer(XhtmlComposer.XML, isPretty).compose(div.getXhtml()));
   }
 
   public void markLanguage(XhtmlNode x, Locale locale) {
