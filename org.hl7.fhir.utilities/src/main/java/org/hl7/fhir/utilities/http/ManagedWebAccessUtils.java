@@ -42,12 +42,21 @@ public class ManagedWebAccessUtils {
     return null;
   }
 
+  /**
+   * Whether {@code serverUrlString}'s origin covers {@code requestUrlString}.
+   * <p/>
+   * A URL that cannot be turned into a {@link URL} - malformed, or syntactically valid but not
+   * absolute, e.g. {@code "n/a"} - is treated as not matching. Both {@link URI#create} and
+   * {@link URI#toURL()} can raise {@link IllegalArgumentException} for such input, and since this
+   * is called for every configured server on every lookup, letting one unusable entry throw would
+   * take down all authenticated web access rather than just failing to match that entry.
+   */
   public static boolean urlMatchesOrigin(String requestUrlString, String serverUrlString) {
     try {
       URL requestUrl = URI.create(requestUrlString).toURL();
       URL serverUrl = URI.create(serverUrlString).toURL();
       return urlMatchesOrigin(requestUrl, serverUrl);
-    } catch (MalformedURLException e) {
+    } catch (MalformedURLException | IllegalArgumentException e) {
       return false;
     }
   }
