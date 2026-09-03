@@ -276,7 +276,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
                 String msg = getUnknownCodeSystemMessage(c.getSystem(), c.getVersion());
                 res = new ValidationResult(IssueSeverity.ERROR, msg,
                   makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg, OpIssueCode.NotFound, null, getUnknownCodeSystemMessageId(c.getSystem(), c.getVersion()))).setUnknownSystems(unknownSystems);
-              } else if (version == null){
+              } else if (version == null) {
                 String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, c.getSystem(), c.getVersion());
                 unknownSystems.add(c.getSystem());
                 res = new ValidationResult(IssueSeverity.ERROR, msg,
@@ -600,7 +600,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     }
 
-    if (!requiredSupplements.isEmpty()) {
+    // cs may be null - the code system could not be resolved. There is then nothing to
+    // merge supplements into, and no cs.getUrl() to compare them against (see #2540)
+    if (cs != null && !requiredSupplements.isEmpty()) {
       List<CodeSystem> additionalSupplements = new ArrayList<>();
       for (String s : requiredSupplements) {
         CodeSystem scs = context.fetchResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());

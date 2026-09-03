@@ -45,7 +45,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.ExpansionOptions;
@@ -211,9 +210,6 @@ public class TerminologyCache {
     private String key;
     @Getter
     private String request;
-    @Accessors(fluent = true)
-    @Getter
-    private boolean hasVersion;
 
     public void setName(String n) {
       String systemName = getSystemNameKeyGenerator().getNameForSystem(n);
@@ -515,7 +511,6 @@ public class TerminologyCache {
       CacheToken ct = new CacheToken();
       if (code.hasSystem()) {
         ct.setName(code.getSystem());
-        ct.hasVersion = code.hasVersion();
       }
       else
         ct.name = NAME_FOR_NO_SYSTEM;
@@ -527,7 +522,7 @@ public class TerminologyCache {
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
         ct.request = "{\"code\" : " + json.composeString(code, "codeableConcept") + ", \"url\": \"" + Utilities.escapeJson(vs.getUrl())
           + "\", \"version\": \"" + Utilities.escapeJson(vs.getVersion()) + "\"" + (options == null ? "" : ", " + options.toJson()) + ", \"profile\": " + expJS + "}\r\n";
-      } else  if (vs != null && vs.hasUrl()) {
+      } else if (vs != null && vs.hasUrl()) {
           ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
             +"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n";
       } else if (options.getVsAsUrl()) {
@@ -548,7 +543,6 @@ public class TerminologyCache {
       CacheToken ct = new CacheToken();
       if (code.hasSystem()) {
         ct.setName(code.getSystem());
-        ct.hasVersion = code.hasVersion();
       } else {
         ct.name = NAME_FOR_NO_SYSTEM;
       }
@@ -600,7 +594,6 @@ public class TerminologyCache {
       for (Coding c : code.getCoding()) {
         if (c.hasSystem()) {
           ct.setName(c.getSystem());
-          ct.hasVersion = c.hasVersion();
         }
       }
       nameCacheToken(vs, ct);
@@ -666,19 +659,16 @@ public class TerminologyCache {
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
         if (inc.hasSystem()) {
           ct.setName(inc.getSystem());
-          ct.hasVersion = inc.hasVersion();
         }
       }
       for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
         if (inc.hasSystem()) {
           ct.setName(inc.getSystem());
-          ct.hasVersion = inc.hasVersion();
         }
       }
       for (ValueSetExpansionContainsComponent inc : vs.getExpansion().getContains()) {
         if (inc.hasSystem()) {
           ct.setName(inc.getSystem());
-          ct.hasVersion = inc.hasVersion();
         }
       }
     }
@@ -742,11 +732,18 @@ public class TerminologyCache {
       return;
     }
 
-    if (!cacheErrors &&
-        ( e.v!= null
-        && e.v.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED
-        && !cacheToken.hasVersion)) {
-      return;
+    // Two kinds of result describe the state of the terminology server rather than the content
+    // being validated, and so must not outlive this session:
+    //  - SERVER_ERROR / NOSERVICE: the server could not be reached this time. Written to disk,
+    //    a single timeout becomes permanent for every later run and every later version of the
+    //    validator, with no recovery short of deleting the cache directory by hand (see #2524).
+    //  - CODESYSTEM_UNSUPPORTED: the server does not have that code system. Load it and the
+    //    answer changes, so it is no more durable than the one above (see #2262).
+    // Both are still held in memory, so repeat validation of the same code stays cheap within
+    // the run; they are simply asked again next time.
+    if (persistent && (isTransientFailure(e) || (!cacheErrors && isCodeSystemUnsupported(e)))) {
+      persistent = false;
+      e.persistent = false;
     }
 
     // map.put returns the entry this key previously held (or null). Removing that exact
@@ -769,6 +766,35 @@ public class TerminologyCache {
         save(nc, now);
       }
     }
+  }
+
+  private boolean isCodeSystemUnsupported(CacheEntry e) {
+    return errorClassOf(e) == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
+  }
+
+  /**
+   * The error class of whatever kind of answer this entry holds - a validation, or an expansion.
+   */
+  private TerminologyServiceErrorClass errorClassOf(CacheEntry e) {
+    if (e.v != null) {
+      return e.v.getErrorClass();
+    } else if (e.e != null) {
+      return e.e.getErrorClass();
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Is this a failure to reach the terminology server, rather than an answer about the content?
+   *
+   * Deliberately not {@link TerminologyServiceErrorClass#isInfrastructure()}, which also covers
+   * VALUESET_UNSUPPORTED: that describes the request the server was asked to answer, and is
+   * reproducible, where these two describe the connection at one moment in time.
+   */
+  private boolean isTransientFailure(CacheEntry e) {
+    TerminologyServiceErrorClass ec = errorClassOf(e);
+    return ec == TerminologyServiceErrorClass.SERVER_ERROR || ec == TerminologyServiceErrorClass.NOSERVICE;
   }
 
   /**
@@ -1112,6 +1138,13 @@ public class TerminologyCache {
 
       CacheEntry cacheEntry = getCacheEntry(request, resultString);
 
+      // Caches written before #2524 can hold transient failures. Drop them on the way in
+      // rather than serving a stale outage back: the file is rewritten without them the
+      // next time this cache saves.
+      if (isTransientFailure(cacheEntry)) {
+        return;
+      }
+
       // Mirror store()'s dedup so the set and map stay consistent even if a file somehow
       // holds the same request twice: the last occurrence wins, no orphan is left behind.
       CacheEntry previous = nc.map.put(String.valueOf(hashJson(cacheEntry.request)), cacheEntry);
@@ -1428,7 +1461,6 @@ public class TerminologyCache {
       if (child.hasSystem()) {
         ct.setName(child.getSystem());
       }
-      ct.hasVersion = parent.hasVersion() || child.hasVersion();
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
