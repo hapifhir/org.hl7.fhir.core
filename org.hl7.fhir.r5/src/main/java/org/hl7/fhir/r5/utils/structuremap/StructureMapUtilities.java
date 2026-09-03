@@ -2121,7 +2121,7 @@ public class StructureMapUtilities {
         b.appendIfNotNull(fpe.evaluateToString(varsForSource, null, null, item, expr));
       }
       if (b.length() > 0)
-        services.log(b.toString());
+        log(b.toString());
     }
     
 
