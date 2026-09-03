@@ -1090,6 +1090,83 @@
         }
       }
     },
+    "/fml": {
+      "post": {
+        "tags": [
+          "StructureMap"
+        ],
+        "summary": "Parse FHIR Mapping Language into a StructureMap",
+        "description": "Parses the posted FML source text into a StructureMap and returns it, serialised for the FHIR version the engine is running rather than for R5. Nothing is registered: the result is returned to the caller. This is the counterpart of `/transform`, which runs a map instead of parsing one.",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Name for the source, used in parse error messages.",
+            "schema": {
+              "type": "string",
+              "default": "map"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format of the returned StructureMap. `Accept` is not consulted.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "json",
+                "xml"
+              ],
+              "default": "json"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "The FML map source text.",
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The parsed StructureMap.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing request body.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
     "/compile": {
       "get": {
         "tags": [

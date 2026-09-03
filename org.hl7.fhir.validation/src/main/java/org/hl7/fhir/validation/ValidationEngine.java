@@ -998,6 +998,58 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return baos.toByteArray();
   }
 
+  /**
+   * Parse FHIR Mapping Language (FML) text into a {@link StructureMap} resource.
+   *
+   * @param fml          the FML map source text
+   * @param srcName      a name for the source (used in parse error messages); defaults to {@code "map"}
+   * @param outputFormat format of the returned bytes (JSON or XML)
+   */
+  public byte[] parseStructureMap(String fml, String srcName, FhirFormat outputFormat) throws FHIRException, IOException {
+    StructureMapUtilities scu = new StructureMapUtilities(context);
+    StructureMap map = scu.parse(fml, (srcName == null || srcName.trim().isEmpty()) ? "map" : srcName.trim());
+    // Emit the StructureMap in the format that matches the engine's runtime FHIR version.
+    // Otherwise an R4-mode validator round-tripping an R5-format SM through /loadResource
+    // silently drops R5-only fields (e.g., the typed `parameter` array on group-rule
+    // dependents, where R4 expects a `variable` string list). See ITB REST spec § version
+    // compatibility.
+    String effectiveVersion = version != null ? version : (context != null ? context.getVersion() : null);
+    return serialiseStructureMapForVersion(map, effectiveVersion, outputFormat);
+  }
+
+  /**
+   * Convert {@code map} (an R5 StructureMap) to the structure matching
+   * {@code targetVersion}, then serialise it in {@code outputFormat}.
+   * If {@code targetVersion} is null, R5, or R6 the map is emitted as R5
+   * (no conversion needed); for R3, R4, or R4B it is converted via the
+   * matching {@link org.hl7.fhir.convertors.factory.VersionConvertorFactory} first.
+   */
+  private static byte[] serialiseStructureMapForVersion(StructureMap map, String targetVersion, FhirFormat outputFormat) throws FHIRException, IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (targetVersion == null || targetVersion.startsWith("5.") || targetVersion.startsWith("6.")) {
+      // Native R5 — keep as-is.
+      if (outputFormat == FhirFormat.XML) new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+      else                                new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+    } else if (targetVersion.startsWith("4.0")) {
+      org.hl7.fhir.r4.model.Resource r4 = org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50.convertResource(map);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.r4.formats.XmlParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(baos, r4);
+      else                                new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(baos, r4);
+    } else if (targetVersion.startsWith("4.3")) {
+      org.hl7.fhir.r4b.model.Resource r4b = org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50.convertResource(map);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.r4b.formats.XmlParser().setOutputStyle(org.hl7.fhir.r4b.formats.IParser.OutputStyle.PRETTY).compose(baos, r4b);
+      else                                new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4b.formats.IParser.OutputStyle.PRETTY).compose(baos, r4b);
+    } else if (targetVersion.startsWith("3.")) {
+      org.hl7.fhir.dstu3.model.Resource r3 = org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50.convertResource(map);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.dstu3.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(baos, r3);
+      else                                new org.hl7.fhir.dstu3.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(baos, r3);
+    } else {
+      // Unknown / unsupported — fall back to native R5.
+      if (outputFormat == FhirFormat.XML) new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+      else                                new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+    }
+    return baos.toByteArray();
+  }
+
   public byte[] generateSnapshot(byte[] resource, FhirFormat format) throws FHIRException, IOException {
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
     Resource res = new ObjectConverter(context).convert(e);
