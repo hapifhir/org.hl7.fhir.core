@@ -238,6 +238,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
     CodeableConcept vcc = new CodeableConcept();
     List<ValidationResult> resList = new ArrayList<>();
+    Map<Integer, List<OperationOutcomeIssueComponent>> unresolvedSystemIssues = new HashMap<>();
+    Set<Integer> matchedCodings = new HashSet<>();
     
     if (!options.isMembershipOnly()) {
       int i = 0;
@@ -283,6 +285,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
                 res = new ValidationResult(IssueSeverity.ERROR, msg,
                   makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_VERSION)).setUnknownSystems(unknownSystems);
 
+              }
+              if (cs == null) {
+                // only a code system that could not be found at all - not one that is present but
+                // whose content cannot answer the question (not-present, example, supplement)
+                unresolvedSystemIssues.put(i, res.getIssues());
               }
             } else {
               res = context.validateCode(options.withNoClient(), c, null);
@@ -350,6 +357,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           result = null;
         } else if (ok != null && ok) {
           result = true;
+          matchedCodings.add(i);
           // Report the FIRST matching coding, not the last: when a CodeableConcept
           // has several valid codings, the code/system/version/display echoed back
           // are those of the earliest coding that validated. vcc still accumulates
@@ -402,6 +410,31 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (vcc.hasCoding() && code.hasText()) {
       vcc.setText(code.getText());
     }
+    // A required binding on a CodeableConcept is satisfied when ANY coding is in the value
+    // set, so a coding whose code system could not be resolved must not veto a membership
+    // that another coding has confirmed. It is still reported, as a warning (see #2272).
+    // This is only about combining the codings: asked about that coding on its own, the
+    // answer is still an error, which is what the terminology servers return.
+    for (Integer idx : unresolvedSystemIssues.keySet()) {
+      // ... but only for a coding OTHER than the one that matched: an unresolvable system or
+      // version on the coding that satisfied membership is still that coding's own error.
+      if (!matchedCodings.isEmpty() && !matchedCodings.contains(idx)) {
+        Coding uc = code.getCodingList().get(idx);
+        // and it gets its own message: the one used when nothing could be validated says "the code
+        // cannot be validated", which reads here as though the whole CodeableConcept had failed.
+        String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED,
+            uc.getSystem()+(uc.hasVersion() ? "|"+uc.getVersion() : ""));
+        for (OperationOutcomeIssueComponent iss : unresolvedSystemIssues.get(idx)) {
+          if (iss.getSeverity() == org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.ERROR) {
+            iss.setSeverity(org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.WARNING);
+            iss.getDetails().setText(msg);
+            iss.removeExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID);
+            iss.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType(I18nConstants.UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED));
+          }
+        }
+      }
+    }
+
     if (!checkRequiredSupplements(info)) {
       return new ValidationResult(IssueSeverity.ERROR, info.getIssues().get(info.getIssues().size()-1).getDetails().getText(), info.getIssues());
     } else if (info.hasErrors()) {
