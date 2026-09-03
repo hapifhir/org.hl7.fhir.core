@@ -422,12 +422,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
         Coding uc = code.getCodingList().get(idx);
         // and it gets its own message: the one used when nothing could be validated says "the code
         // cannot be validated", which reads here as though the whole CodeableConcept had failed.
-        String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED,
+        String msg1 = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED,
             uc.getSystem()+(uc.hasVersion() ? "|"+uc.getVersion() : ""));
         for (OperationOutcomeIssueComponent iss : unresolvedSystemIssues.get(idx)) {
           if (iss.getSeverity() == org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.ERROR) {
             iss.setSeverity(org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.WARNING);
-            iss.getDetails().setText(msg);
+            iss.getDetails().setText(msg1);
             iss.removeExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID);
             iss.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType(I18nConstants.UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED));
           }

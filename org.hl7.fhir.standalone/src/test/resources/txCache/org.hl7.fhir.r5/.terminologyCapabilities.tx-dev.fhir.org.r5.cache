@@ -1902,6 +1902,18 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://id.who.int/icd/entity",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/icf",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/mms",
+    "content" : "complete"
+  },
+  {
     "uri" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
     "content" : "complete"
   },
