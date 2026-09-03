@@ -13,6 +13,18 @@ import org.hl7.fhir.validation.ValidationEngine;
 @Slf4j
 class GitbIgManagerHandler extends GitbProcessingServiceHandler {
 
+  /**
+   * Sources already loaded via this handler, keyed on the raw {@code ig} input.
+   * Package references ({@code id#version}) are also deduplicated downstream by
+   * {@code loadFromPackage}, but URL/file sources (e.g. {@code .../package.tgz})
+   * bypass that check in {@link org.hl7.fhir.validation.IgLoader#loadIg} and would
+   * otherwise re-download and re-add every resource on each call — accumulating
+   * heap across repeated test runs until OOM. Note: this also means a mutable URL
+   * (CI branch build) is NOT re-fetched until the server restarts, which matches
+   * the documented "IGs stay resident; restart to refresh/reclaim" behaviour.
+   */
+  private final java.util.Set<String> loadedSources = java.util.concurrent.ConcurrentHashMap.newKeySet();
+
   GitbIgManagerHandler(FhirValidatorHttpService service) {
     super(service, "/itb/igManager");
   }
@@ -41,9 +53,18 @@ class GitbIgManagerHandler extends GitbProcessingServiceHandler {
     }
     String ig = requireInput(input, "ig");
     ValidationEngine engine = service.getValidationEngine();
-    log.info("GITB loadIG: " + ig);
-    engine.getIgLoader().loadIg(engine.getIgs(), engine.getBinaries(), ig, false);
-    log.info("GITB loadIG complete: " + ig);
+    if (!loadedSources.add(ig)) {
+      log.info("GITB loadIG skipped (already loaded this session): " + ig);
+    } else {
+      log.info("GITB loadIG: " + ig);
+      try {
+        engine.getIgLoader().loadIg(engine.getIgs(), engine.getBinaries(), ig, false);
+      } catch (Exception e) {
+        loadedSources.remove(ig); // failed loads may be retried
+        throw e;
+      }
+      log.info("GITB loadIG complete: " + ig);
+    }
 
     JsonArray output = new JsonArray();
     output.add(anyContent("loaded", ig, "text/plain"));
