@@ -72,6 +72,14 @@ private static TxTestData testData;
     return testData.getTestData();
   }
 
+  private static final Object LOG_LOCK = new Object();
+  private static final StringBuilder LOG = new StringBuilder();
+  private static int logPass = 0;
+  private static int logFail = 0;
+  private static int logSkip = 0;
+
+  private String actualFile;
+
   private final TxTestSetup setup;
   private final String version;
   private final String name;
@@ -87,11 +95,32 @@ private static TxTestData testData;
 
   @Test
   public void test() throws Exception {
+    String id = setup.getTest().asString("name");
+    try {
+      if (runTest()) {
+        log(id, "pass", null);
+      } else {
+        log(id, "skip", null);
+      }
+    } catch (AssertionError e) {
+      log(id, "fail", e.getMessage());
+      throw e;
+    } catch (Exception e) {
+      log(id, "error", e.getClass().getName()+": "+e.getMessage());
+      throw e;
+    }
+  }
+
+  /**
+   * Run one test case. Returns false if the case was skipped (disabled, or not in scope for the
+   * modes the internal server is tested under), true if it actually ran.
+   */
+  private boolean runTest() throws Exception {
     if (setup.getSuite().asBoolean("disabled") || setup.getTest().asBoolean("disabled")) {
-      return;
+      return false;
     }
     if (!passesModes(setup.getSuite()) || !passesModes(setup.getTest())) {
-      return;
+      return false;
     }
 
     if (baseEngine == null) {
@@ -118,6 +147,7 @@ private static TxTestData testData;
     String resp = testData.load(fn);
     String resp2 = fn2 == null ? null : testData.load(fn2);
     String fp = Utilities.path("[tmp]", "tx", fn);
+    actualFile = fp;
     JsonObject ext = testData.getExternals() == null ? null : testData.getExternals().getJsonObject(fn);
     File fo = ManagedFileAccess.file(fp);
     if (fo.exists()) {
@@ -144,6 +174,40 @@ private static TxTestData testData;
       Assertions.assertTrue(true); // we don't test these for the internal server
     } else if (!Utilities.existsInList(setup.getTest().asString("operation"), "batch-validate")) { // the internal terminology server doesn't implement this method
       Assertions.fail("Unknown Operation "+ setup.getTest().asString("operation"));
+    }
+    return true;
+  }
+
+  /**
+   * The run is logged to test-results.log in the same directory the actual responses are written
+   * to ([tmp]/tx), so a run can be reviewed with a diff tool rather than scraped off the console.
+   * The whole log is rewritten after each test, so it is complete even if the run is interrupted.
+   * Logging never fails a test.
+   */
+  private void log(String id, String status, String details) {
+    synchronized (LOG_LOCK) {
+      if ("pass".equals(status)) {
+        logPass++;
+      } else if ("skip".equals(status)) {
+        logSkip++;
+      } else {
+        logFail++;
+      }
+      LOG.append(Utilities.padRight(status, ' ', 6)+id+"\n");
+      if (actualFile != null && !"pass".equals(status) && !"skip".equals(status)) {
+        LOG.append("      actual response written to "+actualFile+"\n");
+      }
+      if (details != null) {
+        LOG.append("      "+details.trim()+"\n");
+      }
+      try {
+        String fn = Utilities.path("[tmp]", "tx", "test-results.log");
+        FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fn));
+        FileUtilities.stringToFile("TerminologyServiceTests (internal terminology server): "+
+            logPass+" passed, "+logFail+" failed, "+logSkip+" skipped\n\n"+LOG.toString(), fn);
+      } catch (IOException e) {
+        // the log is a convenience - never fail a test because it could not be written
+      }
     }
   }
 
