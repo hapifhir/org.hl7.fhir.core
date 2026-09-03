@@ -281,9 +281,30 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     matchetypes.addAll(other.matchetypes);
     showTimes = other.showTimes;
     fhirPathEngine = other.fhirPathEngine;
-    igLoader = other.igLoader;
+    // The IgLoader captures the context it was built against, so sharing other's loader would
+    // make this copy's loadIg() write into other's context rather than its own. Build a loader
+    // bound to the freshly copied context instead - the same construction the builder uses.
+    if (other.igLoader != null) {
+      igLoader = new IgLoader(pcm, context, version, debug);
+      igLoader.setDirectProvider(other.igLoader.getDirectProvider());
+    }
     displayWarnings = other.displayWarnings;
     defaultInstanceValidatorParameters = new InstanceValidatorParameters(other.defaultInstanceValidatorParameters);
+  }
+
+  /**
+   * Replaces the worker context. The IgLoader is bound to the context it was constructed
+   * against, so an existing loader is rebuilt against the new context - otherwise loadIg()
+   * would keep writing into the context that has just been replaced. An engine that has no
+   * loader yet (the builder sets the context before the loader) is left as it is.
+   */
+  public void setContext(SimpleWorkerContext context) {
+    this.context = context;
+    if (igLoader != null && context != null) {
+      IgLoader rebound = new IgLoader(pcm, context, version, debug);
+      rebound.setDirectProvider(igLoader.getDirectProvider());
+      igLoader = rebound;
+    }
   }
 
   /**
