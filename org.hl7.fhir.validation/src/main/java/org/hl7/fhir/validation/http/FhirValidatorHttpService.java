@@ -21,6 +21,14 @@ public class FhirValidatorHttpService {
   private final boolean loopbackOnly;
   private final int port;
 
+  /**
+   * Whether this server is bound to the loopback interface only, so that the only possible
+   * caller is a process on this machine. Handlers use this to decide what a caller may name.
+   */
+  public boolean isLoopbackOnly() {
+    return loopbackOnly;
+  }
+
   private Map<String, TxTestHTTPHandler.ServerTxTester> txTesters = new HashMap<>();
 
   public FhirValidatorHttpService(ValidationEngine validationEngine, boolean loopBackOnly, int port) {
