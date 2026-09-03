@@ -172,17 +172,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.commonmark</groupId>
-			<artifactId>commonmark</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.commonmark</groupId>
-			<artifactId>commonmark-ext-gfm-tables</artifactId>
-			<scope>test</scope>
-		</dependency>
-
 		<!-- JUnit Jupiter -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>

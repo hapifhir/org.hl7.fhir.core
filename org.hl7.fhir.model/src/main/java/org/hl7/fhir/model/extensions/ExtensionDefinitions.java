@@ -48,7 +48,8 @@ import org.hl7.fhir.utilities.Utilities;
 
 @javax.annotation.processing.Generated(value = "org.hl7.fhir.core.generator.engine.JavaCoreGenerator", comments = "generated from hl7.fhir.r6.core#6.0.0-ballot5, hl7.fhir.uv.extensions#5.3.0, hl7.terminology.r5#7.3.0, hl7.fhir.uv.tools#current")
 public class ExtensionDefinitions {
-  
+  public static final String EXTENSIONS_WORKING_VERSION = "5.2.0";
+
   public static final String EXT_CAPABILITIES = "http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities"; // Capabilities
   public static final String EXT_OAUTH_URIS = "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris"; // OAuth URIs
   public static final String EXT_OBJECT_CLASS = "http://hl7.org/fhir/StructureDefinition/11179-objectClass"; // object class

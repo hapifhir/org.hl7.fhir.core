@@ -742,7 +742,7 @@ public class TerminologyCache {
       return;
     }
 
-    if ( !cacheErrors &&
+    if (!cacheErrors &&
         ( e.v!= null
         && e.v.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED
         && !cacheToken.hasVersion)) {

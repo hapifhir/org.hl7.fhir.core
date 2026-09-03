@@ -49,6 +49,20 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Markdown: commonmark is <optional> in org.hl7.fhir.utilities, so it is not inherited.
+             HierarchicalTableGenerator.addMarkdownNoPara() needs it at runtime, which the renderer
+             tests here reach through org.hl7.fhir.services -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-gfm-tables</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.assertj</groupId>
@@ -114,6 +128,17 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.java-diff-utils</groupId>
+            <artifactId>java-diff-utils</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

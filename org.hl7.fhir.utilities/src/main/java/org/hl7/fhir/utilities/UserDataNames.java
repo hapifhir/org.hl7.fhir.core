@@ -163,4 +163,10 @@ public class UserDataNames {
   public static final String CONTAINED_RESOURCE = "CONTAINED_RESOURCE";
   public static final String CACHED_UUID = "CACHED_UUID";
   public static final String EXPANSION = "expansion";
+
+  public static final String VALIDATION_FLAG_BASE64 = "VALIDATION_FLAG_BASE64";
+  public static final String VALIDATION_ATTACHMENT_CONTENT = "VALIDATION_ATTACHMENT_CONTENT";
+  public static final String VALIDATION_XHTML_OUTCOME = "VALIDATION_XHTML_OUTCOME";
+  public static final String VALIDATION_FRAGMENT_INDEX = "VALIDATION_FRAGMENT_INDEX";
+  public static final String VALIDATION_FRAGMENT_INDEX_ID = "VALIDATION_FRAGMENT_INDEX_ID";
 }

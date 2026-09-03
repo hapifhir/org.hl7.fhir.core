@@ -54,6 +54,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 import org.hl7.fhir.instance.model.api.IBaseOperationOutcome;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 /**
  * A collection of error, warning, or information messages that result from a system action.
  */
@@ -1335,12 +1336,14 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
   
   
   @Override 
-  public String toString() { 
-    if (getExpressionList().size() == 1) { 
-      return getExpressionList().get(0)+" "+getDiagnostics()+" "+getSeverity().toCode()+"/"+getCode().toCode()+": "+getDetails().getText(); 
-    } else { 
-      return getExpressionList()+" "+getDiagnostics()+" "+getSeverity().toCode()+"/"+getCode().toCode()+": "+getDetails().getText(); 
-    } 
+  public String toString() {
+    String srvr = hasExtension(ExtensionDefinitions.EXT_ISSUE_SERVER) ? " (from "+getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER)+")" : "";
+    String ctxt = hasExtension(ExtensionDefinitions.EXT_ISSUE_ISSUE_CTXT) ? " (context: "+getExtensionString(ExtensionDefinitions.EXT_ISSUE_ISSUE_CTXT)+")" : "";
+    if (getExpressionList().size() == 1) {
+      return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpressionList().get(0)+(hasDiagnostics() ? " "+getDiagnostics() : "")+": "+getDetails().getText()+ctxt+srvr;
+    } else {
+      return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpressionList()+(hasDiagnostics() ? " "+getDiagnostics() : "")+": "+getDetails().getText()+ctxt+srvr;
+    }
   } 
   
   public boolean isWarningOrMore() {

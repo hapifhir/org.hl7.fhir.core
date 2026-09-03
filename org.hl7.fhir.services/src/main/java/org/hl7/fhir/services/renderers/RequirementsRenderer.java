@@ -11,6 +11,7 @@ import org.hl7.fhir.services.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.model.utilities.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -40,12 +41,20 @@ public class RequirementsRenderer extends ResourceRenderer {
       if (actors.size() == 1) {
         XhtmlNode p = x.para();
         p.tx(context.formatPhrase(RenderingI18nContext.REQ_ACTOR)+" ");
-        renderCanonical(status, p, ActorDefinition.class, actors.get(0));
+        if (VersionUtilities.isR6Ver(req.fhirVersion())) {
+          renderCanonical(status, p, ActorDefinition.class, actors.get(0).child("reference"));
+        } else {
+          renderCanonical(status, p, ActorDefinition.class, actors.get(0));
+        }
       } else {
         x.para().tx(context.formatPhrase(RenderingI18nContext.REQ_FOLLOWING_ACTOR)+" ");
         XhtmlNode ul = x.ul();
         for (ResourceWrapper a : actors) {
-          renderCanonical(status, ul.li(), ActorDefinition.class, a);
+          if (VersionUtilities.isR6Ver(req.fhirVersion())) {
+            renderCanonical(status, ul.li(), ActorDefinition.class, a.child("reference"));
+          } else {
+            renderCanonical(status, ul.li(), ActorDefinition.class, a);
+          }
         }
       }
     }

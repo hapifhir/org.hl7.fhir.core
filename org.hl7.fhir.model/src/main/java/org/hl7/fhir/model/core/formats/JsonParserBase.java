@@ -175,15 +175,24 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     return (JsonArray) j;
   }
   
-  protected JsonObject getJsonObjectFromArray(JsonArray array, int i) throws IOException {
+  /**
+   * The object at array[i], where the array is the JSON representation of a repeating complex
+   * element, and so is an array of objects
+   * <p>
+   * A JSON null is legal in an array of primitive values - it is the placeholder that lines a
+   * value up with its entry in the matching _name array - but it is never legal in an array of
+   * objects, and there is no element that can sensibly be made from it. So it is reported rather
+   * than skipped silently, since silently dropping it loses content on a round trip
+   */
+  protected JsonObject getJsonObjectFromArray(JsonArray array, int i, String name) throws IOException {
     JsonElement e = array.get(i);
-    if (e.isJsonObject()) {
+    if (e instanceof JsonObject) {
       return (JsonObject) e;
     }
-    if (e.isJsonNull()) {
-      return new JsonObject();
+    if (e == null || e instanceof JsonNull) {
+      throw new FHIRFormatError("The property "+name+"["+i+"] is null; null is only valid in a list of primitive values, where it pairs a value up with its entry in _"+name);
     }
-    throw new IOException("Array item "+i+" is a "+e.getClass()+" looking for an Object");
+    throw new FHIRFormatError("The property "+name+"["+i+"] is a "+e.getClass().getSimpleName()+" where an object was expected");
   }
   
   /**
@@ -266,7 +275,12 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   
   @Override
   public void compose(OutputStream stream, DataType type, String rootName) throws IOException {
-    type.assertModelContext(modelContext);
+    // a null type is legal here: composeTypeInner() treats it as a no-op and emits an empty
+    // object, which is what callers such as the SD renderer's buildJson() rely on for an
+    // ElementDefinition.example that carries no value[x]
+    if (type != null) {
+      type.assertModelContext(modelContext);
+    }
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
     if (style == OutputStyle.CANONICAL) {
       json = new JsonCreatorCanonical(osw);

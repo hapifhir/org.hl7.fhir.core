@@ -42,6 +42,8 @@ public boolean hasTarget() {
         return "unsignedInt";
       if ("xsd:anyURI".equalsIgnoreCase(s))
         return "uri";
+      if ("xhtml:div".equalsIgnoreCase(s))
+        return "xhtml";
       
       throw new Error("Unknown xml type '"+s+"'");
     }
@@ -61,7 +63,7 @@ public boolean hasTarget() {
       res = res + "}";
     }
     if (hasTargetProfile()) {
-      res = res + "->(";
+      res = res + "(";
       boolean first = true;
       for (CanonicalType s : getTargetProfileList()) {
         if (first) first = false; else res = res + "|";

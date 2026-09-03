@@ -150,6 +150,7 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
         modes.add("omop");
         modes.add("general");
         modes.add("snomed");
+        modes.add("mimetypes");
       }
 
       if (suiteName == null) {

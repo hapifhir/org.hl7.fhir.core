@@ -1,0 +1,211 @@
+package org.hl7.fhir.services.terminology;
+
+import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.IniFile;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.IHTTPAuthenticationProvider;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
+
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
+
+
+@Slf4j
+public class TerminologyCacheManager {
+
+  // if either the CACHE_VERSION of the stated maj/min server versions change, the 
+  // cache will be blown. Note that the stated terminology server version is 
+  // the CapabilityStatement.software.version 
+  private static final String CACHE_VERSION = "1";
+
+  private String cacheFolder;
+  private String version;
+  private String ghOrg;
+  private String ghRepo;
+  private String ghBranch;
+
+  /**
+   * kindling only
+   * @param serverVersion
+   * @param rootDir
+   * @param ghOrg
+   * @param ghRepo
+   * @param ghBranch
+   * @throws IOException
+   */
+  public TerminologyCacheManager(String serverVersion, String rootDir, String ghOrg, String ghRepo, String ghBranch, boolean clear) throws IOException {
+    super();
+    //    this.rootDir = rootDir;
+    this.ghOrg = ghOrg;
+    this.ghRepo = ghRepo;
+    this.ghBranch = ghBranch;
+    version = CACHE_VERSION+"/"+VersionUtilities.getMajMin(serverVersion);
+    if (Utilities.noString(ghOrg) || Utilities.noString(ghRepo) || Utilities.noString(ghBranch)) {
+      cacheFolder = Utilities.path(rootDir, "temp", "tx-cache");
+    } else {
+      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "tx-cache", ghOrg, ghRepo, ghBranch);
+    }
+    if (clear) {
+      FileUtilities.clearDirectory(cacheFolder);
+    }
+  }
+
+  /**
+   * only for use with Kindling
+   *
+   * @throws IOException
+   */
+  public void initializeForKindling() throws IOException {
+    File f = ManagedFileAccess.file(cacheFolder);
+    if (!f.exists()) {
+      FileUtilities.createDirectory(cacheFolder);      
+    }
+
+    if (!version.equals(getCacheVersion())) {
+      clearCache();
+      fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip");
+    }
+    if (!version.equals(getCacheVersion())) {
+      clearCache();
+      fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/default.zip");
+    }
+    if (!version.equals(getCacheVersion())) {
+      clearCache();
+    }
+
+    IniFile ini = new IniFile(Utilities.path(cacheFolder, "cache.ini"));
+    ini.setStringProperty("cache", "version", version, null);
+    ini.setDateProperty("cache", "last-use", new Date(), null);
+    ini.save();
+  }
+
+  private void fillCache(String source) throws IOException {
+    try {
+      log.info("Initialise terminology cache from "+source);
+
+      HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source+"?nocache=" + System.currentTimeMillis());
+      res.checkThrowException();
+      unzip(new ByteArrayInputStream(res.getContent()), cacheFolder);
+    } catch (Exception e) {
+      log.error("No - can't initialise cache from "+source+": "+e.getMessage(), e);
+    }
+  }
+
+  public static void unzip(InputStream is, String targetDir) throws IOException {
+    try (ZipInputStream zipIn = new ZipInputStream(is)) {
+      for (ZipEntry ze; (ze = zipIn.getNextEntry()) != null; ) {
+        Path path = Path.of(Utilities.path(targetDir, ze.getName())).normalize();
+        String pathString = ManagedFileAccess.fromPath(path).getAbsolutePath();
+        if (!path.startsWith(Path.of(targetDir).normalize())) {
+          // see: https://snyk.io/research/zip-slip-vulnerability
+          throw new RuntimeException("Entry with an illegal path: " + ze.getName());
+        }
+        if (ze.isDirectory()) {
+          FileUtilities.createDirectory(pathString);
+        } else {
+          FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(pathString));
+          FileUtilities.streamToFileNoClose(zipIn, pathString);
+        }
+      }
+    }
+  }
+
+  private void clearCache() throws IOException {
+    FileUtilities.clearDirectory(cacheFolder);    
+  }
+
+  private String getCacheVersion() throws IOException {
+    IniFile ini = new IniFile(Utilities.path(cacheFolder, "cache.ini"));
+    return ini.getStringProperty("cache", "version");
+  }
+
+  public String getFolder() {
+    return cacheFolder;
+  }
+
+  private void zipDirectory(OutputStream outputStream) throws IOException {
+    try (ZipOutputStream zs = new ZipOutputStream(outputStream)) {
+      Path pp = Paths.get(cacheFolder);
+      Files.walk(pp)
+      .forEach(path -> {
+        try {
+          if (Files.isDirectory(path)) {
+            zs.putNextEntry(new ZipEntry(pp.relativize(path).toString() + "/"));
+          } else {
+            ZipEntry zipEntry = new ZipEntry(pp.relativize(path).toString());
+            zs.putNextEntry(zipEntry);
+            Files.copy(path, zs);
+            zs.closeEntry();
+          }
+        } catch (IOException e) {
+          log.error(e.getMessage(), e);
+        }
+      });
+    }
+  }
+
+  public void commit(String token) throws IOException {
+    // create a zip of all the files 
+    ByteArrayOutputStream bs = new ByteArrayOutputStream();
+    zipDirectory(bs);
+
+    // post it to
+    String url = "https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip";
+    log.info("Sending tx-cache to "+url+" ("+Utilities.describeSize(bs.toByteArray().length)+")");
+    HTTPResult res = ManagedWebAccess.accessor(Arrays.asList("web"), new TerminologyCacheManagerAuthenticationProvider(token))
+        .put(url, bs.toByteArray(), null, "application/zip");
+    
+    if (res.getCode() >= 300) {
+      log.error("sending cache failed: "+res.getCode()+" "+res.getMessage()+" ("+res.getContentAsString()+")");
+    } else {
+      log.info("Sent cache");
+    }
+  }
+
+  private class TerminologyCacheManagerAuthenticationProvider implements IHTTPAuthenticationProvider {
+    private String basicAuth;
+
+    public TerminologyCacheManagerAuthenticationProvider(String token) {
+      super();
+      basicAuth = token;
+    }
+
+    @Override
+    public boolean isProtocolAllowed(URL url) {
+      return url.getProtocol().equals("https");
+    }
+
+    @Override
+    public boolean canProvideHeaders(URL url) {
+      return url.getHost().equals("tx.fhir.org");
+    }
+
+    @Override
+    public boolean isPrivateNetworkAllowed(URL url) {
+      return false;
+    }
+
+    @Override
+    public Map<String, String> getHeaders(URL url) {
+      Map<String, String> map = new HashMap<>();
+      if (canProvideHeaders(url)) {
+        // encodeToString, not encode: encode() returns byte[], and concatenating
+        // that yields "Basic [B@1a2b3c" - a header the server can never parse
+        map.put("Authorization", "Basic " + Base64.getEncoder().encodeToString(basicAuth.getBytes(StandardCharsets.UTF_8)));
+      }
+      return map;
+    }
+  }
+}

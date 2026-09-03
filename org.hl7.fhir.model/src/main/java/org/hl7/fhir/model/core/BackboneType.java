@@ -100,6 +100,14 @@ public abstract class BackboneType extends DataType implements IBaseBackboneElem
     }
 
     /**
+     * Read-only access to the modifier extensions, for code that only searches them.
+     * See Element.getExtensionsForRead().
+     */
+    public List<Extension> getModifierExtensionsForRead() { 
+      return this.modifierExtensionList == null ? java.util.Collections.<Extension>emptyList() : this.modifierExtensionList;
+    }
+
+    /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public BackboneType setModifierExtensionList(List<Extension> theModifierExtensionList) { 
@@ -267,7 +275,7 @@ public abstract class BackboneType extends DataType implements IBaseBackboneElem
 
 
   public boolean hasExtension(String... theUrls) {
-    for (Extension next : getModifierExtensionList()) {
+    for (Extension next : getModifierExtensionsForRead()) {
       if (Utilities.existsInList(next.getUrl(), theUrls)) {
         return true;
       }
@@ -297,6 +305,24 @@ public abstract class BackboneType extends DataType implements IBaseBackboneElem
   @Override
   public List<Extension> getModifierExtension() {
     return getModifierExtensionList();
+  }
+
+  // required to implement the HAPI cross-version interface IBaseHasExtensions (fixed method name)
+  @Override
+  public List<Extension> getExtension() {
+    return getExtensionList();
+  }
+
+  public List<Extension> getExtensionsByUrl(String... theUrls) {
+    ArrayList<Extension> retVal = new ArrayList<>();
+
+    for (Extension next : getModifierExtensionsForRead()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        retVal.add(next);
+      }
+    }
+    retVal.addAll(super.getExtensionsByUrl(theUrls));
+    return java.util.Collections.unmodifiableList(retVal);
   }
 
 // end addition
