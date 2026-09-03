@@ -4742,6 +4742,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       warning(errors, "2025-06-25", IssueType.STRUCTURE, theStack, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_FETCH_ERROR,  content.getFetchError());
     }
 
+    if (content.hasNotALink()) {
+      hint(errors, "2026-09-03", IssueType.INFORMATIONAL, theStack, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_URL_NOT_A_LINK, content.getNotALink());
+    }
+
     if (content.hasDecodeError()) {
       rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL, "data", content.getDecodeError());
       ok = false;
@@ -4789,6 +4793,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     private byte[] sha1;
     private String decodeError;
     private String fetchError;
+    private String notALink;
 
     protected AttachmentContent(String sessionId) {
       this.sessionId = sessionId;
@@ -4820,6 +4825,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     protected String getFetchError() {
       return fetchError;
+    }
+
+    protected boolean hasNotALink() {
+      return notALink != null;
+    }
+
+    protected String getNotALink() {
+      return notALink;
     }
   }
 
@@ -4874,8 +4887,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           try (InputStream stream = new FileInputStream(ManagedFileAccess.file(url.substring(5)))) {
             summariseContent(res, stream, wantHash);
           }
-        } else {
+        } else if (isDirectlyAccessibleUrl(url)) {
           res.fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME, url);
+        } else {
+          res.notALink = url;
         }
       } catch (Exception e) {
         if (STACK_TRACE) e.printStackTrace();
@@ -4886,6 +4901,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       res.resolved = true;
     }
     return res;
+  }
+
+  /**
+   * Is this URL something that could be fetched at all, if we knew the scheme?
+   *
+   * Attachment.url is a url, but it is very often not a locator: a urn:uuid: naming another entry
+   * in the same bundle, a cid: into the surrounding package, or a relative reference. Those are
+   * perfectly legitimate, and there is nothing to report about them beyond the fact that the
+   * content was therefore not checked. An absolute URL with a scheme we do not handle is a
+   * different matter - that one is worth a warning, since it could have been fetched.
+   */
+  private boolean isDirectlyAccessibleUrl(String url) {
+    int i = url.indexOf(":");
+    if (i < 1) {
+      return false; // relative, or a fragment: names the content, does not locate it
+    }
+    return !Utilities.existsInList(url.substring(0, i).toLowerCase(), "urn", "cid", "mailto", "tel");
   }
 
   /**
