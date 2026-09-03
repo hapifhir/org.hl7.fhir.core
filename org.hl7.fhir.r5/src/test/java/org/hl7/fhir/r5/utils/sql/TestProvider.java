@@ -8,6 +8,7 @@ import java.util.Map;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.ResourceFactory;
 
 /**
  * Test implementation of Provider interface for SQL on FHIR tests.
@@ -52,50 +53,44 @@ public class TestProvider implements Provider {
       return null;
     }
 
-    // Handle different reference formats.
-    String resourceId = ref;
+    // getReferenceKey() derives a key from the reference itself, so the target does not have to be
+    // one of the resources loaded for the test: fn_reference_keys deliberately points p2 at
+    // Patient/p3, which is not loaded, and expects that row to compare false rather than to be
+    // empty. Resolving only against the loaded resources returned null there and the whole
+    // expression collapsed to empty
+    String work = ref;
+    int h = work.indexOf("/_history/");
+    if (h > -1) {
+      work = work.substring(0, h);
+    }
+    String[] parts = work.split("/");
+    if (parts.length < 2) {
+      return null;
+    }
+    String resourceId = parts[parts.length - 1];
+    String resourceType = parts[parts.length - 2];
 
-    // Strip URL prefix if present.
-    if (ref.contains("/")) {
-      String[] parts = ref.split("/");
-      if (parts.length >= 2) {
-        resourceId = parts[parts.length - 1];
+    // A type specifier constrains the reference: getReferenceKey(Observation) on Patient/p1 has no
+    // value at all. The previous code looked the full reference up first and returned it without
+    // ever consulting the specifier, so the wrong type still produced a key
+    if (specifiedResourceType != null && !specifiedResourceType.isEmpty()) {
+      String wanted = specifiedResourceType.startsWith("FHIR.") ? specifiedResourceType.substring(5) : specifiedResourceType;
+      if (!wanted.equals(resourceType)) {
+        return null;
       }
     }
 
-    // Try direct lookup.
-    Resource resource = resourcesById.get(ref);
+    Resource resource = resourcesById.get(resourceType + "/" + resourceId);
     if (resource != null) {
       return resource;
     }
 
-    // Try with just the ID part.
-    resource = resourcesById.get(resourceId);
-    if (resource != null) {
-      // Check if resource type matches if specified.
-      if (specifiedResourceType != null && !specifiedResourceType.isEmpty()) {
-        String actualType = resource.getResourceType().toString();
-        if (specifiedResourceType.startsWith("FHIR.")) {
-          specifiedResourceType = specifiedResourceType.substring(5);
-        }
-        if (actualType.equals(specifiedResourceType)) {
-          return resource;
-        }
-      } else {
-        return resource;
-      }
+    // Not loaded - synthesise the target, which is all the key is derived from
+    try {
+      return ResourceFactory.createResource(resourceType).setId(resourceId);
+    } catch (Exception e) {
+      return null; // not a resource type, so there is no key
     }
-
-    // Try with resource type prefix.
-    if (specifiedResourceType != null && !specifiedResourceType.isEmpty()) {
-      String typedRef = specifiedResourceType + "/" + resourceId;
-      resource = resourcesById.get(typedRef);
-      if (resource != null) {
-        return resource;
-      }
-    }
-
-    return null;
   }
 
   /**

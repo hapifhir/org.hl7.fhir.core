@@ -2893,6 +2893,15 @@
     "uri" : "http://hl7.org/fhir/w3c-provenance-activity-type"
   },
   {
+    "uri" : "http://id.who.int/icd/entity"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/icf"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/mms"
+  },
+  {
     "uri" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode"
   },
   {

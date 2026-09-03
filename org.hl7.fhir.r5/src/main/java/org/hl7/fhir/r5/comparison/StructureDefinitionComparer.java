@@ -35,7 +35,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -47,7 +47,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import kotlin.NotImplementedError;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class StructureDefinitionComparer extends CanonicalResourceComparer implements ProfileKnowledgeProvider {
 
@@ -179,7 +179,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
 
   private void check(StructureDefinition sd, String name) {
     if (sd == null)
-      throw new DefinitionException("No StructureDefinition provided ("+name+": "+sd.getName()+")");
+      throw new DefinitionException("No StructureDefinition provided ("+name+": null)");
 //    if (sd.getType().equals("Extension")) {
 //      throw new DefinitionException("StructureDefinition is for an extension - use ExtensionComparer instead ("+name+": "+sd.getName()+")");
 //    }

@@ -38,14 +38,14 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.turtle.Turtle.Complex;
 import org.hl7.fhir.utilities.turtle.Turtle.Section;
 import org.hl7.fhir.utilities.turtle.Turtle.Subject;
 
 
-@MarkedToMoveToAdjunctPackage
+
 public class TurtleParserR6 extends TurtleParserBase {
 
   private final Map<String, TurtleConceptIri> conceptIriCache = new HashMap<>();

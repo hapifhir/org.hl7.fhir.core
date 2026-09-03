@@ -38,7 +38,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.utils.SnomedExpressions;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.turtle.Turtle;
 import org.hl7.fhir.utilities.turtle.Turtle.Complex;
@@ -50,7 +50,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 /***
  * Cross-version module derived from org.hl7.fhir.r4.elementmodel.TurtleParser
  */
-@MarkedToMoveToAdjunctPackage
+
 public class TurtleParserR4 extends TurtleParserBase {
 
   public TurtleParserR4(IWorkerContext context) {

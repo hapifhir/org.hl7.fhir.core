@@ -18,7 +18,7 @@ import org.hl7.fhir.utilities.*;
  *
  */
 
-@MarkedToMoveToAdjunctPackage
+
 public class CanonicalResourceManager<T extends CanonicalResource> {
 
   private static final String[] INVALID_TERMINOLOGY_URLS = {

@@ -1,0 +1,3 @@
+node type mismatch in children of /root/blah
+Expected:"1" for expected.xml
+Actual  :"1"

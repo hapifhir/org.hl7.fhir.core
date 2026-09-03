@@ -8,9 +8,9 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.renderers.RendererFactory;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@MarkedToMoveToAdjunctPackage
+
+
 public class CanonicalSpreadsheetGenerator extends SpreadsheetGenerator {
 
   public CanonicalSpreadsheetGenerator(IWorkerContext context, RendererFactory renderer) {

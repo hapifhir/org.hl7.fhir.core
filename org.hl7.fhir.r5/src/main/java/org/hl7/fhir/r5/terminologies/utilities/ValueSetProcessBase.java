@@ -33,7 +33,7 @@ import org.hl7.fhir.r5.terminologies.expansion.OperationIsTooCostly;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.utilities.UserDataNames;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -42,7 +42,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 import javax.annotation.Nonnull;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ValueSetProcessBase {
 
   public class UnknownValueSetException extends FHIRException {
@@ -80,7 +80,8 @@ public class ValueSetProcessBase {
   }
   
   public enum OpIssueCode {
-    NotInVS, ThisNotInVS, InvalidCode, Display, DisplayComment, NotFound, CodeRule, VSProcessing, InferFailed, StatusCheck, InvalidData, CodeComment, VersionError, CacheIdUnknown;
+    NotInVS, ThisNotInVS, InvalidCode, Display, DisplayComment, NotFound, CodeRule, VSProcessing, InferFailed,
+    StatusCheck, InvalidData, CodeComment, VersionError, CacheIdUnknown, TooCostly, NotSupported, BusinessRule;
 
     public String toCode() {
       switch (this) {
@@ -98,6 +99,9 @@ public class ValueSetProcessBase {
       case VSProcessing: return "vs-invalid";
       case CodeComment: return "code-comment";
       case VersionError: return "version-error";
+      case TooCostly: return "too-costly";
+      case NotSupported: return "not-supported";
+      case BusinessRule: return "business-rule";
       default:
         return "??";      
       }

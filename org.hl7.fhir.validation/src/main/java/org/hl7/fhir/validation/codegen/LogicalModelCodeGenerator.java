@@ -46,6 +46,9 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 @Slf4j
 public class LogicalModelCodeGenerator {
 
+  /** the version of the model being generated against: "r5" or "r6" - see generate() */
+  private String targetVersion = "r5";
+
   public static void main(String[] args) throws Exception {
     String packageName = args[0];
     String folder = args[1];
@@ -59,10 +62,23 @@ public class LogicalModelCodeGenerator {
   }
 
   public void generate(String packageName, String folder, String cfgPath, List<String> packages) throws Exception {
-    generate(packageName, folder, cfgPath, packages, null, null);
+    generate("r5", packageName, folder, cfgPath, packages, null, null);
   }
 
   public void generate(String packageName, String folder, String cfgPath, List<String> packages, String testPackageName, String testFolder) throws Exception {
+    generate("r5", packageName, folder, cfgPath, packages, testPackageName, testFolder);
+  }
+
+  /**
+   * @param fhirVersion the version of the model to generate against: "r5" (org.hl7.fhir.r5) or 
+   *   "r6" (the versionless org.hl7.fhir.model classes)
+   */
+  public void generate(String fhirVersion, String packageName, String folder, String cfgPath, List<String> packages, String testPackageName, String testFolder) throws Exception {
+    if (!Utilities.existsInList(fhirVersion, "r5", "r6")) {
+      throw new Error("Unsupported fhir version for code generation: "+fhirVersion+" (must be r5 or r6)");
+    }
+    this.targetVersion = fhirVersion;
+    log.info("Generating for FHIR version: "+fhirVersion);
     long start = System.currentTimeMillis();
     Map<String, AnalysisElementInfo> elementInfo = new HashMap<>();
     Set<String> genClassList = new HashSet<>();
@@ -70,6 +86,7 @@ public class LogicalModelCodeGenerator {
     FileUtilities.createDirectory(folder);
     log.info("Load Configuration from "+cfgPath);
     Configuration config = new Configuration(cfgPath);
+    config.setTargetVersion(targetVersion);
     Date ddate = new Date();
     String date = config.DATE_FORMAT().format(ddate);
     
@@ -134,7 +151,7 @@ public class LogicalModelCodeGenerator {
     
     JavaFactoryGenerator fgen = new JavaFactoryGenerator(ManagedFileAccess.outStream(Utilities.path(folder, "TypeFactory.java")), master, config, date, version, packageName);
     String jname = Utilities.capitalize(tail(packageName));
-    JavaParserGenerator pgen = new JavaParserGenerator(ManagedFileAccess.outStream(Utilities.path(folder,  jname+"Parser.java")), master, config, date, version, packageName, jname);
+    JavaParserGenerator pgen = new JavaParserGenerator(ManagedFileAccess.outStream(Utilities.path(folder,  jname+"Registration.java")), master, config, date, version, packageName, jname);
     pgen.setPackages(pids);
     JavaParserJsonGenerator jgen = new JavaParserJsonGenerator(ManagedFileAccess.outStream(Utilities.path(folder,  jname+"JsonParser.java")), master, config, date, version, packageName, jname);
     JavaParserXmlGenerator xgen = new JavaParserXmlGenerator(ManagedFileAccess.outStream(Utilities.path(folder, jname+"XmlParser.java")), master, config, date, version, packageName, jname);
@@ -211,7 +228,7 @@ public class LogicalModelCodeGenerator {
     log.info(" .. Factory");
     fgen.generate();
     fgen.close();
-    log.info(" .. Parser");
+    log.info(" .. Registration");
     pgen.generate();
     pgen.close();
     log.info(" .. JsonParser");

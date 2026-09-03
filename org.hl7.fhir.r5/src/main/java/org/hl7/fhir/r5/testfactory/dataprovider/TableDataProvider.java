@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Locale;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 
-@MarkedToMoveToAdjunctPackage
+
 public abstract class TableDataProvider {
 
   public abstract List<String> columns();

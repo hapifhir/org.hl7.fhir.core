@@ -7,9 +7,9 @@ import java.util.Set;
 
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@MarkedToMoveToAdjunctPackage
+
+
 public class BuildExtensions extends ExtensionDefinitions {
 
   public static final String EXT_DESCRIPTION = "http://hl7.org/fhir/build/StructureDefinition/description";

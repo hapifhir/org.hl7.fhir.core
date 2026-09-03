@@ -100,13 +100,16 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
       // Load externals if provided
       JsonObject externalsJson = loadExternals(externals);
 
-      // Create TxTester instance
+      // Create TxTester instance. -test-version names the tx-ecosystem package to load the
+      // tests from; it is NOT a FHIR version, so it must not be passed as one. The suites'
+      // and tests' version gates are FHIR version gates, and TxTester evaluates them against
+      // the version the server under test reports.
       TxTester txTester = new TxTester(
         new TxTester.InternalTxLoader(version),
         tx,
         false,
         externalsJson,
-        testVersion
+        null
       );
 
       // Add input loaders

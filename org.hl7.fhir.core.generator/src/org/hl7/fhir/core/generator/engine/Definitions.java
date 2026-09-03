@@ -1,6 +1,10 @@
 package org.hl7.fhir.core.generator.engine;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.hl7.fhir.r5.context.CanonicalResourceManager;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -12,10 +16,17 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 
 public class Definitions {
+
+  // the packages (id#version) these definitions were loaded from. Only used for the header
+  // comment on generated files
+  private List<String> packages = new ArrayList<>();
+
+  public List<String> getPackages() {
+    return packages;
+  }
 
   private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<>(true, false);
   private CanonicalResourceManager<ValueSet> valuesets = new CanonicalResourceManager<>(true, false);
@@ -88,9 +99,9 @@ public class Definitions {
 //      }
 //    }
     for (StructureDefinition sd : structures.getList()) {
-      if (sd.hasExtension(ToolingExtensions.EXT_RESOURCE_IMPLEMENTS) &&
+      if (sd.hasExtension(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS) &&
           !Utilities.existsInList(sd.getType(), "MedicationKnowledge", "ObservationDefinition", "SpecimenDefinition")) {
-        sd.setBaseDefinition(ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_RESOURCE_IMPLEMENTS));
+        sd.setBaseDefinition(ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS));
       }
     }
   }

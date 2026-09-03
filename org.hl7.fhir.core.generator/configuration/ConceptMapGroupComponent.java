@@ -1,6 +1,6 @@
 
   public SourceElementComponent getOrAddElement(String code) {
-    for (SourceElementComponent e : getElement()) {
+    for (SourceElementComponent e : getElementList()) {
       if (code.equals(e.getCode())) {
         return e;
       }

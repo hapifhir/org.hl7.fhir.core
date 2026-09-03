@@ -1,6 +1,6 @@
 package org.hl7.fhir.r4.utils;
 
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -31,7 +31,7 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
   
  */
 
-@MarkedToMoveToAdjunctPackage
+
 public interface INarrativeGenerator {
 
   void setCanonicalUrlsAsLinks(boolean canonicalUrlsAsLinks);

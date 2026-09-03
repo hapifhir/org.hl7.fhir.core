@@ -1,0 +1,45 @@
+package org.hl7.fhir.model;
+
+import org.hl7.fhir.model.core.UuidType;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+class UuidTypeNullTest {
+
+  @Test
+  @DisplayName("Test null value toString()")
+  void testToString() {
+    assertDoesNotThrow(() -> {
+      UuidType nullUuid = new UuidType();
+      System.out.println("Value -> " + nullUuid);
+    });
+  }
+
+  @Test
+  @DisplayName("Test null value equalsDeep()")
+  void equalsDeep() {
+    UuidType nullUuid = new UuidType();
+    UuidType validUuid = new UuidType("d6db3614-4c1c-4753-b319-771383b034cf");
+    Assertions.assertFalse(nullUuid.equalsDeep(validUuid));
+  }
+
+  @Test
+  @DisplayName("Test null value equalsShallow()")
+  void equalsShallow() {
+    UuidType nullUuid = new UuidType();
+    UuidType validUuid = new UuidType("d6db3614-4c1c-4753-b319-771383b034cf");
+    Assertions.assertFalse(nullUuid.equalsShallow(validUuid));
+  }
+
+  @Test
+  @DisplayName("Test null value copy()")
+  void copy() {
+    UuidType nullUuid = new UuidType();
+    UuidType copyUuid = nullUuid.copy(Base.COPY_DATA);
+    Assertions.assertNull(copyUuid.getValue());
+  }
+
+}

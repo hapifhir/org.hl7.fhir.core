@@ -81,6 +81,11 @@ public class BaseWorkerContextTests {
     }
 
     @Override
+    public boolean canLoadPackages() {
+      return false;
+    }
+
+    @Override
     public void cachePackage(PackageInformation packageInfo) {
 
     }
@@ -298,6 +303,11 @@ public class BaseWorkerContextTests {
       @Override
       public PackageLoadController getPackageLoadController() {
         return null;
+      }
+
+      @Override
+      public boolean canLoadPackages() {
+        return false;
       }
 
       @Override

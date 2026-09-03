@@ -142,6 +142,12 @@ public class SqlOnFhirRunnerTests {
         // Get actual results.
         JsonArray actualResults = storage.getResults();
 
+        // The test passes unless one of the checks below records a failure. This has to be set
+        // before them, not after: compareResults and checkColumnOrder report by setting
+        // result.passed = false, so assigning true afterwards silently discarded everything they
+        // found, and the only thing that could fail this class was a thrown exception
+        result.passed = true;
+
         // Compare with expected results.
         if (test.has("expect")) {
           JsonArray expectedResults = test.getJsonArray("expect");
@@ -153,8 +159,6 @@ public class SqlOnFhirRunnerTests {
           JsonArray expectedColumns = test.getJsonArray("expectColumns");
           checkColumnOrder(expectedColumns, actualResults, result);
         }
-
-        result.passed = true;
 
       } catch (Exception e) {
         if (expectError) {

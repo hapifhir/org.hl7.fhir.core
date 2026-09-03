@@ -4,7 +4,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-@MarkedToMoveToAdjunctPackage
+
 public interface IWorkerContextManager {
 
   interface IPackageLoadingTracker {
@@ -60,6 +60,17 @@ public interface IWorkerContextManager {
    */
   public void cacheResource(Resource res) throws FHIRException;
 
+
+  /**
+   * Determines whether the implementation can load packages into the context.
+   *
+   * This method is typically used to check if the context supports loading resources
+   * from FHIR packages, which may involve managing dependencies, resource types, and
+   * lazy loading mechanisms.
+   *
+   * @return true if the implementation supports package loading; false otherwise.
+   */
+  public boolean canLoadPackages();
 
   /**
    * cache a resource for later retrieval using fetchResource.

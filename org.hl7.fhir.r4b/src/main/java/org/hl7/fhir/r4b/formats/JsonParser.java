@@ -66973,7 +66973,7 @@ public class JsonParser extends JsonParserBase {
   @Override
   protected void composeResource(Resource resource) throws IOException {
     if (resource == null) {
-      throw new Error("Unhandled resource type " + resource.getClass().getName());
+      throw new Error("Unhandled resource type: null");
     } else if (resource instanceof Account) {
       composeAccount("Account", (Account) resource);
     } else if (resource instanceof ActivityDefinition) {
@@ -67264,7 +67264,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void composeNamedReference(String name, Resource resource) throws IOException {
     if (resource == null) {
-      throw new Error("Unhandled resource type " + resource.getClass().getName());
+      throw new Error("Unhandled resource type: null");
     } else if (resource instanceof Account) {
       composeAccount(name, (Account) resource);
     } else if (resource instanceof ActivityDefinition) {

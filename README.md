@@ -35,15 +35,54 @@ correct implementation of the core FHIR specification that it implements.
 The following is an overview of modules used in this project:
 
 * **org.fhir.fhir.utilities**: Shared code used by all the other projects - including the internationalization code
-* **org.fhir.fhir.r5**: Object models and utilities for R5 candidate (will change regularly as new R5 candidates are released)
-* **org.fhir.fhir.r4b**: Object models and utilities for R4B
-* **org.fhir.fhir.r4**: Object models and utilities for R4
-* **org.fhir.fhir.dstu3**: Object models and utilities for STU3
+* **org.fhir.fhir.r5**: Object models and utilities for R5
+* **org.hl7.fhir.r4b**: Object models and utilities for R4B (only the FHIRPath code is maintained)
+* **org.hl7.fhir.r4**: Object models and utilities for R4 (only the FHIRPath code is maintained)
+* **org.hl7.fhir.dstu3**: Object models and utilities for STU3 (only the FHIRPath code is maintained)
 * **org.fhir.fhir.dstu2**: Object models and utilities for STU2 (deprecated and scheduled for removal)
-* **org.fhir.fhir.dstu2016may**: Object models and utilities for an early STU3 candidate still used by some implementers
+* **org.hl7.fhir.dstu2016may**: Object models and utilities for an early STU3 candidate still used by some implementers (only the FHIRPath code is maintained)
 * **org.fhir.fhir.convertors**: Code to convert between versions, and other version independence code - uses all the above projects
 * **org.fhir.fhir.validation**: The FHIR Java validator (note: based on R5 internally, but validates all the above versions)
 * **org.fhir.fhir.validation.cli**: Holder project for releasing the FHIR validator as a single fat jar
+
+There are three additional modules that contain experimental code for support of FHIR R6 which are not yet
+suitable for production use:
+
+* **org.hl7.fhir.model**: Object models for the R6 candidate (will change regularly as new R6 candidates are released, and we start working with the R6 code)
+* **org.hl7.fhir.services**: Utilities for working with the R6 code
+* **org.hl7.fhir.standalone**: Worker context, terminology services and test infrastructure for running the R6 code in a single process
+
+Note: these packages will be it, going forward - future versions post R6 will be folded into the code in these modules.
+
+### Maintenance Status
+
+Not all of the code in this project is actively maintained.
+
+For the versions before R5 - STU2, the early STU3 candidate, STU3, R4 and R4B - only the FHIRPath
+implementation is maintained. The object models and the other utilities in those modules are still built and
+released, and they still work, but they are not being kept up to date with the specifications or with the rest
+of this project.
+
+The intention is that all the maintained code moves to the R6 modules as soon as that is practical, and that
+**org.hl7.fhir.r5** joins the older modules at that point. No date has been set for this. If you are starting
+something new, or deciding where your dependencies should sit, that is the direction to plan for.
+
+### Thread Safety
+
+The R6 modules are divided along a threading contract, and this is part of why the code was split up this way:
+
+* **org.hl7.fhir.model** and **org.hl7.fhir.services** are expected to be thread safe. Resources, and the
+  utilities and renderers that work on them, may be shared between threads. So anything cached on a resource -
+  including anything put in `userData` - has to be published safely, and derived state must not be accumulated
+  into a shared mutable collection.
+* **org.hl7.fhir.standalone** is not thread safe, and is not meant to be. The worker context, the canonical
+  resource manager and the terminology services in it assume a single thread, and do things such as loading a
+  resource lazily and deriving from it on first use.
+
+One precondition goes with this: snapshots must be generated before multi-threaded use begins. Snapshot
+generation writes derived state onto the definitions it processes, so it is not safe to generate a snapshot
+while other threads are reading that definition.
+
 
 ## Additional Resources
 

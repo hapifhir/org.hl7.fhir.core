@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
+import org.hl7.fhir.convertors.conv43_50.Utilities43_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
@@ -97,9 +98,9 @@ public class ImmunizationRecommendation43_50 {
     if (src.hasSeries())
       tgt.setSeriesElement(String43_50.convertString(src.getSeriesElement()));
     if (src.hasDoseNumber())
-      tgt.setDoseNumber(src.getDoseNumber().primitiveValue());
+      tgt.setDoseNumberElement(Utilities43_50.convertPositiveIntOrStringToString(src.getDoseNumber()));
     if (src.hasSeriesDoses())
-      tgt.setSeriesDoses(src.getSeriesDoses().primitiveValue());
+      tgt.setSeriesDosesElement(Utilities43_50.convertPositiveIntOrStringToString(src.getSeriesDoses()));
     for (org.hl7.fhir.r4b.model.Reference t : src.getSupportingImmunization())
       tgt.addSupportingImmunization(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r4b.model.Reference t : src.getSupportingPatientInformation())
@@ -129,9 +130,9 @@ public class ImmunizationRecommendation43_50 {
     if (src.hasSeries())
       tgt.setSeriesElement(String43_50.convertString(src.getSeriesElement()));
     if (src.hasDoseNumber())
-      tgt.setDoseNumber(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getDoseNumberElement()));
+      tgt.setDoseNumber(Utilities43_50.convertStringToPositiveIntOrString(src.getDoseNumberElement()));
     if (src.hasSeriesDoses())
-      tgt.setSeriesDoses(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getSeriesDosesElement()));
+      tgt.setSeriesDoses(Utilities43_50.convertStringToPositiveIntOrString(src.getSeriesDosesElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getSupportingImmunization())
       tgt.addSupportingImmunization(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getSupportingPatientInformation())
