@@ -51,8 +51,11 @@
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
         <logback.version>1.6.3</logback.version>
         <log4jVersion>2.26.1</log4jVersion>
-        <okio.version>3.16.4</okio.version>
+        <okio.version>3.18.1</okio.version>
         <surefire.native.access.arg/>
+        <opentelemetry.version>1.65.0</opentelemetry.version>
+        <opentelemetry-testing.version>2.31.1-alpha</opentelemetry-testing.version>
+        <opentelemetry-instrumentation-annotations.version>2.31.1</opentelemetry-instrumentation-annotations.version>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -415,30 +418,31 @@
                 <scope>provided</scope> <!--  available at compile time and test time, but not bundled into the jar. Maven assumes the runtime environment will provide it -->
                 <optional>true</optional> <!-- prevents the dependency from being transitively inherited by downstream consumers -->
             </dependency>
+            <!-- OpenTelemetry - this is inherited through our parent pom and is not used internally -->
             <dependency>
                 <groupId>io.opentelemetry.javaagent</groupId>
                 <artifactId>opentelemetry-testing-common</artifactId>
-                <version>2.27.0-alpha</version>
+                <version>${opentelemetry-testing.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry.javaagent</groupId>
                 <artifactId>opentelemetry-agent-for-testing</artifactId>
-                <version>2.27.0-alpha</version>
+                <version>${opentelemetry-testing.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry.instrumentation</groupId>
                 <artifactId>opentelemetry-instrumentation-annotations</artifactId>
-                <version>2.27.0</version>
+                <version>${opentelemetry-instrumentation-annotations.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry</groupId>
                 <artifactId>opentelemetry-api</artifactId>
-                <version>1.62.0</version>
+                <version>${opentelemetry.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry</groupId>
                 <artifactId>opentelemetry-context</artifactId>
-                <version>1.62.0</version>
+                <version>${opentelemetry.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
