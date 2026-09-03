@@ -155,11 +155,17 @@ abstract class GitbServiceHandler extends BaseHTTPHandler implements HttpHandler
     return ac == null ? null : resolveValue(ac);
   }
 
-  /** Like {@link #resolveInput} but throws {@link MissingInputException} when missing/empty. */
+  /** Like {@link #resolveInput} but throws {@link MissingInputException} when missing or empty,
+   *  with distinct messages so callers can tell "input absent" from "input present but empty"
+   *  (the latter usually means an upstream step produced an empty value). */
   protected static String requireInput(JsonArray inputs, String name) {
-    String v = resolveInput(inputs, name);
-    if (v == null || v.isEmpty()) {
+    JsonObject ac = findInput(inputs, name);
+    if (ac == null) {
       throw new MissingInputException("Missing required input: " + name);
+    }
+    String v = resolveValue(ac);
+    if (v == null || v.isEmpty()) {
+      throw new MissingInputException("Required input '" + name + "' is present but empty");
     }
     return v;
   }

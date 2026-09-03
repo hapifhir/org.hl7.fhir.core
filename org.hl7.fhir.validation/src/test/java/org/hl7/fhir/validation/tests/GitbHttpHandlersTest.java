@@ -165,6 +165,16 @@ class GitbHttpHandlersTest {
   }
 
   @Test
+  void transformProcessReturns400WhenContentInputIsEmpty() throws Exception {
+    JsonObject body = processRequestBody("transform",
+      anyContent("content", ""),
+      anyContent("map", "http://example.org/StructureMap/x"));
+    HttpResponse<String> response = post("/itb/transform/process", JsonParser.compose(body));
+    assertEquals(400, response.statusCode());
+    assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("present but empty");
+  }
+
+  @Test
   void transformProcessReturns400ForUnknownOperation() throws Exception {
     JsonObject body = processRequestBody("flubber",
       anyContent("content", "{}"),
