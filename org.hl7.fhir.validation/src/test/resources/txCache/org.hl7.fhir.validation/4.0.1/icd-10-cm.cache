@@ -47,3 +47,32 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://hl7.org/fhir/sid/icd-10-cm",
+    "code" : "G89.4"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Chronic pain syndrome",
+  "code" : "G89.4",
+  "system" : "http://hl7.org/fhir/sid/icd-10-cm",
+  "version" : "2026-04-01",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/sid/icd-10-cm/vs|2026-04-01: Validate \"[http://hl7.org/fhir/sid/icd-10-cm#G89.4 (\"undefined\")]\"\n3ms http://hl7.org/fhir/sid/icd-10-cm/vs|2026-04-01: Check \"http://hl7.org/fhir/sid/icd-10-cm#G89.4\"\n3ms http://hl7.org/fhir/sid/icd-10-cm/vs|2026-04-01: CodeSystem found: http://hl7.org/fhir/sid/icd-10-cm|2026-04-01 for http://hl7.org/fhir/sid/icd-10-cm|2026-04-01\n3ms http://hl7.org/fhir/sid/icd-10-cm/vs|2026-04-01: check code in (http://hl7.org/fhir/sid/icd-10-cm) at CodeableConcept.coding[0]\n3ms http://hl7.org/fhir/sid/icd-10-cm/vs|2026-04-01: Code \"G89.4\" found in http://hl7.org/fhir/sid/icd-10-cm|2026-04-01",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
