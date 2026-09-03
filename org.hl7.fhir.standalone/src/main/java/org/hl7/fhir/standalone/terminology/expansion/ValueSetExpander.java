@@ -856,14 +856,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ParametersParameterComponent p : expParams.getParameterList()) {
       processParameter(p.getName(), p.getValue());
     }
-    // ValueSet.compose.property names the properties to return "if the client doesn't ask for any
-    // particular properties", so it is only consulted when the request named none
-    if (source.hasCompose() && !source.getCompose().getPropertyList().isEmpty() && !expParams.hasParameter("property")) {
-      expParams = expParams.copy(Base.COPY_DATA);
-      for (StringType t : source.getCompose().getPropertyList()) {
-        expParams.addParameter("property", new StringType(t.getValue()));
-      }
-    }
+    expParams = checkComposeProperties(source, expParams);
     for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
       requiredSupplements.add(s.getValue().primitiveValue());
     }
@@ -945,6 +938,18 @@ public class ValueSetExpander extends ValueSetProcessBase {
       focus.setText(null);
     }
     return new ValueSetExpansionOutcome(focus);
+  }
+
+  private static Parameters checkComposeProperties(ValueSet source, Parameters expParams) {
+    // ValueSet.compose.property names the properties to return "if the client doesn't ask for any
+    // particular properties", so it is only consulted when the request named none
+    if (source.hasCompose() && !source.getCompose().getPropertyList().isEmpty() && !expParams.hasParameter("property")) {
+      expParams = expParams.copy(Base.COPY_DATA);
+      for (StringType t : source.getCompose().getPropertyList()) {
+        expParams.addParameter("property", new StringType(t.getValue()));
+      }
+    }
+    return expParams;
   }
 
   private void processParameter(String name, DataType value) {
@@ -1031,14 +1036,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ParametersParameterComponent p : expParams.getParameterList()) {
       processParameter(p.getName(), p.getValue());
     }
-    // ValueSet.compose.property names the properties to return "if the client doesn't ask for any
-    // particular properties", so it is only consulted when the request named none
-    if (source.hasCompose() && !source.getCompose().getPropertyList().isEmpty() && !expParams.hasParameter("property")) {
-      expParams = expParams.copy(Base.COPY_DATA);
-      for (StringType t : source.getCompose().getPropertyList()) {
-        expParams.addParameter("property", new StringType(t.getValue()));
-      }
-    }
+    expParams = checkComposeProperties(source, expParams);
     for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
       requiredSupplements.add(s.getValue().primitiveValue());
     }
