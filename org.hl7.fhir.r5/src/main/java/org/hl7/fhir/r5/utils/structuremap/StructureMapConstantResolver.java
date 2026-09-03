@@ -7,7 +7,6 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapConstComponent;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +24,6 @@ import java.util.Set;
  * {@link Variables} copy made during a single {@code transform} call so the cache and the
  * in-progress set survive rule-level scope changes.
  */
-@MarkedToMoveToAdjunctPackage
 class StructureMapConstantResolver {
 
   private final StructureMap map;
