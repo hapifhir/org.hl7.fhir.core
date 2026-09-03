@@ -1,8 +1,6 @@
 package org.hl7.fhir.utilities.validation;
 
 import lombok.Getter;
-import lombok.Setter;
-import lombok.With;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
@@ -35,23 +33,55 @@ public class ValidationOptions {
   }
 
   private AcceptLanguageHeader langs = null;
+  /**
+   *  true (default) means that the validator will try to resolve the terminology using a server if it needs to for this
+   *  request. (There are a few use cases, both in the code and externally where this is needed)
+   */
+  @Getter
   private boolean useServer = true;
+
+  /**
+   *  true (default) means that the validator will try to resolve the terminology request locally with the resources at
+   *  hand (There are a few use cases, both in the code and externally where this is needed)
+   */
+  @Getter
   private boolean useClient = true;
+  /**
+   *  True if this is called from a code context where there's no known code system (inferred from the value set)*
+   */
+  @Getter
   private boolean guessSystem = false;
+  @Getter
   private boolean membershipOnly = false;
+  @Getter
   private boolean displayWarningMode = false;
   private boolean vsAsUrl;
+  /**
+   *  If the version requested has to match the version actually found, or not. It's used for e.g. display, where you
+   *  pass a version in, because you have one, but you don't mind getting a display from a different version instead
+   */
+  @Getter
   private boolean versionFlexible = true;
+  @Getter
   private boolean useValueSetDisplays;
+  /**
+   *  If true and the language is other than english, the validator will accept english as well
+   */
+  @Getter
   private boolean englishOk = true;
+  @Getter
   private boolean activeOnly = false;
+  @Getter
   private boolean exampleOK = false;
-  private FhirPublication fhirVersion;
+  @Getter
+  private final FhirPublication fhirVersion;
+  @Getter
   private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
   private boolean isDefaultLang = false;
+  @Getter
   private boolean noAbstract = false;
 
-  @Getter @Setter private Object externalSource;
+  @Getter private Object externalSource;
   
   public ValidationOptions() { this(FhirPublication.R5); }
 
@@ -61,7 +91,7 @@ public class ValidationOptions {
   }
 
   public ValidationOptions(FhirPublication fhirVersion, String language) {
-    super();
+    this(fhirVersion);
     if (!Utilities.noString(language)) {
       langs = new AcceptLanguageHeader(language, false);
       isDefaultLang = false;
@@ -75,11 +105,8 @@ public class ValidationOptions {
   }
   
   /**
-   * The language that the validation is in (for display name checking etc
-   * 
-   * See also englishOK
-   * 
-   * @return
+   * @return the AcceptLanguageHeader for the language that the validation is in (for display name checking etc.)
+   * @see ValidationOptions#englishOk
    */
   public AcceptLanguageHeader getLanguages() {
     return langs;
@@ -91,80 +118,11 @@ public class ValidationOptions {
 
 
   /**
-   * true (which is default) means that the validator will use the server if it needs to for this request
-   * 
-   * (there's a few corner cases where you want to turn this off?)
-   * @return
-   */
-  public boolean isUseServer() {
-    return useServer;
-  }
-
-  /**
-   * True means that the validator will try to resolve the terminology request locally with the resources at hand 
-   * 
-   * There have been a few corner case code systems where the local code system from THO is wrong
-   * 
-   * @return
-   */
-  public boolean isUseClient() {
-    return useClient;
-  }
-
-  /**
-   * True if this is called from a code context where there's no known code system (inferred from the value set)
-   * 
-   * @return
-   */
-  public boolean isGuessSystem() {
-    return guessSystem;
-  }
-
-  public boolean isActiveOnly() {
-    return activeOnly;
-  }
-  public boolean isNoAbstract() {
-    return noAbstract;
-  }
-
-  /**
-   * Don't know what this does
-   * 
-   * @return
+   * If true tells the engine to pass the ValueSet to the server as a URL rather than the whole VS.
+   * (But I don't remember why this exists now -Grieve)
    */
   public boolean getVsAsUrl() {
     return vsAsUrl;
-  }
-
-  /**
-   * Don't know exactly what this does
-   * 
-   * @return
-   */
-  public boolean isVersionFlexible() {
-    return versionFlexible;
-  }
-
-  /**
-   * see {link}
-   *  
-   * @return
-   */
-  public boolean isUseValueSetDisplays() {
-    return useValueSetDisplays;
-  }
-
-  public boolean isMembershipOnly() {
-    return membershipOnly;
-  }
-
-  /**
-   * if the language is other than english, should the validator accept english as well?
-   * 
-   * @return
-   */
-  public boolean isEnglishOk() {
-    return englishOk;
   }
 
 
@@ -316,43 +274,39 @@ public class ValidationOptions {
     return this;
   }
 
-  public boolean isDisplayWarningMode() {
-    return displayWarningMode;
-  }
-
   public ValidationOptions setDisplayWarningMode(boolean displayWarningMode) {
     this.displayWarningMode = displayWarningMode;
     return this;
-  }
-
-  public boolean isExampleOK() {
-    return exampleOK;
   }
 
   public ValidationOptions setExampleOK(boolean exampleOK) {
     this.exampleOK = exampleOK;
     return this;
   }
-  
+
+  public ValidationOptions setExternalSource(Object externalSource) {
+    this.externalSource = externalSource;
+    return this;
+  }
+
   public ValidationOptions withExampleOK() {
-    return setExampleOK(true);
+    ValidationOptions n = this.copy();
+    return n.setExampleOK(true);
   }
 
-  
-  public R5BundleRelativeReferencePolicy getR5BundleRelativeReferencePolicy() {
-    return r5BundleRelativeReferencePolicy;
-  }
 
-  public void setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
+  public ValidationOptions setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
     if (r5BundleRelativeReferencePolicy == null) {
       r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
     } 
     this.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
+    return this;
   }
 
   public ValidationOptions withR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
-    setR5BundleRelativeReferencePolicy(r5BundleRelativeReferencePolicy);
-    return this;
+    ValidationOptions n = this.copy();
+    n.setR5BundleRelativeReferencePolicy(r5BundleRelativeReferencePolicy);
+    return n;
   }
 
   public ValidationOptions copy() {
@@ -395,13 +349,10 @@ public class ValidationOptions {
     }
   }
 
-  public FhirPublication getFhirVersion() {
-    return fhirVersion;
-  }
-
   public ValidationOptions withExternalSource(Object res) {
-    this.externalSource = res;
-    return this;
+    ValidationOptions n = this.copy();
+    n.externalSource = res;
+    return n;
   }
 
 
