@@ -1050,6 +1050,156 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return baos.toByteArray();
   }
 
+  /**
+   * Parse a FHIR resource from bytes and register it (or every entry of a Bundle of type
+   * {@code collection}/{@code batch}/{@code transaction}) in the validator's context so it can
+   * later be resolved by canonical URL — same effect as having loaded it from a package.
+   *
+   * @param content      serialised FHIR resource (JSON or XML)
+   * @param inputFormat  format of {@code content} (JSON or XML)
+   * @return list of {@code "ResourceType/id"} descriptors for each resource registered
+   */
+  public List<String> loadResourceFromBytes(byte[] content, FhirFormat inputFormat) throws FHIRException, IOException {
+    return loadResourceFromBytes(content, inputFormat, false);
+  }
+
+  /**
+   * Same as {@link #loadResourceFromBytes(byte[], FhirFormat)} but with an explicit
+   * {@code replace} flag. When {@code replace} is {@code true}, an incoming canonical
+   * resource whose URL already exists in the context drops the existing copy first and
+   * then registers the new one — the authoring loop, where the author iterates on the
+   * same artifact (typically an FML-derived StructureMap) and resubmits under the same
+   * canonical URL without bumping {@code version} on every edit.
+   *
+   * @param replace when true, a same-URL canonical resource overwrites the existing one
+   *                rather than being reported as {@code (skipped, already in context)}
+   */
+  public List<String> loadResourceFromBytes(byte[] content, FhirFormat inputFormat, boolean replace) throws FHIRException, IOException {
+    String fakeName = "upload." + (inputFormat == FhirFormat.XML ? "xml" : "json");
+    // Prefer the engine's configured version; fall back to the context's, since the
+    // ValidationEngineBuilder.fromSource(...) path doesn't propagate version onto the engine.
+    String effectiveVersion = version != null ? version : (context != null ? context.getVersion() : null);
+    if (effectiveVersion == null) {
+      throw new FHIRException("ValidationEngine has no FHIR version configured; cannot parse resource bytes");
+    }
+    String versionWarning = detectVersionFieldLoss(content, inputFormat, effectiveVersion);
+    Resource parsed = igLoader.loadResourceByVersion(effectiveVersion, content, fakeName);
+    List<String> loaded = new ArrayList<>();
+    if (parsed instanceof Bundle) {
+      Bundle b = (Bundle) parsed;
+      for (BundleEntryComponent e : b.getEntry()) {
+        Resource r = e.getResource();
+        if (r != null && registerIfNew(r, loaded, replace)) {
+          // already accounted for in loaded
+        }
+      }
+    } else if (parsed != null) {
+      registerIfNew(parsed, loaded, replace);
+    }
+    if (versionWarning != null && !loaded.isEmpty()) {
+      // Annotate the last descriptor — that's the one whose bytes we scanned.
+      int i = loaded.size() - 1;
+      loaded.set(i, loaded.get(i) + " " + versionWarning);
+    }
+    return loaded;
+  }
+
+  /**
+   * Defensive check for the silent-data-loss case where an R5-format StructureMap JSON
+   * is POSTed to a non-R5 validator. The R4 / R4B / R3 JSON parsers drop the R5-only
+   * {@code parameter} array on rule dependents (R4 uses {@code variable} instead); the
+   * resource loads without an error but the transform engine then sees zero variables
+   * on every dependent invocation, producing a misleading runtime error.
+   * <p>
+   * Returns a human-readable {@code "(warning: ...)"} string to append to the registered
+   * resource's descriptor, or {@code null} if no mismatch is detected.
+   */
+  private static String detectVersionFieldLoss(byte[] content, FhirFormat inputFormat, String effectiveVersion) {
+    if (content == null || effectiveVersion == null) return null;
+    if (inputFormat != FhirFormat.JSON) return null;        // XML check would mirror this; not common enough to chase
+    if (effectiveVersion.startsWith("5.") || effectiveVersion.startsWith("6.")) return null;
+    // Cheap content sniff for a StructureMap with R5-only dependent.parameter.
+    // We scan the raw bytes: only StructureMaps emit "dependent" near "parameter".
+    String text = new String(content, java.nio.charset.StandardCharsets.UTF_8);
+    if (!text.contains("\"resourceType\"") || !text.contains("\"StructureMap\"")) return null;
+    int depIdx = text.indexOf("\"dependent\"");
+    if (depIdx < 0) return null;
+    // Look for "parameter" within a few hundred chars after each "dependent" occurrence.
+    while (depIdx >= 0) {
+      int endIdx = Math.min(text.length(), depIdx + 600);
+      String window = text.substring(depIdx, endIdx);
+      if (window.contains("\"parameter\"")) {
+        return "(warning: incoming StructureMap JSON contains R5-only field 'dependent.parameter' "
+             + "but validator is running in version " + effectiveVersion + "; dependent invocations "
+             + "may have been silently truncated — run the validator in R5 mode or post an R4-format "
+             + "StructureMap that uses 'dependent.variable' instead)";
+      }
+      depIdx = text.indexOf("\"dependent\"", depIdx + 1);
+    }
+    return null;
+  }
+
+  /**
+   * Register {@code r} on the context.
+   * <p>
+   * Comparison is by canonical URL. If the URL is already present:
+   * <ul>
+   *   <li>{@code replace == false}: the new resource is skipped and the descriptor in
+   *       {@code loaded} is suffixed with {@code (skipped, already in context)}.</li>
+   *   <li>{@code replace == true}: the existing resource is dropped from the context
+   *       (by {@code fhirType}/{@code id}) and the new one is registered. The descriptor
+   *       in {@code loaded} is suffixed with {@code (replaced)}.</li>
+   * </ul>
+   * The {@code loaded} list is always appended so the caller can tell what happened.
+   *
+   * @return true if the resource ended up registered (either fresh or replaced),
+   *         false if it was skipped
+   */
+  private boolean registerIfNew(Resource r, List<String> loaded, boolean replace) throws FHIRException {
+    if (r instanceof CanonicalResource && ((CanonicalResource) r).hasUrl()) {
+      String url = ((CanonicalResource) r).getUrl();
+      Resource existing = null;
+      try {
+        existing = context.fetchResource(Resource.class, url);
+      } catch (Throwable t) {
+        // Ambiguous lookup or other resolution error — treat as "already here" and bail.
+        if (!replace) {
+          loaded.add(describeLoaded(r) + " (skipped, already in context)");
+          return false;
+        }
+      }
+      if (existing != null) {
+        if (!replace) {
+          loaded.add(describeLoaded(r) + " (skipped, already in context)");
+          return false;
+        }
+        // Drop by fhirType + id (the worker context indexes by that pair, not by URL).
+        try {
+          context.dropResource(existing.fhirType(), existing.getIdPart());
+        } catch (Throwable t) {
+          // If the drop fails we still try to register; cacheResource overwrites the
+          // resource map but not always the type-specific caches, so the drop matters
+          // for StructureMap etc.
+        }
+        seeResource(r);
+        loaded.add(describeLoaded(r) + " (replaced)");
+        return true;
+      }
+    }
+    seeResource(r);
+    loaded.add(describeLoaded(r));
+    return true;
+  }
+
+  private static String describeLoaded(Resource r) {
+    if (r instanceof CanonicalResource && ((CanonicalResource) r).hasUrl()) {
+      CanonicalResource cr = (CanonicalResource) r;
+      return cr.fhirType() + "/" + (cr.hasId() ? cr.getIdPart() : "?") + " (" + cr.getUrl()
+          + (cr.hasVersion() ? "|" + cr.getVersion() : "") + ")";
+    }
+    return r.fhirType() + "/" + (r.hasId() ? r.getIdPart() : "?");
+  }
+
   public byte[] generateSnapshot(byte[] resource, FhirFormat format) throws FHIRException, IOException {
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
     Resource res = new ObjectConverter(context).convert(e);

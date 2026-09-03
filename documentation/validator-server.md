@@ -49,8 +49,8 @@ The server runs until it is stopped with Ctrl-C or by a `POST /stop`.
 * A single `ValidationEngine` is created at start up and shared by every request. Per-request
   query parameters build a fresh `InstanceValidatorParameters` for that request; they do not
   change the engine.
-* `POST /loadIG` *does* change the engine, for every subsequent request, permanently - there is
-  no unload.
+* `POST /loadIG` and `POST /loadResource` *do* change the engine, for every subsequent request,
+  permanently - there is no unload.
 * The server is a `com.sun.net.httpserver.HttpServer` created with the default executor, so
   requests are handled sequentially on the dispatcher thread. It is designed for one developer,
   one build pipeline, or one test suite at a time - not as a shared multi-tenant service.
@@ -97,6 +97,7 @@ the HTTP status.
 | POST | `/matchetype` | Compare a resource against a matchetype pattern |
 | POST | `/testdata` | Generate test data for a profile |
 | POST | `/loadIG` | Load an IG into the running engine |
+| POST | `/loadResource` | Register a resource in the running engine |
 | POST | `/convert` | Convert a resource between JSON and XML |
 | POST | `/version` | Convert a resource between FHIR versions |
 | POST | `/snapshot` | Generate the snapshot for a StructureDefinition |
@@ -221,6 +222,30 @@ curl -X POST http://localhost:8080/loadIG \
   -H 'Content-Type: application/json' \
   -d '{"ig": "hl7.fhir.us.core#6.1.0"}'
 ```
+
+### POST /loadResource
+
+Registers a resource - or every entry of a `collection`, `batch` or `transaction` Bundle - in the
+running engine, so that it resolves by canonical URL exactly as if it had come from a package.
+This is how an artifact built at run time, typically a StructureMap parsed by `/fml`, is made
+usable by `/transform`, `/compile` and validation without rebuilding a package.
+
+```sh
+curl -X POST 'http://localhost:8080/loadResource?replace=true'   -H 'Content-Type: application/fhir+json'   --data-binary @structuremap.json
+```
+
+The response is plain JSON rather than an `OperationOutcome`:
+
+```json
+{ "loaded": 1, "resources": ["StructureMap/Example"] }
+```
+
+`format` overrides the format of the body; without it the format comes from `Content-Type`, and
+failing that from the first non-whitespace byte. Without `replace=true` a resource whose canonical
+URL is already known is skipped rather than overwritten - which matters in an authoring loop that
+resubmits the same URL without bumping `version`. A descriptor may carry a trailing
+`(warning: ...)` note, for instance when an R5-format StructureMap is loaded into a non-R5 engine
+and the parser dropped R5-only fields.
 
 ### POST /convert and POST /version
 

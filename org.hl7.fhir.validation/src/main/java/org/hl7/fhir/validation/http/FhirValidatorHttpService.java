@@ -49,6 +49,7 @@ public class FhirValidatorHttpService {
     server.createContext("/matchetype", new MatchetypeHTTPHandler(this));
     server.createContext("/testdata", new TestDataHTTPHandler(this));
     server.createContext("/loadIG", new LoadIGHTTPHandler(this));
+    server.createContext("/loadResource", new LoadResourceHTTPHandler(this));
     server.createContext("/convert", new ConvertHTTPHandler(this));
     server.createContext("/snapshot", new SnapshotHTTPHandler(this));
     server.createContext("/narrative", new NarrativeHTTPHandler(this));

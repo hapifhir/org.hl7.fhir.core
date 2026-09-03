@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "FHIR Validator HTTP Service",
-    "description": "HTTP API exposed by the HL7 FHIR Validator when it is run in server mode:\n\n    java -jar validator_cli.jar server <port> [options]\n\nThe service is a thin HTTP wrapper (`com.sun.net.httpserver.HttpServer`) around a single\nin-process `ValidationEngine`. The engine is configured once at start up (FHIR version,\nterminology server, loaded IGs, default instance-validator settings) and is then shared by\nevery request; per-request query parameters override the instance-validator settings for\nthat request only.\n\nNotes that apply to the whole API:\n\n* There is no authentication, no authorization and no rate limiting. By default the server\n  binds to the loopback address only; `-allowNetworkAccess` binds to all interfaces and is\n  the caller's responsibility to secure.\n* The server is created with the default executor, so requests are handled one at a time on\n  the dispatcher thread. The engine is stateful and mutable (`/loadIG` changes it for every\n  subsequent request), so it is not safe to treat this as a shared multi-tenant service.\n* Request format is taken from `Content-Type`: a media type containing `xml` means XML,\n  anything else (including a missing header) means JSON.\n* Response format is taken from `Accept`: a media type containing `xml` means XML, anything\n  else means JSON. `/convert` and `/transform` use this to pick their *output* format;\n  `/snapshot`, `/narrative`, `/version` and `/testdata` echo the *input* (or requested)\n  format instead.\n* Errors are returned as a FHIR `OperationOutcome` (`application/fhir+json` or\n  `application/fhir+xml`), except for a wrong HTTP method, which returns `text/plain`.\n* Paths are registered as `HttpServer` contexts, so any longer path with the same prefix\n  also matches (e.g. `POST /validateResource/anything` is handled by `/validateResource`).\n",
+    "description": "HTTP API exposed by the HL7 FHIR Validator when it is run in server mode:\n\n    java -jar validator_cli.jar server <port> [options]\n\nThe service is a thin HTTP wrapper (`com.sun.net.httpserver.HttpServer`) around a single\nin-process `ValidationEngine`. The engine is configured once at start up (FHIR version,\nterminology server, loaded IGs, default instance-validator settings) and is then shared by\nevery request; per-request query parameters override the instance-validator settings for\nthat request only.\n\nNotes that apply to the whole API:\n\n* There is no authentication, no authorization and no rate limiting. By default the server\n  binds to the loopback address only; `-allowNetworkAccess` binds to all interfaces and is\n  the caller's responsibility to secure.\n* The server is created with the default executor, so requests are handled one at a time on\n  the dispatcher thread. The engine is stateful and mutable (`/loadIG` and `/loadResource` change it for\n  every subsequent request), so it is not safe to treat this as a shared multi-tenant service.\n* Request format is taken from `Content-Type`: a media type containing `xml` means XML,\n  anything else (including a missing header) means JSON.\n* Response format is taken from `Accept`: a media type containing `xml` means XML, anything\n  else means JSON. `/convert` and `/transform` use this to pick their *output* format;\n  `/snapshot`, `/narrative`, `/version` and `/testdata` echo the *input* (or requested)\n  format instead.\n* Errors are returned as a FHIR `OperationOutcome` (`application/fhir+json` or\n  `application/fhir+xml`), except for a wrong HTTP method, which returns `text/plain`.\n* Paths are registered as `HttpServer` contexts, so any longer path with the same prefix\n  also matches (e.g. `POST /validateResource/anything` is handled by `/validateResource`).\n",
     "version": "1.1.0",
     "contact": {
       "name": "HL7 FHIR Core Team",
@@ -786,6 +786,100 @@
           },
           "400": {
             "description": "Missing `ig` field.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/loadResource": {
+      "post": {
+        "tags": [
+          "Configuration"
+        ],
+        "summary": "Load a resource into the running engine",
+        "description": "Registers the posted resource - or every entry of a posted `collection`, `batch` or `transaction` Bundle - in the shared validation engine, so that it resolves by canonical URL exactly as if it had been loaded from a package. This is how an artifact built at run time, typically a StructureMap parsed by `/fml`, is made available to `/transform`, `/compile` and validation without rebuilding an NPM package. Like `/loadIG`, the change is permanent for the lifetime of the process.",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format of the request body. When absent the format comes from `Content-Type`, and failing that from the first non-whitespace byte (`<` means XML, anything else JSON).",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "json",
+                "xml"
+              ]
+            }
+          },
+          {
+            "name": "replace",
+            "in": "query",
+            "description": "When `true`, an incoming canonical resource whose URL is already in the context replaces the existing copy. When `false` it is reported as skipped and the context is left alone - so an authoring loop that resubmits the same canonical URL without bumping `version` needs `replace=true`.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/fhir+json": {
+              "schema": {
+                "type": "object"
+              }
+            },
+            "application/fhir+xml": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The resources that were registered.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "loaded": {
+                      "type": "integer",
+                      "description": "Number of resources registered."
+                    },
+                    "resources": {
+                      "type": "array",
+                      "description": "One `ResourceType/id` descriptor per registered resource. A descriptor may carry a trailing `(warning: ...)` note - for instance when an R5-format StructureMap is loaded into a non-R5 engine and the parser dropped R5-only fields.",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "loaded": 1,
+                  "resources": [
+                    "StructureMap/Example"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing request body.",
             "content": {
               "application/fhir+json": {
                 "schema": {
