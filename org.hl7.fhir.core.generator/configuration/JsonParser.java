@@ -159,8 +159,19 @@ public class JsonParser extends JsonParserBase {
     String t = json.get("resourceType").getAsString();
     if (Utilities.noString(t)) {
       throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
+    }
+    // a handler registered in the model context as overriding the base specification takes
+    // precedence over the generated dispatch below
+    Resource custom = parseOverridingCustomResource(t, json);
+    if (custom != null) {
+      return custom;
 {{parse-resource}}
     } else {
+      // not a resource this parser knows - the model context may have a handler for it
+      Resource res = parseCustomResource(t, json);
+      if (res != null) {
+        return res;
+      }
       throw new FHIRFormatError("Unknown.Unrecognised resource type '"+t+"' (in property 'resourceType')");
     }
   }
@@ -736,18 +747,22 @@ public class JsonParser extends JsonParserBase {
   @Override
   protected void composeResource(Resource resource) throws IOException {
     if (resource == null) {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      throw new Error("Unhandled resource type: null");
 {{compose-resource}} 
-    } else
+    } else if (!composeCustomResource(resource)) {
+      // the model context may have a handler registered for this resource type
       throw new Error("Unhandled resource type "+resource.getClass().getName());
+    }
   }
 
   protected void composeNamedReference(String name, Resource resource) throws IOException {
     if (resource == null) {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      throw new Error("Unhandled resource type: null");
 {{compose-resource-named}} 
-    } else
+    } else if (!composeCustomResource(name, resource)) {
+      // the model context may have a handler registered for this resource type
       throw new Error("Unhandled resource type "+resource.getClass().getName());
+    }
   }
 
   protected void composeType(String prefix, DataType type) throws IOException {

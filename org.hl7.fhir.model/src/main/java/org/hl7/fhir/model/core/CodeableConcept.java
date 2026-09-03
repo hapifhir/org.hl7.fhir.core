@@ -448,8 +448,17 @@ public boolean hasCoding(String system, String code) {
   @Override 
   public String toString() { 
     return hasCoding() ? getCodingList().toString() : "["+getText()+"]";
-  } 
-   
+  }
+
+
+  public void removeCoding(String system, String version, String code) {
+    getCodingList().removeIf(c ->
+      (system == null || system.equals(c.getSystem())) &&
+        (version == null || version.equals(c.getVersion())) &&
+        (code == null || code.equals(c.getCode())));
+  }
+
+
 // end addition
 
 }

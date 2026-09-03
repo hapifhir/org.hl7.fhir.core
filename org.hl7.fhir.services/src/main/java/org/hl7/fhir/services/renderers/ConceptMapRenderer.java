@@ -339,7 +339,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     x.br();
     int gc = 0;
 
-    CodeSystem cs = VersionUtilities.isR5Plus(context.getContext().getVersion()) ?
+    CodeSystem cs = VersionUtilities.isR5Plus(context.getContext().getFHIRVersion()) ?
       getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship", VersionResolutionRules.defaultRule()) :
       getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence", VersionResolutionRules.defaultRule());
     String eqpath = cs == null ? null : cs.getWebPath();

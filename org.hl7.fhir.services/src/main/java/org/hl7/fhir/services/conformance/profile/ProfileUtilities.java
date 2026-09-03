@@ -809,7 +809,7 @@ public class ProfileUtilities {
         //        debug = true;
         //      }
 
-        MappingAssistant mappingDetails = new MappingAssistant(mappingMergeMode, base, derived, context.getVersion(), suppressedMappings);
+        MappingAssistant mappingDetails = new MappingAssistant(mappingMergeMode, base, derived, context.getFHIRVersion(), suppressedMappings);
         
         ProfilePathProcessor.processPaths(this, base, derived, url, webUrl, diff, baseSnapshot, mappingDetails);
 
@@ -3012,7 +3012,7 @@ public class ProfileUtilities {
 
       if (derived.hasIsSummaryElement()) {
         if (!Base.compareDeep(derived.getIsSummaryElement(), base.getIsSummaryElement(), false)) {
-          if (base.hasIsSummary() && !context.getVersion().equals("1.4.0")) // work around a known issue with some 1.4.0 cosntraints
+          if (base.hasIsSummary() && !context.getFHIRVersion().equals("1.4.0")) // work around a known issue with some 1.4.0 cosntraints
             throw new Error(context.formatMessage(I18nConstants.ERROR_IN_PROFILE__AT__BASE_ISSUMMARY___DERIVED_ISSUMMARY__, purl, derived.getPath(), base.getIsSummaryElement().asStringValue(), derived.getIsSummaryElement().asStringValue()));
           base.setIsSummaryElement(derived.getIsSummaryElement().copy(Base.COPY_DATA));
         } else if (trimDifferential)
@@ -4995,9 +4995,20 @@ public class ProfileUtilities {
   }
 
   private Map<String, List<Property>> propertyCache = new HashMap<>();
-  
+
+  // The XML parser has to try the properties of an element longest name first, so that
+  // e.g. requestOrganizationReference is considered before request[x]. That order depends
+  // only on the list, not on the node being matched, but it was re-sorted for every child
+  // element parsed. The lists here are the ones propertyCache hands out (by identity), so
+  // this holds nothing alive that propertyCache does not already hold.
+  private Map<List<Property>, List<Property>> sortedPropertyCache = new IdentityHashMap<>();
+
   public Map<String, List<Property>> getCachedPropertyList() {
     return propertyCache;
+  }
+
+  public Map<List<Property>, List<Property>> getCachedSortedPropertyList() {
+    return sortedPropertyCache;
   }
 
   public void checkExtensions(ElementDefinition outcome) {

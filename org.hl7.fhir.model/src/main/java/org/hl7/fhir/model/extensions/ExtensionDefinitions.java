@@ -48,7 +48,8 @@ import org.hl7.fhir.utilities.Utilities;
 
 @javax.annotation.processing.Generated(value = "org.hl7.fhir.core.generator.engine.JavaCoreGenerator", comments = "generated from hl7.fhir.r6.core#6.0.0-ballot5, hl7.fhir.uv.extensions#5.3.0, hl7.terminology.r5#7.3.0, hl7.fhir.uv.tools#current")
 public class ExtensionDefinitions {
-  
+  public static final String EXTENSIONS_WORKING_VERSION = "5.2.0";
+
   public static final String EXT_CAPABILITIES = "http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities"; // Capabilities
   public static final String EXT_OAUTH_URIS = "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris"; // OAuth URIs
   public static final String EXT_OBJECT_CLASS = "http://hl7.org/fhir/StructureDefinition/11179-objectClass"; // object class
@@ -835,6 +836,13 @@ public class ExtensionDefinitions {
   public static final String CANONICAL_RESOLUTION_METHOD = "http://hl7.org/fhir/StructureDefinition/version-resolution-method";
   public static final String EXT_JSON_NAME_DEPRECATED = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-json-name";
   public static final String EXT_XML_NAME_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";
+  public static final String EXT_CS_ALTERNATE_USE = "http://hl7.org/fhir/StructureDefinition/alternate-code-use";
+  public static final String EXT_VALUESET_SYSTEM = "http://hl7.org/fhir/StructureDefinition/valueset-system";
+  public static final String EXT_ISSUE_INNER_MESSAGE = "http://hl7.org/fhir/tools/StructureDefinition/operationoutcome-inner-message";
+  public static final String EXT_FEATURE = "http://hl7.org/fhir/uv/application-feature/StructureDefinition/feature";
+  public static final String FEATURE_TX_TEST_VERSION = "http://hl7.org/fhir/uv/tx-tests/FeatureDefinition/test-version";
+  public static final String FEATURE_TX_CS_PARAMS = "http://hl7.org/fhir/uv/tx-ecosystem/FeatureDefinition/CodeSystemAsParameter";
+  public static final String EXT_UNCLOSED_REASON = "http://hl7.org/fhir/StructureDefinition/valueset-unclosed-reason";
 
 
   // special cases: defined in earlier versions and still used, but no longer defined

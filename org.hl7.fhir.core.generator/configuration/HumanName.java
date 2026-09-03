@@ -27,17 +27,24 @@
   } 
 
   /** 
-   * Returns all of the components of the name (prefix, given, family, suffix) as a single string with a single spaced 
-   * string separating each part. 
+   * Returns the name as a single string. 
    * <p> 
-   * If none of the parts are populated, returns the {@link #getTextElement() text} element value instead. 
+   * If {@link #getTextElement() text} is populated it is returned as-is - text is the name as it should be 
+   * presented, and takes precedence over the parts. Otherwise the components that are present (prefix, given, 
+   * family, suffix) are joined with a single space between each part. 
    * </p> 
    */ 
   public String getNameAsSingleString() { 
+    if (hasText()) { 
+      return getText(); 
+    } 
+
     List<StringType> nameParts = new ArrayList<StringType>(); 
     nameParts.addAll(getPrefixList()); 
     nameParts.addAll(getGivenList()); 
-    nameParts.add(getFamilyElement()); 
+    if (hasFamilyElement()) { 
+      nameParts.add(getFamilyElement()); 
+    } 
     nameParts.addAll(getSuffixList()); 
     if (nameParts.size() > 0) { 
       return joinStringsSpaceSeparated(nameParts); 

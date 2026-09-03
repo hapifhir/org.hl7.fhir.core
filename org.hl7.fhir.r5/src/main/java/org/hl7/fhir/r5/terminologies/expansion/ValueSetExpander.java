@@ -200,7 +200,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     if (inactive) {
       n.setInactive(true);
-      ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status", vstatus);
+      // A server that knows a concept is inactive says why. If the code system is more
+      // specific (retired, deprecated, ...) that status is used; otherwise the concept is
+      // simply inactive, and saying so is not optional - previously a concept marked only
+      // with the 'inactive' property got contains.inactive but no status property at all.
+      ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status",
+          Utilities.noString(vstatus) ? "inactive" : vstatus);
     } else if (!Utilities.noString(vstatus) && !Utilities.existsInList(vstatus.toLowerCase(), "active")) {
       ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status", vstatus);
     } else if (deprecated) {
@@ -300,7 +305,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
                   // ??
                 }
               }
-              ValueSetUtilities.addProperty(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
+              ValueSetUtilities.addPropertyValue(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
             }
           }
         }
@@ -320,7 +325,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
                   // TODO: try looking it up from the code system
                 }
               }
-              ValueSetUtilities.addProperty(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
+              ValueSetUtilities.addPropertyValue(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
             }
           }
         }        
@@ -815,7 +820,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
         throw e;
       }
     } catch (OperationIsTooCostly e) {
-      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false);
+      // the tx-issue-type is what a client keys on; the error class only reaches the
+      // OperationOutcome as the FHIR issue type, which does not say this was a limit
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false,
+          I18nConstants.VALUESET_TOO_COSTLY, ValueSetProcessBase.OpIssueCode.TooCostly);
     } catch (UnknownValueSetException e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.VALUESET_UNKNOWN, allErrors, false);
     } catch (VSCheckerException e) {

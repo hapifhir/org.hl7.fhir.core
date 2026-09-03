@@ -22,10 +22,10 @@ import java.util.List;
 
 public class FHIRPathHostServices implements IHostApplicationServices {
 
-  private final StructureMapUtilities structureMapUtilities;
+  private final StructureMapTools structureMapTools;
 
-  public FHIRPathHostServices(StructureMapUtilities structureMapUtilities) {
-    this.structureMapUtilities = structureMapUtilities;
+  public FHIRPathHostServices(StructureMapTools structureMapTools) {
+    this.structureMapTools = structureMapTools;
   }
 
   public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
@@ -57,30 +57,30 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public FHIRPathUtilityClasses.FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
-    return structureMapUtilities.getServices() == null ? null : structureMapUtilities.getServices().resolveFunction(engine, functionName);
+    return structureMapTools.getServices() == null ? null : structureMapTools.getServices().resolveFunction(engine, functionName);
   }
 
   @Override
   public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
-    if (structureMapUtilities.getServices() == null) {
+    if (structureMapTools.getServices() == null) {
       throw new PathEngineException("Unknown function '" + functionName + "'");
     }
-    return structureMapUtilities.getServices().checkFunction(engine, appContext, functionName, focus, parameters);
+    return structureMapTools.getServices().checkFunction(engine, appContext, functionName, focus, parameters);
   }
 
   @Override
   public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
-    if (structureMapUtilities.getServices() == null) {
+    if (structureMapTools.getServices() == null) {
       throw new Error("Not Implemented Yet");
     }
-    return structureMapUtilities.getServices().executeFunction(engine, appContext, focus, functionName, parameters);
+    return structureMapTools.getServices().executeFunction(engine, appContext, focus, functionName, parameters);
   }
 
   @Override
   public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
-    if (structureMapUtilities.getServices() == null)
+    if (structureMapTools.getServices() == null)
       return null;
-    return structureMapUtilities.getServices().resolveReference(appContext, url);
+    return structureMapTools.getServices().resolveReference(appContext, url);
   }
 
   private boolean noErrorValidationMessages(List<ValidationMessage> valerrors) {
@@ -108,7 +108,7 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
-	  return structureMapUtilities.getWorker().findTxResource(ValueSet.class, url, VersionResolutionRules.defaultRule());
+	  return structureMapTools.getWorker().findTxResource(ValueSet.class, url, VersionResolutionRules.defaultRule());
   }
 
   @Override

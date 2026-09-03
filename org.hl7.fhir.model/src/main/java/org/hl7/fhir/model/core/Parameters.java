@@ -1554,6 +1554,10 @@ public class Parameters extends Resource {
 
   }
 
+
+      public boolean hasValuePrimitive() {
+        return hasValue() && getValue() instanceof PrimitiveType<?>;
+      }
 // added from java-adornments.txt:
 public String toString() {
     String s = getName() + " = ";
@@ -1724,6 +1728,7 @@ public String toString() {
 
   }
 
+
       public Parameters copy(EnumSet<CopyObjectOptions> options) {
         Parameters dst = new Parameters(this.modelContext);
         copyValues(dst, options);
@@ -1785,11 +1790,11 @@ public Parameters addParameter(String name, boolean b) {
   return this;
 }
 
-public Parameters addParameter(String name, String s) {
-  if (s != null)
-    addParameter().setName(name).setValue(new StringType(s));
-  return this;
-}
+  public Parameters addParameter(String name, String s) {
+    if (s != null)
+      addParameter().setName(name).setValue(new StringType(s));
+    return this;
+  }
 
 public Parameters addParameter(String name, DataType v) {
   if (v != null)
@@ -1858,6 +1863,15 @@ public DataType getParameterValue(String name) {
   return null;
 }
 
+
+  public boolean hasParameterValue(String name, String value) {
+    for (ParametersParameterComponent p : getParameterList()) {
+      if (p.getName().equals(name) && p.hasValue() && value.equals(p.getValue().primitiveValue()))
+        return true;
+    }
+    return false;
+  }
+
 public ParametersParameterComponent getParameter(String name) {
   for (ParametersParameterComponent p : getParameterList()) {
     if (p.getName().equals(name))
@@ -1895,6 +1909,41 @@ public boolean getParameterBool(String name) {
   }
   return false;
 }
+
+  public Parameters addParameter(String name, int i) {
+    addParameter().setName(name).setValue(new IntegerType(i));
+    return this;
+  }
+
+
+  public void addParameters(Parameters expParameters) {
+    addParameters(expParameters.getParameterList());
+  }
+
+  private void addParameters(List<ParametersParameterComponent> parameters) {
+    for (ParametersParameterComponent p : parameters) {
+      if (!hasParameter(p.getName())) {
+        addParameter(p);
+      }
+    }
+  }
+
+  public Parameters setParameter(ParametersParameterComponent t) { //3
+    if (t == null)
+      return this;
+    if (this.parameterList == null)
+      this.parameterList = new ArrayList<ParametersParameterComponent>();
+    ParametersParameterComponent p = getParameter(t.getName());
+    if (p == null) {
+      this.parameterList.add(t);
+    } else {
+      p.setValue(t.getValue());
+      p.setResource(t.getResource());
+      p.getPartList().clear();
+      p.getPartList().addAll(t.getPartList());
+    }
+    return this;
+  }
 // end addition
 
 }

@@ -931,7 +931,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     XhtmlNode p = x.para().attribute("class", "res-header-id");
     markGenerated(p);
     if (!context.isNoHeader()) {
-      String ft = context.getTranslatedCode(r.fhirType(), VersionUtilities.getResourceTypesUrl(context.getContext().getVersion()));
+      String ft = context.getTranslatedCode(r.fhirType(), VersionUtilities.getResourceTypesUrl(context.getContext().getFHIRVersion()));
       if (id == null) { 
         p.b().tx(context.formatPhrase(context.isTechnicalMode() && !isInner() ? RenderingContext.PROF_DRIV_GEN_NARR_TECH : RenderingContext.PROF_DRIV_GEN_NARR, ft, ""));      
       } else {

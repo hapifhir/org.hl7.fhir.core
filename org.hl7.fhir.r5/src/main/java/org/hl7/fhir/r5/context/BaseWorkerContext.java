@@ -90,6 +90,9 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.subsumption.SubsumptionException;
+import org.hl7.fhir.r5.terminologies.subsumption.SubsumptionOutcome;
+import org.hl7.fhir.r5.terminologies.subsumption.TerminologySubsumptionTester;
 import org.hl7.fhir.r5.terminologies.utilities.*;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
@@ -1634,14 +1637,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
 
-    if (options.isUseClient() && parent.getSystem().equals(child.getSystem())) {
-      CodeSystem cs = fetchCodeSystem(parent.getSystem(), ExtensionUtilities.getVersionResolutionRules(parent.getSystemElement()));
-      if (cs != null) {
-        Boolean b = CodeSystemUtilities.subsumes(cs, parent.getCode(), child.getCode());
+    if (options.isUseClient()) {
+      try {
+        SubsumptionOutcome outcome = new TerminologySubsumptionTester(this).subsumes(parent, child);
+        Boolean b = outcome == SubsumptionOutcome.EQUIVALENT || outcome == SubsumptionOutcome.SUBSUMES;
         if (txCache != null && cachingAllowed) {
           txCache.cacheSubsumes(cacheToken, b, true);
         }
         return b;
+      } catch (SubsumptionException e) {
+        // we can't determine subsumption locally (unknown code system, not complete, hierarchy
+        // doesn't mean is-a, code not known...) so we ask the server, if there is one
       }
     }
 

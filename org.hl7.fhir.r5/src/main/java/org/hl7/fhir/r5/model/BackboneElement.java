@@ -82,6 +82,14 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
     }
 
     /**
+     * Read-only access to the modifier extensions, for code that only searches them.
+     * See Element.getExtensionsForRead().
+     */
+    public List<Extension> getModifierExtensionsForRead() { 
+      return this.modifierExtension == null ? java.util.Collections.<Extension>emptyList() : this.modifierExtension;
+    }
+
+    /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public BackboneElement setModifierExtension(List<Extension> theModifierExtension) { 
@@ -270,7 +278,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
      if (res != null) {
        retVal.add(res);
      }
-     for (Extension next : getModifierExtension()) {
+     for (Extension next : getModifierExtensionsForRead()) {
        if (theUrl.equals(next.getUrl())) {
          retVal.add(next);
        }
@@ -293,6 +301,12 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
    }
    
 
+   @Override
+   protected Extension getSingleExtensionByUrl(String theUrl) throws FHIRException {
+     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
+     return soleExtension(getModifierExtensionsForRead(), theUrl, super.getSingleExtensionByUrl(theUrl));
+   }
+
    /**
     * Returns an unmodifiable list containing all extensions on this element which 
     * match the given URL.
@@ -306,7 +320,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
      ArrayList<Extension> retVal = new ArrayList<Extension>();
      retVal.addAll(super.getExtensionsByUrl(theUrl));
-     for (Extension next : getModifierExtension()) {
+     for (Extension next : getModifierExtensionsForRead()) {
        if (theUrl.equals(next.getUrl())) {
          retVal.add(next);
        }
@@ -326,7 +340,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
    public List<Extension> getExtensionsByUrl(String... theUrls) {
 
      ArrayList<Extension> retVal = new ArrayList<>();
-     for (Extension next : getModifierExtension()) {
+     for (Extension next : getModifierExtensionsForRead()) {
        if (Utilities.existsInList(next.getUrl(), theUrls)) {
          retVal.add(next);
        }
@@ -337,7 +351,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
    
 
    public boolean hasExtension(String... theUrls) {
-     for (Extension next : getModifierExtension()) {
+     for (Extension next : getModifierExtensionsForRead()) {
        if (Utilities.existsInList(next.getUrl(), theUrls)) {
          return true;
        }
@@ -347,7 +361,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
 
 
    public boolean hasExtension(String theUrl) {
-     for (Extension ext : getModifierExtension()) {
+     for (Extension ext : getModifierExtensionsForRead()) {
        if (theUrl.equals(ext.getUrl())) {
          return true;
        }
@@ -368,7 +382,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
 
 
    public Base getExtensionValue(String... theUrls) {
-     for (Extension next : getModifierExtension()) {
+     for (Extension next : getModifierExtensionsForRead()) {
        if (Utilities.existsInList(next.getUrl(), theUrls)) {
          return next.getValue();
        }

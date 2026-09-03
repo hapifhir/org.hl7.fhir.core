@@ -206,7 +206,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           prsr = "parseXhtml(json.get(\""+escapeJavaString(name)+"\").getAsString())";
         } else if (tn.contains("Reference(")) {
           prsr = "parseReference(getJObject(json, \""+escapeJavaString(name)+"\"))";
-          aprsr = "parseReference(array.get(i).getAsJsonObject())";
+          aprsr = "parseReference(getJsonObjectFromArray(array, i, \""+escapeJavaString(name)+"\"))";
           anprsr = "parseReference(null)";
         } else if (tn.contains("canonical(")) {
           prsr = "parseCanonical(json.get(\""+escapeJavaString(name)+"\").getAsString())";
@@ -225,7 +225,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
             pn = analysis.getClassName()+pn;            
           }
           prsr = "parse"+pn+"(getJObject(json, \""+escapeJavaString(name)+"\"))";
-          aprsr = "parse"+pn+"(array.get(i).getAsJsonObject())";
+          aprsr = "parse"+pn+"(getJsonObjectFromArray(array, i, \""+escapeJavaString(name)+"\"))";
           anprsr = "parse"+pn+"(null)";
         }
       }

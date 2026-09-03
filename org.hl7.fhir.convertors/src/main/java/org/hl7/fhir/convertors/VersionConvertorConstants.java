@@ -102,6 +102,13 @@ public class VersionConvertorConstants {
   public static final String EXT_VS_COMPOSE_PROPERTY = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.property"; // introduced in R5
   public static final String EXT_VS_INCLUDE_COPYRIGHT = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.include.copyright"; // introduced in R5 (as a string; markdown in R6)
   public static final String EXT_EXPRESSION_LANGUAGE = "http://hl7.org/fhir/4.0/StructureDefinition/extension-Expression.language";
+  /**
+   * doseNumber[x] and seriesDoses[x] are positiveInt|string choices in R4 and R4B, but plain strings in R5.
+   * Where the source was a positiveInt, this extension records that on the R5 string, so that the original
+   * type can be restored converting back - including where the element has no value at all because it only
+   * carries extensions (e.g. a data absent reason)
+   */
+  public static final String EXT_ORIGINAL_DATATYPE = "http://hl7.org/fhir/tools/StructureDefinition/original-datatype";
 
   public static String refToVS(String url) {
     if (url == null)

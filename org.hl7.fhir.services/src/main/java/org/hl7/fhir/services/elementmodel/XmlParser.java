@@ -479,7 +479,7 @@ public class XmlParser extends ParserBase {
                 }
               }
             }
-            Element n = new Element(property.getName(), property, "xhtml", new XhtmlComposer(XhtmlComposer.XML, false).compose(xhtml)).setXhtml(xhtml).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML).setNativeObject(child);
+            Element n = new Element(property.getName(), property, "xhtml", null).setXhtml(xhtml, null).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML).setNativeObject(child);
             n.setPath(element.getPath()+"."+property.getName());
             element.getChildList().add(n);
           } else {
@@ -612,16 +612,33 @@ public class XmlParser extends ParserBase {
   }
 
 
+  // sort properties according to their name longest first, so .requestOrganizationReference comes
+  // first before .request[x], and therefore the longer property names get evaluated first
+  private static final Comparator<Property> LONGEST_NAME_FIRST = new Comparator<Property>() {
+    @Override
+    public int compare(Property o1, Property o2) {
+      return o2.getName().length() - o1.getName().length();
+    }
+  };
+
+  /**
+   * The order depends only on the list, never on the node being matched, and getChildProperties
+   * hands back the same list instance each time, so this is computed once per property list for
+   * the life of the ProfileUtilities rather than once per child element parsed.
+   */
+  private List<Property> sortedByLongestNameFirst(List<Property> properties) {
+    Map<List<Property>, List<Property>> cache = getProfileUtilities().getCachedSortedPropertyList();
+    List<Property> sorted = cache.get(properties);
+    if (sorted == null) {
+      sorted = new ArrayList<Property>(properties);
+      Collections.sort(sorted, LONGEST_NAME_FIRST);
+      cache.put(properties, sorted);
+    }
+    return sorted;
+  }
+
   private Property getElementProp(List<Property> properties, String nodeName, String namespace) {
-    List<Property> propsSortedByLongestFirst = new ArrayList<Property>(properties);
-    // sort properties according to their name longest first, so .requestOrganizationReference comes first before .request[x]
-    // and therefore the longer property names get evaluated first
-    Collections.sort(propsSortedByLongestFirst, new Comparator<Property>() {
-      @Override
-      public int compare(Property o1, Property o2) {
-        return o2.getName().length() - o1.getName().length();
-      }
-    });
+    List<Property> propsSortedByLongestFirst = sortedByLongestNameFirst(properties);
     // first scan, by namespace
     for (Property p : propsSortedByLongestFirst) {
       if (!p.getDefinition().hasRepresentation(PropertyRepresentation.XMLATTR) && !p.getDefinition().hasRepresentation(PropertyRepresentation.XMLTEXT)) {
@@ -800,22 +817,30 @@ public class XmlParser extends ParserBase {
         }
       }
     }
-    for (Element c : e.getChildList()) {
-      addNamespaces(xml, c);
+    // getChildList() creates and keeps an empty list, and this walks every leaf in the tree
+    if (e.hasChildren()) {
+      for (Element c : e.getChildList()) {
+        addNamespaces(xml, c);
+      }
     }
   }
 
   private boolean hasTypeAttr(Element e) {
     if (isTypeAttr(e.getProperty()))
       return true;
-    for (Element c : e.getChildList()) {
-      if (hasTypeAttr(c))
-        return true;
-    }
     // xsi_type is always allowed on CDA elements. right now, I'm not sure where to indicate this in the model, 
-    // so it's just hardcoded here 
-    if (e.getType() != null && e.getType().startsWith(Constants.NS_CDA_ROOT)) {
+    // so it's just hardcoded here. This is tested before the children (the result is the same either
+    // way - it is all one disjunction) so that getType(), which is not cheap, is called once per element
+    // rather than twice, and so that a CDA element does not walk its subtree to reach the same answer
+    String t = e.getType();
+    if (t != null && t.startsWith(Constants.NS_CDA_ROOT)) {
       return true;
+    }
+    if (e.hasChildren()) {
+      for (Element c : e.getChildList()) {
+        if (hasTypeAttr(c))
+          return true;
+      }
     }
     return false;
   }
@@ -856,6 +881,12 @@ public class XmlParser extends ParserBase {
     if (canonicalFilter.contains(element.getPath())) {
       return;
     }
+    if (!root && isIgnored(element)) {
+      // note: only descendants can be ignored. Ignoring the root would leave the writer
+      // with an unclosed level (namespaces are pending before the first enter()), and
+      // there's nothing sensible to serialise anyway (JsonParser doesn't check the root either)
+      return;
+    }
     if (element.getProperty().getDefinition().hasExtension(ExtensionDefinitions.EXT_XML_NAME)) {
       elementName = element.getProperty().getDefinition().getExtensionString(ExtensionDefinitions.EXT_XML_NAME);
     }
@@ -891,7 +922,7 @@ public class XmlParser extends ParserBase {
         }
         xml.exit(element.getProperty().getXmlNamespace(),elementName);
       }
-    } else if (!element.hasChildren() && !element.hasValue() && !element.hasXhtml()) {
+    } else if (!element.hasChildren() && !element.hasValue() && !element.isXhtml()) {
       if (isElideElements() && element.isElided() && xml.canElide())
         xml.elide();
       else {
@@ -900,14 +931,10 @@ public class XmlParser extends ParserBase {
         xml.element(elementName);
       }
     } else if (element.isPrimitive() || (element.hasType() && isPrimitive(element.getType()))) {
-      if (element.getType().equals("xhtml")) {
+      if (element.isXhtml()) {
         if (isElideElements() && element.isElided() && xml.canElide())
           xml.elide();
-        else {
-          if ((element.getXhtml()==null) && (element.getValue() != null)) {
-            XhtmlParser xhtml = new XhtmlParser();
-            element.setXhtml(xhtml.setXmlMode(true).parse(element.getValue(), null).getDocumentElement());
-          }
+        else if (element.getXhtml() != null) {
           if (isCdaText(element.getProperty())) {
             new CDANarrativeFormat().convert(xml, element.getXhtml());
           } else {
@@ -918,6 +945,9 @@ public class XmlParser extends ParserBase {
               markedXhtml = true;
             }
           }
+        } else if (element.getXhtmlSource() != null) {
+          // this is rough, but we're keeping something
+          xml.escapedText(element.getXhtmlSource());
         }
       } else if (isText(element.getProperty())) {
         if (isElideElements() && element.isElided() && xml.canElide())
@@ -973,7 +1003,7 @@ public class XmlParser extends ParserBase {
             String av = child.getValue();
             if (child.getProperty().isList()) {
               for (Element c2 : element.getChildList()) {
-                if (c2 != child && c2.getName().equals(child.getName())) {
+                if (c2 != child && c2.getName().equals(child.getName()) && !isIgnored(c2)) {
                   if (c2.isElided())
                     av = av + " ...";
                   else

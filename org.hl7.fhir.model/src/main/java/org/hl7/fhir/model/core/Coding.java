@@ -609,12 +609,12 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
       }
       
       public String toString() {
-        String base = getSystem();
+        String base = hasSystem() ? getSystem() : "";
         if (hasVersion())
           base = base+"|"+getVersion();
         base = base + "#"+getCode();
         if (hasDisplay())
-          base = base+": "+getDisplay();
+          base = base+": '"+getDisplay()+"'";
         return base;
         
       } 
