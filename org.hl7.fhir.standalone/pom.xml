@@ -19,6 +19,11 @@
         <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>
         <!-- in development - do not publish yet -->
         <maven.deploy.skip>true</maven.deploy.skip>
+        <!-- The R6 tests here only pass against a locally patched set of R6 packages, so they
+             cannot run on any pipeline (PR, master or release) until the R6 package build is
+             sorted out. Tests are still COMPILED, just not executed. To run them locally:
+             mvn test -pl org.hl7.fhir.standalone -DskipTests=false -->
+        <skipTests>true</skipTests>
     </properties>
 
     <dependencies>
