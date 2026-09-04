@@ -45,6 +45,7 @@ import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DateType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.testfactory.ProfileBasedFactory;
+import org.hl7.fhir.r5.testfactory.ProfileBasedManipulator;
 import org.hl7.fhir.r5.testfactory.TestDataFactory;
 import org.hl7.fhir.r5.testfactory.TestDataHostServices;
 import org.hl7.fhir.r5.testfactory.dataprovider.InlineTableDataProvider;
@@ -996,6 +997,71 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Manager.compose(context, e, baos, outputFormat, OutputStyle.PRETTY, null);
     return baos.toByteArray();
+  }
+
+  /**
+   * Result of a {@link #manipulateResource} call. {@code resource} is the mutated
+   * resource (always populated); {@code outcome} is the post-mutation validation
+   * report, populated only when {@code enforce} was true.
+   */
+  public static class ManipulationResult {
+    private final byte[] resource;
+    private final OperationOutcome outcome;
+    public ManipulationResult(byte[] resource, OperationOutcome outcome) {
+      this.resource = resource;
+      this.outcome = outcome;
+    }
+    public byte[] getResource() { return resource; }
+    public OperationOutcome getOutcome() { return outcome; }
+  }
+
+  /**
+   * Mutate an existing FHIR resource by applying a sequence of
+   * {@code set} / {@code add} / {@code remove} operations, optionally validating the
+   * result against a profile.
+   *
+   * @param inputBytes    serialised input resource
+   * @param inputFormat   format of {@code inputBytes}
+   * @param profileUrl    optional canonical URL of a StructureDefinition to validate
+   *                      against (when {@code enforce} is true). Ignored otherwise.
+   * @param operations    JSON array of operation entries (see ProfileBasedManipulator)
+   * @param enforce       when true, post-mutation validation runs against {@code profileUrl}
+   *                      (or base FHIR if absent) and the OperationOutcome is returned in
+   *                      the result. Validation NEVER throws — callers inspect the outcome.
+   * @param outputFormat  format of the result bytes
+   */
+  public ManipulationResult manipulateResource(byte[] inputBytes, FhirFormat inputFormat,
+      String profileUrl, org.hl7.fhir.utilities.json.model.JsonArray operations,
+      boolean enforce, FhirFormat outputFormat) throws Exception {
+    Element element = Manager.parseSingle(context, new ByteArrayInputStream(inputBytes), inputFormat);
+
+    if (profileUrl != null && !profileUrl.isEmpty()) {
+      StructureDefinition profile = context.fetchResource(StructureDefinition.class, profileUrl);
+      if (profile == null) {
+        throw new FHIRException("Profile not found: " + profileUrl);
+      }
+      if (!profile.hasSnapshot()) {
+        new ProfileUtilities(context, null, null).setAutoFixSliceNames(true)
+            .generateSnapshot(context.fetchResource(StructureDefinition.class, profile.getBaseDefinition()),
+                profile, profile.getUrl(), null, profile.getName());
+      }
+    }
+
+    new ProfileBasedManipulator().apply(element, operations);
+
+    ByteArrayOutputStream bs = new ByteArrayOutputStream();
+    Manager.compose(context, element, bs, outputFormat, OutputStyle.PRETTY, null);
+    byte[] mutated = bs.toByteArray();
+
+    OperationOutcome outcome = null;
+    if (enforce) {
+      InstanceValidatorParameters params = new InstanceValidatorParameters();
+      if (profileUrl != null && !profileUrl.isEmpty()) {
+        params.addProfile(profileUrl);
+      }
+      outcome = validate("manipulate", ByteProvider.forBytes(mutated), outputFormat, params, new ArrayList<>());
+    }
+    return new ManipulationResult(mutated, outcome);
   }
 
   public byte[] generateSnapshot(byte[] resource, FhirFormat format) throws FHIRException, IOException {
