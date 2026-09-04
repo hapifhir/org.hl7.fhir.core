@@ -45,6 +45,7 @@ import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DateType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.testfactory.ProfileBasedFactory;
+import org.hl7.fhir.r5.testfactory.ProfileBasedManipulator;
 import org.hl7.fhir.r5.testfactory.TestDataFactory;
 import org.hl7.fhir.r5.testfactory.TestDataHostServices;
 import org.hl7.fhir.r5.testfactory.dataprovider.InlineTableDataProvider;
@@ -74,6 +75,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.r5.utils.ResourceDependencyWalker;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
@@ -779,6 +781,356 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return map;
   }
 
+  /**
+   * Parse FHIR Mapping Language (FML) text into a {@link StructureMap} resource.
+   *
+   * @param fml          the FML map source text
+   * @param srcName      a name for the source (used in parse error messages); defaults to {@code "map"}
+   * @param outputFormat format of the returned bytes (JSON or XML)
+   */
+  public byte[] parseStructureMap(String fml, String srcName, FhirFormat outputFormat) throws FHIRException, IOException {
+    StructureMapUtilities scu = new StructureMapUtilities(context);
+    StructureMap map = scu.parse(fml, (srcName == null || srcName.trim().isEmpty()) ? "map" : srcName.trim());
+    // Emit the StructureMap in the format that matches the engine's runtime FHIR version.
+    // Otherwise an R4-mode validator round-tripping an R5-format SM through /loadResource
+    // silently drops R5-only fields (e.g., the typed `parameter` array on group-rule
+    // dependents, where R4 expects a `variable` string list). See ITB REST spec § version
+    // compatibility.
+    String effectiveVersion = version != null ? version : (context != null ? context.getVersion() : null);
+    return serialiseStructureMapForVersion(map, effectiveVersion, outputFormat);
+  }
+
+  /**
+   * Convert {@code map} (an R5 StructureMap) to the structure matching
+   * {@code targetVersion}, then serialise it in {@code outputFormat}.
+   * If {@code targetVersion} is null, R5, or R6 the map is emitted as R5
+   * (no conversion needed); for R3, R4, or R4B it is converted via the
+   * matching {@link org.hl7.fhir.convertors.factory.VersionConvertorFactory} first.
+   */
+  private static byte[] serialiseStructureMapForVersion(StructureMap map, String targetVersion, FhirFormat outputFormat) throws FHIRException, IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (targetVersion == null || targetVersion.startsWith("5.") || targetVersion.startsWith("6.")) {
+      // Native R5 — keep as-is.
+      if (outputFormat == FhirFormat.XML) new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+      else                                new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+    } else if (targetVersion.startsWith("4.0")) {
+      org.hl7.fhir.r4.model.Resource r4 = org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50.convertResource(map);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.r4.formats.XmlParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(baos, r4);
+      else                                new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(baos, r4);
+    } else if (targetVersion.startsWith("4.3")) {
+      org.hl7.fhir.r4b.model.Resource r4b = org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50.convertResource(map);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.r4b.formats.XmlParser().setOutputStyle(org.hl7.fhir.r4b.formats.IParser.OutputStyle.PRETTY).compose(baos, r4b);
+      else                                new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4b.formats.IParser.OutputStyle.PRETTY).compose(baos, r4b);
+    } else if (targetVersion.startsWith("3.")) {
+      org.hl7.fhir.dstu3.model.Resource r3 = org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50.convertResource(map);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.dstu3.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(baos, r3);
+      else                                new org.hl7.fhir.dstu3.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(baos, r3);
+    } else {
+      // Unknown / unsupported — fall back to native R5.
+      if (outputFormat == FhirFormat.XML) new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+      else                                new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+    }
+    return baos.toByteArray();
+  }
+
+  /**
+   * CRMI {@code $package}-style operation: given a root canonical artifact, build a
+   * {@code collection} Bundle containing that artifact plus every artifact it transitively
+   * references — profiles, extensions, ValueSets, CodeSystems, Library, ActivityDefinition,
+   * PlanDefinition, ConceptMap, NamingSystem, etc. Core FHIR resources
+   * ({@code hl7.fhir.r5.core}) are not included.
+   *
+   * <p>Dependency discovery uses {@link ResourceDependencyWalker}. When
+   * {@code expandValueSets} is true, each ValueSet entry is replaced by its expansion
+   * (best effort — an unexpandable ValueSet is included unexpanded).</p>
+   *
+   * <p>Not implemented (a subset of the full CRMI {@code $package} parameter surface):
+   * paging ({@code count}/{@code offset}), {@code contentEndpoint}/{@code terminologyEndpoint},
+   * {@code packageOnly}, {@code manifest}, and capability-based filtering.</p>
+   *
+   * @param rootUrl         canonical URL of the root artifact to package
+   * @param expandValueSets when true, ValueSet entries are expanded
+   * @param outputFormat    format of the returned bytes (JSON or XML)
+   */
+  public byte[] packageResource(String rootUrl, boolean expandValueSets, FhirFormat outputFormat)
+      throws FHIRException, IOException {
+    return packageResource(rootUrl, expandValueSets, false, outputFormat);
+  }
+
+  /**
+   * Same as {@link #packageResource(String, boolean, FhirFormat)} but with the option to
+   * also follow rule-level canonical references inside {@link org.hl7.fhir.r5.model.StructureMap}
+   * resources — notably ConceptMap URLs used by {@code translate(...)} transforms. Defaults
+   * to {@code false} on the 3-arg overload because rule-walking can pull in a long tail of
+   * additional artifacts that some callers don't want.
+   */
+  public byte[] packageResource(String rootUrl, boolean expandValueSets, boolean includeRuleReferences, FhirFormat outputFormat)
+      throws FHIRException, IOException {
+    Resource root = context.fetchResource(Resource.class, rootUrl);
+    if (root == null) {
+      throw new FHIRException("Resource not found: " + rootUrl);
+    }
+
+    final java.util.LinkedHashSet<Resource> collected = new java.util.LinkedHashSet<>();
+    final List<String> brokenLinks = new ArrayList<>();
+    ResourceDependencyWalker walker = new ResourceDependencyWalker(context,
+        new ResourceDependencyWalker.IResourceDependencyNotifier() {
+          @Override
+          public void seeResource(Resource resource, String summaryId) {
+            collected.add(resource);
+          }
+          @Override
+          public void brokenLink(String link) {
+            brokenLinks.add(link);
+          }
+        });
+    walker.setIncludeRuleReferences(includeRuleReferences);
+    walker.walk(root);
+
+    Bundle bundle = new Bundle();
+    bundle.setType(Bundle.BundleType.COLLECTION);
+    bundle.getMeta().setLastUpdated(new Date());
+    for (Resource r : collected) {
+      Resource toAdd = r;
+      if (expandValueSets && r instanceof ValueSet) {
+        try {
+          org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome outcome =
+              context.expandVS((ValueSet) r, true, false);
+          if (outcome.isOk() && outcome.getValueset() != null) {
+            toAdd = outcome.getValueset();
+          }
+        } catch (Exception e) {
+          // best effort: keep the unexpanded ValueSet if expansion fails
+        }
+      }
+      BundleEntryComponent entry = bundle.addEntry();
+      entry.setResource(toAdd);
+      if (toAdd instanceof CanonicalResource && ((CanonicalResource) toAdd).hasUrl()) {
+        entry.setFullUrl(((CanonicalResource) toAdd).getUrl());
+      } else if (toAdd.hasId()) {
+        entry.setFullUrl(toAdd.fhirType() + "/" + toAdd.getIdPart());
+      }
+    }
+    for (String broken : brokenLinks) {
+      if (isLikelyNonCanonical(broken)) {
+        log.debug("$package: ignoring non-canonical reference " + broken);
+        continue;
+      }
+      log.warn("$package: could not resolve dependency " + broken);
+    }
+
+    // Same version-matching as parseStructureMap: a Bundle returned to an R4-mode caller
+    // must be serialised as R4 so its StructureMaps round-trip cleanly through
+    // /loadResource. Without this, every StructureMap in the Bundle would emit
+    // dependent.parameter (R5-only) and silently lose variables on re-read.
+    String effectiveVersion = version != null ? version : (context != null ? context.getVersion() : null);
+    return serialiseBundleForVersion(bundle, effectiveVersion, outputFormat);
+  }
+
+  /**
+   * Convert {@code bundle} (an R5 Bundle) to the version matching {@code targetVersion}
+   * and serialise it. Mirrors {@link #serialiseStructureMapForVersion} but for the whole
+   * Bundle so every entry — including nested StructureMaps reached via $package's
+   * dependency walker — gets the same version conversion treatment.
+   */
+  private static byte[] serialiseBundleForVersion(Bundle bundle, String targetVersion, FhirFormat outputFormat) throws FHIRException, IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (targetVersion == null || targetVersion.startsWith("5.") || targetVersion.startsWith("6.")) {
+      if (outputFormat == FhirFormat.XML) new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+      else                                new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+    } else if (targetVersion.startsWith("4.0")) {
+      org.hl7.fhir.r4.model.Resource r4 = org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50.convertResource(bundle);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.r4.formats.XmlParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(baos, r4);
+      else                                new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(baos, r4);
+    } else if (targetVersion.startsWith("4.3")) {
+      org.hl7.fhir.r4b.model.Resource r4b = org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50.convertResource(bundle);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.r4b.formats.XmlParser().setOutputStyle(org.hl7.fhir.r4b.formats.IParser.OutputStyle.PRETTY).compose(baos, r4b);
+      else                                new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4b.formats.IParser.OutputStyle.PRETTY).compose(baos, r4b);
+    } else if (targetVersion.startsWith("3.")) {
+      org.hl7.fhir.dstu3.model.Resource r3 = org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50.convertResource(bundle);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.dstu3.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(baos, r3);
+      else                                new org.hl7.fhir.dstu3.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(baos, r3);
+    } else {
+      if (outputFormat == FhirFormat.XML) new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+      else                                new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+    }
+    return baos.toByteArray();
+  }
+
+  /**
+   * URLs the dependency walker sometimes hands us that aren't FHIR canonicals — terminology
+   * concept identifiers, OIDs, UUIDs, etc. These can show up inside e.g. {@code useContext.valueReference}
+   * and trigger spurious "broken link" warnings. Drop them quietly.
+   *
+   * <p>Walker reports the URL as {@code "<url> from <pkg.id>#<version>"}; we strip the suffix
+   * before testing.</p>
+   */
+  private static boolean isLikelyNonCanonical(String brokenLinkKey) {
+    if (brokenLinkKey == null) return true;
+    String url = brokenLinkKey;
+    int idx = url.indexOf(" from ");
+    if (idx > 0) url = url.substring(0, idx);
+    if (url.startsWith("urn:oid:")) return true;
+    if (url.startsWith("urn:uuid:")) return true;
+    if (url.startsWith("urn:ietf:")) return true;
+    if (url.startsWith("mailto:")) return true;
+    if (url.startsWith("tel:")) return true;
+    if (url.startsWith("http://snomed.info/id/")) return true;          // SNOMED concept IRI
+    if (url.startsWith("http://snomed.info/sct/") && url.length() > 22  // SNOMED edition / module URI (numeric)
+        && Character.isDigit(url.charAt(22))) return true;
+    return false;
+  }
+
+  /**
+   * Parse a FHIR resource from bytes and register it (or every entry of a Bundle of type
+   * {@code collection}/{@code batch}/{@code transaction}) in the validator's context so it can
+   * later be resolved by canonical URL — same effect as having loaded it from a package.
+   *
+   * @param content      serialised FHIR resource (JSON or XML)
+   * @param inputFormat  format of {@code content} (JSON or XML)
+   * @return list of {@code "ResourceType/id"} descriptors for each resource registered
+   */
+  public List<String> loadResourceFromBytes(byte[] content, FhirFormat inputFormat) throws FHIRException, IOException {
+    return loadResourceFromBytes(content, inputFormat, false);
+  }
+
+  /**
+   * Same as {@link #loadResourceFromBytes(byte[], FhirFormat)} but with an explicit
+   * {@code replace} flag. When {@code replace} is {@code true}, an incoming canonical
+   * resource whose URL already exists in the context drops the existing copy first and
+   * then registers the new one — the authoring loop, where the author iterates on the
+   * same artifact (typically an FML-derived StructureMap) and resubmits under the same
+   * canonical URL without bumping {@code version} on every edit.
+   *
+   * @param replace when true, a same-URL canonical resource overwrites the existing one
+   *                rather than being reported as {@code (skipped, already in context)}
+   */
+  public List<String> loadResourceFromBytes(byte[] content, FhirFormat inputFormat, boolean replace) throws FHIRException, IOException {
+    String fakeName = "upload." + (inputFormat == FhirFormat.XML ? "xml" : "json");
+    // Prefer the engine's configured version; fall back to the context's, since the
+    // ValidationEngineBuilder.fromSource(...) path doesn't propagate version onto the engine.
+    String effectiveVersion = version != null ? version : (context != null ? context.getVersion() : null);
+    if (effectiveVersion == null) {
+      throw new FHIRException("ValidationEngine has no FHIR version configured; cannot parse resource bytes");
+    }
+    String versionWarning = detectVersionFieldLoss(content, inputFormat, effectiveVersion);
+    Resource parsed = igLoader.loadResourceByVersion(effectiveVersion, content, fakeName);
+    List<String> loaded = new ArrayList<>();
+    if (parsed instanceof Bundle) {
+      Bundle b = (Bundle) parsed;
+      for (BundleEntryComponent e : b.getEntry()) {
+        Resource r = e.getResource();
+        if (r != null && registerIfNew(r, loaded, replace)) {
+          // already accounted for in loaded
+        }
+      }
+    } else if (parsed != null) {
+      registerIfNew(parsed, loaded, replace);
+    }
+    if (versionWarning != null && !loaded.isEmpty()) {
+      // Annotate the last descriptor — that's the one whose bytes we scanned.
+      int i = loaded.size() - 1;
+      loaded.set(i, loaded.get(i) + " " + versionWarning);
+    }
+    return loaded;
+  }
+
+  /**
+   * Defensive check for the silent-data-loss case where an R5-format StructureMap JSON
+   * is POSTed to a non-R5 validator. The R4 / R4B / R3 JSON parsers drop the R5-only
+   * {@code parameter} array on rule dependents (R4 uses {@code variable} instead); the
+   * resource loads without an error but the transform engine then sees zero variables
+   * on every dependent invocation, producing a misleading runtime error.
+   * <p>
+   * Returns a human-readable {@code "(warning: ...)"} string to append to the registered
+   * resource's descriptor, or {@code null} if no mismatch is detected.
+   */
+  private static String detectVersionFieldLoss(byte[] content, FhirFormat inputFormat, String effectiveVersion) {
+    if (content == null || effectiveVersion == null) return null;
+    if (inputFormat != FhirFormat.JSON) return null;        // XML check would mirror this; not common enough to chase
+    if (effectiveVersion.startsWith("5.") || effectiveVersion.startsWith("6.")) return null;
+    // Cheap content sniff for a StructureMap with R5-only dependent.parameter.
+    // We scan the raw bytes: only StructureMaps emit "dependent" near "parameter".
+    String text = new String(content, java.nio.charset.StandardCharsets.UTF_8);
+    if (!text.contains("\"resourceType\"") || !text.contains("\"StructureMap\"")) return null;
+    int depIdx = text.indexOf("\"dependent\"");
+    if (depIdx < 0) return null;
+    // Look for "parameter" within a few hundred chars after each "dependent" occurrence.
+    while (depIdx >= 0) {
+      int endIdx = Math.min(text.length(), depIdx + 600);
+      String window = text.substring(depIdx, endIdx);
+      if (window.contains("\"parameter\"")) {
+        return "(warning: incoming StructureMap JSON contains R5-only field 'dependent.parameter' "
+             + "but validator is running in version " + effectiveVersion + "; dependent invocations "
+             + "may have been silently truncated — run the validator in R5 mode or post an R4-format "
+             + "StructureMap that uses 'dependent.variable' instead)";
+      }
+      depIdx = text.indexOf("\"dependent\"", depIdx + 1);
+    }
+    return null;
+  }
+
+  /**
+   * Register {@code r} on the context.
+   * <p>
+   * Comparison is by canonical URL. If the URL is already present:
+   * <ul>
+   *   <li>{@code replace == false}: the new resource is skipped and the descriptor in
+   *       {@code loaded} is suffixed with {@code (skipped, already in context)}.</li>
+   *   <li>{@code replace == true}: the existing resource is dropped from the context
+   *       (by {@code fhirType}/{@code id}) and the new one is registered. The descriptor
+   *       in {@code loaded} is suffixed with {@code (replaced)}.</li>
+   * </ul>
+   * The {@code loaded} list is always appended so the caller can tell what happened.
+   *
+   * @return true if the resource ended up registered (either fresh or replaced),
+   *         false if it was skipped
+   */
+  private boolean registerIfNew(Resource r, List<String> loaded, boolean replace) throws FHIRException {
+    if (r instanceof CanonicalResource && ((CanonicalResource) r).hasUrl()) {
+      String url = ((CanonicalResource) r).getUrl();
+      Resource existing = null;
+      try {
+        existing = context.fetchResource(Resource.class, url);
+      } catch (Throwable t) {
+        // Ambiguous lookup or other resolution error — treat as "already here" and bail.
+        if (!replace) {
+          loaded.add(describeLoaded(r) + " (skipped, already in context)");
+          return false;
+        }
+      }
+      if (existing != null) {
+        if (!replace) {
+          loaded.add(describeLoaded(r) + " (skipped, already in context)");
+          return false;
+        }
+        // Drop by fhirType + id (the worker context indexes by that pair, not by URL).
+        try {
+          context.dropResource(existing.fhirType(), existing.getIdPart());
+        } catch (Throwable t) {
+          // If the drop fails we still try to register; cacheResource overwrites the
+          // resource map but not always the type-specific caches, so the drop matters
+          // for StructureMap etc.
+        }
+        seeResource(r);
+        loaded.add(describeLoaded(r) + " (replaced)");
+        return true;
+      }
+    }
+    seeResource(r);
+    loaded.add(describeLoaded(r));
+    return true;
+  }
+
+  private static String describeLoaded(Resource r) {
+    if (r instanceof CanonicalResource && ((CanonicalResource) r).hasUrl()) {
+      CanonicalResource cr = (CanonicalResource) r;
+      return cr.fhirType() + "/" + (cr.hasId() ? cr.getIdPart() : "?") + " (" + cr.getUrl()
+          + (cr.hasVersion() ? "|" + cr.getVersion() : "") + ")";
+    }
+    return r.fhirType() + "/" + (r.hasId() ? r.getIdPart() : "?");
+  }
+
   public org.hl7.fhir.r5.elementmodel.Element transform(ByteProvider source, FhirFormat cntType, String mapUri) throws FHIRException, IOException {
     List<Base> outputs = new ArrayList<>();
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
@@ -922,7 +1274,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public byte[] generateTestData(String profileUrl, org.hl7.fhir.utilities.json.model.JsonArray data,
-      org.hl7.fhir.utilities.json.model.JsonArray mappings, FhirFormat outputFormat, boolean asBundle) throws Exception {
+      org.hl7.fhir.utilities.json.model.JsonArray mappings, FhirFormat outputFormat, boolean asBundle, boolean requiredOnly) throws Exception {
     StructureDefinition profile = context.fetchResource(StructureDefinition.class, profileUrl);
     if (profile == null) {
       throw new FHIRException("Profile not found: " + profileUrl);
@@ -965,6 +1317,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         baseDataPath, tbl, new HashMap<>(),
         mappings != null ? mappings : new org.hl7.fhir.utilities.json.model.JsonArray());
     factory.setTesting(true);
+    factory.setRequiredOnly(requiredOnly);
 
     if (asBundle) {
       Element bundle = Manager.parse(context,
@@ -996,6 +1349,72 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Manager.compose(context, e, baos, outputFormat, OutputStyle.PRETTY, null);
     return baos.toByteArray();
+  }
+
+  /**
+   * Result of a {@link #manipulateResource} call. {@code resource} is the mutated
+   * resource (always populated); {@code outcome} is the post-mutation validation
+   * report, populated only when {@code enforce} was true.
+   */
+  public static class ManipulationResult {
+    private final byte[] resource;
+    private final OperationOutcome outcome;
+    public ManipulationResult(byte[] resource, OperationOutcome outcome) {
+      this.resource = resource;
+      this.outcome = outcome;
+    }
+    public byte[] getResource() { return resource; }
+    public OperationOutcome getOutcome() { return outcome; }
+  }
+
+  /**
+   * Mutate an existing FHIR resource by applying a sequence of
+   * {@code set} / {@code add} / {@code remove} operations, optionally validating the
+   * result against a profile.
+   *
+   * @param inputBytes    serialised input resource
+   * @param inputFormat   format of {@code inputBytes}
+   * @param profileUrl    optional canonical URL of a StructureDefinition to validate
+   *                      against (when {@code enforce} is true). Ignored otherwise.
+   * @param operations    JSON array of operation entries (see ProfileBasedManipulator)
+   * @param enforce       when true, post-mutation validation runs against {@code profileUrl}
+   *                      (or base FHIR if absent) and the OperationOutcome is returned in
+   *                      the result. Validation NEVER throws — callers inspect the outcome.
+   * @param outputFormat  format of the result bytes
+   */
+  public ManipulationResult manipulateResource(byte[] inputBytes, FhirFormat inputFormat,
+      String profileUrl, org.hl7.fhir.utilities.json.model.JsonArray operations,
+      boolean enforce, FhirFormat outputFormat) throws Exception {
+    Element element = Manager.parseSingle(context, new ByteArrayInputStream(inputBytes), inputFormat);
+
+    if (profileUrl != null && !profileUrl.isEmpty()) {
+      StructureDefinition profile = context.fetchResource(StructureDefinition.class, profileUrl);
+      if (profile == null) {
+        throw new FHIRException("Profile not found: " + profileUrl);
+      }
+      if (!profile.hasSnapshot()) {
+        new ProfileUtilities(context, null, null).setAutoFixSliceNames(true)
+            .generateSnapshot(context.fetchResource(StructureDefinition.class, profile.getBaseDefinition()),
+                profile, profile.getUrl(), null, profile.getName());
+      }
+    }
+
+    FHIRPathEngine fpe = new FHIRPathEngine(context);
+    new ProfileBasedManipulator(fpe).apply(element, operations);
+
+    ByteArrayOutputStream bs = new ByteArrayOutputStream();
+    Manager.compose(context, element, bs, outputFormat, OutputStyle.PRETTY, null);
+    byte[] mutated = bs.toByteArray();
+
+    OperationOutcome outcome = null;
+    if (enforce) {
+      InstanceValidatorParameters params = new InstanceValidatorParameters();
+      if (profileUrl != null && !profileUrl.isEmpty()) {
+        params.addProfile(profileUrl);
+      }
+      outcome = validate("manipulate", ByteProvider.forBytes(mutated), outputFormat, params, new ArrayList<>());
+    }
+    return new ManipulationResult(mutated, outcome);
   }
 
   public byte[] generateSnapshot(byte[] resource, FhirFormat format) throws FHIRException, IOException {
@@ -1036,6 +1455,171 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Manager.compose(context, result, baos, outputFormat, OutputStyle.PRETTY, null);
     return baos.toByteArray();
+  }
+
+  /**
+   * Build a FHIR Questionnaire from a StructureDefinition profile, covering the
+   * whole profile. Equivalent to
+   * {@link #generateQuestionnaire(String, FhirFormat, List)} with no selection.
+   */
+  public byte[] generateQuestionnaire(String profileUrl, FhirFormat outputFormat) throws FHIRException, IOException {
+    return generateQuestionnaire(profileUrl, outputFormat, null);
+  }
+
+  /**
+   * Build a FHIR Questionnaire from a StructureDefinition profile. The Questionnaire
+   * is always built from the profile's <b>snapshot</b> (one is generated on the fly if
+   * absent). Coded elements have their ValueSets expanded and attached as answer options.
+   * The profile must already be resolvable in the engine context (load the containing
+   * IG first).
+   *
+   * <p>When {@code selectExpressions} is non-empty, the full Questionnaire is built and
+   * then <b>pruned</b>: each FHIRPath expression is evaluated against every
+   * {@code ElementDefinition} of the snapshot, and an element is "selected" if <i>any</i>
+   * expression evaluates to {@code true} for it. A Questionnaire item is kept when its
+   * element path is selected, is an ancestor of a selected path, or is a descendant of a
+   * selected path — so the item tree stays connected. MustSupport filtering is not a
+   * special case: pass {@code "mustSupport = true"} as one of the expressions.</p>
+   *
+   * <p>When {@code selectExpressions} is null/empty the whole Questionnaire is returned.</p>
+   *
+   * @param profileUrl        canonical URL of the StructureDefinition profile
+   * @param outputFormat      format of the returned bytes (JSON or XML)
+   * @param selectExpressions FHIRPath expressions evaluated per ElementDefinition;
+   *                          null/empty = keep everything
+   */
+  public byte[] generateQuestionnaire(String profileUrl, FhirFormat outputFormat,
+      List<String> selectExpressions) throws FHIRException, IOException {
+    StructureDefinition profile = context.fetchResource(StructureDefinition.class, profileUrl);
+    if (profile == null) {
+      throw new FHIRException("Profile not found: " + profileUrl);
+    }
+    if (!profile.hasSnapshot()) {
+      new ProfileUtilities(context, null, null).setAutoFixSliceNames(true)
+          .generateSnapshot(context.fetchResource(StructureDefinition.class, profile.getBaseDefinition()),
+              profile, profile.getUrl(), null, profile.getName());
+    }
+
+    org.hl7.fhir.r5.utils.QuestionnaireBuilder builder =
+        new org.hl7.fhir.r5.utils.QuestionnaireBuilder(context, profile.getUrl());
+    builder.setProfile(profile);
+    builder.build();
+    org.hl7.fhir.r5.model.Questionnaire questionnaire = builder.getQuestionnaire();
+
+    if (selectExpressions != null && !selectExpressions.isEmpty()) {
+      java.util.Set<String> selectedPaths = selectElementPaths(profile, selectExpressions);
+      if (selectedPaths.isEmpty()) {
+        throw new FHIRException("None of the select expressions matched any element in profile " + profileUrl);
+      }
+      pruneQuestionnaireItems(questionnaire.getItem(), selectedPaths);
+      if (questionnaire.getItem().isEmpty()) {
+        throw new FHIRException("Element selection pruned the entire Questionnaire for profile " + profileUrl);
+      }
+    }
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (outputFormat == FhirFormat.XML) {
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, questionnaire);
+    } else {
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, questionnaire);
+    }
+    return baos.toByteArray();
+  }
+
+  /**
+   * Evaluate each FHIRPath expression against every {@code ElementDefinition} in the
+   * profile's snapshot; collect the {@code path} of every element for which at least
+   * one expression evaluates to a singleton {@code true}.
+   */
+  private java.util.Set<String> selectElementPaths(StructureDefinition profile, List<String> expressions) {
+    FHIRPathEngine fpe = new FHIRPathEngine(context);
+    List<ExpressionNode> compiled = new ArrayList<>();
+    for (String e : expressions) {
+      if (e != null && !e.trim().isEmpty()) {
+        compiled.add(fpe.parse(e.trim()));
+      }
+    }
+    java.util.Set<String> selected = new java.util.HashSet<>();
+    for (ElementDefinition ed : profile.getSnapshot().getElement()) {
+      for (ExpressionNode node : compiled) {
+        boolean matched;
+        try {
+          List<Base> outcome = fpe.evaluate(ed, node);
+          matched = outcome.size() == 1 && outcome.get(0).isPrimitive()
+              && "true".equals(outcome.get(0).primitiveValue());
+        } catch (Exception ex) {
+          matched = false; // an expression that doesn't apply to this element is just a non-match
+        }
+        if (matched) {
+          selected.add(ed.getPath());
+          break;
+        }
+      }
+    }
+    return selected;
+  }
+
+  /**
+   * Recursively prune a Questionnaire item list to the selected element paths.
+   * An item is kept when its element path (derived from its {@code linkId}) is
+   * selected, is an ancestor of a selected path, or is a descendant of one — or
+   * when it still has kept children. Returns true if the list is non-empty after pruning.
+   */
+  private static boolean pruneQuestionnaireItems(
+      List<org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent> items,
+      java.util.Set<String> selectedPaths) {
+    items.removeIf(item -> {
+      boolean keptChildren = pruneQuestionnaireItems(item.getItem(), selectedPaths);
+      String itemPath = elementPathOfLinkId(item.getLinkId());
+      boolean relevant = relatesToSelection(itemPath, selectedPaths);
+      return !relevant && !keptChildren;
+    });
+    return !items.isEmpty();
+  }
+
+  /**
+   * Derive the element path a Questionnaire item corresponds to from its {@code linkId}.
+   * The QuestionnaireBuilder sets linkIds to the element path, sometimes with a
+   * {@code -grp} / {@code -display} / {@code -flyover} suffix or a {@code ._type}-style
+   * tail; slice names ({@code :sliceName}) are stripped so sliced and unsliced map alike.
+   */
+  private static String elementPathOfLinkId(String linkId) {
+    if (linkId == null) {
+      return "";
+    }
+    String s = linkId;
+    for (String suffix : new String[] {"-grp", "-display", "-flyover"}) {
+      if (s.endsWith(suffix)) {
+        s = s.substring(0, s.length() - suffix.length());
+      }
+    }
+    int us = s.indexOf("._"); // type sub-items, e.g. Patient.deceased._boolean
+    if (us >= 0) {
+      s = s.substring(0, us);
+    }
+    StringBuilder b = new StringBuilder();
+    for (String seg : s.split("\\.", -1)) {
+      int colon = seg.indexOf(':');
+      if (b.length() > 0) {
+        b.append('.');
+      }
+      b.append(colon >= 0 ? seg.substring(0, colon) : seg);
+    }
+    return b.toString();
+  }
+
+  private static boolean relatesToSelection(String itemPath, java.util.Set<String> selectedPaths) {
+    if (itemPath == null || itemPath.isEmpty()) {
+      return false;
+    }
+    for (String sel : selectedPaths) {
+      if (itemPath.equals(sel)                       // the item is itself selected
+          || sel.startsWith(itemPath + ".")          // the item is an ancestor of a selection
+          || itemPath.startsWith(sel + ".")) {       // the item is a descendant of a selection
+        return true;
+      }
+    }
+    return false;
   }
 
   public byte[] convertVersion(byte[] resource, FhirFormat format, String targetVer) throws Exception {

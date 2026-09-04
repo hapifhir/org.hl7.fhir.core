@@ -7,7 +7,8 @@ removes the multi-second start up cost from every validation.
 
 The server is also more than a validation endpoint: the same engine is exposed for FHIRPath
 evaluation, format and version conversion, snapshot and narrative generation, StructureMap
-execution, test data generation, matchetype comparison and terminology ecosystem testing.
+execution and FML parsing, test data and Questionnaire generation, artifact packaging,
+matchetype comparison and terminology ecosystem testing.
 
 An OpenAPI 3.0 description of the API lives beside this document in
 [`validator-server.openapi.yaml`](validator-server.openapi.yaml), and the JSON form the server
@@ -49,8 +50,8 @@ The server runs until it is stopped with Ctrl-C or by a `POST /stop`.
 * A single `ValidationEngine` is created at start up and shared by every request. Per-request
   query parameters build a fresh `InstanceValidatorParameters` for that request; they do not
   change the engine.
-* `POST /loadIG` *does* change the engine, for every subsequent request, permanently - there is
-  no unload.
+* `POST /loadIG` and `POST /loadResource` *do* change the engine, for every subsequent request,
+  permanently - there is no unload.
 * The server is a `com.sun.net.httpserver.HttpServer` created with the default executor, so
   requests are handled sequentially on the dispatcher thread. It is designed for one developer,
   one build pipeline, or one test suite at a time - not as a shared multi-tenant service.
@@ -73,8 +74,9 @@ else - including a missing header - means JSON.
 
 **Output format** comes from `Accept`: a media type containing `xml` means XML, anything else
 means JSON. `/convert` and `/transform` use this to pick their output format. `/snapshot`,
-`/narrative` and `/version` return the same format they were given, and `/testdata` uses the
-`format` field in its body.
+`/narrative` and `/version` return the same format they were given; `/testdata` uses the
+`format` field in its body; and `/questionnaire`, `/fml` and `/package` ignore `Accept`
+altogether in favour of a `format` query parameter.
 
 **Errors** are FHIR `OperationOutcome` resources, served as `application/fhir+json` or
 `application/fhir+xml`. The one exception is a wrong HTTP method, which returns `405` with a
@@ -97,11 +99,15 @@ the HTTP status.
 | POST | `/matchetype` | Compare a resource against a matchetype pattern |
 | POST | `/testdata` | Generate test data for a profile |
 | POST | `/loadIG` | Load an IG into the running engine |
+| POST | `/loadResource` | Register a resource in the running engine |
 | POST | `/convert` | Convert a resource between JSON and XML |
 | POST | `/version` | Convert a resource between FHIR versions |
 | POST | `/snapshot` | Generate the snapshot for a StructureDefinition |
+| GET | `/questionnaire` | Generate a Questionnaire from a profile |
 | POST | `/narrative` | Generate the narrative for a resource |
 | POST | `/transform` | Run a StructureMap over a resource |
+| POST | `/fml` | Parse FHIR Mapping Language into a StructureMap |
+| GET | `/package` | Package an artifact with its dependencies |
 | GET | `/compile` | Fetch a StructureMap by canonical URL |
 | GET | `/txTest` | Run one terminology ecosystem test against a server |
 | POST | `/stop` | Shut the server down |
@@ -209,6 +215,8 @@ used.
 ```
 
 `bundle` is compared as the *string* `"true"`, so a JSON boolean `true` does not switch it on.
+`requiredOnly` works the same way and restricts generation to the elements the profile makes
+mandatory.
 
 ### POST /loadIG
 
@@ -220,6 +228,32 @@ curl -X POST http://localhost:8080/loadIG \
   -H 'Content-Type: application/json' \
   -d '{"ig": "hl7.fhir.us.core#6.1.0"}'
 ```
+
+### POST /loadResource
+
+Registers a resource - or every entry of a `collection`, `batch` or `transaction` Bundle - in the
+running engine, so that it resolves by canonical URL exactly as if it had come from a package.
+This is how an artifact built at run time, typically a StructureMap parsed by `/fml`, is made
+usable by `/transform`, `/compile` and validation without rebuilding a package.
+
+```sh
+curl -X POST 'http://localhost:8080/loadResource?replace=true' \
+  -H 'Content-Type: application/fhir+json' \
+  --data-binary @structuremap.json
+```
+
+The response is plain JSON rather than an `OperationOutcome`:
+
+```json
+{ "loaded": 1, "resources": ["StructureMap/Example"] }
+```
+
+`format` overrides the format of the body; without it the format comes from `Content-Type`, and
+failing that from the first non-whitespace byte. Without `replace=true` a resource whose canonical
+URL is already known is skipped rather than overwritten - which matters in an authoring loop that
+resubmits the same URL without bumping `version`. A descriptor may carry a trailing
+`(warning: ...)` note, for instance when an R5-format StructureMap is loaded into a non-R5 engine
+and the parser dropped R5-only fields.
 
 ### POST /convert and POST /version
 
@@ -243,6 +277,28 @@ StructureMap-based conversion is not available here and a resource without a `ur
 generated (the base definition must be loaded). `/narrative` returns the posted resource with a
 generated narrative in `text.div`. Both echo the format they were given.
 
+### GET /questionnaire
+
+Builds a Questionnaire from a profile's snapshot, generating the snapshot if the profile does not
+carry one, and expands the ValueSets of coded elements into answer options. The profile must
+already be loaded.
+
+```sh
+curl 'http://localhost:8080/questionnaire?profile=http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient'
+```
+
+`select` takes a JSON array of FHIRPath expressions, evaluated against every `ElementDefinition`
+of the snapshot. An element is kept when any expression is true, along with its ancestors and
+descendants so that the item tree stays connected. MustSupport filtering is not a special case:
+
+```sh
+curl -G 'http://localhost:8080/questionnaire' \
+  --data-urlencode 'profile=http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient' \
+  --data-urlencode 'select=["mustSupport = true"]'
+```
+
+`format` (`json` or `xml`, default `json`) picks the output format; `Accept` is not consulted.
+
 ### POST /transform and GET /compile
 
 `/transform` runs a StructureMap over the posted resource; `/compile` returns the StructureMap
@@ -259,6 +315,50 @@ curl 'http://localhost:8080/compile?url=http://example.org/StructureMap/Example'
 ```
 
 `/compile` does not check the HTTP method, so POST and other methods behave the same as GET.
+
+### POST /fml
+
+Parses FHIR Mapping Language source into a StructureMap and returns it, serialised for the FHIR
+version the engine is running rather than for R5. Nothing is registered - to make the map usable
+by `/transform` and `/compile`, post the result to `/loadResource`.
+
+```sh
+curl -X POST 'http://localhost:8080/fml?name=Example' \
+  -H 'Content-Type: text/plain' \
+  --data-binary @example.fml > example-map.json
+
+curl -X POST http://localhost:8080/loadResource \
+  -H 'Content-Type: application/fhir+json' \
+  --data-binary @example-map.json
+```
+
+`name` is used only in parse error messages; `format` picks the output format.
+
+### GET /package
+
+The CRMI `$package` operation: returns a `collection` Bundle holding the artifact at `url` and
+everything it transitively depends on. Core FHIR resources are not included, and the root artifact
+must already be loaded.
+
+```sh
+curl 'http://localhost:8080/package?url=http://example.org/StructureDefinition/MyProfile&expand=true'
+```
+
+| Parameter | Required | Default |
+| --- | --- | --- |
+| `url` | yes | - |
+| `expand` | no | `false` |
+| `includeRules` | no | `false` |
+| `format` | no | `json` |
+
+`expand=true` replaces each ValueSet entry by its expansion, best effort - a ValueSet that cannot
+be expanded is included unexpanded. `includeRules=true` also follows canonical references inside
+StructureMap rules, notably the ConceptMaps used by `translate(...)`; it is off by default because
+rule-walking can pull in a long tail of extra artifacts.
+
+Only part of the CRMI parameter surface is implemented: paging (`count`/`offset`),
+`contentEndpoint`/`terminologyEndpoint`, `packageOnly`, `manifest` and capability-based filtering
+are not.
 
 ### GET /txTest
 
@@ -297,6 +397,13 @@ The document served at `/openapi.json` is the classpath resource
 `validator-http-openapi.json` in `org.hl7.fhir.validation`. Edit that file to change the served
 API description; `documentation/validator-server.openapi.yaml` is the same document in YAML for
 reading and diffing.
+
+## GITB services for the Test Bed
+
+Alongside the endpoints above, the server exposes GITB-conformant validation and processing
+services under `/itb/...`, for driving the validator from the Interoperability Test Bed. They are
+a separate contract with their own request and response shapes, and are documented in
+[`itb-rest-spec.md`](itb-rest-spec.md).
 
 ## The bundled client
 
