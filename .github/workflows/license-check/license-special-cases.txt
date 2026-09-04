@@ -41,3 +41,5 @@
 (EPL-2.0) (LGPL-2.1-only) Logback Core Module (ch.qos.logback:logback-core:1.6.3 - http://logback.qos.ch/logback-core)
 # Javassist allows optional licenses, of which Apache License 2.0 is compatible
 (Apache License 2.0) (LGPL 2.1) (MPL 1.1) Javassist (org.javassist:javassist:3.22.0-GA - http://www.javassist.org/)
+# License string includes brackets, but is a valid Apache License
+(Apache License Version 2.0) JsonSchemaValidator (com.networknt:json-schema-validator:1.5.6 - https://github.com/networknt/json-schema-validator)
