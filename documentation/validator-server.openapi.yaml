@@ -27,8 +27,10 @@ info:
     * The server is created with the default executor, so requests are handled one at a time on
       the dispatcher thread. The engine is stateful and mutable (`/loadIG` changes it for every
       subsequent request), so it is not safe to treat this as a shared multi-tenant service.
-    * Request format is taken from `Content-Type`: a media type containing `xml` means XML,
-      anything else (including a missing header) means JSON.
+    * Request format is taken from `Content-Type`: a media type containing `xml` means XML and
+      one containing `json` means JSON. A body that declares neither - including one sent with no
+      `Content-Type` - is refused with `415`, so a browser cannot drive the server from another
+      page with a CORS-simple request. An empty body is not subject to this check.
     * Response format is taken from `Accept`: a media type containing `xml` means XML, anything
       else means JSON. `/convert` and `/transform` use this to pick their *output* format;
       `/snapshot`, `/narrative`, `/version` and `/testdata` echo the *input* (or requested)

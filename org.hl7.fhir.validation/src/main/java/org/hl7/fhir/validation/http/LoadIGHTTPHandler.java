@@ -30,6 +30,9 @@ class LoadIGHTTPHandler extends BaseHTTPHandler implements HttpHandler {
 
     try {
       byte[] body = readRequestBody(exchange);
+      if (!requireDeclaredBodyType(exchange, body)) {
+        return;
+      }
       JsonObject wrapper = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(body);
 
       String ig = wrapper.asString("ig");

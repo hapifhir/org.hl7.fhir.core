@@ -29,6 +29,9 @@ class ConvertHTTPHandler extends BaseHTTPHandler implements HttpHandler {
 
     try {
       byte[] resourceBytes = readRequestBody(exchange);
+      if (!requireDeclaredBodyType(exchange, resourceBytes)) {
+        return;
+      }
       String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
       FhirFormat inputFormat = determineFormat(contentType);
       String acceptHeader = getAcceptHeader(exchange);
