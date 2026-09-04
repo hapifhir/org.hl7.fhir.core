@@ -33,11 +33,11 @@ class LoadIgSourcePolicyTests {
     "hl7.fhir.us.core",
     "hl7.fhir.us.core#5.0.1",
     "hl7.fhir.be.core#2.1.2",
-    "[4.0]hl7.fhir.us.core#5.0.1",
+    "[4.0.1]hl7.fhir.us.core#5.0.1",
     "https://example.org/ig/package.tgz",
     "http://example.org/ig/package.tgz",
     "HTTPS://EXAMPLE.ORG/PACKAGE.TGZ",
-    "[5.0]https://example.org/ig/package.tgz"
+    "[5.0.0]https://example.org/ig/package.tgz"
   })
   void remoteLoadableSources(String src) {
     assertTrue(LoadIGHTTPHandler.isRemoteLoadableSource(src), src);

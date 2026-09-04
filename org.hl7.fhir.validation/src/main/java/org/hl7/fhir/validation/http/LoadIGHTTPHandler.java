@@ -1,13 +1,14 @@
 package org.hl7.fhir.validation.http;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.validation.IgLoader;
 
 import java.io.IOException;
 
@@ -58,6 +59,10 @@ class LoadIGHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     }
   }
 
+  protected static String stripVersionFromSource(String src) throws FHIRException {
+    return new IgLoader.SourceWithFHIRVersion(src).getSource();
+  }
+
   /**
    * Whether {@code src} is something a caller on the network may legitimately name: a package
    * reference ({@code id} or {@code id#version}, optionally prefixed with a {@code [version]}
@@ -67,11 +72,14 @@ class LoadIGHTTPHandler extends BaseHTTPHandler implements HttpHandler {
    * a path on this host.
    */
   static boolean isRemoteLoadableSource(String src) {
-    String s = src;
-    if (s.startsWith("[") && s.indexOf(']', 1) > 1) {
-      s = s.substring(s.indexOf(']', 1) + 1);
+    String versionLessSrc;
+    try {
+      versionLessSrc = stripVersionFromSource(src);
+    } catch (FHIRException e) {
+      return false;
     }
-    String lower = s.toLowerCase(java.util.Locale.ROOT);
+
+    String lower = versionLessSrc.toLowerCase(java.util.Locale.ROOT);
     if (lower.startsWith("http://") || lower.startsWith("https://")) {
       return true;
     }
@@ -82,11 +90,11 @@ class LoadIGHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     if (lower.endsWith(".tgz") || lower.endsWith(".zip") || lower.endsWith(".pack")) {
       return false;
     }
-    if (!s.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT)) {
+    if (!versionLessSrc.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT)) {
       return false;
     }
     try {
-      return !ManagedFileAccess.file(s).exists();
+      return !ManagedFileAccess.file(versionLessSrc).exists();
     } catch (IOException e) {
       return false;
     }
