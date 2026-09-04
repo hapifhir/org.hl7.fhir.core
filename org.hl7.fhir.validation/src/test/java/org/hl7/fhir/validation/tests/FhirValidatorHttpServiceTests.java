@@ -1179,6 +1179,423 @@ class FhirValidatorHttpServiceTest {
         throw new RuntimeException(e);
       }
     }
+
+    private static final String SAMPLE_FML =
+        "map \"http://example.org/StructureMap/IdentityTest\" = \"IdentityTest\"\n" +
+        "\n" +
+        "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientSrc as source\n" +
+        "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientTgt as target\n" +
+        "\n" +
+        "group IdentityTest(source src : PatientSrc, target tgt : PatientTgt) {\n" +
+        "  src.id -> tgt.id;\n" +
+        "}\n";
+
+    @Test
+    @DisplayName("FML - parse FML text to a StructureMap (legacy POST /fml)")
+    void testFmlParseLegacy() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/fml?name=IdentityTest"))
+        .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_FML))
+        .header("Content-Type", "text/plain")
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+      org.hl7.fhir.utilities.json.model.JsonObject sm =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(response.body());
+      assertEquals("StructureMap", sm.asString("resourceType"));
+      assertEquals("http://example.org/StructureMap/IdentityTest", sm.asString("url"));
+      assertTrue(sm.has("group"), "parsed StructureMap should have a group");
+    }
+
+    /**
+     * Two-group FML that exercises a dependent group invocation with named arguments.
+     * In R4 the parsed SM emits {@code dependent.variable: ["a","b"]};
+     * in R5 it emits {@code dependent.parameter: [{valueId:"a"},{valueId:"b"}]}.
+     * Used by the version-format round-trip tests.
+     */
+    private static final String FML_WITH_DEPENDENT =
+        "map \"http://example.org/StructureMap/PassThrough\" = \"PassThrough\"\n" +
+        "\n" +
+        "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientSrc as source\n" +
+        "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientTgt as target\n" +
+        "\n" +
+        "group PassThrough(source s : PatientSrc, target t : PatientTgt) {\n" +
+        "  s as src then InnerCopy(src, t) \"outer\";\n" +
+        "}\n" +
+        "\n" +
+        "group InnerCopy(source src : PatientSrc, target tgt : PatientTgt) {\n" +
+        "  src.id as v -> tgt.id = v \"copyId\";\n" +
+        "}\n";
+
+    @Test
+    @DisplayName("FML - parse output uses the engine's runtime FHIR version (R4 emits 'variable' on dependent, not 'parameter')")
+    void testFmlParseEmitsRuntimeVersion() throws Exception {
+      // The test engine is R4 (hl7.fhir.r4.core#4.0.1). The parsed StructureMap
+      // must round-trip through an R4 JSON parser without losing dependent data —
+      // i.e. its dependent invocation must be encoded as `variable: [...]` (the R4 form),
+      // NOT as `parameter: [...]` (R5-only).
+      setUpService(getValidationEngine());
+
+      HttpResponse<String> resp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/fml?name=PassThrough"))
+          .POST(HttpRequest.BodyPublishers.ofString(FML_WITH_DEPENDENT))
+          .header("Content-Type", "text/plain")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, resp.statusCode(), "parse: " + resp.body());
+
+      // The whole point: dependent encoded in R4 form, not R5.
+      // R4 uses dependent.variable (string list); R5 uses dependent.parameter (typed list).
+      // Walk into the JSON to inspect just the dependent (R4 SM target transforms also use
+      // 'parameter' so a body-wide substring check is too coarse).
+      org.hl7.fhir.utilities.json.model.JsonObject sm =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(resp.body());
+      org.hl7.fhir.utilities.json.model.JsonObject outerGroup = sm.getJsonArray("group").get(0).asJsonObject();
+      org.hl7.fhir.utilities.json.model.JsonObject outerRule  = outerGroup.getJsonArray("rule").get(0).asJsonObject();
+      org.hl7.fhir.utilities.json.model.JsonObject dependent  = outerRule.getJsonArray("dependent").get(0).asJsonObject();
+      assertTrue(dependent.has("variable"),
+        "R4-mode parse must emit dependent.variable (R4 form): " + dependent.toString());
+      assertFalse(dependent.has("parameter"),
+        "R4-mode parse must NOT emit dependent.parameter (R5-only) — would silently lose data: " + dependent.toString());
+      assertEquals(2, dependent.getJsonArray("variable").size(),
+        "dependent.variable must carry both args (src, t): " + dependent.toString());
+    }
+
+    @Test
+    @DisplayName("FML - Missing body returns 400")
+    void testFmlParseMissingBody() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/fml"))
+        .POST(HttpRequest.BodyPublishers.ofString(""))
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(400, response.statusCode());
+      assertTrue(response.body().contains("Missing request body"));
+    }
+
+    @Test
+    @DisplayName("FML - GET method not allowed")
+    void testFmlGetNotAllowed() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/fml"))
+        .GET()
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(405, response.statusCode());
+    }
+
+    // ─── CRMI $package tests ───
+
+    private static final String SAMPLE_COLLECTION_BUNDLE =
+        "{\"resourceType\":\"Bundle\",\"type\":\"collection\",\"entry\":["
+      + "{\"resource\":{\"resourceType\":\"CodeSystem\",\"id\":\"lr-cs1\","
+      + "\"url\":\"http://example.org/CodeSystem/lr-cs1\",\"version\":\"1.0.0\","
+      + "\"status\":\"active\",\"content\":\"complete\","
+      + "\"concept\":[{\"code\":\"x\",\"display\":\"X\"}]}},"
+      + "{\"resource\":{\"resourceType\":\"CodeSystem\",\"id\":\"lr-cs2\","
+      + "\"url\":\"http://example.org/CodeSystem/lr-cs2\","
+      + "\"status\":\"active\",\"content\":\"complete\","
+      + "\"concept\":[{\"code\":\"y\",\"display\":\"Y\"}]}}"
+      + "]}";
+
+
+    @Test
+    @DisplayName("LoadResource - R5-format StructureMap on an R4 validator triggers a version-loss warning in the descriptor")
+    void testLoadResourceWarnsOnVersionMismatch() throws Exception {
+      // Hand-craft an R5-format StructureMap JSON (dependent.parameter, the R5-only form)
+      // and POST it to a R4 validator. The /loadResource endpoint should still accept it
+      // (the R4 parser will just drop the unknown fields), but flag the data loss in the
+      // descriptor so the caller doesn't waste a debugging session like we did.
+      setUpService(getValidationEngine());
+
+      String r5SmJson =
+        "{"
+      + "\"resourceType\":\"StructureMap\","
+      + "\"id\":\"r5-shaped\","
+      + "\"url\":\"http://example.org/StructureMap/r5-shaped\","
+      + "\"name\":\"R5Shaped\","
+      + "\"status\":\"draft\","
+      + "\"group\":[{"
+      + "\"name\":\"outer\","
+      + "\"input\":[{\"name\":\"s\",\"mode\":\"source\"},{\"name\":\"t\",\"mode\":\"target\"}],"
+      + "\"rule\":[{"
+      + "\"name\":\"callInner\","
+      + "\"source\":[{\"context\":\"s\"}],"
+      + "\"dependent\":[{"
+      + "\"name\":\"inner\","
+      + "\"parameter\":[{\"valueId\":\"s\"},{\"valueId\":\"t\"}]"
+      + "}]}]}]}";
+
+      HttpResponse<String> resp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/loadResource"))
+          .POST(HttpRequest.BodyPublishers.ofString(r5SmJson))
+          .header("Content-Type", "application/fhir+json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, resp.statusCode(), "load: " + resp.body());
+
+      org.hl7.fhir.utilities.json.model.JsonObject body =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(resp.body());
+      assertEquals(1, body.asInteger("loaded"));
+      String descriptor = body.getJsonArray("resources").get(0).asString();
+      assertTrue(descriptor.contains("warning"),
+        "R5-format SM on R4 validator must surface a warning: " + descriptor);
+      assertTrue(descriptor.contains("R5-only") || descriptor.contains("parameter"),
+        "warning must mention the R5-only field that caused the mismatch: " + descriptor);
+    }
+
+    @Test
+    @DisplayName("LoadResource - a freshly parsed FML round-trips back into the same validator with NO warning")
+    void testLoadResourceRoundTripsParsedFml() throws Exception {
+      // The two fixes together (parse emits R4-format on R4 + loader warns on R5-only fields)
+      // must compose: parse FML → get a StructureMap → POST it back → no warning, no skipped.
+      setUpService(getValidationEngine());
+
+      HttpResponse<String> parseResp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/fml?name=PassThrough"))
+          .POST(HttpRequest.BodyPublishers.ofString(FML_WITH_DEPENDENT))
+          .header("Content-Type", "text/plain")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, parseResp.statusCode());
+
+      HttpResponse<String> loadResp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/loadResource"))
+          .POST(HttpRequest.BodyPublishers.ofString(parseResp.body()))
+          .header("Content-Type", "application/fhir+json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, loadResp.statusCode(), "load: " + loadResp.body());
+
+      org.hl7.fhir.utilities.json.model.JsonObject body =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(loadResp.body());
+      String descriptor = body.getJsonArray("resources").get(0).asString();
+      assertFalse(descriptor.contains("warning"),
+        "round-trip parse→load must NOT warn — parse output is already in the right version format: " + descriptor);
+    }
+
+    @Test
+    @DisplayName("LoadResource - parse FML then register the resulting StructureMap on the server")
+    void testLoadResourceEndToEnd() throws Exception {
+      setUpService(getValidationEngine());
+
+      // 1. parse FML to a StructureMap JSON
+      HttpResponse<String> parseResp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/fml?name=IdentityTest"))
+          .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_FML))
+          .header("Content-Type", "text/plain")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, parseResp.statusCode(), "parse: " + parseResp.body());
+      String smJson = parseResp.body();
+
+      // 2. register the parsed SM on the running validator
+      HttpResponse<String> loadResp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/loadResource"))
+          .POST(HttpRequest.BodyPublishers.ofString(smJson))
+          .header("Content-Type", "application/fhir+json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, loadResp.statusCode(), "load: " + loadResp.body());
+      org.hl7.fhir.utilities.json.model.JsonObject loadBody =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(loadResp.body());
+      assertEquals(1, loadBody.asInteger("loaded"));
+      org.hl7.fhir.utilities.json.model.JsonArray loadedRes = loadBody.getJsonArray("resources");
+      assertEquals(1, loadedRes.size());
+      assertTrue(loadedRes.get(0).asString().contains("StructureMap"));
+      assertTrue(loadedRes.get(0).asString().contains("http://example.org/StructureMap/IdentityTest"));
+
+      // 3. confirm the validator can now resolve the registered SM by its canonical URL.
+      // We hit /transform with the SM URL — the SM must be found in context. Whether the
+      // engine successfully completes the actual transformation is a separate concern
+      // (it depends on snapshot infrastructure not relevant here); the failure mode we
+      // explicitly do NOT want is "Unable to find map ..." which signals registration didn't take.
+      String patient = "{\"resourceType\":\"Patient\",\"id\":\"abc\"}";
+      String mapParam = java.net.URLEncoder.encode("http://example.org/StructureMap/IdentityTest", "UTF-8");
+      HttpResponse<String> xfmResp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/transform?map=" + mapParam))
+          .POST(HttpRequest.BodyPublishers.ofString(patient))
+          .header("Content-Type", "application/fhir+json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertFalse(xfmResp.body().contains("Unable to find map"),
+        "After /loadResource the validator must be able to resolve the SM by canonical URL: " + xfmResp.body());
+    }
+
+    @Test
+    @DisplayName("LoadResource - registers every entry of a `collection` Bundle")
+    void testLoadResourceBundle() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpResponse<String> resp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/loadResource"))
+          .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_COLLECTION_BUNDLE))
+          .header("Content-Type", "application/fhir+json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, resp.statusCode(), "body: " + resp.body());
+      org.hl7.fhir.utilities.json.model.JsonObject body =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(resp.body());
+      assertEquals(2, body.asInteger("loaded"), "Both entries must be registered");
+      org.hl7.fhir.utilities.json.model.JsonArray arr = body.getJsonArray("resources");
+      assertEquals(2, arr.size());
+      assertTrue(arr.get(0).asString().contains("CodeSystem"));
+      assertTrue(arr.get(1).asString().contains("CodeSystem"));
+    }
+
+    /**
+     * Authoring loop scenario — a developer iterates on an FML mapping and resubmits
+     * the resulting StructureMap repeatedly under the SAME canonical URL. Without an
+     * opt-in flag the server returns {@code (skipped, already in context)} on every
+     * re-submission, which forces the author to bump {@code StructureMap.version} on
+     * every edit just to get the change to take.
+     * <p>
+     * Intended behaviour: {@code POST /loadResource?replace=true} drops any existing
+     * resource with the same canonical URL before registering the new one, so a same-
+     * URL re-submission overwrites in place. This test fails today on purpose — it
+     * pins the contract we want.
+     */
+
+    @Test
+    @DisplayName("LoadResource - replace=true overwrites an existing StructureMap (same URL, authoring loop)")
+    void testLoadResourceReplaceUpdatesExisting() throws Exception {
+      setUpService(getValidationEngine());
+
+      // 1. Parse the original FML to a StructureMap JSON and register it.
+      HttpResponse<String> parse1 = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/fml?name=IdentityTest"))
+          .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_FML))
+          .header("Content-Type", "text/plain")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, parse1.statusCode(), "first parse: " + parse1.body());
+
+      HttpResponse<String> load1 = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/loadResource"))
+          .POST(HttpRequest.BodyPublishers.ofString(parse1.body()))
+          .header("Content-Type", "application/fhir+json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, load1.statusCode(), "first load: " + load1.body());
+      assertFalse(load1.body().contains("skipped"),
+        "first registration must succeed (the URL is fresh): " + load1.body());
+
+      // 2. Author a modified FML — same URL, different group body. This is the authoring
+      //    flow: the user is iterating on the mapping and does not want to keep bumping
+      //    StructureMap.version just to get each edit picked up.
+      String modifiedFml =
+          "map \"http://example.org/StructureMap/IdentityTest\" = \"IdentityTest\"\n" +
+          "\n" +
+          "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientSrc as source\n" +
+          "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientTgt as target\n" +
+          "\n" +
+          "group IdentityTest(source src : PatientSrc, target tgt : PatientTgt) {\n" +
+          "  src.id -> tgt.id;\n" +
+          "  src.gender -> tgt.gender;\n" +
+          "}\n";
+
+      HttpResponse<String> parse2 = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/fml?name=IdentityTest"))
+          .POST(HttpRequest.BodyPublishers.ofString(modifiedFml))
+          .header("Content-Type", "text/plain")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, parse2.statusCode(), "second parse: " + parse2.body());
+
+      // 3. Re-register WITH replace=true — must overwrite, not skip.
+      HttpResponse<String> load2 = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/loadResource?replace=true"))
+          .POST(HttpRequest.BodyPublishers.ofString(parse2.body()))
+          .header("Content-Type", "application/fhir+json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, load2.statusCode(), "second load: " + load2.body());
+
+      org.hl7.fhir.utilities.json.model.JsonObject load2Body =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(load2.body());
+      assertEquals(1, load2Body.asInteger("loaded"),
+        "replace=true must register the same-URL StructureMap: " + load2.body());
+      String desc = load2Body.getJsonArray("resources").get(0).asString();
+      assertFalse(desc.contains("skipped"),
+        "replace=true must overwrite, not skip — got: " + desc);
+      // The descriptor itself ideally reports the replacement; not strict on wording,
+      // just verify it isn't a "skipped" outcome and that it references the SM.
+      assertTrue(desc.contains("StructureMap"),
+        "descriptor must reference the StructureMap: " + desc);
+      assertTrue(desc.contains("http://example.org/StructureMap/IdentityTest"),
+        "descriptor must reference the canonical URL: " + desc);
+
+      // 4. Confirm the validator's context now resolves to the new mapping. The modified
+      //    SM has a `gender` rule that the original did not; running /transform on a
+      //    Patient that has `gender` should not lose it. Whether the transform engine
+      //    succeeds end-to-end depends on snapshot infrastructure we don't control here,
+      //    but the failure mode we explicitly check against is "Unable to find map ..."
+      //    which would signal registration didn't take.
+      String patient = "{\"resourceType\":\"Patient\",\"id\":\"abc\",\"gender\":\"female\"}";
+      String mapParam = java.net.URLEncoder.encode(
+        "http://example.org/StructureMap/IdentityTest", "UTF-8");
+      HttpResponse<String> xfmResp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/transform?map=" + mapParam))
+          .POST(HttpRequest.BodyPublishers.ofString(patient))
+          .header("Content-Type", "application/fhir+json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertFalse(xfmResp.body().contains("Unable to find map"),
+        "After replace=true, the validator must resolve the new SM by canonical URL: " + xfmResp.body());
+    }
+
+    @Test
+    @DisplayName("LoadResource - missing body returns 400")
+    void testLoadResourceMissingBody() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpResponse<String> resp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/loadResource"))
+          .POST(HttpRequest.BodyPublishers.ofString(""))
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(400, resp.statusCode());
+      assertTrue(resp.body().contains("Missing request body"));
+    }
+
+    @Test
+    @DisplayName("LoadResource - GET method not allowed")
+    void testLoadResourceGetNotAllowed() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpResponse<String> resp = httpClient.send(
+        HttpRequest.newBuilder().uri(URI.create(BASE_URL + "/loadResource")).GET().build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(405, resp.statusCode());
+    }
+
   }
 
 }
