@@ -34,7 +34,7 @@ public class HTTPResult {
     this.code = code;
     this.contentType = contentType;
     this.content = content;
-    this.message = message;
+    this.message = Utilities.noString(message) ? getMessagefromCode() : message;
     this.headers = headers;
   }
 

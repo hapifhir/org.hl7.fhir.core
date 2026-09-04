@@ -1,27 +1,27 @@
-package org.hl7.fhir.{{jid}}.formats;
-
-// generated
+{{startMark}}
+package org.hl7.fhir.{{jid}}.core.formats;
 
 {{license}}
 
-{{startMark}}
 
-import org.hl7.fhir.{{jid}}.model.*;
-import org.hl7.fhir.{{jid}}.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.model.*;
+import org.hl7.fhir.{{jid}}.core.*;
+import org.hl7.fhir.{{jid}}.core.Enumerations.FHIRVersion;
 import org.xmlpull.v1.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.FHIRException;
 import java.io.IOException;
 
+{{generated}}
 public class XmlParser extends XmlParserBase {
 
-  public XmlParser() {
-    super();
+  public XmlParser(IModelContext modelContext) {
+    super(modelContext);
   }
 
-  public XmlParser(boolean allowUnknownContent) {
-    super();
+  public XmlParser(IModelContext modelContext, boolean allowUnknownContent) {
+    super(modelContext);
     setAllowUnknownContent(allowUnknownContent);
   }
 
@@ -31,7 +31,7 @@ public class XmlParser extends XmlParserBase {
 
   @SuppressWarnings("unchecked")
   protected <E extends Enum<E>> Enumeration<E> parseEnumeration(XmlPullParser xpp, E item, EnumFactory e) throws XmlPullParserException, IOException, FHIRFormatError {
-    Enumeration<E> res = new Enumeration<E>(e);
+    Enumeration<E> res = new Enumeration<E>(modelContext, e);
     parseElementAttributes(xpp, res);
     res.setValue((E) e.fromCode(xpp.getAttributeValue(null, "value")));
     next(xpp);
@@ -352,8 +352,19 @@ public class XmlParser extends XmlParserBase {
   protected Resource parseResource(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     if (xpp == null) {
       throw new IOException("xpp == null!");
+    }
+    // a handler registered in the model context as overriding the base specification takes
+    // precedence over the generated dispatch below
+    Resource custom = parseOverridingCustomResource(xpp);
+    if (custom != null) {
+      return custom;
 {{parse-resource}}
     } else {
+      // not a resource this parser knows - the model context may have a handler for it
+      Resource res = parseCustomResource(xpp);
+      if (res != null) {
+        return res;
+      }
       throw new FHIRFormatError("Unknown resource type "+xpp.getName()+"");
     }
   }
@@ -850,7 +861,8 @@ public class XmlParser extends XmlParserBase {
     if (resource == null) {
       throw new IOException("resource == null");
 {{compose-resource}}      
-    } else {
+    } else if (!composeCustomResource(resource)) {
+      // the model context may have a handler registered for this resource type
       throw new Error("Unhandled resource type "+resource.getClass().getName());
     }
   }

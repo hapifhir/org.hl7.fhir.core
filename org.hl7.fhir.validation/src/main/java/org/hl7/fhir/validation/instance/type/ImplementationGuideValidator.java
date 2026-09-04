@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
@@ -25,6 +25,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import javax.annotation.Nonnull;
 
 public class ImplementationGuideValidator extends BaseValidator {
 
@@ -140,7 +142,7 @@ public class ImplementationGuideValidator extends BaseValidator {
     return ok;
   }
 
-  private @NonNull String getVersionSuffix() {
+  private @Nonnull String getVersionSuffix() {
     // This is a workaround for the fact that R6 is not fully defined at this time.
     String version = context.getVersion();
     if (version.startsWith("6.")) {

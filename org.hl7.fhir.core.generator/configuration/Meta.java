@@ -16,7 +16,7 @@
    * <code>null</code> if none 
    */
   public Coding getTag(String theSystem, String theCode) { 
-    for (Coding next : getTag()) {
+    for (Coding next : getTagList()) {
       if (ca.uhn.fhir.util.ObjectUtil.equals(next.getSystem(), theSystem) && ca.uhn.fhir.util.ObjectUtil.equals(next.getCode(), theCode)) { 
         return next; 
       } 
@@ -29,10 +29,20 @@
    * <code>null</code> if none 
    */
   public Coding getSecurity(String theSystem, String theCode) { 
-    for (Coding next : getSecurity()) {
+    for (Coding next : getSecurityList()) {
       if (ca.uhn.fhir.util.ObjectUtil.equals(next.getSystem(), theSystem) && ca.uhn.fhir.util.ObjectUtil.equals(next.getCode(), theCode)) { 
         return next; 
       } 
     }
     return null; 
   }
+
+    public List<Coding> getSecurity() {
+      return this.getSecurityList();
+    }
+    public List<Coding> getTag() {
+      return this.getTagList();
+    }
+    public List<CanonicalType> getProfile() {
+      return this.getProfileList();
+    }

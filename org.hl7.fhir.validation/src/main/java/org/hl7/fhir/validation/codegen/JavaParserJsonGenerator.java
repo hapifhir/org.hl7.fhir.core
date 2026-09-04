@@ -321,7 +321,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         ei = (EnumInfo) ed.getUserData("java.enum"); // getCodeListType(cd.getBinding());
         ValueSet vs = ei.getValueSet();
         if (vs.hasUserData("java.core.enum")) {
-          en = "org.hl7.fhir.r5.model.Enumerations."+ei.getName();
+          en = (isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.r5.model")+".Enumerations."+ei.getName();
         } else if (vs.hasUserData("shared")) {
           en = "Enumerations."+ei.getName();
         } else {
@@ -444,21 +444,27 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     
     String stn = (ti == analysis.getRootType() ? tn : analysis.getClassName()+"."+tn);
 
-    composer.append("  protected void compose"+tn+"(String name, "+stn+" element) throws IOException {\r\n");
-    composer.append("    if (element != null) {\r\n");
-    composer.append("      open(name);\r\n");      
-    composer.append("      prop(\"_type\", element.fhirType());\r\n");
-    composer.append("      switch (element.fhirType()) {\r\n");            
-    for (Entry<String, String> e : getConcreteDescendents(analysis, ti).entrySet()) {
-      composer.append("      case \""+escapeJavaString(e.getKey())+"\":\r\n");      
-      composer.append("        compose"+e.getValue()+"Properties(("+e.getValue()+") element);\r\n");      
-      composer.append("        close();\r\n");      
-      composer.append("        break;\r\n");      
+    if (!isTypeSpecifierTarget(analysis)) {
+      // the generic dispatcher for an abstract type writes a _type discriminator property. Where 
+      // an element of this type carries type-specifier extensions, the type-specifier machinery 
+      // generates a dispatcher with this name and signature instead (instanceof-based, no _type 
+      // on the wire, matching the condition-based parse dispatch), so this one is not generated
+      composer.append("  protected void compose"+tn+"(String name, "+stn+" element) throws IOException {\r\n");
+      composer.append("    if (element != null) {\r\n");
+      composer.append("      open(name);\r\n");      
+      composer.append("      prop(\"_type\", element.fhirType());\r\n");
+      composer.append("      switch (element.fhirType()) {\r\n");            
+      for (Entry<String, String> e : getConcreteDescendents(analysis, ti).entrySet()) {
+        composer.append("      case \""+escapeJavaString(e.getKey())+"\":\r\n");      
+        composer.append("        compose"+e.getValue()+"Properties(("+e.getValue()+") element);\r\n");      
+        composer.append("        close();\r\n");      
+        composer.append("        break;\r\n");      
+      }
+      composer.append("      default: throw new FHIRException(\"Unsupported type '\"+element.fhirType()+\"'\");\r\n");      
+      composer.append("      }\r\n");    
+      composer.append("    }\r\n");
+      composer.append("  }\r\n\r\n");
     }
-    composer.append("      default: throw new FHIRException(\"Unsupported type '\"+element.fhirType()+\"'\");\r\n");      
-    composer.append("      }\r\n");    
-    composer.append("    }\r\n");
-    composer.append("  }\r\n\r\n");
 
 
     composer.append("  protected void compose"+tn+"Properties("+tn+" element) throws IOException {\r\n");
@@ -558,7 +564,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         ValueSet vs = ei.getValueSet();
         enShared = vs.hasUserData("shared") || vs.hasUserData("java.core.enum");
         if (vs.hasUserData("java.core.enum")) {
-          en = "org.hl7.fhir.r5.model.Enumerations."+ei.getName();
+          en = (isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.r5.model")+".Enumerations."+ei.getName();
         } else if (vs.hasUserData("shared")) {
           en = "Enumerations."+ei.getName();
         } else {
@@ -656,7 +662,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           composer.append("        for (Enumeration<"+prepEnumName(en)+"> e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
           composer.append("          composeEnumerationCore(null, e, new "+prepEnumName(en)+"EnumFactory(), true);\r\n");
           composer.append("        closeArray();\r\n");
-          composer.append("        if (anyHasExtras(element.get"+upFirst(getElementName(name, false))+"())) {\r\n");
+          composer.append("        if (anyHasExtras(element.get"+upFirst(getElementName(name, false))+"List())) {\r\n");
           composer.append("          openArray(\"_"+escapeJavaString(name)+"\");\r\n");
           composer.append("          for (Enumeration<"+prepEnumName(en)+"> e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
           composer.append("            composeEnumerationExtras(null, e, new "+prepEnumName(en)+"EnumFactory(), true);\r\n");

@@ -57,7 +57,7 @@ import org.hl7.fhir.r4b.terminologies.ValueSetExpander.TerminologyServiceErrorCl
 import org.hl7.fhir.r4b.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -80,7 +80,7 @@ import com.google.gson.JsonPrimitive;
  * @author graha
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class TerminologyCache {
   public static final boolean TRANSIENT = false;

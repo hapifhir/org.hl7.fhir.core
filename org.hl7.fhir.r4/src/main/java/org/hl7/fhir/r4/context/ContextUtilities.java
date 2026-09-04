@@ -28,7 +28,7 @@ import org.hl7.fhir.r4.model.StructureMap;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.NamingSystem;
 import org.hl7.fhir.r4.model.StructureDefinition;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -37,7 +37,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class ContextUtilities implements ProfileKnowledgeProvider {
 

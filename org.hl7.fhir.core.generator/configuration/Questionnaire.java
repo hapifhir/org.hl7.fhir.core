@@ -1,7 +1,7 @@
 public QuestionnaireItemComponent getQuestion(String linkId) {
     if (linkId == null)
       return null;
-    for (QuestionnaireItemComponent i : getItem()) {
+    for (QuestionnaireItemComponent i : getItemList()) {
       if (i.getLinkId().equals(linkId))
         return i;
       QuestionnaireItemComponent t = i.getQuestion(linkId);
@@ -12,7 +12,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
   }
 
   public QuestionnaireItemComponent getCommonGroup(QuestionnaireItemComponent q1, QuestionnaireItemComponent q2) {
-    for (QuestionnaireItemComponent i : getItem()) {
+    for (QuestionnaireItemComponent i : getItemList()) {
       QuestionnaireItemComponent t = i.getCommonGroup(q1, q2);
       if (t != null)
         return t;

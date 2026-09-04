@@ -1,0 +1,272 @@
+package org.hl7.fhir.services.conformance;
+
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.model.core.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.*;
+
+
+public class R5ExtensionsLoader {
+  
+  public static class CanonicalResourceSortByUrl<T extends CanonicalResource> implements Comparator<Loadable<T>> {
+
+    @Override
+    public int compare(Loadable<T> arg0, Loadable<T> arg1) {
+      return arg0.info.getUrl().compareTo(arg1.info.getUrl());
+    }
+  }
+
+  public class Loadable<T extends CanonicalResource> {
+    public Loadable(PackageResourceInformation info, NpmPackage source) {
+      this.info = info;
+      this.source = source;
+    }
+    private T resource;
+    private NpmPackage source;
+    private PackageResourceInformation info;
+    public T getResource() throws FHIRFormatError, FileNotFoundException, IOException {
+      if (resource == null) {
+        CanonicalResource r = (CanonicalResource) json.parse(source.load(info));
+        r.setWebPath(Utilities.pathURL(source.getWebLocation(), r.fhirType().toLowerCase()+ "-"+r.getId().toLowerCase()+".html"));
+        resource = (T) r;
+      }
+      return resource;
+    }
+  }
+
+  private BasePackageCacheManager pcm;
+  private int count;
+  private NpmPackage pckCore;
+  private Map<String, Loadable<ValueSet>> valueSets;
+  private Map<String, Loadable<CodeSystem>> codeSystems;
+  private List<Loadable<StructureDefinition>> structures;
+  private IWorkerContext context;
+  private JsonParser json;
+  
+  public R5ExtensionsLoader(BasePackageCacheManager pcm, IWorkerContext context) {
+    super();
+    this.pcm = pcm;
+    this.context = context;
+
+    valueSets = new HashMap<>();
+    codeSystems = new HashMap<>();
+    structures = new ArrayList<>();
+  }
+
+  public void load() throws FHIRException, IOException {
+    pckCore = pcm.loadPackage("hl7.fhir.r5.core", "5.0.0");
+    loadDetails(pckCore); 
+  }
+
+  private void loadDetails(NpmPackage pck) throws IOException {
+    json = new JsonParser(context);
+
+    String[] types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem" };
+    for (PackageResourceInformation pri : pck.listIndexedResources(types)) {
+      if (pri.getResourceType().equals("CodeSystem")) {
+        codeSystems.put(pri.getUrl(), new Loadable<CodeSystem>(pri, pck));
+        codeSystems.put(pri.getUrl()+"|"+pri.getVersion(), new Loadable<CodeSystem>(pri, pck));
+      } else if (pri.getResourceType().equals("ValueSet")) {
+        valueSets.put(pri.getUrl(), new Loadable<ValueSet>(pri, pck));
+        valueSets.put(pri.getUrl()+"|"+pri.getVersion(), new Loadable<ValueSet>(pri, pck));
+      } else if (pri.getResourceType().equals("StructureDefinition"))  {
+        structures.add(new Loadable<StructureDefinition>(pri, pck));
+      }
+    }
+  }
+  
+//  public void loadR5Extensions() throws FHIRException, IOException {
+//    count = 0;
+//    List<String> typeNames = new ContextUtilities(context).getTypeNames();
+//    for (Loadable<StructureDefinition> lsd : structures) {
+//      if (lsd.info.getStatedType().equals("Extension") && !context.hasResource(StructureDefinition.class, lsd.info.getUrl())) {
+//        StructureDefinition sd = lsd.getResource();
+//        if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
+//          if (survivesStrippingTypes(sd, context, typeNames)) {
+//            count++;
+//            sd.setWebPath(Utilities.pathURL(pckExt.getWebLocation(), "extension-"+sd.getId().toLowerCase()+".html"));
+//            registerTerminologies(sd);
+//            context.cacheResourceFromPackage(sd, new PackageInformation(lsd.source));
+//          }
+//        }
+//      }
+//    }
+//  }
+
+  public void loadR5SpecialTypes(List<String> types) throws FHIRException, IOException {
+    for (Loadable<StructureDefinition> lsd : structures) {
+      if (Utilities.existsInList(lsd.info.getId(), types)) {
+        StructureDefinition sd = lsd.getResource();
+        count++;
+        List<ElementDefinition> rl = new ArrayList<>();
+        for (ElementDefinition ed : sd.getDifferential().getElementList()) {
+          if (!stripTypes(ed, sd, types)) {
+            rl.add(ed);
+          }
+        }
+        sd.getDifferential().getElementList().removeAll(rl);
+        rl.clear();
+        for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
+          if (!stripTypes(ed, sd, types)) {
+            rl.add(ed);
+          }
+        } 
+        sd.getSnapshot().getElementList().removeAll(rl);
+        sd.setWebPath(Utilities.pathURL(lsd.source.getWebLocation(), sd.getId().toLowerCase()+".html"));
+        registerTerminologies(sd);
+        context.getManager().cacheResourceFromPackage(sd, new PackageInformation(lsd.source));
+      }
+    }    
+  }
+  
+  private boolean stripTypes(ElementDefinition ed, StructureDefinition sd, List<String> types) {
+    if (!ed.getPath().contains(".") || !ed.hasType()) {
+      return true;
+    }
+    ed.getTypeList().removeIf(tr -> context.fetchTypeDefinition(tr.getWorkingCode()) == null);
+    if (!ed.hasType()) {
+      return false;
+    }
+    for (TypeRefComponent tr : ed.getTypeList()) {
+      if (tr.hasTargetProfile()) {
+        tr.getTargetProfileList().removeIf(n -> !context.hasResource(StructureDefinition.class, n.asStringValue()) && !n.asStringValue().equals(sd.getUrl()) && !types.contains(tail(n.asStringValue())));
+        if (!tr.hasTargetProfile()) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  private Object tail(String s) {
+    if (s == null || !s.contains("/")) {
+      return s;
+    }
+    return s.substring(s.lastIndexOf("/")+1);
+  }
+
+  private void registerTerminologies(StructureDefinition sd) throws FHIRFormatError, FileNotFoundException, IOException {
+    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
+      if (ed.hasBinding() && ed.getBinding().hasValueSet()) {
+        String vsu = ed.getBinding().getValueSet();
+        ValueSet vs = valueSets.containsKey(vsu) ? valueSets.get(vsu).getResource() : null;
+        if (vs != null) {
+          vsu = makeR5Url(vsu);
+          ed.getBinding().setValueSet(vsu);
+          if (!context.hasResource(ValueSet.class, vsu)) {
+            vs.setUrl(removeVersion(vsu));
+            loadValueSet(vs, context, valueSets, codeSystems);
+          }
+        }
+      }
+    }
+  }
+
+  private String removeVersion(String url) {
+    if (url.contains("|")) {
+      url = url.substring(0, url.indexOf("|"));
+    }
+    return url;
+  }
+
+  private String makeR5Url(String url) {
+    return url.replace("/fhir/", "/fhir/5.0/");
+  }
+
+  private void loadValueSet(ValueSet vs, IWorkerContext context, Map<String, Loadable<ValueSet>> valueSets, Map<String, Loadable<CodeSystem>> codeSystems) throws FHIRFormatError, FileNotFoundException, IOException {
+    context.getManager().cacheResourceFromPackage(vs, vs.getSourcePackage());
+    for (ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
+      for (CanonicalType t : inc.getValueSetList()) {
+        String vsu = t.getValue();
+        ValueSet vsi = valueSets.containsKey(vsu) ? valueSets.get(vsu).getResource() : null;
+        if (vsi != null) {
+          vsu = makeR5Url(vsu);
+          t.setValue(vsu);
+          vsi.setUrl(vsu);
+          if (!context.hasResource(ValueSet.class, vsu)) {
+            loadValueSet(vsi, context, valueSets, codeSystems);
+          }
+        }
+      }
+      if (inc.hasSystem()) {
+        CodeSystem cs;
+        if (inc.hasVersion()) {
+          cs = codeSystems.containsKey(inc.getSystem()+"|"+inc.getVersion()) ? codeSystems.get(inc.getSystem()+"|"+inc.getVersion()).getResource() : null;
+        } else {
+          cs = codeSystems.containsKey(inc.getSystem()) ? codeSystems.get(inc.getSystem()).getResource() : null;
+        }
+        if (cs != null) {
+          String csu = makeR5Url(inc.getSystem());
+          cs.setUrl(csu);
+          inc.setSystem(csu);
+          if (!context.hasResource(CodeSystem.class, csu)) {
+            context.getManager().cacheResourceFromPackage(cs, cs.getSourcePackage());
+          }
+        }
+      }
+    }
+  }
+
+  private boolean survivesStrippingTypes(StructureDefinition sd, IWorkerContext context, List<String> typeNames) {
+    for (ElementDefinition ed : sd.getDifferential().getElementList()) {
+      stripTypes(ed, context, typeNames);
+    }
+    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
+      if (!stripTypes(ed, context, typeNames)) {
+        return false;
+      }
+    }  
+    return true;
+  }
+
+  private boolean stripTypes(ElementDefinition ed, IWorkerContext context, List<String> typeNames) {
+    if (!ed.getPath().contains(".") || !ed.hasType()) {
+      return true;
+    }
+    ed.getTypeList().removeIf(tr -> !typeNames.contains(tr.getWorkingCode()));
+    if (!ed.hasType()) {
+      return false;
+    }
+    for (TypeRefComponent tr : ed.getTypeList()) {
+      if (tr.hasTargetProfile()) {
+        tr.getTargetProfileList().removeIf(n -> !context.hasResource(StructureDefinition.class, n.asStringValue()));
+        if (!tr.hasTargetProfile()) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  public BasePackageCacheManager getPcm() {
+    return pcm;
+  }
+
+  public int getCount() {
+    return count;
+  }
+
+  public byte[] getMap() throws IOException {
+   return pckCore.hasFile("other", "spec.internals") ?  FileUtilities.streamToBytes(pckCore.load("other", "spec.internals")) : null;
+  }
+
+  public NpmPackage getPckCore() {
+    return pckCore;
+  }
+
+
+
+  
+}

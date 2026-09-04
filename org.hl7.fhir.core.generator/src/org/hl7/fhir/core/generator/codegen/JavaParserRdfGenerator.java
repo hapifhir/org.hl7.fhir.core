@@ -57,7 +57,7 @@ public class JavaParserRdfGenerator extends JavaBaseGenerator {
         regt.append("    } else if (value instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(parent, parentType, name, ("+analysis.getClassName()+")value, index);\r\n");
       }
       if (analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE) {
-        reg.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(parent, null, \""+analysis.getName()+"\", ("+analysis.getClassName()+")resource, -1);\r\n");
+        reg.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(parent, null, \""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+")resource, -1);\r\n");
       }
     }
   }
@@ -67,6 +67,7 @@ public class JavaParserRdfGenerator extends JavaBaseGenerator {
     template = template.replace("{{jid}}", jid);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
+    template = template.replace("{{generated}}", generatedAnnotationValue());
 
     template = template.replace("{{composer}}", composer.toString());
     template = template.replace("{{compose-resource}}", reg.toString());
@@ -104,7 +105,7 @@ public class JavaParserRdfGenerator extends JavaBaseGenerator {
     composer.append("    else {\r\n");
     composer.append("      t = parent.predicate(\"fhir:\"+name,index > -1);\r\n");
     composer.append("    }\r\n");
-    composer.append("    compose"+ti.getAncestorName()+"(t, \""+ti.getDefn().getName()+"\", name, element, index);\r\n");
+    composer.append("    compose"+ti.getAncestorName()+"(t, \""+escapeJavaString(ti.getDefn().getName())+"\", name, element, index);\r\n");
     if (tn.equals("Coding")) 
       composer.append("    decorateCoding(t, element);\r\n");
     else if (tn.equals("CodeableConcept")) 
@@ -178,16 +179,17 @@ public class JavaParserRdfGenerator extends JavaBaseGenerator {
     if (ed.unbounded()) {
 //      if (gname.endsWith("Element()") && !gname.equals("getElement()"))
 //        gname = gname.substring(0, gname.length()-9)+"()";
+      gname = gname.substring(0, gname.length()-2)+"List()";
       composer.append("    for (int i = 0; i < element."+gname+".size(); i++) {\r\n");
-      composer.append("      compose"+pfx+tname+"(t, \""+ti.getName()+"\", \""+name+"\", element."+gname+".get(i), i);\r\n");
+      composer.append("      compose"+pfx+tname+"(t, \""+escapeJavaString(ti.getName())+"\", \""+escapeJavaString(name)+"\", element."+gname+".get(i), i);\r\n");
       composer.append("    }\r\n");
     } else if (inh != null && inh.unbounded()) {
       composer.append("    if (element.has"+gname.substring(3).replace("ReferenceElement_", "ReferenceElement")+") {\r\n");
-      composer.append("      compose"+pfx+tname+"(t, \""+ti.getName()+"\", \""+name+"\", element."+gname.replace("()", "FirstRep()")+", -1);\r\n");
+      composer.append("      compose"+pfx+tname+"(t, \""+escapeJavaString(ti.getName())+"\", \""+escapeJavaString(name)+"\", element."+gname.replace("()", "FirstRep()")+", -1);\r\n");
       composer.append("    }\r\n");
     } else {
       composer.append("    if (element.has"+gname.substring(3).replace("ReferenceElement_", "ReferenceElement")+") {\r\n");
-      composer.append("      compose"+pfx+tname+"(t, \""+ti.getName()+"\", \""+name+"\", element."+gname+", -1);\r\n");
+      composer.append("      compose"+pfx+tname+"(t, \""+escapeJavaString(ti.getName())+"\", \""+escapeJavaString(name)+"\", element."+gname+", -1);\r\n");
       composer.append("    }\r\n");
     }
   }

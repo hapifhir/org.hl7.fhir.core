@@ -118,14 +118,25 @@ public class TxTesterScrubbers {
     }
   }
 
+  /**
+   * OperationOutcome.issue.diagnostics is server specific detail -- an internal message, a
+   * stack location, a request id -- and is never part of what a test asserts. It is
+   * stripped outright here so that no expectation can depend on it, and so that servers are
+   * free to put whatever they find useful in it. Everything a test needs to see about an
+   * issue belongs in details.text (and the tx-issue-type coding in details.coding).
+   *
+   * An issue that carried nothing but diagnostics would say nothing at all once it is
+   * stripped, so those are dropped -- but only while at least one issue survives, since an
+   * OperationOutcome with no issues is not valid.
+   */
   public static void scrubOperationOutcome(OperationOutcome po, boolean tight) {
     if (po != null) {
       scrubDomainResource(po, tight);
-      po.getIssue().removeIf(i -> i.hasDiagnostics() && !i.hasDetails());
+      if (po.getIssue().size() > 1) {
+        po.getIssue().removeIf(i -> i.hasDiagnostics() && !i.hasDetails());
+      }
       for (OperationOutcomeIssueComponent iss : po.getIssue()) {
-        if (iss.hasDiagnostics() && !iss.getDiagnostics().toLowerCase().contains("x-request-id")) {
-          iss.setDiagnostics(null);
-        }
+        iss.setDiagnostics(null);
       }
     }
   }

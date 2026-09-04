@@ -1457,7 +1457,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         }
         if (hasRulesElement() || hasOrdered()) {
           if (hasRulesElement() && hasOrdered()) {
-            b.append((getOrdered() ? "orderer" : "unordered")+" and " +getRules().toCode()+", by");            
+            b.append((getOrdered() ? "ordered" : "unordered")+" and " +getRules().toCode()+", by");
           } else if (hasRules()) {
             b.append(getRules().toCode()+", by");
           } else if (getOrdered()) {

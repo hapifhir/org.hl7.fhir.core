@@ -1,6 +1,6 @@
 package org.hl7.fhir.r4.terminologies;
 
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -60,7 +60,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-@MarkedToMoveToAdjunctPackage
+
 public interface ValueSetExpanderFactory {
   public ValueSetExpander getExpander();
 }

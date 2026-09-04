@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------------
-{"hierarchical" : true, "valueSet" :{
+{"hierarchical" : false, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : true,
@@ -47,13 +47,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:91508cb0-0112-45d0-9373-ad12b50081af",
-    "timestamp" : "2026-07-22T20:15:51.904Z",
+    "identifier" : "urn:uuid:2f99c066-bf65-4e72-8bd5-0866816980ab",
+    "timestamp" : "2026-08-31T05:39:56.294Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : false
+      "valueBoolean" : true
     },
     {
       "name" : "includeDefinition",
@@ -116,7 +116,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : true, "valueSet" :{
+{"hierarchical" : false, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : true,
@@ -137,13 +137,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:ccf34a7f-11c7-4a6a-a383-9fddf4d982ad",
-    "timestamp" : "2026-07-22T20:15:52.759Z",
+    "identifier" : "urn:uuid:07602ee5-5abd-400f-8a55-71b15df6853a",
+    "timestamp" : "2026-08-31T05:39:56.507Z",
     "total" : 8,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : false
+      "valueBoolean" : true
     },
     {
       "name" : "includeDefinition",
@@ -206,7 +206,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : true, "valueSet" :{
+{"hierarchical" : false, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -254,13 +254,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:34c6d40d-bd9b-46df-9b78-4277700f396e",
-    "timestamp" : "2026-07-22T20:15:56.988Z",
+    "identifier" : "urn:uuid:188a1a39-3319-47bb-8d75-6af6713fd036",
+    "timestamp" : "2026-08-31T05:39:57.557Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : false
+      "valueBoolean" : true
     },
     {
       "name" : "includeDefinition",
@@ -336,7 +336,7 @@ v: {
   "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.82'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#LP43571-6 (\"undefined\")]\"\n6ms http://loinc.org/vs|2.82: Check \"http://loinc.org#LP43571-6\"\n10ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n10ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n10ms http://loinc.org/vs|2.82: Code \"LP43571-6\" not found in http://loinc.org|2.82: undefined",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#LP43571-6 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.82: Check \"http://loinc.org#LP43571-6\"\n8ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n8ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n8ms http://loinc.org/vs|2.82: Code \"LP43571-6\" not found in http://loinc.org|2.82: undefined",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -363,7 +363,7 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : true, "valueSet" :{
+{"hierarchical" : false, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -383,13 +383,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:0fdd4b07-41bc-4435-8d1e-1592581d849a",
-    "timestamp" : "2026-07-22T20:16:02.228Z",
+    "identifier" : "urn:uuid:391d233a-cf16-42f1-a605-889e99ebd06c",
+    "timestamp" : "2026-08-31T05:39:59.198Z",
     "total" : 1,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : false
+      "valueBoolean" : true
     },
     {
       "name" : "includeDefinition",
@@ -429,14 +429,14 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.82",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n5ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#38269-7 (\"undefined\")]\"\n8ms http://loinc.org/vs|2.82: Check \"http://loinc.org#38269-7\"\n12ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n13ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n13ms http://loinc.org/vs|2.82: Code \"38269-7\" found in http://loinc.org|2.82",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#38269-7 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.82: Check \"http://loinc.org#38269-7\"\n9ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n9ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n9ms http://loinc.org/vs|2.82: Code \"38269-7\" found in http://loinc.org|2.82",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
 
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : true, "valueSet" :{
+{"hierarchical" : false, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : true,
@@ -472,13 +472,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:8d7fb471-984a-42f9-bd01-a3fc02b81679",
-    "timestamp" : "2026-07-22T20:16:14.958Z",
+    "identifier" : "urn:uuid:bcc0e5b1-2313-4771-9994-37fd0420a776",
+    "timestamp" : "2026-08-31T05:40:02.574Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : false
+      "valueBoolean" : true
     },
     {
       "name" : "includeDefinition",
@@ -526,7 +526,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : true, "valueSet" :{
+{"hierarchical" : false, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : true,
@@ -566,13 +566,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:7d2df2f7-82fe-4c72-afcd-4ec019af9b67",
-    "timestamp" : "2026-07-22T22:06:54.111Z",
+    "identifier" : "urn:uuid:056d9038-066d-4daf-b947-1ba9b3379b35",
+    "timestamp" : "2026-09-01T01:03:28.078Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : false
+      "valueBoolean" : true
     },
     {
       "name" : "includeDefinition",
@@ -625,7 +625,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : true, "valueSet" :{
+{"hierarchical" : false, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : true,
@@ -657,13 +657,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:82e72cb4-f18b-4139-bd7d-1dfcd74d60f4",
-    "timestamp" : "2026-07-23T01:20:19.084Z",
+    "identifier" : "urn:uuid:b3c7d462-095b-40d2-be3a-eea11798009f",
+    "timestamp" : "2026-09-01T21:37:47.538Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : false
+      "valueBoolean" : true
     },
     {
       "name" : "includeDefinition",
@@ -706,7 +706,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : true, "valueSet" :{
+{"hierarchical" : false, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -746,13 +746,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:a59fcbe5-4347-49c6-ad72-43756d7114b3",
-    "timestamp" : "2026-07-23T11:31:14.799Z",
+    "identifier" : "urn:uuid:734b8828-8a81-481c-990e-9fcf5532a7af",
+    "timestamp" : "2026-09-01T22:16:33.472Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : false
+      "valueBoolean" : true
     },
     {
       "name" : "includeDefinition",
@@ -805,7 +805,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : true, "valueSet" :{
+{"hierarchical" : false, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -841,13 +841,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:560dd596-dd1c-4641-ad83-758937e5c8a3",
-    "timestamp" : "2026-07-27T17:51:31.007Z",
+    "identifier" : "urn:uuid:b3ffff82-8a53-4856-bc67-7ba30a949f8c",
+    "timestamp" : "2026-09-02T00:16:47.786Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : false
+      "valueBoolean" : true
     },
     {
       "name" : "includeDefinition",
@@ -895,7 +895,7 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : true, "valueSet" :{
+{"hierarchical" : false, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
     "inactive" : false,
@@ -926,13 +926,13 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:7b54aad0-f6ed-4a38-9b8f-5a21da755ab9",
-    "timestamp" : "2026-07-28T12:18:54.571Z",
+    "identifier" : "urn:uuid:96bfd5ce-c703-468b-b732-cbb598e48e67",
+    "timestamp" : "2026-09-02T00:21:09.530Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
-      "valueBoolean" : false
+      "valueBoolean" : true
     },
     {
       "name" : "includeDefinition",

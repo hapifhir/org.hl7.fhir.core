@@ -38,7 +38,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * @author graha
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 public class Renderer  {
   
   public static class RenderingStatus {

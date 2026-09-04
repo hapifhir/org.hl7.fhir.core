@@ -52,6 +52,16 @@ import org.hl7.fhir.utilities.CanonicalPair;
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
 public class ConceptMap40_50 {
 
+  // ConceptMap.group.unmapped.valueSet and .relationship are R5; R4/R4B have no
+  // equivalent, so they travel as cross-version extensions and the round trip is lossless.
+  public static final String UNMAPPED_VALUESET_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ConceptMap.group.unmapped.valueSet";
+  public static final String UNMAPPED_RELATIONSHIP_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ConceptMap.group.unmapped.relationship";
+
+  private static final String[] UNMAPPED_IGNORED_EXTENSION_URLS = new String[]{
+    UNMAPPED_VALUESET_EXTENSION_URL,
+    UNMAPPED_RELATIONSHIP_EXTENSION_URL
+  };
+
   public static org.hl7.fhir.r5.model.ConceptMap convertConceptMap(org.hl7.fhir.r4.model.ConceptMap src) throws FHIRException {
     if (src == null)
       return null;
@@ -405,7 +415,7 @@ public class ConceptMap40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, UNMAPPED_IGNORED_EXTENSION_URLS);
     if (src.hasMode())
       tgt.setModeElement(convertConceptMapGroupUnmappedMode(src.getModeElement()));
     if (src.hasCode())
@@ -414,6 +424,10 @@ public class ConceptMap40_50 {
       tgt.setDisplayElement(String40_50.convertString(src.getDisplayElement()));
     if (src.hasUrl())
       tgt.setOtherMapElement(Canonical40_50.convertCanonical(src.getUrlElement()));
+    if (src.hasExtension(UNMAPPED_VALUESET_EXTENSION_URL))
+      tgt.setValueSetElement(Canonical40_50.convertCanonical((org.hl7.fhir.r4.model.CanonicalType) src.getExtensionByUrl(UNMAPPED_VALUESET_EXTENSION_URL).getValue()));
+    if (src.hasExtension(UNMAPPED_RELATIONSHIP_EXTENSION_URL))
+      tgt.setRelationship(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.fromCode(src.getExtensionByUrl(UNMAPPED_RELATIONSHIP_EXTENSION_URL).getValue().primitiveValue()));
     return tgt;
   }
 
@@ -421,7 +435,7 @@ public class ConceptMap40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupUnmappedComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupUnmappedComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, UNMAPPED_IGNORED_EXTENSION_URLS);
     if (src.hasMode())
       tgt.setModeElement(convertConceptMapGroupUnmappedMode(src.getModeElement()));
     if (src.hasCode())
@@ -430,6 +444,10 @@ public class ConceptMap40_50 {
       tgt.setDisplayElement(String40_50.convertString(src.getDisplayElement()));
     if (src.hasOtherMap())
       tgt.setUrlElement(Canonical40_50.convertCanonical(src.getOtherMapElement()));
+    if (src.hasValueSet())
+      tgt.addExtension(UNMAPPED_VALUESET_EXTENSION_URL, Canonical40_50.convertCanonical(src.getValueSetElement()));
+    if (src.hasRelationship())
+      tgt.addExtension(UNMAPPED_RELATIONSHIP_EXTENSION_URL, new org.hl7.fhir.r4.model.CodeType(src.getRelationship().toCode()));
     return tgt;
   }
 

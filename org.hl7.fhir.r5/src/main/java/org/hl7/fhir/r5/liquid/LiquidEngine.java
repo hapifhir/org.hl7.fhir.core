@@ -56,7 +56,7 @@ import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.KeyIssuer;
 import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
@@ -65,7 +65,7 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
-@MarkedToMoveToAdjunctPackage
+
 public class LiquidEngine implements IHostApplicationServices {
 
   public static class LiquidforloopObject extends Base {
@@ -862,7 +862,12 @@ public class LiquidEngine implements IHostApplicationServices {
           String fmt = rubyToJavaDateFormat(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)));
           ZonedDateTime dt = parseArbitraryDateTime(singleString(t));
           try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(fmt);
+            // Locale.ENGLISH, not the JVM default: this is Ruby strftime, and Liquid renders English
+            // month and day names wherever it runs. Without it the output follows the machine's
+            // locale data - and in CLDR, en-AU abbreviates June and July as "June" and "July", so
+            // %b on 2015-07-17 gave "July" rather than "Jul" (the parse formatters below already
+            // pin the locale for exactly this reason)
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(fmt, java.util.Locale.ENGLISH);
             t = List.of(dt.format(formatter));
           } catch (Exception e) {
             throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_BAD_DATE_FORMAT, fmt));

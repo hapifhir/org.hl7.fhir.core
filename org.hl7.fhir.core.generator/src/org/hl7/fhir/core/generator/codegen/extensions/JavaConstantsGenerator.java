@@ -24,7 +24,7 @@ public class JavaConstantsGenerator extends JavaBaseGenerator {
   }
   
   public void generate(StructureDefinition sd, String name, String constName) throws Exception {  
-    src.append("  public static final String EXT_"+constName+" = \""+sd.getUrl()+"\"; // "+sd.getTitle()+"\r\n");
+    src.append("  public static final String EXT_"+constName+" = \""+escapeJavaString(sd.getUrl())+"\"; // "+sanitizeComment(sd.getTitle())+"\r\n");
   }
   
   public void finish() throws Exception {   
@@ -33,6 +33,7 @@ public class JavaConstantsGenerator extends JavaBaseGenerator {
     template = template.replace("{{jid}}", jid);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
+    template = template.replace("{{generated}}", generatedAnnotationValue());
 
     template = template.replace("{{consts}}", src.toString());
     template = template.replace("{{mod}}", genMod());
@@ -50,7 +51,7 @@ public class JavaConstantsGenerator extends JavaBaseGenerator {
   }
 
   public void seeModifier(StructureDefinition sd) {
-    mod.append("\"" + sd.getUrl()+"\"");
+    mod.append("\"" + escapeJavaString(sd.getUrl())+"\"");
   }
   
 }

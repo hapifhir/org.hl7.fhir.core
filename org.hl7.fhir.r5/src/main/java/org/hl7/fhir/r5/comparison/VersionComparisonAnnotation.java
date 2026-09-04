@@ -9,9 +9,9 @@ import org.hl7.fhir.r5.comparison.CanonicalResourceComparer.CanonicalResourceCom
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.utilities.UserDataNames;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@MarkedToMoveToAdjunctPackage
+
+
 public class VersionComparisonAnnotation {
 
   public enum AnotationType {

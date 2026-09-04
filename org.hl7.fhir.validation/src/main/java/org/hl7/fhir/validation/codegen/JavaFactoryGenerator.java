@@ -98,7 +98,7 @@ public class JavaFactoryGenerator extends JavaBaseGenerator {
       }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
         String tn = ((TypeInfo) sd.getUserData("java.type.info")).getName();
-        b.append("        case "+Integer.toString(sd.getName().hashCode())+": return new "+tn+"();\r\n");
+        b.append("        case \""+escapeJavaString(sd.getName())+"\": return new "+tn+"();\r\n");
       }
     }
     

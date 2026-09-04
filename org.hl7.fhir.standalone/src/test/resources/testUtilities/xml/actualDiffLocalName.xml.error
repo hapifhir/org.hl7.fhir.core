@@ -1,0 +1,3 @@
+Names differ at /root
+Expected:"nameSpacedNode" for expected.xml
+Actual  :"wrongNameSpacedNode"

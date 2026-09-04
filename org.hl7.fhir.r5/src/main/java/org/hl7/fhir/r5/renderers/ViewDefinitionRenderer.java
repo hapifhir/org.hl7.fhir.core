@@ -16,7 +16,7 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.sql.Column;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -27,7 +27,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ViewDefinitionRenderer extends ResourceRenderer {
   
   public ViewDefinitionRenderer(RenderingContext context) { 

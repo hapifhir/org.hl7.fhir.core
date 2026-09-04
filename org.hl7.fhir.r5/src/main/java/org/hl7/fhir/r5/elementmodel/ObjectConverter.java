@@ -43,10 +43,10 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Enumerations.QuantityComparator;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 
-@MarkedToMoveToAdjunctPackage
+
+
 public class ObjectConverter  {
 
   private IWorkerContext context;

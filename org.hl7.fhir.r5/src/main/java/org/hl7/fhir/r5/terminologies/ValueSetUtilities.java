@@ -354,6 +354,28 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return p;
   }
 
+  /**
+   * Add another value for a property that may legitimately repeat, instead of replacing the value
+   * already carried.
+   *
+   * <p>{@link #addProperty} is a set: callers such as the label / order / weight handling
+   * deliberately write the code system's value and then let the value set's value replace it. That
+   * is the wrong behaviour when the values are siblings rather than overrides —
+   * {@code CodeSystem.concept.property} is 0..*, and every value belongs in the expansion.
+   *
+   * <p>An identical value already present is not added twice; a repeated identical value in the
+   * source says nothing the expansion does not already carry.
+   */
+  public static org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent addPropertyValue(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, DataType value) {
+    code = defineProperty(vs, url, code);
+    for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent t : ctxt.getProperty()) {
+      if (code.equals(t.getCode()) && t.hasValue() && value != null && t.getValue().equalsDeep(value)) {
+        return t;
+      }
+    }
+    return ctxt.addProperty().setCode(code).setValue(value);
+  }
+
   private static org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent getProperty(List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> list, String code) {
     for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent t : list) {
       if (code.equals(t.getCode())) {
@@ -371,12 +393,18 @@ public class ValueSetUtilities extends TerminologyUtilities {
     }
     for (ValueSetExpansionPropertyComponent p : vs.getExpansion().getProperty()) {
       if (p.hasCode() && p.getCode().equals(code)) {
-        p.setUri(url);
+        if (url != null) {
+          // a code system property need not have a uri, and when it doesn't, the declaration is by
+          // code alone - which must not clear a uri that another source provided
+          p.setUri(url);
+        }
         return code;
       }
     }
     ValueSetExpansionPropertyComponent p = vs.getExpansion().addProperty();
-    p.setUri(url);
+    if (url != null) {
+      p.setUri(url);
+    }
     p.setCode(code);
     return code;  
   }

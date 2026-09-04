@@ -55,7 +55,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.SnomedExpressions;
 import org.hl7.fhir.r5.utils.SnomedExpressions.Expression;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.turtle.Turtle;
@@ -72,7 +72,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
-@MarkedToMoveToAdjunctPackage
+
 public abstract class TurtleParserBase extends ParserBase {
 
   protected String base;
@@ -454,8 +454,8 @@ public abstract class TurtleParserBase extends ParserBase {
       t.linkedPredicate("a", FHIR_BASE_PREFIX+className(element.fhirType()), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
     if (element.hasValue()) {
         String elementLiteral = null;
-        if ("xhtml".equals(element.getType())) {
-          elementLiteral = new XhtmlComposer(XhtmlComposer.XML, false).setCanonical(true).compose(element.getXhtml());;
+        if (element.isXhtml()) {
+          elementLiteral = element.getXhtmlSource(true);
         } else {
           elementLiteral = element.getValue();
         }

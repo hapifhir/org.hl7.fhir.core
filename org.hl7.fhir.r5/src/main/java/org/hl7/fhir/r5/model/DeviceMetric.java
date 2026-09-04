@@ -90,6 +90,19 @@ public class DeviceMetric extends DomainResource {
         else
           throw new FHIRException("Unknown DeviceMetricCalibrationState code '"+codeString+"'");
         }
+      public static boolean isValidCode(String codeString) {
+        if (codeString == null || "".equals(codeString))
+          return false;
+        if ("not-calibrated".equals(codeString))
+          return true;
+        if ("calibration-required".equals(codeString))
+          return true;
+        if ("calibrated".equals(codeString))
+          return true;
+        if ("unspecified".equals(codeString))
+          return true;
+        return false;
+      }
         public String toCode() {
           switch (this) {
             case NOTCALIBRATED: return "not-calibrated";
@@ -204,9 +217,9 @@ public class DeviceMetric extends DomainResource {
          * added to help the parsers with the generic types
          */
         NULL;
-        public static DeviceMetricCalibrationType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
+      public static DeviceMetricCalibrationType fromCode(String codeString) throws FHIRException {
+        if (codeString == null || "".equals(codeString))
+          return null;
         if ("unspecified".equals(codeString))
           return UNSPECIFIED;
         if ("offset".equals(codeString))
@@ -219,7 +232,23 @@ public class DeviceMetric extends DomainResource {
           return null;
         else
           throw new FHIRException("Unknown DeviceMetricCalibrationType code '"+codeString+"'");
-        }
+      }
+      public static boolean isValidCode(String codeString) {
+        if (codeString == null || "".equals(codeString))
+          return false;
+        if ("unspecified".equals(codeString))
+          return true;
+        if ("offset".equals(codeString))
+          return true;
+        if ("gain".equals(codeString))
+          return true;
+        if ("two-point".equals(codeString))
+          return true;
+        if (Configuration.isAcceptInvalidEnums())
+          return false;
+        else
+          throw new FHIRException("Unknown DeviceMetricCalibrationType code '"+codeString+"'");
+      }
         public String toCode() {
           switch (this) {
             case UNSPECIFIED: return "unspecified";
@@ -334,9 +363,9 @@ public class DeviceMetric extends DomainResource {
          * added to help the parsers with the generic types
          */
         NULL;
-        public static DeviceMetricCategory fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
+      public static DeviceMetricCategory fromCode(String codeString) throws FHIRException {
+        if (codeString == null || "".equals(codeString))
+          return null;
         if ("measurement".equals(codeString))
           return MEASUREMENT;
         if ("setting".equals(codeString))
@@ -349,7 +378,23 @@ public class DeviceMetric extends DomainResource {
           return null;
         else
           throw new FHIRException("Unknown DeviceMetricCategory code '"+codeString+"'");
-        }
+      }
+      public static boolean isValidCode(String codeString)  {
+        if (codeString == null || "".equals(codeString))
+          return false;
+        if ("measurement".equals(codeString))
+          return true;
+        if ("setting".equals(codeString))
+          return true;
+        if ("calculation".equals(codeString))
+          return true;
+        if ("unspecified".equals(codeString))
+          return true;
+        if (Configuration.isAcceptInvalidEnums())
+          return false;
+        else
+          throw new FHIRException("Unknown DeviceMetricCategory code '"+codeString+"'");
+      }
         public String toCode() {
           switch (this) {
             case MEASUREMENT: return "measurement";

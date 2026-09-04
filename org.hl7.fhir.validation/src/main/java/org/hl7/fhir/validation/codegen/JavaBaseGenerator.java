@@ -42,15 +42,16 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -60,6 +61,11 @@ public class JavaBaseGenerator extends OutputStreamWriter {
 
   protected Definitions definitions;
   protected Configuration config;
+
+  /** true when generating against the versionless R6+ model (org.hl7.fhir.model) rather than org.hl7.fhir.r5 */
+  protected boolean isR6() {
+    return config.isR6();
+  }
   protected String version;
   protected String genDate;
   protected String packageName;
@@ -610,6 +616,108 @@ public class JavaBaseGenerator extends OutputStreamWriter {
 
   protected boolean isNamedElementExtensions(ElementDefinition ed) {
     return "named-elements".equals(ed.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED));
+  }
+
+  /**
+   * true if the element's (single) type resolves to an abstract class in the set being 
+   * generated. Such a type gets its own xsi:type dispatcher from genInnerAbstract, with 
+   * the same name and signature a type-specifier dispatcher for an element of the type 
+   * would get - so the type-specifier emission is skipped for these elements (the 
+   * abstract dispatcher covers all the concrete descendents)
+   */
+  protected boolean isAbstractGeneratedType(ElementDefinition ed) {
+    if (ed.getType().size() != 1) {
+      return false;
+    }
+    String code = ed.getTypeFirstRep().getWorkingCode();
+    StructureDefinition sd = definitions.getStructures().get(code);
+    if (sd == null) {
+      sd = definitions.getStructures().get("http://hl7.org/fhir/StructureDefinition/"+code);
+    }
+    return sd != null && sd.getAbstract() && !sd.hasUserData(Definitions.CORE_MARKER);
+  }
+
+  /**
+   * true if any element in the generated set carries a type-specifier extension and is 
+   * declared with the given analysis's (abstract) type. For such types the JSON composer's 
+   * type-specifier machinery generates the compose dispatcher (instanceof-based, matching 
+   * the condition-based parse dispatch, with no _type property on the wire), so the generic 
+   * abstract _type-protocol dispatcher must not also be generated - same name and signature
+   */
+  protected boolean isTypeSpecifierTarget(Analysis analysis) {
+    String url = analysis.getStructure().getUrl();
+    for (StructureDefinition sd : definitions.getStructures().getList()) {
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC) && ed.getType().size() == 1 
+            && url.equals(ed.getTypeFirstRep().getWorkingCode())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Get the expansion to enumerate a (required-binding) value set from, for generating an 
+   * enum. In order: an expansion already attached by the loader (UserDataNames.EXPANSION); 
+   * an expansion built directly from the code system definitions in the loaded packages, 
+   * where the compose is simple enough (all-codes or enumerated includes of complete code 
+   * systems, no filters/imports/excludes) - this covers IG-defined enums without a 
+   * terminology server round trip; failing those, a terminology service expansion. 
+   * Returns null if none of these produce an expansion
+   */
+  protected ValueSet expandValueSet(ValueSet vs) {
+    ValueSet vse = (ValueSet) vs.getUserData(UserDataNames.EXPANSION);
+    if (vse == null) {
+      vse = expandFromCodeSystems(vs);
+    }
+    if (vse == null) {
+      ValueSetExpansionOutcome vsex = definitions.getContext().expandVS(vs, true, false);
+      if (vsex.isOk()) {
+        vse = vsex.getValueset();
+      }
+    }
+    return vse;
+  }
+
+  private ValueSet expandFromCodeSystems(ValueSet vs) {
+    if (!vs.hasCompose() || vs.getCompose().hasExclude()) {
+      return null;
+    }
+    ValueSet res = new ValueSet();
+    res.setUrl(vs.getUrl());
+    res.setVersion(vs.getVersion());
+    for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+      if (inc.hasFilter() || inc.hasValueSet() || !inc.hasSystem()) {
+        return null;
+      }
+      CodeSystem cs = definitions.getCodeSystems().get(inc.getSystem());
+      if (cs == null) {
+        cs = definitions.getContext().fetchResource(CodeSystem.class, inc.getSystem());
+      }
+      if (cs == null || cs.getContent() != Enumerations.CodeSystemContentMode.COMPLETE) {
+        return null;
+      }
+      if (inc.hasConcept()) {
+        for (ConceptReferenceComponent c : inc.getConcept()) {
+          ConceptDefinitionComponent d = cs.getDefinitionByCode(c.getCode());
+          res.getExpansion().addContains().setSystem(inc.getSystem()).setCode(c.getCode())
+              .setDisplay(c.hasDisplay() ? c.getDisplay() : (d == null ? null : d.getDisplay()));
+        }
+      } else {
+        addAllCodes(res, cs, inc.getSystem(), cs.getConcept());
+      }
+    }
+    return res.getExpansion().hasContains() ? res : null;
+  }
+
+  private void addAllCodes(ValueSet res, CodeSystem cs, String system, List<ConceptDefinitionComponent> concepts) {
+    for (ConceptDefinitionComponent c : concepts) {
+      if (!CodeSystemUtilities.isNotSelectable(cs, c)) {
+        res.getExpansion().addContains().setSystem(system).setCode(c.getCode()).setDisplay(c.getDisplay());
+      }
+      addAllCodes(res, cs, system, c.getConcept());
+    }
   }
 
   protected Map<String, String> getConcreteDescendents(Analysis analysis, TypeInfo ti) {

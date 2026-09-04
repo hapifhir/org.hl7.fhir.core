@@ -103,7 +103,7 @@ import org.hl7.fhir.r4.utils.formats.CSVWriter;
 import org.hl7.fhir.r4.utils.formats.XLSXWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -141,7 +141,7 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  * @author Grahame
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class ProfileUtilities extends TranslatingUtilities {
 

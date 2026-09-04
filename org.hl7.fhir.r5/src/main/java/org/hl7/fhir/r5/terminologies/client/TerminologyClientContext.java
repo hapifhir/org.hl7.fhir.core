@@ -18,11 +18,11 @@ import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 
-@MarkedToMoveToAdjunctPackage
+
 public class TerminologyClientContext {
   public static final String MIN_TEST_VERSION = "1.6.0";
   public static final String TX_BATCH_VERSION = "1.7.8"; // actually, it's 17.7., but there was an error in the tx.fhir.org code around this
@@ -100,6 +100,14 @@ public class TerminologyClientContext {
   // Lifecycle: set once by shutdown(), never cleared. After shutdown the context
   // must not be used for further requests (see shutdown()).
   private boolean isShutdown;
+  // How many TerminologyClientManagers currently hold this context. One context
+  // object can be in several managers at once, because TerminologyClientManager.copy
+  // shares the server list by reference rather than rebuilding it - so a worker
+  // context built by copying another shares its servers, and its caches, with the
+  // original. The server-side cache belongs to all of them jointly, so it is only
+  // released when the LAST holder lets go (see shutdown()); whichever manager is
+  // torn down first must not pull the cache out from under the others.
+  private int holders = 1;
   private final ILoggingService logger;
 
   protected TerminologyClientContext(ITerminologyClient client, TerminologyCache txCache, boolean master, ILoggingService logger) throws IOException {
@@ -293,20 +301,54 @@ public class TerminologyClientContext {
   }
 
   /**
-   * End this context's use of its server-side cache. If this context started the
-   * cache, it is released via $cache-control?mode=end (best-effort: failures are
-   * ignored, the server times caches out anyway); an adopted cache (see the
-   * constructor) is left alone, because the owning context may still be using it.
+   * Take an additional hold on this context, because another manager is about to
+   * start using it (see TerminologyClientManager.copy). Balanced by one shutdown().
    *
-   * Terminal and idempotent: only the first call has any effect. Repeat calls are
-   * deliberately a no-op rather than an error, because this is reached from
-   * best-effort teardown paths (e.g. BaseWorkerContext.unload()) that must be
-   * safe to run more than once. After shutdown the context must not be used for
-   * further requests: the underlying client still carries the (now released)
-   * cache-id header, so a server would reject them as referencing an unknown cache.
+   * Called by TerminologyClientManager only; a caller that retains without ever
+   * shutting down simply leaves the cache to the server's idle timeout, which is
+   * the safe direction to fail in.
    */
-  public void shutdown() {
+  synchronized void retain() {
     if (isShutdown) {
+      return; // already released - there is nothing left to hold
+    }
+    holders++;
+  }
+
+  /**
+   * Release one hold on this context. The last holder ends the server-side cache;
+   * earlier ones just let go.
+   *
+   * The distinction matters because TerminologyClientManager.copy shares context
+   * objects by reference: a worker context created by copying another has the same
+   * TerminologyClientContext in its manager, and unloading either worker context
+   * calls through to here. Ending the cache on the first call would release a cache
+   * the surviving worker context is still sending the cache-id for, and every
+   * subsequent request would be rejected as referencing an unknown cache - an error
+   * that reads like an expiry but isn't one.
+   *
+   * When this IS the last holder: if this context started the cache, it is released
+   * via $cache-control?mode=end (best-effort: failures are ignored, the server times
+   * caches out anyway); an adopted cache (see the constructor) is left alone, because
+   * the context that owns it may still be using it.
+   *
+   * Idempotent once fully shut down, because this is reached from best-effort
+   * teardown paths (e.g. BaseWorkerContext.unload()) that must be safe to run more
+   * than once - though each MANAGER must call it exactly once, or the count is wrong;
+   * TerminologyClientManager.shutdown() guards that. After the final shutdown the
+   * context must not be used for further requests: the underlying client still
+   * carries the (now released) cache-id header, so a server would reject them as
+   * referencing an unknown cache.
+   */
+  public synchronized void shutdown() {
+    if (isShutdown) {
+      return;
+    }
+    if (holders > 0) {
+      holders--;
+    }
+    if (holders > 0) {
+      // Somebody else is still working with this server. Not ours to close.
       return;
     }
     isShutdown = true;
@@ -318,6 +360,13 @@ public class TerminologyClientContext {
       }
     }
     setTxCaching(false);
+  }
+
+  /**
+   * @return how many managers currently hold this context (test/diagnostic use).
+   */
+  public synchronized int getHolderCount() {
+    return holders;
   }
 
   /**

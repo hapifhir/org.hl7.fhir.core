@@ -152,7 +152,7 @@ public class Analyser {
       return false;
     }
     try {
-      Class.forName("org.hl7.fhir.r5.model.Enumerations$"+name);
+      Class.forName((config.isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.r5.model")+".Enumerations$"+name);
       return true;
     } catch (ClassNotFoundException e) {
       return false;
@@ -191,7 +191,7 @@ public class Analyser {
             EnumInfo ei = new EnumInfo(en); // note: not registered in analysis.getEnums() - no local enum is generated
             ei.setValueSet(cvs);
             cvs.setUserData("java.core.enum", true);
-            tn = "org.hl7.fhir.r5.model.Enumerations."+en;
+            tn = (config.isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.r5.model")+".Enumerations."+en;
             e.setUserData("java.type", "Enumeration<"+tn+">");
             e.setUserData("java.enum", ei);
           }

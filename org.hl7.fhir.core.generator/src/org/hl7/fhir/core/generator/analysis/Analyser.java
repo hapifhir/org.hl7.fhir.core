@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.core.generator.codegen.Configuration;
+import org.hl7.fhir.core.generator.codegen.JavaBaseGenerator;
 import org.hl7.fhir.core.generator.engine.Definitions;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
@@ -18,7 +20,6 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -37,10 +38,16 @@ public class Analyser {
   public Analysis analyse(StructureDefinition sd, Map<String, AnalysisElementInfo> elementInfo) throws Exception {
     Analysis res = new Analysis(definitions, sd);
 
+    // the definitions are produced by the FHIR build and are trusted in practice, but everything 
+    // that becomes a java name is checked anyway - see JavaBaseGenerator.checkJavaIdentifier
+    JavaBaseGenerator.checkJavaIdentifier(sd.getName(), "the name of "+sd.getVersionedUrl());
     if (VersionUtilities.isR4BVer(version)) {
       res.setAncestor(definitions.getStructures().get(getR4bAncestor(sd)));
     } else {
       res.setAncestor(definitions.getStructures().get(sd.getBaseDefinition()));
+    }
+    if (res.getAncestor() != null) {
+      JavaBaseGenerator.checkJavaIdentifier(res.getAncestor().getName(), "the name of the base definition of "+sd.getVersionedUrl());
     }
     res.setAbstract(sd.getAbstract());
     res.setInterface(sd.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-interface"));
@@ -105,6 +112,10 @@ public class Analyser {
       }
     }
     res.removeAll(r);
+    for (ElementDefinition t : res) {
+      // every retained child becomes a field/accessor name in the generated code
+      JavaBaseGenerator.checkJavaIdentifier(JavaBaseGenerator.getElementName(t.getName(), true), "the name of "+t.getPath());
+    }
     return res;
   }
 
@@ -127,6 +138,7 @@ public class Analyser {
         ValueSet vs = definitions.getValuesets().get(cd.getValueSet());   
         if (vs != null) {
           tn = getCodeListType(vs.getName());
+          JavaBaseGenerator.checkJavaIdentifier(tn, "the enum name derived from the name of "+vs.getVersionedUrl());
           EnumInfo ei = analysis.getEnums().get(tn);
           if (ei == null) {
             ei = new EnumInfo(tn);
@@ -153,6 +165,11 @@ public class Analyser {
           tn ="DataType";
         else if (definitions.hasPrimitiveType(tn))
           tn = upFirst(tn)+"Type";
+        if (tn.contains("-")) {
+          tn = tn.replace("-", "_");
+        }
+        // becomes the declared java type of the generated field and its accessors
+        JavaBaseGenerator.checkJavaIdentifier(tn, "the type name derived for "+e.getPath());
         e.setUserData("java.type", tn);
       } else {
         if (e.hasContentReference()) {
@@ -184,6 +201,7 @@ public class Analyser {
             }
             tn = tn + i;
           }
+          JavaBaseGenerator.checkJavaIdentifier(tn, "the type name derived for "+e.getPath());
           e.setUserData("java.type", tn);
 
           tn = upFirst(tn);
@@ -254,8 +272,8 @@ public class Analyser {
   }
 
   protected String getTypename(TypeRefComponent type) throws Exception {
-    if (type.hasExtension(ToolingExtensions.EXT_FHIR_TYPE)) {
-      return type.getExtensionString(ToolingExtensions.EXT_FHIR_TYPE);
+    if (type.hasExtension(ExtensionDefinitions.EXT_FHIR_TYPE)) {
+      return type.getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE);
     } else {
       return getTypeName(type.getCode());
     }

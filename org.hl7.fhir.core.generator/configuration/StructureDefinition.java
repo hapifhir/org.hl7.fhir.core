@@ -43,3 +43,25 @@ public String describeType() {
   public void setGeneratingSnapshot(boolean generatingSnapshot) {
     this.generatingSnapshot = generatingSnapshot;
   }
+
+  public String getBaseDefinitionNoVersion() {
+    String bd = getBaseDefinition();
+    if (bd != null && bd.contains("|")) {
+      bd = bd.substring(0, bd.indexOf("|"));
+    }
+    return bd;
+  }
+
+  private List<String> baseDefinitions;
+  public List<String> getBaseDefinitions() {
+    if (baseDefinitions == null) {
+      baseDefinitions = new ArrayList<>();
+      baseDefinitions.add(getBaseDefinition());
+      for (Extension ex : getExtensionsByUrl(ExtensionDefinitions.EXT_ADDITIONAL_BASE)) {
+        if (ex.hasValue() && ex.getValue().hasPrimitiveValue()) {
+          baseDefinitions.add(ex.getValue().primitiveValue());
+        }
+      }
+    }
+    return baseDefinitions;
+  }

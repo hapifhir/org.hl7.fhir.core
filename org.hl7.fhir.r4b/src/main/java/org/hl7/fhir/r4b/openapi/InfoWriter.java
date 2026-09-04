@@ -1,6 +1,6 @@
 package org.hl7.fhir.r4b.openapi;
 
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -35,7 +35,7 @@ import org.hl7.fhir.utilities.Utilities;
 
 import com.google.gson.JsonObject;
 
-@MarkedToMoveToAdjunctPackage
+
 public class InfoWriter extends BaseWriter {
 
   public InfoWriter(JsonObject object) {

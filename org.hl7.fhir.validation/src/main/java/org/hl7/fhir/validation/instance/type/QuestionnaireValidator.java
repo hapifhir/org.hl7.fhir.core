@@ -593,13 +593,16 @@ public class QuestionnaireValidator extends BaseValidator {
       ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, answers.get(1).line(), answers.get(1).col(), stack.getLiteralPath(), qItem.getRepeats(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEA));
     }
 
+    // maxOccurs and minOccurs are inclusive bounds: a maximum of 2 permits 2 answers, and a
+    // minimum of 2 is satisfied by 2 answers. The condition here is the condition to PASS,
+    // so the comparisons must not be strict (see #2314)
     if (qItem.hasExtension(ExtensionDefinitions.EXT_MAXOCCURS)) {
       int mo = ExtensionUtilities.readIntegerExtension(qItem, ExtensionDefinitions.EXT_MAXOCCURS, -1);
-      ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, stack, mo < 0 || answers.size() < mo, I18nConstants.QUESTIONNAIRE_QR_ITEM_MAX_OCCURS, mo, answers.size()));      
+      ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, stack, mo < 0 || answers.size() <= mo, I18nConstants.QUESTIONNAIRE_QR_ITEM_MAX_OCCURS, mo, answers.size()));      
     }
     if (qItem.hasExtension(ExtensionDefinitions.EXT_MINOCCURS)) {
       int mo = ExtensionUtilities.readIntegerExtension(qItem, ExtensionDefinitions.EXT_MINOCCURS, -1);
-      ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, stack, mo < 0 || answers.size() > mo, I18nConstants.QUESTIONNAIRE_QR_ITEM_MIN_OCCURS, mo, answers.size()));      
+      ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, stack, mo < 0 || answers.size() >= mo, I18nConstants.QUESTIONNAIRE_QR_ITEM_MIN_OCCURS, mo, answers.size()));      
     }
     
     int i = 0;
@@ -1155,7 +1158,7 @@ public class QuestionnaireValidator extends BaseValidator {
         vdt.setSystem(v.getNamedChildValue("system"));
         vdt.setCode(v.getNamedChildValue("code"));
         if (v.hasChild("comparator")) {
-          vdt.setComparator(QuantityComparator.valueOf(v.getNamedChildValue("comparator")));
+          vdt.setComparator(QuantityComparator.fromCode(v.getNamedChildValue("comparator")));
         }
 
         

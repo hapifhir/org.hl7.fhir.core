@@ -18,7 +18,7 @@ import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.utilities.UserDataNames;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -46,7 +46,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
  *    * when done, call finish(WorkContext)
  */
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class Runner implements IHostApplicationServices {
   
@@ -538,15 +538,21 @@ public class Runner implements IHostApplicationServices {
       if (ref !=  null) {
         Base target = provider.resolveReference(rootResource, ref, rt);
         if (target != null) {
-          if (!res.hasUserData(UserDataNames.Storage_key)) {
+          // The cache slot has to be per type specifier, not one slot on the Reference: the same
+          // Reference can be asked for getReferenceKey(), getReferenceKey(Patient) and
+          // getReferenceKey(Observation) in one view, and those do not all resolve to the same
+          // target - or to a target at all. A single slot returned whichever key was calculated
+          // first for all of them
+          String slot = rt == null ? UserDataNames.Storage_key : UserDataNames.Storage_key+"."+rt;
+          if (!res.hasUserData(slot)) {
             String key = storage.getKeyForTargetResource(target);
             if (key == null) {
-              throw new FHIRException("Unidentified resource: "+res.fhirType()+"/"+res.getIdBase());
+              throw new FHIRException("Unidentified resource: "+target.fhirType()+"/"+target.getIdBase());
             } else {
-              res.setUserData(UserDataNames.Storage_key, key);
+              res.setUserData(slot, key);
             }
           }
-          base.add(new StringType(res.getUserString(UserDataNames.Storage_key)));
+          base.add(new StringType(res.getUserString(slot)));
         }
       }
     }

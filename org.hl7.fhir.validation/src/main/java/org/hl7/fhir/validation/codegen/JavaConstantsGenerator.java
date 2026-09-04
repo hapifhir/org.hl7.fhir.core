@@ -38,6 +38,12 @@ public class JavaConstantsGenerator extends JavaBaseGenerator {
     
     String template = config.getAdornments().get("Constants");
     template = template.replace("{{pid}}", packageName);
+    // the first entry in the packages list is the (primary) package these definitions were loaded from (id#version)
+    String npmName = definitions.getPackages().isEmpty() ? "" : definitions.getPackages().get(0);
+    if (npmName.contains("#")) {
+      npmName = npmName.substring(0, npmName.indexOf("#"));
+    }
+    template = template.replace("{{package-name}}", npmName);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
     template = template.replace("{{generated}}", generatedAnnotationValue());

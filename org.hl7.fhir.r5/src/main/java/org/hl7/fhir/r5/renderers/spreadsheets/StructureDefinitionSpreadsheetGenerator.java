@@ -44,7 +44,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextCompo
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTAutoFilter;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCustomFilter;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCustomFilters;
@@ -53,7 +53,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFilters;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.STFilterOperator;
 
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
   private XmlParser xml = new XmlParser();

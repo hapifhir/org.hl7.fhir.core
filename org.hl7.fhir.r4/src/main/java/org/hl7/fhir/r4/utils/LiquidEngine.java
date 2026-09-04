@@ -45,11 +45,11 @@ import org.hl7.fhir.r4.fhirpath.FHIRPathEngine.ExpressionNodeWithOffset;
 import org.hl7.fhir.r4.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 
-@MarkedToMoveToAdjunctPackage
+
 public class LiquidEngine implements IHostApplicationServices {
 
   public interface ILiquidEngineIcludeResolver {

@@ -1,6 +1,6 @@
 package org.hl7.fhir.r4b.openapi;
 
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -33,7 +33,7 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 import com.google.gson.JsonObject;
 
-@MarkedToMoveToAdjunctPackage
+
 public class HeaderWriter extends ParameterWriter {
 
   public HeaderWriter(JsonObject object) {

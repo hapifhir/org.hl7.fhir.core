@@ -29,7 +29,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
-@MarkedToMoveToAdjunctPackage
+
 public class TerminologyClientManager {
 
   private ImplicitValueSets implicitValueSets;
@@ -154,6 +154,12 @@ public class TerminologyClientManager {
 
   private int ecosystemfailCount;
 
+  // Set once by shutdown(). A manager must release its hold on each server context
+  // exactly once, or the holder count those contexts keep goes wrong and a shared
+  // cache is closed while another manager is still using it - so repeat shutdowns
+  // (unload() is a best-effort path that may run more than once) do nothing here.
+  private boolean isShutdown;
+
   public TerminologyClientManager(ITerminologyClientFactory factory, ILoggingService logger) {
     super();
     this.factory = factory;
@@ -161,7 +167,17 @@ public class TerminologyClientManager {
     implicitValueSets = new ImplicitValueSets(null);
   }
 
+  /**
+   * Adopt another manager's servers. Note that this shares the server contexts by
+   * reference - it does not build new ones - so afterwards both managers are using
+   * the same connections and the same server-side terminology caches. Each context
+   * is retained here so it knows it now has two holders, and only releases its
+   * cache when the last of them shuts down (see TerminologyClientContext.shutdown).
+   */
   public void copy(TerminologyClientManager other) {
+    for (TerminologyClientContext server : other.serverList) {
+      server.retain();
+    }
     serverList.addAll(other.serverList);
     serverMap.putAll(other.serverMap);
     resMap.putAll(other.resMap);
@@ -604,11 +620,18 @@ public class TerminologyClientManager {
   }
 
   /**
-   * Shut down every server context, releasing owned server caches (best-effort),
-   * e.g. on worker context unload. Idempotent; the contexts must not be used for
-   * further requests afterwards.
+   * Release this manager's hold on every server context, e.g. on worker context
+   * unload. A context shared with another manager (see copy()) keeps working for
+   * that manager; a context nobody else holds releases its owned server cache
+   * (best-effort). Idempotent, and it must be: releasing twice would make a shared
+   * context think it had lost a holder it never had. Once this manager has shut
+   * down, its contexts must not be used for further requests.
    */
   public void shutdown() {
+    if (isShutdown) {
+      return;
+    }
+    isShutdown = true;
     for (TerminologyClientContext server : serverList) {
       server.shutdown();
     }
@@ -643,6 +666,12 @@ public class TerminologyClientManager {
   public TerminologyClientContext setMasterClient(ITerminologyClient client, boolean useEcosystem) throws IOException {
     this.useEcosystem = useEcosystem;
     TerminologyClientContext terminologyClientContext = new TerminologyClientContext(client, cache, true, logger);
+    // Note: the cleared contexts are deliberately NOT released here. Releasing one
+    // that turned out to be the last holder would end its cache - and if it shared
+    // this client, the context just constructed above has already adopted that very
+    // cache-id from the client's header, so we would be closing the cache we are
+    // about to use. Leaving the hold means an abandoned cache lives until the
+    // server's idle timeout instead, which is the harmless direction to be wrong in.
     serverList.clear();
     serverList.add(terminologyClientContext);
     serverMap.put(client.getAddress(), terminologyClientContext);

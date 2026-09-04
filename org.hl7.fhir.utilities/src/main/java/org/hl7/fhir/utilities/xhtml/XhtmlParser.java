@@ -1004,7 +1004,7 @@ public class XhtmlParser {
   private String readUntil(char ch) throws IOException
   {
     StringBuilder s = new StringBuilder();
-    while (peekChar() != 0 && peekChar() != ch)
+    while (peekChar() != END_OF_CHARS && peekChar() != ch)
       s.append(readChar());
     readChar();
     return s.toString();
@@ -1014,7 +1014,7 @@ public class XhtmlParser {
   private String readUntil(String sc) throws IOException
   {
     StringBuilder s = new StringBuilder();
-    while (peekChar() != 0 && sc.indexOf(peekChar()) == -1)
+    while (peekChar() != END_OF_CHARS && sc.indexOf(peekChar()) == -1)
       s.append(readChar());
     readChar();
     return s.toString();

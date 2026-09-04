@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.10.3-SNAPSHOT</version>
+    <version>6.10.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -25,8 +25,8 @@
         <guava_version>32.0.1-jre</guava_version>
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>8.10.0</hapi_fhir_version>
-        <validator_test_case_version>1.7.67</validator_test_case_version>
-        <jackson_version>2.22.1</jackson_version>
+        <validator_test_case_version>1.7.69</validator_test_case_version>
+        <jackson_version>2.22.2</jackson_version>
         <jackson_annotations_version>2.22</jackson_annotations_version>
         <junit_jupiter_version>5.14.0</junit_jupiter_version>
         <junit_platform_launcher_version>1.14.0</junit_platform_launcher_version>
@@ -49,10 +49,13 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven-checkstyle-version>3.6.0</maven-checkstyle-version>
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
-        <logback.version>1.5.37</logback.version>
+        <logback.version>1.6.3</logback.version>
         <log4jVersion>2.26.1</log4jVersion>
-        <okio.version>3.16.4</okio.version>
+        <okio.version>3.18.1</okio.version>
         <surefire.native.access.arg/>
+        <opentelemetry.version>1.65.0</opentelemetry.version>
+        <opentelemetry-testing.version>2.31.1-alpha</opentelemetry-testing.version>
+        <opentelemetry-instrumentation-annotations.version>2.31.1</opentelemetry-instrumentation-annotations.version>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -72,12 +75,18 @@
         <module>org.hl7.fhir.r4b</module>
         <module>org.hl7.fhir.r5</module>
         <module>org.hl7.fhir.convertors</module>
+        <!-- org.hl7.fhir.core.generator is deliberately NOT a module: it is an internal R6 code
+             generation tool that is never published and is only ever run by hand. Import it in an
+             IDE by opening org.hl7.fhir.core.generator/pom.xml as its own maven project - see that
+             module's readme.md. -->
         <module>org.hl7.fhir.validation</module>
         <module>org.hl7.fhir.validation.cli</module>
         <!-- The report project exists only to aggregate the test results from the other projects into a central report. -->
         <module>org.hl7.fhir.report</module>
         <module>org.hl7.fhir.model</module>
+        <module>org.hl7.fhir.services</module>
         <module>org.hl7.fhir.support</module>
+        <module>org.hl7.fhir.standalone</module>
     </modules>
 
     <repositories>
@@ -321,7 +330,7 @@
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib</artifactId>
-                <version>2.4.0</version>
+                <version>2.4.10</version>
             </dependency>
 
             <dependency>
@@ -409,30 +418,31 @@
                 <scope>provided</scope> <!--  available at compile time and test time, but not bundled into the jar. Maven assumes the runtime environment will provide it -->
                 <optional>true</optional> <!-- prevents the dependency from being transitively inherited by downstream consumers -->
             </dependency>
+            <!-- OpenTelemetry - this is inherited through our parent pom and is not used internally -->
             <dependency>
                 <groupId>io.opentelemetry.javaagent</groupId>
                 <artifactId>opentelemetry-testing-common</artifactId>
-                <version>2.27.0-alpha</version>
+                <version>${opentelemetry-testing.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry.javaagent</groupId>
                 <artifactId>opentelemetry-agent-for-testing</artifactId>
-                <version>2.27.0-alpha</version>
+                <version>${opentelemetry-testing.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry.instrumentation</groupId>
                 <artifactId>opentelemetry-instrumentation-annotations</artifactId>
-                <version>2.27.0</version>
+                <version>${opentelemetry-instrumentation-annotations.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry</groupId>
                 <artifactId>opentelemetry-api</artifactId>
-                <version>1.62.0</version>
+                <version>${opentelemetry.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry</groupId>
                 <artifactId>opentelemetry-context</artifactId>
-                <version>1.62.0</version>
+                <version>${opentelemetry.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
