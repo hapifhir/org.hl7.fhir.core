@@ -2,12 +2,14 @@ package org.hl7.fhir.validation.tests;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Set;
 
-import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
-import org.everit.json.schema.loader.SchemaLoader;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersion;
+import com.networknt.schema.ValidationMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,8 +17,10 @@ import org.junit.jupiter.api.Test;
 
 public class JsonSchemaTests {
 
-  static private org.everit.json.schema.Schema sFhir;
-  static private org.everit.json.schema.Schema sTest;
+  private static final ObjectMapper MAPPER = new ObjectMapper();
+
+  static private JsonSchema sFhir;
+  static private JsonSchema sTest;
 
   public static final String TEST_SCHEMA = "{\r\n" +
     "  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\r\n" +
@@ -130,33 +134,29 @@ public class JsonSchemaTests {
     if (sFhir == null) {
 //      String path = TestUtilities.resourceNameToFile("fhir.schema.json"); // todo... what should this be?
 //      String source = FileUtilities.fileToString(path);
-//      JSONObject rawSchema = new JSONObject(new JSONTokener(source));
-//      sFhir = SchemaLoader.load(rawSchema);
-      JSONObject rawSchema = new JSONObject(new JSONTokener(TEST_SCHEMA));
-      sTest = SchemaLoader.load(rawSchema);
+//      JsonNode rawSchema = MAPPER.readTree(source);
+//      sFhir = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V6).getSchema(rawSchema);
+      JsonNode rawSchema = MAPPER.readTree(TEST_SCHEMA);
+      sTest = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V6).getSchema(rawSchema);
     }
   }
 
-  private boolean validateJson(String source, Schema schema) throws FileNotFoundException, IOException {
-    JSONObject jo = new JSONObject(source); // jo = (JsonObject) new com.google.gson.JsonParser().parse(source);
-    try {
-      schema.validate(jo);
-      return true;
-    } catch (ValidationException e) {
-      System.out.println(e.getMessage());
+  private boolean validateJson(String source, JsonSchema schema) throws IOException {
+    JsonNode node = MAPPER.readTree(source);
+    Set<ValidationMessage> messages = schema.validate(node);
+    if (!messages.isEmpty()) {
+      messages.forEach(m -> System.out.println(m.getMessage()));
       return false;
     }
-//        e.getCausingExceptions().stream()
-////            .map(ValidationException::getMessage)
-////            .forEach(System.out::println);
+    return true;
   }
 
 
-  private void pass(String source, Schema schema) throws FileNotFoundException, IOException {
+  private void pass(String source, JsonSchema schema) throws FileNotFoundException, IOException {
     Assertions.assertTrue(validateJson(source, schema));
   }
 
-  private void fail(String source, Schema schema) throws FileNotFoundException, IOException {
+  private void fail(String source, JsonSchema schema) throws FileNotFoundException, IOException {
     Assertions.assertFalse(validateJson(source, schema));
   }
 
