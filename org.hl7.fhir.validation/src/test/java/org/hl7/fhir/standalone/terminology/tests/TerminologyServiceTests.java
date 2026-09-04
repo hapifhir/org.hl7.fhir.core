@@ -129,7 +129,6 @@ private static TxTestData testData;
 
     ValidationEngine engine = new ValidationEngine(this.baseEngine);
     for (String s : setup.getSuite().forceArray("setup").asStrings()) {
-      // System.out.println(s);
       Resource res = loadResource(s);
       engine.seeResource(res);
     }
