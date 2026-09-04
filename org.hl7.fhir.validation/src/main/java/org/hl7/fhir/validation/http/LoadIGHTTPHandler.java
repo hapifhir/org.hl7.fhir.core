@@ -90,7 +90,10 @@ class LoadIGHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     if (lower.endsWith(".tgz") || lower.endsWith(".zip") || lower.endsWith(".pack")) {
       return false;
     }
-    if (!versionLessSrc.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT)) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored package name pattern, safe
+    boolean matchesPackageVersionRegex = versionLessSrc.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT);
+    if (!matchesPackageVersionRegex) {
       return false;
     }
     try {
