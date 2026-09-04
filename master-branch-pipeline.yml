@@ -20,6 +20,7 @@ parameters:
         - org.hl7.fhir.r5
         - org.hl7.fhir.model
         - org.hl7.fhir.support
+        - org.hl7.fhir.standalone
         - org.hl7.fhir.convertors
         - org.hl7.fhir.validation
         - org.hl7.fhir.validation.cli
@@ -38,6 +39,7 @@ parameters:
         - r5
         - model
         - support
+        - standalone
         - convertors
         - validation
 
