@@ -234,6 +234,13 @@ public class ProfileBasedFactory {
           if (val == null && data != null) { 
             val = getPrimitiveValue(ls, b.fhirType(), path, pe.path(), pe.definition().getId(), pe.definition().getPath());
           }
+          if (val != null && "base64Binary".equals(b.fhirType())) {
+            try {
+              java.util.Base64.getDecoder().decode(val);
+            } catch (IllegalArgumentException e) {
+              val = null; // not valid Base64; fall through and generate a conformant value instead
+            }
+          }
           if (val == null && pe.valueSet() != null) {
             ValueSetExpansionContainsComponent cc = doExpansion(ls, pe.valueSet());
             if (cc != null) {
@@ -558,6 +565,11 @@ public class ProfileBasedFactory {
   private String getPrimitiveValue(LogSet ls, String fhirType, String... ids) {
     JsonObject entry = findMatchingEntry(ls, ids);
     if (entry != null) {
+      if (entry.has("value")) {
+        String val = entry.asString("value");
+        ls.others.add("literal value = '"+val+"'");
+        return val;
+      }
       JsonElement expression = entry.get("expression");
       if (expression == null || !expression.isJsonPrimitive() || Utilities.noString(expression.asString())) {
         ls.others.add("Found an entry for "+entry.asString("path")+" but it had no expression");
@@ -614,9 +626,13 @@ public class ProfileBasedFactory {
       } else {
         for (JsonObject src : a.asJsonObjects()) {
           if (!src.has("name")) {
-            throw new FHIRException("Found an entry for "+entry.asString("path")+" but it had no proeprty name");            
-          } 
-          result.put(src.asString("name"), evaluateExpression(ls.others, src.get("expression"), src.asString("name")));
+            throw new FHIRException("Found an entry for "+entry.asString("path")+" but it had no property name");
+          }
+          if (src.has("value")) {
+            result.put(src.asString("name"), src.asString("value"));
+          } else {
+            result.put(src.asString("name"), evaluateExpression(ls.others, src.get("expression"), src.asString("name")));
+          }
         }
       }
     }
