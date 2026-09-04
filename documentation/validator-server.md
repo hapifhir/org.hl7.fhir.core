@@ -102,6 +102,7 @@ the HTTP status.
 | POST | `/snapshot` | Generate the snapshot for a StructureDefinition |
 | POST | `/narrative` | Generate the narrative for a resource |
 | POST | `/transform` | Run a StructureMap over a resource |
+| POST | `/fml` | Parse FHIR Mapping Language into a StructureMap |
 | GET | `/compile` | Fetch a StructureMap by canonical URL |
 | GET | `/txTest` | Run one terminology ecosystem test against a server |
 | POST | `/stop` | Shut the server down |
@@ -259,6 +260,19 @@ curl 'http://localhost:8080/compile?url=http://example.org/StructureMap/Example'
 ```
 
 `/compile` does not check the HTTP method, so POST and other methods behave the same as GET.
+
+### POST /fml
+
+Parses FHIR Mapping Language source into a StructureMap and returns it, serialised for the FHIR
+version the engine is running rather than for R5. Nothing is registered - the result is returned
+to the caller.
+
+```sh
+curl -X POST 'http://localhost:8080/fml?name=Example'   -H 'Content-Type: text/plain'   --data-binary @example.fml
+```
+
+`name` is used only in parse error messages; `format` (`json` or `xml`, default `json`) picks the
+output format, and `Accept` is not consulted.
 
 ### GET /txTest
 

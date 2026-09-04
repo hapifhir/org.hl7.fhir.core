@@ -1179,6 +1179,126 @@ class FhirValidatorHttpServiceTest {
         throw new RuntimeException(e);
       }
     }
+
+    private static final String SAMPLE_FML =
+        "map \"http://example.org/StructureMap/IdentityTest\" = \"IdentityTest\"\n" +
+        "\n" +
+        "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientSrc as source\n" +
+        "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientTgt as target\n" +
+        "\n" +
+        "group IdentityTest(source src : PatientSrc, target tgt : PatientTgt) {\n" +
+        "  src.id -> tgt.id;\n" +
+        "}\n";
+
+    @Test
+    @DisplayName("FML - parse FML text to a StructureMap (legacy POST /fml)")
+    void testFmlParseLegacy() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/fml?name=IdentityTest"))
+        .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_FML))
+        .header("Content-Type", "text/plain")
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+      org.hl7.fhir.utilities.json.model.JsonObject sm =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(response.body());
+      assertEquals("StructureMap", sm.asString("resourceType"));
+      assertEquals("http://example.org/StructureMap/IdentityTest", sm.asString("url"));
+      assertTrue(sm.has("group"), "parsed StructureMap should have a group");
+    }
+
+    /**
+     * Two-group FML that exercises a dependent group invocation with named arguments.
+     * In R4 the parsed SM emits {@code dependent.variable: ["a","b"]};
+     * in R5 it emits {@code dependent.parameter: [{valueId:"a"},{valueId:"b"}]}.
+     * Used by the version-format round-trip tests.
+     */
+    private static final String FML_WITH_DEPENDENT =
+        "map \"http://example.org/StructureMap/PassThrough\" = \"PassThrough\"\n" +
+        "\n" +
+        "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientSrc as source\n" +
+        "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientTgt as target\n" +
+        "\n" +
+        "group PassThrough(source s : PatientSrc, target t : PatientTgt) {\n" +
+        "  s as src then InnerCopy(src, t) \"outer\";\n" +
+        "}\n" +
+        "\n" +
+        "group InnerCopy(source src : PatientSrc, target tgt : PatientTgt) {\n" +
+        "  src.id as v -> tgt.id = v \"copyId\";\n" +
+        "}\n";
+
+    @Test
+    @DisplayName("FML - parse output uses the engine's runtime FHIR version (R4 emits 'variable' on dependent, not 'parameter')")
+    void testFmlParseEmitsRuntimeVersion() throws Exception {
+      // The test engine is R4 (hl7.fhir.r4.core#4.0.1). The parsed StructureMap
+      // must round-trip through an R4 JSON parser without losing dependent data —
+      // i.e. its dependent invocation must be encoded as `variable: [...]` (the R4 form),
+      // NOT as `parameter: [...]` (R5-only).
+      setUpService(getValidationEngine());
+
+      HttpResponse<String> resp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/fml?name=PassThrough"))
+          .POST(HttpRequest.BodyPublishers.ofString(FML_WITH_DEPENDENT))
+          .header("Content-Type", "text/plain")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, resp.statusCode(), "parse: " + resp.body());
+
+      // The whole point: dependent encoded in R4 form, not R5.
+      // R4 uses dependent.variable (string list); R5 uses dependent.parameter (typed list).
+      // Walk into the JSON to inspect just the dependent (R4 SM target transforms also use
+      // 'parameter' so a body-wide substring check is too coarse).
+      org.hl7.fhir.utilities.json.model.JsonObject sm =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(resp.body());
+      org.hl7.fhir.utilities.json.model.JsonObject outerGroup = sm.getJsonArray("group").get(0).asJsonObject();
+      org.hl7.fhir.utilities.json.model.JsonObject outerRule  = outerGroup.getJsonArray("rule").get(0).asJsonObject();
+      org.hl7.fhir.utilities.json.model.JsonObject dependent  = outerRule.getJsonArray("dependent").get(0).asJsonObject();
+      assertTrue(dependent.has("variable"),
+        "R4-mode parse must emit dependent.variable (R4 form): " + dependent.toString());
+      assertFalse(dependent.has("parameter"),
+        "R4-mode parse must NOT emit dependent.parameter (R5-only) — would silently lose data: " + dependent.toString());
+      assertEquals(2, dependent.getJsonArray("variable").size(),
+        "dependent.variable must carry both args (src, t): " + dependent.toString());
+    }
+
+    @Test
+    @DisplayName("FML - Missing body returns 400")
+    void testFmlParseMissingBody() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/fml"))
+        .POST(HttpRequest.BodyPublishers.ofString(""))
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(400, response.statusCode());
+      assertTrue(response.body().contains("Missing request body"));
+    }
+
+    @Test
+    @DisplayName("FML - GET method not allowed")
+    void testFmlGetNotAllowed() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/fml"))
+        .GET()
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(405, response.statusCode());
+    }
+
+    // ─── CRMI $package tests ───
+
   }
 
 }
