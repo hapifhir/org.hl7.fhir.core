@@ -51,6 +51,7 @@ public class FhirValidatorHttpService {
     server.createContext("/loadIG", new LoadIGHTTPHandler(this));
     server.createContext("/convert", new ConvertHTTPHandler(this));
     server.createContext("/snapshot", new SnapshotHTTPHandler(this));
+    server.createContext("/questionnaire", new QuestionnaireHTTPHandler(this));
     server.createContext("/narrative", new NarrativeHTTPHandler(this));
     server.createContext("/transform", new TransformHTTPHandler(this));
     server.createContext("/version", new VersionHTTPHandler(this));
