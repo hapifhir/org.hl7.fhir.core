@@ -6,7 +6,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.10.4-SNAPSHOT</version>
+        <version>6.10.5-SNAPSHOT</version>
     </parent>
 
     <artifactId>org.hl7.fhir.standalone</artifactId>
@@ -19,6 +19,11 @@
         <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>
         <!-- in development - do not publish yet -->
         <maven.deploy.skip>true</maven.deploy.skip>
+        <!-- The R6 tests here only pass against a locally patched set of R6 packages, so they
+             cannot run on any pipeline (PR, master or release) until the R6 package build is
+             sorted out. Tests are still COMPILED, just not executed. To run them locally:
+             mvn test -pl org.hl7.fhir.standalone -DskipTests=false -->
+        <skipTests>true</skipTests>
     </properties>
 
     <dependencies>
@@ -49,7 +54,27 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Markdown: commonmark is <optional> in org.hl7.fhir.utilities, so it is not inherited.
+             HierarchicalTableGenerator.addMarkdownNoPara() needs it at runtime, which the renderer
+             tests here reach through org.hl7.fhir.services -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-gfm-tables</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.hl7.fhir.testcases</groupId>
+            <artifactId>fhir-test-cases</artifactId>
+            <version>${validator_test_case_version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
@@ -114,6 +139,17 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.java-diff-utils</groupId>
+            <artifactId>java-diff-utils</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

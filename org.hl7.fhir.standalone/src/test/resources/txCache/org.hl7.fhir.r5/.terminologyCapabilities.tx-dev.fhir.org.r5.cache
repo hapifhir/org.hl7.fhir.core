@@ -1,0 +1,5874 @@
+{
+  "resourceType" : "TerminologyCapabilities",
+  "id" : "FhirServer",
+  "url" : "http://tx-dev.fhir.org/r5/TerminologyCapabilities/tx",
+  "name" : "FHIRTerminologyServer",
+  "title" : "FHIR Terminology Server",
+  "status" : "active",
+  "contact" : [{
+    "telecom" : [{
+      "system" : "other",
+      "value" : "http://example.org/"
+    }]
+  }],
+  "description" : "FHIR Terminology Server",
+  "kind" : "instance",
+  "codeSystem" : [{
+    "uri" : "http://cap.org/eCP",
+    "content" : "fragment"
+  },
+  {
+    "uri" : "http://cds-hooks.hl7.org/CodeSystem/indicator",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://devices.fhir.org/CodeSystem/MDC-concept-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://devices.fhir.org/CodeSystem/MDC-designation-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://dicom.nema.org/resources/ontology/DCM",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://fdasis.nlm.nih.gov",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://fhir.org/packages/fhir.tx.support/CodeSystem/designation-usage",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://healthit.gov/nhin/purposeofuse",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/account-aggregate",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/account-balance-term",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/account-billing-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/account-relationship",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/account-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/action-cardinality-behavior",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/action-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/action-condition-kind",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/action-grouping-behavior",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/action-participant-function",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/action-participant-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/action-precheck-behavior",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/action-reason-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/action-relationship-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/action-required-behavior",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/action-selection-behavior",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/address-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/address-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/administrable-dose-form",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/administrative-gender",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/adverse-event-actuality",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/allergy-intolerance-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/allergy-intolerance-criticality",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/allergy-intolerance-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/animal-tissue-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/appointmentstatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/artifact-contribution-instance-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/artifact-contribution-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/artifact-url-classifier",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/artifactassessment-disposition",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/artifactassessment-information-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/artifactassessment-workflow-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/assert-direction-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/assert-manual-completion-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/assert-operator-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/assert-response-code-types",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/asset-availability",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/audit-event-action",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/audit-event-severity",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/binding-strength",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/biologicallyderived-product-property-type-codes",
+    "content" : "example"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/biologicallyderived-product-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/biologicallyderived-productcodes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/biologicallyderivedproductdispense-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/bundle-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/bundle-type-de",
+    "content" : "supplement"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/capability-statement-kind",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/care-team-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/catalogType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/certainty-rating",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/certainty-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/characteristic-combination",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/characteristic-offset",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/chargeitem-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/citation-artifact-classifier",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/citation-classification-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/citation-status-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/citation-summary-style",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/cited-artifact-abstract-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/cited-artifact-classification-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/cited-artifact-part-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/cited-artifact-status-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/cited-medium",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/claim-decision",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/claim-decision-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/claim-outcome",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/claim-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/clinical-use-definition-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/clinical-use-definition-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/code-search-support",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/codesystem-content-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/codesystem-hierarchy-meaning",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/additional-binding-purpose",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/administration-subpotent-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/biologicallyderivedproductdispense-match-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/biologicallyderivedproductdispense-origin-relationship",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/biologicallyderivedproductdispense-performer-function",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/devicedispense-status-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/example",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/example-metadata",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/example-metadata-2",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/example-supplement",
+    "content" : "supplement"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/fhirpath-types",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/formularyitem-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/iana-link-relations",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/knowledge-representation-level",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/measure-aggregate-method",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medication-admin-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medication-dose-aid",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medication-ingredientstrength",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medication-intended-performer-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medication-statement-adherence",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medication-statement-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medication-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medicationdispense-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medicationdispense-status-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medicationknowledge-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medicationrequest-intent",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/medicationrequest-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/submit-data-update-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/summary",
+    "content" : "not-present"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/task-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/transport-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/usage-context-agreement-scope",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/CodeSystem/verificationresult-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/color-names",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/color-rgb",
+    "content" : "not-present"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/combined-dose-form",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/compartment-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/composition-attestation-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/composition-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/concept-map-relationship",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/concept-properties",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/concept-property-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/concept-subsumption-outcome",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/conceptmap-attribute-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/conceptmap-properties",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/conceptmap-property-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/conceptmap-unmapped-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/condition-precondition-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/condition-questionnaire-purpose",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/conditional-delete-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/conditional-read-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/conformance-expectation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/consent-data-meaning",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/consent-provision-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/consent-state-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/constraint-severity",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contact-point-system",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contact-point-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-action-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-asset-context",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-asset-scope",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-asset-subtype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-asset-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-decision-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-definition-subtype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-definition-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-expiration-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-legalstate",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-party-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-publicationstatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-scope",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-security-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-security-classification",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-security-control",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contract-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contributor-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contributor-summary-source",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contributor-summary-style",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contributor-summary-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/contributor-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/coverage-kind",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/datestype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/days-of-week",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/definition-method",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/detectedissue-severity",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/detectedissue-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/device-action",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/device-availability-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/device-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/device-correctiveactionscope",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/device-nametype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/device-operation-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/device-productidentifierinudi",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/device-specification-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/device-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/deviceassociation-operationstatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/deviceassociation-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/deviceassociation-status-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/devicedefinition-regulatory-identifier-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/devicedefinition-relationtype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/devicedispense-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/deviceusage-adherence-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/deviceusage-adherence-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/deviceusage-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/diagnostic-report-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/discriminator-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/document-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/document-reference-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/document-relationship-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/eligibility-outcome",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/eligibilityrequest-purpose",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/eligibilityresponse-purpose",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/encounter-diagnosis-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/encounter-location-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/encounter-reason-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/encounter-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/endpoint-environment",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/endpoint-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/enrollment-outcome",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/episode-of-care-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/event-capability-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/event-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/event-timing",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/evidence-classifier-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/evidence-report-section",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/evidence-report-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/evidence-variable-event",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/examplescenario-actor-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/explanationofbenefit-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/extension-context-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/extra-activity-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/fhir-format-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/fhir-old-types",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/fhir-types",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/FHIR-version",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/filter-operator",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/flag-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/fm-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/focus-characteristic-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/genomicstudy-changetype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/genomicstudy-dataformat",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/genomicstudy-methodtype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/genomicstudy-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/genomicstudy-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/goal-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/graph-compartment-rule",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/graph-compartment-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/group-membership-basis",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/group-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/guidance-module-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/guidance-response-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/guide-page-generation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/guide-parameter-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/history-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/http-operations",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/http-verb",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/identifier-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/identity-assuranceLevel",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/imagingselection-2dgraphictype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/imagingselection-3dgraphictype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/imagingselection-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/imagingstudy-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/ingredient-function",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/ingredient-manufacturer-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/ingredient-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/interaction-incidence",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/interaction-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/inventoryitem-nametype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/inventoryitem-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/inventoryreport-counttype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/inventoryreport-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/invoice-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/issue-severity",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/issue-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/item-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/legal-status-of-supply",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/link-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/linkage-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/list-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/list-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/location-characteristic",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/location-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/location-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/manufactured-dose-form",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/map-group-type-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/map-input-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/map-model-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/map-source-list-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/map-target-list-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/map-transform",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/measure-definition-example",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/measure-group-example",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/measure-report-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/measure-report-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/measure-stratifier-example",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/measure-supplemental-data-example",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/measurereport-stratifier-value-example",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/medication-cost-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/medicationdispense-admin-location",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/medicinal-product-additional-monitoring",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/medicinal-product-confidentiality",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/medicinal-product-contact-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/medicinal-product-cross-reference-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/medicinal-product-domain",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/medicinal-product-name-part-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/medicinal-product-name-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/medicinal-product-package-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/medicinal-product-pediatric-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/medicinal-product-special-measures",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/medicinal-product-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/message-events",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/message-significance-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/message-transport",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/messageheader-response-request",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/metric-calibration-state",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/metric-calibration-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/metric-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/metric-operational-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/name-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/namingsystem-identifier-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/namingsystem-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/narrative-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/note-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/nutritionproduct-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/observation-range-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/observation-referencerange-normalvalue",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/observation-statistics",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/observation-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/observation-triggeredbytype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/operation-kind",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/operation-outcome",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/operation-parameter-scope",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/operation-parameter-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/organization-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/orientation-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/package-material",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/package-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/packaging-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/participationstatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/payment-issuertype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/payment-kind",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/payment-outcome",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/permission-rule-combining",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/permission-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/permitted-data-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/price-component-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/product-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/product-intended-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/product-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/property-representation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/provenance-entity-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/publication-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/published-in-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/quantity-comparator",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/questionnaire-answer-constraint",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/questionnaire-answers-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/questionnaire-disabled-display",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/questionnaire-enable-behavior",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/questionnaire-enable-operator",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/reaction-event-severity",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/reason-medication-not-given",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/reference-handling-policy",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/reference-version-rules",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/regulated-authorization-basis",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/regulated-authorization-case-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/regulated-authorization-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/related-artifact-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/related-artifact-type-expanded",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/relationship",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/remittance-outcome",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/report-action-result-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/report-participant-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/report-relation-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/report-result-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/report-status-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/request-intent",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/request-priority",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/request-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/research-study-arm-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/research-study-classifiers",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/research-study-focus-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/research-study-objective-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/research-study-party-organization-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/research-study-party-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/research-study-phase",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/research-study-prim-purp-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/research-study-reason-stopped",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/research-study-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/resource-aggregation-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/resource-slicing-rules",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/resource-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/resource-validation-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/response-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/restful-capability-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/restful-interaction",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/restful-security-service",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/safety-entries",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/sample-security-structural-roles",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/search-comparator",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/search-entry-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/search-modifier-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/search-param-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/search-processingmode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/sequence-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/service-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/servicerequest-orderdetail-parameter-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/sid/cvx",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/sid/ex-icd-10-procedures",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/sid/icd-10",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/sid/icd-10-cm",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/sid/icd-9-cm",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/sid/icf",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/sid/mvx",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/sid/ndc",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/slotstatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/sort-direction",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/spdx-license",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/specimen-combined",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/specimen-contained-preference",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/specimen-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/specimen-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/statistic-model-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/strand-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/structure-definition-kind",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/study-design",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/subscription-notification-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/subscription-payload-content",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/subscription-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/subscriptiontopic-cr-behavior",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-amount-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-form",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-grade",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-name-authority",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-name-domain",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-name-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-optical-activity",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-relationship-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-representation-format",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-representation-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-source-material-genus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-source-material-part",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-source-material-species",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-source-material-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-stereochemistry",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-structure-technique",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-weight-method",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/substance-weight-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/supplydelivery-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/supplydelivery-supplyitemtype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/supplyrequest-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/target-species",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/task-intent",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/task-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/task-status-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/testscript-scope-conformance-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/testscript-scope-phase-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/therapy-relationship-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/title-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/transport-intent",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/transport-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/transport-status-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/trigger-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/type-derivation-rule",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/udi-entry-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/undesirable-effect-frequency",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/unit-of-presentation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/us/core/CodeSystem/careplan-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/us/core/CodeSystem/condition-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/assemble-expectation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/AustralianStateCodes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/chf-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/collapsible",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/entryMode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/keyboardType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/launchContext",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/observation-extract-relationship",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/questionnaire-answer-constraint",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/questionnaire-behavior-condition",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/temp",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/variable-handling",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/version-algorithm",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/versioning-policy",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/virtual-service-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/vision-base-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/vision-eye-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/w3c-provenance-activity-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/warning-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/week-of-month",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://id.who.int/icd/entity",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/icf",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/mms",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://loinc.org",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+    "content" : "fragment"
+  },
+  {
+    "uri" : "http://nucc.org/provider-taxonomy",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://radlex.org",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://snomed.info/sct",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://standardterms.edqm.eu",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/accepting-patients",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/action-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/activity-definition-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ADAToothSurfaceCodes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ADAUniversalToothDesignationSystem",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/adjudication",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/adjudication-error",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/adjudication-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/admit-source",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/adverse-event-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/adverse-event-causality-assess",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/adverse-event-causality-method",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/adverse-event-seriousness",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/adverse-event-severity",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/allerg-intol-substance-exp-risk",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/applicability",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/appointment-cancellation-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/appropriateness-score",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/artifact-contribution-instance-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/artifact-identifier-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/artifact-relationship-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/artifact-url-classifier",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/artifact-version-policy-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/attribute-estimate-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/audit-entity-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/audit-event-outcome",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/audit-event-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/basic-resource-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/benefit-network",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/benefit-term",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/benefit-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/benefit-unit",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/can-push-updates",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/care-consideration",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/care-service-accessibility",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/catalogType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/cdshooks-card-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/cdshooks-indicator",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/certainty-rating",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/certainty-subcomponent-rating",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/certainty-subcomponent-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/certainty-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/characteristic-method",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/chargeitem-billingcodes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/choice-list-orientation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/chromosome-human",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/citation-artifact-classifier",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/citation-classification-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/citation-summary-style",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/cited-artifact-abstract-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/cited-artifact-classification-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/cited-artifact-contribution-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/cited-artifact-part-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/cited-artifact-status-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/cited-medium",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/claim-adjudication-basis-categories",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/claim-exception",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/claim-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/claimcareteamrole",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/claiminformationcategory",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/codesystem-altcode-kind",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/color-names",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/color-rgb",
+    "content" : "not-present"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/common-tags",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/communication-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/communication-not-done-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/communication-topic",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/composite-measure-scoring",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/composition-altcode-kind",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/composition-attestation-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/conceptdomains",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/condition-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/condition-state",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/conformance-expectation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/consentaction",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/consentcategorycodes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/consentpolicycodes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/consentscope",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/consentverification",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contactentity-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/container-cap",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contract-content-derivative",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contract-data-meaning",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contract-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contractaction",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contractactorrole",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contractsignertypecodes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contractsubtypecodes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contracttermsubtypecodes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contracttermtypecodes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contributor-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contributor-summary-source",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contributor-summary-style",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/contributor-summary-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/copy-number-event",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/coverage-class",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/coverage-copay-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/coverage-selfpay",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/coverageeligibilityresponse-ex-auth-support",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/cql-access-modifier",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/crd-coverage-detail",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/definition-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/definition-topic",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/definition-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-severity",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-availability-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-nametype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-productidentifierinudi",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-specification-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-status-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-activationState",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-annunciation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-manifestation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-presence",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-priority",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/deviceassociation-relationship",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/deviceassociation-relationship-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/deviceassociation-status-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicedefinition-relationtype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/diagnosis-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/diagnosistype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/dicom-audit-lifecycle",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/diet",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/directness",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/discharge-disposition",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/document-relationship-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/dose-rate-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/encounter-special-arrangements",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/encounter-subject-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/encounter-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/endpoint-connection-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/endpoint-payload-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/entformula-additive",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/episodeofcare-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/evidence-quality",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/evidence-variable-constraint",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/evidence-variable-unacceptable-data-handling",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-benefitcategory",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-claimsubtype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-coverage-financial-exception",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-diagnosis-on-admission",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-diagnosisrelatedgroup",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-diagnosistype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-payee-resource-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-paymenttype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-procedure-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-programcode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-providerqualification",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-relatedclaimrelationship",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-revenue-center",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-serviceplace",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-tooth",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-USCLS",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ex-visionprescriptionproduct",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-parameter-source",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/expansion-processing-rule",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/extra-security-role-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/failure-action",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/FDI-surface",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/financialtaskcode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/financialtaskinputtype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/flag-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/forms-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/fundsreserve",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/goal-acceptance-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/goal-achievement",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/goal-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/goal-priority",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/goal-relationship-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/group-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/guide-parameter-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/handling-condition",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/history-absent-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-document-format-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/icd-o-3",
+    "content" : "fragment"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ICHContextOfUse",
+    "content" : "fragment"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ILRSpeakingSkillScale",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-funding-source",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-origin",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-program-eligibility",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-recommendation-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/immunization-subpotent-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/implantStatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/insurance-coverage-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/insurance-plan-type",
+    "content" : "fragment"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/insurance-product-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/insuranceplan-plan-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/iso-21089-lifecycle",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/library-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/list-empty-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/list-example-use-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/list-order",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/location-physical-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/match-grade",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/measure-aggregate-method",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/measure-data-usage",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/measure-improvement-notation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/measure-population",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/measure-scoring",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/measure-supplemental-data",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/measure-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/med-admin-perform-function",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/media-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medical-management-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medication-admin-location",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medication-usage-admin-location",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medicationdispense-performer-function",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medicationknowledge-characteristic",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medicationknowledge-package-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medicationknowledge-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medicationrequest-admin-location",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medicationrequest-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medicationrequest-course-of-therapy",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/medicationrequest-status-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/message-reasons-encounter",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/metric-availability",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/metric-calibration-state",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/metric-calibration-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/metric-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/missingtoothreason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/modifiers",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/name-assembly-order",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/ndh-healthcare-service-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/need",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/nutrition-intake-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/nutritionintake-status-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/object-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/observation-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/observation-referencerange-normalvalue",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/observation-statistics",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/operation-outcome",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/organization-affiliation-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/organization-affiliation-role-for-hie",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/organization-alias-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/organization-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/parameter-group",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/participant-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/payeetype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/payment-adjustment-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/payment-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/paymentstatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/plan-definition-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/practitioner-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/primary-source-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/procedure-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/processpriority",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/professional-credential-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/program",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/published-in-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/push-type-available",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/question-max-occurs",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/questionnaire-usage-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/reaction-event-certainty",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/reading-mode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/reason-medication-given",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/recommendation-strength",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/referencerange-meaning",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/rejection-criteria",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-study-objective-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-study-party-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-study-phase",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-study-prim-purp-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-study-purpose-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-study-reason-stopped",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-study-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-subject-milestone",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-subject-state",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-subject-state-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/resource-security-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/resource-type-link",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/risk-probability",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/security-source-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/service-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/service-delivery-method",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/service-provision-conditions",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/service-referral-method",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/service-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/sex-parameter-for-clinical-use",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/smart-capabilities",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/software-system-type-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/special-values",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/standards-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/state-change-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/statistic-model-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/statistic-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/study-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/subscriber-relationship",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/subscription-channel-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/subscription-error",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/subscription-status-at-event",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/subscription-tag",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/substance-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/supply-item-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/supply-kind",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/supplyrequest-reason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/synthesis-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/task-code",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/testscript-operation-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/time-period-ranges",
+    "content" : "not-present"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/timing-abbreviation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/title-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/triggerEventID",
+    "content" : "fragment"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/us-claim-information-category",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/us-military-service-period",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/usage-context-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/utg-concept-properties",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0001",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0002",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0003",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0004",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0005",
+    "content" : "fragment"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0006",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0007",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0008",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0009",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0012",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0017",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0027",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0033",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0034",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0038",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0048",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0052",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0061",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0062",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0063",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0065",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0066",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0069",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0070",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0074",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0076",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0080",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0083",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0085",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0091",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0092",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0098",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0100",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0102",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0103",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0104",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0105",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0106",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0107",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0108",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0109",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0116",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0119",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0121",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0122",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0123",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0124",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0126",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0127",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0128",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0130",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0131",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0133",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0135",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0137",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0140",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0142",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0144",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0145",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0146",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0147",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0148",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0149",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0150",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0155",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0156",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0157",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0158",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0159",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0160",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0161",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0162",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0163",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0164",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0165",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0166",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0167",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0168",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0169",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0170",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0173",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0174",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0175",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0177",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0178",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0179",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0180",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0181",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0183",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0185",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0187",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0189",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0190",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0191",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0193",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0200",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0201",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0202",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0203",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0204",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0205",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0206",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0207",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0208",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0209",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0210",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0211",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0213",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0214",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0215",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0216",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0217",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0220",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0223",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0224",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0225",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0228",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0230",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0231",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0232",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0234",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0235",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0236",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0237",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0238",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0239",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0240",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0241",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0242",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0243",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0247",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0248",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0250",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0251",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0252",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0253",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0254",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0255",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0256",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0257",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0258",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0260",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0261",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0262",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0263",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0265",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0267",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0268",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0269",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0270",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0271",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0272",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0273",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0275",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0276",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0277",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0278",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0279",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0280",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0281",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0282",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0283",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0284",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0286",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0287",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0290",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0291",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0294",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0298",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0299",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0301",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0305",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0309",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0311",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0315",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0316",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0317",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0321",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0322",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0323",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0324",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0325",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0326",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0329",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0330",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0331",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0332",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0334",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0335",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0336",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0337",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0339",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0353",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0354",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0355",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0356",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0357",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0359",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0360",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0364",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0365",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0366",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0367",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0368",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0369",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0370",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0371",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0372",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0373",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0374",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0375",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0376",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0377",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0383",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0384",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0387",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0388",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0389",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0391",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0392",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0393",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0394",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0395",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0396",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0397",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0398",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0401",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0402",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0403",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0404",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0406",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0409",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0415",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0416",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0417",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0418",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0421",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0422",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0423",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0424",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0425",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0426",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0427",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0428",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0429",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0430",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0431",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0432",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0433",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0434",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0435",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0436",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0437",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0438",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0440",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0441",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0442",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0443",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0444",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0445",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0450",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0457",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0465",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0466",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0468",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0469",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0470",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0472",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0473",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0474",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0475",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0477",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0478",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0480",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0482",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0483",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0484",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0485",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0487",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0488",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0489",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0490",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0491",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0492",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0493",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0494",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0495",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0496",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0497",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0498",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0499",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0500",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0501",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0502",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0503",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0504",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0505",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0506",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0507",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0508",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0510",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0511",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0513",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0514",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0516",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0517",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0518",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0520",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0523",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0524",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0527",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0528",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0529",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0530",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0532",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0534",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0535",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0536",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0538",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0540",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0544",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0547",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0548",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0550",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0553",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0554",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0555",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0556",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0557",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0558",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0559",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0560",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0561",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0562",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0564",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0565",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0566",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0569",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0570",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0571",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0572",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0615",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0616",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0617",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0618",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0625",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0634",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0642",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0651",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0653",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0657",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0659",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0667",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0669",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0682",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0702",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0717",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0728",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0731",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0734",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0739",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0742",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0749",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0755",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0757",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0759",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0761",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0763",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0776",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0778",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0790",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0793",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0806",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0818",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0834",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0868",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0871",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0881",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0882",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0894",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0904",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0905",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0906",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0907",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0909",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0912",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0914",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0916",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0917",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0918",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0919",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0920",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0921",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0922",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0923",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0924",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0925",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0926",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0927",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0933",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0935",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0936",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0937",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0938",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0939",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0940",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0942",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0945",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0946",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0948",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0949",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0950",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0951",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0970",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-0971",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-4000",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v2-tables",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-AcknowledgementCondition",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-AcknowledgementDetailCode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-AcknowledgementDetailType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-AcknowledgementType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActClass",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActExposureLevelCode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActInvoiceElementModifier",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActMood",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActPriority",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActRelationshipCheckpoint",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActRelationshipJoin",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActRelationshipSplit",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActRelationshipSubset",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActRelationshipType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActSite",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActStatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActUncertainty",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActUSPrivacyLaw",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-AddressPartType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-AddressUse",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-AdministrativeGender",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-AmericanIndianAlaskaNativeLanguages",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-Calendar",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-CalendarCycle",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-CalendarType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-Charset",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-CodeSystem",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-CodeSystemType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-CodingRationale",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-CommunicationFunctionType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-CompressionAlgorithm",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ConceptCodeRelationship",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ConceptGenerality",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ConceptProperty",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ConceptStatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ContainerCap",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ContainerSeparator",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ContentProcessingMode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ContextControl",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-Country",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-Currency",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-DataType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-Dentition",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-DeviceAlertLevel",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-DocumentCompletion",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-DocumentStorage",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EditStatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EducationLevel",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EmployeeJobClass",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EncounterAccident",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EncounterAcuity",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EncounterAdmissionSource",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EncounterReferralSource",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EncounterSpecialCourtesy",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityClass",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityCode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityDeterminer",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityHandling",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNamePartQualifier",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNamePartQualifierR2",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNamePartType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNamePartTypeR2",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNameUse",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNameUseR2",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityRisk",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityStatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-EquipmentAlertLevel",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-Ethnicity",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ExposureMode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-GenderStatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-GTSAbbreviation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-HealthcareProviderTaxonomyHIPAA",
+    "content" : "fragment"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7ApprovalStatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7CMETAttribution",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-HL7CommitteeIDInRIM",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-HL7ConformanceInclusion",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-HL7ContextConductionStyle",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-HL7DefinedRoseProperty",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-HL7DocumentFormatCodes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7ITSType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7ITSVersionCode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7PublishingDomain",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7PublishingSection",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7PublishingSubSection",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7Realm",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-HL7StandardVersionCode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-HL7UpdateMode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7V3Conformance",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7VoteResolution",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-HtmlLinkType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-IdentifierReliability",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-IdentifierScope",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-IntegrityCheckAlgorithm",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ISO3166-1retired",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ISO3166-2retired",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ISO3166-3retired",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-iso4217-HL7",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-LanguageAbilityMode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-LanguageAbilityProficiency",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-LivingArrangement",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-LocalMarkupIgnore",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-LocalRemoteControlState",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ManagedParticipationStatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ManufacturerModelNameExample",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-MapRelationship",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-MaterialForm",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-MaterialType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-MDFAttributeType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-MdfHmdMetSourceType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-MdfHmdRowType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-MdfRmimRowType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-MDFSubjectAreaPrefix",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-mediaType",
+    "content" : "fragment"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-MessageCondition",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-MessageWaitingPriority",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ModifyIndicator",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ObservationCategory",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ObservationMethod",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-OrganizationNameType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ParameterizedDataType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ParticipationFunction",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ParticipationMode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ParticipationSignature",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-PatientImportance",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-PaymentTerms",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-PersonDisabilityType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-PostalAddressUse",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ProbabilityDistributionType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ProcessingID",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ProcessingMode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-QueryParameterValue",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-QueryPriority",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-QueryQuantityUnit",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-QueryRequestLimit",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-QueryResponse",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-QueryStatusCode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-Race",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-RelationalOperator",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-RelationshipConjunction",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ReligiousAffiliation",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ResponseLevel",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ResponseModality",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-ResponseMode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleClass",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleLinkStatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleLinkType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleStatus",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-Sequencing",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-SetOperator",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-SoftwareNameExample",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-SpecimenType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-styleType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-substanceAdminSubstitution",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-SubstitutionCondition",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-TableCellHorizontalAlign",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-TableCellScope",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-TableCellVerticalAlign",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-TableFrame",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-TableRules",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-TargetAwareness",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-TelecommunicationAddressUse",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-TelecommunicationCapabilities",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-TransmissionRelationshipTypeCode",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-TribalEntityUS",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-URLScheme",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-VaccineManufacturer",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-VaccineType",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-VocabularyDomainQualifier",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/v3-WorkClassificationODH",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/validation-process",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/validation-status",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/validation-type",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/variable-role",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/variable-role-subtype",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/variant-state",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/verificationresult-communication-method",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/virtual-healthcare-delivery-method",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://unitsofmeasure.org",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://uri.etsi.org/01903/v1.2.2",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://varnomen.hgvs.org",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://www.ada.org/snodent",
+    "content" : "fragment"
+  },
+  {
+    "uri" : "http://www.ama-assn.org/go/cpt",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://www.cms.gov/Medicare/Coding/ICD10",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://www.whocc.no/atc",
+    "content" : "complete"
+  },
+  {
+    "uri" : "https://fevir.net/sevco",
+    "content" : "complete"
+  },
+  {
+    "uri" : "https://fhir-terminology.ohdsi.org",
+    "content" : "complete"
+  },
+  {
+    "uri" : "https://terminology.dhp.uz/fhir/CodeSystem/loinc-supplement-uz",
+    "content" : "supplement"
+  },
+  {
+    "uri" : "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/cdcnhsn.html",
+    "content" : "complete"
+  },
+  {
+    "uri" : "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html",
+    "content" : "complete"
+  },
+  {
+    "uri" : "https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set",
+    "content" : "complete"
+  },
+  {
+    "uri" : "https://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/HospitalAcqCond/Coding",
+    "content" : "complete"
+  },
+  {
+    "uri" : "https://www.humanservices.gov.au/organisations/health-professionals/enablers/air-vaccine-code-formats",
+    "content" : "complete"
+  },
+  {
+    "uri" : "https://www.iana.org/time-zones",
+    "content" : "complete"
+  },
+  {
+    "uri" : "https://www.usps.com/",
+    "content" : "complete"
+  },
+  {
+    "uri" : "urn:ietf:bcp:13",
+    "content" : "complete"
+  },
+  {
+    "uri" : "urn:ietf:bcp:47",
+    "content" : "complete"
+  },
+  {
+    "uri" : "urn:ietf:rfc:3986",
+    "content" : "complete"
+  },
+  {
+    "uri" : "urn:iso-astm:E1762-95:2013",
+    "content" : "complete"
+  },
+  {
+    "uri" : "urn:iso:std:iso:11073:10101",
+    "content" : "complete"
+  },
+  {
+    "uri" : "urn:iso:std:iso:3166",
+    "content" : "complete"
+  },
+  {
+    "uri" : "urn:iso:std:iso:3166:-2",
+    "content" : "complete"
+  },
+  {
+    "uri" : "urn:iso:std:iso:4217",
+    "content" : "complete"
+  },
+  {
+    "uri" : "urn:oid:1.2.36.1.2001.1001.101.104.16592",
+    "content" : "complete"
+  },
+  {
+    "uri" : "urn:oid:2.16.840.1.113883.2.9.6.2.7",
+    "content" : "fragment"
+  },
+  {
+    "uri" : "urn:oid:2.16.840.1.113883.3.1937.98.5.8",
+    "content" : "complete"
+  },
+  {
+    "uri" : "urn:oid:2.16.840.1.113883.6.238",
+    "content" : "complete"
+  }],
+  "expansion" : {
+    "parameter" : [{
+      "name" : "tx-resource",
+      "documentation" : "Additional valuesets needed for evaluation e.g. value sets referred to from the import statement of the value set being expanded"
+    },
+    {
+      "name" : "_incomplete"
+    },
+    {
+      "name" : "abstract"
+    },
+    {
+      "name" : "activeOnly"
+    },
+    {
+      "name" : "check-system-version"
+    },
+    {
+      "name" : "count"
+    },
+    {
+      "name" : "default-to-latest-version"
+    },
+    {
+      "name" : "displayLanguage"
+    },
+    {
+      "name" : "excludeNested"
+    },
+    {
+      "name" : "excludeNotForUI"
+    },
+    {
+      "name" : "excludePostCoordinated"
+    },
+    {
+      "name" : "force-system-version"
+    },
+    {
+      "name" : "inactive"
+    },
+    {
+      "name" : "includeAlternateCodes"
+    },
+    {
+      "name" : "includeDefinition"
+    },
+    {
+      "name" : "includeDesignations"
+    },
+    {
+      "name" : "incomplete-ok"
+    },
+    {
+      "name" : "limitedExpansion"
+    },
+    {
+      "name" : "mode",
+      "documentation" : "=lenient-display-validation"
+    },
+    {
+      "name" : "no-cache"
+    },
+    {
+      "name" : "offset"
+    },
+    {
+      "name" : "profile"
+    },
+    {
+      "name" : "property"
+    },
+    {
+      "name" : "system-version"
+    },
+    {
+      "name" : "valueSetMode",
+      "documentation" : "= CHECK_MEMBERSHIP_ONLY | NO_MEMBERSHIP_CHECK"
+    }]
+  },
+  "validateCode" : {
+    "translations" : true
+  },
+  "translation" : {
+    "needsMap" : false
+  }
+}

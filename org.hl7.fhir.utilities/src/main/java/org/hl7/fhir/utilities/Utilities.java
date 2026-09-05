@@ -894,6 +894,32 @@ public class Utilities {
     }
   }
 
+  // fixed-arity overloads for the common cases. The varargs form below allocates a char[]
+  // on every call, which matters in per-character loops such as the JSON lexer's whitespace skip.
+  public static boolean charInSet(char value, char c1) {
+    return value == c1;
+  }
+
+  public static boolean charInSet(char value, char c1, char c2) {
+    return value == c1 || value == c2;
+  }
+
+  public static boolean charInSet(char value, char c1, char c2, char c3) {
+    return value == c1 || value == c2 || value == c3;
+  }
+
+  public static boolean charInSet(char value, char c1, char c2, char c3, char c4) {
+    return value == c1 || value == c2 || value == c3 || value == c4;
+  }
+
+  public static boolean charInSet(char value, char c1, char c2, char c3, char c4, char c5) {
+    return value == c1 || value == c2 || value == c3 || value == c4 || value == c5;
+  }
+
+  public static boolean charInSet(char value, char c1, char c2, char c3, char c4, char c5, char c6) {
+    return value == c1 || value == c2 || value == c3 || value == c4 || value == c5 || value == c6;
+  }
+
   public static boolean charInSet(char value, char... array) {
     for (int i : array)
       if (value == i)
@@ -1031,8 +1057,24 @@ public class Utilities {
     if (value == null)
       return "";
 
-    StringBuilder b = new StringBuilder();
-    for (char c : value.toCharArray()) {
+    // Almost every string written to JSON needs no escaping at all, and this is called for every one of
+    // them. Scan first: when nothing has to change, hand back the original rather than copying it into a
+    // char[] and rebuilding it a character at a time
+    int first = -1;
+    for (int i = 0; i < value.length(); i++) {
+      if (needsJsonEscape(value.charAt(i), escapeUnicodeWhitespace)) {
+        first = i;
+        break;
+      }
+    }
+    if (first == -1) {
+      return value;
+    }
+
+    StringBuilder b = new StringBuilder(value.length() + 16);
+    b.append(value, 0, first);
+    for (int i = first; i < value.length(); i++) {
+      char c = value.charAt(i);
       if (c == '\r')
         b.append("\\r");
       else if (c == '\n')
@@ -1053,6 +1095,20 @@ public class Utilities {
         b.append(c);
     }
     return b.toString();
+  }
+
+  /**
+   * whether escapeJson would write this character as anything other than itself - the exact complement of
+   * the branches above, so that the scan and the rewrite can never disagree
+   */
+  private static boolean needsJsonEscape(char c, boolean escapeUnicodeWhitespace) {
+    if (c == '\r' || c == '\n' || c == '\t' || c == '"' || c == '\\') {
+      return true;
+    }
+    if (c == ' ') {
+      return false;
+    }
+    return (isWhitespace(c) && escapeUnicodeWhitespace) || ((int) c) < 32;
   }
 
   public static String humanize(String code) {

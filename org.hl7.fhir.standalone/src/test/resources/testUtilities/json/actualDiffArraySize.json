@@ -1,0 +1,11 @@
+{
+  "expectedString" : "expected value",
+  "expectedBoolean" : true,
+  "expectedNumber" : 123,
+  "expectedArray" : [
+    "expectedValue 1"
+  ],
+  "property" : {
+    "subField" : 1
+  }
+}

@@ -148,6 +148,14 @@ public class TxTester implements ITerminologyRequestIdProvider {
   private final List<String> warnings = new CopyOnWriteArrayList<>();
   private CapabilityStatement capabilityStatement;
   private TerminologyCapabilities terminologyCapabilities;
+
+  /**
+   * The FHIR version the server under test reports, discovered in connectToServer(). This is
+   * what the suites' and tests' version gates are evaluated against - see passesVersion(). It
+   * is set once, on the calling thread, before initialise() returns and therefore before any
+   * gate is evaluated or any worker thread starts.
+   */
+  private volatile String serverVersion;
   // Server-side caching state, per thread (clients are per-thread). Maps a suite
   // name to the server-issued cache-id this thread holds for it. The first test a
   // thread runs from a suite starts a cache and front-loads that suite's setup
@@ -276,6 +284,8 @@ public class TxTester implements ITerminologyRequestIdProvider {
     } catch (Exception e) {
       log.error("Exception running Terminology Service Tests: "+e.getMessage(), e);
       return false;
+    } finally {
+      TxTesterLogFile.stop();
     }
   }
 
@@ -429,43 +439,19 @@ public class TxTester implements ITerminologyRequestIdProvider {
     if (outputDir == null) {
       outputDir = Utilities.path("[tmp]", serverId());
     }
-
-    String fhirVersion = null;
-    try {
-      String actFn = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), "actual", "$versions.json") : Utilities.path(this.outputDir, "actual", "$versions.json");
-      byte[] vr = fetch(Utilities.pathURL(server, "$versions", "?_format=json"));
-      FileUtilities.bytesToFile(vr, actFn);
-      if (vr != null) {
-        JsonObject vl = JsonParser.parseObject(vr);
-        if ("Parameters".equals(vl.asString("resourceType"))) {
-          for (JsonObject v : vl.forceArray("parameter").asJsonObjects()) {
-            if ("default".equals(v.asString("name"))) {
-              fhirVersion = v.asString("valueString");
-            }
-          }
-        } else if (vl.has("default")) {
-          fhirVersion = vl.asString("default");
-        } else {
-          log.warn("Unable to interpret response from $versions: " + vl.toString());
-        }
-
-        if (fhirVersion != null) {
-          log.info("Server version " + fhirVersion + " from $versions");
-        }
-      }
-    } catch (Exception e) {
-      log.warn("Server does not support $versions: "+e.getMessage(), e);
+    // from here on, everything logged to the console is also written to test.log in the
+    // output directory. This is the one point both entry points pass through - execute()
+    // for a whole run, executeTest() one test at a time from the JUnit runners - and the
+    // first at which the output directory is known.
+    String logFile = TxTesterLogFile.start(outputDir);
+    if (logFile != null) {
+      log.info("  Log File: "+logFile);
     }
-    if (fhirVersion == null) {
-      try {
-        JsonObject cs = JsonParser.parseObjectFromUrl(Utilities.pathURL(server, "metadata", "?_format=json"));
-        fhirVersion = cs.asString("fhirVersion");
-        log.info("Server version "+fhirVersion+" from /metadata");
-      } catch (Exception e) {
-        log.warn("Error checking server version: "+e.getMessage(), e);
-        log.warn("Defaulting to FHIR R4");
-        fhirVersion = "4.0";
-      }
+
+    String fhirVersion = determineFhirVersion();
+
+    if (serverVersion == null) {
+      serverVersion = fhirVersion;
     }
 
     ITerminologyClient client = null;
@@ -485,6 +471,98 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return client;
   }
 
+  /**
+   * Work out which FHIR version the server under test speaks.
+   *
+   * This is not optional information: it decides which terminology client is used, and it is what
+   * the suites' and tests' version gates are evaluated against (see passesVersion()). Guessing it
+   * produces a run that looks fine and means nothing - the wrong client, and version gated tests
+   * silently included or excluded - so if we cannot determine it, we stop.
+   *
+   * Two probes, in order:
+   *  - $versions, the terminology ecosystem's own version discovery;
+   *  - /metadata, which per the specification returns a CapabilityStatement, and so carries
+   *    fhirVersion. (TerminologyCapabilities is the response to /metadata?mode=terminology, which
+   *    is fetched separately in checkClient(); a server that returns one from unqualified /metadata
+   *    is not conformant, and the error says so rather than leaving the user to guess.)
+   */
+  private String determineFhirVersion() throws IOException {
+    List<String> issues = new ArrayList<>();
+    String fhirVersion = null;
+
+    try {
+      String actFn = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), "actual", "$versions.json") : Utilities.path(this.outputDir, "actual", "$versions.json");
+      byte[] vr = fetch(Utilities.pathURL(server, "$versions", "?_format=json"));
+      if (vr == null) {
+        issues.add("$versions returned no content");
+      } else {
+        FileUtilities.bytesToFile(vr, actFn);
+        fhirVersion = versionFromVersions(JsonParser.parseObject(vr), issues);
+      }
+    } catch (Exception e) {
+      issues.add("$versions failed: "+e.getMessage());
+      log.warn("Server does not support $versions: "+e.getMessage(), e);
+    }
+    if (fhirVersion != null) {
+      log.info("Server version " + fhirVersion + " from $versions");
+      return fhirVersion;
+    }
+
+    try {
+      fhirVersion = versionFromMetadata(JsonParser.parseObjectFromUrl(Utilities.pathURL(server, "metadata", "?_format=json")), issues);
+    } catch (Exception e) {
+      issues.add("/metadata failed: "+e.getMessage());
+      log.warn("Error checking server version: "+e.getMessage(), e);
+    }
+    if (fhirVersion != null) {
+      log.info("Server version "+fhirVersion+" from /metadata");
+      return fhirVersion;
+    }
+
+    throw new FHIRException("Unable to determine the FHIR version of the terminology server at "+server+", so the tests cannot be run. "+
+        "The server must either support $versions, or return a CapabilityStatement with a fhirVersion from /metadata. Details: "+String.join("; ", issues));
+  }
+
+  /**
+   * The FHIR version from a $versions response: a Parameters with a 'default' parameter, or the
+   * bare JSON object with a 'default' property that the operation's simpler form returns. Returns
+   * null and appends to issues if neither shape yields a version.
+   */
+  static String versionFromVersions(JsonObject vl, List<String> issues) {
+    if ("Parameters".equals(vl.asString("resourceType"))) {
+      for (JsonObject v : vl.forceArray("parameter").asJsonObjects()) {
+        if ("default".equals(v.asString("name")) && v.asString("valueString") != null) {
+          return v.asString("valueString");
+        }
+      }
+      issues.add("$versions returned a Parameters with no usable 'default' parameter");
+      return null;
+    } else if (vl.has("default")) {
+      return vl.asString("default");
+    } else {
+      issues.add("Unable to interpret the response from $versions: " + vl.toString());
+      return null;
+    }
+  }
+
+  /**
+   * The FHIR version from a /metadata response, which is a CapabilityStatement. Returns null and
+   * appends to issues otherwise - naming the resource type that did come back, since the usual
+   * cause is a server answering TerminologyCapabilities where CapabilityStatement is specified.
+   */
+  static String versionFromMetadata(JsonObject cs, List<String> issues) {
+    String fhirVersion = cs.asString("fhirVersion");
+    if (fhirVersion != null) {
+      return fhirVersion;
+    }
+    String rt = cs.asString("resourceType");
+    if (rt != null && !"CapabilityStatement".equals(rt)) {
+      issues.add("/metadata returned a "+rt+", not a CapabilityStatement (TerminologyCapabilities is the response to /metadata?mode=terminology, not to /metadata)");
+    } else {
+      issues.add("/metadata returned a CapabilityStatement with no fhirVersion");
+    }
+    return null;
+  }
 
   /**
    * Eagerly perform the one-shot, not-thread-safe setup: connect to the server
@@ -588,9 +666,15 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return ok;
   }
 
+  /**
+   * The version gate is a FHIR version, so it is evaluated against the FHIR version the server
+   * under test reports - not against anything the caller names. The constructor's version is
+   * only a fallback for a tester that has not connected to a server.
+   */
   private boolean passesVersion(JsonObject item) {
-    if (item.has("version") && version != null) {
-      return versionGateMatches(item.asString("version"), version);
+    String ver = serverVersion != null ? serverVersion : version;
+    if (item.has("version") && ver != null) {
+      return versionGateMatches(item.asString("version"), ver);
     } else {
       return true;
     }
@@ -708,6 +792,8 @@ public class TxTester implements ITerminologyRequestIdProvider {
           msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("compare")) {
           msg = compare(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+        } else if (test.asString("operation").equals("subsumes")) {
+          msg = subsumes(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -823,6 +909,41 @@ public class TxTester implements ITerminologyRequestIdProvider {
     String pj;
     try {
       Parameters po = client().lookupCode(p);
+      TxTesterScrubbers.scrubParameters(po, tight);
+      TxTesterSorters.sortParameters(po);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+      code = 200;
+    } catch (EFhirClientException e) {
+      code = e.getCode();
+      OperationOutcome oo = e.getServerError();
+      TxTesterScrubbers.scrubOperationOutcome(oo, tight);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null) {
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(resp, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(pj, actFn);
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    return diff;
+  }
+
+  private String subsumes(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+    for (Resource r : setup) {
+      p.addParameter().setName("tx-resource").setResource(r);
+    }
+    client().setAcceptLanguage(lang);
+    p.getParameter().addAll(profile.getParameter());
+    int code = 0;
+    String pj;
+    try {
+      Parameters po = client().subsumes(p);
       TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);

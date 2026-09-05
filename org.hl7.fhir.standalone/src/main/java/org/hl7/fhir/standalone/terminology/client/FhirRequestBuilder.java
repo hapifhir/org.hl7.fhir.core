@@ -28,9 +28,9 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class FhirRequestBuilder {
 
-  protected static final String LOCATION_HEADER = "location";
-  protected static final String CONTENT_LOCATION_HEADER = "content-location";
-  protected static final String DEFAULT_CHARSET = "UTF-8";
+  public static final String LOCATION_HEADER = "location";
+  public static final String CONTENT_LOCATION_HEADER = "content-location";
+  public static final String DEFAULT_CHARSET = "UTF-8";
 
   private final HTTPRequest httpRequest;
   private String resourceFormat = null;
@@ -85,7 +85,7 @@ public class FhirRequestBuilder {
    * @param httpRequest {@link HTTPRequest} to add default headers to.
    * @param format     Expected {@link Resource} format.
    */
-  protected static Iterable<HTTPHeader> getResourceFormatHeaders(HTTPRequest httpRequest, String format) {
+  public static Iterable<HTTPHeader> getResourceFormatHeaders(HTTPRequest httpRequest, String format) {
     List<HTTPHeader> headers = new ArrayList<>();
     headers.add(new HTTPHeader("Accept", format));
     if (httpRequest.getMethod() == HTTPRequest.HttpMethod.PUT
@@ -106,7 +106,7 @@ public class FhirRequestBuilder {
    * @param oo {@link OperationOutcome} to evaluate.
    * @return {@link Boolean#TRUE} if an error exists.
    */
-  protected static boolean hasError(OperationOutcome oo) {
+  public static boolean hasError(OperationOutcome oo) {
     return (oo.getIssueList().stream().anyMatch(issue -> issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR
         || issue.getSeverity() == OperationOutcome.IssueSeverity.FATAL));
   }
@@ -119,7 +119,7 @@ public class FhirRequestBuilder {
    * @param headers {@link HTTPHeader} to evaluate
    * @return {@link String} header value, or null if no location headers are set.
    */
-  protected static String getLocationHeader(Iterable<HTTPHeader> headers) {
+  public static String getLocationHeader(Iterable<HTTPHeader> headers) {
     String locationHeader = HTTPHeaderUtil.getSingleHeader(headers, LOCATION_HEADER);
 
     if (locationHeader != null) {

@@ -56,7 +56,7 @@ public class {{jname}}JsonParser extends org.hl7.fhir.model.core.formats.JsonPar
   @Override
   protected void composeResource(Resource resource) throws IOException {
     if (resource == null) {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      throw new Error("Unhandled resource type: null");
 {{compose-resource}} 
     } else
       throw new Error("Unhandled resource type "+resource.getClass().getName());

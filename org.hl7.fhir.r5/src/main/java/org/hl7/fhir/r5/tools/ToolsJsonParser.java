@@ -1413,7 +1413,7 @@ public class ToolsJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
   @Override
   protected void composeResource(Resource resource) throws IOException {
     if (resource == null) {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      throw new Error("Unhandled resource type: null");
     } else if (resource instanceof TestCases) {
       composeTestCases("TestCases", (TestCases)resource);
  

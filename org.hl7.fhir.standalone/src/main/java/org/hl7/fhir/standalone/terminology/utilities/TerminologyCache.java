@@ -38,6 +38,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.formats.*;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
@@ -342,7 +343,7 @@ public class TerminologyCache {
   @Getter @Setter private static boolean noCaching;
   @Getter @Setter private static boolean cacheErrors;
 
-  protected TerminologyCache(Object lock, String folder, Long capabilityCacheExpirationMilliseconds, IWorkerContext context) throws FileNotFoundException, IOException, FHIRException {
+  public TerminologyCache(Object lock, String folder, Long capabilityCacheExpirationMilliseconds, IWorkerContext context) throws FileNotFoundException, IOException, FHIRException {
     super();
    this.lock = lock;
    this.context = context;
@@ -479,16 +480,23 @@ public class TerminologyCache {
     save(terminologyCapabilities, TERMINOLOGY_CAPABILITIES_TITLE+"."+getServerId(address));
   }
 
+  private String getSystemName(String name, String oldName) {
+    String systemName = getSystemNameKeyGenerator().getNameForSystem(name);
+    if (oldName == null)
+      oldName = systemName;
+    else if (!systemName.equals(oldName))
+      oldName = NAME_FOR_NO_SYSTEM;
+    return oldName;
+  }
 
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs, Parameters expParameters) {
     try {
       CacheToken ct = new CacheToken();
       if (code.hasSystem()) {
-        ct.setName(code.getSystem());
-        ct.setHasVersion(code.hasVersion());
+        ct.setName(getSystemName(code.getSystem(), ct.getName()));
+      } else {
+        ct.setName(getSystemName(NAME_FOR_NO_SYSTEM, ct.getName()));
       }
-      else
-        ct.setName(NAME_FOR_NO_SYSTEM);
       nameCacheToken(vs, ct);
       JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
@@ -517,12 +525,11 @@ public class TerminologyCache {
     try {
       CacheToken ct = new CacheToken();
       if (code.hasSystem()) {
-        ct.setName(code.getSystem());
-        ct.setHasVersion(code.hasVersion());
+        ct.setName(getSystemName(code.getSystem(), ct.getName()));
       } else {
-        ct.setName(NAME_FOR_NO_SYSTEM);
+        ct.setName(getSystemName(NAME_FOR_NO_SYSTEM, ct.getName()));
       }
-      ct.setName(vsUrl);
+      ct.setName(getSystemName(vsUrl, ct.getName()));
       JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
@@ -569,8 +576,7 @@ public class TerminologyCache {
       CacheToken ct = new CacheToken();
       for (Coding c : code.getCodingList()) {
         if (c.hasSystem()) {
-          ct.setName(c.getSystem());
-          ct.setHasVersion(c.hasVersion());
+          ct.setName(getSystemName(c.getSystem(), ct.getName()));
         }
       }
       nameCacheToken(vs, ct);
@@ -596,7 +602,7 @@ public class TerminologyCache {
   public ValueSet getVSEssense(ValueSet vs) {
     if (vs == null)
       return null;
-    ValueSet vsc = new ValueSet();
+    ValueSet vsc = new ValueSet(vs.getModelContext());
     vsc.setCompose(vs.getCompose());
     if (vs.hasExpansion()) {
       vsc.getExpansion().getParameterList().addAll(vs.getExpansion().getParameterList());
@@ -635,20 +641,17 @@ public class TerminologyCache {
     if (vs != null) {
       for (ValueSet.ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
         if (inc.hasSystem()) {
-          ct.setName(inc.getSystem());
-          ct.setHasVersion(inc.hasVersion());
+          ct.setName(getSystemName(inc.getSystem(), ct.getName()));
         }
       }
       for (ValueSet.ConceptSetComponent inc : vs.getCompose().getExcludeList()) {
         if (inc.hasSystem()) {
-          ct.setName(inc.getSystem());
-          ct.setHasVersion(inc.hasVersion());
+          ct.setName(getSystemName(inc.getSystem(), ct.getName()));
         }
       }
       for (ValueSet.ValueSetExpansionContainsComponent inc : vs.getExpansion().getContainsList()) {
         if (inc.hasSystem()) {
-          ct.setName(inc.getSystem());
-          ct.setHasVersion(inc.hasVersion());
+          ct.setName(getSystemName(inc.getSystem(), ct.getName()));
         }
       }
     }
@@ -712,11 +715,18 @@ public class TerminologyCache {
       return;
     }
 
-    if ( !cacheErrors &&
-        ( e.v!= null
-        && e.v.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED
-        && !cacheToken.isHasVersion())) {
-      return;
+    // Two kinds of result describe the state of the terminology server rather than the content
+    // being validated, and so must not outlive this session:
+    //  - SERVER_ERROR / NOSERVICE: the server could not be reached this time. Written to disk,
+    //    a single timeout becomes permanent for every later run and every later version of the
+    //    validator, with no recovery short of deleting the cache directory by hand (see #2524).
+    //  - CODESYSTEM_UNSUPPORTED: the server does not have that code system. Load it and the
+    //    answer changes, so it is no more durable than the one above (see #2262).
+    // Both are still held in memory, so repeat validation of the same code stays cheap within
+    // the run; they are simply asked again next time.
+    if (persistent && (isTransientFailure(e) || (!cacheErrors && isCodeSystemUnsupported(e)))) {
+      persistent = false;
+      e.persistent = false;
     }
 
     // map.put returns the entry this key previously held (or null). Removing that exact
@@ -739,6 +749,35 @@ public class TerminologyCache {
         save(nc, now);
       }
     }
+  }
+
+  private boolean isCodeSystemUnsupported(CacheEntry e) {
+    return errorClassOf(e) == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
+  }
+
+  /**
+   * The error class of whatever kind of answer this entry holds - a validation, or an expansion.
+   */
+  private TerminologyServiceErrorClass errorClassOf(CacheEntry e) {
+    if (e.v != null) {
+      return e.v.getErrorClass();
+    } else if (e.e != null) {
+      return e.e.getErrorClass();
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Is this a failure to reach the terminology server, rather than an answer about the content?
+   *
+   * Deliberately not {@link TerminologyServiceErrorClass#isInfrastructure()}, which also covers
+   * VALUESET_UNSUPPORTED: that describes the request the server was asked to answer, and is
+   * reproducible, where these two describe the connection at one moment in time.
+   */
+  private boolean isTransientFailure(CacheEntry e) {
+    TerminologyServiceErrorClass ec = errorClassOf(e);
+    return ec == TerminologyServiceErrorClass.SERVER_ERROR || ec == TerminologyServiceErrorClass.NOSERVICE;
   }
 
   /**
@@ -1082,6 +1121,13 @@ public class TerminologyCache {
 
       CacheEntry cacheEntry = getCacheEntry(request, resultString);
 
+      // Caches written before #2524 can hold transient failures. Drop them on the way in
+      // rather than serving a stale outage back: the file is rewritten without them the
+      // next time this cache saves.
+      if (isTransientFailure(cacheEntry)) {
+        return;
+      }
+
       // Mirror store()'s dedup so the set and map stay consistent even if a file somehow
       // holds the same request twice: the last occurrence wins, no orphan is left behind.
       CacheEntry previous = nc.map.put(String.valueOf(hashJson(cacheEntry.request)), cacheEntry);
@@ -1393,12 +1439,11 @@ public class TerminologyCache {
     try {
       CacheToken ct = new CacheToken();
       if (parent.hasSystem()) {
-        ct.setName(parent.getSystem());
+        ct.setName(getSystemName(parent.getSystem(), ct.getName()));
       }
       if (child.hasSystem()) {
-        ct.setName(child.getSystem());
+        ct.setName(getSystemName(child.getSystem(), ct.getName()));
       }
-      ct.setHasVersion(parent.hasVersion() || child.hasVersion());
       JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);

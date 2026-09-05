@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.*;
 
 import org.apache.commons.io.IOUtils;
-import org.checkerframework.checker.nullness.qual.NonNull;
+
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
@@ -27,6 +27,9 @@ import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.subsumption.SubsumptionException;
+import org.hl7.fhir.r5.terminologies.subsumption.SubsumptionOutcome;
+import org.hl7.fhir.r5.terminologies.subsumption.TerminologySubsumptionTester;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.UUIDUtilities;
@@ -50,6 +53,8 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Charsets;
 
+import javax.annotation.Nonnull;
+
 import static org.junit.Assert.assertNull;
 
 
@@ -67,6 +72,14 @@ private static TxTestData testData;
     return testData.getTestData();
   }
 
+  private static final Object LOG_LOCK = new Object();
+  private static final StringBuilder LOG = new StringBuilder();
+  private static int logPass = 0;
+  private static int logFail = 0;
+  private static int logSkip = 0;
+
+  private String actualFile;
+
   private final TxTestSetup setup;
   private final String version;
   private final String name;
@@ -82,11 +95,32 @@ private static TxTestData testData;
 
   @Test
   public void test() throws Exception {
+    String id = setup.getTest().asString("name");
+    try {
+      if (runTest()) {
+        log(id, "pass", null);
+      } else {
+        log(id, "skip", null);
+      }
+    } catch (AssertionError e) {
+      log(id, "fail", e.getMessage());
+      throw e;
+    } catch (Exception e) {
+      log(id, "error", e.getClass().getName()+": "+e.getMessage());
+      throw e;
+    }
+  }
+
+  /**
+   * Run one test case. Returns false if the case was skipped (disabled, or not in scope for the
+   * modes the internal server is tested under), true if it actually ran.
+   */
+  private boolean runTest() throws Exception {
     if (setup.getSuite().asBoolean("disabled") || setup.getTest().asBoolean("disabled")) {
-      return;
+      return false;
     }
     if (!passesModes(setup.getSuite()) || !passesModes(setup.getTest())) {
-      return;
+      return false;
     }
 
     if (baseEngine == null) {
@@ -113,6 +147,7 @@ private static TxTestData testData;
     String resp = testData.load(fn);
     String resp2 = fn2 == null ? null : testData.load(fn2);
     String fp = Utilities.path("[tmp]", "tx", fn);
+    actualFile = fp;
     JsonObject ext = testData.getExternals() == null ? null : testData.getExternals().getJsonObject(fn);
     File fo = ManagedFileAccess.file(fp);
     if (fo.exists()) {
@@ -133,11 +168,98 @@ private static TxTestData testData;
     } else if (setup.getTest().asString("operation").equals("cs-validate-code")) {
       String diff = TxServiceTestHelper.getDiffForValidation(setup.getTest().str("name"), engine.getContext(), setup.getTest().asString("name"), req, resp, resp2, setup.getTest().asString("Accept-Language"), fp, ext, true, modes());
       assertNull(diff, diff);
+    } else if (setup.getTest().asString("operation").equals("subsumes")) {
+      subsumes(setup.getTest().str("name"), engine, req, resp, fp, ext);
     } else if (Utilities.existsInList(setup.getTest().asString("operation"), "lookup", "translate", "metadata", "term-caps")) {
       Assertions.assertTrue(true); // we don't test these for the internal server
     } else if (!Utilities.existsInList(setup.getTest().asString("operation"), "batch-validate")) { // the internal terminology server doesn't implement this method
       Assertions.fail("Unknown Operation "+ setup.getTest().asString("operation"));
     }
+    return true;
+  }
+
+  /**
+   * The run is logged to test-results.log in the same directory the actual responses are written
+   * to ([tmp]/tx), so a run can be reviewed with a diff tool rather than scraped off the console.
+   * The whole log is rewritten after each test, so it is complete even if the run is interrupted.
+   * Logging never fails a test.
+   */
+  private void log(String id, String status, String details) {
+    synchronized (LOG_LOCK) {
+      if ("pass".equals(status)) {
+        logPass++;
+      } else if ("skip".equals(status)) {
+        logSkip++;
+      } else {
+        logFail++;
+      }
+      LOG.append(Utilities.padRight(status, ' ', 6)+id+"\n");
+      if (actualFile != null && !"pass".equals(status) && !"skip".equals(status)) {
+        LOG.append("      actual response written to "+actualFile+"\n");
+      }
+      if (details != null) {
+        LOG.append("      "+details.trim()+"\n");
+      }
+      try {
+        String fn = Utilities.path("[tmp]", "tx", "test-results.log");
+        FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fn));
+        FileUtilities.stringToFile("TerminologyServiceTests (internal terminology server): "+
+            logPass+" passed, "+logFail+" failed, "+logSkip+" skipped\n\n"+LOG.toString(), fn);
+      } catch (IOException e) {
+        // the log is a convenience - never fail a test because it could not be written
+      }
+    }
+  }
+
+  /**
+   * $subsumes against the internal terminology server. The test cases use both forms of the 
+   * operation parameters (system + codeA/codeB, and codingA/codingB); the parameter names are 
+   * passed through to the tester so that any issues are reported against the right parameter.
+   */
+  private void subsumes(String id, ValidationEngine engine, Resource req, String resp, String fp, JsonObject ext) throws IOException {
+    org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) req;
+    Coding codingA;
+    Coding codingB;
+    String pathA;
+    String pathB;
+    if (p.hasParameter("codingA") || p.hasParameter("codingB")) {
+      codingA = (Coding) p.getParameterValue("codingA");
+      codingB = (Coding) p.getParameterValue("codingB");
+      pathA = "codingA";
+      pathB = "codingB";
+    } else {
+      String system = primitive(p, "system");
+      String sversion = primitive(p, "version");
+      codingA = new Coding().setSystem(system).setVersion(sversion).setCode(primitive(p, "codeA"));
+      codingB = new Coding().setSystem(system).setVersion(sversion).setCode(primitive(p, "codeB"));
+      pathA = "codeA";
+      pathB = "codeB";
+    }
+
+    String actual;
+    try {
+      SubsumptionOutcome outcome = new TerminologySubsumptionTester(engine.getContext()).subsumes(codingA, codingB, pathA, pathB);
+      org.hl7.fhir.r5.model.Parameters po = new org.hl7.fhir.r5.model.Parameters();
+      po.addParameter("outcome", new CodeType(outcome.toCode()));
+      actual = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+    } catch (SubsumptionException e) {
+      OperationOutcome oo = new OperationOutcome();
+      oo.getIssue().addAll(e.getIssues());
+      TxTesterSorters.sortOperationOutcome(oo);
+      TxTesterScrubbers.scrubOperationOutcome(oo, false);
+      actual = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
+
+    String diff = new CompareUtilities(modes(), ext, vars()).checkJsonSrcIsSame(id, resp, actual);
+    if (diff != null) {
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+      FileUtilities.stringToFile(actual, fp);
+    }
+    Assertions.assertNull(diff, diff);
+  }
+
+  private String primitive(org.hl7.fhir.r5.model.Parameters p, String name) {
+    return p.hasParameter(name) && p.getParameterValue(name) != null ? p.getParameterValue(name).primitiveValue() : null;
   }
 
   private boolean passesModes(JsonObject obj) {
@@ -236,7 +358,7 @@ private static TxTestData testData;
     }
   }
 
-  private static @NonNull OperationOutcome makeOperationOutcome(ValueSetExpansionOutcome vse) {
+  private static @Nonnull OperationOutcome makeOperationOutcome(ValueSetExpansionOutcome vse) {
     OperationOutcome oo = new OperationOutcome();
     if (vse.getIssues() != null) {
       oo.getIssue().addAll(vse.getIssues());

@@ -1,0 +1,38 @@
+{
+  "resourceType" : "CodeSystem",
+  "id" : "basic-answer",
+  "language" : "en",
+  "url" : "https://example.com/CodeSystem/basic-answer",
+  "version" : "0.1.0",
+  "name" : "BasicAnswer",
+  "title" : "Administration-Method",
+  "status" : "active",
+  "date" : "2024-04-07",
+  "publisher" : "Sample",
+  "description" : "Basic answers for any kind of questions.",
+  "caseSensitive" : false,
+  "content" : "complete",
+  "count" : 3,
+  "concept" : [ {
+    "code" : "ok",
+    "display" : "OK",
+    "designation" : [ {
+      "language" : "it",
+      "value" : "OK"
+    } ]
+  }, {
+    "code" : "yes",
+    "display" : "Yes",
+    "designation" : [ {
+      "language" : "it",
+      "value" : "Si"
+    } ]
+  }, {
+    "code" : "no",
+    "display" : "No",
+    "designation" : [ {
+      "language" : "it",
+      "value" : "No"
+    } ]
+  } ]
+}

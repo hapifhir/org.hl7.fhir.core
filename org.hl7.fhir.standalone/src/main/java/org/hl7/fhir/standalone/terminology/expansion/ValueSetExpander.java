@@ -286,9 +286,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     for (ParametersParameterComponent p : expParams.getParameterList()) {
       if ("property".equals(p.getName())) {
+        // '*' means every property the server knows about for this concept - see the definition
+        // of ValueSet.compose.property, and of the 'property' expansion parameter
+        boolean allProperties = p.hasValue() && "*".equals(p.getValue().primitiveValue());
         if (csProps != null && p.hasValue()) {
           for (ConceptPropertyComponent cp : csProps) {
-            if (p.getValue().primitiveValue().equals(cp.getCode())) {
+            if (allProperties || p.getValue().primitiveValue().equals(cp.getCode())) {
               PropertyComponent pd = cs.getProperty(cp.getCode());
               String url = pd == null ? null : pd.getUri();
               if (url == null) {
@@ -304,7 +307,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         }
         if (expProps != null && p.hasValue()) {
           for (org.hl7.fhir.model.core.ValueSet.ConceptPropertyComponent cp : expProps) {
-            if (p.getValue().primitiveValue().equals(cp.getCode())) {
+            if (allProperties || p.getValue().primitiveValue().equals(cp.getCode())) {
               String url = null;
               for (ValueSetExpansionPropertyComponent t : vsProp) {
                 if (t.hasCode() && t.getCode().equals(cp.getCode())) {
@@ -813,7 +816,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
         throw e;
       }
     } catch (OperationIsTooCostly e) {
-      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false);
+      // the tx-issue-type is what a client keys on; the error class only reaches the
+      // OperationOutcome as the FHIR issue type, which does not say this was a limit
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false,
+          I18nConstants.VALUESET_TOO_COSTLY, OpIssueCode.TooCostly);
     } catch (UnknownValueSetException e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.VALUESET_UNKNOWN, allErrors, false);
     } catch (VSCheckerException e) {
@@ -850,6 +856,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ParametersParameterComponent p : expParams.getParameterList()) {
       processParameter(p.getName(), p.getValue());
     }
+    expParams = checkComposeProperties(source, expParams);
     for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
       requiredSupplements.add(s.getValue().primitiveValue());
     }
@@ -931,6 +938,18 @@ public class ValueSetExpander extends ValueSetProcessBase {
       focus.setText(null);
     }
     return new ValueSetExpansionOutcome(focus);
+  }
+
+  private static Parameters checkComposeProperties(ValueSet source, Parameters expParams) {
+    // ValueSet.compose.property names the properties to return "if the client doesn't ask for any
+    // particular properties", so it is only consulted when the request named none
+    if (source.hasCompose() && !source.getCompose().getPropertyList().isEmpty() && !expParams.hasParameter("property")) {
+      expParams = expParams.copy(Base.COPY_DATA);
+      for (StringType t : source.getCompose().getPropertyList()) {
+        expParams.addParameter("property", new StringType(t.getValue()));
+      }
+    }
+    return expParams;
   }
 
   private void processParameter(String name, DataType value) {
@@ -1017,6 +1036,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ParametersParameterComponent p : expParams.getParameterList()) {
       processParameter(p.getName(), p.getValue());
     }
+    expParams = checkComposeProperties(source, expParams);
     for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
       requiredSupplements.add(s.getValue().primitiveValue());
     }

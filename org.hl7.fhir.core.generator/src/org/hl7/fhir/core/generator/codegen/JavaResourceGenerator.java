@@ -782,8 +782,12 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 	  write(indent+"  protected void listChildren(List<Property> children) {\r\n");
     write(indent+"    super.listChildren(children);\r\n");
 	  for (ElementDefinition e : children) {
-      if (!isInterface && !e.typeSummary().equals("xhtml")) {
-	      write(indent+"    children.add(new Property(\""+escapeJavaString(e.getName())+"\", \""+escapeJavaString(resolvedTypeCode(e))+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+"));\r\n");
+      if (!isInterface) {
+        // an xhtml element has no Base-typed field to hand to the Property. XhtmlType is the wrapper
+        // that presents the XhtmlNode as a Base, and it has to be in this list or the element is
+        // invisible to getChildValues("*"), and so to FHIRPath children() and descendants()
+        String value = e.typeSummary().equals("xhtml") ? "new XhtmlType(modelContext, this)" : getElementName(e.getName(), true)+(e.unbounded() ? "List" : "");
+	      write(indent+"    children.add(new Property(\""+escapeJavaString(e.getName())+"\", \""+escapeJavaString(resolvedTypeCode(e))+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+value+"));\r\n");
       }
 	  }
 	  write(indent+"  }\r\n\r\n");  
@@ -1020,7 +1024,17 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         if (e.unbounded()) {
           write("return this."+getElementName(name, true)+"List == null ? new Base[0] : this."+getElementName(name, true)+"List.toArray(new Base[this."+getElementName(name, true)+"List.size()]); // "+sanitizeComment(tn)+"\r\n");
         } else if (e.typeSummary().equals("xhtml")) {
-          write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {new StringType(modelContext, new org.hl7.fhir.utilities.xhtml.XhtmlComposer(true).composeEx(this."+getElementName(name, true)+"))}; // "+sanitizeComment(tn)+"\r\n");
+          // XhtmlType, not a composed StringType. XhtmlType reports fhirType() "xhtml" and reads
+          // through to the live XhtmlNode; a composed StringType is a detached snapshot that says
+          // it is a "string", and it recomposes the whole narrative on every call. This has to
+          // agree with generateChildrenRegister above, because getChildValues sends "*" to
+          // listChildren and a name to here - so a mismatch means FHIRPath sees Narrative.div as
+          // a string but children()/descendants() see the same element as xhtml
+          //
+          // Note this line has been wrong since the generator's first draft (Dec 2019): the
+          // property getter was written with makeProperty's body. The R5 model, which comes out
+          // of the spec build's own generator rather than this one, has always had XhtmlType here
+          write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {new XhtmlType(modelContext, this)}; // "+sanitizeComment(tn)+"\r\n");
         } else {
           write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {this."+getElementName(name, true)+"}; // "+sanitizeComment(tn)+"\r\n");
         }

@@ -169,7 +169,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
 
   private void check(StructureDefinition sd, String name) {
     if (sd == null)
-      throw new DefinitionException("No StructureDefinition provided ("+name+": "+sd.getName()+")");
+      throw new DefinitionException("No StructureDefinition provided ("+name+": null)");
 //    if (sd.getType().equals("Extension")) {
 //      throw new DefinitionException("StructureDefinition is for an extension - use ExtensionComparer instead ("+name+": "+sd.getName()+")");
 //    }

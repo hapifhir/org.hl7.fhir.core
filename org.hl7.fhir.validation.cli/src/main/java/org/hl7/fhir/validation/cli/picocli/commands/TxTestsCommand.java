@@ -19,25 +19,30 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 /**
- * Command to run terminology service tests against a terminology server.
+ * Command to run the terminology service test cases against a terminology server.
  * <p/>
- * This hidden command executes terminology tests and generates a JSON report
- * with results. Tests can be filtered by mode and name pattern.
+ * Executes the tests published by the tx-ecosystem IG and generates a JSON report with the
+ * results. Tests can be filtered by suite, mode and name.
  * <p/>
- * This is an internal tool for terminology testing.
+ * This is a documented, publicly used conformance workflow - see
+ * https://hl7.org/fhir/uv/tx-ecosystem/testcases.html - so it is deliberately NOT hidden:
+ * someone who mistypes an option has to be able to find the right one in the help.
  */
 @Slf4j
 @CommandLine.Command(
   name = "txTests",
   description = """
-    Run terminology service tests against a terminology server.
+    Run the terminology service test cases against a terminology server.
 
-    Executes terminology tests and generates a JSON report with results.
-    Tests can be filtered by mode and name pattern.
+    Executes the test cases published by the tx-ecosystem IG and writes a JSON report of the
+    results, along with the actual response for each failed test. Tests can be filtered by
+    suite, mode and name.
 
-    Hidden internal tool for terminology testing.
-    """,
-  hidden = true
+    The tests are fetched for you - there is nothing to download. The version of FHIR tested is
+    the server's own, so it is not a parameter.
+
+    Documentation: https://hl7.org/fhir/uv/tx-ecosystem/testcases.html
+    """
 )
 public class TxTestsCommand extends ValidationServiceCommand implements Callable<Integer> {
 
@@ -49,7 +54,10 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
 
   @CommandLine.Option(
     names = {"-test-version"},
-    description = "Version of the tests to run (default: current - the version of the tests in the ci-build of the tx-ecosystem IG)"
+    description = "Version of the tx-ecosystem test cases to run, e.g. 1.9.3 - NOT a FHIR version "
+      + "(the FHIR version tested is whatever the server reports). Released versions are listed at "
+      + "https://hl7.org/fhir/uv/tx-ecosystem/history.html. Default: current, the tests as they "
+      + "stand in the ci-build of the IG, which change whenever the IG's master branch changes"
   )
   private String testVersion;
 
@@ -100,13 +108,16 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
       // Load externals if provided
       JsonObject externalsJson = loadExternals(externals);
 
-      // Create TxTester instance
+      // Create TxTester instance. -test-version names the tx-ecosystem package to load the
+      // tests from; it is NOT a FHIR version, so it must not be passed as one. The suites'
+      // and tests' version gates are FHIR version gates, and TxTester evaluates them against
+      // the version the server under test reports.
       TxTester txTester = new TxTester(
         new TxTester.InternalTxLoader(version),
         tx,
         false,
         externalsJson,
-        testVersion
+        null
       );
 
       // Add input loaders
