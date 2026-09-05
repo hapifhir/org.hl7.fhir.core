@@ -62,6 +62,7 @@ public class ValidationOptions {
 
   public ValidationOptions(FhirPublication fhirVersion, String language) {
     super();
+    this.fhirVersion = fhirVersion;
     if (!Utilities.noString(language)) {
       langs = new AcceptLanguageHeader(language, false);
       isDefaultLang = false;

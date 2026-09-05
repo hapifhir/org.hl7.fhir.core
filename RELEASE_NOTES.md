@@ -1,7 +1,11 @@
 ## Validator Changes
 
-* no changes
+* txTests over HTTP (how the server-side runners drive the tests): a test gated on a mode that was not requested came back as the bare string "n/a", which the caller reports as a plain failure with no reason - a whole suite gated on a mode the caller forgot to send arrives as a wall of unexplained failures. It now names the mode that would have run the test and the modes that were actually asked for. It is still not a pass: the test did not run, and saying it passed would be worse
+* txTests over HTTP: `icd-11` added to the default mode set, which had been missed when the mode set was last extended
+* txTests: the caller can name the folder the run writes into, with the new `folder` parameter, instead of it being taken from the server's host name. It is a name and not a path - the output still goes under the temp directory - and it is checked for being usable on every OS the tests run on (no separators, no `..`, no trailing `.`, and none of the names Windows reserves for devices). Without it, a caller that runs one server several ways has every variant writing into the same folder
+* txTests: each test can carry a `label`, which is a subfolder of the run folder that all of that test's output goes into; no label puts it in the root as before. R4 and R5 runs of the same test write the same two filenames, so without a label only the last one survives - and it does not say which one it was
+* txTests: `$versions` was never actually used to determine a server's FHIR version. Two faults, both silent because the fallback to `/metadata` works: the response was written to `actual/$versions.json` before anything had created that directory, so the write threw and the probe was recorded as failed (this only hit `executeTest()` - server mode and the JUnit runners - because a whole run creates the directory first); and the `default` parameter was only read as `valueString`, where servers send `valueCode`. A server that supports `$versions` but not `/metadata` could not be tested at all
 
 ## Other code changes
 
-* no changes
+* R5 -> R4 and R5 -> R4B conversion dropped `ValueSet.compose.property` - the element a client uses to say which properties it wants back in an expansion. Neither R4 nor R4B has the element, so it now travels as the cross-version extension `http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.property` and is read back on the way up. Before this, a value set that asked for properties came back without them after a round trip, which looks like a terminology server fault rather than a conversion one
