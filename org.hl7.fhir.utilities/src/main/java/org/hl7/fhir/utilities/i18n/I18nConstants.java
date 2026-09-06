@@ -21,6 +21,7 @@ public class I18nConstants {
   public static final String BINDING_ADDITIONAL_D = "BINDING_ADDITIONAL_D";
   public static final String BINDING_ADDITIONAL_UC = "BINDING_ADDITIONAL_UC";
   public static final String BINDING_ADDITIONAL_USAGE = "BINDING_ADDITIONAL_USAGE";
+  public static final String BINDING_ADDITIONAL_IN_SCOPE = "BINDING_ADDITIONAL_IN_SCOPE";
   public static final String BINDING_MAX = "BINDING_MAX";
   public static final String BUNDLE_BUNDLE_ENTRY_CANONICAL = "Bundle_BUNDLE_Entry_Canonical";
   public static final String BUNDLE_BUNDLE_ENTRY_DOCUMENT = "Bundle_BUNDLE_Entry_Document";
@@ -617,6 +618,10 @@ public class I18nConstants {
   public static final String QUESTIONNAIRE_QR_ITEM_ONLYONEI = "Questionnaire_QR_Item_OnlyOneI";
   public static final String QUESTIONNAIRE_QR_ITEM_ORDER = "Questionnaire_QR_Item_Order";
   public static final String QUESTIONNAIRE_QR_ITEM_STRINGNOOPTIONS = "Questionnaire_QR_Item_StringNoOptions";
+  public static final String QUESTIONNAIRE_QR_ITEM_STRINGNOTALLOWED = "Questionnaire_QR_Item_StringNotAllowed";
+  public static final String QUESTIONNAIRE_QR_ITEM_ENABLEWHEN_UNCHECKABLE = "Questionnaire_QR_Item_EnableWhen_Uncheckable";
+  public static final String QUESTIONNAIRE_QR_LAUNCH_CONTEXT_NOT_LOADED = "Questionnaire_QR_LaunchContext_NotLoaded";
+  public static final String QUESTIONNAIRE_QR_LAUNCH_CONTEXT_WRONG_TYPE = "Questionnaire_QR_LaunchContext_WrongType";
   public static final String QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING = "QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING";
   public static final String QUESTIONNAIRE_QR_ITEM_TEXT = "Questionnaire_QR_Item_Text";
   public static final String QUESTIONNAIRE_QR_ITEM_TIMENOOPTIONS = "Questionnaire_QR_Item_TimeNoOptions";

@@ -74,6 +74,7 @@ public class ExtensionDefinitions {
   public static final String EXT_HIERARCHY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-hierarchy";
   public static final String EXT_ISSUE_SOURCE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source";
   public static final String EXT_MAXOCCURS = "http://hl7.org/fhir/StructureDefinition/questionnaire-maxOccurs";
+  public static final String EXT_VARIABLE = "http://hl7.org/fhir/StructureDefinition/variable";
   public static final String EXT_MAX_DECIMALS = "http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces";
   public static final String EXT_MAX_SIZE = "http://hl7.org/fhir/StructureDefinition/maxSize";
   public static final String EXT_MAX_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet";
