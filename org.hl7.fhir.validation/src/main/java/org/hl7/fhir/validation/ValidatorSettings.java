@@ -28,6 +28,11 @@ public class ValidatorSettings extends ValidationOptions {
   private boolean warnOnDraftOrExperimental; // @configuration 
   private BestPracticeWarningLevel bpWarnings = BestPracticeWarningLevel.Warning; // @configuration
   private List<UsageContext> usageContexts = new ArrayList<UsageContext>(); // @configuration
+  /**
+   * Launch contexts the caller supplied, by the name a Questionnaire declares for them, each held as
+   * the reference it was given as - a file name or a URL. See the -launch-context parameter.
+   */
+  private Map<String, String> launchContexts = new HashMap<String, String>(); // @configuration
   private boolean assumeValidRestReferences;
   private Map<String, byte[]> certificates = new HashMap<>();
   private List<String> certificateFolders = new ArrayList<>();
@@ -113,6 +118,9 @@ public class ValidatorSettings extends ValidationOptions {
 
   public List<UsageContext> getUsageContexts() {
     return usageContexts;
+  }
+  public Map<String, String> getLaunchContexts() {
+    return launchContexts;
   }
   public Map<String, byte[]> getCertificates() {
     return certificates;

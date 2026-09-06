@@ -183,6 +183,8 @@ import org.hl7.fhir.validation.instance.utils.ValidationContext;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
+import org.hl7.fhir.validation.service.utils.LaunchContextUtilities;
+import org.hl7.fhir.validation.service.utils.UsageContextUtilities;
 import org.hl7.fhir.validation.codesystem.CodingsObserver;
 import org.hl7.fhir.validation.instance.type.StructureMapValidator.VariableDefn;
 import org.hl7.fhir.validation.instance.type.StructureMapValidator.VariableSet;
@@ -654,6 +656,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     setDoImplicitFHIRPathStringConversion(parameters.isDoImplicitFHIRPathStringConversion());
     getSettings().setR5BundleRelativeReferencePolicy(parameters.getR5BundleRelativeReferencePolicy());
     setJurisdiction(CodeSystemUtilities.readCoding(parameters.getJurisdiction()));
+    getSettings().getUsageContexts().clear(); // should be empty - the settings are fresh - but this method is public
+    for (String usage : parameters.getUsages()) {
+      getSettings().getUsageContexts().add(UsageContextUtilities.parseUsageContext(usage));
+    }
+    getSettings().getLaunchContexts().clear();
+    for (String launchContext : parameters.getLaunchContexts()) {
+      LaunchContextUtilities.addLaunchContext(getSettings().getLaunchContexts(), launchContext);
+    }
 
     setUnknownCodeSystemsCauseErrors(parameters.isUnknownCodeSystemsCauseErrors());
     setNoExperimentalContent(parameters.isNoExperimentalContent());
@@ -1499,8 +1509,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path, profile);
           }
           for (ElementDefinitionBindingAdditionalComponent ab : binding.getAdditional()) {
-            StringBuilder b = new StringBuilder();
-            if (isTestableBinding(ab) && isInScope(ab, profile, getResource(stack), b)) {
+            CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
+            if (isTestableBinding(ab) && isInScope(errors, path, element, ab, profile, getResource(stack), b)) {
               String vsRef = ab.getValueSet();
               ValueSet valueset = resolveBindingReference(profile, vsRef, ab.getValueSetElement(), profile.getUrl(), profile);
               BindingStrength strength = convertPurposeToStrength(ab.getPurpose());
@@ -1546,7 +1556,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private boolean isInScope(ElementDefinitionBindingAdditionalComponent ab, StructureDefinition profile, Element resource, StringBuilder b) {
+  private boolean isInScope(List<ValidationMessage> errors, String path, Element element, ElementDefinitionBindingAdditionalComponent ab, StructureDefinition profile, Element resource, CommaSeparatedStringBuilder b) {
     if (ab.getUsage().isEmpty()) {
       return true;
     }
@@ -1556,11 +1566,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = false;
       }
     }
+    if (ok) {
+      // a binding that only applies in some contexts has been decided to apply in this one, and that
+      // decision comes from outside the resource - either a use context the caller declared, or one
+      // matched against the content. Say so, so that the messages it goes on to produce are traceable
+      hint(errors, "2026-09-06", IssueType.INFORMATIONAL, element.line(), element.col(), path, false, I18nConstants.BINDING_ADDITIONAL_IN_SCOPE, describeReference(ab.getValueSet()), b.toString());
+    }
     return ok;
   }
 
-  private boolean isInScope(UsageContext usage, StructureDefinition profile, Element resource, StringBuilder b) {
+  private boolean isInScope(UsageContext usage, StructureDefinition profile, Element resource, CommaSeparatedStringBuilder b) {
     if (isKnownUsage(usage)) {
+      // the caller declared this use context - see ValidatorSettings.usageContexts and the -usage parameter
+      b.append(context.formatMessage(I18nConstants.BINDING_ADDITIONAL_USAGE, displayCoding(usage.getCode()), display(usage.getValue())));
       return true;
     }
     if (usage.getCode().hasSystem() && (usage.getCode().getSystem().equals(profile.getUrl()) || usage.getCode().getSystem().equals(profile.getVersionedUrl()))) {
@@ -2056,8 +2074,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path, profile);
           }
           for (ElementDefinitionBindingAdditionalComponent ab : binding.getAdditional()) {
-            StringBuilder b = new StringBuilder();
-            if (isTestableBinding(ab) && isInScope(ab, profile, getResource(stack), b)) {
+            CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
+            if (isTestableBinding(ab) && isInScope(errors, path, element, ab, profile, getResource(stack), b)) {
               String vsRef = ab.getValueSet();
               ValueSet valueset = resolveBindingReference(profile, vsRef, ab.getValueSetElement(), profile.getUrl(), profile);
               BindingStrength strength = convertPurposeToStrength(ab.getPurpose());
@@ -2102,8 +2120,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path, profile);
               }
               for (ElementDefinitionBindingAdditionalComponent ab : binding.getAdditional()) {
-                StringBuilder b = new StringBuilder();
-                if (isTestableBinding(ab) && isInScope(ab, profile, getResource(stack), b)) {
+                CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
+                if (isTestableBinding(ab) && isInScope(errors, path, element, ab, profile, getResource(stack), b)) {
                   String vsRef = ab.getValueSet();
                   ValueSet valueset = resolveBindingReference(profile, vsRef, ab.getValueSetElement(), profile.getUrl(), profile);
                   BindingStrength strength = convertPurposeToStrength(ab.getPurpose());
@@ -2424,8 +2442,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
 
               for (ElementDefinitionBindingAdditionalComponent ab : binding.getAdditional()) {
-                StringBuilder b = new StringBuilder();
-                if (isTestableBinding(ab) && isInScope(ab, profile, getResource(stack), b)) {
+                CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
+                if (isTestableBinding(ab) && isInScope(errors, path, element, ab, profile, getResource(stack), b)) {
                   String vsRef = ab.getValueSet();
                   ValueSet valueset = resolveBindingReference(profile, vsRef, ab.getValueSetElement(), profile.getUrl(), profile);
                   BindingStrength strength = convertPurposeToStrength(ab.getPurpose());
@@ -4477,64 +4495,121 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // firstly, resolve the value set
     ElementDefinitionBindingComponent binding = elementContext.getBinding();
     
+    BooleanHolder bh = new BooleanHolder(ok);
+    ValidationResult primary = null;
     if (binding.hasValueSet()) {
-      ValueSet vs = resolveBindingReference(profile, binding.getValueSet(), binding.getValueSetElement(), profile.getUrl(), profile);
-      if (vs == null) { 
-        CodeSystem cs = context.fetchCodeSystem(binding.getValueSet(), ExtensionUtilities.getVersionResolutionRules(binding.getValueSetElement()));
-        if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
-          warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, vs != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
-        } else {
-          ok = false;
-        }
-      } else {
-        EnumSet<CodedContentValidationAction> validationPolicy = policyAdvisor.policyForCodedContent(this, valContext, stack.getLiteralPath(), elementContext, profile, BindingKind.PRIMARY, null, vs, new ArrayList<>());
+      primary = checkPrimitiveBindingValue(valContext, errors, path, elementContext, element, profile, stack, value,
+          binding.getValueSet(), binding.getValueSetElement(), binding.getStrength(),
+          binding.hasExtension(ExtensionDefinitions.EXT_MAX_VALUESET) ? ExtensionUtilities.readStringExtension(binding, ExtensionDefinitions.EXT_MAX_VALUESET) : null,
+          BindingContext.BASE, null, true, null, bh);
+    } else if (!noBindingMsgSuppressed) {
+      hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, !type.equals("code"), I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path, profile);
+    }
 
-        if (!validationPolicy.isEmpty()) {
-          long t = System.nanoTime();
-          ValidationResult vr = null;
-          if (binding.getStrength() != BindingStrength.EXAMPLE) {
+    // the element's own binding says which code system the value comes from, so an additional
+    // binding doesn't have to guess: 'unknown' is administrative-gender#unknown whether or not the
+    // additional value set happens to contain it, and asking about a bare code would only produce a
+    // spurious "the System URI could not be determined"
+    String system = primary == null ? null : primary.getSystem();
+
+    // additional bindings apply to a primitive just as they do to a Coding or CodeableConcept -
+    // see the same loop in checkCodedElement. Whether one is in scope may depend on the use contexts
+    // the caller declared (-usage), or on the content of the resource
+    for (ElementDefinitionBindingAdditionalComponent ab : binding.getAdditional()) {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
+      if (isTestableBinding(ab) && isInScope(errors, path, element, ab, profile, getResource(stack), b)) {
+        checkPrimitiveBindingValue(valContext, errors, path, elementContext, element, profile, stack, value,
+            ab.getValueSet(), ab.getValueSetElement(), convertPurposeToStrength(ab.getPurpose()), null,
+            BindingContext.ADDITIONAL, b.toString(), false, system, bh);
+      }
+    }
+    return bh.ok();
+  }
+
+  /**
+   * Check a primitive value against one binding: either the element's own binding, or one of its
+   * additional bindings.
+   *
+   * @param vsRef the value set the binding names, and vsRefElement the element it was read from (for version resolution)
+   * @param strength the strength to apply - for an additional binding, derived from its purpose
+   * @param maxVSUrl the max value set to fall back to when an extensible binding fails; only the primary binding has one
+   * @param bc how to describe the binding in messages
+   * @param usageNote why an additional binding is in scope, where that came from the resource's content
+   * @param primary whether to ask the policy advisor about this binding - as in checkCodedElement, the
+   *   advisor is only consulted for the element's own binding
+   * @param system the code system the value is known to come from, or null to infer it from the value set
+   * @param bh collects whether validation passed
+   * @return the result of checking the value against this binding, so that the caller can reuse what it learnt
+   */
+  private ValidationResult checkPrimitiveBindingValue(ValidationContext valContext, List<ValidationMessage> errors, String path,
+      ElementDefinition elementContext, Element element, StructureDefinition profile, NodeStack stack, String value,
+      String vsRef, CanonicalType vsRefElement, BindingStrength strength, String maxVSUrl, BindingContext bc, String usageNote, boolean primary,
+      String system, BooleanHolder bh) {
+    boolean ok = true;
+    if (strength == null) {
+      return null;
+    }
+    ValidationResult vr = null;
+    ValueSet vs = resolveBindingReference(profile, vsRef, vsRefElement, profile.getUrl(), profile);
+    if (vs == null) { 
+      CodeSystem cs = context.fetchCodeSystem(vsRef, ExtensionUtilities.getVersionResolutionRules(vsRefElement));
+      if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(vsRef))) {
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, vs != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(vsRef));
+      } else {
+        ok = false;
+      }
+    } else {
+      EnumSet<CodedContentValidationAction> validationPolicy = primary ?
+          policyAdvisor.policyForCodedContent(this, valContext, stack.getLiteralPath(), elementContext, profile, BindingKind.PRIMARY, null, vs, new ArrayList<>()) :
+          EnumSet.allOf(CodedContentValidationAction.class);
+
+      if (!validationPolicy.isEmpty()) {
+        long t = System.nanoTime();
+        if (strength != BindingStrength.EXAMPLE) {
+          if (system != null) {
+            vr = checkCodeOnServer(stack, vs, new Coding().setSystem(system).setCode(value), profile);
+          } else {
             ValidationOptions options = settings.withGuessSystem();
             if (!validationPolicy.contains(CodedContentValidationAction.InvalidCode) && !validationPolicy.contains(CodedContentValidationAction.InvalidDisplay)) {
               options = options.withCheckValueSetOnly();              
             }
             vr = checkCodeOnServer(stack, vs, value, options);
           }
-          ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, binding.getStrength() != BindingStrength.REQUIRED, binding.getValueSet(), binding.getStrength()) && ok;
+        }
+        ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, strength != BindingStrength.REQUIRED, vsRef, strength) && ok;
 
-          timeTracker.tx(t, "vc "+value+"");
-          if (binding.getStrength() == BindingStrength.REQUIRED) {
-            removeTrackedMessagesForLocation(errors, element, path);
+        timeTracker.tx(t, "vc "+value+"");
+        if (strength == BindingStrength.REQUIRED) {
+          removeTrackedMessagesForLocation(errors, element, path);
+        }
+        if (vr != null && !vr.isOk()) {
+          if (vr.isNoService()) {
+            txHint(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_15, value);
+          } else if (vr.getErrorClass() != null && vr.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+          } else if (strength == BindingStrength.REQUIRED) {
+            ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_16, value, describeReference(vsRef, vs, bc, usageNote), getErrorMessage(vr.getMessage())) && ok;
+          } else if (strength == BindingStrength.EXTENSIBLE) {
+            if (maxVSUrl != null)
+              ok = checkMaxValueSet(errors, path, element, profile, maxVSUrl, value, stack) && ok;
+            else if (!noExtensibleWarnings && !isOkExtension(value, vs))
+              txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_17, value, describeReference(vsRef, vs, bc, usageNote), getErrorMessage(vr.getMessage()));
+          } else if (strength == BindingStrength.PREFERRED) {
+            if (!isBaseBinding(profile, elementContext) || settings.isForPublication()) {
+              txHint(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_18, value, describeReference(vsRef, vs, bc, usageNote), getErrorMessage(vr.getMessage()));
+            }
           }
-          if (vr != null && !vr.isOk()) {
-            if (vr.isNoService()) {
-              txHint(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_15, value);
-            } else if (vr.getErrorClass() != null && vr.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
-              txWarning(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
-            } else if (binding.getStrength() == BindingStrength.REQUIRED) {
-              ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_16, value, describeReference(binding.getValueSet(), vs, BindingContext.BASE, null), getErrorMessage(vr.getMessage())) && ok;
-            } else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-              if (binding.hasExtension(ExtensionDefinitions.EXT_MAX_VALUESET))
-                ok = checkMaxValueSet(errors, path, element, profile, ExtensionUtilities.readStringExtension(binding, ExtensionDefinitions.EXT_MAX_VALUESET), value, stack) && ok;
-              else if (!noExtensibleWarnings && !isOkExtension(value, vs))
-                txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_17, value, describeReference(binding.getValueSet(), vs, BindingContext.BASE, null), getErrorMessage(vr.getMessage()));
-            } else if (binding.getStrength() == BindingStrength.PREFERRED) {
-              if (!isBaseBinding(profile, elementContext) || settings.isForPublication()) {
-                txHint(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_18, value, describeReference(binding.getValueSet(), vs, BindingContext.BASE, null), getErrorMessage(vr.getMessage()));
-              }
-            }
-          } else if (vr != null && vr.getMessage() != null){
-            if (vr.getSeverity() == IssueSeverity.INFORMATION) {
-              txHint(errors, "2023-07-04", vr.getTxLink(), vr.getDiagnostics(), IssueType.INFORMATIONAL, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_HINT, value, vr.getMessage());
-            } else {
-              txWarning(errors, "2023-07-04", vr.getTxLink(), vr.getDiagnostics(), IssueType.INFORMATIONAL, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_WARNING, value, vr.getMessage());
-            }
+        } else if (vr != null && vr.getMessage() != null){
+          if (vr.getSeverity() == IssueSeverity.INFORMATION) {
+            txHint(errors, "2023-07-04", vr.getTxLink(), vr.getDiagnostics(), IssueType.INFORMATIONAL, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_HINT, value, vr.getMessage());
+          } else {
+            txWarning(errors, "2023-07-04", vr.getTxLink(), vr.getDiagnostics(), IssueType.INFORMATIONAL, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_WARNING, value, vr.getMessage());
           }
         }
       }
-    } else if (!noBindingMsgSuppressed) {
-      hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, !type.equals("code"), I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path, profile);
     }
-    return ok;
+    bh.see(ok);
+    return vr;
   }
 
   private boolean isOkExtension(String value, ValueSet vs) {

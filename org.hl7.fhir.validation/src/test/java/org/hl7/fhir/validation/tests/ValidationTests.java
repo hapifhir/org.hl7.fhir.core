@@ -324,6 +324,28 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     if (content.has("allowed-extension-domains"))
       for (JsonElement a : content.getAsJsonArray("allowed-extension-domains"))
         val.getExtensionDomains().add(a.getAsString());
+    if (content.has("usage")) {
+      // use contexts that the caller says apply - what -usage supplies on the command line. These
+      // decide whether an additional binding scoped to a use context is in force
+      JsonElement usage = content.get("usage");
+      if (usage.isJsonArray()) {
+        for (JsonElement e : usage.getAsJsonArray()) {
+          val.getSettings().getUsageContexts().add(parseUsageContext(e));
+        }
+      } else {
+        val.getSettings().getUsageContexts().add(parseUsageContext(usage));
+      }
+    }
+    if (content.has("launch-context")) {
+      // launch contexts the caller supplies - what -launch-context provides on the command line.
+      // The settings carry the reference as given, so extract the test resource to a real file and
+      // name that, which leaves the validator doing the same loading it would do for a real run.
+      // A reference with no matching test resource is passed through untouched, which is how the
+      // cases that check what happens to an unresolvable reference are written
+      for (Map.Entry<String, JsonElement> e : content.getAsJsonObject("launch-context").entrySet()) {
+        val.getSettings().getLaunchContexts().put(e.getKey(), resolveLaunchContext(e.getValue().getAsString()));
+      }
+    }
     val.setForPublication(content.has("for-publication") && "true".equals(content.get("for-publication").getAsString()));
     if (content.has("default-version")) {
       val.getSettings().setVersionFlexible(content.get("default-version").getAsBoolean());
@@ -726,6 +748,23 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         else
           throw new FHIRException("unknown version " + version);
       }
+    }
+  }
+
+  private String resolveLaunchContext(String ref) throws IOException {
+    if (!TestingUtilities.findTestResource("validator", ref)) {
+      return ref;
+    }
+    File f = ManagedFileAccess.file(Utilities.path(outputFolder, "launch-context-" + ref.replace("/", "-")));
+    FileUtilities.bytesToFile(TestingUtilities.loadTestResourceBytes("validator", ref), f);
+    return f.getAbsolutePath();
+  }
+
+  private UsageContext parseUsageContext(JsonElement json) {
+    try {
+      return (UsageContext) new JsonParser().parseType(json.toString(), "UsageContext");
+    } catch (Exception e) {
+      throw new Error("Unable to parse the usage context " + json.toString() + ": " + e.getMessage(), e);
     }
   }
 
