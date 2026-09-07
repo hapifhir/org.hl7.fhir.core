@@ -16,6 +16,7 @@ import org.hl7.fhir.r4.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.utilities.UserDataNames;
 
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -571,15 +572,15 @@ public class Runner implements IHostApplicationServices {
     List<Base> base = new ArrayList<Base>();
     if (focus.size() == 1) {
       Base res = focus.get(0);
-      if (!res.hasUserData("Storage.key")) {
+      if (!res.hasUserData(UserDataNames.Storage_key)) {
         String key = storage.getKeyForSourceResource(res);
         if (key == null) {
           throw new FHIRException("Unidentified resource: "+res.fhirType()+"/"+res.getIdBase());
         } else {
-          res.setUserData("Storage.key", key);
+          res.setUserData(UserDataNames.Storage_key, key);
         }
       }
-      base.add(new StringType(res.getUserString("Storage.key")));
+      base.add(new StringType(res.getUserString(UserDataNames.Storage_key)));
     }
     return base;
   }
@@ -606,15 +607,21 @@ public class Runner implements IHostApplicationServices {
       if (ref !=  null) {
         Base target = provider.resolveReference(rootResource, ref, rt);
         if (target != null) {
-          if (!res.hasUserData("Storage.key")) {
+          // The cache slot has to be per type specifier, not one slot on the Reference: the same
+          // Reference can be asked for getReferenceKey(), getReferenceKey(Patient) and
+          // getReferenceKey(Observation) in one view, and those do not all resolve to the same
+          // target - or to a target at all. A single slot returned whichever key was calculated
+          // first for all of them
+          String slot = rt == null ? UserDataNames.Storage_key : UserDataNames.Storage_key+"."+rt;
+          if (!res.hasUserData(slot)) {
             String key = storage.getKeyForTargetResource(target);
             if (key == null) {
-              throw new FHIRException("Unidentified resource: "+res.fhirType()+"/"+res.getIdBase());
+              throw new FHIRException("Unidentified resource: "+target.fhirType()+"/"+target.getIdBase());
             } else {
-              res.setUserData("Storage.key", key);
+              res.setUserData(slot, key);
             }
           }
-          base.add(new StringType(res.getUserString("Storage.key")));
+          base.add(new StringType(res.getUserString(slot)));
         }
       }
     }
