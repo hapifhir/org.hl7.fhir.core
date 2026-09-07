@@ -1,5 +1,7 @@
 ## Validator Changes
 
+* The OperationOutcome the validator produces now carries a `validator-version` extension (defined in the tooling IG) holding the same version/build line the validator logs at start up, e.g. "FHIR Validation tool Version 6.10.3-SNAPSHOT (Git# 5f774e5d63a1). Built 2026-08-22T00:02:31.157+10:00 (16 days old)". A validation report says nothing today about what produced it, so a report from a build that is a year old reads exactly like one from this morning
+
 * txTests over HTTP (how the server-side runners drive the tests): a test gated on a mode that was not requested came back as the bare string "n/a", which the caller reports as a plain failure with no reason - a whole suite gated on a mode the caller forgot to send arrives as a wall of unexplained failures. It now names the mode that would have run the test and the modes that were actually asked for. It is still not a pass: the test did not run, and saying it passed would be worse
 * txTests over HTTP: `icd-11` added to the default mode set, which had been missed when the mode set was last extended
 * txTests: the caller can name the folder the run writes into, with the new `folder` parameter, instead of it being taken from the server's host name. It is a name and not a path - the output still goes under the temp directory - and it is checked for being usable on every OS the tests run on (no separators, no `..`, no trailing `.`, and none of the names Windows reserves for devices). Without it, a caller that runs one server several ways has every variant writing into the same folder
