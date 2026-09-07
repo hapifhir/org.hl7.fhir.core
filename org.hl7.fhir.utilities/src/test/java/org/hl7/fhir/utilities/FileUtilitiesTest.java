@@ -6,11 +6,16 @@ import org.junit.jupiter.api.*;
  import java.io.ByteArrayOutputStream;
  import java.io.File;
  import java.io.IOException;
+ import java.io.OutputStream;
  import java.nio.charset.StandardCharsets;
  import java.nio.file.Files;
+ import java.nio.file.NoSuchFileException;
  import java.util.ArrayList;
  import java.util.Arrays;
  import java.util.List;
+ import java.util.UUID;
+ import java.util.concurrent.atomic.AtomicBoolean;
+ import java.util.concurrent.atomic.AtomicInteger;
 
  import static org.junit.jupiter.api.Assertions.*;
 
@@ -196,5 +201,123 @@ import org.junit.jupiter.api.*;
    private void makeDir(String path) throws IOException {
      FileUtilities.createDirectory(path);
      FileUtilities.clearDirectory(path);
+   }
+
+   @Test
+   void testReplaceFileAtomicallyOverExistingFile() throws IOException {
+     final var dir = Files.createTempDirectory("replace-atomically").toFile();
+     final var dst = new File(dir, "target.txt");
+     Files.writeString(dst.toPath(), "old");
+     final var tmp = new File(dir, "target.txt.tmp");
+     Files.writeString(tmp.toPath(), "new");
+
+     FileUtilities.replaceFileAtomically(tmp, dst);
+
+     assertEquals("new", Files.readString(dst.toPath()));
+     assertFalse(tmp.exists(), "the scratch file should be gone once it has been swapped in");
+   }
+
+   @Test
+   void testReplaceFileAtomicallyWhenTargetDoesNotExist() throws IOException {
+     final var dir = Files.createTempDirectory("replace-atomically").toFile();
+     final var dst = new File(dir, "target.txt");
+     final var tmp = new File(dir, "target.txt.tmp");
+     Files.writeString(tmp.toPath(), "new");
+
+     FileUtilities.replaceFileAtomically(tmp, dst);
+
+     assertEquals("new", Files.readString(dst.toPath()));
+   }
+
+   /**
+    * The point of the temp-then-swap idiom: a reader running alongside the writer only ever
+    * sees a whole version of the file, never a half-written one. Each version here is a long
+    * run of a single character, so anything torn is trivially detectable.
+    *
+    * <p>Writing the same file in place instead does produce torn reads, but only a couple per
+    * few hundred - too rare to assert on without making the test flaky, so this asserts the
+    * one direction that cannot false-fail.
+    */
+   @Test
+   void testReplaceFileAtomicallyIsNeverSeenPartiallyWritten() throws Exception {
+     final var dir = Files.createTempDirectory("replace-atomically").toFile();
+     final var dst = new File(dir, "target.txt");
+     Files.write(dst.toPath(), versionOfFile('A'));
+
+     final var stop = new AtomicBoolean(false);
+     final var torn = new AtomicInteger(0);
+     final var reads = new AtomicInteger(0);
+     final List<Exception> failures = new ArrayList<>();
+
+     final var writer = new Thread(() -> {
+       try {
+         for (int i = 0; i < 300; i++) {
+           final var tmp = new File(dir, "target.txt." + UUID.randomUUID() + ".tmp");
+           try (OutputStream os = ManagedFileAccess.outStream(tmp)) {
+             os.write(versionOfFile(i % 2 == 0 ? 'A' : 'B'));
+           }
+           FileUtilities.replaceFileAtomically(tmp, dst);
+         }
+       } catch (Exception e) {
+         synchronized (failures) { failures.add(e); }
+       } finally {
+         stop.set(true);
+       }
+     });
+
+     final var reader = new Thread(() -> {
+       while (!stop.get()) {
+         try {
+           final var read = Files.readAllBytes(dst.toPath());
+           reads.incrementAndGet();
+           if (!isWholeVersion(read)) {
+             torn.incrementAndGet();
+           }
+         } catch (NoSuchFileException e) {
+           torn.incrementAndGet(); // the file must never vanish either
+         } catch (IOException e) {
+           synchronized (failures) { failures.add(e); }
+           return;
+         }
+       }
+     });
+
+     writer.start();
+     reader.start();
+     writer.join();
+     reader.join();
+
+     synchronized (failures) {
+       assertTrue(failures.isEmpty(), () -> "unexpected failure: " + failures.get(0));
+     }
+     assertTrue(reads.get() > 0, "the reader never managed to read the file");
+     assertEquals(0, torn.get(), "reader saw a partially written file");
+   }
+
+   private static byte[] versionOfFile(char c) {
+     final var b = new StringBuilder();
+     for (int i = 0; i < 2000; i++) {
+       for (int j = 0; j < 60; j++) {
+         b.append(c);
+       }
+       b.append('\n');
+     }
+     return b.toString().getBytes(StandardCharsets.UTF_8);
+   }
+
+   private static boolean isWholeVersion(byte[] read) {
+     if (read.length == 0) {
+       return false;
+     }
+     final char c = (char) read[0];
+     if (c != 'A' && c != 'B') {
+       return false;
+     }
+     for (final byte b : read) {
+       if (b != (byte) c && b != (byte) '\n') {
+         return false;
+       }
+     }
+     return read.length == versionOfFile(c).length;
    }
  } 

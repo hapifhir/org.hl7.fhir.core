@@ -1158,6 +1158,21 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return validator;
   }
 
+  /**
+   * Write any terminology answers this engine has picked up but not yet flushed.
+   *
+   * <p>The terminology cache coalesces writes over a long window, so entries earned during a
+   * run sit in memory until something asks for them to be persisted. Call this when a unit of
+   * work finishes - the end of a command, the end of a validation pass - so the next run
+   * starts with them rather than asking the server again. It is cheap when there is nothing
+   * pending, and safe to call as often as you like.
+   */
+  public void saveTerminologyCache() {
+    if (context != null && context.getTxCache() != null) {
+      context.getTxCache().save();
+    }
+  }
+
   public void prepare() {
     for (StructureDefinition sd : new ContextUtilities(context).allStructures()) {
       try {
