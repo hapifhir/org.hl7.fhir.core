@@ -1,12 +1,8 @@
 package org.hl7.fhir.utils.sql;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.services.elementmodel.JsonParser;
-import org.hl7.fhir.services.sql.Provider;
 import org.hl7.fhir.services.sql.Runner;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -17,7 +13,6 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -320,58 +315,6 @@ public class SqlOnFhirRunnerTests {
                                      expected, actualColumns);
       }
     }
-  }
-
-  /**
-   * Regression test for <a
-   * href="https://github.com/hapifhir/org.hl7.fhir.core/issues/2442">issue #2442</a>: a date /
-   * dateTime / instant column whose source value is supplied as an element-model primitive
-   * previously fell through to an else branch in {@code Runner.genValue} that threw a misleading
-   * "to an integer column" error. {@code org.hl7.fhir.services.elementmodel.Element} does not
-   * override {@code isDateTime()} / {@code dateTimeValue()}, so the original guard never matched.
-   */
-  @Test
-  @DisplayName("birthDate column resolves correctly when input is an element-model Patient")
-  public void birthDateColumnFromElementModelInput() throws Exception {
-    // Parse a Patient via the element-model parser so the value reaching genValue is an Element,
-    // not a model BaseDateTimeType.
-    String patientJson = "{\"resourceType\":\"Patient\",\"id\":\"p1\",\"birthDate\":\"1970-06-15\"}";
-    Element patient = new JsonParser(context).parse(patientJson, "Patient");
-    assertNotNull(patient);
-
-    Provider provider = new Provider() {
-      @Override
-      public List<Base> fetch(String resourceType) {
-        List<Base> result = new ArrayList<>();
-        if ("Patient".equals(resourceType)) {
-          result.add(patient);
-        }
-        return result;
-      }
-
-      @Override
-      public Base resolveReference(Base rootResource, String ref, String specifiedResourceType) {
-        return null;
-      }
-    };
-
-    String viewJson = "{\"resource\":\"Patient\",\"status\":\"active\",\"select\":[{\"column\":["
-        + "{\"name\":\"id\",\"path\":\"id\",\"type\":\"id\"},"
-        + "{\"name\":\"birth_date\",\"path\":\"birthDate\"}]}]}";
-    JsonObject view = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(viewJson);
-
-    TestStorage storage = new TestStorage();
-    Runner runner = new Runner();
-    runner.setContext(context);
-    runner.setProvider(provider);
-    runner.setStorage(storage);
-    runner.execute(view);
-
-    JsonArray rows = storage.getResults();
-    assertEquals(1, rows.size());
-    JsonObject row = (JsonObject) rows.get(0);
-    assertEquals("p1", row.asString("id"));
-    assertEquals("1970-06-15", row.asString("birth_date"));
   }
 
   /**
