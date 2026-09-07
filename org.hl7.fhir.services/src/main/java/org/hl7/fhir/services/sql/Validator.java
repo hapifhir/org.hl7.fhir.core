@@ -60,7 +60,7 @@ public class Validator {
 
 
   public void checkViewDefinition(String path, JsonObject viewDefinition) {    
-    checkProperties(viewDefinition, path, "resourceType", "id", "meta", "implicitRules", "language", "text", "contained", "modifierExtension", "url", "identifier", "version", "versionAlgorithmString", "versionAlgorithmCoding", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "copyrightLabel", "resource", "profile", "fhirVersion", "constant", "select", "where");
+    checkProperties(viewDefinition, path, "resourceType", "id", "meta", "implicitRules", "language", "text", "contained", "modifierExtension", "url", "identifier", "version", "versionAlgorithmString", "versionAlgorithmCoding", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "copyrightLabel", "approvalDate", "lastReviewDate", "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact", "resource", "profile", "fhirVersion", "constant", "select", "where");
     
     JsonElement nameJ = viewDefinition.get("name");
     if (nameJ == null) {

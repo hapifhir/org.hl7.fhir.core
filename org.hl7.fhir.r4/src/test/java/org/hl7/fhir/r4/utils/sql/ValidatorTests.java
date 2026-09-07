@@ -99,14 +99,15 @@ class ValidatorTests {
     }
   }
 
-  // ViewDefinition logical-model fields and inherited Resource fields that SUSHI emits on
-  // Instances generated from the logical model. The spec's edge build snapshot at
-  // https://build.fhir.org/ig/FHIR/sql-on-fhir-v2/StructureDefinition-ViewDefinition.json
+  // ViewDefinition logical-model fields and inherited Resource/MetadataResource fields that SUSHI
+  // emits on Instances generated from the logical model. The spec's CI build snapshot at
+  // https://build.fhir.org/ig/HL7/sql-on-fhir/en/StructureDefinition-ViewDefinition.html
   // is the authoritative source for this list.
   static Stream<String> topLevelInheritedFields() {
     return Stream.of("id", "meta", "text", "language", "implicitRules", "contained",
         "modifierExtension", "profile", "fhirVersion", "jurisdiction", "purpose", "copyrightLabel",
-        "versionAlgorithmString", "versionAlgorithmCoding");
+        "versionAlgorithmString", "versionAlgorithmCoding", "approvalDate", "lastReviewDate",
+        "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact");
   }
 
   @ParameterizedTest(name = "top-level field {0} is accepted")
@@ -118,10 +119,12 @@ class ValidatorTests {
     // accepts the property name.
     if ("contained".equals(field) || "jurisdiction".equals(field)
         || "modifierExtension".equals(field) || "profile".equals(field)
-        || "fhirVersion".equals(field)) {
+        || "fhirVersion".equals(field) || "topic".equals(field) || "author".equals(field)
+        || "editor".equals(field) || "reviewer".equals(field) || "endorser".equals(field)
+        || "relatedArtifact".equals(field)) {
       vd.forceArray(field);
     } else if ("meta".equals(field) || "text".equals(field)
-        || "versionAlgorithmCoding".equals(field)) {
+        || "versionAlgorithmCoding".equals(field) || "effectivePeriod".equals(field)) {
       vd.forceObject(field);
     } else {
       vd.add(field, "x");
