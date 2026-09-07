@@ -63,39 +63,23 @@ public class TestProvider implements Provider {
       }
     }
 
-    // Try direct lookup.
+    // Try the reference as given, then fall back to the bare ID.
     Resource resource = resourcesById.get(ref);
-    if (resource != null) {
+    if (resource == null) {
+      resource = resourcesById.get(resourceId);
+    }
+    if (resource == null) {
+      return null;
+    }
+
+    // A type specifier constrains the result whichever way the resource was
+    // found, including a reference that already carries a type prefix.
+    if (specifiedResourceType == null || specifiedResourceType.isEmpty()) {
       return resource;
     }
-
-    // Try with just the ID part.
-    resource = resourcesById.get(resourceId);
-    if (resource != null) {
-      // Check if resource type matches if specified.
-      if (specifiedResourceType != null && !specifiedResourceType.isEmpty()) {
-        String actualType = resource.getResourceType().toString();
-        if (specifiedResourceType.startsWith("FHIR.")) {
-          specifiedResourceType = specifiedResourceType.substring(5);
-        }
-        if (actualType.equals(specifiedResourceType)) {
-          return resource;
-        }
-      } else {
-        return resource;
-      }
-    }
-
-    // Try with resource type prefix.
-    if (specifiedResourceType != null && !specifiedResourceType.isEmpty()) {
-      String typedRef = specifiedResourceType + "/" + resourceId;
-      resource = resourcesById.get(typedRef);
-      if (resource != null) {
-        return resource;
-      }
-    }
-
-    return null;
+    String requiredType = specifiedResourceType.startsWith("FHIR.")
+        ? specifiedResourceType.substring(5) : specifiedResourceType;
+    return resource.getResourceType().toString().equals(requiredType) ? resource : null;
   }
 
   /**
