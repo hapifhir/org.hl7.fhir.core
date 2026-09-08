@@ -14,6 +14,7 @@ import org.hl7.fhir.r4.utils.sql.ColumnKind;
 import org.hl7.fhir.r4.utils.sql.Storage;
 import org.hl7.fhir.r4.utils.sql.Store;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.UserDataNames;
 
 
 
@@ -33,13 +34,6 @@ public class StorageSqlite3 implements Storage {
     
   }
   
-  /**
-   * The r4 model does not provide a UserDataNames constants class, so the
-   * key under which the IG publisher's DBBuilder stamps the SQLite primary
-   * key is referenced here by its literal string form.
-   */
-  private static final String USER_DATA_DB_KEY = "db.key";
-
   private Connection conn;
   private int nextKey = 0;
   
@@ -159,16 +153,16 @@ public class StorageSqlite3 implements Storage {
   }
 
   /**
-   * Prefer the DBBuilder-supplied SQLite primary key (USER_DATA_DB_KEY) when
-   * present so view-result keys join against the Resources table. Falls back
-   * to type/id for callers that have not pre-stamped a key.
+   * Prefer the DBBuilder-supplied SQLite primary key (UserDataNames.db_key)
+   * when present so view-result keys join against the Resources table. Falls
+   * back to type/id for callers that have not pre-stamped a key.
    */
   private String resolveKey(Base res) {
     if (res == null) {
       return null;
     }
-    if (res.hasUserData(USER_DATA_DB_KEY)) {
-      return res.getUserString(USER_DATA_DB_KEY);
+    if (res.hasUserData(UserDataNames.db_key)) {
+      return res.getUserString(UserDataNames.db_key);
     }
     return res.fhirType() + "/" + res.getIdBase();
   }

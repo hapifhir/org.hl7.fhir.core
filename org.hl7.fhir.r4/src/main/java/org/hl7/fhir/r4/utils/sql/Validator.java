@@ -40,6 +40,7 @@ import org.hl7.fhir.r4.utils.sql.ColumnKind;
 import org.hl7.fhir.r4.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4.fhirpath.FHIRPathEngine.IssueMessage;
 
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonBoolean;
@@ -110,7 +111,7 @@ public class Validator {
     }
 
     List<Column> columns = new ArrayList<>();    
-    viewDefinition.setUserData("columns", columns);
+    viewDefinition.setUserData(UserDataNames.db_columns, columns);
     
     JsonElement resourceNameJ = viewDefinition.get("resource");
     if (resourceNameJ == null) {
@@ -154,7 +155,7 @@ public class Validator {
 
   private List<Column> checkSelect(JsonObject vd, String path, JsonObject select, TypeDetails t) {
     List<Column> columns = new ArrayList<>();
-    select.setUserData("columns", columns);
+    select.setUserData(UserDataNames.db_columns, columns);
     checkProperties(select, path, "id", "modifierExtension", "column", "select", "forEach", "forEachOrNull", "repeat", "unionAll");
 
     if (select.has("forEach")) {
@@ -259,7 +260,7 @@ public class Validator {
             error(path+".unionAll["+ic+"]", ((JsonArray) a).get(ic), "unionAll["+ic+"] column definitions do not match: "+diff, IssueType.INVALID);            
           }
         }
-        a.setUserData("colunms", columns);
+        a.setUserData(UserDataNames.db_columns, columns);
         return columns;
       }
     }     
@@ -300,7 +301,7 @@ public class Validator {
         ExpressionNode node = null;
         try {
           node = fpe.parse(expr);
-          column.setUserData("path", node);
+          column.setUserData(UserDataNames.db_path, node);
           td = fpe.checkOnTypes(vd, "Resource", resourceName, t, node, warnings);
         } catch (Exception e) {
           error(path, expression, e.getMessage(), IssueType.INVALID);
@@ -336,7 +337,7 @@ public class Validator {
           }
           // ok, name is sorted!
           if (columnName != null) {
-            column.setUserData("name", columnName);
+            column.setUserData(UserDataNames.db_name, columnName);
             boolean isColl = false;
             if (column.has("collection")) {
               JsonElement collectionJ = column.get("collection");
@@ -409,7 +410,7 @@ public class Validator {
               }
               if (ok) {
                 Column col = new Column(columnName, isColl, type, kindForType(type));
-                column.setUserData("column", col);
+                column.setUserData(UserDataNames.db_column, col);
                 return col;
               }
             }
@@ -498,7 +499,7 @@ public class Validator {
       TypeDetails td = null;
       try {
         ExpressionNode n = fpe.parse(expr);
-        focus.setUserData("forEach", n);
+        focus.setUserData(UserDataNames.db_forEach, n);
         td = fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
       } catch (Exception e) {
         error(path, expression, e.getMessage(), IssueType.INVALID);
@@ -523,7 +524,7 @@ public class Validator {
       TypeDetails td = null;
       try {
         ExpressionNode n = fpe.parse(expr);
-        focus.setUserData("forEachOrNull", n);
+        focus.setUserData(UserDataNames.db_forEachOrNull, n);
         td = fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
       } catch (Exception e) {
         error(path, expression, e.getMessage(), IssueType.INVALID);
@@ -585,7 +586,7 @@ public class Validator {
       }
       i++;
     }
-    focus.setUserData("repeat", nodes);
+    focus.setUserData(UserDataNames.db_repeat, nodes);
     // If no path yielded any types, the runtime will produce no rows from this
     // select. Returning null signals downstream validation to skip type-based
     // checks on columns/nested selects, which would otherwise fail against an
@@ -661,7 +662,7 @@ public class Validator {
       error(path+"."+name, j, name+" must be a string", IssueType.INVALID);
     } else {
       value.setValueAsString(j.asString());
-      constant.setUserData("value", value);
+      constant.setUserData(UserDataNames.db_value, value);
     }
   }
 
@@ -671,7 +672,7 @@ public class Validator {
       error(path+"."+name, j, name+" must be a boolean", IssueType.INVALID);
     } else {
       value.setValueAsString(j.asString());
-      constant.setUserData("value", value);
+      constant.setUserData(UserDataNames.db_value, value);
     }
   }
 
@@ -681,7 +682,7 @@ public class Validator {
       error(path+"."+name, j, name+" must be a number", IssueType.INVALID);
     } else {
       value.setValueAsString(j.asString());
-      constant.setUserData("value", value);
+      constant.setUserData(UserDataNames.db_value, value);
     }
   }
   
@@ -698,7 +699,7 @@ public class Validator {
     TypeDetails td = null;
     try {
       ExpressionNode n = fpe.parse(expr);
-      where.setUserData("path", n);
+      where.setUserData(UserDataNames.db_path, n);
       td = fpe.checkOnTypes(vd, "Resource", resourceName, types, n, warnings);
     } catch (Exception e) {
       error(path, where.get("path"), e.getMessage(), IssueType.INVALID);

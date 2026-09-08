@@ -169,7 +169,7 @@ public class Runner implements IHostApplicationServices {
     validator.dump();
     validator.check();
     resourceName = validator.getResourceName();
-    wc.store = storage.createStore(wc.vd.asString("name"), (List<Column>) wc.vd.getUserData("columns"));
+    wc.store = storage.createStore(wc.vd.asString("name"), (List<Column>) wc.vd.getUserData(UserDataNames.db_columns));
     return wc;
   }
   
@@ -262,7 +262,7 @@ public class Runner implements IHostApplicationServices {
         executeUnionAll(fctx, select.getJsonObjects("unionAll"), f, rowsToAdd);
       } else {
         @SuppressWarnings("unchecked")
-        List<Column> allColumns = (List<Column>) select.getUserData("columns");
+        List<Column> allColumns = (List<Column>) select.getUserData(UserDataNames.db_columns);
         if (allColumns != null) {
           for (List<Cell> row : rowsToAdd) {
             for (Column c : allColumns) {
@@ -312,14 +312,14 @@ public class Runner implements IHostApplicationServices {
   }
 
   private List<Base> executeForEach(ExecutionContext ctx, JsonObject focus, Base b) {
-    ExpressionNode n = (ExpressionNode) focus.getUserData("forEach");
+    ExpressionNode n = (ExpressionNode) focus.getUserData(UserDataNames.db_forEach);
     List<Base> result = new ArrayList<>();
     result.addAll(fpe.evaluate(ctx, b, n));
     return result;
   }
 
   private List<Base> executeForEachOrNull(ExecutionContext ctx, JsonObject focus, Base b) {
-    ExpressionNode n = (ExpressionNode) focus.getUserData("forEachOrNull");
+    ExpressionNode n = (ExpressionNode) focus.getUserData(UserDataNames.db_forEachOrNull);
     List<Base> result = new ArrayList<>();
     result.addAll(fpe.evaluate(ctx, b, n));
     return result;
@@ -327,7 +327,7 @@ public class Runner implements IHostApplicationServices {
 
   @SuppressWarnings("unchecked")
   private List<Base> executeRepeat(ExecutionContext ctx, JsonObject focus, Base b) {
-    List<ExpressionNode> nodes = (List<ExpressionNode>) focus.getUserData("repeat");
+    List<ExpressionNode> nodes = (List<ExpressionNode>) focus.getUserData(UserDataNames.db_repeat);
     List<Base> result = new ArrayList<>();
     if (nodes != null && b != null) {
       expandRepeat(ctx, b, nodes, result);
@@ -345,12 +345,12 @@ public class Runner implements IHostApplicationServices {
   }
 
   private void executeColumn(ExecutionContext ctx, JsonObject column, Base b, List<List<Cell>> rows) {
-    ExpressionNode n = (ExpressionNode) column.getUserData("path");
+    ExpressionNode n = (ExpressionNode) column.getUserData(UserDataNames.db_path);
     // Evaluate even when b is null: this is the synthetic null row produced by
     // an empty forEachOrNull. The engine tolerates a null base; %rowIndex still
     // resolves via resolveConstant, and field navigation yields the empty list.
     List<Base> bl2 = new ArrayList<>(fpe.evaluate(ctx, b, n));
-    Column col = (Column) column.getUserData("column");
+    Column col = (Column) column.getUserData(UserDataNames.db_column);
     if (col == null) {
       log.error("Error");
     } else {
@@ -483,7 +483,7 @@ public class Runner implements IHostApplicationServices {
       JsonObject vd = viewDefinitionOf(appContext);
       JsonObject constant = vd == null ? null : findConstant(vd, name);
       if (constant != null) {
-        Base b = (Base) constant.getUserData("value");
+        Base b = (Base) constant.getUserData(UserDataNames.db_value);
         if (b != null) {
           list.add(b);
         }
@@ -503,7 +503,7 @@ public class Runner implements IHostApplicationServices {
       JsonObject vd = viewDefinitionOf(appContext);
       JsonObject constant = vd == null ? null : findConstant(vd, name.substring(1));
       if (constant != null) {
-        Base b = (Base) constant.getUserData("value");
+        Base b = (Base) constant.getUserData(UserDataNames.db_value);
         if (b != null) {
           return new TypeDetails(CollectionStatus.SINGLETON, b.fhirType());
         }

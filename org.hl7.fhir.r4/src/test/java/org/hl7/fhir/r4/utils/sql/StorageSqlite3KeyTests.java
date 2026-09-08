@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.hl7.fhir.r4.model.Patient;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -18,45 +19,36 @@ import org.junit.jupiter.api.Test;
 class StorageSqlite3KeyTests {
 
   /**
-   * The r4 model does not provide a UserDataNames constants class, so the
-   * key under which the IG publisher stamps the SQLite primary key is the
-   * literal string "db.key".
-   */
-  private static final String DB_KEY = "db.key";
-
-  /**
    * Confirms that when the IG publisher has stamped a primary-key value via
-   * the "db.key" user-data slot, the source-resource key resolver returns
-   * that value as a string so that view-result keys can join against the
-   * Resources table.
+   * UserDataNames.db_key, the source-resource key resolver returns that value
+   * as a string so that view-result keys can join against the Resources table.
    */
   @Test
   void sourceKey_usesDbKey_whenPresent() {
     StorageSqlite3 storage = new StorageSqlite3(null);
     Patient patient = new Patient();
-    patient.setUserData(DB_KEY, 42);
+    patient.setUserData(UserDataNames.db_key, 42);
 
     assertEquals("42", storage.getKeyForSourceResource(patient));
   }
 
   /**
    * Confirms that the target-resource key resolver behaves identically to the
-   * source-resource resolver when a db.key value is present.
+   * source-resource resolver when a db_key is present.
    */
   @Test
   void targetKey_usesDbKey_whenPresent() {
     StorageSqlite3 storage = new StorageSqlite3(null);
     Patient patient = new Patient();
-    patient.setUserData(DB_KEY, 17);
+    patient.setUserData(UserDataNames.db_key, 17);
 
     assertEquals("17", storage.getKeyForTargetResource(patient));
   }
 
   /**
-   * When no db.key has been stamped (for example, when the resolver is
-   * invoked outside the IG publisher), the source-resource resolver should
-   * fall back to the canonical type/id form used by the other Storage
-   * implementations.
+   * When no db_key has been stamped (for example, when the resolver is invoked
+   * outside the IG publisher), the source-resource resolver should fall back
+   * to the canonical type/id form used by the other Storage implementations.
    */
   @Test
   void sourceKey_fallsBack_toTypeSlashId() {
@@ -80,22 +72,22 @@ class StorageSqlite3KeyTests {
   }
 
   /**
-   * Guards against treating a value of zero as if the db.key were absent. A
+   * Guards against treating a value of zero as if the db_key were absent. A
    * legitimate key of 0 must be preserved by the resolver.
    */
   @Test
   void sourceKey_zeroDbKey_isReturnedAsString() {
     StorageSqlite3 storage = new StorageSqlite3(null);
     Patient patient = new Patient();
-    patient.setUserData(DB_KEY, 0);
+    patient.setUserData(UserDataNames.db_key, 0);
 
     assertEquals("0", storage.getKeyForSourceResource(patient));
   }
 
   /**
    * Documents the existing fallback behaviour when a resource has neither a
-   * db.key nor an id - the resolver returns "Type/null", matching the other
-   * Storage implementations.
+   * db_key nor an id - the resolver returns "Type/null", matching StorageJson
+   * and TestStorage.
    */
   @Test
   void sourceKey_fallback_whenIdMissing() {
