@@ -104,7 +104,7 @@ class ValidatorTests {
   // https://build.fhir.org/ig/HL7/sql-on-fhir/en/StructureDefinition-ViewDefinition.html
   // is the authoritative source for this list.
   static Stream<String> topLevelInheritedFields() {
-    return Stream.of("id", "meta", "text", "language", "implicitRules", "contained",
+    return Stream.of("resourceDefinition", "id", "meta", "text", "language", "implicitRules", "contained",
         "modifierExtension", "profile", "fhirVersion", "jurisdiction", "purpose", "copyrightLabel",
         "versionAlgorithmString", "versionAlgorithmCoding", "approvalDate", "lastReviewDate",
         "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact");
