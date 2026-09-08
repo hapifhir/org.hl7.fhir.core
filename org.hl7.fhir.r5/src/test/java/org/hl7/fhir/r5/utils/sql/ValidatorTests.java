@@ -533,4 +533,26 @@ class ValidatorTests {
     assertEquals(1, issues.size(),
         "expected exactly one type-conformance error for a cross-family declaration");
   }
+
+  // A unionAll branch whose columns differ from the first branch is reported at that branch's
+  // index, not at the branch count.
+  @Test
+  void unionMismatchIsReportedAtTheOffendingBranch() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t9\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"unionAll\": [\n"
+        + "      { \"column\": [{ \"name\": \"a\", \"path\": \"id\", \"type\": \"id\" }] },\n"
+        + "      { \"column\": [{ \"name\": \"a\", \"path\": \"id\", \"type\": \"id\" }] },\n"
+        + "      { \"column\": [{ \"name\": \"b\", \"path\": \"id\", \"type\": \"id\" }] }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertIssueContains(v, "unionAll[2] column definitions do not match");
+    assertNoIssueContains(v, "unionAll[3]");
+  }
 }

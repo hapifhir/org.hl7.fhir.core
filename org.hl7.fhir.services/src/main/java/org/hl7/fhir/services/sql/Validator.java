@@ -228,7 +228,7 @@ public class Validator {
         for (int ic = 1; ic < unionColumns.size(); ic++) {
           String diff = columnDiffs(columns, unionColumns.get(ic));
           if (diff != null) {
-            error(path+".unionAll["+i+"]", ((JsonArray) a).get(ic), "unionAll["+i+"] column definitions do not match: "+diff, IssueType.INVALID);            
+            error(path+".unionAll["+ic+"]", ((JsonArray) a).get(ic), "unionAll["+ic+"] column definitions do not match: "+diff, IssueType.INVALID);            
           }
         }
         a.setUserData(UserDataNames.db_columns, columns);
