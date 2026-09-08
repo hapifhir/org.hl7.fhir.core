@@ -1084,17 +1084,17 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private String makeXml(ValueSetExpansionContainsComponent c, String version) {
     StringBuilder b = new StringBuilder();
     b.append("<coding>");
-    b.append("<system value=\""+ Utilities.escapeXml(c.getSystem())+"\">");
+    b.append("<system value=\""+ Utilities.escapeXml(c.getSystem())+"\"/>");
     if (c.hasVersion()) {
-      b.append("<version value=\""+ Utilities.escapeXml(c.getVersion())+"\">");
+      b.append("<version value=\""+ Utilities.escapeXml(c.getVersion())+"\"/>");
     } else if (version != null) {
-      b.append("<version value=\""+ Utilities.escapeXml(version)+"\">");
+      b.append("<version value=\""+ Utilities.escapeXml(version)+"\"/>");
     }
     if (c.hasCode()) {
-      b.append("<code value=\""+ Utilities.escapeXml(c.getCode())+"\">");
+      b.append("<code value=\""+ Utilities.escapeXml(c.getCode())+"\"/>");
     }
     if (c.hasDisplay()) {
-      b.append("<display value=\""+ Utilities.escapeXml(c.getDisplay())+"\">");
+      b.append("<display value=\""+ Utilities.escapeXml(c.getDisplay())+"\"/>");
     }
     b.append("</coding>");
     return b.toString();
