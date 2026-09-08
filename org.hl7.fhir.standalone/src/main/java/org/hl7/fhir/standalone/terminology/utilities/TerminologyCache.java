@@ -159,6 +159,21 @@ public class TerminologyCache {
   private static final String ENTRY_MARKER = "-------------------------------------------------------------------------------------";
   private static final String BREAK = "####";
   private static final String CACHE_FILE_EXTENSION = ".cache";
+  /**
+   * Prefix of the header line that carries a cache file's nonce - a fresh random value
+   * written on every save, used to detect that someone else has rewritten the file since we
+   * last read or wrote it. It sits before the first {@link #ENTRY_MARKER}, and everything
+   * before that marker is discarded on load, so older readers simply ignore it and a file
+   * without one still loads.
+   */
+  private static final String NONCE_MARKER = "# nonce: ";
+
+  /**
+   * Suffix for the scratch file a save writes into before swapping it over the real one.
+   * Deliberately does not end in {@link #CACHE_FILE_EXTENSION}, so {@link #load()} skips
+   * any that a hard kill left behind.
+   */
+  private static final String TEMP_FILE_EXTENSION = ".tmp";
   private static final String CAPABILITY_STATEMENT_TITLE = ".capabilityStatement";
   private static final String TERMINOLOGY_CAPABILITIES_TITLE = ".terminologyCapabilities";
   private static final String FIXED_CACHE_VERSION = "4"; // last change: change the way tx.fhir.org handles expansions
@@ -167,9 +182,33 @@ public class TerminologyCache {
    * Minimum interval between persistent saves of a single NamedCache. Writes within this
    * window are coalesced: the in-memory cache is updated immediately, and the entry is
    * flushed to disk on the first subsequent write past the window, or by an explicit
-   * {@link #save()} call (which is what shutdown handling should use).
+   * {@link #save()} call.
+   *
+   * <p>Five minutes, which is long enough that this is no longer the main way anything
+   * reaches disk. Callers are expected to {@link #save()} when a unit of work finishes - the
+   * validator at the end of a command, the IG publisher after validation and again at the end
+   * of a build - and this window is the backstop for the long stretches in between, plus a
+   * bound on how much is at risk if the process dies. A shutdown hook catches the ordinary
+   * interruptions; see {@link #ensureShutdownHook}.
    */
-  private static final long SAVE_DELAY_MS = 5000;
+  private static final long SAVE_DELAY_MS = 300000;
+
+  /**
+   * How long a JVM shutdown waits for pending cache entries to be written before giving up.
+   */
+  private static final long SHUTDOWN_SAVE_TIMEOUT_MS = 10000;
+
+  /**
+   * Every cache that has a folder, so a shutdown can flush them all. Held weakly, so a cache
+   * that is simply dropped without {@link #unload()} being called does not leak; synchronized,
+   * because the shutdown thread walks it while the rest of the program may still be creating
+   * caches.
+   */
+  private static final Set<TerminologyCache> liveCaches =
+      Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<TerminologyCache, Boolean>()));
+
+  /** Guarded by {@link #liveCaches}. */
+  private static boolean shutdownHookInstalled = false;
 
   /**
    * Upper bound on the number of persistent entries kept in a single NamedCache, both in
@@ -295,6 +334,12 @@ public class TerminologyCache {
     private boolean dirty = false;
     /** Wall-clock time of the last on-disk save for this cache (0 = never saved this session). */
     private long lastSaveAt = 0;
+    /**
+     * The nonce in the copy of this cache we last read or wrote. Null when we have never
+     * touched the file. If what is on disk no longer carries this value, another process has
+     * rewritten it and we must merge before saving over the top - see {@link #mergeFromDisk}.
+     */
+    private String nonce = null;
   }
 
 
@@ -371,6 +416,8 @@ public class TerminologyCache {
       }
       checkVersion();
       load();
+      liveCaches.add(this);
+      ensureShutdownHook();
     }
   }
 
@@ -428,10 +475,66 @@ public class TerminologyCache {
     return s.replace("/", ".");
   }
   
+  /**
+   * Arrange for pending entries to be written when the JVM goes down.
+   *
+   * <p>Saves are coalesced into {@value #SAVE_DELAY_MS}ms windows, so a run that is interrupted
+   * - Ctrl-C on a long IG build, a CI job that hits its time limit - would otherwise discard
+   * terminology work that has already been paid for. {@link #unload()} saves, but nothing
+   * guarantees it is ever reached.
+   *
+   * <p>The writing happens on a separate thread that the hook waits a bounded time for, because
+   * {@link #save()} takes the context lock: if another thread holds it as the JVM starts to shut
+   * down, doing this inline would hang the exit instead of merely losing a cache entry. Timing
+   * out leaves us exactly where we would have been without a hook, and a partial flush is safe
+   * because each file is swapped into place atomically.
+   */
+  private static void ensureShutdownHook() {
+    synchronized (liveCaches) {
+      if (shutdownHookInstalled) {
+        return;
+      }
+      shutdownHookInstalled = true;
+    }
+    try {
+      Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+        Thread saver = new Thread(TerminologyCache::saveAll, "terminology-cache-shutdown-save");
+        saver.setDaemon(true);
+        saver.start();
+        try {
+          saver.join(SHUTDOWN_SAVE_TIMEOUT_MS);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+        }
+      }, "terminology-cache-shutdown"));
+    } catch (IllegalStateException e) {
+      // shutdown is already under way; there is nothing left to register with
+    }
+  }
+
+  private static void saveAll() {
+    List<TerminologyCache> caches;
+    synchronized (liveCaches) {
+      caches = new ArrayList<TerminologyCache>(liveCaches);
+    }
+    for (TerminologyCache cache : caches) {
+      try {
+        cache.save();
+      } catch (Throwable t) {
+        // Throwable, not Exception, and deliberately: the most likely way to get here is a
+        // JVM going down under memory pressure, where writing a large cache throws
+        // OutOfMemoryError. That must not stop the smaller caches from being written. We are
+        // on the way out and there is nothing left to protect, so there is nowhere useful for
+        // this to go either.
+      }
+    }
+  }
+
   public void unload() {
     // not useable after this is called — flush any pending writes first so we don't lose
     // entries that were waiting out the SAVE_DELAY_MS coalescing window.
     save();
+    liveCaches.remove(this);
     caches.clear();
     vsCache.clear();
     csCache.clear();
@@ -857,25 +960,162 @@ public class TerminologyCache {
     if (folder == null)
       return;
 
+    String temp = null;
+    OutputStreamWriter sw = null;
     try {
-      OutputStreamWriter sw = new OutputStreamWriter(ManagedFileAccess.outStream(Utilities.path(folder, title + CACHE_FILE_EXTENSION)), "UTF-8");
+      String target = Utilities.path(folder, title + CACHE_FILE_EXTENSION);
+      temp = tempFileFor(target);
+      sw = new OutputStreamWriter(ManagedFileAccess.outStream(temp), "UTF-8");
 
       JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
 
       sw.write(json.composeString(resource).trim());
       sw.close();
+      sw = null;
+      FileUtilities.replaceFileAtomically(ManagedFileAccess.file(temp), ManagedFileAccess.file(target));
+      temp = null;
     } catch (Exception e) {
       log.error("error saving capability statement "+e.getMessage(), e);
+    } finally {
+      closeQuietly(sw);
+      deleteQuietly(temp);
     }
+  }
+
+  /**
+   * The scratch file a save writes into before swapping it over {@code target}.
+   *
+   * <p>It sits beside the target - the swap can only be atomic within one filesystem - and
+   * carries a random discriminator so that two processes saving the same cache at the same
+   * moment write to different scratch files. Without that they would interleave into one
+   * shared temp file and swap the mess into place. With it, the only contended operation is
+   * the swap itself, which is atomic, so the loser is simply overwritten.
+   */
+  private String tempFileFor(String target) {
+    return target + "." + UUID.randomUUID().toString() + TEMP_FILE_EXTENSION;
+  }
+
+  private void closeQuietly(Closeable c) {
+    if (c != null) {
+      try {
+        c.close();
+      } catch (IOException e) {
+        // the save has already failed; nothing useful to do with this
+      }
+    }
+  }
+
+  /**
+   * Remove a scratch file that never made it into place. Best effort: an orphan is harmless
+   * (load() ignores it) and only survives a hard kill mid-save.
+   */
+  private void deleteQuietly(String path) {
+    if (path != null) {
+      try {
+        ManagedFileAccess.file(path).delete();
+      } catch (Exception e) {
+        // nothing useful to do
+      }
+    }
+  }
+
+  /**
+   * Has the file behind this cache been rewritten by someone else since we last read or wrote
+   * it?
+   *
+   * <p>Answered from a nonce in the file's header rather than from its timestamp: mtime
+   * granularity is a whole second on some filesystems, which sits well inside the window in
+   * which two processes can both save, whereas the nonce is exact. Answering costs one line.
+   *
+   * <p>A file carrying no nonce was written by a version of this code from before the header
+   * existed, so it counts as changed. That happens once: our own save writes a nonce, so it
+   * converges immediately.
+   */
+  private boolean isChangedOnDisk(NamedCache nc) {
+    try {
+      String path = Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION);
+      if (!ManagedFileAccess.file(path).exists()) {
+        return false;
+      }
+      String nonce = null;
+      try (BufferedReader r = new BufferedReader(new InputStreamReader(
+          ManagedFileAccess.inStream(path), StandardCharsets.UTF_8))) {
+        String line = r.readLine();
+        if (line != null && line.startsWith(NONCE_MARKER)) {
+          nonce = line.substring(NONCE_MARKER.length()).trim();
+        }
+      }
+      return nonce == null || !nonce.equals(nc.nonce);
+    } catch (Exception e) {
+      // if we can't tell, assume it changed: re-reading a file needlessly is cheap, and
+      // dropping another process's entries is not
+      log.debug("Unable to check "+nc.name+" for concurrent changes ("+e.getMessage()+") - merging anyway");
+      return true;
+    }
+  }
+
+  /**
+   * Fold the on-disk copy of this cache into our in-memory one, so that saving over the top
+   * does not discard what another process learned.
+   *
+   * <p>Direction matters, and it is this way round: start from what is on disk, then replay
+   * our own entries on top. For a request we both hold, ours wins - we just got it from the
+   * server, so it is the fresher answer - and it lands at the tail of the insertion order.
+   * {@link #enforceEntryLimit} evicts oldest-first, so a merge that overflows the cap discards
+   * stale entries from disk rather than anything we just fetched.
+   *
+   * <p>Transient entries are the one wrinkle. They live in the map but never in the list, so
+   * they are never written; where disk has a persistent answer for a request we only hold
+   * transiently, we take the disk entry - a real answer beats a local outage, and keeping it
+   * is also what stops our save from dropping it from the file.
+   */
+  private void mergeFromDisk(NamedCache nc) {
+    NamedCache disk = readNamedCache(nc.name+CACHE_FILE_EXTENSION, nc.name);
+    if (disk == null) {
+      return; // unreadable: keep what we have rather than losing that too
+    }
+    Set<CacheEntry> merged = new LinkedHashSet<CacheEntry>();
+    for (CacheEntry ce : disk.list) {
+      String key = String.valueOf(hashJson(ce.request));
+      CacheEntry ours = nc.map.get(key);
+      if (ours != null && ours.persistent) {
+        continue; // ours is newer; it goes in below, after everything from disk
+      }
+      merged.add(ce);
+      nc.map.put(key, ce);
+    }
+    merged.addAll(nc.list);
+    nc.list = merged;
+    enforceEntryLimit(nc);
+    nc.nonce = disk.nonce;
   }
 
   private void save(NamedCache nc, long lastSaveAt) {
     if (folder == null)
       return;
 
+    // Another process sharing this cache folder may have rewritten this file since we last
+    // read or wrote it; fold what it learned in before we save over the top. Costs one line
+    // read unless the file really has changed.
+    if (isChangedOnDisk(nc)) {
+      mergeFromDisk(nc);
+    }
+
+    // Write the whole file into a scratch file beside it and swap that into place once it is
+    // complete, rather than writing over the live file. Anything reading concurrently - another
+    // validator process sharing this cache folder, our own load(), TerminologyCacheManager
+    // zipping the folder up, a git add in the auto-builder - then sees either the old file or
+    // the new one, never a truncated one. See FileUtilities.replaceFileAtomically.
+    boolean saved = false;
+    String temp = null;
+    BufferedWriter sw = null;
     try {
-      BufferedWriter sw = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION)), "UTF-8"));
+      String target = Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION);
+      temp = tempFileFor(target);
+      sw = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(temp), "UTF-8"));
+      String nonce = UUID.randomUUID().toString();
+      sw.write(NONCE_MARKER+nonce+"\r\n");
       sw.write(ENTRY_MARKER+"\r\n");
       JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
@@ -970,10 +1210,22 @@ public class TerminologyCache {
         sw.write(ENTRY_MARKER+"\r\n");
       }      
       sw.close();
+      sw = null;
+      FileUtilities.replaceFileAtomically(ManagedFileAccess.file(temp), ManagedFileAccess.file(target));
+      temp = null;
+      nc.nonce = nonce;
+      saved = true;
     } catch (Exception e) {
       log.error("error saving "+nc.name+": "+e.getMessage(), e);
+    } finally {
+      closeQuietly(sw);
+      deleteQuietly(temp);
     }
-    nc.dirty = false;
+    // A failed write leaves the cache dirty so that the next save retries these entries,
+    // instead of clearing the flag and dropping them silently. lastSaveAt is advanced either
+    // way, so a write that keeps failing (a read-only folder, say) retries once per
+    // SAVE_DELAY_MS window rather than on every single store.
+    nc.dirty = !saved;
     nc.lastSaveAt = lastSaveAt;
   }
 
@@ -1071,9 +1323,21 @@ public class TerminologyCache {
   }
 
   private void loadNamedCache(String fn) throws IOException {
+    NamedCache nc = readNamedCache(fn, fn.substring(0, fn.lastIndexOf(".")));
+    if (nc != null) {
+      caches.put(nc.name, nc);
+    }
+  }
+
+  /**
+   * Read a cache file into a fresh NamedCache, without registering it in {@link #caches}.
+   *
+   * @return the loaded cache, or null if the file could not be read at all
+   */
+  private NamedCache readNamedCache(String fn, String name) {
     int c = 0;
     NamedCache nc = new NamedCache();
-    nc.name = fn.substring(0, fn.lastIndexOf("."));
+    nc.name = name;
 
     // Stream the file one entry at a time. Cache files can be very large (e.g. the ICD-11
     // cache), and reading the whole file into a single String (as FileUtilities.fileToString
@@ -1095,15 +1359,19 @@ public class TerminologyCache {
           seenMarker = true;
           segment.setLength(0);
         } else {
+          if (!seenMarker && line.startsWith(NONCE_MARKER)) {
+            nc.nonce = line.substring(NONCE_MARKER.length()).trim();
+          }
           segment.append(line).append("\r\n");
         }
       }
       // Trailing content after the last marker is intentionally ignored: only
       // marker-terminated entries are loaded (matching the original behavior).
-      caches.put(nc.name, nc);
     } catch (Exception e) {
       log.error("Error loading "+fn+": "+e.getMessage()+" entry "+c+" - ignoring it", e);
+      return null;
     }
+    return nc;
   }
 
   private void loadCacheEntry(NamedCache nc, String s, String fn, int c) {
