@@ -593,7 +593,9 @@ public class Validator {
     if (result.hasNoTypes()) {
       return null;
     }
-    return result;
+    // Like forEach, each yielded element becomes its own row, so columns and
+    // nested selects see a single element rather than the traversed collection.
+    return result.toSingleton();
   }
 
   private void checkConstant(String path, JsonObject constant) {

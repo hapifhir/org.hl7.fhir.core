@@ -292,6 +292,26 @@ class ValidatorTests {
     assertIssueContains(v, "might return multiple values");
   }
 
+  // A 0..1 column under repeat over a recursive 0..* path must not warn that the column path
+  // "might return multiple values" - each yielded element is processed as a single row.
+  @Test
+  void repeatWithSingletonColumnDoesNotWarn() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t8\",\n"
+        + "  \"resource\": \"QuestionnaireResponse\",\n"
+        + "  \"select\": [{\n"
+        + "    \"repeat\": [\"item\", \"answer.item\"],\n"
+        + "    \"column\": [\n"
+        + "      { \"name\": \"linkId\", \"path\": \"linkId\", \"type\": \"string\" }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertNoIssueContains(v, "might return multiple values");
+  }
+
   // Column type-conformance tests.
   //
   // The validator infers a column's type from its FHIRPath expression and, when the ViewDefinition
