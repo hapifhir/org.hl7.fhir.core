@@ -631,6 +631,9 @@ public class Validator {
       checkIsString(path, constant, "valueInstant", new InstantType());
     } else if (constant.has("valueInteger")) {
       checkIsNumber(path, constant, "valueInteger", new IntegerType());
+    } else if (constant.has("valueInteger64")) {
+      // the r4 model has no integer64 type, so the constant cannot be given a value
+      error(path+".valueInteger64", constant.get("valueInteger64"), "valueInteger64 is not supported by the R4 model", IssueType.NOTSUPPORTED);
     } else if (constant.has("valueOid")) {
       checkIsString(path, constant, "valueOid", new OidType());
     } else if (constant.has("valueString")) {

@@ -204,6 +204,22 @@ class ValidatorTests {
     assertNoUnknownPropertyIssues(v);
   }
 
+  // The r4 model has no integer64 type. A valueInteger64 constant is a valid ViewDefinition
+  // property, so it must be reported as unsupported rather than as unknown or as having no value.
+  @Test
+  @DisplayName("constant valueInteger64 is reported as not supported by the r4 model")
+  void constantInteger64IsReportedAsNotSupported() {
+    JsonObject vd = minimalViewDefinition();
+    JsonObject constant = vd.forceArray("constant").addObject();
+    constant.add("name", "big");
+    constant.add("valueInteger64", 5000000000L);
+    Validator v = newValidator();
+    check(v, vd);
+    assertNoUnknownPropertyIssues(v);
+    assertIssueContains(v, "valueInteger64 is not supported");
+    assertNoIssueContains(v, "No value found");
+  }
+
   @Test
   @DisplayName("where backbone-inherited id/modifierExtension are accepted")
   void whereBackboneInheritedPropertiesAreAccepted() {
