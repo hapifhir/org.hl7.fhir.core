@@ -45,14 +45,14 @@ public class SqlOnFhirRunnerTests {
   private static Map<String, JsonObject> testFiles = new LinkedHashMap<>();
 
   @BeforeAll
-  public static void setUp() throws Exception {
+  static void setUp() throws Exception {
     context = TestingUtilities.getSharedWorkerContext();
     reportGenerator = new TestReportGenerator();
     loadTestFiles();
   }
 
   @AfterAll
-  public static void tearDown() {
+  static void tearDown() {
     reportGenerator.writeReport("target/sof-test-report.json");
   }
 
@@ -91,7 +91,7 @@ public class SqlOnFhirRunnerTests {
   @ParameterizedTest(name = "{0}: {1}")
   @MethodSource("testCases")
   @DisplayName("SQL on FHIR Runner Test")
-  public void testRunner(String fileName, String testName, JsonObject testFile, JsonObject test) throws Exception {
+  void testRunner(String fileName, String testName, JsonObject testFile, JsonObject test) throws Exception {
     log.info("Running test: {} - {}", fileName, testName);
 
     TestResult result = new TestResult();

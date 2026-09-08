@@ -41,6 +41,7 @@ class ValidatorTests {
   static void setUpAll() {
     context = TestingUtilities.context();
     fpe = new FHIRPathEngine(context);
+    fpe.setEmitSQLonFHIRWarning(true);
   }
 
   /**
