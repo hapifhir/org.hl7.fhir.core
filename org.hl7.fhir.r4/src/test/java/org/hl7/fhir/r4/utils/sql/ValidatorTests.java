@@ -292,6 +292,86 @@ class ValidatorTests {
     assertIssueContains(v, "might return multiple values");
   }
 
+  // A nested select underneath a forEach should also see a singleton starting type.
+  @Test
+  void nestedSelectUnderForEachDoesNotWarn() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t3\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"forEach\": \"address\",\n"
+        + "    \"select\": [{\n"
+        + "      \"column\": [\n"
+        + "        { \"name\": \"use\", \"path\": \"use\", \"type\": \"code\" }\n"
+        + "      ]\n"
+        + "    }]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertNoIssueContains(v, "might return multiple values");
+  }
+
+  // Same as the unmarked case above but with collection: true - no warning should fire.
+  @Test
+  void collectionColumnPathUnderForEachIsQuietWhenMarked() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t5\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"forEach\": \"address\",\n"
+        + "    \"column\": [\n"
+        + "      { \"name\": \"line\", \"path\": \"line\", \"type\": \"string\", \"collection\": true }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertNoIssueContains(v, "might return multiple values");
+    assertNoIssueContains(v, "collection-is-true-but-path-is-singleton");
+  }
+
+  // A top-level multi-valued column path (no forEach) must still warn.
+  @Test
+  void topLevelMultiValuedColumnStillWarns() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t6\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"column\": [\n"
+        + "      { \"name\": \"g\", \"path\": \"name.given\", \"type\": \"string\" }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertIssueContains(v, "might return multiple values");
+  }
+
+  // A column path expression that is a union literal returns a collection regardless of
+  // the starting type. The warning must still fire - proves the downgrade only changes
+  // the starting type, not the column-path's own returned collection status.
+  @Test
+  void columnPathUnionLiteralUnderForEachStillWarns() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t7\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"forEach\": \"name.given\",\n"
+        + "    \"column\": [\n"
+        + "      { \"name\": \"u\", \"path\": \"1 | 2 | 3\", \"type\": \"integer\" }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertIssueContains(v, "might return multiple values");
+  }
+
   // A 0..1 column under repeat over a recursive 0..* path must not warn that the column path
   // "might return multiple values" - each yielded element is processed as a single row.
   @Test
