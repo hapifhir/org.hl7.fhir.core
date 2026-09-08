@@ -185,6 +185,11 @@ public class Runner implements IHostApplicationServices {
   }
   
   private void processResource(JsonObject vd, Store store, Base b) {
+    // Spec, "Process a Resource" step 1: a resource of another type emits nothing. Batch mode
+    // fetches by type, but trickle mode hands over whatever the caller has.
+    if (!resourceName.equals(b.fhirType())) {
+      return;
+    }
     // The resource is row 0 of its own scope: %rowIndex is 0 until a select
     // starts iterating.
     ExecutionContext ctx = new ExecutionContext(vd, 0);
@@ -429,11 +434,15 @@ public class Runner implements IHostApplicationServices {
         throw new FHIRException("Attempt to add a type "+b.fhirType()+" to a decimal column for column "+column.getName());
       }
     case Integer:
+      // integer64 is not an IntegerType; both are 64-bit safe in the Value.
       if (b instanceof IntegerType) {
         IntegerType i = (IntegerType) b;
+        return Value.makeInteger(i.primitiveValue(), i.getValue().longValue());
+      } else if (b instanceof Integer64Type) {
+        Integer64Type i = (Integer64Type) b;
         return Value.makeInteger(i.primitiveValue(), i.getValue());
       } else if (b.isPrimitive()) { // ElementModel
-        return Value.makeInteger(b.primitiveValue(), Integer.valueOf(b.primitiveValue()));
+        return Value.makeInteger(b.primitiveValue(), Long.valueOf(b.primitiveValue()));
       } else {
         throw new FHIRException("Attempt to add a type "+b.fhirType()+" to an integer column for column "+column.getName());
       }
@@ -561,9 +570,13 @@ public class Runner implements IHostApplicationServices {
     return null;
   }
   
+  // The FHIRPath features below need services (a reference resolver, a terminology server, a
+  // profile validator, a trace sink) this runner does not have. Using one is a failure of the
+  // view, reported as a FHIRException the caller can handle - never as a java.lang.Error.
+
   @Override
   public boolean log(String argument, List<Base> focus) {
-    throw new Error("Not implemented yet: log");
+    throw new FHIRException("The SQL on FHIR runner does not support the FHIRPath function trace()");
   }
 
   @Override
@@ -579,7 +592,7 @@ public class Runner implements IHostApplicationServices {
     switch (functionName) {
     case "getResourceKey" : return new TypeDetails(CollectionStatus.SINGLETON, "string");
     case "getReferenceKey" : return new TypeDetails(CollectionStatus.SINGLETON, "string");
-    default: throw new Error("Not known: "+functionName);
+    default: throw new FHIRException("Unknown function "+functionName);
     }
   }
 
@@ -588,7 +601,7 @@ public class Runner implements IHostApplicationServices {
     switch (functionName) {
     case "getResourceKey" : return executeResourceKey(focus);
     case "getReferenceKey" : return executeReferenceKey(null, focus, parameters);
-    default: throw new Error("Not known: "+functionName);
+    default: throw new FHIRException("Unknown function "+functionName);
     }
   }
 
@@ -662,17 +675,17 @@ public class Runner implements IHostApplicationServices {
 
   @Override
   public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier id, Base refContext) throws FHIRException {
-    throw new Error("Not implemented yet: resolveReference");
+    throw new FHIRException("The SQL on FHIR runner does not support the FHIRPath function resolve()");
   }
 
   @Override
   public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
-    throw new Error("Not implemented yet: conformsToProfile");
+    throw new FHIRException("The SQL on FHIR runner does not support the FHIRPath function conformsTo()");
   }
 
   @Override
   public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
-    throw new Error("Not implemented yet: resolveValueSet");
+    throw new FHIRException("The SQL on FHIR runner does not support the FHIRPath function memberOf()");
   }
   @Override
   public boolean paramIsType(String name, int index) {

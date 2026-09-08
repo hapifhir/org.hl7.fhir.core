@@ -56,4 +56,17 @@ class StorageJsonTests {
   void significantDigitsAreUnchanged() {
     assertEquals("0.125", decimalText("0.125"));
   }
+
+  // integer64 values exceed the int range; the JSON number must carry the full value.
+  @Test
+  void integerBeyondIntRangeIsWrittenInFull() {
+    Column column = new Column("v", false, "integer64", ColumnKind.Integer);
+    StorageJson storage = new StorageJson();
+    Store store = storage.createStore("t", List.of(column));
+    List<Cell> cells = new ArrayList<>();
+    cells.add(new Cell(column, Value.makeInteger("9999999999", 9999999999L)));
+    storage.addRow(store, cells);
+    JsonObject row = (JsonObject) storage.getRows().get(0);
+    assertEquals("9999999999", ((JsonNumber) row.get("v")).getValue());
+  }
 }

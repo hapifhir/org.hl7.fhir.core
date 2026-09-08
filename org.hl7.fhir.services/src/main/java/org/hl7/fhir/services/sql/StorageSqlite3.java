@@ -81,29 +81,43 @@ public class StorageSqlite3 implements Storage {
       p.setInt(1, ++nextKey);
       for (int i = 0; i < cells.size(); i++) {
         Cell c = cells.get(i);
+        int index = i+2;
+        // An empty cell is SQL NULL whatever the column's kind (spec: empty binds to null).
+        Value v = c.getValues().isEmpty() ? null : c.getValues().get(0);
         switch (c.getColumn().getKind()) {
         case Null: 
-          p.setNull(i+2, java.sql.Types.NVARCHAR);
+          p.setNull(index, java.sql.Types.NVARCHAR);
+          break;
         case Binary:
-          p.setBytes(i+2, c.getValues().size() == 0 ? null : c.getValues().get(0).getValueBinary());
+          p.setBytes(index, v == null ? null : v.getValueBinary());
           break;
         case Boolean:
-          p.setBoolean(i+2, c.getValues().size() == 0 ? false : c.getValues().get(0).getValueBoolean().booleanValue());
+          if (v == null) {
+            p.setNull(index, java.sql.Types.INTEGER);
+          } else {
+            p.setBoolean(index, v.getValueBoolean().booleanValue());
+          }
           break;
         case DateTime:
-          p.setDate(i+2, c.getValues().size() == 0 ? null : new java.sql.Date(c.getValues().get(0).getValueDate().getTime()));
+          // Text column, FHIR string form: keeps precision, time of day and zone offset, which
+          // java.sql.Date would drop (spec: date and dateTime map to CHARACTER VARYING).
+          p.setString(index, v == null ? null : v.getValueString());
           break;
         case Decimal:
-          p.setString(i+2, c.getValues().size() == 0 ? null : c.getValues().get(0).getValueString());
+          p.setString(index, v == null ? null : v.getValueString());
           break;
         case Integer:
-          p.setInt(i+2, c.getValues().size() == 0 ? 0 : c.getValues().get(0).getValueInt().intValue());
+          if (v == null) {
+            p.setNull(index, java.sql.Types.INTEGER);
+          } else {
+            p.setLong(index, v.getValueInt().longValue());
+          }
           break;
         case String:
-          p.setString(i+2, c.getValues().size() == 0 ? null : c.getValues().get(0).getValueString());
+          p.setString(index, v == null ? null : v.getValueString());
           break;
         case Time:
-          p.setString(i+2, c.getValues().size() == 0 ? null : c.getValues().get(0).getValueString());
+          p.setString(index, v == null ? null : v.getValueString());
           break;    
         case Complex: throw new FHIRException("SQLite runner does not handle complexes");
         }
