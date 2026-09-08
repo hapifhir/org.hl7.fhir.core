@@ -293,7 +293,8 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     json.valueNum(value);
   }
 
-  // the FHIR decimal grammar, which is also a subset of the JSON number grammar
+  @SuppressWarnings("checkstyle:patternUsage")
+  //the FHIR decimal grammar; a fixed literal, never user input
   private static final Pattern JSON_NUMBER = Pattern.compile("-?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?");
 
   /**
@@ -304,6 +305,8 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
    * fall back to writing the numeric value. Canonical JSON is unaffected: JsonCreatorCanonical runs
    * both routes through JsonNumberCanonicalizer.
    */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: Matcher.matches() on pattern which has been independently reviewed
   protected void propDecimal(String name, DecimalType value) throws IOException {
     String s = value.asStringValue();
     if (s != null && JSON_NUMBER.matcher(s).matches()) {
