@@ -164,16 +164,16 @@ class ViewDefinitionValidatorTests {
     assertTrue(m.getMessage().contains("'value' vs 'other'"), m.getMessage());
   }
 
-  // Branch columns of the same name but different storage kinds cannot be unioned.
+  // Branch columns of the same name but different types cannot be unioned.
   @Test
-  void unionAllWithDifferentColumnKindsIsRejected() {
+  void unionAllWithDifferentColumnTypesIsRejected() {
     List<ValidationMessage> messages = validate(view("Patient",
         "{ \"unionAll\": ["
         + "  { \"column\": [" + column("value", "id", "string") + "] },"
         + "  { \"column\": [" + column("value", "active", "boolean") + "] }"
         + "] }"));
     ValidationMessage m = assertOneWithId(messages, I18nConstants.VIEWDEFINITION_UNION_MISMATCH);
-    assertTrue(m.getMessage().contains("Kinds differ"), m.getMessage());
+    assertTrue(m.getMessage().contains("'string' vs 'boolean'"), m.getMessage());
   }
 
   // A unionAll with a single branch is legal but pointless, so it is reported as a warning.

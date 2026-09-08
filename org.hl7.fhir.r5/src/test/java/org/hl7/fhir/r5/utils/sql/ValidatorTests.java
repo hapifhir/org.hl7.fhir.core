@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.hl7.fhir.utilities.UserDataNames;
+
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
@@ -67,7 +69,11 @@ class ValidatorTests {
   }
 
   private static Validator newValidator() {
-    return new Validator(context, fpe, new ArrayList<>(), TrueFalseOrUnknown.UNKNOWN, TrueFalseOrUnknown.UNKNOWN, TrueFalseOrUnknown.UNKNOWN);
+    return newValidator(TrueFalseOrUnknown.UNKNOWN);
+  }
+
+  private static Validator newValidator(TrueFalseOrUnknown complexTypes) {
+    return new Validator(context, fpe, new ArrayList<>(), TrueFalseOrUnknown.UNKNOWN, complexTypes, TrueFalseOrUnknown.UNKNOWN);
   }
 
   /**
@@ -554,5 +560,272 @@ class ValidatorTests {
     v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
     assertIssueContains(v, "unionAll[2] column definitions do not match");
     assertNoIssueContains(v, "unionAll[3]");
+  }
+
+  // Malformed input must surface as validation issues, not as exceptions. A runner embedded in a
+  // server reports issues to the caller; an escaping exception takes the request down instead.
+
+  private static Validator validateJson(String vd) throws Exception {
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    return v;
+  }
+
+  private static void assertIssueAt(Validator v, String location, String substring) {
+    for (ValidationMessage m : v.getIssues()) {
+      if (location.equals(m.getLocation()) && m.getMessage() != null && m.getMessage().contains(substring)) {
+        return;
+      }
+    }
+    fail("Expected an issue at '" + location + "' containing '" + substring + "'. All issues: " + v.getIssues());
+  }
+
+  // A one-branch unionAll is legal (the spec only asks for a warning). It must contribute its
+  // columns to the enclosing select rather than blowing up.
+  @Test
+  void singleBranchUnionAllIsWarnedAndItsColumnsAreKept() throws Exception {
+    String vd = "{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"resource\":\"Patient\","
+        + "\"select\":[{\"unionAll\":[{\"column\":[{\"name\":\"id\",\"path\":\"id\",\"type\":\"id\"}]}]}]}";
+    Validator v = newValidator();
+    JsonObject parsed = JsonParser.parseObject(vd);
+    v.checkViewDefinition("ViewDefinition", parsed);
+    assertTrue(v.isOk(), "a single-branch union is not an error: " + v.getIssues());
+    assertIssueContains(v, "unionAll should have more than one item");
+    @SuppressWarnings("unchecked")
+    List<Column> columns = (List<Column>) parsed.getUserData(UserDataNames.db_columns);
+    assertEquals(1, columns.size(), "the union branch's column must reach the view");
+    assertEquals("id", columns.get(0).getName());
+  }
+
+  @Test
+  void unionAllThatIsNotAnArrayIsReported() throws Exception {
+    Validator v = validateJson("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"resource\":\"Patient\","
+        + "\"select\":[{\"column\":[{\"name\":\"id\",\"path\":\"id\"}]},{\"unionAll\":\"x\"}]}");
+    assertFalse(v.isOk());
+    assertIssueAt(v, "ViewDefinition.select[1].unionAll", "union is not an array");
+  }
+
+  @Test
+  void whereWithoutPathIsReported() throws Exception {
+    Validator v = validateJson("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"resource\":\"Patient\","
+        + "\"where\":[{\"description\":\"no path\"}],\"select\":[{\"column\":[{\"name\":\"id\",\"path\":\"id\"}]}]}");
+    assertFalse(v.isOk());
+    assertIssueAt(v, "ViewDefinition.where[0]", "No path provided");
+  }
+
+  @Test
+  void whereWithNonStringPathIsReported() throws Exception {
+    Validator v = validateJson("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"resource\":\"Patient\","
+        + "\"where\":[{\"path\":5}],\"select\":[{\"column\":[{\"name\":\"id\",\"path\":\"id\"}]}]}");
+    assertFalse(v.isOk());
+    assertIssueAt(v, "ViewDefinition.where[0].path", "path must be a string");
+  }
+
+  // The resource-type error is about 'resource', so it has to be anchored there - and must not
+  // depend on an unrelated 'name' being present.
+  @Test
+  void unknownResourceTypeWithoutNameIsReportedAtResource() throws Exception {
+    Validator v = validateJson("{\"resourceType\":\"ViewDefinition\",\"resource\":\"Patinet\","
+        + "\"select\":[{\"column\":[{\"name\":\"id\",\"path\":\"id\"}]}]}");
+    assertFalse(v.isOk());
+    assertIssueAt(v, "ViewDefinition.resource", "'Patinet' is not a valid resource type");
+  }
+
+  static Stream<Arguments> malformedConstantValues() {
+    // property, JSON value that is the right JSON kind but not a valid FHIR value of that type
+    return Stream.of(
+        Arguments.of("valueDate", "\"not-a-date\""),
+        Arguments.of("valueDateTime", "\"not-a-datetime\""),
+        Arguments.of("valueInteger", "1.5"),
+        Arguments.of("valueInteger64", "1.5"));
+  }
+
+  @ParameterizedTest(name = "malformed {0} {1} is reported")
+  @MethodSource("malformedConstantValues")
+  void malformedConstantValueIsReported(String property, String json) throws Exception {
+    Validator v = validateJson("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"resource\":\"Patient\","
+        + "\"constant\":[{\"name\":\"k\"," + "\"" + property + "\":" + json + "}],"
+        + "\"select\":[{\"column\":[{\"name\":\"id\",\"path\":\"id\"}]}]}");
+    assertFalse(v.isOk());
+    assertIssueAt(v, "ViewDefinition.constant[0]." + property, "Invalid value for " + property);
+  }
+
+  // Column names must be unique across the whole view, not just within one select. Two sibling
+  // top-level selects that both emit 'id' is the case the per-select check misses.
+  @Test
+  void duplicateColumnAcrossSiblingSelectsIsReported() throws Exception {
+    Validator v = validateJson("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"resource\":\"Patient\","
+        + "\"select\":[{\"column\":[{\"name\":\"id\",\"path\":\"id\"}]},{\"column\":[{\"name\":\"id\",\"path\":\"gender\"}]}]}");
+    assertFalse(v.isOk());
+    assertIssueContains(v, "Duplicate Column Name 'id'");
+  }
+
+  // SQL identifiers are case-insensitive on most targets and the runner already merges cells by
+  // name ignoring case, so the validator applies the same policy.
+  @Test
+  void columnNamesDifferingOnlyByCaseAreReported() throws Exception {
+    Validator v = validateJson("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"resource\":\"Patient\","
+        + "\"select\":[{\"column\":[{\"name\":\"id\",\"path\":\"id\"},{\"name\":\"ID\",\"path\":\"gender\"}]}]}");
+    assertFalse(v.isOk());
+    assertIssueContains(v, "Duplicate Column Name 'ID'");
+    assertIssueContains(v, "ignoring case");
+  }
+
+  // A duplicate between a parent select and its nested select is already caught at the parent;
+  // the view-level pass must not report it a second time.
+  @Test
+  void duplicateColumnAcrossNestedSelectIsReportedOnce() throws Exception {
+    Validator v = validateJson("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"resource\":\"Patient\","
+        + "\"select\":[{\"column\":[{\"name\":\"id\",\"path\":\"id\"}],\"select\":[{\"column\":[{\"name\":\"id\",\"path\":\"gender\"}]}]}]}");
+    long count = v.getIssues().stream()
+        .filter(m -> m.getMessage().contains("Duplicate Column Name")).count();
+    assertEquals(1, count, "expected exactly one duplicate report: " + v.getIssues());
+  }
+
+  // sql-name: ^[A-Za-z][A-Za-z0-9_]*$ - ASCII letters and digits only, and the first character must
+  // be a letter.
+  static Stream<String> invalidNames() {
+    return Stream.of("1abc", "_a", "a-b", "a b", "caf\u00e9", "a.b", "\u0661x");
+  }
+
+  @ParameterizedTest(name = "column name '{0}' is rejected")
+  @MethodSource("invalidNames")
+  void invalidColumnNameIsRejected(String name) throws Exception {
+    Validator v = validateJson("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"resource\":\"Patient\","
+        + "\"select\":[{\"column\":[{\"name\":\"" + name + "\",\"path\":\"id\"}]}]}");
+    assertIssueAt(v, "ViewDefinition.select[0].column[0].name", "is not valid");
+  }
+
+  static Stream<String> validNames() {
+    return Stream.of("a", "Z", "A_1", "abc123", "camelCase", "snake_case_9");
+  }
+
+  @ParameterizedTest(name = "column name '{0}' is accepted")
+  @MethodSource("validNames")
+  void validColumnNameIsAccepted(String name) throws Exception {
+    Validator v = validateJson("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"resource\":\"Patient\","
+        + "\"select\":[{\"column\":[{\"name\":\"" + name + "\",\"path\":\"id\"}]}]}");
+    assertNoIssueContains(v, "is not valid");
+  }
+
+  @Test
+  void viewNameStartingWithDigitIsRejected() throws Exception {
+    Validator v = validateJson("{\"resourceType\":\"ViewDefinition\",\"name\":\"1view\",\"resource\":\"Patient\","
+        + "\"select\":[{\"column\":[{\"name\":\"id\",\"path\":\"id\"}]}]}");
+    assertIssueAt(v, "ViewDefinition.name", "'1view' is not valid");
+  }
+
+  @Test
+  void constantNameStartingWithDigitIsRejected() throws Exception {
+    Validator v = validateJson("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"resource\":\"Patient\","
+        + "\"constant\":[{\"name\":\"1k\",\"valueString\":\"x\"}],"
+        + "\"select\":[{\"column\":[{\"name\":\"id\",\"path\":\"id\"}]}]}");
+    assertIssueAt(v, "ViewDefinition.constant[0].name", "'1k' is not valid");
+  }
+
+  // unionAll branches must produce the same FHIR types, not merely the same storage family: a
+  // 'code' and an 'id' both store as text but are different column types under the spec.
+  private static String unionOfTwoTypedColumns(String path1, String type1, String path2, String type2) {
+    return "{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"resource\":\"Patient\","
+        + "\"select\":[{\"unionAll\":["
+        + "{\"column\":[{\"name\":\"v\",\"path\":\"" + path1 + "\"" + (type1 == null ? "" : ",\"type\":\"" + type1 + "\"") + "}]},"
+        + "{\"column\":[{\"name\":\"v\",\"path\":\"" + path2 + "\"" + (type2 == null ? "" : ",\"type\":\"" + type2 + "\"") + "}]}"
+        + "]}]}";
+  }
+
+  static Stream<Arguments> mismatchedUnionTypes() {
+    return Stream.of(
+        Arguments.of("gender", "code", "id", "id"),
+        Arguments.of("birthDate", "date", "meta.lastUpdated", "instant"),
+        Arguments.of("birthDate", "date", "deceased.ofType(dateTime)", "dateTime"));
+  }
+
+  @ParameterizedTest(name = "union of {1} and {3} is rejected")
+  @MethodSource("mismatchedUnionTypes")
+  void unionBranchesWithDifferentFhirTypesAreRejected(String path1, String type1, String path2, String type2) throws Exception {
+    Validator v = validateJson(unionOfTwoTypedColumns(path1, type1, path2, type2));
+    assertFalse(v.isOk());
+    assertIssueContains(v, "unionAll[1] column definitions do not match");
+    assertIssueContains(v, "Types differ: '" + type1 + "' vs '" + type2 + "'");
+  }
+
+  @Test
+  void unionBranchesWithSameDeclaredTypeAreAccepted() throws Exception {
+    Validator v = validateJson(unionOfTwoTypedColumns("gender", "code", "maritalStatus.coding.first().code", "code"));
+    assertNoIssueContains(v, "column definitions do not match");
+  }
+
+  // The column type is the declared type when present, otherwise the inferred one; a branch
+  // that infers 'code' matches a branch that declares it.
+  @Test
+  void unionBranchInferredTypeMatchesDeclaredType() throws Exception {
+    Validator v = validateJson(unionOfTwoTypedColumns("gender", "code", "gender", null));
+    assertNoIssueContains(v, "column definitions do not match");
+  }
+
+  // A branch whose column is the empty collection has no type of its own and takes the type of
+  // the other branch, so the union's column is usable by storage.
+  @Test
+  void unionBranchWithEmptyCollectionAdoptsOtherBranchType() throws Exception {
+    Validator v = newValidator();
+    JsonObject parsed = JsonParser.parseObject(unionOfTwoTypedColumns("{}", null, "gender", "code"));
+    v.checkViewDefinition("ViewDefinition", parsed);
+    assertNoIssueContains(v, "column definitions do not match");
+    @SuppressWarnings("unchecked")
+    List<Column> columns = (List<Column>) parsed.getUserData(UserDataNames.db_columns);
+    assertEquals("code", columns.get(0).getType());
+    assertEquals(ColumnKind.String, columns.get(0).getKind());
+  }
+
+  // The resolved column keeps the FHIR type (used for union comparison and by storage layers),
+  // while its storage kind is still the primitive family.
+  @Test
+  void resolvedColumnKeepsDeclaredFhirType() {
+    Validator v = newValidator();
+    Column col = resolvedColumn(checkAndParse(v, viewWithColumn("Patient", "birthDate", "date")));
+    assertEquals("date", col.getType());
+    assertEquals(ColumnKind.DateTime, col.getKind());
+  }
+
+  @Test
+  void resolvedColumnKeepsInferredFhirType() {
+    Validator v = newValidator();
+    Column col = resolvedColumn(checkAndParse(v, viewWithColumn("Patient", "gender", null)));
+    assertEquals("code", col.getType());
+    assertEquals(ColumnKind.String, col.getKind());
+  }
+
+  // column.type may be a StructureDefinition URI, a bare type name, or element-id notation for a
+  // backbone element (spec: "Element-id notation (e.g. Observation.referenceRange) is allowed").
+  @Test
+  void elementIdTypeNotationIsAccepted() {
+    Validator v = newValidator(TrueFalseOrUnknown.TRUE);
+    JsonObject vd = viewWithColumn("Observation", "referenceRange", "Observation.referenceRange");
+    vd.getJsonArray("select").asJsonObjects().get(0).getJsonArray("column").asJsonObjects().get(0)
+        .add("collection", true);
+    JsonObject parsed = checkAndParse(v, vd);
+    assertNoTypeConformanceIssues(v);
+    Column col = resolvedColumn(parsed);
+    assertEquals("Observation.referenceRange", col.getType());
+    assertEquals(ColumnKind.Complex, col.getKind());
+  }
+
+  @Test
+  void wrongElementIdTypeIsRejected() {
+    Validator v = newValidator(TrueFalseOrUnknown.TRUE);
+    JsonObject vd = viewWithColumn("Observation", "referenceRange", "Observation.component");
+    vd.getJsonArray("select").asJsonObjects().get(0).getJsonArray("column").asJsonObjects().get(0)
+        .add("collection", true);
+    check(v, vd);
+    assertEquals(1, typeConformanceIssues(v).size());
+  }
+
+  @Test
+  void fullStructureDefinitionUriTypeIsAccepted() {
+    Validator v = newValidator();
+    Column col = resolvedColumn(checkAndParse(v,
+        viewWithColumn("Observation", "status", "http://hl7.org/fhir/StructureDefinition/code")));
+    assertNoTypeConformanceIssues(v);
+    assertEquals("code", col.getType());
   }
 }
