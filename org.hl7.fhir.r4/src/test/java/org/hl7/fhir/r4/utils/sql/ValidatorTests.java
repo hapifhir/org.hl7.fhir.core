@@ -1,6 +1,7 @@
 package org.hl7.fhir.r4.utils.sql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -97,6 +98,25 @@ class ValidatorTests {
           .collect(Collectors.joining("\n  "));
       fail("Expected no 'Unknown JSON property' issues but got:\n  " + detail);
     }
+  }
+
+  private static void assertNoIssueContains(Validator v, String substring) {
+    for (ValidationMessage m : v.getIssues()) {
+      assertFalse(m.getMessage() != null && m.getMessage().contains(substring),
+          "Expected no issue containing '" + substring + "' but found: " + m.getMessage());
+    }
+  }
+
+  private static void assertIssueContains(Validator v, String substring) {
+    boolean found = false;
+    for (ValidationMessage m : v.getIssues()) {
+      if (m.getMessage() != null && m.getMessage().contains(substring)) {
+        found = true;
+        break;
+      }
+    }
+    assertTrue(found, "Expected an issue containing '" + substring + "' but found none. All issues: "
+        + v.getIssues());
   }
 
   // ViewDefinition logical-model fields and inherited Resource/MetadataResource fields that SUSHI
@@ -210,6 +230,66 @@ class ValidatorTests {
     assertEquals(1, unknown.size(), "expected exactly one unknown-property issue");
     assertTrue(unknown.get(0).getMessage().contains("foo"),
         "expected the unknown-property issue to name 'foo' but was: " + unknown.get(0).getMessage());
+  }
+
+  // A 0..1 column under forEach over a 0..* collection must not warn that the column
+  // path "might return multiple values" - each iteration sees a single element.
+  @Test
+  void forEachWithSingletonColumnDoesNotWarn() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t1\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"forEach\": \"address\",\n"
+        + "    \"column\": [\n"
+        + "      { \"name\": \"use\",  \"path\": \"use\",  \"type\": \"code\" },\n"
+        + "      { \"name\": \"city\", \"path\": \"city\", \"type\": \"string\" }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertNoIssueContains(v, "might return multiple values");
+  }
+
+  // Same as above but with forEachOrNull.
+  @Test
+  void forEachOrNullWithSingletonColumnDoesNotWarn() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t2\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"forEachOrNull\": \"address\",\n"
+        + "    \"column\": [\n"
+        + "      { \"name\": \"use\", \"path\": \"use\", \"type\": \"code\" }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertNoIssueContains(v, "might return multiple values");
+  }
+
+  // A genuinely collection-valued column path (line is 0..* on Address) must still warn
+  // when not marked collection: true. Regression guard.
+  @Test
+  void collectionColumnPathUnderForEachStillWarnsWhenNotMarked() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t4\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"forEach\": \"address\",\n"
+        + "    \"column\": [\n"
+        + "      { \"name\": \"line\", \"path\": \"line\", \"type\": \"string\" }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertIssueContains(v, "might return multiple values");
   }
 
   // Column type-conformance tests.
