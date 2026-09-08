@@ -354,7 +354,7 @@ public class TerminologyCache {
   }
 
   private class NamedCache {
-    private String name;
+    private final String name;
     private Set<CacheEntry> list = new LinkedHashSet<CacheEntry>(); // persistent entries, in insertion order
     private Map<String, CacheEntry> map = new HashMap<String, CacheEntry>();
     /** True when {@link #list} has persistent entries that haven't yet been flushed to disk. */
@@ -367,6 +367,10 @@ public class TerminologyCache {
      * rewritten it and we must merge before saving over the top - see {@link #mergeWithDiskCache}.
      */
     private String nonce = null;
+
+    protected NamedCache(String name) {
+      this.name = name;
+    }
   }
 
 
@@ -801,8 +805,7 @@ public class TerminologyCache {
     NamedCache nc = caches.get(cacheName);
 
     if (nc == null) {
-      nc = new NamedCache();
-      nc.name = cacheName;
+      nc = new NamedCache(cacheName);
       caches.put(nc.name, nc);
     }
     return nc;
@@ -1354,8 +1357,7 @@ public class TerminologyCache {
    */
   private NamedCache readNamedCache(String fn, String name) {
     int c = 0;
-    NamedCache nc = new NamedCache();
-    nc.name = name;
+    NamedCache nc = new NamedCache(name);
 
     // Stream the file one entry at a time. Cache files can be very large (e.g. the ICD-11
     // cache), and reading the whole file into a single String (as FileUtilities.fileToString
