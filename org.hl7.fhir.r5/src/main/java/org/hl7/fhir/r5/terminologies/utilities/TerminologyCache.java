@@ -33,7 +33,6 @@ package org.hl7.fhir.r5.terminologies.utilities;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -220,7 +219,7 @@ public class TerminologyCache {
       Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<TerminologyCache, Boolean>()));
 
   /** Guarded by {@link #liveCaches}. */
-  private static boolean shutdownHookInstalled = false;
+  private static boolean shutdownHookAdded = false;
 
   /**
    * Upper bound on the number of persistent entries kept in a single NamedCache, both in
@@ -365,7 +364,7 @@ public class TerminologyCache {
     /**
      * The nonce in the copy of this cache we last read or wrote. Null when we have never
      * touched the file. If what is on disk no longer carries this value, another process has
-     * rewritten it and we must merge before saving over the top - see {@link #mergeFromDisk}.
+     * rewritten it and we must merge before saving over the top - see {@link #mergeWithDiskCache}.
      */
     private String nonce = null;
   }
@@ -517,10 +516,10 @@ public class TerminologyCache {
    */
   private static void ensureShutdownHook() {
     synchronized (liveCaches) {
-      if (shutdownHookInstalled) {
+      if (shutdownHookAdded) {
         return;
       }
-      shutdownHookInstalled = true;
+      shutdownHookAdded = true;
     }
     try {
       Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -978,26 +977,19 @@ public class TerminologyCache {
     if (folder == null)
       return;
 
-    String temp = null;
-    OutputStreamWriter sw = null;
     try {
       String target = Utilities.path(folder, title + CACHE_FILE_EXTENSION);
-      temp = tempFileFor(target);
-      sw = new OutputStreamWriter(ManagedFileAccess.outStream(temp), "UTF-8");
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target));
+           OutputStreamWriter tempFileWriter = new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8)) {
+        JsonParser jsonParser = new JsonParser();
+        jsonParser.setOutputStyle(OutputStyle.PRETTY);
 
-      JsonParser json = new JsonParser();
-      json.setOutputStyle(OutputStyle.PRETTY);
-
-      sw.write(json.composeString(resource).trim());
-      sw.close();
-      sw = null;
-      FileUtilities.replaceFileAtomically(ManagedFileAccess.file(temp), ManagedFileAccess.file(target));
-      temp = null;
+        tempFileWriter.write(jsonParser.composeString(resource).trim());
+        FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
+        tempFile.setDeleted();
+      }
     } catch (Exception e) {
       log.error("error saving capability statement "+e.getMessage(), e);
-    } finally {
-      closeQuietly(sw);
-      deleteQuietly(temp);
     }
   }
 
@@ -1014,27 +1006,36 @@ public class TerminologyCache {
     return target + "." + UUID.randomUUID().toString() + TEMP_FILE_EXTENSION;
   }
 
-  private void closeQuietly(Closeable c) {
-    if (c != null) {
-      try {
-        c.close();
-      } catch (IOException e) {
-        // the save has already failed; nothing useful to do with this
-      }
-    }
-  }
-
   /**
-   * Remove a scratch file that never made it into place. Best effort: an orphan is harmless
-   * (load() ignores it) and only survives a hard kill mid-save.
+   * Deletes the scratch file it wraps on close(), unless {@link #setDeleted()} has been called -
+   * i.e. cleans up a save's temp file if the save didn't reach the atomic rename.
    */
-  private void deleteQuietly(String path) {
-    if (path != null) {
-      try {
-        ManagedFileAccess.file(path).delete();
-      } catch (Exception e) {
-        // nothing useful to do
-      }
+  private static final class AutoCloseableTempFile implements AutoCloseable {
+    private final String filePath;
+    private boolean isDeleted = false;
+
+    private AutoCloseableTempFile(String path) {
+      this.filePath = path;
+    }
+
+    String getFilePath() {
+      return filePath;
+    }
+
+    void setDeleted() {
+      isDeleted = true;
+    }
+
+    @Override
+    public void close() {
+      if (!isDeleted && filePath != null) {
+          try {
+            ManagedFileAccess.file(filePath).delete();
+          } catch (Exception e) {
+            log.debug("Exception deleting " + filePath + " after try-catch", e);
+          }
+        }
+
     }
   }
 
@@ -1050,7 +1051,7 @@ public class TerminologyCache {
    * existed, so it counts as changed. That happens once: our own save writes a nonce, so it
    * converges immediately.
    */
-  private boolean isChangedOnDisk(NamedCache nc) {
+  private boolean shouldMergeWithDiskCache(NamedCache nc) {
     try {
       String path = Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION);
       if (!ManagedFileAccess.file(path).exists()) {
@@ -1088,7 +1089,7 @@ public class TerminologyCache {
    * transiently, we take the disk entry - a real answer beats a local outage, and keeping it
    * is also what stops our save from dropping it from the file.
    */
-  private void mergeFromDisk(NamedCache memoryCache) {
+  private void mergeWithDiskCache(NamedCache memoryCache) {
     NamedCache diskCache = readNamedCache(memoryCache.name+CACHE_FILE_EXTENSION, memoryCache.name);
     if (diskCache == null) {
       return; // unreadable: keep what we have rather than losing that too
@@ -1116,8 +1117,8 @@ public class TerminologyCache {
     // Another process sharing this cache folder may have rewritten this file since we last
     // read or wrote it; fold what it learned in before we save over the top. Costs one line
     // read unless the file really has changed.
-    if (isChangedOnDisk(namedCache)) {
-      mergeFromDisk(namedCache);
+    if (shouldMergeWithDiskCache(namedCache)) {
+      mergeWithDiskCache(namedCache);
     }
 
     // Write the whole file into a scratch file beside it and swap that into place once it is
@@ -1126,31 +1127,26 @@ public class TerminologyCache {
     // zipping the folder up, a git add in the auto-builder - then sees either the old file or
     // the new one, never a truncated one. See FileUtilities.replaceFileAtomically.
     boolean saved = false;
-    String tempFile = null;
-    BufferedWriter tempFileWriter = null;
     try {
       String target = Utilities.path(folder, namedCache.name+CACHE_FILE_EXTENSION);
-      tempFile = tempFileFor(target);
-      tempFileWriter = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(tempFile), "UTF-8"));
-      String nonce = UUID.randomUUID().toString();
-      tempFileWriter.write(NONCE_MARKER+nonce+"\r\n");
-      tempFileWriter.write(ENTRY_MARKER+"\r\n");
-      JsonParser jsonParser = new JsonParser();
-      jsonParser.setOutputStyle(OutputStyle.PRETTY);
-      for (CacheEntry cacheEntry : namedCache.list) {
-        writeCacheEntryToFile(cacheEntry, tempFileWriter, jsonParser);
-      }      
-      tempFileWriter.close();
-      tempFileWriter = null;
-      FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile), ManagedFileAccess.file(target));
-      tempFile = null;
-      namedCache.nonce = nonce;
-      saved = true;
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target));
+           BufferedWriter tempFileWriter = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8))) {
+        String nonce = UUID.randomUUID().toString();
+        tempFileWriter.write(NONCE_MARKER+nonce+"\r\n");
+        tempFileWriter.write(ENTRY_MARKER+"\r\n");
+        JsonParser jsonParser = new JsonParser();
+        jsonParser.setOutputStyle(OutputStyle.PRETTY);
+        for (CacheEntry cacheEntry : namedCache.list) {
+          writeCacheEntryToFile(cacheEntry, tempFileWriter, jsonParser);
+        }
+
+        FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
+        tempFile.setDeleted();
+        namedCache.nonce = nonce;
+        saved = true;
+      }
     } catch (Exception e) {
       log.error("error saving "+namedCache.name+": "+e.getMessage(), e);
-    } finally {
-      closeQuietly(tempFileWriter);
-      deleteQuietly(tempFile);
     }
     // A failed write leaves the cache dirty so that the next save retries these entries,
     // instead of clearing the flag and dropping them silently. lastSaveAt is advanced either
