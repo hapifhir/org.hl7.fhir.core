@@ -38,6 +38,11 @@ public class DisabledValidationPolicyAdvisor implements IValidationPolicyAdvisor
   }
 
   @Override
+  public boolean isSuppressCompliesWithReason(String claimedProfileUrl, String elementPath) {
+    return policyAdvisor != null && policyAdvisor.isSuppressCompliesWithReason(claimedProfileUrl, elementPath);
+  }
+
+  @Override
   public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator, Object appContext,
       StructureDefinition structure, ElementDefinition element, String containerType, String containerId,
       SpecialElement containingResourceType, String path, String url) {

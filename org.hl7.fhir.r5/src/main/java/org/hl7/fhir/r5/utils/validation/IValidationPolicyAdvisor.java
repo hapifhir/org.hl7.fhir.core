@@ -93,6 +93,17 @@ public interface IValidationPolicyAdvisor {
   }
 
   /**
+   * Return true if a specific reason produced by the compliesWith check should not be reported.
+   *
+   * @param claimedProfileUrl URL of the claimed profile
+   * @param elementPath path of the element in the StructureDefinition
+   * @return true if the validator should ignore the reason
+   */
+  default boolean isSuppressCompliesWithReason(String claimedProfileUrl, String elementPath) {
+    return false;
+  }
+
+  /**
    * Whether to try validating a reference, and if so, how much validation to apply
    * 
    * @param validator
