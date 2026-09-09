@@ -926,6 +926,8 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return new URI(server).getHost();
   }
 
+  @SuppressWarnings("checkstyle:patternUsage")
+  //a fixed literal reviewed here; never user input
   private static final Pattern FOLDER_NAME = Pattern.compile("[A-Za-z0-9][A-Za-z0-9._-]*");
   private static final Set<String> WINDOWS_DEVICE_NAMES = Set.of("con", "prn", "aux", "nul",
       "com1", "com2", "com3", "com4", "com5", "com6", "com7", "com8", "com9",
@@ -941,6 +943,8 @@ public class TxTester implements ITerminologyRequestIdProvider {
    *
    * @return what is wrong with the name, or null if it is fine
    */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: Matcher.matches() on pattern which has been independently reviewed
   public static String checkFolderName(String name) {
     if (Utilities.noString(name)) {
       return "No name provided";
