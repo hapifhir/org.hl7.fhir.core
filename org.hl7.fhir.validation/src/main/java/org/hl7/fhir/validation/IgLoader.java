@@ -64,6 +64,30 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
 
   }
 
+  public static class SourceWithFHIRVersion {
+
+    @Getter private final String fhirVersion;
+    @Getter private final String source;
+
+    public SourceWithFHIRVersion(String src) throws FHIRException {
+      if (src.startsWith("[") && src.indexOf(']', 1) > 1) {
+        this.fhirVersion = src.substring(1, src.indexOf(']', 1));
+        this.source = src.substring(src.indexOf(']', 1) + 1);
+        if (!VersionUtilities.isSupportedVersion(this.fhirVersion)) {
+          throw new FHIRException("Unsupported FHIR Version: " + this.fhirVersion + " valid versions are " + VersionUtilities.listSupportedVersions());
+        }
+      } else {
+        this.fhirVersion = null;
+        this.source = src;
+      }
+    }
+
+    public SourceWithFHIRVersion(String fhirVersion, String source) {
+      this.fhirVersion = fhirVersion;
+      this.source = source;
+    }
+  }
+
   private static final String[] IGNORED_EXTENSIONS = {"md", "css", "js", "png", "gif", "jpg", "html", "tgz", "pack", "zip"};
   private static final String[] EXEMPT_FILES = {"spec.internals", "version.info", "schematron.zip", "package.json"};
   private static final int SCAN_HEADER_SIZE = 2048;
@@ -107,26 +131,15 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
                      String src,
                      boolean recursive) throws IOException, FHIRException {
 
-    final String explicitFhirVersion;
-    final String srcPackage;
-    if (src.startsWith("[") && src.indexOf(']', 1) > 1) {
-      explicitFhirVersion = src.substring(1,src.indexOf(']', 1));
-      srcPackage = src.substring(src.indexOf(']',1) + 1);
-      if (!VersionUtilities.isSupportedVersion(explicitFhirVersion)) {
-        throw new FHIRException("Unsupported FHIR Version: " + explicitFhirVersion + " valid versions are " + VersionUtilities.listSupportedVersions());
-      }
-    } else {
-      explicitFhirVersion = null;
-      srcPackage = src;
-    }
+    final SourceWithFHIRVersion sourceWithFHIRVersion = new SourceWithFHIRVersion(src);
 
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //anchored package name pattern, safe
-    NpmPackage npm = srcPackage.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !ManagedFileAccess.file(srcPackage).exists() ? getPackageCacheManager().loadPackage(srcPackage, null) : null;
-    if (npm == null && ManagedFileAccess.file(srcPackage).exists()) {
+    NpmPackage npm = sourceWithFHIRVersion.getSource().matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !ManagedFileAccess.file(sourceWithFHIRVersion.getSource()).exists() ? getPackageCacheManager().loadPackage(sourceWithFHIRVersion.getSource(), null) : null;
+    if (npm == null && ManagedFileAccess.file(sourceWithFHIRVersion.getSource()).exists()) {
       // try treating the file as an npm
       try {
-        npm = NpmPackage.fromPackage(ManagedFileAccess.inStream(srcPackage));
+        npm = NpmPackage.fromPackage(ManagedFileAccess.inStream(sourceWithFHIRVersion.getSource()));
       } catch (Exception e) {
         // nothing - any errors will be properly handled later in the process
       }
@@ -140,8 +153,8 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
         }
       }
       StringBuilder packageLoadLine = new StringBuilder();
-      packageLoadLine.append("  Load " + srcPackage);
-      if (!srcPackage.contains("#")) {
+      packageLoadLine.append("  Load " + sourceWithFHIRVersion.getSource());
+      if (!sourceWithFHIRVersion.getSource().contains("#")) {
         packageLoadLine.append("#" + npm.version());
       }
       IContextResourceLoader loader = ValidatorUtils.loaderForVersion(npm.fhirVersion());
@@ -150,10 +163,10 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
     } else {
       StringBuilder packageLoadLine = new StringBuilder();
-      packageLoadLine.append("  Load " + srcPackage);
+      packageLoadLine.append("  Load " + sourceWithFHIRVersion.getSource());
       String canonical = null;
       int count = 0;
-      Map<String, ByteProvider> source = loadIgSource(srcPackage, recursive, true);
+      Map<String, ByteProvider> source = loadIgSource(sourceWithFHIRVersion.getSource(), recursive, true);
       String version = Constants.VERSION;
       if (getVersion() != null) {
         version = getVersion();
@@ -161,8 +174,8 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       if (source.containsKey("version.info")) {
         version = readInfoVersion(source.get("version.info"));
       }
-      if (explicitFhirVersion != null) {
-        version = explicitFhirVersion;
+      if (sourceWithFHIRVersion.getFhirVersion() != null) {
+        version = sourceWithFHIRVersion.getFhirVersion();
       }
 
       for (Map.Entry<String, ByteProvider> t : source.entrySet()) {
