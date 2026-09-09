@@ -751,6 +751,22 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     }
   }
 
+  /**
+   * Some messages quote the name of a file that the test harness itself wrote into the output
+   * folder - the launch context resources, in particular. The output folder is different on every
+   * machine, so cut it back to the bare file name before the outcome is compared (and before it is
+   * written out for copying into outcomes/java), or the expected outcomes would only ever match on
+   * the machine they were recorded on
+   */
+  private void stripOutputFolder(OperationOutcome oo) {
+    String prefix = outputFolder + File.separator;
+    for (OperationOutcomeIssueComponent iss : oo.getIssue()) {
+      if (iss.hasDetails() && iss.getDetails().hasText()) {
+        iss.getDetails().setText(iss.getDetails().getText().replace(prefix, ""));
+      }
+    }
+  }
+
   private String resolveLaunchContext(String ref) throws IOException {
     if (!TestingUtilities.findTestResource("validator", ref)) {
       return ref;
@@ -799,6 +815,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     OperationOutcome actual = content.has("ids-in-errors") ? OperationOutcomeUtilities.createOutcomeSimpleWithIds(errors) : OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
     actual.getIssue().forEach(iss -> iss.removeExtension(ExtensionDefinitions.EXT_ISSUE_SLICE_INFO));
+    stripOutputFolder(actual);
 
     String json = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(actual);
     FileUtilities.stringToFile(json, Utilities.path(outputFolder, expectedFileName));
