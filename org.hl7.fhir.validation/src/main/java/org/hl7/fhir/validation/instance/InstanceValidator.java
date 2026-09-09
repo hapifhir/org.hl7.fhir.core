@@ -3494,7 +3494,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             ok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueTimeType() || !context.getMinValueTimeType().hasValue() || !context.getMinValueTimeType().after(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DT_LT, (context.hasMinValueTimeType() ? context.getMinValueTimeType().primitiveValue() : "")) && ok;
           } catch (Exception ex) {
             ok = false;
-            rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, elementValue, ex.getMessage());
+            rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_TIME_VALID_CAUSE, elementValue, ex.getMessage());
           }
         }
         try {

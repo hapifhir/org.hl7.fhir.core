@@ -1023,6 +1023,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_WS = "Type_Specific_Checks_DT_String_WS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_WS_ALL = "Type_Specific_Checks_DT_String_WS_ALL";
   public static final String TYPE_SPECIFIC_CHECKS_DT_TIME_VALID = "Type_Specific_Checks_DT_Time_Valid";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_TIME_VALID_CAUSE = "Type_Specific_Checks_DT_Time_Valid_Cause";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_OID = "Type_Specific_Checks_DT_URI_OID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_UUID = "Type_Specific_Checks_DT_URI_UUID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_WS = "Type_Specific_Checks_DT_URI_WS";
