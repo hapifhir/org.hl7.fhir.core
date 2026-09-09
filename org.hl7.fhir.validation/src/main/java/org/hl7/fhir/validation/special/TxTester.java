@@ -94,7 +94,6 @@ public class TxTester implements ITerminologyRequestIdProvider {
 
     @Override
     public void log(String name, String mode, String resourceType, String version, byte[] cnt) {
-      System.out.println("log: "+name+" "+resourceType+" "+version+" "+cnt.length);
       String base;
       try {
         base = Utilities.path(outputDir, "conversions");
