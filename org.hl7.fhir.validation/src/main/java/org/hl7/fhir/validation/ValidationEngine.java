@@ -1038,6 +1038,171 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return baos.toByteArray();
   }
 
+  /**
+   * Build a FHIR Questionnaire from a StructureDefinition profile, covering the
+   * whole profile. Equivalent to
+   * {@link #generateQuestionnaire(String, FhirFormat, List)} with no selection.
+   */
+  public byte[] generateQuestionnaire(String profileUrl, FhirFormat outputFormat) throws FHIRException, IOException {
+    return generateQuestionnaire(profileUrl, outputFormat, null);
+  }
+
+  /**
+   * Build a FHIR Questionnaire from a StructureDefinition profile. The Questionnaire
+   * is always built from the profile's <b>snapshot</b> (one is generated on the fly if
+   * absent). Coded elements have their ValueSets expanded and attached as answer options.
+   * The profile must already be resolvable in the engine context (load the containing
+   * IG first).
+   *
+   * <p>When {@code selectExpressions} is non-empty, the full Questionnaire is built and
+   * then <b>pruned</b>: each FHIRPath expression is evaluated against every
+   * {@code ElementDefinition} of the snapshot, and an element is "selected" if <i>any</i>
+   * expression evaluates to {@code true} for it. A Questionnaire item is kept when its
+   * element path is selected, is an ancestor of a selected path, or is a descendant of a
+   * selected path — so the item tree stays connected. MustSupport filtering is not a
+   * special case: pass {@code "mustSupport = true"} as one of the expressions.</p>
+   *
+   * <p>When {@code selectExpressions} is null/empty the whole Questionnaire is returned.</p>
+   *
+   * @param profileUrl        canonical URL of the StructureDefinition profile
+   * @param outputFormat      format of the returned bytes (JSON or XML)
+   * @param selectExpressions FHIRPath expressions evaluated per ElementDefinition;
+   *                          null/empty = keep everything
+   */
+  public byte[] generateQuestionnaire(String profileUrl, FhirFormat outputFormat,
+      List<String> selectExpressions) throws FHIRException, IOException {
+    StructureDefinition profile = context.fetchResource(StructureDefinition.class, profileUrl);
+    if (profile == null) {
+      throw new FHIRException("Profile not found: " + profileUrl);
+    }
+    if (!profile.hasSnapshot()) {
+      new ProfileUtilities(context, null, null).setAutoFixSliceNames(true)
+          .generateSnapshot(context.fetchResource(StructureDefinition.class, profile.getBaseDefinition()),
+              profile, profile.getUrl(), null, profile.getName());
+    }
+
+    org.hl7.fhir.r5.utils.QuestionnaireBuilder builder =
+        new org.hl7.fhir.r5.utils.QuestionnaireBuilder(context, profile.getUrl());
+    builder.setProfile(profile);
+    builder.build();
+    org.hl7.fhir.r5.model.Questionnaire questionnaire = builder.getQuestionnaire();
+
+    if (selectExpressions != null && !selectExpressions.isEmpty()) {
+      java.util.Set<String> selectedPaths = selectElementPaths(profile, selectExpressions);
+      if (selectedPaths.isEmpty()) {
+        throw new FHIRException("None of the select expressions matched any element in profile " + profileUrl);
+      }
+      pruneQuestionnaireItems(questionnaire.getItem(), selectedPaths);
+      if (questionnaire.getItem().isEmpty()) {
+        throw new FHIRException("Element selection pruned the entire Questionnaire for profile " + profileUrl);
+      }
+    }
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (outputFormat == FhirFormat.XML) {
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, questionnaire);
+    } else {
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, questionnaire);
+    }
+    return baos.toByteArray();
+  }
+
+  /**
+   * Evaluate each FHIRPath expression against every {@code ElementDefinition} in the
+   * profile's snapshot; collect the {@code path} of every element for which at least
+   * one expression evaluates to a singleton {@code true}.
+   */
+  private java.util.Set<String> selectElementPaths(StructureDefinition profile, List<String> expressions) {
+    FHIRPathEngine fpe = new FHIRPathEngine(context);
+    List<ExpressionNode> compiled = new ArrayList<>();
+    for (String e : expressions) {
+      if (e != null && !e.trim().isEmpty()) {
+        compiled.add(fpe.parse(e.trim()));
+      }
+    }
+    java.util.Set<String> selected = new java.util.HashSet<>();
+    for (ElementDefinition ed : profile.getSnapshot().getElement()) {
+      for (ExpressionNode node : compiled) {
+        boolean matched;
+        try {
+          List<Base> outcome = fpe.evaluate(ed, node);
+          matched = outcome.size() == 1 && outcome.get(0).isPrimitive()
+              && "true".equals(outcome.get(0).primitiveValue());
+        } catch (Exception ex) {
+          matched = false; // an expression that doesn't apply to this element is just a non-match
+        }
+        if (matched) {
+          selected.add(ed.getPath());
+          break;
+        }
+      }
+    }
+    return selected;
+  }
+
+  /**
+   * Recursively prune a Questionnaire item list to the selected element paths.
+   * An item is kept when its element path (derived from its {@code linkId}) is
+   * selected, is an ancestor of a selected path, or is a descendant of one — or
+   * when it still has kept children. Returns true if the list is non-empty after pruning.
+   */
+  private static boolean pruneQuestionnaireItems(
+      List<org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent> items,
+      java.util.Set<String> selectedPaths) {
+    items.removeIf(item -> {
+      boolean keptChildren = pruneQuestionnaireItems(item.getItem(), selectedPaths);
+      String itemPath = elementPathOfLinkId(item.getLinkId());
+      boolean relevant = relatesToSelection(itemPath, selectedPaths);
+      return !relevant && !keptChildren;
+    });
+    return !items.isEmpty();
+  }
+
+  /**
+   * Derive the element path a Questionnaire item corresponds to from its {@code linkId}.
+   * The QuestionnaireBuilder sets linkIds to the element path, sometimes with a
+   * {@code -grp} / {@code -display} / {@code -flyover} suffix or a {@code ._type}-style
+   * tail; slice names ({@code :sliceName}) are stripped so sliced and unsliced map alike.
+   */
+  private static String elementPathOfLinkId(String linkId) {
+    if (linkId == null) {
+      return "";
+    }
+    String s = linkId;
+    for (String suffix : new String[] {"-grp", "-display", "-flyover"}) {
+      if (s.endsWith(suffix)) {
+        s = s.substring(0, s.length() - suffix.length());
+      }
+    }
+    int us = s.indexOf("._"); // type sub-items, e.g. Patient.deceased._boolean
+    if (us >= 0) {
+      s = s.substring(0, us);
+    }
+    StringBuilder b = new StringBuilder();
+    for (String seg : s.split("\\.", -1)) {
+      int colon = seg.indexOf(':');
+      if (b.length() > 0) {
+        b.append('.');
+      }
+      b.append(colon >= 0 ? seg.substring(0, colon) : seg);
+    }
+    return b.toString();
+  }
+
+  private static boolean relatesToSelection(String itemPath, java.util.Set<String> selectedPaths) {
+    if (itemPath == null || itemPath.isEmpty()) {
+      return false;
+    }
+    for (String sel : selectedPaths) {
+      if (itemPath.equals(sel)                       // the item is itself selected
+          || sel.startsWith(itemPath + ".")          // the item is an ancestor of a selection
+          || itemPath.startsWith(sel + ".")) {       // the item is a descendant of a selection
+        return true;
+      }
+    }
+    return false;
+  }
+
   public byte[] convertVersion(byte[] resource, FhirFormat format, String targetVer) throws Exception {
     Content cnt = new Content();
     cnt.setFocus(ByteProvider.forBytes(resource));
