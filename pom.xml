@@ -1025,9 +1025,12 @@
                             <includedScopes>compile,runtime</includedScopes>
                             <failOnBlacklist>true</failOnBlacklist>
                             <failOnMissing>true</failOnMissing>
-                            <!-- overrideFile/overrideUrl deliberately unset: the plugin defaults to
-                                 src/license/override-THIRD-PARTY.properties resolved against ${basedir},
-                                 which is exactly where this project's override file lives. -->
+                            <!-- This project has no conventional src/ layout at this level, so the override file
+                                 lives at license/override-THIRD-PARTY.properties instead of the plugin's default
+                                 location (src/license/override-THIRD-PARTY.properties resolved against ${basedir}).
+                                 overrideUrl must be a real file: URL (a bare relative path is not a recognized URI
+                                 scheme and would silently fall back to the plugin's default path). -->
+                            <overrideUrl>file:${project.basedir}/license/override-THIRD-PARTY.properties</overrideUrl>
                             <includedLicenses>
                                 <includedLicense>The Apache Software License, Version 2.0</includedLicense>
                                 <includedLicense>Apache Software License, version 1.1</includedLicense>

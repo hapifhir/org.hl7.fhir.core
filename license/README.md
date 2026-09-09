@@ -54,12 +54,12 @@ automatically as soon as **any one** of their licenses is on the allowlist — n
 
 ## Overrides
 
-`src/license/override-THIRD-PARTY.properties` overrides the license the plugin uses for a specific dependency
+`license/override-THIRD-PARTY.properties` overrides the license the plugin uses for a specific dependency
 version, for cases the allowlist can't handle on its own: a dependency with no license declared in its POM, or a
 single (non dual-licensed) dependency whose exact license string isn't in the allowlist despite being an
-acceptable license. This file's path is the plugin's own default (`src/license/override-THIRD-PARTY.properties`
-resolved against `${basedir}`), so the `LICENSE_CHECK` profile does not need to configure `overrideFile`/`overrideUrl`
-explicitly.
+acceptable license. This project has no conventional `src/` layout at this level, so the file lives directly under
+`license/` rather than the plugin's default `src/license/override-THIRD-PARTY.properties`; the `LICENSE_CHECK`
+profile points at it explicitly via `overrideUrl`.
 
 Format: `groupId--artifactId--version=License Name`, where `License Name` should be a name already present in the
 allowlist above.
