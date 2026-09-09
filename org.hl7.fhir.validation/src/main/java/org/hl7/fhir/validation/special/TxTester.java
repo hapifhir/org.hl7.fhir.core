@@ -929,9 +929,6 @@ public class TxTester implements ITerminologyRequestIdProvider {
   @SuppressWarnings("checkstyle:patternUsage")
   //a fixed literal reviewed here; never user input
   private static final Pattern FOLDER_NAME = Pattern.compile("[A-Za-z0-9][A-Za-z0-9._-]*");
-  private static final Set<String> WINDOWS_DEVICE_NAMES = Set.of("con", "prn", "aux", "nul",
-      "com1", "com2", "com3", "com4", "com5", "com6", "com7", "com8", "com9",
-      "lpt1", "lpt2", "lpt3", "lpt4", "lpt5", "lpt6", "lpt7", "lpt8", "lpt9");
 
   /**
    * Check a folder name given by the caller - the run folder, or a test's label. It has to be
@@ -960,9 +957,6 @@ public class TxTester implements ITerminologyRequestIdProvider {
       return "The name '" + name + "' ends with '.', which Windows does not allow in a folder name";
     }
     String base = name.contains(".") ? name.substring(0, name.indexOf('.')) : name;
-    if (WINDOWS_DEVICE_NAMES.contains(base.toLowerCase())) {
-      return "The name '" + name + "' is reserved for a device on Windows";
-    }
     return null;
   }
 
