@@ -29,6 +29,9 @@ class MatchetypeHTTPHandler extends BaseHTTPHandler implements HttpHandler {
 
     try {
       byte[] body = readRequestBody(exchange);
+      if (!requireDeclaredBodyType(exchange, body)) {
+        return;
+      }
       JsonObject wrapper = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(body);
 
       if (!wrapper.has("resource") || !wrapper.has("matchetype")) {

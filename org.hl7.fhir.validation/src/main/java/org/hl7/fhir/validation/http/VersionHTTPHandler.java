@@ -37,6 +37,9 @@ class VersionHTTPHandler extends BaseHTTPHandler implements HttpHandler {
       }
 
       byte[] resourceBytes = readRequestBody(exchange);
+      if (!requireDeclaredBodyType(exchange, resourceBytes)) {
+        return;
+      }
       String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
       FhirFormat format = determineFormat(contentType);
 

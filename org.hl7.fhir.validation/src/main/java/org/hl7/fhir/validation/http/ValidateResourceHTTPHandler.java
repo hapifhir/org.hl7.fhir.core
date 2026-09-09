@@ -52,6 +52,9 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
     try {
       // Read resource bytes from request body
       resourceBytes = readRequestBody(exchange);
+      if (!requireDeclaredBodyType(exchange, resourceBytes)) {
+        return;
+      }
       // Get content type and determine format
       String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
       format = determineFormat(contentType);
