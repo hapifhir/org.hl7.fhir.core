@@ -1220,6 +1220,14 @@ public class ProfileUtilities {
     addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url, msg, ValidationMessage.IssueSeverity.ERROR));
   }
 
+  /**
+   * ElementDefinition.binding.strength is 1..1, but a profile can turn up without one - and when it
+   * does, this is the message that reports it, so it must not fall over describing it.
+   */
+  private String describeStrength(ElementDefinitionBindingComponent binding) {
+    return binding.hasStrength() ? binding.getStrength().toCode() : "(none)";
+  }
+
   private void addMessage(ValidationMessage msg) {
     messages.add(msg);
     if (msg.getLevel() == IssueSeverity.ERROR && wantThrowExceptions) {
@@ -2957,7 +2965,7 @@ public class ProfileUtilities {
         
         if (!base.hasBinding() || !Base.compareDeep(derived.getBinding(), base.getBinding(), false)) {
           if (base.hasBinding() && base.getBinding().getStrength() == BindingStrength.REQUIRED && derived.getBinding().getStrength() != BindingStrength.REQUIRED)
-            addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "illegal attempt to change the binding on "+derived.getPath()+" from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode(), ValidationMessage.IssueSeverity.ERROR));
+            addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "illegal attempt to change the binding on "+derived.getPath()+" from "+describeStrength(base.getBinding())+" to "+describeStrength(derived.getBinding()), ValidationMessage.IssueSeverity.ERROR));
 //            throw new DefinitionException("StructureDefinition "+pn+" at "+derived.getPath()+": illegal attempt to change a binding from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode());
           else if (base.hasBinding() && derived.hasBinding() && base.getBinding().getStrength() == BindingStrength.REQUIRED && base.getBinding().hasValueSet() && derived.getBinding().hasValueSet()) {
             ValueSet baseVs = context.findTxResource(ValueSet.class, base.getBinding().getValueSet(), getVersionResolutionRules(base.getBinding().getValueSetElement()), null, srcSD);

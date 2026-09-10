@@ -51,6 +51,31 @@ public class FHIRPathUtilityClasses {
     public Map<String, Base> getAliases() {
       return aliases;
     }
+
+    /**
+     * Variables the caller put in scope before evaluation, visible to the expression as %name.
+     *
+     * <p>This version of the engine only handles singleton constants (see justOne() in the engine),
+     * so a variable holds one value, not a collection.
+     */
+    private Map<String, Base> definedVariables;
+
+    public boolean hasDefinedVariable(String name) {
+      return definedVariables != null && definedVariables.containsKey(name);
+    }
+
+    public Base getDefinedVariable(String name) {
+      return definedVariables == null ? null : definedVariables.get(name);
+    }
+
+    public void setDefinedVariable(String name, Base value) {
+      if (definedVariables == null) {
+        definedVariables = new HashMap<String, Base>();
+      } else if (definedVariables.containsKey(name)) {
+        throw new FHIRException("Attempt to redefine the variable '"+name+"'");
+      }
+      definedVariables.put(name, value);
+    }
     
   }
 

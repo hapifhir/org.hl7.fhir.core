@@ -324,6 +324,28 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     if (content.has("allowed-extension-domains"))
       for (JsonElement a : content.getAsJsonArray("allowed-extension-domains"))
         val.getExtensionDomains().add(a.getAsString());
+    if (content.has("usage")) {
+      // use contexts that the caller says apply - what -usage supplies on the command line. These
+      // decide whether an additional binding scoped to a use context is in force
+      JsonElement usage = content.get("usage");
+      if (usage.isJsonArray()) {
+        for (JsonElement e : usage.getAsJsonArray()) {
+          val.getSettings().getUsageContexts().add(parseUsageContext(e));
+        }
+      } else {
+        val.getSettings().getUsageContexts().add(parseUsageContext(usage));
+      }
+    }
+    if (content.has("launch-context")) {
+      // launch contexts the caller supplies - what -launch-context provides on the command line.
+      // The settings carry the reference as given, so extract the test resource to a real file and
+      // name that, which leaves the validator doing the same loading it would do for a real run.
+      // A reference with no matching test resource is passed through untouched, which is how the
+      // cases that check what happens to an unresolvable reference are written
+      for (Map.Entry<String, JsonElement> e : content.getAsJsonObject("launch-context").entrySet()) {
+        val.getSettings().getLaunchContexts().put(e.getKey(), resolveLaunchContext(e.getValue().getAsString()));
+      }
+    }
     val.setForPublication(content.has("for-publication") && "true".equals(content.get("for-publication").getAsString()));
     if (content.has("default-version")) {
       val.getSettings().setVersionFlexible(content.get("default-version").getAsBoolean());
@@ -729,6 +751,39 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     }
   }
 
+  /**
+   * Some messages quote the name of a file that the test harness itself wrote into the output
+   * folder - the launch context resources, in particular. The output folder is different on every
+   * machine, so cut it back to the bare file name before the outcome is compared (and before it is
+   * written out for copying into outcomes/java), or the expected outcomes would only ever match on
+   * the machine they were recorded on
+   */
+  private void stripOutputFolder(OperationOutcome oo) {
+    String prefix = outputFolder + File.separator;
+    for (OperationOutcomeIssueComponent iss : oo.getIssue()) {
+      if (iss.hasDetails() && iss.getDetails().hasText()) {
+        iss.getDetails().setText(iss.getDetails().getText().replace(prefix, ""));
+      }
+    }
+  }
+
+  private String resolveLaunchContext(String ref) throws IOException {
+    if (!TestingUtilities.findTestResource("validator", ref)) {
+      return ref;
+    }
+    File f = ManagedFileAccess.file(Utilities.path(outputFolder, "launch-context-" + ref.replace("/", "-")));
+    FileUtilities.bytesToFile(TestingUtilities.loadTestResourceBytes("validator", ref), f);
+    return f.getAbsolutePath();
+  }
+
+  private UsageContext parseUsageContext(JsonElement json) {
+    try {
+      return (UsageContext) new JsonParser().parseType(json.toString(), "UsageContext");
+    } catch (Exception e) {
+      throw new Error("Unable to parse the usage context " + json.toString() + ": " + e.getMessage(), e);
+    }
+  }
+
   private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String mode, String profile, String name, List<String> suppress) throws IOException {
     errors.removeIf(vm -> vm.containsText(suppress));
 
@@ -760,6 +815,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     OperationOutcome actual = content.has("ids-in-errors") ? OperationOutcomeUtilities.createOutcomeSimpleWithIds(errors) : OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
     actual.getIssue().forEach(iss -> iss.removeExtension(ExtensionDefinitions.EXT_ISSUE_SLICE_INFO));
+    stripOutputFolder(actual);
 
     String json = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(actual);
     FileUtilities.stringToFile(json, Utilities.path(outputFolder, expectedFileName));
