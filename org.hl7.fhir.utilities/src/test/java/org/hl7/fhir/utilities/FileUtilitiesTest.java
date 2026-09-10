@@ -245,9 +245,9 @@ import org.junit.jupiter.api.*;
      Files.write(dst.toPath(), versionOfFile('A'));
 
      final var stop = new AtomicBoolean(false);
-     final var torn = new AtomicInteger(0);
+     final var readFailures = new AtomicInteger(0);
      final var reads = new AtomicInteger(0);
-     final List<Exception> failures = new ArrayList<>();
+     final List<Exception> writeFailures = new ArrayList<>();
 
      final var writer = new Thread(() -> {
        try {
@@ -259,7 +259,7 @@ import org.junit.jupiter.api.*;
            FileUtilities.replaceFileAtomically(tmp, dst);
          }
        } catch (Exception e) {
-         synchronized (failures) { failures.add(e); }
+         synchronized (writeFailures) { writeFailures.add(e); }
        } finally {
          stop.set(true);
        }
@@ -271,12 +271,12 @@ import org.junit.jupiter.api.*;
            final var read = Files.readAllBytes(dst.toPath());
            reads.incrementAndGet();
            if (!isWholeVersion(read)) {
-             torn.incrementAndGet();
+             readFailures.incrementAndGet();
            }
          } catch (NoSuchFileException e) {
-           torn.incrementAndGet(); // the file must never vanish either
+           readFailures.incrementAndGet(); // the file must never vanish either
          } catch (IOException e) {
-           synchronized (failures) { failures.add(e); }
+           synchronized (writeFailures) { writeFailures.add(e); }
            return;
          }
        }
@@ -287,11 +287,11 @@ import org.junit.jupiter.api.*;
      writer.join();
      reader.join();
 
-     synchronized (failures) {
-       assertTrue(failures.isEmpty(), () -> "unexpected failure: " + failures.get(0));
+     synchronized (writeFailures) {
+       assertTrue(writeFailures.isEmpty(), () -> "unexpected failure: " + writeFailures.get(0));
      }
      assertTrue(reads.get() > 0, "the reader never managed to read the file");
-     assertEquals(0, torn.get(), "reader saw a partially written file");
+     assertEquals(0, readFailures.get(), "reader saw a partially written file");
    }
 
    private static byte[] versionOfFile(char c) {
