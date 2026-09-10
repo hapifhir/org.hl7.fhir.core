@@ -2,7 +2,11 @@ package org.hl7.fhir.validation.tests;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.*;
 
@@ -11,6 +15,9 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.http.FhirValidatorHttpService;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -1150,7 +1157,53 @@ class FhirValidatorHttpServiceTest {
 
     //TODO make this available in a test utility so we can use it elsewhere. -dotasek
     private String prettyJSONFunction(String jsonString) {
-      return gson.toJson(JsonParser.parseString(jsonString));
+      JsonElement e = JsonParser.parseString(jsonString);
+      if (e.isJsonObject()) {
+        removeValidatorVersion(e.getAsJsonObject());
+      }
+      return gson.toJson(e);
+    }
+
+    /**
+     * The validator stamps its own version into every OperationOutcome it produces. The value changes
+     * with every build, so it can't be part of the expected content - drop it before comparing.
+     */
+    private void removeValidatorVersion(JsonObject obj) {
+      if (!obj.has("extension") || !obj.get("extension").isJsonArray()) {
+        return;
+      }
+      JsonArray exts = obj.getAsJsonArray("extension");
+      JsonArray kept = new JsonArray();
+      for (JsonElement ext : exts) {
+        if (ext.isJsonObject() && ext.getAsJsonObject().has("url")
+          && ExtensionDefinitions.EXT_VALIDATOR_VERSION.equals(ext.getAsJsonObject().get("url").getAsString())) {
+          continue;
+        }
+        kept.add(ext);
+      }
+      if (kept.isEmpty()) {
+        obj.remove("extension");
+      } else {
+        obj.add("extension", kept);
+      }
+    }
+
+    /**
+     * The XML counterpart of {@link #removeValidatorVersion(JsonObject)}.
+     */
+    private void removeValidatorVersion(Document doc) {
+      Element root = doc.getDocumentElement();
+      if (root == null) {
+        return;
+      }
+      NodeList children = root.getChildNodes();
+      for (int i = children.getLength() - 1; i >= 0; i--) {
+        Node n = children.item(i);
+        if (n instanceof Element && "extension".equals(n.getNodeName())
+          && ExtensionDefinitions.EXT_VALIDATOR_VERSION.equals(((Element) n).getAttribute("url"))) {
+          root.removeChild(n);
+        }
+      }
     }
 
     //TODO make this available in a test utility so we can use it elsewhere. -dotasek
@@ -1163,6 +1216,7 @@ class FhirValidatorHttpServiceTest {
         dbf.setValidating(false);
 
         doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(xmlString)));
+        removeValidatorVersion(doc);
 
         TransformerFactory tf = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedTransformerFactory();
 

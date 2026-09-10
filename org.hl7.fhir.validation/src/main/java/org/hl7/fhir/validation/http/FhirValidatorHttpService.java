@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.http;
 
 import com.sun.net.httpserver.HttpServer;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.instance.ResourcePercentageLogger;
@@ -18,6 +19,12 @@ public class FhirValidatorHttpService {
 
   private final ValidationEngine validationEngine;
   private HttpServer server;
+  /**
+   * -- GETTER --
+   *  Whether this server is bound to the loopback interface only, so that the only possible
+   *  caller is a process on this machine. Handlers use this to decide what a caller may name.
+   */
+  @Getter
   private final boolean loopbackOnly;
   private final int port;
 

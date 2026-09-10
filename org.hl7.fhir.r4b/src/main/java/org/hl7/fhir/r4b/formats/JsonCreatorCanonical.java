@@ -179,7 +179,15 @@ public class JsonCreatorCanonical implements JsonCreator {
 
   @Override
   public void valueNum(String value) throws IOException {
-    stack.peek().addProp(new JsonCanPresentedNumberValue(takeName(), value));
+    // canonical output must not carry a presented form. Normalise to the same text that
+    // value(BigDecimal) would have produced, so that canonical bytes are unchanged by
+    // JsonParserBase.propDecimal preserving decimal literals on the ordinary paths
+    String n = takeName();
+    try {
+      stack.peek().addProp(new JsonCanNumberValue(n, new BigDecimal(value)));
+    } catch (NumberFormatException e) {
+      stack.peek().addProp(new JsonCanPresentedNumberValue(n, value));
+    }
   }
 
   @Override

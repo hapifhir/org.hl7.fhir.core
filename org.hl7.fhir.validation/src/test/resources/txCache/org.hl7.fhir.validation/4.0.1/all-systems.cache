@@ -12694,3 +12694,1983 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:729c42be-751f-4ee9-b97d-f768ae0f2e8d", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:729c42be-751f-4ee9-b97d-f768ae0f2e8d|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:729c42be-751f-4ee9-b97d-f768ae0f2e8d|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms urn:uuid:729c42be-751f-4ee9-b97d-f768ae0f2e8d|1: Analysing urn:uuid:729c42be-751f-4ee9-b97d-f768ae0f2e8d|1 for validation purposes\n2ms urn:uuid:729c42be-751f-4ee9-b97d-f768ae0f2e8d|1: Parameters: disp-lang=en-US, generate-narrative\n2ms urn:uuid:729c42be-751f-4ee9-b97d-f768ae0f2e8d|1: Prepare include[0]: \"(urn:iso:std:iso:3166)\"\n3ms urn:uuid:729c42be-751f-4ee9-b97d-f768ae0f2e8d|1: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n4ms urn:uuid:729c42be-751f-4ee9-b97d-f768ae0f2e8d|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n4ms urn:uuid:729c42be-751f-4ee9-b97d-f768ae0f2e8d|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:729c42be-751f-4ee9-b97d-f768ae0f2e8d|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:729c42be-751f-4ee9-b97d-f768ae0f2e8d|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:99569712-2bf1-4861-a362-032253b166c7", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:99569712-2bf1-4861-a362-032253b166c7|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:99569712-2bf1-4861-a362-032253b166c7|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms urn:uuid:99569712-2bf1-4861-a362-032253b166c7|1: Analysing urn:uuid:99569712-2bf1-4861-a362-032253b166c7|1 for validation purposes\n2ms urn:uuid:99569712-2bf1-4861-a362-032253b166c7|1: Parameters: disp-lang=en-US, generate-narrative\n2ms urn:uuid:99569712-2bf1-4861-a362-032253b166c7|1: Prepare include[0]: \"(urn:iso:std:iso:3166:-2)\"\n3ms urn:uuid:99569712-2bf1-4861-a362-032253b166c7|1: CodeSystem found: \"urn:iso:std:iso:3166:-2|2021\"\n3ms urn:uuid:99569712-2bf1-4861-a362-032253b166c7|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n3ms urn:uuid:99569712-2bf1-4861-a362-032253b166c7|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:99569712-2bf1-4861-a362-032253b166c7|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:99569712-2bf1-4861-a362-032253b166c7|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "[%payloadFormat%]"
+}, "url": "urn:uuid:056977b6-1970-47f4-bde4-cc496821757a", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "[%payloadFormat%]",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:056977b6-1970-47f4-bde4-cc496821757a|1'; The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:056977b6-1970-47f4-bde4-cc496821757a|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:056977b6-1970-47f4-bde4-cc496821757a|1: Analysing urn:uuid:056977b6-1970-47f4-bde4-cc496821757a|1 for validation purposes\n1ms urn:uuid:056977b6-1970-47f4-bde4-cc496821757a|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:056977b6-1970-47f4-bde4-cc496821757a|1: Prepare include[0]: \"(urn:ietf:bcp:13)\"\n2ms urn:uuid:056977b6-1970-47f4-bde4-cc496821757a|1: CodeSystem found: \"urn:ietf:bcp:13|null\"\n2ms urn:uuid:056977b6-1970-47f4-bde4-cc496821757a|1: Validate \"[undefined#[%payloadFormat%] (\"undefined\")]\" and infer system\n2ms urn:uuid:056977b6-1970-47f4-bde4-cc496821757a|1: Check \"undefined#[%payloadFormat%]\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:056977b6-1970-47f4-bde4-cc496821757a|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:056977b6-1970-47f4-bde4-cc496821757a|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:9e9e73ad-18b6-4053-9c36-6b926009bdfd", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:9e9e73ad-18b6-4053-9c36-6b926009bdfd|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:9e9e73ad-18b6-4053-9c36-6b926009bdfd|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms urn:uuid:9e9e73ad-18b6-4053-9c36-6b926009bdfd|1: Analysing urn:uuid:9e9e73ad-18b6-4053-9c36-6b926009bdfd|1 for validation purposes\n2ms urn:uuid:9e9e73ad-18b6-4053-9c36-6b926009bdfd|1: Parameters: disp-lang=en-US, generate-narrative\n2ms urn:uuid:9e9e73ad-18b6-4053-9c36-6b926009bdfd|1: Prepare include[0]: \"(urn:iso:std:iso:3166)\"\n3ms urn:uuid:9e9e73ad-18b6-4053-9c36-6b926009bdfd|1: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n3ms urn:uuid:9e9e73ad-18b6-4053-9c36-6b926009bdfd|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n3ms urn:uuid:9e9e73ad-18b6-4053-9c36-6b926009bdfd|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:9e9e73ad-18b6-4053-9c36-6b926009bdfd|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:9e9e73ad-18b6-4053-9c36-6b926009bdfd|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:749af39a-73c1-468c-ba18-9adf1f793ee1", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:749af39a-73c1-468c-ba18-9adf1f793ee1|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:749af39a-73c1-468c-ba18-9adf1f793ee1|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:749af39a-73c1-468c-ba18-9adf1f793ee1|1: Analysing urn:uuid:749af39a-73c1-468c-ba18-9adf1f793ee1|1 for validation purposes\n1ms urn:uuid:749af39a-73c1-468c-ba18-9adf1f793ee1|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:749af39a-73c1-468c-ba18-9adf1f793ee1|1: Prepare include[0]: \"(urn:iso:std:iso:3166:-2)\"\n2ms urn:uuid:749af39a-73c1-468c-ba18-9adf1f793ee1|1: CodeSystem found: \"urn:iso:std:iso:3166:-2|2021\"\n2ms urn:uuid:749af39a-73c1-468c-ba18-9adf1f793ee1|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n2ms urn:uuid:749af39a-73c1-468c-ba18-9adf1f793ee1|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:749af39a-73c1-468c-ba18-9adf1f793ee1|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:749af39a-73c1-468c-ba18-9adf1f793ee1|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "[%payloadFormat%]"
+}, "url": "urn:uuid:e2ebbd2e-ed71-44ab-a3d7-06a294b72b28", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "[%payloadFormat%]",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:e2ebbd2e-ed71-44ab-a3d7-06a294b72b28|1'; The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:e2ebbd2e-ed71-44ab-a3d7-06a294b72b28|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:e2ebbd2e-ed71-44ab-a3d7-06a294b72b28|1: Analysing urn:uuid:e2ebbd2e-ed71-44ab-a3d7-06a294b72b28|1 for validation purposes\n1ms urn:uuid:e2ebbd2e-ed71-44ab-a3d7-06a294b72b28|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:e2ebbd2e-ed71-44ab-a3d7-06a294b72b28|1: Prepare include[0]: \"(urn:ietf:bcp:13)\"\n3ms urn:uuid:e2ebbd2e-ed71-44ab-a3d7-06a294b72b28|1: CodeSystem found: \"urn:ietf:bcp:13|null\"\n3ms urn:uuid:e2ebbd2e-ed71-44ab-a3d7-06a294b72b28|1: Validate \"[undefined#[%payloadFormat%] (\"undefined\")]\" and infer system\n3ms urn:uuid:e2ebbd2e-ed71-44ab-a3d7-06a294b72b28|1: Check \"undefined#[%payloadFormat%]\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:e2ebbd2e-ed71-44ab-a3d7-06a294b72b28|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:e2ebbd2e-ed71-44ab-a3d7-06a294b72b28|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:2a9600cc-9e43-418c-b982-b08f494bc182", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:2a9600cc-9e43-418c-b982-b08f494bc182|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:2a9600cc-9e43-418c-b982-b08f494bc182|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:2a9600cc-9e43-418c-b982-b08f494bc182|1: Analysing urn:uuid:2a9600cc-9e43-418c-b982-b08f494bc182|1 for validation purposes\n1ms urn:uuid:2a9600cc-9e43-418c-b982-b08f494bc182|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:2a9600cc-9e43-418c-b982-b08f494bc182|1: Prepare include[0]: \"(urn:iso:std:iso:3166)\"\n2ms urn:uuid:2a9600cc-9e43-418c-b982-b08f494bc182|1: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n2ms urn:uuid:2a9600cc-9e43-418c-b982-b08f494bc182|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n2ms urn:uuid:2a9600cc-9e43-418c-b982-b08f494bc182|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:2a9600cc-9e43-418c-b982-b08f494bc182|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:2a9600cc-9e43-418c-b982-b08f494bc182|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:c52bddae-f96c-48cb-bcd9-7df0602d5fd3", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:c52bddae-f96c-48cb-bcd9-7df0602d5fd3|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:c52bddae-f96c-48cb-bcd9-7df0602d5fd3|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:c52bddae-f96c-48cb-bcd9-7df0602d5fd3|1: Analysing urn:uuid:c52bddae-f96c-48cb-bcd9-7df0602d5fd3|1 for validation purposes\n1ms urn:uuid:c52bddae-f96c-48cb-bcd9-7df0602d5fd3|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:c52bddae-f96c-48cb-bcd9-7df0602d5fd3|1: Prepare include[0]: \"(urn:iso:std:iso:3166:-2)\"\n2ms urn:uuid:c52bddae-f96c-48cb-bcd9-7df0602d5fd3|1: CodeSystem found: \"urn:iso:std:iso:3166:-2|2021\"\n2ms urn:uuid:c52bddae-f96c-48cb-bcd9-7df0602d5fd3|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n2ms urn:uuid:c52bddae-f96c-48cb-bcd9-7df0602d5fd3|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:c52bddae-f96c-48cb-bcd9-7df0602d5fd3|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:c52bddae-f96c-48cb-bcd9-7df0602d5fd3|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "[%payloadFormat%]"
+}, "url": "urn:uuid:badc5949-7bee-4d42-be9d-5e6dade6b309", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "[%payloadFormat%]",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:badc5949-7bee-4d42-be9d-5e6dade6b309|1'; The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:badc5949-7bee-4d42-be9d-5e6dade6b309|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:badc5949-7bee-4d42-be9d-5e6dade6b309|1: Analysing urn:uuid:badc5949-7bee-4d42-be9d-5e6dade6b309|1 for validation purposes\n1ms urn:uuid:badc5949-7bee-4d42-be9d-5e6dade6b309|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:badc5949-7bee-4d42-be9d-5e6dade6b309|1: Prepare include[0]: \"(urn:ietf:bcp:13)\"\n2ms urn:uuid:badc5949-7bee-4d42-be9d-5e6dade6b309|1: CodeSystem found: \"urn:ietf:bcp:13|null\"\n2ms urn:uuid:badc5949-7bee-4d42-be9d-5e6dade6b309|1: Validate \"[undefined#[%payloadFormat%] (\"undefined\")]\" and infer system\n2ms urn:uuid:badc5949-7bee-4d42-be9d-5e6dade6b309|1: Check \"undefined#[%payloadFormat%]\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:badc5949-7bee-4d42-be9d-5e6dade6b309|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:badc5949-7bee-4d42-be9d-5e6dade6b309|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:ac7d4fdb-3063-4b74-919a-5dc915580422", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:ac7d4fdb-3063-4b74-919a-5dc915580422|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:ac7d4fdb-3063-4b74-919a-5dc915580422|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:ac7d4fdb-3063-4b74-919a-5dc915580422|1: Analysing urn:uuid:ac7d4fdb-3063-4b74-919a-5dc915580422|1 for validation purposes\n1ms urn:uuid:ac7d4fdb-3063-4b74-919a-5dc915580422|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:ac7d4fdb-3063-4b74-919a-5dc915580422|1: Prepare include[0]: \"(urn:iso:std:iso:3166)\"\n3ms urn:uuid:ac7d4fdb-3063-4b74-919a-5dc915580422|1: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n3ms urn:uuid:ac7d4fdb-3063-4b74-919a-5dc915580422|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n3ms urn:uuid:ac7d4fdb-3063-4b74-919a-5dc915580422|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:ac7d4fdb-3063-4b74-919a-5dc915580422|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:ac7d4fdb-3063-4b74-919a-5dc915580422|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:e664b487-a1ff-41b8-abc9-d44b506820f4", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:e664b487-a1ff-41b8-abc9-d44b506820f4|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:e664b487-a1ff-41b8-abc9-d44b506820f4|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms urn:uuid:e664b487-a1ff-41b8-abc9-d44b506820f4|1: Analysing urn:uuid:e664b487-a1ff-41b8-abc9-d44b506820f4|1 for validation purposes\n2ms urn:uuid:e664b487-a1ff-41b8-abc9-d44b506820f4|1: Parameters: disp-lang=en-US, generate-narrative\n2ms urn:uuid:e664b487-a1ff-41b8-abc9-d44b506820f4|1: Prepare include[0]: \"(urn:iso:std:iso:3166:-2)\"\n3ms urn:uuid:e664b487-a1ff-41b8-abc9-d44b506820f4|1: CodeSystem found: \"urn:iso:std:iso:3166:-2|2021\"\n3ms urn:uuid:e664b487-a1ff-41b8-abc9-d44b506820f4|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n3ms urn:uuid:e664b487-a1ff-41b8-abc9-d44b506820f4|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:e664b487-a1ff-41b8-abc9-d44b506820f4|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:e664b487-a1ff-41b8-abc9-d44b506820f4|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "[%payloadFormat%]"
+}, "url": "urn:uuid:7afc5f56-a4c4-4fd7-9374-4d77d947b745", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "[%payloadFormat%]",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:7afc5f56-a4c4-4fd7-9374-4d77d947b745|1'; The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:7afc5f56-a4c4-4fd7-9374-4d77d947b745|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:7afc5f56-a4c4-4fd7-9374-4d77d947b745|1: Analysing urn:uuid:7afc5f56-a4c4-4fd7-9374-4d77d947b745|1 for validation purposes\n1ms urn:uuid:7afc5f56-a4c4-4fd7-9374-4d77d947b745|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:7afc5f56-a4c4-4fd7-9374-4d77d947b745|1: Prepare include[0]: \"(urn:ietf:bcp:13)\"\n2ms urn:uuid:7afc5f56-a4c4-4fd7-9374-4d77d947b745|1: CodeSystem found: \"urn:ietf:bcp:13|null\"\n2ms urn:uuid:7afc5f56-a4c4-4fd7-9374-4d77d947b745|1: Validate \"[undefined#[%payloadFormat%] (\"undefined\")]\" and infer system\n2ms urn:uuid:7afc5f56-a4c4-4fd7-9374-4d77d947b745|1: Check \"undefined#[%payloadFormat%]\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:7afc5f56-a4c4-4fd7-9374-4d77d947b745|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:7afc5f56-a4c4-4fd7-9374-4d77d947b745|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:5060330a-7b0c-4a0e-9364-b4b523fd86bb", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:5060330a-7b0c-4a0e-9364-b4b523fd86bb|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:5060330a-7b0c-4a0e-9364-b4b523fd86bb|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms urn:uuid:5060330a-7b0c-4a0e-9364-b4b523fd86bb|1: Analysing urn:uuid:5060330a-7b0c-4a0e-9364-b4b523fd86bb|1 for validation purposes\n2ms urn:uuid:5060330a-7b0c-4a0e-9364-b4b523fd86bb|1: Parameters: disp-lang=en-US, generate-narrative\n2ms urn:uuid:5060330a-7b0c-4a0e-9364-b4b523fd86bb|1: Prepare include[0]: \"(urn:iso:std:iso:3166)\"\n3ms urn:uuid:5060330a-7b0c-4a0e-9364-b4b523fd86bb|1: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n3ms urn:uuid:5060330a-7b0c-4a0e-9364-b4b523fd86bb|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n3ms urn:uuid:5060330a-7b0c-4a0e-9364-b4b523fd86bb|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:5060330a-7b0c-4a0e-9364-b4b523fd86bb|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:5060330a-7b0c-4a0e-9364-b4b523fd86bb|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:77540ffb-06bf-4600-a0cd-a2409f30e196", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:77540ffb-06bf-4600-a0cd-a2409f30e196|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:77540ffb-06bf-4600-a0cd-a2409f30e196|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:77540ffb-06bf-4600-a0cd-a2409f30e196|1: Analysing urn:uuid:77540ffb-06bf-4600-a0cd-a2409f30e196|1 for validation purposes\n1ms urn:uuid:77540ffb-06bf-4600-a0cd-a2409f30e196|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:77540ffb-06bf-4600-a0cd-a2409f30e196|1: Prepare include[0]: \"(urn:iso:std:iso:3166:-2)\"\n2ms urn:uuid:77540ffb-06bf-4600-a0cd-a2409f30e196|1: CodeSystem found: \"urn:iso:std:iso:3166:-2|2021\"\n2ms urn:uuid:77540ffb-06bf-4600-a0cd-a2409f30e196|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n2ms urn:uuid:77540ffb-06bf-4600-a0cd-a2409f30e196|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:77540ffb-06bf-4600-a0cd-a2409f30e196|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:77540ffb-06bf-4600-a0cd-a2409f30e196|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "[%payloadFormat%]"
+}, "url": "urn:uuid:a7287b09-6ad6-4e3a-8296-06a364231016", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "[%payloadFormat%]",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:a7287b09-6ad6-4e3a-8296-06a364231016|1'; The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:a7287b09-6ad6-4e3a-8296-06a364231016|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:a7287b09-6ad6-4e3a-8296-06a364231016|1: Analysing urn:uuid:a7287b09-6ad6-4e3a-8296-06a364231016|1 for validation purposes\n1ms urn:uuid:a7287b09-6ad6-4e3a-8296-06a364231016|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:a7287b09-6ad6-4e3a-8296-06a364231016|1: Prepare include[0]: \"(urn:ietf:bcp:13)\"\n2ms urn:uuid:a7287b09-6ad6-4e3a-8296-06a364231016|1: CodeSystem found: \"urn:ietf:bcp:13|null\"\n2ms urn:uuid:a7287b09-6ad6-4e3a-8296-06a364231016|1: Validate \"[undefined#[%payloadFormat%] (\"undefined\")]\" and infer system\n2ms urn:uuid:a7287b09-6ad6-4e3a-8296-06a364231016|1: Check \"undefined#[%payloadFormat%]\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:a7287b09-6ad6-4e3a-8296-06a364231016|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:a7287b09-6ad6-4e3a-8296-06a364231016|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:8155ccd0-31a1-4ddf-8c72-25b02594d471", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:8155ccd0-31a1-4ddf-8c72-25b02594d471|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:8155ccd0-31a1-4ddf-8c72-25b02594d471|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms urn:uuid:8155ccd0-31a1-4ddf-8c72-25b02594d471|1: Analysing urn:uuid:8155ccd0-31a1-4ddf-8c72-25b02594d471|1 for validation purposes\n2ms urn:uuid:8155ccd0-31a1-4ddf-8c72-25b02594d471|1: Parameters: disp-lang=en-US, generate-narrative\n2ms urn:uuid:8155ccd0-31a1-4ddf-8c72-25b02594d471|1: Prepare include[0]: \"(urn:iso:std:iso:3166)\"\n3ms urn:uuid:8155ccd0-31a1-4ddf-8c72-25b02594d471|1: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n3ms urn:uuid:8155ccd0-31a1-4ddf-8c72-25b02594d471|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n3ms urn:uuid:8155ccd0-31a1-4ddf-8c72-25b02594d471|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:8155ccd0-31a1-4ddf-8c72-25b02594d471|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:8155ccd0-31a1-4ddf-8c72-25b02594d471|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:ae2e78a1-4ec8-4f05-b1e5-85165a6b9e4c", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:ae2e78a1-4ec8-4f05-b1e5-85165a6b9e4c|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:ae2e78a1-4ec8-4f05-b1e5-85165a6b9e4c|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:ae2e78a1-4ec8-4f05-b1e5-85165a6b9e4c|1: Analysing urn:uuid:ae2e78a1-4ec8-4f05-b1e5-85165a6b9e4c|1 for validation purposes\n1ms urn:uuid:ae2e78a1-4ec8-4f05-b1e5-85165a6b9e4c|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:ae2e78a1-4ec8-4f05-b1e5-85165a6b9e4c|1: Prepare include[0]: \"(urn:iso:std:iso:3166:-2)\"\n1ms urn:uuid:ae2e78a1-4ec8-4f05-b1e5-85165a6b9e4c|1: CodeSystem found: \"urn:iso:std:iso:3166:-2|2021\"\n1ms urn:uuid:ae2e78a1-4ec8-4f05-b1e5-85165a6b9e4c|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n1ms urn:uuid:ae2e78a1-4ec8-4f05-b1e5-85165a6b9e4c|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:ae2e78a1-4ec8-4f05-b1e5-85165a6b9e4c|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:ae2e78a1-4ec8-4f05-b1e5-85165a6b9e4c|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "[%payloadFormat%]"
+}, "url": "urn:uuid:2d646845-8a0d-4c1e-a6aa-9d80a89cc382", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "[%payloadFormat%]",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:2d646845-8a0d-4c1e-a6aa-9d80a89cc382|1'; The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:2d646845-8a0d-4c1e-a6aa-9d80a89cc382|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:2d646845-8a0d-4c1e-a6aa-9d80a89cc382|1: Analysing urn:uuid:2d646845-8a0d-4c1e-a6aa-9d80a89cc382|1 for validation purposes\n1ms urn:uuid:2d646845-8a0d-4c1e-a6aa-9d80a89cc382|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:2d646845-8a0d-4c1e-a6aa-9d80a89cc382|1: Prepare include[0]: \"(urn:ietf:bcp:13)\"\n2ms urn:uuid:2d646845-8a0d-4c1e-a6aa-9d80a89cc382|1: CodeSystem found: \"urn:ietf:bcp:13|null\"\n2ms urn:uuid:2d646845-8a0d-4c1e-a6aa-9d80a89cc382|1: Validate \"[undefined#[%payloadFormat%] (\"undefined\")]\" and infer system\n2ms urn:uuid:2d646845-8a0d-4c1e-a6aa-9d80a89cc382|1: Check \"undefined#[%payloadFormat%]\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:2d646845-8a0d-4c1e-a6aa-9d80a89cc382|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:2d646845-8a0d-4c1e-a6aa-9d80a89cc382|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:4d1733b4-3c23-4aa1-823b-2164b042f60e", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:4d1733b4-3c23-4aa1-823b-2164b042f60e|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:4d1733b4-3c23-4aa1-823b-2164b042f60e|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms urn:uuid:4d1733b4-3c23-4aa1-823b-2164b042f60e|1: Analysing urn:uuid:4d1733b4-3c23-4aa1-823b-2164b042f60e|1 for validation purposes\n2ms urn:uuid:4d1733b4-3c23-4aa1-823b-2164b042f60e|1: Parameters: disp-lang=en-US, generate-narrative\n2ms urn:uuid:4d1733b4-3c23-4aa1-823b-2164b042f60e|1: Prepare include[0]: \"(urn:iso:std:iso:3166)\"\n3ms urn:uuid:4d1733b4-3c23-4aa1-823b-2164b042f60e|1: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n3ms urn:uuid:4d1733b4-3c23-4aa1-823b-2164b042f60e|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n3ms urn:uuid:4d1733b4-3c23-4aa1-823b-2164b042f60e|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:4d1733b4-3c23-4aa1-823b-2164b042f60e|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:4d1733b4-3c23-4aa1-823b-2164b042f60e|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:be158be9-c645-4a4e-b39a-caa5055aa8b5", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:be158be9-c645-4a4e-b39a-caa5055aa8b5|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:be158be9-c645-4a4e-b39a-caa5055aa8b5|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:be158be9-c645-4a4e-b39a-caa5055aa8b5|1: Analysing urn:uuid:be158be9-c645-4a4e-b39a-caa5055aa8b5|1 for validation purposes\n1ms urn:uuid:be158be9-c645-4a4e-b39a-caa5055aa8b5|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:be158be9-c645-4a4e-b39a-caa5055aa8b5|1: Prepare include[0]: \"(urn:iso:std:iso:3166:-2)\"\n2ms urn:uuid:be158be9-c645-4a4e-b39a-caa5055aa8b5|1: CodeSystem found: \"urn:iso:std:iso:3166:-2|2021\"\n2ms urn:uuid:be158be9-c645-4a4e-b39a-caa5055aa8b5|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n2ms urn:uuid:be158be9-c645-4a4e-b39a-caa5055aa8b5|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:be158be9-c645-4a4e-b39a-caa5055aa8b5|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:be158be9-c645-4a4e-b39a-caa5055aa8b5|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "[%payloadFormat%]"
+}, "url": "urn:uuid:a8d06a4a-1171-487d-9ab5-405ef8087eff", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "[%payloadFormat%]",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:a8d06a4a-1171-487d-9ab5-405ef8087eff|1'; The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:a8d06a4a-1171-487d-9ab5-405ef8087eff|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:a8d06a4a-1171-487d-9ab5-405ef8087eff|1: Analysing urn:uuid:a8d06a4a-1171-487d-9ab5-405ef8087eff|1 for validation purposes\n1ms urn:uuid:a8d06a4a-1171-487d-9ab5-405ef8087eff|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:a8d06a4a-1171-487d-9ab5-405ef8087eff|1: Prepare include[0]: \"(urn:ietf:bcp:13)\"\n2ms urn:uuid:a8d06a4a-1171-487d-9ab5-405ef8087eff|1: CodeSystem found: \"urn:ietf:bcp:13|null\"\n2ms urn:uuid:a8d06a4a-1171-487d-9ab5-405ef8087eff|1: Validate \"[undefined#[%payloadFormat%] (\"undefined\")]\" and infer system\n2ms urn:uuid:a8d06a4a-1171-487d-9ab5-405ef8087eff|1: Check \"undefined#[%payloadFormat%]\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:a8d06a4a-1171-487d-9ab5-405ef8087eff|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:a8d06a4a-1171-487d-9ab5-405ef8087eff|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:9d89e999-b80d-457e-853d-64145e7e9c0d", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:9d89e999-b80d-457e-853d-64145e7e9c0d|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:9d89e999-b80d-457e-853d-64145e7e9c0d|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms urn:uuid:9d89e999-b80d-457e-853d-64145e7e9c0d|1: Analysing urn:uuid:9d89e999-b80d-457e-853d-64145e7e9c0d|1 for validation purposes\n2ms urn:uuid:9d89e999-b80d-457e-853d-64145e7e9c0d|1: Parameters: disp-lang=en-US, generate-narrative\n2ms urn:uuid:9d89e999-b80d-457e-853d-64145e7e9c0d|1: Prepare include[0]: \"(urn:iso:std:iso:3166)\"\n3ms urn:uuid:9d89e999-b80d-457e-853d-64145e7e9c0d|1: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n3ms urn:uuid:9d89e999-b80d-457e-853d-64145e7e9c0d|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n3ms urn:uuid:9d89e999-b80d-457e-853d-64145e7e9c0d|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:9d89e999-b80d-457e-853d-64145e7e9c0d|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:9d89e999-b80d-457e-853d-64145e7e9c0d|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:c926d549-35b1-4da1-ba41-cf738828b410", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:c926d549-35b1-4da1-ba41-cf738828b410|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:c926d549-35b1-4da1-ba41-cf738828b410|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:c926d549-35b1-4da1-ba41-cf738828b410|1: Analysing urn:uuid:c926d549-35b1-4da1-ba41-cf738828b410|1 for validation purposes\n1ms urn:uuid:c926d549-35b1-4da1-ba41-cf738828b410|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:c926d549-35b1-4da1-ba41-cf738828b410|1: Prepare include[0]: \"(urn:iso:std:iso:3166:-2)\"\n2ms urn:uuid:c926d549-35b1-4da1-ba41-cf738828b410|1: CodeSystem found: \"urn:iso:std:iso:3166:-2|2021\"\n2ms urn:uuid:c926d549-35b1-4da1-ba41-cf738828b410|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n2ms urn:uuid:c926d549-35b1-4da1-ba41-cf738828b410|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:c926d549-35b1-4da1-ba41-cf738828b410|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:c926d549-35b1-4da1-ba41-cf738828b410|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "[%payloadFormat%]"
+}, "url": "urn:uuid:90162c62-ca63-44e5-9b72-821abc8c9379", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "[%payloadFormat%]",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:90162c62-ca63-44e5-9b72-821abc8c9379|1'; The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:90162c62-ca63-44e5-9b72-821abc8c9379|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:90162c62-ca63-44e5-9b72-821abc8c9379|1: Analysing urn:uuid:90162c62-ca63-44e5-9b72-821abc8c9379|1 for validation purposes\n1ms urn:uuid:90162c62-ca63-44e5-9b72-821abc8c9379|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:90162c62-ca63-44e5-9b72-821abc8c9379|1: Prepare include[0]: \"(urn:ietf:bcp:13)\"\n2ms urn:uuid:90162c62-ca63-44e5-9b72-821abc8c9379|1: CodeSystem found: \"urn:ietf:bcp:13|null\"\n2ms urn:uuid:90162c62-ca63-44e5-9b72-821abc8c9379|1: Validate \"[undefined#[%payloadFormat%] (\"undefined\")]\" and infer system\n2ms urn:uuid:90162c62-ca63-44e5-9b72-821abc8c9379|1: Check \"undefined#[%payloadFormat%]\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:90162c62-ca63-44e5-9b72-821abc8c9379|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:90162c62-ca63-44e5-9b72-821abc8c9379|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:7111a8c2-0d83-47e7-92a2-d1bd3c152faa", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:7111a8c2-0d83-47e7-92a2-d1bd3c152faa|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:7111a8c2-0d83-47e7-92a2-d1bd3c152faa|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:7111a8c2-0d83-47e7-92a2-d1bd3c152faa|1: Analysing urn:uuid:7111a8c2-0d83-47e7-92a2-d1bd3c152faa|1 for validation purposes\n2ms urn:uuid:7111a8c2-0d83-47e7-92a2-d1bd3c152faa|1: Parameters: disp-lang=en-US, generate-narrative\n2ms urn:uuid:7111a8c2-0d83-47e7-92a2-d1bd3c152faa|1: Prepare include[0]: \"(urn:iso:std:iso:3166)\"\n3ms urn:uuid:7111a8c2-0d83-47e7-92a2-d1bd3c152faa|1: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n3ms urn:uuid:7111a8c2-0d83-47e7-92a2-d1bd3c152faa|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n3ms urn:uuid:7111a8c2-0d83-47e7-92a2-d1bd3c152faa|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:7111a8c2-0d83-47e7-92a2-d1bd3c152faa|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:7111a8c2-0d83-47e7-92a2-d1bd3c152faa|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:7784a8e4-e4a0-4d1e-a4ea-69b8573b80b4", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:7784a8e4-e4a0-4d1e-a4ea-69b8573b80b4|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:7784a8e4-e4a0-4d1e-a4ea-69b8573b80b4|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:7784a8e4-e4a0-4d1e-a4ea-69b8573b80b4|1: Analysing urn:uuid:7784a8e4-e4a0-4d1e-a4ea-69b8573b80b4|1 for validation purposes\n1ms urn:uuid:7784a8e4-e4a0-4d1e-a4ea-69b8573b80b4|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:7784a8e4-e4a0-4d1e-a4ea-69b8573b80b4|1: Prepare include[0]: \"(urn:iso:std:iso:3166:-2)\"\n2ms urn:uuid:7784a8e4-e4a0-4d1e-a4ea-69b8573b80b4|1: CodeSystem found: \"urn:iso:std:iso:3166:-2|2021\"\n2ms urn:uuid:7784a8e4-e4a0-4d1e-a4ea-69b8573b80b4|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n2ms urn:uuid:7784a8e4-e4a0-4d1e-a4ea-69b8573b80b4|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:7784a8e4-e4a0-4d1e-a4ea-69b8573b80b4|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:7784a8e4-e4a0-4d1e-a4ea-69b8573b80b4|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "[%payloadFormat%]"
+}, "url": "urn:uuid:158ab10c-1a15-4436-abd7-246363a98f83", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "[%payloadFormat%]",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:158ab10c-1a15-4436-abd7-246363a98f83|1'; The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:158ab10c-1a15-4436-abd7-246363a98f83|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:158ab10c-1a15-4436-abd7-246363a98f83|1: Analysing urn:uuid:158ab10c-1a15-4436-abd7-246363a98f83|1 for validation purposes\n1ms urn:uuid:158ab10c-1a15-4436-abd7-246363a98f83|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:158ab10c-1a15-4436-abd7-246363a98f83|1: Prepare include[0]: \"(urn:ietf:bcp:13)\"\n2ms urn:uuid:158ab10c-1a15-4436-abd7-246363a98f83|1: CodeSystem found: \"urn:ietf:bcp:13|null\"\n2ms urn:uuid:158ab10c-1a15-4436-abd7-246363a98f83|1: Validate \"[undefined#[%payloadFormat%] (\"undefined\")]\" and infer system\n2ms urn:uuid:158ab10c-1a15-4436-abd7-246363a98f83|1: Check \"undefined#[%payloadFormat%]\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:158ab10c-1a15-4436-abd7-246363a98f83|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:158ab10c-1a15-4436-abd7-246363a98f83|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:7e42655a-57d2-4eb0-9ed5-b04e1d508aa9", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:7e42655a-57d2-4eb0-9ed5-b04e1d508aa9|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:7e42655a-57d2-4eb0-9ed5-b04e1d508aa9|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:7e42655a-57d2-4eb0-9ed5-b04e1d508aa9|1: Analysing urn:uuid:7e42655a-57d2-4eb0-9ed5-b04e1d508aa9|1 for validation purposes\n2ms urn:uuid:7e42655a-57d2-4eb0-9ed5-b04e1d508aa9|1: Parameters: disp-lang=en-US, generate-narrative\n2ms urn:uuid:7e42655a-57d2-4eb0-9ed5-b04e1d508aa9|1: Prepare include[0]: \"(urn:iso:std:iso:3166)\"\n2ms urn:uuid:7e42655a-57d2-4eb0-9ed5-b04e1d508aa9|1: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n3ms urn:uuid:7e42655a-57d2-4eb0-9ed5-b04e1d508aa9|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n3ms urn:uuid:7e42655a-57d2-4eb0-9ed5-b04e1d508aa9|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:7e42655a-57d2-4eb0-9ed5-b04e1d508aa9|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:7e42655a-57d2-4eb0-9ed5-b04e1d508aa9|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Australia"
+}, "url": "urn:uuid:13222107-22a9-4c45-9217-b4111e30b4a9", "version": "1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:13222107-22a9-4c45-9217-b4111e30b4a9|1'; The provided code '#Australia' was not found in the value set 'urn:uuid:13222107-22a9-4c45-9217-b4111e30b4a9|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:13222107-22a9-4c45-9217-b4111e30b4a9|1: Analysing urn:uuid:13222107-22a9-4c45-9217-b4111e30b4a9|1 for validation purposes\n1ms urn:uuid:13222107-22a9-4c45-9217-b4111e30b4a9|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:13222107-22a9-4c45-9217-b4111e30b4a9|1: Prepare include[0]: \"(urn:iso:std:iso:3166:-2)\"\n1ms urn:uuid:13222107-22a9-4c45-9217-b4111e30b4a9|1: CodeSystem found: \"urn:iso:std:iso:3166:-2|2021\"\n1ms urn:uuid:13222107-22a9-4c45-9217-b4111e30b4a9|1: Validate \"[undefined#Australia (\"undefined\")]\" and infer system\n1ms urn:uuid:13222107-22a9-4c45-9217-b4111e30b4a9|1: Check \"undefined#Australia\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code 'Australia' in the ValueSet 'urn:uuid:13222107-22a9-4c45-9217-b4111e30b4a9|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#Australia' was not found in the value set 'urn:uuid:13222107-22a9-4c45-9217-b4111e30b4a9|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "[%payloadFormat%]"
+}, "url": "urn:uuid:727f72e9-1d2e-44cd-a4b0-9a4ee1a32722", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "[%payloadFormat%]",
+  "severity" : "error",
+  "error" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:727f72e9-1d2e-44cd-a4b0-9a4ee1a32722|1'; The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:727f72e9-1d2e-44cd-a4b0-9a4ee1a32722|1'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:727f72e9-1d2e-44cd-a4b0-9a4ee1a32722|1: Analysing urn:uuid:727f72e9-1d2e-44cd-a4b0-9a4ee1a32722|1 for validation purposes\n1ms urn:uuid:727f72e9-1d2e-44cd-a4b0-9a4ee1a32722|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:727f72e9-1d2e-44cd-a4b0-9a4ee1a32722|1: Prepare include[0]: \"(urn:ietf:bcp:13)\"\n2ms urn:uuid:727f72e9-1d2e-44cd-a4b0-9a4ee1a32722|1: CodeSystem found: \"urn:ietf:bcp:13|null\"\n2ms urn:uuid:727f72e9-1d2e-44cd-a4b0-9a4ee1a32722|1: Validate \"[undefined#[%payloadFormat%] (\"undefined\")]\" and infer system\n2ms urn:uuid:727f72e9-1d2e-44cd-a4b0-9a4ee1a32722|1: Check \"undefined#[%payloadFormat%]\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNABLE_TO_INFER_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "cannot-infer"
+      }],
+      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:727f72e9-1d2e-44cd-a4b0-9a4ee1a32722|1'"
+    },
+    "expression" : ["code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:727f72e9-1d2e-44cd-a4b0-9a4ee1a32722|1'"
+    },
+    "expression" : ["code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

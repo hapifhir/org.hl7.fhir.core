@@ -481,6 +481,35 @@ public class XhtmlParser {
     return " at line "+Integer.toString(line)+" column "+Integer.toString(col);
   }
 
+  /**
+   * The name of the user data that carries a recovery note on the element it happened in.
+   * The value is the same String that appears in {@link #getRecoveryNotes()}.
+   * <p>
+   * User data deliberately, not an attribute: XhtmlComposer writes attributes back out, and callers
+   * such as the IG publisher's HTMLInspector re-save the pages they parse, so an attribute here
+   * would be published into the output HTML.
+   */
+  public static final String RECOVERY_NOTE = "xhtml.recovery-note";
+
+  private List<String> recoveryNotes = new ArrayList<>();
+
+  /**
+   * What the parser had to fix up to keep going, when it is not in well formed mode.
+   * <p>
+   * Empty for content that parsed cleanly, so a caller can keep the lenient parse - and everything
+   * it can then check - while still reporting that the source was not valid, and where.
+   */
+  public List<String> getRecoveryNotes() {
+    return recoveryNotes;
+  }
+
+  private void noteRecovery(XhtmlNode node, String err) {
+    recoveryNotes.add(err);
+    if (node != null && !node.hasUserData(RECOVERY_NOTE)) {
+      node.setUserData(RECOVERY_NOTE, err);
+    }
+  }
+
   private Reader rdr;
   private String cache = "";
   private XhtmlNode unwindPoint;
@@ -631,9 +660,15 @@ public class XhtmlParser {
             return;
           else
           {
+            String err = "Found \"</"+n.getName()+">\" expecting \"</"+node.getName()+">\""+descLoc();
             if (mustBeWellFormed) {
-              throw new FHIRFormatError("Malformed XHTML: Found \"</"+n.getName()+">\" expecting \"</"+node.getName()+">\""+descLoc());
+              throw new FHIRFormatError("Malformed XHTML: "+err);
             }
+            // Not well formed, but we are parsing leniently, so recover below. Record what we had
+            // to do, on the element it happened in and in a list for the caller: the content is
+            // still wrong, and a caller that keeps the tree (rather than failing the parse) has no
+            // other way to know. See getRecoveryNotes().
+            noteRecovery(node, err);
             for (int i = parents.size() - 1; i >= 0; i--)
             {
               if (parents.get(i).getName().equals(n.getName()))
