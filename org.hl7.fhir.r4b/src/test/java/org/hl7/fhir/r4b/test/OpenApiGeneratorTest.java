@@ -39,7 +39,7 @@ public class OpenApiGeneratorTest {
   @Test
   void testR4CapabilityStatement() {
     assertDoesNotThrow(() -> {
-      InputStream sfn = TestingUtilities.loadTestResourceStream("r4", "openapi", "cs-r4.json");
+      InputStream sfn = TestingUtilities.loadTestResourceStream("r4b", "openapi", "cs-r4.json");
       String dfn = TestingUtilities.tempFile("openapi", "swagger-r4.json");
       run(sfn, dfn);
     });
