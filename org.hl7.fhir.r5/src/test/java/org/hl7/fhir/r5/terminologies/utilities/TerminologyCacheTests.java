@@ -1055,6 +1055,12 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       }
     }
 
+    private Path nonceFile() throws IOException {
+      try (Stream<Path> files = Files.list(folder)) {
+        return files.filter(f -> f.toString().endsWith(".cache.nonce")).findFirst().orElseThrow();
+      }
+    }
+
     @Test
     void testEntriesWrittenByAnotherProcessSurviveOurSave() throws IOException {
       TerminologyCache a = cache();
@@ -1130,38 +1136,97 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     }
 
     @Test
-    void testSaveWritesTheNonceHeaderAheadOfTheEntries() throws IOException {
+    void testTheNonceGoesInAPartnerFileAndNotInTheCache() throws IOException {
       TerminologyCache a = cache();
       cache(a, 0, "a0");
       a.save();
 
+      // the cache file itself must be free of per-save churn: these folders live in version
+      // control (core's own test txCache, IG repos, the auto-builder's cache repo)
       List<String> lines = Files.readAllLines(cacheFile());
-      assertTrue(lines.get(0).startsWith("# nonce: "), "the nonce header should be the first line");
-      assertTrue(lines.get(1).startsWith("-----"), "the entry marker should still follow it");
+      assertTrue(lines.get(0).startsWith("-----"), "the entry marker should be the first line");
+      assertTrue(Files.readAllLines(cacheFile()).stream().noneMatch(l -> l.contains("nonce")),
+          "the cache file should carry no nonce at all");
+
+      assertEquals(cacheFile().getFileName().toString() + ".nonce", nonceFile().getFileName().toString());
+      assertTrue(Files.readAllLines(nonceFile()).size() > 1, "the nonce file should say what it is");
       try (Stream<Path> files = Files.list(folder)) {
         assertTrue(files.noneMatch(f -> f.toString().endsWith(".tmp")), "no scratch file should be left behind");
       }
     }
 
     @Test
-    void testAFileWithNoNonceHeaderIsMergedRatherThanClobbered() throws IOException {
+    void testSavingTheSameEntriesTwiceLeavesTheCacheFileByteIdentical() throws IOException {
+      TerminologyCache a = cache();
+      cache(a, 0, "a0");
+      a.save();
+      byte[] first = Files.readAllBytes(cacheFile());
+
+      cache(a, 0, "a0"); // same request, same answer: nothing has actually changed
+      a.save();
+
+      assertArrayEquals(first, Files.readAllBytes(cacheFile()),
+          "a save that learns nothing new should not produce a diff");
+    }
+
+    @Test
+    void testACacheWithNoNonceFileIsMergedRatherThanClobbered() throws IOException {
       TerminologyCache stale = cache(); // opened while the folder was empty: it knows no nonce
 
       TerminologyCache other = cache();
       cache(other, 0, "from-other");
       other.save();
 
-      // strip the header, leaving the file as a build from before the nonce existed wrote it
-      List<String> lines = new ArrayList<>(Files.readAllLines(cacheFile()));
-      lines.remove(0);
-      Files.write(cacheFile(), String.join("\r\n", lines).getBytes(StandardCharsets.UTF_8));
+      Files.delete(nonceFile()); // as a fresh clone, or a tidied cache folder, has it
 
       cache(stale, 1, "from-stale");
       stale.save();
 
       assertEquals(2, countPresent(cache(), 0, 2));
-      assertTrue(Files.readAllLines(cacheFile()).get(0).startsWith("# nonce: "),
-          "saving should give the file a nonce, so this only costs one extra merge");
+    }
+
+    @Test
+    void testACacheRewrittenWithoutItsNonceIsMergedRatherThanClobbered() throws IOException {
+      TerminologyCache a = cache();
+      cache(a, 0, "a0");
+      a.save();
+      byte[] ourNonce = Files.readAllBytes(nonceFile());
+
+      TerminologyCache b = cache();
+      cache(b, 1, "b1");
+      b.save();
+
+      // the cache has moved on but our nonce file has not - what a checkout of a
+      // version-controlled cache folder, a hand edit, or an older build all look like
+      Files.write(nonceFile(), ourNonce);
+
+      cache(a, 2, "a2");
+      a.save();
+
+      assertEquals(3, countPresent(cache(), 0, 3));
+    }
+
+    @Test
+    void testALegacyInFileNonceHeaderIsIgnoredAndDropped() throws IOException {
+      TerminologyCache a = cache();
+      cache(a, 0, "a0");
+      a.save();
+
+      // as a build between #2332 and the move to a partner file left it
+      Files.delete(nonceFile());
+      List<String> lines = new ArrayList<>(Files.readAllLines(cacheFile()));
+      lines.add(0, "# nonce: 8e2b4a1c-legacy");
+      Files.write(cacheFile(), String.join("\r\n", lines).getBytes(StandardCharsets.UTF_8));
+
+      TerminologyCache reader = cache();
+      assertEquals("a0", read(reader, 0), "the header should not stop the file loading");
+
+      cache(reader, 1, "a1");
+      reader.save();
+
+      assertTrue(Files.readAllLines(cacheFile()).get(0).startsWith("-----"),
+          "rewriting the file should drop the legacy header");
+      assertEquals(2, countPresent(cache(), 0, 2));
     }
   }
 }

@@ -172,13 +172,23 @@ public class TerminologyCache {
   private static final String BREAK = "####";
   private static final String CACHE_FILE_EXTENSION = ".cache";
   /**
-   * Prefix of the header line that carries a cache file's nonce - a fresh random value
-   * written on every save, used to detect that someone else has rewritten the file since we
-   * last read or wrote it. It sits before the first {@link #ENTRY_MARKER}, and everything
-   * before that marker is discarded on load, so older readers simply ignore it and a file
-   * without one still loads.
+   * Extension of the partner file that carries a cache file's nonce: {@code foo.cache} is
+   * accompanied by {@code foo.cache.nonce}. The nonce is a fresh random value written on every
+   * save, used to detect that someone else has rewritten the cache since we last read or wrote
+   * it.
+   *
+   * <p>It lives beside the cache rather than in a header line inside it because cache folders
+   * are routinely kept in version control - core's own test txCache, IG repositories, the
+   * auto-builder's cache repo - and a value that changes on every save would turn every run
+   * into a diff of every file. This file is local bookkeeping only: deleting it costs one
+   * extra merge and nothing else, and a repository holding a cache folder should ignore
+   * {@code *.cache.nonce}. Where one does get committed it still costs nothing, because only a
+   * cache that is being rewritten gets a new nonce: the partner file never changes on its own.
+   *
+   * <p>Deliberately does not end in {@link #CACHE_FILE_EXTENSION}, so {@link #load()} does not
+   * mistake it for a cache.
    */
-  private static final String NONCE_MARKER = "# nonce: ";
+  private static final String NONCE_FILE_EXTENSION = ".cache.nonce";
 
   /**
    * Suffix for the scratch file a save writes into before swapping it over the real one.
@@ -363,9 +373,11 @@ public class TerminologyCache {
     /** Wall-clock time of the last on-disk save for this cache (0 = never saved this session). */
     private long lastSaveAt = 0;
     /**
-     * The nonce in the copy of this cache we last read or wrote. Null when we have never
-     * touched the file. If what is on disk no longer carries this value, another process has
-     * rewritten it and we must merge before saving over the top - see {@link #mergeFromDisk}.
+     * The nonce of the copy of this cache we last read or wrote, as recorded in the partner
+     * file described by {@link #NONCE_FILE_EXTENSION}. Null when we have never touched the
+     * file, or when writing the nonce failed. If the partner file no longer carries this
+     * value, another process has rewritten the cache and we must merge before saving over the
+     * top - see {@link #mergeFromDisk}.
      */
     private String nonce = null;
   }
@@ -1039,16 +1051,95 @@ public class TerminologyCache {
   }
 
   /**
+   * What the nonce file beside a cache says: the nonce written by the save that produced the
+   * cache file, and the length that file had when it was written.
+   */
+  private static class DiskNonce {
+    private final String nonce;
+    private final long length;
+
+    private DiskNonce(String nonce, long length) {
+      this.nonce = nonce;
+      this.length = length;
+    }
+  }
+
+  /**
+   * Read the nonce file beside a cache.
+   *
+   * @return what it says, or null if there isn't one, or it can't be read or understood - all
+   *   of which mean the same thing to the caller: we can't prove the cache is untouched
+   */
+  private DiskNonce readNonce(String name) {
+    try {
+      String path = Utilities.path(folder, name+NONCE_FILE_EXTENSION);
+      if (!ManagedFileAccess.file(path).exists()) {
+        return null;
+      }
+      try (BufferedReader r = new BufferedReader(new InputStreamReader(
+          ManagedFileAccess.inStream(path), StandardCharsets.UTF_8))) {
+        String line;
+        while ((line = r.readLine()) != null) {
+          line = line.trim();
+          if (line.isEmpty() || line.startsWith("#")) {
+            continue;
+          }
+          int i = line.indexOf(' ');
+          if (i < 1) {
+            return null;
+          }
+          return new DiskNonce(line.substring(0, i), Long.parseLong(line.substring(i+1).trim()));
+        }
+      }
+      return null;
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  /**
+   * Write the nonce file beside a cache we have just saved. Records the cache file's length as
+   * well as the nonce, because the nonce alone only proves that the last writer to come
+   * through this code was us: a checkout of a version-controlled cache folder, a hand edit or
+   * an older build can all replace the cache without touching its partner, and the lengths not
+   * agreeing is what catches that.
+   *
+   * @return true if it was written
+   */
+  private boolean writeNonce(String name, String nonce, long length) {
+    String temp = null;
+    try {
+      String target = Utilities.path(folder, name+NONCE_FILE_EXTENSION);
+      temp = tempFileFor(target);
+      try (BufferedWriter w = new BufferedWriter(new OutputStreamWriter(
+          ManagedFileAccess.outStream(temp), StandardCharsets.UTF_8))) {
+        w.write("# nonce for "+name+CACHE_FILE_EXTENSION+" - local bookkeeping, safe to delete, do not commit\r\n");
+        w.write(nonce+" "+length+"\r\n");
+      }
+      FileUtilities.replaceFileAtomically(ManagedFileAccess.file(temp), ManagedFileAccess.file(target));
+      temp = null;
+      return true;
+    } catch (Exception e) {
+      log.debug("Unable to write the nonce for "+name+" ("+e.getMessage()+") - the next save will merge from disk");
+      return false;
+    } finally {
+      deleteQuietly(temp);
+    }
+  }
+
+  /**
    * Has the file behind this cache been rewritten by someone else since we last read or wrote
    * it?
    *
-   * <p>Answered from a nonce in the file's header rather than from its timestamp: mtime
+   * <p>Answered from the nonce beside the file rather than from its timestamp: mtime
    * granularity is a whole second on some filesystems, which sits well inside the window in
-   * which two processes can both save, whereas the nonce is exact. Answering costs one line.
+   * which two processes can both save, whereas the nonce is exact. Answering costs one small
+   * read and a stat.
    *
-   * <p>A file carrying no nonce was written by a version of this code from before the header
-   * existed, so it counts as changed. That happens once: our own save writes a nonce, so it
-   * converges immediately.
+   * <p>A cache with no nonce beside it counts as changed - it was written by a version of this
+   * code from before the partner file existed, or the folder came out of version control, or
+   * someone tidied up. That happens once: our own save writes a nonce, so it converges
+   * immediately.
    */
   private boolean isChangedOnDisk(NamedCache nc) {
     try {
@@ -1056,15 +1147,12 @@ public class TerminologyCache {
       if (!ManagedFileAccess.file(path).exists()) {
         return false;
       }
-      String nonce = null;
-      try (BufferedReader r = new BufferedReader(new InputStreamReader(
-          ManagedFileAccess.inStream(path), StandardCharsets.UTF_8))) {
-        String line = r.readLine();
-        if (line != null && line.startsWith(NONCE_MARKER)) {
-          nonce = line.substring(NONCE_MARKER.length()).trim();
-        }
+      DiskNonce disk = readNonce(nc.name);
+      if (disk == null || !disk.nonce.equals(nc.nonce)) {
+        return true;
       }
-      return nonce == null || !nonce.equals(nc.nonce);
+      // the nonce is ours, but it only vouches for a file of the length we wrote it for
+      return disk.length != ManagedFileAccess.file(path).length();
     } catch (Exception e) {
       // if we can't tell, assume it changed: re-reading a file needlessly is cheap, and
       // dropping another process's entries is not
@@ -1132,8 +1220,6 @@ public class TerminologyCache {
       String target = Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION);
       temp = tempFileFor(target);
       sw = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(temp), "UTF-8"));
-      String nonce = UUID.randomUUID().toString();
-      sw.write(NONCE_MARKER+nonce+"\r\n");
       sw.write(ENTRY_MARKER+"\r\n");
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
@@ -1231,7 +1317,11 @@ public class TerminologyCache {
       sw = null;
       FileUtilities.replaceFileAtomically(ManagedFileAccess.file(temp), ManagedFileAccess.file(target));
       temp = null;
-      nc.nonce = nonce;
+      // The nonce goes in the partner file, and only once the cache itself is in place: if we
+      // die between the two, the nonce is stale or missing and the next save merges, which is
+      // the safe way round.
+      String nonce = UUID.randomUUID().toString();
+      nc.nonce = writeNonce(nc.name, nonce, ManagedFileAccess.file(target).length()) ? nonce : null;
       saved = true;
     } catch (Exception e) {
       log.error("error saving "+nc.name+": "+e.getMessage(), e);
@@ -1357,6 +1447,12 @@ public class TerminologyCache {
     NamedCache nc = new NamedCache();
     nc.name = name;
 
+    // The nonce is read before the content, not after: if a save lands between the two we end
+    // up holding the older nonce for newer content, which costs a needless merge next time
+    // rather than losing an entry.
+    DiskNonce dn = readNonce(name);
+    nc.nonce = dn == null ? null : dn.nonce;
+
     // Stream the file one entry at a time. Cache files can be very large (e.g. the ICD-11
     // cache), and reading the whole file into a single String (as FileUtilities.fileToString
     // does) needs 2-3x the file size in transient heap just for the read - enough to OOM.
@@ -1373,14 +1469,12 @@ public class TerminologyCache {
           if (seenMarker) {
             loadCacheEntry(nc, segment.toString(), fn, ++c);
           }
-          // Content before the first marker (including any legacy '?' prefix) is discarded,
-          // apart from the nonce header, which is picked out on the way past.
+          // Content before the first marker is discarded: a legacy '?' prefix, and the nonce
+          // header that builds between #2332 and this change wrote there. Rewriting the file
+          // drops that line, so a cache folder in version control settles down after one save.
           seenMarker = true;
           segment.setLength(0);
         } else {
-          if (!seenMarker && line.startsWith(NONCE_MARKER)) {
-            nc.nonce = line.substring(NONCE_MARKER.length()).trim();
-          }
           segment.append(line).append("\r\n");
         }
       }
