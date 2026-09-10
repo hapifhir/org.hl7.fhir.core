@@ -52,8 +52,9 @@ class TestDataHTTPHandler extends BaseHTTPHandler implements HttpHandler {
       String formatStr = wrapper.has("format") ? wrapper.asString("format") : "json";
       FhirFormat outputFormat = "xml".equalsIgnoreCase(formatStr) ? FhirFormat.XML : FhirFormat.JSON;
       boolean asBundle = wrapper.has("bundle") && "true".equals(wrapper.asString("bundle"));
+      boolean requiredOnly = wrapper.has("requiredOnly") && "true".equals(wrapper.asString("requiredOnly"));
 
-      byte[] result = fhirValidatorHttpService.getValidationEngine().generateTestData(profileUrl, data, mappings, outputFormat, asBundle);
+      byte[] result = fhirValidatorHttpService.getValidationEngine().generateTestData(profileUrl, data, mappings, outputFormat, asBundle, requiredOnly);
 
       String contentType = outputFormat == FhirFormat.XML ? "application/fhir+xml" : "application/fhir+json";
       exchange.getResponseHeaders().set("Content-Type", contentType);
