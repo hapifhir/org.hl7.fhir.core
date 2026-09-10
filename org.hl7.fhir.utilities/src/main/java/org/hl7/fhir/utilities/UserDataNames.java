@@ -169,4 +169,5 @@ public class UserDataNames {
   public static final String VALIDATION_XHTML_OUTCOME = "VALIDATION_XHTML_OUTCOME";
   public static final String VALIDATION_FRAGMENT_INDEX = "VALIDATION_FRAGMENT_INDEX";
   public static final String VALIDATION_FRAGMENT_INDEX_ID = "VALIDATION_FRAGMENT_INDEX_ID";
+  public static final String EXPANSION_PURPOSE = "EXPANSION_PURPOSE";
 }
