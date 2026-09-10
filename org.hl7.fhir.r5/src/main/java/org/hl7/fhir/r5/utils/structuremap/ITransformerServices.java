@@ -29,7 +29,7 @@ public interface ITransformerServices {
   //    Lookup another tree of data
   //    Create an instance tree
   //    Return the correct string format to refer to a tree (input or output)
-  public Base resolveReference(Object appContext, String url) throws FHIRException;
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException;
 
   public List<Base> performSearch(Object appContext, String url) throws FHIRException;
 
