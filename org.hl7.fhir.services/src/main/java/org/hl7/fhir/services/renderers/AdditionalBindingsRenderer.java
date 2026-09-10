@@ -368,7 +368,7 @@ public class AdditionalBindingsRenderer {
   }
 
   private void renderPurpose(XhtmlNode td, String purpose) {
-    boolean r5 = context == null || context.getWorker() == null ? false : VersionUtilities.isR5Plus(context.getWorker().getVersion());
+    boolean r5 = context == null || context.getWorker() == null ? false : VersionUtilities.isR5Plus(context.getWorker().getFHIRVersion());
     switch (purpose) {
     case "maximum": 
       td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-maximum" : corePath+"extension-elementdefinition-maxvalueset.html", context.formatPhrase(RenderingI18nContext.ADD_BIND_EXT_PREF)).tx(context.formatPhrase(RenderingI18nContext.ADD_BIND_MAX));

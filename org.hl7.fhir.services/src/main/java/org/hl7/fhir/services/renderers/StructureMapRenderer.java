@@ -1,6 +1,6 @@
 package org.hl7.fhir.services.renderers;
 
-import org.hl7.fhir.services.fml.StructureMapUtilities;
+import org.hl7.fhir.services.fml.StructureMapTools;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -61,7 +61,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
   public void renderMap(RenderingStatus status, XhtmlNode x, StructureMap map) {
     
     x.tx("\r\n");
-    if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
+    if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion())) {
       renderMetadata(x, "url", map.getUrlElement());
       renderMetadata(x, "name", map.getNameElement());
       if (map.hasTitle()) {
@@ -409,9 +409,9 @@ public class StructureMapRenderer extends TerminologyRenderer {
     // Accept the executable simple-form shape (vvv variable on both sides plus
     // a CREATE transform on target with no params) as well as the bare shape.
     // Mirrors StructureMapUtilities.isSimpleIdentityRule.
-    if (s.hasVariable() && !StructureMapUtilities.AUTO_VAR_NAME.equals(s.getVariable()))
+    if (s.hasVariable() && !StructureMapTools.AUTO_VAR_NAME.equals(s.getVariable()))
       return false;
-    if (t.hasVariable() && !StructureMapUtilities.AUTO_VAR_NAME.equals(t.getVariable()))
+    if (t.hasVariable() && !StructureMapTools.AUTO_VAR_NAME.equals(t.getVariable()))
       return false;
     if (t.hasTransform() && t.getTransform() != StructureMapTransform.CREATE)
       return false;
@@ -479,7 +479,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.tx(rules.get(j).getSourceFirstRep().getElementName());
     }
     String prefix = identityBatchPrefix(first);
-    if (prefix != null && !StructureMapUtilities.BATCH_IDENTITY_UNNAMED_NAME.equals(prefix)) {
+    if (prefix != null && !StructureMapTools.BATCH_IDENTITY_UNNAMED_NAME.equals(prefix)) {
       x.tx(" ");
       x.i().tx("\"" + prefix + "\"");
     }
@@ -642,7 +642,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
     return
       (r.getSourceList().size() == 1 && r.getSourceFirstRep().hasElement() && r.getSourceFirstRep().hasVariable()) &&
         (r.getTargetList().size() == 1 && r.getTargetFirstRep().hasVariable() && (r.getTargetFirstRep().getTransform() == null || r.getTargetFirstRep().getTransform() == StructureMapTransform.CREATE) && r.getTargetFirstRep().getParameterList().size() == 0) &&
-        (r.getDependentList().size() == 0 || (r.getDependentList().size() == 1 && StructureMapUtilities.DEF_GROUP_NAME.equals(r.getDependentFirstRep().getName()))) && (r.getRuleList().size() == 0);
+        (r.getDependentList().size() == 0 || (r.getDependentList().size() == 1 && StructureMapTools.DEF_GROUP_NAME.equals(r.getDependentFirstRep().getName()))) && (r.getRuleList().size() == 0);
   }
   
   private void renderSource(XhtmlNode x,StructureMapGroupRuleSourceComponent rs, boolean abbreviate) {
@@ -653,7 +653,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.color(COLOR_SYNTAX).tx(")");
     } else if (rs.hasElement()) {
       x.tx(".");
-      x.tx(StructureMapUtilities.renderElementName(rs.getElementName()));
+      x.tx(StructureMapTools.renderElementName(rs.getElementName()));
     }
     if (rs.hasType()) {
       x.color(COLOR_SYNTAX).tx(" : ");
@@ -705,7 +705,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.tx(rt.getContext());
       if (rt.hasElement()) {
         x.tx(".");
-        x.tx(StructureMapUtilities.renderElementName(rt.getElementName()));
+        x.tx(StructureMapTools.renderElementName(rt.getElementName()));
       }
     }
     if (!abbreviate && rt.hasTransform()) {

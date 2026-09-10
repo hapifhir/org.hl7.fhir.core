@@ -8,6 +8,7 @@ import org.hl7.fhir.model.core.MarkdownType;
 import org.hl7.fhir.services.renderers.utils.RenderingContext;
 import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.model.utilities.EOperationOutcome;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -45,9 +46,9 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
     }
 
     
-    if (st.has("resourceTrigger")) {
+    if (st.hasMN("resourceTrigger", "trigger")) {
       TableData td = new TableData(context.formatPhrase(RenderingI18nContext.SUB_TOPIC_RES_TRIG));
-      for (ResourceWrapper rt : st.children("resourceTrigger")) {
+      for (ResourceWrapper rt : st.childrenMN("resourceTrigger", "trigger")) {
         TableRowData tr = td.addRow();
         if (rt.has("resource")) {
           tr.value(context.formatPhrase(RenderingI18nContext.GENERAL_RESOURCE), rt.child("resource"));
@@ -102,6 +103,46 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
       renderTable(status, td, x);
     }
 
+    if (VersionUtilities.isR6Ver(st.fhirVersion())) {
+      if (st.hasMN("resourceTrigger", "trigger")) {
+        for (ResourceWrapper rt : st.childrenMN("resourceTrigger", "trigger")) {
+          renderCanFilterBy(status, x, rt);
+        }
+      }
+    } else {
+      renderCanFilterBy(status, x, st);
+    }
+    if (VersionUtilities.isR6Ver(st.fhirVersion())) {
+      if (st.hasMN("resourceTrigger", "trigger")) {
+        for (ResourceWrapper rt : st.childrenMN("resourceTrigger", "trigger")) {
+          renderNotificationShape(status, x, rt);
+        }
+      }
+    } else {
+      renderNotificationShape(status, x, st);
+    }
+  }
+
+  private void renderNotificationShape(RenderingStatus status, XhtmlNode x, ResourceWrapper st) throws IOException {
+    if (st.has("notificationShape")) {
+      TableData td = new TableData("Notification Shapes");
+      for (ResourceWrapper rt : st.children("notificationShape")) {
+        TableRowData tr = td.addRow();
+        if (rt.has("resource")) {
+          tr.value(context.formatPhrase(RenderingI18nContext.GENERAL_RESOURCE), rt.child("resource"));
+        }
+        for (ResourceWrapper t : rt.children("include")) {
+          tr.value(context.formatPhrase(RenderingI18nContext.SUB_TOPIC_INCL), t);
+        }
+        for (ResourceWrapper t : rt.children("revInclude")) {
+          tr.value(context.formatPhrase(RenderingI18nContext.SUB_TOPIC_REV_INCL), t);
+        }
+      }
+      renderTable(status, td, x);
+    }
+  }
+
+  private void renderCanFilterBy(RenderingStatus status, XhtmlNode x, ResourceWrapper st) throws IOException {
     if (st.has("canFilterBy")) {
       TableData td = new TableData("Can Filter By");
       for (ResourceWrapper rt : st.children("canFilterBy")) {
@@ -120,23 +161,6 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
         }
         for (ResourceWrapper t : rt.children("modifier")) {
           tr.value(context.formatPhrase(RenderingI18nContext.GENERAL_MODIFIERS), t);
-        }
-      }
-      renderTable(status, td, x);
-    }
-
-    if (st.has("notificationShape")) {
-      TableData td = new TableData("Notification Shapes");
-      for (ResourceWrapper rt : st.children("notificationShape")) {
-        TableRowData tr = td.addRow();
-        if (rt.has("resource")) {
-          tr.value(context.formatPhrase(RenderingI18nContext.GENERAL_RESOURCE), rt.child("resource"));
-        }
-        for (ResourceWrapper t : rt.children("include")) {
-          tr.value(context.formatPhrase(RenderingI18nContext.SUB_TOPIC_INCL), t);
-        }
-        for (ResourceWrapper t : rt.children("revInclude")) {
-          tr.value(context.formatPhrase(RenderingI18nContext.SUB_TOPIC_REV_INCL), t);
         }
       }
       renderTable(status, td, x);

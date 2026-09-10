@@ -5,7 +5,7 @@ import org.hl7.fhir.model.core.StructureDefinition;
 
 /**
  * Post Validation Information
- * Added by the validator during validtion, ratained for interest
+ * Added by the validator during validation, retained for interest
  *
  */
 public class ValidationInformation {

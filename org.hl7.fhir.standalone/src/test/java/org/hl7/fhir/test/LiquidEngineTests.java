@@ -1,0 +1,102 @@
+package org.hl7.fhir.test;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import org.apache.commons.collections4.map.HashedMap;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.services.liquid.LiquidEngine;
+import org.hl7.fhir.services.liquid.LiquidEngine.ILiquidEngineIncludeResolver;
+import org.hl7.fhir.services.liquid.LiquidEngine.LiquidDocument;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
+public class LiquidEngineTests implements ILiquidEngineIncludeResolver {
+
+  private static Map<String, Resource> resources = new HashedMap<>();
+  private static JsonObject testdoc = null;
+
+  private JsonObject test;
+  private LiquidEngine engine;
+
+  @AfterAll
+  static void tearDown() {
+    resources = null;
+    testdoc = null;
+  }
+
+  @BeforeEach
+  void setUp() throws Exception {
+    engine = new LiquidEngine(TestingUtilities.getSharedWorkerContext(), null);
+    engine.setIncludeResolver(this);
+  }
+
+  public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {
+    testdoc = (JsonObject) new com.google.gson.JsonParser().parse(TestingUtilities.loadTestResource("r6", "liquid", "liquid-tests.json"));
+    JsonArray tests = testdoc.getAsJsonArray("tests");
+    List<Arguments> objects = new ArrayList<>();
+    for (JsonElement n : tests) {
+      objects.add(Arguments.of(n));
+    }
+    return objects.stream();
+  }
+
+  @ParameterizedTest(name = "{index}: file{0}")
+  @MethodSource("data")
+  public void test(JsonObject test) throws Exception {
+    this.test = test;
+    String source = test.get("template").getAsString();
+
+    boolean expectError = test.has("error") && test.get("error").getAsBoolean();
+    if (expectError) {
+      Assertions.assertThrows(Exception.class, () -> {
+        LiquidDocument doc = engine.parse(source, "test-script");
+        engine.evaluate(doc, loadResource(), null);
+      });
+      return;
+    }
+    LiquidDocument doc = engine.parse(source, "test-script");
+    String output = engine.evaluate(doc, loadResource(), null);
+    if (test.has("outputRegex")) {
+      String regex = test.get("outputRegex").getAsString();
+      Assertions.assertTrue(
+        output.matches(regex),
+        "Output did not match regex. Output=[" + output + "], regex=[" + regex + "]"
+      );
+    } else {
+      Assertions.assertEquals(test.get("output").getAsString(), output);
+    }
+  }
+
+  @Override
+  public String fetchInclude(LiquidEngine engine, String name) {
+    if (test.has("includes") && test.getAsJsonObject("includes").has(name))
+      return test.getAsJsonObject("includes").get(name).getAsString();
+    else
+      return null;
+  }
+
+  private Resource loadResource() throws IOException, FHIRFormatError {
+    String name = test.get("focus").getAsString();
+    if (!resources.containsKey(name)) {
+      resources.put(name, new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r6", (name.replace("/", "-") + ".xml").toLowerCase())));
+    }
+    return resources.get(test.get("focus").getAsString());
+  }
+
+}

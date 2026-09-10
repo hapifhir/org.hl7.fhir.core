@@ -498,7 +498,7 @@ public class ProfilePathProcessor {
     if (shortCut) {
       // this is the short cut method, we've just dived in and specified a type slice.
       // in R3 (and unpatched R4, as a workaround right now...
-      if (!VersionUtilities.isR4Plus(profileUtilities.getContext().getVersion()) || !profileUtilities.isNewSlicingProcessing()) { // newSlicingProcessing is a work around for editorial loop dependency
+      if (!VersionUtilities.isR4Plus(profileUtilities.getContext().getFHIRVersion()) || !profileUtilities.isNewSlicingProcessing()) { // newSlicingProcessing is a work around for editorial loop dependency
         // we insert a cloned element with the right types at the start of the diffMatches
         ElementDefinition ed = new ElementDefinition();
         ed.setPath(profileUtilities.determineTypeSlicePath(path, currentBasePath));
@@ -1498,7 +1498,7 @@ public class ProfilePathProcessor {
     if (shortCut) {
       // this is the short cut method, we've just dived in and specified a type slice.
       // in R3 (and unpatched R4, as a workaround right now...
-      if (!VersionUtilities.isR4Plus(profileUtilities.getContext().getVersion()) || !profileUtilities.isNewSlicingProcessing()) { // newSlicingProcessing is a work around for editorial loop dependency
+      if (!VersionUtilities.isR4Plus(profileUtilities.getContext().getFHIRVersion()) || !profileUtilities.isNewSlicingProcessing()) { // newSlicingProcessing is a work around for editorial loop dependency
         // we insert a cloned element with the right types at the start of the diffMatches
         ElementDefinition ed = new ElementDefinition();
         ed.setPath(profileUtilities.determineTypeSlicePath(diffMatches.get(0).getPath(), currentBasePath));

@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -92,18 +93,14 @@ public class TxTester implements ITerminologyRequestIdProvider {
     public final ThreadLocal<String> testName = new ThreadLocal<>();
 
     @Override
-    public void log(String name, String resourceType, String version, byte[] cnt) {
-      if (!"expandValueset.response".equals(name)) {
-        return;
-      }
-
+    public void log(String name, String mode, String resourceType, String version, byte[] cnt) {
       String base;
       try {
         base = Utilities.path(outputDir, "conversions");
         if (ManagedFileAccess.file(base).exists()) {
           String dir = Utilities.path(base, version, suiteName.get());
           FileUtilities.createDirectory(dir);
-          String filename = Utilities.path(dir, testName.get()+"."+resourceType+".json");
+          String filename = Utilities.path(dir, testName.get()+"."+mode+".json");
           FileUtilities.bytesToFile(cnt, filename);
         }
       } catch (IOException e) {
@@ -121,6 +118,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
   private String server;
   private List<ITxTesterLoader> loaders = new ArrayList<>();
   private String outputDir;
+  private String folderName;
   // Per-thread ITerminologyClient. Every operation mutates client state
   // (setAcceptLanguage, setClientHeaders) before dispatch; giving each worker
   // its own client makes those mutations private to that worker and removes
@@ -141,9 +139,21 @@ public class TxTester implements ITerminologyRequestIdProvider {
   private final List<String> fails = new CopyOnWriteArrayList<>();
 
   @Getter
+  // Warnings are recorded from CompareUtilities ($optional$ items marked
+  // "warning:..." that were absent from the response) but they do NOT make a test
+  // fail, and no longer cause the expected/actual pair to be written out either -
+  // a passing test should leave no diff output behind.
   private final List<String> warnings = new CopyOnWriteArrayList<>();
   private CapabilityStatement capabilityStatement;
   private TerminologyCapabilities terminologyCapabilities;
+
+  /**
+   * The FHIR version the server under test reports, discovered in connectToServer(). This is
+   * what the suites' and tests' version gates are evaluated against - see passesVersion(). It
+   * is set once, on the calling thread, before initialise() returns and therefore before any
+   * gate is evaluated or any worker thread starts.
+   */
+  private volatile String serverVersion;
   // Server-side caching state, per thread (clients are per-thread). Maps a suite
   // name to the server-issued cache-id this thread holds for it. The first test a
   // thread runs from a suite starts a cache and front-loads that suite's setup
@@ -180,7 +190,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
 
   public boolean execute(Set<String> modes, String filter, String suite) throws IOException, URISyntaxException {
     if (outputDir == null) {
-      outputDir = Utilities.path("[tmp]", serverId());
+      outputDir = Utilities.path("[tmp]", outputFolder());
     }
 
     log.info("Run terminology service Tests");
@@ -272,6 +282,8 @@ public class TxTester implements ITerminologyRequestIdProvider {
     } catch (Exception e) {
       log.error("Exception running Terminology Service Tests: "+e.getMessage(), e);
       return false;
+    } finally {
+      TxTesterLogFile.stop();
     }
   }
 
@@ -423,45 +435,21 @@ public class TxTester implements ITerminologyRequestIdProvider {
     software = server;
 
     if (outputDir == null) {
-      outputDir = Utilities.path("[tmp]", serverId());
+      outputDir = Utilities.path("[tmp]", outputFolder());
+    }
+    // from here on, everything logged to the console is also written to test.log in the
+    // output directory. This is the one point both entry points pass through - execute()
+    // for a whole run, executeTest() one test at a time from the JUnit runners - and the
+    // first at which the output directory is known.
+    String logFile = TxTesterLogFile.start(outputDir);
+    if (logFile != null) {
+      log.info("  Log File: "+logFile);
     }
 
-    String fhirVersion = null;
-    try {
-      String actFn = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), "actual", "$versions.json") : Utilities.path(this.outputDir, "actual", "$versions.json");
-      byte[] vr = fetch(Utilities.pathURL(server, "$versions", "?_format=json"));
-      FileUtilities.bytesToFile(vr, actFn);
-      if (vr != null) {
-        JsonObject vl = JsonParser.parseObject(vr);
-        if ("Parameters".equals(vl.asString("resourceType"))) {
-          for (JsonObject v : vl.forceArray("parameter").asJsonObjects()) {
-            if ("default".equals(v.asString("name"))) {
-              fhirVersion = v.asString("valueString");
-            }
-          }
-        } else if (vl.has("default")) {
-          fhirVersion = vl.asString("default");
-        } else {
-          log.warn("Unable to interpret response from $versions: " + vl.toString());
-        }
+    String fhirVersion = determineFhirVersion();
 
-        if (fhirVersion != null) {
-          log.info("Server version " + fhirVersion + " from $versions");
-        }
-      }
-    } catch (Exception e) {
-      log.warn("Server does not support $versions: "+e.getMessage(), e);
-    }
-    if (fhirVersion == null) {
-      try {
-        JsonObject cs = JsonParser.parseObjectFromUrl(Utilities.pathURL(server, "metadata", "?_format=json"));
-        fhirVersion = cs.asString("fhirVersion");
-        log.info("Server version "+fhirVersion+" from /metadata");
-      } catch (Exception e) {
-        log.warn("Error checking server version: "+e.getMessage(), e);
-        log.warn("Defaulting to FHIR R4");
-        fhirVersion = "4.0";
-      }
+    if (serverVersion == null) {
+      serverVersion = fhirVersion;
     }
 
     ITerminologyClient client = null;
@@ -481,6 +469,110 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return client;
   }
 
+  /**
+   * Work out which FHIR version the server under test speaks.
+   *
+   * This is not optional information: it decides which terminology client is used, and it is what
+   * the suites' and tests' version gates are evaluated against (see passesVersion()). Guessing it
+   * produces a run that looks fine and means nothing - the wrong client, and version gated tests
+   * silently included or excluded - so if we cannot determine it, we stop.
+   *
+   * Two probes, in order:
+   *  - $versions, the terminology ecosystem's own version discovery;
+   *  - /metadata, which per the specification returns a CapabilityStatement, and so carries
+   *    fhirVersion. (TerminologyCapabilities is the response to /metadata?mode=terminology, which
+   *    is fetched separately in checkClient(); a server that returns one from unqualified /metadata
+   *    is not conformant, and the error says so rather than leaving the user to guess.)
+   */
+  private String determineFhirVersion() throws IOException {
+    List<String> issues = new ArrayList<>();
+    String fhirVersion = null;
+
+    try {
+      String actFn = Utilities.path(outputRoot(), "actual", "$versions.json");
+      byte[] vr = fetch(Utilities.pathURL(server, "$versions", "?_format=json"));
+      if (vr == null) {
+        issues.add("$versions returned no content");
+      } else {
+        // create the directory first: execute() makes it for a whole run, but executeTest()
+        // (server mode, and the JUnit runners) comes straight here, so without this the write
+        // failed and $versions was recorded as unsupported for every server-mode run - which
+        // it then silently was, because the fallback to /metadata works
+        FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+        FileUtilities.bytesToFile(vr, actFn);
+        fhirVersion = versionFromVersions(JsonParser.parseObject(vr), issues);
+      }
+    } catch (Exception e) {
+      issues.add("$versions failed: "+e.getMessage());
+      log.warn("Server does not support $versions: "+e.getMessage(), e);
+    }
+    if (fhirVersion != null) {
+      log.info("Server version " + fhirVersion + " from $versions");
+      return fhirVersion;
+    }
+
+    try {
+      fhirVersion = versionFromMetadata(JsonParser.parseObjectFromUrl(Utilities.pathURL(server, "metadata", "?_format=json")), issues);
+    } catch (Exception e) {
+      issues.add("/metadata failed: "+e.getMessage());
+      log.warn("Error checking server version: "+e.getMessage(), e);
+    }
+    if (fhirVersion != null) {
+      log.info("Server version "+fhirVersion+" from /metadata");
+      return fhirVersion;
+    }
+
+    throw new FHIRException("Unable to determine the FHIR version of the terminology server at "+server+", so the tests cannot be run. "+
+        "The server must either support $versions, or return a CapabilityStatement with a fhirVersion from /metadata. Details: "+String.join("; ", issues));
+  }
+
+  /**
+   * The FHIR version from a $versions response: a Parameters with a 'default' parameter, or the
+   * bare JSON object with a 'default' property that the operation's simpler form returns. Returns
+   * null and appends to issues if neither shape yields a version.
+   *
+   * The parameter is read as valueCode or valueString: there is no OperationDefinition for
+   * $versions to settle which it should be, and the reference implementation sends valueCode, so
+   * accepting only one of them means never reading the answer at all.
+   */
+  static String versionFromVersions(JsonObject vl, List<String> issues) {
+    if ("Parameters".equals(vl.asString("resourceType"))) {
+      for (JsonObject v : vl.forceArray("parameter").asJsonObjects()) {
+        if ("default".equals(v.asString("name"))) {
+          String value = v.asString("valueCode") != null ? v.asString("valueCode") : v.asString("valueString");
+          if (value != null) {
+            return value;
+          }
+        }
+      }
+      issues.add("$versions returned a Parameters with no usable 'default' parameter");
+      return null;
+    } else if (vl.has("default")) {
+      return vl.asString("default");
+    } else {
+      issues.add("Unable to interpret the response from $versions: " + vl.toString());
+      return null;
+    }
+  }
+
+  /**
+   * The FHIR version from a /metadata response, which is a CapabilityStatement. Returns null and
+   * appends to issues otherwise - naming the resource type that did come back, since the usual
+   * cause is a server answering TerminologyCapabilities where CapabilityStatement is specified.
+   */
+  static String versionFromMetadata(JsonObject cs, List<String> issues) {
+    String fhirVersion = cs.asString("fhirVersion");
+    if (fhirVersion != null) {
+      return fhirVersion;
+    }
+    String rt = cs.asString("resourceType");
+    if (rt != null && !"CapabilityStatement".equals(rt)) {
+      issues.add("/metadata returned a "+rt+", not a CapabilityStatement (TerminologyCapabilities is the response to /metadata?mode=terminology, not to /metadata)");
+    } else {
+      issues.add("/metadata returned a CapabilityStatement with no fhirVersion");
+    }
+    return null;
+  }
 
   /**
    * Eagerly perform the one-shot, not-thread-safe setup: connect to the server
@@ -520,6 +612,22 @@ public class TxTester implements ITerminologyRequestIdProvider {
   }
 
   public String executeTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, Set<String> modes) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
+    return executeTest(loader, suite, test, modes, null);
+  }
+
+  /**
+   * @param label a subfolder of the run folder for this test's output, or null for the root of
+   *   it. A caller that runs the same test more than one way - R4 and R5, cached and not - has
+   *   every run writing the same two filenames, so without a label only the last one survives,
+   *   and it is not marked as being from the last one.
+   */
+  public String executeTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, Set<String> modes, String label) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
+    if (label != null) {
+      String err = checkFolderName(label);
+      if (err != null) {
+        throw new FHIRException("Invalid test label: " + err);
+      }
+    }
     if (!passesModes(suite, modes) || !passesModes(test, modes)) {
       return "n/a";
     }
@@ -531,7 +639,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     List<Resource> setup = loadSetupResources(loader, suite);
     TestReportTestComponent tr = getTestReportTest(suite, test);
 
-    ResultInformation ri = runTest(loader, suite, test, setup, modes, "*", null, new AtomicInteger(), tr);
+    ResultInformation ri = runTest(loader, suite, test, setup, modes, "*", null, new AtomicInteger(), tr, label);
     return ri.message;
   }
 
@@ -567,7 +675,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
           if (test.asBoolean("disabled")) {
             ok = true;
           } else {
-            ResultInformation tok = runTest(loader, suite, test, setup, modes, filter, outputS.forceArray("tests"), counter, tr);
+            ResultInformation tok = runTest(loader, suite, test, setup, modes, filter, outputS.forceArray("tests"), counter, tr, null);
             if (!tok.result) {
               errCount.getAndAdd(1);
             }
@@ -584,16 +692,44 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return ok;
   }
 
+  /**
+   * The version gate is a FHIR version, so it is evaluated against the FHIR version the server
+   * under test reports - not against anything the caller names. The constructor's version is
+   * only a fallback for a tester that has not connected to a server.
+   */
   private boolean passesVersion(JsonObject item) {
-    if (item.has("version") && version != null) {
-      return VersionUtilities.versionMatches(version, item.asString("version"));
+    String ver = serverVersion != null ? serverVersion : version;
+    if (item.has("version") && ver != null) {
+      return versionGateMatches(item.asString("version"), ver);
     } else {
       return true;
     }
   }
 
+  /**
+   * Does a suite's or test's "version" gate let it run against this FHIR version?
+   *
+   * The gate is a major.minor prefix - "4.0" runs only on R4 - optionally negated with
+   * a leading "!", so "!4.0" runs on everything except R4. Negation is handled here
+   * rather than in VersionUtilities, which has no notion of it.
+   *
+   * This is a deliberate prefix test rather than VersionUtilities.versionMatches: the
+   * gate is written as major.minor, but the version it is matched against may be either
+   * major.minor ("4.0") or a full version ("4.0.1"), and versionMatches counts the
+   * missing patch part as a mismatch in both directions.
+   */
+  public static boolean versionGateMatches(String gate, String ver) {
+    if (gate == null || ver == null) {
+      return true;
+    }
+    if (gate.startsWith("!")) {
+      return !versionGateMatches(gate.substring(1), ver);
+    }
+    return ver.equals(gate) || ver.startsWith(gate + ".");
+  }
+
   private ResultInformation runTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, List<Resource> setup, Set<String> modes, String filter,
-                                    JsonArray output, AtomicInteger counter, TestReportTestComponent tr) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException {
+                                    JsonArray output, AtomicInteger counter, TestReportTestComponent tr, String label) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException {
     JsonObject outputT = new JsonObject();
     if (output != null) {
       output.add(outputT);
@@ -635,11 +771,20 @@ public class TxTester implements ITerminologyRequestIdProvider {
         conversionLogger.testName.set(testName);
         String reqFile = chooseParam(test, "request", modes);
         Resource req = reqFile == null ? null : loader.loadResource(reqFile);
+        // A test can ask for a particular display validation mode rather than
+        // carrying the parameter in its request file, so the same request can be
+        // run both ways (see snomed-inactive-display-lenient / -notlenient).
+        // The parameter only means anything to the two $validate-code operations.
+        if (test.has("lenient-display") && req instanceof Parameters
+            && Utilities.existsInList(test.asString("operation"), "validate-code", "cs-validate-code")) {
+          ((Parameters) req).addParameter("lenient-display-validation", test.asBoolean("lenient-display"));
+        }
 
         String fn = chooseParam(test, "response", modes);
         String resp = FileUtilities.bytesToString(loader.loadContent(fn));
-        String expFn = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), "expected", fn) : Utilities.path(this.outputDir, "expected", fn);
-        String actFn = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), "actual", fn) : Utilities.path(this.outputDir, "actual", fn);
+        String base = label == null ? outputRoot() : Utilities.path(outputRoot(), label);
+        String expFn = Utilities.path(base, "expected", fn);
+        String actFn = Utilities.path(base, "actual", fn);
         File fo = ManagedFileAccess.file(expFn);
         if (fo.exists()) {
           fo.delete();
@@ -674,6 +819,8 @@ public class TxTester implements ITerminologyRequestIdProvider {
           msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("compare")) {
           msg = compare(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+        } else if (test.asString("operation").equals("subsumes")) {
+          msg = subsumes(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -724,7 +871,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -741,7 +888,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(csj, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -779,6 +926,68 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return new URI(server).getHost();
   }
 
+  @SuppressWarnings("checkstyle:patternUsage")
+  //a fixed literal reviewed here; never user input
+  private static final Pattern FOLDER_NAME = Pattern.compile("[A-Za-z0-9][A-Za-z0-9._-]*");
+
+  /**
+   * Check a folder name given by the caller - the run folder, or a test's label. It has to be
+   * usable on every operating system the tests run on, and it must not be able to walk out of
+   * the directory it is meant to be in, so it is a name and never a path: letters, digits, '.',
+   * '-' and '_', starting with a letter or a digit. That also rules out "..", a leading '.',
+   * and any separator. Windows adds two rules of its own - no trailing '.', and none of the
+   * names it reserves for devices, even with an extension on the end.
+   *
+   * @return what is wrong with the name, or null if it is fine
+   */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: Matcher.matches() on pattern which has been independently reviewed
+  public static String checkFolderName(String name) {
+    if (Utilities.noString(name)) {
+      return "No name provided";
+    }
+    if (name.length() > 64) {
+      return "The name '" + name + "' is longer than 64 characters";
+    }
+    if (!FOLDER_NAME.matcher(name).matches()) {
+      return "The name '" + name + "' is not a simple name: it may contain only letters, digits, "
+          + "'.', '-' and '_', and must start with a letter or a digit. It is a folder name, not a path";
+    }
+    if (name.endsWith(".")) {
+      return "The name '" + name + "' ends with '.', which Windows does not allow in a folder name";
+    }
+    String base = name.contains(".") ? name.substring(0, name.indexOf('.')) : name;
+    return null;
+  }
+
+  /**
+   * Name the folder this run writes into, under the temp directory, instead of taking the name
+   * from the server. One server run several ways - R4 and R5, cached and not - is still one
+   * server, so a folder named after it has every variant writing over the last one, and the
+   * diffs you go looking for are from whichever variant happened to finish last.
+   */
+  public void setFolderName(String folderName) {
+    String err = checkFolderName(folderName);
+    if (err != null) {
+      throw new FHIRException("Invalid output folder name: " + err);
+    }
+    this.folderName = folderName;
+  }
+
+  public String getFolderName() {
+    return folderName;
+  }
+
+  /** The folder this run writes into: the caller's name for it, or the server's host. */
+  private String outputFolder() throws URISyntaxException {
+    return folderName == null ? serverId() : folderName;
+  }
+
+  /** Where this run's output goes: an explicit output directory, else the temp folder. */
+  private String outputRoot() throws URISyntaxException, IOException {
+    return outputDir == null ? Utilities.path("[tmp]", outputFolder()) : outputDir;
+  }
+
   private String lookup(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
@@ -802,7 +1011,42 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(resp, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(pj, actFn);
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    return diff;
+  }
+
+  private String subsumes(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+    for (Resource r : setup) {
+      p.addParameter().setName("tx-resource").setResource(r);
+    }
+    client().setAcceptLanguage(lang);
+    p.getParameter().addAll(profile.getParameter());
+    int code = 0;
+    String pj;
+    try {
+      Parameters po = client().subsumes(p);
+      TxTesterScrubbers.scrubParameters(po, tight);
+      TxTesterSorters.sortParameters(po);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+      code = 200;
+    } catch (EFhirClientException e) {
+      code = e.getCode();
+      OperationOutcome oo = e.getServerError();
+      TxTesterScrubbers.scrubOperationOutcome(oo, tight);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -837,7 +1081,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -881,7 +1125,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, vsj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -928,7 +1172,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -968,7 +1212,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -1019,7 +1263,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -1059,7 +1303,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -1106,7 +1350,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
     String diff = c.checkJsonSrcIsSame(id, resp, bj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null || !c.getWarnings().isEmpty()) {
+    if (diff != null) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));

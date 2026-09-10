@@ -212,8 +212,9 @@ used.
 
 ### POST /loadIG
 
-Loads an IG into the running engine. The value may be a package reference, a URL, or a path on
-the server's file system.
+Loads an IG into the running engine. The value may be a package reference or a URL. A path on
+the server's file system is accepted only while the server is bound to loopback (the default);
+with `-allowNetworkAccess` a path is refused with 400.
 
 ```sh
 curl -X POST http://localhost:8080/loadIG \

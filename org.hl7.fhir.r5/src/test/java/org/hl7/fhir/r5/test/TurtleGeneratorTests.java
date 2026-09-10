@@ -250,7 +250,7 @@ public class TurtleGeneratorTests {
         "policy", "linkResolver", "showDecorations", "idPolicy",
         "logical", "signatureServices", "canonicalFilter");
     // Internal plumbing established at construction time; not part of user-configurable state.
-    Set<String> ignored = Set.of("context", "profileUtilities", "contextUtilities");
+    Set<String> ignored = Set.of("context", "profileUtilities", "contextUtilities", "elementsToIgnore");
 
     Set<String> declared = Arrays.stream(ParserBase.class.getDeclaredFields())
         .filter(f -> !Modifier.isStatic(f.getModifiers()))

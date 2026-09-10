@@ -21,6 +21,7 @@ public class I18nConstants {
   public static final String BINDING_ADDITIONAL_D = "BINDING_ADDITIONAL_D";
   public static final String BINDING_ADDITIONAL_UC = "BINDING_ADDITIONAL_UC";
   public static final String BINDING_ADDITIONAL_USAGE = "BINDING_ADDITIONAL_USAGE";
+  public static final String BINDING_ADDITIONAL_IN_SCOPE = "BINDING_ADDITIONAL_IN_SCOPE";
   public static final String BINDING_MAX = "BINDING_MAX";
   public static final String BUNDLE_BUNDLE_ENTRY_CANONICAL = "Bundle_BUNDLE_Entry_Canonical";
   public static final String BUNDLE_BUNDLE_ENTRY_DOCUMENT = "Bundle_BUNDLE_Entry_Document";
@@ -460,6 +461,7 @@ public class I18nConstants {
   public static final String MEASURE_MR_SCORE_UNIT_PROHIBITED = "MEASURE_MR_SCORE_UNIT_PROHIBITED";
   public static final String MEASURE_MR_SCORE_UNIT_REQUIRED = "MEASURE_MR_SCORE_UNIT_REQUIRED";
   public static final String MEASURE_MR_SCORE_VALUE_INVALID_01 = "MEASURE_MR_SCORE_VALUE_INVALID_01";
+  public static final String MEASURE_MR_SCORE_VALUE_INVALID_02 = "MEASURE_MR_SCORE_VALUE_INVALID_02";
   public static final String MEASURE_MR_SCORE_VALUE_REQUIRED = "MEASURE_MR_SCORE_VALUE_REQUIRED";
   public static final String MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID = "MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID"; 
   public static final String MEASURE_M_CRITERIA_CQL_ERROR = "MEASURE_M_CRITERIA_CQL_ERROR";
@@ -616,6 +618,10 @@ public class I18nConstants {
   public static final String QUESTIONNAIRE_QR_ITEM_ONLYONEI = "Questionnaire_QR_Item_OnlyOneI";
   public static final String QUESTIONNAIRE_QR_ITEM_ORDER = "Questionnaire_QR_Item_Order";
   public static final String QUESTIONNAIRE_QR_ITEM_STRINGNOOPTIONS = "Questionnaire_QR_Item_StringNoOptions";
+  public static final String QUESTIONNAIRE_QR_ITEM_STRINGNOTALLOWED = "Questionnaire_QR_Item_StringNotAllowed";
+  public static final String QUESTIONNAIRE_QR_ITEM_ENABLEWHEN_UNCHECKABLE = "Questionnaire_QR_Item_EnableWhen_Uncheckable";
+  public static final String QUESTIONNAIRE_QR_LAUNCH_CONTEXT_NOT_LOADED = "Questionnaire_QR_LaunchContext_NotLoaded";
+  public static final String QUESTIONNAIRE_QR_LAUNCH_CONTEXT_WRONG_TYPE = "Questionnaire_QR_LaunchContext_WrongType";
   public static final String QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING = "QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING";
   public static final String QUESTIONNAIRE_QR_ITEM_TEXT = "Questionnaire_QR_Item_Text";
   public static final String QUESTIONNAIRE_QR_ITEM_TIMENOOPTIONS = "Questionnaire_QR_Item_TimeNoOptions";
@@ -658,6 +664,7 @@ public class I18nConstants {
   public static final String REFERENCE_REF_NOTFOUND_BUNDLE = "Reference_REF_NotFound_Bundle";
   public static final String REFERENCE_REF_NOTYPE = "Reference_REF_NoType";
   public static final String REFERENCE_REF_QUERY_INVALID = "REFERENCE_REF_QUERY_INVALID";
+  public static final String REFERENCE_REF_QUERY_NOT_TRANSACTION = "REFERENCE_REF_QUERY_NOT_TRANSACTION";
   public static final String REFERENCE_REF_REL_UNSOLVEABLE = "REFERENCE_REF_REL_UNSOLVEABLE";
   public static final String REFERENCE_REF_RESOURCETYPE = "Reference_REF_ResourceType";
   public static final String REFERENCE_REF_SUSPICIOUS = "REFERENCE_REF_SUSPICIOUS";
@@ -838,6 +845,15 @@ public class I18nConstants {
   public static final String SNAPSHOT_IS_EMPTY = "SNAPSHOT_IS_EMPTY";
   public static final String STATUS_CODE_WARNING_CODE = "STATUS_CODE_WARNING_CODE";
   public static final String STRUCTUREDEFINITION__AT__ILLEGAL_CONSTRAINED_TYPE__FROM__IN_ = "StructureDefinition__at__illegal_constrained_type__from__in_";
+  public static final String SUBSUMPTION_CS_HIERARCHY_MEANING = "SUBSUMPTION_CS_HIERARCHY_MEANING";
+  public static final String SUBSUMPTION_CS_NOT_COMPLETE = "SUBSUMPTION_CS_NOT_COMPLETE";
+  public static final String SUBSUMPTION_CS_NOT_FOUND = "SUBSUMPTION_CS_NOT_FOUND";
+  public static final String SUBSUMPTION_CS_NOT_FOUND_VERSION = "SUBSUMPTION_CS_NOT_FOUND_VERSION";
+  public static final String SUBSUMPTION_NO_CODE = "SUBSUMPTION_NO_CODE";
+  public static final String SUBSUMPTION_NO_CODING = "SUBSUMPTION_NO_CODING";
+  public static final String SUBSUMPTION_NO_SYSTEM = "SUBSUMPTION_NO_SYSTEM";
+  public static final String SUBSUMPTION_SYSTEM_MISMATCH = "SUBSUMPTION_SYSTEM_MISMATCH";
+  public static final String SUBSUMPTION_VERSION_MISMATCH = "SUBSUMPTION_VERSION_MISMATCH";
   public static final String TERMINOLOGY_PASSTHROUGH_TX_MESSAGE = "Terminology_PassThrough_TX_Message";
   public static final String TERMINOLOGY_TX_BINDING_CANTCHECK = "Terminology_TX_Binding_CantCheck";
   public static final String TERMINOLOGY_TX_BINDING_MISSING = "Terminology_TX_Binding_Missing";
@@ -927,6 +943,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID = "TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG = "TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME = "TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_URL_NOT_A_LINK = "TYPE_SPECIFIC_CHECKS_DT_ATT_URL_NOT_A_LINK";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR = "TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR";
   public static final String TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR = "TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR";
   public static final String TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING = "TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING";
@@ -1006,6 +1023,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_WS = "Type_Specific_Checks_DT_String_WS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_WS_ALL = "Type_Specific_Checks_DT_String_WS_ALL";
   public static final String TYPE_SPECIFIC_CHECKS_DT_TIME_VALID = "Type_Specific_Checks_DT_Time_Valid";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_TIME_VALID_CAUSE = "Type_Specific_Checks_DT_Time_Valid_Cause";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_OID = "Type_Specific_Checks_DT_URI_OID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_UUID = "Type_Specific_Checks_DT_URI_UUID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_WS = "Type_Specific_Checks_DT_URI_WS";
@@ -1081,6 +1099,7 @@ public class I18nConstants {
   public static final String UNICODE_XML_BAD_CHARS = "UNICODE_XML_BAD_CHARS";
   public static final String UNKNOWN_CODESYSTEM = "UNKNOWN_CODESYSTEM";
   public static final String UNKNOWN_CODESYSTEM_VERSION = "UNKNOWN_CODESYSTEM_VERSION";
+  public static final String UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED = "UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED";
   public static final String UNKNOWN_CODESYSTEM_VERSION_UNK = "UNKNOWN_CODESYSTEM_VERSION_UNK";
   public static final String UNKNOWN_CODESYSTEM_VERSION_NONE = "UNKNOWN_CODESYSTEM_VERSION_NONE";
   public static final String UNKNOWN_CODE_IN = "Unknown_Code_in";
@@ -1369,7 +1388,7 @@ public class I18nConstants {
   public static final String BUNDLE_SIGNATURE_NOT_CHECKED_KIND = "BUNDLE_SIGNATURE_NOT_CHECKED_KIND";
   public static final String BUNDLE_SIGNATURE_NOT_CHECKED_DATA = "BUNDLE_SIGNATURE_NOT_CHECKED_DATA";
   public static final String BUNDLE_SIGNATURE_HEADER_PARSE = "BUNDLE_SIGNATURE_HEADER_PARSE";
-  public static final String BUNDLE_SIGNATURE_NO_WHEN = "BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH";
+  public static final String BUNDLE_SIGNATURE_NO_WHEN = "BUNDLE_SIGNATURE_NO_WHEN";
   public static final String BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH = "BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH";
   public static final String BUNDLE_SIGNATURE_PAYLOAD_PRESENT = "BUNDLE_SIGNATURE_PAYLOAD_PRESENT";
   public static final String BUNDLE_SIGNATURE_PAYLOAD_INVALID = "BUNDLE_SIGNATURE_PAYLOAD_INVALID";
@@ -1408,6 +1427,8 @@ public class I18nConstants {
   public static final String BUNDLE_SIGNATURE_DIGSIG_INVALID = "BUNDLE_SIGNATURE_DIGSIG_INVALID";
   public static final String BUNDLE_SIGNATURE_DIGSIG_NO_SIG_TIME = "BUNDLE_SIGNATURE_DIGSIG_NO_SIG_TIME";
   public static final String BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH = "BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH";
+  public static final String BUNDLE_SIGNATURE_SIG_TIME_INVALID = "BUNDLE_SIGNATURE_SIG_TIME_INVALID";
+  public static final String BUNDLE_SIGNATURE_WHEN_INVALID = "BUNDLE_SIGNATURE_WHEN_INVALID";
   public static final String BUNDLE_SIGNATURE_DIGSIG_X509_ERROR = "BUNDLE_SIGNATURE_DIGSIG_X509_ERROR";
   public static final String BUNDLE_SIGNATURE_DIGSIG_NO_CERT = "BUNDLE_SIGNATURE_DIGSIG_NO_CERT";
   public static final String BUNDLE_SIGNATURE_DIGSIG_NO_SV = "BUNDLE_SIGNATURE_DIGSIG_NO_SV";
@@ -1433,6 +1454,7 @@ public class I18nConstants {
   public static final String XHTML_XHTML_ILLEGAL_CHILDREN = "XHTML_XHTML_ILLEGAL_CHILDREN";
   public static final String XHTML_XHTML_BAD_ELEMENT_TYPE = "XHTML_XHTML_BAD_ELEMENT_TYPE";
   public static final String XHTML_XHTML_OUT_OF_PLACE = "XHTML_XHTML_OUT_OF_PLACE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_FETCH_ERROR = "TYPE_SPECIFIC_CHECKS_DT_ATT_FETCH_ERROR";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL = "TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH = "TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH";
   public static final String BUNDLE_SIGNATURE_HEADER_SIG_TIME_WRONG_FORMAT = "BUNDLE_SIGNATURE_HEADER_SIG_TIME_WRONG_FORMAT";

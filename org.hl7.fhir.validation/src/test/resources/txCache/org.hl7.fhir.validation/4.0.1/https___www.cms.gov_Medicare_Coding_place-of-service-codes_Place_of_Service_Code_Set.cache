@@ -1,0 +1,55 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set",
+  "code" : "11"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Office",
+  "code" : "11",
+  "system" : "https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set",
+  "version" : "20240502",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set/vs|20240502: Validate \"[https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set#11 (\"undefined\")]\"\n2ms https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set/vs|20240502: Check \"https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set#11\"\n2ms https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set/vs|20240502: CodeSystem found: https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set|20240502 for https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set|20240502\n2ms https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set/vs|20240502: check code in (https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set) at Coding\n2ms https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set/vs|20240502: Code \"11\" found in https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set|20240502",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set",
+  "code" : "11"
+}, "url": "http://hl7.org/fhir/us/davinci-pas/ValueSet/X12278LocationType--1", "version": "2.1.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Office",
+  "code" : "11",
+  "system" : "https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set",
+  "version" : "20240502",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/us/davinci-pas/ValueSet/X12278LocationType--1|2.1.0: Analysing http://hl7.org/fhir/us/davinci-pas/ValueSet/X12278LocationType--1|2.1.0 for validation purposes\n2ms http://hl7.org/fhir/us/davinci-pas/ValueSet/X12278LocationType--1|2.1.0: Parameters: disp-lang=en-US, generate-narrative\n2ms http://hl7.org/fhir/us/davinci-pas/ValueSet/X12278LocationType--1|2.1.0: Prepare include[0]: \"(https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set)\"\n2ms http://hl7.org/fhir/us/davinci-pas/ValueSet/X12278LocationType--1|2.1.0: CodeSystem found: \"https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set|20240502\"\n3ms http://hl7.org/fhir/us/davinci-pas/ValueSet/X12278LocationType--1|2.1.0: Validate \"[https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set#11 (\"undefined\")]\"\n3ms http://hl7.org/fhir/us/davinci-pas/ValueSet/X12278LocationType--1|2.1.0: Check \"https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set#11\"\n3ms http://hl7.org/fhir/us/davinci-pas/ValueSet/X12278LocationType--1|2.1.0: CodeSystem found: https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set|20240502 for https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set\n3ms http://hl7.org/fhir/us/davinci-pas/ValueSet/X12278LocationType--1|2.1.0: check code in (https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set) at Coding\n4ms http://hl7.org/fhir/us/davinci-pas/ValueSet/X12278LocationType--1|2.1.0: Code \"11\" found in https://www.cms.gov/Medicare/Coding/place-of-service-codes/Place_of_Service_Code_Set|20240502",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

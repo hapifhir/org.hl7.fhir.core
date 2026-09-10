@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.10.3-SNAPSHOT</version>
+        <version>6.10.5-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -110,14 +110,6 @@
             <artifactId>gson</artifactId>
         </dependency>
 
-        <!-- JSON Schema -->
-        <dependency>
-            <groupId>org.everit.json</groupId>
-            <artifactId>org.everit.json.schema</artifactId>
-            <version>1.1.0</version>
-            <scope>test</scope>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -165,6 +157,18 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- TxTesterLogFile tees the terminology test log into the run's output directory.
+             slf4j is only an API and has no file output of its own, so the appender has to
+             come from the backend. provided: logback is on the classpath wherever these
+             tests are actually run (the CLI ships it, the test scope brings it in), and this
+             does not put it on the runtime classpath of anything that embeds the validator.
+             TxTesterLogFile degrades to console-only if it is not there. -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
             <scope>provided</scope>
         </dependency>
 

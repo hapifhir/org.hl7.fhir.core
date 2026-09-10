@@ -25,7 +25,7 @@ public interface IOIDServices {
     private String version;
     private String packageSrc;
     private String status;
-    protected OIDDefinition(String type, String oid, String url, String version, String status, String packageSrc) {
+    public OIDDefinition(String type, String oid, String url, String version, String status, String packageSrc) {
       super();
       this.type = type;
       this.oid = oid;

@@ -26,7 +26,7 @@ public class RegexFilter extends ConceptFilter {
       boolean matches = RegexTimeout.matches(def.getCode(), regex);
      return matches;
     } catch (TimeoutException e) {
-      throw fail("The regex filter '"+regex+"' took too long to evaluate against code '"+def.getCode()+"'");
+      throw failFilter("The regex filter '"+regex+"' took too long to evaluate against code '"+def.getCode()+"'");
     } catch (RuntimeException e) {
       // RegexTimeout wraps evaluation failures (e.g. an invalid pattern) in a RuntimeException
       throw fail("Error evaluating the regex filter '"+regex+"' against code '"+def.getCode()+"': "+e.getMessage());

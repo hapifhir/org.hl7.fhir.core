@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Attachment;
+import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.Measure;
 import org.hl7.fhir.r5.model.Measure.MeasureGroupComponent;
@@ -14,6 +16,8 @@ public class MeasureContext {
 
 
   public static final String USER_DATA_ELM = "validator.ELM";
+  // Measure.group.scoring only exists from R5; before that, the CQM IG carries group level scoring in this extension
+  public static final String EXT_CQM_SCORING = "http://hl7.org/fhir/uv/cqm/StructureDefinition/cqm-scoring";
   private List<Library> libs = new ArrayList<>();
   private Measure measure;
   private Element report;
@@ -52,6 +56,18 @@ public class MeasureContext {
   }
   public String scoring() {
     return measure.getScoring().getCodingFirstRep().getCode();
+  }
+  public String scoring(MeasureGroupComponent group) {
+    if (group.hasScoring()) {
+      return group.getScoring().getCodingFirstRep().getCode();
+    }
+    if (group.hasExtension(EXT_CQM_SCORING)) {
+      DataType v = group.getExtensionByUrl(EXT_CQM_SCORING).getValue();
+      if (v instanceof CodeableConcept) {
+        return ((CodeableConcept) v).getCodingFirstRep().getCode();
+      }
+    }
+    return scoring();
   }
   public List<Library> libraries() {
     return libs;

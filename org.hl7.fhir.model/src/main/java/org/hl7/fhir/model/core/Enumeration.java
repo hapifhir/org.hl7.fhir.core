@@ -214,10 +214,7 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
   public Enumeration<T> copy(EnumSet<CopyObjectOptions> options) {
     Enumeration dst= new Enumeration(modelContext, this.myEnumFactory);
     dst.setValueAsString(asStringValue()); // string based, not value based, so a CUSTOM value (where the real code lives in the string) survives the copy
-    //Copy the Extension
-    if (extensionList != null) {
-//      dst.extensionList = new BaseList<>(dst).copyFrom(extensionList, options);
-    };
+    copyValues(dst, options);
     return dst;
   }
 

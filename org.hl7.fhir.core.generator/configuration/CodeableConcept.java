@@ -99,8 +99,7 @@ public boolean hasCoding(String system, String code) {
       res.setText(l.getText());
     }
     return res;
-  }  
-  
+  }
     
   public void addCoding(String system, String code, String display) {
     getCodingList().add(new Coding(system, code, display));
@@ -109,5 +108,12 @@ public boolean hasCoding(String system, String code) {
   @Override 
   public String toString() { 
     return hasCoding() ? getCodingList().toString() : "["+getText()+"]";
-  } 
-   
+  }
+
+
+  public void removeCoding(String system, String version, String code) {
+    getCodingList().removeIf(c ->
+      (system == null || system.equals(c.getSystem())) &&
+        (version == null || version.equals(c.getVersion())) &&
+        (code == null || code.equals(c.getCode())));
+  }

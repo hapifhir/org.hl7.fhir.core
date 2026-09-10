@@ -66,7 +66,7 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
   public StructureDefinition getDefinition(String url) {
     url = url.replace("%5Bx%5D", "[x]");
     String verSource = url.substring(20, 23);
-    String verTarget = VersionUtilities.getMajMin(context.getVersion());
+    String verTarget = VersionUtilities.getMajMin(context.getFHIRVersion());
     String e = url.substring(54);
     String r = e.contains(".") ? e.substring(0, e.indexOf(".")) : e;
     if (!lists.containsKey(verSource)) {
@@ -95,8 +95,8 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
       sd.setWebPath(PackageHacker.fixPackageUrl("https://hl7.org/fhir/versions.html#extensions"));
     }
     sd.setUrl(url);
-    sd.setVersion(context.getVersion());
-    sd.setFhirVersion(Enumerations.FHIRVersion.fromCode(context.getVersion()));
+    sd.setVersion(context.getFHIRVersion());
+    sd.setFhirVersion(Enumerations.FHIRVersion.fromCode(context.getFHIRVersion()));
     sd.setKind(StructureDefinition.StructureDefinitionKind.COMPLEXTYPE);
     sd.setType("Extension");
     sd.setDerivation(StructureDefinition.TypeDerivationRule.CONSTRAINT);

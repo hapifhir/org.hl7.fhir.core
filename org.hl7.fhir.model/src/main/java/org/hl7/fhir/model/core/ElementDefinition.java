@@ -2869,6 +2869,8 @@ public boolean hasTarget() {
         return "unsignedInt";
       if ("xsd:anyURI".equalsIgnoreCase(s))
         return "uri";
+      if ("xhtml:div".equalsIgnoreCase(s))
+        return "xhtml";
       
       throw new Error("Unknown xml type '"+s+"'");
     }
@@ -2888,7 +2890,7 @@ public boolean hasTarget() {
       res = res + "}";
     }
     if (hasTargetProfile()) {
-      res = res + "->(";
+      res = res + "(";
       boolean first = true;
       for (CanonicalType s : getTargetProfileList()) {
         if (first) first = false; else res = res + "|";
@@ -13243,6 +13245,9 @@ public boolean hasTarget() {
   }
 
   public boolean unbounded() {
+    if (getMax() == null) {
+      throw new Error("No max on "+getPath());
+    }
     return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
   }
 

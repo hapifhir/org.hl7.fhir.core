@@ -100,6 +100,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 public class StructureDefinitionRenderer extends ResourceRenderer {
 
   public static final String RED_BACKGROUND_COLOR = "#D50000";
+  public static final String TRANSLATABLE_BACKGROUND_COLOR = "#ffd1fb";
 
   public enum MapStructureMode {
     IN_LIST, NOT_IN_LIST, OTHER
@@ -1368,6 +1369,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     if (element != null && element.getIsSummary()) { 
       checkForNoChange(element.getIsSummaryElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_INCLUDED)), "\u03A3", null, null, null, false)); 
+    } 
+    if (element != null && ExtensionUtilities.readBoolExtension(element, ExtensionDefinitions.EXT_TRANSLATABLE)) { 
+      gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_TRANSLATABLE)), "T", "black", TRANSLATABLE_BACKGROUND_COLOR, null, true); 
     } 
     if (element != null && element.getMustHaveValue()) { 
       checkForNoChange(element.getMustHaveValueElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE)), "V", "maroon", null, null, true)); 
@@ -4519,6 +4523,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     if (mode != GEN_MODE_DIFF && d.hasIsSummary()) { 
       tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_SUMM), "search.html#summary", strikethrough, Boolean.toString(d.getIsSummary())); 
+    } 
+    if (ExtensionUtilities.readBoolExtension(d, ExtensionDefinitions.EXT_TRANSLATABLE)) { 
+      tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_TRANSLATABLE), "languages.html#translatable", strikethrough, "true"); 
     } 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_REQUIREMENTS), null, strikethrough, compareMarkdown(sd.getName(), d.getRequirementsElement(), (compare==null) || slicedExtension ? null : compare.getRequirementsElement(), mode)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_LABEL), null, strikethrough, compareString(d.getLabel(), d.getLabelElement(), null, "label", d, (compare != null ? compare.getLabel() : null), null, mode, false, false));    

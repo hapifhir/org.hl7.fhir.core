@@ -17,3 +17,7 @@ public String toString() {
     }
     return s;
   }
+
+public boolean hasValuePrimitive() {
+  return hasValue() && getValue() instanceof PrimitiveType<?>;
+}

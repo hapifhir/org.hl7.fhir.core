@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -1217,6 +1218,14 @@ public class ProfileUtilities {
 
   private void handleError(String url, String msg) {
     addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url, msg, ValidationMessage.IssueSeverity.ERROR));
+  }
+
+  /**
+   * ElementDefinition.binding.strength is 1..1, but a profile can turn up without one - and when it
+   * does, this is the message that reports it, so it must not fall over describing it.
+   */
+  private String describeStrength(ElementDefinitionBindingComponent binding) {
+    return binding.hasStrength() ? binding.getStrength().toCode() : "(none)";
   }
 
   private void addMessage(ValidationMessage msg) {
@@ -2956,7 +2965,7 @@ public class ProfileUtilities {
         
         if (!base.hasBinding() || !Base.compareDeep(derived.getBinding(), base.getBinding(), false)) {
           if (base.hasBinding() && base.getBinding().getStrength() == BindingStrength.REQUIRED && derived.getBinding().getStrength() != BindingStrength.REQUIRED)
-            addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "illegal attempt to change the binding on "+derived.getPath()+" from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode(), ValidationMessage.IssueSeverity.ERROR));
+            addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "illegal attempt to change the binding on "+derived.getPath()+" from "+describeStrength(base.getBinding())+" to "+describeStrength(derived.getBinding()), ValidationMessage.IssueSeverity.ERROR));
 //            throw new DefinitionException("StructureDefinition "+pn+" at "+derived.getPath()+": illegal attempt to change a binding from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode());
           else if (base.hasBinding() && derived.hasBinding() && base.getBinding().getStrength() == BindingStrength.REQUIRED && base.getBinding().hasValueSet() && derived.getBinding().hasValueSet()) {
             ValueSet baseVs = context.findTxResource(ValueSet.class, base.getBinding().getValueSet(), getVersionResolutionRules(base.getBinding().getValueSetElement()), null, srcSD);
@@ -5020,9 +5029,20 @@ public class ProfileUtilities {
   }
 
   private Map<String, List<Property>> propertyCache = new HashMap<>();
-  
+
+  // The XML parser has to try the properties of an element longest name first, so that
+  // e.g. requestOrganizationReference is considered before request[x]. That order depends
+  // only on the list, not on the node being matched, but it was re-sorted for every child
+  // element parsed. The lists here are the ones propertyCache hands out (by identity), so
+  // this holds nothing alive that propertyCache does not already hold.
+  private Map<List<Property>, List<Property>> sortedPropertyCache = new IdentityHashMap<>();
+
   public Map<String, List<Property>> getCachedPropertyList() {
     return propertyCache;
+  }
+
+  public Map<List<Property>, List<Property>> getCachedSortedPropertyList() {
+    return sortedPropertyCache;
   }
 
   public void checkExtensions(ElementDefinition outcome) {

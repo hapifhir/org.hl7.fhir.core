@@ -1341,7 +1341,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       Piece p = gc.addText(CONSTRAINT_CHAR); 
       p.setHint((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_AFFECTED, listConstraintsAndConditions(element), ")"))); 
       p.addStyle(CONSTRAINT_STYLE); 
-      p.setReference(Utilities.pathURL(VersionUtilities.getSpecUrl(context.getWorker().getVersion()), "conformance-rules.html#constraints")); 
+      p.setReference(Utilities.pathURL(VersionUtilities.getSpecUrl(context.getWorker().getFHIRVersion()), "conformance-rules.html#constraints"));
     } 
     if (element != null && element.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS)) { 
       StandardsStatus ss = StandardsStatus.fromCode(element.getExtensionString(ExtensionDefinitions.EXT_STANDARDS_STATUS)); 
@@ -2755,7 +2755,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               erow.getSubRows().add(row); 
               Cell c = gen.new Cell(); 
               row.getCells().add(c); 
-              c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : corePath+(VersionUtilities.isR5Plus(context.getWorker().getVersion()) ? "types-definitions.html#"+ed.getBase().getPath() : "element-definitions.html#"+ed.getBase().getPath())), t.getName(), null)); 
+              c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : corePath+(VersionUtilities.isR5Plus(context.getWorker().getFHIRVersion()) ? "types-definitions.html#"+ed.getBase().getPath() : "element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
               c = gen.new Cell(); 
               row.getCells().add(c); 
               c.addPiece(gen.new Piece(null, null, null)); 
@@ -2804,7 +2804,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
               Cell c = gen.new Cell(); 
               row.getCells().add(c); 
-              c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : (VersionUtilities.isR5Ver(context.getWorker().getVersion()) ? corePath+"types-definitions.html#"+ed.getBase().getPath() : corePath+"element-definitions.html#"+ed.getBase().getPath())), t.getName(), null)); 
+              c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : (VersionUtilities.isR5Ver(context.getWorker().getFHIRVersion()) ? corePath+"types-definitions.html#"+ed.getBase().getPath() : corePath+"element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
  
               c = gen.new Cell(); 
               row.getCells().add(c); 
@@ -4533,7 +4533,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }   
    
   private String spec(String name) { 
-    return Utilities.pathURL(VersionUtilities.getSpecUrl(context.getWorker().getVersion()) , name); 
+    return Utilities.pathURL(VersionUtilities.getSpecUrl(context.getWorker().getFHIRVersion()) , name);
   } 
  
   private XhtmlNode describeXml(StructureDefinition profile, ElementDefinition d, boolean root) { 

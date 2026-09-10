@@ -33,8 +33,8 @@ import lombok.Getter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import java.io.Serializable;
@@ -86,8 +86,11 @@ public abstract class Base implements Serializable, IBase, IElement {
     if (this.modelContext == modelContext) {
       return;
     }
-    if (this.modelContext != null) {
-      throw new FHIRException("Attempt to change the model context of an instance that already has one");
+    if (modelContext == null) {
+      return; // FIXME: really?
+    }
+    if (this.modelContext != null && !this.modelContext.isCompatibleModelContext(modelContext)) {
+      throw new FHIRException("Attempt to change the model context of an instance that already has one ("+describeContext(this.modelContext)+" -> "+describeContext(modelContext)+")");
     }
     this.modelContext = modelContext;
   }
@@ -132,7 +135,12 @@ public abstract class Base implements Serializable, IBase, IElement {
   }
 
   private void assertModelContext(String path, IModelContext expected) {
-    if (this.modelContext != expected) {
+    if (expected == null) {
+      return;
+    }
+    if (this.modelContext == null) {
+      this.modelContext = expected;
+    } else if (this.modelContext != expected && !this.modelContext.isCompatibleModelContext(expected)) {
       throw new FHIRException("Model context mismatch at "+path+": expected "+describeContext(expected)+" but found "+describeContext(this.modelContext));
     }
     List<Property> children = new ArrayList<Property>();
@@ -149,7 +157,7 @@ public abstract class Base implements Serializable, IBase, IElement {
   }
 
   private static String describeContext(IModelContext modelContext) {
-    return modelContext == null ? "no context" : modelContext.getClass().getSimpleName()+"@"+Integer.toHexString(System.identityHashCode(modelContext));
+    return modelContext == null ? "no context" : modelContext.describeContext();
   }
 
   /**
@@ -161,7 +169,7 @@ public abstract class Base implements Serializable, IBase, IElement {
    * elements are actually applicable
    */
   public String getFHIRVersion() {
-    return modelContext == null ? null : modelContext.getVersion();
+    return modelContext == null ? null : modelContext.getFHIRVersion();
   }
   //endregion
 
@@ -428,12 +436,12 @@ public abstract class Base implements Serializable, IBase, IElement {
    * Note that the actual content of primitive or xhtml elements is not iterated explicitly.
    * To find these, the processing code must recognise the element as a primitive, and use @link primitiveValue
    *
-   * @return a list of all the children defined for this element
+   * @return an immutable list of all the children defined for this element
    */
   public List<Property> getChildren() {
     List<Property> result = new ArrayList<Property>();
     listChildren(result);
-    return result;
+    return Collections.unmodifiableList(result);
   }
   /**
    * Return the named child as a Property, or null if the name is unknown. Matches choice 
@@ -461,9 +469,9 @@ public abstract class Base implements Serializable, IBase, IElement {
   }
 
   /**
-   * Return the current values of the named child as a list, never containing nulls (and never 
-   * null itself - no values is an empty list). "*" returns the values of all children. Unknown 
-   * names return an empty list when checkValid is false, and throw when it is true.
+   * Return the current values of the named child as an immutable list, never containing nulls 
+   * (and never null itself - no values is an empty list). "*" returns the values of all children. 
+   * Unknown names return an empty list when checkValid is false, and throw when it is true.
    */
   public List<Base> getChildValues(String name, boolean checkValid) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
@@ -481,7 +489,7 @@ public abstract class Base implements Serializable, IBase, IElement {
           if (b != null)
             result.add(b);
     }
-    return result;
+    return Collections.unmodifiableList(result);
   }
 
   /**
@@ -719,7 +727,7 @@ public abstract class Base implements Serializable, IBase, IElement {
    */
   public void copyValues(Base dst, EnumSet<CopyObjectOptions> options) {
     dst.setModelContext(modelContext); // no-op on the normal path (copy() constructs dst with this context); adopts a fresh dst; throws rather than corrupting a dst that belongs to a different context
-    if (options.contains(CopyObjectOptions.USER_DATA)) {
+    if (userData != null && options.contains(CopyObjectOptions.USER_DATA)) {
       dst.userData = new HashMap<>();
       dst.userData.putAll(userData);
     }

@@ -438,8 +438,8 @@ public abstract class TurtleParserBase extends ParserBase {
       t.linkedPredicate("a", FHIR_BASE_PREFIX+className(element.fhirType()), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
     if (element.hasValue()) {
         String elementLiteral = null;
-        if ("xhtml".equals(element.getType())) {
-          elementLiteral = new XhtmlComposer(XhtmlComposer.XML, false).setCanonical(true).compose(element.getXhtml());;
+        if (element.isXhtml()) {
+          elementLiteral = element.getXhtmlSource(true);
         } else {
           elementLiteral = element.getValue();
         }

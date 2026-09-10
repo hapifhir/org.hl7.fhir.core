@@ -12120,6 +12120,7 @@ The primary difference between a medicationstatement and a medicationadministrat
         _6_0_0_BALLOT3,
         _6_0_0_BALLOT4,
         _6_0_0_BALLOT5,
+        _6_0_0_SNAPSHOT1,
       /**
          * added to help the parsers
          */
@@ -12255,6 +12256,8 @@ The primary difference between a medicationstatement and a medicationadministrat
             return _6_0_0_BALLOT4;
           if ("6.0.0-ballot5".equals(codeString))
             return _6_0_0_BALLOT5;
+          if ("6.0.0-snapshot1".equals(codeString))
+            return _6_0_0_SNAPSHOT1;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public static boolean isValidCode(String codeString) {
@@ -12328,6 +12331,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case _6_0_0_BALLOT3: return "6.0.0-ballot3";
             case _6_0_0_BALLOT4: return "6.0.0-ballot4";
             case _6_0_0_BALLOT5: return "6.0.0-ballot5";
+            case _6_0_0_SNAPSHOT1: return "6.0.0-snapshot1";
             case NULL: return null;
             default: return "?";
           }
@@ -12394,6 +12398,11 @@ The primary difference between a medicationstatement and a medicationadministrat
             case _6_0_0CIBUILD: return "http://hl7.org/fhir/FHIR-version";
             case _6_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _6_0_0_BALLOT1: return "http://hl7.org/fhir/FHIR-version";
+            case _6_0_0_BALLOT2: return "http://hl7.org/fhir/FHIR-version";
+            case _6_0_0_BALLOT3: return "http://hl7.org/fhir/FHIR-version";
+            case _6_0_0_BALLOT4: return "http://hl7.org/fhir/FHIR-version";
+            case _6_0_0_BALLOT5: return "http://hl7.org/fhir/FHIR-version";
+            case _6_0_0_SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
             case NULL: return null;
             default: return "?";
           }
@@ -12530,6 +12539,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case _6_0_0_BALLOT3: return "6.0.0-ballot3";
             case _6_0_0_BALLOT4: return "6.0.0-ballot4";
             case _6_0_0_BALLOT5: return "6.0.0-ballot5";
+            case _6_0_0_SNAPSHOT1: return "6.0.0-snapshot1";
             case NULL: return null;
             default: return "?";
           }
@@ -12686,6 +12696,8 @@ The primary difference between a medicationstatement and a medicationadministrat
         return FHIRVersion._6_0_0_BALLOT4;
       if ("6.0.0-ballot5".equals(codeString))
         return FHIRVersion._6_0_0_BALLOT5;
+      if ("6.0.0-snapshot1".equals(codeString))
+        return FHIRVersion._6_0_0_SNAPSHOT1;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
 
@@ -12825,6 +12837,8 @@ The primary difference between a medicationstatement and a medicationadministrat
           return new Enumeration<FHIRVersion>(this, FHIRVersion._6_0_0_BALLOT4, code);
         if ("6.0.0-ballot5".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._6_0_0_BALLOT5, code);
+        if ("6.0.0-snapshot1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._6_0_0_SNAPSHOT1, code);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");        
         }
     public String toCode(FHIRVersion code) {
@@ -12962,6 +12976,9 @@ The primary difference between a medicationstatement and a medicationadministrat
       }
       if (code == FHIRVersion._6_0_0_BALLOT5) {
         return "6.0.0-ballot5";
+      }
+      if (code == FHIRVersion._6_0_0_SNAPSHOT1) {
+        return "6.0.0-snapshot1";
       }
       return "?";
    }

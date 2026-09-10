@@ -1188,7 +1188,7 @@ public class ClassDiagramRenderer {
           allPrimitive = false;
         }
       }
-      if (VersionUtilities.isR4BVer(context.getVersion())) {
+      if (VersionUtilities.isR4BVer(context.getFHIRVersion())) {
         return "Element";
       } if (allPrimitive) {
         return "PrimitiveType";

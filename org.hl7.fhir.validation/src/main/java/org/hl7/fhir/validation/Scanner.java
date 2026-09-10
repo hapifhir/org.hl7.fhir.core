@@ -32,6 +32,8 @@ import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
 import org.hl7.fhir.validation.service.model.ScanOutputItem;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -308,6 +310,7 @@ public class Scanner {
   protected OperationOutcome exceptionToOutcome(Exception ex) throws IOException, FHIRException, EOperationOutcome {
     OperationOutcome op = new OperationOutcome();
     op.addIssue().setCode(OperationOutcome.IssueType.EXCEPTION).setSeverity(OperationOutcome.IssueSeverity.FATAL).getDetails().setText(ex.getMessage());
+    ExtensionUtilities.addStringExtension(op, ExtensionDefinitions.EXT_VALIDATOR_VERSION, ValidatorUtils.getValidatorVersionDescription());
     RenderingContext rc = new RenderingContext(getContext(), new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     new RendererFactory().factory(op, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), op));
     return op;

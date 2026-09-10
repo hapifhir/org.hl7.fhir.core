@@ -126,7 +126,7 @@ public class ConsentRenderer extends ResourceRenderer {
         for (ResourceWrapper r : consent.childrenMN("regulatoryBasis", "policyRule")) {
           first = p.sepFirst(first, ",");
           p.tx(" ");
-          if (VersionUtilities.isR4Plus(context.getContext().getVersion())) {
+          if (VersionUtilities.isR4Plus(context.getContext().getFHIRVersion())) {
             renderCodeableConcept(status, p, r);
           } else {
             p.ah(r.primitiveValue()).tx(r.primitiveValue());
@@ -201,9 +201,9 @@ public class ConsentRenderer extends ResourceRenderer {
   }
 
   private boolean determineBasePermit(ResourceWrapper consent) {
-    if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
+    if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion())) {
       return "permit".equals(consent.primitiveValue("decision"));
-    } else if (VersionUtilities.isR4Plus(context.getContext().getVersion())) {
+    } else if (VersionUtilities.isR4Plus(context.getContext().getFHIRVersion())) {
       return true;
     } else {
       return true;
@@ -211,7 +211,7 @@ public class ConsentRenderer extends ResourceRenderer {
   }
 
   private boolean determineItemPermit(ResourceWrapper consent, ResourceWrapper item, boolean parentPermit) {
-    if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
+    if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion())) {
       return !parentPermit;
     } else {
       return "permit".equals(item.primitiveValue("type"));

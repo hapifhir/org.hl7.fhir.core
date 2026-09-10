@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.10.3-SNAPSHOT</version>
+        <version>6.10.5-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -224,13 +224,6 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml-full</artifactId>
             <optional>false</optional>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.everit.json</groupId>
-            <artifactId>org.everit.json.schema</artifactId>
-            <version>1.1.0</version>
             <scope>compile</scope>
         </dependency>
 

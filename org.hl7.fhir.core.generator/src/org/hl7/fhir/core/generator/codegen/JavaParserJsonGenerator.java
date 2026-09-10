@@ -206,7 +206,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           prsr = "parseXhtml(json.get(\""+escapeJavaString(name)+"\").getAsString())";
         } else if (tn.contains("Reference(")) {
           prsr = "parseReference(getJObject(json, \""+escapeJavaString(name)+"\"))";
-          aprsr = "parseReference(array.get(i).getAsJsonObject())";
+          aprsr = "parseReference(getJsonObjectFromArray(array, i, \""+escapeJavaString(name)+"\"))";
           anprsr = "parseReference(null)";
         } else if (tn.contains("canonical(")) {
           prsr = "parseCanonical(json.get(\""+escapeJavaString(name)+"\").getAsString())";
@@ -216,8 +216,15 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           if (tn.endsWith("Type")) {
             tn = tn.substring(0, tn.length()-4);
           }
-          prsr = "parse"+upFirst(tn)+"(json.get(\""+escapeJavaString(name)+"\").getAs"+getAsJsonPrimitive(ed.typeSummary(), true)+"())";
-          aprsr = "parse"+upFirst(tn)+"(array.get(i).getAs"+getAsJsonPrimitive(ed.typeSummary(), true)+"())";
+          if ("decimal".equals(ed.typeSummary())) {
+            // pass the JsonElement, not the BigDecimal, so that parseDecimal can keep the literal
+            // the source used (1.0e0, 1e2) instead of whatever BigDecimal.toString() makes of it
+            prsr = "parse"+upFirst(tn)+"(json.get(\""+escapeJavaString(name)+"\"))";
+            aprsr = "parse"+upFirst(tn)+"(array.get(i))";
+          } else {
+            prsr = "parse"+upFirst(tn)+"(json.get(\""+escapeJavaString(name)+"\").getAs"+getAsJsonPrimitive(ed.typeSummary(), true)+"())";
+            aprsr = "parse"+upFirst(tn)+"(array.get(i).getAs"+getAsJsonPrimitive(ed.typeSummary(), true)+"())";
+          }
           anprsr = "parse"+upFirst(tn)+"(null)";
         } else {
           String pn = tn;
@@ -225,7 +232,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
             pn = analysis.getClassName()+pn;            
           }
           prsr = "parse"+pn+"(getJObject(json, \""+escapeJavaString(name)+"\"))";
-          aprsr = "parse"+pn+"(array.get(i).getAsJsonObject())";
+          aprsr = "parse"+pn+"(getJsonObjectFromArray(array, i, \""+escapeJavaString(name)+"\"))";
           anprsr = "parse"+pn+"(null)";
         }
       }

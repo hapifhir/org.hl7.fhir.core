@@ -463,7 +463,7 @@ public class TestingJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("_result"))
       parseElementProperties(getJObject(json, "_result"), res.getResultElement());
     if (json.has("score"))
-      res.setScoreElement(parseDecimal(json.get("score").getAsBigDecimal()));
+      res.setScoreElement(parseDecimal(json.get("score")));
     if (json.has("_score"))
       parseElementProperties(getJObject(json, "_score"), res.getScoreElement());
     if (json.has("tester"))
@@ -3121,7 +3121,7 @@ public class TestingJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
   @Override
   protected void composeResource(Resource resource) throws IOException {
     if (resource == null) {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      throw new Error("Unhandled resource type: null");
     } else if (resource instanceof TestPlan) {
       composeTestPlan("TestPlan", (TestPlan)resource);
     } else if (resource instanceof TestReport) {
