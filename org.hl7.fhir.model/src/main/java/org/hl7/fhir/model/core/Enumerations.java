@@ -17336,6 +17336,10 @@ public class Enumerations {
          */
         _6_0_0BALLOT5, 
         /**
+         * R6 Snapshot #1.
+         */
+        _6_0_0SNAPSHOT1, 
+        /**
          * added to help the parsers
          */
         NULL;
@@ -17470,12 +17474,14 @@ public class Enumerations {
           return _6_0_0BALLOT4;
         if ("6.0.0-ballot5".equals(codeString))
           return _6_0_0BALLOT5;
+        if ("6.0.0-snapshot1".equals(codeString))
+          return _6_0_0SNAPSHOT1;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public static boolean isValidCode(String codeString) {
             if (codeString == null || "".equals(codeString))
                 return false;
-          return Utilities.existsInList(codeString, "0.01", "0.05", "0.06", "0.11", "0.0", "0.0.80", "0.0.81", "0.0.82", "0.4", "0.4.0", "0.5", "0.5.0", "1.0", "1.0.0", "1.0.1", "1.0.2", "1.1", "1.1.0", "1.4", "1.4.0", "1.6", "1.6.0", "1.8", "1.8.0", "3.0", "3.0.0", "3.0.1", "3.0.2", "3.3", "3.3.0", "3.5", "3.5.0", "4.0", "4.0.0", "4.0.1", "4.1", "4.1.0", "4.2", "4.2.0", "4.3", "4.3.0", "4.3.0-cibuild", "4.3.0-snapshot1", "4.4", "4.4.0", "4.5", "4.5.0", "4.6", "4.6.0", "5.0", "5.0.0", "5.0.0-cibuild", "5.0.0-snapshot1", "5.0.0-snapshot2", "5.0.0-ballot", "5.0.0-snapshot3", "5.0.0-draft-final", "6.0", "6.0.0", "6.0.0-ballot1", "6.0.0-ballot2", "6.0.0-ballot3", "6.0.0-ballot4", "6.0.0-ballot5");
+          return Utilities.existsInList(codeString, "0.01", "0.05", "0.06", "0.11", "0.0", "0.0.80", "0.0.81", "0.0.82", "0.4", "0.4.0", "0.5", "0.5.0", "1.0", "1.0.0", "1.0.1", "1.0.2", "1.1", "1.1.0", "1.4", "1.4.0", "1.6", "1.6.0", "1.8", "1.8.0", "3.0", "3.0.0", "3.0.1", "3.0.2", "3.3", "3.3.0", "3.5", "3.5.0", "4.0", "4.0.0", "4.0.1", "4.1", "4.1.0", "4.2", "4.2.0", "4.3", "4.3.0", "4.3.0-cibuild", "4.3.0-snapshot1", "4.4", "4.4.0", "4.5", "4.5.0", "4.6", "4.6.0", "5.0", "5.0.0", "5.0.0-cibuild", "5.0.0-snapshot1", "5.0.0-snapshot2", "5.0.0-ballot", "5.0.0-snapshot3", "5.0.0-draft-final", "6.0", "6.0.0", "6.0.0-ballot1", "6.0.0-ballot2", "6.0.0-ballot3", "6.0.0-ballot4", "6.0.0-ballot5", "6.0.0-snapshot1");
         }
         public String toCode() {
           switch (this) {
@@ -17543,6 +17549,7 @@ public class Enumerations {
             case _6_0_0BALLOT3: return "6.0.0-ballot3";
             case _6_0_0BALLOT4: return "6.0.0-ballot4";
             case _6_0_0BALLOT5: return "6.0.0-ballot5";
+            case _6_0_0SNAPSHOT1: return "6.0.0-snapshot1";
             case NULL: return null;
             default: return "?";
           }
@@ -17613,6 +17620,7 @@ public class Enumerations {
             case _6_0_0BALLOT3: return "http://hl7.org/fhir/FHIR-version";
             case _6_0_0BALLOT4: return "http://hl7.org/fhir/FHIR-version";
             case _6_0_0BALLOT5: return "http://hl7.org/fhir/FHIR-version";
+            case _6_0_0SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
             case NULL: return null;
             default: return "?";
           }
@@ -17683,6 +17691,7 @@ public class Enumerations {
             case _6_0_0BALLOT3: return "R6 3rd Draft Ballot.";
             case _6_0_0BALLOT4: return "R6 1st Normative Ballot.";
             case _6_0_0BALLOT5: return "";
+            case _6_0_0SNAPSHOT1: return "R6 Snapshot #1.";
             case NULL: return null;
             default: return "?";
           }
@@ -17753,6 +17762,7 @@ public class Enumerations {
             case _6_0_0BALLOT3: return "6.0.0-ballot3";
             case _6_0_0BALLOT4: return "6.0.0-ballot4";
             case _6_0_0BALLOT5: return "6.0.0-ballot5";
+            case _6_0_0SNAPSHOT1: return "6.0.0-snapshot1";
             case NULL: return null;
             default: return "?";
           }
@@ -17916,6 +17926,8 @@ public class Enumerations {
           return FHIRVersion._6_0_0BALLOT4;
         if ("6.0.0-ballot5".equals(codeString))
           return FHIRVersion._6_0_0BALLOT5;
+        if ("6.0.0-snapshot1".equals(codeString))
+          return FHIRVersion._6_0_0SNAPSHOT1;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
 
@@ -18055,6 +18067,8 @@ public class Enumerations {
           return new Enumeration<FHIRVersion>(modelContext, this, FHIRVersion._6_0_0BALLOT4, code);
         if ("6.0.0-ballot5".equals(codeString))
           return new Enumeration<FHIRVersion>(modelContext, this, FHIRVersion._6_0_0BALLOT5, code);
+        if ("6.0.0-snapshot1".equals(codeString))
+          return new Enumeration<FHIRVersion>(modelContext, this, FHIRVersion._6_0_0SNAPSHOT1, code);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
@@ -18186,6 +18200,8 @@ public class Enumerations {
         return "6.0.0-ballot4";
       if (code == FHIRVersion._6_0_0BALLOT5)
         return "6.0.0-ballot5";
+      if (code == FHIRVersion._6_0_0SNAPSHOT1)
+        return "6.0.0-snapshot1";
       return "?";
       }
     public String toSystem(FHIRVersion code) {

@@ -918,6 +918,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
           .getDetails().setText(msg.getMessage());
       }
     }
+    ExtensionUtilities.addStringExtension(oo, ExtensionDefinitions.EXT_VALIDATOR_VERSION, ValidatorUtils.getValidatorVersionDescription());
     return oo;
   }
 

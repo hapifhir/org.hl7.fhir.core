@@ -30,6 +30,8 @@ public class InstanceValidatorParameters {
     this.outputStyle = instanceValidatorParameters.outputStyle;
     this.r5BundleRelativeReferencePolicy = instanceValidatorParameters.r5BundleRelativeReferencePolicy;
     this.extensions = new ArrayList<>(instanceValidatorParameters.extensions);
+    this.usages = new ArrayList<>(instanceValidatorParameters.usages);
+    this.launchContexts = new ArrayList<>(instanceValidatorParameters.launchContexts);
     this.wantInvariantsInMessages = instanceValidatorParameters.wantInvariantsInMessages;
     this.noInvariants = instanceValidatorParameters.noInvariants;
     this.questionnaireMode = instanceValidatorParameters.questionnaireMode;
@@ -162,6 +164,61 @@ public class InstanceValidatorParameters {
 
   public InstanceValidatorParameters addExtension(String extension) {
     this.extensions.add(extension);
+    return this;
+  }
+
+  /**
+   * Use contexts that apply to this validation, each as a code=value pair - see
+   * {@link org.hl7.fhir.validation.service.utils.UsageContextUtilities}. Held as written rather than
+   * as UsageContext so that this object stays JSON round-trippable.
+   */
+  @JsonProperty("usages")
+  @SerializedName("usages")
+  private List<String> usages = new ArrayList<String>();
+
+  @SerializedName("usages")
+  @JsonProperty("usages")
+  public List<String> getUsages() {
+    return usages;
+  }
+
+  @SerializedName("usages")
+  @JsonProperty("usages")
+  public InstanceValidatorParameters setUsages(List<String> usages) {
+    this.usages = usages;
+    return this;
+  }
+
+  public InstanceValidatorParameters addUsage(String usage) {
+    this.usages.add(usage);
+    return this;
+  }
+
+  /**
+   * Launch contexts to make available to Questionnaire processing, each as a name:reference pair -
+   * see {@link org.hl7.fhir.validation.service.utils.LaunchContextUtilities}. Held as written, both
+   * so that this object stays JSON round-trippable and because whether a reference resolves is
+   * settled where it is used, not here.
+   */
+  @JsonProperty("launchContexts")
+  @SerializedName("launchContexts")
+  private List<String> launchContexts = new ArrayList<String>();
+
+  @SerializedName("launchContexts")
+  @JsonProperty("launchContexts")
+  public List<String> getLaunchContexts() {
+    return launchContexts;
+  }
+
+  @SerializedName("launchContexts")
+  @JsonProperty("launchContexts")
+  public InstanceValidatorParameters setLaunchContexts(List<String> launchContexts) {
+    this.launchContexts = launchContexts;
+    return this;
+  }
+
+  public InstanceValidatorParameters addLaunchContext(String launchContext) {
+    this.launchContexts.add(launchContext);
     return this;
   }
 
@@ -665,6 +722,8 @@ public class InstanceValidatorParameters {
       && Objects.equals(outputStyle, that.outputStyle)
       && Objects.equals(r5BundleRelativeReferencePolicy, that.r5BundleRelativeReferencePolicy)
       && Objects.equals(extensions, that.extensions)
+      && Objects.equals(usages, that.usages)
+      && Objects.equals(launchContexts, that.launchContexts)
       && Objects.equals(questionnaireMode, that.questionnaireMode)
       && Objects.equals(level, that.level)
       && Objects.equals(bestPracticeLevel, that.bestPracticeLevel)
@@ -682,7 +741,7 @@ public class InstanceValidatorParameters {
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, timeout, checkDisplay, resourceIdRule,maxValidationMessages, codeSystemValidationSizeLimit);
+    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, usages, launchContexts, timeout, checkDisplay, resourceIdRule,maxValidationMessages, codeSystemValidationSizeLimit);
   }
 
   @Override
@@ -694,6 +753,8 @@ public class InstanceValidatorParameters {
       ", outputStyle='" + outputStyle + '\'' +
       ", r5BundleRelativeReferencePolicy=" + r5BundleRelativeReferencePolicy +
       ", extensions=" + extensions +
+      ", usages=" + usages +
+      ", launchContexts=" + launchContexts +
       ", wantInvariantsInMessages=" + wantInvariantsInMessages +
       ", noInvariants=" + noInvariants +
       ", questionnaireMode=" + questionnaireMode +
