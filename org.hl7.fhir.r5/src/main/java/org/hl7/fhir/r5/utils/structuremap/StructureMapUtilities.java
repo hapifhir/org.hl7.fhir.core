@@ -3144,7 +3144,7 @@ public class StructureMapUtilities {
         StructureDefinition sd = worker.fetchResource(StructureDefinition.class, imp.getUrl(), ExtensionUtilities.getVersionResolutionRules(imp.getUrlElement()));
         if (sd == null)
           throw new FHIRException("Import " + imp.getUrl() + " cannot be resolved");
-        if (sd.getId().equals(type)) {
+        if ((imp.hasAlias() && imp.getAlias().equals(type)) || sd.getId().equals(type) || sd.getType().equals(type)) {
           return new PropertyWithType(sd.getType(), new Property(worker, sd.getSnapshot().getElement().get(0), sd), null, new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl()));
         }
       }
