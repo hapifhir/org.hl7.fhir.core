@@ -1096,7 +1096,7 @@ if (type != null && type.startsWith(TypeDetails.FP_NS)) {
         }        
       }
     }
-    if (srcED != null) {
+    if (tgtED != null) {
       if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, tgtED.getBinding().hasValueSet() && tgtED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_TARGET)) {
         ValueSet vs = context.findTxResource(ValueSet.class, tgtED.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(tgtED.getBinding().getValueSetElement()));
         if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vs != null, I18nConstants.SM_TARGET_TRANSLATE_BINDING_VS_TARGET, tgtED.getBinding().getValueSet())) {
@@ -1116,7 +1116,7 @@ if (type != null && type.startsWith(TypeDetails.FP_NS)) {
               }
             }
             if (b.count() > 0) {
-              warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, srcED.getBinding().hasValueSet() && srcED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_TARGET_WRONG, b.toString());
+              warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, tgtED.getBinding().hasValueSet() && tgtED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_TARGET_WRONG, b.toString());
             }
           }          
         }        
