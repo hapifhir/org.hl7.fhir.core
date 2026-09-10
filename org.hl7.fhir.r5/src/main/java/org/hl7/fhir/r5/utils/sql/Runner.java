@@ -95,6 +95,18 @@ public class Runner implements IHostApplicationServices {
   private List<ValidationMessage> issues;
   private int resCount;
 
+  /**
+   * Cap on the nesting depth of the repeat directive, protecting against cyclical repeat
+   * paths such as $this. Far deeper than any real FHIR resource nests.
+   */
+  private int maxRepeatDepth = 100;
+
+  /**
+   * Cap on the number of nodes a repeat directive may collect, protecting against repeat
+   * paths whose output grows exponentially with nesting depth, such as descendants().
+   */
+  private int maxRepeatNodes = 100000;
+
 
   public IWorkerContext getContext() {
     return context;
@@ -115,6 +127,32 @@ public class Runner implements IHostApplicationServices {
   }
   public void setStorage(Storage storage) {
     this.storage = storage;
+  }
+
+  /**
+   * The maximum nesting depth the repeat directive will traverse. Raising it increases
+   * the risk of deep, cyclical recursion.
+   *
+   * @param maxRepeatDepth the maximum nesting depth; must be at least 1
+   */
+  public void setMaxRepeatDepth(int maxRepeatDepth) {
+    if (maxRepeatDepth < 1) {
+      throw new IllegalArgumentException("maxRepeatDepth must be at least 1");
+    }
+    this.maxRepeatDepth = maxRepeatDepth;
+  }
+
+  /**
+   * The maximum number of nodes a repeat directive may collect. Raising it increases the
+   * risk of unbounded time and memory consumption.
+   *
+   * @param maxRepeatNodes the maximum number of nodes; must be at least 1
+   */
+  public void setMaxRepeatNodes(int maxRepeatNodes) {
+    if (maxRepeatNodes < 1) {
+      throw new IllegalArgumentException("maxRepeatNodes must be at least 1");
+    }
+    this.maxRepeatNodes = maxRepeatNodes;
   }
 
   public List<String> getProhibitedNames() {
@@ -336,16 +374,41 @@ public class Runner implements IHostApplicationServices {
     List<ExpressionNode> nodes = (List<ExpressionNode>) focus.getUserData(UserDataNames.db_repeat);
     List<Base> result = new ArrayList<>();
     if (nodes != null && b != null) {
-      expandRepeat(ctx, b, nodes, result);
+      expandRepeat(ctx, b, nodes, result, 0);
     }
     return result;
   }
 
-  private void expandRepeat(ExecutionContext ctx, Base b, List<ExpressionNode> nodes, List<Base> result) {
+  /**
+   * Collects the nodes matched by the repeat directive, depth-first. The root node is
+   * not included; a node reached by more than one path is added once per path, matching
+   * the spec algorithm and the reference implementation.
+   *
+   * <p>Recursion is bounded so that a cyclical path such as $this stops with a
+   * FHIRException (an Exception, which callers catch) rather than a StackOverflowError,
+   * and an expression whose output grows exponentially with nesting depth, such as
+   * descendants(), cannot consume unbounded time and memory.
+   *
+   * @param ctx the evaluation context threaded through the select recursion
+   * @param b the node whose children are being visited
+   * @param nodes the repeat path expressions
+   * @param result the nodes collected so far
+   * @param depth the nesting depth of b below the repeat root
+   * @throws FHIRException when the depth or node limit is hit
+   */
+  private void expandRepeat(ExecutionContext ctx, Base b, List<ExpressionNode> nodes, List<Base> result, int depth) {
+    if (depth >= maxRepeatDepth) {
+      throw new FHIRException("ViewDefinition repeat reached the maximum nesting depth of " + maxRepeatDepth
+          + "; the repeat expressions are likely cyclical (for example, a path that matches its own result)");
+    }
     for (ExpressionNode node : nodes) {
       for (Base child : fpe.evaluate(ctx, b, node)) {
+        if (result.size() >= maxRepeatNodes) {
+          throw new FHIRException("ViewDefinition repeat produced more than " + maxRepeatNodes
+              + " nodes; constrain the repeat expressions or raise the configured limit");
+        }
         result.add(child);
-        expandRepeat(ctx, child, nodes, result);
+        expandRepeat(ctx, child, nodes, result, depth + 1);
       }
     }
   }

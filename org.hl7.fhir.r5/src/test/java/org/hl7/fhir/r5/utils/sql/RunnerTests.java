@@ -120,4 +120,69 @@ class RunnerTests {
     assertEquals(1, storage.getResults().size());
     assertTrue(((JsonObject) storage.getResults().get(0)).get("s") instanceof JsonNull);
   }
+
+  // A cyclical repeat expression such as ["$this"] would otherwise recurse until the stack
+  // overflows; StackOverflowError is an Error, so it escapes the publisher's catch (Exception)
+  // and kills the whole build. The runner must stop with a FHIRException instead.
+  @Test
+  void cyclicalRepeatFailsWithFhirException() throws Exception {
+    TestStorage storage = new TestStorage();
+    TestProvider provider = new TestProvider();
+    provider.addResource(parseResource("{\"resourceType\":\"Patient\",\"id\":\"p1\",\"gender\":\"male\"}"));
+    Runner runner = newRunner(provider, storage);
+    JsonObject view = JsonParser.parseObject("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"status\":\"active\","
+        + "\"resource\":\"Patient\",\"select\":[{\"repeat\":[\"$this\"],"
+        + "\"column\":[{\"name\":\"id\",\"path\":\"id\"}]}]}");
+
+    FHIRException e = assertThrows(FHIRException.class, () -> runner.execute(view));
+    assertTrue(e.getMessage().contains("repeat"), e.getMessage());
+  }
+
+  // The number of nodes a repeat collects must be capped, so that an expression
+  // such as ["descendants()"], whose output grows exponentially with nesting depth,
+  // cannot consume unbounded time and memory. The limit is configurable so callers
+  // can tune it; the default is far above what legitimate views produce.
+  @Test
+  void repeatBeyondNodeLimitFailsWithFhirException() throws Exception {
+    TestStorage storage = new TestStorage();
+    TestProvider provider = new TestProvider();
+    provider.addResource(parseResource(
+        "{\"resourceType\":\"Patient\",\"id\":\"p1\",\"name\":[{\"family\":\"a\"},{\"family\":\"b\"},"
+            + "{\"family\":\"c\"},{\"family\":\"d\"},{\"family\":\"e\"},{\"family\":\"f\"}]}"));
+    Runner runner = newRunner(provider, storage);
+    runner.setMaxRepeatNodes(3);
+    JsonObject view = JsonParser.parseObject("{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"status\":\"active\","
+        + "\"resource\":\"Patient\",\"select\":[{\"repeat\":[\"name\"],"
+        + "\"column\":[{\"name\":\"f\",\"path\":\"family\"}]}]}");
+
+    FHIRException e = assertThrows(FHIRException.class, () -> runner.execute(view));
+    assertTrue(e.getMessage().contains("repeat"), e.getMessage());
+  }
+
+  // Legitimate nesting far deeper than any real FHIR resource must still be traversed
+  // in full; the depth limit must not reject reasonable views.
+  @Test
+  void repeatTraversesDeeplyNestedItems() throws Exception {
+    int depth = 50;
+    StringBuilder resource = new StringBuilder(
+        "{\"resourceType\":\"QuestionnaireResponse\",\"id\":\"q1\",\"status\":\"completed\"");
+    for (int i = 0; i < depth; i++) {
+      resource.append(",\"item\":[{\"linkId\":\"i").append(i).append("\"");
+    }
+    for (int i = 0; i < depth; i++) {
+      resource.append("}]");
+    }
+    resource.append("}");
+    TestStorage storage = new TestStorage();
+    TestProvider provider = new TestProvider();
+    provider.addResource(parseResource(resource.toString()));
+    Runner runner = newRunner(provider, storage);
+    JsonObject view = JsonParser.parseObject(
+        "{\"resourceType\":\"ViewDefinition\",\"name\":\"t\",\"status\":\"active\",\"resource\":\"QuestionnaireResponse\","
+            + "\"select\":[{\"repeat\":[\"item\"],\"column\":[{\"name\":\"linkId\",\"path\":\"linkId\"}]}]}");
+
+    runner.execute(view);
+
+    assertEquals(depth, storage.getResults().size(), "one row per nested item");
+  }
 }
