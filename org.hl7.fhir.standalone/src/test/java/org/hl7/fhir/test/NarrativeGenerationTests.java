@@ -235,7 +235,7 @@ public class NarrativeGenerationTests {
 
   @BeforeAll
   static void setUp() throws IOException {
-    var simpleContext = TestingUtilities.getSharedWorkerContext("6.0.0-ballot5");
+    var simpleContext = TestingUtilities.getSharedWorkerContext("6.0.0-snapshot1");
     simpleContext.connectToTSServer(new TerminologyClientR6.TerminologyClientR6Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
     context = simpleContext;
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
