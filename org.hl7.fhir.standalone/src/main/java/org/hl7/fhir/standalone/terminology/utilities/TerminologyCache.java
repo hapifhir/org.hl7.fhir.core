@@ -349,7 +349,7 @@ public class TerminologyCache {
      * file described by {@link #NONCE_FILE_EXTENSION}. Null when we have never touched the
      * file, or when writing the nonce failed. If the partner file no longer carries this
      * value, another process has rewritten the cache and we must merge before saving over the
-     * top - see {@link #mergeFromDisk}.
+     * top - see {@link #mergeWithDiskCache}.
      */
     private String nonce = null;
 
@@ -977,12 +977,12 @@ public class TerminologyCache {
 
     try {
       String target = Utilities.path(folder, title + CACHE_FILE_EXTENSION);
-      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target));
-           OutputStreamWriter tempFileWriter = new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8)) {
-        JsonParser jsonParser = new JsonParser(context);
-        jsonParser.setOutputStyle(OutputStyle.PRETTY);
-
-        tempFileWriter.write(jsonParser.composeString(resource).trim());
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target))) {
+        try (OutputStreamWriter tempFileWriter = new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8)) {
+          JsonParser jsonParser = new JsonParser(context);
+          jsonParser.setOutputStyle(OutputStyle.PRETTY);
+          tempFileWriter.write(jsonParser.composeString(resource).trim());
+        }
         FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
         tempFile.setDeleted();
       }
@@ -1002,20 +1002,6 @@ public class TerminologyCache {
    */
   private String tempFileFor(String target) {
     return target + "." + UUID.randomUUID().toString() + TEMP_FILE_EXTENSION;
-  }
-
-  /**
-   * Remove a scratch file that never made it into place. Best effort: an orphan is harmless
-   * (load() ignores it) and only survives a hard kill mid-save.
-   */
-  private void deleteQuietly(String path) {
-    if (path != null) {
-      try {
-        ManagedFileAccess.file(path).delete();
-      } catch (Exception e) {
-        // nothing useful to do
-      }
-    }
   }
 
   /**
@@ -1075,23 +1061,54 @@ public class TerminologyCache {
    * @return true if it was written
    */
   private boolean writeNonce(String name, String nonce, long length) {
-    String temp = null;
     try {
       String target = Utilities.path(folder, name+NONCE_FILE_EXTENSION);
-      temp = tempFileFor(target);
-      try (BufferedWriter w = new BufferedWriter(new OutputStreamWriter(
-          ManagedFileAccess.outStream(temp), StandardCharsets.UTF_8))) {
-        w.write("# nonce for "+name+CACHE_FILE_EXTENSION+" - local bookkeeping, safe to delete, do not commit\r\n");
-        w.write(nonce+" "+length+"\r\n");
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target))) {
+        try (BufferedWriter w = new BufferedWriter(new OutputStreamWriter(
+            ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8))) {
+          w.write("# nonce for "+name+CACHE_FILE_EXTENSION+" - local bookkeeping, safe to delete, do not commit\r\n");
+          w.write(nonce+" "+length+"\r\n");
+        }
+        FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
+        tempFile.setDeleted();
       }
-      FileUtilities.replaceFileAtomically(ManagedFileAccess.file(temp), ManagedFileAccess.file(target));
-      temp = null;
       return true;
     } catch (Exception e) {
       log.debug("Unable to write the nonce for "+name+" ("+e.getMessage()+") - the next save will merge from disk");
       return false;
-    } finally {
-      deleteQuietly(temp);
+    }
+  }
+
+  /**
+   * Deletes the scratch file it wraps on close(), unless {@link #setDeleted()} has been called -
+   * i.e. cleans up a save's temp file if the save didn't reach the atomic rename.
+   */
+  private static final class AutoCloseableTempFile implements AutoCloseable {
+    private final String filePath;
+    private boolean isDeleted = false;
+
+    private AutoCloseableTempFile(String path) {
+      this.filePath = path;
+    }
+
+    String getFilePath() {
+      return filePath;
+    }
+
+    void setDeleted() {
+      isDeleted = true;
+    }
+
+    @Override
+    public void close() {
+      if (!isDeleted && filePath != null) {
+          try {
+            ManagedFileAccess.file(filePath).delete();
+          } catch (Exception e) {
+            log.debug("Exception deleting " + filePath + " after try-catch", e);
+          }
+        }
+
     }
   }
 
@@ -1183,111 +1200,27 @@ public class TerminologyCache {
     // the new one, never a truncated one. See FileUtilities.replaceFileAtomically.
     boolean saved = false;
     try {
-      String target = Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION);
-      temp = tempFileFor(target);
-      sw = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(temp), "UTF-8"));
-      sw.write(ENTRY_MARKER+"\r\n");
-      JsonParser json = new JsonParser(context);
-      json.setOutputStyle(OutputStyle.PRETTY);
-      for (CacheEntry ce : nc.list) {
-        sw.write(ce.request.trim());
-        sw.write(BREAK+"\r\n");
-        if (ce.e != null) {
-          sw.write("e: {\r\n");
-          if (ce.e.isFromServer()) {
-            sw.write("  \"from-server\" : true,\r\n");
+      String target = Utilities.path(folder, namedCache.name+CACHE_FILE_EXTENSION);
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target))) {
+        // the writer has to be closed - so everything is flushed - before the swap, or the file
+        // that lands in place can be missing its tail (and on Windows the move of a file that is
+        // still open fails outright)
+        try (BufferedWriter tempFileWriter = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8))) {
+          tempFileWriter.write(ENTRY_MARKER+"\r\n");
+          JsonParser jsonParser = new JsonParser(context);
+          jsonParser.setOutputStyle(OutputStyle.PRETTY);
+          for (CacheEntry cacheEntry : namedCache.list) {
+            writeCacheEntryToFile(cacheEntry, tempFileWriter, jsonParser);
           }
-          if (ce.e.getErrorClass() != null) {
-            sw.write("  \"class\" : \""+ce.e.getErrorClass().toString()+"\",\r\n");
-          }
-          if (ce.e.getValueset() != null) {
-            if (ce.e.getValueset().hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
-              sw.write("  \"source\" : "+Utilities.escapeJson(ce.e.getValueset().getUserString(UserDataNames.VS_EXPANSION_SOURCE)).trim()+",\r\n");              
-            }
-            sw.write("  \"valueSet\" : "+json.composeString(ce.e.getValueset()).trim()+",\r\n");
-          }
-          sw.write("  \"error\" : \""+Utilities.escapeJson(ce.e.getError()).trim()+"\"\r\n}\r\n");
-        } else if (ce.s != null) {
-          sw.write("s: {\r\n");
-          sw.write("  \"result\" : "+ce.s.result+"\r\n}\r\n");
-        } else {
-          sw.write("v: {\r\n");
-          boolean first = true;
-          if (ce.v.getDisplay() != null) {            
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"display\" : \""+Utilities.escapeJson(ce.v.getDisplay()).trim()+"\"");
-          }
-          if (ce.v.getCode() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"code\" : \""+Utilities.escapeJson(ce.v.getCode()).trim()+"\"");
-          }
-          if (ce.v.getSystem() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"system\" : \""+Utilities.escapeJson(ce.v.getSystem()).trim()+"\"");
-          }
-          if (ce.v.getVersion() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"version\" : \""+Utilities.escapeJson(ce.v.getVersion()).trim()+"\"");
-          }
-          if (ce.v.getSeverity() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"severity\" : "+"\""+ce.v.getSeverity().toCode().trim()+"\""+"");
-          }
-          if (ce.v.getMessage() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"error\" : \""+Utilities.escapeJson(ce.v.getMessage()).trim()+"\"");
-          }
-          if (ce.v.getErrorClass() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"class\" : \""+Utilities.escapeJson(ce.v.getErrorClass().toString())+"\"");
-          }
-          if (ce.v.getDefinition() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"definition\" : \""+Utilities.escapeJson(ce.v.getDefinition()).trim()+"\"");
-          }
-          if (ce.v.getStatus() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"status\" : \""+Utilities.escapeJson(ce.v.getStatus()).trim()+"\"");
-          }
-          if (ce.v.getServer() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"server\" : \""+Utilities.escapeJson(ce.v.getServer()).trim()+"\"");
-          }
-          if (ce.v.isInactive()) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"inactive\" : true");
-          }
-          if (ce.v.getDiagnostics() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"diagnostics\" : \""+Utilities.escapeJson(ce.v.getDiagnostics()).trim()+"\"");
-          }
-          if (ce.v.getUnknownSystems() != null && ce.v.getUnknownSystems().size() > 0) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"unknown-systems\" : \""+Utilities.escapeJson(CommaSeparatedStringBuilder.join(",", ce.v.getUnknownSystems())).trim()+"\"");
-          }
-          if (ce.v.getParameters() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"parameters\" : "+json.composeString(ce.v.getParameters()).trim()+"\r\n");
-          }
-          if (ce.v.getIssues() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            OperationOutcome oo = new OperationOutcome();
-            oo.setIssueList(ce.v.getIssues());
-            sw.write("  \"issues\" : "+json.composeString(oo).trim()+"\r\n");
-          }
-          sw.write("\r\n}\r\n");
         }
-        sw.write(ENTRY_MARKER+"\r\n");
-      }      
-      sw.close();
-      sw = null;
-      FileUtilities.replaceFileAtomically(ManagedFileAccess.file(temp), ManagedFileAccess.file(target));
-      temp = null;
+        FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
+        tempFile.setDeleted();
+      }
       // The nonce goes in the partner file, and only once the cache itself is in place: if we
       // die between the two, the nonce is stale or missing and the next save merges, which is
       // the safe way round.
       String nonce = UUID.randomUUID().toString();
-      nc.nonce = writeNonce(nc.name, nonce, ManagedFileAccess.file(target).length()) ? nonce : null;
+      namedCache.nonce = writeNonce(namedCache.name, nonce, ManagedFileAccess.file(target).length()) ? nonce : null;
       saved = true;
     } catch (Exception e) {
       log.error("error saving "+namedCache.name+": "+e.getMessage(), e);
