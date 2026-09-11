@@ -272,7 +272,7 @@ public class ValidationEngineTests {
       System.out.println("  .. load USCore");
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "observation301.xml"), null);
     Assertions.assertTrue(checkOutcomes("test301", op,
-        "warning/not-found @ Observation.code.coding[3].system: A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated (context: http://hl7.org/fhir/StructureDefinition/Observation)\n" +
+        "warning/not-found @ Observation.code.coding[3].system: A definition for the code system 'http://acme.org/devices/clinical-codes' could not be found, so this coding was not checked. The CodeableConcept is still valid: another coding is in the value set (context: http://hl7.org/fhir/StructureDefinition/Observation)\n" +
           "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer"));
     verifyNoTerminologyRequests(logger);
   }
