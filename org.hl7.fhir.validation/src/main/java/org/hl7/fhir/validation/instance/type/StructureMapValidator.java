@@ -1087,6 +1087,10 @@ public class StructureMapValidator extends BaseValidator {
     } else if (rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, parameterName)) {
       if ("id".equals(e.fhirType())) {
         VariableDefn sv = variables.getVariable(e.getValue(), true);
+        if (sv == null) {
+          // the variable could also be in an output parameter
+          sv = variables.getVariable(e.getValue(), false);
+        }
         ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), sv != null, I18nConstants.SM_TARGET_TRANSFORM_OP_UNKNOWN_SOURCE, transform, parameterName, e.getValue()) && ok;
       } else {
         ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e.isPrimitive(), I18nConstants.SM_TARGET_TRANSFORM_OP_INVALID_TYPE, transform, parameterName, e.fhirType()) && ok;
@@ -1104,6 +1108,10 @@ public class StructureMapValidator extends BaseValidator {
     } else if (rule(errors, "2026-08-31", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, parameterName)) {
       if ("id".equals(e.fhirType())) {
         VariableDefn sv = variables.getVariable(e.getValue(), true);
+        if (sv == null) {
+          // the variable could also be in an output parameter
+          sv = variables.getVariable(e.getValue(), false);
+        }
         ok = rule(errors, "2026-08-31", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), sv != null, I18nConstants.SM_TARGET_TRANSFORM_OP_UNKNOWN_SOURCE, transform, parameterName, e.getValue()) && ok;
       } else {
         ok = rule(errors, "2026-08-31", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e.isPrimitive(), I18nConstants.SM_TARGET_TRANSFORM_OP_INVALID_TYPE, transform, parameterName, e.fhirType()) && ok;
