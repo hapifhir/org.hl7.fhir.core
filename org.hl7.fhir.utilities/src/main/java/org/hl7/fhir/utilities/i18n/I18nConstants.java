@@ -784,6 +784,9 @@ public class I18nConstants {
   public static final String SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___DISCIMINATOR___ = "Slicing_rules_on_differential__do_not_match_those_on_base___disciminator___";
   public static final String SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___ORDER___ = "Slicing_rules_on_differential__do_not_match_those_on_base___order___";
   public static final String SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___RULE___ = "Slicing_rules_on_differential__do_not_match_those_on_base___rule___";
+  public static final String SM_CONSTANT_NAME_MISSING = "SM_CONSTANT_NAME_MISSING";
+  public static final String SM_CONSTANT_VALUE_MISSING = "SM_CONSTANT_VALUE_MISSING";
+  public static final String SM_CONSTANT_TYPE_UNDETERMINED = "SM_CONSTANT_TYPE_UNDETERMINED";
   public static final String SM_DEPENDENT_PARAM_MODE_MISMATCH = "SM_DEPENDENT_PARAM_MODE_MISMATCH";
   public static final String SM_DEPENDENT_PARAM_NOT_FOUND = "SM_DEPENDENT_PARAM_NOT_FOUND";
   public static final String SM_DEPENDENT_PARAM_TYPE_MISMATCH = "SM_DEPENDENT_PARAM_TYPE_MISMATCH";

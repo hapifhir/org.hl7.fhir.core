@@ -821,35 +821,51 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   private StructureDefinition getSourceResourceFromStructureMap(StructureMap map) {
-	StructureMap.StructureMapGroupComponent g = map.getGroup().get(0);
-	String type = null;
-	for (StructureMap.StructureMapGroupInputComponent inp : g.getInput()) {
-	  if (inp.getMode() == StructureMap.StructureMapInputMode.SOURCE)
-	    if (type != null)
-	      throw new DefinitionException("This engine does not support multiple source inputs");
-	    else
-	      type = inp.getType();
-	}
+    StructureMap.StructureMapGroupComponent g = map.getGroup().get(0);
+    String type = null;
+    for (StructureMap.StructureMapGroupInputComponent inp : g.getInput()) {
+      if (inp.getMode() == StructureMap.StructureMapInputMode.SOURCE)
+        if (type != null)
+          throw new DefinitionException("This engine does not support multiple source inputs");
+        else
+          type = inp.getType();
+    }
 
-	String sourceTypeUrl = null;
-	for (StructureMap.StructureMapStructureComponent component : map.getStructure()) {
-	  if (component.getMode() == StructureMap.StructureMapModelMode.SOURCE
-	      && component.getAlias().equalsIgnoreCase(type)) {
-	    sourceTypeUrl = component.getUrl();
-	    break;
-	  }
-	}
+    // Check if the source type is one of the aliased types in the structure map.
+    // (and lookup the StructureDefinition for that type)
+    String sourceTypeUrl = null;
+    for (StructureMap.StructureMapStructureComponent component : map.getStructure()) {
+      if (component.getMode() == StructureMap.StructureMapModelMode.SOURCE) {
+        if (component.hasAlias() && component.getAlias().equalsIgnoreCase(type)) {
+          sourceTypeUrl = component.getUrl();
+          break;
+        }
+      }
+    }
 
-	StructureDefinition structureDefinition = null;
-	for (StructureDefinition sd : this.context.fetchResourcesByType(StructureDefinition.class)) {
-	  if (sd.getUrl().equalsIgnoreCase(sourceTypeUrl)) {
-	    structureDefinition = sd;
-	  	break;
-	  }
-	}
+    StructureDefinition structureDefinition = null;
+    for (StructureDefinition sd : this.context.fetchResourcesByType(StructureDefinition.class)) {
+      if (sourceTypeUrl != null) {
+        if (sd.getUrl().equalsIgnoreCase(sourceTypeUrl)) {
+          structureDefinition = sd;
+          break;
+        }
+      } else {
+        // handle any parameter types that weren't "used" with an alias
+        for (StructureMap.StructureMapStructureComponent component : map.getStructure()) {
+          if (component.getMode() == StructureMap.StructureMapModelMode.SOURCE) {
+            if (sd.getUrl().equalsIgnoreCase(component.getUrl()) && sd.getName().equalsIgnoreCase(type)) {
+              structureDefinition = sd;
+              break;
+            }
+          }
+        }
+      }
+    }
 
-	if (structureDefinition == null) throw new FHIRException("Unable to find StructureDefinition for source type ('" + sourceTypeUrl + "')");
-	return structureDefinition;
+    if (structureDefinition == null)
+      throw new FHIRException("Unable to find StructureDefinition for source type ('" + sourceTypeUrl + "')");
+    return structureDefinition;
   }
 
 

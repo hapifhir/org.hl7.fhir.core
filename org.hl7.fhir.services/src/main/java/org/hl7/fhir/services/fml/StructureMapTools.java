@@ -2088,7 +2088,7 @@ public class StructureMapTools {
       type = new TypeDetails(CollectionStatus.SINGLETON, vp.getType(tgt.getElementName()));
     }
 
-    if (tgt.getTransform() == StructureMap.StructureMapTransform.CREATE) {
+    if (tgt.getTransform() == StructureMap.StructureMapTransform.CREATE && tgt.hasParameter()) {
       String s = getParamString(vars, tgt.getParameterList().get(0));
       if (worker.getResourceNames().contains(s))
         tw.newResource(tgt.getVariable(), s);
@@ -2331,8 +2331,14 @@ public class StructureMapTools {
     var tgtParameters = tgt.getParameterList();
     switch (tgt.getTransform()) {
       case CREATE:
-        if (tgtParameters.size() != 1)
+        if (tgtParameters.size() > 1)
           throw new FHIRException("Transform " + tgt.getTransform().toCode() + " requires exactly 1 parameter");
+        if (tgtParameters.isEmpty()) {
+          Property targetProperty = var.getProperty().getBaseProperty().getChild(tgt.getElementName(), tgt.getElementName());
+          if (targetProperty == null)
+            throw new FHIRException("Unknown Property " + tgt.getElementName() + " on " + var.getProperty().getPath());
+          return new TypeDetails(CollectionStatus.SINGLETON, targetProperty.getType(tgt.getElementName()));
+        }
         String p = getParamString(vars, tgtParameters.get(0));
         return new TypeDetails(CollectionStatus.SINGLETON, p);
       case COPY:
