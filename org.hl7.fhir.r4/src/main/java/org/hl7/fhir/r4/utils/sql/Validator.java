@@ -67,7 +67,7 @@ public class Validator {
   }
 
 
-  @SuppressWarnings("checkstyle:patternUsage")
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
   // safe against ReDoS: no nested/overlapping quantifiers, matches in linear time
   private static final Pattern SQL_NAME = Pattern.compile("^[A-Za-z][A-Za-z0-9_]*$");
   private static final String STRUCTURE_DEFINITION_NS = "http://hl7.org/fhir/StructureDefinition/";
