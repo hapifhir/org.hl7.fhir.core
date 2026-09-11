@@ -187,7 +187,7 @@ public class MeasureValidator extends BaseValidator {
           ok = false;
         }
         if (lib != null) {
-          if (rule(errors, NO_RULE_DATE, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), lib.hasUserData(MeasureContext.USER_DATA_ELM), I18nConstants.MEASURE_M_CRITERIA_CQL_NO_ELM, lib.getUrl())) {
+          if (warning(errors, NO_RULE_DATE, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), lib.hasUserData(MeasureContext.USER_DATA_ELM), I18nConstants.MEASURE_M_CRITERIA_CQL_NO_ELM, lib.getUrl())) {
             if (lib.getUserData(MeasureContext.USER_DATA_ELM) instanceof String) {
               ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), false, I18nConstants.MEASURE_M_CRITERIA_CQL_ERROR, lib.getUrl(), lib.getUserString(MeasureContext.USER_DATA_ELM)) && ok;            
             } else if (lib.getUserData(MeasureContext.USER_DATA_ELM) instanceof Document) {
@@ -511,9 +511,9 @@ public class MeasureValidator extends BaseValidator {
         }
         if ("cohort".equals(m.scoring(mg))) {
           // cohort - score is a unitless number >= 0
-          ok = banned(errors, ns, ms, "unit", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "cohort");
-          ok = banned(errors, ns, ms, "system", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "cohort");
-          ok = banned(errors, ns, ms, "code", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "cohort");
+          ok = banned(errors, ns, ms, "unit", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "cohort") && ok;
+          ok = banned(errors, ns, ms, "system", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "cohort") && ok;
+          ok = banned(errors, ns, ms, "code", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "cohort") && ok;
           if (rule(errors, NO_RULE_DATE, IssueType.REQUIRED, ms.line(), ms.col(), ns.getLiteralPath(), v != null, I18nConstants.MEASURE_MR_SCORE_VALUE_REQUIRED, "cohort")) {
             try {
               BigDecimal dec = new BigDecimal(v.primitiveValue());
@@ -527,9 +527,9 @@ public class MeasureValidator extends BaseValidator {
           }
         } else if ("proportion".equals(m.scoring(mg))) {
           //  proportion - score is a unitless number from 0 ... 1
-          ok = banned(errors, ns, ms, "unit", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "proportion");
-          ok = banned(errors, ns, ms, "system", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "proportion");
-          ok = banned(errors, ns, ms, "code", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "proportion");
+          ok = banned(errors, ns, ms, "unit", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "proportion") && ok;
+          ok = banned(errors, ns, ms, "system", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "proportion") && ok;
+          ok = banned(errors, ns, ms, "code", I18nConstants.MEASURE_MR_SCORE_UNIT_PROHIBITED, "proportion") && ok;
           if (rule(errors, NO_RULE_DATE, IssueType.REQUIRED, ms.line(), ms.col(), ns.getLiteralPath(), v != null, I18nConstants.MEASURE_MR_SCORE_VALUE_REQUIRED, "proportion")) {
             try {
               BigDecimal dec = new BigDecimal(v.primitiveValue());

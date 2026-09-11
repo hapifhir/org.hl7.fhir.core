@@ -3,7 +3,11 @@ package org.hl7.fhir.validation.instance.type;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +19,13 @@ import org.fhir.ucum.UcumException;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DateType;
@@ -56,7 +63,13 @@ import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+import org.hl7.fhir.validation.service.utils.Common;
+import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator.EnableWhenOutcome;
 import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator.QStack;
 
 import ca.uhn.fhir.util.ObjectUtil;
@@ -547,7 +560,8 @@ public class QuestionnaireValidator extends BaseValidator {
       if (qok) {
         boolean notCompleted = !Utilities.existsInList(element.getNamedChildValue("status", false), "completed", "amended");
         ok = checkAuthoringDate(errors,  stack, element, qsrc.q) && ok;
-        ok = validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.q().getItem(), errors, element, stack, notCompleted, element, new QStack(qsrc, element)) && ok;
+        ok = validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.q().getItem(), errors, element, stack, notCompleted, element,
+            new QStack(qsrc, element, loadLaunchContexts(errors, element, stack, qsrc.q()))) && ok;
       }
     }
     return ok;
@@ -593,13 +607,16 @@ public class QuestionnaireValidator extends BaseValidator {
       ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, answers.get(1).line(), answers.get(1).col(), stack.getLiteralPath(), qItem.getRepeats(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEA));
     }
 
+    // maxOccurs and minOccurs are inclusive bounds: a maximum of 2 permits 2 answers, and a
+    // minimum of 2 is satisfied by 2 answers. The condition here is the condition to PASS,
+    // so the comparisons must not be strict (see #2314)
     if (qItem.hasExtension(ExtensionDefinitions.EXT_MAXOCCURS)) {
       int mo = ExtensionUtilities.readIntegerExtension(qItem, ExtensionDefinitions.EXT_MAXOCCURS, -1);
-      ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, stack, mo < 0 || answers.size() < mo, I18nConstants.QUESTIONNAIRE_QR_ITEM_MAX_OCCURS, mo, answers.size()));      
+      ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, stack, mo < 0 || answers.size() <= mo, I18nConstants.QUESTIONNAIRE_QR_ITEM_MAX_OCCURS, mo, answers.size()));      
     }
     if (qItem.hasExtension(ExtensionDefinitions.EXT_MINOCCURS)) {
       int mo = ExtensionUtilities.readIntegerExtension(qItem, ExtensionDefinitions.EXT_MINOCCURS, -1);
-      ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, stack, mo < 0 || answers.size() > mo, I18nConstants.QUESTIONNAIRE_QR_ITEM_MIN_OCCURS, mo, answers.size()));      
+      ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, stack, mo < 0 || answers.size() >= mo, I18nConstants.QUESTIONNAIRE_QR_ITEM_MIN_OCCURS, mo, answers.size()));      
     }
     
     int i = 0;
@@ -661,12 +678,12 @@ public class QuestionnaireValidator extends BaseValidator {
           case CODING:
             String itemType = validateQuestionnaireResponseItemType(errors, answer, ns, ok, "Coding", "date", "time", "integer", "string");
             if (itemType != null) {
-              if (itemType.equals("Coding")) validateAnswerCode(errors, answer, ns, qsrc, qItem, false, answers.size());
+              if (itemType.equals("Coding")) ok.see(validateAnswerCode(errors, answer, ns, qsrc, qItem, constraintOf(qItem), answers.size()));
               else if (itemType.equals("date")) checkOption(errors, answer, ns, qsrc, qItem, "date", answers.size());
               else if (itemType.equals("time")) checkOption(errors, answer, ns, qsrc, qItem, "time", answers.size());
               else if (itemType.equals("integer"))
                 ok.see(checkOption(errors, answer, ns, qsrc, qItem, "integer", answers.size()));
-              else if (itemType.equals("string")) checkOption(errors, answer, ns, qsrc, qItem, "string", answers.size());
+              else if (itemType.equals("string")) ok.see(checkOption(errors, answer, ns, qsrc, qItem, "string", answers.size()));
             }
             break;
 //          case OPENCHOICE:
@@ -740,6 +757,109 @@ public class QuestionnaireValidator extends BaseValidator {
     return -1;
   }
 
+  private static final String EXT_SDC_LAUNCH_CONTEXT = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-launchContext";
+
+  /**
+   * Work out which launch contexts are available for the expressions in this QuestionnaireResponse.
+   *
+   * <p>The questionnaire declares what it wants, by name and type; the caller supplies references
+   * for whatever names it can (see ValidatorSettings.getLaunchContexts() and -launch-context). Only
+   * the names the questionnaire declares are looked at, so a caller can pass one set of launch
+   * contexts for a batch of questionnaires that each use different ones without being told off for
+   * the ones that don't apply.
+   *
+   * <p>This runs once per QuestionnaireResponse rather than once per expression, so a reference that
+   * can't be loaded is reported once, not once for every item that wanted it.
+   */
+  private Map<String, List<Base>> loadLaunchContexts(List<ValidationMessage> errors, Element element, NodeStack stack, Questionnaire q) {
+    Map<String, List<Base>> res = new HashMap<>();
+    if (q == null || settings.getLaunchContexts().isEmpty()) {
+      return res;
+    }
+    for (Extension ext : q.getExtensionsByUrl(EXT_SDC_LAUNCH_CONTEXT)) {
+      String name = launchContextName(ext);
+      if (name == null || !settings.getLaunchContexts().containsKey(name)) {
+        continue;
+      }
+      String ref = settings.getLaunchContexts().get(name);
+      Element cnt = null;
+      try {
+        cnt = loadLaunchContextResource(ref);
+      } catch (Exception e) {
+        rule(errors, "2026-09-06", IssueType.NOTFOUND, element.line(), element.col(), stack.getLiteralPath(), false,
+            I18nConstants.QUESTIONNAIRE_QR_LAUNCH_CONTEXT_NOT_LOADED, name, ref, e.getMessage() == null ? e.getClass().getName() : e.getMessage());
+        continue;
+      }
+      String type = ext.getExtensionString("type");
+      if (type != null && !type.equals(cnt.fhirType())) {
+        // the questionnaire said what it needs. Using something else would make the expressions
+        // silently wrong, rather than merely unevaluated, so the value is not made available
+        rule(errors, "2026-09-06", IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false,
+            I18nConstants.QUESTIONNAIRE_QR_LAUNCH_CONTEXT_WRONG_TYPE, name, ref, cnt.fhirType(), type);
+        continue;
+      }
+      res.put(name, new ArrayList<>(Arrays.asList(cnt)));
+    }
+    return res;
+  }
+
+  /**
+   * SDC declares the name as a Coding, but content in the wild also carries it as a plain string
+   */
+  private String launchContextName(Extension ext) {
+    Extension name = ext.getExtensionByUrl("name");
+    if (name == null || name.getValue() == null) {
+      return null;
+    } else if (name.getValue() instanceof Coding) {
+      return ((Coding) name.getValue()).getCode();
+    } else {
+      return name.getValue().primitiveValue();
+    }
+  }
+
+  /**
+   * A launch context is a parameter, like -ig or the source being validated, so it is fetched the
+   * same way IgLoader fetches those: web access through ManagedWebAccess with the "web" server type,
+   * and file access through ManagedFileAccess - both of which apply whatever access policy is in
+   * force, up to refusing outright. Nothing here reads a file or opens a connection directly.
+   */
+  private Element loadLaunchContextResource(String ref) throws IOException {
+    byte[] cnt;
+    if (Common.isNetworkPath(ref)) {
+      HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), ref);
+      res.checkThrowException();
+      cnt = res.getContent();
+    } else {
+      if (!ManagedFileAccess.file(ref).exists()) {
+        throw new IOException("The file was not found");
+      }
+      // read through the managed stream rather than the File, so that a managed accessor is the one
+      // doing the reading - ManagedFileAccess.file() only settles whether the path may be touched
+      try (InputStream stream = ManagedFileAccess.inStream(ref)) {
+        cnt = FileUtilities.streamToBytes(stream);
+      }
+    }
+    return Manager.parseSingle(context, new ByteArrayInputStream(cnt), sniffFormat(cnt));
+  }
+
+  /**
+   * Sniff the content rather than trusting the file name - a launch context can be given as a URL
+   * with no extension at all
+   */
+  private FhirFormat sniffFormat(byte[] cnt) throws IOException {
+    for (byte b : cnt) {
+      char c = (char) b;
+      if (c == '{') {
+        return FhirFormat.JSON;
+      } else if (c == '<') {
+        return FhirFormat.XML;
+      } else if (!Character.isWhitespace(c)) {
+        break;
+      }
+    }
+    throw new IOException("Unable to tell what format the content is in - it is neither JSON nor XML");
+  }
+
   private boolean validateQuestionannaireResponseItems(ValidationContext hostContext, QuestionnaireWithContext qsrc, List<QuestionnaireItemComponent> qItems, List<ValidationMessage> errors, Element element, NodeStack stack, boolean notCompleted, Element questionnaireResponseRoot, QStack qstack) {
     boolean ok = true;
     List<Element> items = new ArrayList<Element>();
@@ -783,7 +903,22 @@ public class QuestionnaireValidator extends BaseValidator {
 
   public boolean validateQuestionnaireResponseItem(ValidationContext hostContext, QuestionnaireWithContext qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean notCompleted, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<ElementWithIndex> mapItem, QStack qstack) {
     boolean ok = true;
-    boolean enabled = myEnableWhenEvaluator.isQuestionEnabled(hostContext, qItem, qstack, fpe);
+    EnableWhenOutcome ewo = myEnableWhenEvaluator.checkQuestionEnabled(hostContext, qItem, qstack, fpe);
+    boolean enabled = ewo.isEnabled();
+    if (ewo.getUncheckable() != null) {
+      // the expression referred to something we don't have - a launchContext variable, most likely.
+      // We can't show the item is disabled, so we treat it as enabled, but the author should know
+      // that this enableWhen was never actually checked (#2404). Report it against the item itself
+      // where the response has one, rather than against the parent
+      Element loc = element;
+      NodeStack lstack = stack;
+      if (mapItem != null && !mapItem.isEmpty()) {
+        loc = mapItem.get(0).getElement();
+        lstack = stack.push(loc, loc.getIndex(), loc.getProperty().getDefinition(), loc.getProperty().getDefinition());
+      }
+      warning(errors, "2026-09-05", IssueType.INCOMPLETE, loc.line(), loc.col(), lstack.getLiteralPath(), false,
+          I18nConstants.QUESTIONNAIRE_QR_ITEM_ENABLEWHEN_UNCHECKABLE, qItem.getLinkId(), ewo.getUncheckable());
+    }
     if (mapItem != null) {
       if (!enabled) {
         for (ElementWithIndex e : mapItem) {
@@ -1155,7 +1290,7 @@ public class QuestionnaireValidator extends BaseValidator {
         vdt.setSystem(v.getNamedChildValue("system"));
         vdt.setCode(v.getNamedChildValue("code"));
         if (v.hasChild("comparator")) {
-          vdt.setComparator(QuantityComparator.valueOf(v.getNamedChildValue("comparator")));
+          vdt.setComparator(QuantityComparator.fromCode(v.getNamedChildValue("comparator")));
         }
 
         
@@ -1398,8 +1533,17 @@ public class QuestionnaireValidator extends BaseValidator {
     return null;
   }
 
-  private boolean validateAnswerCode(List<ValidationMessage> errors, Element value, NodeStack stack, QuestionnaireWithContext qSrc, String ref, boolean theOpenChoice) {
+  private boolean validateAnswerCode(List<ValidationMessage> errors, Element value, NodeStack stack, QuestionnaireWithContext qSrc, String ref, QuestionnaireAnswerConstraint constraint) {
     boolean ok = true;
+    boolean theOpenChoice = constraint == QuestionnaireAnswerConstraint.OPTIONSORSTRING;
+    // optionsOrType says that any value of the item's own type is a valid answer, so for a coding
+    // item the value set stops being the list the answer must come from, and there is nothing left
+    // for the questionnaire to check. The coding is still checked against its code system - an
+    // invented code or a wrong display is an error either way - but that happens in the ordinary
+    // element validation (InstanceValidator.checkCodedElement falls through to checkCode when no
+    // binding validated the code, and answer.value[x] has no binding), so asking here as well would
+    // be a second trip to the server to produce a second copy of the same message (#2549)
+    boolean checkValueSet = constraint != QuestionnaireAnswerConstraint.OPTIONSORTYPE;
     ValueSet vs = null;
     if (ref.startsWith("#") && qSrc.container != null) {
       vs = (ValueSet) loadContainedResource(errors, qSrc.containerPath, qSrc.container, ref.substring(1), ValueSet.class);
@@ -1415,7 +1559,7 @@ public class QuestionnaireValidator extends BaseValidator {
           }
         }
 
-        if (!noTerminologyChecks) {
+        if (!noTerminologyChecks && checkValueSet) {
           long t = System.nanoTime();
           ValidationContextCarrier vc = makeValidationContext(errors, qSrc);
           ValidationResult res = context.validateCode(new ValidationOptions(FhirPublication.R5, stack.getWorkingLang()), c, vs, vc);
@@ -1449,28 +1593,39 @@ public class QuestionnaireValidator extends BaseValidator {
     return vc;
   }
 
-  private boolean validateAnswerCode(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean theOpenChoice, int answerCount) {
+  private boolean validateAnswerCode(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, QuestionnaireAnswerConstraint constraint, int answerCount) {
     Element v = answer.getNamedChild("valueCoding", false);
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0)
-      checkCodingOption(errors, answer, stack, qSrc, qItem, theOpenChoice, answerCount);
+      checkCodingOption(errors, answer, stack, qSrc, qItem, constraint == QuestionnaireAnswerConstraint.OPTIONSORSTRING, answerCount);
       //      validateAnswerCode(errors, v, stack, qItem.getOption());
     else if (qItem.hasAnswerValueSet())
-      return validateAnswerCode(errors, v, stack, qSrc, qItem.getAnswerValueSet(), theOpenChoice);
+      return validateAnswerCode(errors, v, stack, qSrc, qItem.getAnswerValueSet(), constraint);
     else
       hint(errors, NO_RULE_DATE, IssueType.INVARIANT, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONS);
     return true;
   }
 
-  private boolean checkOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, String type, int answerCount) {
-    return checkOption(errors, answer, stack, qSrc, qItem, type, qItem.getAnswerConstraint() == QuestionnaireAnswerConstraint.OPTIONSORSTRING, answerCount);
+  /**
+   * The answerConstraint in force for an item. Absent means optionsOnly - that's the element's
+   * default, and it's also what an R4 'choice' item converts to.
+   */
+  private QuestionnaireAnswerConstraint constraintOf(QuestionnaireItemComponent qItem) {
+    return qItem.hasAnswerConstraint() ? qItem.getAnswerConstraint() : QuestionnaireAnswerConstraint.OPTIONSONLY;
   }
 
-  private boolean checkOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, String type, boolean openChoice, int answerCount) {
+  private boolean checkOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, String type, int answerCount) {
+    return checkOption(errors, answer, stack, qSrc, qItem, type, constraintOf(qItem), answerCount);
+  }
+
+  private boolean checkOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, String type, QuestionnaireAnswerConstraint constraint, int answerCount) {
+    // for the answerOption types other than string and Coding, 'openChoice' has always meant
+    // optionsOrString, and nothing here changes that
+    boolean openChoice = constraint == QuestionnaireAnswerConstraint.OPTIONSORSTRING;
     if (type.equals("integer")) return checkIntegerOption(errors, answer, stack, qSrc, qItem, openChoice);
     else if (type.equals("date")) return checkDateOption(errors, answer, stack, qSrc, qItem, openChoice);
     else if (type.equals("time")) return checkTimeOption(errors, answer, stack, qSrc, qItem, openChoice);
-    else if (type.equals("string")) return checkStringOption(errors, answer, stack, qSrc, qItem, openChoice);
+    else if (type.equals("string")) return checkStringOption(errors, answer, stack, qSrc, qItem, constraint);
     else if (type.equals("Coding")) return checkCodingOption(errors, answer, stack, qSrc, qItem, openChoice, answerCount);
     return true;
   }
@@ -1574,8 +1729,12 @@ public class QuestionnaireValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean checkStringOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
+  private boolean checkStringOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, QuestionnaireAnswerConstraint constraint) {
     boolean ok = true;
+    // only optionsOrString admits a bare string as an answer in its own right. optionsOrType widens
+    // the answer to any value of the item's own type, which for a coding item is any Coding, not a
+    // string (#2549)
+    boolean openChoice = constraint == QuestionnaireAnswerConstraint.OPTIONSORSTRING;
     Element v = answer.getNamedChild("valueString", false);
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0) {
@@ -1603,8 +1762,17 @@ public class QuestionnaireValidator extends BaseValidator {
         }
         ok = warning(errors, NO_RULE_DATE, IssueType.INVARIANT, v.line(), v.col(), stack.getLiteralPath(), !found, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING, v.primitiveValue()) && ok;        
       }
-    } else {
+    } else if (!qItem.hasAnswerValueSet()) {
+      // no answerOption and no answerValueSet: there is genuinely no option list, whatever the
+      // constraint says, so this stays what it always was - a note that nothing could be checked
       hint(errors, NO_RULE_DATE, IssueType.INVARIANT, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRINGNOOPTIONS);
+    } else if (openChoice) {
+      // free text is an answer in its own right here, so there is nothing to check it against, and
+      // nothing wrong with it (#2549)
+    } else {
+      // there IS an option list - it's a value set - and the constraint says the answer has to come
+      // from it. A string isn't a code, so this answer can't be one of the options (#2549)
+      ok = rule(errors, "2026-09-05", IssueType.INVARIANT, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRINGNOTALLOWED, qItem.getLinkId(), constraint.toCode()) && ok;
     }
     return ok;
   }

@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.picocli;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
@@ -14,11 +15,14 @@ import org.hl7.fhir.validation.service.utils.ValidationLevel;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class InstanceValidatorOptionsConvertorTest {
 
@@ -58,6 +62,41 @@ public class InstanceValidatorOptionsConvertorTest {
         new InstanceValidatorParameters()
           .addProfile("http://hl7.org/fhir/StructureDefinition/Patient")
           .addProfile("http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient")
+      ),
+
+      Arguments.arguments(
+        "single usage",
+        new InstanceValidatorOptions().withUsages(List.of(
+          "http://terminology.hl7.org/CodeSystem/usage-context-type#gender=Coding:http://hl7.org/fhir/administrative-gender#female"
+        )),
+        new InstanceValidatorParameters()
+          .addUsage("http://terminology.hl7.org/CodeSystem/usage-context-type#gender=Coding:http://hl7.org/fhir/administrative-gender#female")
+      ),
+
+      Arguments.arguments(
+        "usages of each value type",
+        new InstanceValidatorOptions().withUsages(List.of(
+          "http://terminology.hl7.org/CodeSystem/usage-context-type#gender=Coding:http://hl7.org/fhir/administrative-gender#female",
+          "http://terminology.hl7.org/CodeSystem/usage-context-type#age=Quantity:65:http://unitsofmeasure.org#a",
+          "http://terminology.hl7.org/CodeSystem/usage-context-type#focus=Reference:http://example.org/fhir/Patient/1",
+          "http://terminology.hl7.org/CodeSystem/usage-context-type#species=http://snomed.info/sct#337915000"
+        )),
+        new InstanceValidatorParameters()
+          .addUsage("http://terminology.hl7.org/CodeSystem/usage-context-type#gender=Coding:http://hl7.org/fhir/administrative-gender#female")
+          .addUsage("http://terminology.hl7.org/CodeSystem/usage-context-type#age=Quantity:65:http://unitsofmeasure.org#a")
+          .addUsage("http://terminology.hl7.org/CodeSystem/usage-context-type#focus=Reference:http://example.org/fhir/Patient/1")
+          .addUsage("http://terminology.hl7.org/CodeSystem/usage-context-type#species=http://snomed.info/sct#337915000")
+      ),
+
+      Arguments.arguments(
+        "launch contexts",
+        new InstanceValidatorOptions().withLaunchContexts(List.of(
+          "patient:patient-example.json",
+          "user:http://example.org/fhir/Practitioner/1"
+        )),
+        new InstanceValidatorParameters()
+          .addLaunchContext("patient:patient-example.json")
+          .addLaunchContext("user:http://example.org/fhir/Practitioner/1")
       ),
 
       Arguments.arguments(
@@ -366,5 +405,50 @@ public class InstanceValidatorOptionsConvertorTest {
     InstanceValidatorOptionsConvertor convertor = new InstanceValidatorOptionsConvertor();
     InstanceValidatorParameters actualParameters = convertor.convert(options);
     assertThat(actualParameters).isEqualTo(expectedParameters);
+  }
+
+  @ParameterizedTest(name = "{index}: rejects -usage \"{0}\"")
+  @ValueSource(strings = {
+    "gender=female",
+    "http://terminology.hl7.org/CodeSystem/usage-context-type#gender",
+    "http://terminology.hl7.org/CodeSystem/usage-context-type#gender=female",
+    "http://terminology.hl7.org/CodeSystem/usage-context-type#age=Quantity:65",
+    "http://terminology.hl7.org/CodeSystem/usage-context-type#age=Quantity:big:http://unitsofmeasure.org#a",
+    "http://terminology.hl7.org/CodeSystem/usage-context-type#focus=Reference:Patient/1"
+  })
+  void malformedUsageIsACommandLineError(String usage) {
+    // caught while converting the options, so it reads as a bad parameter rather than surfacing
+    // part way through a validation
+    InstanceValidatorOptionsConvertor convertor = new InstanceValidatorOptionsConvertor();
+    assertThatThrownBy(() -> convertor.convert(new InstanceValidatorOptions().withUsages(List.of(usage))))
+      .isInstanceOf(FHIRException.class);
+  }
+
+  @ParameterizedTest(name = "{index}: rejects -launch-context \"{0}\"")
+  @ValueSource(strings = {
+    "patient",
+    ":patient-example.json",
+    "patient:"
+  })
+  void malformedLaunchContextIsACommandLineError(String launchContext) {
+    // only the shape is checked here - whether the reference resolves is settled where it is used
+    InstanceValidatorOptionsConvertor convertor = new InstanceValidatorOptionsConvertor();
+    assertThatThrownBy(() -> convertor.convert(new InstanceValidatorOptions().withLaunchContexts(List.of(launchContext))))
+      .isInstanceOf(FHIRException.class);
+  }
+
+  @Test
+  void duplicateLaunchContextNameIsACommandLineError() {
+    InstanceValidatorOptionsConvertor convertor = new InstanceValidatorOptionsConvertor();
+    assertThatThrownBy(() -> convertor.convert(new InstanceValidatorOptions().withLaunchContexts(List.of("patient:a.json", "patient:b.json"))))
+      .isInstanceOf(FHIRException.class);
+  }
+
+  @Test
+  void unresolvableLaunchContextReferenceIsNotACommandLineError() {
+    // deliberately: the CLI does not go looking for the file
+    InstanceValidatorOptionsConvertor convertor = new InstanceValidatorOptionsConvertor();
+    InstanceValidatorParameters p = convertor.convert(new InstanceValidatorOptions().withLaunchContexts(List.of("patient:no-such-file.json")));
+    assertThat(p.getLaunchContexts()).containsExactly("patient:no-such-file.json");
   }
 }

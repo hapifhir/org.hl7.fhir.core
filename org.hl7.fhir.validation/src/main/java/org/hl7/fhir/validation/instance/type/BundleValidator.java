@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -1118,7 +1119,13 @@ public class BundleValidator extends BaseValidator {
         sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(sigT)));
       }
       if (sigT == null && header.has(DigitalSignatureSupport.JWT_HEADER_IAT)) {
-        sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(header.asString(DigitalSignatureSupport.JWT_HEADER_IAT))));
+        String iat = header.asString(DigitalSignatureSupport.JWT_HEADER_IAT);
+        if (Utilities.isInteger(iat)) {
+          sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(iat)));
+        } else {
+          // iat is seconds since the epoch; if it is not, say so rather than throwing out of the validator
+          ok = rule(errors, "2026-09-02", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIG_TIME_INVALID, iat) && ok;
+        }
       }
       if (sigT == null) {
         warning(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_HEADER_NO_SIG_TIME); 
@@ -1126,7 +1133,8 @@ public class BundleValidator extends BaseValidator {
       if (when == null) {
         rule(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_NO_WHEN);        
       } else if (sigT != null) {
-        ok = rule(errors, "2025-06-13", IssueType.BUSINESSRULE, stack, agreeWithin(sigT, when.primitiveValue(), 2), I18nConstants.BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH, sigT, when.primitiveValue()) && ok;
+        Instant sigTime = parseSignatureInstant(errors, stack, sigT, I18nConstants.BUNDLE_SIGNATURE_SIG_TIME_INVALID);
+        ok = sigTime != null && checkTimesAgree(errors, stack, sigTime, sigT, when.primitiveValue(), I18nConstants.BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH) && ok;
       }
 
       // 2. canonicalisation
@@ -1355,10 +1363,45 @@ public class BundleValidator extends BaseValidator {
     }
     return ok;
   }
-  static boolean agreeWithin(String a, String b, long toleranceSeconds) {
-    Instant ia = OffsetDateTime.parse(a).toInstant();
-    Instant ib = OffsetDateTime.parse(b).toInstant();
-    return Duration.between(ia, ib).abs().compareTo(Duration.ofSeconds(toleranceSeconds)) <= 0;
+  /**
+   * How far the time in the signature and Signature.when may differ and still be taken to
+   * describe the same signing event. They are written by different code at (nearly) the same
+   * moment, so they are compared as instants with a small allowance rather than as strings -
+   * both are instants, and the same instant has many valid lexical forms (see #2385).
+   */
+  private static final long SIGNATURE_TIME_TOLERANCE_SECONDS = 2;
+
+  static boolean agreeWithin(Instant a, Instant b, long toleranceSeconds) {
+    return Duration.between(a, b).abs().compareTo(Duration.ofSeconds(toleranceSeconds)) <= 0;
+  }
+
+  /**
+   * Parse one of the signature's times. Neither the time in the signature nor Signature.when is
+   * known to be well formed - that is what is being validated - so a value that cannot be parsed
+   * is reported as a validation message naming the offending value, rather than thrown. Returns
+   * null when the value is not a valid instant.
+   */
+  private Instant parseSignatureInstant(List<ValidationMessage> errors, NodeStack stack, String value, String msgId) {
+    try {
+      return OffsetDateTime.parse(value).toInstant();
+    } catch (DateTimeParseException e) {
+      rule(errors, "2026-09-02", IssueType.INVALID, stack, false, msgId, value);
+      return null;
+    }
+  }
+
+  /**
+   * Cross check the time in the signature against Signature.when. sigTime is the already parsed
+   * signature time; sigT is its lexical form, for the message. If Signature.when cannot be
+   * parsed, that is reported (naming it, so it is clear which of the two times is at fault) and
+   * no comparison is made.
+   */
+  private boolean checkTimesAgree(List<ValidationMessage> errors, NodeStack stack, Instant sigTime, String sigT, String when, String mismatchMsgId) {
+    Instant whenTime = parseSignatureInstant(errors, stack, when, I18nConstants.BUNDLE_SIGNATURE_WHEN_INVALID);
+    if (whenTime == null) {
+      return false;
+    }
+    return rule(errors, "2025-06-13", IssueType.BUSINESSRULE, stack, agreeWithin(sigTime, whenTime, SIGNATURE_TIME_TOLERANCE_SECONDS), mismatchMsgId, sigT, when);
   }
   public String certificateToPEMSingleLine(X509Certificate cert) throws Exception {
     byte[] encoded = cert.getEncoded();
@@ -1488,12 +1531,13 @@ public class BundleValidator extends BaseValidator {
       if (sigT == null) {
         warning(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_DIGSIG_NO_SIG_TIME); 
       } else {
-        instant = Instant.parse(sigT);
+        instant = parseSignatureInstant(errors, stack, sigT, I18nConstants.BUNDLE_SIGNATURE_SIG_TIME_INVALID);
+        ok = instant != null && ok;
       }
       if (when == null) {
         rule(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_NO_WHEN);        
-      } else if (sigT != null) { 
-        ok = rule(errors, "2025-06-13", IssueType.BUSINESSRULE, stack, sigT.equals(when.primitiveValue()), I18nConstants.BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH, sigT, when.primitiveValue()) && ok;                            
+      } else if (instant != null) { 
+        ok = checkTimesAgree(errors, stack, instant, sigT, when.primitiveValue(), I18nConstants.BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH) && ok;                            
       }
 
       // 2. canonicalisation

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -281,6 +282,58 @@ public class FileUtilities {
 
   public static void copyFile(String source, String dest) throws IOException {
     copyFile(ManagedFileAccess.file(source), ManagedFileAccess.file(dest));
+  }
+
+  /**
+   * Replace {@code dst} with {@code tmp}, atomically wherever the platform allows it.
+   *
+   * <p>This is the second half of the write-to-temp-then-swap idiom. Its point is that a
+   * concurrent reader - another process, or another thread - never observes a half-written
+   * file: it sees either the whole old content or the whole new content, and never a
+   * truncated file. Writing directly over a live file gives no such guarantee, and the
+   * resulting torn reads are intermittent and very hard to diagnose.
+   *
+   * <p>{@code tmp} must be on the same filesystem as {@code dst} (in practice: the same
+   * directory), or the move cannot be atomic. Where the filesystem cannot do an atomic
+   * replace at all, this falls back to a plain replacing move - still far better than
+   * writing in place, since the window in which the file is incomplete shrinks from
+   * "the whole write" to "the move itself".
+   *
+   * <p>On Windows the replace can transiently fail while another process has {@code dst}
+   * open, so it is retried briefly before giving up.
+   *
+   * <p>Note that this says nothing about durability: no fsync is performed, so a power
+   * loss may still lose the write. It is about concurrent visibility, not crash safety.
+   *
+   * @param tmp the fully written temporary file; it no longer exists once this returns
+   * @param dst the file to replace
+   */
+  public static void replaceFileAtomically(File tmp, File dst) throws IOException {
+    IOException last = null;
+    for (int i = 0; i < 10; i++) {
+      try {
+        moveReplacing(tmp, dst);
+        return;
+      } catch (IOException e) {
+        // most likely a sharing violation on Windows - back off and let the reader finish
+        last = e;
+        try {
+          Thread.sleep(20);
+        } catch (InterruptedException ie) {
+          Thread.currentThread().interrupt();
+          throw e;
+        }
+      }
+    }
+    throw last;
+  }
+
+  private static void moveReplacing(File tmp, File dst) throws IOException {
+    try {
+      Files.move(tmp.toPath(), dst.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+    } catch (AtomicMoveNotSupportedException | UnsupportedOperationException e) {
+      Files.move(tmp.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    }
   }
 
   public static void copyDirectory(String sourceFolder, String destFolder, FileNotifier notifier) throws IOException, FHIRException {

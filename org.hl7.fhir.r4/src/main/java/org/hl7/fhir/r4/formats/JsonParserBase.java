@@ -63,10 +63,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
+import java.util.regex.Pattern;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IIdType;
+import org.hl7.fhir.r4.model.DecimalType;
 import org.hl7.fhir.r4.model.DomainResource;
 import org.hl7.fhir.r4.model.Element;
 import org.hl7.fhir.r4.model.IdType;
@@ -277,6 +279,29 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     if (name != null)
       json.name(name);
     json.valueNum(value);
+  }
+
+  @SuppressWarnings("checkstyle:patternUsage")
+  //the FHIR decimal grammar; a fixed literal, never user input
+  private static final Pattern JSON_NUMBER = Pattern.compile("-?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?");
+
+  /**
+   * Write a decimal using the literal the parser saw, so that the presented form survives a round
+   * trip - 1.0e0 is not silently rewritten as 1.0, nor 1e2 as 1E+2. asStringValue() is the presented
+   * form when the parser captured one (see DecimalType.setRepresentation) and BigDecimal.toString()
+   * otherwise. Guarded because BigDecimal accepts forms JSON does not (a leading + or .), and those
+   * fall back to writing the numeric value. Canonical JSON is unaffected: JsonCreatorCanonical runs
+   * both routes through JsonNumberCanonicalizer.
+   */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: Matcher.matches() on pattern which has been independently reviewed
+  protected void propDecimal(String name, DecimalType value) throws IOException {
+    String s = value.asStringValue();
+    if (s != null && JSON_NUMBER.matcher(s).matches()) {
+      propNum(name, s);
+    } else {
+      prop(name, value.getValue());
+    }
   }
 
   protected void prop(String name, java.lang.Integer value) throws IOException {

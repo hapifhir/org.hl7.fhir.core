@@ -46,7 +46,7 @@ public class ValidationOptions {
   private boolean englishOk = true;
   private boolean activeOnly = false;
   private boolean exampleOK = false;
-  private FhirPublication fhirVersion;
+  final private FhirPublication fhirVersion;
   private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
   private boolean isDefaultLang = false;
   private boolean noAbstract = false;
@@ -62,6 +62,7 @@ public class ValidationOptions {
 
   public ValidationOptions(FhirPublication fhirVersion, String language) {
     super();
+    this.fhirVersion = fhirVersion;
     if (!Utilities.noString(language)) {
       langs = new AcceptLanguageHeader(language, false);
       isDefaultLang = false;
@@ -335,7 +336,9 @@ public class ValidationOptions {
   }
   
   public ValidationOptions withExampleOK() {
-    return setExampleOK(true);
+    ValidationOptions n = this.copy();
+    n.exampleOK = true;
+    return n;
   }
 
   
@@ -351,8 +354,9 @@ public class ValidationOptions {
   }
 
   public ValidationOptions withR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
-    setR5BundleRelativeReferencePolicy(r5BundleRelativeReferencePolicy);
-    return this;
+    ValidationOptions n = this.copy();
+    n.setR5BundleRelativeReferencePolicy(r5BundleRelativeReferencePolicy);
+    return n;
   }
 
   public ValidationOptions copy() {
@@ -370,6 +374,8 @@ public class ValidationOptions {
     n.useValueSetDisplays = useValueSetDisplays;   
     n.displayWarningMode = displayWarningMode;
     n.exampleOK = exampleOK;
+    n.englishOk = englishOk;
+    n.externalSource = externalSource;
     n.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
     return n;
   }
@@ -400,8 +406,9 @@ public class ValidationOptions {
   }
 
   public ValidationOptions withExternalSource(Object res) {
-    this.externalSource = res;
-    return this;
+    ValidationOptions n = this.copy();
+    n.externalSource = res;
+    return n;
   }
 
 

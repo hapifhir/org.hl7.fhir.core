@@ -1,0 +1,76 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets",
+  "code" : "G0154"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Hhcp-svs of rn,ea 15 min",
+  "code" : "G0154",
+  "system" : "http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets",
+  "version" : "2025-01",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets/vs|2025-01: Validate \"[http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets#G0154 (\"undefined\")]\"\n2ms http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets/vs|2025-01: Check \"http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets#G0154\"\n2ms http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets/vs|2025-01: CodeSystem found: http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets|2025-01 for http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets|2025-01\n2ms http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets/vs|2025-01: check code in (http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets) at Coding\n2ms http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets/vs|2025-01: Code \"G0154\" found in http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets|2025-01",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets",
+  "code" : "B4184"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "B4184",
+  "system" : "http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets",
+  "severity" : "error",
+  "error" : "Unknown code 'B4184' in the CodeSystem 'http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets' version '2025-01'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets/vs|2025-01: Validate \"[http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets#B4184 (\"undefined\")]\"\n3ms http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets/vs|2025-01: Check \"http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets#B4184\"\n3ms http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets/vs|2025-01: CodeSystem found: http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets|2025-01 for http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets|2025-01\n3ms http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets/vs|2025-01: check code in (http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets) at Coding\n3ms http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets/vs|2025-01: Code \"B4184\" not found in http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets|2025-01: undefined",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'B4184' in the CodeSystem 'http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets' version '2025-01'"
+    },
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

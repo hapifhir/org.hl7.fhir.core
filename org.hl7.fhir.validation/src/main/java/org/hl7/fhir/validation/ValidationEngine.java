@@ -934,6 +934,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
           .getDetails().setText(msg.getMessage());
       }
     }
+    ExtensionUtilities.addStringExtension(oo, ExtensionDefinitions.EXT_VALIDATOR_VERSION, ValidatorUtils.getValidatorVersionDescription());
     return oo;
   }
 
@@ -1174,6 +1175,21 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return validator;
   }
 
+  /**
+   * Write any terminology answers this engine has picked up but not yet flushed.
+   *
+   * <p>The terminology cache coalesces writes over a long window, so entries earned during a
+   * run sit in memory until something asks for them to be persisted. Call this when a unit of
+   * work finishes - the end of a command, the end of a validation pass - so the next run
+   * starts with them rather than asking the server again. It is cheap when there is nothing
+   * pending, and safe to call as often as you like.
+   */
+  public void saveTerminologyCache() {
+    if (context != null && context.getTxCache() != null) {
+      context.getTxCache().save();
+    }
+  }
+
   public void prepare() {
     for (StructureDefinition sd : new ContextUtilities(context).allStructures()) {
       try {
@@ -1385,13 +1401,41 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return null;
   }
 
+  /**
+   * Whether a reference URL points at an HL7 or FHIR Foundation host - {@code hl7.org},
+   * {@code fhir.org}, or any subdomain of either. Decided on the parsed host, so a URL that
+   * merely mentions one of those names in its path or query does not qualify. Relative
+   * references, and anything that fails to parse, are not treated as HL7 hosts.
+   */
+  public static boolean isHl7OrFhirHost(String url) {
+    if (url == null) {
+      return false;
+    }
+    String host;
+    try {
+      host = new java.net.URI(url).getHost();
+    } catch (java.net.URISyntaxException e) {
+      return false;
+    }
+    if (host == null) {
+      return false;
+    }
+    host = host.toLowerCase(java.util.Locale.ROOT);
+    for (String domain : new String[] { "hl7.org", "fhir.org" }) {
+      if (host.equals(domain) || host.endsWith("." + domain)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @Override
   public ReferenceValidationPolicy policyForReference(IResourceValidator validator, Object appContext, String path, String url, ReferenceDestinationType destinationType) {
     Resource resource = context.fetchResource(StructureDefinition.class, url);
     if (resource != null) {
       return ReferenceValidationPolicy.CHECK_VALID;
     }
-    if (!(url.contains("hl7.org") || url.contains("fhir.org"))) {
+    if (!isHl7OrFhirHost(url)) {
       return ReferenceValidationPolicy.IGNORE;
     } else if (policyAdvisor != null) {
       return policyAdvisor.policyForReference(validator, appContext, path, url, destinationType);

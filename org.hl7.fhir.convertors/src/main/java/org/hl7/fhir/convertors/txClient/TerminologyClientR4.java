@@ -90,7 +90,7 @@ public class TerminologyClientR4 implements ITerminologyClient {
   
   @Override
   public TerminologyCapabilities getTerminologyCapabilities() throws FHIRException {
-    return (TerminologyCapabilities) convertResource("getTerminologyCapabilities.response", client.getTerminologyCapabilities());
+    return (TerminologyCapabilities) convertResource("getTerminologyCapabilities", "response", client.getTerminologyCapabilities());
   }
 
   @Override
@@ -100,14 +100,14 @@ public class TerminologyClientR4 implements ITerminologyClient {
 
   @Override
   public ValueSet expandValueset(ValueSet vs, Parameters p) throws FHIRException {
-    org.hl7.fhir.r4.model.ValueSet vs2 = vs == null ? null : (org.hl7.fhir.r4.model.ValueSet) convertResource("expandValueset.valueset", vs);
-    org.hl7.fhir.r4.model.Parameters p2 = p == null ? null :  (org.hl7.fhir.r4.model.Parameters) convertResource("expandValueset.parameters", p);
+    org.hl7.fhir.r4.model.ValueSet vs2 = vs == null ? null : (org.hl7.fhir.r4.model.ValueSet) convertResource("expandValueset", "request-params", vs);
+    org.hl7.fhir.r4.model.Parameters p2 = p == null ? null :  (org.hl7.fhir.r4.model.Parameters) convertResource("expandValueset", "request-body", p);
     try {
       vs2 = client.expandValueset(vs2, p2); // todo: second parameter
-      return (ValueSet) convertResource("expandValueset.response", vs2);
+      return (ValueSet) convertResource("expandValueset", "response", vs2);
     } catch (org.hl7.fhir.r4.utils.client.EFhirClientException e) {
       if (e.getServerErrors().size() > 0) {
-        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), (org.hl7.fhir.r5.model.OperationOutcome) convertResource("expandValueset.error", e.getServerErrors().get(0)));
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), (org.hl7.fhir.r5.model.OperationOutcome) convertResource("expandValueset", "error", e.getServerErrors().get(0)));
       } else {
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage());        
       }
@@ -118,12 +118,12 @@ public class TerminologyClientR4 implements ITerminologyClient {
   @Override
   public Parameters validateCS(Parameters pin) throws FHIRException {
     try {
-      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("validateCS.request", pin);
+      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("validateCS", "request", pin);
       p2 = client.operateType(org.hl7.fhir.r4.model.CodeSystem.class, "validate-code", p2);
-      return (Parameters) convertResource("validateCS.response", p2);
+      return (Parameters) convertResource("validateCS", "response", p2);
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
-        OperationOutcome op =  (OperationOutcome) convertResource("validateCS.error", e.getServerErrors().get(0));
+        OperationOutcome op =  (OperationOutcome) convertResource("validateCS", "error", e.getServerErrors().get(0));
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);        
@@ -136,12 +136,12 @@ public class TerminologyClientR4 implements ITerminologyClient {
   @Override
   public Parameters batchValidateCS(Parameters pin) throws FHIRException {
     try {
-      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("validateCS.request", pin);
+      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("validateCS", "request", pin);
       p2 = client.operateType(org.hl7.fhir.r4.model.CodeSystem.class, "batch-validate-code", p2);
-      return (Parameters) convertResource("validateCS.response", p2);
+      return (Parameters) convertResource("validateCS", "response", p2);
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
-        OperationOutcome op =  (OperationOutcome) convertResource("validateCS.error", e.getServerErrors().get(0));
+        OperationOutcome op =  (OperationOutcome) convertResource("validateCS", "error", e.getServerErrors().get(0));
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);
@@ -156,12 +156,12 @@ public class TerminologyClientR4 implements ITerminologyClient {
   @Override
   public Parameters subsumes(Parameters pin) throws FHIRException {
     try {
-      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("subsumes.request", pin);
+      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("subsumes", "request", pin);
       p2 = client.operateType(org.hl7.fhir.r4.model.CodeSystem.class, "subsumes", p2);
-      return (Parameters) convertResource("subsumes.response", p2);
+      return (Parameters) convertResource("subsumes", "response", p2);
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
-        OperationOutcome op =  (OperationOutcome) convertResource("subsumes.error", e.getServerErrors().get(0));
+        OperationOutcome op =  (OperationOutcome) convertResource("subsumes", "error", e.getServerErrors().get(0));
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);        
@@ -183,12 +183,12 @@ public class TerminologyClientR4 implements ITerminologyClient {
   @Override
   public Parameters validateVS(Parameters pin) throws FHIRException {
     try {
-      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("validateVS.request", pin);
+      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("validateVS", "request", pin);
       p2 = client.operateType(org.hl7.fhir.r4.model.ValueSet.class, "validate-code", p2);
-      return (Parameters) convertResource("validateVS.response", p2);
+      return (Parameters) convertResource("validateVS", "response", p2);
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
-        OperationOutcome op =  (OperationOutcome) convertResource("validateVS.error", e.getServerErrors().get(0));
+        OperationOutcome op =  (OperationOutcome) convertResource("validateVS", "error", e.getServerErrors().get(0));
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);        
@@ -200,20 +200,20 @@ public class TerminologyClientR4 implements ITerminologyClient {
 
   @Override
   public Parameters cacheControl(CacheControlMode mode, Parameters body) throws FHIRException, IOException {
-    org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("cacheControl.request", body == null ? new Parameters() : body);
+    org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("cacheControl", "request", body == null ? new Parameters() : body);
     org.hl7.fhir.r4.model.Parameters r = client.operateSystem("cache-control", "mode=" + mode.toCode(), p2);
-    return (Parameters) convertResource("cacheControl.response", r);
+    return (Parameters) convertResource("cacheControl", "response", r);
   }
 
   @Override
   public Parameters batchValidateVS(Parameters pin) throws FHIRException {
     try {
-      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("validateVS.request", pin);
+      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("validateVS", "request", pin);
       p2 = client.operateType(org.hl7.fhir.r4.model.ValueSet.class, "batch-validate-code", p2);
-      return (Parameters) convertResource("validateVS.response", p2);
+      return (Parameters) convertResource("validateVS", "response", p2);
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
-        OperationOutcome op =  (OperationOutcome) convertResource("validateVS.error", e.getServerErrors().get(0));
+        OperationOutcome op =  (OperationOutcome) convertResource("validateVS", "error", e.getServerErrors().get(0));
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);
@@ -264,28 +264,28 @@ public class TerminologyClientR4 implements ITerminologyClient {
 
   @Override
   public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException {
-    return (CapabilityStatement) convertResource("getCapabilitiesStatementQuick.response", client.getCapabilitiesStatementQuick());
+    return (CapabilityStatement) convertResource("getCapabilitiesStatementQuick", "response", client.getCapabilitiesStatementQuick());
   }
 
   @Override
   public CapabilityStatement getCapabilitiesStatement() throws FHIRException {
-    return (CapabilityStatement) convertResource("getCapabilitiesStatement.response", client.getCapabilitiesStatement());
+    return (CapabilityStatement) convertResource("getCapabilitiesStatement", "response", client.getCapabilitiesStatement());
   }
 
   @Override
   public Parameters lookupCode(Map<String, String> params) throws FHIRException {
-    return (Parameters) convertResource("lookupCode.response", client.lookupCode(params));
+    return (Parameters) convertResource("lookupCode", "response", client.lookupCode(params));
   }
 
   @Override
   public Parameters lookupCode(Parameters params) throws FHIRException {
     try {
-      return (Parameters) convertResource("lookupCode.response", client.lookupCode((org.hl7.fhir.r4.model.Parameters) convertResource("lookupCode.request", params)));
+      return (Parameters) convertResource("lookupCode", "response", client.lookupCode((org.hl7.fhir.r4.model.Parameters) convertResource("lookupCode", "request", params)));
     } catch (EFhirClientException e) {
       List<org.hl7.fhir.r4.model.OperationOutcome> r4 = e.getServerErrors();
       List<org.hl7.fhir.r5.model.OperationOutcome> r5 = new ArrayList<OperationOutcome>();
       for (org.hl7.fhir.r4.model.OperationOutcome op : r4) {
-        r5.add((OperationOutcome) convertResource("lookupCode.error", op));
+        r5.add((OperationOutcome) convertResource("lookupCode", "error", op));
       }
       throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), r5.isEmpty() ? null : r5.get(0));
     }
@@ -298,8 +298,8 @@ public class TerminologyClientR4 implements ITerminologyClient {
 
   @Override
   public Bundle batch(Bundle batch) {
-    org.hl7.fhir.r4.model.Bundle result = client.transaction((org.hl7.fhir.r4.model.Bundle) convertResource("validateBatch.request", batch));
-    return result == null ? null : (Bundle) convertResource("validateBatch.response", result);
+    org.hl7.fhir.r4.model.Bundle result = client.transaction((org.hl7.fhir.r4.model.Bundle) convertResource("validateBatch", "request", batch));
+    return result == null ? null : (Bundle) convertResource("validateBatch", "response", result);
   }
 
   @Override
@@ -314,7 +314,7 @@ public class TerminologyClientR4 implements ITerminologyClient {
     if (r4 == null) {
       throw new FHIRException("Unable to fetch resource " + Utilities.pathURL(getAddress(), type, id));
     }
-    org.hl7.fhir.r5.model.Resource r5 = convertResource("read.result", r4);
+    org.hl7.fhir.r5.model.Resource r5 = convertResource("read", "response", r4);
     if (r5 == null) {
       throw new FHIRException("Unable to convert resource " + Utilities.pathURL(getAddress(), type, id) + " to R5 (internal representation)");
     }
@@ -386,17 +386,17 @@ public class TerminologyClientR4 implements ITerminologyClient {
   @Override
   public Bundle search(String type, String criteria) {    
     org.hl7.fhir.r4.model.Bundle result = client.search(type, criteria);
-    return result == null ? null : (Bundle) convertResource("search.result", result);
+    return result == null ? null : (Bundle) convertResource("search", "response",  result);
   }
 
   @Override
   public Parameters translate(Parameters params) throws FHIRException {
     try {
-      org.hl7.fhir.r4.model.Parameters p4 = (org.hl7.fhir.r4.model.Parameters) convertResource("translate.request", params);
-      return (Parameters) convertResource("translate.response", client.translate(p4));
+      org.hl7.fhir.r4.model.Parameters p4 = (org.hl7.fhir.r4.model.Parameters) convertResource("translate", "request", params);
+      return (Parameters) convertResource("translate", "response", client.translate(p4));
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
-        OperationOutcome op =  (OperationOutcome) convertResource("validateVS.error", e.getServerErrors().get(0));
+        OperationOutcome op =  (OperationOutcome) convertResource("validateVS", "error", e.getServerErrors().get(0));
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);
@@ -406,13 +406,13 @@ public class TerminologyClientR4 implements ITerminologyClient {
 
   @Override
   public Parameters doCompare(Parameters params) throws FHIRException {
-    return (Parameters) convertResource("compare.response", client.doCompare((org.hl7.fhir.r4.model.Parameters) convertResource("compare.request", params)));
+    return (Parameters) convertResource("compare", "response", client.doCompare((org.hl7.fhir.r4.model.Parameters) convertResource("compare", "request", params)));
   }
 
-  private org.hl7.fhir.r4.model.Resource convertResource(String name, org.hl7.fhir.r5.model.Resource resource) {
+  private org.hl7.fhir.r4.model.Resource convertResource(String name, String mode, org.hl7.fhir.r5.model.Resource resource) {
     if (logger != null) {
       try {
-        logger.log(name, resource.fhirType(), "r5", new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(resource));
+        logger.log(name, mode, resource.fhirType(), "r5", new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(resource));
       } catch (IOException e) {
         throw new FHIRException(e);
       }
@@ -420,7 +420,7 @@ public class TerminologyClientR4 implements ITerminologyClient {
     org.hl7.fhir.r4.model.Resource res = VersionConvertorFactory_40_50.convertResource(resource);
     if (logger != null) {
       try {
-        logger.log(name, resource.fhirType(), "r4", new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).composeBytes(res));
+        logger.log(name, mode, resource.fhirType(), "r4", new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).composeBytes(res));
       } catch (IOException e) {
         throw new FHIRException(e);
       }
@@ -428,10 +428,10 @@ public class TerminologyClientR4 implements ITerminologyClient {
     return res;
   }
 
-  private org.hl7.fhir.r5.model.Resource convertResource(String name, org.hl7.fhir.r4.model.Resource resource) {
+  private org.hl7.fhir.r5.model.Resource convertResource(String name, String mode, org.hl7.fhir.r4.model.Resource resource) {
     if (logger != null && name != null) {
       try {
-        logger.log(name, resource.fhirType(), "r4", new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).composeBytes(resource));
+        logger.log(name, mode, resource.fhirType(), "r4", new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).composeBytes(resource));
       } catch (IOException e) {
         throw new FHIRException(e);
       }
@@ -439,7 +439,7 @@ public class TerminologyClientR4 implements ITerminologyClient {
     org.hl7.fhir.r5.model.Resource res = VersionConvertorFactory_40_50.convertResource(resource);
     if (logger != null && name != null) {
       try {
-        logger.log(name, resource.fhirType(), "r5", new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(res));
+        logger.log(name, mode, resource.fhirType(), "r5", new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(res));
       } catch (IOException e) {
         throw new FHIRException(e);
       }
@@ -455,12 +455,12 @@ public class TerminologyClientR4 implements ITerminologyClient {
   @Override
   public OperationOutcome validateResource(org.hl7.fhir.r5.model.Resource res) {
     try {
-      org.hl7.fhir.r4.model.Resource r2 = convertResource("validate.request", res);
+      org.hl7.fhir.r4.model.Resource r2 = convertResource("validate", "request", res);
       Resource p2 = client.validate(r2, null);
-      return (OperationOutcome) convertResource("validateVS.response", p2);
+      return (OperationOutcome) convertResource("validateVS", "response", p2);
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
-        OperationOutcome op =  (OperationOutcome) convertResource("validateVS.error", e.getServerErrors().get(0));
+        OperationOutcome op =  (OperationOutcome) convertResource("validateVS", "error", e.getServerErrors().get(0));
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
         throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);        

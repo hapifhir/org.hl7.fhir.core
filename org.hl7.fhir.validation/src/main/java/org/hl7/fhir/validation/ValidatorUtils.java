@@ -32,9 +32,12 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -155,9 +158,18 @@ public class ValidatorUtils {
     if (!op.hasIssue()) {
       op.addIssue().setSeverity(OperationOutcome.IssueSeverity.INFORMATION).setCode(OperationOutcome.IssueType.INFORMATIONAL).getDetails().setText(context.formatMessage(I18nConstants.ALL_OK));
     }
+    ExtensionUtilities.addStringExtension(op, ExtensionDefinitions.EXT_VALIDATOR_VERSION, getValidatorVersionDescription());
     RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", context.getLocale(), RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     new RendererFactory().factory(op, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), op));
     return op;
+  }
+
+  /**
+   * A human readable description of this validator - the same string that the CLI logs on start up.
+   * It goes into the OperationOutcome so that a report always says what produced it (see FHIR-2459).
+   */
+  public static String getValidatorVersionDescription() {
+    return "FHIR Validation tool " + VersionUtil.getVersionString();
   }
 
   /**

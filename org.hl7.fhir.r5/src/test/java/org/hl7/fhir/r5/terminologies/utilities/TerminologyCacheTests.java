@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -333,7 +335,6 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
       coding, valueSet, new Parameters());
     assertEquals("all-systems", cacheToken.getName());
-    assertFalse(cacheToken.hasVersion());
   }
 
   @Test
@@ -349,7 +350,6 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
       coding, valueSet, new Parameters());
     assertEquals("dummySystem", cacheToken.getName());
-    assertTrue(cacheToken.hasVersion());
   }
 
 
@@ -365,7 +365,6 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       concept, valueSet, new Parameters());
 
     assertNull(cacheToken.getName());
-    assertEquals(false, cacheToken.hasVersion());
 
     JsonElement actual = jsonParser.parse(cacheToken.getRequest());
     JsonElement expected = getJsonFromFile("codableConceptEmptyValueSet.json");
@@ -389,7 +388,6 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       concept, valueSet, new Parameters());
 
     assertEquals("dummySystem", cacheToken.getName());
-    assertEquals(true, cacheToken.hasVersion());
 
     JsonElement actual = jsonParser.parse(cacheToken.getRequest());
     JsonElement expected = getJsonFromFile("codableConceptEmptyValueSetSystem.json");
@@ -413,7 +411,6 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       concept, valueSet, new Parameters());
 
     assertNull(cacheToken.getName());
-    assertFalse(cacheToken.hasVersion());
   }
 
   private static Stream<Arguments> getExpansionTokenParams() {
@@ -434,18 +431,18 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     allSystem.getExpansion().setContains(Arrays.asList(containsComponent));
 
     return Stream.of(
-      Arguments.of(baseValueSet, null, false),
-      Arguments.of(withInclude, "dummyIncludeSystem", true),
-      Arguments.of(withExclude, "dummyExcludeSystem", true),
-      Arguments.of(withExpansion, "dummyContainsSystem", true),
+      Arguments.of(baseValueSet, null),
+      Arguments.of(withInclude, "dummyIncludeSystem"),
+      Arguments.of(withExclude, "dummyExcludeSystem"),
+      Arguments.of(withExpansion, "dummyContainsSystem"),
       // Essentially, if more than one system is used, we're switching to 'all-systems'
-      Arguments.of(allSystem, "all-systems", true)
+      Arguments.of(allSystem, "all-systems")
     );
   }
 
   @ParameterizedTest
   @MethodSource("getExpansionTokenParams")
-  public void testExpansionTokenInclude(ValueSet valueSet, String expectedName, boolean expectedHasVersion) throws IOException, URISyntaxException {
+  public void testExpansionTokenInclude(ValueSet valueSet, String expectedName) throws IOException, URISyntaxException {
     TerminologyCache terminologyCache = createTerminologyCache();
 
     TerminologyCache.CacheToken expansionToken = terminologyCache.generateExpandToken(valueSet, new ExpansionOptions().withHierarchical(false));
@@ -453,8 +450,6 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
     assertEquals(expectedName, expansionToken.getName());
     assertEquals(expectedName, expansionTokenHierarchical.getName());
-    assertEquals(expectedHasVersion, expansionToken.hasVersion());
-    assertEquals(expectedHasVersion, expansionTokenHierarchical.hasVersion());
   }
 
   @Test
@@ -1004,6 +999,169 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       for (int i = 0; i < iterations; i++) {
         cache.hashJson(input);
       }
+    }
+  }
+
+  /**
+   * Two TerminologyCache instances over one folder stand in for two processes sharing a
+   * terminology cache - two validator runs, or a validator alongside an IG publisher. Each
+   * saves whenever it feels like it, so a save has to fold in whatever the other one has
+   * written since, rather than overwriting the file with its own view of the world.
+   */
+  @Nested
+  class SharedCacheFolderTests {
+
+    private Path folder;
+
+    @BeforeEach
+    void setUp() throws IOException {
+      folder = createTempCacheDirectory();
+    }
+
+    private TerminologyCache cache() throws IOException {
+      return new TerminologyCache(new Object(), folder.toString());
+    }
+
+    private Coding coding(int i) {
+      return new Coding().setSystem("http://example.org/sys").setCode("code-" + i);
+    }
+
+    private void cache(TerminologyCache cache, int i, String message) {
+      TerminologyCache.CacheToken token = cache.generateValidationToken(CacheTestUtils.validationOptions,
+          coding(i), new ValueSet(), new Parameters());
+      cache.cacheValidation(token, new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, message, null), true);
+    }
+
+    private String read(TerminologyCache cache, int i) {
+      TerminologyCache.CacheToken token = cache.generateValidationToken(CacheTestUtils.validationOptions,
+          coding(i), new ValueSet(), new Parameters());
+      ValidationResult result = cache.getValidation(token);
+      return result == null ? null : result.getMessage();
+    }
+
+    private int countPresent(TerminologyCache cache, int from, int to) {
+      int found = 0;
+      for (int i = from; i < to; i++) {
+        if (read(cache, i) != null) {
+          found++;
+        }
+      }
+      return found;
+    }
+
+    private Path cacheFile() throws IOException {
+      try (Stream<Path> files = Files.list(folder)) {
+        return files.filter(f -> f.toString().endsWith(".cache")).findFirst().orElseThrow();
+      }
+    }
+
+    @Test
+    void testEntriesWrittenByAnotherProcessSurviveOurSave() throws IOException {
+      TerminologyCache a = cache();
+      TerminologyCache b = cache(); // both opened while the folder was still empty
+
+      for (int i = 0; i < 10; i++) {
+        cache(a, i, "a" + i);
+      }
+      a.save();
+      for (int i = 10; i < 20; i++) {
+        cache(b, i, "b" + i);
+      }
+      b.save(); // b has never seen a's entries, and must not drop them
+
+      assertEquals(20, countPresent(cache(), 0, 20));
+    }
+
+    @Test
+    void testAStaleWriterMergesRatherThanRevertingTheFile() throws IOException {
+      TerminologyCache a = cache();
+      TerminologyCache b = cache();
+
+      cache(a, 0, "a0");
+      a.save();
+      cache(b, 1, "b1");
+      b.save(); // file is now ahead of what a knows about
+
+      cache(a, 2, "a2");
+      a.save();
+
+      assertEquals(3, countPresent(cache(), 0, 3));
+    }
+
+    @Test
+    void testOurOwnAnswerWinsWhenBothHoldTheSameRequest() throws IOException {
+      TerminologyCache a = cache();
+      TerminologyCache b = cache();
+
+      cache(a, 0, "from-a");
+      a.save();
+      cache(b, 0, "from-b");
+      b.save(); // b asked the server more recently, so b's answer is the one to keep
+
+      assertEquals("from-b", read(cache(), 0));
+    }
+
+    @Test
+    void testMergeOverflowingTheCapEvictsDiskEntriesNotJustFetchedOnes() throws IOException {
+      int previousLimit = TerminologyCache.getMaxEntriesPerCache();
+      TerminologyCache.setMaxEntriesPerCache(12);
+      try {
+        TerminologyCache a = cache();
+        TerminologyCache b = cache();
+
+        for (int i = 0; i < 10; i++) {
+          cache(a, i, "a" + i);
+        }
+        a.save();
+        for (int i = 10; i < 20; i++) {
+          cache(b, i, "b" + i);
+        }
+        b.save(); // 20 entries merged into a cache that holds 12
+
+        TerminologyCache reloaded = cache();
+        int fresh = countPresent(reloaded, 10, 20);
+        int fromDisk = countPresent(reloaded, 0, 10);
+        assertEquals(10, fresh, "everything the saving process had just fetched should be kept");
+        assertTrue(fromDisk > 0, "older entries should be trimmed, not all discarded");
+        assertTrue(fresh + fromDisk <= 12, "the entry cap should still hold");
+      } finally {
+        TerminologyCache.setMaxEntriesPerCache(previousLimit);
+      }
+    }
+
+    @Test
+    void testSaveWritesTheNonceHeaderAheadOfTheEntries() throws IOException {
+      TerminologyCache a = cache();
+      cache(a, 0, "a0");
+      a.save();
+
+      List<String> lines = Files.readAllLines(cacheFile());
+      assertTrue(lines.get(0).startsWith("# nonce: "), "the nonce header should be the first line");
+      assertTrue(lines.get(1).startsWith("-----"), "the entry marker should still follow it");
+      try (Stream<Path> files = Files.list(folder)) {
+        assertTrue(files.noneMatch(f -> f.toString().endsWith(".tmp")), "no scratch file should be left behind");
+      }
+    }
+
+    @Test
+    void testAFileWithNoNonceHeaderIsMergedRatherThanClobbered() throws IOException {
+      TerminologyCache stale = cache(); // opened while the folder was empty: it knows no nonce
+
+      TerminologyCache other = cache();
+      cache(other, 0, "from-other");
+      other.save();
+
+      // strip the header, leaving the file as a build from before the nonce existed wrote it
+      List<String> lines = new ArrayList<>(Files.readAllLines(cacheFile()));
+      lines.remove(0);
+      Files.write(cacheFile(), String.join("\r\n", lines).getBytes(StandardCharsets.UTF_8));
+
+      cache(stale, 1, "from-stale");
+      stale.save();
+
+      assertEquals(2, countPresent(cache(), 0, 2));
+      assertTrue(Files.readAllLines(cacheFile()).get(0).startsWith("# nonce: "),
+          "saving should give the file a nonce, so this only costs one extra merge");
     }
   }
 }

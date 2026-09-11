@@ -332,7 +332,6 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
       coding, valueSet, new Parameters());
     assertEquals("all-systems", cacheToken.getName());
-    assertFalse(cacheToken.isHasVersion());
   }
 
   @Test
@@ -348,7 +347,6 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
       coding, valueSet, new Parameters());
     assertEquals("dummySystem", cacheToken.getName());
-    assertTrue(cacheToken.isHasVersion());
   }
 
 
@@ -364,7 +362,6 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       concept, valueSet, new Parameters());
 
     assertNull(cacheToken.getName());
-    assertEquals(false, cacheToken.isHasVersion());
 
     JsonElement actual = jsonParser.parse(cacheToken.getRequest());
     JsonElement expected = getJsonFromFile("codableConceptEmptyValueSet.json");
@@ -388,7 +385,6 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       concept, valueSet, new Parameters());
 
     assertEquals("dummySystem", cacheToken.getName());
-    assertEquals(true, cacheToken.isHasVersion());
 
     JsonElement actual = jsonParser.parse(cacheToken.getRequest());
     JsonElement expected = getJsonFromFile("codableConceptEmptyValueSetSystem.json");
@@ -412,7 +408,6 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       concept, valueSet, new Parameters());
 
     assertNull(cacheToken.getName());
-    assertFalse(cacheToken.isHasVersion());
   }
 
   private static Stream<Arguments> getExpansionTokenParams() {
@@ -433,18 +428,18 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     allSystem.getExpansion().setContainsList(Arrays.asList(containsComponent));
 
     return Stream.of(
-      Arguments.of(baseValueSet, null, false),
-      Arguments.of(withInclude, "dummyIncludeSystem", true),
-      Arguments.of(withExclude, "dummyExcludeSystem", true),
-      Arguments.of(withExpansion, "dummyContainsSystem", true),
+      Arguments.of(baseValueSet, null),
+      Arguments.of(withInclude, "dummyIncludeSystem"),
+      Arguments.of(withExclude, "dummyExcludeSystem"),
+      Arguments.of(withExpansion, "dummyContainsSystem"),
       // Essentially, if more than one system is used, we're switching to 'all-systems'
-      Arguments.of(allSystem, "all-systems", true)
+      Arguments.of(allSystem, "all-systems")
     );
   }
 
   @ParameterizedTest
   @MethodSource("getExpansionTokenParams")
-  public void testExpansionTokenInclude(ValueSet valueSet, String expectedName, boolean expectedHasVersion) throws IOException, URISyntaxException {
+  public void testExpansionTokenInclude(ValueSet valueSet, String expectedName) throws IOException, URISyntaxException {
     TerminologyCache terminologyCache = createTerminologyCache();
 
     CacheToken expansionToken = terminologyCache.generateExpandToken(valueSet, new ExpansionOptions().withHierarchical(false));
@@ -452,8 +447,6 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
     assertEquals(expectedName, expansionToken.getName());
     assertEquals(expectedName, expansionTokenHierarchical.getName());
-    assertEquals(expectedHasVersion, expansionToken.isHasVersion());
-    assertEquals(expectedHasVersion, expansionTokenHierarchical.isHasVersion());
   }
 
   @Test

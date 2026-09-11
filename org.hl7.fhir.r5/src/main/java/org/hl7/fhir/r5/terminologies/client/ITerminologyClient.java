@@ -110,7 +110,7 @@ public interface ITerminologyClient {
   
   // internal conversion logging
   public interface ITerminologyConversionLogger {
-    void log(String name, String resourceType, String version, byte[] cnt);
+    void log(String name, String mode, String resourceType, String version, byte[] cnt);
   }
   void setConversionLogger(ITerminologyConversionLogger logger);
   OperationOutcome validateResource(Resource vs);
