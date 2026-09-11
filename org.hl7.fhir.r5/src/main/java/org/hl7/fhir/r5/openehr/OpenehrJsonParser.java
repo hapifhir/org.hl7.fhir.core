@@ -927,7 +927,7 @@ public class OpenehrJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
   protected void parseDV_COUNTProperties(JsonObject json, DV_COUNT res) throws IOException, FHIRFormatError {
     parseDV_AMOUNTProperties(json, res);
     if (json.has("magnitude"))
-      res.setMagnitudeElement(parseDecimal(json.get("magnitude").getAsBigDecimal()));
+      res.setMagnitudeElement(parseDecimal(json.get("magnitude")));
     if (json.has("_magnitude"))
       parseElementProperties(getJObject(json, "_magnitude"), res.getMagnitudeElement());
   }
@@ -1135,11 +1135,11 @@ public class OpenehrJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
   protected void parseDV_PROPORTIONProperties(JsonObject json, DV_PROPORTION res) throws IOException, FHIRFormatError {
     parseDV_AMOUNTProperties(json, res);
     if (json.has("numerator"))
-      res.setNumeratorElement(parseDecimal(json.get("numerator").getAsBigDecimal()));
+      res.setNumeratorElement(parseDecimal(json.get("numerator")));
     if (json.has("_numerator"))
       parseElementProperties(getJObject(json, "_numerator"), res.getNumeratorElement());
     if (json.has("denominator"))
-      res.setDenominatorElement(parseDecimal(json.get("denominator").getAsBigDecimal()));
+      res.setDenominatorElement(parseDecimal(json.get("denominator")));
     if (json.has("_denominator"))
       parseElementProperties(getJObject(json, "_denominator"), res.getDenominatorElement());
     if (json.has("type"))
@@ -1161,7 +1161,7 @@ public class OpenehrJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
   protected void parseDV_QUANTITYProperties(JsonObject json, DV_QUANTITY res) throws IOException, FHIRFormatError {
     parseDV_AMOUNTProperties(json, res);
     if (json.has("magnitude"))
-      res.setMagnitudeElement(parseDecimal(json.get("magnitude").getAsBigDecimal()));
+      res.setMagnitudeElement(parseDecimal(json.get("magnitude")));
     if (json.has("_magnitude"))
       parseElementProperties(getJObject(json, "_magnitude"), res.getMagnitudeElement());
     if (json.has("precision"))
@@ -1193,7 +1193,7 @@ public class OpenehrJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("symbol"))
       res.setSymbol(parseDV_CODED_TEXT(getJObject(json, "symbol")));
     if (json.has("value"))
-      res.setValueElement(parseDecimal(json.get("value").getAsBigDecimal()));
+      res.setValueElement(parseDecimal(json.get("value")));
     if (json.has("_value"))
       parseElementProperties(getJObject(json, "_value"), res.getValueElement());
   }
@@ -2584,7 +2584,7 @@ public class OpenehrJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("_minOp"))
       parseElementProperties(getJObject(json, "_minOp"), res.getMinOpElement());
     if (json.has("min"))
-      res.setMinElement(parseDecimal(json.get("min").getAsBigDecimal()));
+      res.setMinElement(parseDecimal(json.get("min")));
     if (json.has("_min"))
       parseElementProperties(getJObject(json, "_min"), res.getMinElement());
     if (json.has("maxOp"))
@@ -2592,7 +2592,7 @@ public class OpenehrJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     if (json.has("_maxOp"))
       parseElementProperties(getJObject(json, "_maxOp"), res.getMaxOpElement());
     if (json.has("max"))
-      res.setMaxElement(parseDecimal(json.get("max").getAsBigDecimal()));
+      res.setMaxElement(parseDecimal(json.get("max")));
     if (json.has("_max"))
       parseElementProperties(getJObject(json, "_max"), res.getMaxElement());
   }

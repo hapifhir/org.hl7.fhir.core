@@ -32,6 +32,16 @@ class TxTesterVersionTests {
   }
 
   @Test
+  void versionFromVersionsReadsParametersDefaultAsCode() throws Exception {
+    // what tx.fhir.org actually sends
+    List<String> issues = new ArrayList<>();
+    String v = TxTester.versionFromVersions(json("{\"resourceType\":\"Parameters\",\"parameter\":["+
+        "{\"name\":\"version\",\"valueCode\":\"5.0\"},{\"name\":\"default\",\"valueCode\":\"5.0\"}]}"), issues);
+    assertEquals("5.0", v);
+    assertTrue(issues.isEmpty());
+  }
+
+  @Test
   void versionFromVersionsReadsBareDefault() throws Exception {
     List<String> issues = new ArrayList<>();
     assertEquals("4.0.1", TxTester.versionFromVersions(json("{\"versions\":[\"4.0.1\"],\"default\":\"4.0.1\"}"), issues));

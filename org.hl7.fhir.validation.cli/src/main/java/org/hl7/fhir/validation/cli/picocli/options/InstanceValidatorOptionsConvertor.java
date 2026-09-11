@@ -6,13 +6,18 @@ import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.cli.picocli.OptionUtilities;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
+import org.hl7.fhir.validation.service.utils.LaunchContextUtilities;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
+import org.hl7.fhir.validation.service.utils.UsageContextUtilities;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
 public class InstanceValidatorOptionsConvertor {
@@ -104,6 +109,25 @@ public class InstanceValidatorOptionsConvertor {
     if (options.extensions != null && !options.extensions.isEmpty()) {
       for (String extension : options.extensions) {
         instanceValidatorParameters.addExtension(extension);
+      }
+    }
+
+    if (options.usages != null && !options.usages.isEmpty()) {
+      for (String usage : options.usages) {
+        // parse it here as well as where it's used, so that a malformed -usage is reported as a
+        // command line error rather than part way through a validation
+        UsageContextUtilities.parseUsageContext(usage);
+        instanceValidatorParameters.addUsage(usage);
+      }
+    }
+
+    if (options.launchContexts != null && !options.launchContexts.isEmpty()) {
+      // check the shape here, so that a malformed -launch-context is reported as a command line
+      // error. Whether the reference resolves is settled where the launch context is used
+      Map<String, String> shapeCheck = new HashMap<>();
+      for (String launchContext : options.launchContexts) {
+        LaunchContextUtilities.addLaunchContext(shapeCheck, launchContext);
+        instanceValidatorParameters.addLaunchContext(launchContext);
       }
     }
 

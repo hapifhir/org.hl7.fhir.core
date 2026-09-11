@@ -21,6 +21,7 @@ public class I18nConstants {
   public static final String BINDING_ADDITIONAL_D = "BINDING_ADDITIONAL_D";
   public static final String BINDING_ADDITIONAL_UC = "BINDING_ADDITIONAL_UC";
   public static final String BINDING_ADDITIONAL_USAGE = "BINDING_ADDITIONAL_USAGE";
+  public static final String BINDING_ADDITIONAL_IN_SCOPE = "BINDING_ADDITIONAL_IN_SCOPE";
   public static final String BINDING_MAX = "BINDING_MAX";
   public static final String BUNDLE_BUNDLE_ENTRY_CANONICAL = "Bundle_BUNDLE_Entry_Canonical";
   public static final String BUNDLE_BUNDLE_ENTRY_DOCUMENT = "Bundle_BUNDLE_Entry_Document";
@@ -617,6 +618,10 @@ public class I18nConstants {
   public static final String QUESTIONNAIRE_QR_ITEM_ONLYONEI = "Questionnaire_QR_Item_OnlyOneI";
   public static final String QUESTIONNAIRE_QR_ITEM_ORDER = "Questionnaire_QR_Item_Order";
   public static final String QUESTIONNAIRE_QR_ITEM_STRINGNOOPTIONS = "Questionnaire_QR_Item_StringNoOptions";
+  public static final String QUESTIONNAIRE_QR_ITEM_STRINGNOTALLOWED = "Questionnaire_QR_Item_StringNotAllowed";
+  public static final String QUESTIONNAIRE_QR_ITEM_ENABLEWHEN_UNCHECKABLE = "Questionnaire_QR_Item_EnableWhen_Uncheckable";
+  public static final String QUESTIONNAIRE_QR_LAUNCH_CONTEXT_NOT_LOADED = "Questionnaire_QR_LaunchContext_NotLoaded";
+  public static final String QUESTIONNAIRE_QR_LAUNCH_CONTEXT_WRONG_TYPE = "Questionnaire_QR_LaunchContext_WrongType";
   public static final String QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING = "QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING";
   public static final String QUESTIONNAIRE_QR_ITEM_TEXT = "Questionnaire_QR_Item_Text";
   public static final String QUESTIONNAIRE_QR_ITEM_TIMENOOPTIONS = "Questionnaire_QR_Item_TimeNoOptions";
@@ -1018,6 +1023,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_WS = "Type_Specific_Checks_DT_String_WS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_WS_ALL = "Type_Specific_Checks_DT_String_WS_ALL";
   public static final String TYPE_SPECIFIC_CHECKS_DT_TIME_VALID = "Type_Specific_Checks_DT_Time_Valid";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_TIME_VALID_CAUSE = "Type_Specific_Checks_DT_Time_Valid_Cause";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_OID = "Type_Specific_Checks_DT_URI_OID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_UUID = "Type_Specific_Checks_DT_URI_UUID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_WS = "Type_Specific_Checks_DT_URI_WS";
@@ -1253,6 +1259,7 @@ public class I18nConstants {
   public static final String VIEWDEFINITION_COLLECTION_NOT_NEEDED = "VIEWDEFINITION_COLLECTION_NOT_NEEDED";
   public static final String VIEWDEFINITION_COMPLEX_TYPE = "VIEWDEFINITION_COMPLEX_TYPE";
   public static final String VIEWDEFINITION_DUPL_COL_NAME = "VIEWDEFINITION_DUPL_COL_NAME";
+  public static final String VIEWDEFINITION_ITERATION_CONFLICT = "VIEWDEFINITION_ITERATION_CONFLICT";
   public static final String VIEWDEFINITION_NAME_INVALID = "VIEWDEFINITION_NAME_INVALID";
   public static final String VIEWDEFINITION_NAME_REQUIRED = "VIEWDEFINITION_NAME_REQUIRED";
   public static final String VIEWDEFINITION_NAME_REQUIRED_HINT = "VIEWDEFINITION_NAME_REQUIRED_HINT";
@@ -1262,6 +1269,8 @@ public class I18nConstants {
   public static final String VIEWDEFINITION_SHOULD_HAVE_NAME = "VIEWDEFINITION_SHOULD_HAVE_NAME";
   public static final String VIEWDEFINITION_TYPE_MISMATCH = "VIEWDEFINITION_TYPE_MISMATCH";
   public static final String VIEWDEFINITION_UNABLE_TO_TYPE = "VIEWDEFINITION_UNABLE_TO_TYPE";
+  public static final String VIEWDEFINITION_UNION_MISMATCH = "VIEWDEFINITION_UNION_MISMATCH";
+  public static final String VIEWDEFINITION_UNION_SINGLE = "VIEWDEFINITION_UNION_SINGLE";
   public static final String VIEWDEFINITION_UNKNOWN_RESOURCE = "VIEWDEFINITION_UNKNOWN_RESOURCE";
   public static final String VS_EXP_FILTER_UNK = "VS_EXP_FILTER_UNK";
   public static final String VS_EXP_IMPORT_CS = "VS_EXP_IMPORT_CS";
