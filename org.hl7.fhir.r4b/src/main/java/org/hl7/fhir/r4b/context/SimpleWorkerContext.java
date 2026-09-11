@@ -164,26 +164,32 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     super(locale);
   }
 
-  public SimpleWorkerContext(SimpleWorkerContext other) throws FileNotFoundException, IOException, FHIRException {
-    super();
-    copy(other);
-  }
+  // Copying a worker context has been withdrawn in this version. A copy is not properly isolated
+  // from the context it was copied from: it shares the terminology client, the translator, the
+  // validator factory and the resources themselves (the registries are copied, the resources in them
+  // are not), so changes made through one can show up in the other. This code base is only
+  // maintained for FHIRPath, so rather than fix it, the copy support is commented out. If you need
+  // it, raise an issue at https://github.com/hapifhir/org.hl7.fhir.core/issues
+//  public SimpleWorkerContext(SimpleWorkerContext other) throws FileNotFoundException, IOException, FHIRException {
+//    super();
+//    copy(other);
+//  }
 
-  public SimpleWorkerContext(SimpleWorkerContext other, Locale locale)
-      throws FileNotFoundException, IOException, FHIRException {
-    super(locale);
-    copy(other);
-  }
+//  public SimpleWorkerContext(SimpleWorkerContext other, Locale locale)
+//      throws FileNotFoundException, IOException, FHIRException {
+//    super(locale);
+//    copy(other);
+//  }
 
-  protected void copy(SimpleWorkerContext other) {
-    super.copy(other);
-    questionnaire = other.questionnaire;
-    binaries.putAll(other.binaries);
-    version = other.version;
-    revision = other.revision;
-    date = other.date;
-    validatorFactory = other.validatorFactory;
-  }
+//  protected void copy(SimpleWorkerContext other) {
+//    super.copy(other);
+//    questionnaire = other.questionnaire;
+//    binaries.putAll(other.binaries);
+//    version = other.version;
+//    revision = other.revision;
+//    date = other.date;
+//    validatorFactory = other.validatorFactory;
+//  }
 
   public List<String> getLoadedPackages() {
     return loadedPackages;
