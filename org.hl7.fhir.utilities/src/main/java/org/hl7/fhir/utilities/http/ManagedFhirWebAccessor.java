@@ -82,7 +82,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
    * {@link ManagedHTTPClient} then follows redirects with would resend them across a
    * cross-origin redirect target.
    */
-  protected HTTPRequest requestWithAuthorizationHeaders(HTTPRequest httpRequest) {
+  protected HTTPRequest requestWithAuthorizationHeaders(HTTPRequest httpRequest) throws IOException {
     HTTPRequest requestWithDefaultAndStaticHeaders = requestWithDefaultAndStaticHeaders(httpRequest);
 
     List<HTTPHeader> headers = new ArrayList<>();
