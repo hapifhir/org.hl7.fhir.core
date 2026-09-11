@@ -4899,6 +4899,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcJoin(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    // FHIRPath: "If the input is empty, the result is empty".
+    if (focus.isEmpty()) {
+      return new ArrayList<Base>();
+    }
     List<Base> nl = exp.getParameters().size() > 0 ? execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true) : new ArrayList<Base>();
     String param = "";
     String param2 = "";
