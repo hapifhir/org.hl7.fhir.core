@@ -103,7 +103,7 @@ public class ViewDefinitionValidator extends BaseValidator {
           TypeDetails t = new TypeDetails(CollectionStatus.SINGLETON, resourceName);
           i = 0;
           for (Element select : vd.getChildren("select")) {
-            ok = checkSelect(hostContext, errors, vd, vd, stack.push(select, i, null, null), select, resourceName, t, columns, vec, vdesc, first) && ok;
+            ok = checkSelect(hostContext, errors, vd, stack.push(select, i, null, null), select, resourceName, t, columns, vec, vdesc, first) && ok;
             i++;
           }
         } 
@@ -138,18 +138,30 @@ public class ViewDefinitionValidator extends BaseValidator {
     }
   }
 
-  private boolean checkSelect(ValidationContext hostContext, List<ValidationMessage> errors, Element vd, Element parent, NodeStack stack, Element select, 
+  private boolean checkSelect(ValidationContext hostContext, List<ValidationMessage> errors, Element vd, NodeStack stack, Element select,
       String resourceName, TypeDetails t, List<Column> columns, VersionEvaluationContext vec, String vdesc, boolean first) {
     select.setUserData(UserDataNames.db_columns, columns);
     boolean ok = true;
 
+    // repeat is 0..*, so it must be tested with hasChildren: hasChild throws once a select lists
+    // more than one path.
     if (select.hasChild("forEach")) {
+      if (select.hasChild("forEachOrNull") || select.hasChildren("repeat")) {
+        rule(errors, "2024-11-14", IssueType.INVALID, stack, false, I18nConstants.VIEWDEFINITION_ITERATION_CONFLICT);
+        ok = false;
+      }
       Element e = select.getNamedChild("forEach");
       t = checkForEach(hostContext, errors, vd, select, stack.push(e, -1, null, null), e, resourceName, t, vec, vdesc, first);
     } else if (select.hasChild("forEachOrNull")) {
+      if (select.hasChildren("repeat")) {
+        rule(errors, "2024-11-14", IssueType.INVALID, stack, false, I18nConstants.VIEWDEFINITION_ITERATION_CONFLICT);
+        ok = false;
+      }
       Element e = select.getNamedChild("forEachOrNull");
       t = checkForEachOrNull(hostContext, errors, vd, select, stack.push(e, -1, null, null), e, resourceName, t, vec, vdesc, first);
-    } 
+    } else if (select.hasChildren("repeat")) {
+      t = checkRepeat(hostContext, errors, vd, select, stack, resourceName, t, vec, vdesc, first);
+    }
 
     if (t == null) {
       ok = false;
@@ -166,18 +178,14 @@ public class ViewDefinitionValidator extends BaseValidator {
       if (select.hasChildren("select")) {    
         int i = 0;
         for (Element e : select.getChildren("select")) {
-          ok = checkSelect(hostContext, errors, vd, select, stack.push(e,  i,  null, null), e, resourceName, t, columns, vec, vdesc, first) && ok;
+          ok = checkSelect(hostContext, errors, vd, stack.push(e,  i,  null, null), e, resourceName, t, columns, vec, vdesc, first) && ok;
           i++;
         }      
       }     
 
       if (select.hasChildren("unionAll")) {
-        int i = 0;
-        for (Element e : select.getChildren("unionAll")) {
-          ok = checkUnion(hostContext, errors, vd, parent, stack.push(e,  i,  null, null), e, resourceName, t, columns, vec, vdesc, first)  && ok;
-          i++;
-        }
-      } 
+        ok = checkUnion(hostContext, errors, vd, select, stack, resourceName, t, columns, vec, vdesc, first) && ok;
+      }
       checkColumnNamesUnique(errors, stack, columns);
     }
     return ok;
@@ -199,35 +207,36 @@ public class ViewDefinitionValidator extends BaseValidator {
     }    
   }
 
-  private boolean checkUnion(ValidationContext hostContext, List<ValidationMessage> errors, Element vd, Element parent, NodeStack stack, 
-      Element unionAll, String resourceName,  TypeDetails t, List<Column> columns, VersionEvaluationContext vec, String vdesc, boolean first) {
-    return false;
-    //      List<List<Column>> unionColumns = new ArrayList<>();
-    //      int i = 0;
-    //      for (JsonElement e : ((JsonArray) a)) {
-    //        if (!(e instanceof JsonObject)) {
-    //          error(path+".unionAll["+i+"]", e, "unionAll["+i+"] is not an object", IssueType.INVALID);
-    //        } else { 
-    //          unionColumns.add(checkSelect(vd, path+".unionAll["+i+"]", (JsonObject) e, t));
-    //        }
-    //        i++;
-    //      }  
-    //      if (i < 2) {
-    //        warning(path+".unionAll", a, "unionAll should have more than one item");        
-    //      }
-    //      if (unionColumns.size() > 1) {
-    //        List<Column> columns = unionColumns.get(0);
-    //        for (int ic = 1; ic < unionColumns.size(); ic++) {
-    //          String diff = columnDiffs(columns, unionColumns.get(ic));
-    //          if (diff != null) {
-    //            error(path+".unionAll["+i+"]", ((JsonArray) a).get(ic), "unionAll["+i+"] column definitions do not match: "+diff, IssueType.INVALID);            
-    //          }
-    //        }
-    //        a.setUserData(UserDataNames.db_columns, columns);
-    //        return columns;
-    //      }
-    //    }     
-    //    return null;
+  /**
+   * Validates the unionAll branches of a select. Each branch is a select in its own right, whose
+   * columns are gathered separately so the branches can be compared: they must agree in column
+   * name, kind and collection status. The first branch's columns then join the enclosing select's
+   * columns, since the union contributes them to the view's output.
+   */
+  private boolean checkUnion(ValidationContext hostContext, List<ValidationMessage> errors, Element vd, Element select, NodeStack stack,
+      String resourceName, TypeDetails t, List<Column> columns, VersionEvaluationContext vec, String vdesc, boolean first) {
+    boolean ok = true;
+    List<Element> branches = select.getChildren("unionAll");
+    List<List<Column>> branchColumns = new ArrayList<>();
+    int i = 0;
+    for (Element branch : branches) {
+      // Columns are only created on the first version pass; later passes annotate the existing
+      // columns, so they work on the enclosing list directly.
+      List<Column> cols = first ? new ArrayList<>() : columns;
+      ok = checkSelect(hostContext, errors, vd, stack.push(branch, i, null, null), branch, resourceName, t, cols, vec, vdesc, first) && ok;
+      branchColumns.add(cols);
+      i++;
+    }
+    warning(errors, "2026-09-08", IssueType.BUSINESSRULE, stack, I18nConstants.VIEWDEFINITION_UNION_SINGLE, branches.size() > 1, I18nConstants.VIEWDEFINITION_UNION_SINGLE);
+    if (first) {
+      List<Column> reference = branchColumns.get(0);
+      for (int ic = 1; ic < branchColumns.size(); ic++) {
+        String diff = columnDiffs(reference, branchColumns.get(ic));
+        ok = rule(errors, "2026-09-08", IssueType.INVALID, stack.push(branches.get(ic), ic, null, null), diff == null, I18nConstants.VIEWDEFINITION_UNION_MISMATCH, diff) && ok;
+      }
+      columns.addAll(reference);
+    }
+    return ok;
   }
 
   private String columnDiffs(List<Column> list1, List<Column> list2) {
@@ -315,7 +324,7 @@ public class ViewDefinitionValidator extends BaseValidator {
 
               String type = column.getNamedChildValue("type");
               if (type != null) {
-                if (td.hasType(type)) {
+                if (td.hasType(type) || familyMatches(type, td)) {
                   types.clear();
                   types.add(simpleType(type));
                 } else {
@@ -388,19 +397,19 @@ public class ViewDefinitionValidator extends BaseValidator {
 
   private String simpleType(String type) {
     type = type.replace("http://hl7.org/fhirpath/System.", "").replace("http://hl7.org/fhir/StructureDefinition/", "");
-    if (Utilities.existsInList(type, "date", "dateTime", "instant")) {
+    if (Utilities.existsInList(type, "date", "dateTime", "instant", "DateTime")) {
       return "dateTime";
     }
     if (Utilities.existsInList(type, "Boolean", "boolean")) {
       return "boolean";
     }
-    if (Utilities.existsInList(type, "Integer", "integer", "integer64")) {
+    if (Utilities.existsInList(type, "Integer", "integer", "integer64", "positiveInt", "unsignedInt")) {
       return "integer";
     }
     if (Utilities.existsInList(type, "Decimal", "decimal")) {
       return "decimal";
     }
-    if (Utilities.existsInList(type, "String", "string", "code")) {
+    if (Utilities.existsInList(type, "String", "string", "code", "id", "oid", "uri", "url", "uuid", "canonical", "markdown", "sid")) {
       return "string";
     }
     if (Utilities.existsInList(type, "Time", "time")) {
@@ -410,6 +419,22 @@ public class ViewDefinitionValidator extends BaseValidator {
       return "base64Binary";
     }
     return type;
+  }
+
+  /**
+   * Returns true when the declared type shares a primitive base family with at least one of the
+   * engine-inferred types. This accepts valid declarations of a primitive specialisation (for
+   * example 'id') where the computable definitions type the element as its base primitive (for
+   * example 'string'), in either direction, while genuine cross-family mismatches still fail.
+   */
+  private boolean familyMatches(String declaredType, TypeDetails td) {
+    String declaredFamily = simpleType(declaredType);
+    for (String t : td.getTypes()) {
+      if (declaredFamily.equals(simpleType(t))) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private TypeDetails checkForEach(ValidationContext hostContext, List<ValidationMessage> errors, Element vd, Element parent, NodeStack stack, 
@@ -432,14 +457,14 @@ public class ViewDefinitionValidator extends BaseValidator {
             warning(errors, "2024-11-14", IssueType.BUSINESSRULE, stack, false, I18nConstants.VIEWDEFINITION_PATH_WARNING, s.getMessage(), vdesc);
           }
         }
-        return td;
+        return td == null ? null : td.toSingleton();
       }
     }
     return null;
 
   }
 
-  private TypeDetails checkForEachOrNull(ValidationContext hostContext, List<ValidationMessage> errors, Element vd, Element parent, NodeStack stack, 
+  private TypeDetails checkForEachOrNull(ValidationContext hostContext, List<ValidationMessage> errors, Element vd, Element parent, NodeStack stack,
       Element  expression, String resourceName,  TypeDetails t, VersionEvaluationContext vec, String vdesc, boolean first) {
     String expr = expression.primitiveValue();
     if (expr != null) {
@@ -449,19 +474,65 @@ public class ViewDefinitionValidator extends BaseValidator {
         TypeDetails td = null;
         try {
           td = vec.fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
-        } catch (Exception e) {     
+        } catch (Exception e) {
           rule(errors, "2024-11-14", IssueType.EXCEPTION, stack, false, I18nConstants.VIEWDEFINITION_PATH_ERROR, e.getMessage(), vdesc);
           return null;
         }
         if (td != null) {
-          for (IssueMessage s : warnings) {        
+          for (IssueMessage s : warnings) {
             warning(errors, "2024-11-14", IssueType.BUSINESSRULE, stack, false, I18nConstants.VIEWDEFINITION_PATH_WARNING, s.getMessage(), vdesc);
           }
         }
-        return td;
+        return td == null ? null : td.toSingleton();
       }
     }
     return null;
+  }
+
+  private TypeDetails checkRepeat(ValidationContext hostContext, List<ValidationMessage> errors, Element vd, Element parent, NodeStack stack,
+      String resourceName, TypeDetails t, VersionEvaluationContext vec, String vdesc, boolean first) {
+    List<Element> repeats = parent.getChildren("repeat");
+    List<ExpressionNode> nodes = new ArrayList<>();
+    TypeDetails result = new TypeDetails(null);
+    int i = 0;
+    for (Element repeat : repeats) {
+      String expr = repeat.primitiveValue();
+      if (expr != null) {
+        NodeStack repeatStack = stack.push(repeat, i, null, null);
+        ExpressionNode n = getParsedExpression(repeat, vec.fpe, expr, errors, repeatStack, UserDataNames.db_repeat);
+        if (n != null) {
+          nodes.add(n);
+          // Repeat paths are applied recursively to the focus and all yielded
+          // descendants, so a path may be invalid on the starting type but
+          // valid on a descendant yielded by another sibling path. Type-check
+          // errors are recorded as warnings rather than rejected outright.
+          List<IssueMessage> warnings = new ArrayList<>();
+          TypeDetails td = null;
+          try {
+            td = vec.fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
+          } catch (Exception e) {
+            warning(errors, "2024-11-14", IssueType.BUSINESSRULE, repeatStack, false, I18nConstants.VIEWDEFINITION_PATH_WARNING, e.getMessage(), vdesc);
+          }
+          if (td != null) {
+            result.update(td);
+          }
+          for (IssueMessage s : warnings) {
+            warning(errors, "2024-11-14", IssueType.BUSINESSRULE, repeatStack, false, I18nConstants.VIEWDEFINITION_PATH_WARNING, s.getMessage(), vdesc);
+          }
+        }
+      }
+      i++;
+    }
+    parent.setUserData(UserDataNames.db_repeat, nodes);
+    // If no path yielded any types, the runtime will produce no rows. Signal
+    // downstream validation to skip type-based checks so they do not fail
+    // against an empty type set.
+    if (result.hasNoTypes()) {
+      return null;
+    }
+    // Like forEach, each yielded element becomes its own row, so columns and
+    // nested selects see a single element rather than the traversed collection.
+    return result.toSingleton();
   }
 
   private boolean checkConstant(ValidationContext hostContext, List<ValidationMessage> errors, NodeStack stack, Element constant) {

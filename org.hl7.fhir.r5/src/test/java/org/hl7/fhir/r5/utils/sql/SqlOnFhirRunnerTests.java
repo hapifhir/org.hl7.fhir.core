@@ -1,30 +1,27 @@
 package org.hl7.fhir.r5.utils.sql;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.sql.Runner;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonNull;
+import org.hl7.fhir.utilities.json.model.JsonNumber;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -35,7 +32,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Tests for SQL on FHIR Runner implementation based on the official test suite.
- * Tests are loaded from JSON files in the resources/sof directory.
+ * The suite is the copy of https://github.com/FHIR/sql-on-fhir.js/tree/main/tests held in
+ * fhir-test-cases under sql-on-fhir/, whose manifest.json lists the files to run.
  *
  * @author John Grimes
  */
@@ -44,31 +42,27 @@ public class SqlOnFhirRunnerTests {
 
   private static IWorkerContext context;
   private static TestReportGenerator reportGenerator;
-  private static Map<String, JsonObject> testFiles = new HashMap<>();
+  private static Map<String, JsonObject> testFiles = new LinkedHashMap<>();
 
   @BeforeAll
-  public static void setUp() throws Exception {
+  static void setUp() throws Exception {
     context = TestingUtilities.getSharedWorkerContext();
     reportGenerator = new TestReportGenerator();
     loadTestFiles();
   }
 
   @AfterAll
-  public static void tearDown() {
+  static void tearDown() {
     reportGenerator.writeReport("target/sof-test-report.json");
   }
 
   private static void loadTestFiles() throws IOException {
-    File testDir = new File("src/test/resources/sof");
-    if (testDir.exists() && testDir.isDirectory()) {
-      File[] files = testDir.listFiles((dir, name) -> name.endsWith(".json"));
-      if (files != null) {
-        for (File file : files) {
-          String content = Files.readString(file.toPath());
-          JsonObject testFile = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(content);
-          testFiles.put(file.getName(), testFile);
-        }
-      }
+    JsonArray manifest = (JsonArray) org.hl7.fhir.utilities.json.parser.JsonParser.parse(
+        TestingUtilities.loadTestResource("sql-on-fhir", "manifest.json"));
+    for (String fileName : manifest.asStrings()) {
+      JsonObject testFile = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(
+          TestingUtilities.loadTestResource("sql-on-fhir", fileName));
+      testFiles.put(fileName, testFile);
     }
   }
 
@@ -97,7 +91,7 @@ public class SqlOnFhirRunnerTests {
   @ParameterizedTest(name = "{0}: {1}")
   @MethodSource("testCases")
   @DisplayName("SQL on FHIR Runner Test")
-  public void testRunner(String fileName, String testName, JsonObject testFile, JsonObject test) throws Exception {
+  void testRunner(String fileName, String testName, JsonObject testFile, JsonObject test) throws Exception {
     log.info("Running test: {} - {}", fileName, testName);
 
     TestResult result = new TestResult();
@@ -221,15 +215,25 @@ public class SqlOnFhirRunnerTests {
       return;
     }
 
-    // Deep comparison of JSON results.
+    // Multiset comparison: row order is not significant in SQL on FHIR,
+    // but duplicate rows must still match in count. For each expected row,
+    // find an unconsumed actual row that matches; mark it consumed so the
+    // same actual row cannot satisfy two expected rows.
+    boolean[] consumed = new boolean[actual.size()];
     for (int i = 0; i < expected.size(); i++) {
       JsonElement expectedRow = expected.get(i);
-      JsonElement actualRow = actual.get(i);
-
-      if (!compareJsonElements(expectedRow, actualRow)) {
+      boolean found = false;
+      for (int j = 0; j < actual.size(); j++) {
+        if (!consumed[j] && compareJsonElements(expectedRow, actual.get(j))) {
+          consumed[j] = true;
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
         result.passed = false;
-        result.error = String.format("Row %d mismatch: expected %s, got %s",
-                                     i, expectedRow, actualRow);
+        result.error = String.format("No matching actual row for expected row %d: %s",
+                                     i, expectedRow);
         return;
       }
     }
@@ -277,6 +281,11 @@ public class SqlOnFhirRunnerTests {
         }
       }
       return true;
+    } else if (expected instanceof JsonNumber) {
+      // Numbers compare by value, not by rendering: an engine is free to return
+      // 0.95000000 where the test suite writes 0.95.
+      return new BigDecimal(((JsonNumber) expected).getValue())
+          .compareTo(new BigDecimal(((JsonNumber) actual).getValue())) == 0;
     } else {
       // Primitive comparison.
       return expected.toString().equals(actual.toString());
