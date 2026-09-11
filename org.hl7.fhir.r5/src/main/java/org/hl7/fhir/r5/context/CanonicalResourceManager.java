@@ -301,10 +301,23 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   public void copy(CanonicalResourceManager<T> source) {
     allResources.clear();
     indexedResources.clear();
+    listForUrl.clear();
+    listForId.clear();
+    masterDefinitions.clear();
+    supplements.clear();
     allResources.addAll(source.allResources);
     indexedResources.putAll(source.indexedResources);
     for (Map.Entry<String, List<CachedCanonicalResource<T>>> entry : source.listForUrl.entrySet()) {
       listForUrl.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+    }
+    for (Map.Entry<String, List<CachedCanonicalResource<T>>> entry : source.listForId.entrySet()) {
+      listForId.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+    }
+    // the master definitions decide which version of an unversioned canonical is used when the referencing 
+    // resource has no package (see getByPackage), without them the copy falls back to the latest version
+    masterDefinitions.putAll(source.masterDefinitions);
+    for (Map.Entry<String, List<CachedCanonicalResource<T>>> entry : source.supplements.entrySet()) {
+      supplements.put(entry.getKey(), new ArrayList<>(entry.getValue()));
     }
   }
 

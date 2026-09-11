@@ -405,6 +405,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       cachingAllowed = other.cachingAllowed;
       suppressedMappings = other.suppressedMappings;
       cutils.setSuppressedMappings(other.suppressedMappings);
+      // the package information is needed to resolve canonicals with the dependencies of the package of the 
+      // referencing resource (see populatePVList), without it the copy falls back to the latest version
+      packages.putAll(other.packages);
     }
   }
 
