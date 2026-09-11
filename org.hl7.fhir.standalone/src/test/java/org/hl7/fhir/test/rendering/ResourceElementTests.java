@@ -94,7 +94,7 @@ public class ResourceElementTests {
     Assertions.assertNull(bnd.name());
     Assertions.assertNull(bnd.getId());
     Assertions.assertEquals("Bundle", bnd.path());
-    Assertions.assertTrue("6.0.0".equals(bnd.fhirVersion()) || "6.0.0-ballot5".equals(bnd.fhirVersion()));
+    Assertions.assertTrue("6.0.0".equals(bnd.fhirVersion()) || "6.0.0-snapshot1".equals(bnd.fhirVersion()));
     Assertions.assertFalse(bnd.canHaveNarrative());
     Assertions.assertFalse(bnd.hasNarrative());
     Assertions.assertEquals(ElementKind.IndependentResource, bnd.kind());

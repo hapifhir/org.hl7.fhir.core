@@ -863,7 +863,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     List<Element> constraints = element.getChildrenByName("constraint");
     int cc = 0;
     for (Element invariant : constraints) {
-      ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path", false), rootPath, profileUrl, profileVersion, profileType, snapshot, base) && ok;
+      ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path", false), rootPath, profileUrl, profileVersion, profileType, snapshot, base, sd) && ok;
       cc++;
     }    
     if (snapshot) {
@@ -1019,7 +1019,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
   private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, SourcedInvariant> invariantMap, List<Element> elements, Element element, 
-      String path, String rootPath, String profileUrl, String profileVersion, String profileType, boolean snapshot, StructureDefinition base) {
+      String path, String rootPath, String profileUrl, String profileVersion, String profileType, boolean snapshot, StructureDefinition base, StructureDefinition sdThis) {
     boolean ok = true;
     String key = invariant.getNamedChildValue("key", false); 
     String expression = invariant.getNamedChildValue("expression", false);
@@ -1080,7 +1080,12 @@ public class StructureDefinitionValidator extends BaseValidator {
             }        
           }
         } else {   
-          if (rule(errors, "2023-07-27", IssueType.INVALID, stack, source == null || matchesCanonical(source, profileUrl, profileVersion), I18nConstants.ED_INVARIANT_DIFF_NO_SOURCE, key, source, profileUrl)) {
+          // the source can name another profile, but only if this profile imposes that profile - and then the invariant really has to be the same one
+          boolean imposed = source != null && !matchesCanonical(source, profileUrl, profileVersion) && isInImposeList(source, sdThis);
+          if (rule(errors, "2023-07-27", IssueType.INVALID, stack, source == null || matchesCanonical(source, profileUrl, profileVersion) || imposed, I18nConstants.ED_INVARIANT_DIFF_NO_SOURCE, key, source, profileUrl)) {
+            if (imposed) {
+              ok = checkImposedInvariant(errors, stack, key, expression, source) && ok;
+            }
             SourcedInvariant inv = findInvariantInBase(base, key);
             if (rule(errors, "2023-07-27", IssueType.INVALID, stack, inv == null || inv.getInv().equals(expression), I18nConstants.ED_INVARIANT_KEY_ALREADY_USED, key, inv == null ? "??" : inv.getSd(), inv == null  ? "??" : inv.getInv())) {
               if (invariantMap.containsKey(key)) { 
@@ -1101,6 +1106,76 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  /**
+   * Is source one of the profiles that sd imposes (structuredefinition-imposeProfile)? If it is, then an
+   * invariant in sd is allowed to name it as the source of the invariant
+   */
+  private boolean isInImposeList(String source, StructureDefinition sd) {
+    if (source == null || sd == null) {
+      return false;
+    }
+    for (Extension ex : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
+      if (ex.hasValueCanonicalType() && matchesImposedCanonical(source, ex.getValueCanonicalType().primitiveValue())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * The source and the imposed canonical may each carry a version, or not. They match if the URLs are the
+   * same and they don't state different versions
+   */
+  private boolean matchesImposedCanonical(String source, String imposed) {
+    if (imposed == null) {
+      return false;
+    }
+    CanonicalPair src = CanonicalPair.of(source);
+    CanonicalPair imp = CanonicalPair.of(imposed);
+    if (!src.getUrl().equals(imp.getUrl())) {
+      return false;
+    }
+    return !src.hasVersion() || !imp.hasVersion() || src.getVersion().equals(imp.getVersion());
+  }
+
+  /**
+   * The invariant names an imposed profile as its source. That's legal, but the invariant it names really has
+   * to be the invariant that's defined over there - otherwise the traceability the source provides is a lie
+   */
+  private boolean checkImposedInvariant(List<ValidationMessage> errors, NodeStack stack, String key, String expression, String source) {
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, source, IWorkerContext.VersionResolutionRules.defaultRule());
+    if (sd == null) {
+      warning(errors, "2026-09-09", IssueType.NOTFOUND, stack, false, I18nConstants.ED_INVARIANT_IMPOSE_NOT_FOUND, key, source);
+      return true;
+    }
+    ElementDefinitionConstraintComponent inv = findInvariantInImposedProfile(sd, key);
+    if (inv == null) {
+      return rule(errors, "2026-09-09", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_IMPOSE_NOT_DEFINED, key, source);
+    }
+    if (Utilities.noString(expression) || !inv.hasExpression()) {
+      return true; // nothing to compare
+    }
+    return rule(errors, "2026-09-09", IssueType.INVALID, stack, expression.equals(inv.getExpression()), I18nConstants.ED_INVARIANT_IMPOSE_DIFFERENT, key, source, inv.getExpression(), expression);
+  }
+
+  private ElementDefinitionConstraintComponent findInvariantInImposedProfile(StructureDefinition sd, String key) {
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+        if (key.equals(inv.getKey())) {
+          return inv;
+        }
+      }
+    }
+    for (ElementDefinition ed : sd.getDifferential().getElement()) {
+      for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+        if (key.equals(inv.getKey())) {
+          return inv;
+        }
+      }
+    }
+    return null;
   }
 
   private boolean matchesCanonical(String source, String profileUrl, String profileVersion) {

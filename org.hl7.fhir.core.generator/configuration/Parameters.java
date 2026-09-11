@@ -122,10 +122,6 @@ public boolean getParameterBool(String name) {
   return false;
 }
 
-public boolean hasValuePrimitive() {
-  return hasValue() && getValue() instanceof PrimitiveType<?>;
-}
-
 public Parameters addParameter(String name, int i) {
   addParameter().setName(name).setValue(new IntegerType(i));
   return this;

@@ -47,7 +47,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 
   static public Map<String, SimpleWorkerContext> sharedContexts;
 
-  final static public String DEFAULT_CONTEXT_VERSION = "6.0.0-ballot5";
+  final static public String DEFAULT_CONTEXT_VERSION = "6.0.0-snapshot1";
 
   /** Get an existing instantiation of a WorkerContext if available
    *
@@ -64,7 +64,7 @@ public class TestingUtilities extends BaseTestingUtilities {
    * @return
    */
   public static SimpleWorkerContext getSharedWorkerContext(String fhirVersion) {
-    if (!Utilities.existsInList(fhirVersion, "1.0.2", "3.0.1", "4.0.1", "4.3.0", "5.0.0", "6.0.0-ballot5")) {
+    if (!Utilities.existsInList(fhirVersion, "1.0.2", "3.0.1", "4.0.1", "4.3.0", "5.0.0", "6.0.0-snapshot1")) {
       throw new Error("illegal version: "+fhirVersion);
       
     }

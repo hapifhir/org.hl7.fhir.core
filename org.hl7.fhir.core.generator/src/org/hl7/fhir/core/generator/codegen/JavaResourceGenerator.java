@@ -1266,7 +1266,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		  return;
 		}
     if (vse == null) {
-      return;
+      // the analyser has already typed the element(s) as Enumeration<tns>, so skipping the enum
+      // just produces code that doesn't compile. Fail here instead, where the cause is visible
+      throw new Error("No expansion available for "+vs.getVersionedUrl()+", so the enum "+tns+" can't be generated (is it missing from the expansions package?)");
     }
     ValueSetUtilities.checkExpansionIsFlat(vse);
     

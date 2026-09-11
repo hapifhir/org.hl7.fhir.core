@@ -493,5 +493,42 @@ class UtilitiesTest {
     assertThat(result[3]).isEqualTo("D");
     assertThat(result[4]).isEqualTo("E");
   }
-}
 
+  @ParameterizedTest
+  @MethodSource("decodeBase64Valid")
+  void testDecodeBase64Valid(String input, String expected) {
+    assertEquals(expected, new String(Utilities.decodeBase64(input), StandardCharsets.UTF_8));
+  }
+
+  private static Stream<Arguments> decodeBase64Valid() {
+    return Stream.of(
+      Arguments.of("SGVsbG8=", "Hello"),
+      Arguments.of("", ""),
+      Arguments.of("SGVs\nbG8=", "Hello"),
+      Arguments.of("SGVs\r\nbG8=", "Hello"),
+      Arguments.of(" SGVs bG8= ", "Hello"),
+      Arguments.of("\tSGVs\tbG8=\n", "Hello"),
+      Arguments.of("S G V s b G 8 =", "Hello"),
+      Arguments.of("SGVsbG8gV29y\nbGQ=\n", "Hello World")
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("decodeBase64Invalid")
+  void testDecodeBase64Invalid(String input) {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> Utilities.decodeBase64(input));
+  }
+
+  private static Stream<Arguments> decodeBase64Invalid() {
+    return Stream.of(
+      Arguments.of("not valid base64!!"),
+      Arguments.of("SGV!sbG8="),
+      Arguments.of("SGV!\nsbG8="),
+      Arguments.of("SGVsbG8=SGVsbG8="),
+      Arguments.of("SGVsbG8=\nSGVsbG8="),
+      Arguments.of("SGVsbG8=!!"),
+      Arguments.of("SGVs\u00a0bG8="), // NBSP is not base64 whitespace
+      Arguments.of("\u0141AAA\n") // must not truncate to 'A' (which would make "AAAA", valid)
+    );
+  }
+}

@@ -3536,8 +3536,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID, value) && ok;
             } else {
               boolean wsok = !Base64Util.base64HasWhitespace(elementValue);
+              // R5+ says base64Binary content "does not include any whitespace or line feeds, but reading applications
+              // should ignore whitespace characters". That is not SHALL NOT, so it's a warning in all versions, but
+              // the language is stronger from R5 on
               if (VersionUtilities.isR5Plus(this.context.getVersion())) {
-                ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR) && ok;
+                warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR);
               } else {
                 warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING);
               }
@@ -4846,7 +4849,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private byte[] readBase64Data(List<ValidationMessage> errors, NodeStack theStack, String name, String b64) {
     try {
-      return Base64.getDecoder().decode(b64);
+      return Utilities.decodeBase64(b64);
     } catch (Exception e) {
       rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL, name, e.getMessage());
     }
@@ -4936,8 +4939,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         try {
           // this is the one place the whole content is held in memory at once. Decoding it in chunks would 
           // avoid that, but only the whole-array decoder checks that nothing follows the padding, and it 
-          // words the error differently, so the checking is worth more than the memory here
-          summariseContent(res, Base64.getDecoder().decode(b64), wantHash);
+          // words the error differently, so the checking is worth more than the memory here. Whitespace 
+          // is ignored (readers should ignore it), so it makes no difference to the size or the hash
+          summariseContent(res, Utilities.decodeBase64(b64), wantHash);
         } catch (Exception e) {
           res.decodeError = e.getMessage();
         }

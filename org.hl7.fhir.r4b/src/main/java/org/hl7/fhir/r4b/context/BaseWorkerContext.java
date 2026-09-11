@@ -271,40 +271,46 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     clock = new TimeTracker();
   }
 
-  protected void copy(BaseWorkerContext other) {
-    synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet
-      allResourcesById.putAll(other.allResourcesById);
-      translator = other.translator;
-      codeSystems.copy(other.codeSystems);
-      txcaps = other.txcaps;
-      valueSets.copy(other.valueSets);
-      maps.copy(other.maps);
-      transforms.copy(other.transforms);
-      structures.copy(other.structures);
-      searchParameters.copy(other.searchParameters);
-      plans.copy(other.plans);
-      questionnaires.copy(other.questionnaires);
-      operations.copy(other.operations);
-      systems.copy(other.systems);
-      guides.copy(other.guides);
-      capstmts.copy(other.capstmts);
-      measures.copy(other.measures);
-      libraries.copy(other.libraries);
+  // Copying a worker context has been withdrawn in this version. A copy is not properly isolated
+  // from the context it was copied from: it shares the terminology client, the translator, the
+  // validator factory and the resources themselves (the registries are copied, the resources in them
+  // are not), so changes made through one can show up in the other. This code base is only
+  // maintained for FHIRPath, so rather than fix it, the copy support is commented out. If you need
+  // it, raise an issue at https://github.com/hapifhir/org.hl7.fhir.core/issues
+//  protected void copy(BaseWorkerContext other) {
+//    synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet
+//      allResourcesById.putAll(other.allResourcesById);
+//      translator = other.translator;
+//      codeSystems.copy(other.codeSystems);
+//      txcaps = other.txcaps;
+//      valueSets.copy(other.valueSets);
+//      maps.copy(other.maps);
+//      transforms.copy(other.transforms);
+//      structures.copy(other.structures);
+//      searchParameters.copy(other.searchParameters);
+//      plans.copy(other.plans);
+//      questionnaires.copy(other.questionnaires);
+//      operations.copy(other.operations);
+//      systems.copy(other.systems);
+//      guides.copy(other.guides);
+//      capstmts.copy(other.capstmts);
+//      measures.copy(other.measures);
+//      libraries.copy(other.libraries);
 
-      allowLoadingDuplicates = other.allowLoadingDuplicates;
-      tsServer = other.tsServer;
-      name = other.name;
-      txClient = other.txClient;
-      txLog = other.txLog;
-      txcaps = other.txcaps;
-      canRunWithoutTerminology = other.canRunWithoutTerminology;
-      noTerminologyServer = other.noTerminologyServer;
-      if (other.txCache != null)
-        txCache = other.txCache.copy();
-      expandCodesLimit = other.expandCodesLimit;
-      expParameters = other.expParameters;
-    }
-  }
+//      allowLoadingDuplicates = other.allowLoadingDuplicates;
+//      tsServer = other.tsServer;
+//      name = other.name;
+//      txClient = other.txClient;
+//      txLog = other.txLog;
+//      txcaps = other.txcaps;
+//      canRunWithoutTerminology = other.canRunWithoutTerminology;
+//      noTerminologyServer = other.noTerminologyServer;
+//      if (other.txCache != null)
+//        txCache = other.txCache.copy();
+//      expandCodesLimit = other.expandCodesLimit;
+//      expParameters = other.expParameters;
+//    }
+//  }
 
   public void cacheResource(Resource r) throws FHIRException {
     cacheResourceFromPackage(r, null);

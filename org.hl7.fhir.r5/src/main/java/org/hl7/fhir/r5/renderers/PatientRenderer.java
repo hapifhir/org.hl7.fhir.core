@@ -3,7 +3,6 @@ package org.hl7.fhir.r5.renderers;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -654,7 +653,7 @@ public class PatientRenderer extends ResourceRenderer {
       List<ResourceWrapper> a = r.children("photo");
       for (ResourceWrapper att : a) {
         String ct = att.primitiveValue("contentType");
-        byte[] cnt = att.has("data") ? Base64.getDecoder().decode(att.primitiveValue("data")) : null;
+        byte[] cnt = att.has("data") ? Utilities.decodeBase64(att.primitiveValue("data")) : null;
         if (ct.startsWith("image/") &&
             cnt != null && (!context.isInlineGraphics() || (cnt.length > 0 && cnt.length < MAX_IMAGE_LENGTH))) {
           String ext = extensionForType(ct);

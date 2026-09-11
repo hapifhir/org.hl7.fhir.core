@@ -66,6 +66,9 @@ public class Validator {
     TRUE, FALSE, UNKNOWN
   }
 
+
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  // safe against ReDoS: no nested/overlapping quantifiers, matches in linear time
   private static final Pattern SQL_NAME = Pattern.compile("^[A-Za-z][A-Za-z0-9_]*$");
   private static final String STRUCTURE_DEFINITION_NS = "http://hl7.org/fhir/StructureDefinition/";
   private static final String FHIRPATH_SYSTEM_NS = "http://hl7.org/fhirpath/System.";
@@ -803,7 +806,10 @@ public class Validator {
 
   /** The spec's sql-name invariant: {@code ^[A-Za-z][A-Za-z0-9_]*$}. */
   private boolean isValidName(String name) {
-    return SQL_NAME.matcher(name).matches();
+    @SuppressWarnings("checkstyle:patternUsage")
+    // Regex declared in constant. See comments on constant regarding safety.
+    boolean matches = SQL_NAME.matcher(name).matches();
+    return matches;
   }
 
 
