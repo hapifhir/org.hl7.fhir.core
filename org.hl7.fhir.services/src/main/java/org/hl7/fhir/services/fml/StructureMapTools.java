@@ -284,6 +284,9 @@ public class StructureMapTools {
       case "title" : 
         result.setTitle(lexer.readConstant("title"));
         break;
+      case "version" : 
+        result.setVersion(lexer.readConstant("version"));
+        break;
       case "description" : 
         result.setDescription(lexer.readMarkdown("description"));
         break;

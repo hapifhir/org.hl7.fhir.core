@@ -43,6 +43,23 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     // StructureMap/ActivityDefinition3to4: StructureMap.group[3].rule[2].name error id value '"expression"' is not valid
     Assertions.assertEquals("expression", structureMap.getGroup().get(2).getRule().get(1).getName());
   }
+
+  @Test
+  public void testAnalyseInfersImplicitCreateType() throws Exception {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap structureMap = scu.parse("""
+      map "http://example.org/StructureMap/Identity" = "Identity"
+
+      uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as source
+      uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as target
+
+      group Identity(source src : Patient, target tgt : Patient) {
+        src.id -> tgt.id;
+      }
+      """, "Identity");
+
+    Assertions.assertDoesNotThrow(() -> scu.analyse(null, structureMap));
+  }
   
   @Test
   public void testCast() throws IOException, FHIRException {
