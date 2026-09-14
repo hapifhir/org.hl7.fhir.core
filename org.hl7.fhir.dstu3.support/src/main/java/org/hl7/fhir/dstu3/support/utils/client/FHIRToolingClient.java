@@ -58,6 +58,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   public static final String DATE_FORMAT = "yyyy-MM-dd";
   public static final String hostKey = "http.proxyHost";
   public static final String portKey = "http.proxyPort";
+  private static final int MAX_GET_URL_LENGTH = 2000;
 
   private String base;
   private ResourceAddress resourceAddress;
@@ -304,6 +305,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
           ps += Utilities.encodeUriParam(p.getName(), ((PrimitiveType<?>) p.getValue()).asStringValue()) + "&";
     ResourceRequest<T> result;
     URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
+    if (!complex && url.toString().length() > MAX_GET_URL_LENGTH) {
+      // all the parameters are simple, but the URL is too long for a GET, so send them in the body instead
+      complex = true;
+      url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, "");
+    }
     if (complex) {
       byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true);
       if (client.getLogger() != null) {
@@ -464,11 +470,24 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return feed;
   }
 
+  private Parameters asParameters(Map<String, String> params) {
+    Parameters p = new Parameters();
+    for (Map.Entry<String, String> e : params.entrySet()) {
+      p.addParameter().setName(e.getKey()).setValue(new StringType(e.getValue()));
+    }
+    return p;
+  }
+
   public Parameters lookupCode(Map<String, String> params) {
     recordUse();
+    URI url = resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params);
+    if (url.toString().length() > MAX_GET_URL_LENGTH) {
+      // too long for a GET, so send the parameters in the body instead
+      return lookupCode(asParameters(params));
+    }
     ResourceRequest<Resource> result = null;
     try {
-      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params),
+      result = client.issueGetResourceRequest(url,
         withVer(getPreferredResourceFormat(), "3.0"),
         generateHeaders(false),
         "CodeSystem/$lookup",
