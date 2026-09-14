@@ -618,7 +618,7 @@ public class TerminologyCache {
         ct.setName(getSystemName(NAME_FOR_NO_SYSTEM, ct.getName()));
       }
       nameCacheToken(vs, ct);
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
 
@@ -650,7 +650,7 @@ public class TerminologyCache {
         ct.setName(getSystemName(NAME_FOR_NO_SYSTEM, ct.getName()));
       }
       ct.setName(getSystemName(vsUrl, ct.getName()));
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
 
@@ -700,7 +700,7 @@ public class TerminologyCache {
         }
       }
       nameCacheToken(vs, ct);
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
@@ -738,7 +738,7 @@ public class TerminologyCache {
       ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\"}\r\n");
     } else {
       ValueSet vsc = getVSEssense(vs);
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       try {
         ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n");
@@ -980,7 +980,7 @@ public class TerminologyCache {
       String target = Utilities.path(folder, title + CACHE_FILE_EXTENSION);
       try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target))) {
         try (OutputStreamWriter tempFileWriter = new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8)) {
-          JsonParser jsonParser = new JsonParser(context);
+          JsonParser jsonParser = new JsonParser(context.getModelContext());
           jsonParser.setOutputStyle(OutputStyle.PRETTY);
           tempFileWriter.write(jsonParser.composeString(resource).trim());
         }
@@ -1208,7 +1208,7 @@ public class TerminologyCache {
         // still open fails outright)
         try (BufferedWriter tempFileWriter = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8))) {
           tempFileWriter.write(ENTRY_MARKER+"\r\n");
-          JsonParser jsonParser = new JsonParser(context);
+          JsonParser jsonParser = new JsonParser(context.getModelContext());
           jsonParser.setOutputStyle(OutputStyle.PRETTY);
           for (CacheEntry cacheEntry : namedCache.list) {
             writeCacheEntryToFile(cacheEntry, tempFileWriter, jsonParser);
@@ -1344,7 +1344,7 @@ public class TerminologyCache {
       String address = getServerForId(serverId);
       if (address != null) {
         JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(src);
-        Resource resource = new JsonParser(context).parse(o);
+        Resource resource = new JsonParser(context.getModelContext()).parse(o);
 
         if (fn.startsWith(CAPABILITY_STATEMENT_TITLE)) {
           this.capabilityStatementCache.put(address, (CapabilityStatement) resource);
@@ -1378,7 +1378,7 @@ public class TerminologyCache {
     if (e == 'e') {
       TerminologyServiceErrorClass errorClass = o.has("class") ? TerminologyServiceErrorClass.valueOf(o.get("class").getAsString()) : TerminologyServiceErrorClass.UNKNOWN;
       if (o.has("valueSet")) {
-        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser(context).parse(o.getAsJsonObject("valueSet")), error, errorClass, o.has("from-server"));
+        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser(context.getModelContext()).parse(o.getAsJsonObject("valueSet")), error, errorClass, o.has("from-server"));
         if (o.has("source")) {
           ce.e.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, o.get("source").getAsString());
         }
@@ -1399,8 +1399,8 @@ public class TerminologyCache {
       String status = loadJS(o.get("status"));
       boolean inactive = "true".equals(loadJS(o.get("inactive")));
       String unknownSystems = loadJS(o.get("unknown-systems"));
-      OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser(context).parse(o.getAsJsonObject("issues")) : null;
-      Parameters p = o.has("parameters") ? (Parameters) new JsonParser(context).parse(o.getAsJsonObject("parameters")) : null;
+      OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser(context.getModelContext()).parse(o.getAsJsonObject("issues")) : null;
+      Parameters p = o.has("parameters") ? (Parameters) new JsonParser(context.getModelContext()).parse(o.getAsJsonObject("parameters")) : null;
       t = loadJS(o.get("class")); 
       TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
       ce.v = new ValidationResult(severity, error, system, version, new CodeSystem.ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display, null).setErrorClass(errorClass);
@@ -1709,7 +1709,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser(context).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser(context.getModelContext()).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
       } catch (Exception e) {
         return null;
       }
@@ -1722,7 +1722,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser(context).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser(context.getModelContext()).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
       } catch (Exception e) {
         return null;
       }
@@ -1740,7 +1740,7 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "vs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser(context).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
+          new JsonParser(context.getModelContext()).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
         }
         vsCache.put(canonical, new SourcedValueSetEntry(svs.getServer(), fn));
       }    
@@ -1777,7 +1777,7 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "cs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser(context).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
+          new JsonParser(context.getModelContext()).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
         }
         csCache.put(canonical, new SourcedCodeSystemEntry(scs.getServer(), fn));
       }    
@@ -1812,7 +1812,7 @@ public class TerminologyCache {
       if (child.hasSystem()) {
         ct.setName(getSystemName(child.getSystem(), ct.getName()));
       }
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
       ct.setRequest( "{\"op\": \"subsumes\", \"parent\" : "+json.composeString(parent, "code")+", \"child\" :"+json.composeString(child, "code")+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}");

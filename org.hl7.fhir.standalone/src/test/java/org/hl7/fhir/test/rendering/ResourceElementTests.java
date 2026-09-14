@@ -26,7 +26,7 @@ public class ResourceElementTests {
   @Test
   public void testDirectBundleXml() throws FHIRFormatError, IOException {
     IWorkerContext worker = TestingUtilities.getSharedWorkerContext();
-    Resource res = new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResource("r6", "bundle-resource-element-test.xml"));
+    Resource res = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResource("r6", "bundle-resource-element-test.xml"));
     ResourceWrapper re = ResourceWrapper.forResource(new ContextUtilities(worker), res);
     checkTree(re); 
   }
@@ -43,7 +43,7 @@ public class ResourceElementTests {
   @Test
   public void testDirectBundleJson() throws FHIRFormatError, IOException {
     IWorkerContext worker = TestingUtilities.getSharedWorkerContext();
-    Resource res = new JsonParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResource("r6", "bundle-resource-element-test.json"));
+    Resource res = new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResource("r6", "bundle-resource-element-test.json"));
     ResourceWrapper re = ResourceWrapper.forResource(new ContextUtilities(worker), res);
     checkTree(re);
   }
@@ -59,7 +59,7 @@ public class ResourceElementTests {
   @Test
   public void testDirectObservationXml() throws FHIRFormatError, IOException {
     IWorkerContext worker = TestingUtilities.getSharedWorkerContext();
-    Resource res = new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResource("r6", "obs-resource-element-test.xml"));
+    Resource res = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResource("r6", "obs-resource-element-test.xml"));
     ResourceWrapper re = ResourceWrapper.forResource(new ContextUtilities(worker), res);
     checkObservation(re, false, "Observation"); 
   }
@@ -76,7 +76,7 @@ public class ResourceElementTests {
   @Test
   public void testDirectObservationJson() throws FHIRFormatError, IOException {
     IWorkerContext worker = TestingUtilities.getSharedWorkerContext();
-    Resource res = new JsonParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResource("r6", "obs-resource-element-test.json"));
+    Resource res = new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResource("r6", "obs-resource-element-test.json"));
     ResourceWrapper re = ResourceWrapper.forResource(new ContextUtilities(worker), res);
     checkObservation(re, false, "Observation");   
   }

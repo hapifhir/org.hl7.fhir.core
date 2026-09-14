@@ -89,10 +89,10 @@ public class TxServiceTestHelper {
       newParameters.clearParameters("includeAlternateCodes");
       for (Parameters.ParametersParameterComponent pp : p.getParameterList()) {
         if ("includeAlternateCodes".equals(pp.getName())) {
-          newParameters.addParameter(pp.copy(Base.COPY_DATA));
+          newParameters.addParameter(pp.copy(Base.COPY_NOTHING));
         }
         if ("useSupplement".equals(pp.getName())) {
-          newParameters.addParameter(pp.copy(Base.COPY_DATA));
+          newParameters.addParameter(pp.copy(Base.COPY_NOTHING));
         }
       }
       context.getManager().setExpansionParameters(newParameters);
@@ -126,7 +126,7 @@ public class TxServiceTestHelper {
       TxTesterSorters.sortOperationOutcome(operationOutcome);
       TxTesterScrubbers.scrubOperationOutcome(operationOutcome, false);
 
-      String actualResponse = new JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(operationOutcome);
+      String actualResponse = new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(operationOutcome);
 
 
       boolean option2 = false;
@@ -202,7 +202,7 @@ public class TxServiceTestHelper {
       TxTesterSorters.sortParameters(parameters);
       TxTesterScrubbers.scrubParameters(parameters, false);
 
-      String actualResponse = new JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(parameters);
+      String actualResponse = new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(parameters);
 
       boolean option2 = false;
       String diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse, actualResponse);

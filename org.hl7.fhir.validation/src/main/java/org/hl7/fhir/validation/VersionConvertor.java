@@ -9,7 +9,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.services.context.SimpleModelContext;
+
 import org.hl7.fhir.services.elementmodel.Manager;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -200,10 +200,10 @@ public class VersionConvertor {
     org.hl7.fhir.model.core.Resource rN;
     switch (cnt.getCntType()) {
       case JSON:
-        rN = new org.hl7.fhir.model.core.formats.JsonParser(context).parse(cnt.getFocus().getBytes());
+        rN = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(cnt.getFocus().getBytes());
         break;
       case XML:
-        rN = new org.hl7.fhir.model.core.formats.XmlParser(context).parse(cnt.getFocus().getBytes() );
+        rN = new org.hl7.fhir.model.core.formats.XmlParser(context.getModelContext()).parse(cnt.getFocus().getBytes() );
         break;
       default:
         throw new FHIRException("Unsupported input format: " + cnt.getCntType().toString());
@@ -320,10 +320,10 @@ public class VersionConvertor {
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
     switch (format) {
       case JSON:
-        new org.hl7.fhir.model.core.formats.JsonParser(context).compose(bs, rN);
+        new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).compose(bs, rN);
         return bs.toByteArray();
       case XML:
-        new org.hl7.fhir.model.core.formats.XmlParser(context).compose(bs, rN);
+        new org.hl7.fhir.model.core.formats.XmlParser(context.getModelContext()).compose(bs, rN);
         return bs.toByteArray();
       default:
         throw new FHIRException("Unsupported output format: " + cnt.getCntType().toString());

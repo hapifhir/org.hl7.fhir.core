@@ -69,7 +69,10 @@ public class ProfileVersionAdaptor {
     if (sd.getDerivation() != TypeDerivationRule.CONSTRAINT || !"Extension".equals(sd.getType())) {
       return null; // nothing to say right now
     }
-    sd = sd.copy(Base.COPY_DATA);
+    sd = sd.copy(Base.COPY_NOTHING);
+    // the copy is leaving the source version's world: impose the target context before any
+    // target-context content is added to it (setModelContext only allows adoption, not change)
+    sd.changeModelContext(tCtxt.getModelContext());
     convertContext(sd, log);
     if (sd.getContextList().isEmpty()) {
       log.clear();
@@ -167,33 +170,33 @@ public class ProfileVersionAdaptor {
                 } else {
                   // nothing
                 }
-                ElementDefinition newBaseElementDefinition = new ElementDefinition(tCtxt, base.getPath());
+                ElementDefinition newBaseElementDefinition = new ElementDefinition(tCtxt.getModelContext(), base.getPath());
                 newBaseElementDefinition.setSliceName(elementFromType.getName());
                 if (constraintFromExtension != null) {
-                  newBaseElementDefinition.setShortElement(constraintFromExtension.hasShort() ? constraintFromExtension.getShortElement() : elementFromType.getShortElement());
-                  newBaseElementDefinition.setDefinitionElement(constraintFromExtension.hasDefinition() ? constraintFromExtension.getDefinitionElement() : elementFromType.getDefinitionElement());
-                  newBaseElementDefinition.setCommentElement(constraintFromExtension.hasComment() ? constraintFromExtension.getCommentElement() : elementFromType.getCommentElement());
-                  newBaseElementDefinition.setMinElement(constraintFromExtension.hasMin() ? constraintFromExtension.getMinElement() : elementFromType.getMinElement());
-                  newBaseElementDefinition.setMaxElement(constraintFromExtension.hasMax() ? constraintFromExtension.getMaxElement() : elementFromType.getMaxElement());
+                  newBaseElementDefinition.setShortElement(adopt(constraintFromExtension.hasShort() ? constraintFromExtension.getShortElement() : elementFromType.getShortElement()));
+                  newBaseElementDefinition.setDefinitionElement(adopt(constraintFromExtension.hasDefinition() ? constraintFromExtension.getDefinitionElement() : elementFromType.getDefinitionElement()));
+                  newBaseElementDefinition.setCommentElement(adopt(constraintFromExtension.hasComment() ? constraintFromExtension.getCommentElement() : elementFromType.getCommentElement()));
+                  newBaseElementDefinition.setMinElement(adopt(constraintFromExtension.hasMin() ? constraintFromExtension.getMinElement() : elementFromType.getMinElement()));
+                  newBaseElementDefinition.setMaxElement(adopt(constraintFromExtension.hasMax() ? constraintFromExtension.getMaxElement() : elementFromType.getMaxElement()));
                 } else {
-                  newBaseElementDefinition.setShortElement(elementFromType.getShortElement());
-                  newBaseElementDefinition.setDefinitionElement(elementFromType.getDefinitionElement());
-                  newBaseElementDefinition.setCommentElement(elementFromType.getCommentElement());
-                  newBaseElementDefinition.setMinElement(elementFromType.getMinElement());
-                  newBaseElementDefinition.setMaxElement(elementFromType.getMaxElement());
+                  newBaseElementDefinition.setShortElement(adopt(elementFromType.getShortElement()));
+                  newBaseElementDefinition.setDefinitionElement(adopt(elementFromType.getDefinitionElement()));
+                  newBaseElementDefinition.setCommentElement(adopt(elementFromType.getCommentElement()));
+                  newBaseElementDefinition.setMinElement(adopt(elementFromType.getMinElement()));
+                  newBaseElementDefinition.setMaxElement(adopt(elementFromType.getMaxElement()));
                 }
 
                 offset = addDiffElement(sd, insPoint - bo, offset, newBaseElementDefinition);
                 // set the extensions to 0
-                ElementDefinition newExtensionElementDefinition = new ElementDefinition(tCtxt, base.getPath() + ".extension");
+                ElementDefinition newExtensionElementDefinition = new ElementDefinition(tCtxt.getModelContext(), base.getPath() + ".extension");
                 newExtensionElementDefinition.setMax("0");
                 offset = addDiffElement(sd, insPoint - bo, offset, newExtensionElementDefinition);
                 // fix the url 
-                ElementDefinition newUrlElementDefinition = new ElementDefinition(tCtxt, base.getPath() + ".url");
+                ElementDefinition newUrlElementDefinition = new ElementDefinition(tCtxt.getModelContext(), base.getPath() + ".url");
                 newUrlElementDefinition.setFixed(new UriType(elementFromType.getName()));
                 offset = addDiffElement(sd, insPoint - bo, offset, newUrlElementDefinition);
                 // set the value 
-                ElementDefinition newValueElementDefinition = new ElementDefinition(tCtxt, base.getPath() + ".value[x]");
+                ElementDefinition newValueElementDefinition = new ElementDefinition(tCtxt.getModelContext(), base.getPath() + ".value[x]");
                 newValueElementDefinition.setMin(1);
                 offset = addDiffElement(sd, insPoint - bo, offset, newValueElementDefinition);
                 if (elementFromType.getTypeList().size() == 1 && Utilities.existsInList(elementFromType.getTypeFirstRep().getWorkingCode(), "Element", "BackboneElement")) {
@@ -216,9 +219,9 @@ public class ProfileVersionAdaptor {
                     throw new DefinitionException("No types?");
                   }
                   if (ed.hasBinding() && "concept".equals(elementFromType.getName())) { // codeablereference, we have to move the binding down one
-                    newValueElementDefinition.setBinding(ed.getBinding());
+                    newValueElementDefinition.setBinding(adopt(ed.getBinding()));
                   } else {
-                    newValueElementDefinition.setBinding(elementFromType.getBinding());
+                    newValueElementDefinition.setBinding(adopt(elementFromType.getBinding()));
                   }
                 }
               }
@@ -272,7 +275,10 @@ public class ProfileVersionAdaptor {
   }
 
   private StructureDefinition convertLogical(StructureDefinition sdSrc, List<ConversionMessage> log) {
-    StructureDefinition sd = sdSrc.copy(Base.COPY_DATA);
+    StructureDefinition sd = sdSrc.copy(Base.COPY_NOTHING);
+    // the copy is leaving the source version's world: impose the target context before any
+    // target-context content is added to it (setModelContext only allows adoption, not change)
+    sd.changeModelContext(tCtxt.getModelContext());
     sd.setFhirVersion(Enumerations.FHIRVersion.fromCode(tCtxt.getFHIRVersion()));
     sd.setSnapshot(null);
 
@@ -354,7 +360,7 @@ public class ProfileVersionAdaptor {
   }
 
   private int addDatatypeSlice(StructureDefinition sd, int offset, int insPoint, ElementDefinition base, String type) {
-    ElementDefinition ned = new ElementDefinition(tCtxt, base.getPath());
+    ElementDefinition ned = new ElementDefinition(tCtxt.getModelContext(), base.getPath());
     ned.setSliceName("_datatype");
     ned.setShort("DataType name '"+type+"' from "+VersionUtilities.getNameForVersion(sCtxt.getFHIRVersion()));
     ned.setDefinition(ned.getShort());
@@ -371,7 +377,7 @@ public class ProfileVersionAdaptor {
     //    ned.setFixed(new UriType("http://hl7.org/fhir/StructureDefinition/_datatype"));
     //    offset = addDiffElement(sd, insPoint, offset, ned);
     // set the value 
-    ned = new ElementDefinition(tCtxt, base.getPath()+".value[x]");
+    ned = new ElementDefinition(tCtxt.getModelContext(), base.getPath()+".value[x]");
     ned.setMin(1);
     offset = addDiffElement(sd, insPoint, offset, ned);
     ned.addType().setCode("string");
@@ -396,16 +402,31 @@ public class ProfileVersionAdaptor {
     return false;
   }
 
+  /**
+   * Lift a value out of another tree into the profile being built: copy it, so a definition that
+   * may be a cached resource in the source context is never aliased into the output, and impose
+   * the target context on the copy, since setModelContext only allows adoption, not change.
+   */
+  @SuppressWarnings("unchecked")
+  private <T extends Base> T adopt(T value) {
+    if (value == null) {
+      return null;
+    }
+    T res = (T) value.copy(Base.COPY_NOTHING);
+    res.changeModelContext(tCtxt.getModelContext());
+    return res;
+  }
+
   private TypeRefComponent checkTypeReference(TypeRefComponent tr, Set<String> types) {
     String dt = getMappedDT(tr.getCode());
     if (dt != null) {
       if (types.contains(dt)) {
         return null;
       } else {
-        return tr.copy(Base.COPY_DATA).setCode(dt);
+        return adopt(tr).setCode(dt);
       }
     } else if (tcu.isDatatype(tr.getWorkingCode())) {
-      return tr.copy(Base.COPY_DATA);
+      return adopt(tr);
     } else {
       return null;
     }
@@ -518,7 +539,10 @@ public class ProfileVersionAdaptor {
   }
 
   public SearchParameter convert(SearchParameter resource, List<ConversionMessage> log) {
-    SearchParameter res = resource.copy(Base.COPY_DATA);
+    SearchParameter res = resource.copy(Base.COPY_NOTHING);
+    // the copy is leaving the source version's world: impose the target context before any
+    // target-context content is added to it (setModelContext only allows adoption, not change)
+    res.changeModelContext(tCtxt.getModelContext());
     // todo: translate resource types
     res.getBaseList().removeIf(t -> {
       String rt = t.asStringValue();

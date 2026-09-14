@@ -2,12 +2,12 @@ package org.hl7.fhir.standalone.testing;
 
 import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.UcumEssenceService;
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.core.Constants;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.fml.FmlRegistration;
 import org.hl7.fhir.model.testing.TestingRegistration;
 import org.hl7.fhir.model.tools.ToolsRegistration;
-import org.hl7.fhir.services.context.SimpleModelContext;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.services.context.IContextResourceLoaderN;
 import org.hl7.fhir.model.core.Parameters;
@@ -125,14 +125,14 @@ public class TestingUtilities extends BaseTestingUtilities {
   }
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(new SimpleModelContext().getContextInformation()).withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
         .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage);
     TerminologyCache.setCacheErrors(true);
     return swc;
   }
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage, IContextResourceLoaderN loader) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(new SimpleModelContext().getContextInformation()).withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
         .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage, loader, true);
     TerminologyCache.setCacheErrors(true);
     return swc;

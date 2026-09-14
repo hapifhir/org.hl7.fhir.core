@@ -353,7 +353,7 @@ public class TestDataFactory {
         Element resource = factory.generate(profile);
         Element be = bundle.makeElement("entry");
         be.makeElement("fullUrl").setValue(Utilities.pathURL(canonical, "test", resource.fhirType(), resource.getIdBase()));
-        be.makeElement("resource").getChildren().addAll(resource.getChildren());
+        be.makeElement("resource").getChildList().addAll(resource.getChildList());
       }
     }
     log("Saving Bundle");
@@ -458,7 +458,7 @@ public class TestDataFactory {
       Element resource = Manager.parse(context, new ByteArrayInputStream(data), format).get(0).getElement();
       Element be = bundle.makeElement("entry");
       be.makeElement("fullUrl").setValue(Utilities.pathURL(canonical, "test", resource.fhirType(), resource.getIdBase()));
-      be.makeElement("resource").getChildren().addAll(resource.getChildren());
+      be.makeElement("resource").getChildList().addAll(resource.getChildList());
     }
     log("Saving Bundle");
     ByteArrayOutputStream bs = new ByteArrayOutputStream();

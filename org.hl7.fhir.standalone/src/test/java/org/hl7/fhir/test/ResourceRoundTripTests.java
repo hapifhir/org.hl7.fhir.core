@@ -35,11 +35,11 @@ public class ResourceRoundTripTests {
   @Test
   void test() {
     assertDoesNotThrow(() -> {
-      DomainResource res = (DomainResource) new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"));
+      DomainResource res = (DomainResource) new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"));
       RenderingContext rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
       new RendererFactory().factory(res, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), res));
       IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"), ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "unicode.xml")));
-      new XmlParser(TestingUtilities.getSharedWorkerContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "unicode.out.xml")), res);
+      new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "unicode.out.xml")), res);
     });
   }
 
@@ -50,14 +50,14 @@ public class ResourceRoundTripTests {
       Bundle feed = new Bundle();
 
       // Serialize Atom Feed
-      IParser comp = new JsonParser(TestingUtilities.getSharedWorkerContext());
+      IParser comp = new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext());
       ByteArrayOutputStream os = new ByteArrayOutputStream();
       comp.compose(os, feed);
       os.close();
       String json = os.toString();
 
       // Deserialize Atom Feed
-      JsonParser parser = new JsonParser(TestingUtilities.getSharedWorkerContext());
+      JsonParser parser = new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext());
       InputStream is = new ByteArrayInputStream(json.getBytes("UTF-8"));
       Resource result = parser.parse(is);
       if (result == null)

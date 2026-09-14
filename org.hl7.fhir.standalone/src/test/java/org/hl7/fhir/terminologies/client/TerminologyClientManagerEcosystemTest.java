@@ -115,7 +115,7 @@ public class TerminologyClientManagerEcosystemTest {
   }
 
   private TerminologyClientManager makeManager() throws IOException {
-    TerminologyClientManager mgr = new TerminologyClientManager(TestingUtilities.getSharedWorkerContext(), new TestFactory(), new ILoggingService() {
+    TerminologyClientManager mgr = new TerminologyClientManager(TestingUtilities.getSharedWorkerContext().getModelContext(), new TestFactory(), new ILoggingService() {
       @Override
       public void logMessage(String message) {
       }

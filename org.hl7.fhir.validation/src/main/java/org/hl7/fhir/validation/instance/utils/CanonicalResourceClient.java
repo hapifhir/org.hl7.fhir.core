@@ -48,7 +48,7 @@ public class CanonicalResourceClient {
   @Nonnull
   public ITerminologyClientN getTerminologyClient(String root) throws URISyntaxException {
     final String secureRoot = ManagedWebAccess.makeSecureRef(root);
-    return new TerminologyClientFactory(context.getFHIRVersion()).makeClientN(context, "source", secureRoot, Common.getValidatorUserAgent(), null);
+    return new TerminologyClientFactory(context.getFHIRVersion()).makeClientN(context.getModelContext(), "source", secureRoot, Common.getValidatorUserAgent(), null);
   }
 
 

@@ -401,8 +401,27 @@ public abstract class Base implements Serializable, IBase, IElement {
    * StructureDefinition at runtime. Affects which operand drives deep equality (see 
    * compareDeep) - the outcomes are the same either way
    */
-  protected boolean isMetadataBased() {
+  public boolean isMetadataBased() {
     return false;
+  }
+
+  /**
+   * If this object navigates by metadata (i.e. it is an element model Element), produce the
+   * equivalent typed object, else null. The element model lives in org.hl7.fhir.services, which
+   * the model classes cannot see, so this is the hook they reach it through (and it is why
+   * TypeConvertor can convert an element model tree to a type - see castToType)
+   */
+  public DataType asType() {
+    return null;
+  }
+
+  /**
+   * If this object can present itself as a coding, return that view of it, else null. The element
+   * model does this for Coding and Quantity, and for code elements with a required binding (by
+   * expanding the value set to find the system). Same hook arrangement as asType()
+   */
+  public ICoding getAsICoding() {
+    return null;
   }
 
   /** the xhtml content if this is an xhtml node (Narrative.div's value), else null */

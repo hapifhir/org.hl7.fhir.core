@@ -23,11 +23,12 @@ import javax.annotation.Nonnull;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.fml.StructureMap;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.services.context.ContextUtilities;
-import org.hl7.fhir.services.context.SimpleModelContext;
+
 import org.hl7.fhir.services.context.Slf4JLoggingService;
 import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
@@ -289,7 +290,7 @@ public class ValidationService {
    VersionSourceInformation versions = new VersionSourceInformation();
     IgLoader igLoader = new IgLoader(
       new FilesystemPackageCacheManager.Builder().build(),
-      new SimpleWorkerContext.SimpleWorkerContextBuilder(new SimpleModelContext().getContextInformation()).fromNothing(),
+      new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).fromNothing(),
       null);
 
     for (String src : igs) {

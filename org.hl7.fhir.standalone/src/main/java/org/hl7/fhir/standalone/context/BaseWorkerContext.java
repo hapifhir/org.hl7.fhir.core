@@ -11,7 +11,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.IModelContext;
-import org.hl7.fhir.model.ModelContextInformation;
 import org.hl7.fhir.model.fml.StructureMap;
 import org.hl7.fhir.model.utilities.*;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
@@ -114,7 +113,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private long definitionsVersion = 0;
   private Map<String, Object> analyses = new HashMap();
 
-  @Getter protected ModelContextInformation contextInformation = new ModelContextInformation();
+  @Getter
+  protected final IModelContext modelContext;
+
   public interface IByteProvider {
     byte[] bytes() throws IOException;
   }
@@ -294,12 +295,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
   protected org.hl7.fhir.services.context.ILoggingService logger = new Slf4JLoggingService(log);
-  @Getter protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(this, new TerminologyClientR6.TerminologyClientR6Factory(), logger);
+  // NB: not a field initialiser - modelContext is assigned in the constructor body, which runs
+  // after field initialisers, so initialising here would pass null as the model context
+  @Getter
+  protected final TerminologyClientManager terminologyClientManager;
   protected AtomicReference<Parameters> expansionParameters = new AtomicReference<>(null);
   private Map<String, PackageInformation> packages = new HashMap<>();
 
   @Getter
-  protected TerminologyCache txCache = new TerminologyCache(this, null, this);
+  protected TerminologyCache txCache;
   protected TimeTracker clock;
   private boolean tlogging = true;
   private IWorkerContextManager.ICanonicalResourceLocator locator;
@@ -307,23 +311,29 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected ContextUtilities cutils;
   private List<String> suppressedMappings;
 
-  protected BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
+  protected BaseWorkerContext(IModelContext modelContext) throws FileNotFoundException, IOException, FHIRException {
+    this.modelContext = modelContext;
+    this.terminologyClientManager = new TerminologyClientManager(modelContext, new TerminologyClientR6.TerminologyClientR6Factory(), logger);
     setValidationMessageLanguage(getLocale());
     clock = new TimeTracker();
     initLang();
     cutils = new ContextUtilities(this, suppressedMappings);
+    txCache = new TerminologyCache(this, null, this);
   }
 
-  protected BaseWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
+  protected BaseWorkerContext(IModelContext modelContext, Locale locale) throws FileNotFoundException, IOException, FHIRException {
+    this.modelContext = modelContext;
+    this.terminologyClientManager = new TerminologyClientManager(modelContext, new TerminologyClientR6.TerminologyClientR6Factory(), logger);
     this.setLocale(locale);
     clock = new TimeTracker();
     initLang();
     cutils = new ContextUtilities(this, suppressedMappings);
+    txCache = new TerminologyCache(this, null, this);
   }
 
-  protected BaseWorkerContext(CanonicalResourceManager<CodeSystem> codeSystems, CanonicalResourceManager<ValueSet> valueSets, CanonicalResourceManager<ConceptMap> maps, CanonicalResourceManager<StructureDefinition> profiles,
+  protected BaseWorkerContext(IModelContext modelContext, CanonicalResourceManager<CodeSystem> codeSystems, CanonicalResourceManager<ValueSet> valueSets, CanonicalResourceManager<ConceptMap> maps, CanonicalResourceManager<StructureDefinition> profiles,
                               CanonicalResourceManager<ImplementationGuide> guides) throws FileNotFoundException, IOException, FHIRException {
-    this();
+    this(modelContext);
     this.codeSystems = codeSystems;
     this.valueSets = valueSets;
     this.maps = maps;
@@ -335,10 +345,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     cutils = new ContextUtilities(this, suppressedMappings);
   }
 
-  @Override
-  public boolean isCompatibleModelContext(IModelContext modelContext) {
-    return modelContext.getFHIRVersion().equals(this.getFHIRVersion()) && this.getContextInformation().isCompatible(modelContext.getContextInformation());
-  }
   private void initLang() throws IOException {
     registry = new LanguageSubtagRegistry();
     LanguageSubtagRegistryLoader loader = new LanguageSubtagRegistryLoader(registry);
@@ -347,12 +353,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected void copy(BaseWorkerContext other) {
     synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet 
-      // this has to come first: the resources copied below were created under the other context, and
-      // they can only be used under this one if the two contexts have the same registrations. Without
-      // this, any context copied from one that had custom resources registered (e.g. the shared test
-      // context, which registers StructureMap/TestPlan/TestReport/TestScript) is incompatible with
-      // every resource it just inherited
-      contextInformation = new ModelContextInformation(other.contextInformation);
+      // the resources copied below were created under the other context, and can only be used under
+      // this one because a copy shares the source's model context (see the constructors) rather than
+      // building its own - otherwise a context copied from one with custom resources registered
+      // (e.g. the shared test context) would be incompatible with every resource it just inherited
       allResourcesById.putAll(other.allResourcesById);
       codeSystems.copy(other.codeSystems);
       valueSets.copy(other.valueSets);
@@ -834,6 +838,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           if (terminologyClientManager != null) {
             try {
               TerminologyClientContext client = terminologyClientManager.chooseServer(null, Set.of(urlWithVersion), false);
+              if (client == null) {
+                // no terminology server is configured at all; the catch below is what puts the
+                // context into no-terminology-server mode, and it should get a reason, not an NPE
+                throw new TerminologyServiceException(formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES, "", system));
+              }
               supportedCodeSystems.put(urlWithVersion, new SystemSupportInformation(client.supportsSystem(urlWithVersion), client.getAddress(), client.getTxTestVersion(), client.supportsSystem(urlWithVersion) ? null : "The server does not support this code system"));
             } catch (Exception e) {
               if (canRunWithoutTerminology) {
@@ -1031,7 +1040,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (ParametersParameterComponent pp : pIn.getParameterList()) {
       if (Utilities.existsInList(pp.getName(), "designation", "filterProperty", "useSupplement", "property", "tx-resource")) {
         // these parameters are additive
-        p.getParameterList().add(pp.copy(Base.COPY_DATA));
+        p.getParameterList().add(pp.copy(Base.COPY_NOTHING));
       } else {
         ParametersParameterComponent existing = null;
         if (Utilities.existsInList(pp.getName(), "system-version", "check-system-version", "force-system-version",
@@ -1052,7 +1061,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (existing != null) {
           existing.setValue(pp.getValue());
         } else {
-          p.getParameterList().add(pp.copy(Base.COPY_DATA));
+          p.getParameterList().add(pp.copy(Base.COPY_NOTHING));
         }
       }
     }
@@ -1062,7 +1071,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       p.setParameter("displayLanguage", new CodeType(options.getLanguage()));
     }
     if (vs.hasExpansion()) {
-      return new ValueSetExpansionOutcome(vs.copy(Base.COPY_DATA));
+      return new ValueSetExpansionOutcome(vs.copy(Base.COPY_NOTHING));
     }
     if (!vs.hasUrl()) {
       throw new Error(formatMessage(I18nConstants.NO_VALUE_SET_IN_URL));
@@ -1137,6 +1146,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     Set<String> systems = findRelevantSystems(vs);
     TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, true);
+    // chooseServer() returns null when no terminology server is configured at all (an empty server
+    // list), which is not the same state as noTerminologyServer - answer it the same way
+    if (tc == null) {
+      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, allErrors, false);
+    }
     addDependentResources(null, tc, p, vs);
 
 
@@ -1282,6 +1296,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     if (items.size() > 0) {
       TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, findValidationLanguage(options));
+      // chooseServer() returns null when no terminology server is configured at all (an empty server
+      // list), which is not the same state as noTerminologyServer - answer them the same way
+      if (tc == null) {
+        for (CodingValidationRequest t : items) {
+          t.setResult(new ValidationResult(IssueSeverity.ERROR, formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES, t.getCoding().getCode(), t.getCoding().getSystem()), TerminologyServiceErrorClass.NOSERVICE, null));
+        }
+        return;
+      }
       Parameters resp = processBatch(tc, batch, systems, items.size());
       List<ParametersParameterComponent> validations = resp.getParameters("validation");
       for (int i = 0; i < items.size(); i++) {
@@ -1322,10 +1344,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Coding requestCoding = requestAtIndex.getCoding();
     // the system is only checked when we asked with one - with inferSystem, the server picks it
     boolean mismatch = (code != null && !code.equals(requestCoding.getCode()))
-        || (system != null && requestCoding.hasSystem() && !system.equals(requestCoding.getSystem()));
+      || (system != null && requestCoding.hasSystem() && !system.equals(requestCoding.getSystem()));
     if (mismatch) {
       throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_BATCH_RESPONSE_MISMATCH, tc.getAddress(), index,
-          (system == null ? "" : system + "#") + code, requestCoding.getSystem() + "#" + requestCoding.getCode()));
+        (system == null ? "" : system + "#") + code, requestCoding.getSystem() + "#" + requestCoding.getCode()));
     }
   }
 
@@ -1502,7 +1524,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         vsc.setThrowToServer(options.isUseServer() && terminologyClientManager.hasClient());
         vsc.setExternalSource((CanonicalResource) options.getExternalSource());
         if (!ValueSetUtilities.isServerSide(code.getSystem())) {
-          res = vsc.validateCode(path, code.copy(Base.COPY_DATA));
+          res = vsc.validateCode(path, code.copy(Base.COPY_NOTHING));
           if (txCache != null && cachingAllowed) {
             txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
           }
@@ -1519,7 +1541,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
         type = e.getType();
       } catch (TerminologyOperationContext.TerminologyServiceProtectionException e) {
-        OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(this, org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.ERROR, e.getType());
+        OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(getModelContext(), org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.ERROR, e.getType());
         iss.getDetails().setText(e.getMessage());
         iss.setDiagnostics(e.getDiagnostics());
         issues.add(iss);
@@ -1577,6 +1599,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     Set<String> systems = findRelevantSystems(code, vs);
     TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, findValidationLanguage(options));
+    // chooseServer() returns null when no terminology server is configured at all (an empty server
+    // list), which is not the same state as noTerminologyServer - answer it the same way
+    if (tc == null) {
+      return new ValidationResult(IssueSeverity.ERROR, formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES, code.getCode(), code.getSystem()), TerminologyServiceErrorClass.NOSERVICE, issues);
+    }
 
     String csumm = cachingAllowed && txCache != null ? txCache.summary(code) : null;
     if (cachingAllowed && txCache != null) {
@@ -1658,6 +1685,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     systems.add(parent.getSystem());
     systems.add(child.getSystem());
     TerminologyClientContext tc = terminologyClientManager.chooseServer(null, systems, false);
+    // chooseServer() returns null when no terminology server is configured at all (an empty server
+    // list), which is not the same state as noTerminologyServer - answer it the same way
+    if (tc == null) {
+      return null;
+    }
 
     txLog("$subsumes " + parent.toString() + " > " + child.toString() + " on " + tc.getAddress());
 
@@ -1712,6 +1744,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   /**
    * public for testing only
+   *
    * @param options
    * @param vs
    * @return
@@ -1724,6 +1757,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   /**
    * public for testing only
+   *
    * @param opCtxt
    * @param tcd
    * @param vs
@@ -1834,7 +1868,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           issues.addAll(e.getIssues());
         }
       } catch (TerminologyOperationContext.TerminologyServiceProtectionException e) {
-        OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(this, org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.ERROR, e.getType());
+        OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(getModelContext(), org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.ERROR, e.getType());
         iss.getDetails().setText(e.getMessage());
         iss.setDiagnostics(e.getDiagnostics());
         iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", e.getCode().toCode(), null);
@@ -1868,6 +1902,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     Set<String> systems = findRelevantSystems(code, vs);
     TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, findValidationLanguage(options));
+    // chooseServer() returns null when no terminology server is configured at all (an empty server
+    // list), which is not the same state as noTerminologyServer - answer it the same way
+    if (tc == null) {
+      return new ValidationResult(IssueSeverity.ERROR, "Error validating code: running without terminology services", TerminologyServiceErrorClass.NOSERVICE, null);
+    }
 
     txLog("$validate " + txCache.summary(code) + " for " + txCache.summary(vs) + " on " + tc.getAddress());
     try {
@@ -1875,7 +1914,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       res = validateOnServer2(tc, vs, pIn, options, systems);
     } catch (Exception e) {
       issues.clear();
-      OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(this, org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.model.core.OperationOutcome.IssueType.EXCEPTION);
+      OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(getModelContext(), org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.model.core.OperationOutcome.IssueType.EXCEPTION);
       iss.getDetails().setText(e.getMessage());
       issues.add(iss);
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage(), issues).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
@@ -1963,6 +2002,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   /**
    * public for testing only
+   *
    * @param tc
    * @param vs
    * @param pin
@@ -2001,6 +2041,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   /**
    * Public for testing only
+   *
    * @param opCtxt
    * @param terminologyClientContext
    * @param vs
@@ -2032,7 +2073,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()));
       } else {
         if (vs.hasCompose() && vs.hasExpansion()) {
-          vs = vs.copy(Base.COPY_DATA);
+          vs = vs.copy(Base.COPY_NOTHING);
           vs.setExpansion(null);
         }
         pin.addParameter().setName("valueSet").setResource(vs);
@@ -2078,8 +2119,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private static final Set<String> MULTI_INSTANCE_PARAMETERS = new HashSet<>(Arrays.asList(
-      "useSupplement", "force-system-version", "property", "filterProperty", "exclude-system", "system-version", 
-      "check-system-version", "default-valueset-version", "check-valueset-version", "force-valueset-version", "tx-resource"));
+    "useSupplement", "force-system-version", "property", "filterProperty", "exclude-system", "system-version",
+    "check-system-version", "default-valueset-version", "check-valueset-version", "force-valueset-version", "tx-resource"));
 
   private boolean isMultiInstanceParameter(String name) {
     return MULTI_INSTANCE_PARAMETERS.contains(name);
@@ -2250,27 +2291,27 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           unknownSystems.add(((PrimitiveType<?>) p.getValue()).asStringValue());
         } else if (p.getName().equals("warning-withdrawn")) {
           String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
-          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(this, org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.model.core.OperationOutcome.IssueType.BUSINESSRULE);
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(getModelContext(), org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.model.core.OperationOutcome.IssueType.BUSINESSRULE);
           iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_WITHDRAWN : I18nConstants.MSG_WITHDRAWN_SRC, msg, vs, impliedType(msg)));
           issues.add(iss);
         } else if (p.getName().equals("warning-deprecated")) {
           String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
-          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(this, org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.model.core.OperationOutcome.IssueType.BUSINESSRULE);
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(getModelContext(), org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.model.core.OperationOutcome.IssueType.BUSINESSRULE);
           iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DEPRECATED : I18nConstants.MSG_DEPRECATED_SRC, msg, vs, impliedType(msg)));
           issues.add(iss);
         } else if (p.getName().equals("warning-retired")) {
           String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
-          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(this, org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.model.core.OperationOutcome.IssueType.BUSINESSRULE);
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(getModelContext(), org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.model.core.OperationOutcome.IssueType.BUSINESSRULE);
           iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_RETIRED : I18nConstants.MSG_RETIRED_SRC, msg, vs, impliedType(msg)));
           issues.add(iss);
         } else if (p.getName().equals("warning-experimental")) {
           String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
-          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(this, org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.model.core.OperationOutcome.IssueType.BUSINESSRULE);
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(getModelContext(), org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.model.core.OperationOutcome.IssueType.BUSINESSRULE);
           iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_EXPERIMENTAL : I18nConstants.MSG_EXPERIMENTAL_SRC, msg, vs, impliedType(msg)));
           issues.add(iss);
         } else if (p.getName().equals("warning-draft")) {
           String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
-          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(this, org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.model.core.OperationOutcome.IssueType.BUSINESSRULE);
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(getModelContext(), org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.model.core.OperationOutcome.IssueType.BUSINESSRULE);
           iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DRAFT : I18nConstants.MSG_DRAFT_SRC, msg, vs, impliedType(msg)));
           issues.add(iss);
         } else if (p.getName().equals("cause")) {
@@ -2307,8 +2348,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       List<String> msgs = new ArrayList<>();
       for (OperationOutcomeIssueComponent iss : issues) {
         if ((iss.getSeverity() == org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.FATAL ||
-             iss.getSeverity() == org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.ERROR)
-            && iss.getDetails().hasText() && !msgs.contains(iss.getDetails().getText())) {
+          iss.getSeverity() == org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.ERROR)
+          && iss.getDetails().hasText() && !msgs.contains(iss.getDetails().getText())) {
           msgs.add(iss.getDetails().getText());
         }
       }
@@ -2343,7 +2384,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } else if (message != null) {
       res = new ValidationResult(IssueSeverity.WARNING, message, system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog == null ? null : txLog.getLastId());
     } else if (display != null) {
-       res = new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog == null ? null : txLog.getLastId());
+      res = new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog == null ? null : txLog.getLastId());
     } else {
       res = new ValidationResult(system, version, new ConceptDefinitionComponent().setCode(code), null).setTxLink(txLog == null ? null : txLog.getLastId());
     }
@@ -2407,7 +2448,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    */
   public Parameters getExpansionParameters() {
     final Parameters parameters = expansionParameters.get();
-    return parameters == null ? null : parameters.copy(Base.COPY_DATA);
+    return parameters == null ? null : parameters.copy(Base.COPY_NOTHING);
   }
 
   /**
@@ -4016,15 +4057,5 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    * @param txLog
    */
   public void setTxLog(ToolingClientLogger txLog) {
-  }
-
-  @Override
-  public String describeContext() {
-    return "context:"+getFHIRVersion()+"("+ CommaSeparatedStringBuilder.join("|", contextInformation.getPackageList()) +")";
-  }
-
-  @Override
-  public String toString() {
-    return describeContext();
   }
 }

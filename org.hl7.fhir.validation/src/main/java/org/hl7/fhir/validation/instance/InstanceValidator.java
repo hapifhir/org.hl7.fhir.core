@@ -1967,7 +1967,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * @return the new issue component with appropriate severity
    */
   private OperationOutcomeIssueComponent getTxIssueWithCalculatedSeverity(OperationOutcomeIssueComponent issueComponent, BindingStrength bindingStrength) {
-    OperationOutcomeIssueComponent newIssueComponent = issueComponent.copy(Base.COPY_DATA);
+    OperationOutcomeIssueComponent newIssueComponent = issueComponent.copy(Base.COPY_NOTHING);
     if (newIssueComponent.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found")) {
       String text = issueComponent.getDetails().getText();
       boolean isHL7 = text == null ? false : text.contains("http://hl7.org/fhir") || text.contains("http://terminology.hl7.org");
@@ -2624,7 +2624,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", hasExtensionSlice(profile, url), I18nConstants.EXTENSION_EXT_SUBEXTENSION_INVALID, url, profile.getVersionedUrl()) && ok;
         }
       } else if (SpecialExtensions.isKnownExtension(url)) {
-        ex = SpecialExtensions.getDefinition(context, url);
+        ex = SpecialExtensions.getDefinition(context.getModelContext(), url);
       } else if (org.hl7.fhir.r5.utils.BuildExtensions.allConsts().contains(url)) {
         // nothing
       } else if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, allowUnknownExtension(url), I18nConstants.EXTENSION_EXT_UNKNOWN_NOTHERE, url)) {
@@ -3003,7 +3003,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private List<StructureDefinitionContextComponent> fixContexts(String extUrl, List<StructureDefinitionContextComponent> list) {
     List<StructureDefinitionContextComponent> res = new ArrayList<>();
     for (StructureDefinitionContextComponent ctxt : list) {
-      res.add(ctxt.copy(Base.COPY_DATA));
+      res.add(ctxt.copy(Base.COPY_NOTHING));
     }
     if (ExtensionDefinitions.EXT_FHIR_TYPE.equals(extUrl)) {
       list.get(0).setExpression("ElementDefinition.type");

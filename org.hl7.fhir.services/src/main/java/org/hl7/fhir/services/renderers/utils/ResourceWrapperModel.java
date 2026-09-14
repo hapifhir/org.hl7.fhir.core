@@ -147,10 +147,10 @@ public class ResourceWrapperModel extends ResourceWrapper {
     if (txt == null) {
       txt = new org.hl7.fhir.services.elementmodel.Element("text", model.getProperty().getChild(null, "text"));
       int i = 0;
-      while (i < model.getChildren().size() && (model.getChildren().get(i).getName().equals("id") || model.getChildren().get(i).getName().equals("meta") || model.getChildren().get(i).getName().equals("implicitRules") || model.getChildren().get(i).getName().equals("language"))) {
+      while (i < model.getChildList().size() && (model.getChildList().get(i).getName().equals("id") || model.getChildList().get(i).getName().equals("meta") || model.getChildList().get(i).getName().equals("implicitRules") || model.getChildList().get(i).getName().equals("language"))) {
         i++;
       }
-      if (i >= model.getChildren().size())
+      if (i >= model.getChildList().size())
         model.getChildList().add(txt);
       else
         model.getChildList().add(i, txt);

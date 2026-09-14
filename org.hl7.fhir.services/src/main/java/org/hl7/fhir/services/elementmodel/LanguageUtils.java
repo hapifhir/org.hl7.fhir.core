@@ -1045,7 +1045,7 @@ public class LanguageUtils {
   }
 
   public Element copyToLanguage(Element element, String lang, boolean markLanguage, String resourceLang, String defaultLang, List<ValidationMessage> errors) throws IOException {
-    Element result = (Element) element.copy(Base.COPY_DATA);
+    Element result = (Element) element.copy(Base.COPY_NOTHING);
     switchLanguage(result, lang, markLanguage, resourceLang, defaultLang, errors);
     return result;
   }
@@ -1054,7 +1054,7 @@ public class LanguageUtils {
     if (res == null) {
       return null;
     }
-    Resource r = res.copy(Base.COPY_DATA);
+    Resource r = res.copy(Base.COPY_NOTHING);
     switchLanguage(r, lang, markLanguage, false, res.getLanguage(), defaultLang, errors);    
     return r;
   }

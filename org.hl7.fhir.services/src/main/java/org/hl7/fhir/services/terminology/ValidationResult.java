@@ -38,7 +38,7 @@ public class ValidationResult {
   }
 
   public ValidationResult(ValidationResult validationResult) {
-    this.definition = validationResult.definition == null ? null : validationResult.definition.copy(Base.COPY_DATA);
+    this.definition = validationResult.definition == null ? null : validationResult.definition.copy(Base.COPY_NOTHING);
     this.preferredDisplay = validationResult.preferredDisplay;
     this.system = validationResult.system;
     this.version = validationResult.version;
@@ -51,10 +51,10 @@ public class ValidationResult {
     this.diagnostics = validationResult.diagnostics;
     if (validationResult.issues != null) {
       for (OperationOutcomeIssueComponent issue : validationResult.issues) {
-        this.issues.add(issue.copy(Base.COPY_DATA));
+        this.issues.add(issue.copy(Base.COPY_NOTHING));
       }
     }
-    this.codeableConcept = validationResult.codeableConcept == null ? null : validationResult.codeableConcept.copy(Base.COPY_DATA);
+    this.codeableConcept = validationResult.codeableConcept == null ? null : validationResult.codeableConcept.copy(Base.COPY_NOTHING);
     this.unknownSystems = validationResult.unknownSystems == null ? null : new HashSet<>(validationResult.unknownSystems);
     this.inactive = validationResult.inactive;
     this.status = validationResult.status;

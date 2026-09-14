@@ -16,10 +16,11 @@ import org.hl7.fhir.convertors.context.ContextResourceLoaderFactory;
 import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.loaders.loaderRN.NullLoaderKnowledgeProviderRN;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.services.context.IContextResourceLoaderN;
 import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.services.context.SimpleModelContext;
+
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext.SimpleWorkerContextBuilder;
 import org.hl7.fhir.model.core.formats.JsonParser;
@@ -95,9 +96,8 @@ public class LogicalModelCodeGenerator {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     log.info("Load R5");
     NpmPackage npm = pcm.loadPackage("hl7.fhir.r5.core");
-    SimpleModelContext simpleModelContext = new SimpleModelContext();
-    IContextResourceLoaderN loader = ContextResourceLoaderFactory.makeLoaderN(simpleModelContext, npm.fhirVersion(), new NullLoaderKnowledgeProviderRN());
-    SimpleWorkerContext context = new SimpleWorkerContextBuilder(simpleModelContext.getContextInformation()).withAllowLoadingDuplicates(true).fromPackage(npm, loader, true);
+    IContextResourceLoaderN loader = ContextResourceLoaderFactory.makeLoaderN(ModelContext.fullCoreContext(), npm.fhirVersion(), new NullLoaderKnowledgeProviderRN());
+    SimpleWorkerContext context = new SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withAllowLoadingDuplicates(true).fromPackage(npm, loader, true);
     String version = context.getFHIRVersion();
     NpmPackage coreNpm = npm;
     IContextResourceLoaderN coreLoader = loader;
@@ -111,7 +111,7 @@ public class LogicalModelCodeGenerator {
       log.info("Load "+pid);
       npm = pcm.loadPackage(pid);    
       pids.add(npm.name()+"#"+npm.version());
-      loader = ContextResourceLoaderFactory.makeLoaderN(simpleModelContext, npm.fhirVersion(), new NullLoaderKnowledgeProviderRN());
+      loader = ContextResourceLoaderFactory.makeLoaderN(ModelContext.fullCoreContext(), npm.fhirVersion(), new NullLoaderKnowledgeProviderRN());
       load(master, npm, loader); 
       context.loadFromPackage(npm, loader);
     }

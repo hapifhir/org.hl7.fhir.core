@@ -844,7 +844,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     altCodeParams.seeParameters(expParams);
     altCodeParams.seeValueSet(source);
     source.checkNoModifiers("ValueSet", "expanding");
-    focus = source.copy(Base.COPY_DATA);
+    focus = source.copy(Base.COPY_NOTHING);
     focus.setIdBase(null);
     focus.setExpansion(new ValueSet.ValueSetExpansionComponent());
     focus.getExpansion().setTimestampElement(DateTimeType.now());
@@ -944,7 +944,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     // ValueSet.compose.property names the properties to return "if the client doesn't ask for any
     // particular properties", so it is only consulted when the request named none
     if (source.hasCompose() && !source.getCompose().getPropertyList().isEmpty() && !expParams.hasParameter("property")) {
-      expParams = expParams.copy(Base.COPY_DATA);
+      expParams = expParams.copy(Base.COPY_NOTHING);
       for (StringType t : source.getCompose().getPropertyList()) {
         expParams.addParameter("property", new StringType(t.getValue()));
       }
@@ -1024,7 +1024,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     altCodeParams.seeParameters(expParams);
     altCodeParams.seeValueSet(source);
     source.checkNoModifiers("ValueSet", "expanding");
-    focus = source.copy(Base.COPY_DATA);
+    focus = source.copy(Base.COPY_NOTHING);
     focus.setIdBase(null);
     focus.setExpansion(new ValueSet.ValueSetExpansionComponent());
     focus.getExpansion().setTimestampElement(DateTimeType.now());
@@ -1227,7 +1227,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
     checkCanonical(exp, vs, focus);
-    expParams = expParams.copy(Base.COPY_DATA);
+    expParams = expParams.copy(Base.COPY_NOTHING);
     expParams.getParameterList().removeIf(pp -> Utilities.existsInList(pp.getName(), "offset", "count"));
     if (noInactive) {
       expParams.addParameter("activeOnly", true);
@@ -1293,7 +1293,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     checkCanonical(exp, vs, focus);
     if (noInactive) {
-      expParams = expParams.copy(Base.COPY_DATA);
+      expParams = expParams.copy(Base.COPY_NOTHING);
       expParams.addParameter("activeOnly", true);
     }
     ValueSetExpander expander = new ValueSetExpander(context, opContext.copy(), allErrors);

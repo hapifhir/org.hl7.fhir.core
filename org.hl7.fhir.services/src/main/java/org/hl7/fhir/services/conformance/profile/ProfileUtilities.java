@@ -3828,7 +3828,7 @@ public class ProfileUtilities {
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //single literal character split
       String newPath = diffList.get(0).getPath().split("\\.")[0];
-      ElementDefinition e = new ElementDefinition(context, newPath);
+      ElementDefinition e = new ElementDefinition(context.getModelContext(), newPath);
       edh = new ElementDefinitionHolder(e, true);
     } else {
       edh = new ElementDefinitionHolder(diffList.get(0));
@@ -3889,7 +3889,7 @@ public class ProfileUtilities {
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //single literal character split
         String newPath = prefix + list.get(i).getPath().substring(prefix.length()).split("\\.")[0];
-        ElementDefinition e = new ElementDefinition(context, newPath);
+        ElementDefinition e = new ElementDefinition(context.getModelContext(), newPath);
         ElementDefinitionHolder child = new ElementDefinitionHolder(e, true);
         edh.getChildren().add(child);
         i = processElementsIntoTree(child, i, list);

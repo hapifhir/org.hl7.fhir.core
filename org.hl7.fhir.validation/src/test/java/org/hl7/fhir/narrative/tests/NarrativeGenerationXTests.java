@@ -151,7 +151,7 @@ public class NarrativeGenerationXTests {
 
     @Override
     public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
-      return new XmlParser(context).parseType(xml, type);
+      return new XmlParser(context.getModelContext()).parseType(xml, type);
     }
     @Override
     public Base parseType(org.hl7.fhir.services.elementmodel.Element e) throws FHIRFormatError, IOException, FHIRException {
@@ -274,9 +274,9 @@ public class NarrativeGenerationXTests {
     IWorkerContext context = contexts.get(version);
     if (test.getRegister() != null) {
       if (test.getRegister().endsWith(".json")) {
-        context.getManager().cacheResource(new JsonParser(context).parse(TestingUtilities.loadTestResourceStream("rX", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new JsonParser(context.getModelContext()).parse(TestingUtilities.loadTestResourceStream("rX", "narrative", test.getRegister())));
       } else {
-        context.getManager().cacheResource(new XmlParser(context).parse(TestingUtilities.loadTestResourceStream("rX", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new XmlParser(context.getModelContext()).parse(TestingUtilities.loadTestResourceStream("rX", "narrative", test.getRegister())));
       }
     }
     RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);

@@ -19,7 +19,7 @@
   "http://hl7.org/fhir/smart-app-launch/ValueSet/user-access-category" : null,
   "https://healthterminologies.gov.au/fhir/ValueSet/australian-immunisation-register-vaccine-1" : {
     "server" : "https://tx.hl7.org.au/fhir",
-    "filename" : "vs-5ef6ec40-419e-4222-aa5a-6deeaa9646f2.json"
+    "filename" : "vs-fb6b3663-64e9-49ba-bb50-57add203b21a.json"
   },
   "http://hl7.org/fhir/CodeSystem/c1" : null,
   "https://valueset.x12.org/x217/005010/request/2000E/UM/1/01/00/1525" : null,

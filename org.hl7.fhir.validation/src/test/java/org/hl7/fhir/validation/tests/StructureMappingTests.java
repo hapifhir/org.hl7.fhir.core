@@ -98,7 +98,7 @@ public class StructureMappingTests {
   private StructureMap loadStructureMap(String map) throws Exception {
     String stringMap = TestingUtilities.loadTestResource("r5", "structure-mapping", map);
     if (map.endsWith(".json")) {
-      return (StructureMap) new org.hl7.fhir.model.core.formats.JsonParser(context).parse(stringMap);
+      return (StructureMap) new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(stringMap);
     } else if (map.endsWith(".map")) {
       return new StructureMapTools(context).parse(stringMap, map);
     }

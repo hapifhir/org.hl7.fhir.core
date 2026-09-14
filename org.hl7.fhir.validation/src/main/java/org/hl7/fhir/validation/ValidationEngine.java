@@ -21,6 +21,7 @@ import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.model.utilities.formats.FormatUtilities;
 import org.hl7.fhir.model.utilities.formats.IParser;
@@ -389,7 +390,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     public ValidationEngine fromNothing() throws IOException {
       NpmPackageIndexBuilder.setExtensionFactory(new SQLiteINpmPackageIndexBuilderDBImpl.SQLiteINpmPackageIndexBuilderDBImplFactory());
       ValidationEngine engine = new ValidationEngine(defaultInstanceValidatorParameters);
-      SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder(new SimpleModelContext().getContextInformation()).withLoggingService(loggingService);
+      SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withLoggingService(loggingService);
       if (terminologyCachePath != null)
         contextBuilder = contextBuilder.withTerminologyCachePath(terminologyCachePath);
       engine.setContext(contextBuilder.build());
@@ -478,26 +479,26 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     NpmPackage npm = getPcm().loadPackage(src, null);
     if (npm != null) {
       version = npm.fhirVersion();
-      SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder(new SimpleModelContext().getContextInformation()).withLoggingService(loggingService);
+      SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withLoggingService(loggingService);
       if (terminologyCachePath != null)
         contextBuilder = contextBuilder.withTerminologyCachePath(terminologyCachePath);
       if (userAgent != null) {
         contextBuilder.withUserAgent(userAgent);
       }
 
-      context = contextBuilder.fromPackage(npm, ValidatorUtils.loaderForVersion(context, version), false);
+      context = contextBuilder.fromPackage(npm, ValidatorUtils.loaderForVersion(ModelContext.fullCoreContext(), version), false);
     } else {
       Map<String, ByteProvider> source = igLoader.loadIgSource(src, recursive, true);
       if (version == null) {
         version = getVersionFromPack(source);
       }
-      SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder(new SimpleModelContext().getContextInformation());
+      SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext());
       if (terminologyCachePath != null)
         contextBuilder = contextBuilder.withTerminologyCachePath(terminologyCachePath);
       if (userAgent != null) {
         contextBuilder.withUserAgent(userAgent);
       }
-      context = contextBuilder.fromDefinitions(source, ValidatorUtils.loaderForVersion(context, version), new PackageInformation(src, version, new Date()));
+      context = contextBuilder.fromDefinitions(source, ValidatorUtils.loaderForVersion(ModelContext.fullCoreContext(), version), new PackageInformation(src, version, new Date()));
       ValidatorUtils.grabNatives(getBinaries(), source, "http://hl7.org/fhir");
     }
     // ucum-essence.xml should be in the class path. if it's not, ask about how to sort this out 
@@ -968,7 +969,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         Element resource = factory.generate(profile);
         Element be = bundle.makeElement("entry");
         be.makeElement("fullUrl").setValue("urn:uuid:" + java.util.UUID.randomUUID().toString().toLowerCase());
-        be.makeElement("resource").getChildren().addAll(resource.getChildren());
+        be.makeElement("resource").getChildList().addAll(resource.getChildList());
       }
       tbl.reset();
       ByteArrayOutputStream bs = new ByteArrayOutputStream();
@@ -1004,9 +1005,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     new ProfileUtilities(context, null, null).setAutoFixSliceNames(true).generateSnapshot(base, sd, sd.getUrl(), null, sd.getName());
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     if (format == FhirFormat.XML) {
-      new XmlParser(context).setOutputStyle(OutputStyle.PRETTY).compose(baos, sd);
+      new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(baos, sd);
     } else {
-      new JsonParser(context).setOutputStyle(OutputStyle.PRETTY).compose(baos, sd);
+      new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(baos, sd);
     }
     return baos.toByteArray();
   }
@@ -1018,9 +1019,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     genResource(res, rc);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     if (format == FhirFormat.XML) {
-      new XmlParser(context).setOutputStyle(OutputStyle.PRETTY).compose(baos, res);
+      new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(baos, res);
     } else {
-      new JsonParser(context).setOutputStyle(OutputStyle.PRETTY).compose(baos, res);
+      new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(baos, res);
     }
     return baos.toByteArray();
   }
@@ -1065,9 +1066,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (map == null) throw new FHIRException("Unable to find map: " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     if (outputFormat == FhirFormat.XML) {
-      new XmlParser(context).setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+      new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
     } else {
-      new JsonParser(context).setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+      new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
     }
     return baos.toByteArray();
   }
@@ -1241,9 +1242,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         throw new FHIRException("Unsupported format for " + fn);
     } else if (VersionUtilities.isR5Plus(version)) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
-        new XmlParser(context).setOutputStyle(org.hl7.fhir.model.utilities.formats.OutputStyle.PRETTY).compose(s, r);
+        new XmlParser(context.getModelContext()).setOutputStyle(org.hl7.fhir.model.utilities.formats.OutputStyle.PRETTY).compose(s, r);
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
-        new JsonParser(context).setOutputStyle(org.hl7.fhir.model.utilities.formats.OutputStyle.PRETTY).compose(s, r);
+        new JsonParser(context.getModelContext()).setOutputStyle(org.hl7.fhir.model.utilities.formats.OutputStyle.PRETTY).compose(s, r);
       else if (fn.endsWith(".txt") || fn.endsWith(".map")  || fn.endsWith(".fml"))
         FileUtilities.stringToStream(StructureMapTools.render((org.hl7.fhir.model.fml.StructureMap) r), s);
       else
@@ -1615,7 +1616,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
    * @param fileType the format of the content, as a {@link FhirFormat} extension. When null, the format is inferred.
    */
   public void loadExpansionParameters(byte[] content, String name, String fileType) {
-    context.setExpansionParameters(parseExpansionParameters(context, content, name, fileType));
+    context.setExpansionParameters(parseExpansionParameters(context.getModelContext(), content, name, fileType));
   }
 
   /**

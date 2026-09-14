@@ -39,7 +39,7 @@ public class TestPackageLoader implements IContextResourceLoaderN {
 
   @Override
   public Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
-    return isJson ? new JsonParser(context).parse(stream) : new XmlParser(context).parse(stream);
+    return isJson ? new JsonParser(context.getModelContext()).parse(stream) : new XmlParser(context.getModelContext()).parse(stream);
   }
 
   @Override

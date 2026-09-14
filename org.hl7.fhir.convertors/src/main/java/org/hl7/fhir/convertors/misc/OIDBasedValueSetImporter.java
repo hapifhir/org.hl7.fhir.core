@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.misc;
 
 import java.io.IOException;
+import org.hl7.fhir.model.ModelContext;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;

@@ -157,7 +157,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       if (!sourceWithFHIRVersion.getSource().contains("#")) {
         packageLoadLine.append("#" + npm.version());
       }
-      IContextResourceLoaderN loader = ValidatorUtils.loaderForVersion(context, npm.fhirVersion());
+      IContextResourceLoaderN loader = ValidatorUtils.loaderForVersion(context.getModelContext(), npm.fhirVersion());
       loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
       int count = getContext().loadFromPackage(npm, loader, false);
       log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
@@ -189,7 +189,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
               canonical = ((ImplementationGuide) r).getUrl();
               igs.add((ImplementationGuide) r);
               if (canonical.contains("/ImplementationGuide/")) {
-                Resource r2 = r.copy(Base.COPY_DATA);
+                Resource r2 = r.copy(Base.COPY_NOTHING);
                 ((ImplementationGuide) r2).setUrl(canonical.substring(0, canonical.indexOf("/ImplementationGuide/")));
                 getContext().cacheResource(r2);
               }
@@ -583,7 +583,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
     if (!pi.isCoreExamples()) {
       if (loadInContext) {
         //      getContext().getLoadedPackages().add(pi.name() + "#" + pi.version());
-        getContext().loadFromPackage(pi, ValidatorUtils.loaderForVersion(context, pi.fhirVersion()));
+        getContext().loadFromPackage(pi, ValidatorUtils.loaderForVersion(context.getModelContext(), pi.fhirVersion()));
       }
       for (String s : pi.listResources("CodeSystem", "ConceptMap", "ImplementationGuide", "CapabilityStatement", "SearchParameter", "Conformance", "StructureMap", "ValueSet", "StructureDefinition")) {
         res.put(s, pi.getProvider("package", s));
@@ -894,9 +894,9 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       r = VersionConvertorFactory_50_N.convertResource(res);
     } else if (fhirVersion.startsWith("6.0")) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
-        r = new XmlParser(context).parse(new ByteArrayInputStream(content));
+        r = new XmlParser(context.getModelContext()).parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
-        r = new JsonParser(context).parse(new ByteArrayInputStream(content));
+        r = new JsonParser(context.getModelContext()).parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".txt"))
         r = new StructureMapTools(getContext(), null, null).parse(FileUtilities.bytesToString(content), fn);
       else if (fn.endsWith(".map") || fn.endsWith(".fml"))
@@ -932,7 +932,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
     if (!idAndVer.contains("#")) {
       packageLoadLine.append("#" + npm.version());
     }
-    IContextResourceLoaderN loader = ValidatorUtils.loaderForVersion(context, npm.fhirVersion());
+    IContextResourceLoaderN loader = ValidatorUtils.loaderForVersion(context.getModelContext(), npm.fhirVersion());
     loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
     int count = getContext().loadFromPackage(npm, loader);
     log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");

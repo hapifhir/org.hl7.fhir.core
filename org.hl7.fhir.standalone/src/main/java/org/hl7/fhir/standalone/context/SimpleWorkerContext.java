@@ -39,6 +39,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.ModelContextInformation;
 import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.formats.XmlParser;
@@ -126,37 +127,33 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   @Getter @Setter private ILoaderFactory loaderFactory;
   @Getter PackageLoadController packageLoadController;
 
-  private SimpleWorkerContext(ModelContextInformation contextInformation) throws IOException, FHIRException {
-    super();
-    this.contextInformation = contextInformation;
+  private SimpleWorkerContext(IModelContext context) throws IOException, FHIRException {
+    super(context);
     packageLoadController = new PackageLoadController();
   }
 
   private SimpleWorkerContext() throws IOException, FHIRException {
-    super();
-    this.contextInformation = new SimpleModelContext().getContextInformation();
+    super(ModelContext.fullCoreContext());
     packageLoadController = new PackageLoadController();
   }
 
-  private SimpleWorkerContext(ModelContextInformation contextInformation, Locale locale) throws IOException, FHIRException {
-    super(locale);
-    this.contextInformation = contextInformation;
+  private SimpleWorkerContext(IModelContext context, Locale locale) throws IOException, FHIRException {
+    super(context, locale);
     packageLoadController = new PackageLoadController();
   }
 
   public SimpleWorkerContext(SimpleWorkerContext other) throws IOException, FHIRException {
-    super();
+    super(other.modelContext);
     copy(other);
   }
 
   private SimpleWorkerContext(SimpleWorkerContext other, Locale locale) throws IOException, FHIRException {
-    super(locale);
+    super(other.modelContext, locale);
     copy(other);
   }
   
   protected void copy(SimpleWorkerContext other) {
     super.copy(other);
-    this.contextInformation = other.contextInformation;
     binaries.putAll(other.binaries);
     version = other.version;
     revision = other.revision;
@@ -177,7 +174,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   public static class SimpleWorkerContextBuilder {
 
     @Getter
-    private ModelContextInformation context;
+    private IModelContext context;
 
     @With
     private final String terminologyCachePath;
@@ -201,7 +198,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     private final ILoggingService loggingService;
     private boolean defaultExpParams;
 
-    public SimpleWorkerContextBuilder(ModelContextInformation context) {
+    public SimpleWorkerContextBuilder(IModelContext context) {
       this.context = context;
       cacheTerminologyClientErrors = false;
       alwaysUseTerminologyServer = false;
@@ -233,7 +230,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       context.initTxCache(terminologyCachePath);
       context.setUserAgent(userAgent);
       context.setLogger(loggingService);
-      context.cacheResource(new org.hl7.fhir.model.core.formats.JsonParser(context).parse(MagicResources.spdxCodesAsData()));
+      context.cacheResource(new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(MagicResources.spdxCodesAsData()));
       if (defaultExpParams) {
         context.setExpansionParameters(makeExpProfile());
       }
@@ -380,7 +377,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
           throw new IllegalArgumentException("Unknown extension for text file logging: \"" + log + "\" expected: .html, .htm, .txt or .log");
         }
       }
-      org.hl7.fhir.model.client.ITerminologyClientN client = factory.makeClientN(this,"tx-server", ManagedWebAccess.makeSecureRef(address), software, txLog);
+      org.hl7.fhir.model.client.ITerminologyClientN client = factory.makeClientN(this.getModelContext(),"tx-server", ManagedWebAccess.makeSecureRef(address), software, txLog);
       // txFactory.makeClient("Tx-Server", txServer, "fhir/publisher", null)
 //      terminologyClientManager.setLogger(txLog);
 //      terminologyClientManager.setUserAgent(userAgent);
@@ -402,7 +399,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		  if (loader != null)
 		    f = loader.loadBundle(stream, false);
 		  else {
-		    XmlParser xml = new XmlParser(this);
+		    XmlParser xml = new XmlParser(this.getModelContext());
 		    f = xml.parse(stream);
 		  }
     } catch (DataFormatException e1) {
@@ -442,7 +439,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       if (loader != null)
         f = loader.loadBundle(stream, true);
       else {
-        JsonParser json = new JsonParser(this);
+        JsonParser json = new JsonParser(this.getModelContext());
         Resource r = json.parse(stream);
         if (r instanceof Bundle)
           f = (Bundle) r;
@@ -477,13 +474,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   public int loadPackage(NpmPackage npm, boolean isMaster) throws IOException, FHIRException {
-    IContextResourceLoaderN loader =  loaderFactory.makeLoaderN(this, npm.fhirVersion());
+    IContextResourceLoaderN loader =  loaderFactory.makeLoaderN(this.getModelContext(), npm.fhirVersion());
     return loadFromPackageInt(npm, loader, loader == null ? defaultTypesToLoad() : loader.getTypes(), isMaster);
   }
 
   public int loadPackage(String idAndVer, boolean isMaster) throws IOException, FHIRException {
     NpmPackage npm = packageCacheManager.loadPackage(idAndVer);
-    IContextResourceLoaderN loader =  loaderFactory.makeLoaderN(this, npm.fhirVersion());
+    IContextResourceLoaderN loader =  loaderFactory.makeLoaderN(this.getModelContext(), npm.fhirVersion());
     return loadFromPackageInt(npm, loader, loader == null ? defaultTypesToLoad() : loader.getTypes(), isMaster);
   }
 
@@ -582,6 +579,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
             }
             t++;
           } catch (FHIRException e) {
+            e.printStackTrace();
             throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, pri.getFilename(), pi.name(), pi.version(), e.getMessage()), e);
           }
         }
@@ -705,9 +703,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   public void loadFromFolder(String folder) throws IOException {
     for (String n : ManagedFileAccess.file(folder).list()) {
       if (n.endsWith(".json")) 
-        loadFromFile(Utilities.path(folder, n), new JsonParser(this));
+        loadFromFile(Utilities.path(folder, n), new JsonParser(this.getModelContext()));
       else if (n.endsWith(".xml")) 
-        loadFromFile(Utilities.path(folder, n), new XmlParser(this));
+        loadFromFile(Utilities.path(folder, n), new XmlParser(this.getModelContext()));
     }
   }
   

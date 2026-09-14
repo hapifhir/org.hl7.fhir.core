@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.service.renderers;
 import java.io.File;
 import java.io.IOException;
 
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.model.utilities.formats.IParser;
 import org.hl7.fhir.model.core.formats.JsonParser;
@@ -10,7 +11,7 @@ import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.model.core.Bundle;
 import org.hl7.fhir.model.core.OperationOutcome;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
-import org.hl7.fhir.services.context.SimpleModelContext;
+
 
 public class NativeRenderer extends ValidationOutputRenderer {
 
@@ -27,9 +28,9 @@ public class NativeRenderer extends ValidationOutputRenderer {
   public void render(OperationOutcome op) throws IOException {
     IParser x;
     if (format == FhirFormat.JSON) {
-      x = new JsonParser(new SimpleModelContext());
+      x = new JsonParser(ModelContext.fullCoreContext());
     } else {
-      x = new XmlParser(new SimpleModelContext());
+      x = new XmlParser(ModelContext.fullCoreContext());
     }
     x.setOutputStyle(OutputStyle.PRETTY);
     x.compose(dst, op);
@@ -39,9 +40,9 @@ public class NativeRenderer extends ValidationOutputRenderer {
   public void render(Bundle bundle) throws IOException {
     IParser x;
     if (format == FhirFormat.JSON) {
-      x = new JsonParser(new SimpleModelContext());
+      x = new JsonParser(ModelContext.fullCoreContext());
     } else {
-      x = new XmlParser(new SimpleModelContext());
+      x = new XmlParser(ModelContext.fullCoreContext());
     }
     x.setOutputStyle(OutputStyle.PRETTY);
     x.compose(dst, bundle);

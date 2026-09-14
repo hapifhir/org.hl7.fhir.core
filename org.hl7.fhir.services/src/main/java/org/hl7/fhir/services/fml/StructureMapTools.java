@@ -1604,7 +1604,7 @@ public class StructureMapTools {
           return res;
         case COPY:
           Base val = getParam(vars, tgt.getParameterList().get(0));
-          return val != null ? val.copy(Base.COPY_DATA) : val;
+          return val != null ? val.copy(Base.COPY_NOTHING) : val;
         case EVALUATE:
           ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
           if (expr == null) {

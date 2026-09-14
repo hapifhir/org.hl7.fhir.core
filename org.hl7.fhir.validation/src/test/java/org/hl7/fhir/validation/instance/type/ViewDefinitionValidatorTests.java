@@ -10,10 +10,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
-import org.hl7.fhir.services.context.SimpleModelContext;
+
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -45,7 +46,7 @@ class ViewDefinitionValidatorTests {
     engine = TestUtilities.getValidationEngineNoTxServer("hl7.fhir.r5.core#5.0.0", "5.0.0");
     NpmPackage npm = new FilesystemPackageCacheManager.Builder().build()
         .loadPackage("hl7.fhir.uv.sql-on-fhir#3.0.0-ballot");
-    StructureDefinition sd = (StructureDefinition) new JsonParser(new SimpleModelContext())
+    StructureDefinition sd = (StructureDefinition) new JsonParser(ModelContext.fullCoreContext())
         .parse(npm.loadResource("StructureDefinition-ViewDefinition.json"));
     engine.getContext().cacheResource(sd);
     validator = engine.getValidator(FhirFormat.JSON);

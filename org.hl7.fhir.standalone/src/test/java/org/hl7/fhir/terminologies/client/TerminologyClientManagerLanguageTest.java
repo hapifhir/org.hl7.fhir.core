@@ -65,7 +65,7 @@ public class TerminologyClientManagerLanguageTest {
     List<String> requests = new ArrayList<>();
 
     TestManager(ITerminologyClientFactoryN factory, ILoggingService logger) {
-      super(TestingUtilities.getSharedWorkerContext(), factory, logger);
+      super(TestingUtilities.getSharedWorkerContext().getModelContext(), factory, logger);
     }
 
     @Override

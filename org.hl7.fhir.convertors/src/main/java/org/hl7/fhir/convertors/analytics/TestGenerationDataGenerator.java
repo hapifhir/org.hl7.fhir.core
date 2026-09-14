@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.analytics;
 
 import java.io.ByteArrayInputStream;
+import org.hl7.fhir.model.ModelContext;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;

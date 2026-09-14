@@ -121,13 +121,13 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     cs.setStatus(left.getStatus());
     cs.setDate(new Date());
     for (PropertyComponent pL : left.getPropertyList()) {
-      cs.addProperty(pL.copy(Base.COPY_DATA));
+      cs.addProperty(pL.copy(Base.COPY_NOTHING));
     }
     for (PropertyComponent pR : left.getPropertyList()) {
       PropertyComponent pL = findProperty(left, pR);
       if (pL == null) {
         String code = getUniqued(pR.getCode(), cs.getPropertyList());
-        cs.addProperty(pR.copy(Base.COPY_DATA).setCode(code));
+        cs.addProperty(pR.copy(Base.COPY_NOTHING).setCode(code));
       } else {
         res.getPropMap().put(pR.getCode(), pL.getCode());
       }
@@ -382,7 +382,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
   private ConceptDefinitionComponent merge(ConceptDefinitionComponent l, ConceptDefinitionComponent r, List<PropertyComponent> destProps, CodeSystemComparison res) {
-    ConceptDefinitionComponent cd = l.copy(Base.COPY_DATA);
+    ConceptDefinitionComponent cd = l.copy(Base.COPY_NOTHING);
     if (!l.hasDisplay() && r.hasDisplay()) {
       cd.setDisplay(r.getDisplay());
     }
@@ -395,7 +395,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
   private PropertyComponent merge(PropertyComponent l, PropertyComponent r, CodeSystemComparison res) {
-    PropertyComponent cd = l.copy(Base.COPY_DATA);
+    PropertyComponent cd = l.copy(Base.COPY_NOTHING);
     if (!l.hasDescription() && r.hasDescription()) {
       cd.setDescription(r.getDescription());
     }
@@ -404,7 +404,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
 
 
   private CodeSystemFilterComponent merge(CodeSystemFilterComponent l, CodeSystemFilterComponent r, CodeSystemComparison res) {
-    CodeSystemFilterComponent cd = l.copy(Base.COPY_DATA);
+    CodeSystemFilterComponent cd = l.copy(Base.COPY_NOTHING);
     if (!l.hasDescription() && r.hasDescription()) {
       cd.setDescription(r.getDescription());
     }
@@ -412,7 +412,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
   private ConceptDefinitionComponent intersect(ConceptDefinitionComponent l, ConceptDefinitionComponent r, CodeSystemComparison res) {
-    ConceptDefinitionComponent cd = l.copy(Base.COPY_DATA);
+    ConceptDefinitionComponent cd = l.copy(Base.COPY_NOTHING);
     if (l.hasDisplay() && !r.hasDisplay()) {
       cd.setDisplay(null);
     }
@@ -425,7 +425,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
   private PropertyComponent intersect(PropertyComponent l, PropertyComponent r, CodeSystemComparison res) {
-    PropertyComponent cd = l.copy(Base.COPY_DATA);
+    PropertyComponent cd = l.copy(Base.COPY_NOTHING);
     if (l.hasDescription() && !r.hasDescription()) {
       cd.setDescription(null);
     }
@@ -433,7 +433,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
   private CodeSystemFilterComponent intersect(CodeSystemFilterComponent l, CodeSystemFilterComponent r, CodeSystemComparison res) {
-    CodeSystemFilterComponent cd = l.copy(Base.COPY_DATA);
+    CodeSystemFilterComponent cd = l.copy(Base.COPY_NOTHING);
     if (l.hasDescription() && !r.hasDescription()) {
       cd.setDescription(null);
     }
@@ -500,7 +500,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
         matchR.add(rp);
         cd.getPropertyList().add(lp);
         if (!lp.getValue().equalsDeep(rp.getValue())) {
-          ConceptPropertyComponent pc = rp.copy(Base.COPY_DATA);
+          ConceptPropertyComponent pc = rp.copy(Base.COPY_NOTHING);
           String code = res.getPropMap().get(rp.getCode());
           if (code != null) {
             pc.setCode(code);
@@ -511,7 +511,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     }
     for (ConceptPropertyComponent rp : r.getPropertyList()) {
       if (!matchR.contains(rp)) {
-        ConceptPropertyComponent pc = rp.copy(Base.COPY_DATA);
+        ConceptPropertyComponent pc = rp.copy(Base.COPY_NOTHING);
         String code = res.getPropMap().get(rp.getCode());
         if (code != null) {
           pc.setCode(code);

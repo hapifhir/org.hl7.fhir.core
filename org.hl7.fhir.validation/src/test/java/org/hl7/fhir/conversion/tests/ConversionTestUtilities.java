@@ -49,6 +49,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.convertors.loaders.loaderRN.*;
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.services.context.IContextResourceLoaderN;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.model.core.Parameters;
@@ -102,13 +103,15 @@ public class ConversionTestUtilities {
     if (Utilities.noString(version))
       return null;
     if (version.startsWith("1.0"))
-      return new R2ToRNLoader(fcontexts.get(version), Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN());
+      return new R2ToRNLoader(ModelContext.fullCoreContext(), Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN());
     if (version.startsWith("1.4"))
-      return new R2016MayToRNLoader(fcontexts.get(version), Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN()); // special case
+      return new R2016MayToRNLoader(ModelContext.fullCoreContext(), Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN()); // special case
     if (version.startsWith("3.0"))
-      return new R3ToRNLoader(fcontexts.get(version), Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN());
+      return new R3ToRNLoader(ModelContext.fullCoreContext(), Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN());
     if (version.startsWith("4.0"))
-      return new R4ToRNLoader(fcontexts.get(version), Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN(), version);
+      return new R4ToRNLoader(ModelContext.fullCoreContext(), Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN(), version);
+    if (version.startsWith("5.0"))
+      return new R5ToRNLoader(ModelContext.fullCoreContext(), Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN());
     return null;
   }
 

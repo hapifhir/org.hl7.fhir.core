@@ -11,11 +11,12 @@ import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.core.Constants;
 import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.formats.XmlParser;
-import org.hl7.fhir.services.context.SimpleModelContext;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.JsonException;
@@ -132,7 +133,7 @@ public class OntoserverTests implements ITxTesterLoader {
     try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
       if (filename.contains(".json")) {
         if (Constants.VERSION.equals(version) || "6.0".equals(version))
-          res = new JsonParser(new SimpleModelContext()).parse(inputStream);
+          res = new JsonParser(ModelContext.fullCoreContext()).parse(inputStream);
         else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
           res = VersionConvertorFactory_30_N.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))
@@ -147,7 +148,7 @@ public class OntoserverTests implements ITxTesterLoader {
           throw new FHIRException("unknown version " + version);
       } else {
         if (Constants.VERSION.equals(version) || "6.0".equals(version))
-          res = new XmlParser(new SimpleModelContext()).parse(inputStream);
+          res = new XmlParser(ModelContext.fullCoreContext()).parse(inputStream);
         else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
           res = VersionConvertorFactory_30_N.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))

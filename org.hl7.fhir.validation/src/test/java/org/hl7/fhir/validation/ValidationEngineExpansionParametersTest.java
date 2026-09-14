@@ -17,8 +17,9 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.core.Parameters;
-import org.hl7.fhir.services.context.SimpleModelContext;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -47,7 +48,7 @@ class ValidationEngineExpansionParametersTest {
   @ParameterizedTest(name = "{0}")
   @MethodSource("parseableContent")
   void parsesContent(String description, String content, String fileType) {
-    Parameters parameters = ValidationEngine.parseExpansionParameters(new SimpleModelContext(), bytes(content), "exp-params", fileType);
+    Parameters parameters = ValidationEngine.parseExpansionParameters(ModelContext.fullCoreContext(), bytes(content), "exp-params", fileType);
 
     assertEquals(1, parameters.getParameterList().size());
     assertEquals("en-US", parameters.getParameterValue("displayLanguage").primitiveValue());
@@ -57,7 +58,7 @@ class ValidationEngineExpansionParametersTest {
   @Test
   void unparseableContentReportsBothFormats() {
     FHIRException e = assertThrows(FHIRException.class,
-      () -> ValidationEngine.parseExpansionParameters(new SimpleModelContext(), bytes("not a resource"), "exp-params", null));
+      () -> ValidationEngine.parseExpansionParameters(ModelContext.fullCoreContext(), bytes("not a resource"), "exp-params", null));
 
     assertTrue(e.getMessage().contains("exp-params"), e.getMessage());
     assertTrue(e.getMessage().contains("xml"), e.getMessage());
@@ -68,7 +69,7 @@ class ValidationEngineExpansionParametersTest {
   @Test
   void declaredFormatIsTheOnlyOneTriedXml() {
     FHIRException e = assertThrows(FHIRException.class,
-      () -> ValidationEngine.parseExpansionParameters(new SimpleModelContext(), bytes(JSON_CONTENT), "exp-params.xml", "xml"));
+      () -> ValidationEngine.parseExpansionParameters(ModelContext.fullCoreContext(), bytes(JSON_CONTENT), "exp-params.xml", "xml"));
 
     assertTrue(e.getMessage().contains("exp-params.xml"), e.getMessage());
     assertTrue(e.getMessage().contains("as xml"), e.getMessage());
@@ -78,7 +79,7 @@ class ValidationEngineExpansionParametersTest {
   @Test
   void declaredFormatIsTheOnlyOneTriedJson() {
     FHIRException e = assertThrows(FHIRException.class,
-      () -> ValidationEngine.parseExpansionParameters(new SimpleModelContext(), bytes(XML_CONTENT), "exp-params.json", "json"));
+      () -> ValidationEngine.parseExpansionParameters(ModelContext.fullCoreContext(), bytes(XML_CONTENT), "exp-params.json", "json"));
 
     assertTrue(e.getMessage().contains("exp-params.json"), e.getMessage());
     assertTrue(e.getMessage().contains("as json"), e.getMessage());

@@ -300,7 +300,7 @@ public class MeasureValidator extends BaseValidator {
               else
                 return null;
             case R5:
-              rN = new org.hl7.fhir.model.core.formats.JsonParser(context).parse(json);
+              rN = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(json);
               if (rN instanceof Measure)
                 return (Measure) rN;
               else

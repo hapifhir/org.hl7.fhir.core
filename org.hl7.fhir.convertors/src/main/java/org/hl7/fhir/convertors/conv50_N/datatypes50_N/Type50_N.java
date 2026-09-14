@@ -30,25 +30,7 @@ import org.hl7.fhir.convertors.conv50_N.datatypes50_N.metadata50_N.ParameterDefi
 import org.hl7.fhir.convertors.conv50_N.datatypes50_N.metadata50_N.RelatedArtifact50_N;
 import org.hl7.fhir.convertors.conv50_N.datatypes50_N.metadata50_N.TriggerDefinition50_N;
 import org.hl7.fhir.convertors.conv50_N.datatypes50_N.metadata50_N.UsageContext50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Base64Binary50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Boolean50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Canonical50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Code50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Date50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.DateTime50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Decimal50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Id50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Instant50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Integer50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.MarkDown50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Oid50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.PositiveInt50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.String50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Time50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.UnsignedInt50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Uri50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Url50_N;
-import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Uuid50_N;
+import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.*;
 import org.hl7.fhir.convertors.conv50_N.datatypes50_N.special50_N.Dosage50_N;
 import org.hl7.fhir.convertors.conv50_N.datatypes50_N.special50_N.ElementDefinition50_N;
 import org.hl7.fhir.convertors.conv50_N.datatypes50_N.special50_N.Extension50_N;
@@ -90,6 +72,8 @@ public class Type50_N {
       return PositiveInt50_N.convertPositiveInt((org.hl7.fhir.r5.model.PositiveIntType) src);
     if (src instanceof org.hl7.fhir.r5.model.IntegerType)
       return Integer50_N.convertInteger((org.hl7.fhir.r5.model.IntegerType) src);
+    if (src instanceof org.hl7.fhir.r5.model.Integer64Type)
+      return Integer6450_N.convertInteger64((org.hl7.fhir.r5.model.Integer64Type) src);
     if (src instanceof org.hl7.fhir.r5.model.MarkdownType)
       return MarkDown50_N.convertMarkDown((org.hl7.fhir.r5.model.MarkdownType) src);
     if (src instanceof org.hl7.fhir.r5.model.OidType) return Oid50_N.convertOid((org.hl7.fhir.r5.model.OidType) src);

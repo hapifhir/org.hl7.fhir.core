@@ -122,7 +122,7 @@ public class ViewDefinitionValidator extends BaseValidator {
     } else {
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(ver));
-      SimpleWorkerContext context = new SimpleWorkerContext.SimpleWorkerContextBuilder(this.context.getContextInformation()).withAllowLoadingDuplicates(true).fromPackage(npm);
+      SimpleWorkerContext context = new SimpleWorkerContext.SimpleWorkerContextBuilder(this.context.getModelContext()).withAllowLoadingDuplicates(true).fromPackage(npm);
       var vec = new VersionEvaluationContext(context);
       session.getObjects().put(ValidatorSession.VIEW_DEFINITION_CONTEXT+"."+context.getFHIRVersion(), vec);
       versions.add(vec);

@@ -160,7 +160,7 @@ public class ProfileBasedFactory {
           ls.line.append("fixed value = "+fv.primitiveValue());
           focus.setValue(fv.primitiveValue());
         } else {
-          ls.line.append("fixed value = "+new org.hl7.fhir.model.core.formats.JsonParser(fpe.getWorker()).setOutputStyle(OutputStyle.NORMAL).composeString((DataType) fv, "data"));
+          ls.line.append("fixed value = "+new org.hl7.fhir.model.core.formats.JsonParser(fpe.getWorker().getModelContext()).setOutputStyle(OutputStyle.NORMAL).composeString((DataType) fv, "data"));
           populateElementFromDataType(focus, fv, null);
         }
       } else {

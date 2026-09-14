@@ -18,6 +18,13 @@ public class MeasureContext {
   public static final String USER_DATA_ELM = "validator.ELM";
   // Measure.group.scoring only exists from R5; before that, the CQM IG carries group level scoring in this extension
   public static final String EXT_CQM_SCORING = "http://hl7.org/fhir/uv/cqm/StructureDefinition/cqm-scoring";
+  // root level Measure.scoring only exists before R6; when a Measure is converted up from
+  // an earlier version, it is carried in the matching cross-version extension
+  public static final String[] EXT_XVER_SCORING = {
+      "http://hl7.org/fhir/4.0/StructureDefinition/extension-Measure.scoring",
+      "http://hl7.org/fhir/4.3/StructureDefinition/extension-Measure.scoring",
+      "http://hl7.org/fhir/5.0/StructureDefinition/extension-Measure.scoring"
+  };
   private List<Library> libs = new ArrayList<>();
   private Measure measure;
   private Element report;
@@ -65,8 +72,21 @@ public class MeasureContext {
         return ((CodeableConcept) v).getCodingFirstRep().getCode();
       }
     }
+    return scoring();
+  }
+
+  public String scoring() {
+    for (String url : EXT_XVER_SCORING) {
+      if (measure.hasExtension(url)) {
+        DataType v = measure.getExtensionByUrl(url).getValue();
+        if (v instanceof CodeableConcept) {
+          return ((CodeableConcept) v).getCodingFirstRep().getCode();
+        }
+      }
+    }
     return null;
   }
+
   public List<Library> libraries() {
     return libs;
   }

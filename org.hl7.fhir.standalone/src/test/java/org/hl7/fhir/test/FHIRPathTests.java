@@ -212,9 +212,9 @@ public class FHIRPathTests {
           if ("cda".equals(test.getAttribute("mode"))) {
             res = Manager.makeParser(fp.getWorker(), FhirFormat.XML).parseSingle(TestingUtilities.loadTestResourceStream("r6", input), null);
           } else if (input.endsWith(".json")) {
-            res = new JsonParser(context).parse(TestingUtilities.loadTestResourceStream("r6", input));
+            res = new JsonParser(context.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", input));
           } else {
-            res = new XmlParser(context).parse(TestingUtilities.loadTestResourceStream("r6", input));
+            res = new XmlParser(context.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", input));
           }
           resources.put(input, res);
         }        

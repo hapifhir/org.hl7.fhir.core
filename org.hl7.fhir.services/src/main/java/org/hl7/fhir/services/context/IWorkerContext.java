@@ -10,6 +10,7 @@ import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -40,9 +41,24 @@ import java.util.Set;
  * @author Grahame
  */
 
-public interface IWorkerContext extends IModelContext {
+public interface IWorkerContext {
 
   //region General Properties
+
+  /**
+   * The model context for this WorkerContext (does not change during the lifetime of the context)
+   *
+   * @return
+   */
+  public IModelContext getModelContext();
+
+  /**
+   * This returns the main/core version that is in use - a draft version of R6 or more recent
+   * @return
+   */
+  @Nonnull
+  public String getFHIRVersion();
+
   /**
    * The context increments this anytime any definitions change. (that is, any
    * resources are made available through the fetch*() methods, or removed

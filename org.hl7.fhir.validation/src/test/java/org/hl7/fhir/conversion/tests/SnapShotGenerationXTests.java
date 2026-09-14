@@ -160,19 +160,19 @@ public class SnapShotGenerationXTests {
     }
 
 
-    public void load(String version) throws FHIRFormatError, FileNotFoundException, IOException {
+    public void load(String loadVersion) throws FHIRFormatError, FileNotFoundException, IOException {
       if (TestingUtilities.findTestResource("rX", "snapshot-generation", id + "-input.json"))
-        source = (StructureDefinition) XVersionLoader.loadJson(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-input.json"));
+        source = (StructureDefinition) XVersionLoader.loadJson(ConversionTestUtilities.context(version).getModelContext(), loadVersion, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-input.json"));
       else
-        source = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-input.xml"));      
+        source = (StructureDefinition) XVersionLoader.loadXml(ConversionTestUtilities.context(version).getModelContext(), loadVersion, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", id + "-input.xml"));
       if (!Utilities.noString(include))
-        included.add((StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", include + ".xml")));
+        included.add((StructureDefinition) XVersionLoader.loadXml(ConversionTestUtilities.context(version).getModelContext(), loadVersion, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", include + ".xml")));
       if (!Utilities.noString(register)) {
         for (String r : register.split("\\,")) {
           if (TestingUtilities.findTestResource("rX", "snapshot-generation", r + ".xml")) {
-            included.add((StructureDefinition)  XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", r + ".xml")));
+            included.add((StructureDefinition)  XVersionLoader.loadXml(ConversionTestUtilities.context(version).getModelContext(), loadVersion, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", r + ".xml")));
           } else {
-            included.add((StructureDefinition)  XVersionLoader.loadJson(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", r + ".json")));
+            included.add((StructureDefinition)  XVersionLoader.loadJson(ConversionTestUtilities.context(version).getModelContext(), loadVersion, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", r + ".json")));
           }
         }
       }
@@ -488,17 +488,17 @@ public class SnapShotGenerationXTests {
     boolean json = false;
     if (TestingUtilities.findTestResource("rX", "snapshot-generation", test.getId() + "-output.json")) {
       json = true;
-      expected = (StructureDefinition) XVersionLoader.loadJson(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-output-"+test.targetVersion+".json"));
+      expected = (StructureDefinition) XVersionLoader.loadJson(ConversionTestUtilities.context(version).getModelContext(), version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-output-"+test.targetVersion+".json"));
     } else {
-      expected = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-output-"+test.targetVersion+".xml"));
+      expected = (StructureDefinition) XVersionLoader.loadXml(ConversionTestUtilities.context(version).getModelContext(), version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-output-"+test.targetVersion+".xml"));
     }
 
     if (json) {
-      XVersionLoader.saveJson(version, output, ManagedFileAccess.outStream(Utilities.path(folder, test.getId() + "-output-"+test.targetVersion+".json")));
-      actual = (StructureDefinition) XVersionLoader.loadJson(version, ManagedFileAccess.inStream(Utilities.path(folder, test.getId() + "-output-"+test.targetVersion+".json")));
+      XVersionLoader.saveJson(ConversionTestUtilities.context(version).getModelContext(), version, output, ManagedFileAccess.outStream(Utilities.path(folder, test.getId() + "-output-"+test.targetVersion+".json")));
+      actual = (StructureDefinition) XVersionLoader.loadJson(ConversionTestUtilities.context(version).getModelContext(), version, ManagedFileAccess.inStream(Utilities.path(folder, test.getId() + "-output-"+test.targetVersion+".json")));
     } else {
-      XVersionLoader.saveXml(version, output, ManagedFileAccess.outStream(Utilities.path(folder, test.getId() + "-output-"+test.targetVersion+".xml")));
-      actual = (StructureDefinition) XVersionLoader.loadXml(version, ManagedFileAccess.inStream(Utilities.path(folder, test.getId() + "-output-"+test.targetVersion+".xml")));
+      XVersionLoader.saveXml(ConversionTestUtilities.context(version).getModelContext(), version, output, ManagedFileAccess.outStream(Utilities.path(folder, test.getId() + "-output-"+test.targetVersion+".xml")));
+      actual = (StructureDefinition) XVersionLoader.loadXml(ConversionTestUtilities.context(version).getModelContext(), version, ManagedFileAccess.inStream(Utilities.path(folder, test.getId() + "-output-"+test.targetVersion+".xml")));
     }
     actual.setText(null);
     expected.setText(null);
@@ -584,17 +584,17 @@ public class SnapShotGenerationXTests {
       boolean json = false;
       if (TestingUtilities.findTestResource("rX", "snapshot-generation", test.getId() + "-output.json")) {
         json = true;
-        expected = (StructureDefinition) XVersionLoader.loadJson(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-output.json"));
+        expected = (StructureDefinition) XVersionLoader.loadJson(ConversionTestUtilities.context(version).getModelContext(), version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-output.json"));
       } else {
-        expected = (StructureDefinition) XVersionLoader.loadXml(version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-output.xml"));      
+        expected = (StructureDefinition) XVersionLoader.loadXml(ConversionTestUtilities.context(version).getModelContext(), version, TestingUtilities.loadTestResourceStream("rX", "snapshot-generation", test.getId() + "-output.xml"));
       }
     
       if (json) {
-        XVersionLoader.saveJson(version, output, ManagedFileAccess.outStream(Utilities.path(folder, test.getId() + "-output.json")));
-        actual = (StructureDefinition) XVersionLoader.loadJson(version, ManagedFileAccess.inStream(Utilities.path(folder, test.getId() + "-output.json")));
+        XVersionLoader.saveJson(ConversionTestUtilities.context(version).getModelContext(), version, output, ManagedFileAccess.outStream(Utilities.path(folder, test.getId() + "-output.json")));
+        actual = (StructureDefinition) XVersionLoader.loadJson(ConversionTestUtilities.context(version).getModelContext(), version, ManagedFileAccess.inStream(Utilities.path(folder, test.getId() + "-output.json")));
       } else {
-        XVersionLoader.saveXml(version, output, ManagedFileAccess.outStream(Utilities.path(folder, test.getId() + "-output.xml")));
-        actual = (StructureDefinition) XVersionLoader.loadXml(version, ManagedFileAccess.inStream(Utilities.path(folder, test.getId() + "-output.xml")));
+        XVersionLoader.saveXml(ConversionTestUtilities.context(version).getModelContext(), version, output, ManagedFileAccess.outStream(Utilities.path(folder, test.getId() + "-output.xml")));
+        actual = (StructureDefinition) XVersionLoader.loadXml(ConversionTestUtilities.context(version).getModelContext(), version, ManagedFileAccess.inStream(Utilities.path(folder, test.getId() + "-output.xml")));
       }
       actual.setText(null);
       expected.setText(null);

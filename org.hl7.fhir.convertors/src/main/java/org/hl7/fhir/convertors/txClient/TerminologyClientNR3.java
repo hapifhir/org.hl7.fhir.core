@@ -99,7 +99,11 @@ public class TerminologyClientNR3 implements ITerminologyClientN {
   
   @Override
   public TerminologyCapabilities getTerminologyCapabilities() throws FHIRException {
-    return TerminologyCapabilities50_N.convertTerminologyCapabilities(TerminologyCapabilities30_50.convertTerminologyCapabilities(client.getTerminologyCapabilities(), false));
+    // via the factory, not TerminologyCapabilities50_N directly: the generated converters read
+    // their VersionConvertor out of a ThreadLocal that only the factory sets up, so calling one
+    // directly NPEs in copyDomainResource
+    return (TerminologyCapabilities) VersionConvertorFactory_50_N.convertResource(
+      TerminologyCapabilities30_50.convertTerminologyCapabilities(client.getTerminologyCapabilities(), false));
   }
 
   @Override

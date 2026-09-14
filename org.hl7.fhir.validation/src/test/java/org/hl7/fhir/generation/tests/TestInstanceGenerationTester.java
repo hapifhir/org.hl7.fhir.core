@@ -13,7 +13,8 @@ import org.hl7.fhir.convertors.loaders.loaderRN.R4ToRNLoader;
 import org.hl7.fhir.convertors.txClient.TerminologyClient5R4;
 import org.hl7.fhir.convertors.txClient.TerminologyClientNR4;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.services.context.SimpleModelContext;
+
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext.SimpleWorkerContextBuilder;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
@@ -42,11 +43,11 @@ class TestInstanceGenerationTester {
   @Test
   void testDataFactory() throws IOException, FHIRException {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-    SimpleWorkerContext context = new SimpleWorkerContextBuilder(new SimpleModelContext().getContextInformation()).withAllowLoadingDuplicates(true).withDefaultParams().fromPackage(pcm.loadPackage("hl7.fhir.r4.core"));
+    SimpleWorkerContext context = new SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withAllowLoadingDuplicates(true).withDefaultParams().fromPackage(pcm.loadPackage("hl7.fhir.r4.core"));
     context.connectToTSServer(new TerminologyClientNR4.TerminologyClientR4Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
-    context.loadFromPackage(pcm.loadPackage("us.nlm.vsac#0.21.0"), new R4ToRNLoader(context, Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
+    context.loadFromPackage(pcm.loadPackage("us.nlm.vsac#0.21.0"), new R4ToRNLoader(context.getModelContext(),Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
         new NullLoaderKnowledgeProviderRN(), context.getFHIRVersion()));
-    context.loadFromPackage(pcm.loadPackage("hl7.fhir.us.core#6.0.0"), new R4ToRNLoader(context, Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
+    context.loadFromPackage(pcm.loadPackage("hl7.fhir.us.core#6.0.0"), new R4ToRNLoader(context.getModelContext(),Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
         new NullLoaderKnowledgeProviderRN(), context.getFHIRVersion()));
             
     FHIRPathEngine fpe = new FHIRPathEngine(context);
@@ -60,7 +61,7 @@ class TestInstanceGenerationTester {
     fpe.setHostServices(hs);
     LiquidEngine liquid = new LiquidEngine(context, hs);
     
-    StructureDefinition sd = (StructureDefinition) new org.hl7.fhir.model.core.formats.JsonParser(context).parse(TestingUtilities.loadTestResourceBytes("rX", "instance-generation", "collateral", "StructureDefinition-test-patient-profile.json"));
+    StructureDefinition sd = (StructureDefinition) new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(TestingUtilities.loadTestResourceBytes("rX", "instance-generation", "collateral", "StructureDefinition-test-patient-profile.json"));
     context.cacheResource(sd);
     
     // set up the space

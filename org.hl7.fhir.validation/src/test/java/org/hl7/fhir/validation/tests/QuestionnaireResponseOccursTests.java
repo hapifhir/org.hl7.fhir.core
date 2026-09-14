@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
@@ -20,7 +21,7 @@ import org.hl7.fhir.model.core.QuestionnaireResponse.QuestionnaireResponseItemCo
 import org.hl7.fhir.model.core.QuestionnaireResponse.QuestionnaireResponseStatus;
 import org.hl7.fhir.model.core.StringType;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
-import org.hl7.fhir.services.context.SimpleModelContext;
+
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
@@ -47,7 +48,7 @@ class QuestionnaireResponseOccursTests {
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", "n/a", FhirPublication.R5, "5.0.0");
     ve.getContext().cacheResource(questionnaire());
 
-    byte[] qr = new JsonParser(new SimpleModelContext()).composeBytes(response());
+    byte[] qr = new JsonParser(ModelContext.fullCoreContext()).composeBytes(response());
     OperationOutcome op = ve.validate(FhirFormat.JSON, new ByteArrayInputStream(qr), null);
 
     List<String> reported = new ArrayList<>();

@@ -57,7 +57,7 @@ class ClientTest {
   @BeforeEach
   void setup() {
     setupMockServer();
-    client = new Client(TestingUtilities.getSharedWorkerContext());
+    client = new Client(TestingUtilities.getSharedWorkerContext().getModelContext());
   }
 
   void setupMockServer() {
@@ -66,7 +66,7 @@ class ClientTest {
   }
 
   byte[] generateResourceBytes(Resource resource) throws IOException {
-    return new JsonParser(TestingUtilities.getSharedWorkerContext()).composeBytes(resource);
+    return new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).composeBytes(resource);
   }
 
   @Test
@@ -130,7 +130,7 @@ class ClientTest {
   @Test
   @DisplayName("PUT request, test payload received by server matches sent.")
   void test_put() throws IOException, URISyntaxException, InterruptedException {
-    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false, false, TestingUtilities.getSharedWorkerContext());
+    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false, false, TestingUtilities.getSharedWorkerContext().getModelContext());
     // Mock server response of 200, with the same resource payload returned that we included in the PUT request
     server.enqueue(
       new MockResponse()
@@ -148,7 +148,7 @@ class ClientTest {
   @Test
   @DisplayName("POST request, test payload received by server matches sent.")
   void test_post() throws IOException, URISyntaxException, InterruptedException {
-    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false, false, TestingUtilities.getSharedWorkerContext());
+    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false, false, TestingUtilities.getSharedWorkerContext().getModelContext());
     // Mock server response of 200, with the same resource payload returned that we included in the PUT request
     server.enqueue(
       new MockResponse()
@@ -166,7 +166,7 @@ class ClientTest {
   @Test
   @DisplayName("Testing the logger works.")
   void test_logger() throws IOException, URISyntaxException, InterruptedException {
-    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false, false, TestingUtilities.getSharedWorkerContext());
+    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false, false, TestingUtilities.getSharedWorkerContext().getModelContext());
     server.enqueue(
       new MockResponse()
         .setResponseCode(200)

@@ -2,6 +2,7 @@ package org.hl7.fhir.context;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.client.ITerminologyClientN;
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.services.context.IContextResourceLoaderN;
 import org.hl7.fhir.services.terminology.*;
@@ -48,7 +49,7 @@ public class BaseWorkerContextTests {
   private static final String DUMMY_URL = "http://dummyUrl";
 
   @Spy
-  BaseWorkerContext context = new BaseWorkerContext() {
+  BaseWorkerContext context = new BaseWorkerContext(ModelContext.fullCoreContext()) {
     @Override
     public String getFHIRVersion() {
       return "4.0.1";
@@ -273,7 +274,7 @@ public class BaseWorkerContextTests {
   }
 
   private BaseWorkerContext getBaseWorkerContext() throws IOException {
-    BaseWorkerContext baseWorkerContext = new BaseWorkerContext() {
+    BaseWorkerContext baseWorkerContext = new BaseWorkerContext(ModelContext.fullCoreContext()) {
       @Override
       public String getFHIRVersion() {
         return null;

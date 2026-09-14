@@ -1604,6 +1604,11 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     return b.toString();
   }
 
+
+  public String toString() {
+    return (ordered == null ? "??" : "true".equals(ordered.asStringValue()) ? "ordered" : "unordered")+"/"+
+        (rules == null ? "??" : rules.asStringValue())+" "+getDiscriminatorList().toString();
+  }
 // end addition
   }
 
@@ -1893,6 +1898,13 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
 
   }
 
+// added from java-adornments.txt:
+
+  public String toString() {
+    return (type == null ? "??" : type.getCode()) + "="+(path == null ? "??" : path.asStringValue());
+  }
+
+// end addition
   }
 
     @Block()
@@ -2496,7 +2508,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           if (this.targetProfileList == null)
             return false;
           for (CanonicalType v : this.targetProfileList)
-            if (v.getValue().equals(value)) // canonical
+            if (v.getValue().equals(value) || v.getValue().startsWith(value+"|")) // canonical
               return true;
           return false;
         }

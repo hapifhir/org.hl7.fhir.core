@@ -233,13 +233,13 @@ private static TxTestData testData;
       SubsumptionOutcome outcome = new TerminologySubsumptionTester(engine.getContext()).subsumes(codingA, codingB, pathA, pathB);
       org.hl7.fhir.model.core.Parameters po = new org.hl7.fhir.model.core.Parameters();
       po.addParameter("outcome", new CodeType(outcome.toCode()));
-      actual = new JsonParser(engine.getContext()).setOutputStyle(OutputStyle.PRETTY).composeString(po);
+      actual = new JsonParser(engine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(po);
     } catch (SubsumptionException e) {
       OperationOutcome oo = new OperationOutcome();
       oo.getIssueList().addAll(e.getIssues());
       TxTesterSorters.sortOperationOutcome(oo);
       TxTesterScrubbers.scrubOperationOutcome(oo, false);
-      actual = new JsonParser(engine.getContext()).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      actual = new JsonParser(engine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
 
     String diff = new CompareUtilities(modes(), ext, vars()).checkJsonSrcIsSame(id, resp, actual);
@@ -308,7 +308,7 @@ private static TxTestData testData;
         if (resp2 != null) {
           OperationOutcome oo = makeOperationOutcome(vse);
 
-          String ooj = new JsonParser(engine.getContext()).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+          String ooj = new JsonParser(engine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
           String diff = new CompareUtilities(modes(), ext, vars()).checkJsonSrcIsSame(id, resp2, ooj);
           if (diff != null) {
             FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
@@ -327,7 +327,7 @@ private static TxTestData testData;
         }
         TxTesterSorters.sortValueSet(vse.getValueset());
         TxTesterScrubbers.scrubValueSet(vse.getValueset(), false);
-        String vsj = new JsonParser(engine.getContext()).setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
+        String vsj = new JsonParser(engine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
         CompareUtilities c = new CompareUtilities(modes(), ext, vars());
         String diff = c.checkJsonSrcIsSame(id, resp, vsj);
         if (diff != null) {
@@ -340,7 +340,7 @@ private static TxTestData testData;
     } else {
       OperationOutcome oo = makeOperationOutcome(vse);
 
-      String ooj = new JsonParser(engine.getContext()).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      String ooj = new JsonParser(engine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
       String diff = new CompareUtilities(modes(), ext, vars()).checkJsonSrcIsSame(id, resp, ooj);
       if (diff != null) {
         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
@@ -431,7 +431,7 @@ private static TxTestData testData;
     try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
       if (filename.contains(".json")) {
         if (Constants.VERSION.equals(version) || "6.0".equals(version))
-          return new JsonParser(baseEngine.getContext()).parse(inputStream);
+          return new JsonParser(baseEngine.getContext().getModelContext()).parse(inputStream);
         else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
           return VersionConvertorFactory_30_N.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))
@@ -446,7 +446,7 @@ private static TxTestData testData;
           throw new FHIRException("unknown version " + version);
       } else {
         if (Constants.VERSION.equals(version) || "6.0".equals(version))
-          return new XmlParser(baseEngine.getContext()).parse(inputStream);
+          return new XmlParser(baseEngine.getContext().getModelContext()).parse(inputStream);
         else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
           return VersionConvertorFactory_30_N.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))

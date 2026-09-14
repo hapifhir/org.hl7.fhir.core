@@ -35,7 +35,7 @@ public class PackageResourceLoader extends CanonicalResourceProxy {
         if (loader != null) {
           return setPi(R6Hacker.fixR5BrokenResource((CanonicalResource) loader.loadResource(f, true)));
         } else {
-          return setPi(R6Hacker.fixR5BrokenResource((CanonicalResource) new JsonParser(context).parse(f)));
+          return setPi(R6Hacker.fixR5BrokenResource((CanonicalResource) new JsonParser(context.getModelContext()).parse(f)));
         }
       } finally {
         f.close();

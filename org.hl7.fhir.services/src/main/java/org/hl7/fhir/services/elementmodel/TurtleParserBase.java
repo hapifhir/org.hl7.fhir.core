@@ -351,7 +351,7 @@ public abstract class TurtleParserBase extends ParserBase {
   }
 
   private boolean hasModifierExtension(Element e) {
-    return e.getChildren().stream().anyMatch(p -> p.getName().equals("modifierExtension"));
+    return e.getChildList().stream().anyMatch(p -> p.getName().equals("modifierExtension"));
   }
 
   protected String getURIType(String uri) {

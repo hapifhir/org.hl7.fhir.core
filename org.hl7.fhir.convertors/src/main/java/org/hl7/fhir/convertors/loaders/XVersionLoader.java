@@ -9,7 +9,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
-import org.hl7.fhir.services.context.SimpleModelContext;
+import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -17,9 +17,9 @@ import javax.xml.crypto.dsig.SignatureMethod;
 
 public class XVersionLoader {
 
-  public static Resource loadXml(String version, InputStream stream) throws FHIRFormatError, IOException {
+  public static Resource loadXml(IModelContext context, String version, InputStream stream) throws FHIRFormatError, IOException {
     if (Utilities.noString(version)) {
-      return new org.hl7.fhir.model.core.formats.XmlParser(new SimpleModelContext()).parse(stream);
+      return new org.hl7.fhir.model.core.formats.XmlParser(context).parse(stream);
     }
     switch (VersionUtilities.getMajMin(version)) {
       case "1.0":
@@ -33,14 +33,14 @@ public class XVersionLoader {
       case "5.0":
         return VersionConvertorFactory_50_N.convertResource(new org.hl7.fhir.r5.formats.XmlParser().parse(stream));
       case "6.0":
-        return new org.hl7.fhir.model.core.formats.XmlParser(new SimpleModelContext()).parse(stream);
+        return new org.hl7.fhir.model.core.formats.XmlParser(context).parse(stream);
     }
     throw new FHIRException("Unknown version " + version + " loading resource");
   }
 
-  public static Resource loadJson(String version, InputStream stream) throws FHIRException, IOException {
+  public static Resource loadJson(IModelContext context, String version, InputStream stream) throws FHIRException, IOException {
     if (Utilities.noString(version)) {
-      return new org.hl7.fhir.model.core.formats.JsonParser(new SimpleModelContext()).parse(stream);
+      return new org.hl7.fhir.model.core.formats.JsonParser(context).parse(stream);
     }
     switch (VersionUtilities.getMajMin(version)) {
       case "1.0":
@@ -54,14 +54,14 @@ public class XVersionLoader {
       case "5.0":
         return VersionConvertorFactory_50_N.convertResource(new org.hl7.fhir.r5.formats.JsonParser().parse(stream));
       case "6.0":
-        return new org.hl7.fhir.model.core.formats.JsonParser(new SimpleModelContext()).parse(stream);
+        return new org.hl7.fhir.model.core.formats.JsonParser(context).parse(stream);
     }
     throw new FHIRException("Unknown version " + version + " loading resource");
   }
 
-  public static void saveXml(String version, Resource resource, OutputStream stream) throws FHIRFormatError, IOException {
+  public static void saveXml(IModelContext context, String version, Resource resource, OutputStream stream) throws FHIRFormatError, IOException {
     if (Utilities.noString(version)) {
-      new org.hl7.fhir.model.core.formats.XmlParser(new SimpleModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(stream, resource);
+      new org.hl7.fhir.model.core.formats.XmlParser(context).setOutputStyle(OutputStyle.PRETTY).compose(stream, resource);
     }
     switch (VersionUtilities.getMajMin(version)) {
       case "1.0":
@@ -80,15 +80,15 @@ public class XVersionLoader {
         new org.hl7.fhir.r5.formats.XmlParser().setOutputStyle(org.hl7.fhir.r5.formats.IParser.OutputStyle.PRETTY).compose(stream, VersionConvertorFactory_50_N.convertResource(resource));
         return;
       case "6.0":
-        new org.hl7.fhir.model.core.formats.XmlParser(new SimpleModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(stream, resource);
+        new org.hl7.fhir.model.core.formats.XmlParser(context).setOutputStyle(OutputStyle.PRETTY).compose(stream, resource);
         return;
     }
     throw new FHIRException("Unknown version " + version + " loading resource");
   }
 
-  public static void saveJson(String version, Resource resource, OutputStream stream) throws FHIRException, IOException {
+  public static void saveJson(IModelContext context, String version, Resource resource, OutputStream stream) throws FHIRException, IOException {
     if (Utilities.noString(version)) {
-      new org.hl7.fhir.model.core.formats.JsonParser(new SimpleModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(stream, resource);
+      new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).compose(stream, resource);
     }
     switch (VersionUtilities.getMajMin(version)) {
       case "1.0":
@@ -107,7 +107,7 @@ public class XVersionLoader {
         new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(org.hl7.fhir.r5.formats.IParser.OutputStyle.PRETTY).compose(stream, VersionConvertorFactory_50_N.convertResource(resource));
         return;
       case "6.0":
-         new org.hl7.fhir.model.core.formats.JsonParser(new SimpleModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(stream, resource);
+         new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).compose(stream, resource);
          return;
     }
     throw new FHIRException("Unknown version " + version + " loading resource");

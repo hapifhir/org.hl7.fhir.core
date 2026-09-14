@@ -173,7 +173,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
     JsonObject json = JsonParser.parseObjectFromFile(Utilities.path(src, "input", "_data", "conversions.json"));
     log("Load R5");
     pcm = new FilesystemPackageCacheManager.Builder().build();
-    context = new SimpleWorkerContextBuilder(context.getContextInformation()).withAllowLoadingDuplicates(true).fromPackage(pcm.loadPackage("hl7.fhir.r5.core#current"));
+    context = new SimpleWorkerContextBuilder(context.getModelContext()).withAllowLoadingDuplicates(true).fromPackage(pcm.loadPackage("hl7.fhir.r5.core#current"));
     log("Load Maps");
 //     context.loadFromPackage(pcm.loadPackage(), null);
     
@@ -252,7 +252,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
     log("Load "+path);
     for (File f : ManagedFileAccess.file(path).listFiles()) {
       if (f.getName().endsWith(".json")) {
-        context.cacheResource(new org.hl7.fhir.model.core.formats.JsonParser(context).parse(ManagedFileAccess.inStream(f)));
+        context.cacheResource(new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(ManagedFileAccess.inStream(f)));
       }
       if (f.getName().endsWith(".fml")) {
         context.cacheResource(utils.parse(FileUtilities.fileToString(f), f.getName()));
@@ -264,7 +264,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
   private void loadPackage(String pid, boolean loadMaps) throws FHIRException, IOException {
     log("Load "+pid);
     NpmPackage npm = pcm.loadPackage(pid);
-    IContextResourceLoaderN loader = ValidatorUtils.loaderForVersion(context, npm.fhirVersion());
+    IContextResourceLoaderN loader = ValidatorUtils.loaderForVersion(context.getModelContext(), npm.fhirVersion());
     if (!loadMaps && loader.getTypes().contains("StructureMap")) {
       loader.getTypes().remove("StructureMap");
     }
@@ -417,7 +417,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
 
   private void checkSave(String id, String state, Resource r) throws FHIRException, FileNotFoundException, IOException {
     if (saveProcess) {
-      new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "r4r5", r.fhirType()+"-"+id+"-"+state+".json")), r);
+      new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "r4r5", r.fhirType()+"-"+id+"-"+state+".json")), r);
     }
   }
   

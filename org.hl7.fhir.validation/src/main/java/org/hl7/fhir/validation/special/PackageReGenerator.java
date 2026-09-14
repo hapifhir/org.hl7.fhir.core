@@ -238,19 +238,19 @@ public class PackageReGenerator {
       if (modeParams.contains("api")) {
         if (verbose) log.info("Processing CapabilityStatements");
         for (String res : npm.listResources("CapabilityStatement")) {
-          CapabilityStatement cs = (CapabilityStatement) new JsonParser(context).parse(npm.loadResource(res));
+          CapabilityStatement cs = (CapabilityStatement) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           cs.setSourcePackage(new PackageInformation(npm));
           processResource(cs);
         }
         if (verbose) log.info("Processing OperationDefinitions");
         for (String res : npm.listResources("OperationDefinition")) {
-          OperationDefinition op = (OperationDefinition) new JsonParser(context).parse(npm.loadResource(res));
+          OperationDefinition op = (OperationDefinition) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           op.setSourcePackage(new PackageInformation(npm));
           processResource(op);
         }
         if (verbose) log.info("Processing SearchParameters");
         for (String res : npm.listResources("SearchParameter")) {
-          SearchParameter sp = (SearchParameter) new JsonParser(context).parse(npm.loadResource(res));
+          SearchParameter sp = (SearchParameter) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           sp.setSourcePackage(new PackageInformation(npm));
           processResource(sp);
         }
@@ -258,19 +258,19 @@ public class PackageReGenerator {
       if (modeParams.contains("tx")) {
         if (verbose) log.info("Processing CodeSystems");
         for (String res : npm.listResources("CodeSystem")) {
-          CodeSystem cs = (CodeSystem) new JsonParser(context).parse(npm.loadResource(res));
+          CodeSystem cs = (CodeSystem) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           cs.setSourcePackage(new PackageInformation(npm));
           processResource(cs);
         }
         if (verbose) log.info("Processing ValueSets");
         for (String res : npm.listResources("ValueSet")) {
-          ValueSet vs = (ValueSet) new JsonParser(context).parse(npm.loadResource(res));
+          ValueSet vs = (ValueSet) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           vs.setSourcePackage(new PackageInformation(npm));
           processResource(vs);
         }
         if (verbose) log.info("Processing NamingSystems");
         for (String res : npm.listResources("NamingSystem")) {
-          NamingSystem ns = (NamingSystem) new JsonParser(context).parse(npm.loadResource(res));
+          NamingSystem ns = (NamingSystem) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           ns.setSourcePackage(new PackageInformation(npm));
           processResource(ns);
         }
@@ -278,14 +278,14 @@ public class PackageReGenerator {
       if (modeParams.contains("cnt")) {
         if (verbose) log.info("Processing StructureDefinitions");
         for (String res : npm.listResources("StructureDefinition")) {
-          StructureDefinition sd = (StructureDefinition) new JsonParser(context).parse(npm.loadResource(res));
+          StructureDefinition sd = (StructureDefinition) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           sd.setSourcePackage(new PackageInformation(npm));
           processResource(sd);
         }
       }
       if (verbose) log.info("Processing Bindings");
       for (String res : npm.listResources("StructureDefinition")) {
-        StructureDefinition sd = (StructureDefinition) new JsonParser(context).parse(npm.loadResource(res));
+        StructureDefinition sd = (StructureDefinition) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
         processSD(sd, npm.id());
       }
 
@@ -617,9 +617,9 @@ public class PackageReGenerator {
     Set<String> names = new HashSet<>();
     names.add("manifest");
     if (json) {
-      zip.addBytes("manifest.json", new JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters), false);
+      zip.addBytes("manifest.json", new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters), false);
     } else {
-      zip.addBytes("manifest.xml", new XmlParser(context).setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters), false);
+      zip.addBytes("manifest.xml", new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters), false);
     }
 
     for (CanonicalResource cr : resources) {
@@ -648,9 +648,9 @@ public class PackageReGenerator {
     Set<String> names = new HashSet<>();
     names.add("manifest");
     if (json) {
-      gen.addFile("package", "manifest.json", new JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters));
+      gen.addFile("package", "manifest.json", new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters));
     } else {
-      gen.addFile("package", "manifest.xml", new XmlParser(context).setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters));
+      gen.addFile("package", "manifest.xml", new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters));
     }
     for (CanonicalResource cr : resources) {
       gen.addFile("package", resourceFileName(cr), composeResource(cr));
@@ -680,9 +680,9 @@ public class PackageReGenerator {
     Set<String> names = new HashSet<>();
     names.add("manifest");
     if (json) {
-      new JsonParser(context).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(output, "manifest.json")), expansionParameters);
+      new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(output, "manifest.json")), expansionParameters);
     } else {
-      new XmlParser(context).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(output, "manifest.xml")), expansionParameters);
+      new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(output, "manifest.xml")), expansionParameters);
     }
     for (CanonicalResource cr : resources) {
       FileUtilities.bytesToFile(composeResource(cr), Utilities.path(output, resourceFileName(cr)));
@@ -692,9 +692,9 @@ public class PackageReGenerator {
 
   private byte[] composeResource(CanonicalResource cr) throws IOException {
     if (json) {
-      return new JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeBytes(cr);
+      return new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(cr);
     } else {
-      return new XmlParser(context).setOutputStyle(OutputStyle.PRETTY).composeBytes(cr);
+      return new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(cr);
     }
   }
 
@@ -761,7 +761,7 @@ public class PackageReGenerator {
         NpmPackage core = pcm.loadPackage(VersionUtilities.packageForVersion(v));
         NpmPackage tho = pcm.loadPackage("hl7.terminology");
         log.info("Load FHIR from "+core.name()+"#"+core.version());
-        SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder(context.getContextInformation()).withAllowLoadingDuplicates(true).fromPackage(core);
+        SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder(context.getModelContext()).withAllowLoadingDuplicates(true).fromPackage(core);
         TerminologyClientFactory factory = new TerminologyClientFactory(ctxt.getFHIRVersion());
         ctxt.connectToTSServer(factory, "https://tx.fhir.org", ctxt.getUserAgent(), null, true);
         var loader = new IgLoader(pcm, ctxt, ctxt.getFHIRVersion());

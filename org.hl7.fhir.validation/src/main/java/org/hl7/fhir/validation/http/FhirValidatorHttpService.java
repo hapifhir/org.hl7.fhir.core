@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.http;
 
 import com.sun.net.httpserver.HttpServer;
+import org.hl7.fhir.model.IModelContext;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.validation.ValidationEngine;
@@ -51,22 +52,24 @@ public class FhirValidatorHttpService {
     }
     server = HttpServer.create(inetSocketAddress, 0);
 
-    server.createContext("/validateResource", new ValidateResourceHTTPHandler(validationEngine.getContext(), this));
-    server.createContext("/fhirpath", new FhirPathHTTPHandler(validationEngine.getContext(), this));
-    server.createContext("/matchetype", new MatchetypeHTTPHandler(validationEngine.getContext(), this));
-    server.createContext("/testdata", new TestDataHTTPHandler(validationEngine.getContext(), this));
-    server.createContext("/loadIG", new LoadIGHTTPHandler(validationEngine.getContext(), this));
-    server.createContext("/convert", new ConvertHTTPHandler(validationEngine.getContext(), this));
-    server.createContext("/snapshot", new SnapshotHTTPHandler(validationEngine.getContext(), this));
-    server.createContext("/narrative", new NarrativeHTTPHandler(validationEngine.getContext(), this));
-    server.createContext("/transform", new TransformHTTPHandler(validationEngine.getContext(), this));
-    server.createContext("/version", new VersionHTTPHandler(validationEngine.getContext(), this));
-    server.createContext("/compile", new CompileHTTPHandler(validationEngine.getContext(), this));
+    IModelContext context = validationEngine.getContext().getModelContext();
+
+    server.createContext("/validateResource", new ValidateResourceHTTPHandler(context, this));
+    server.createContext("/fhirpath", new FhirPathHTTPHandler(context, this));
+    server.createContext("/matchetype", new MatchetypeHTTPHandler(context, this));
+    server.createContext("/testdata", new TestDataHTTPHandler(context, this));
+    server.createContext("/loadIG", new LoadIGHTTPHandler(context, this));
+    server.createContext("/convert", new ConvertHTTPHandler(context, this));
+    server.createContext("/snapshot", new SnapshotHTTPHandler(context, this));
+    server.createContext("/narrative", new NarrativeHTTPHandler(context, this));
+    server.createContext("/transform", new TransformHTTPHandler(context, this));
+    server.createContext("/version", new VersionHTTPHandler(context, this));
+    server.createContext("/compile", new CompileHTTPHandler(context, this));
     server.createContext("/openapi.json", new OpenApiHTTPHandler());
-    server.createContext("/docs", new DocsHTTPHandler(validationEngine.getContext(), DocsHTTPHandler.SWAGGER_HTML));
-    server.createContext("/redoc", new DocsHTTPHandler(validationEngine.getContext(), DocsHTTPHandler.REDOC_HTML));
-    server.createContext("/txTest", new TxTestHTTPHandler(validationEngine.getContext(), this));
-    server.createContext("/stop", new StopHTTPHandler(validationEngine.getContext(), this));
+    server.createContext("/docs", new DocsHTTPHandler(context, DocsHTTPHandler.SWAGGER_HTML));
+    server.createContext("/redoc", new DocsHTTPHandler(context, DocsHTTPHandler.REDOC_HTML));
+    server.createContext("/txTest", new TxTestHTTPHandler(context, this));
+    server.createContext("/stop", new StopHTTPHandler(context, this));
 
     // Start the server
     server.setExecutor(null); // Use default executor

@@ -554,8 +554,8 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (!session.getOtherVersions().containsKey(v)) {
           FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
           NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(v));
-          SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(context.getContextInformation()).withAllowLoadingDuplicates(true)
-            .fromPackage(npm, ValidatorUtils.loaderForVersion(context, v), false);
+          SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(context.getModelContext()).withAllowLoadingDuplicates(true)
+            .fromPackage(npm, ValidatorUtils.loaderForVersion(context.getModelContext(), v), false);
           session.getOtherVersions().put(v, swc);
         }
         ctxt = session.getOtherVersions().get(v);
@@ -1904,7 +1904,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       org.hl7.fhir.r5.model.Resource r5 = new org.hl7.fhir.r5.formats.JsonParser().parse(bs.toByteArray());
       return (StructureDefinition) VersionConvertorFactory_50_N.convertResource(r5);
     }
-    return (StructureDefinition) new org.hl7.fhir.model.core.formats.JsonParser(context).parse(bs.toByteArray());
+    return (StructureDefinition) new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(bs.toByteArray());
   }
 
 }

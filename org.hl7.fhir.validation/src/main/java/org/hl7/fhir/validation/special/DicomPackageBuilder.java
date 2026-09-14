@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.CodeSystem;
@@ -21,7 +22,7 @@ import org.hl7.fhir.model.core.Identifier;
 import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.r5.utils.NPMPackageGenerator;
 import org.hl7.fhir.r5.utils.NPMPackageGenerator.Category;
-import org.hl7.fhir.services.context.SimpleModelContext;
+
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -73,9 +74,9 @@ public class DicomPackageBuilder {
     
     NPMPackageGenerator gen = new NPMPackageGenerator(fn, buildPackage());
     int i = 2;
-    gen.addFile(Category.RESOURCE, "CodeSystem-"+cs.getId()+".json", new JsonParser(new SimpleModelContext()).setOutputStyle(OutputStyle.NORMAL).composeBytes(cs));
+    gen.addFile(Category.RESOURCE, "CodeSystem-"+cs.getId()+".json", new JsonParser(ModelContext.fullCoreContext()).setOutputStyle(OutputStyle.NORMAL).composeBytes(cs));
     ValueSet vs = buildAllValueSet();
-    gen.addFile(Category.RESOURCE, "ValueSet-"+vs.getId()+".json", new JsonParser(new SimpleModelContext()).setOutputStyle(OutputStyle.NORMAL).composeBytes(vs));
+    gen.addFile(Category.RESOURCE, "ValueSet-"+vs.getId()+".json", new JsonParser(ModelContext.fullCoreContext()).setOutputStyle(OutputStyle.NORMAL).composeBytes(vs));
     Set<String> ids = new HashSet<>();
     ids.add(vs.getId());
     
@@ -89,7 +90,7 @@ public class DicomPackageBuilder {
         throw new Error("Duplicate Id (note Ids cut off at 64 char): "+vs.getId());
       }
       ids.add(vs.getId());
-      gen.addFile(Category.RESOURCE, "ValueSet-"+vs.getId()+".json", new JsonParser(new SimpleModelContext()).setOutputStyle(OutputStyle.NORMAL).composeBytes(vs));
+      gen.addFile(Category.RESOURCE, "ValueSet-"+vs.getId()+".json", new JsonParser(ModelContext.fullCoreContext()).setOutputStyle(OutputStyle.NORMAL).composeBytes(vs));
       i++;
     }
     gen.finish();

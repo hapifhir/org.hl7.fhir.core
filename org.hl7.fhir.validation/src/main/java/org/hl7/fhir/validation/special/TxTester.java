@@ -19,6 +19,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.client.ClientHeaders;
 import org.hl7.fhir.model.client.EFhirClientException;
 import org.hl7.fhir.model.client.ITerminologyClientN;
@@ -38,7 +39,7 @@ import org.hl7.fhir.model.testing.TestReport.TestReportStatusValueSet;
 import org.hl7.fhir.model.testing.TestReport.TestReportTestComponent;
 import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
-import org.hl7.fhir.services.context.SimpleModelContext;
+
 import org.hl7.fhir.services.testing.CompareUtilities;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
 import org.hl7.fhir.utilities.*;
@@ -148,7 +149,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
   private final List<String> warnings = new CopyOnWriteArrayList<>();
   private CapabilityStatement capabilityStatement;
   private TerminologyCapabilities terminologyCapabilities;
-  private IModelContext context = new SimpleModelContext();
+  private IModelContext context = ModelContext.fullCoreContext();
 
   /**
    * The FHIR version the server under test reports, discovered in connectToServer(). This is
@@ -180,7 +181,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
   }
 
   public static void main(String[] args) throws Exception {
-    new TxTester(new InternalTxLoader(new SimpleModelContext(), args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null, null).execute(new HashSet<>(), args[3]);
+    new TxTester(new InternalTxLoader(ModelContext.fullCoreContext(), args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null, null).execute(new HashSet<>(), args[3]);
   }
 
   public void addLoader(ITxTesterLoader loader) {
@@ -866,7 +867,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
   }
 
   private String metadata(String id, List<Resource> setup, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, Set<String> modes) throws IOException, URISyntaxException {
-    CapabilityStatement cs = capabilityStatement.copy(Base.COPY_DATA);
+    CapabilityStatement cs = capabilityStatement.copy(Base.COPY_NOTHING);
     TxTesterScrubbers.scrubCapStmt(cs, tight);
     TxTesterSorters.sortCapStmt(cs);
     String csj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(cs);
@@ -884,7 +885,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
   }
 
   private String termcaps(String id, List<Resource> setup, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, Set<String> modes) throws IOException, URISyntaxException {
-    TerminologyCapabilities cs = terminologyCapabilities.copy(Base.COPY_DATA);
+    TerminologyCapabilities cs = terminologyCapabilities.copy(Base.COPY_NOTHING);
     TxTesterScrubbers.scrubTermCaps(cs, tight);
     TxTesterSorters.sortTermCaps(cs);
     String csj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(cs);

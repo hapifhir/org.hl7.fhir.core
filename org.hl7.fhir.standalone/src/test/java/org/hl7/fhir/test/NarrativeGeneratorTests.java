@@ -58,11 +58,11 @@ class NarrativeGeneratorTests {
   }
 
   private void process(InputStream stream) throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
-    XmlParser p = new XmlParser(TestingUtilities.getSharedWorkerContext());
+    XmlParser p = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext());
     DomainResource r = (DomainResource) p.parse(stream);
     new RendererFactory().factory(r, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), r));
     FileOutputStream s = ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "gen.xml"));
-    new XmlParser(TestingUtilities.getSharedWorkerContext()).compose(s, r, true);
+    new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).compose(s, r, true);
     s.close();
   }
   

@@ -509,7 +509,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   public ValueSet expandValueset(ValueSet source, Parameters expParams) {
     recordUse();
-    Parameters p = expParams == null ? new Parameters() : expParams.copy(Base.COPY_DATA);
+    Parameters p = expParams == null ? new Parameters() : expParams.copy(Base.COPY_NOTHING);
     if (source != null) {
       p.addParameter().setName("valueSet").setResource(source);
     }

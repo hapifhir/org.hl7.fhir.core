@@ -364,7 +364,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           // are those of the earliest coding that validated. vcc still accumulates
           // every valid coding below; only foundCoding is locked to the first.
           if (foundCoding == null) {
-            foundCoding = c.copy(Base.COPY_DATA);
+            foundCoding = c.copy(Base.COPY_NOTHING);
             foundCoding.setVersion(info.getFoundVersion());
           }
           if (!options.isMembershipOnly()) {

@@ -140,7 +140,7 @@ public class NarrativeGenerationTests {
 
     @Override
     public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
-      return new org.hl7.fhir.model.core.formats.XmlParser(TestingUtilities.getSharedWorkerContext()).parseType(xml, type);
+      return new org.hl7.fhir.model.core.formats.XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parseType(xml, type);
     }
     @Override
     public Base parseType(org.hl7.fhir.services.elementmodel.Element e) throws FHIRFormatError, IOException, FHIRException {
@@ -254,9 +254,9 @@ public class NarrativeGenerationTests {
     XhtmlNode.setCheckParaGeneral(true);
     if (test.getRegister() != null) {
       if (test.getRegister().endsWith(".json")) {
-        context.getManager().cacheResource(new JsonParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getRegister())));
       } else {
-        context.getManager().cacheResource(new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getRegister())));
       }
     }
     RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
@@ -286,11 +286,11 @@ public class NarrativeGenerationTests {
     
     Resource source;
     if (TestingUtilities.findTestResource("r6", "narrative", test.getId() + ".json")) {
-      source = (Resource) new JsonParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getId() + ".json"));
+      source = (Resource) new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getId() + ".json"));
     } else  if (TestingUtilities.findTestResource("r6", "narrative", test.getId() + ".fml")) {
       source = (Resource) new StructureMapTools(context).parse(FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getId() + ".fml")), "source");
     } else {
-      source = (Resource) new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getId() + ".xml"));
+      source = (Resource) new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getId() + ".xml"));
     }
     
     XhtmlNode x = new RendererFactory().factory(source, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), source));
