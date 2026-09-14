@@ -3164,7 +3164,7 @@ public class ProfileUtilities {
     if (!res.hasValue() && source.hasValue()) {
       res.setValue(source.getValue());
     } else if (res.hasValue() && source.hasValue() && res.getValue().startsWith("...")) {
-      res.setValue(Utilities.appendDerivedTextToBase(res.getValue(), source.getValue()));
+      res.setValue(Utilities.appendDerivedTextToBase(source.getValue(), res.getValue()));
     }
     for (Extension sourceExtension : source.getExtension()) {
       Extension matchingExtension = findMatchingExtension(res, sourceExtension);
