@@ -871,7 +871,16 @@ public class ExtensionDefinitions {
   public static final String EXT_CM_NOMAP_COMMENT = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment";
     public static boolean isModifier(String url) {
     return Utilities.existsInList(url, "http://hl7.org/fhir/StructureDefinition/artifact-status", "http://hl7.org/fhir/StructureDefinition/capabilitystatement-prohibited", "http://hl7.org/fhir/StructureDefinition/contactpoint-multiple-use", "http://hl7.org/fhir/StructureDefinition/perform-condition", "http://hl7.org/fhir/StructureDefinition/request-doNotPerform");
+
+
   }
+  public static final String EXT_MIN_QUANTITY = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-minQuantity";
+  public static final String EXT_MAX_QUANTITY = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-maxQuantity";
+  public static final String EXT_VALIDATOR_VERSION = "http://hl7.org/fhir/tools/StructureDefinition/validator-version";
+  public static final String EXT_FHIRVERSION_SPECIFIC_USE = "http://hl7.org/fhir/StructureDefinition/version-specific-use";
+  public static final String EXT_FHIRVERSION_SPECIFIC_USE_START = "startFhirVersion";
+  public static final String EXT_FHIRVERSION_SPECIFIC_USE_END = "endFhirVersion";
+  public static final String EXT_CONTENT_PROFILE = "http://hl7.org/fhir/StructureDefinition/contentReferenceProfile";
 
 
 

@@ -5267,3 +5267,158 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA20271-5",
+  "display" : "Medications"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 1
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "a."
+        }],
+        "code" : "LA20271-5",
+        "display" : "Medications"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 2
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "b."
+        }],
+        "code" : "LA20335-8",
+        "display" : "Biological products"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 3
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "c."
+        }],
+        "code" : "LA20336-6",
+        "display" : "Nutritional products"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 4
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "d."
+        }],
+        "code" : "LA20337-4",
+        "display" : "Expressed human breast milk"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 5
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "e."
+        }],
+        "code" : "LA20338-2",
+        "display" : "Medical gases (e.g., oxygen, nitrogen, nitrous oxide)"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 6
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "f."
+        }],
+        "code" : "LA20339-0",
+        "display" : "Contrast media"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 7
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "g."
+        }],
+        "code" : "LA20340-8",
+        "display" : "Radiopharmaceuticals"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 8
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "h."
+        }],
+        "code" : "LA20341-6",
+        "display" : "Patient food (not suspected in drug-food interactions)"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 9
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "i."
+        }],
+        "code" : "LA20342-4",
+        "display" : "Drug-drug, drug-food, or adverse drug reaction as a result of a prescription and/or administration of a drug and/or food prior to admission"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 10
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "j."
+        }],
+        "code" : "LA20343-2",
+        "display" : "Other substance: PLEASE SPECIFY"
+      }]
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Medications",
+  "code" : "LA20271-5",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms unknown-valueset: Analysing undefined for validation purposes\n1ms unknown-valueset: Parameters: disp-lang=en-US, generate-narrative, default-to-latest\n1ms unknown-valueset: Prepare include[0]: \"(http://loinc.org)(LA20271-5,LA20335-8,LA20336-6,LA20337-4,LA20338-2,LA20339-0,LA20340-8,LA20341-6,LA20342-4,LA20343-2)\"\n5ms unknown-valueset: CodeSystem found: \"http://loinc.org|2.82\"\n5ms unknown-valueset: Validate \"[http://loinc.org#LA20271-5 (\"Medications\")]\"\n6ms unknown-valueset: Check \"http://loinc.org#LA20271-5\"\n9ms unknown-valueset: CodeSystem found: http://loinc.org|2.82 for http://loinc.org\n9ms unknown-valueset: check code in (http://loinc.org)(LA20271-5,LA20335-8,LA20336-6,LA20337-4,LA20338-2,LA20339-0,LA20340-8,LA20341-6,LA20342-4,LA20343-2) at Coding\n9ms unknown-valueset: Code \"LA20271-5\" found in http://loinc.org|2.82",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

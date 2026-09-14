@@ -7,20 +7,20 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.Questionnaire;
-import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
-import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
-import org.hl7.fhir.r5.model.QuestionnaireResponse;
-import org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent;
-import org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus;
-import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
+import org.hl7.fhir.model.core.IntegerType;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.model.core.Questionnaire;
+import org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemComponent;
+import org.hl7.fhir.model.core.QuestionnaireResponse;
+import org.hl7.fhir.model.core.QuestionnaireResponse.QuestionnaireResponseItemComponent;
+import org.hl7.fhir.model.core.QuestionnaireResponse.QuestionnaireResponseStatus;
+import org.hl7.fhir.model.core.StringType;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.context.SimpleModelContext;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
@@ -47,11 +47,11 @@ class QuestionnaireResponseOccursTests {
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", "n/a", FhirPublication.R5, "5.0.0");
     ve.getContext().cacheResource(questionnaire());
 
-    byte[] qr = new JsonParser().composeBytes(response());
+    byte[] qr = new JsonParser(new SimpleModelContext()).composeBytes(response());
     OperationOutcome op = ve.validate(FhirFormat.JSON, new ByteArrayInputStream(qr), null);
 
     List<String> reported = new ArrayList<>();
-    for (OperationOutcomeIssueComponent issue : op.getIssue()) {
+    for (OperationOutcomeIssueComponent issue : op.getIssueList()) {
       String msg = issue.getDetails().getText();
       if (msg != null && (msg.contains("minimum number of answers") || msg.contains("maximum number of answers"))) {
         reported.add(location(issue) + ": " + msg);
@@ -65,7 +65,7 @@ class QuestionnaireResponseOccursTests {
   }
 
   private String location(OperationOutcomeIssueComponent issue) {
-    return issue.getExpression().isEmpty() ? "??" : issue.getExpression().get(0).asStringValue();
+    return issue.getExpressionList().isEmpty() ? "??" : issue.getExpressionList().get(0).asStringValue();
   }
 
   private Questionnaire questionnaire() {
@@ -83,7 +83,7 @@ class QuestionnaireResponseOccursTests {
   private QuestionnaireItemComponent item(String linkId, String occursExtension, int value) {
     QuestionnaireItemComponent i = new QuestionnaireItemComponent();
     i.setLinkId(linkId);
-    i.setType(QuestionnaireItemType.STRING);
+    i.setType(Questionnaire.QuestionnaireItemTypeUsable.STRING);
     i.setRepeats(true);
     i.addExtension(occursExtension, new IntegerType(value));
     return i;

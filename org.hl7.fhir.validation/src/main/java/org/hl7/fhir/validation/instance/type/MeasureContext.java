@@ -3,13 +3,13 @@ package org.hl7.fhir.validation.instance.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.Attachment;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.Library;
-import org.hl7.fhir.r5.model.Measure;
-import org.hl7.fhir.r5.model.Measure.MeasureGroupComponent;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.core.Attachment;
+import org.hl7.fhir.model.core.CodeableConcept;
+import org.hl7.fhir.model.core.DataType;
+import org.hl7.fhir.model.core.Library;
+import org.hl7.fhir.model.core.Measure;
+import org.hl7.fhir.model.core.Measure.MeasureGroupComponent;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 
 public class MeasureContext {
@@ -32,7 +32,7 @@ public class MeasureContext {
 
   public void seeLibrary(Library l) {
     libs.add(l);    
-    for (Attachment att : l.getContent()) {
+    for (Attachment att : l.getContentList()) {
       if ("application/elm+xml".equals(att.getContentType())) {
         try {
           l.setUserData(USER_DATA_ELM, XMLUtil.parseToDom(att.getData(), true));
@@ -44,7 +44,7 @@ public class MeasureContext {
   }
 
   public List<MeasureGroupComponent> groups() {
-    return measure.getGroup();
+    return measure.getGroupList();
   }
 
   public Measure measure() {
@@ -54,9 +54,7 @@ public class MeasureContext {
   public String reportType() {
     return report.getChildValue("type");
   }
-  public String scoring() {
-    return measure.getScoring().getCodingFirstRep().getCode();
-  }
+
   public String scoring(MeasureGroupComponent group) {
     if (group.hasScoring()) {
       return group.getScoring().getCodingFirstRep().getCode();
@@ -67,7 +65,7 @@ public class MeasureContext {
         return ((CodeableConcept) v).getCodingFirstRep().getCode();
       }
     }
-    return scoring();
+    return null;
   }
   public List<Library> libraries() {
     return libs;

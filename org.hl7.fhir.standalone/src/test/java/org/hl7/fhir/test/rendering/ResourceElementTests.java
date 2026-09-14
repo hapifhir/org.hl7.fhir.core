@@ -2,10 +2,10 @@ package org.hl7.fhir.test.rendering;
 
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.context.ContextUtilities;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.Manager;
-import org.hl7.fhir.services.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.services.elementmodel.ValidatedFragment;
 import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.formats.XmlParser;

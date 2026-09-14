@@ -2,11 +2,11 @@ package org.hl7.fhir.test;
 
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.services.elementmodel.*;
-import org.hl7.fhir.services.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.standalone.testing.TestingUtilities;

@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.convertors.loaders.loaderR5.R4BToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderRN.R4BToRNLoader;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.context.SimpleModelContext;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -22,8 +24,9 @@ public class InstanceGenerator {
   public static void main(String[] args) throws FHIRException, IOException {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage npm = pcm.loadPackage("hl7.fhir.r4.core");
-    SimpleWorkerContext context = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm);
-    context.loadFromPackage(pcm.loadPackage("hl7.fhir.us.core#6.0.0"), new R4BToR5Loader(null, null, null));
+    SimpleModelContext simpleModelContext = new SimpleModelContext();
+    SimpleWorkerContext context = new SimpleWorkerContext.SimpleWorkerContextBuilder(simpleModelContext.getContextInformation()).withAllowLoadingDuplicates(true).fromPackage(npm);
+    context.loadFromPackage(pcm.loadPackage("hl7.fhir.us.core#6.0.0"), new R4BToRNLoader(simpleModelContext, null, null, null));
     var gen = new InstanceGenerator(context);
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, args[0]);
     FhirFormat fmt = FhirFormat.valueOf(args[1].toUpperCase());

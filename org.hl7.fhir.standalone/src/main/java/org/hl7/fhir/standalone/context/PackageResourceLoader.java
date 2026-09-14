@@ -4,7 +4,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.core.CanonicalResource;
 import org.hl7.fhir.model.core.PackageInformation;
 import org.hl7.fhir.model.core.formats.JsonParser;
-import org.hl7.fhir.services.context.IContextResourceLoader;
+import org.hl7.fhir.services.context.IContextResourceLoaderN;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.utilities.R6Hacker;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -18,10 +18,10 @@ public class PackageResourceLoader extends CanonicalResourceManager.CanonicalRes
 
   private final String filename;
   private IWorkerContext context;
-  private final IContextResourceLoader loader;
+  private final IContextResourceLoaderN loader;
   private final PackageInformation packageInformation;
 
-  public PackageResourceLoader(NpmPackage.PackageResourceInformation pri, IContextResourceLoader loader, PackageInformation pi, IWorkerContext context) {
+  public PackageResourceLoader(NpmPackage.PackageResourceInformation pri, IContextResourceLoaderN loader, PackageInformation pi, IWorkerContext context) {
     super(pri.getResourceType(), pri.getId(), loader == null ? pri.getUrl() : loader.patchUrl(pri.getUrl(), pri.getResourceType()), pri.getVersion(), pri.getSupplements(), pri.getDerivation(), pri.getContent());
     this.filename = pri.getFilename();
     this.loader = loader;

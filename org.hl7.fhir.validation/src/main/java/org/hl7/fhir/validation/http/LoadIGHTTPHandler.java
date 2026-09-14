@@ -1,12 +1,13 @@
 package org.hl7.fhir.validation.http;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.validation.IgLoader;
 
@@ -20,7 +21,8 @@ import java.io.IOException;
 class LoadIGHTTPHandler extends BaseHTTPHandler implements HttpHandler {
   private final FhirValidatorHttpService fhirValidatorHttpService;
 
-  public LoadIGHTTPHandler(FhirValidatorHttpService fhirValidatorHttpService) {
+  public LoadIGHTTPHandler(IModelContext context, FhirValidatorHttpService fhirValidatorHttpService) {
+    super(context);
     this.fhirValidatorHttpService = fhirValidatorHttpService;
   }
 

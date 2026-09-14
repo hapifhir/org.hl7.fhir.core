@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.model.core.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.services.terminology.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
 
 import java.util.ArrayList;
 import java.util.Collections;

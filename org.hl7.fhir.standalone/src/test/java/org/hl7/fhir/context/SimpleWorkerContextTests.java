@@ -2,10 +2,10 @@ package org.hl7.fhir.context;
 
 import org.hl7.fhir.model.core.CapabilityStatement;
 import org.hl7.fhir.model.core.TerminologyCapabilities;
-import org.hl7.fhir.services.terminology.ITerminologyClient;
+import org.hl7.fhir.services.context.SimpleModelContext;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
-import org.hl7.fhir.standalone.terminology.client.TerminologyClientR6;
+import org.hl7.fhir.model.client.TerminologyClientR6;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.junit.jupiter.api.Assertions;
@@ -43,7 +43,7 @@ public class SimpleWorkerContextTests {
   ToolingClientLogger txLog;
 
   @Mock
-  ITerminologyClient terminologyClient;
+  org.hl7.fhir.model.client.ITerminologyClientN terminologyClient;
 
   public static final TerminologyCapabilities terminologyCapabilities = new TerminologyCapabilities();
   static {  terminologyCapabilities.getExpansion().setParameterList(Arrays.asList());}
@@ -113,14 +113,14 @@ public class SimpleWorkerContextTests {
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("zipSlipData")
   public void testLoadFromClasspathZipSlip(String classPath, String expectedMessage) {
-    RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {new SimpleWorkerContext.SimpleWorkerContextBuilder().fromClassPath(classPath);});
+    RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {new SimpleWorkerContext.SimpleWorkerContextBuilder(new SimpleModelContext().getContextInformation()).fromClassPath(classPath);});
     assertNotNull(thrown);
     assertEquals(expectedMessage, thrown.getMessage());
   }
 
   @Test
   public void testLoadFromClasspathBinaries() throws IOException {
-   SimpleWorkerContext simpleWorkerContext = new SimpleWorkerContext.SimpleWorkerContextBuilder().fromClassPath("zip-slip/zip-normal.zip");
+   SimpleWorkerContext simpleWorkerContext = new SimpleWorkerContext.SimpleWorkerContextBuilder(new SimpleModelContext().getContextInformation()).fromClassPath("zip-slip/zip-normal.zip");
 
     final String testPath = "zip-normal/depth1/test.txt";
     assertTrue(simpleWorkerContext.getBinaryKeysAsSet().contains(testPath));

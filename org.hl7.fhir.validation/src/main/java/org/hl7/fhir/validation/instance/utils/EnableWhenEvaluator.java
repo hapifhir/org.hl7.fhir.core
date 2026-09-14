@@ -37,24 +37,24 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.fhirpath.ExpressionNode;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FHIRConstant;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.Expression;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.Factory;
-import org.hl7.fhir.r5.model.PrimitiveType;
-import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Questionnaire.EnableWhenBehavior;
-import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
-import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemEnableWhenComponent;
-import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemOperator;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.services.fhirpath.ExpressionNode;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.fhirpath.FHIRPathUtilityClasses.FHIRConstant;
+import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.core.BooleanType;
+import org.hl7.fhir.model.core.Coding;
+import org.hl7.fhir.model.core.DataType;
+import org.hl7.fhir.model.core.Expression;
+import org.hl7.fhir.model.core.Extension;
+import org.hl7.fhir.model.Factory;
+import org.hl7.fhir.model.core.PrimitiveType;
+import org.hl7.fhir.model.core.Quantity;
+import org.hl7.fhir.model.core.Questionnaire.EnableWhenBehavior;
+import org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemComponent;
+import org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemEnableWhenComponent;
+import org.hl7.fhir.model.core.Questionnaire.QuestionnaireItemOperator;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.instance.type.QuestionnaireValidator.QuestionnaireWithContext;
 
@@ -245,7 +245,7 @@ public class EnableWhenEvaluator {
     }
 
     List<EnableWhenResult> evaluationResults = new ArrayList<>();
-    for (QuestionnaireItemEnableWhenComponent enableCondition : qitem.getEnableWhen()) {
+    for (QuestionnaireItemEnableWhenComponent enableCondition : qitem.getEnableWhenList()) {
       evaluationResults.add(evaluateCondition(enableCondition, qitem, qstack));
     }
     return EnableWhenOutcome.evaluated(checkConditionResults(evaluationResults, qitem));
@@ -453,7 +453,7 @@ public class EnableWhenEvaluator {
     if (b instanceof PrimitiveType) {
       ((PrimitiveType<?>) b).setValueAsString(element.primitiveValue());
     } else {
-      for (Element child : element.getChildren()) {
+      for (Element child : element.getChildList()) {
         if (!isExtension(child)) {
           b.setProperty(child.getName(), convertToType(child));
         }
@@ -594,7 +594,7 @@ public class EnableWhenEvaluator {
   private List<Element> extractAnswer(Element item) {
     return item.getChildrenByName(ANSWER_ELEMENT)
       .stream()
-      .flatMap(c -> c.getChildren().stream())
+      .flatMap(c -> c.getChildList().stream())
       .collect(Collectors.toList());
   }
 

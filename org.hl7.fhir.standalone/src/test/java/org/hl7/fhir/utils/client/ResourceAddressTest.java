@@ -2,7 +2,7 @@ package org.hl7.fhir.utils.client;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.hl7.fhir.standalone.terminology.client.ResourceAddress;
+import org.hl7.fhir.model.client.ResourceAddress;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

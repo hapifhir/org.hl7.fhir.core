@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.comparison;
+package org.hl7.fhir.services.comparison;
 
 import java.io.IOException;
 import java.util.ArrayList;

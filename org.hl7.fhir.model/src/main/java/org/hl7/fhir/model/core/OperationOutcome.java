@@ -149,6 +149,9 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             default: return "?";
           }
         }
+      public boolean isHigherThan(IssueSeverity other) {
+        return this.ordinal() < other.ordinal();
+      }
     }
 
   public static class IssueSeverityEnumFactory implements EnumFactory<IssueSeverity> {
@@ -1376,6 +1379,15 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
       }
     }
   }
+      public String getText() {
+        if (getDetails().hasText()) {
+          return getDetails().getText();
+        }
+        if (hasDiagnostics()) {
+          return getDiagnostics();
+        }
+        return null;
+      }
 
 // end addition
   }

@@ -24,7 +24,7 @@ import org.hl7.fhir.services.renderers.utils.RenderingContext.ResourceRendererMo
 import org.hl7.fhir.services.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
 import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.services.testing.CompareUtilities;
-import org.hl7.fhir.standalone.terminology.client.TerminologyClientR6;
+import org.hl7.fhir.model.client.TerminologyClientR6;
 import org.hl7.fhir.standalone.testing.TestPackageLoader;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;

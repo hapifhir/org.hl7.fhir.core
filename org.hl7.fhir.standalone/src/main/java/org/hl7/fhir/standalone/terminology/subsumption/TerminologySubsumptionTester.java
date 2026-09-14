@@ -26,7 +26,7 @@ import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyOperationContext;
 import org.hl7.fhir.services.terminology.OpIssueCode;
-import org.hl7.fhir.services.terminology.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
 import org.hl7.fhir.standalone.terminology.utilities.ValueSetProcessBase;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;

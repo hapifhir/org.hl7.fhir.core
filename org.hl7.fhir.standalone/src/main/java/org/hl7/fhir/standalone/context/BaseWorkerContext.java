@@ -19,7 +19,7 @@ import org.hl7.fhir.services.context.*;
 import org.hl7.fhir.services.context.ContextUtilities;
 import org.hl7.fhir.services.terminology.*;
 import org.hl7.fhir.services.utilities.CoreVersionPinner;
-import org.hl7.fhir.services.utilities.OperationOutcomeUtilities;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.standalone.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.services.context.ILoggingService.LogCategory;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
@@ -42,7 +42,7 @@ import org.hl7.fhir.services.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.services.renderers.OperationOutcomeRenderer;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientManager;
-import org.hl7.fhir.standalone.terminology.client.TerminologyClientR6;
+import org.hl7.fhir.model.client.TerminologyClientR6;
 import org.hl7.fhir.standalone.terminology.expansion.ValueSetExpander;
 import org.hl7.fhir.standalone.terminology.subsumption.SubsumptionException;
 import org.hl7.fhir.standalone.terminology.subsumption.SubsumptionOutcome;
@@ -64,6 +64,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.standalone.terminology.utilities.ValueSetProcessBase;
+import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.client.EFhirClientException;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -112,7 +114,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private long definitionsVersion = 0;
   private Map<String, Object> analyses = new HashMap();
 
-  @Getter private ModelContextInformation contextInformation = new ModelContextInformation();
+  @Getter protected ModelContextInformation contextInformation = new ModelContextInformation();
   public interface IByteProvider {
     byte[] bytes() throws IOException;
   }
@@ -928,8 +930,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       TerminologyServiceErrorClass errorClass = TerminologyServiceErrorClass.UNKNOWN;
       if (e instanceof EFhirClientException) {
         EFhirClientException fhirClientException = (EFhirClientException) e;
-        if (fhirClientException.hasServerError()) {
-          errorClass = OperationOutcomeUtilities.getTerminologyErrorClass(((EFhirClientException) e).getServerError());
+        if (fhirClientException.hasServerErrors()) {
+          errorClass = OperationOutcomeUtilities.getTerminologyErrorClass(((EFhirClientException) e).getServerErrors().get(0));
         }
       }
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), errorClass, true);

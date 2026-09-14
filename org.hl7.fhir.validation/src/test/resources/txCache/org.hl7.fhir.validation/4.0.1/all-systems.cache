@@ -7423,3 +7423,47 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2148-5",
+  "display" : "Mexican"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.40.2.48.1", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "2148-5",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.2",
+  "severity" : "error",
+  "error" : "Cannot process resource http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.877|20240606 at \"exclude[0].filter\" due to the presence of the modifier extension vsacOpModifier",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "business-rule"
+      }],
+      "text" : "Cannot process resource http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.877|20240606 at \"exclude[0].filter\" due to the presence of the modifier extension vsacOpModifier"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

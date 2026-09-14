@@ -17,8 +17,9 @@ import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r4.model.Property;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.services.context.SimpleModelContext;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -39,7 +40,7 @@ public class Scanner {
   private void execute(String... paths) throws IOException {
     System.out.println("loading");
     NpmPackage npm = new FilesystemPackageCacheManager.Builder().build().loadPackage("hl7.fhir.r5.core");
-    ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm);
+    ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder(new SimpleModelContext().getContextInformation()).withAllowLoadingDuplicates(true).fromPackage(npm);
     for (String p : paths) {
       execute(new File(p));
     }

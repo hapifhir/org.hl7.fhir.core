@@ -23,10 +23,10 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.services.context.SimpleModelContext;
 import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -237,9 +237,9 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     String contents = txtests.load(filename);
     try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
       if (filename.contains(".json")) {
-        return new JsonParser().parse(inputStream);
+        return new JsonParser(new SimpleModelContext()).parse(inputStream);
       } else {
-        return new XmlParser().parse(inputStream);
+        return new XmlParser(new SimpleModelContext()).parse(inputStream);
       }
     }
   }

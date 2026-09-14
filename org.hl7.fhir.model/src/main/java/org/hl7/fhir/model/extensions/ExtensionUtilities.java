@@ -1550,13 +1550,6 @@ public class ExtensionUtilities {
     String rule = element.getExtensionString(ExtensionDefinitions.CANONICAL_RESOLUTION_METHOD);
     return rule == null ? VersionResolutionRules.defaultRule() : VersionResolutionRules.fromCode(rule);
   }
-//  public static VersionResolutionRules getVersionResolutionRules(org.hl7.fhir.model.elementmodel.Element element) {
-//    if (element == null) {
-//      return VersionResolutionRules.defaultRule();
-//    }
-//    String rule = element.getExtensionString(ExtensionDefinitions.CANONICAL_RESOLUTION_METHOD);
-//    return rule == null ? VersionResolutionRules.defaultRule() : VersionResolutionRules.fromCode(rule);
-//  }
 
   public static VersionResolutionRules getVersionResolutionRulesBase(Base base) {
     if (base == null) {

@@ -6,6 +6,7 @@ import org.hl7.fhir.model.utilities.ValueSetUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
 
 
 /**

@@ -6,22 +6,25 @@ import java.util.List;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.ExpansionOptions;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.ElementDefinition.ConstraintSeverity;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
-import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.terminologies.TerminologyUtilities;
-import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.DefinitionNavigator;
+import org.hl7.fhir.model.Property;
+import org.hl7.fhir.model.client.ITerminologyClientN;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.ElementDefinition.ConstraintSeverity;
+import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionConstraintComponent;
+import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
+import org.hl7.fhir.model.core.ElementDefinition.SlicingRules;
+import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.model.core.Enumerations.BindingStrength;
+import org.hl7.fhir.model.utilities.TerminologyUtilities;
+import org.hl7.fhir.model.utilities.ValueSetUtilities;
+import org.hl7.fhir.services.terminology.ExpansionOptions;
+import org.hl7.fhir.services.terminology.ITerminologyClientManager;
+import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
+import org.hl7.fhir.standalone.terminology.client.TerminologyClientManager;
+import org.hl7.fhir.services.utilities.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -298,7 +301,7 @@ public class CompliesWithChecker {
     if (!ed.hasType() || !ed.getTypeFirstRep().hasProfile()) {
       return null;
     } else {
-      return new CanonicalType(ed.getTypeFirstRep().getProfile().get(0).asStringValue());
+      return new CanonicalType(ed.getTypeFirstRep().getProfileList().get(0).asStringValue());
     }
   }
 
@@ -372,10 +375,10 @@ public class CompliesWithChecker {
       return false;
     } else {
       // every discriminator that the authority has, the child has to have. The order of discriminators doesn't matter
-      for (ElementDefinitionSlicingDiscriminatorComponent ad : authority.getSlicing().getDiscriminator()) {
+      for (ElementDefinitionSlicingDiscriminatorComponent ad : authority.getSlicing().getDiscriminatorList()) {
         discriminators.add(ad);
         ElementDefinitionSlicingDiscriminatorComponent cd = null;
-        for (ElementDefinitionSlicingDiscriminatorComponent t : claimee.getSlicing().getDiscriminator()) {
+        for (ElementDefinitionSlicingDiscriminatorComponent t : claimee.getSlicing().getDiscriminatorList()) {
           if (t.getType() == ad.getType() && t.getPath().equals(ad.getPath())) {
             cd = t;
           }
@@ -419,8 +422,8 @@ public class CompliesWithChecker {
       }
     }
     if (!"Resource.id".equals(claimee.getBase().getPath())) { // tricky... there's definitional problems with Resource.id for legacy reasons, but whatever issues there are aren't due to anything the profile did
-      for (TypeRefComponent tr : claimee.getType()) {
-        if (!hasType(tr, authority.getType())) {
+      for (TypeRefComponent tr : claimee.getTypeList()) {
+        if (!hasType(tr, authority.getTypeList())) {
           messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_BAD_TYPE, tr.getWorkingCode()), IssueSeverity.ERROR));        
         }
         doInner = false;
@@ -447,15 +450,15 @@ public class CompliesWithChecker {
       }
     }
     if (authority.hasValueAlternatives()) {
-      for (CanonicalType ct : claimee.getValueAlternatives()) {
-        if (!hasCanonical(ct, authority.getValueAlternatives())) {
+      for (CanonicalType ct : claimee.getValueAlternativesList()) {
+        if (!hasCanonical(ct, authority.getValueAlternativesList())) {
           messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_BAD_ELEMENT, "valueAlternatives", ct.toString()), IssueSeverity.ERROR));
         }
       }
     }
-    for (ElementDefinitionConstraintComponent cc : authority.getConstraint()) {
+    for (ElementDefinitionConstraintComponent cc : authority.getConstraintList()) {
       if (cc.getSeverity() == ConstraintSeverity.ERROR) {
-        if (!hasConstraint(cc, claimee.getConstraint())) {
+        if (!hasConstraint(cc, claimee.getConstraintList())) {
           messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_MISSING_ELEMENT, "constraint", cc.getExpression()), IssueSeverity.ERROR));
         }        
       }
@@ -483,8 +486,8 @@ public class CompliesWithChecker {
           if (sameValueSets(cVS, aVS)) {
             // no message
           } else {
-            TerminologyClientManager terminologyClientManager = context.getTerminologyClientManager();
-            ITerminologyClient client = terminologyClientManager != null ? terminologyClientManager.getMasterClient() : null;
+            ITerminologyClientManager terminologyClientManager = context.getTerminologyClientManager();
+            ITerminologyClientN client = terminologyClientManager != null ? terminologyClientManager.getMasterClient() : null;
             if (client != null && TerminologyUtilities.supportsOperation(client.getCapabilitiesStatement(), "ValueSet", "$compare")) {
               Parameters params = client.getValueSetRelationship(cVS, aVS);
               throw new Error("not done yet");
@@ -518,7 +521,7 @@ public class CompliesWithChecker {
   }
 
   private boolean isBindableType(ElementDefinition c) {
-    for (TypeRefComponent t : c.getType()) {
+    for (TypeRefComponent t : c.getTypeList()) {
       if (isBindableType(t.getWorkingCode())) {
         return true;
       }
@@ -543,11 +546,11 @@ public class CompliesWithChecker {
   }
 
   private boolean typesIdentical(ElementDefinition c, ElementDefinition a) {
-    if (c.getType().size() != a.getType().size()) {
+    if (c.getTypeList().size() != a.getTypeList().size()) {
       return false;
     }
-    for (TypeRefComponent ct : c.getType()) {
-      TypeRefComponent at = getType(a.getType(), ct.getCode());
+    for (TypeRefComponent ct : c.getTypeList()) {
+      TypeRefComponent at = getType(a.getTypeList(), ct.getCode());
       if (at == null || !at.equalsDeep(ct)) {
         return false;
       }
@@ -652,9 +655,9 @@ public class CompliesWithChecker {
         return false;
       }
     } 
-    for (Property p : authority.children()) {
+    for (Property p : authority.getChildren()) {
       if (p.hasValues()) {
-        Property pt = test.getNamedProperty(p.getName());
+        Property pt = test.getNamedProperty(p.getName(), true);
         if (p.getValues().size() > pt.getValues().size()) {
           return false;
         } else {

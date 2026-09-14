@@ -14,7 +14,6 @@ import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.utilities.EOperationOutcome;
 import org.hl7.fhir.model.utilities.Tuple;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
-import org.hl7.fhir.r5.comparison.CodeSystemComparer;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;

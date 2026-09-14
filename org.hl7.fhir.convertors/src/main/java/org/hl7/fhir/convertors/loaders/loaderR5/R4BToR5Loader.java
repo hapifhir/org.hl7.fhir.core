@@ -26,7 +26,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory5;
 import org.hl7.fhir.utilities.Utilities;
 
 public class R4BToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
@@ -122,7 +122,7 @@ public class R4BToR5Loader extends BaseLoaderR5 implements IContextResourceLoade
 
 
   @Override
-  public ITerminologyClientFactory txFactory() {
+  public ITerminologyClientFactory5 txFactory() {
     return new TerminologyClientFactory(versionString());
   }
 

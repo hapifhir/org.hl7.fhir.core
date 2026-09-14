@@ -14,27 +14,29 @@ import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.context.ContextResourceLoaderFactory;
 import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
+import org.hl7.fhir.convertors.loaders.loaderRN.NullLoaderKnowledgeProviderRN;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.IContextResourceLoader;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext.SimpleWorkerContextBuilder;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.CompartmentDefinition;
-import org.hl7.fhir.r5.model.ConceptMap;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.OperationDefinition;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.SearchParameter;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.services.context.IContextResourceLoaderN;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.context.SimpleModelContext;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext.SimpleWorkerContextBuilder;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.CapabilityStatement;
+import org.hl7.fhir.model.core.CodeSystem;
+import org.hl7.fhir.model.core.CompartmentDefinition;
+import org.hl7.fhir.model.core.ConceptMap;
+import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.Enumerations.BindingStrength;
+import org.hl7.fhir.model.core.OperationDefinition;
+import org.hl7.fhir.model.core.Parameters;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.SearchParameter;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.model.core.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -92,12 +94,13 @@ public class LogicalModelCodeGenerator {
     
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     log.info("Load R5");
-    NpmPackage npm = pcm.loadPackage("hl7.fhir.r5.core");    
-    IContextResourceLoader loader = ContextResourceLoaderFactory.makeLoader(npm.fhirVersion(), new NullLoaderKnowledgeProviderR5());
-    SimpleWorkerContext context = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm, loader, true);
-    String version = context.getVersion();
+    NpmPackage npm = pcm.loadPackage("hl7.fhir.r5.core");
+    SimpleModelContext simpleModelContext = new SimpleModelContext();
+    IContextResourceLoaderN loader = ContextResourceLoaderFactory.makeLoaderN(simpleModelContext, npm.fhirVersion(), new NullLoaderKnowledgeProviderRN());
+    SimpleWorkerContext context = new SimpleWorkerContextBuilder(simpleModelContext.getContextInformation()).withAllowLoadingDuplicates(true).fromPackage(npm, loader, true);
+    String version = context.getFHIRVersion();
     NpmPackage coreNpm = npm;
-    IContextResourceLoader coreLoader = loader;
+    IContextResourceLoaderN coreLoader = loader;
     context.connectToTSServer(new TerminologyClientFactory(FhirPublication.R5), "https://tx.fhir.org",
         "CodeGenerator", null, true);
     context.setExpansionParameters(new Parameters());
@@ -108,7 +111,7 @@ public class LogicalModelCodeGenerator {
       log.info("Load "+pid);
       npm = pcm.loadPackage(pid);    
       pids.add(npm.name()+"#"+npm.version());
-      loader = ContextResourceLoaderFactory.makeLoader(npm.fhirVersion(), new NullLoaderKnowledgeProviderR5());
+      loader = ContextResourceLoaderFactory.makeLoaderN(simpleModelContext, npm.fhirVersion(), new NullLoaderKnowledgeProviderRN());
       load(master, npm, loader); 
       context.loadFromPackage(npm, loader);
     }
@@ -271,7 +274,7 @@ public class LogicalModelCodeGenerator {
     return packageName.substring(packageName.lastIndexOf(".")+1);
   }
 
-  private Definitions load(Definitions res, NpmPackage npm, IContextResourceLoader loader) throws IOException {    
+  private Definitions load(Definitions res, NpmPackage npm, IContextResourceLoaderN loader) throws IOException {
     for (String t : npm.listResources("CodeSystem")) {
       res.getCodeSystems().see((CodeSystem) load(npm, t, loader), null);
     }
@@ -299,7 +302,7 @@ public class LogicalModelCodeGenerator {
     return res;
   }
 
-  public static Resource load(NpmPackage npm, String t, IContextResourceLoader loader) {
+  public static Resource load(NpmPackage npm, String t, IContextResourceLoaderN loader) {
     try {
       return loader.loadResource(npm.loadResource(t), true);
     } catch (Exception e) {
@@ -316,7 +319,7 @@ public class LogicalModelCodeGenerator {
         continue;
       }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.PRIMITIVETYPE && !sd.getName().contains(".")) {
-        for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
           if (ed.hasBinding() && ed.getBinding().hasValueSet() && ed.getBinding().getStrength() == BindingStrength.REQUIRED) {
             ValueSet vs = defns.getValuesets().get(ed.getBinding().getValueSet());
             if (vs != null) {

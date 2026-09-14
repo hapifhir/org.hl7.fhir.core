@@ -6,7 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.*;
 

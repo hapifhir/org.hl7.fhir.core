@@ -15,16 +15,17 @@ import java.util.stream.Stream;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.formats.IParser;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureMap;
-import org.hl7.fhir.r5.test.utils.CompareUtilities;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.context.ContextUtilities;
+import org.hl7.fhir.services.fml.StructureMapTools;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.model.utilities.formats.IParser;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.fml.StructureMap;
+import org.hl7.fhir.services.testing.CompareUtilities;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -97,9 +98,9 @@ public class StructureMappingTests {
   private StructureMap loadStructureMap(String map) throws Exception {
     String stringMap = TestingUtilities.loadTestResource("r5", "structure-mapping", map);
     if (map.endsWith(".json")) {
-      return (StructureMap) new org.hl7.fhir.r5.formats.JsonParser().parse(stringMap);
+      return (StructureMap) new org.hl7.fhir.model.core.formats.JsonParser(context).parse(stringMap);
     } else if (map.endsWith(".map")) {
-      return new StructureMapUtilities(context).parse(stringMap, map);
+      return new StructureMapTools(context).parse(stringMap, map);
     }
     throw new Exception("File extension for StuctureMap is not a recognized type (should be one of: '.map', '.json')");
   }
@@ -119,12 +120,12 @@ public class StructureMappingTests {
     try {
       StructureMap r = loadStructureMap(map);
       context.cacheResource(r);
-      org.hl7.fhir.r5.elementmodel.Element element = validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl());
+      org.hl7.fhir.services.elementmodel.Element element = validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl());
       s = new ByteArrayOutputStream();
       if (output.endsWith(".json"))
-        new org.hl7.fhir.r5.elementmodel.JsonParser(context).compose(element, s, IParser.OutputStyle.PRETTY, null);
+        new org.hl7.fhir.services.elementmodel.JsonParser(context).compose(element, s, OutputStyle.PRETTY, null);
       else
-        new org.hl7.fhir.r5.elementmodel.XmlParser(context).compose(element, s, IParser.OutputStyle.PRETTY, null);
+        new org.hl7.fhir.services.elementmodel.XmlParser(context).compose(element, s, OutputStyle.PRETTY, null);
       context.dropResource(r);
     } catch (Exception e) {
       e.printStackTrace();
@@ -154,10 +155,10 @@ public class StructureMappingTests {
     		+ "}";
     StructureMap r = null;   
 	try {
-	  r = new StructureMapUtilities(context).parse(map, "cda2qr");
+	  r = new StructureMapTools(context).parse(map, "cda2qr");
 	  context.cacheResource(r);	      
 	  ByteProvider byteSource = ByteProvider.forBytes("{}".getBytes());
-	  org.hl7.fhir.r5.elementmodel.Element element = validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl());
+	  org.hl7.fhir.services.elementmodel.Element element = validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl());
 	  Assertions.assertNotNull(element);
 	} finally {
 	  context.dropResource(r);

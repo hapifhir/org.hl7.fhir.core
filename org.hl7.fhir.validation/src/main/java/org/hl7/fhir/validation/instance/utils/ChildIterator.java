@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 
@@ -59,7 +59,7 @@ public class ChildIterator {
     }
 
     public Element element() {
-        return parent.getChildren().get(cursor);
+        return parent.getChildList().get(cursor);
     }
 
     public String name() {

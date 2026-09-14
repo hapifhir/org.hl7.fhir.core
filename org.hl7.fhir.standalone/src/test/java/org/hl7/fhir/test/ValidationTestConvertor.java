@@ -1,10 +1,11 @@
 package org.hl7.fhir.test;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.context.SimpleModelContext;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.Manager;
-import org.hl7.fhir.services.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -22,7 +23,7 @@ public class ValidationTestConvertor {
    * @throws FileNotFoundException
    */
   public static void main(String[] args) throws FileNotFoundException, IOException, FHIRException {
-    SimpleWorkerContext context = new SimpleWorkerContext.SimpleWorkerContextBuilder().fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
+    SimpleWorkerContext context = new SimpleWorkerContext.SimpleWorkerContextBuilder(new SimpleModelContext().getContextInformation()).fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
     for (File f : ManagedFileAccess.file("C:\\work\\org.hl7.fhir\\build\\tests\\validation-examples").listFiles()) {
       if (f.getAbsolutePath().endsWith(".xml")) {
         File t = ManagedFileAccess.file(FileUtilities.changeFileExt(f.getAbsolutePath(), ".ttl"));

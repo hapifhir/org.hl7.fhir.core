@@ -8,63 +8,48 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionFilterComponent;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
-import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
-import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent;
-import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent;
-import org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent;
-import org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent;
-import org.hl7.fhir.r5.model.Enumerations.CommonLanguages;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent;
-import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
+import org.hl7.fhir.model.core.CanonicalType;
+import org.hl7.fhir.model.core.CapabilityStatement;
+import org.hl7.fhir.model.core.Extension;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.model.core.Parameters;
+import org.hl7.fhir.model.core.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
+import org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent;
+import org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionFilterComponent;
+import org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.StringType;
+import org.hl7.fhir.model.core.TerminologyCapabilities;
+import org.hl7.fhir.model.core.ValueSet;
+import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestComponent;
+import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestResourceComponent;
+import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestResourceOperationComponent;
+import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent;
+import org.hl7.fhir.model.core.CapabilityStatement.ResourceInteractionComponent;
+import org.hl7.fhir.model.core.CapabilityStatement.SystemInteractionComponent;
+import org.hl7.fhir.model.core.CodeType;
+import org.hl7.fhir.model.core.CodeableConcept;
+import org.hl7.fhir.model.core.Coding;
+import org.hl7.fhir.model.core.Enumeration;
+import org.hl7.fhir.model.core.ValueSet.ConceptPropertyComponent;
+import org.hl7.fhir.model.core.ValueSet.ConceptReferenceDesignationComponent;
+import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionParameterComponent;
+import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionPropertyComponent;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.validation.special.TxTesterSorters.CodeTypeSorter;
 
 public class TxTesterSorters {
 
-
-  public static void main(String[] args) throws JsonException, IOException {
-    Resource r = new JsonParser().parse(new FileInputStream(args[0]));
-    switch (r.fhirType()) {
-    case "Parameters" :
-      sortParameters((Parameters) r);
-      break;
-    default:
-      return;
-    }
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(args[0]), r);
-  }
-
   public static void sortParameters(Parameters po) {
-    Collections.sort(po.getParameter(), new TxTesterSorters.ParameterSorter());
-    for (ParametersParameterComponent p : po.getParameter()) {
+    Collections.sort(po.getParameterList(), new TxTesterSorters.ParameterSorter());
+    for (ParametersParameterComponent p : po.getParameterList()) {
       if (p.getResource() != null && p.getResource() instanceof OperationOutcome) {
-        Collections.sort(((OperationOutcome) p.getResource()).getIssue(), new TxTesterSorters.OperationIssueSorter());
+        Collections.sort(((OperationOutcome) p.getResource()).getIssueList(), new TxTesterSorters.OperationIssueSorter());
       }
       if (p.getResource() != null && p.getResource() instanceof Parameters) {
         sortParameters(((Parameters) p.getResource()));
@@ -88,28 +73,28 @@ public class TxTesterSorters {
 
 
   public static void sortOperationOutcome(OperationOutcome oo) {
-    Collections.sort(oo.getIssue(), new TxTesterSorters.OperationIssueSorter());
+    Collections.sort(oo.getIssueList(), new TxTesterSorters.OperationIssueSorter());
   }
   
   public static void sortValueSet(ValueSet vs) {
     Collections.sort(vs.getExtension(), new TxTesterSorters.ExtensionSorter());
     if (vs.hasExpansion()) {
-      Collections.sort(vs.getExpansion().getParameter(), new TxTesterSorters.ExpParameterSorter());
-      Collections.sort(vs.getExpansion().getProperty(), new TxTesterSorters.PropertyDefnSorter());
-      Collections.sort(vs.getExpansion().getExtension(), new TxTesterSorters.ExtensionSorter());
-      Collections.sort(vs.getExpansion().getContains(), new TxTesterSorters.ContainsSorter());
-      for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContains()) {
+      Collections.sort(vs.getExpansion().getParameterList(), new TxTesterSorters.ExpParameterSorter());
+      Collections.sort(vs.getExpansion().getPropertyList(), new TxTesterSorters.PropertyDefnSorter());
+      Collections.sort(vs.getExpansion().getExtensionList(), new TxTesterSorters.ExtensionSorter());
+      Collections.sort(vs.getExpansion().getContainsList(), new TxTesterSorters.ContainsSorter());
+      for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContainsList()) {
         sortContainsFeatures(cc);
       }
     }
   }
 
   public static void sortContainsFeatures(ValueSetExpansionContainsComponent cc) {
-    Collections.sort(cc.getContains(), new TxTesterSorters.ContainsSorter());
-    Collections.sort(cc.getExtension(), new TxTesterSorters.ExtensionSorter());
-    Collections.sort(cc.getDesignation(), new TxTesterSorters.DesignationSorter());
-    Collections.sort(cc.getProperty(), new TxTesterSorters.PropertyValueSorter());
-    for (ValueSetExpansionContainsComponent c : cc.getContains()) {
+    Collections.sort(cc.getContainsList(), new TxTesterSorters.ContainsSorter());
+    Collections.sort(cc.getExtensionList(), new TxTesterSorters.ExtensionSorter());
+    Collections.sort(cc.getDesignationList(), new TxTesterSorters.DesignationSorter());
+    Collections.sort(cc.getPropertyList(), new TxTesterSorters.PropertyValueSorter());
+    for (ValueSetExpansionContainsComponent c : cc.getContainsList()) {
       sortContainsFeatures(c);
     }
   }
@@ -126,8 +111,8 @@ public class TxTesterSorters {
         s2 = o2.hasCode() ? o2.getCode().toCode() : "";
         ret = s1.compareTo(s2);
         if (ret == 0) {
-          s1 = o1.hasExpression() ? o1.getExpression().get(0).primitiveValue() : "";
-          s2 = o2.hasExpression() ? o2.getExpression().get(0).primitiveValue() : "";
+          s1 = o1.hasExpression() ? o1.getExpressionList().get(0).primitiveValue() : "";
+          s2 = o2.hasExpression() ? o2.getExpressionList().get(0).primitiveValue() : "";
           ret = s1.compareTo(s2);
           if (ret == 0) {
             s1 = o1.getDetails().hasText() ? o1.getDetails().getText() : "";
@@ -228,8 +213,8 @@ public class TxTesterSorters {
     public int compare(ParametersParameterComponent o1, ParametersParameterComponent o2) {
       Collections.sort(o1.getExtension(), new ExtensionSorter());
       Collections.sort(o2.getExtension(), new ExtensionSorter());
-      Collections.sort(o1.getPart(), new ParameterSorter());
-      Collections.sort(o2.getPart(), new ParameterSorter());
+      Collections.sort(o1.getPartList(), new ParameterSorter());
+      Collections.sort(o2.getPartList(), new ParameterSorter());
       if (o1.getName().equals(o2.getName()) && o1.getName().equals("property")) {
         String code1 = o1.getPart("code").getValue().primitiveValue().toLowerCase();
         String code2 = o2.getPart("code").getValue().primitiveValue().toLowerCase();
@@ -260,31 +245,31 @@ public class TxTesterSorters {
   }
 
   public static void sortCapStmt(CapabilityStatement cs) {
-    Collections.sort(cs.getFormat(), new CodeTypeSorter());
-    Collections.sort(cs.getInstantiates(), new CanonicalTypeSorter());
-    Collections.sort(cs.getImports(), new CanonicalTypeSorter());
-    Collections.sort(cs.getAcceptLanguage(), new CodeTypeSorter());
-    Collections.sort(cs.getRest(), new CSRestSorter());
-    for (CapabilityStatementRestComponent r : cs.getRest()) {
+    Collections.sort(cs.getFormatList(), new CodeTypeSorter());
+    Collections.sort(cs.getInstantiatesList(), new CanonicalTypeSorter());
+    Collections.sort(cs.getImportsList(), new CanonicalTypeSorter());
+    Collections.sort(cs.getAcceptLanguageList(), new CodeTypeSorter());
+    Collections.sort(cs.getRestList(), new CSRestSorter());
+    for (CapabilityStatementRestComponent r : cs.getRestList()) {
       if (r.hasSecurity()) {
-        for (CodeableConcept cc : r.getSecurity().getService()) {
-          Collections.sort(cc.getCoding(), new CodingSorter());
+        for (CodeableConcept cc : r.getSecurity().getServiceList()) {
+          Collections.sort(cc.getCodingList(), new CodingSorter());
         }
-        Collections.sort(r.getSecurity().getService(), new CodeableConceptSorter());        
+        Collections.sort(r.getSecurity().getServiceList(), new CodeableConceptSorter());
       }
-      Collections.sort(r.getResource(), new CSRestResourceSorter());
-      for (CapabilityStatementRestResourceComponent res : r.getResource()) {
-        Collections.sort(res.getSupportedProfile(), new CanonicalTypeSorter());
-        Collections.sort(res.getInteraction(), new CSRestResourceInteractionSorter());
-        Collections.sort(res.getSearchInclude(), new StringTypeSorter());
-        Collections.sort(res.getSearchRevInclude(), new StringTypeSorter());
-        Collections.sort(res.getSearchParam(), new SearchParamSorter());
-        Collections.sort(res.getOperation(), new CSRestResourceOperationSorter());
+      Collections.sort(r.getResourceList(), new CSRestResourceSorter());
+      for (CapabilityStatementRestResourceComponent res : r.getResourceList()) {
+        Collections.sort(res.getSupportedProfileList(), new CanonicalTypeSorter());
+        Collections.sort(res.getInteractionList(), new CSRestResourceInteractionSorter());
+        Collections.sort(res.getSearchIncludeList(), new StringTypeSorter());
+        Collections.sort(res.getSearchRevIncludeList(), new StringTypeSorter());
+        Collections.sort(res.getSearchParamList(), new SearchParamSorter());
+        Collections.sort(res.getOperationList(), new CSRestResourceOperationSorter());
       }
-      Collections.sort(r.getInteraction(), new CSRestInteractionSorter());
-      Collections.sort(r.getSearchParam(), new SearchParamSorter());
-      Collections.sort(r.getOperation(), new CSRestResourceOperationSorter());
-      Collections.sort(r.getCompartment(), new CanonicalTypeSorter());
+      Collections.sort(r.getInteractionList(), new CSRestInteractionSorter());
+      Collections.sort(r.getSearchParamList(), new SearchParamSorter());
+      Collections.sort(r.getOperationList(), new CSRestResourceOperationSorter());
+      Collections.sort(r.getCompartmentList(), new CanonicalTypeSorter());
     }
   }
   
@@ -402,23 +387,23 @@ public class TxTesterSorters {
   }
 
   public static void sortTermCaps(TerminologyCapabilities tc) {
-    Collections.sort(tc.getCodeSystem(), new TCCodeSystemSorter());
-    for (TerminologyCapabilitiesCodeSystemComponent t : tc.getCodeSystem()) {
-      Collections.sort(t.getVersion(), new TCCodeSystemVersionSorter());
-      for (TerminologyCapabilitiesCodeSystemVersionComponent v : t.getVersion()) {
-        Collections.sort(v.getLanguage(), new LanguageSorter());
-        Collections.sort(v.getProperty(), new CodeTypeSorter());
-        Collections.sort(v.getFilter(), new TCCodeSystemVersionFilterSorter());
+    Collections.sort(tc.getCodeSystemList(), new TCCodeSystemSorter());
+    for (TerminologyCapabilitiesCodeSystemComponent t : tc.getCodeSystemList()) {
+      Collections.sort(t.getVersionList(), new TCCodeSystemVersionSorter());
+      for (TerminologyCapabilitiesCodeSystemVersionComponent v : t.getVersionList()) {
+        Collections.sort(v.getLanguageList(), new LanguageSorter());
+        Collections.sort(v.getPropertyList(), new CodeTypeSorter());
+        Collections.sort(v.getFilterList(), new TCCodeSystemVersionFilterSorter());
       }
     }
-    Collections.sort(tc.getExpansion().getParameter(), new TCExpansionParameterSorter());
+    Collections.sort(tc.getExpansion().getParameterList(), new TCExpansionParameterSorter());
   }
 
 
-  public static class LanguageSorter implements Comparator<Enumeration<CommonLanguages>> {
+  public static class LanguageSorter implements Comparator<CodeType> {
 
     @Override
-    public int compare(Enumeration<CommonLanguages> o1, Enumeration<CommonLanguages> o2) {
+    public int compare(CodeType o1, CodeType o2) {
       return o1.asStringValue().compareTo(o2.asStringValue());
     }
 
@@ -436,7 +421,7 @@ public class TxTesterSorters {
 
     @Override
     public int compare(TerminologyCapabilitiesCodeSystemVersionComponent o1, TerminologyCapabilitiesCodeSystemVersionComponent o2) {
-      return o1.getCode() == null || o2.getCode() == null ? 0 : o1.getCode().compareTo(o2.getCode());
+      return o1.getValue() == null || o2.getValue() == null ? 0 : o1.getValue().compareTo(o2.getValue());
     }
 
   }

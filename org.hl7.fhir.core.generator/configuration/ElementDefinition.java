@@ -164,3 +164,22 @@
     return getTypeList().size() == 1 && "Extension".equals(getTypeFirstRep().getCode()) &&
       getTypeFirstRep().getProfileList().size() == 1;
   }
+
+
+  public List<String> typeNameList() {
+    List<String> res = new ArrayList<>();
+    for (TypeRefComponent tr : getType()) {
+      if (tr.hasCode())
+        res.add(tr.getWorkingCode());
+    }
+    return res;
+  }
+
+  public TypeRefComponent getByType(String code) {
+    for (TypeRefComponent tr : getTypeList()) {
+      if (tr.getWorkingCode().equals(code)) {
+        return tr;
+      }
+    }
+    return null;
+  }

@@ -6,6 +6,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
@@ -882,6 +883,21 @@ public interface IWorkerContext extends IModelContext {
   public TimeTracker clock();
 
   //endregion
+
+  /**
+   * Get a validator that can check whether a resource is valid
+   *
+   * this is deprecated because there's lots of properties to set on the validator;
+   * the functions using this need to be changed to use the validator directly
+   *
+   * @return a prepared generator
+   * @throws FHIRException
+   * @
+   */
+  @Deprecated
+  public IResourceValidator newValidator() throws FHIRException;
+
+  ITerminologyClientManager getTerminologyClientManager();
 
   @Deprecated
   public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();

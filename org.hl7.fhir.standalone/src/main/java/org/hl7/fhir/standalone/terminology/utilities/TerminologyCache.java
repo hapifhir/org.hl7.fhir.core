@@ -56,6 +56,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
 
 /**
  * This implements a two level cache. 

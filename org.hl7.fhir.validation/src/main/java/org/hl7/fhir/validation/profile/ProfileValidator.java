@@ -36,16 +36,17 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
-import org.hl7.fhir.r5.utils.validation.ValidatorSession;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionConstraintComponent;
+import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.services.validation.ValidatorSession;
+import org.hl7.fhir.services.xver.XVerExtensionManager;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -103,17 +104,17 @@ public class ProfileValidator extends BaseValidator {
     warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, profile.getUrl(), profile.hasVersion(), s+" SHOULD state their own version");
     
     // extensions must be defined
-    for (ElementDefinition ec : profile.getDifferential().getElement())
+    for (ElementDefinition ec : profile.getDifferential().getElementList())
       checkExtensions(profile, errors, "differential", ec);
     rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, profile.getId(), profile.hasSnapshot(), "missing Snapshot at "+profile.getName()+"."+profile.getName());
-    for (ElementDefinition ec : profile.getSnapshot().getElement()) 
+    for (ElementDefinition ec : profile.getSnapshot().getElementList()) 
       checkExtensions(profile, errors, "snapshot", ec);
 
     if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, profile.getId(), profile.hasSnapshot(), "A snapshot is required")) {
       Hashtable<String, ElementDefinition> snapshotElements = new Hashtable<String, ElementDefinition>();
-      for (ElementDefinition ed : profile.getSnapshot().getElement()) {
+      for (ElementDefinition ed : profile.getSnapshot().getElementList()) {
         snapshotElements.put(ed.getId(), ed);
-        for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+        for (ElementDefinitionConstraintComponent inv : ed.getConstraintList()) {
           if (forBuild) {
             if (!inExemptList(inv.getKey())) {
 //              if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, profile.getId()+"::"+ed.getPath()+"::"+inv.getKey(), inv.hasExpression(), "The invariant has no FHIR Path expression ("+inv.getXpath()+")")) {
@@ -128,7 +129,7 @@ public class ProfileValidator extends BaseValidator {
         }
       }
       if (snapshotElements != null) {
-        for (ElementDefinition diffElement : profile.getDifferential().getElement()) {
+        for (ElementDefinition diffElement : profile.getDifferential().getElementList()) {
           if (diffElement == null)
             throw new Error("Diff Element is null - this is not an expected thing");
           ElementDefinition snapElement = snapshotElements.get(diffElement.getId());
@@ -137,7 +138,7 @@ public class ProfileValidator extends BaseValidator {
             boolean noMustSupport = !checkMustSupport || !snapElement.getPath().contains(".") || snapElement.hasSlicing() || snapElement.hasPattern() || snapElement.hasFixed() || snapElement.getMax().equals("0") || snapElement.hasMustSupport();
             warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, diffElement.getId(), noMustSupport, "Elements included in the differential that aren't prohibited and don't have fixed values or patterns should declare mustSupport: " + snapElement.getPath());
             if (checkAggregation) {
-              for (TypeRefComponent type : snapElement.getType()) {
+              for (TypeRefComponent type : snapElement.getTypeList()) {
                 if ("http://hl7.org/fhir/Reference".equals(type.getWorkingCode()) || "http://hl7.org/fhir/canonical".equals(type.getWorkingCode())) {
                   warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, diffElement.getId(), type.hasAggregation(), "Elements with type Reference or canonical should declare aggregation");
                 }
@@ -156,9 +157,9 @@ public class ProfileValidator extends BaseValidator {
   }
 
   private boolean checkExtensions(StructureDefinition profile, List<ValidationMessage> errors, String kind, ElementDefinition ec) {
-    if (!ec.getType().isEmpty() && "Extension".equals(ec.getType().get(0).getWorkingCode()) && ec.getType().get(0).hasProfile()) {
-      String url = ec.getType().get(0).getProfile().get(0).getValue();
-      StructureDefinition defn = context.fetchResource(StructureDefinition.class, url, ExtensionUtilities.getVersionResolutionRules(ec.getType().get(0).getProfile().get(0)));
+    if (!ec.getTypeList().isEmpty() && "Extension".equals(ec.getTypeList().get(0).getWorkingCode()) && ec.getTypeList().get(0).hasProfile()) {
+      String url = ec.getTypeList().get(0).getProfileList().get(0).getValue();
+      StructureDefinition defn = context.fetchResource(StructureDefinition.class, url, ExtensionUtilities.getVersionResolutionRules(ec.getTypeList().get(0).getProfileList().get(0)));
       if (defn == null) {
         defn = getXverExt(profile, errors, url);
       }

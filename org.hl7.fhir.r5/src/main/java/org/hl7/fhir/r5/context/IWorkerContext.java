@@ -10,6 +10,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
@@ -984,11 +985,7 @@ public interface IWorkerContext {
 
   //endregion
 
-  /**
-  * Note: This currently returns an implementation, not an interface, and will likely be changed at a later time.
-  * @return null if you do not want to use TerminologyClientManager (recommended)
-  */
-  TerminologyClientManager getTerminologyClientManager();
+  ITerminologyClientManager getTerminologyClientManager();
 
   @Deprecated
   public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();

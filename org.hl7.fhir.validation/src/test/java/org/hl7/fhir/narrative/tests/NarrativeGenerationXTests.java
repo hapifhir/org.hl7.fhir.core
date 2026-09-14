@@ -1,33 +1,35 @@
 package org.hl7.fhir.narrative.tests;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.hl7.fhir.convertors.txClient.TerminologyClientNR5;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.profile.BindingResolution;
-import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.elementmodel.ParserBase;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.renderers.RendererFactory;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
-import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
-import org.hl7.fhir.r5.test.utils.CompareUtilities;
-import org.hl7.fhir.r5.test.utils.TestPackageLoader;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.conformance.profile.BindingResolution;
+import org.hl7.fhir.services.conformance.profile.ProfileKnowledgeProvider;
+import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.services.elementmodel.ParserBase;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.ValueSet;
+import org.hl7.fhir.services.renderers.RendererFactory;
+import org.hl7.fhir.services.renderers.utils.RenderingContext;
+import org.hl7.fhir.services.renderers.utils.RenderingContext.GenerationRules;
+import org.hl7.fhir.services.renderers.utils.RenderingContext.ITypeParser;
+import org.hl7.fhir.services.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.services.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
+import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClient5R5;
+import org.hl7.fhir.services.testing.CompareUtilities;
+import org.hl7.fhir.standalone.testing.TestPackageLoader;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
@@ -95,7 +97,7 @@ public class NarrativeGenerationXTests {
     }
 
     @Override
-    public BindingResolution resolveBinding(StructureDefinition def, String url, String path, org.hl7.fhir.r5.model.Element ctxt) throws FHIRException {
+    public BindingResolution resolveBinding(StructureDefinition def, String url, String path, org.hl7.fhir.model.core.Element ctxt) throws FHIRException {
       ValueSet vs = context.fetchResource(ValueSet.class, url, ExtensionUtilities.getVersionResolutionRules(ctxt));
       if (vs != null) {
         if (vs.hasWebPath()) {
@@ -141,12 +143,18 @@ public class NarrativeGenerationXTests {
 
   public static class TestTypeParser implements ITypeParser {
 
+    private final IWorkerContext context;
+
+    public TestTypeParser(IWorkerContext context) {
+      this.context = context;
+    }
+
     @Override
     public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
-      return new XmlParser().parseType(xml, type);
+      return new XmlParser(context).parseType(xml, type);
     }
     @Override
-    public Base parseType(org.hl7.fhir.r5.elementmodel.Element e) throws FHIRFormatError, IOException, FHIRException {
+    public Base parseType(org.hl7.fhir.services.elementmodel.Element e) throws FHIRFormatError, IOException, FHIRException {
       throw new NotImplementedException(); 
     }
   }
@@ -244,18 +252,18 @@ public class NarrativeGenerationXTests {
   @BeforeAll
   public static void setUp() throws IOException {
     var simpleContext = TestingUtilities.getSharedWorkerContext("5.0.0");
-    simpleContext.connectToTSServer(new TerminologyClientR5.TerminologyClientR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
+    simpleContext.connectToTSServer(new TerminologyClientNR5.TerminologyClientNR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
     contexts.put("5.0", simpleContext);
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");
-    simpleContext.getManager().loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" )));
+    simpleContext.getManager().loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" ), simpleContext));
 
     simpleContext = TestingUtilities.getSharedWorkerContext("4.0.1");
-    simpleContext.connectToTSServer(new TerminologyClientR5.TerminologyClientR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
+    simpleContext.connectToTSServer(new TerminologyClientNR5.TerminologyClientNR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
     contexts.put("4.0", simpleContext);
     pcm = new FilesystemPackageCacheManager.Builder().build();
     ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");
-    simpleContext.getManager().loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" )));
+    simpleContext.getManager().loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" ), simpleContext));
   }
 
   @ParameterizedTest(name = "{index}: file {0}")
@@ -266,9 +274,9 @@ public class NarrativeGenerationXTests {
     IWorkerContext context = contexts.get(version);
     if (test.getRegister() != null) {
       if (test.getRegister().endsWith(".json")) {
-        context.getManager().cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("rX", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new JsonParser(context).parse(TestingUtilities.loadTestResourceStream("rX", "narrative", test.getRegister())));
       } else {
-        context.getManager().cacheResource(new XmlParser().parse(TestingUtilities.loadTestResourceStream("rX", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new XmlParser(context).parse(TestingUtilities.loadTestResourceStream("rX", "narrative", test.getRegister())));
       }
     }
     RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
@@ -277,7 +285,7 @@ public class NarrativeGenerationXTests {
     rc.setTrackNarrativeSource(test.isTrack());
     rc.setDefinitionsTarget("test.html");
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
-    rc.setParser(new TestTypeParser());
+    rc.setParser(new TestTypeParser(context));
     
     // getting timezones correct (well, at least consistent, so tests pass on any computer)
     rc.setLocale(new java.util.Locale("en", "AU"));
@@ -299,16 +307,16 @@ public class NarrativeGenerationXTests {
     ParserBase p = null;
     InputStream s = null;
     if (TestingUtilities.findTestResource("rX", "narrative", test.getId() + ".json")) {
-      p = Manager.makeParser(context, Manager.FhirFormat.JSON);
+      p = Manager.makeParser(context, FhirFormat.JSON);
       s = TestingUtilities.loadTestResourceStream("rX", "narrative", test.getId() + ".json");
     } else  if (TestingUtilities.findTestResource("rX", "narrative", test.getId() + ".fml")) {
-      p = Manager.makeParser(context, Manager.FhirFormat.FML);
+      p = Manager.makeParser(context, FhirFormat.FML);
       s = TestingUtilities.loadTestResourceStream("rX", "narrative", test.getId() + ".fml");
     } else {
-      p = Manager.makeParser(context, Manager.FhirFormat.XML);
+      p = Manager.makeParser(context, FhirFormat.XML);
       s = TestingUtilities.loadTestResourceStream("rX", "narrative", test.getId() + ".xml");
     }
-    org.hl7.fhir.r5.elementmodel.Element source = p.parseSingle(s, null);
+    org.hl7.fhir.services.elementmodel.Element source = p.parseSingle(s, null);
     
     XhtmlNode x = new RendererFactory().factory(source.fhirType(), rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), source));
     String expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("rX", "narrative", "output", test.getId() + ".html"));
@@ -332,7 +340,7 @@ public class NarrativeGenerationXTests {
     
     //    
 //    if (test.isMeta()) {
-//      org.hl7.fhir.r5.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
+//      org.hl7.fhir.services.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML);
 //      x = RendererFactory.factory(source, rc).build(ResourceElement.forResource(rc.getContextUtilities(), rc.getProfileUtilities(), e));
 //
 //      expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + "-meta.html"));

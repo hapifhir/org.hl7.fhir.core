@@ -3,11 +3,11 @@ package org.hl7.fhir.standalone.terminology.client;
 import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.model.client.ITerminologyClientN;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.services.context.ILoggingService;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
-import org.hl7.fhir.services.terminology.ITerminologyClient;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.HTTPHeader;
@@ -71,7 +71,7 @@ public class TerminologyClientContext {
   @Getter
   private static boolean canUseCacheId;
 
-  private ITerminologyClient client;
+  private ITerminologyClientN client;
 
   private CapabilityStatement capabilitiesStatement;
   private TerminologyCapabilities txcaps;
@@ -109,7 +109,7 @@ public class TerminologyClientContext {
   private int holders = 1;
   private final ILoggingService logger;
 
-  public TerminologyClientContext(ITerminologyClient client, TerminologyCache txCache, boolean master, ILoggingService logger) throws IOException {
+  public TerminologyClientContext(ITerminologyClientN client, TerminologyCache txCache, boolean master, ILoggingService logger) throws IOException {
     super();
     this.client = client;
     this.txCache = txCache;
@@ -147,7 +147,7 @@ public class TerminologyClientContext {
     return master;
   }
 
-  public ITerminologyClient getClient() {
+  public ITerminologyClientN getClient() {
     return client;
   }
 
@@ -283,7 +283,7 @@ public class TerminologyClientContext {
       // R3/R4 clients convert it down before sending.
       Parameters body = new Parameters();
       body.addParameter("sealed", false);
-      Parameters res = client.cacheControl(ITerminologyClient.CacheControlMode.START_CACHE, body);
+      Parameters res = client.cacheControl(ITerminologyClientN.CacheControlMode.START_CACHE, body);
       String id = (res != null && res.hasParameter("cache-id")) ? res.getParameterValue("cache-id").primitiveValue() : null;
       if (id != null && !id.isEmpty()) {
         applyCacheIdHeader(id);
@@ -353,7 +353,7 @@ public class TerminologyClientContext {
     isShutdown = true;
     if (cacheId != null && cacheOwned) {
       try {
-        client.cacheControl(ITerminologyClient.CacheControlMode.END_CACHE, null);
+        client.cacheControl(ITerminologyClientN.CacheControlMode.END_CACHE, null);
       } catch (Exception e) {
         // best-effort release; ignore
       }

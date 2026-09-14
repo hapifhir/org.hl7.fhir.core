@@ -51,7 +51,7 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory5;
 
 public class R6ToR5Loader extends BaseLoaderR5 {
 
@@ -126,7 +126,7 @@ public class R6ToR5Loader extends BaseLoaderR5 {
   }
 
   @Override
-  public ITerminologyClientFactory txFactory() {
+  public ITerminologyClientFactory5 txFactory() {
     return new TerminologyClientFactory(versionString());
   }
 

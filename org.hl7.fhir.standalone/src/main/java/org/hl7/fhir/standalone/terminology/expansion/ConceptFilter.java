@@ -5,7 +5,7 @@ import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.model.core.OperationOutcome.IssueType;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
-import org.hl7.fhir.services.terminology.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
 import org.hl7.fhir.services.terminology.OpIssueCode;
 
 import java.util.List;

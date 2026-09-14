@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
-import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
+import org.hl7.fhir.services.validation.BundleValidationRule;
+import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
@@ -577,22 +578,22 @@ public class InstanceValidatorParameters {
   @JsonProperty("bundleValidationRules")
   @SerializedName("bundleValidationRules")
   private
-  List<org.hl7.fhir.r5.utils.validation.BundleValidationRule> bundleValidationRules = new ArrayList<>();
+  List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
 
   @SerializedName("bundleValidationRules")
   @JsonProperty("bundleValidationRules")
-  public List<org.hl7.fhir.r5.utils.validation.BundleValidationRule> getBundleValidationRules() {
+  public List<BundleValidationRule> getBundleValidationRules() {
     return bundleValidationRules;
   }
 
   @SerializedName("bundleValidationRules")
   @JsonProperty("bundleValidationRules")
-  public InstanceValidatorParameters setBundleValidationRules(List<org.hl7.fhir.r5.utils.validation.BundleValidationRule> bundleValidationRules) {
+  public InstanceValidatorParameters setBundleValidationRules(List<BundleValidationRule> bundleValidationRules) {
     this.bundleValidationRules = bundleValidationRules;
     return this;
   }
 
-  public InstanceValidatorParameters addBundleValidationRule(org.hl7.fhir.r5.utils.validation.BundleValidationRule bundleValidationRule) {
+  public InstanceValidatorParameters addBundleValidationRule(BundleValidationRule bundleValidationRule) {
     this.bundleValidationRules.add(bundleValidationRule);
     return this;
   }
