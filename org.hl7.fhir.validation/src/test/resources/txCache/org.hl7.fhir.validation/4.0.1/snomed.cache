@@ -7473,3 +7473,57 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "50631000087105",
+  "display" : "Screening colonoscopy requested following discussion with patientX"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  },
+  {
+    "name" : "system-version",
+    "valueCanonical" : "http://snomed.info/sct|http://snomed.info/sct/20611000087101"
+  }]
+}}####
+v: {
+  "display" : "Screening colonoscopy requested following discussion with patient",
+  "code" : "50631000087105",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/20611000087101/version/20260831",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Screening colonoscopy requested following discussion with patientX' for http://snomed.info/sct#50631000087105. Valid display is 'Screening colonoscopy requested following discussion with patient' (en-x-sctlang-90000000-00005090-07) (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "https://terminologystandardsservice.ca/tx/fhir",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://terminologystandardsservice.ca/tx/fhir"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Screening colonoscopy requested following discussion with patientX' for http://snomed.info/sct#50631000087105. Valid display is 'Screening colonoscopy requested following discussion with patient' (en-x-sctlang-90000000-00005090-07) (for the language(s) 'en-US')"
+    },
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

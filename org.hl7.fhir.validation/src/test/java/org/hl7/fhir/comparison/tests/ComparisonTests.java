@@ -125,7 +125,7 @@ public class ComparisonTests {
     
     if (context == null) {
       System.out.println("---- Load R5 ----------------------------------------------------------------");
-      context = TestingUtilities.getSharedWorkerContext();
+      context = TestingUtilities.getSharedWorkerContext("5.0.0");
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pcm.loadPackage("hl7.fhir.us.core#3.1.0");
       BaseWorkerContext bc = (BaseWorkerContext) context;

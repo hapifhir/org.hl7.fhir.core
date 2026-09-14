@@ -195,3 +195,31 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2184-0",
+  "display" : "Dominican"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Dominican",
+  "code" : "2184-0",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.2",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.2: Validate \"[urn:oid:2.16.840.1.113883.6.238#2184-0 (\"Dominican\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.2: Check \"urn:oid:2.16.840.1.113883.6.238#2184-0\"\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.2: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.2 for urn:oid:2.16.840.1.113883.6.238|1.2\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.2: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.2: Code \"2184-0\" found in urn:oid:2.16.840.1.113883.6.238|1.2",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
