@@ -3430,9 +3430,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   public void finishLoading(boolean genSnapshots) {
-    if (!VersionUtilities.isR6Ver(getFHIRVersion())) {
-      throw new Error("R6 only");
-    }
     if (!hasResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Base")) {
       cacheResource(ProfileUtilities.makeBaseDefinition(version));
     }
