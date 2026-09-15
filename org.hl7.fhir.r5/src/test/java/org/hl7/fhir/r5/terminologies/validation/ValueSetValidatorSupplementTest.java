@@ -1,19 +1,34 @@
 package org.hl7.fhir.r5.terminologies.validation;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+
+import java.util.Objects;
 
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 /**
  * Regression tests for #2540: ValueSetValidator.resolveCodeSystem dereferenced cs without a
@@ -85,5 +100,41 @@ class ValueSetValidatorSupplementTest {
     assertNotNull(assertDoesNotThrow(() -> new ValueSetValidator(ctxt,
         new TerminologyOperationContext(ctxt, options, "validation"), options, vs,
         new ValidationContextCarrier(), new Parameters(), null, null)));
+  }
+
+  /**
+   * A server-side code system can't have the supplement merged into it locally, so the membership
+   * check sent to the server has to carry it, rather than the supplement being reported as not found.
+   */
+  @Test
+  void requiredSupplementForServerSideSystemIsSentToServer() throws Exception {
+    ArgumentCaptor<ValueSet> sent = ArgumentCaptor.forClass(ValueSet.class);
+    ValueSetValidator vsv = validatorWithServer(SUPPLEMENT_URL, sent);
+    ValidationResult res = assertDoesNotThrow(() -> vsv.validateCode(new CodeableConcept(new Coding(SUPPLEMENTED_URL, "x", null))));
+    assertTrue(res.isOk());
+    ValueSet toServer = sent.getAllValues().stream().filter(Objects::nonNull).findFirst().orElseThrow();
+    assertEquals(SUPPLEMENT_URL, toServer.getExtensionString(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED));
+  }
+
+  /** A required supplement that can't be found is still an error when the code system is server-side. */
+  @Test
+  void missingSupplementForServerSideSystemIsStillReported() throws Exception {
+    ValueSetValidator vsv = validatorWithServer("http://example.org/fhir/CodeSystem/missing-supplement", ArgumentCaptor.forClass(ValueSet.class));
+    assertThrows(TerminologyServiceProtectionException.class, () -> vsv.validateCode(new CodeableConcept(new Coding(SUPPLEMENTED_URL, "x", null))));
+  }
+
+  private ValueSetValidator validatorWithServer(String supplement, ArgumentCaptor<ValueSet> sent) throws Exception {
+    SimpleWorkerContext ctxt = spy(contextWithSupplement());
+    doReturn(false).when(ctxt).isNoTerminologyServer();
+    doReturn(new ValidationResult(SUPPLEMENTED_URL, null, new ConceptDefinitionComponent("x"), "x"))
+        .when(ctxt).validateCode(any(ValidationOptions.class), any(Coding.class), sent.capture());
+    ValueSet vs = new ValueSet();
+    vs.setUrl("http://example.org/fhir/ValueSet/test3");
+    vs.setStatus(PublicationStatus.ACTIVE);
+    vs.addExtension(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new org.hl7.fhir.r5.model.CanonicalType(supplement));
+    vs.getCompose().addInclude().setSystem(SUPPLEMENTED_URL);
+    ValueSetValidator vsv = newValidator(ctxt, vs);
+    vsv.setThrowToServer(true);
+    return vsv;
   }
 }
