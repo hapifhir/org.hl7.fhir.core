@@ -16,7 +16,7 @@ import org.hl7.fhir.model.core.StringType;
 import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.services.validation.ValidatorSession;
 import org.hl7.fhir.services.xver.XVerExtensionManager;
-import org.hl7.fhir.model.client.EFhirClientException;
+import org.hl7.fhir.services.client.EFhirClientException;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;

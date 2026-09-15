@@ -1,11 +1,11 @@
 package org.hl7.fhir.terminologies.client;
 
 import org.hl7.fhir.model.IModelContext;
-import org.hl7.fhir.model.client.ITerminologyClientN;
+import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.services.context.ILoggingService;
 import org.hl7.fhir.model.core.CapabilityStatement;
 import org.hl7.fhir.model.core.TerminologyCapabilities;
-import org.hl7.fhir.model.client.ITerminologyClientFactoryN;
+import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientManager;
 import org.hl7.fhir.standalone.testing.TestingUtilities;

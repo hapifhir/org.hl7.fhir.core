@@ -1,8 +1,8 @@
-package org.hl7.fhir.model.client;
+package org.hl7.fhir.services.client;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.IModelContext;
-import org.hl7.fhir.model.client.FHIRToolingClient;
+import org.hl7.fhir.services.client.FHIRToolingClient;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ITerminologyRequestIdProvider;

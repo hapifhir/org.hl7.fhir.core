@@ -18,13 +18,13 @@ import java.io.IOException;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.IModelContext;
-import org.hl7.fhir.model.client.ITerminologyClientN;
+import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.model.core.CapabilityStatement;
 import org.hl7.fhir.model.core.IdType;
 import org.hl7.fhir.model.core.Parameters;
 import org.hl7.fhir.model.core.TerminologyCapabilities;
 import org.hl7.fhir.services.context.ILoggingService;
-import org.hl7.fhir.model.client.ITerminologyClientFactoryN;
+import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

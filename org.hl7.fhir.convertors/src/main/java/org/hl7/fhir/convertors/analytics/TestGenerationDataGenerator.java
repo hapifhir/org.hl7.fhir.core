@@ -86,7 +86,7 @@ public class TestGenerationDataGenerator implements IPackageVisitorProcessor {
   }
 
   @Override
-  public void processResource(PackageContext ctxt, Object context, String type, String id, byte[] content) throws FHIRException, IOException, EOperationOutcome {
+  public void processResource(PackageContext ctxt, Object context, String type, String id, byte[] content) throws FHIRException, IOException {
     String version = ctxt.getNpm().fhirVersion();
     IWorkerContext worker = contexts.get(version);
     if (worker == null) {

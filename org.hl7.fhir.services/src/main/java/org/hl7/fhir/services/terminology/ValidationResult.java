@@ -10,7 +10,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 import java.util.*;
-import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 
 public class ValidationResult {
   private ConceptDefinitionComponent definition;

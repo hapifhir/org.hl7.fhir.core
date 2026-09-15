@@ -1,4 +1,4 @@
-package org.hl7.fhir.model.client;
+package org.hl7.fhir.services.client;
 
 import lombok.Getter;
 import lombok.Setter;

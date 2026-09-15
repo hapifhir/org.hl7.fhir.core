@@ -3,7 +3,7 @@ package org.hl7.fhir.standalone.terminology.client;
 import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.model.client.ITerminologyClientN;
+import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.services.context.ILoggingService;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;

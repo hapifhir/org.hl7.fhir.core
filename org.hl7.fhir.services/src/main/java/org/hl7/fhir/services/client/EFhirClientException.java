@@ -1,4 +1,4 @@
-package org.hl7.fhir.model.client;
+package org.hl7.fhir.services.client;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -152,7 +152,7 @@ public class EFhirClientException extends RuntimeException {
    * @return
    */
   public boolean hasServerErrors() {
-    return errors.size() > 0;
+    return !errors.isEmpty();
   }
 
   public int getCode() {

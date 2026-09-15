@@ -1,7 +1,7 @@
 package org.hl7.fhir.context;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.model.client.ITerminologyClientN;
+import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.services.context.IContextResourceLoaderN;

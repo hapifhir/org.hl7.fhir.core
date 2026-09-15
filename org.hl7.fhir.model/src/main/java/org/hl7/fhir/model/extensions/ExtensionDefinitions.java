@@ -881,7 +881,18 @@ public class ExtensionDefinitions {
   public static final String EXT_FHIRVERSION_SPECIFIC_USE_START = "startFhirVersion";
   public static final String EXT_FHIRVERSION_SPECIFIC_USE_END = "endFhirVersion";
   public static final String EXT_CONTENT_PROFILE = "http://hl7.org/fhir/StructureDefinition/contentReferenceProfile";
-
-
-
+  public static final String EXT_IGDEP_NO_SAVE = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-no-save"; // this is never persisted - it works around a circulatiry problem with THO
+  public static final String EXT_IGP_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/resource-information";
+  public static final String EXT_PRIVATE_BASE = "http://hl7.org/fhir/tools/";
+  public static final String EXT_IGP_SPREADSHEET = "http://hl7.org/fhir/StructureDefinition/igpublisher-spreadsheet";
+  public static final String EXT_IGP_MAPPING_CSV = "http://hl7.org/fhir/StructureDefinition/igpublisher-mapping-csv";
+  public static final String EXT_BINARY_FORMAT_OLD = "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format";
+  public static final String EXT_MAPPING_NAME = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-source-name";
+  public static final String EXT_MAPPING_TYPE = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-source-type";
+  public static final String EXT_MAPPING_CARD = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-source-cardinality";
+  public static final String EXT_MAPPING_TGTTYPE = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-target-type";
+  public static final String EXT_MAPPING_TGTCARD = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-target-cardinality";
+  public static final String EXT_IGP_LOADVERSION = "http://hl7.org/fhir/StructureDefinition/igpublisher-loadversion";
+  public static final String EXT_IGP_CONTAINED_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/contained-resource-information";
+  public static final String EXT_LIST_PACKAGE = "http://hl7.org/fhir/StructureDefinition/list-packageId";
 }

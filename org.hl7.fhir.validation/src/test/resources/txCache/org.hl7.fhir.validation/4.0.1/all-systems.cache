@@ -6997,3 +6997,59 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2028-9",
+  "display" : "Asian"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Asian",
+  "code" : "2028-9",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.2",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n11ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575|20250419: Analysing http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575|20250419 for validation purposes\n11ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575|20250419: Parameters: disp-lang=en-US, generate-narrative\n11ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575|20250419: Prepare include[0]: \"(^http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102)\"\n11ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102|20211028: Analysing http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102|20211028 for validation purposes\n11ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102|20211028: Prepare include[0]: \"(http://terminology.hl7.org/CodeSystem/v3-NullFlavor)(ASKU,UNK)\"\n11ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102|20211028: CodeSystem found: \"http://terminology.hl7.org/CodeSystem/v3-NullFlavor|4.0.0\"\n11ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575|20250419: Prepare include[1]: \"(^http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.836)\"\n11ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.836|20121025: Analysing http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.836|20121025 for validation purposes\n11ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.836|20121025: Prepare include[0]: \"(urn:oid:2.16.840.1.113883.6.238)(1002-5,2028-9,2054-5,2076-8,2106-3,2131-1)\"\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.836|20121025: CodeSystem found: \"urn:oid:2.16.840.1.113883.6.238|1.2\"\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575|20250419: Prepare include[2]: \"(^http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1240.4)\"\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1240.4|20230628: Analysing http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1240.4|20230628 for validation purposes\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1240.4|20230628: Prepare include[0]: \"(http://terminology.hl7.org/CodeSystem/data-absent-reason)(asked-declined)\"\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1240.4|20230628: CodeSystem found: \"http://terminology.hl7.org/CodeSystem/data-absent-reason|1.0.0\"\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575|20250419: Validate \"[urn:oid:2.16.840.1.113883.6.238#2028-9 (\"Asian\")]\"\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575|20250419: Check \"urn:oid:2.16.840.1.113883.6.238#2028-9\"\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575|20250419: Check included value set http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102|20211028: Check \"urn:oid:2.16.840.1.113883.6.238#2028-9\"\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102|20211028: Include for http://terminology.hl7.org/CodeSystem/v3-NullFlavor not considered for \"urn:oid:2.16.840.1.113883.6.238\"\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.4.642.2.575|20250419: Check included value set http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.836\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.836|20121025: Check \"urn:oid:2.16.840.1.113883.6.238#2028-9\"\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.836|20121025: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.2 for urn:oid:2.16.840.1.113883.6.238\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.836|20121025: check code in (urn:oid:2.16.840.1.113883.6.238)(1002-5,2028-9,2054-5,2076-8,2106-3,2131-1) at Coding\n12ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.836|20121025: Code \"2028-9\" found in urn:oid:2.16.840.1.113883.6.238|1.2",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "1586-7",
+  "display" : "Shoshone"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25", "version": "20250419", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Shoshone",
+  "code" : "1586-7",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.2",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n7ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25|20250419: Analysing http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25|20250419 for validation purposes\n7ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25|20250419: Parameters: disp-lang=en-US, generate-narrative\n7ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25|20250419: Prepare include[0]: \"(^http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.1.11.14914)\"\n7ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.1.11.14914|20240606: Analysing http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.1.11.14914|20240606 for validation purposes\n7ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.1.11.14914|20240606: Prepare include[0]: \"(urn:oid:2.16.840.1.113883.6.238)(conceptdescendent-of1000-9)\"\n8ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.1.11.14914|20240606: CodeSystem found: \"urn:oid:2.16.840.1.113883.6.238|1.2\"\n8ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25|20250419: Prepare include[1]: \"(^http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102)\"\n8ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102|20211028: Analysing http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102|20211028 for validation purposes\n8ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102|20211028: Prepare include[0]: \"(http://terminology.hl7.org/CodeSystem/v3-NullFlavor)(ASKU,UNK)\"\n8ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102|20211028: CodeSystem found: \"http://terminology.hl7.org/CodeSystem/v3-NullFlavor|4.0.0\"\n8ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25|20250419: Prepare include[2]: \"(^http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1240.4)\"\n8ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1240.4|20230628: Analysing http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1240.4|20230628 for validation purposes\n8ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1240.4|20230628: Prepare include[0]: \"(http://terminology.hl7.org/CodeSystem/data-absent-reason)(asked-declined)\"\n8ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1240.4|20230628: CodeSystem found: \"http://terminology.hl7.org/CodeSystem/data-absent-reason|1.0.0\"\n8ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25|20250419: Validate \"[urn:oid:2.16.840.1.113883.6.238#1586-7 (\"Shoshone\")]\"\n8ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25|20250419: Check \"urn:oid:2.16.840.1.113883.6.238#1586-7\"\n8ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1267.25|20250419: Check included value set http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.1.11.14914\n8ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.1.11.14914|20240606: Check \"urn:oid:2.16.840.1.113883.6.238#1586-7\"\n9ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.1.11.14914|20240606: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.2 for urn:oid:2.16.840.1.113883.6.238|1.2\n9ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.1.11.14914|20240606: check code in (urn:oid:2.16.840.1.113883.6.238)(conceptdescendent-of1000-9) at Coding\n10ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.1.11.14914|20240606: Filter concept descendent-of 1000-9: Code \"1586-7\" found in urn:oid:2.16.840.1.113883.6.238|1.2",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

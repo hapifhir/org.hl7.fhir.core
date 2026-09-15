@@ -3,7 +3,7 @@ package org.hl7.fhir.validation.special;
 import com.google.gson.JsonSyntaxException;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.model.Base;
-import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;

@@ -2,7 +2,7 @@ package org.hl7.fhir.services.context;
 
 import com.google.gson.JsonSyntaxException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.model.client.ITerminologyClientFactoryN;
+import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
 import org.hl7.fhir.model.core.Bundle;
 import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.Resource;

@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.Property;
-import org.hl7.fhir.model.client.ITerminologyClientN;
+import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
@@ -23,7 +23,6 @@ import org.hl7.fhir.model.utilities.ValueSetUtilities;
 import org.hl7.fhir.services.terminology.ExpansionOptions;
 import org.hl7.fhir.services.terminology.ITerminologyClientManager;
 import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
-import org.hl7.fhir.standalone.terminology.client.TerminologyClientManager;
 import org.hl7.fhir.services.utilities.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.UUIDUtilities;

@@ -113,7 +113,7 @@ import org.hl7.fhir.model.core.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
 import org.hl7.fhir.model.utilities.ValueSetUtilities;
-import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.services.terminology.SystemSupportInformation;
 import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.model.utilities.ResourceUtilities;

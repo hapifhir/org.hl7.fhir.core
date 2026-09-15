@@ -47,7 +47,7 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
-import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

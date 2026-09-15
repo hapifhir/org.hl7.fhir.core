@@ -1,10 +1,7 @@
 package org.hl7.fhir.convertors.loaders.loaderRN;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
-import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_50_N;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_N;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_50_N;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.dstu2.formats.JsonParser;
@@ -12,14 +9,13 @@ import org.hl7.fhir.dstu2.formats.XmlParser;
 import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.IModelContext;
-import org.hl7.fhir.model.client.ITerminologyClientFactoryN;
+import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
 import org.hl7.fhir.model.core.Bundle;
 import org.hl7.fhir.model.core.Bundle.*;
 import org.hl7.fhir.model.core.CanonicalResource;
 import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.services.context.IContextResourceLoaderN;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory5;
 import org.hl7.fhir.services.context.PackageResourceLoader;
 
 import java.io.IOException;

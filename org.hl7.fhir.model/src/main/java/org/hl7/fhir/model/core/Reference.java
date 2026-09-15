@@ -545,8 +545,7 @@ public class Reference extends BaseReference implements IBaseReference, IComposi
         return false;
       }
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //False positive: not using String.matches
-      boolean refMatches = reference.matches(value.getReference());
+      boolean refMatches = reference.equals(value.getReference());
       if (!refMatches) {
         return true;
       }
@@ -556,7 +555,6 @@ public class Reference extends BaseReference implements IBaseReference, IComposi
         return false;
       }
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //False positive: not using String.matches
       boolean idMatches = identifier.valueMatches(value.getIdentifier());
       if (!idMatches) {
         return true;

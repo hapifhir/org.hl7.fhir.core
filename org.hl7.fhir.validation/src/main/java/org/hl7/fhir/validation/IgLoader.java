@@ -877,7 +877,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
     } else if (fhirVersion.startsWith("1.0")) {
       org.hl7.fhir.dstu2.model.Resource res;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
-        res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(new ByteArrayInputStream(content));
+        res = new org.hl7.fhir.dstu2.formats.XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else
@@ -885,13 +885,21 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       r = VersionConvertorFactory_10_N.convertResource(res, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
     } else if (fhirVersion.startsWith("5.0")) {
       org.hl7.fhir.r5.model.Resource res;
+      r = null;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
-        res = new org.hl7.fhir.r5.formats.JsonParser().parse(new ByteArrayInputStream(content));
+        res = new org.hl7.fhir.r5.formats.XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         res = new org.hl7.fhir.r5.formats.JsonParser().parse(new ByteArrayInputStream(content));
-      else
+      else if (fn.endsWith(".txt"))
+        res = new StructureMapUtilities(null, null).parse(FileUtilities.bytesToString(content), fn);
+      else if (fn.endsWith(".map") || fn.endsWith(".fml")) {
+        res = null; // we can't use the old R5 code here -so we just treat it as R6. This will become painful later
+        r = new StructureMapTools(context).parse(new String(content), fn);
+      } else
         throw new FHIRException("Unsupported format for " + fn);
-      r = VersionConvertorFactory_50_N.convertResource(res);
+      if (r == null) {
+        r = VersionConvertorFactory_50_N.convertResource(res);
+      }
     } else if (fhirVersion.startsWith("6.0")) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         r = new XmlParser(context.getModelContext()).parse(new ByteArrayInputStream(content));

@@ -1,7 +1,6 @@
 package org.hl7.fhir.model.utilities;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.Narrative.NarrativeStatus;
 import org.hl7.fhir.model.core.OperationOutcome.IssueSeverity;

@@ -60,7 +60,8 @@ import ca.uhn.fhir.model.api.annotation.Block;
 @javax.annotation.processing.Generated(value = "org.hl7.fhir.core.generator.engine.JavaCoreGenerator", comments = "generated from hl7.fhir.r6.core#6.0.0-snapshot1")
 public class Requirements extends CanonicalResource {
 
-    public enum ConformanceExpectation {
+
+  public enum ConformanceExpectation {
         /**
          * Support for the specified capability is required to be considered conformant.
          */
@@ -4798,7 +4799,16 @@ public RequirementsStatementComponent findStatement(String key) {
     } 
   } 
   return null; 
-} 
+}
+
+  public boolean hasActor(String url) {
+    for (var actor : getActorList()) {
+      if (actor.getReference().equals(url)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
 // end addition
 

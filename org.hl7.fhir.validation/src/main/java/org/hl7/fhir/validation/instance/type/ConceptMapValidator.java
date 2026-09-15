@@ -3,9 +3,7 @@ package org.hl7.fhir.validation.instance.type;
 import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.model.core.Enumerations.CodeSystemContentMode;
@@ -15,7 +13,7 @@ import org.hl7.fhir.services.elementmodel.ElementUtilities;
 import org.hl7.fhir.services.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
 import org.hl7.fhir.services.terminology.CodingValidationRequest;
-import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;

@@ -1,0 +1,426 @@
+package org.hl7.fhir.services.utilities;
+
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.model.core.ConceptMap.OtherElementComponent;
+import org.hl7.fhir.model.core.ConceptMap.SourceElementComponent;
+import org.hl7.fhir.model.core.ConceptMap.TargetElementComponent;
+import org.hl7.fhir.model.core.Enumerations.ConceptMapRelationship;
+import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
+import org.hl7.fhir.model.fml.StructureMap;
+import org.hl7.fhir.model.fml.StructureMap.*;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.fml.StructureMapTools;
+import org.hl7.fhir.utilities.CSVReader;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+public class MappingSheetParser {
+
+  public class MappingRow {
+    private String sequence;
+    private String identifier;
+    private String name;
+    private String dataType;
+    private String cardinality;
+    private String condition;
+    private String attribute;
+    private String type;
+    private String minMax;
+    private String dtMapping;
+    private String vocabMapping;
+    private String derived;
+    private String derivedMapping;
+    private String comments;
+    public String getSequence() {
+      return sequence;
+    }
+    public String getIdentifier() {
+      return identifier;
+    }
+    public String getName() {
+      return name;
+    }
+    public String getDataType() {
+      return dataType;
+    }
+    public String getCardinality() {
+      return cardinality;
+    }
+    public int getCardinalityMin() {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] parts = cardinality.split("\\.");
+      return Integer.parseInt(parts[0]);
+    }
+    public String getCardinalityMax() {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] parts = cardinality.split("\\.");
+      return parts[2];
+    }
+    public String getCondition() {
+      return condition;
+    }
+    public String getAttribute() {
+      return attribute;
+    }
+    public String getType() {
+      return type;
+    }
+    public String getMinMax() {
+      return minMax;
+    }
+    public String getDtMapping() {
+      return dtMapping;
+    }
+    public String getVocabMapping() {
+      return vocabMapping;
+    }
+    public String getDerived() {
+      return derived;
+    }
+    public String getDerivedMapping() {
+      return derivedMapping;
+    }
+    public String getComments() {
+      return comments;
+    }
+
+  }
+
+
+  private List<MappingRow> rows = new ArrayList<>();
+  private Map<String, String> metadata = new HashMap<>();
+
+  public MappingSheetParser() {
+    super();    
+  }
+    
+  public void  parse(InputStream stream, String name) throws FHIRException, IOException {
+    CSVReader csv = new CSVReader(stream);
+    checkHeaders1(csv, name);
+    checkHeaders2(csv, name);
+    while (csv.line()) {
+      processRow(csv); 
+    }
+  }
+
+  private void checkHeaders1(CSVReader csv, String name) throws FHIRException, IOException {
+    csv.readHeaders();
+    csv.checkColumn(1, "HL7 v2", "Mapping Sheet "+name);
+    csv.checkColumn(6, "Condition (IF True)", "Mapping Sheet "+name);
+    csv.checkColumn(7, "HL7 FHIR", "Mapping Sheet "+name);
+    csv.checkColumn(14, "Comments", "Mapping Sheet "+name);
+    csv.checkColumn(16, "Name", "Mapping Sheet "+name);
+    csv.checkColumn(17, "Value", "Mapping Sheet "+name);
+  }
+
+  private void checkHeaders2(CSVReader csv, String name) throws FHIRException, IOException {
+    csv.readHeaders();
+    csv.checkColumn(1, "Display Sequence", "Mapping Sheet "+name);
+    csv.checkColumn(2, "Identifier", "Mapping Sheet "+name);
+    csv.checkColumn(3, "Name", "Mapping Sheet "+name);
+    csv.checkColumn(4, "Data Type", "Mapping Sheet "+name);
+    csv.checkColumn(5, "Cardinality", "Mapping Sheet "+name);
+    csv.checkColumn(7, "FHIR Attribute", "Mapping Sheet "+name);
+    csv.checkColumn(8, "Data Type", "Mapping Sheet "+name);
+    csv.checkColumn(9, "Cardinality", "Mapping Sheet "+name);
+    csv.checkColumn(10, "Data Type Mapping", "Mapping Sheet "+name);
+    csv.checkColumn(11, "Vocabulary Mapping\n(IS, ID, CE, CNE, CWE)", "Mapping Sheet "+name);
+    csv.checkColumn(12, "Derived Mapping", "Mapping Sheet "+name);
+  }
+
+  private void processRow(CSVReader csv) {
+    MappingRow mr = new MappingRow();
+    mr.sequence = csv.value(1);
+    mr.identifier =  csv.value(2);
+    mr.name = csv.value(3);
+    mr.dataType = csv.value(4);
+    mr.cardinality = csv.value(5);
+    mr.condition = csv.value(6);
+    mr.attribute = csv.value(7);
+    mr.type = csv.value(8);
+    mr.minMax = csv.value(9);
+    mr.dtMapping = csv.value(10);
+    mr.vocabMapping = csv.value(11);
+    mr.derived = csv.value(12);
+    if (!Utilities.noString(mr.derived)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] s = mr.derived.split("\\=");
+      mr.derived = s[0].trim();
+      mr.derivedMapping = s[1].trim();
+    }
+    mr.comments = csv.value(14);
+    rows.add(mr);
+    if (!Utilities.noString(csv.value(16)))
+      metadata.put(csv.value(16), csv.value(17));
+  }
+
+  public List<MappingRow> getRows() {
+    return rows;
+  }
+
+  public ConceptMap getConceptMap() throws FHIRException {
+    ConceptMap map = new ConceptMap();
+    loadMetadata(map);
+    if (metadata.containsKey("copyright"))
+      map.setCopyright(metadata.get("copyright"));
+    for (MappingRow row : rows) {
+      SourceElementComponent element = map.getGroupFirstRep().addElement();
+      element.setCode(row.getIdentifier());
+      element.setId(row.getSequence());
+      element.setDisplay(row.getName()+" : "+row.getDataType()+" ["+row.getCardinality()+"]");
+      element.addExtension(ExtensionDefinitions.EXT_MAPPING_NAME, new StringType(row.getName()));
+      element.addExtension(ExtensionDefinitions.EXT_MAPPING_TYPE, new StringType(row.getDataType()));
+      element.addExtension(ExtensionDefinitions.EXT_MAPPING_CARD, new StringType(row.getCardinality()));
+      if ("N/A".equals(row.getAttribute()))
+        element.setNoMap(true);
+      else {
+        element.getTargetFirstRep().setRelationship(ConceptMapRelationship.RELATEDTO);
+        if (row.getCondition() != null)
+          element.getTargetFirstRep().addDependsOn().setAttribute("http://hl7.org/fhirpath").setValue(new StringType(processCondition(row.getCondition())));
+        element.getTargetFirstRep().setCode(row.getAttribute());
+        element.getTargetFirstRep().setDisplay(row.getType()+" : ["+row.getMinMax()+"]");
+        element.getTargetFirstRep().addExtension(ExtensionDefinitions.EXT_MAPPING_TGTTYPE, new StringType(row.getType()));
+        element.getTargetFirstRep().addExtension(ExtensionDefinitions.EXT_MAPPING_TGTCARD, new StringType(row.getMinMax()));
+        if (row.getDerived() != null) 
+          element.getTargetFirstRep().getProductFirstRep().setAttribute(row.getDerived()).setValue(new StringType(row.getDerivedMapping()));
+        if (row.getComments() != null)
+          element.getTargetFirstRep().setComment(row.getComments());
+        if (row.getDtMapping() != null)
+          element.getTargetFirstRep().addExtension("http://hl7.org/fhir/StructureDefinition/ConceptMap-type-mapping", new UrlType("todo#"+row.getDtMapping()));
+        if (row.getVocabMapping() != null)
+          element.getTargetFirstRep().addExtension("http://hl7.org/fhir/StructureDefinition/ConceptMap-vocab-mapping", new UrlType("todo#"+row.getVocabMapping()));
+      }
+    }
+    return map;    
+  }
+
+  private String processCondition(String condition) {
+    if (condition.startsWith("IF ") && condition.endsWith(" IS VALUED"))
+      return "`"+condition.substring(4, condition.length()-10)+"`.exists()";
+    if (condition.startsWith("IF ") && condition.endsWith(" DOES NOT EXIST"))
+      return "`"+condition.substring(4, condition.length()-15)+"`.exists()";
+    throw new Error("not processed yet: "+condition); 
+  }
+
+  private void loadMetadata(CanonicalResource mr) throws FHIRException {
+    if (metadata.containsKey("id"))
+      mr.setId(metadata.get("id"));
+    if (metadata.containsKey("url"))
+      mr.setUrl(metadata.get("url"));
+    if (metadata.containsKey("name"))
+      mr.setName(metadata.get("name"));
+    if (metadata.containsKey("title"))
+      mr.setTitle(metadata.get("title"));
+    if (metadata.containsKey("version"))
+      mr.setVersion(metadata.get("version"));
+    if (metadata.containsKey("status"))
+      mr.setStatus(PublicationStatus.fromCode(metadata.get("status")));
+    if (metadata.containsKey("date"))
+      mr.setDateElement(new DateTimeType(metadata.get("date")));
+    if (metadata.containsKey("publisher"))
+      mr.setPublisher(metadata.get("publisher"));
+    if (metadata.containsKey("description"))
+      mr.setDescription(metadata.get("description"));
+  }
+
+  public StructureMap getStructureMap() throws FHIRException {
+    StructureMap map = new StructureMap();
+    loadMetadata(map);
+    if (metadata.containsKey("copyright"))
+      map.setCopyright(metadata.get("copyright"));
+    StructureMapGroupComponent grp = map.addGroup();
+    for (MappingRow row : rows) {
+      StructureMapGroupRuleComponent rule = grp.addRule();
+      rule.setName(row.getSequence());
+      StructureMapGroupRuleSourceComponent src = rule.getSourceFirstRep();
+      src.setContext("src");
+      src.addElement(row.getIdentifier());
+      src.setMin(row.getCardinalityMin());
+      src.setMax(row.getCardinalityMax());
+      src.setType(row.getDataType());
+      src.addExtension(ExtensionDefinitions.EXT_MAPPING_NAME, new StringType(row.getName()));
+      if (row.getCondition() != null) {
+        src.setCheck(processCondition(row.getCondition()));
+      }
+      StructureMapGroupRuleTargetComponent tgt = rule.getTargetFirstRep();
+      tgt.setContext("tgt");
+      tgt.addElement(row.getAttribute());
+      tgt.addExtension(ExtensionDefinitions.EXT_MAPPING_TGTTYPE, new StringType(row.getType()));
+      tgt.addExtension(ExtensionDefinitions.EXT_MAPPING_TGTCARD, new StringType(row.getMinMax()));
+      if (row.getDtMapping() != null) {
+        src.setVariable("s");
+        tgt.setVariable("t");
+        tgt.setTransform(StructureMapTransform.CREATE);
+        StructureMapGroupRuleDependentComponent dep = rule.addDependent();
+        dep.setName(row.getDtMapping());
+        dep.addParameter().setValue(new IdType("s"));
+        dep.addParameter().setValue(new IdType("t"));
+      } else if (row.getVocabMapping() != null) {
+        tgt.setTransform(StructureMapTransform.TRANSLATE);
+        tgt.addParameter().setValue(new StringType(row.getVocabMapping()));
+        tgt.addParameter().setValue(new IdType("src"));
+      } else {
+        tgt.setTransform(StructureMapTransform.COPY);
+      }
+      rule.setDocumentation(row.getComments());
+      if (row.getDerived() != null) { 
+        tgt = rule.addTarget();
+        tgt.setContext("tgt");
+        tgt.addElement(row.getDerived());
+        tgt.setTransform(StructureMapTransform.COPY);
+        tgt.addParameter().setValue(new StringType(row.getDerivedMapping()));
+      }
+    }
+    return map;
+  }
+
+  public boolean isSheet(ConceptMap cm) {
+    if (cm.getGroupList().size() != 1)
+      return false;
+    ConceptMapGroupComponent grp = cm.getGroupFirstRep();
+    for (SourceElementComponent e : grp.getElementList()) {
+      if (!e.hasExtension(ExtensionDefinitions.EXT_MAPPING_TYPE))
+        return false;
+    }
+    return true;
+  }
+
+  public String genSheet(ConceptMap cm) throws FHIRException {
+    StringBuilder b = new StringBuilder();
+    readConceptMap(cm);
+    b.append("<table class=\"grid\">\r\n");
+    addHeaderRow1(b);
+    addHeaderRow2(b);
+    for (MappingRow row : rows) 
+      addRow(b, row);
+    b.append("</table>\r\n");
+    return b.toString();
+  }
+
+  private void addRow(StringBuilder b, MappingRow row) {
+    b.append(" <tr>");
+    b.append("<td>"+Utilities.escapeXml(nn(row.sequence))+"</td>");
+    b.append("<td>"+Utilities.escapeXml(nn(row.identifier))+"</td>");
+    b.append("<td>"+Utilities.escapeXml(nn(row.name))+"</td>");
+    b.append("<td>"+Utilities.escapeXml(nn(row.dataType))+"</td>");
+    b.append("<td>"+Utilities.escapeXml(nn(row.cardinality))+"</td>");
+    b.append("<td>"+Utilities.escapeXml(nn(row.condition))+"</td>");
+    b.append("<td>"+Utilities.escapeXml(nn(row.attribute))+"</td>");
+    b.append("<td>"+Utilities.escapeXml(nn(row.type))+"</td>");
+    b.append("<td>"+Utilities.escapeXml(nn(row.minMax))+"</td>");
+    b.append("<td>"+Utilities.escapeXml(nn(row.dtMapping))+"</td>");
+    b.append("<td>"+Utilities.escapeXml(nn(row.vocabMapping))+"</td>");
+    if (row.derived != null)
+      b.append("<td>"+Utilities.escapeXml(nn(row.derived+"="+row.derivedMapping))+"</td>");
+    else
+      b.append("<td></td>");
+    b.append("<td>"+Utilities.escapeXml(nn(row.comments))+"</td>");
+    b.append("</tr>\r\n");   
+    
+  }
+
+  private String nn(String s) {
+    return s == null ? "" : s;
+  }
+
+  private void addHeaderRow1(StringBuilder b) {
+    b.append(" <tr>");
+    b.append("<td colspan=\"5\" style=\"background-color: lightgreen\"><b>v2</b></td>");
+    b.append("<td colspan=\"1\"><b>Condition</b></td>");
+    b.append("<td colspan=\"6\" style=\"background-color: orange\"><b>FHIR</b></td>");
+    b.append("<td colspan=\"1\"><b>Comments</b></td>");
+    b.append("</tr>\r\n");
+  }
+
+  private void addHeaderRow2(StringBuilder b) {
+    b.append(" <tr>");
+    b.append("<td style=\"background-color: lightgreen\"><b>Display Sequence</b></td>");
+    b.append("<td style=\"background-color: lightgreen\"><b>Identifier</b></td>");
+    b.append("<td style=\"background-color: lightgreen\"><b>Name</b></td>");
+    b.append("<td style=\"background-color: lightgreen\"><b>Data Type</b></td>");
+    b.append("<td style=\"background-color: lightgreen\"><b>Cardinality</b></td>");
+    b.append("<td><b></b></td>");
+    b.append("<td style=\"background-color: orange\"><b>FHIR Attribute</b></td>");
+    b.append("<td style=\"background-color: orange\"><b>Data Type</b></td>");
+    b.append("<td style=\"background-color: orange\"><b>Cardinality</b></td>");
+    b.append("<td style=\"background-color: orange\"><b>Data Type Mapping</b></td>");
+    b.append("<td style=\"background-color: orange\"><b>Vocabulary Mapping</b></td>");
+    b.append("<td style=\"background-color: orange\"><b>Derived Mapping</b></td>");
+    b.append("<td><b></b></td>");
+    b.append("</tr>\r\n");   
+  }
+
+  private void readConceptMap(ConceptMap cm) throws FHIRException {
+    for (ConceptMapGroupComponent g : cm.getGroupList()) {
+      for (SourceElementComponent e : g.getElementList()) {
+        if (e.hasId() && e.getTargetList().size() == 1 && e.hasExtension(ExtensionDefinitions.EXT_MAPPING_TYPE)) {
+          TargetElementComponent t = e.getTargetFirstRep();
+          MappingRow row = new MappingRow();
+          row.sequence = e.getId();
+          row.identifier = e.getCode();
+          row.name = e.getExtensionString(ExtensionDefinitions.EXT_MAPPING_NAME);
+          row.dataType = e.getExtensionString(ExtensionDefinitions.EXT_MAPPING_TYPE);
+          row.cardinality = e.getExtensionString(ExtensionDefinitions.EXT_MAPPING_CARD);
+          if (e.getNoMap() == true) {
+            row.attribute = "N/A";            
+          } else {
+            OtherElementComponent dep = getDependency(t, "http://hl7.org/fhirpath");
+            if (dep != null)
+              row.condition = dep.getValue().primitiveValue();
+            row.attribute = t.getCode();
+            row.type = t.getExtensionString(ExtensionDefinitions.EXT_MAPPING_TGTTYPE);
+            row.minMax = t.getExtensionString(ExtensionDefinitions.EXT_MAPPING_TGTCARD);
+            row.dtMapping = t.getExtensionString("http://hl7.org/fhir/StructureDefinition/ConceptMap-type-mapping");
+            row.vocabMapping = t.getExtensionString("http://hl7.org/fhir/StructureDefinition/ConceptMap-vocab-mapping");
+            if (t.getProductList().size() > 0) {
+              row.derived = t.getProductFirstRep().getAttribute();
+              row.derivedMapping = t.getProductFirstRep().getValue().primitiveValue();
+            }
+          }
+          row.comments = t.getComment();
+          rows.add(row);
+        }
+      }
+    }
+  }
+
+
+  private OtherElementComponent getDependency(TargetElementComponent t, String prop) {
+    for (OtherElementComponent dep : t.getDependsOnList()) {
+      if (prop.equals(dep.getAttribute()))
+        return dep;
+    }
+    return null;
+  }
+
+  private static final String PFX = "<html><link rel=\"stylesheet\" href=\"file:c:\\work\\org.hl7.fhir\\build\\publish\\fhir.css\"/></head><body>\r\n";
+  private static final String SFX = "<body></html>";
+  public static void main(String[] args) throws FileNotFoundException, IOException, FHIRException {
+    MappingSheetParser parser = new MappingSheetParser();
+    parser.parse(ManagedFileAccess.inStream(Utilities.path("[tmp]", "v2-pid.csv")), "v2-pid.csv");
+    ConceptMap cm = parser.getConceptMap();
+    StructureMap sm = parser.getStructureMap();
+    new JsonParser(cm.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "sm.json")), sm);
+    new JsonParser(cm.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "cm.json")), cm);
+    FileUtilities.stringToFile(StructureMapTools.render(sm), Utilities.path("[tmp]", "sm.txt"));
+    FileUtilities.stringToFile(PFX+parser.genSheet(cm)+SFX, Utilities.path("[tmp]", "map.html"));
+  }
+
+}

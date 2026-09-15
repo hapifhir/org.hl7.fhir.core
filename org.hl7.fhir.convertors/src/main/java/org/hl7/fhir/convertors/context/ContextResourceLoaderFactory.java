@@ -37,7 +37,7 @@ public class ContextResourceLoaderFactory {
     if (VersionUtilities.isR6Ver(version)) {
       return new R6ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     }
-    return new R6ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+    return new R5ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
   }
 
   public static IContextResourceLoaderN makeLoaderN(IModelContext context, String version, ILoaderKnowledgeProviderRN loader) {
@@ -55,6 +55,9 @@ public class ContextResourceLoaderFactory {
     }
     if (VersionUtilities.isR4BVer(version)) {
       return new R4BToRNLoader(context, Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
+    }
+    if (VersionUtilities.isR5Ver(version)) {
+      return new R5ToRNLoader(context, Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     }
     if (VersionUtilities.isR6Ver(version)) {
       return new RNToRNLoader(context, Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);

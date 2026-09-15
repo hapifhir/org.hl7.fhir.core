@@ -40,7 +40,6 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.ModelContext;
-import org.hl7.fhir.model.ModelContextInformation;
 import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.model.core.*;
@@ -51,14 +50,14 @@ import org.hl7.fhir.model.fml.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.model.utilities.JurisdictionUtilities;
 import org.hl7.fhir.model.utilities.formats.IParser;
 import org.hl7.fhir.services.context.*;
-import org.hl7.fhir.model.client.ITerminologyClientFactoryN;
+import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
 import org.hl7.fhir.services.utilities.HTMLClientLogger;
 import org.hl7.fhir.services.utilities.TextClientLogger;
 import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.services.validation.ValidatorSession;
 import org.hl7.fhir.services.xver.XVerExtensionManager;
 import org.hl7.fhir.services.xver.XVerExtensionManagerFactory;
-import org.hl7.fhir.model.client.TerminologyClientR6;
+import org.hl7.fhir.services.client.TerminologyClientR6;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -341,7 +340,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return null;
   }
 
-  public void connectToTSServer(ITerminologyClientFactoryN factory, org.hl7.fhir.model.client.ITerminologyClientN client, boolean useEcosystem) {
+  public void connectToTSServer(ITerminologyClientFactoryN factory, org.hl7.fhir.services.client.ITerminologyClientN client, boolean useEcosystem) {
     terminologyClientManager.setFactory(factory);
     if (txLog == null) {
       txLog = client.getLogger();
@@ -377,7 +376,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
           throw new IllegalArgumentException("Unknown extension for text file logging: \"" + log + "\" expected: .html, .htm, .txt or .log");
         }
       }
-      org.hl7.fhir.model.client.ITerminologyClientN client = factory.makeClientN(this.getModelContext(),"tx-server", ManagedWebAccess.makeSecureRef(address), software, txLog);
+      org.hl7.fhir.services.client.ITerminologyClientN client = factory.makeClientN(this.getModelContext(),"tx-server", ManagedWebAccess.makeSecureRef(address), software, txLog);
       // txFactory.makeClient("Tx-Server", txServer, "fhir/publisher", null)
 //      terminologyClientManager.setLogger(txLog);
 //      terminologyClientManager.setUserAgent(userAgent);

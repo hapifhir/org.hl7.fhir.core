@@ -1,10 +1,6 @@
 package org.hl7.fhir.convertors.txClient;
 
-import org.hl7.fhir.convertors.conv30_40.resources30_40.TerminologyCapabilities30_40;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.TerminologyCapabilities30_50;
-import org.hl7.fhir.convertors.conv40_N.resources40_N.TerminologyCapabilities40_N;
-import org.hl7.fhir.convertors.conv50_N.resources50_N.TerminologyCapabilities50_N;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_N;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_50_N;
 import org.hl7.fhir.dstu3.model.Resource;
@@ -12,9 +8,9 @@ import org.hl7.fhir.dstu3.support.utils.client.EFhirClientException;
 import org.hl7.fhir.dstu3.support.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.IModelContext;
-import org.hl7.fhir.model.client.ClientHeaders;
-import org.hl7.fhir.model.client.ITerminologyClientN;
-import org.hl7.fhir.model.client.ResourceFormat;
+import org.hl7.fhir.services.client.ClientHeaders;
+import org.hl7.fhir.services.client.ITerminologyClientN;
+import org.hl7.fhir.services.client.ResourceFormat;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ITerminologyRequestIdProvider;
@@ -351,9 +347,9 @@ public class TerminologyClientNR3 implements ITerminologyClientN {
     } catch (EFhirClientException e) {
       if (e.getServerErrors().size() == 1) {
         OperationOutcome op =  (OperationOutcome)VersionConvertorFactory_30_N.convertResource(e.getServerErrors().get(0));
-        throw new org.hl7.fhir.model.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
+        throw new org.hl7.fhir.services.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
       } else {
-        throw new org.hl7.fhir.model.client.EFhirClientException(e.getCode(), e.getMessage(), e);
+        throw new org.hl7.fhir.services.client.EFhirClientException(e.getCode(), e.getMessage(), e);
       }
     }
   }

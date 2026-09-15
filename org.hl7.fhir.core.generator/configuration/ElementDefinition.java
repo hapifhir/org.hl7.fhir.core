@@ -183,3 +183,15 @@
     }
     return null;
   }
+
+
+  public boolean hasElementType(String name) {
+    if (name == null)
+      return false;
+
+    for (TypeRefComponent tr : getTypeList()) {
+      if (name.equals(tr.getWorkingCode()))
+        return true;
+    }
+    return false;
+  }

@@ -35,7 +35,7 @@ import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.model.core.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.services.utilities.DefinitionNavigator;
 import org.hl7.fhir.utilities.UserDataNames;

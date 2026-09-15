@@ -1,10 +1,7 @@
-package org.hl7.fhir.convertors.misc;
+package org.hl7.fhir.standalone.utilities;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -26,36 +23,23 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_50;
 import org.hl7.fhir.convertors.context.ContextResourceLoaderFactory;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_30;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
-import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.IContextResourceLoader;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersionEnumFactory;
-import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.convertors.factory.*;
+import org.hl7.fhir.convertors.misc.PR2Handler;
+import org.hl7.fhir.services.context.ContextUtilities;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.core.CanonicalResource;
+import org.hl7.fhir.model.core.CanonicalType;
+import org.hl7.fhir.model.core.CodeSystem;
+import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.Enumeration;
+import org.hl7.fhir.model.core.Enumerations.FHIRVersion;
+import org.hl7.fhir.model.core.Enumerations.FHIRVersionEnumFactory;
+import org.hl7.fhir.model.core.ImplementationGuide;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.ValueSet;
+import org.hl7.fhir.model.core.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -63,7 +47,6 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 
@@ -83,7 +66,7 @@ public class NpmPackageVersionConverter {
   private Map<String, Resource> additionalResources = new HashMap<>();
 
   private NpmPackage targetNpm;
-  private SimpleWorkerContext tctxt;
+  private IWorkerContext tctxt;
   private ContextUtilities cu;
 
   public NpmPackageVersionConverter(String source, String dest, String version, String packageId, IWorkerContext context) {
@@ -198,7 +181,7 @@ public class NpmPackageVersionConverter {
   }
 
   @Nonnull
-  protected Map<String, byte[]> loadContentMap(InputStream inputStream) throws IOException {
+  public Map<String, byte[]> loadContentMap(InputStream inputStream) throws IOException {
     GzipCompressorInputStream gzipIn;
     try {
       gzipIn = new GzipCompressorInputStream(inputStream);
@@ -270,8 +253,10 @@ public class NpmPackageVersionConverter {
           return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(VersionConvertorFactory_10_30.convertResource(res));
         } else if (VersionUtilities.isR4Ver(version) || VersionUtilities.isR4BVer(version)) {
           return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(VersionConvertorFactory_10_40.convertResource(res));
-        } else if (VersionUtilities.isR5Plus(version)) {
+        } else if (VersionUtilities.isR5Ver(version)) {
           return new org.hl7.fhir.r5.formats.JsonParser().composeBytes(VersionConvertorFactory_10_50.convertResource(res));
+        } else if (VersionUtilities.isR6Plus(version)) {
+          return new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).composeBytes(VersionConvertorFactory_10_N.convertResource(res));
         }
       } else if (VersionUtilities.isR2BVer(currentVersion)) {
         org.hl7.fhir.dstu2016may.model.Resource res = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(cnt);
@@ -284,8 +269,10 @@ public class NpmPackageVersionConverter {
           return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(VersionConvertorFactory_14_30.convertResource(res));
         } else if (VersionUtilities.isR4Ver(version) || VersionUtilities.isR4BVer(version)) {
           return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(VersionConvertorFactory_14_40.convertResource(res));
-        } else if (VersionUtilities.isR5Plus(version)) {
+        } else if (VersionUtilities.isR5Ver(version)) {
           return new org.hl7.fhir.r5.formats.JsonParser().composeBytes(VersionConvertorFactory_14_50.convertResource(res));
+        } else if (VersionUtilities.isR6Plus(version)) {
+          return new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).composeBytes(VersionConvertorFactory_14_N.convertResource(res));
         }
       } else if (VersionUtilities.isR3Ver(currentVersion)) {
         org.hl7.fhir.dstu3.model.Resource res = new org.hl7.fhir.dstu3.formats.JsonParser().parse(cnt);
@@ -298,8 +285,10 @@ public class NpmPackageVersionConverter {
           return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(res);
         } else if (VersionUtilities.isR4Ver(version) || VersionUtilities.isR4BVer(version)) {
           return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(VersionConvertorFactory_30_40.convertResource(res));
-        } else if (VersionUtilities.isR5Plus(version)) {
+        } else if (VersionUtilities.isR5Ver(version)) {
           return new org.hl7.fhir.r5.formats.JsonParser().composeBytes(VersionConvertorFactory_30_50.convertResource(res));
+        } else if (VersionUtilities.isR6Plus(version)) {
+          return new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).composeBytes(VersionConvertorFactory_30_N.convertResource(res));
         }
       } else if (VersionUtilities.isR4Ver(currentVersion)) {
         org.hl7.fhir.r4.model.Resource res = new org.hl7.fhir.r4.formats.JsonParser().parse(cnt);
@@ -312,8 +301,10 @@ public class NpmPackageVersionConverter {
           return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(VersionConvertorFactory_30_40.convertResource(res, new BaseAdvisor_30_40(false)));
         } else if (VersionUtilities.isR4Ver(version) || VersionUtilities.isR4BVer(version)) {
           return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(res);
-        } else if (VersionUtilities.isR5Plus(version)) {
+        } else if (VersionUtilities.isR5Ver(version)) {
           return new org.hl7.fhir.r5.formats.JsonParser().composeBytes(VersionConvertorFactory_40_50.convertResource(res));
+        } else if (VersionUtilities.isR6Plus(version)) {
+          return new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).composeBytes(VersionConvertorFactory_40_N.convertResource(res));
         }
       } else if (VersionUtilities.isR4BVer(currentVersion)) {
         org.hl7.fhir.r4.model.Resource res = new org.hl7.fhir.r4.formats.JsonParser().parse(cnt);
@@ -326,23 +317,44 @@ public class NpmPackageVersionConverter {
           return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(VersionConvertorFactory_30_40.convertResource(res, new BaseAdvisor_30_40(false)));
         } else if (VersionUtilities.isR4Ver(version) || VersionUtilities.isR4BVer(version)) {
           return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(res);
-        } else if (VersionUtilities.isR5Plus(version)) {
+        } else if (VersionUtilities.isR5Ver(version)) {
           return new org.hl7.fhir.r5.formats.JsonParser().composeBytes(VersionConvertorFactory_40_50.convertResource(res));
+        } else if (VersionUtilities.isR6Plus(version)) {
+          return new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).composeBytes(VersionConvertorFactory_40_N.convertResource(res));
         }
-      } else if (VersionUtilities.isR5Plus(currentVersion)) {
-        org.hl7.fhir.r5.model.Resource res = new org.hl7.fhir.r5.formats.JsonParser().parse(cnt);
+      } else if (VersionUtilities.isR5Ver(currentVersion)) {
+        org.hl7.fhir.model.core.Resource res = VersionConvertorFactory_50_N.convertResource(new org.hl7.fhir.r5.formats.JsonParser().parse(cnt));
         checkForCoreDependencies(res);
         convertResourceR5(res);
         if (VersionUtilities.isR2Ver(version)) {
-          return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_50.convertResource(res));
+          return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_N.convertResource(res));
         } else if (VersionUtilities.isR2BVer(version)) {
-          return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(VersionConvertorFactory_14_50.convertResource(res));
+          return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(VersionConvertorFactory_14_N.convertResource(res));
         } else if (VersionUtilities.isR3Ver(version)) {
-          return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(VersionConvertorFactory_30_50.convertResource(res, new BaseAdvisor_30_50(false)));
+          return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(VersionConvertorFactory_30_N.convertResource(res, new BaseAdvisor_30_50(false)));
         } else if (VersionUtilities.isR4Ver(version) || VersionUtilities.isR4BVer(version)) {
-          return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(VersionConvertorFactory_40_50.convertResource(res));
-        } else if (VersionUtilities.isR5Plus(version)) {
-          return new org.hl7.fhir.r5.formats.JsonParser().composeBytes(res);
+          return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(VersionConvertorFactory_40_N.convertResource(res));
+        } else if (VersionUtilities.isR5Ver(version)) {
+          return new org.hl7.fhir.r5.formats.JsonParser().composeBytes(VersionConvertorFactory_50_N.convertResource(res));
+        } else if (VersionUtilities.isR6Plus(version)) {
+          return new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).composeBytes(res);
+        }
+      } else if (VersionUtilities.isR6Plus(currentVersion)) {
+        org.hl7.fhir.model.core.Resource res = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(cnt);
+        checkForCoreDependencies(res);
+        convertResourceR5(res);
+        if (VersionUtilities.isR2Ver(version)) {
+          return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_N.convertResource(res));
+        } else if (VersionUtilities.isR2BVer(version)) {
+          return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(VersionConvertorFactory_14_N.convertResource(res));
+        } else if (VersionUtilities.isR3Ver(version)) {
+          return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(VersionConvertorFactory_30_N.convertResource(res, new BaseAdvisor_30_50(false)));
+        } else if (VersionUtilities.isR4Ver(version) || VersionUtilities.isR4BVer(version)) {
+          return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(VersionConvertorFactory_40_N.convertResource(res));
+        } else if (VersionUtilities.isR5Ver(version)) {
+          return new org.hl7.fhir.r5.formats.JsonParser().composeBytes(VersionConvertorFactory_50_N.convertResource(res));
+        } else if (VersionUtilities.isR6Plus(version)) {
+          return new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).composeBytes(res);
         }
       }
       throw new Error("Unknown version " + currentVersion + " -> " + version);
@@ -356,15 +368,17 @@ public class NpmPackageVersionConverter {
     try {
       convertResourceR5(res);
       if (VersionUtilities.isR2Ver(version)) {
-        return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_50.convertResource(res));
+        return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_N.convertResource(res));
       } else if (VersionUtilities.isR2BVer(version)) {
-        return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(VersionConvertorFactory_14_50.convertResource(res));
+        return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(VersionConvertorFactory_14_N.convertResource(res));
       } else if (VersionUtilities.isR3Ver(version)) {
-        return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(VersionConvertorFactory_30_50.convertResource(res, new BaseAdvisor_30_50(false)));
+        return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(VersionConvertorFactory_30_N.convertResource(res, new BaseAdvisor_30_50(false)));
       } else if (VersionUtilities.isR4Ver(version) || VersionUtilities.isR4BVer(version)) {
-        return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(VersionConvertorFactory_40_50.convertResource(res));
-      } else if (VersionUtilities.isR5Plus(version)) {
-        return new org.hl7.fhir.r5.formats.JsonParser().composeBytes(res);
+        return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(VersionConvertorFactory_40_N.convertResource(res));
+      } else if (VersionUtilities.isR5Ver(version)) {
+        return new org.hl7.fhir.r5.formats.JsonParser().composeBytes(VersionConvertorFactory_50_N.convertResource(res));
+      } else if (VersionUtilities.isR6Plus(version)) {
+        return new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).composeBytes(res);
       }
       throw new Error("Unknown version " + currentVersion + " -> " + version);
     } catch (Exception ex) {
@@ -384,7 +398,7 @@ public class NpmPackageVersionConverter {
   }
 
   private void checkForCoreDependenciesSD(StructureDefinition sd) throws IOException {
-    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
       if (ed.hasBinding() && ed.getBinding().hasValueSet()) {
         ValueSet vs = context.fetchResource(ValueSet.class, ed.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(ed.getBinding().getValueSetElement()));
         if (vs != null) {
@@ -400,8 +414,8 @@ public class NpmPackageVersionConverter {
         additionalResources.put(valueSet.getUrl(), valueSet);
       }
     }
-    for (ConceptSetComponent inc : valueSet.getCompose().getInclude()) {
-      for (CanonicalType c : inc.getValueSet()) {
+    for (ConceptSetComponent inc : valueSet.getCompose().getIncludeList()) {
+      for (CanonicalType c : inc.getValueSetList()) {
         ValueSet vs = context.fetchResource(ValueSet.class, c.getValue(), ExtensionUtilities.getVersionResolutionRules(c));
         if (vs != null) {
           checkForCoreDependenciesVS(vs);
@@ -495,8 +509,8 @@ public class NpmPackageVersionConverter {
   private void convertResourceR5(Resource res) {
     if (res instanceof ImplementationGuide) {
       ImplementationGuide ig = (ImplementationGuide) res;
-      ig.getFhirVersion().clear();
-      ig.getFhirVersion().add(new Enumeration<>(new FHIRVersionEnumFactory(), version));
+      ig.getFhirVersionList().clear();
+      ig.getFhirVersionList().add(new Enumeration<>(new FHIRVersionEnumFactory(), version));
       ig.setPackageId(packageId);
     }
     if (res instanceof StructureDefinition) {

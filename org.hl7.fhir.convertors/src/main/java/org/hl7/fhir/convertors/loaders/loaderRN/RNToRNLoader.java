@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.hl7.fhir.model.IModelContext;
-import org.hl7.fhir.model.client.ITerminologyClientFactoryN;
+import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.Bundle.*;
 import org.hl7.fhir.model.core.formats.JsonParser;

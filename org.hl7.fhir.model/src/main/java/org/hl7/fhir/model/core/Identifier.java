@@ -749,8 +749,7 @@ public class Identifier extends DataType implements ICompositeType {
 
   public boolean valueMatches(Identifier other) {
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //system and value are identifiers/URLs; safe
-    boolean result = hasSystem() && hasValue() && getSystem().matches(other.getSystem()) && getValue().matches(other.getValue());
+    boolean result = hasSystem() && hasValue() && getSystem().equals(other.getSystem()) && getValue().equals(other.getValue());
     return result;
   }
 }

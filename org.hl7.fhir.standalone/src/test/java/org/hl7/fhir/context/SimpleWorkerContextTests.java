@@ -5,7 +5,7 @@ import org.hl7.fhir.model.core.TerminologyCapabilities;
 
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
-import org.hl7.fhir.model.client.TerminologyClientR6;
+import org.hl7.fhir.services.client.TerminologyClientR6;
 import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -44,7 +44,7 @@ public class SimpleWorkerContextTests {
   ToolingClientLogger txLog;
 
   @Mock
-  org.hl7.fhir.model.client.ITerminologyClientN terminologyClient;
+  org.hl7.fhir.services.client.ITerminologyClientN terminologyClient;
 
   public static final TerminologyCapabilities terminologyCapabilities = new TerminologyCapabilities();
   static {  terminologyCapabilities.getExpansion().setParameterList(Arrays.asList());}

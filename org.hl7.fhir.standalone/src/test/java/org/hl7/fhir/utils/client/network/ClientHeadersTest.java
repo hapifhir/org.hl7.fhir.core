@@ -1,7 +1,7 @@
 package org.hl7.fhir.utils.client.network;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.model.client.ClientHeaders;
+import org.hl7.fhir.services.client.ClientHeaders;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

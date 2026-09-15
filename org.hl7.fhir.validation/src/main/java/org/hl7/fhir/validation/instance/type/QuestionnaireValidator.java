@@ -43,7 +43,7 @@ import org.hl7.fhir.model.core.Reference;
 import org.hl7.fhir.model.core.StringType;
 import org.hl7.fhir.model.core.TimeType;
 import org.hl7.fhir.model.core.ValueSet;
-import org.hl7.fhir.model.client.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.services.terminology.ValidationContextCarrier;
@@ -423,7 +423,6 @@ public class QuestionnaireValidator extends BaseValidator {
       if (ao.hasValue() && ao.getValue() instanceof Reference) {
         Reference r = ao.getValueReference();
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-        //False positive: not using String.matches
         boolean refMatches = r.valueMatches(value);
         if (refMatches) {
           return true;

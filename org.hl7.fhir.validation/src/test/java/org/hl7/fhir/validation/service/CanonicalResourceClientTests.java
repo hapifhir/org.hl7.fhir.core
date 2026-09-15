@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation.service;
 
-import org.hl7.fhir.model.client.ITerminologyClientN;
+import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.utilities.VersionUtil;
 

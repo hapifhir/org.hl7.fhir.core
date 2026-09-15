@@ -1,6 +1,7 @@
 package org.hl7.fhir.services.context;
 
 import org.fhir.ucum.UcumService;
+import org.hl7.fhir.services.profilemodel.PEBuilder;
 import org.hl7.fhir.services.terminology.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.IModelContext;
@@ -931,5 +932,7 @@ public interface IWorkerContext {
   @Deprecated
   public void setForPublication(boolean value);
 
+  @Deprecated
+  public PEBuilder getProfiledElementBuilder(PEBuilder.PEElementPropertiesPolicy elementProps, boolean fixedProps);
 
 }

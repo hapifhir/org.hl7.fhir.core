@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.loaders.loaderRN;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_N;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_50_N;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
@@ -17,7 +16,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.hl7.fhir.model.IModelContext;
-import org.hl7.fhir.model.client.ITerminologyClientFactoryN;
+import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.Bundle.*;
 import org.hl7.fhir.services.context.PackageResourceLoader;
