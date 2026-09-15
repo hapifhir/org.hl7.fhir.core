@@ -861,15 +861,18 @@ public class LanguageUtils {
     }
 
     if (r.fhirType().equals("Narrative")) {
+      // div can be absent: a Narrative with a status and no div is invalid, but one gets built
+      // transiently (getText() auto-creates), and there is nothing in it to translate
       Base div = r.getSingleChildValue("div", false);
-      Base status = r.getSingleChildValue("status", false);
-
-      XhtmlNode xhtml = div.getXhtml();
-      xhtml = adjustToLang(xhtml, lang, status == null ? null : status.primitiveValue(), resourceLang, defaultLang, errors);
-      if (xhtml == null) {
-        r.removeChild("div", div);
-      } else {
-        div.setXhtml(xhtml);
+      if (div != null) {
+        Base status = r.getSingleChildValue("status", false);
+        XhtmlNode xhtml = div.getXhtml();
+        xhtml = adjustToLang(xhtml, lang, status == null ? null : status.primitiveValue(), resourceLang, defaultLang, errors);
+        if (xhtml == null) {
+          r.removeChild("div", div);
+        } else {
+          div.setXhtml(xhtml);
+        }
       }
     }
     for (Property p : r.getChildren()) {
