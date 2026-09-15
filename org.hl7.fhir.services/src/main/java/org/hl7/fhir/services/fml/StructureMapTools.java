@@ -1928,6 +1928,8 @@ public class StructureMapTools {
         return null;
       if ("code".equals(fieldToReturn))
         return new CodeType(outcome.getCode());
+      else if ("CodeableConcept".equals(fieldToReturn))
+        return new CodeableConcept(outcome);
       else
         return outcome;
     }
