@@ -74,25 +74,8 @@ public class R5ToRNLoader extends BaseLoaderRN {
       b.setType(Bundle.BundleType.COLLECTION);
       b.addEntry().setResource(rN).setFullUrl(rN instanceof CanonicalResource ? ((CanonicalResource) rN).getUrl() : null);
     }
-    if (killPrimitives) {
-      List<BundleEntryComponent> remove = new ArrayList<BundleEntryComponent>();
-      for (BundleEntryComponent be : b.getEntryList()) {
-        if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
-          StructureDefinition sd = (StructureDefinition) be.getResource();
-          if (sd.getKind() == StructureDefinition.StructureDefinitionKind.PRIMITIVETYPE)
-            remove.add(be);
-        }
-      }
-      b.getEntryList().removeAll(remove);
-    }
-    if (patchUrls) {
-      for (BundleEntryComponent be : b.getEntryList()) {
-        if (be.hasResource()) {
-          inspectResource(be.getResource());
-          doPatchUrls(be.getResource());
-        }
-      }
-    }
+    checkRemovePrimitiveDefinitions(b);
+    checkPatchUrls(b);
     return b;
   }
 

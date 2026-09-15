@@ -53,7 +53,6 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r4b.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r4b.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r4b.formats.IParser;
 import org.hl7.fhir.r4b.formats.JsonParser;
 import org.hl7.fhir.r4b.formats.ParserType;
@@ -83,6 +82,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
@@ -372,7 +372,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   private void logContextDebugMessage(String message) {
     log.makeLoggingEventBuilder(Level.DEBUG)
-      .addMarker(MarkerFactory.getMarker(LogCategory.CONTEXT.name().toLowerCase()))
+      .addMarker(MarkerFactory.getMarker(ILoggingService.LogCategory.CONTEXT.name().toLowerCase()))
       .setMessage(message)
       .log();
   }

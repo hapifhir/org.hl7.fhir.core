@@ -5,12 +5,12 @@ import lombok.Setter;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.services.context.ILoggingService;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.HTTPHeader;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

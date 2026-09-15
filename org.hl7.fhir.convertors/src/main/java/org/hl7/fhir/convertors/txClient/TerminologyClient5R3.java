@@ -92,7 +92,7 @@ public class TerminologyClient5R3 implements ITerminologyClient5 {
   
   @Override
   public TerminologyCapabilities getTerminologyCapabilities() throws FHIRException {
-    return TerminologyCapabilities30_50.convertTerminologyCapabilities(client.getTerminologyCapabilities(), false);
+    return TerminologyCapabilities30_50.convertTerminologyCapabilities(client.getTerminologyCapabilities());
   }
 
   @Override

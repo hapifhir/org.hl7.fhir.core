@@ -62,6 +62,7 @@ public class XVersionLoader {
   public static void saveXml(IModelContext context, String version, Resource resource, OutputStream stream) throws FHIRFormatError, IOException {
     if (Utilities.noString(version)) {
       new org.hl7.fhir.model.core.formats.XmlParser(context).setOutputStyle(OutputStyle.PRETTY).compose(stream, resource);
+      return;
     }
     switch (VersionUtilities.getMajMin(version)) {
       case "1.0":
@@ -89,6 +90,7 @@ public class XVersionLoader {
   public static void saveJson(IModelContext context, String version, Resource resource, OutputStream stream) throws FHIRException, IOException {
     if (Utilities.noString(version)) {
       new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).compose(stream, resource);
+      return;
     }
     switch (VersionUtilities.getMajMin(version)) {
       case "1.0":

@@ -1,4 +1,4 @@
-package org.hl7.fhir.services.context;
+package org.hl7.fhir.utilities.logging;
 
 import lombok.RequiredArgsConstructor;
 
@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 
-public class Slf4JLoggingService implements ILoggingService {
+public class Slf4JLoggingService implements org.hl7.fhir.utilities.logging.ILoggingService {
 
   private final Logger logger;
 

@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.Property;
 import org.hl7.fhir.services.context.ContextUtilities;
 import org.hl7.fhir.services.context.IWorkerContext;
@@ -761,7 +762,7 @@ public class PackageReGenerator {
         NpmPackage core = pcm.loadPackage(VersionUtilities.packageForVersion(v));
         NpmPackage tho = pcm.loadPackage("hl7.terminology");
         log.info("Load FHIR from "+core.name()+"#"+core.version());
-        SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder(context.getModelContext()).withAllowLoadingDuplicates(true).fromPackage(core);
+        SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withAllowLoadingDuplicates(true).fromPackage(core);
         TerminologyClientFactory factory = new TerminologyClientFactory(ctxt.getFHIRVersion());
         ctxt.connectToTSServer(factory, "https://tx.fhir.org", ctxt.getUserAgent(), null, true);
         var loader = new IgLoader(pcm, ctxt, ctxt.getFHIRVersion());

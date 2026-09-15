@@ -54,7 +54,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.conformance.ProfileUtilities.ProfileKnowledgeProvider;
-import org.hl7.fhir.r4.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r4.formats.IParser;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.ParserType;
@@ -80,6 +79,7 @@ import org.hl7.fhir.r4.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -287,7 +287,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   private void logContextDebugMessage(String message) {
     log.makeLoggingEventBuilder(Level.DEBUG)
-      .addMarker(MarkerFactory.getMarker(LogCategory.CONTEXT.name().toLowerCase()))
+      .addMarker(MarkerFactory.getMarker(ILoggingService.LogCategory.CONTEXT.name().toLowerCase()))
       .setMessage(message)
       .log();
   }

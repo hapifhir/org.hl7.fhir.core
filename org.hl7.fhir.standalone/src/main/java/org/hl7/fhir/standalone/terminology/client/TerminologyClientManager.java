@@ -6,7 +6,6 @@ import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.utilities.ImplicitValueSets;
-import org.hl7.fhir.services.context.ILoggingService;
 import org.hl7.fhir.model.core.Bundle.BundleEntryComponent;
 import org.hl7.fhir.model.core.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
@@ -22,6 +21,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import java.io.File;

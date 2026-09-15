@@ -18,7 +18,9 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Accessors(chain = true)
@@ -211,4 +213,31 @@ public abstract class BaseLoaderRN implements IContextResourceLoaderN {
       res.setUserData(t, true);
     }
   }
+
+
+  protected void checkRemovePrimitiveDefinitions(Bundle b) {
+    if (killPrimitives) {
+      List<Bundle.BundleEntryComponent> remove = new ArrayList<Bundle.BundleEntryComponent>();
+      for (Bundle.BundleEntryComponent be : b.getEntryList()) {
+        if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
+          StructureDefinition sd = (StructureDefinition) be.getResource();
+          if (sd.getKind() == StructureDefinition.StructureDefinitionKind.PRIMITIVETYPE)
+            remove.add(be);
+        }
+      }
+      b.getEntryList().removeAll(remove);
+    }
+  }
+
+  protected void checkPatchUrls(Bundle b) {
+    if (patchUrls) {
+      for (Bundle.BundleEntryComponent be : b.getEntryList()) {
+        if (be.hasResource()) {
+          inspectResource(be.getResource());
+          doPatchUrls(be.getResource());
+        }
+      }
+    }
+  }
+
 }

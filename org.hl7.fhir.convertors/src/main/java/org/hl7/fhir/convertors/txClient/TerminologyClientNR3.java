@@ -99,7 +99,7 @@ public class TerminologyClientNR3 implements ITerminologyClientN {
     // their VersionConvertor out of a ThreadLocal that only the factory sets up, so calling one
     // directly NPEs in copyDomainResource
     return (TerminologyCapabilities) VersionConvertorFactory_50_N.convertResource(
-      TerminologyCapabilities30_50.convertTerminologyCapabilities(client.getTerminologyCapabilities(), false));
+      TerminologyCapabilities30_50.convertTerminologyCapabilities(client.getTerminologyCapabilities()));
   }
 
   @Override

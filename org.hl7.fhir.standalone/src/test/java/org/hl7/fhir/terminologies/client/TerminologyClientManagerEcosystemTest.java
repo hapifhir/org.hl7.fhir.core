@@ -2,7 +2,6 @@ package org.hl7.fhir.terminologies.client;
 
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.services.client.ITerminologyClientN;
-import org.hl7.fhir.services.context.ILoggingService;
 import org.hl7.fhir.model.core.CapabilityStatement;
 import org.hl7.fhir.model.core.TerminologyCapabilities;
 import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
@@ -13,6 +12,7 @@ import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

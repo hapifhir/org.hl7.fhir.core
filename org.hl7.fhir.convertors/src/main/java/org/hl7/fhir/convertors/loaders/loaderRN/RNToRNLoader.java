@@ -71,43 +71,27 @@ public class RNToRNLoader extends BaseLoaderRN {
       b.setType(BundleType.COLLECTION);
       b.addEntry().setResource(rN).setFullUrl(rN instanceof CanonicalResource ? ((CanonicalResource) rN).getUrl() : null);
     }
-    if (killPrimitives) {
-      List<BundleEntryComponent> remove = new ArrayList<BundleEntryComponent>();
-      for (BundleEntryComponent be : b.getEntryList()) {
-        if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
-          StructureDefinition sd = (StructureDefinition) be.getResource();
-          if (sd.getKind() == StructureDefinition.StructureDefinitionKind.PRIMITIVETYPE)
-            remove.add(be);
-        }
-      }
-      b.getEntryList().removeAll(remove);
-    }
-    if (patchUrls) {
-      for (BundleEntryComponent be : b.getEntryList()) {
-        if (be.hasResource()) {
-          doPatchUrls(be.getResource());
-        }
-      }
-    }
+    checkRemovePrimitiveDefinitions(b);
+    checkPatchUrls(b);
     return b;
   }
 
   @Override
   public Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
-    Resource r5 = null;
+    Resource rN = null;
     if (isJson)
-      r5 = new JsonParser(context).parse(stream);
+      rN = new JsonParser(context).parse(stream);
     else
-      r5 = new XmlParser(context).parse(stream);
-    setPath(r5);
+      rN = new XmlParser(context).parse(stream);
+    setPath(rN);
 
     if (killPrimitives) {
       throw new FHIRException("Cannot kill primitives when using deferred loading");
     }
     if (patchUrls) {
-      doPatchUrls(r5);
+      doPatchUrls(rN);
     }
-    return r5;
+    return rN;
   }
   
   @Override

@@ -67,7 +67,7 @@ public class ConceptMapEngine {
     for (ConceptMapGroupComponent g : cm.getGroupList()) {
       for (SourceElementComponent e : g.getElementList()) {
         if (code.equals(e.getCode())) {
-          if (e != null)
+          if (ct != null)
             throw new FHIRException("Unable to process translate "+code+" because multiple candidate matches were found in concept map "+cm.getUrl());
           ct = e;
           cg = g;

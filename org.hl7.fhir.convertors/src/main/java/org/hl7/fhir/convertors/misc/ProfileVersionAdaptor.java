@@ -62,14 +62,14 @@ public class ProfileVersionAdaptor {
 
   }
 
-  public StructureDefinition convert(StructureDefinition sd, List<ConversionMessage> log) throws FileNotFoundException, IOException {
-    if (sd.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL) {
-      return convertLogical(sd, log);
+  public StructureDefinition convert(StructureDefinition originalSd, List<ConversionMessage> log) throws FileNotFoundException, IOException {
+    if (originalSd.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL) {
+      return convertLogical(originalSd, log);
     }
-    if (sd.getDerivation() != TypeDerivationRule.CONSTRAINT || !"Extension".equals(sd.getType())) {
+    if (originalSd.getDerivation() != TypeDerivationRule.CONSTRAINT || !"Extension".equals(originalSd.getType())) {
       return null; // nothing to say right now
     }
-    sd = sd.copy(Base.COPY_NOTHING);
+    StructureDefinition sd = originalSd.copy(Base.COPY_NOTHING);
     // the copy is leaving the source version's world: impose the target context before any
     // target-context content is added to it (setModelContext only allows adoption, not change)
     sd.changeModelContext(tCtxt.getModelContext());

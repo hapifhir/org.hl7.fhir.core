@@ -56,25 +56,8 @@ public class R4BToRNLoader extends BaseLoaderRN implements IContextResourceLoade
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
     }
-    if (killPrimitives) {
-      List<BundleEntryComponent> remove = new ArrayList<BundleEntryComponent>();
-      for (BundleEntryComponent be : b.getEntryList()) {
-        if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
-          StructureDefinition sd = (StructureDefinition) be.getResource();
-          if (sd.getKind() == StructureDefinition.StructureDefinitionKind.PRIMITIVETYPE)
-            remove.add(be);
-        }
-      }
-      b.getEntryList().removeAll(remove);
-    }
-    if (patchUrls) {
-      for (BundleEntryComponent be : b.getEntryList()) {
-        if (be.hasResource()) {
-          inspectResource(be.getResource());
-          doPatchUrls(be.getResource());
-        }
-      }
-    }
+    checkRemovePrimitiveDefinitions(b);
+    checkPatchUrls(b);
     return b;
   }
 
@@ -85,7 +68,7 @@ public class R4BToRNLoader extends BaseLoaderRN implements IContextResourceLoade
       r4 = new JsonParser().parse(stream);
     else
       r4 = new XmlParser().parse(stream);
-    org.hl7.fhir.model.core.Resource rN = VersionConvertorFactory_43_N.convertResource(r4);
+    org.hl7.fhir.model.core.Resource rN = VersionConvertorFactory_43_N.convertResource(r4, advisor);
     setPath(rN);
 
     if (!advisor.getCslist().isEmpty()) {

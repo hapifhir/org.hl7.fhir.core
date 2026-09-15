@@ -70,43 +70,27 @@ public class R4ToRNLoader extends BaseLoaderRN implements IContextResourceLoader
       r4 = new JsonParser().parse(stream);
     else
       r4 = new XmlParser().parse(stream);
-    org.hl7.fhir.model.core.Resource r5 = VersionConvertorFactory_40_N.convertResource(r4, advisor);
+    org.hl7.fhir.model.core.Resource rN = VersionConvertorFactory_40_N.convertResource(r4, advisor);
 
     Bundle b;
-    if (r5 instanceof Bundle)
-      b = (Bundle) r5;
+    if (rN instanceof Bundle)
+      b = (Bundle) rN;
     else {
       b = new Bundle();
       b.setId(UUID.randomUUID().toString().toLowerCase());
       b.setType(BundleType.COLLECTION);
-      b.addEntry().setResource(r5).setFullUrl(r5 instanceof CanonicalResource ? ((CanonicalResource) r5).getUrl() : null);
+      b.addEntry().setResource(rN).setFullUrl(rN instanceof CanonicalResource ? ((CanonicalResource) rN).getUrl() : null);
     }
     for (CodeSystem cs : advisor.getCslist()) {
       BundleEntryComponent be = b.addEntry();
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
     }
-    if (killPrimitives) {
-      List<BundleEntryComponent> remove = new ArrayList<BundleEntryComponent>();
-      for (BundleEntryComponent be : b.getEntryList()) {
-        if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
-          StructureDefinition sd = (StructureDefinition) be.getResource();
-          if (sd.getKind() == StructureDefinition.StructureDefinitionKind.PRIMITIVETYPE)
-            remove.add(be);
-        }
-      }
-      b.getEntryList().removeAll(remove);
-    }
-    if (patchUrls) {
-      for (BundleEntryComponent be : b.getEntryList()) {
-        if (be.hasResource()) {
-          inspectResource(be.getResource());
-          doPatchUrls(be.getResource());
-        }
-      }
-    }
+    checkRemovePrimitiveDefinitions(b);
+    checkPatchUrls(b);
     return b;
   }
+
 
   @Override
   public org.hl7.fhir.model.core.Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {

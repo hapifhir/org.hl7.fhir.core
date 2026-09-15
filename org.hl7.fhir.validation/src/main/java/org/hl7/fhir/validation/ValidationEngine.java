@@ -90,6 +90,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -352,7 +353,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       timeTracker = null;
       canRunWithoutTerminologyServer = false;
       useEcosystem = USE_ECOSYSTEM_DEFAULT;
-      loggingService = new org.hl7.fhir.services.context.Slf4JLoggingService(LoggerFactory.getLogger(ValidationEngine.class));
+      loggingService = new org.hl7.fhir.utilities.logging.Slf4JLoggingService(LoggerFactory.getLogger(ValidationEngine.class));
       thoVersion = null;
       extensionsVersion = null;
       defaultInstanceValidatorParameters = new InstanceValidatorParameters();

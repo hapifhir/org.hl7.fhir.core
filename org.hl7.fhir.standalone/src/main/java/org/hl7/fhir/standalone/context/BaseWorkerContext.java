@@ -20,7 +20,6 @@ import org.hl7.fhir.services.terminology.*;
 import org.hl7.fhir.services.utilities.CoreVersionPinner;
 import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.standalone.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.services.context.ILoggingService.LogCategory;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.model.core.CodeSystem.ConceptDefinitionComponent;
@@ -58,6 +57,7 @@ import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.i18n.subtag.LanguageSubtagRegistry;
 import org.hl7.fhir.utilities.i18n.subtag.LanguageSubtagRegistryLoader;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -294,7 +294,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected boolean canRunWithoutTerminology;
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
-  protected org.hl7.fhir.services.context.ILoggingService logger = new Slf4JLoggingService(log);
+  protected ILoggingService logger = new org.hl7.fhir.utilities.logging.Slf4JLoggingService(log);
+
   // NB: not a field initialiser - modelContext is assigned in the constructor body, which runs
   // after field initialisers, so initialising here would pass null as the model context
   @Getter
@@ -525,7 +526,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
           map.put(r.getId(), new ResourceProxy(r));
         } else {
-          logger.logDebugMessage(LogCategory.PROGRESS, "Ignore " + r.fhirType() + "/" + r.getId() + " from package " + packageInfo.toString());
+          logger.logDebugMessage(ILoggingService.LogCategory.PROGRESS, "Ignore " + r.fhirType() + "/" + r.getId() + " from package " + packageInfo.toString());
         }
       }
       if (r instanceof CanonicalResource) {
@@ -871,7 +872,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected void txLog(String msg) {
     if (tlogging) {
-      logger.logDebugMessage(LogCategory.TX, msg);
+      logger.logDebugMessage(ILoggingService.LogCategory.TX, msg);
     }
   }
 
@@ -2217,12 +2218,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (!tc.alreadyCached(cr)) {
         tc.addToCache(cr);
 
-        logger.logDebugMessage(LogCategory.CONTEXT, "add to cache: " + cr.getVUrl());
+        logger.logDebugMessage(ILoggingService.LogCategory.CONTEXT, "add to cache: " + cr.getVUrl());
 
         addToParams = true;
         cache = true;
       } else {
-        logger.logDebugMessage(LogCategory.CONTEXT, "already cached: " + cr.getVUrl());
+        logger.logDebugMessage(ILoggingService.LogCategory.CONTEXT, "already cached: " + cr.getVUrl());
       }
     } else {
       addToParams = true;
@@ -2433,7 +2434,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.canRunWithoutTerminology = canRunWithoutTerminology;
   }
 
-  public void setLogger(@Nonnull org.hl7.fhir.services.context.ILoggingService logger) {
+  public void setLogger(@Nonnull ILoggingService logger) {
     this.logger = logger;
     getTxClientManager().setLogger(logger);
   }
@@ -3293,7 +3294,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public org.hl7.fhir.services.context.ILoggingService getLogger() {
+  public ILoggingService getLogger() {
     return logger;
   }
 
@@ -3484,7 +3485,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           }
         } catch (Exception e) {
           log.error("Unable to generate snapshot @1 for " + tail(sd.getUrl()) + " from " + tail(sd.getBaseDefinition()) + " because " + e.getMessage());
-          logger.logDebugMessage(LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
+          logger.logDebugMessage(ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
         }
       }
     }

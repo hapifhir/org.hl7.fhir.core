@@ -9,6 +9,7 @@ import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import javax.annotation.Nonnull;

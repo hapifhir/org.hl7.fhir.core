@@ -85,25 +85,8 @@ public class R3ToRNLoader extends BaseLoaderRN implements IContextResourceLoader
       be.setFullUrl(cs.getUrl());
       be.setResource(VersionConvertorFactory_50_N.convertResource(cs));
     }
-    if (killPrimitives) {
-      List<BundleEntryComponent> remove = new ArrayList<BundleEntryComponent>();
-      for (BundleEntryComponent be : b.getEntryList()) {
-        if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
-          StructureDefinition sd = (StructureDefinition) be.getResource();
-          if (sd.getKind() == StructureDefinition.StructureDefinitionKind.PRIMITIVETYPE)
-            remove.add(be);
-        }
-      }
-      b.getEntryList().removeAll(remove);
-    }
-    if (patchUrls) {
-      for (BundleEntryComponent be : b.getEntryList()) {
-        if (be.hasResource()) {
-          inspectResource(be.getResource());
-          doPatchUrls(be.getResource());
-        }          
-      }
-    }
+    checkRemovePrimitiveDefinitions(b);
+    checkPatchUrls(b);
     return b;
   }
 
@@ -114,8 +97,8 @@ public class R3ToRNLoader extends BaseLoaderRN implements IContextResourceLoader
       r3 = new JsonParser().parse(stream);
     else
       r3 = new XmlParser().parse(stream);
-    org.hl7.fhir.model.core.Resource r5 = VersionConvertorFactory_30_N.convertResource(r3);
-    setPath(r5);
+    org.hl7.fhir.model.core.Resource rN = VersionConvertorFactory_30_N.convertResource(r3, advisor);
+    setPath(rN);
 
     if (!advisor.getCslist().isEmpty()) {
       throw new FHIRException("Error: Cannot have included code systems");
@@ -123,11 +106,11 @@ public class R3ToRNLoader extends BaseLoaderRN implements IContextResourceLoader
     if (killPrimitives) {
       throw new FHIRException("Cannot kill primitives when using deferred loading");
     }
-    inspectResource(r5);
+    inspectResource(rN);
     if (patchUrls) {
-      doPatchUrls(r5);
+      doPatchUrls(rN);
     }
-    return r5;
+    return rN;
   }
 
   @Override

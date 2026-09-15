@@ -748,7 +748,6 @@ public class Identifier extends DataType implements ICompositeType {
 
 
   public boolean valueMatches(Identifier other) {
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     boolean result = hasSystem() && hasValue() && getSystem().equals(other.getSystem()) && getValue().equals(other.getValue());
     return result;
   }
