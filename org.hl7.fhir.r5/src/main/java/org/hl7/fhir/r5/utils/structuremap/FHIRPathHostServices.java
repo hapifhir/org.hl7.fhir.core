@@ -5,7 +5,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
@@ -22,7 +21,15 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Host services for FHIRPath evaluation within the context of StructureMap processing.
+ * The `Object appContext` passed to the various functions is of type `Variables` and is provided by the
+ * StructureMap engine when it is calling the FHIRPath engine's evaluate methods.
+ * It contains the current variable bindings and the constant resolver for the current StructureMap.
+ * Note: The Transform engine registers this class with its internal FHIRPath engine instance,
+ * it is only used to provide host services for FHIRPath evaluation during StructureMap processing,
+ * and is not a general-purpose FHIRPath host services implementation.
+ */
 public class FHIRPathHostServices implements IHostApplicationServices {
 
   private final StructureMapUtilities structureMapUtilities;
@@ -33,12 +40,15 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     Variables vars = (Variables) appContext;
-    Base res = vars.get(VariableMode.INPUT, name);
+    Base res = vars.getLocal(VariableMode.INPUT, name);
     if (res == null)
-      res = vars.get(VariableMode.OUTPUT, name);
+      res = vars.getLocal(VariableMode.OUTPUT, name);
     List<Base> result = new ArrayList<Base>();
-    if (res != null)
+    if (res != null) {
       result.add(res);
+    } else if (vars.getConstants() != null) {
+      result.addAll(vars.getConstants().resolve(name));
+    }
     return result;
   }
 
