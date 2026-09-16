@@ -1710,11 +1710,25 @@ public class StructureMapTools {
           else
             throw new FHIRException("Rule \"" + rulePath + "\": Transform engine cannot point at an element of type " + b.fhirType());
         case CC:
+          // cc(system, code [, display]), or cc(text) for a CodeableConcept with only a text value
           CodeableConcept cc = new CodeableConcept();
-          cc.addCoding(buildCoding(getParamStringNoNull(vars, tgt.getParameterList().get(0), tgt.toString()), getParamStringNoNull(vars, tgt.getParameterList().get(1), tgt.toString())));
+          if (tgt.getParameterList().size() == 1) {
+            cc.setText(getParamStringNoNull(vars, tgt.getParameterList().get(0), tgt.toString()));
+          } else {
+            Coding ccc = buildCoding(getParamStringNoNull(vars, tgt.getParameterList().get(0), tgt.toString()), getParamStringNoNull(vars, tgt.getParameterList().get(1), tgt.toString()));
+            if (tgt.getParameterList().size() > 2) {
+              // an explicit display wins over whatever buildCoding looked up
+              ccc.setDisplay(getParamStringNoNull(vars, tgt.getParameterList().get(2), tgt.toString()));
+            }
+            cc.addCoding(ccc);
+          }
           return cc;
         case C:
+          // c(system, code [, display])
           Coding c = buildCoding(getParamStringNoNull(vars, tgt.getParameterList().get(0), tgt.toString()), getParamStringNoNull(vars, tgt.getParameterList().get(1), tgt.toString()));
+          if (tgt.getParameterList().size() > 2) {
+            c.setDisplay(getParamStringNoNull(vars, tgt.getParameterList().get(2), tgt.toString()));
+          }
           return c;
         default:
           throw new FHIRException("Rule \"" + rulePath + "\": Transform Unknown: " + tgt.getTransform().toCode());
@@ -2141,11 +2155,21 @@ public class StructureMapTools {
       //case POINTER,
       //case EVALUATE,
       case CC:
+        // cc(system, code [, display]), or cc(text) for a CodeableConcept with only a text value
         CodeableConcept cc = new CodeableConcept();
-        cc.addCoding(buildCoding(tgt.getParameterList().get(0).getValue(), tgt.getParameterList().get(1).getValue()));
+        if (tgt.getParameterList().size() == 1) {
+          String text = fixedString(tgt.getParameterList().get(0).getValue());
+          if (text == null) {
+            return null;
+          }
+          cc.setText(text);
+        } else {
+          cc.addCoding(applyFixedDisplay(buildCoding(tgt.getParameterList().get(0).getValue(), tgt.getParameterList().get(1).getValue()), tgt));
+        }
         return cc;
       case C:
-        return buildCoding(tgt.getParameterList().get(0).getValue(), tgt.getParameterList().get(1).getValue());
+        // c(system, code [, display])
+        return applyFixedDisplay(buildCoding(tgt.getParameterList().get(0).getValue(), tgt.getParameterList().get(1).getValue()), tgt);
       case QTY:
         return null;
       //case ID,
@@ -2158,6 +2182,29 @@ public class StructureMapTools {
   @SuppressWarnings("rawtypes")
   private Coding buildCoding(DataType value1, DataType value2) {
     return new Coding().setSystem(((PrimitiveType) value1).asStringValue()).setCode(((PrimitiveType) value2).asStringValue());
+  }
+
+  /**
+   * The value of a fixed (non-variable) transform parameter as a string, or null if it isn't one
+   * we can read - allParametersFixed only rules out IdType, so the value can still be complex
+   */
+  @SuppressWarnings("rawtypes")
+  private String fixedString(DataType value) {
+    return value instanceof PrimitiveType ? ((PrimitiveType) value).asStringValue() : null;
+  }
+
+  /**
+   * cc() and c() take an optional third parameter, the display. An explicit one wins over
+   * whatever buildCoding worked out from the value set
+   */
+  private Coding applyFixedDisplay(Coding coding, StructureMap.StructureMapGroupRuleTargetComponent tgt) {
+    if (tgt.getParameterList().size() > 2) {
+      String display = fixedString(tgt.getParameterList().get(2).getValue());
+      if (display != null) {
+        coding.setDisplay(display);
+      }
+    }
+    return coding;
   }
 
   private boolean allParametersFixed(StructureMap.StructureMapGroupRuleTargetComponent tgt) {
