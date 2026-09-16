@@ -3504,7 +3504,7 @@ public class FHIRPathEngine {
     case Split:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes,
           new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
-      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+      return new TypeDetails(CollectionStatus.ORDERED, TypeDetails.FP_String);
     case Join:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes,
           new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
