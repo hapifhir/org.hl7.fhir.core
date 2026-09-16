@@ -50,8 +50,8 @@
 
 		<!-- XML Parsers -->
 		<dependency>
-			<groupId>org.ogce</groupId>
-			<artifactId>xpp3</artifactId>
+            <groupId>org.codelibs</groupId>
+            <artifactId>xpp3</artifactId>
 			<optional>true</optional>
 		</dependency>
 
