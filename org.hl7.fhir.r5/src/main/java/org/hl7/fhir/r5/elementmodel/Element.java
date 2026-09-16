@@ -60,8 +60,6 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-
-import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
 import org.hl7.fhir.utilities.NamedItemList.NamedItem;
@@ -486,7 +484,7 @@ public class Element extends Base implements NamedItem {
     
     if (!value.isPrimitive() && !(value instanceof Element)) {
       if (isDataType(value)) 
-        value = convertToElement(property.getChild(name), value);
+        value = convertToElement(property.getChildSimpleName(name, name), value); // getChild doesn't handle choice elements like Observation.value[x]
       else
         throw new FHIRException("Cannot set property "+name+" on "+this.name+" - value is not a primitive type ("+value.fhirType()+") or an ElementModel type");
     }
