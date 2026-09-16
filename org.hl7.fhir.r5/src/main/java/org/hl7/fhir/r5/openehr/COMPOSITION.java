@@ -429,8 +429,8 @@ or any other code defined in the openEHR terminology group 'category'.)
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((COMPOSITION) b);
+      public void assignValues(Base dst) {
+        copyValues((COMPOSITION) dst);
       }
 
       public void copyValues(COMPOSITION dst) {

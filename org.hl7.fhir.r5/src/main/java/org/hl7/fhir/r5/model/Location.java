@@ -615,8 +615,8 @@ public class Location extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((LocationPositionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((LocationPositionComponent) dst);
       }
 
       public void copyValues(LocationPositionComponent dst) {
@@ -1930,8 +1930,8 @@ public class Location extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Location) b);
+      public void assignValues(Base dst) {
+        copyValues((Location) dst);
       }
 
       public void copyValues(Location dst) {

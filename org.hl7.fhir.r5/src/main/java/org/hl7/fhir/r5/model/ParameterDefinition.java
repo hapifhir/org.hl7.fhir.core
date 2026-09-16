@@ -637,8 +637,8 @@ public class ParameterDefinition extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ParameterDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((ParameterDefinition) dst);
       }
 
       public void copyValues(ParameterDefinition dst) {

@@ -1348,8 +1348,8 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Extension) b);
+      public void assignValues(Base dst) {
+        copyValues((Extension) dst);
       }
 
       public void copyValues(Extension dst) {

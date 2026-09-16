@@ -390,8 +390,8 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DocumentReferenceRelatedComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DocumentReferenceRelatedComponent) dst, options);
       }
 
       public void copyValues(DocumentReferenceRelatedComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -717,8 +717,8 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DocumentReferenceAttesterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DocumentReferenceAttesterComponent) dst, options);
       }
 
       public void copyValues(DocumentReferenceAttesterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -973,8 +973,8 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DocumentReferenceRelatesToComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DocumentReferenceRelatesToComponent) dst, options);
       }
 
       public void copyValues(DocumentReferenceRelatesToComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1242,8 +1242,8 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DocumentReferenceContentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DocumentReferenceContentComponent) dst, options);
       }
 
       public void copyValues(DocumentReferenceContentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1499,8 +1499,8 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DocumentReferenceContentProfileComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DocumentReferenceContentProfileComponent) dst, options);
       }
 
       public void copyValues(DocumentReferenceContentProfileComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3302,8 +3302,8 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DocumentReference) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DocumentReference) dst, options);
       }
 
       public void copyValues(DocumentReference dst, EnumSet<CopyObjectOptions> options) {

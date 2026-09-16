@@ -649,8 +649,8 @@ public class Location extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((LocationPositionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((LocationPositionComponent) dst, options);
       }
 
       public void copyValues(LocationPositionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2071,8 +2071,8 @@ public class Location extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Location) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Location) dst, options);
       }
 
       public void copyValues(Location dst, EnumSet<CopyObjectOptions> options) {

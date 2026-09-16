@@ -65,8 +65,8 @@ public abstract class ACCESS_CONTROL_SETTINGS extends LogicalBase implements ICo
 
       public abstract ACCESS_CONTROL_SETTINGS copy();
 
-      public void assign(Base b) {
-        copyValues((ACCESS_CONTROL_SETTINGS) b);
+      public void assignValues(Base dst) {
+        copyValues((ACCESS_CONTROL_SETTINGS) dst);
       }
 
       public void copyValues(ACCESS_CONTROL_SETTINGS dst) {

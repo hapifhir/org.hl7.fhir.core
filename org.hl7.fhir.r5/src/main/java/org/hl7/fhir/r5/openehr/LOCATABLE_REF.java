@@ -197,8 +197,8 @@ public class LOCATABLE_REF extends OBJECT_REF implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((LOCATABLE_REF) b);
+      public void assignValues(Base dst) {
+        copyValues((LOCATABLE_REF) dst);
       }
 
       public void copyValues(LOCATABLE_REF dst) {

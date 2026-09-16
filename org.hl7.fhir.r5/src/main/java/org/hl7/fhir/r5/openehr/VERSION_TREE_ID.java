@@ -201,8 +201,8 @@ public class VERSION_TREE_ID extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((VERSION_TREE_ID) b);
+      public void assignValues(Base dst) {
+        copyValues((VERSION_TREE_ID) dst);
       }
 
       public void copyValues(VERSION_TREE_ID dst) {

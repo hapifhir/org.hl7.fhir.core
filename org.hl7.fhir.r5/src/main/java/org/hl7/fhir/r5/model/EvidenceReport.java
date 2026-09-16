@@ -478,8 +478,8 @@ public class EvidenceReport extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceReportSubjectComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceReportSubjectComponent) dst);
       }
 
       public void copyValues(EvidenceReportSubjectComponent dst) {
@@ -921,8 +921,8 @@ public class EvidenceReport extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceReportSubjectCharacteristicComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceReportSubjectCharacteristicComponent) dst);
       }
 
       public void copyValues(EvidenceReportSubjectCharacteristicComponent dst) {
@@ -1174,8 +1174,8 @@ public class EvidenceReport extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceReportRelatesToComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceReportRelatesToComponent) dst);
       }
 
       public void copyValues(EvidenceReportRelatesToComponent dst) {
@@ -1532,8 +1532,8 @@ public class EvidenceReport extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceReportRelatesToTargetComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceReportRelatesToTargetComponent) dst);
       }
 
       public void copyValues(EvidenceReportRelatesToTargetComponent dst) {
@@ -2418,8 +2418,8 @@ public class EvidenceReport extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SectionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SectionComponent) dst);
       }
 
       public void copyValues(SectionComponent dst) {
@@ -4408,8 +4408,8 @@ public class EvidenceReport extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceReport) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceReport) dst);
       }
 
       public void copyValues(EvidenceReport dst) {

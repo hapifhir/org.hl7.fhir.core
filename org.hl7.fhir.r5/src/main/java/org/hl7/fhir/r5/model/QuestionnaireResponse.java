@@ -647,8 +647,8 @@ public class QuestionnaireResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((QuestionnaireResponseItemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((QuestionnaireResponseItemComponent) dst);
       }
 
       public void copyValues(QuestionnaireResponseItemComponent dst) {
@@ -1149,8 +1149,8 @@ public class QuestionnaireResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((QuestionnaireResponseItemAnswerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((QuestionnaireResponseItemAnswerComponent) dst);
       }
 
       public void copyValues(QuestionnaireResponseItemAnswerComponent dst) {
@@ -1984,8 +1984,8 @@ public class QuestionnaireResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((QuestionnaireResponse) b);
+      public void assignValues(Base dst) {
+        copyValues((QuestionnaireResponse) dst);
       }
 
       public void copyValues(QuestionnaireResponse dst) {

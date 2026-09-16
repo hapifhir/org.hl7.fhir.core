@@ -665,8 +665,8 @@ public class FamilyMemberHistory extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((FamilyMemberHistoryConditionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((FamilyMemberHistoryConditionComponent) dst, options);
       }
 
       public void copyValues(FamilyMemberHistoryConditionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1228,8 +1228,8 @@ public class FamilyMemberHistory extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((FamilyMemberHistoryProcedureComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((FamilyMemberHistoryProcedureComponent) dst, options);
       }
 
       public void copyValues(FamilyMemberHistoryProcedureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2674,8 +2674,8 @@ public class FamilyMemberHistory extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((FamilyMemberHistory) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((FamilyMemberHistory) dst, options);
       }
 
       public void copyValues(FamilyMemberHistory dst, EnumSet<CopyObjectOptions> options) {

@@ -1321,8 +1321,8 @@ For resource issues, this will be a simple XPath limited to element names, repet
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((OperationOutcomeIssueComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((OperationOutcomeIssueComponent) dst);
       }
 
       public void copyValues(OperationOutcomeIssueComponent dst) {
@@ -1603,8 +1603,8 @@ For resource issues, this will be a simple XPath limited to element names, repet
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((OperationOutcome) b);
+      public void assignValues(Base dst) {
+        copyValues((OperationOutcome) dst);
       }
 
       public void copyValues(OperationOutcome dst) {

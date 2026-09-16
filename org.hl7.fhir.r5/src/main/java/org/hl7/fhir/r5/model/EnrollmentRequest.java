@@ -546,8 +546,8 @@ public class EnrollmentRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EnrollmentRequest) b);
+      public void assignValues(Base dst) {
+        copyValues((EnrollmentRequest) dst);
       }
 
       public void copyValues(EnrollmentRequest dst) {

@@ -330,8 +330,8 @@ public class ServiceRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ServiceRequestOrderDetailComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ServiceRequestOrderDetailComponent) dst, options);
       }
 
       public void copyValues(ServiceRequestOrderDetailComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -722,8 +722,8 @@ public class ServiceRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ServiceRequestOrderDetailParameterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ServiceRequestOrderDetailParameterComponent) dst, options);
       }
 
       public void copyValues(ServiceRequestOrderDetailParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -942,8 +942,8 @@ public class ServiceRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ServiceRequestPatientInstructionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ServiceRequestPatientInstructionComponent) dst, options);
       }
 
       public void copyValues(ServiceRequestPatientInstructionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3321,8 +3321,8 @@ public class ServiceRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ServiceRequest) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ServiceRequest) dst, options);
       }
 
       public void copyValues(ServiceRequest dst, EnumSet<CopyObjectOptions> options) {

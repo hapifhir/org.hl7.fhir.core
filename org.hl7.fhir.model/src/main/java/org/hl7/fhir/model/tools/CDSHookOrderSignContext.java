@@ -399,8 +399,8 @@ public class CDSHookOrderSignContext extends CDSHookContext implements IComposit
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHookOrderSignContext) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHookOrderSignContext) dst, options);
       }
 
       public void copyValues(CDSHookOrderSignContext dst, EnumSet<CopyObjectOptions> options) {

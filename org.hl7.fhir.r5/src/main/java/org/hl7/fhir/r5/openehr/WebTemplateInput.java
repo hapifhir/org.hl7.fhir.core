@@ -638,8 +638,8 @@ public class WebTemplateInput extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((WebTemplateInput) b);
+      public void assignValues(Base dst) {
+        copyValues((WebTemplateInput) dst);
       }
 
       public void copyValues(WebTemplateInput dst) {

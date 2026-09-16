@@ -433,8 +433,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RelatedClaimComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RelatedClaimComponent) dst, options);
       }
 
       public void copyValues(RelatedClaimComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -725,8 +725,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ExplanationOfBenefitEventComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExplanationOfBenefitEventComponent) dst, options);
       }
 
       public void copyValues(ExplanationOfBenefitEventComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -964,8 +964,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PayeeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PayeeComponent) dst, options);
       }
 
       public void copyValues(PayeeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1342,8 +1342,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CareTeamComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CareTeamComponent) dst, options);
       }
 
       public void copyValues(CareTeamComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3040,8 +3040,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SupportingInformationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SupportingInformationComponent) dst, options);
       }
 
       public void copyValues(SupportingInformationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3462,8 +3462,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DiagnosisComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DiagnosisComponent) dst, options);
       }
 
       public void copyValues(DiagnosisComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3971,8 +3971,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ProcedureComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ProcedureComponent) dst, options);
       }
 
       public void copyValues(ProcedureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4344,8 +4344,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((InsuranceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((InsuranceComponent) dst, options);
       }
 
       public void copyValues(InsuranceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4706,8 +4706,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AccidentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AccidentComponent) dst, options);
       }
 
       public void copyValues(AccidentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6870,8 +6870,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ItemComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ItemComponent) dst, options);
       }
 
       public void copyValues(ItemComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7345,8 +7345,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ItemBodySiteComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ItemBodySiteComponent) dst, options);
       }
 
       public void copyValues(ItemBodySiteComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7744,8 +7744,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ItemReviewOutcomeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ItemReviewOutcomeComponent) dst, options);
       }
 
       public void copyValues(ItemReviewOutcomeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -8192,8 +8192,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AdjudicationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdjudicationComponent) dst, options);
       }
 
       public void copyValues(AdjudicationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9572,8 +9572,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DetailComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DetailComponent) dst, options);
       }
 
       public void copyValues(DetailComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10973,8 +10973,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubDetailComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubDetailComponent) dst, options);
       }
 
       public void copyValues(SubDetailComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -13074,8 +13074,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AddedItemComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AddedItemComponent) dst, options);
       }
 
       public void copyValues(AddedItemComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -13535,8 +13535,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AddedItemBodySiteComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AddedItemBodySiteComponent) dst, options);
       }
 
       public void copyValues(AddedItemBodySiteComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -14625,8 +14625,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AddedItemDetailComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AddedItemDetailComponent) dst, options);
       }
 
       public void copyValues(AddedItemDetailComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -15714,8 +15714,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AddedItemDetailSubDetailComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AddedItemDetailSubDetailComponent) dst, options);
       }
 
       public void copyValues(AddedItemDetailSubDetailComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -16038,8 +16038,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TotalComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TotalComponent) dst, options);
       }
 
       public void copyValues(TotalComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -16514,8 +16514,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PaymentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PaymentComponent) dst, options);
       }
 
       public void copyValues(PaymentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -16976,8 +16976,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NoteComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NoteComponent) dst, options);
       }
 
       public void copyValues(NoteComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -17649,8 +17649,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((BenefitBalanceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((BenefitBalanceComponent) dst, options);
       }
 
       public void copyValues(BenefitBalanceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -18074,8 +18074,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((BenefitComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((BenefitComponent) dst, options);
       }
 
       public void copyValues(BenefitComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -21357,8 +21357,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ExplanationOfBenefit) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExplanationOfBenefit) dst, options);
       }
 
       public void copyValues(ExplanationOfBenefit dst, EnumSet<CopyObjectOptions> options) {

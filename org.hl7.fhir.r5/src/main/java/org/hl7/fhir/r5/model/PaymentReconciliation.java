@@ -1069,8 +1069,8 @@ public class PaymentReconciliation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PaymentReconciliationAllocationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PaymentReconciliationAllocationComponent) dst);
       }
 
       public void copyValues(PaymentReconciliationAllocationComponent dst) {
@@ -1354,8 +1354,8 @@ public class PaymentReconciliation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NotesComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NotesComponent) dst);
       }
 
       public void copyValues(NotesComponent dst) {
@@ -3203,8 +3203,8 @@ public class PaymentReconciliation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PaymentReconciliation) b);
+      public void assignValues(Base dst) {
+        copyValues((PaymentReconciliation) dst);
       }
 
       public void copyValues(PaymentReconciliation dst) {

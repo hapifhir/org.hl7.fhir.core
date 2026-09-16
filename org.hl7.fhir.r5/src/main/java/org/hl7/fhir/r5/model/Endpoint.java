@@ -440,8 +440,8 @@ public class Endpoint extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EndpointPayloadComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EndpointPayloadComponent) dst);
       }
 
       public void copyValues(EndpointPayloadComponent dst) {
@@ -1417,8 +1417,8 @@ public class Endpoint extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Endpoint) b);
+      public void assignValues(Base dst) {
+        copyValues((Endpoint) dst);
       }
 
       public void copyValues(Endpoint dst) {

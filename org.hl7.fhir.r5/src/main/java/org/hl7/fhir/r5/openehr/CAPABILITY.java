@@ -220,8 +220,8 @@ public class CAPABILITY extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CAPABILITY) b);
+      public void assignValues(Base dst) {
+        copyValues((CAPABILITY) dst);
       }
 
       public void copyValues(CAPABILITY dst) {

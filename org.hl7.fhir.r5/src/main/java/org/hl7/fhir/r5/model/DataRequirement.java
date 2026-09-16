@@ -696,8 +696,8 @@ public class DataRequirement extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DataRequirementCodeFilterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DataRequirementCodeFilterComponent) dst);
       }
 
       public void copyValues(DataRequirementCodeFilterComponent dst) {
@@ -1071,8 +1071,8 @@ public class DataRequirement extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DataRequirementDateFilterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DataRequirementDateFilterComponent) dst);
       }
 
       public void copyValues(DataRequirementDateFilterComponent dst) {
@@ -1515,8 +1515,8 @@ public class DataRequirement extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DataRequirementValueFilterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DataRequirementValueFilterComponent) dst);
       }
 
       public void copyValues(DataRequirementValueFilterComponent dst) {
@@ -1789,8 +1789,8 @@ public class DataRequirement extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DataRequirementSortComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DataRequirementSortComponent) dst);
       }
 
       public void copyValues(DataRequirementSortComponent dst) {
@@ -2619,8 +2619,8 @@ The value of mustSupport SHALL be a FHIRPath resolvable on the type of the DataR
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DataRequirement) b);
+      public void assignValues(Base dst) {
+        copyValues((DataRequirement) dst);
       }
 
       public void copyValues(DataRequirement dst) {

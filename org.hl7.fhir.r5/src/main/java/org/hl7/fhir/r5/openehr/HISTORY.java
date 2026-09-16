@@ -366,8 +366,8 @@ public class HISTORY extends DATA_STRUCTURE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((HISTORY) b);
+      public void assignValues(Base dst) {
+        copyValues((HISTORY) dst);
       }
 
       public void copyValues(HISTORY dst) {

@@ -614,8 +614,8 @@ public class RiskAssessment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RiskAssessmentPredictionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RiskAssessmentPredictionComponent) dst, options);
       }
 
       public void copyValues(RiskAssessmentPredictionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1812,8 +1812,8 @@ public class RiskAssessment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RiskAssessment) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RiskAssessment) dst, options);
       }
 
       public void copyValues(RiskAssessment dst, EnumSet<CopyObjectOptions> options) {

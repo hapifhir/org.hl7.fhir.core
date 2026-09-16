@@ -415,8 +415,8 @@ public class MedicationAdministration extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationAdministrationPerformerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationAdministrationPerformerComponent) dst);
       }
 
       public void copyValues(MedicationAdministrationPerformerComponent dst) {
@@ -891,8 +891,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationAdministrationDosageComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationAdministrationDosageComponent) dst);
       }
 
       public void copyValues(MedicationAdministrationDosageComponent dst) {
@@ -2485,8 +2485,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationAdministration) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationAdministration) dst);
       }
 
       public void copyValues(MedicationAdministration dst) {

@@ -439,8 +439,8 @@ public class EpisodeOfCare extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EpisodeOfCareStatusHistoryComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EpisodeOfCareStatusHistoryComponent) dst);
       }
 
       public void copyValues(EpisodeOfCareStatusHistoryComponent dst) {
@@ -685,8 +685,8 @@ public class EpisodeOfCare extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ReasonComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ReasonComponent) dst);
       }
 
       public void copyValues(ReasonComponent dst) {
@@ -935,8 +935,8 @@ public class EpisodeOfCare extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DiagnosisComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DiagnosisComponent) dst);
       }
 
       public void copyValues(DiagnosisComponent dst) {
@@ -1933,8 +1933,8 @@ public class EpisodeOfCare extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EpisodeOfCare) b);
+      public void assignValues(Base dst) {
+        copyValues((EpisodeOfCare) dst);
       }
 
       public void copyValues(EpisodeOfCare dst) {

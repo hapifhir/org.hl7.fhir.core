@@ -793,8 +793,8 @@ public class SubscriptionStatus extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubscriptionStatusNotificationEventComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionStatusNotificationEventComponent) dst, options);
       }
 
       public void copyValues(SubscriptionStatusNotificationEventComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1104,8 +1104,8 @@ public class SubscriptionStatus extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubscriptionStatusNotificationEventRelatedQueryComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionStatusNotificationEventRelatedQueryComponent) dst, options);
       }
 
       public void copyValues(SubscriptionStatusNotificationEventRelatedQueryComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1377,8 +1377,8 @@ public class SubscriptionStatus extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubscriptionStatusNotificationEventAuthorizationHintComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionStatusNotificationEventAuthorizationHintComponent) dst, options);
       }
 
       public void copyValues(SubscriptionStatusNotificationEventAuthorizationHintComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2028,8 +2028,8 @@ public class SubscriptionStatus extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubscriptionStatus) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionStatus) dst, options);
       }
 
       public void copyValues(SubscriptionStatus dst, EnumSet<CopyObjectOptions> options) {

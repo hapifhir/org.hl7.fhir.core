@@ -421,8 +421,8 @@ public class CDSHookOrderDispatchContext extends CDSHookContext implements IComp
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHookOrderDispatchContext) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHookOrderDispatchContext) dst, options);
       }
 
       public void copyValues(CDSHookOrderDispatchContext dst, EnumSet<CopyObjectOptions> options) {

@@ -1757,8 +1757,8 @@ public class ActorDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ActorDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((ActorDefinition) dst);
       }
 
       public void copyValues(ActorDefinition dst) {

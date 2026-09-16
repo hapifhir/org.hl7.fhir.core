@@ -111,8 +111,8 @@ public class CodeType extends StringType implements Comparable<CodeType>, ICodin
   }
 
   @Override
-  public void assign(Base b) {
-    copyValues((CodeType) b);
+  public void assignValues(Base dst) {
+    copyValues((CodeType) dst);
   }
 
   /**

@@ -525,8 +525,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ValueSetComposeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ValueSetComposeComponent) dst, options);
       }
 
       public void copyValues(ValueSetComposeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1143,8 +1143,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ConceptSetComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptSetComponent) dst, options);
       }
 
       public void copyValues(ConceptSetComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1553,8 +1553,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ConceptReferenceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptReferenceComponent) dst, options);
       }
 
       public void copyValues(ConceptReferenceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1985,8 +1985,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ConceptReferenceDesignationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptReferenceDesignationComponent) dst, options);
       }
 
       public void copyValues(ConceptReferenceDesignationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2441,8 +2441,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ConceptSetFilterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptSetFilterComponent) dst, options);
       }
 
       public void copyValues(ConceptSetFilterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3191,8 +3191,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ValueSetExpansionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ValueSetExpansionComponent) dst, options);
       }
 
       public void copyValues(ValueSetExpansionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3652,8 +3652,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ValueSetExpansionParameterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ValueSetExpansionParameterComponent) dst, options);
       }
 
       public void copyValues(ValueSetExpansionParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3945,8 +3945,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ValueSetExpansionPropertyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ValueSetExpansionPropertyComponent) dst, options);
       }
 
       public void copyValues(ValueSetExpansionPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4750,8 +4750,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ValueSetExpansionContainsComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ValueSetExpansionContainsComponent) dst, options);
       }
 
       public void copyValues(ValueSetExpansionContainsComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5274,8 +5274,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ConceptPropertyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptPropertyComponent) dst, options);
       }
 
       public void copyValues(ConceptPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5689,8 +5689,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ConceptSubPropertyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptSubPropertyComponent) dst, options);
       }
 
       public void copyValues(ConceptSubPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7996,8 +7996,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ValueSet) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ValueSet) dst, options);
       }
 
       public void copyValues(ValueSet dst, EnumSet<CopyObjectOptions> options) {

@@ -407,8 +407,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RelatedClaimComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RelatedClaimComponent) dst);
       }
 
       public void copyValues(RelatedClaimComponent dst) {
@@ -671,8 +671,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ExplanationOfBenefitEventComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ExplanationOfBenefitEventComponent) dst);
       }
 
       public void copyValues(ExplanationOfBenefitEventComponent dst) {
@@ -888,8 +888,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PayeeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PayeeComponent) dst);
       }
 
       public void copyValues(PayeeComponent dst) {
@@ -1296,8 +1296,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CareTeamComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CareTeamComponent) dst);
       }
 
       public void copyValues(CareTeamComponent dst) {
@@ -1888,8 +1888,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SupportingInformationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SupportingInformationComponent) dst);
       }
 
       public void copyValues(SupportingInformationComponent dst) {
@@ -2300,8 +2300,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DiagnosisComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DiagnosisComponent) dst);
       }
 
       public void copyValues(DiagnosisComponent dst) {
@@ -2811,8 +2811,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ProcedureComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ProcedureComponent) dst);
       }
 
       public void copyValues(ProcedureComponent dst) {
@@ -3152,8 +3152,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InsuranceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InsuranceComponent) dst);
       }
 
       public void copyValues(InsuranceComponent dst) {
@@ -3482,8 +3482,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AccidentComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AccidentComponent) dst);
       }
 
       public void copyValues(AccidentComponent dst) {
@@ -5521,8 +5521,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ItemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ItemComponent) dst);
       }
 
       public void copyValues(ItemComponent dst) {
@@ -5902,8 +5902,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ItemBodySiteComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ItemBodySiteComponent) dst);
       }
 
       public void copyValues(ItemBodySiteComponent dst) {
@@ -6274,8 +6274,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ItemReviewOutcomeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ItemReviewOutcomeComponent) dst);
       }
 
       public void copyValues(ItemReviewOutcomeComponent dst) {
@@ -6602,8 +6602,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdjudicationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdjudicationComponent) dst);
       }
 
       public void copyValues(AdjudicationComponent dst) {
@@ -7901,8 +7901,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DetailComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DetailComponent) dst);
       }
 
       public void copyValues(DetailComponent dst) {
@@ -9178,8 +9178,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubDetailComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubDetailComponent) dst);
       }
 
       public void copyValues(SubDetailComponent dst) {
@@ -10985,8 +10985,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AddedItemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AddedItemComponent) dst);
       }
 
       public void copyValues(AddedItemComponent dst) {
@@ -11352,8 +11352,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AddedItemBodySiteComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AddedItemBodySiteComponent) dst);
       }
 
       public void copyValues(AddedItemBodySiteComponent dst) {
@@ -12381,8 +12381,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AddedItemDetailComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AddedItemDetailComponent) dst);
       }
 
       public void copyValues(AddedItemDetailComponent dst) {
@@ -13368,8 +13368,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AddedItemDetailSubDetailComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AddedItemDetailSubDetailComponent) dst);
       }
 
       public void copyValues(AddedItemDetailSubDetailComponent dst) {
@@ -13629,8 +13629,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TotalComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TotalComponent) dst);
       }
 
       public void copyValues(TotalComponent dst) {
@@ -14059,8 +14059,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PaymentComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PaymentComponent) dst);
       }
 
       public void copyValues(PaymentComponent dst) {
@@ -14422,8 +14422,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NoteComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NoteComponent) dst);
       }
 
       public void copyValues(NoteComponent dst) {
@@ -15032,8 +15032,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((BenefitBalanceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((BenefitBalanceComponent) dst);
       }
 
       public void copyValues(BenefitBalanceComponent dst) {
@@ -15408,8 +15408,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((BenefitComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((BenefitComponent) dst);
       }
 
       public void copyValues(BenefitComponent dst) {
@@ -18507,8 +18507,8 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ExplanationOfBenefit) b);
+      public void assignValues(Base dst) {
+        copyValues((ExplanationOfBenefit) dst);
       }
 
       public void copyValues(ExplanationOfBenefit dst) {

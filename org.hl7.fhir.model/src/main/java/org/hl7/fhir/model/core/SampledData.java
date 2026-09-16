@@ -963,8 +963,8 @@ public class SampledData extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SampledData) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SampledData) dst, options);
       }
 
       public void copyValues(SampledData dst, EnumSet<CopyObjectOptions> options) {

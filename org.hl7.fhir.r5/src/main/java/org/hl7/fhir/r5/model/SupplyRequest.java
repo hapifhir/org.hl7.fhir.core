@@ -481,8 +481,8 @@ public class SupplyRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SupplyRequestParameterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SupplyRequestParameterComponent) dst);
       }
 
       public void copyValues(SupplyRequestParameterComponent dst) {
@@ -1645,8 +1645,8 @@ public class SupplyRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SupplyRequest) b);
+      public void assignValues(Base dst) {
+        copyValues((SupplyRequest) dst);
       }
 
       public void copyValues(SupplyRequest dst) {

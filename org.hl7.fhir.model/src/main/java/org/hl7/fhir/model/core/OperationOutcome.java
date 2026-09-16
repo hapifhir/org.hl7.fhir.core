@@ -1266,8 +1266,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((OperationOutcomeIssueComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationOutcomeIssueComponent) dst, options);
       }
 
       public void copyValues(OperationOutcomeIssueComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1560,8 +1560,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((OperationOutcome) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationOutcome) dst, options);
       }
 
       public void copyValues(OperationOutcome dst, EnumSet<CopyObjectOptions> options) {

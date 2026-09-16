@@ -1431,8 +1431,8 @@ public class VisionPrescription extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((VisionPrescriptionLensSpecificationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((VisionPrescriptionLensSpecificationComponent) dst);
       }
 
       public void copyValues(VisionPrescriptionLensSpecificationComponent dst) {
@@ -1747,8 +1747,8 @@ public class VisionPrescription extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PrismComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PrismComponent) dst);
       }
 
       public void copyValues(PrismComponent dst) {
@@ -2381,8 +2381,8 @@ public class VisionPrescription extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((VisionPrescription) b);
+      public void assignValues(Base dst) {
+        copyValues((VisionPrescription) dst);
       }
 
       public void copyValues(VisionPrescription dst) {

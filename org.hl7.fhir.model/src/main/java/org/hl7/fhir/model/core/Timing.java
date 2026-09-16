@@ -2186,8 +2186,8 @@ public class Timing extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TimingRepeatComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TimingRepeatComponent) dst, options);
       }
 
       public void copyValues(TimingRepeatComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2595,8 +2595,8 @@ public class Timing extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Timing) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Timing) dst, options);
       }
 
       public void copyValues(Timing dst, EnumSet<CopyObjectOptions> options) {

@@ -167,8 +167,8 @@ public class PARTY_IDENTITY extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PARTY_IDENTITY) b);
+      public void assignValues(Base dst) {
+        copyValues((PARTY_IDENTITY) dst);
       }
 
       public void copyValues(PARTY_IDENTITY dst) {

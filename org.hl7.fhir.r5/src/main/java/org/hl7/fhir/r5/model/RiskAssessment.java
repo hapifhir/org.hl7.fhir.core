@@ -554,8 +554,8 @@ public class RiskAssessment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RiskAssessmentPredictionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RiskAssessmentPredictionComponent) dst);
       }
 
       public void copyValues(RiskAssessmentPredictionComponent dst) {
@@ -1671,8 +1671,8 @@ public class RiskAssessment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RiskAssessment) b);
+      public void assignValues(Base dst) {
+        copyValues((RiskAssessment) dst);
       }
 
       public void copyValues(RiskAssessment dst) {

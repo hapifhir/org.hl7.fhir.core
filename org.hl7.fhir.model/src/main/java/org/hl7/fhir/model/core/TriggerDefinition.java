@@ -880,8 +880,8 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TriggerDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TriggerDefinition) dst, options);
       }
 
       public void copyValues(TriggerDefinition dst, EnumSet<CopyObjectOptions> options) {

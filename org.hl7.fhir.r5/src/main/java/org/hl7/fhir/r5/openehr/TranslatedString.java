@@ -267,8 +267,8 @@ public class TranslatedString extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TranslatedString) b);
+      public void assignValues(Base dst) {
+        copyValues((TranslatedString) dst);
       }
 
       public void copyValues(TranslatedString dst) {

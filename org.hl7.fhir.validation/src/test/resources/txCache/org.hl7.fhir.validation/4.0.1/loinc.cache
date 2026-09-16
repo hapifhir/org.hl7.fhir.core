@@ -5568,3 +5568,98 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA20276-4",
+  "display" : "Incorrect patient"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA20276-4",
+        "display" : "Incorrect patient"
+      },
+      {
+        "code" : "LA20302-8",
+        "display" : "Incorrect medication/substance"
+      },
+      {
+        "code" : "LA20303-6",
+        "display" : "Incorrect dose(s)"
+      },
+      {
+        "code" : "LA20304-4",
+        "display" : "Incorrect route of administration"
+      },
+      {
+        "code" : "LA20305-1",
+        "display" : "Incorrect timing"
+      },
+      {
+        "code" : "LA20306-9",
+        "display" : "Incorrect rate"
+      },
+      {
+        "code" : "LA20307-7",
+        "display" : "Incorrect duration of administration or course of therapy"
+      },
+      {
+        "code" : "LA20308-5",
+        "display" : "Incorrect dosage form (e.g., sustained release instead of immediate release)"
+      },
+      {
+        "code" : "LA20309-3",
+        "display" : "Incorrect strength or concentration"
+      },
+      {
+        "code" : "LA20310-1",
+        "display" : "Incorrect preparation, including inappropriate cutting of tablets, error in compounding, mixing, etc."
+      },
+      {
+        "code" : "LA20311-9",
+        "display" : "Expired or deteriorated medication/substance"
+      },
+      {
+        "code" : "LA20312-7",
+        "display" : "Medication/substance that is known to be an allergen to the patient"
+      },
+      {
+        "code" : "LA20345-7",
+        "display" : "Medication/substance that is known to be contraindicated for the patient"
+      },
+      {
+        "code" : "LA20313-5",
+        "display" : "Incorrect patient/family action (e.g., self-administration error)"
+      },
+      {
+        "code" : "LA20318-4",
+        "display" : "Other: PLEASE SPECIFY"
+      }]
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Incorrect patient",
+  "code" : "LA20276-4",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n3ms unknown-valueset: Analysing undefined for validation purposes\n3ms unknown-valueset: Parameters: disp-lang=en-US, generate-narrative, default-to-latest\n3ms unknown-valueset: Prepare include[0]: \"(http://loinc.org)(LA20276-4,LA20302-8,LA20303-6,LA20304-4,LA20305-1,LA20306-9,LA20307-7,LA20308-5,LA20309-3,LA20310-1,LA20311-9,LA20312-7,LA20345-7,LA20313-5,LA20318-4)\"\n6ms unknown-valueset: CodeSystem found: \"http://loinc.org|2.82\"\n7ms unknown-valueset: Validate \"[http://loinc.org#LA20276-4 (\"Incorrect patient\")]\"\n9ms unknown-valueset: Check \"http://loinc.org#LA20276-4\"\n15ms unknown-valueset: CodeSystem found: http://loinc.org|2.82 for http://loinc.org\n15ms unknown-valueset: check code in (http://loinc.org)(LA20276-4,LA20302-8,LA20303-6,LA20304-4,LA20305-1,LA20306-9,LA20307-7,LA20308-5,LA20309-3,LA20310-1,LA20311-9,LA20312-7,LA20345-7,LA20313-5,LA20318-4) at Coding\n15ms unknown-valueset: Code \"LA20276-4\" found in http://loinc.org|2.82",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

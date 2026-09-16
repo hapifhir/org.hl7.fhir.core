@@ -1507,8 +1507,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ElementDefinitionSlicingComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionSlicingComponent) dst, options);
       }
 
       public void copyValues(ElementDefinitionSlicingComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1853,8 +1853,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ElementDefinitionSlicingDiscriminatorComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionSlicingDiscriminatorComponent) dst, options);
       }
 
       public void copyValues(ElementDefinitionSlicingDiscriminatorComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2224,8 +2224,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ElementDefinitionBaseComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionBaseComponent) dst, options);
       }
 
       public void copyValues(ElementDefinitionBaseComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2771,8 +2771,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TypeRefComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TypeRefComponent) dst, options);
       }
 
       public void copyValues(TypeRefComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4250,8 +4250,8 @@ public boolean hasTarget() {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ElementDefinitionExampleComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionExampleComponent) dst, options);
       }
 
       public void copyValues(ElementDefinitionExampleComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4920,8 +4920,8 @@ public boolean hasTarget() {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ElementDefinitionConstraintComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionConstraintComponent) dst, options);
       }
 
       public void copyValues(ElementDefinitionConstraintComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5390,8 +5390,8 @@ public boolean hasTarget() {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ElementDefinitionBindingComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionBindingComponent) dst, options);
       }
 
       public void copyValues(ElementDefinitionBindingComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6088,8 +6088,8 @@ public boolean hasTarget() {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ElementDefinitionBindingAdditionalComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionBindingAdditionalComponent) dst, options);
       }
 
       public void copyValues(ElementDefinitionBindingAdditionalComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6562,8 +6562,8 @@ public boolean hasTarget() {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ElementDefinitionMappingComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionMappingComponent) dst, options);
       }
 
       public void copyValues(ElementDefinitionMappingComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -12941,8 +12941,8 @@ public boolean hasTarget() {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ElementDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinition) dst, options);
       }
 
       public void copyValues(ElementDefinition dst, EnumSet<CopyObjectOptions> options) {

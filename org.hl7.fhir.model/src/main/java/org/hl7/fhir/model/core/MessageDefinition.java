@@ -704,8 +704,8 @@ public class MessageDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MessageDefinitionFocusComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageDefinitionFocusComponent) dst, options);
       }
 
       public void copyValues(MessageDefinitionFocusComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1008,8 +1008,8 @@ public class MessageDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MessageDefinitionAllowedResponseComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageDefinitionAllowedResponseComponent) dst, options);
       }
 
       public void copyValues(MessageDefinitionAllowedResponseComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3084,8 +3084,8 @@ public class MessageDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MessageDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageDefinition) dst, options);
       }
 
       public void copyValues(MessageDefinition dst, EnumSet<CopyObjectOptions> options) {

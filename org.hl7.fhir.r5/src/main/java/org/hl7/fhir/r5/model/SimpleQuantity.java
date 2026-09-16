@@ -51,8 +51,8 @@ public class SimpleQuantity extends Quantity {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SimpleQuantity) b);
+      public void assignValues(Base dst) {
+        copyValues((SimpleQuantity) dst);
       }
 
       public void copyValues(SimpleQuantity dst) {

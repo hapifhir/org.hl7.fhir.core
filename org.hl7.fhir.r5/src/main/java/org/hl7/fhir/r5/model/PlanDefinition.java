@@ -560,8 +560,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanDefinitionGoalComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanDefinitionGoalComponent) dst);
       }
 
       public void copyValues(PlanDefinitionGoalComponent dst) {
@@ -979,8 +979,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanDefinitionGoalTargetComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanDefinitionGoalTargetComponent) dst);
       }
 
       public void copyValues(PlanDefinitionGoalTargetComponent dst) {
@@ -1328,8 +1328,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanDefinitionActorComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanDefinitionActorComponent) dst);
       }
 
       public void copyValues(PlanDefinitionActorComponent dst) {
@@ -1698,8 +1698,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanDefinitionActorOptionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanDefinitionActorOptionComponent) dst);
       }
 
       public void copyValues(PlanDefinitionActorOptionComponent dst) {
@@ -3984,8 +3984,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanDefinitionActionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanDefinitionActionComponent) dst);
       }
 
       public void copyValues(PlanDefinitionActionComponent dst) {
@@ -4323,8 +4323,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanDefinitionActionConditionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanDefinitionActionConditionComponent) dst);
       }
 
       public void copyValues(PlanDefinitionActionConditionComponent dst) {
@@ -4634,8 +4634,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanDefinitionActionInputComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanDefinitionActionInputComponent) dst);
       }
 
       public void copyValues(PlanDefinitionActionInputComponent dst) {
@@ -4948,8 +4948,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanDefinitionActionOutputComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanDefinitionActionOutputComponent) dst);
       }
 
       public void copyValues(PlanDefinitionActionOutputComponent dst) {
@@ -5377,8 +5377,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanDefinitionActionRelatedActionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanDefinitionActionRelatedActionComponent) dst);
       }
 
       public void copyValues(PlanDefinitionActionRelatedActionComponent dst) {
@@ -5865,8 +5865,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanDefinitionActionParticipantComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanDefinitionActionParticipantComponent) dst);
       }
 
       public void copyValues(PlanDefinitionActionParticipantComponent dst) {
@@ -6113,8 +6113,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanDefinitionActionDynamicValueComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanDefinitionActionDynamicValueComponent) dst);
       }
 
       public void copyValues(PlanDefinitionActionDynamicValueComponent dst) {
@@ -8802,8 +8802,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanDefinition) dst);
       }
 
       public void copyValues(PlanDefinition dst) {

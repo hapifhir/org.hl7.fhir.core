@@ -468,8 +468,8 @@ public class ResearchSubject extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ResearchSubjectProgressComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ResearchSubjectProgressComponent) dst);
       }
 
       public void copyValues(ResearchSubjectProgressComponent dst) {
@@ -1189,8 +1189,8 @@ public class ResearchSubject extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ResearchSubject) b);
+      public void assignValues(Base dst) {
+        copyValues((ResearchSubject) dst);
       }
 
       public void copyValues(ResearchSubject dst) {

@@ -70,8 +70,8 @@ public class Duration extends Quantity implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Duration) b);
+      public void assignValues(Base dst) {
+        copyValues((Duration) dst);
       }
 
       public void copyValues(Duration dst) {

@@ -372,8 +372,8 @@ public class ManufacturedItemDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ManufacturedItemDefinitionPropertyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ManufacturedItemDefinitionPropertyComponent) dst);
       }
 
       public void copyValues(ManufacturedItemDefinitionPropertyComponent dst) {
@@ -924,8 +924,8 @@ public class ManufacturedItemDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ManufacturedItemDefinitionComponentComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ManufacturedItemDefinitionComponentComponent) dst);
       }
 
       public void copyValues(ManufacturedItemDefinitionComponentComponent dst) {
@@ -1373,8 +1373,8 @@ public class ManufacturedItemDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ManufacturedItemDefinitionComponentConstituentComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ManufacturedItemDefinitionComponentConstituentComponent) dst);
       }
 
       public void copyValues(ManufacturedItemDefinitionComponentConstituentComponent dst) {
@@ -2216,8 +2216,8 @@ public class ManufacturedItemDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ManufacturedItemDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((ManufacturedItemDefinition) dst);
       }
 
       public void copyValues(ManufacturedItemDefinition dst) {

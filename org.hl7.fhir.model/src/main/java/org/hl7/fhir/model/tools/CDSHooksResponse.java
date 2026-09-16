@@ -1169,8 +1169,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHooksResponseCardsComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsComponent) dst, options);
       }
 
       public void copyValues(CDSHooksResponseCardsComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1572,8 +1572,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHooksResponseCardsSourceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsSourceComponent) dst, options);
       }
 
       public void copyValues(CDSHooksResponseCardsSourceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1977,8 +1977,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHooksResponseCardsSuggestionsComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsSuggestionsComponent) dst, options);
       }
 
       public void copyValues(CDSHooksResponseCardsSuggestionsComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2361,8 +2361,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHooksResponseCardsSuggestionsActionsComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsSuggestionsActionsComponent) dst, options);
       }
 
       public void copyValues(CDSHooksResponseCardsSuggestionsActionsComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2767,8 +2767,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHooksResponseCardsLinksComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsLinksComponent) dst, options);
       }
 
       public void copyValues(CDSHooksResponseCardsLinksComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3036,8 +3036,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHooksResponse) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponse) dst, options);
       }
 
       public void copyValues(CDSHooksResponse dst, EnumSet<CopyObjectOptions> options) {

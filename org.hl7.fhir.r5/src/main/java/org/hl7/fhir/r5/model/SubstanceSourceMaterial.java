@@ -252,8 +252,8 @@ public class SubstanceSourceMaterial extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceSourceMaterialFractionDescriptionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceSourceMaterialFractionDescriptionComponent) dst);
       }
 
       public void copyValues(SubstanceSourceMaterialFractionDescriptionComponent dst) {
@@ -803,8 +803,8 @@ public class SubstanceSourceMaterial extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceSourceMaterialOrganismComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceSourceMaterialOrganismComponent) dst);
       }
 
       public void copyValues(SubstanceSourceMaterialOrganismComponent dst) {
@@ -1057,8 +1057,8 @@ public class SubstanceSourceMaterial extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceSourceMaterialOrganismAuthorComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceSourceMaterialOrganismAuthorComponent) dst);
       }
 
       public void copyValues(SubstanceSourceMaterialOrganismAuthorComponent dst) {
@@ -1512,8 +1512,8 @@ public class SubstanceSourceMaterial extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceSourceMaterialOrganismHybridComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceSourceMaterialOrganismHybridComponent) dst);
       }
 
       public void copyValues(SubstanceSourceMaterialOrganismHybridComponent dst) {
@@ -1830,8 +1830,8 @@ public class SubstanceSourceMaterial extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceSourceMaterialOrganismOrganismGeneralComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceSourceMaterialOrganismOrganismGeneralComponent) dst);
       }
 
       public void copyValues(SubstanceSourceMaterialOrganismOrganismGeneralComponent dst) {
@@ -2050,8 +2050,8 @@ public class SubstanceSourceMaterial extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceSourceMaterialPartDescriptionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceSourceMaterialPartDescriptionComponent) dst);
       }
 
       public void copyValues(SubstanceSourceMaterialPartDescriptionComponent dst) {
@@ -2994,8 +2994,8 @@ public class SubstanceSourceMaterial extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceSourceMaterial) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceSourceMaterial) dst);
       }
 
       public void copyValues(SubstanceSourceMaterial dst) {

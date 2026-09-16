@@ -446,8 +446,8 @@ public abstract class PATHABLE extends Any implements ICompositeType {
 
       public abstract PATHABLE copy();
 
-      public void assign(Base b) {
-        copyValues((PATHABLE) b);
+      public void assignValues(Base dst) {
+        copyValues((PATHABLE) dst);
       }
 
       public void copyValues(PATHABLE dst) {

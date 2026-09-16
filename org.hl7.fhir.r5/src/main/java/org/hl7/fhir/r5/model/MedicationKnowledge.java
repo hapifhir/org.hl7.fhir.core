@@ -379,8 +379,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeRelatedMedicationKnowledgeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeRelatedMedicationKnowledgeComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeRelatedMedicationKnowledgeComponent dst) {
@@ -599,8 +599,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeMonographComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeMonographComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeMonographComponent dst) {
@@ -1006,8 +1006,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeCostComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeCostComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeCostComponent dst) {
@@ -1254,8 +1254,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeMonitoringProgramComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeMonitoringProgramComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeMonitoringProgramComponent dst) {
@@ -1526,8 +1526,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeIndicationGuidelineComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeIndicationGuidelineComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeIndicationGuidelineComponent dst) {
@@ -1902,8 +1902,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent dst) {
@@ -2168,8 +2168,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent dst) {
@@ -2451,8 +2451,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent dst) {
@@ -2785,8 +2785,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeMedicineClassificationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeMedicineClassificationComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeMedicineClassificationComponent dst) {
@@ -3036,8 +3036,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgePackagingComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgePackagingComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgePackagingComponent dst) {
@@ -3431,8 +3431,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeStorageGuidelineComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeStorageGuidelineComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeStorageGuidelineComponent dst) {
@@ -3723,8 +3723,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent dst) {
@@ -4097,8 +4097,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeRegulatoryComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeRegulatoryComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeRegulatoryComponent dst) {
@@ -4354,8 +4354,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeRegulatorySubstitutionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeRegulatorySubstitutionComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeRegulatorySubstitutionComponent dst) {
@@ -4578,8 +4578,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeRegulatoryMaxDispenseComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeRegulatoryMaxDispenseComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeRegulatoryMaxDispenseComponent dst) {
@@ -5049,8 +5049,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeDefinitionalComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeDefinitionalComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeDefinitionalComponent dst) {
@@ -5399,8 +5399,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeDefinitionalIngredientComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeDefinitionalIngredientComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeDefinitionalIngredientComponent dst) {
@@ -5713,8 +5713,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledgeDefinitionalDrugCharacteristicComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeDefinitionalDrugCharacteristicComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeDefinitionalDrugCharacteristicComponent dst) {
@@ -7259,8 +7259,8 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationKnowledge) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledge) dst);
       }
 
       public void copyValues(MedicationKnowledge dst) {

@@ -425,8 +425,8 @@ public class Account extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CoverageComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CoverageComponent) dst, options);
       }
 
       public void copyValues(CoverageComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -968,8 +968,8 @@ public class Account extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((GuarantorComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((GuarantorComponent) dst, options);
       }
 
       public void copyValues(GuarantorComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1558,8 +1558,8 @@ public class Account extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AccountDiagnosisComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AccountDiagnosisComponent) dst, options);
       }
 
       public void copyValues(AccountDiagnosisComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2152,8 +2152,8 @@ public class Account extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AccountProcedureComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AccountProcedureComponent) dst, options);
       }
 
       public void copyValues(AccountProcedureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2561,8 +2561,8 @@ public class Account extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AccountBalanceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AccountBalanceComponent) dst, options);
       }
 
       public void copyValues(AccountBalanceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3928,8 +3928,8 @@ public class Account extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Account) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Account) dst, options);
       }
 
       public void copyValues(Account dst, EnumSet<CopyObjectOptions> options) {

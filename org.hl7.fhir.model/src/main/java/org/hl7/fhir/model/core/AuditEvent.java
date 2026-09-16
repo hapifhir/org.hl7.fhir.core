@@ -626,8 +626,8 @@ public class AuditEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AuditEventOutcomeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AuditEventOutcomeComponent) dst, options);
       }
 
       public void copyValues(AuditEventOutcomeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1343,8 +1343,8 @@ public class AuditEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AuditEventAgentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AuditEventAgentComponent) dst, options);
       }
 
       public void copyValues(AuditEventAgentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1707,8 +1707,8 @@ public class AuditEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AuditEventSourceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AuditEventSourceComponent) dst, options);
       }
 
       public void copyValues(AuditEventSourceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2330,8 +2330,8 @@ public class AuditEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AuditEventEntityComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AuditEventEntityComponent) dst, options);
       }
 
       public void copyValues(AuditEventEntityComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2831,8 +2831,8 @@ public class AuditEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AuditEventEntityDetailComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AuditEventEntityDetailComponent) dst, options);
       }
 
       public void copyValues(AuditEventEntityDetailComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3932,8 +3932,8 @@ public class AuditEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AuditEvent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AuditEvent) dst, options);
       }
 
       public void copyValues(AuditEvent dst, EnumSet<CopyObjectOptions> options) {

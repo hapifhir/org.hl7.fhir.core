@@ -533,8 +533,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CoverageEligibilityResponseEventComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CoverageEligibilityResponseEventComponent) dst);
       }
 
       public void copyValues(CoverageEligibilityResponseEventComponent dst) {
@@ -899,8 +899,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InsuranceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InsuranceComponent) dst);
       }
 
       public void copyValues(InsuranceComponent dst) {
@@ -1890,8 +1890,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ItemsComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ItemsComponent) dst);
       }
 
       public void copyValues(ItemsComponent dst) {
@@ -2305,8 +2305,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((BenefitComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((BenefitComponent) dst);
       }
 
       public void copyValues(BenefitComponent dst) {
@@ -2568,8 +2568,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ErrorsComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ErrorsComponent) dst);
       }
 
       public void copyValues(ErrorsComponent dst) {
@@ -3767,8 +3767,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CoverageEligibilityResponse) b);
+      public void assignValues(Base dst) {
+        copyValues((CoverageEligibilityResponse) dst);
       }
 
       public void copyValues(CoverageEligibilityResponse dst) {

@@ -378,8 +378,8 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((IngredientManufacturerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((IngredientManufacturerComponent) dst);
       }
 
       public void copyValues(IngredientManufacturerComponent dst) {
@@ -631,8 +631,8 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((IngredientSubstanceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((IngredientSubstanceComponent) dst);
       }
 
       public void copyValues(IngredientSubstanceComponent dst) {
@@ -1412,8 +1412,8 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((IngredientSubstanceStrengthComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((IngredientSubstanceStrengthComponent) dst);
       }
 
       public void copyValues(IngredientSubstanceStrengthComponent dst) {
@@ -1861,8 +1861,8 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((IngredientSubstanceStrengthReferenceStrengthComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((IngredientSubstanceStrengthReferenceStrengthComponent) dst);
       }
 
       public void copyValues(IngredientSubstanceStrengthReferenceStrengthComponent dst) {
@@ -2628,8 +2628,8 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Ingredient) b);
+      public void assignValues(Base dst) {
+        copyValues((Ingredient) dst);
       }
 
       public void copyValues(Ingredient dst) {

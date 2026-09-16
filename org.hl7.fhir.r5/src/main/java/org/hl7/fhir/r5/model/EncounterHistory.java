@@ -237,8 +237,8 @@ public class EncounterHistory extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EncounterHistoryLocationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EncounterHistoryLocationComponent) dst);
       }
 
       public void copyValues(EncounterHistoryLocationComponent dst) {
@@ -1170,8 +1170,8 @@ public class EncounterHistory extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EncounterHistory) b);
+      public void assignValues(Base dst) {
+        copyValues((EncounterHistory) dst);
       }
 
       public void copyValues(EncounterHistory dst) {

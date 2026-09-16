@@ -561,8 +561,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CoverageEligibilityResponseEventComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CoverageEligibilityResponseEventComponent) dst, options);
       }
 
       public void copyValues(CoverageEligibilityResponseEventComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -956,8 +956,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((InsuranceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((InsuranceComponent) dst, options);
       }
 
       public void copyValues(InsuranceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2023,8 +2023,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ItemsComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ItemsComponent) dst, options);
       }
 
       public void copyValues(ItemsComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2505,8 +2505,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((BenefitComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((BenefitComponent) dst, options);
       }
 
       public void copyValues(BenefitComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2788,8 +2788,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ErrorsComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ErrorsComponent) dst, options);
       }
 
       public void copyValues(ErrorsComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4126,8 +4126,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CoverageEligibilityResponse) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CoverageEligibilityResponse) dst, options);
       }
 
       public void copyValues(CoverageEligibilityResponse dst, EnumSet<CopyObjectOptions> options) {

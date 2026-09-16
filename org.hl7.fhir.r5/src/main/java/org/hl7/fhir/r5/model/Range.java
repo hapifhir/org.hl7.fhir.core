@@ -228,8 +228,8 @@ public class Range extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Range) b);
+      public void assignValues(Base dst) {
+        copyValues((Range) dst);
       }
 
       public void copyValues(Range dst) {

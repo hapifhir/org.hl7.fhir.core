@@ -859,8 +859,8 @@ public class NamingSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NamingSystemUniqueIdComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NamingSystemUniqueIdComponent) dst, options);
       }
 
       public void copyValues(NamingSystemUniqueIdComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3323,8 +3323,8 @@ public class NamingSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NamingSystem) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NamingSystem) dst, options);
       }
 
       public void copyValues(NamingSystem dst, EnumSet<CopyObjectOptions> options) {

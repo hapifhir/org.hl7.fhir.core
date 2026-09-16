@@ -219,8 +219,8 @@ public class DV_COUNT extends DV_AMOUNT implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_COUNT) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_COUNT) dst);
       }
 
       public void copyValues(DV_COUNT dst) {

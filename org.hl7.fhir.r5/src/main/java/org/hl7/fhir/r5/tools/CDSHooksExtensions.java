@@ -183,8 +183,8 @@ public class CDSHooksExtensions extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CDSHooksExtensions) b);
+      public void assignValues(Base dst) {
+        copyValues((CDSHooksExtensions) dst);
       }
 
       public void copyValues(CDSHooksExtensions dst) {

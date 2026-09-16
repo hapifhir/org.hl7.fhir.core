@@ -311,8 +311,8 @@ public class DeviceAssociation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceAssociationOperationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceAssociationOperationComponent) dst);
       }
 
       public void copyValues(DeviceAssociationOperationComponent dst) {
@@ -989,8 +989,8 @@ public class DeviceAssociation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceAssociation) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceAssociation) dst);
       }
 
       public void copyValues(DeviceAssociation dst) {

@@ -181,8 +181,8 @@ public class PARTY_RELATED extends PARTY_IDENTIFIED implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PARTY_RELATED) b);
+      public void assignValues(Base dst) {
+        copyValues((PARTY_RELATED) dst);
       }
 
       public void copyValues(PARTY_RELATED dst) {

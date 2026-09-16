@@ -465,8 +465,8 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdverseEventParticipantComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventParticipantComponent) dst);
       }
 
       public void copyValues(AdverseEventParticipantComponent dst) {
@@ -724,8 +724,8 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdverseEventSuspectEntityComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventSuspectEntityComponent) dst);
       }
 
       public void copyValues(AdverseEventSuspectEntityComponent dst) {
@@ -989,8 +989,8 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdverseEventSuspectEntityCausalityComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventSuspectEntityCausalityComponent) dst);
       }
 
       public void copyValues(AdverseEventSuspectEntityCausalityComponent dst) {
@@ -1205,8 +1205,8 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdverseEventContributingFactorComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventContributingFactorComponent) dst);
       }
 
       public void copyValues(AdverseEventContributingFactorComponent dst) {
@@ -1417,8 +1417,8 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdverseEventPreventiveActionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventPreventiveActionComponent) dst);
       }
 
       public void copyValues(AdverseEventPreventiveActionComponent dst) {
@@ -1629,8 +1629,8 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdverseEventMitigatingActionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventMitigatingActionComponent) dst);
       }
 
       public void copyValues(AdverseEventMitigatingActionComponent dst) {
@@ -1841,8 +1841,8 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdverseEventSupportingInfoComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventSupportingInfoComponent) dst);
       }
 
       public void copyValues(AdverseEventSupportingInfoComponent dst) {
@@ -3614,8 +3614,8 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdverseEvent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdverseEvent) dst);
       }
 
       public void copyValues(AdverseEvent dst) {

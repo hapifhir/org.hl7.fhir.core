@@ -86,8 +86,8 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
   }
 
   @Override
-  public void assign(Base b) {
-    copyValues((Base64BinaryType) b);
+  public void assignValues(Base dst) {
+    copyValues((Base64BinaryType) dst);
   }
 
   /**

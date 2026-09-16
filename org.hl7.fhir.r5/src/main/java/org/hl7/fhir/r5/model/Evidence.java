@@ -479,8 +479,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceVariableDefinitionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceVariableDefinitionComponent) dst);
       }
 
       public void copyValues(EvidenceVariableDefinitionComponent dst) {
@@ -1231,8 +1231,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceStatisticComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceStatisticComponent) dst);
       }
 
       public void copyValues(EvidenceStatisticComponent dst) {
@@ -1727,8 +1727,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceStatisticSampleSizeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceStatisticSampleSizeComponent) dst);
       }
 
       public void copyValues(EvidenceStatisticSampleSizeComponent dst) {
@@ -2313,8 +2313,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceStatisticAttributeEstimateComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceStatisticAttributeEstimateComponent) dst);
       }
 
       public void copyValues(EvidenceStatisticAttributeEstimateComponent dst) {
@@ -2704,8 +2704,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceStatisticModelCharacteristicComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceStatisticModelCharacteristicComponent) dst);
       }
 
       public void copyValues(EvidenceStatisticModelCharacteristicComponent dst) {
@@ -3193,8 +3193,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceStatisticModelCharacteristicVariableComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceStatisticModelCharacteristicVariableComponent) dst);
       }
 
       public void copyValues(EvidenceStatisticModelCharacteristicVariableComponent dst) {
@@ -3721,8 +3721,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceCertaintyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceCertaintyComponent) dst);
       }
 
       public void copyValues(EvidenceCertaintyComponent dst) {
@@ -6213,8 +6213,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Evidence) b);
+      public void assignValues(Base dst) {
+        copyValues((Evidence) dst);
       }
 
       public void copyValues(Evidence dst) {

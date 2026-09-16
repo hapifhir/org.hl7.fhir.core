@@ -200,8 +200,8 @@ public class ITEM_TABLE extends ITEM_STRUCTURE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ITEM_TABLE) b);
+      public void assignValues(Base dst) {
+        copyValues((ITEM_TABLE) dst);
       }
 
       public void copyValues(ITEM_TABLE dst) {

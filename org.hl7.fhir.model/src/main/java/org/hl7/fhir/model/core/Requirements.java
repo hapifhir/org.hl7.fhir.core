@@ -454,8 +454,8 @@ public class Requirements extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RequirementsImportsComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequirementsImportsComponent) dst, options);
       }
 
       public void copyValues(RequirementsImportsComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -751,8 +751,8 @@ public class Requirements extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RequirementsActorComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequirementsActorComponent) dst, options);
       }
 
       public void copyValues(RequirementsActorComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1770,8 +1770,8 @@ public class Requirements extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RequirementsStatementComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequirementsStatementComponent) dst, options);
       }
 
       public void copyValues(RequirementsStatementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2137,8 +2137,8 @@ public class Requirements extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RequirementsStatementDerivedFromComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequirementsStatementDerivedFromComponent) dst, options);
       }
 
       public void copyValues(RequirementsStatementDerivedFromComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2430,8 +2430,8 @@ public class Requirements extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RequirementsStatementPartOfComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequirementsStatementPartOfComponent) dst, options);
       }
 
       public void copyValues(RequirementsStatementPartOfComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4257,8 +4257,8 @@ public class Requirements extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Requirements) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Requirements) dst, options);
       }
 
       public void copyValues(Requirements dst, EnumSet<CopyObjectOptions> options) {

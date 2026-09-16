@@ -540,8 +540,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NutritionOrderOralDietComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderOralDietComponent) dst, options);
       }
 
       public void copyValues(NutritionOrderOralDietComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -903,8 +903,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((OralDietScheduleComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((OralDietScheduleComponent) dst, options);
       }
 
       public void copyValues(OralDietScheduleComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1152,8 +1152,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NutritionOrderOralDietNutrientComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderOralDietNutrientComponent) dst, options);
       }
 
       public void copyValues(NutritionOrderOralDietNutrientComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1392,8 +1392,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NutritionOrderOralDietTextureComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderOralDietTextureComponent) dst, options);
       }
 
       public void copyValues(NutritionOrderOralDietTextureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1891,8 +1891,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NutritionOrderSupplementComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderSupplementComponent) dst, options);
       }
 
       public void copyValues(NutritionOrderSupplementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2243,8 +2243,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SupplementScheduleComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SupplementScheduleComponent) dst, options);
       }
 
       public void copyValues(SupplementScheduleComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2955,8 +2955,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NutritionOrderEnteralFormulaComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderEnteralFormulaComponent) dst, options);
       }
 
       public void copyValues(NutritionOrderEnteralFormulaComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3324,8 +3324,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NutritionOrderEnteralFormulaAdministrationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderEnteralFormulaAdministrationComponent) dst, options);
       }
 
       public void copyValues(NutritionOrderEnteralFormulaAdministrationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3662,8 +3662,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EnteralFormulaScheduleComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EnteralFormulaScheduleComponent) dst, options);
       }
 
       public void copyValues(EnteralFormulaScheduleComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4062,8 +4062,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NutritionOrderAdditiveComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderAdditiveComponent) dst, options);
       }
 
       public void copyValues(NutritionOrderAdditiveComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5651,8 +5651,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NutritionOrder) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrder) dst, options);
       }
 
       public void copyValues(NutritionOrder dst, EnumSet<CopyObjectOptions> options) {

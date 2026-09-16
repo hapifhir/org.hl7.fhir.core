@@ -704,8 +704,8 @@ public class Task extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TaskPerformerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TaskPerformerComponent) dst);
       }
 
       public void copyValues(TaskPerformerComponent dst) {
@@ -1015,8 +1015,8 @@ public class Task extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TaskRestrictionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TaskRestrictionComponent) dst);
       }
 
       public void copyValues(TaskRestrictionComponent dst) {
@@ -2322,8 +2322,8 @@ public class Task extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TaskInputComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TaskInputComponent) dst);
       }
 
       public void copyValues(TaskInputComponent dst) {
@@ -3622,8 +3622,8 @@ public class Task extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TaskOutputComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TaskOutputComponent) dst);
       }
 
       public void copyValues(TaskOutputComponent dst) {
@@ -5834,8 +5834,8 @@ public class Task extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Task) b);
+      public void assignValues(Base dst) {
+        copyValues((Task) dst);
       }
 
       public void copyValues(Task dst) {

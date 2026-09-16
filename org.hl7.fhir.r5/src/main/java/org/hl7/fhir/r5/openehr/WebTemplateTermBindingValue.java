@@ -267,8 +267,8 @@ public class WebTemplateTermBindingValue extends LogicalBase implements IComposi
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((WebTemplateTermBindingValue) b);
+      public void assignValues(Base dst) {
+        copyValues((WebTemplateTermBindingValue) dst);
       }
 
       public void copyValues(WebTemplateTermBindingValue dst) {

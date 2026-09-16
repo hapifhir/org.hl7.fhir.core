@@ -1003,8 +1003,8 @@ public class ImmunizationRecommendation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImmunizationRecommendationRecommendationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ImmunizationRecommendationRecommendationComponent) dst);
       }
 
       public void copyValues(ImmunizationRecommendationRecommendationComponent dst) {
@@ -1296,8 +1296,8 @@ public class ImmunizationRecommendation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImmunizationRecommendationRecommendationDateCriterionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ImmunizationRecommendationRecommendationDateCriterionComponent) dst);
       }
 
       public void copyValues(ImmunizationRecommendationRecommendationDateCriterionComponent dst) {
@@ -1742,8 +1742,8 @@ public class ImmunizationRecommendation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImmunizationRecommendation) b);
+      public void assignValues(Base dst) {
+        copyValues((ImmunizationRecommendation) dst);
       }
 
       public void copyValues(ImmunizationRecommendation dst) {

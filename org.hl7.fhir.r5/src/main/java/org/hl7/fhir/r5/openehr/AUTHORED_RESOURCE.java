@@ -404,8 +404,8 @@ public abstract class AUTHORED_RESOURCE extends LogicalBase implements IComposit
 
       public abstract AUTHORED_RESOURCE copy();
 
-      public void assign(Base b) {
-        copyValues((AUTHORED_RESOURCE) b);
+      public void assignValues(Base dst) {
+        copyValues((AUTHORED_RESOURCE) dst);
       }
 
       public void copyValues(AUTHORED_RESOURCE dst) {

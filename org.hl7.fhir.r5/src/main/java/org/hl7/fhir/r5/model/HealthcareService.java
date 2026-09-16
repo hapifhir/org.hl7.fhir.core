@@ -252,8 +252,8 @@ public class HealthcareService extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((HealthcareServiceEligibilityComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((HealthcareServiceEligibilityComponent) dst);
       }
 
       public void copyValues(HealthcareServiceEligibilityComponent dst) {
@@ -2026,8 +2026,8 @@ public class HealthcareService extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((HealthcareService) b);
+      public void assignValues(Base dst) {
+        copyValues((HealthcareService) dst);
       }
 
       public void copyValues(HealthcareService dst) {

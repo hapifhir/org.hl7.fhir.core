@@ -841,8 +841,8 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TriggerDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((TriggerDefinition) dst);
       }
 
       public void copyValues(TriggerDefinition dst) {

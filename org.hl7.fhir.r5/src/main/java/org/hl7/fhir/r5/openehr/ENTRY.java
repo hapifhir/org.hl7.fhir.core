@@ -462,8 +462,8 @@ Generally only used when the recorder needs to make it explicit. Otherwise, Comp
 
       public abstract ENTRY copy();
 
-      public void assign(Base b) {
-        copyValues((ENTRY) b);
+      public void assignValues(Base dst) {
+        copyValues((ENTRY) dst);
       }
 
       public void copyValues(ENTRY dst) {

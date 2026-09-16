@@ -836,8 +836,8 @@ public class Flag extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Flag) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Flag) dst, options);
       }
 
       public void copyValues(Flag dst, EnumSet<CopyObjectOptions> options) {

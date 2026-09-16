@@ -744,8 +744,8 @@ public class CodeSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CodeSystemFilterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CodeSystemFilterComponent) dst);
       }
 
       public void copyValues(CodeSystemFilterComponent dst) {
@@ -1164,8 +1164,8 @@ public class CodeSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PropertyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PropertyComponent) dst);
       }
 
       public void copyValues(PropertyComponent dst) {
@@ -1733,8 +1733,8 @@ public class CodeSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConceptDefinitionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConceptDefinitionComponent) dst);
       }
 
       public void copyValues(ConceptDefinitionComponent dst) {
@@ -2152,8 +2152,8 @@ public class CodeSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConceptDefinitionDesignationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConceptDefinitionDesignationComponent) dst);
       }
 
       public void copyValues(ConceptDefinitionDesignationComponent dst) {
@@ -2540,8 +2540,8 @@ public class CodeSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConceptPropertyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConceptPropertyComponent) dst);
       }
 
       public void copyValues(ConceptPropertyComponent dst) {
@@ -5327,8 +5327,8 @@ public class CodeSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CodeSystem) b);
+      public void assignValues(Base dst) {
+        copyValues((CodeSystem) dst);
       }
 
       public void copyValues(CodeSystem dst) {

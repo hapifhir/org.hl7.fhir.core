@@ -1561,8 +1561,8 @@ public class GenomicStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GenomicStudyAnalysisComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((GenomicStudyAnalysisComponent) dst);
       }
 
       public void copyValues(GenomicStudyAnalysisComponent dst) {
@@ -1935,8 +1935,8 @@ public class GenomicStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GenomicStudyAnalysisInputComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((GenomicStudyAnalysisInputComponent) dst);
       }
 
       public void copyValues(GenomicStudyAnalysisInputComponent dst) {
@@ -2155,8 +2155,8 @@ public class GenomicStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GenomicStudyAnalysisOutputComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((GenomicStudyAnalysisOutputComponent) dst);
       }
 
       public void copyValues(GenomicStudyAnalysisOutputComponent dst) {
@@ -2371,8 +2371,8 @@ public class GenomicStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GenomicStudyAnalysisPerformerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((GenomicStudyAnalysisPerformerComponent) dst);
       }
 
       public void copyValues(GenomicStudyAnalysisPerformerComponent dst) {
@@ -2587,8 +2587,8 @@ public class GenomicStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GenomicStudyAnalysisDeviceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((GenomicStudyAnalysisDeviceComponent) dst);
       }
 
       public void copyValues(GenomicStudyAnalysisDeviceComponent dst) {
@@ -3743,8 +3743,8 @@ public class GenomicStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GenomicStudy) b);
+      public void assignValues(Base dst) {
+        copyValues((GenomicStudy) dst);
       }
 
       public void copyValues(GenomicStudy dst) {

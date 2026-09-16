@@ -228,8 +228,8 @@ public class CodeableReference extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CodeableReference) b);
+      public void assignValues(Base dst) {
+        copyValues((CodeableReference) dst);
       }
 
       public void copyValues(CodeableReference dst) {

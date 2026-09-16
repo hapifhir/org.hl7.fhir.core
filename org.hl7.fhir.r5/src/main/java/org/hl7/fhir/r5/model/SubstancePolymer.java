@@ -256,8 +256,8 @@ public class SubstancePolymer extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstancePolymerMonomerSetComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymerMonomerSetComponent) dst);
       }
 
       public void copyValues(SubstancePolymerMonomerSetComponent dst) {
@@ -592,8 +592,8 @@ public class SubstancePolymer extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstancePolymerMonomerSetStartingMaterialComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymerMonomerSetStartingMaterialComponent) dst);
       }
 
       public void copyValues(SubstancePolymerMonomerSetStartingMaterialComponent dst) {
@@ -911,8 +911,8 @@ public class SubstancePolymer extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstancePolymerRepeatComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymerRepeatComponent) dst);
       }
 
       public void copyValues(SubstancePolymerRepeatComponent dst) {
@@ -1375,8 +1375,8 @@ public class SubstancePolymer extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstancePolymerRepeatRepeatUnitComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymerRepeatRepeatUnitComponent) dst);
       }
 
       public void copyValues(SubstancePolymerRepeatRepeatUnitComponent dst) {
@@ -1759,8 +1759,8 @@ public class SubstancePolymer extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) dst);
       }
 
       public void copyValues(SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent dst) {
@@ -2098,8 +2098,8 @@ public class SubstancePolymer extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent) dst);
       }
 
       public void copyValues(SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent dst) {
@@ -2664,8 +2664,8 @@ public class SubstancePolymer extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstancePolymer) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymer) dst);
       }
 
       public void copyValues(SubstancePolymer dst) {

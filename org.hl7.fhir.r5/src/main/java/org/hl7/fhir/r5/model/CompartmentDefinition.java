@@ -506,8 +506,8 @@ public class CompartmentDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CompartmentDefinitionResourceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CompartmentDefinitionResourceComponent) dst);
       }
 
       public void copyValues(CompartmentDefinitionResourceComponent dst) {
@@ -1939,8 +1939,8 @@ public class CompartmentDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CompartmentDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((CompartmentDefinition) dst);
       }
 
       public void copyValues(CompartmentDefinition dst) {

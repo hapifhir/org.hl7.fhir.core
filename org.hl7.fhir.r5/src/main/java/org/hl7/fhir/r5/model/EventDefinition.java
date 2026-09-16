@@ -2318,8 +2318,8 @@ public class EventDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EventDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((EventDefinition) dst);
       }
 
       public void copyValues(EventDefinition dst) {

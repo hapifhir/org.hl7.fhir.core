@@ -897,8 +897,8 @@ public class SampledData extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SampledData) b);
+      public void assignValues(Base dst) {
+        copyValues((SampledData) dst);
       }
 
       public void copyValues(SampledData dst) {

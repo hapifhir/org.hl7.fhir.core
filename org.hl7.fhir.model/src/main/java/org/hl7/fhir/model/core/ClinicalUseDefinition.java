@@ -524,8 +524,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ClinicalUseDefinitionUndesirableEffectComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ClinicalUseDefinitionUndesirableEffectComponent) dst, options);
       }
 
       public void copyValues(ClinicalUseDefinitionUndesirableEffectComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1214,8 +1214,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ClinicalUseDefinitionIndicationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ClinicalUseDefinitionIndicationComponent) dst, options);
       }
 
       public void copyValues(ClinicalUseDefinitionIndicationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1512,8 +1512,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ClinicalUseDefinitionIndicationOtherTherapyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ClinicalUseDefinitionIndicationOtherTherapyComponent) dst, options);
       }
 
       public void copyValues(ClinicalUseDefinitionIndicationOtherTherapyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2101,8 +2101,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ClinicalUseDefinitionContraindicationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ClinicalUseDefinitionContraindicationComponent) dst, options);
       }
 
       public void copyValues(ClinicalUseDefinitionContraindicationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2637,8 +2637,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ClinicalUseDefinitionInteractionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ClinicalUseDefinitionInteractionComponent) dst, options);
       }
 
       public void copyValues(ClinicalUseDefinitionInteractionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2950,8 +2950,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ClinicalUseDefinitionInteractionInteractantComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ClinicalUseDefinitionInteractionInteractantComponent) dst, options);
       }
 
       public void copyValues(ClinicalUseDefinitionInteractionInteractantComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3213,8 +3213,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ClinicalUseDefinitionWarningComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ClinicalUseDefinitionWarningComponent) dst, options);
       }
 
       public void copyValues(ClinicalUseDefinitionWarningComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4129,8 +4129,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ClinicalUseDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ClinicalUseDefinition) dst, options);
       }
 
       public void copyValues(ClinicalUseDefinition dst, EnumSet<CopyObjectOptions> options) {

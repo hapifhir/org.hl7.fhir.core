@@ -736,8 +736,8 @@ public class MolecularSequence extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MolecularSequenceRelativeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MolecularSequenceRelativeComponent) dst);
       }
 
       public void copyValues(MolecularSequenceRelativeComponent dst) {
@@ -1350,8 +1350,8 @@ public class MolecularSequence extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MolecularSequenceRelativeStartingSequenceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MolecularSequenceRelativeStartingSequenceComponent) dst);
       }
 
       public void copyValues(MolecularSequenceRelativeStartingSequenceComponent dst) {
@@ -1757,8 +1757,8 @@ public class MolecularSequence extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MolecularSequenceRelativeEditComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MolecularSequenceRelativeEditComponent) dst);
       }
 
       public void copyValues(MolecularSequenceRelativeEditComponent dst) {
@@ -2521,8 +2521,8 @@ public class MolecularSequence extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MolecularSequence) b);
+      public void assignValues(Base dst) {
+        copyValues((MolecularSequence) dst);
       }
 
       public void copyValues(MolecularSequence dst) {

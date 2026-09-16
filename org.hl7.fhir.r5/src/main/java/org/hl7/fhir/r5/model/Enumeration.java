@@ -144,8 +144,8 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
 
   @SuppressWarnings("unchecked")
   @Override
-  public void assign(Base b) {
-    copyValues((Enumeration<T>) b);
+  public void assignValues(Base dst) {
+    copyValues((Enumeration<T>) dst);
   }
 
   /**

@@ -264,8 +264,8 @@ public class ServiceRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ServiceRequestOrderDetailComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ServiceRequestOrderDetailComponent) dst);
       }
 
       public void copyValues(ServiceRequestOrderDetailComponent dst) {
@@ -631,8 +631,8 @@ public class ServiceRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ServiceRequestOrderDetailParameterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ServiceRequestOrderDetailParameterComponent) dst);
       }
 
       public void copyValues(ServiceRequestOrderDetailParameterComponent dst) {
@@ -835,8 +835,8 @@ public class ServiceRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ServiceRequestPatientInstructionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ServiceRequestPatientInstructionComponent) dst);
       }
 
       public void copyValues(ServiceRequestPatientInstructionComponent dst) {
@@ -3312,8 +3312,8 @@ public class ServiceRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ServiceRequest) b);
+      public void assignValues(Base dst) {
+        copyValues((ServiceRequest) dst);
       }
 
       public void copyValues(ServiceRequest dst) {

@@ -397,8 +397,8 @@ public class Coverage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CoveragePaymentByComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CoveragePaymentByComponent) dst, options);
       }
 
       public void copyValues(CoveragePaymentByComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -778,8 +778,8 @@ public class Coverage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ClassComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ClassComponent) dst, options);
       }
 
       public void copyValues(ClassComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1351,8 +1351,8 @@ public class Coverage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CostToBeneficiaryComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CostToBeneficiaryComponent) dst, options);
       }
 
       public void copyValues(CostToBeneficiaryComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1628,8 +1628,8 @@ public class Coverage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ExceptionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExceptionComponent) dst, options);
       }
 
       public void copyValues(ExceptionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2993,8 +2993,8 @@ public class Coverage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Coverage) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Coverage) dst, options);
       }
 
       public void copyValues(Coverage dst, EnumSet<CopyObjectOptions> options) {

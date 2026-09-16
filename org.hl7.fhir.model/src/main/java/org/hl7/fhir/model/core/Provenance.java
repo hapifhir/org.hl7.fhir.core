@@ -549,8 +549,8 @@ public class Provenance extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ProvenanceAgentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ProvenanceAgentComponent) dst, options);
       }
 
       public void copyValues(ProvenanceAgentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -908,8 +908,8 @@ public class Provenance extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ProvenanceEntityComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ProvenanceEntityComponent) dst, options);
       }
 
       public void copyValues(ProvenanceEntityComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2039,8 +2039,8 @@ public class Provenance extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Provenance) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Provenance) dst, options);
       }
 
       public void copyValues(Provenance dst, EnumSet<CopyObjectOptions> options) {

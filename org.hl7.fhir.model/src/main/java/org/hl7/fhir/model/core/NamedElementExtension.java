@@ -101,8 +101,8 @@ public class NamedElementExtension extends Element  {
     return dst;
   }
 
-  public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-    copyValues((NamedElementExtension) b, options);
+  public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+    copyValues((NamedElementExtension) dst, options);
   }
 
   public void copyValues(NamedElementExtension dst, EnumSet<CopyObjectOptions> options) {

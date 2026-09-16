@@ -272,8 +272,8 @@ public class LINK extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((LINK) b);
+      public void assignValues(Base dst) {
+        copyValues((LINK) dst);
       }
 
       public void copyValues(LINK dst) {

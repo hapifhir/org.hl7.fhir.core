@@ -640,8 +640,8 @@ public class Identifier extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Identifier) b);
+      public void assignValues(Base dst) {
+        copyValues((Identifier) dst);
       }
 
       public void copyValues(Identifier dst) {

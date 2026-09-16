@@ -69,8 +69,8 @@ public class DV_EHR_URI extends DV_URI implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_EHR_URI) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_EHR_URI) dst);
       }
 
       public void copyValues(DV_EHR_URI dst) {

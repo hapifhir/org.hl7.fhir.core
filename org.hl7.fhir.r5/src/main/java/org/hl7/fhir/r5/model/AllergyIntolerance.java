@@ -595,8 +595,8 @@ public class AllergyIntolerance extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AllergyIntoleranceParticipantComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AllergyIntoleranceParticipantComponent) dst);
       }
 
       public void copyValues(AllergyIntoleranceParticipantComponent dst) {
@@ -1189,8 +1189,8 @@ public class AllergyIntolerance extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AllergyIntoleranceReactionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AllergyIntoleranceReactionComponent) dst);
       }
 
       public void copyValues(AllergyIntoleranceReactionComponent dst) {
@@ -2371,8 +2371,8 @@ public class AllergyIntolerance extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AllergyIntolerance) b);
+      public void assignValues(Base dst) {
+        copyValues((AllergyIntolerance) dst);
       }
 
       public void copyValues(AllergyIntolerance dst) {

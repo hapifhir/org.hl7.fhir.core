@@ -1210,8 +1210,8 @@ public class GuidanceResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GuidanceResponse) b);
+      public void assignValues(Base dst) {
+        copyValues((GuidanceResponse) dst);
       }
 
       public void copyValues(GuidanceResponse dst) {

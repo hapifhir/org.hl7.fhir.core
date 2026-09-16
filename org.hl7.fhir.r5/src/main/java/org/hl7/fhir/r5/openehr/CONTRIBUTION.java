@@ -300,8 +300,8 @@ public class CONTRIBUTION extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CONTRIBUTION) b);
+      public void assignValues(Base dst) {
+        copyValues((CONTRIBUTION) dst);
       }
 
       public void copyValues(CONTRIBUTION dst) {

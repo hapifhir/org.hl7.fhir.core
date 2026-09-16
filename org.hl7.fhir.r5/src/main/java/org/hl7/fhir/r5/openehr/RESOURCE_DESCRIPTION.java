@@ -619,8 +619,8 @@ public class RESOURCE_DESCRIPTION extends LogicalBase implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RESOURCE_DESCRIPTION) b);
+      public void assignValues(Base dst) {
+        copyValues((RESOURCE_DESCRIPTION) dst);
       }
 
       public void copyValues(RESOURCE_DESCRIPTION dst) {

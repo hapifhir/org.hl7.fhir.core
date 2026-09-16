@@ -280,8 +280,8 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestPlanScopeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanScopeComponent) dst, options);
       }
 
       public void copyValues(TestPlanScopeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -544,8 +544,8 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestPlanDependencyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanDependencyComponent) dst, options);
       }
 
       public void copyValues(TestPlanDependencyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -808,8 +808,8 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestPlanModeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanModeComponent) dst, options);
       }
 
       public void copyValues(TestPlanModeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1292,8 +1292,8 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestPlanParameterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanParameterComponent) dst, options);
       }
 
       public void copyValues(TestPlanParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1986,8 +1986,8 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestPlanSuiteComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanSuiteComponent) dst, options);
       }
 
       public void copyValues(TestPlanSuiteComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2385,8 +2385,8 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestPlanSuiteInputComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanSuiteInputComponent) dst, options);
       }
 
       public void copyValues(TestPlanSuiteInputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3080,8 +3080,8 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestPlanSuiteTestComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanSuiteTestComponent) dst, options);
       }
 
       public void copyValues(TestPlanSuiteTestComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3551,8 +3551,8 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestPlanSuiteTestAssertionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanSuiteTestAssertionComponent) dst, options);
       }
 
       public void copyValues(TestPlanSuiteTestAssertionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5318,8 +5318,8 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestPlan) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlan) dst, options);
       }
 
       public void copyValues(TestPlan dst, EnumSet<CopyObjectOptions> options) {

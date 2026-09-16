@@ -613,8 +613,8 @@ public class Subscription extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubscriptionFilterByComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubscriptionFilterByComponent) dst);
       }
 
       public void copyValues(SubscriptionFilterByComponent dst) {
@@ -886,8 +886,8 @@ public class Subscription extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubscriptionParameterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubscriptionParameterComponent) dst);
       }
 
       public void copyValues(SubscriptionParameterComponent dst) {
@@ -2206,8 +2206,8 @@ public class Subscription extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Subscription) b);
+      public void assignValues(Base dst) {
+        copyValues((Subscription) dst);
       }
 
       public void copyValues(Subscription dst) {

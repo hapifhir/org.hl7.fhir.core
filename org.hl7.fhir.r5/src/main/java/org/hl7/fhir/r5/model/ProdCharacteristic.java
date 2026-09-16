@@ -776,8 +776,8 @@ public class ProdCharacteristic extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ProdCharacteristic) b);
+      public void assignValues(Base dst) {
+        copyValues((ProdCharacteristic) dst);
       }
 
       public void copyValues(ProdCharacteristic dst) {

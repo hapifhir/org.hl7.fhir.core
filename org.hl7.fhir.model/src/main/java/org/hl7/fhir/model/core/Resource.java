@@ -422,8 +422,8 @@ public abstract class Resource extends BaseResource implements IAnyResource {
 
       public abstract Resource copy(EnumSet<CopyObjectOptions> options);
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Resource) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Resource) dst, options);
       }
 
       public void copyValues(Resource dst, EnumSet<CopyObjectOptions> options) {

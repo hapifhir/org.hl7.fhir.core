@@ -257,8 +257,8 @@ public abstract class EVENT extends LOCATABLE implements ICompositeType {
 
       public abstract EVENT copy();
 
-      public void assign(Base b) {
-        copyValues((EVENT) b);
+      public void assignValues(Base dst) {
+        copyValues((EVENT) dst);
       }
 
       public void copyValues(EVENT dst) {

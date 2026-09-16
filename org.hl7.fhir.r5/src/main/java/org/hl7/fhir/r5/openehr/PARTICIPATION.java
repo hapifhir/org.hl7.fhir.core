@@ -313,8 +313,8 @@ public class PARTICIPATION extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PARTICIPATION) b);
+      public void assignValues(Base dst) {
+        copyValues((PARTICIPATION) dst);
       }
 
       public void copyValues(PARTICIPATION dst) {

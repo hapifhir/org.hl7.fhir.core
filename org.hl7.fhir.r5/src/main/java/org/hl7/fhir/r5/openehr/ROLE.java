@@ -298,8 +298,8 @@ public class ROLE extends PARTY implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ROLE) b);
+      public void assignValues(Base dst) {
+        copyValues((ROLE) dst);
       }
 
       public void copyValues(ROLE dst) {

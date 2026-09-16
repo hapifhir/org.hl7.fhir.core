@@ -65,8 +65,8 @@ public abstract class ITEM_STRUCTURE extends DATA_STRUCTURE implements IComposit
 
       public abstract ITEM_STRUCTURE copy();
 
-      public void assign(Base b) {
-        copyValues((ITEM_STRUCTURE) b);
+      public void assignValues(Base dst) {
+        copyValues((ITEM_STRUCTURE) dst);
       }
 
       public void copyValues(ITEM_STRUCTURE dst) {

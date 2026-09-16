@@ -506,8 +506,8 @@ public class Provenance extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ProvenanceAgentComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ProvenanceAgentComponent) dst);
       }
 
       public void copyValues(ProvenanceAgentComponent dst) {
@@ -838,8 +838,8 @@ public class Provenance extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ProvenanceEntityComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ProvenanceEntityComponent) dst);
       }
 
       public void copyValues(ProvenanceEntityComponent dst) {
@@ -1854,8 +1854,8 @@ public class Provenance extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Provenance) b);
+      public void assignValues(Base dst) {
+        copyValues((Provenance) dst);
       }
 
       public void copyValues(Provenance dst) {

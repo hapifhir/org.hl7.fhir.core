@@ -406,8 +406,8 @@ public class Narrative extends BaseNarrative implements INarrative {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Narrative) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Narrative) dst, options);
       }
 
       public void copyValues(Narrative dst, EnumSet<CopyObjectOptions> options) {

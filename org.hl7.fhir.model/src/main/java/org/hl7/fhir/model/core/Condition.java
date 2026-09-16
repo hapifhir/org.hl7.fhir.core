@@ -317,8 +317,8 @@ public class Condition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ConditionStageComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConditionStageComponent) dst, options);
       }
 
       public void copyValues(ConditionStageComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1716,8 +1716,8 @@ public class Condition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Condition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Condition) dst, options);
       }
 
       public void copyValues(Condition dst, EnumSet<CopyObjectOptions> options) {

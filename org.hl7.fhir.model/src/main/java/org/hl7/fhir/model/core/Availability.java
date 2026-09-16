@@ -445,8 +445,8 @@ public class Availability extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AvailabilityAvailableTimeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AvailabilityAvailableTimeComponent) dst, options);
       }
 
       public void copyValues(AvailabilityAvailableTimeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -724,8 +724,8 @@ public class Availability extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AvailabilityNotAvailableTimeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AvailabilityNotAvailableTimeComponent) dst, options);
       }
 
       public void copyValues(AvailabilityNotAvailableTimeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1058,8 +1058,8 @@ public class Availability extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Availability) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Availability) dst, options);
       }
 
       public void copyValues(Availability dst, EnumSet<CopyObjectOptions> options) {

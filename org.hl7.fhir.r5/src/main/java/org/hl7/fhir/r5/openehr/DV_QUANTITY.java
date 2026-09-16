@@ -546,8 +546,8 @@ If not set, the application environment needs to determine the displayable form.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_QUANTITY) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_QUANTITY) dst);
       }
 
       public void copyValues(DV_QUANTITY dst) {

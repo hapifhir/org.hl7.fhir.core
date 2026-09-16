@@ -1076,8 +1076,8 @@ public class ImagingStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImagingStudySeriesComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ImagingStudySeriesComponent) dst);
       }
 
       public void copyValues(ImagingStudySeriesComponent dst) {
@@ -1335,8 +1335,8 @@ public class ImagingStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImagingStudySeriesPerformerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ImagingStudySeriesPerformerComponent) dst);
       }
 
       public void copyValues(ImagingStudySeriesPerformerComponent dst) {
@@ -1719,8 +1719,8 @@ public class ImagingStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImagingStudySeriesInstanceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ImagingStudySeriesInstanceComponent) dst);
       }
 
       public void copyValues(ImagingStudySeriesInstanceComponent dst) {
@@ -3071,8 +3071,8 @@ public class ImagingStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImagingStudy) b);
+      public void assignValues(Base dst) {
+        copyValues((ImagingStudy) dst);
       }
 
       public void copyValues(ImagingStudy dst) {

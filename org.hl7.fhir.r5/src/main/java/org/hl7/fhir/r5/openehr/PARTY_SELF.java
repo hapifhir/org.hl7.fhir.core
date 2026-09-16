@@ -69,8 +69,8 @@ public class PARTY_SELF extends PARTY_PROXY implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PARTY_SELF) b);
+      public void assignValues(Base dst) {
+        copyValues((PARTY_SELF) dst);
       }
 
       public void copyValues(PARTY_SELF dst) {

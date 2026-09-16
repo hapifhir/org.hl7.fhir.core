@@ -27,12 +27,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
- * copy() and assign() must both produce something indistinguishable from the source, and must
+ * copy() and assignValues() must both produce something indistinguishable from the source, and must
  * agree with each other.
  * <p>
  * The reason this needs its own test: copyValues() takes a different argument type at every level
  * of the hierarchy (Base -&gt; DataType -&gt; HumanName), so a call made through a Base reference
- * binds statically to Base.copyValues and never reaches the leaf. assign() has one signature all
+ * binds statically to Base.copyValues and never reaches the leaf. assignValues() has one signature all
  * the way down and dispatches virtually, which only works if every level's state is actually in
  * its copyValues(). The primitive types used to keep their value out of copyValues() entirely -
  * each subclass carried it across in the constructor argument of its own copy() - so anything
@@ -321,29 +321,29 @@ public class CopyAndAssignTest {
     // deliberately through a Base reference: that is the call that used to bind to
     // Base.copyValues and stop there
     Base source = src;
-    source.assign(dst);
-    assertEquals(before, describe(dst), name+": assign() did not preserve the state");
+    source.assignValues(dst);
+    assertEquals(before, describe(dst), name+": assignValues() did not preserve the state");
     assertTrue(src.equalsDeep(dst), name+": the assigned object is not equalsDeep to its source");
-    assertEquals(before, describe(src), name+": assign() modified the source");
+    assertEquals(before, describe(src), name+": assignValues() modified the source");
   }
 
   private void assertCopyAndAssignAgree(String name, Base src) throws Exception {
     Base viaCopy = src.copy();
     Base viaAssign = src.getClass().getDeclaredConstructor().newInstance();
     Base source = src;
-    source.assign(viaAssign);
-    assertEquals(describe(viaCopy), describe(viaAssign), name+": copy() and assign() disagree");
+    source.assignValues(viaAssign);
+    assertEquals(describe(viaCopy), describe(viaAssign), name+": copy() and assignValues() disagree");
   }
 
   // ---------------------------------------------------------------- named regressions
 
   @Test
   public void assignThroughABaseReferenceReachesTheLeaf() {
-    // the whole point of assign(): copyValues() alone cannot do this, because the argument type
+    // the whole point of assignValues(): copyValues() alone cannot do this, because the argument type
     // changes at every level of the hierarchy
     Base src = new StringType("hello");
     Base dst = new StringType();
-    src.assign(dst);
+    src.assignValues(dst);
     assertEquals("hello", ((StringType) dst).getValue());
   }
 
@@ -375,7 +375,7 @@ public class CopyAndAssignTest {
     src.setSystem("http://hl7.org/fhir/observation-status");
     assertEquals(src.getSystem(), src.copy().getSystem());
     CodeType dst = new CodeType();
-    ((Base) src).assign(dst);
+    ((Base) src).assignValues(dst);
     assertEquals(src.getSystem(), dst.getSystem());
   }
 
@@ -383,7 +383,7 @@ public class CopyAndAssignTest {
   public void dateTimeKeepsPrecisionAndTimezone() {
     DateTimeType src = new DateTimeType("2024-03-05T10:11:12.345+10:00");
     DateTimeType dst = new DateTimeType();
-    ((Base) src).assign(dst);
+    ((Base) src).assignValues(dst);
     assertEquals(src.getValueAsString(), dst.getValueAsString());
     assertEquals(src.getPrecision(), dst.getPrecision());
     assertEquals(src.getTimeZone(), dst.getTimeZone());
@@ -395,8 +395,8 @@ public class CopyAndAssignTest {
   public void enumerationKeepsItsFactory() {
     Enumeration<AdministrativeGender> src = new Enumeration<>(new AdministrativeGenderEnumFactory(), AdministrativeGender.MALE);
     Enumeration<AdministrativeGender> dst = new Enumeration<>();
-    ((Base) src).assign(dst);
-    assertNotNull(dst.getEnumFactory(), "assign() left the target without an EnumFactory");
+    ((Base) src).assignValues(dst);
+    assertNotNull(dst.getEnumFactory(), "assignValues() left the target without an EnumFactory");
     assertEquals("male", dst.asStringValue());
     assertEquals(AdministrativeGender.MALE, dst.getValue());
   }
@@ -416,7 +416,7 @@ public class CopyAndAssignTest {
       assertEquals("MyCustomResource", src.copy().asStringValue());
       assertEquals("enum-1", src.copy().getId());
       Enumeration<VersionIndependentResourceTypesAll> dst = new Enumeration<>();
-      ((Base) src).assign(dst);
+      ((Base) src).assignValues(dst);
       assertEquals("MyCustomResource", dst.asStringValue());
     } finally {
       Configuration.setAllowCustomResourceTypes(custom);
@@ -427,7 +427,7 @@ public class CopyAndAssignTest {
   public void idTypeKeepsItsComponentParts() {
     IdType src = new IdType("http://example.org/fhir/Patient/123/_history/4");
     IdType dst = new IdType();
-    ((Base) src).assign(dst);
+    ((Base) src).assignValues(dst);
     assertEquals(src.getBaseUrl(), dst.getBaseUrl());
     assertEquals(src.getResourceType(), dst.getResourceType());
     assertEquals(src.getIdPart(), dst.getIdPart());
@@ -452,7 +452,7 @@ public class CopyAndAssignTest {
     // the Date only goes to millis - the rest lives in myFractionalSeconds
     DateTimeType src = new DateTimeType("2024-03-05T10:11:12.1234567+10:00");
     DateTimeType dst = new DateTimeType();
-    ((Base) src).assign(dst);
+    ((Base) src).assignValues(dst);
     assertEquals("2024-03-05T10:11:12.1234567+10:00", dst.getValueAsString());
     assertEquals(src.getNanos(), dst.getNanos());
     assertEquals(Long.valueOf(123456700L), dst.getNanos());
@@ -464,8 +464,8 @@ public class CopyAndAssignTest {
     DateTimeType src = new DateTimeType("2024-03-05T10:11:12");
     assertNull(src.getTimeZone(), "the fixture is wrong: this one has no timezone");
     DateTimeType dst = new DateTimeType();
-    ((Base) src).assign(dst);
-    assertNull(dst.getTimeZone(), "assign() invented a timezone");
+    ((Base) src).assignValues(dst);
+    assertNull(dst.getTimeZone(), "assignValues() invented a timezone");
     assertEquals("2024-03-05T10:11:12", dst.getValueAsString());
     assertNull(src.copy().getTimeZone(), "copy() invented a timezone");
   }
@@ -477,7 +477,7 @@ public class CopyAndAssignTest {
     DateTimeType src = new DateTimeType(new Date(1709600000000L), TemporalPrecisionEnum.MILLI, tz);
     assertEquals(tz, src.copy().getTimeZone());
     DateTimeType dst = new DateTimeType();
-    ((Base) src).assign(dst);
+    ((Base) src).assignValues(dst);
     assertEquals(tz, dst.getTimeZone());
     assertEquals(src.getValueAsString(), dst.getValueAsString());
   }
@@ -489,7 +489,7 @@ public class CopyAndAssignTest {
     // which of the two this is
     DateTimeType src = new DateTimeType(value);
     DateTimeType dst = new DateTimeType();
-    ((Base) src).assign(dst);
+    ((Base) src).assignValues(dst);
     assertEquals(src.getPrecision(), dst.getPrecision());
     assertEquals(value, dst.getValueAsString());
     assertEquals(src.getPrecision(), src.copy().getPrecision());
@@ -501,7 +501,7 @@ public class CopyAndAssignTest {
   public void partialDateTypesKeepTheirPrecision(String value) {
     DateType src = new DateType(value);
     DateType dst = new DateType();
-    ((Base) src).assign(dst);
+    ((Base) src).assignValues(dst);
     assertEquals(src.getPrecision(), dst.getPrecision());
     assertEquals(value, dst.getValueAsString());
     assertEquals(src.getPrecision(), src.copy().getPrecision());

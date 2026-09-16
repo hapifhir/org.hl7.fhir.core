@@ -255,8 +255,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicinalProductDefinitionContactComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicinalProductDefinitionContactComponent) dst, options);
       }
 
       public void copyValues(MedicinalProductDefinitionContactComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -671,8 +671,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicinalProductDefinitionNameComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicinalProductDefinitionNameComponent) dst, options);
       }
 
       public void copyValues(MedicinalProductDefinitionNameComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -960,8 +960,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicinalProductDefinitionNamePartComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicinalProductDefinitionNamePartComponent) dst, options);
       }
 
       public void copyValues(MedicinalProductDefinitionNamePartComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1265,8 +1265,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicinalProductDefinitionNameUsageComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicinalProductDefinitionNameUsageComponent) dst, options);
       }
 
       public void copyValues(MedicinalProductDefinitionNameUsageComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1521,8 +1521,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicinalProductDefinitionCrossReferenceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicinalProductDefinitionCrossReferenceComponent) dst, options);
       }
 
       public void copyValues(MedicinalProductDefinitionCrossReferenceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1887,8 +1887,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicinalProductDefinitionOperationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicinalProductDefinitionOperationComponent) dst, options);
       }
 
       public void copyValues(MedicinalProductDefinitionOperationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2306,8 +2306,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicinalProductDefinitionCharacteristicComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicinalProductDefinitionCharacteristicComponent) dst, options);
       }
 
       public void copyValues(MedicinalProductDefinitionCharacteristicComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4459,8 +4459,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicinalProductDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicinalProductDefinition) dst, options);
       }
 
       public void copyValues(MedicinalProductDefinition dst, EnumSet<CopyObjectOptions> options) {

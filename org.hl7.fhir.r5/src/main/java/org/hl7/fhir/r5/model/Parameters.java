@@ -1449,8 +1449,8 @@ public class Parameters extends Resource implements IBaseParameters {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ParametersParameterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ParametersParameterComponent) dst);
       }
 
       public void copyValues(ParametersParameterComponent dst) {
@@ -1721,8 +1721,8 @@ public String toString() {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Parameters) b);
+      public void assignValues(Base dst) {
+        copyValues((Parameters) dst);
       }
 
       public void copyValues(Parameters dst) {

@@ -550,8 +550,8 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHooksRequestFhirAuthorizationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksRequestFhirAuthorizationComponent) dst, options);
       }
 
       public void copyValues(CDSHooksRequestFhirAuthorizationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -793,8 +793,8 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHooksRequestPrefetchComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksRequestPrefetchComponent) dst, options);
       }
 
       public void copyValues(CDSHooksRequestPrefetchComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1262,8 +1262,8 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHooksRequest) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksRequest) dst, options);
       }
 
       public void copyValues(CDSHooksRequest dst, EnumSet<CopyObjectOptions> options) {

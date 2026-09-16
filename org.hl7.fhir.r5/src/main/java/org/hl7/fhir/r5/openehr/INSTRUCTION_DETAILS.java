@@ -305,8 +305,8 @@ This specification does not currently define the actual structure or semantics o
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((INSTRUCTION_DETAILS) b);
+      public void assignValues(Base dst) {
+        copyValues((INSTRUCTION_DETAILS) dst);
       }
 
       public void copyValues(INSTRUCTION_DETAILS dst) {

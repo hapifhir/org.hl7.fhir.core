@@ -275,8 +275,8 @@ public class RatioRange extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RatioRange) b);
+      public void assignValues(Base dst) {
+        copyValues((RatioRange) dst);
       }
 
       public void copyValues(RatioRange dst) {

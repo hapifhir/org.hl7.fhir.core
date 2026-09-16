@@ -399,8 +399,8 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((IngredientManufacturerComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((IngredientManufacturerComponent) dst, options);
       }
 
       public void copyValues(IngredientManufacturerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -669,8 +669,8 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((IngredientSubstanceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((IngredientSubstanceComponent) dst, options);
       }
 
       public void copyValues(IngredientSubstanceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1492,8 +1492,8 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((IngredientSubstanceStrengthComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((IngredientSubstanceStrengthComponent) dst, options);
       }
 
       public void copyValues(IngredientSubstanceStrengthComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1988,8 +1988,8 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((IngredientSubstanceStrengthReferenceStrengthComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((IngredientSubstanceStrengthReferenceStrengthComponent) dst, options);
       }
 
       public void copyValues(IngredientSubstanceStrengthReferenceStrengthComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2828,8 +2828,8 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Ingredient) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Ingredient) dst, options);
       }
 
       public void copyValues(Ingredient dst, EnumSet<CopyObjectOptions> options) {

@@ -426,8 +426,8 @@ public class ITEM_TAG extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ITEM_TAG) b);
+      public void assignValues(Base dst) {
+        copyValues((ITEM_TAG) dst);
       }
 
       public void copyValues(ITEM_TAG dst) {

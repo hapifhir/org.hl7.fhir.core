@@ -1572,8 +1572,8 @@ public class MeasureReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MeasureReportGroupComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureReportGroupComponent) dst, options);
       }
 
       public void copyValues(MeasureReportGroupComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2359,8 +2359,8 @@ public class MeasureReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MeasureReportGroupPopulationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureReportGroupPopulationComponent) dst, options);
       }
 
       public void copyValues(MeasureReportGroupPopulationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2886,8 +2886,8 @@ public class MeasureReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MeasureReportGroupStratifierComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureReportGroupStratifierComponent) dst, options);
       }
 
       public void copyValues(MeasureReportGroupStratifierComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3581,8 +3581,8 @@ public class MeasureReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((StratifierGroupComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StratifierGroupComponent) dst, options);
       }
 
       public void copyValues(StratifierGroupComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4140,8 +4140,8 @@ public class MeasureReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((StratifierGroupComponentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StratifierGroupComponentComponent) dst, options);
       }
 
       public void copyValues(StratifierGroupComponentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4718,8 +4718,8 @@ public class MeasureReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((StratifierGroupPopulationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StratifierGroupPopulationComponent) dst, options);
       }
 
       public void copyValues(StratifierGroupPopulationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6017,8 +6017,8 @@ public class MeasureReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MeasureReport) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureReport) dst, options);
       }
 
       public void copyValues(MeasureReport dst, EnumSet<CopyObjectOptions> options) {

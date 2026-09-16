@@ -437,8 +437,8 @@ The type is the Canonical URL of Resource Definition that is the type this refer
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Reference) b);
+      public void assignValues(Base dst) {
+        copyValues((Reference) dst);
       }
 
       public void copyValues(Reference dst) {

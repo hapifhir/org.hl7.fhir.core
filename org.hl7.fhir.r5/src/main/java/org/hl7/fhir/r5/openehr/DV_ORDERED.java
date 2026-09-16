@@ -287,8 +287,8 @@ public abstract class DV_ORDERED extends DATA_VALUE implements ICompositeType {
 
       public abstract DV_ORDERED copy();
 
-      public void assign(Base b) {
-        copyValues((DV_ORDERED) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_ORDERED) dst);
       }
 
       public void copyValues(DV_ORDERED dst) {

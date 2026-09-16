@@ -65,8 +65,8 @@ public abstract class Any extends LogicalBase implements ICompositeType {
 
       public abstract Any copy();
 
-      public void assign(Base b) {
-        copyValues((Any) b);
+      public void assignValues(Base dst) {
+        copyValues((Any) dst);
       }
 
       public void copyValues(Any dst) {

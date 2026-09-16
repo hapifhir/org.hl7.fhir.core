@@ -741,8 +741,8 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImagingSelectionPerformerComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingSelectionPerformerComponent) dst, options);
       }
 
       public void copyValues(ImagingSelectionPerformerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1585,8 +1585,8 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImagingSelectionInstanceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingSelectionInstanceComponent) dst, options);
       }
 
       public void copyValues(ImagingSelectionInstanceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1946,8 +1946,8 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImageRegion2DComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImageRegion2DComponent) dst, options);
       }
 
       public void copyValues(ImageRegion2DComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2253,8 +2253,8 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImageRegion3DComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImageRegion3DComponent) dst, options);
       }
 
       public void copyValues(ImageRegion3DComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3736,8 +3736,8 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImagingSelection) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingSelection) dst, options);
       }
 
       public void copyValues(ImagingSelection dst, EnumSet<CopyObjectOptions> options) {

@@ -811,8 +811,8 @@ public class NamingSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NamingSystemUniqueIdComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NamingSystemUniqueIdComponent) dst);
       }
 
       public void copyValues(NamingSystemUniqueIdComponent dst) {
@@ -3156,8 +3156,8 @@ public class NamingSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NamingSystem) b);
+      public void assignValues(Base dst) {
+        copyValues((NamingSystem) dst);
       }
 
       public void copyValues(NamingSystem dst) {

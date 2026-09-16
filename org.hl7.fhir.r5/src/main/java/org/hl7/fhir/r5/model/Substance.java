@@ -386,8 +386,8 @@ public class Substance extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceIngredientComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceIngredientComponent) dst);
       }
 
       public void copyValues(SubstanceIngredientComponent dst) {
@@ -1125,8 +1125,8 @@ public class Substance extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Substance) b);
+      public void assignValues(Base dst) {
+        copyValues((Substance) dst);
       }
 
       public void copyValues(Substance dst) {

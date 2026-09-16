@@ -554,8 +554,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionOrderOralDietComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionOrderOralDietComponent) dst);
       }
 
       public void copyValues(NutritionOrderOralDietComponent dst) {
@@ -889,8 +889,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((OralDietScheduleComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((OralDietScheduleComponent) dst);
       }
 
       public void copyValues(OralDietScheduleComponent dst) {
@@ -1113,8 +1113,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionOrderOralDietNutrientComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionOrderOralDietNutrientComponent) dst);
       }
 
       public void copyValues(NutritionOrderOralDietNutrientComponent dst) {
@@ -1331,8 +1331,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionOrderOralDietTextureComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionOrderOralDietTextureComponent) dst);
       }
 
       public void copyValues(NutritionOrderOralDietTextureComponent dst) {
@@ -1737,8 +1737,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionOrderSupplementComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionOrderSupplementComponent) dst);
       }
 
       public void copyValues(NutritionOrderSupplementComponent dst) {
@@ -2055,8 +2055,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SupplementScheduleComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SupplementScheduleComponent) dst);
       }
 
       public void copyValues(SupplementScheduleComponent dst) {
@@ -2741,8 +2741,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionOrderEnteralFormulaComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionOrderEnteralFormulaComponent) dst);
       }
 
       public void copyValues(NutritionOrderEnteralFormulaComponent dst) {
@@ -3055,8 +3055,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionOrderEnteralFormulaAdditiveComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionOrderEnteralFormulaAdditiveComponent) dst);
       }
 
       public void copyValues(NutritionOrderEnteralFormulaAdditiveComponent dst) {
@@ -3356,8 +3356,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionOrderEnteralFormulaAdministrationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionOrderEnteralFormulaAdministrationComponent) dst);
       }
 
       public void copyValues(NutritionOrderEnteralFormulaAdministrationComponent dst) {
@@ -3671,8 +3671,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EnteralFormulaScheduleComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EnteralFormulaScheduleComponent) dst);
       }
 
       public void copyValues(EnteralFormulaScheduleComponent dst) {
@@ -5373,8 +5373,8 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionOrder) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionOrder) dst);
       }
 
       public void copyValues(NutritionOrder dst) {

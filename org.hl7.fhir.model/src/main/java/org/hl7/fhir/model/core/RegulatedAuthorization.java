@@ -479,8 +479,8 @@ public class RegulatedAuthorization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RegulatedAuthorizationCaseComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RegulatedAuthorizationCaseComponent) dst, options);
       }
 
       public void copyValues(RegulatedAuthorizationCaseComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1604,8 +1604,8 @@ public class RegulatedAuthorization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RegulatedAuthorization) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RegulatedAuthorization) dst, options);
       }
 
       public void copyValues(RegulatedAuthorization dst, EnumSet<CopyObjectOptions> options) {

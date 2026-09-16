@@ -981,8 +981,8 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PropertyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PropertyComponent) dst, options);
       }
 
       public void copyValues(PropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1442,8 +1442,8 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AdditionalAttributeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdditionalAttributeComponent) dst, options);
       }
 
       public void copyValues(AdditionalAttributeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1876,8 +1876,8 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ConceptMapGroupComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptMapGroupComponent) dst, options);
       }
 
       public void copyValues(ConceptMapGroupComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2488,8 +2488,8 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SourceElementComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SourceElementComponent) dst, options);
       }
 
       public void copyValues(SourceElementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3275,8 +3275,8 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TargetElementComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TargetElementComponent) dst, options);
       }
 
       public void copyValues(TargetElementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3721,8 +3721,8 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MappingPropertyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MappingPropertyComponent) dst, options);
       }
 
       public void copyValues(MappingPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4162,8 +4162,8 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((OtherElementComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((OtherElementComponent) dst, options);
       }
 
       public void copyValues(OtherElementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4850,8 +4850,8 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ConceptMapGroupUnmappedComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptMapGroupUnmappedComponent) dst, options);
       }
 
       public void copyValues(ConceptMapGroupUnmappedComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7481,8 +7481,8 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ConceptMap) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptMap) dst, options);
       }
 
       public void copyValues(ConceptMap dst, EnumSet<CopyObjectOptions> options) {

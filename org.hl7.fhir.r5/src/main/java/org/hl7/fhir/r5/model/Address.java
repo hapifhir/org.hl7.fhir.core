@@ -1102,8 +1102,8 @@ public class Address extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Address) b);
+      public void assignValues(Base dst) {
+        copyValues((Address) dst);
       }
 
       public void copyValues(Address dst) {

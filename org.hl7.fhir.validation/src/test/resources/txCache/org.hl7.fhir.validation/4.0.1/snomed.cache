@@ -7637,3 +7637,83 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "119339001",
+  "display" : "Stool specimen (specimen)"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.3249", "version": "20200710", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Stool specimen",
+  "code" : "119339001",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/731000124108/version/20220301",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/731000124108/version/20220301' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20240930, http://snomed.info/sct/2011000195101/version/20230607, http://snomed.info/sct/554471000005108/version/20260331, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/827022005/version/20241216, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20240201, http://snomed.info/sct/900000000000207008/version/20250201 and http://snomed.info/xsct/31000003106/version/20250909",
+  "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.3249|20200710: Analysing http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.3249|20200710 for validation purposes\n1ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.3249|20200710: Parameters: disp-lang=en-US, generate-narrative, default-to-latest\n1ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.3249|20200710: Prepare include[0]: \"(http://snomed.info/sct)(110893002,110894008,110896005,110903005,110926003,110931001,110933003,110935005,110937002,110939004,110941003,110945007,110947004,110949001,110955006,110957003,110958008,110959000,110961009,110968003,116213003,119297000,119298005,119325001,119326000,119327009,119332005,119334006,119335007,119339001,119340004,119341000,119342007,119343002,119347001,119359002,119361006,119362004,119363009,119364003,119365002,119367005,119371008,119373006,119379005,119380008,119381007,119383005,119389009,119390000,119391001,119398007,122551003,122552005,122553000,122555007,122556008,122557004,122561005,122562003,122565001,122569007,122571007,122575003,122578001,122588000,122590004,122592007,122609004,122610009,122611008,122692002,122699006,122712006,122730004,122877000,122880004,127456000,127458004,127459007,127462005,127465007,127469001,127473003,128158009,128173005,168136008,168139001,168145009,258411007,258412000,258414004,258429002,258432004,258436001,258437005,258446004,258450006,258452003,258462005,258465007,258466008,258467004,258469001,258470000,258472008,258475005,258480001,258481002,258482009,258485006,258498002,258508008,258513007,258525005,258528007,258530009,258541006,258548000,258570002,258574006,258575007,258576008,258580003,258581004,258589002,258591005,258603007,258604001,258606004,258607008,258608003,258609006,258610001,258611002,276833005,278020009,302794003,309048008,309055005,309068002,309070006,309071005,309074002,309101008,309104000,309115005,309117002,309125000,309128003,309141004,309145008,309149002,309154006,309165001,309169007,309170008,309171007,309173005,309174004,309176002,309185002,309188000,309192007,309199003,309209004,309210009,309268005,309479002,309480004,309491006,309493009,309507001,363311008,396897003,397457001,399436000,399460001,399492000,399680007,399747006,404643001,409821005,410580001,418564007,418932006,430133009,430157009,430220009,430221008,430236006,430244006,430249001,430250001,430268003,430304001,430318008,430386002,432657002,432986001,433308004,433323009,433324003,433326001,438336007,438343001,439895009,440135000,441510007,441903006,441917002,442043001,442166002,442173007,442427000,444937002,445295009,445383006,445447003,445742005,445743000,446130001,446131002,446272009,446277003,446300003,446838005,446846006,446907008,447104008,447345009,447488002,447589008,698276005,699283007,699284001,699285000,699286004,699287008,703430008,703431007,703432000,708048008,708049000)\"\n2ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.3249|20200710: CodeSystem version http://snomed.info/sct/731000124108/version/20220301 not found: \"http://snomed.info/sct|http://snomed.info/sct/731000124108/version/20220301\"\n2ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.3249|20200710: Validate \"[http://snomed.info/sct#119339001 (\"Stool specimen (specimen)\")]\"\n2ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.3249|20200710: Check \"http://snomed.info/sct#119339001\"\n2ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.3249|20200710: CodeSystem not found: http://snomed.info/sct|http://snomed.info/sct/731000124108/version/20220301",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_VERSION"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/731000124108/version/20220301' could not be found, so the code cannot be validated. Valid versions: http://snomed.info/sct/11000146104/version/20240930, http://snomed.info/sct/2011000195101/version/20230607, http://snomed.info/sct/554471000005108/version/20260331, http://snomed.info/sct/731000124108/version/20230301, http://snomed.info/sct/731000124108/version/20240301, http://snomed.info/sct/731000124108/version/20250901, http://snomed.info/sct/827022005/version/20241216, http://snomed.info/sct/83821000000107/version/20230412, http://snomed.info/sct/900000000000207008/version/20240201, http://snomed.info/sct/900000000000207008/version/20250201 and http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    "expression" : ["Coding.system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/731000124108",
+  "code" : "248152002",
+  "display" : "Female (finding)"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.121", "version": "20250228", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Female",
+  "code" : "248152002",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/731000124108/version/20250901",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.121|20250228: Analysing http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.121|20250228 for validation purposes\n1ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.121|20250228: Parameters: disp-lang=en-US, generate-narrative\n1ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.121|20250228: Prepare include[0]: \"(http://snomed.info/sct)(248152002,248153007)\"\n2ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.121|20250228: CodeSystem found: \"http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\"\n2ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.121|20250228: Validate \"[http://snomed.info/sct|http://snomed.info/sct/731000124108#248152002 (\"Female (finding)\")]\"\n2ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.121|20250228: Check \"http://snomed.info/sct|http://snomed.info/sct/731000124108#248152002\"\n4ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.121|20250228: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/731000124108/version/20250901 for http://snomed.info/sct|http://snomed.info/sct/731000124108\n4ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.121|20250228: check code in (http://snomed.info/sct)(248152002,248153007) at Coding\n4ms http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.121|20250228: Code \"248152002\" found in http://snomed.info/sct|http://snomed.info/sct/731000124108/version/20250901",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

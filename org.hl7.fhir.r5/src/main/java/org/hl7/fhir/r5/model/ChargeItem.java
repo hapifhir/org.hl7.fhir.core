@@ -415,8 +415,8 @@ public class ChargeItem extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ChargeItemPerformerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ChargeItemPerformerComponent) dst);
       }
 
       public void copyValues(ChargeItemPerformerComponent dst) {
@@ -2231,8 +2231,8 @@ public class ChargeItem extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ChargeItem) b);
+      public void assignValues(Base dst) {
+        copyValues((ChargeItem) dst);
       }
 
       public void copyValues(ChargeItem dst) {

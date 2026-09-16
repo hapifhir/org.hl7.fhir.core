@@ -1212,8 +1212,8 @@ public class EvidenceVariable extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceVariableCharacteristicComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceVariableCharacteristicComponent) dst);
       }
 
       public void copyValues(EvidenceVariableCharacteristicComponent dst) {
@@ -1755,8 +1755,8 @@ public class EvidenceVariable extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceVariableCharacteristicDefinitionByTypeAndValueComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceVariableCharacteristicDefinitionByTypeAndValueComponent) dst);
       }
 
       public void copyValues(EvidenceVariableCharacteristicDefinitionByTypeAndValueComponent dst) {
@@ -2108,8 +2108,8 @@ public class EvidenceVariable extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceVariableCharacteristicDefinitionByCombinationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceVariableCharacteristicDefinitionByCombinationComponent) dst);
       }
 
       public void copyValues(EvidenceVariableCharacteristicDefinitionByCombinationComponent dst) {
@@ -2600,8 +2600,8 @@ public class EvidenceVariable extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceVariableCharacteristicTimeFromEventComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceVariableCharacteristicTimeFromEventComponent) dst);
       }
 
       public void copyValues(EvidenceVariableCharacteristicTimeFromEventComponent dst) {
@@ -2904,8 +2904,8 @@ public class EvidenceVariable extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceVariableCategoryComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceVariableCategoryComponent) dst);
       }
 
       public void copyValues(EvidenceVariableCategoryComponent dst) {
@@ -5275,8 +5275,8 @@ See guidance around (not) making local changes to elements [here](canonicalresou
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EvidenceVariable) b);
+      public void assignValues(Base dst) {
+        copyValues((EvidenceVariable) dst);
       }
 
       public void copyValues(EvidenceVariable dst) {

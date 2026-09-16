@@ -649,8 +649,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ClinicalUseDefinitionContraindicationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ClinicalUseDefinitionContraindicationComponent) dst);
       }
 
       public void copyValues(ClinicalUseDefinitionContraindicationComponent dst) {
@@ -896,8 +896,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ClinicalUseDefinitionContraindicationOtherTherapyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ClinicalUseDefinitionContraindicationOtherTherapyComponent) dst);
       }
 
       public void copyValues(ClinicalUseDefinitionContraindicationOtherTherapyComponent dst) {
@@ -1519,8 +1519,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ClinicalUseDefinitionIndicationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ClinicalUseDefinitionIndicationComponent) dst);
       }
 
       public void copyValues(ClinicalUseDefinitionIndicationComponent dst) {
@@ -1960,8 +1960,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ClinicalUseDefinitionInteractionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ClinicalUseDefinitionInteractionComponent) dst);
       }
 
       public void copyValues(ClinicalUseDefinitionInteractionComponent dst) {
@@ -2186,8 +2186,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ClinicalUseDefinitionInteractionInteractantComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ClinicalUseDefinitionInteractionInteractantComponent) dst);
       }
 
       public void copyValues(ClinicalUseDefinitionInteractionInteractantComponent dst) {
@@ -2451,8 +2451,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ClinicalUseDefinitionUndesirableEffectComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ClinicalUseDefinitionUndesirableEffectComponent) dst);
       }
 
       public void copyValues(ClinicalUseDefinitionUndesirableEffectComponent dst) {
@@ -2695,8 +2695,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ClinicalUseDefinitionWarningComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ClinicalUseDefinitionWarningComponent) dst);
       }
 
       public void copyValues(ClinicalUseDefinitionWarningComponent dst) {
@@ -3566,8 +3566,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ClinicalUseDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((ClinicalUseDefinition) dst);
       }
 
       public void copyValues(ClinicalUseDefinition dst) {

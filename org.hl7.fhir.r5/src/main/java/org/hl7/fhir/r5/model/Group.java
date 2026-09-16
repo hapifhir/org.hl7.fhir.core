@@ -771,8 +771,8 @@ public class Group extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GroupCharacteristicComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((GroupCharacteristicComponent) dst);
       }
 
       public void copyValues(GroupCharacteristicComponent dst) {
@@ -1066,8 +1066,8 @@ public class Group extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GroupMemberComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((GroupMemberComponent) dst);
       }
 
       public void copyValues(GroupMemberComponent dst) {
@@ -1955,8 +1955,8 @@ public class Group extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Group) b);
+      public void assignValues(Base dst) {
+        copyValues((Group) dst);
       }
 
       public void copyValues(Group dst) {

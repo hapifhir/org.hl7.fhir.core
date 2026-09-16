@@ -445,8 +445,8 @@ public class DeviceUsage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceUsageAdherenceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceUsageAdherenceComponent) dst);
       }
 
       public void copyValues(DeviceUsageAdherenceComponent dst) {
@@ -1684,8 +1684,8 @@ public class DeviceUsage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceUsage) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceUsage) dst);
       }
 
       public void copyValues(DeviceUsage dst) {

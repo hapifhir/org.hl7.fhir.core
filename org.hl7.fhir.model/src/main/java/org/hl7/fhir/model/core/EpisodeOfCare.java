@@ -476,8 +476,8 @@ public class EpisodeOfCare extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EpisodeOfCareStatusHistoryComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EpisodeOfCareStatusHistoryComponent) dst, options);
       }
 
       public void copyValues(EpisodeOfCareStatusHistoryComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -756,8 +756,8 @@ public class EpisodeOfCare extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ReasonComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ReasonComponent) dst, options);
       }
 
       public void copyValues(ReasonComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1044,8 +1044,8 @@ public class EpisodeOfCare extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DiagnosisComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DiagnosisComponent) dst, options);
       }
 
       public void copyValues(DiagnosisComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2072,8 +2072,8 @@ public class EpisodeOfCare extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EpisodeOfCare) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EpisodeOfCare) dst, options);
       }
 
       public void copyValues(EpisodeOfCare dst, EnumSet<CopyObjectOptions> options) {

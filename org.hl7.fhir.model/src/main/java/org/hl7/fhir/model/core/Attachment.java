@@ -1139,8 +1139,8 @@ public class Attachment extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Attachment) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Attachment) dst, options);
       }
 
       public void copyValues(Attachment dst, EnumSet<CopyObjectOptions> options) {

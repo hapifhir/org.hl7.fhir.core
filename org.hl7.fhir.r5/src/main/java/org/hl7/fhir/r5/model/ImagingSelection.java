@@ -652,8 +652,8 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImagingSelectionPerformerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ImagingSelectionPerformerComponent) dst);
       }
 
       public void copyValues(ImagingSelectionPerformerComponent dst) {
@@ -1224,8 +1224,8 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImagingSelectionInstanceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ImagingSelectionInstanceComponent) dst);
       }
 
       public void copyValues(ImagingSelectionInstanceComponent dst) {
@@ -1534,8 +1534,8 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImageRegion2DComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ImageRegion2DComponent) dst);
       }
 
       public void copyValues(ImageRegion2DComponent dst) {
@@ -1825,8 +1825,8 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImageRegion3DComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ImageRegion3DComponent) dst);
       }
 
       public void copyValues(ImageRegion3DComponent dst) {
@@ -3131,8 +3131,8 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImagingSelection) b);
+      public void assignValues(Base dst) {
+        copyValues((ImagingSelection) dst);
       }
 
       public void copyValues(ImagingSelection dst) {

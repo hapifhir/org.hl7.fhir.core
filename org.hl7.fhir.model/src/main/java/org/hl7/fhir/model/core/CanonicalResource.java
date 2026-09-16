@@ -568,8 +568,8 @@ public abstract class CanonicalResource extends DomainResource {
 
       public abstract CanonicalResource copy(EnumSet<CopyObjectOptions> options);
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CanonicalResource) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CanonicalResource) dst, options);
       }
 
       public void copyValues(CanonicalResource dst, EnumSet<CopyObjectOptions> options) {

@@ -647,8 +647,8 @@ public class GraphDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((GraphDefinitionNodeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((GraphDefinitionNodeComponent) dst, options);
       }
 
       public void copyValues(GraphDefinitionNodeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1399,8 +1399,8 @@ public class GraphDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((GraphDefinitionLinkComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((GraphDefinitionLinkComponent) dst, options);
       }
 
       public void copyValues(GraphDefinitionLinkComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1887,8 +1887,8 @@ public class GraphDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((GraphDefinitionLinkCompartmentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((GraphDefinitionLinkCompartmentComponent) dst, options);
       }
 
       public void copyValues(GraphDefinitionLinkCompartmentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3440,8 +3440,8 @@ public class GraphDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((GraphDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((GraphDefinition) dst, options);
       }
 
       public void copyValues(GraphDefinition dst, EnumSet<CopyObjectOptions> options) {

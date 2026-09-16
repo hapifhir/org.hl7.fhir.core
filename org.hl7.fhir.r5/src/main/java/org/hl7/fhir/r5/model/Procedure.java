@@ -331,8 +331,8 @@ public class Procedure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ProcedurePerformerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ProcedurePerformerComponent) dst);
       }
 
       public void copyValues(ProcedurePerformerComponent dst) {
@@ -560,8 +560,8 @@ public class Procedure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ProcedureFocalDeviceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ProcedureFocalDeviceComponent) dst);
       }
 
       public void copyValues(ProcedureFocalDeviceComponent dst) {
@@ -2681,8 +2681,8 @@ public class Procedure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Procedure) b);
+      public void assignValues(Base dst) {
+        copyValues((Procedure) dst);
       }
 
       public void copyValues(Procedure dst) {

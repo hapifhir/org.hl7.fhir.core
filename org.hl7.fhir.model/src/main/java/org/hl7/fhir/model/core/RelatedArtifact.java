@@ -930,8 +930,8 @@ public class RelatedArtifact extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RelatedArtifact) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RelatedArtifact) dst, options);
       }
 
       public void copyValues(RelatedArtifact dst, EnumSet<CopyObjectOptions> options) {

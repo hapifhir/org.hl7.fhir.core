@@ -87,8 +87,8 @@ public class Distance extends Quantity implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Distance) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Distance) dst, options);
       }
 
       public void copyValues(Distance dst, EnumSet<CopyObjectOptions> options) {

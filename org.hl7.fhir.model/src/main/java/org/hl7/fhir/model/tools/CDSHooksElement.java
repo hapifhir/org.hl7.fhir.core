@@ -181,8 +181,8 @@ public abstract class CDSHooksElement extends LogicalBase implements ICompositeT
 
       public abstract CDSHooksElement copy(EnumSet<CopyObjectOptions> options);
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHooksElement) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksElement) dst, options);
       }
 
       public void copyValues(CDSHooksElement dst, EnumSet<CopyObjectOptions> options) {

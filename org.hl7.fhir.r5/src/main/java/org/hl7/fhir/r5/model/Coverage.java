@@ -374,8 +374,8 @@ public class Coverage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CoveragePaymentByComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CoveragePaymentByComponent) dst);
       }
 
       public void copyValues(CoveragePaymentByComponent dst) {
@@ -672,8 +672,8 @@ public class Coverage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ClassComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ClassComponent) dst);
       }
 
       public void copyValues(ClassComponent dst) {
@@ -1193,8 +1193,8 @@ public class Coverage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CostToBeneficiaryComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CostToBeneficiaryComponent) dst);
       }
 
       public void copyValues(CostToBeneficiaryComponent dst) {
@@ -1430,8 +1430,8 @@ public class Coverage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ExemptionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ExemptionComponent) dst);
       }
 
       public void copyValues(ExemptionComponent dst) {
@@ -2811,8 +2811,8 @@ public class Coverage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Coverage) b);
+      public void assignValues(Base dst) {
+        copyValues((Coverage) dst);
       }
 
       public void copyValues(Coverage dst) {

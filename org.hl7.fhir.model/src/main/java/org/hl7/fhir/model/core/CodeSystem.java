@@ -774,8 +774,8 @@ public class CodeSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CodeSystemFilterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CodeSystemFilterComponent) dst, options);
       }
 
       public void copyValues(CodeSystemFilterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1235,8 +1235,8 @@ public class CodeSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PropertyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PropertyComponent) dst, options);
       }
 
       public void copyValues(PropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1835,8 +1835,8 @@ public class CodeSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ConceptDefinitionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptDefinitionComponent) dst, options);
       }
 
       public void copyValues(ConceptDefinitionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2295,8 +2295,8 @@ public class CodeSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ConceptDefinitionDesignationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptDefinitionDesignationComponent) dst, options);
       }
 
       public void copyValues(ConceptDefinitionDesignationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2714,8 +2714,8 @@ public class CodeSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ConceptPropertyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptPropertyComponent) dst, options);
       }
 
       public void copyValues(ConceptPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5662,8 +5662,8 @@ public class CodeSystem extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CodeSystem) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CodeSystem) dst, options);
       }
 
       public void copyValues(CodeSystem dst, EnumSet<CopyObjectOptions> options) {

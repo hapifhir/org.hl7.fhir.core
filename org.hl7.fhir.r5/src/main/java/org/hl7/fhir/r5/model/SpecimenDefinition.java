@@ -885,8 +885,8 @@ public class SpecimenDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SpecimenDefinitionTypeTestedComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SpecimenDefinitionTypeTestedComponent) dst);
       }
 
       public void copyValues(SpecimenDefinitionTypeTestedComponent dst) {
@@ -1524,8 +1524,8 @@ public class SpecimenDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SpecimenDefinitionTypeTestedContainerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SpecimenDefinitionTypeTestedContainerComponent) dst);
       }
 
       public void copyValues(SpecimenDefinitionTypeTestedContainerComponent dst) {
@@ -1751,8 +1751,8 @@ public class SpecimenDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SpecimenDefinitionTypeTestedContainerAdditiveComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SpecimenDefinitionTypeTestedContainerAdditiveComponent) dst);
       }
 
       public void copyValues(SpecimenDefinitionTypeTestedContainerAdditiveComponent dst) {
@@ -2085,8 +2085,8 @@ public class SpecimenDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SpecimenDefinitionTypeTestedHandlingComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SpecimenDefinitionTypeTestedHandlingComponent) dst);
       }
 
       public void copyValues(SpecimenDefinitionTypeTestedHandlingComponent dst) {
@@ -4210,8 +4210,8 @@ public class SpecimenDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SpecimenDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((SpecimenDefinition) dst);
       }
 
       public void copyValues(SpecimenDefinition dst) {

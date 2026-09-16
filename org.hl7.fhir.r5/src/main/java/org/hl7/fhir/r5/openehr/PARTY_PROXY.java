@@ -168,8 +168,8 @@ public abstract class PARTY_PROXY extends LogicalBase implements ICompositeType 
 
       public abstract PARTY_PROXY copy();
 
-      public void assign(Base b) {
-        copyValues((PARTY_PROXY) b);
+      public void assignValues(Base dst) {
+        copyValues((PARTY_PROXY) dst);
       }
 
       public void copyValues(PARTY_PROXY dst) {

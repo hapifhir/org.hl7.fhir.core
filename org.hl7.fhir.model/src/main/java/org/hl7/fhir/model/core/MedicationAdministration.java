@@ -438,8 +438,8 @@ public class MedicationAdministration extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicationAdministrationPerformerComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationAdministrationPerformerComponent) dst, options);
       }
 
       public void copyValues(MedicationAdministrationPerformerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -950,8 +950,8 @@ public class MedicationAdministration extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicationAdministrationDosageComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationAdministrationDosageComponent) dst, options);
       }
 
       public void copyValues(MedicationAdministrationDosageComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2597,8 +2597,8 @@ public class MedicationAdministration extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicationAdministration) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationAdministration) dst, options);
       }
 
       public void copyValues(MedicationAdministration dst, EnumSet<CopyObjectOptions> options) {

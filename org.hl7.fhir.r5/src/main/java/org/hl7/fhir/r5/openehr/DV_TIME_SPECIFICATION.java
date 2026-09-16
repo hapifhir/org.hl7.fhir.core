@@ -197,8 +197,8 @@ public abstract class DV_TIME_SPECIFICATION extends DATA_VALUE implements ICompo
 
       public abstract DV_TIME_SPECIFICATION copy();
 
-      public void assign(Base b) {
-        copyValues((DV_TIME_SPECIFICATION) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_TIME_SPECIFICATION) dst);
       }
 
       public void copyValues(DV_TIME_SPECIFICATION dst) {

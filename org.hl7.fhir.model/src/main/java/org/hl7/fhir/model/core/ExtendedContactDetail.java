@@ -496,8 +496,8 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ExtendedContactDetail) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExtendedContactDetail) dst, options);
       }
 
       public void copyValues(ExtendedContactDetail dst, EnumSet<CopyObjectOptions> options) {

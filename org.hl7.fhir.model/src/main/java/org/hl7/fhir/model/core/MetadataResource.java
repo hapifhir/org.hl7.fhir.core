@@ -331,8 +331,8 @@ public abstract class MetadataResource extends CanonicalResource {
 
       public abstract MetadataResource copy(EnumSet<CopyObjectOptions> options);
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MetadataResource) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MetadataResource) dst, options);
       }
 
       public void copyValues(MetadataResource dst, EnumSet<CopyObjectOptions> options) {

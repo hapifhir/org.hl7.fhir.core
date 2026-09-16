@@ -442,8 +442,8 @@ public class ConditionDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConditionDefinitionObservationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConditionDefinitionObservationComponent) dst);
       }
 
       public void copyValues(ConditionDefinitionObservationComponent dst) {
@@ -660,8 +660,8 @@ public class ConditionDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConditionDefinitionMedicationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConditionDefinitionMedicationComponent) dst);
       }
 
       public void copyValues(ConditionDefinitionMedicationComponent dst) {
@@ -992,8 +992,8 @@ public class ConditionDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConditionDefinitionPreconditionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConditionDefinitionPreconditionComponent) dst);
       }
 
       public void copyValues(ConditionDefinitionPreconditionComponent dst) {
@@ -1243,8 +1243,8 @@ public class ConditionDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConditionDefinitionQuestionnaireComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConditionDefinitionQuestionnaireComponent) dst);
       }
 
       public void copyValues(ConditionDefinitionQuestionnaireComponent dst) {
@@ -1467,8 +1467,8 @@ public class ConditionDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConditionDefinitionPlanComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConditionDefinitionPlanComponent) dst);
       }
 
       public void copyValues(ConditionDefinitionPlanComponent dst) {
@@ -4030,8 +4030,8 @@ public class ConditionDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConditionDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((ConditionDefinition) dst);
       }
 
       public void copyValues(ConditionDefinition dst) {

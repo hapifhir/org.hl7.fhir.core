@@ -1058,8 +1058,8 @@ public class Attachment extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Attachment) b);
+      public void assignValues(Base dst) {
+        copyValues((Attachment) dst);
       }
 
       public void copyValues(Attachment dst) {

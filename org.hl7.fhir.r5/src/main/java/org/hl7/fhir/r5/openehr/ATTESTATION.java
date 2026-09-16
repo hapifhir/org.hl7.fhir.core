@@ -439,8 +439,8 @@ public class ATTESTATION extends AUDIT_DETAILS implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ATTESTATION) b);
+      public void assignValues(Base dst) {
+        copyValues((ATTESTATION) dst);
       }
 
       public void copyValues(ATTESTATION dst) {

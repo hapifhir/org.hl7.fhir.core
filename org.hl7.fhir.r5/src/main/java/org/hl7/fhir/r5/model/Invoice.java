@@ -382,8 +382,8 @@ public class Invoice extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InvoiceParticipantComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InvoiceParticipantComponent) dst);
       }
 
       public void copyValues(InvoiceParticipantComponent dst) {
@@ -818,8 +818,8 @@ public class Invoice extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InvoiceLineItemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InvoiceLineItemComponent) dst);
       }
 
       public void copyValues(InvoiceLineItemComponent dst) {
@@ -2100,8 +2100,8 @@ public class Invoice extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Invoice) b);
+      public void assignValues(Base dst) {
+        copyValues((Invoice) dst);
       }
 
       public void copyValues(Invoice dst) {

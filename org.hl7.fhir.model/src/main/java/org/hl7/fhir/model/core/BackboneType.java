@@ -213,8 +213,8 @@ public abstract class BackboneType extends DataType implements IBaseBackboneElem
 
       public abstract BackboneType copy(EnumSet<CopyObjectOptions> options);
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((BackboneType) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((BackboneType) dst, options);
       }
 
       public void copyValues(BackboneType dst, EnumSet<CopyObjectOptions> options) {

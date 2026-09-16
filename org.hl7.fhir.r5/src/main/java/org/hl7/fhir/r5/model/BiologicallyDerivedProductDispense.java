@@ -431,8 +431,8 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((BiologicallyDerivedProductDispensePerformerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((BiologicallyDerivedProductDispensePerformerComponent) dst);
       }
 
       public void copyValues(BiologicallyDerivedProductDispensePerformerComponent dst) {
@@ -1556,8 +1556,8 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((BiologicallyDerivedProductDispense) b);
+      public void assignValues(Base dst) {
+        copyValues((BiologicallyDerivedProductDispense) dst);
       }
 
       public void copyValues(BiologicallyDerivedProductDispense dst) {

@@ -313,8 +313,8 @@ public class FOLDER extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((FOLDER) b);
+      public void assignValues(Base dst) {
+        copyValues((FOLDER) dst);
       }
 
       public void copyValues(FOLDER dst) {

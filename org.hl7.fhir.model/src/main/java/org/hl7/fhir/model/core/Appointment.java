@@ -1002,8 +1002,8 @@ public class Appointment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AppointmentParticipantComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AppointmentParticipantComponent) dst, options);
       }
 
       public void copyValues(AppointmentParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1823,8 +1823,8 @@ public class Appointment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AppointmentRecurrenceTemplateComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AppointmentRecurrenceTemplateComponent) dst, options);
       }
 
       public void copyValues(AppointmentRecurrenceTemplateComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2175,8 +2175,8 @@ public class Appointment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AppointmentRecurrenceTemplateWeeklyTemplateComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AppointmentRecurrenceTemplateWeeklyTemplateComponent) dst, options);
       }
 
       public void copyValues(AppointmentRecurrenceTemplateWeeklyTemplateComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2629,8 +2629,8 @@ public class Appointment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AppointmentRecurrenceTemplateMonthlyTemplateComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AppointmentRecurrenceTemplateMonthlyTemplateComponent) dst, options);
       }
 
       public void copyValues(AppointmentRecurrenceTemplateMonthlyTemplateComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2858,8 +2858,8 @@ public class Appointment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AppointmentRecurrenceTemplateYearlyTemplateComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AppointmentRecurrenceTemplateYearlyTemplateComponent) dst, options);
       }
 
       public void copyValues(AppointmentRecurrenceTemplateYearlyTemplateComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5247,8 +5247,8 @@ public class Appointment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Appointment) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Appointment) dst, options);
       }
 
       public void copyValues(Appointment dst, EnumSet<CopyObjectOptions> options) {

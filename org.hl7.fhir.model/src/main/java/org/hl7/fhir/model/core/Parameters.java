@@ -1491,8 +1491,8 @@ public class Parameters extends Resource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ParametersParameterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ParametersParameterComponent) dst, options);
       }
 
       public void copyValues(ParametersParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1757,8 +1757,8 @@ public String toString() {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Parameters) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Parameters) dst, options);
       }
 
       public void copyValues(Parameters dst, EnumSet<CopyObjectOptions> options) {

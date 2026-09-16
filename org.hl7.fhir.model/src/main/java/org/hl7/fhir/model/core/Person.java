@@ -410,8 +410,8 @@ public class Person extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PersonCommunicationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PersonCommunicationComponent) dst, options);
       }
 
       public void copyValues(PersonCommunicationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -685,8 +685,8 @@ public class Person extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PersonLinkComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PersonLinkComponent) dst, options);
       }
 
       public void copyValues(PersonLinkComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1755,8 +1755,8 @@ public class Person extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Person) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Person) dst, options);
       }
 
       public void copyValues(Person dst, EnumSet<CopyObjectOptions> options) {

@@ -362,8 +362,8 @@ public class Annotation extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Annotation) b);
+      public void assignValues(Base dst) {
+        copyValues((Annotation) dst);
       }
 
       public void copyValues(Annotation dst) {

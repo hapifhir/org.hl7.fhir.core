@@ -524,8 +524,8 @@ public class Expression extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Expression) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Expression) dst, options);
       }
 
       public void copyValues(Expression dst, EnumSet<CopyObjectOptions> options) {

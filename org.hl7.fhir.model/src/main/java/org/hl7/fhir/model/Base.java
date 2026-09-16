@@ -740,14 +740,21 @@ public abstract class Base implements Serializable, IBase, IElement {
   public abstract Base copy(EnumSet<CopyObjectOptions> options); //
 
   /**
+   * Copy this object's content onto dst, the same as copyValues, but with one signature all the
+   * way down the hierarchy so that a call made through a Base reference reaches the leaf type.
+   * copyValues takes a different argument type at every level, so a call bound through Base
+   * would stop at Base.copyValues; each override of this casts dst to its own type to pick the
+   * right one
+   */
+  public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+    copyValues((Base) dst, options);
+  }
+
+  /**
    * Copy this object's content onto dst: this implementation copies the option-selected 
    * Base-level features; the generated overrides copy their element content (passing the 
    * options down to every child they copy) and call super
    */
-  public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-    copyValues((Base) b, options);
-  }
-
   public void copyValues(Base dst, EnumSet<CopyObjectOptions> options) {
     dst.setModelContext(modelContext); // no-op on the normal path (copy() constructs dst with this context); adopts a fresh dst; throws rather than corrupting a dst that belongs to a different context
     if (options.contains(CopyObjectOptions.USER_DATA)) {

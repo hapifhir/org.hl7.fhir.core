@@ -69,8 +69,8 @@ public class TEMPLATE_ID extends OBJECT_ID implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TEMPLATE_ID) b);
+      public void assignValues(Base dst) {
+        copyValues((TEMPLATE_ID) dst);
       }
 
       public void copyValues(TEMPLATE_ID dst) {

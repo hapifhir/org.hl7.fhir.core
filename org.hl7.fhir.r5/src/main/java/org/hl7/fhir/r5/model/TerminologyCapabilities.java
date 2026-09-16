@@ -394,8 +394,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TerminologyCapabilitiesSoftwareComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesSoftwareComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesSoftwareComponent dst) {
@@ -662,8 +662,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TerminologyCapabilitiesImplementationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesImplementationComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesImplementationComponent dst) {
@@ -1076,8 +1076,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TerminologyCapabilitiesCodeSystemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesCodeSystemComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesCodeSystemComponent dst) {
@@ -1657,8 +1657,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TerminologyCapabilitiesCodeSystemVersionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesCodeSystemVersionComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesCodeSystemVersionComponent dst) {
@@ -1958,8 +1958,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TerminologyCapabilitiesCodeSystemVersionFilterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesCodeSystemVersionFilterComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesCodeSystemVersionFilterComponent dst) {
@@ -2431,8 +2431,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TerminologyCapabilitiesExpansionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesExpansionComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesExpansionComponent dst) {
@@ -2709,8 +2709,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TerminologyCapabilitiesExpansionParameterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesExpansionParameterComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesExpansionParameterComponent dst) {
@@ -2906,8 +2906,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TerminologyCapabilitiesValidateCodeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesValidateCodeComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesValidateCodeComponent dst) {
@@ -3102,8 +3102,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TerminologyCapabilitiesTranslationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesTranslationComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesTranslationComponent dst) {
@@ -3290,8 +3290,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TerminologyCapabilitiesClosureComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesClosureComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesClosureComponent dst) {
@@ -5222,8 +5222,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TerminologyCapabilities) b);
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilities) dst);
       }
 
       public void copyValues(TerminologyCapabilities dst) {

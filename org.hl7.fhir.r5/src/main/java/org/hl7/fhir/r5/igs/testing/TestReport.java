@@ -931,8 +931,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TestReportParticipantComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TestReportParticipantComponent) dst);
       }
 
       public void copyValues(TestReportParticipantComponent dst) {
@@ -1193,8 +1193,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TestReportParameterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TestReportParameterComponent) dst);
       }
 
       public void copyValues(TestReportParameterComponent dst) {
@@ -1389,8 +1389,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TestReportSetupComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TestReportSetupComponent) dst);
       }
 
       public void copyValues(TestReportSetupComponent dst) {
@@ -1585,8 +1585,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SetupActionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SetupActionComponent) dst);
       }
 
       public void copyValues(SetupActionComponent dst) {
@@ -1914,8 +1914,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SetupActionOperationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SetupActionOperationComponent) dst);
       }
 
       public void copyValues(SetupActionOperationComponent dst) {
@@ -2320,8 +2320,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SetupActionAssertComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SetupActionAssertComponent) dst);
       }
 
       public void copyValues(SetupActionAssertComponent dst) {
@@ -2524,8 +2524,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SetupActionAssertRequirementComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SetupActionAssertRequirementComponent) dst);
       }
 
       public void copyValues(SetupActionAssertRequirementComponent dst) {
@@ -3019,8 +3019,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TestReportTestComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TestReportTestComponent) dst);
       }
 
       public void copyValues(TestReportTestComponent dst) {
@@ -3236,8 +3236,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TestActionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TestActionComponent) dst);
       }
 
       public void copyValues(TestActionComponent dst) {
@@ -3432,8 +3432,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TestReportTeardownComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TestReportTeardownComponent) dst);
       }
 
       public void copyValues(TestReportTeardownComponent dst) {
@@ -3603,8 +3603,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TeardownActionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TeardownActionComponent) dst);
       }
 
       public void copyValues(TeardownActionComponent dst) {
@@ -4726,8 +4726,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TestReport) b);
+      public void assignValues(Base dst) {
+        copyValues((TestReport) dst);
       }
 
       public void copyValues(TestReport dst) {

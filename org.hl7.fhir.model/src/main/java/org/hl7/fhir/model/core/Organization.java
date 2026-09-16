@@ -434,8 +434,8 @@ public class Organization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((OrganizationQualificationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((OrganizationQualificationComponent) dst, options);
       }
 
       public void copyValues(OrganizationQualificationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1314,8 +1314,8 @@ public class Organization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Organization) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Organization) dst, options);
       }
 
       public void copyValues(Organization dst, EnumSet<CopyObjectOptions> options) {

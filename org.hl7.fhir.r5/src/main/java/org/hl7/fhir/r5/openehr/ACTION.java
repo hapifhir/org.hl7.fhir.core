@@ -312,8 +312,8 @@ public class ACTION extends CARE_ENTRY implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ACTION) b);
+      public void assignValues(Base dst) {
+        copyValues((ACTION) dst);
       }
 
       public void copyValues(ACTION dst) {

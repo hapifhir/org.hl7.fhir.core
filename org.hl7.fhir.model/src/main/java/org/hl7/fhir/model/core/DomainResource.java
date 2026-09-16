@@ -379,8 +379,8 @@ public abstract class DomainResource extends Resource implements IBaseHasExtensi
 
       public abstract DomainResource copy(EnumSet<CopyObjectOptions> options);
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DomainResource) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DomainResource) dst, options);
       }
 
       public void copyValues(DomainResource dst, EnumSet<CopyObjectOptions> options) {

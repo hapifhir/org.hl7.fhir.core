@@ -1304,8 +1304,8 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((OperationDefinitionParameterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((OperationDefinitionParameterComponent) dst);
       }
 
       public void copyValues(OperationDefinitionParameterComponent dst) {
@@ -1613,8 +1613,8 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((OperationDefinitionParameterBindingComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((OperationDefinitionParameterBindingComponent) dst);
       }
 
       public void copyValues(OperationDefinitionParameterBindingComponent dst) {
@@ -1881,8 +1881,8 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((OperationDefinitionParameterReferencedFromComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((OperationDefinitionParameterReferencedFromComponent) dst);
       }
 
       public void copyValues(OperationDefinitionParameterReferencedFromComponent dst) {
@@ -2157,8 +2157,8 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((OperationDefinitionOverloadComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((OperationDefinitionOverloadComponent) dst);
       }
 
       public void copyValues(OperationDefinitionOverloadComponent dst) {
@@ -4457,8 +4457,8 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((OperationDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((OperationDefinition) dst);
       }
 
       public void copyValues(OperationDefinition dst) {

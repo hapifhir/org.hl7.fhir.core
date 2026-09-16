@@ -1533,12 +1533,12 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
   /**
    * copyValues is declared with a different argument type at every level of the hierarchy
    * (Base -> DataType -> HumanName), so a call made through a Base reference binds statically to
-   * Base.copyValues and never reaches the leaf. assign has the same signature all the way down, so
+   * Base.copyValues and never reaches the leaf. assignValues has the same signature all the way down, so
    * it dispatches virtually, and each override casts to its own type to select the right copyValues
    */
-  private void generateAssign(String tn) throws Exception {
-    write("      public void assign(Base b, EnumSet<CopyObjectOptions> options) {\r\n");
-    write("        copyValues(("+tn+") b, options);\r\n");
+  private void generateAssignValues(String tn) throws Exception {
+    write("      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {\r\n");
+    write("        copyValues(("+tn+") dst, options);\r\n");
     write("      }\r\n\r\n");
   }
 
@@ -1551,7 +1551,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 	  
 	  if (isAbstract) {
       write("      public abstract "+tn+" copy(EnumSet<CopyObjectOptions> options);\r\n\r\n");
-      generateAssign(tn);
+      generateAssignValues(tn);
       write("      public void copyValues("+tn+" dst, EnumSet<CopyObjectOptions> options) {\r\n");
       write("        super.copyValues(dst, options);\r\n");
 	  } else {
@@ -1560,7 +1560,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       write("        copyValues(dst, options);\r\n");
       write("        return dst;\r\n");
       write("      }\r\n\r\n");
-      generateAssign(tn);
+      generateAssignValues(tn);
       write("      public void copyValues("+tn+" dst, EnumSet<CopyObjectOptions> options) {\r\n");
       write("        super.copyValues(dst, options);\r\n");
 	  }

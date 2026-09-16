@@ -3397,8 +3397,8 @@ public class SearchParameter extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SearchParameterComponentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SearchParameterComponentComponent) dst, options);
       }
 
       public void copyValues(SearchParameterComponentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6008,8 +6008,8 @@ public class SearchParameter extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SearchParameter) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SearchParameter) dst, options);
       }
 
       public void copyValues(SearchParameter dst, EnumSet<CopyObjectOptions> options) {

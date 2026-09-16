@@ -408,8 +408,8 @@ public class DV_IDENTIFIER extends DATA_VALUE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_IDENTIFIER) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_IDENTIFIER) dst);
       }
 
       public void copyValues(DV_IDENTIFIER dst) {

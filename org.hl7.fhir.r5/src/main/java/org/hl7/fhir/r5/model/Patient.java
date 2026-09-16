@@ -678,8 +678,8 @@ public class Patient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ContactComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ContactComponent) dst);
       }
 
       public void copyValues(ContactComponent dst) {
@@ -939,8 +939,8 @@ public class Patient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PatientCommunicationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PatientCommunicationComponent) dst);
       }
 
       public void copyValues(PatientCommunicationComponent dst) {
@@ -1188,8 +1188,8 @@ public class Patient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PatientLinkComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PatientLinkComponent) dst);
       }
 
       public void copyValues(PatientLinkComponent dst) {
@@ -2485,8 +2485,8 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Patient) b);
+      public void assignValues(Base dst) {
+        copyValues((Patient) dst);
       }
 
       public void copyValues(Patient dst) {

@@ -319,8 +319,8 @@ public class DeviceRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceRequestParameterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceRequestParameterComponent) dst, options);
       }
 
       public void copyValues(DeviceRequestParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2263,8 +2263,8 @@ public class DeviceRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceRequest) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceRequest) dst, options);
       }
 
       public void copyValues(DeviceRequest dst, EnumSet<CopyObjectOptions> options) {

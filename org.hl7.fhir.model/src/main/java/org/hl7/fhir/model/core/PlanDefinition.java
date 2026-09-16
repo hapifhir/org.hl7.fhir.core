@@ -584,8 +584,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PlanDefinitionGoalComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionGoalComponent) dst, options);
       }
 
       public void copyValues(PlanDefinitionGoalComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1047,8 +1047,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PlanDefinitionGoalTargetComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionGoalTargetComponent) dst, options);
       }
 
       public void copyValues(PlanDefinitionGoalTargetComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1422,8 +1422,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PlanDefinitionActorComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActorComponent) dst, options);
       }
 
       public void copyValues(PlanDefinitionActorComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1827,8 +1827,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PlanDefinitionActorOptionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActorOptionComponent) dst, options);
       }
 
       public void copyValues(PlanDefinitionActorOptionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4302,8 +4302,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PlanDefinitionActionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionComponent) dst, options);
       }
 
       public void copyValues(PlanDefinitionActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4752,8 +4752,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PlanDefinitionActionConditionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionConditionComponent) dst, options);
       }
 
       public void copyValues(PlanDefinitionActionConditionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5091,8 +5091,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PlanDefinitionActionInputComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionInputComponent) dst, options);
       }
 
       public void copyValues(PlanDefinitionActionInputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5436,8 +5436,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PlanDefinitionActionOutputComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionOutputComponent) dst, options);
       }
 
       public void copyValues(PlanDefinitionActionOutputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5901,8 +5901,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PlanDefinitionActionRelatedActionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionRelatedActionComponent) dst, options);
       }
 
       public void copyValues(PlanDefinitionActionRelatedActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6439,8 +6439,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PlanDefinitionActionParticipantComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionParticipantComponent) dst, options);
       }
 
       public void copyValues(PlanDefinitionActionParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6721,8 +6721,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PlanDefinitionActionDynamicValueComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionDynamicValueComponent) dst, options);
       }
 
       public void copyValues(PlanDefinitionActionDynamicValueComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9519,8 +9519,8 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PlanDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinition) dst, options);
       }
 
       public void copyValues(PlanDefinition dst, EnumSet<CopyObjectOptions> options) {

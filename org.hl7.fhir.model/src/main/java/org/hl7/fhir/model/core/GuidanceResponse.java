@@ -1517,8 +1517,8 @@ public class GuidanceResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((GuidanceResponse) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((GuidanceResponse) dst, options);
       }
 
       public void copyValues(GuidanceResponse dst, EnumSet<CopyObjectOptions> options) {

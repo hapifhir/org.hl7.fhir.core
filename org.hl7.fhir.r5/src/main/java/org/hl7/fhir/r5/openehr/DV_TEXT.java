@@ -511,8 +511,8 @@ DEPRECATED usage: contains a string of the form ```'name:value; name:value…​
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_TEXT) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_TEXT) dst);
       }
 
       public void copyValues(DV_TEXT dst) {

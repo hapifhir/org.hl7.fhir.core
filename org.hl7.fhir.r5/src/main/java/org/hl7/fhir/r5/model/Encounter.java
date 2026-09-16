@@ -434,8 +434,8 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EncounterParticipantComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EncounterParticipantComponent) dst);
       }
 
       public void copyValues(EncounterParticipantComponent dst) {
@@ -714,8 +714,8 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ReasonComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ReasonComponent) dst);
       }
 
       public void copyValues(ReasonComponent dst) {
@@ -996,8 +996,8 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DiagnosisComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DiagnosisComponent) dst);
       }
 
       public void copyValues(DiagnosisComponent dst) {
@@ -1411,8 +1411,8 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EncounterAdmissionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EncounterAdmissionComponent) dst);
       }
 
       public void copyValues(EncounterAdmissionComponent dst) {
@@ -1766,8 +1766,8 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EncounterLocationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((EncounterLocationComponent) dst);
       }
 
       public void copyValues(EncounterLocationComponent dst) {
@@ -3787,8 +3787,8 @@ This does not describe the event of admitting the patient, but rather any inform
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Encounter) b);
+      public void assignValues(Base dst) {
+        copyValues((Encounter) dst);
       }
 
       public void copyValues(Encounter dst) {

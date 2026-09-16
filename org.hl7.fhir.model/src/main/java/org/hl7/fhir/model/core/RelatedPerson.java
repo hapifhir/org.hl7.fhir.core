@@ -275,8 +275,8 @@ public class RelatedPerson extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RelatedPersonCommunicationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RelatedPersonCommunicationComponent) dst, options);
       }
 
       public void copyValues(RelatedPersonCommunicationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1342,8 +1342,8 @@ public class RelatedPerson extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RelatedPerson) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RelatedPerson) dst, options);
       }
 
       public void copyValues(RelatedPerson dst, EnumSet<CopyObjectOptions> options) {

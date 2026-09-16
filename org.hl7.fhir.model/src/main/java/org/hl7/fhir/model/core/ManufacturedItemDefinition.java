@@ -410,8 +410,8 @@ public class ManufacturedItemDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ManufacturedItemDefinitionPropertyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ManufacturedItemDefinitionPropertyComponent) dst, options);
       }
 
       public void copyValues(ManufacturedItemDefinitionPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -971,8 +971,8 @@ public class ManufacturedItemDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ManufacturedItemDefinitionComponentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ManufacturedItemDefinitionComponentComponent) dst, options);
       }
 
       public void copyValues(ManufacturedItemDefinitionComponentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1434,8 +1434,8 @@ public class ManufacturedItemDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ManufacturedItemDefinitionComponentConstituentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ManufacturedItemDefinitionComponentConstituentComponent) dst, options);
       }
 
       public void copyValues(ManufacturedItemDefinitionComponentConstituentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2307,8 +2307,8 @@ public class ManufacturedItemDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ManufacturedItemDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ManufacturedItemDefinition) dst, options);
       }
 
       public void copyValues(ManufacturedItemDefinition dst, EnumSet<CopyObjectOptions> options) {

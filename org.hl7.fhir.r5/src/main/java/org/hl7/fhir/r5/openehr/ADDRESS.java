@@ -175,8 +175,8 @@ public class ADDRESS extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ADDRESS) b);
+      public void assignValues(Base dst) {
+        copyValues((ADDRESS) dst);
       }
 
       public void copyValues(ADDRESS dst) {

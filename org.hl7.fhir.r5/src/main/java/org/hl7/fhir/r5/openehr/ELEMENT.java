@@ -258,8 +258,8 @@ public class ELEMENT extends ITEM implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ELEMENT) b);
+      public void assignValues(Base dst) {
+        copyValues((ELEMENT) dst);
       }
 
       public void copyValues(ELEMENT dst) {

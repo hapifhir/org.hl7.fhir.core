@@ -374,8 +374,8 @@ public class Immunization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImmunizationPerformerComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImmunizationPerformerComponent) dst, options);
       }
 
       public void copyValues(ImmunizationPerformerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -626,8 +626,8 @@ public class Immunization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImmunizationProgramEligibilityComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImmunizationProgramEligibilityComponent) dst, options);
       }
 
       public void copyValues(ImmunizationProgramEligibilityComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -962,8 +962,8 @@ public class Immunization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImmunizationReactionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImmunizationReactionComponent) dst, options);
       }
 
       public void copyValues(ImmunizationReactionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1410,8 +1410,8 @@ public class Immunization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImmunizationProtocolAppliedComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImmunizationProtocolAppliedComponent) dst, options);
       }
 
       public void copyValues(ImmunizationProtocolAppliedComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3415,8 +3415,8 @@ public class Immunization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Immunization) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Immunization) dst, options);
       }
 
       public void copyValues(Immunization dst, EnumSet<CopyObjectOptions> options) {

@@ -316,8 +316,8 @@ public class CODE_PHRASE extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CODE_PHRASE) b);
+      public void assignValues(Base dst) {
+        copyValues((CODE_PHRASE) dst);
       }
 
       public void copyValues(CODE_PHRASE dst) {

@@ -352,8 +352,8 @@ public class CDSHookEncounterDischargeContext extends CDSHookContext implements 
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHookEncounterDischargeContext) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHookEncounterDischargeContext) dst, options);
       }
 
       public void copyValues(CDSHookEncounterDischargeContext dst, EnumSet<CopyObjectOptions> options) {

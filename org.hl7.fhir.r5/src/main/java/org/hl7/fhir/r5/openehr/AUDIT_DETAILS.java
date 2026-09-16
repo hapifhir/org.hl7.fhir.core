@@ -380,8 +380,8 @@ public class AUDIT_DETAILS extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AUDIT_DETAILS) b);
+      public void assignValues(Base dst) {
+        copyValues((AUDIT_DETAILS) dst);
       }
 
       public void copyValues(AUDIT_DETAILS dst) {

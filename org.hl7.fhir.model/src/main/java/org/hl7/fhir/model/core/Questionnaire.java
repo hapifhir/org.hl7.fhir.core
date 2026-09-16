@@ -2323,8 +2323,8 @@ public class Questionnaire extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((QuestionnaireItemComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireItemComponent) dst, options);
       }
 
       public void copyValues(QuestionnaireItemComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3045,8 +3045,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((QuestionnaireItemEnableWhenComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireItemEnableWhenComponent) dst, options);
       }
 
       public void copyValues(QuestionnaireItemEnableWhenComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3516,8 +3516,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((QuestionnaireItemAnswerOptionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireItemAnswerOptionComponent) dst, options);
       }
 
       public void copyValues(QuestionnaireItemAnswerOptionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3949,8 +3949,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((QuestionnaireItemInitialComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireItemInitialComponent) dst, options);
       }
 
       public void copyValues(QuestionnaireItemInitialComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6119,8 +6119,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Questionnaire) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Questionnaire) dst, options);
       }
 
       public void copyValues(Questionnaire dst, EnumSet<CopyObjectOptions> options) {

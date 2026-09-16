@@ -454,8 +454,8 @@ public class Reference extends BaseReference implements IBaseReference, IComposi
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Reference) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Reference) dst, options);
       }
 
       public void copyValues(Reference dst, EnumSet<CopyObjectOptions> options) {

@@ -328,8 +328,8 @@ The first three values are taken from the ISO standards 2788 ( Guide to Establis
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TERM_MAPPING) b);
+      public void assignValues(Base dst) {
+        copyValues((TERM_MAPPING) dst);
       }
 
       public void copyValues(TERM_MAPPING dst) {

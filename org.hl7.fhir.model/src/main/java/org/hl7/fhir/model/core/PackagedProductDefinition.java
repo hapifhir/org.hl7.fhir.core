@@ -245,8 +245,8 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PackagedProductDefinitionLegalStatusOfSupplyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PackagedProductDefinitionLegalStatusOfSupplyComponent) dst, options);
       }
 
       public void copyValues(PackagedProductDefinitionLegalStatusOfSupplyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1163,8 +1163,8 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PackagedProductDefinitionPackagingComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PackagedProductDefinitionPackagingComponent) dst, options);
       }
 
       public void copyValues(PackagedProductDefinitionPackagingComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1583,8 +1583,8 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PackagedProductDefinitionPackagingPropertyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PackagedProductDefinitionPackagingPropertyComponent) dst, options);
       }
 
       public void copyValues(PackagedProductDefinitionPackagingPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1832,8 +1832,8 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PackagedProductDefinitionPackagingContainedItemComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PackagedProductDefinitionPackagingContainedItemComponent) dst, options);
       }
 
       public void copyValues(PackagedProductDefinitionPackagingContainedItemComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3016,8 +3016,8 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PackagedProductDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PackagedProductDefinition) dst, options);
       }
 
       public void copyValues(PackagedProductDefinition dst, EnumSet<CopyObjectOptions> options) {

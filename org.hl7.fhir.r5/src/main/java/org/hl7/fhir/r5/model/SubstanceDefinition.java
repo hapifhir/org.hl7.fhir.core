@@ -596,8 +596,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceDefinitionMoietyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceDefinitionMoietyComponent) dst);
       }
 
       public void copyValues(SubstanceDefinitionMoietyComponent dst) {
@@ -971,8 +971,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceDefinitionCharacterizationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceDefinitionCharacterizationComponent) dst);
       }
 
       public void copyValues(SubstanceDefinitionCharacterizationComponent dst) {
@@ -1299,8 +1299,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceDefinitionPropertyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceDefinitionPropertyComponent) dst);
       }
 
       public void copyValues(SubstanceDefinitionPropertyComponent dst) {
@@ -1572,8 +1572,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceDefinitionMolecularWeightComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceDefinitionMolecularWeightComponent) dst);
       }
 
       public void copyValues(SubstanceDefinitionMolecularWeightComponent dst) {
@@ -2207,8 +2207,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceDefinitionStructureComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceDefinitionStructureComponent) dst);
       }
 
       public void copyValues(SubstanceDefinitionStructureComponent dst) {
@@ -2568,8 +2568,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceDefinitionStructureRepresentationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceDefinitionStructureRepresentationComponent) dst);
       }
 
       public void copyValues(SubstanceDefinitionStructureRepresentationComponent dst) {
@@ -3010,8 +3010,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceDefinitionCodeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceDefinitionCodeComponent) dst);
       }
 
       public void copyValues(SubstanceDefinitionCodeComponent dst) {
@@ -3911,8 +3911,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceDefinitionNameComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceDefinitionNameComponent) dst);
       }
 
       public void copyValues(SubstanceDefinitionNameComponent dst) {
@@ -4241,8 +4241,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceDefinitionNameOfficialComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceDefinitionNameOfficialComponent) dst);
       }
 
       public void copyValues(SubstanceDefinitionNameOfficialComponent dst) {
@@ -4843,8 +4843,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceDefinitionRelationshipComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceDefinitionRelationshipComponent) dst);
       }
 
       public void copyValues(SubstanceDefinitionRelationshipComponent dst) {
@@ -5245,8 +5245,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceDefinitionSourceMaterialComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceDefinitionSourceMaterialComponent) dst);
       }
 
       public void copyValues(SubstanceDefinitionSourceMaterialComponent dst) {
@@ -6950,8 +6950,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceDefinition) dst);
       }
 
       public void copyValues(SubstanceDefinition dst) {

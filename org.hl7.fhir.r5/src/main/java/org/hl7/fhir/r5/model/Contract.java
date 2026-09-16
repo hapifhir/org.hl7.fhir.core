@@ -1112,8 +1112,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ContentDefinitionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ContentDefinitionComponent) dst);
       }
 
       public void copyValues(ContentDefinitionComponent dst) {
@@ -2011,8 +2011,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TermComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TermComponent) dst);
       }
 
       public void copyValues(TermComponent dst) {
@@ -2455,8 +2455,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SecurityLabelComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SecurityLabelComponent) dst);
       }
 
       public void copyValues(SecurityLabelComponent dst) {
@@ -3274,8 +3274,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ContractOfferComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ContractOfferComponent) dst);
       }
 
       public void copyValues(ContractOfferComponent dst) {
@@ -3565,8 +3565,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ContractPartyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ContractPartyComponent) dst);
       }
 
       public void copyValues(ContractPartyComponent dst) {
@@ -3981,8 +3981,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AnswerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AnswerComponent) dst);
       }
 
       public void copyValues(AnswerComponent dst) {
@@ -5184,8 +5184,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ContractAssetComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ContractAssetComponent) dst);
       }
 
       public void copyValues(ContractAssetComponent dst) {
@@ -5565,8 +5565,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AssetContextComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AssetContextComponent) dst);
       }
 
       public void copyValues(AssetContextComponent dst) {
@@ -6614,8 +6614,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ValuedItemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ValuedItemComponent) dst);
       }
 
       public void copyValues(ValuedItemComponent dst) {
@@ -8106,8 +8106,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ActionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ActionComponent) dst);
       }
 
       public void copyValues(ActionComponent dst) {
@@ -8433,8 +8433,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ActionSubjectComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ActionSubjectComponent) dst);
       }
 
       public void copyValues(ActionSubjectComponent dst) {
@@ -8739,8 +8739,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SignatoryComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SignatoryComponent) dst);
       }
 
       public void copyValues(SignatoryComponent dst) {
@@ -8957,8 +8957,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((FriendlyLanguageComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((FriendlyLanguageComponent) dst);
       }
 
       public void copyValues(FriendlyLanguageComponent dst) {
@@ -9168,8 +9168,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((LegalLanguageComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((LegalLanguageComponent) dst);
       }
 
       public void copyValues(LegalLanguageComponent dst) {
@@ -9379,8 +9379,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ComputableLanguageComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ComputableLanguageComponent) dst);
       }
 
       public void copyValues(ComputableLanguageComponent dst) {
@@ -11726,8 +11726,8 @@ public class Contract extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Contract) b);
+      public void assignValues(Base dst) {
+        copyValues((Contract) dst);
       }
 
       public void copyValues(Contract dst) {

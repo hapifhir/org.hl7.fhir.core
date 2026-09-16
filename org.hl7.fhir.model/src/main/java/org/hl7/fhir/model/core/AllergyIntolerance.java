@@ -874,8 +874,8 @@ public class AllergyIntolerance extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AllergyIntoleranceReactionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AllergyIntoleranceReactionComponent) dst, options);
       }
 
       public void copyValues(AllergyIntoleranceReactionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2155,8 +2155,8 @@ public class AllergyIntolerance extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AllergyIntolerance) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AllergyIntolerance) dst, options);
       }
 
       public void copyValues(AllergyIntolerance dst, EnumSet<CopyObjectOptions> options) {

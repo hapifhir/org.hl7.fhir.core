@@ -474,8 +474,8 @@ public class MessageHeader extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MessageDestinationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageDestinationComponent) dst, options);
       }
 
       public void copyValues(MessageDestinationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1037,8 +1037,8 @@ public class MessageHeader extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MessageSourceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageSourceComponent) dst, options);
       }
 
       public void copyValues(MessageSourceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1382,8 +1382,8 @@ public class MessageHeader extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MessageHeaderResponseComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageHeaderResponseComponent) dst, options);
       }
 
       public void copyValues(MessageHeaderResponseComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2027,8 +2027,8 @@ public class MessageHeader extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MessageHeader) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageHeader) dst, options);
       }
 
       public void copyValues(MessageHeader dst, EnumSet<CopyObjectOptions> options) {

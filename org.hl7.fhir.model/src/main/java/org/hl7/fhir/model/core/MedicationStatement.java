@@ -375,8 +375,8 @@ public class MedicationStatement extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicationStatementAdherenceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationStatementAdherenceComponent) dst, options);
       }
 
       public void copyValues(MedicationStatementAdherenceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1688,8 +1688,8 @@ public class MedicationStatement extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicationStatement) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationStatement) dst, options);
       }
 
       public void copyValues(MedicationStatement dst, EnumSet<CopyObjectOptions> options) {

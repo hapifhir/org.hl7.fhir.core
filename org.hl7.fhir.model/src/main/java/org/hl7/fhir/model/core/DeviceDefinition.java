@@ -638,8 +638,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionUdiDeviceIdentifierComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionUdiDeviceIdentifierComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionUdiDeviceIdentifierComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -929,8 +929,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((UdiDeviceIdentifierMarketDistributionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((UdiDeviceIdentifierMarketDistributionComponent) dst, options);
       }
 
       public void copyValues(UdiDeviceIdentifierMarketDistributionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1427,8 +1427,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionRegulatoryIdentifierComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionRegulatoryIdentifierComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionRegulatoryIdentifierComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1714,8 +1714,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionDeviceNameComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionDeviceNameComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionDeviceNameComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1984,8 +1984,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionClassificationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionClassificationComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionClassificationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2394,8 +2394,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionConformsToComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionConformsToComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionConformsToComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2718,8 +2718,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionHasPartComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionHasPartComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionHasPartComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3268,8 +3268,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionPackagingComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionPackagingComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionPackagingComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3585,8 +3585,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PackagingDistributorComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PackagingDistributorComponent) dst, options);
       }
 
       public void copyValues(PackagingDistributorComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3914,8 +3914,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionDeviceVersionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionDeviceVersionComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionDeviceVersionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4305,8 +4305,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionPropertyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionPropertyComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4592,8 +4592,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionLinkComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionLinkComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionLinkComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4936,8 +4936,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionMaterialComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionMaterialComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionMaterialComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5193,8 +5193,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionAdditiveComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionAdditiveComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionAdditiveComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5847,8 +5847,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionGuidelineComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionGuidelineComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionGuidelineComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6242,8 +6242,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionCorrectiveActionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionCorrectiveActionComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionCorrectiveActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6624,8 +6624,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinitionChargeItemComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionChargeItemComponent) dst, options);
       }
 
       public void copyValues(DeviceDefinitionChargeItemComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9930,8 +9930,8 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinition) dst, options);
       }
 
       public void copyValues(DeviceDefinition dst, EnumSet<CopyObjectOptions> options) {

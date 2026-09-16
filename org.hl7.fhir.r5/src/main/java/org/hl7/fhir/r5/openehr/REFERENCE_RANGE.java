@@ -226,8 +226,8 @@ public class REFERENCE_RANGE extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((REFERENCE_RANGE) b);
+      public void assignValues(Base dst) {
+        copyValues((REFERENCE_RANGE) dst);
       }
 
       public void copyValues(REFERENCE_RANGE dst) {

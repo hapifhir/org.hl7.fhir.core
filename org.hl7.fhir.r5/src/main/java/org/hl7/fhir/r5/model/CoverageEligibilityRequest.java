@@ -403,8 +403,8 @@ public class CoverageEligibilityRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CoverageEligibilityRequestEventComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CoverageEligibilityRequestEventComponent) dst);
       }
 
       public void copyValues(CoverageEligibilityRequestEventComponent dst) {
@@ -715,8 +715,8 @@ public class CoverageEligibilityRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SupportingInformationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SupportingInformationComponent) dst);
       }
 
       public void copyValues(SupportingInformationComponent dst) {
@@ -1034,8 +1034,8 @@ public class CoverageEligibilityRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InsuranceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InsuranceComponent) dst);
       }
 
       public void copyValues(InsuranceComponent dst) {
@@ -1753,8 +1753,8 @@ public class CoverageEligibilityRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DetailsComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DetailsComponent) dst);
       }
 
       public void copyValues(DetailsComponent dst) {
@@ -1988,8 +1988,8 @@ public class CoverageEligibilityRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DiagnosisComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DiagnosisComponent) dst);
       }
 
       public void copyValues(DiagnosisComponent dst) {
@@ -3089,8 +3089,8 @@ public class CoverageEligibilityRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CoverageEligibilityRequest) b);
+      public void assignValues(Base dst) {
+        copyValues((CoverageEligibilityRequest) dst);
       }
 
       public void copyValues(CoverageEligibilityRequest dst) {

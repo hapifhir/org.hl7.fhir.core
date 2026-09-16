@@ -275,8 +275,8 @@ public class ChargeItemDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ChargeItemDefinitionApplicabilityComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ChargeItemDefinitionApplicabilityComponent) dst);
       }
 
       public void copyValues(ChargeItemDefinitionApplicabilityComponent dst) {
@@ -550,8 +550,8 @@ public class ChargeItemDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ChargeItemDefinitionPropertyGroupComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ChargeItemDefinitionPropertyGroupComponent) dst);
       }
 
       public void copyValues(ChargeItemDefinitionPropertyGroupComponent dst) {
@@ -2822,8 +2822,8 @@ public class ChargeItemDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ChargeItemDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((ChargeItemDefinition) dst);
       }
 
       public void copyValues(ChargeItemDefinition dst) {

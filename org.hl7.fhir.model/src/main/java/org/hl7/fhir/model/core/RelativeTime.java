@@ -564,8 +564,8 @@ public class RelativeTime extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((RelativeTime) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((RelativeTime) dst, options);
       }
 
       public void copyValues(RelativeTime dst, EnumSet<CopyObjectOptions> options) {

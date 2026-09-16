@@ -69,8 +69,8 @@ public class VERSIONED_EHR_ACCESS extends VERSIONED_OBJECT implements IComposite
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((VERSIONED_EHR_ACCESS) b);
+      public void assignValues(Base dst) {
+        copyValues((VERSIONED_EHR_ACCESS) dst);
       }
 
       public void copyValues(VERSIONED_EHR_ACCESS dst) {

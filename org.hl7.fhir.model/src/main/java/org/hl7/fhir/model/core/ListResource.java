@@ -643,8 +643,8 @@ public class ListResource extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ListResourceEntryComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ListResourceEntryComponent) dst, options);
       }
 
       public void copyValues(ListResourceEntryComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1737,8 +1737,8 @@ public class ListResource extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ListResource) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ListResource) dst, options);
       }
 
       public void copyValues(ListResource dst, EnumSet<CopyObjectOptions> options) {

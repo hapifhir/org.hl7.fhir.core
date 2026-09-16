@@ -656,8 +656,8 @@ public class Goal extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GoalTargetComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((GoalTargetComponent) dst);
       }
 
       public void copyValues(GoalTargetComponent dst) {
@@ -1846,8 +1846,8 @@ public class Goal extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Goal) b);
+      public void assignValues(Base dst) {
+        copyValues((Goal) dst);
       }
 
       public void copyValues(Goal dst) {

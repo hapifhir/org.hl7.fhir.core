@@ -602,8 +602,8 @@ public class InventoryReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InventoryReportInventoryListingComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InventoryReportInventoryListingComponent) dst);
       }
 
       public void copyValues(InventoryReportInventoryListingComponent dst) {
@@ -882,8 +882,8 @@ public class InventoryReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InventoryReportInventoryListingItemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InventoryReportInventoryListingItemComponent) dst);
       }
 
       public void copyValues(InventoryReportInventoryListingItemComponent dst) {
@@ -1642,8 +1642,8 @@ public class InventoryReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InventoryReport) b);
+      public void assignValues(Base dst) {
+        copyValues((InventoryReport) dst);
       }
 
       public void copyValues(InventoryReport dst) {

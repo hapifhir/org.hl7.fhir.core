@@ -551,8 +551,8 @@ public class VirtualServiceDetail extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((VirtualServiceDetail) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((VirtualServiceDetail) dst, options);
       }
 
       public void copyValues(VirtualServiceDetail dst, EnumSet<CopyObjectOptions> options) {

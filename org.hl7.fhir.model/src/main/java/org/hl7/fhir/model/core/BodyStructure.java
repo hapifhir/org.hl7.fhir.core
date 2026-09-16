@@ -697,8 +697,8 @@ public class BodyStructure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((BodyStructureIncludedStructureComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((BodyStructureIncludedStructureComponent) dst, options);
       }
 
       public void copyValues(BodyStructureIncludedStructureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1177,8 +1177,8 @@ public class BodyStructure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((BodyStructureIncludedStructureBodyLandmarkOrientationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((BodyStructureIncludedStructureBodyLandmarkOrientationComponent) dst, options);
       }
 
       public void copyValues(BodyStructureIncludedStructureBodyLandmarkOrientationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1483,8 +1483,8 @@ public class BodyStructure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent) dst, options);
       }
 
       public void copyValues(BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2133,8 +2133,8 @@ public class BodyStructure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((BodyStructure) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((BodyStructure) dst, options);
       }
 
       public void copyValues(BodyStructure dst, EnumSet<CopyObjectOptions> options) {

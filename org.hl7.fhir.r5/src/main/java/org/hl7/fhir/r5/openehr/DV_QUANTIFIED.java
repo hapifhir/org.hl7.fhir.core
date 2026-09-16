@@ -273,8 +273,8 @@ If not present, assumed meaning is '=' .
 
       public abstract DV_QUANTIFIED copy();
 
-      public void assign(Base b) {
-        copyValues((DV_QUANTIFIED) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_QUANTIFIED) dst);
       }
 
       public void copyValues(DV_QUANTIFIED dst) {

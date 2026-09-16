@@ -1123,8 +1123,8 @@ public class MedicationRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicationRequestDispenseRequestComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationRequestDispenseRequestComponent) dst, options);
       }
 
       public void copyValues(MedicationRequestDispenseRequestComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1404,8 +1404,8 @@ public class MedicationRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicationRequestDispenseRequestInitialFillComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationRequestDispenseRequestInitialFillComponent) dst, options);
       }
 
       public void copyValues(MedicationRequestDispenseRequestInitialFillComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1690,8 +1690,8 @@ public class MedicationRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicationRequestSubstitutionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationRequestSubstitutionComponent) dst, options);
       }
 
       public void copyValues(MedicationRequestSubstitutionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3974,8 +3974,8 @@ public class MedicationRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicationRequest) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationRequest) dst, options);
       }
 
       public void copyValues(MedicationRequest dst, EnumSet<CopyObjectOptions> options) {

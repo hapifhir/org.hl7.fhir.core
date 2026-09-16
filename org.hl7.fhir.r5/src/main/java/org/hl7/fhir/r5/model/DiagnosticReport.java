@@ -480,8 +480,8 @@ public class DiagnosticReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DiagnosticReportSupportingInfoComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DiagnosticReportSupportingInfoComponent) dst);
       }
 
       public void copyValues(DiagnosticReportSupportingInfoComponent dst) {
@@ -728,8 +728,8 @@ public class DiagnosticReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DiagnosticReportMediaComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DiagnosticReportMediaComponent) dst);
       }
 
       public void copyValues(DiagnosticReportMediaComponent dst) {
@@ -2323,8 +2323,8 @@ public class DiagnosticReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DiagnosticReport) b);
+      public void assignValues(Base dst) {
+        copyValues((DiagnosticReport) dst);
       }
 
       public void copyValues(DiagnosticReport dst) {

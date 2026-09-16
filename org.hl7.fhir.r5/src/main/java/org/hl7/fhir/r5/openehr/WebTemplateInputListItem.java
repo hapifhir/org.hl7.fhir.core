@@ -765,8 +765,8 @@ public class WebTemplateInputListItem extends LogicalBase implements ICompositeT
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((WebTemplateInputListItem) b);
+      public void assignValues(Base dst) {
+        copyValues((WebTemplateInputListItem) dst);
       }
 
       public void copyValues(WebTemplateInputListItem dst) {

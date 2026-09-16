@@ -188,8 +188,8 @@ public abstract class DV_AMOUNT extends DV_QUANTIFIED implements ICompositeType 
 
       public abstract DV_AMOUNT copy();
 
-      public void assign(Base b) {
-        copyValues((DV_AMOUNT) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_AMOUNT) dst);
       }
 
       public void copyValues(DV_AMOUNT dst) {

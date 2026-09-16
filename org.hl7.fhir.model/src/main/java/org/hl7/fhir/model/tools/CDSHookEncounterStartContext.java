@@ -352,8 +352,8 @@ public class CDSHookEncounterStartContext extends CDSHookContext implements ICom
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHookEncounterStartContext) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHookEncounterStartContext) dst, options);
       }
 
       public void copyValues(CDSHookEncounterStartContext dst, EnumSet<CopyObjectOptions> options) {

@@ -435,8 +435,8 @@ public class DetectedIssue extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DetectedIssueEvidenceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DetectedIssueEvidenceComponent) dst, options);
       }
 
       public void copyValues(DetectedIssueEvidenceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -843,8 +843,8 @@ public class DetectedIssue extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DetectedIssueMitigationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DetectedIssueMitigationComponent) dst, options);
       }
 
       public void copyValues(DetectedIssueMitigationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2209,8 +2209,8 @@ public class DetectedIssue extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DetectedIssue) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DetectedIssue) dst, options);
       }
 
       public void copyValues(DetectedIssue dst, EnumSet<CopyObjectOptions> options) {

@@ -1675,8 +1675,8 @@ public class Group extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((GroupCharacteristicComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((GroupCharacteristicComponent) dst, options);
       }
 
       public void copyValues(GroupCharacteristicComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2125,8 +2125,8 @@ public class Group extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((GroupMemberComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((GroupMemberComponent) dst, options);
       }
 
       public void copyValues(GroupMemberComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4175,8 +4175,8 @@ public class Group extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Group) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Group) dst, options);
       }
 
       public void copyValues(Group dst, EnumSet<CopyObjectOptions> options) {

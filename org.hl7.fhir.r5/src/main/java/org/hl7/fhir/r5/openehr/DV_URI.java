@@ -201,8 +201,8 @@ public class DV_URI extends DATA_VALUE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_URI) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_URI) dst);
       }
 
       public void copyValues(DV_URI dst) {

@@ -480,8 +480,8 @@ public class Statistic extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((StatisticSampleSizeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((StatisticSampleSizeComponent) dst);
       }
 
       public void copyValues(StatisticSampleSizeComponent dst) {
@@ -1066,8 +1066,8 @@ public class Statistic extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((StatisticAttributeEstimateComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((StatisticAttributeEstimateComponent) dst);
       }
 
       public void copyValues(StatisticAttributeEstimateComponent dst) {
@@ -1581,8 +1581,8 @@ public class Statistic extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((StatisticAttributeEstimateAttributeEstimateComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((StatisticAttributeEstimateAttributeEstimateComponent) dst);
       }
 
       public void copyValues(StatisticAttributeEstimateAttributeEstimateComponent dst) {
@@ -1892,8 +1892,8 @@ public class Statistic extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((StatisticModelCharacteristicComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((StatisticModelCharacteristicComponent) dst);
       }
 
       public void copyValues(StatisticModelCharacteristicComponent dst) {
@@ -2375,8 +2375,8 @@ public class Statistic extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((StatisticModelCharacteristicVariableComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((StatisticModelCharacteristicVariableComponent) dst);
       }
 
       public void copyValues(StatisticModelCharacteristicVariableComponent dst) {
@@ -3137,8 +3137,8 @@ public class Statistic extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Statistic) b);
+      public void assignValues(Base dst) {
+        copyValues((Statistic) dst);
       }
 
       public void copyValues(Statistic dst) {

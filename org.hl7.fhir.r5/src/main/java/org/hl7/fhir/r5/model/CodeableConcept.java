@@ -281,8 +281,8 @@ public class CodeableConcept extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CodeableConcept) b);
+      public void assignValues(Base dst) {
+        copyValues((CodeableConcept) dst);
       }
 
       public void copyValues(CodeableConcept dst) {

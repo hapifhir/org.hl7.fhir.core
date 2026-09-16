@@ -72,8 +72,8 @@ public abstract class DataType extends Element implements IBaseDatatype, IElemen
 
   public abstract DataType copy();
 
-  public void assign(Base b) {
-    copyValues((DataType) b);
+  public void assignValues(Base dst) {
+    copyValues((DataType) dst);
   }
 
   public void copyValues(DataType dst) {

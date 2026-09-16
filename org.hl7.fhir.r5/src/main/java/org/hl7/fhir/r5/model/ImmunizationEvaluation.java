@@ -1061,8 +1061,8 @@ public class ImmunizationEvaluation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImmunizationEvaluation) b);
+      public void assignValues(Base dst) {
+        copyValues((ImmunizationEvaluation) dst);
       }
 
       public void copyValues(ImmunizationEvaluation dst) {

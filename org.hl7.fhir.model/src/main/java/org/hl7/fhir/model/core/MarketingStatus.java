@@ -437,8 +437,8 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MarketingStatus) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MarketingStatus) dst, options);
       }
 
       public void copyValues(MarketingStatus dst, EnumSet<CopyObjectOptions> options) {

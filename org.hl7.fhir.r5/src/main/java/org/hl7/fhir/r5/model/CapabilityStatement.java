@@ -1490,8 +1490,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CapabilityStatementSoftwareComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CapabilityStatementSoftwareComponent) dst);
       }
 
       public void copyValues(CapabilityStatementSoftwareComponent dst) {
@@ -1809,8 +1809,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CapabilityStatementImplementationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CapabilityStatementImplementationComponent) dst);
       }
 
       public void copyValues(CapabilityStatementImplementationComponent dst) {
@@ -2514,8 +2514,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CapabilityStatementRestComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CapabilityStatementRestComponent) dst);
       }
 
       public void copyValues(CapabilityStatementRestComponent dst) {
@@ -2880,8 +2880,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CapabilityStatementRestSecurityComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CapabilityStatementRestSecurityComponent) dst);
       }
 
       public void copyValues(CapabilityStatementRestSecurityComponent dst) {
@@ -4348,8 +4348,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CapabilityStatementRestResourceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CapabilityStatementRestResourceComponent) dst);
       }
 
       public void copyValues(CapabilityStatementRestResourceComponent dst) {
@@ -4682,8 +4682,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ResourceInteractionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ResourceInteractionComponent) dst);
       }
 
       public void copyValues(ResourceInteractionComponent dst) {
@@ -5093,8 +5093,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CapabilityStatementRestResourceSearchParamComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CapabilityStatementRestResourceSearchParamComponent) dst);
       }
 
       public void copyValues(CapabilityStatementRestResourceSearchParamComponent dst) {
@@ -5434,8 +5434,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CapabilityStatementRestResourceOperationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CapabilityStatementRestResourceOperationComponent) dst);
       }
 
       public void copyValues(CapabilityStatementRestResourceOperationComponent dst) {
@@ -5710,8 +5710,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SystemInteractionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SystemInteractionComponent) dst);
       }
 
       public void copyValues(SystemInteractionComponent dst) {
@@ -6120,8 +6120,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CapabilityStatementMessagingComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CapabilityStatementMessagingComponent) dst);
       }
 
       public void copyValues(CapabilityStatementMessagingComponent dst) {
@@ -6380,8 +6380,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CapabilityStatementMessagingEndpointComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CapabilityStatementMessagingEndpointComponent) dst);
       }
 
       public void copyValues(CapabilityStatementMessagingEndpointComponent dst) {
@@ -6649,8 +6649,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CapabilityStatementMessagingSupportedMessageComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CapabilityStatementMessagingSupportedMessageComponent) dst);
       }
 
       public void copyValues(CapabilityStatementMessagingSupportedMessageComponent dst) {
@@ -6989,8 +6989,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CapabilityStatementDocumentComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CapabilityStatementDocumentComponent) dst);
       }
 
       public void copyValues(CapabilityStatementDocumentComponent dst) {
@@ -9320,8 +9320,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CapabilityStatement) b);
+      public void assignValues(Base dst) {
+        copyValues((CapabilityStatement) dst);
       }
 
       public void copyValues(CapabilityStatement dst) {

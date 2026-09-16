@@ -332,8 +332,8 @@ public class Binary extends BaseBinary implements IBaseBinary {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Binary) b);
+      public void assignValues(Base dst) {
+        copyValues((Binary) dst);
       }
 
       public void copyValues(Binary dst) {

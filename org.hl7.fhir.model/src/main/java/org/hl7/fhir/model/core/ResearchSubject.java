@@ -407,8 +407,8 @@ public class ResearchSubject extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ResearchSubjectSubjectStateComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchSubjectSubjectStateComponent) dst, options);
       }
 
       public void copyValues(ResearchSubjectSubjectStateComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -765,8 +765,8 @@ public class ResearchSubject extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ResearchSubjectSubjectMilestoneComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchSubjectSubjectMilestoneComponent) dst, options);
       }
 
       public void copyValues(ResearchSubjectSubjectMilestoneComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1523,8 +1523,8 @@ public class ResearchSubject extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ResearchSubject) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchSubject) dst, options);
       }
 
       public void copyValues(ResearchSubject dst, EnumSet<CopyObjectOptions> options) {

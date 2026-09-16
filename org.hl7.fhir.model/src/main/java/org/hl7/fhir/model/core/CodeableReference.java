@@ -243,8 +243,8 @@ public class CodeableReference extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CodeableReference) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CodeableReference) dst, options);
       }
 
       public void copyValues(CodeableReference dst, EnumSet<CopyObjectOptions> options) {

@@ -51,8 +51,8 @@ public class MoneyQuantity extends Quantity {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MoneyQuantity) b);
+      public void assignValues(Base dst) {
+        copyValues((MoneyQuantity) dst);
       }
 
       public void copyValues(MoneyQuantity dst) {

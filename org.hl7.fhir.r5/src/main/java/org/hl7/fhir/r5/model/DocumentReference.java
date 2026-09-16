@@ -422,8 +422,8 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DocumentReferenceAttesterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DocumentReferenceAttesterComponent) dst);
       }
 
       public void copyValues(DocumentReferenceAttesterComponent dst) {
@@ -650,8 +650,8 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DocumentReferenceRelatesToComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DocumentReferenceRelatesToComponent) dst);
       }
 
       public void copyValues(DocumentReferenceRelatesToComponent dst) {
@@ -902,8 +902,8 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DocumentReferenceContentComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DocumentReferenceContentComponent) dst);
       }
 
       public void copyValues(DocumentReferenceContentComponent dst) {
@@ -1139,8 +1139,8 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DocumentReferenceContentProfileComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DocumentReferenceContentProfileComponent) dst);
       }
 
       public void copyValues(DocumentReferenceContentProfileComponent dst) {
@@ -2821,8 +2821,8 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DocumentReference) b);
+      public void assignValues(Base dst) {
+        copyValues((DocumentReference) dst);
       }
 
       public void copyValues(DocumentReference dst) {

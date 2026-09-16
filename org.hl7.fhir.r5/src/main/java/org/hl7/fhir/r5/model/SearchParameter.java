@@ -391,8 +391,8 @@ public class SearchParameter extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SearchParameterComponentComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SearchParameterComponentComponent) dst);
       }
 
       public void copyValues(SearchParameterComponentComponent dst) {
@@ -2818,8 +2818,8 @@ public class SearchParameter extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SearchParameter) b);
+      public void assignValues(Base dst) {
+        copyValues((SearchParameter) dst);
       }
 
       public void copyValues(SearchParameter dst) {

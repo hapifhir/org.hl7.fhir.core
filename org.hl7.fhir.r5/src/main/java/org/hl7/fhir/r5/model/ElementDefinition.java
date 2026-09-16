@@ -1400,8 +1400,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ElementDefinitionSlicingComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ElementDefinitionSlicingComponent) dst);
       }
 
       public void copyValues(ElementDefinitionSlicingComponent dst) {
@@ -1714,8 +1714,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ElementDefinitionSlicingDiscriminatorComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ElementDefinitionSlicingDiscriminatorComponent) dst);
       }
 
       public void copyValues(ElementDefinitionSlicingDiscriminatorComponent dst) {
@@ -2052,8 +2052,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ElementDefinitionBaseComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ElementDefinitionBaseComponent) dst);
       }
 
       public void copyValues(ElementDefinitionBaseComponent dst) {
@@ -2581,8 +2581,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TypeRefComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TypeRefComponent) dst);
       }
 
       public void copyValues(TypeRefComponent dst) {
@@ -4006,8 +4006,8 @@ public boolean hasTarget() {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ElementDefinitionExampleComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ElementDefinitionExampleComponent) dst);
       }
 
       public void copyValues(ElementDefinitionExampleComponent dst) {
@@ -4623,8 +4623,8 @@ public boolean hasTarget() {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ElementDefinitionConstraintComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ElementDefinitionConstraintComponent) dst);
       }
 
       public void copyValues(ElementDefinitionConstraintComponent dst) {
@@ -5056,8 +5056,8 @@ public boolean hasTarget() {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ElementDefinitionBindingComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ElementDefinitionBindingComponent) dst);
       }
 
       public void copyValues(ElementDefinitionBindingComponent dst) {
@@ -5629,8 +5629,8 @@ public boolean hasTarget() {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ElementDefinitionBindingAdditionalComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ElementDefinitionBindingAdditionalComponent) dst);
       }
 
       public void copyValues(ElementDefinitionBindingAdditionalComponent dst) {
@@ -6054,8 +6054,8 @@ public boolean hasTarget() {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ElementDefinitionMappingComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ElementDefinitionMappingComponent) dst);
       }
 
       public void copyValues(ElementDefinitionMappingComponent dst) {
@@ -12896,8 +12896,8 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ElementDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((ElementDefinition) dst);
       }
 
       public void copyValues(ElementDefinition dst) {

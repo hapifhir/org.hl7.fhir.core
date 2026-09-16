@@ -69,8 +69,8 @@ public class VERSIONED_FOLDER extends VERSIONED_OBJECT implements ICompositeType
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((VERSIONED_FOLDER) b);
+      public void assignValues(Base dst) {
+        copyValues((VERSIONED_FOLDER) dst);
       }
 
       public void copyValues(VERSIONED_FOLDER dst) {

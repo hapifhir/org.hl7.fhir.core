@@ -245,8 +245,8 @@ public class CONTACT extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CONTACT) b);
+      public void assignValues(Base dst) {
+        copyValues((CONTACT) dst);
       }
 
       public void copyValues(CONTACT dst) {

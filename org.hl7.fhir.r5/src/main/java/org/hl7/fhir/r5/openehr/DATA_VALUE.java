@@ -65,8 +65,8 @@ public abstract class DATA_VALUE extends LogicalBase implements ICompositeType {
 
       public abstract DATA_VALUE copy();
 
-      public void assign(Base b) {
-        copyValues((DATA_VALUE) b);
+      public void assignValues(Base dst) {
+        copyValues((DATA_VALUE) dst);
       }
 
       public void copyValues(DATA_VALUE dst) {

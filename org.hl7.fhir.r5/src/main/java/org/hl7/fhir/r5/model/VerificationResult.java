@@ -754,8 +754,8 @@ public class VerificationResult extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((VerificationResultPrimarySourceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((VerificationResultPrimarySourceComponent) dst);
       }
 
       public void copyValues(VerificationResultPrimarySourceComponent dst) {
@@ -1346,8 +1346,8 @@ public class VerificationResult extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((VerificationResultAttestationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((VerificationResultAttestationComponent) dst);
       }
 
       public void copyValues(VerificationResultAttestationComponent dst) {
@@ -1653,8 +1653,8 @@ public class VerificationResult extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((VerificationResultValidatorComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((VerificationResultValidatorComponent) dst);
       }
 
       public void copyValues(VerificationResultValidatorComponent dst) {
@@ -2695,8 +2695,8 @@ public class VerificationResult extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((VerificationResult) b);
+      public void assignValues(Base dst) {
+        copyValues((VerificationResult) dst);
       }
 
       public void copyValues(VerificationResult dst) {

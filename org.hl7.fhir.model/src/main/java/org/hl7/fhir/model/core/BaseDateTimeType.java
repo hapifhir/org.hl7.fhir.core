@@ -64,8 +64,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   private boolean myTimeZoneZulu = false;
 
   @Override
-  public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-    copyValues((BaseDateTimeType) b, options);
+  public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+    copyValues((BaseDateTimeType) dst, options);
   }
 
   /**

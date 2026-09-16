@@ -2516,8 +2516,8 @@ public class Library extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Library) b);
+      public void assignValues(Base dst) {
+        copyValues((Library) dst);
       }
 
       public void copyValues(Library dst) {

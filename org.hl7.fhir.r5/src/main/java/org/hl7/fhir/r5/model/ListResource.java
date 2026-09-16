@@ -489,8 +489,8 @@ public class ListResource extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ListResourceEntryComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ListResourceEntryComponent) dst);
       }
 
       public void copyValues(ListResourceEntryComponent dst) {
@@ -1449,8 +1449,8 @@ public class ListResource extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ListResource) b);
+      public void assignValues(Base dst) {
+        copyValues((ListResource) dst);
       }
 
       public void copyValues(ListResource dst) {

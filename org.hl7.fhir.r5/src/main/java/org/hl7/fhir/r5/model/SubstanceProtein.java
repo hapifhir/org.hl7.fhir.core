@@ -622,8 +622,8 @@ public class SubstanceProtein extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceProteinSubunitComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceProteinSubunitComponent) dst);
       }
 
       public void copyValues(SubstanceProteinSubunitComponent dst) {
@@ -1032,8 +1032,8 @@ public class SubstanceProtein extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceProtein) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceProtein) dst);
       }
 
       public void copyValues(SubstanceProtein dst) {

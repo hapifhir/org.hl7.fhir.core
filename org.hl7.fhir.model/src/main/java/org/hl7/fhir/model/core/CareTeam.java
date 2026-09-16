@@ -609,8 +609,8 @@ public class CareTeam extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CareTeamParticipantComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CareTeamParticipantComponent) dst, options);
       }
 
       public void copyValues(CareTeamParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1538,8 +1538,8 @@ public class CareTeam extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CareTeam) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CareTeam) dst, options);
       }
 
       public void copyValues(CareTeam dst, EnumSet<CopyObjectOptions> options) {

@@ -682,8 +682,8 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EncounterBusinessStatusComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EncounterBusinessStatusComponent) dst, options);
       }
 
       public void copyValues(EncounterBusinessStatusComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1000,8 +1000,8 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EncounterParticipantComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EncounterParticipantComponent) dst, options);
       }
 
       public void copyValues(EncounterParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1290,8 +1290,8 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ReasonComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ReasonComponent) dst, options);
       }
 
       public void copyValues(ReasonComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1578,8 +1578,8 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DiagnosisComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DiagnosisComponent) dst, options);
       }
 
       public void copyValues(DiagnosisComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2040,8 +2040,8 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EncounterAdmissionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EncounterAdmissionComponent) dst, options);
       }
 
       public void copyValues(EncounterAdmissionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2442,8 +2442,8 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EncounterLocationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EncounterLocationComponent) dst, options);
       }
 
       public void copyValues(EncounterLocationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4573,8 +4573,8 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Encounter) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Encounter) dst, options);
       }
 
       public void copyValues(Encounter dst, EnumSet<CopyObjectOptions> options) {

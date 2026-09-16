@@ -1595,8 +1595,8 @@ public class StructureMap extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-      copyValues((StructureMapStructureComponent) b, options);
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapStructureComponent) dst, options);
     }
 
     public void copyValues(StructureMapStructureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1864,8 +1864,8 @@ public class StructureMap extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-      copyValues((StructureMapConstComponent) b, options);
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapConstComponent) dst, options);
     }
 
     public void copyValues(StructureMapConstComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2428,8 +2428,8 @@ public class StructureMap extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-      copyValues((StructureMapGroupComponent) b, options);
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupComponent) dst, options);
     }
 
     public void copyValues(StructureMapGroupComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2864,8 +2864,8 @@ public class StructureMap extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-      copyValues((StructureMapGroupInputComponent) b, options);
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupInputComponent) dst, options);
     }
 
     public void copyValues(StructureMapGroupInputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3438,8 +3438,8 @@ public class StructureMap extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-      copyValues((StructureMapGroupRuleComponent) b, options);
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupRuleComponent) dst, options);
     }
 
     public void copyValues(StructureMapGroupRuleComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4396,8 +4396,8 @@ public class StructureMap extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-      copyValues((StructureMapGroupRuleSourceComponent) b, options);
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupRuleSourceComponent) dst, options);
     }
 
     public void copyValues(StructureMapGroupRuleSourceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5077,8 +5077,8 @@ public class StructureMap extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((StructureMapGroupRuleTargetComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMapGroupRuleTargetComponent) dst, options);
       }
 
       public void copyValues(StructureMapGroupRuleTargetComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5451,8 +5451,8 @@ public class StructureMap extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((StructureMapGroupRuleTargetParameterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMapGroupRuleTargetParameterComponent) dst, options);
       }
 
       public void copyValues(StructureMapGroupRuleTargetParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5721,8 +5721,8 @@ public class StructureMap extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((StructureMapGroupRuleDependentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMapGroupRuleDependentComponent) dst, options);
       }
 
       public void copyValues(StructureMapGroupRuleDependentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7350,8 +7350,8 @@ public class StructureMap extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((StructureMap) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMap) dst, options);
       }
 
       public void copyValues(StructureMap dst, EnumSet<CopyObjectOptions> options) {

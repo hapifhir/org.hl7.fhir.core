@@ -287,8 +287,8 @@ In some cases, a scale may include values that have no code/symbol. In this case
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_SCALE) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_SCALE) dst);
       }
 
       public void copyValues(DV_SCALE dst) {

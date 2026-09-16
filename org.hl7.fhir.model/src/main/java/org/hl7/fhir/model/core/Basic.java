@@ -460,8 +460,8 @@ public class Basic extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Basic) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Basic) dst, options);
       }
 
       public void copyValues(Basic dst, EnumSet<CopyObjectOptions> options) {

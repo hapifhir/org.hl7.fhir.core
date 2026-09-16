@@ -9554,8 +9554,8 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b) {
-      copyValues((ImplementationGuideDependsOnComponent) b);
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDependsOnComponent) dst);
     }
 
     public void copyValues(ImplementationGuideDependsOnComponent dst) {
@@ -9825,8 +9825,8 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b) {
-      copyValues((ImplementationGuideGlobalComponent) b);
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideGlobalComponent) dst);
     }
 
     public void copyValues(ImplementationGuideGlobalComponent dst) {
@@ -10294,8 +10294,8 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b) {
-      copyValues((ImplementationGuideDefinitionComponent) b);
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDefinitionComponent) dst);
     }
 
     public void copyValues(ImplementationGuideDefinitionComponent dst) {
@@ -10583,8 +10583,8 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b) {
-      copyValues((ImplementationGuideDefinitionGroupingComponent) b);
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDefinitionGroupingComponent) dst);
     }
 
     public void copyValues(ImplementationGuideDefinitionGroupingComponent dst) {
@@ -11216,8 +11216,8 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b) {
-      copyValues((ImplementationGuideDefinitionResourceComponent) b);
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDefinitionResourceComponent) dst);
     }
 
     public void copyValues(ImplementationGuideDefinitionResourceComponent dst) {
@@ -11751,8 +11751,8 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b) {
-      copyValues((ImplementationGuideDefinitionPageComponent) b);
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDefinitionPageComponent) dst);
     }
 
     public void copyValues(ImplementationGuideDefinitionPageComponent dst) {
@@ -12007,8 +12007,8 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b) {
-      copyValues((ImplementationGuideDefinitionParameterComponent) b);
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDefinitionParameterComponent) dst);
     }
 
     public void copyValues(ImplementationGuideDefinitionParameterComponent dst) {
@@ -12343,8 +12343,8 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b) {
-      copyValues((ImplementationGuideDefinitionTemplateComponent) b);
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDefinitionTemplateComponent) dst);
     }
 
     public void copyValues(ImplementationGuideDefinitionTemplateComponent dst) {
@@ -12863,8 +12863,8 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b) {
-      copyValues((ImplementationGuideManifestComponent) b);
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideManifestComponent) dst);
     }
 
     public void copyValues(ImplementationGuideManifestComponent dst) {
@@ -13283,8 +13283,8 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b) {
-      copyValues((ManifestResourceComponent) b);
+    public void assignValues(Base dst) {
+      copyValues((ManifestResourceComponent) dst);
     }
 
     public void copyValues(ManifestResourceComponent dst) {
@@ -13646,8 +13646,8 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
-    public void assign(Base b) {
-      copyValues((ManifestPageComponent) b);
+    public void assignValues(Base dst) {
+      copyValues((ManifestPageComponent) dst);
     }
 
     public void copyValues(ManifestPageComponent dst) {
@@ -15487,8 +15487,8 @@ public class ImplementationGuide extends CanonicalResource {
     return dst;
   }
 
-  public void assign(Base b) {
-    copyValues((ImplementationGuide) b);
+  public void assignValues(Base dst) {
+    copyValues((ImplementationGuide) dst);
   }
 
   public void copyValues(ImplementationGuide dst) {

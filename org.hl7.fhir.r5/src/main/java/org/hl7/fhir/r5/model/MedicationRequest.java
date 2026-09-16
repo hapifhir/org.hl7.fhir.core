@@ -1010,8 +1010,8 @@ public class MedicationRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationRequestDispenseRequestComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationRequestDispenseRequestComponent) dst);
       }
 
       public void copyValues(MedicationRequestDispenseRequestComponent dst) {
@@ -1243,8 +1243,8 @@ public class MedicationRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationRequestDispenseRequestInitialFillComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationRequestDispenseRequestInitialFillComponent) dst);
       }
 
       public void copyValues(MedicationRequestDispenseRequestInitialFillComponent dst) {
@@ -1504,8 +1504,8 @@ public class MedicationRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationRequestSubstitutionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationRequestSubstitutionComponent) dst);
       }
 
       public void copyValues(MedicationRequestSubstitutionComponent dst) {
@@ -3721,8 +3721,8 @@ public class MedicationRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationRequest) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationRequest) dst);
       }
 
       public void copyValues(MedicationRequest dst) {

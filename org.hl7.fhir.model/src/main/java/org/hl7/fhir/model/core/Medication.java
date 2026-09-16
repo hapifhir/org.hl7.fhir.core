@@ -362,8 +362,8 @@ public class Medication extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicationPackageSizeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationPackageSizeComponent) dst, options);
       }
 
       public void copyValues(MedicationPackageSizeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -797,8 +797,8 @@ public class Medication extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicationIngredientComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationIngredientComponent) dst, options);
       }
 
       public void copyValues(MedicationIngredientComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1166,8 +1166,8 @@ public class Medication extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((MedicationInstanceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationInstanceComponent) dst, options);
       }
 
       public void copyValues(MedicationInstanceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1857,8 +1857,8 @@ public class Medication extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Medication) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Medication) dst, options);
       }
 
       public void copyValues(Medication dst, EnumSet<CopyObjectOptions> options) {

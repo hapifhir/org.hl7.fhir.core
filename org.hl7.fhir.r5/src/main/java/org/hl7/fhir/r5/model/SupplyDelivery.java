@@ -394,8 +394,8 @@ public class SupplyDelivery extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SupplyDeliverySuppliedItemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SupplyDeliverySuppliedItemComponent) dst);
       }
 
       public void copyValues(SupplyDeliverySuppliedItemComponent dst) {
@@ -1260,8 +1260,8 @@ public class SupplyDelivery extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SupplyDelivery) b);
+      public void assignValues(Base dst) {
+        copyValues((SupplyDelivery) dst);
       }
 
       public void copyValues(SupplyDelivery dst) {

@@ -724,8 +724,8 @@ public class Subscription extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubscriptionFilterByComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionFilterByComponent) dst, options);
       }
 
       public void copyValues(SubscriptionFilterByComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1039,8 +1039,8 @@ public class Subscription extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubscriptionParameterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionParameterComponent) dst, options);
       }
 
       public void copyValues(SubscriptionParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2418,8 +2418,8 @@ public class Subscription extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Subscription) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Subscription) dst, options);
       }
 
       public void copyValues(Subscription dst, EnumSet<CopyObjectOptions> options) {

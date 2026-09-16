@@ -3384,8 +3384,8 @@ public class CompartmentDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CompartmentDefinitionResourceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompartmentDefinitionResourceComponent) dst, options);
       }
 
       public void copyValues(CompartmentDefinitionResourceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4903,8 +4903,8 @@ public class CompartmentDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CompartmentDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompartmentDefinition) dst, options);
       }
 
       public void copyValues(CompartmentDefinition dst, EnumSet<CopyObjectOptions> options) {

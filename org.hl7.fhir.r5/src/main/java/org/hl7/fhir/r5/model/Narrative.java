@@ -394,8 +394,8 @@ public class Narrative extends BaseNarrative implements INarrative {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Narrative) b);
+      public void assignValues(Base dst) {
+        copyValues((Narrative) dst);
       }
 
       public void copyValues(Narrative dst) {

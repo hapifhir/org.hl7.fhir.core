@@ -345,8 +345,8 @@ public class ISM_TRANSITION extends PATHABLE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ISM_TRANSITION) b);
+      public void assignValues(Base dst) {
+        copyValues((ISM_TRANSITION) dst);
       }
 
       public void copyValues(ISM_TRANSITION dst) {

@@ -420,8 +420,8 @@ public class AdministrableProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdministrableProductDefinitionPropertyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdministrableProductDefinitionPropertyComponent) dst);
       }
 
       public void copyValues(AdministrableProductDefinitionPropertyComponent dst) {
@@ -910,8 +910,8 @@ public class AdministrableProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdministrableProductDefinitionRouteOfAdministrationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdministrableProductDefinitionRouteOfAdministrationComponent) dst);
       }
 
       public void copyValues(AdministrableProductDefinitionRouteOfAdministrationComponent dst) {
@@ -1176,8 +1176,8 @@ public class AdministrableProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent) dst);
       }
 
       public void copyValues(AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent dst) {
@@ -1478,8 +1478,8 @@ public class AdministrableProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent) dst);
       }
 
       public void copyValues(AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent dst) {
@@ -2351,8 +2351,8 @@ public class AdministrableProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdministrableProductDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((AdministrableProductDefinition) dst);
       }
 
       public void copyValues(AdministrableProductDefinition dst) {

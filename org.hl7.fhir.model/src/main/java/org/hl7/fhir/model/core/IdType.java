@@ -320,8 +320,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   }
 
   @Override
-  public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-    copyValues((IdType) b, options);
+  public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+    copyValues((IdType) dst, options);
   }
 
   /**

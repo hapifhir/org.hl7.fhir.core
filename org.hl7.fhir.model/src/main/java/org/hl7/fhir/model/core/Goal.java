@@ -684,8 +684,8 @@ public class Goal extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((GoalAcceptanceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((GoalAcceptanceComponent) dst, options);
       }
 
       public void copyValues(GoalAcceptanceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1152,8 +1152,8 @@ public class Goal extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((GoalTargetComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((GoalTargetComponent) dst, options);
       }
 
       public void copyValues(GoalTargetComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2453,8 +2453,8 @@ public class Goal extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Goal) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Goal) dst, options);
       }
 
       public void copyValues(Goal dst, EnumSet<CopyObjectOptions> options) {

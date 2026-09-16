@@ -267,8 +267,8 @@ public class TestCases extends Resource implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TestCasesModeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TestCasesModeComponent) dst);
       }
 
       public void copyValues(TestCasesModeComponent dst) {
@@ -761,8 +761,8 @@ public class TestCases extends Resource implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TestCasesSuiteComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TestCasesSuiteComponent) dst);
       }
 
       public void copyValues(TestCasesSuiteComponent dst) {
@@ -1142,8 +1142,8 @@ public class TestCases extends Resource implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TestCasesSuiteResourceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TestCasesSuiteResourceComponent) dst);
       }
 
       public void copyValues(TestCasesSuiteResourceComponent dst) {
@@ -1605,8 +1605,8 @@ public class TestCases extends Resource implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TestCasesSuiteParameterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TestCasesSuiteParameterComponent) dst);
       }
 
       public void copyValues(TestCasesSuiteParameterComponent dst) {
@@ -2221,8 +2221,8 @@ public class TestCases extends Resource implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TestCasesSuiteTestComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TestCasesSuiteTestComponent) dst);
       }
 
       public void copyValues(TestCasesSuiteTestComponent dst) {
@@ -2852,8 +2852,8 @@ public class TestCases extends Resource implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TestCases) b);
+      public void assignValues(Base dst) {
+        copyValues((TestCases) dst);
       }
 
       public void copyValues(TestCases dst) {

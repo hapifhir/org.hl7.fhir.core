@@ -877,8 +877,8 @@ public class Device extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceUdiCarrierComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceUdiCarrierComponent) dst);
       }
 
       public void copyValues(DeviceUdiCarrierComponent dst) {
@@ -1222,8 +1222,8 @@ public class Device extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceNameComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceNameComponent) dst);
       }
 
       public void copyValues(DeviceNameComponent dst) {
@@ -1588,8 +1588,8 @@ public class Device extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceVersionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceVersionComponent) dst);
       }
 
       public void copyValues(DeviceVersionComponent dst) {
@@ -1889,8 +1889,8 @@ public class Device extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceConformsToComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceConformsToComponent) dst);
       }
 
       public void copyValues(DeviceConformsToComponent dst) {
@@ -2253,8 +2253,8 @@ public class Device extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DevicePropertyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DevicePropertyComponent) dst);
       }
 
       public void copyValues(DevicePropertyComponent dst) {
@@ -4495,8 +4495,8 @@ public class Device extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Device) b);
+      public void assignValues(Base dst) {
+        copyValues((Device) dst);
       }
 
       public void copyValues(Device dst) {

@@ -69,8 +69,8 @@ public class DV_GENERAL_TIME_SPECIFICATION extends DV_TIME_SPECIFICATION impleme
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_GENERAL_TIME_SPECIFICATION) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_GENERAL_TIME_SPECIFICATION) dst);
       }
 
       public void copyValues(DV_GENERAL_TIME_SPECIFICATION dst) {

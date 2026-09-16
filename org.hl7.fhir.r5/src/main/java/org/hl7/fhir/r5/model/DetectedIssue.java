@@ -540,8 +540,8 @@ public class DetectedIssue extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DetectedIssueEvidenceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DetectedIssueEvidenceComponent) dst);
       }
 
       public void copyValues(DetectedIssueEvidenceComponent dst) {
@@ -919,8 +919,8 @@ public class DetectedIssue extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DetectedIssueMitigationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DetectedIssueMitigationComponent) dst);
       }
 
       public void copyValues(DetectedIssueMitigationComponent dst) {
@@ -1995,8 +1995,8 @@ public class DetectedIssue extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DetectedIssue) b);
+      public void assignValues(Base dst) {
+        copyValues((DetectedIssue) dst);
       }
 
       public void copyValues(DetectedIssue dst) {

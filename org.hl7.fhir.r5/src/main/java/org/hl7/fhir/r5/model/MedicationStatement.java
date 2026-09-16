@@ -354,8 +354,8 @@ public class MedicationStatement extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationStatementAdherenceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationStatementAdherenceComponent) dst);
       }
 
       public void copyValues(MedicationStatementAdherenceComponent dst) {
@@ -1670,8 +1670,8 @@ public class MedicationStatement extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationStatement) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationStatement) dst);
       }
 
       public void copyValues(MedicationStatement dst) {

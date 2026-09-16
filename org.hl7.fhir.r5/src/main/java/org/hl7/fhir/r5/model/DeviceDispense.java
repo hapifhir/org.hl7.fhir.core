@@ -446,8 +446,8 @@ public class DeviceDispense extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDispensePerformerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDispensePerformerComponent) dst);
       }
 
       public void copyValues(DeviceDispensePerformerComponent dst) {
@@ -1889,8 +1889,8 @@ public class DeviceDispense extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDispense) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDispense) dst);
       }
 
       public void copyValues(DeviceDispense dst) {

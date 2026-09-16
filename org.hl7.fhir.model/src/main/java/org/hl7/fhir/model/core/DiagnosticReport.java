@@ -503,8 +503,8 @@ public class DiagnosticReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DiagnosticReportSupportingInfoComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DiagnosticReportSupportingInfoComponent) dst, options);
       }
 
       public void copyValues(DiagnosticReportSupportingInfoComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -776,8 +776,8 @@ public class DiagnosticReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DiagnosticReportMediaComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DiagnosticReportMediaComponent) dst, options);
       }
 
       public void copyValues(DiagnosticReportMediaComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2803,8 +2803,8 @@ public class DiagnosticReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DiagnosticReport) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DiagnosticReport) dst, options);
       }
 
       public void copyValues(DiagnosticReport dst, EnumSet<CopyObjectOptions> options) {

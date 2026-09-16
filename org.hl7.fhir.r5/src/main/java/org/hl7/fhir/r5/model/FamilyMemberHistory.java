@@ -367,8 +367,8 @@ public class FamilyMemberHistory extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((FamilyMemberHistoryParticipantComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((FamilyMemberHistoryParticipantComponent) dst);
       }
 
       public void copyValues(FamilyMemberHistoryParticipantComponent dst) {
@@ -857,8 +857,8 @@ public class FamilyMemberHistory extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((FamilyMemberHistoryConditionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((FamilyMemberHistoryConditionComponent) dst);
       }
 
       public void copyValues(FamilyMemberHistoryConditionComponent dst) {
@@ -1376,8 +1376,8 @@ public class FamilyMemberHistory extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((FamilyMemberHistoryProcedureComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((FamilyMemberHistoryProcedureComponent) dst);
       }
 
       public void copyValues(FamilyMemberHistoryProcedureComponent dst) {
@@ -2954,8 +2954,8 @@ public class FamilyMemberHistory extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((FamilyMemberHistory) b);
+      public void assignValues(Base dst) {
+        copyValues((FamilyMemberHistory) dst);
       }
 
       public void copyValues(FamilyMemberHistory dst) {

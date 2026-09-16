@@ -1015,8 +1015,8 @@ public class Requirements extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RequirementsStatementComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RequirementsStatementComponent) dst);
       }
 
       public void copyValues(RequirementsStatementComponent dst) {
@@ -2736,8 +2736,8 @@ public class Requirements extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Requirements) b);
+      public void assignValues(Base dst) {
+        copyValues((Requirements) dst);
       }
 
       public void copyValues(Requirements dst) {

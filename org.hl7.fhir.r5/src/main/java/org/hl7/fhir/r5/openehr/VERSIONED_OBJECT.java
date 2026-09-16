@@ -272,8 +272,8 @@ public class VERSIONED_OBJECT extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((VERSIONED_OBJECT) b);
+      public void assignValues(Base dst) {
+        copyValues((VERSIONED_OBJECT) dst);
       }
 
       public void copyValues(VERSIONED_OBJECT dst) {

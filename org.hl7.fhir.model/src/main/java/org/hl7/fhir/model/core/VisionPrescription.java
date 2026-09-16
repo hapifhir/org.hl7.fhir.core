@@ -1513,8 +1513,8 @@ public class VisionPrescription extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((VisionPrescriptionLensSpecificationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((VisionPrescriptionLensSpecificationComponent) dst, options);
       }
 
       public void copyValues(VisionPrescriptionLensSpecificationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1888,8 +1888,8 @@ public class VisionPrescription extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PrismComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PrismComponent) dst, options);
       }
 
       public void copyValues(PrismComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2923,8 +2923,8 @@ public class VisionPrescription extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((VisionPrescription) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((VisionPrescription) dst, options);
       }
 
       public void copyValues(VisionPrescription dst, EnumSet<CopyObjectOptions> options) {

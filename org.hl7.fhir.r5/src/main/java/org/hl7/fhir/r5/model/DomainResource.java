@@ -387,8 +387,8 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
 
       public abstract DomainResource copy();
 
-      public void assign(Base b) {
-        copyValues((DomainResource) b);
+      public void assignValues(Base dst) {
+        copyValues((DomainResource) dst);
       }
 
       public void copyValues(DomainResource dst) {

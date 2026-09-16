@@ -196,8 +196,8 @@ public class DV_DATE extends DV_TEMPORAL implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_DATE) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_DATE) dst);
       }
 
       public void copyValues(DV_DATE dst) {

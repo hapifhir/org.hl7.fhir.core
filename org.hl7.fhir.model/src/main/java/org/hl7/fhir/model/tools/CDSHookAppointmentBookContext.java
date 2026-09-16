@@ -399,8 +399,8 @@ public class CDSHookAppointmentBookContext extends CDSHookContext implements ICo
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHookAppointmentBookContext) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHookAppointmentBookContext) dst, options);
       }
 
       public void copyValues(CDSHookAppointmentBookContext dst, EnumSet<CopyObjectOptions> options) {

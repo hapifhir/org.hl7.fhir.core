@@ -65,8 +65,8 @@ public abstract class ITEM extends LOCATABLE implements ICompositeType {
 
       public abstract ITEM copy();
 
-      public void assign(Base b) {
-        copyValues((ITEM) b);
+      public void assignValues(Base dst) {
+        copyValues((ITEM) dst);
       }
 
       public void copyValues(ITEM dst) {

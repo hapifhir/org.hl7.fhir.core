@@ -371,8 +371,8 @@ public class NutritionProduct extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionProductNutrientComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionProductNutrientComponent) dst);
       }
 
       public void copyValues(NutritionProductNutrientComponent dst) {
@@ -627,8 +627,8 @@ public class NutritionProduct extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionProductIngredientComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionProductIngredientComponent) dst);
       }
 
       public void copyValues(NutritionProductIngredientComponent dst) {
@@ -972,8 +972,8 @@ public class NutritionProduct extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionProductCharacteristicComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionProductCharacteristicComponent) dst);
       }
 
       public void copyValues(NutritionProductCharacteristicComponent dst) {
@@ -1547,8 +1547,8 @@ public class NutritionProduct extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionProductInstanceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionProductInstanceComponent) dst);
       }
 
       public void copyValues(NutritionProductInstanceComponent dst) {
@@ -2414,8 +2414,8 @@ public class NutritionProduct extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionProduct) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionProduct) dst);
       }
 
       public void copyValues(NutritionProduct dst) {

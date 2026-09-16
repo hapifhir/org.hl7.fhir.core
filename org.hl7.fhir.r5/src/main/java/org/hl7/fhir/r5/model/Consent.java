@@ -414,8 +414,8 @@ public class Consent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConsentPolicyBasisComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConsentPolicyBasisComponent) dst);
       }
 
       public void copyValues(ConsentPolicyBasisComponent dst) {
@@ -836,8 +836,8 @@ public class Consent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConsentVerificationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConsentVerificationComponent) dst);
       }
 
       public void copyValues(ConsentVerificationComponent dst) {
@@ -1791,8 +1791,8 @@ public class Consent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ProvisionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ProvisionComponent) dst);
       }
 
       public void copyValues(ProvisionComponent dst) {
@@ -2060,8 +2060,8 @@ public class Consent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ProvisionActorComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ProvisionActorComponent) dst);
       }
 
       public void copyValues(ProvisionActorComponent dst) {
@@ -2309,8 +2309,8 @@ public class Consent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ProvisionDataComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ProvisionDataComponent) dst);
       }
 
       public void copyValues(ProvisionDataComponent dst) {
@@ -3702,8 +3702,8 @@ public class Consent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Consent) b);
+      public void assignValues(Base dst) {
+        copyValues((Consent) dst);
       }
 
       public void copyValues(Consent dst) {

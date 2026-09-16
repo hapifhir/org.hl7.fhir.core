@@ -351,8 +351,8 @@ public class Immunization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImmunizationPerformerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ImmunizationPerformerComponent) dst);
       }
 
       public void copyValues(ImmunizationPerformerComponent dst) {
@@ -578,8 +578,8 @@ public class Immunization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImmunizationProgramEligibilityComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ImmunizationProgramEligibilityComponent) dst);
       }
 
       public void copyValues(ImmunizationProgramEligibilityComponent dst) {
@@ -886,8 +886,8 @@ public class Immunization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImmunizationReactionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ImmunizationReactionComponent) dst);
       }
 
       public void copyValues(ImmunizationReactionComponent dst) {
@@ -1351,8 +1351,8 @@ public class Immunization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ImmunizationProtocolAppliedComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ImmunizationProtocolAppliedComponent) dst);
       }
 
       public void copyValues(ImmunizationProtocolAppliedComponent dst) {
@@ -3249,8 +3249,8 @@ public class Immunization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Immunization) b);
+      public void assignValues(Base dst) {
+        copyValues((Immunization) dst);
       }
 
       public void copyValues(Immunization dst) {

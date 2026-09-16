@@ -725,8 +725,8 @@ public class DataRequirement extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DataRequirementCodeFilterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DataRequirementCodeFilterComponent) dst, options);
       }
 
       public void copyValues(DataRequirementCodeFilterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1134,8 +1134,8 @@ public class DataRequirement extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DataRequirementDateFilterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DataRequirementDateFilterComponent) dst, options);
       }
 
       public void copyValues(DataRequirementDateFilterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1693,8 +1693,8 @@ public class DataRequirement extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DataRequirementValueFilterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DataRequirementValueFilterComponent) dst, options);
       }
 
       public void copyValues(DataRequirementValueFilterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1996,8 +1996,8 @@ public class DataRequirement extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DataRequirementSortComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DataRequirementSortComponent) dst, options);
       }
 
       public void copyValues(DataRequirementSortComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2833,8 +2833,8 @@ public class DataRequirement extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DataRequirement) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DataRequirement) dst, options);
       }
 
       public void copyValues(DataRequirement dst, EnumSet<CopyObjectOptions> options) {

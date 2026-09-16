@@ -1466,8 +1466,8 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((OperationDefinitionParameterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationDefinitionParameterComponent) dst, options);
       }
 
       public void copyValues(OperationDefinitionParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1831,8 +1831,8 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((OperationDefinitionParameterBindingComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationDefinitionParameterBindingComponent) dst, options);
       }
 
       public void copyValues(OperationDefinitionParameterBindingComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2124,8 +2124,8 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((OperationDefinitionParameterReferencedFromComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationDefinitionParameterReferencedFromComponent) dst, options);
       }
 
       public void copyValues(OperationDefinitionParameterReferencedFromComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2414,8 +2414,8 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((OperationDefinitionOverloadComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationDefinitionOverloadComponent) dst, options);
       }
 
       public void copyValues(OperationDefinitionOverloadComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4924,8 +4924,8 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((OperationDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationDefinition) dst, options);
       }
 
       public void copyValues(OperationDefinition dst, EnumSet<CopyObjectOptions> options) {

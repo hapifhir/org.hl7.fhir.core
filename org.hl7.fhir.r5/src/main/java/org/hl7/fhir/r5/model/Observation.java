@@ -451,8 +451,8 @@ Reflex | Repeat | Re-run.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ObservationTriggeredByComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ObservationTriggeredByComponent) dst);
       }
 
       public void copyValues(ObservationTriggeredByComponent dst) {
@@ -960,8 +960,8 @@ Reflex | Repeat | Re-run.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ObservationReferenceRangeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ObservationReferenceRangeComponent) dst);
       }
 
       public void copyValues(ObservationReferenceRangeComponent dst) {
@@ -1651,8 +1651,8 @@ Reflex | Repeat | Re-run.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ObservationComponentComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ObservationComponentComponent) dst);
       }
 
       public void copyValues(ObservationComponentComponent dst) {
@@ -3851,8 +3851,8 @@ Reflex | Repeat | Re-run.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Observation) b);
+      public void assignValues(Base dst) {
+        copyValues((Observation) dst);
       }
 
       public void copyValues(Observation dst) {

@@ -920,8 +920,8 @@ public class DeviceMetric extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceMetricCalibrationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceMetricCalibrationComponent) dst);
       }
 
       public void copyValues(DeviceMetricCalibrationComponent dst) {
@@ -1616,8 +1616,8 @@ public class DeviceMetric extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceMetric) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceMetric) dst);
       }
 
       public void copyValues(DeviceMetric dst) {

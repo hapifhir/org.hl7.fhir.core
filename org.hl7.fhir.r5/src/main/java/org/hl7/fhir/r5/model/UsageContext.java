@@ -314,8 +314,8 @@ public class UsageContext extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((UsageContext) b);
+      public void assignValues(Base dst) {
+        copyValues((UsageContext) dst);
       }
 
       public void copyValues(UsageContext dst) {

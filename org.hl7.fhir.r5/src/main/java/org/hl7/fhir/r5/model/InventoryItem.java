@@ -460,8 +460,8 @@ public class InventoryItem extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InventoryItemNameComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InventoryItemNameComponent) dst);
       }
 
       public void copyValues(InventoryItemNameComponent dst) {
@@ -688,8 +688,8 @@ public class InventoryItem extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InventoryItemResponsibleOrganizationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InventoryItemResponsibleOrganizationComponent) dst);
       }
 
       public void copyValues(InventoryItemResponsibleOrganizationComponent dst) {
@@ -956,8 +956,8 @@ public class InventoryItem extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InventoryItemDescriptionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InventoryItemDescriptionComponent) dst);
       }
 
       public void copyValues(InventoryItemDescriptionComponent dst) {
@@ -1231,8 +1231,8 @@ public class InventoryItem extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InventoryItemAssociationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InventoryItemAssociationComponent) dst);
       }
 
       public void copyValues(InventoryItemAssociationComponent dst) {
@@ -1714,8 +1714,8 @@ public class InventoryItem extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InventoryItemCharacteristicComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InventoryItemCharacteristicComponent) dst);
       }
 
       public void copyValues(InventoryItemCharacteristicComponent dst) {
@@ -2149,8 +2149,8 @@ public class InventoryItem extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InventoryItemInstanceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InventoryItemInstanceComponent) dst);
       }
 
       public void copyValues(InventoryItemInstanceComponent dst) {
@@ -3198,8 +3198,8 @@ public class InventoryItem extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InventoryItem) b);
+      public void assignValues(Base dst) {
+        copyValues((InventoryItem) dst);
       }
 
       public void copyValues(InventoryItem dst) {

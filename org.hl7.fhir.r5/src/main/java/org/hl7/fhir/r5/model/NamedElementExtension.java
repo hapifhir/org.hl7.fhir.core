@@ -117,8 +117,8 @@ public class NamedElementExtension extends Element  {
     return dst;
   }
 
-  public void assign(Base b) {
-    copyValues((NamedElementExtension) b);
+  public void assignValues(Base dst) {
+    copyValues((NamedElementExtension) dst);
   }
 
   public void copyValues(NamedElementExtension dst) {

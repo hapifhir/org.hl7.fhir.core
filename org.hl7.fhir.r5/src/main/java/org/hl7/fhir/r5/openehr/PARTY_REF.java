@@ -69,8 +69,8 @@ public class PARTY_REF extends OBJECT_REF implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PARTY_REF) b);
+      public void assignValues(Base dst) {
+        copyValues((PARTY_REF) dst);
       }
 
       public void copyValues(PARTY_REF dst) {

@@ -253,8 +253,8 @@ public class Measure extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MeasureTermComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MeasureTermComponent) dst);
       }
 
       public void copyValues(MeasureTermComponent dst) {
@@ -1247,8 +1247,8 @@ public class Measure extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MeasureGroupComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MeasureGroupComponent) dst);
       }
 
       public void copyValues(MeasureGroupComponent dst) {
@@ -1807,8 +1807,8 @@ public class Measure extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MeasureGroupPopulationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MeasureGroupPopulationComponent) dst);
       }
 
       public void copyValues(MeasureGroupPopulationComponent dst) {
@@ -2298,8 +2298,8 @@ public class Measure extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MeasureGroupStratifierComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MeasureGroupStratifierComponent) dst);
       }
 
       public void copyValues(MeasureGroupStratifierComponent dst) {
@@ -2715,8 +2715,8 @@ public class Measure extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MeasureGroupStratifierComponentComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MeasureGroupStratifierComponentComponent) dst);
       }
 
       public void copyValues(MeasureGroupStratifierComponentComponent dst) {
@@ -3164,8 +3164,8 @@ public class Measure extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MeasureSupplementalDataComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MeasureSupplementalDataComponent) dst);
       }
 
       public void copyValues(MeasureSupplementalDataComponent dst) {
@@ -6480,8 +6480,8 @@ public class Measure extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Measure) b);
+      public void assignValues(Base dst) {
+        copyValues((Measure) dst);
       }
 
       public void copyValues(Measure dst) {

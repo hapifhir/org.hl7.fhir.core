@@ -87,8 +87,8 @@ public class Count extends Quantity implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Count) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Count) dst, options);
       }
 
       public void copyValues(Count dst, EnumSet<CopyObjectOptions> options) {

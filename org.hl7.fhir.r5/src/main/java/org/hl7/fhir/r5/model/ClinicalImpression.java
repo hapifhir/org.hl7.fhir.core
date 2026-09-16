@@ -253,8 +253,8 @@ public class ClinicalImpression extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ClinicalImpressionFindingComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ClinicalImpressionFindingComponent) dst);
       }
 
       public void copyValues(ClinicalImpressionFindingComponent dst) {
@@ -1646,8 +1646,8 @@ public class ClinicalImpression extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ClinicalImpression) b);
+      public void assignValues(Base dst) {
+        copyValues((ClinicalImpression) dst);
       }
 
       public void copyValues(ClinicalImpression dst) {

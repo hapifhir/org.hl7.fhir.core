@@ -230,8 +230,8 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PackagedProductDefinitionLegalStatusOfSupplyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PackagedProductDefinitionLegalStatusOfSupplyComponent) dst);
       }
 
       public void copyValues(PackagedProductDefinitionLegalStatusOfSupplyComponent dst) {
@@ -1136,8 +1136,8 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PackagedProductDefinitionPackagingComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PackagedProductDefinitionPackagingComponent) dst);
       }
 
       public void copyValues(PackagedProductDefinitionPackagingComponent dst) {
@@ -1504,8 +1504,8 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PackagedProductDefinitionPackagingPropertyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PackagedProductDefinitionPackagingPropertyComponent) dst);
       }
 
       public void copyValues(PackagedProductDefinitionPackagingPropertyComponent dst) {
@@ -1728,8 +1728,8 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PackagedProductDefinitionPackagingContainedItemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PackagedProductDefinitionPackagingContainedItemComponent) dst);
       }
 
       public void copyValues(PackagedProductDefinitionPackagingContainedItemComponent dst) {
@@ -2876,8 +2876,8 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PackagedProductDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((PackagedProductDefinition) dst);
       }
 
       public void copyValues(PackagedProductDefinition dst) {

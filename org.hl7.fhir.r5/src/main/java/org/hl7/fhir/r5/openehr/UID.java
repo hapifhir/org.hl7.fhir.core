@@ -197,8 +197,8 @@ public abstract class UID extends LogicalBase implements ICompositeType {
 
       public abstract UID copy();
 
-      public void assign(Base b) {
-        copyValues((UID) b);
+      public void assignValues(Base dst) {
+        copyValues((UID) dst);
       }
 
       public void copyValues(UID dst) {

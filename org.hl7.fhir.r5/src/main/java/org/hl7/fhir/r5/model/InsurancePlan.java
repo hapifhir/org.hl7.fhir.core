@@ -340,8 +340,8 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InsurancePlanCoverageComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InsurancePlanCoverageComponent) dst);
       }
 
       public void copyValues(InsurancePlanCoverageComponent dst) {
@@ -673,8 +673,8 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CoverageBenefitComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CoverageBenefitComponent) dst);
       }
 
       public void copyValues(CoverageBenefitComponent dst) {
@@ -896,8 +896,8 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CoverageBenefitLimitComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CoverageBenefitLimitComponent) dst);
       }
 
       public void copyValues(CoverageBenefitLimitComponent dst) {
@@ -1440,8 +1440,8 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InsurancePlanPlanComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InsurancePlanPlanComponent) dst);
       }
 
       public void copyValues(InsurancePlanPlanComponent dst) {
@@ -1821,8 +1821,8 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InsurancePlanPlanGeneralCostComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InsurancePlanPlanGeneralCostComponent) dst);
       }
 
       public void copyValues(InsurancePlanPlanGeneralCostComponent dst) {
@@ -2077,8 +2077,8 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InsurancePlanPlanSpecificCostComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InsurancePlanPlanSpecificCostComponent) dst);
       }
 
       public void copyValues(InsurancePlanPlanSpecificCostComponent dst) {
@@ -2333,8 +2333,8 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanBenefitComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanBenefitComponent) dst);
       }
 
       public void copyValues(PlanBenefitComponent dst) {
@@ -2684,8 +2684,8 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PlanBenefitCostComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PlanBenefitCostComponent) dst);
       }
 
       public void copyValues(PlanBenefitCostComponent dst) {
@@ -3788,8 +3788,8 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InsurancePlan) b);
+      public void assignValues(Base dst) {
+        copyValues((InsurancePlan) dst);
       }
 
       public void copyValues(InsurancePlan dst) {

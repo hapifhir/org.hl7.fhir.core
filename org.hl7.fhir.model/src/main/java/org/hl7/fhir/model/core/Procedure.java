@@ -361,8 +361,8 @@ public class Procedure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ProcedurePerformerComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ProcedurePerformerComponent) dst, options);
       }
 
       public void copyValues(ProcedurePerformerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -621,8 +621,8 @@ public class Procedure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ProcedureFocalDeviceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ProcedureFocalDeviceComponent) dst, options);
       }
 
       public void copyValues(ProcedureFocalDeviceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2651,8 +2651,8 @@ public class Procedure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Procedure) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Procedure) dst, options);
       }
 
       public void copyValues(Procedure dst, EnumSet<CopyObjectOptions> options) {

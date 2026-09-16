@@ -509,8 +509,8 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AdverseEventParticipantComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdverseEventParticipantComponent) dst, options);
       }
 
       public void copyValues(AdverseEventParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -846,8 +846,8 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AdverseEventSuspectEntityComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdverseEventSuspectEntityComponent) dst, options);
       }
 
       public void copyValues(AdverseEventSuspectEntityComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1145,8 +1145,8 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AdverseEventSuspectEntityCausalityComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdverseEventSuspectEntityCausalityComponent) dst, options);
       }
 
       public void copyValues(AdverseEventSuspectEntityCausalityComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2967,8 +2967,8 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((AdverseEvent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdverseEvent) dst, options);
       }
 
       public void copyValues(AdverseEvent dst, EnumSet<CopyObjectOptions> options) {

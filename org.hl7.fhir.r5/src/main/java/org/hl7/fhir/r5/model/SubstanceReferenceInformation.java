@@ -303,8 +303,8 @@ public class SubstanceReferenceInformation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceReferenceInformationGeneComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceReferenceInformationGeneComponent) dst);
       }
 
       public void copyValues(SubstanceReferenceInformationGeneComponent dst) {
@@ -601,8 +601,8 @@ public class SubstanceReferenceInformation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceReferenceInformationGeneElementComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceReferenceInformationGeneElementComponent) dst);
       }
 
       public void copyValues(SubstanceReferenceInformationGeneElementComponent dst) {
@@ -1188,8 +1188,8 @@ public class SubstanceReferenceInformation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceReferenceInformationTargetComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceReferenceInformationTargetComponent) dst);
       }
 
       public void copyValues(SubstanceReferenceInformationTargetComponent dst) {
@@ -1622,8 +1622,8 @@ public class SubstanceReferenceInformation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubstanceReferenceInformation) b);
+      public void assignValues(Base dst) {
+        copyValues((SubstanceReferenceInformation) dst);
       }
 
       public void copyValues(SubstanceReferenceInformation dst) {

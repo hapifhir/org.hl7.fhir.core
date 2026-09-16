@@ -409,8 +409,8 @@ public class NutritionProduct extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NutritionProductNutrientComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionProductNutrientComponent) dst, options);
       }
 
       public void copyValues(NutritionProductNutrientComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -767,8 +767,8 @@ public class NutritionProduct extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NutritionProductIngredientComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionProductIngredientComponent) dst, options);
       }
 
       public void copyValues(NutritionProductIngredientComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1138,8 +1138,8 @@ public class NutritionProduct extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NutritionProductCharacteristicComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionProductCharacteristicComponent) dst, options);
       }
 
       public void copyValues(NutritionProductCharacteristicComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1757,8 +1757,8 @@ public class NutritionProduct extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NutritionProductInstanceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionProductInstanceComponent) dst, options);
       }
 
       public void copyValues(NutritionProductInstanceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2696,8 +2696,8 @@ public class NutritionProduct extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NutritionProduct) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionProduct) dst, options);
       }
 
       public void copyValues(NutritionProduct dst, EnumSet<CopyObjectOptions> options) {

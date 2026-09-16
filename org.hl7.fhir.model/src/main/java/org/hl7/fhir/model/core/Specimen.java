@@ -514,8 +514,8 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SpecimenFeatureComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SpecimenFeatureComponent) dst, options);
       }
 
       public void copyValues(SpecimenFeatureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1217,8 +1217,8 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SpecimenCollectionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SpecimenCollectionComponent) dst, options);
       }
 
       public void copyValues(SpecimenCollectionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1804,8 +1804,8 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SpecimenProcessingComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SpecimenProcessingComponent) dst, options);
       }
 
       public void copyValues(SpecimenProcessingComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2077,8 +2077,8 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SpecimenProcessingAdditiveComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SpecimenProcessingAdditiveComponent) dst, options);
       }
 
       public void copyValues(SpecimenProcessingAdditiveComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2327,8 +2327,8 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SpecimenContainerComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SpecimenContainerComponent) dst, options);
       }
 
       public void copyValues(SpecimenContainerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3570,8 +3570,8 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Specimen) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Specimen) dst, options);
       }
 
       public void copyValues(Specimen dst, EnumSet<CopyObjectOptions> options) {

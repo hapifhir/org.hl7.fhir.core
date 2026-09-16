@@ -651,8 +651,8 @@ public class GraphDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GraphDefinitionNodeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((GraphDefinitionNodeComponent) dst);
       }
 
       public void copyValues(GraphDefinitionNodeComponent dst) {
@@ -1418,8 +1418,8 @@ public class GraphDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GraphDefinitionLinkComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((GraphDefinitionLinkComponent) dst);
       }
 
       public void copyValues(GraphDefinitionLinkComponent dst) {
@@ -1922,8 +1922,8 @@ public class GraphDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GraphDefinitionLinkCompartmentComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((GraphDefinitionLinkCompartmentComponent) dst);
       }
 
       public void copyValues(GraphDefinitionLinkCompartmentComponent dst) {
@@ -3513,8 +3513,8 @@ public class GraphDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GraphDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((GraphDefinition) dst);
       }
 
       public void copyValues(GraphDefinition dst) {

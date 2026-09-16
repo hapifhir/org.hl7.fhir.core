@@ -1407,8 +1407,8 @@ public class ObservationDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ObservationDefinitionQualifiedValueComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ObservationDefinitionQualifiedValueComponent) dst, options);
       }
 
       public void copyValues(ObservationDefinitionQualifiedValueComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1897,8 +1897,8 @@ public class ObservationDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ObservationDefinitionComponentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ObservationDefinitionComponentComponent) dst, options);
       }
 
       public void copyValues(ObservationDefinitionComponentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4880,8 +4880,8 @@ public class ObservationDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ObservationDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ObservationDefinition) dst, options);
       }
 
       public void copyValues(ObservationDefinition dst, EnumSet<CopyObjectOptions> options) {

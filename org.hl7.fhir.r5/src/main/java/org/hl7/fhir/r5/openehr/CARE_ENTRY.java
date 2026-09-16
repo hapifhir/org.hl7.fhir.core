@@ -208,8 +208,8 @@ public abstract class CARE_ENTRY extends ENTRY implements ICompositeType {
 
       public abstract CARE_ENTRY copy();
 
-      public void assign(Base b) {
-        copyValues((CARE_ENTRY) b);
+      public void assignValues(Base dst) {
+        copyValues((CARE_ENTRY) dst);
       }
 
       public void copyValues(CARE_ENTRY dst) {

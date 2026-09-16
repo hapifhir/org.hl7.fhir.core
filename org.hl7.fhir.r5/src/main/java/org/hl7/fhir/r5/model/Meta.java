@@ -584,8 +584,8 @@ public class Meta extends DataType implements IBaseMetaType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Meta) b);
+      public void assignValues(Base dst) {
+        copyValues((Meta) dst);
       }
 
       public void copyValues(Meta dst) {

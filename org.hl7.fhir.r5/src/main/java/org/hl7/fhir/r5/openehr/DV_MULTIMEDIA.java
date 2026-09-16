@@ -634,8 +634,8 @@ public class DV_MULTIMEDIA extends DV_ENCAPSULATED implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_MULTIMEDIA) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_MULTIMEDIA) dst);
       }
 
       public void copyValues(DV_MULTIMEDIA dst) {

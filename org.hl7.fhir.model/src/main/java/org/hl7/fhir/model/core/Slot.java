@@ -1114,8 +1114,8 @@ public class Slot extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Slot) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Slot) dst, options);
       }
 
       public void copyValues(Slot dst, EnumSet<CopyObjectOptions> options) {

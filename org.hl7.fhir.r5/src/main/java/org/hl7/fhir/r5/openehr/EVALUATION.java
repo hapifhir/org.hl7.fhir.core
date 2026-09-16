@@ -175,8 +175,8 @@ public class EVALUATION extends CARE_ENTRY implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EVALUATION) b);
+      public void assignValues(Base dst) {
+        copyValues((EVALUATION) dst);
       }
 
       public void copyValues(EVALUATION dst) {

@@ -197,8 +197,8 @@ public class DV_TIME extends DV_ORDERED implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_TIME) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_TIME) dst);
       }
 
       public void copyValues(DV_TIME dst) {

@@ -427,8 +427,8 @@ public abstract class PARTY extends LOCATABLE implements ICompositeType {
 
       public abstract PARTY copy();
 
-      public void assign(Base b) {
-        copyValues((PARTY) b);
+      public void assignValues(Base dst) {
+        copyValues((PARTY) dst);
       }
 
       public void copyValues(PARTY dst) {

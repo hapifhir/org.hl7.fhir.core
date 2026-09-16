@@ -695,8 +695,8 @@ public class Transport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TransportRestrictionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TransportRestrictionComponent) dst);
       }
 
       public void copyValues(TransportRestrictionComponent dst) {
@@ -2002,8 +2002,8 @@ public class Transport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ParameterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ParameterComponent) dst);
       }
 
       public void copyValues(ParameterComponent dst) {
@@ -3302,8 +3302,8 @@ public class Transport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TransportOutputComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TransportOutputComponent) dst);
       }
 
       public void copyValues(TransportOutputComponent dst) {
@@ -5420,8 +5420,8 @@ public class Transport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Transport) b);
+      public void assignValues(Base dst) {
+        copyValues((Transport) dst);
       }
 
       public void copyValues(Transport dst) {

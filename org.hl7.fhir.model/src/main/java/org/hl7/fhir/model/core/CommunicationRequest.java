@@ -276,8 +276,8 @@ public class CommunicationRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CommunicationRequestPayloadComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CommunicationRequestPayloadComponent) dst, options);
       }
 
       public void copyValues(CommunicationRequestPayloadComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1958,8 +1958,8 @@ public class CommunicationRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CommunicationRequest) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CommunicationRequest) dst, options);
       }
 
       public void copyValues(CommunicationRequest dst, EnumSet<CopyObjectOptions> options) {

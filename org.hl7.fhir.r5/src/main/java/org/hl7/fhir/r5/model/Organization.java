@@ -358,8 +358,8 @@ public class Organization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((OrganizationQualificationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((OrganizationQualificationComponent) dst);
       }
 
       public void copyValues(OrganizationQualificationComponent dst) {
@@ -1206,8 +1206,8 @@ public class Organization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Organization) b);
+      public void assignValues(Base dst) {
+        copyValues((Organization) dst);
       }
 
       public void copyValues(Organization dst) {

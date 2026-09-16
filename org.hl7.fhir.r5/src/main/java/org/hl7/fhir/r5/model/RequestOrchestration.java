@@ -2147,8 +2147,8 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RequestOrchestrationActionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RequestOrchestrationActionComponent) dst);
       }
 
       public void copyValues(RequestOrchestrationActionComponent dst) {
@@ -2479,8 +2479,8 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RequestOrchestrationActionConditionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RequestOrchestrationActionConditionComponent) dst);
       }
 
       public void copyValues(RequestOrchestrationActionConditionComponent dst) {
@@ -2790,8 +2790,8 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RequestOrchestrationActionInputComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RequestOrchestrationActionInputComponent) dst);
       }
 
       public void copyValues(RequestOrchestrationActionInputComponent dst) {
@@ -3104,8 +3104,8 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RequestOrchestrationActionOutputComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RequestOrchestrationActionOutputComponent) dst);
       }
 
       public void copyValues(RequestOrchestrationActionOutputComponent dst) {
@@ -3533,8 +3533,8 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RequestOrchestrationActionRelatedActionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RequestOrchestrationActionRelatedActionComponent) dst);
       }
 
       public void copyValues(RequestOrchestrationActionRelatedActionComponent dst) {
@@ -4032,8 +4032,8 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RequestOrchestrationActionParticipantComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RequestOrchestrationActionParticipantComponent) dst);
       }
 
       public void copyValues(RequestOrchestrationActionParticipantComponent dst) {
@@ -4279,8 +4279,8 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RequestOrchestrationActionDynamicValueComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RequestOrchestrationActionDynamicValueComponent) dst);
       }
 
       public void copyValues(RequestOrchestrationActionDynamicValueComponent dst) {
@@ -5629,8 +5629,8 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RequestOrchestration) b);
+      public void assignValues(Base dst) {
+        copyValues((RequestOrchestration) dst);
       }
 
       public void copyValues(RequestOrchestration dst) {

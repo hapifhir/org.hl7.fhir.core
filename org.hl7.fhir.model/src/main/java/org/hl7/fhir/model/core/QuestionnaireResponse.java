@@ -692,8 +692,8 @@ public class QuestionnaireResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((QuestionnaireResponseItemComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireResponseItemComponent) dst, options);
       }
 
       public void copyValues(QuestionnaireResponseItemComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1235,8 +1235,8 @@ public class QuestionnaireResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((QuestionnaireResponseItemAnswerComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireResponseItemAnswerComponent) dst, options);
       }
 
       public void copyValues(QuestionnaireResponseItemAnswerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2115,8 +2115,8 @@ public class QuestionnaireResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((QuestionnaireResponse) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireResponse) dst, options);
       }
 
       public void copyValues(QuestionnaireResponse dst, EnumSet<CopyObjectOptions> options) {

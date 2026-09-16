@@ -487,8 +487,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EvidenceRelatesToComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceRelatesToComponent) dst, options);
       }
 
       public void copyValues(EvidenceRelatesToComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -747,8 +747,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EvidenceClassificationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceClassificationComponent) dst, options);
       }
 
       public void copyValues(EvidenceClassificationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1410,8 +1410,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EvidenceVariableDefinitionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceVariableDefinitionComponent) dst, options);
       }
 
       public void copyValues(EvidenceVariableDefinitionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2231,8 +2231,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EvidenceStatisticComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceStatisticComponent) dst, options);
       }
 
       public void copyValues(EvidenceStatisticComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2857,8 +2857,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EvidenceStatisticSampleSizeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceStatisticSampleSizeComponent) dst, options);
       }
 
       public void copyValues(EvidenceStatisticSampleSizeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3493,8 +3493,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EvidenceStatisticAttributeEstimateComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceStatisticAttributeEstimateComponent) dst, options);
       }
 
       public void copyValues(EvidenceStatisticAttributeEstimateComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4122,8 +4122,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EvidenceStatisticModelCharacteristicComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceStatisticModelCharacteristicComponent) dst, options);
       }
 
       public void copyValues(EvidenceStatisticModelCharacteristicComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4618,8 +4618,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EvidenceStatisticModelCharacteristicVariableComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceStatisticModelCharacteristicVariableComponent) dst, options);
       }
 
       public void copyValues(EvidenceStatisticModelCharacteristicVariableComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5189,8 +5189,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EvidenceCertaintyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceCertaintyComponent) dst, options);
       }
 
       public void copyValues(EvidenceCertaintyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7974,8 +7974,8 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Evidence) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Evidence) dst, options);
       }
 
       public void copyValues(Evidence dst, EnumSet<CopyObjectOptions> options) {

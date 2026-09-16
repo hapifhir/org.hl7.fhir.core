@@ -217,8 +217,8 @@ public class WebTemplateInputValidation extends LogicalBase implements IComposit
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((WebTemplateInputValidation) b);
+      public void assignValues(Base dst) {
+        copyValues((WebTemplateInputValidation) dst);
       }
 
       public void copyValues(WebTemplateInputValidation dst) {

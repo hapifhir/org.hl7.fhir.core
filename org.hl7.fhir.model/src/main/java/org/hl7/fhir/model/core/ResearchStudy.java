@@ -346,8 +346,8 @@ public class ResearchStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ResearchStudyLabelComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchStudyLabelComponent) dst, options);
       }
 
       public void copyValues(ResearchStudyLabelComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -697,8 +697,8 @@ public class ResearchStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ResearchStudyRelatesToComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchStudyRelatesToComponent) dst, options);
       }
 
       public void copyValues(ResearchStudyRelatesToComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1171,8 +1171,8 @@ public class ResearchStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ResearchStudyAssociatedPartyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchStudyAssociatedPartyComponent) dst, options);
       }
 
       public void copyValues(ResearchStudyAssociatedPartyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1516,8 +1516,8 @@ public class ResearchStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ResearchStudyProgressStatusComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchStudyProgressStatusComponent) dst, options);
       }
 
       public void copyValues(ResearchStudyProgressStatusComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1982,8 +1982,8 @@ public class ResearchStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ResearchStudyRecruitmentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchStudyRecruitmentComponent) dst, options);
       }
 
       public void copyValues(ResearchStudyRecruitmentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2536,8 +2536,8 @@ public class ResearchStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ResearchStudyComparisonGroupComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchStudyComparisonGroupComponent) dst, options);
       }
 
       public void copyValues(ResearchStudyComparisonGroupComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2969,8 +2969,8 @@ public class ResearchStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ResearchStudyObjectiveComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchStudyObjectiveComponent) dst, options);
       }
 
       public void copyValues(ResearchStudyObjectiveComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3726,8 +3726,8 @@ public class ResearchStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ResearchStudyObjectiveOutcomeMeasureComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchStudyObjectiveOutcomeMeasureComponent) dst, options);
       }
 
       public void copyValues(ResearchStudyObjectiveOutcomeMeasureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4136,8 +4136,8 @@ public class ResearchStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ResearchStudyObjectiveOutcomeMeasureEventHandlingComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchStudyObjectiveOutcomeMeasureEventHandlingComponent) dst, options);
       }
 
       public void copyValues(ResearchStudyObjectiveOutcomeMeasureEventHandlingComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6591,8 +6591,8 @@ public class ResearchStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ResearchStudy) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchStudy) dst, options);
       }
 
       public void copyValues(ResearchStudy dst, EnumSet<CopyObjectOptions> options) {

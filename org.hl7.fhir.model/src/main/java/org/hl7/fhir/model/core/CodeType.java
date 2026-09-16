@@ -138,8 +138,8 @@ public class CodeType extends StringType implements Comparable<CodeType>, ICodin
   }
 
   @Override
-  public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-    copyValues((CodeType) b, options);
+  public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+    copyValues((CodeType) dst, options);
   }
 
   /**

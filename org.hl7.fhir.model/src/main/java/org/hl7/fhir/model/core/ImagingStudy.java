@@ -1109,8 +1109,8 @@ public class ImagingStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImagingStudySeriesComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingStudySeriesComponent) dst, options);
       }
 
       public void copyValues(ImagingStudySeriesComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1423,8 +1423,8 @@ public class ImagingStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImagingStudySeriesPerformerComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingStudySeriesPerformerComponent) dst, options);
       }
 
       public void copyValues(ImagingStudySeriesPerformerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1936,8 +1936,8 @@ public class ImagingStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImagingStudySeriesInstanceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingStudySeriesInstanceComponent) dst, options);
       }
 
       public void copyValues(ImagingStudySeriesInstanceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3271,8 +3271,8 @@ public class ImagingStudy extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImagingStudy) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingStudy) dst, options);
       }
 
       public void copyValues(ImagingStudy dst, EnumSet<CopyObjectOptions> options) {

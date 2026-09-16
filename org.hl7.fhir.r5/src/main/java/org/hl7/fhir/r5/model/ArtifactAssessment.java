@@ -1332,8 +1332,8 @@ public class ArtifactAssessment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ArtifactAssessmentContentComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ArtifactAssessmentContentComponent) dst);
       }
 
       public void copyValues(ArtifactAssessmentContentComponent dst) {
@@ -2334,8 +2334,8 @@ public class ArtifactAssessment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ArtifactAssessment) b);
+      public void assignValues(Base dst) {
+        copyValues((ArtifactAssessment) dst);
       }
 
       public void copyValues(ArtifactAssessment dst) {

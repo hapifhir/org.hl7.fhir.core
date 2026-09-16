@@ -487,8 +487,8 @@ public class Contributor extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Contributor) b);
+      public void assignValues(Base dst) {
+        copyValues((Contributor) dst);
       }
 
       public void copyValues(Contributor dst) {

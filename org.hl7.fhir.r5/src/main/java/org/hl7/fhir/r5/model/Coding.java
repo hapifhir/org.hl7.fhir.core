@@ -500,8 +500,8 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Coding) b);
+      public void assignValues(Base dst) {
+        copyValues((Coding) dst);
       }
 
       public void copyValues(Coding dst) {

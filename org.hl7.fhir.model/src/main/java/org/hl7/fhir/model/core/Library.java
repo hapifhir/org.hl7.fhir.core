@@ -2614,8 +2614,8 @@ public class Library extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Library) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Library) dst, options);
       }
 
       public void copyValues(Library dst, EnumSet<CopyObjectOptions> options) {

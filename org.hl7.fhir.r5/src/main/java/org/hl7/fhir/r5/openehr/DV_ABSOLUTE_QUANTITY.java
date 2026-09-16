@@ -65,8 +65,8 @@ public abstract class DV_ABSOLUTE_QUANTITY extends DV_QUANTIFIED implements ICom
 
       public abstract DV_ABSOLUTE_QUANTITY copy();
 
-      public void assign(Base b) {
-        copyValues((DV_ABSOLUTE_QUANTITY) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_ABSOLUTE_QUANTITY) dst);
       }
 
       public void copyValues(DV_ABSOLUTE_QUANTITY dst) {

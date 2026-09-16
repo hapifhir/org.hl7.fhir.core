@@ -717,8 +717,8 @@ public class ActivityDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ActivityDefinitionParticipantComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ActivityDefinitionParticipantComponent) dst, options);
       }
 
       public void copyValues(ActivityDefinitionParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1001,8 +1001,8 @@ public class ActivityDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ActivityDefinitionDynamicValueComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ActivityDefinitionDynamicValueComponent) dst, options);
       }
 
       public void copyValues(ActivityDefinitionDynamicValueComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4903,8 +4903,8 @@ public class ActivityDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ActivityDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ActivityDefinition) dst, options);
       }
 
       public void copyValues(ActivityDefinition dst, EnumSet<CopyObjectOptions> options) {

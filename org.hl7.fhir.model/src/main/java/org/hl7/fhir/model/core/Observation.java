@@ -473,8 +473,8 @@ public class Observation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ObservationTriggeredByComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ObservationTriggeredByComponent) dst, options);
       }
 
       public void copyValues(ObservationTriggeredByComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1029,8 +1029,8 @@ public class Observation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ObservationReferenceRangeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ObservationReferenceRangeComponent) dst, options);
       }
 
       public void copyValues(ObservationReferenceRangeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1742,8 +1742,8 @@ public class Observation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ObservationComponentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ObservationComponentComponent) dst, options);
       }
 
       public void copyValues(ObservationComponentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4207,8 +4207,8 @@ public class Observation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Observation) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Observation) dst, options);
       }
 
       public void copyValues(Observation dst, EnumSet<CopyObjectOptions> options) {

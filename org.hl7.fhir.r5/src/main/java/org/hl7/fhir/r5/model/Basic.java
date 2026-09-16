@@ -432,8 +432,8 @@ public class Basic extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Basic) b);
+      public void assignValues(Base dst) {
+        copyValues((Basic) dst);
       }
 
       public void copyValues(Basic dst) {

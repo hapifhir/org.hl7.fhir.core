@@ -1098,8 +1098,8 @@ public class PractitionerRole extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PractitionerRole) b);
+      public void assignValues(Base dst) {
+        copyValues((PractitionerRole) dst);
       }
 
       public void copyValues(PractitionerRole dst) {

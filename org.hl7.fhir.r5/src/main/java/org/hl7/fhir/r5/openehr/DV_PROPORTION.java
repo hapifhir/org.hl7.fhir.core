@@ -436,8 +436,8 @@ public class DV_PROPORTION extends DV_AMOUNT implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_PROPORTION) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_PROPORTION) dst);
       }
 
       public void copyValues(DV_PROPORTION dst) {

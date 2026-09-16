@@ -555,8 +555,15 @@ public abstract class Base implements Serializable, IBase, IElement {
 
   public abstract Base copy();
   
-  public void assign(Base b) {
-    copyValues((Base) b);
+  /**
+   * Copy this object's content onto dst, the same as copyValues, but with one signature all the
+   * way down the hierarchy so that a call made through a Base reference reaches the leaf type.
+   * copyValues takes a different argument type at every level, so a call bound through Base
+   * would stop at Base.copyValues; each override of this casts dst to its own type to pick the
+   * right one
+   */
+  public void assignValues(Base dst) {
+    copyValues((Base) dst);
   }
 
   public void copyValues(Base dst) {  

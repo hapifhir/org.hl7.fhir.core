@@ -408,8 +408,8 @@ A coverage may only be responsible for specific types of charges, and the sequen
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CoverageComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CoverageComponent) dst);
       }
 
       public void copyValues(CoverageComponent dst) {
@@ -699,8 +699,8 @@ A coverage may only be responsible for specific types of charges, and the sequen
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((GuarantorComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((GuarantorComponent) dst);
       }
 
       public void copyValues(GuarantorComponent dst) {
@@ -1235,8 +1235,8 @@ A coverage may only be responsible for specific types of charges, and the sequen
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AccountDiagnosisComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AccountDiagnosisComponent) dst);
       }
 
       public void copyValues(AccountDiagnosisComponent dst) {
@@ -1792,8 +1792,8 @@ A coverage may only be responsible for specific types of charges, and the sequen
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AccountProcedureComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AccountProcedureComponent) dst);
       }
 
       public void copyValues(AccountProcedureComponent dst) {
@@ -2037,8 +2037,8 @@ A coverage may only be responsible for specific types of charges, and the sequen
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AccountRelatedAccountComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AccountRelatedAccountComponent) dst);
       }
 
       public void copyValues(AccountRelatedAccountComponent dst) {
@@ -2378,8 +2378,8 @@ A coverage may only be responsible for specific types of charges, and the sequen
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AccountBalanceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AccountBalanceComponent) dst);
       }
 
       public void copyValues(AccountBalanceComponent dst) {
@@ -3641,8 +3641,8 @@ The balances with a `term` that is not current are usually generated/updated by 
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Account) b);
+      public void assignValues(Base dst) {
+        copyValues((Account) dst);
       }
 
       public void copyValues(Account dst) {

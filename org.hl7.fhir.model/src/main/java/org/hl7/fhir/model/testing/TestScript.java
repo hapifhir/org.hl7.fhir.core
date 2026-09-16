@@ -1926,8 +1926,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestScriptTestSystemComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptTestSystemComponent) dst, options);
       }
 
       public void copyValues(TestScriptTestSystemComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2206,8 +2206,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestScriptMetadataComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptMetadataComponent) dst, options);
       }
 
       public void copyValues(TestScriptMetadataComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2477,8 +2477,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestScriptMetadataLinkComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptMetadataLinkComponent) dst, options);
       }
 
       public void copyValues(TestScriptMetadataLinkComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3099,8 +3099,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestScriptMetadataCapabilityComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptMetadataCapabilityComponent) dst, options);
       }
 
       public void copyValues(TestScriptMetadataCapabilityComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3403,8 +3403,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestScriptScopeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptScopeComponent) dst, options);
       }
 
       public void copyValues(TestScriptScopeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3757,8 +3757,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestScriptFixtureComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptFixtureComponent) dst, options);
       }
 
       public void copyValues(TestScriptFixtureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4420,8 +4420,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestScriptVariableComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptVariableComponent) dst, options);
       }
 
       public void copyValues(TestScriptVariableComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4621,8 +4621,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestScriptSetupComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptSetupComponent) dst, options);
       }
 
       public void copyValues(TestScriptSetupComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4861,8 +4861,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SetupActionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionComponent) dst, options);
       }
 
       public void copyValues(SetupActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5198,8 +5198,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SetupActionCommonComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionCommonComponent) dst, options);
       }
 
       public void copyValues(SetupActionCommonComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5464,8 +5464,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SetupActionCommonParameterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionCommonParameterComponent) dst, options);
       }
 
       public void copyValues(SetupActionCommonParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6752,8 +6752,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SetupActionOperationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionOperationComponent) dst, options);
       }
 
       public void copyValues(SetupActionOperationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7043,8 +7043,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SetupActionOperationRequestHeaderComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionOperationRequestHeaderComponent) dst, options);
       }
 
       public void copyValues(SetupActionOperationRequestHeaderComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9024,8 +9024,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SetupActionAssertComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionAssertComponent) dst, options);
       }
 
       public void copyValues(SetupActionAssertComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9341,8 +9341,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SetupActionAssertRequirementComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionAssertRequirementComponent) dst, options);
       }
 
       public void copyValues(SetupActionAssertRequirementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9670,8 +9670,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestScriptTestComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptTestComponent) dst, options);
       }
 
       public void copyValues(TestScriptTestComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9932,8 +9932,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestActionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestActionComponent) dst, options);
       }
 
       public void copyValues(TestActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10133,8 +10133,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestScriptTeardownComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptTeardownComponent) dst, options);
       }
 
       public void copyValues(TestScriptTeardownComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10354,8 +10354,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TeardownActionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TeardownActionComponent) dst, options);
       }
 
       public void copyValues(TeardownActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10831,8 +10831,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestScriptCommonComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptCommonComponent) dst, options);
       }
 
       public void copyValues(TestScriptCommonComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -11103,8 +11103,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CommonParameterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CommonParameterComponent) dst, options);
       }
 
       public void copyValues(CommonParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -11312,8 +11312,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CommonActionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CommonActionComponent) dst, options);
       }
 
       public void copyValues(CommonActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -13275,8 +13275,8 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestScript) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScript) dst, options);
       }
 
       public void copyValues(TestScript dst, EnumSet<CopyObjectOptions> options) {

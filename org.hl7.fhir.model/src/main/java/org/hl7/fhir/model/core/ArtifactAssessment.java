@@ -733,8 +733,8 @@ public class ArtifactAssessment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ArtifactAssessmentRelatesToComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ArtifactAssessmentRelatesToComponent) dst, options);
       }
 
       public void copyValues(ArtifactAssessmentRelatesToComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1496,8 +1496,8 @@ public class ArtifactAssessment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ArtifactAssessmentContentComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ArtifactAssessmentContentComponent) dst, options);
       }
 
       public void copyValues(ArtifactAssessmentContentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2642,8 +2642,8 @@ public class ArtifactAssessment extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ArtifactAssessment) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ArtifactAssessment) dst, options);
       }
 
       public void copyValues(ArtifactAssessment dst, EnumSet<CopyObjectOptions> options) {

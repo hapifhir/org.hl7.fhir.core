@@ -730,8 +730,8 @@ public class Task extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TaskFocusComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TaskFocusComponent) dst, options);
       }
 
       public void copyValues(TaskFocusComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -976,8 +976,8 @@ public class Task extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TaskPerformerComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TaskPerformerComponent) dst, options);
       }
 
       public void copyValues(TaskPerformerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1307,8 +1307,8 @@ public class Task extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TaskRestrictionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TaskRestrictionComponent) dst, options);
       }
 
       public void copyValues(TaskRestrictionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2663,8 +2663,8 @@ public class Task extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TaskInputComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TaskInputComponent) dst, options);
       }
 
       public void copyValues(TaskInputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4009,8 +4009,8 @@ public class Task extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TaskOutputComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TaskOutputComponent) dst, options);
       }
 
       public void copyValues(TaskOutputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6226,8 +6226,8 @@ public class Task extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Task) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Task) dst, options);
       }
 
       public void copyValues(Task dst, EnumSet<CopyObjectOptions> options) {

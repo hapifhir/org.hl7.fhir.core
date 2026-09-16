@@ -411,8 +411,8 @@ public class FEEDER_AUDIT extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((FEEDER_AUDIT) b);
+      public void assignValues(Base dst) {
+        copyValues((FEEDER_AUDIT) dst);
       }
 
       public void copyValues(FEEDER_AUDIT dst) {

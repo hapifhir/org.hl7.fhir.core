@@ -237,8 +237,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicinalProductDefinitionContactComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionContactComponent) dst);
       }
 
       public void copyValues(MedicinalProductDefinitionContactComponent dst) {
@@ -632,8 +632,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicinalProductDefinitionNameComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionNameComponent) dst);
       }
 
       public void copyValues(MedicinalProductDefinitionNameComponent dst) {
@@ -890,8 +890,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicinalProductDefinitionNamePartComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionNamePartComponent) dst);
       }
 
       public void copyValues(MedicinalProductDefinitionNamePartComponent dst) {
@@ -1165,8 +1165,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicinalProductDefinitionNameUsageComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionNameUsageComponent) dst);
       }
 
       public void copyValues(MedicinalProductDefinitionNameUsageComponent dst) {
@@ -1393,8 +1393,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicinalProductDefinitionCrossReferenceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionCrossReferenceComponent) dst);
       }
 
       public void copyValues(MedicinalProductDefinitionCrossReferenceComponent dst) {
@@ -1732,8 +1732,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicinalProductDefinitionOperationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionOperationComponent) dst);
       }
 
       public void copyValues(MedicinalProductDefinitionOperationComponent dst) {
@@ -2100,8 +2100,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicinalProductDefinitionCharacteristicComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionCharacteristicComponent) dst);
       }
 
       public void copyValues(MedicinalProductDefinitionCharacteristicComponent dst) {
@@ -4210,8 +4210,8 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicinalProductDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinition) dst);
       }
 
       public void copyValues(MedicinalProductDefinition dst) {

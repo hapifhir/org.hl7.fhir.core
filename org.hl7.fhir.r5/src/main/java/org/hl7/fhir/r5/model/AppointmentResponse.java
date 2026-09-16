@@ -1093,8 +1093,8 @@ public class AppointmentResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AppointmentResponse) b);
+      public void assignValues(Base dst) {
+        copyValues((AppointmentResponse) dst);
       }
 
       public void copyValues(AppointmentResponse dst) {

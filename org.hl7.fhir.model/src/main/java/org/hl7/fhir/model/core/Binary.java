@@ -356,8 +356,8 @@ public class Binary extends BaseBinary implements IBaseBinary {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Binary) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Binary) dst, options);
       }
 
       public void copyValues(Binary dst, EnumSet<CopyObjectOptions> options) {

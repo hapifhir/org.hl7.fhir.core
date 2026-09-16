@@ -167,8 +167,8 @@ public class EHR_ACCESS extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((EHR_ACCESS) b);
+      public void assignValues(Base dst) {
+        copyValues((EHR_ACCESS) dst);
       }
 
       public void copyValues(EHR_ACCESS dst) {

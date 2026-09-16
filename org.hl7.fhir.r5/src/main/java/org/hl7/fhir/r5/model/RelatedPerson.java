@@ -257,8 +257,8 @@ public class RelatedPerson extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RelatedPersonCommunicationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RelatedPersonCommunicationComponent) dst);
       }
 
       public void copyValues(RelatedPersonCommunicationComponent dst) {
@@ -1223,8 +1223,8 @@ public class RelatedPerson extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RelatedPerson) b);
+      public void assignValues(Base dst) {
+        copyValues((RelatedPerson) dst);
       }
 
       public void copyValues(RelatedPerson dst) {

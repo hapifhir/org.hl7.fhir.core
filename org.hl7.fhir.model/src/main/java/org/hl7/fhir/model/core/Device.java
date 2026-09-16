@@ -1000,8 +1000,8 @@ public class Device extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceUdiCarrierComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceUdiCarrierComponent) dst, options);
       }
 
       public void copyValues(DeviceUdiCarrierComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1369,8 +1369,8 @@ public class Device extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceNameComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceNameComponent) dst, options);
       }
 
       public void copyValues(DeviceNameComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1774,8 +1774,8 @@ public class Device extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceDeviceVersionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDeviceVersionComponent) dst, options);
       }
 
       public void copyValues(DeviceDeviceVersionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2112,8 +2112,8 @@ public class Device extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceConformsToComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceConformsToComponent) dst, options);
       }
 
       public void copyValues(DeviceConformsToComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2504,8 +2504,8 @@ public class Device extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DevicePropertyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DevicePropertyComponent) dst, options);
       }
 
       public void copyValues(DevicePropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2754,8 +2754,8 @@ public class Device extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceAdditiveComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceAdditiveComponent) dst, options);
       }
 
       public void copyValues(DeviceAdditiveComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4676,8 +4676,8 @@ public class Device extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Device) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Device) dst, options);
       }
 
       public void copyValues(Device dst, EnumSet<CopyObjectOptions> options) {

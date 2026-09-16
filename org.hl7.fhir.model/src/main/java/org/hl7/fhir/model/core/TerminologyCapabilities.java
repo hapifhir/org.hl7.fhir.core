@@ -536,8 +536,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TerminologyCapabilitiesSoftwareComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesSoftwareComponent) dst, options);
       }
 
       public void copyValues(TerminologyCapabilitiesSoftwareComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -983,8 +983,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TerminologyCapabilitiesImplementationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesImplementationComponent) dst, options);
       }
 
       public void copyValues(TerminologyCapabilitiesImplementationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1598,8 +1598,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TerminologyCapabilitiesCodeSystemComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesCodeSystemComponent) dst, options);
       }
 
       public void copyValues(TerminologyCapabilitiesCodeSystemComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2377,8 +2377,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TerminologyCapabilitiesCodeSystemVersionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesCodeSystemVersionComponent) dst, options);
       }
 
       public void copyValues(TerminologyCapabilitiesCodeSystemVersionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2722,8 +2722,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TerminologyCapabilitiesCodeSystemVersionFilterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesCodeSystemVersionFilterComponent) dst, options);
       }
 
       public void copyValues(TerminologyCapabilitiesCodeSystemVersionFilterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2937,8 +2937,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TerminologyCapabilitiesSupplementsComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesSupplementsComponent) dst, options);
       }
 
       public void copyValues(TerminologyCapabilitiesSupplementsComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3434,8 +3434,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TerminologyCapabilitiesExpansionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesExpansionComponent) dst, options);
       }
 
       public void copyValues(TerminologyCapabilitiesExpansionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3747,8 +3747,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TerminologyCapabilitiesExpansionParameterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesExpansionParameterComponent) dst, options);
       }
 
       public void copyValues(TerminologyCapabilitiesExpansionParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3963,8 +3963,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TerminologyCapabilitiesValidateCodeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesValidateCodeComponent) dst, options);
       }
 
       public void copyValues(TerminologyCapabilitiesValidateCodeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4175,8 +4175,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TerminologyCapabilitiesTranslationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesTranslationComponent) dst, options);
       }
 
       public void copyValues(TerminologyCapabilitiesTranslationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6233,8 +6233,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TerminologyCapabilities) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilities) dst, options);
       }
 
       public void copyValues(TerminologyCapabilities dst, EnumSet<CopyObjectOptions> options) {

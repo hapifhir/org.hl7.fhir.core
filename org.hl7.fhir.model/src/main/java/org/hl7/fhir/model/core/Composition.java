@@ -403,8 +403,8 @@ public class Composition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CompositionParticipantComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompositionParticipantComponent) dst, options);
       }
 
       public void copyValues(CompositionParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -681,8 +681,8 @@ public class Composition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CompositionClassificationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompositionClassificationComponent) dst, options);
       }
 
       public void copyValues(CompositionClassificationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1012,8 +1012,8 @@ public class Composition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CompositionAttesterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompositionAttesterComponent) dst, options);
       }
 
       public void copyValues(CompositionAttesterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1363,8 +1363,8 @@ public class Composition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CompositionRelatesToComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompositionRelatesToComponent) dst, options);
       }
 
       public void copyValues(CompositionRelatesToComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1622,8 +1622,8 @@ public class Composition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CompositionEventComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompositionEventComponent) dst, options);
       }
 
       public void copyValues(CompositionEventComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2395,8 +2395,8 @@ public class Composition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SectionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SectionComponent) dst, options);
       }
 
       public void copyValues(SectionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4234,8 +4234,8 @@ public class Composition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Composition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Composition) dst, options);
       }
 
       public void copyValues(Composition dst, EnumSet<CopyObjectOptions> options) {

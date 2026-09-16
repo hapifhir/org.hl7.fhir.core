@@ -447,8 +447,8 @@ public class MedicationDispense extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationDispensePerformerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationDispensePerformerComponent) dst);
       }
 
       public void copyValues(MedicationDispensePerformerComponent dst) {
@@ -815,8 +815,8 @@ public class MedicationDispense extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationDispenseSubstitutionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationDispenseSubstitutionComponent) dst);
       }
 
       public void copyValues(MedicationDispenseSubstitutionComponent dst) {
@@ -2683,8 +2683,8 @@ public class MedicationDispense extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((MedicationDispense) b);
+      public void assignValues(Base dst) {
+        copyValues((MedicationDispense) dst);
       }
 
       public void copyValues(MedicationDispense dst) {

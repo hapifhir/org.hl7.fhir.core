@@ -667,8 +667,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionMoietyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionMoietyComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionMoietyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1090,8 +1090,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionCharacterizationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionCharacterizationComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionCharacterizationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1469,8 +1469,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionPropertyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPropertyComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1773,8 +1773,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionMolecularWeightComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionMolecularWeightComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionMolecularWeightComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2445,8 +2445,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionStructureComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionStructureComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionStructureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2858,8 +2858,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionStructureRepresentationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionStructureRepresentationComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionStructureRepresentationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3330,8 +3330,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionCodeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionCodeComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionCodeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4263,8 +4263,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionNameComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNameComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionNameComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4651,8 +4651,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionNameOfficialComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNameOfficialComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionNameOfficialComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5506,8 +5506,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionRelationshipComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionRelationshipComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionRelationshipComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5970,8 +5970,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionSourceMaterialComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionSourceMaterialComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionSourceMaterialComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6598,8 +6598,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionNucleicAcidComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNucleicAcidComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionNucleicAcidComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7298,8 +7298,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionNucleicAcidSubunitComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNucleicAcidSubunitComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionNucleicAcidSubunitComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7674,8 +7674,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionNucleicAcidSubunitLinkageComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNucleicAcidSubunitLinkageComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionNucleicAcidSubunitLinkageComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7943,8 +7943,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionNucleicAcidSubunitSugarComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNucleicAcidSubunitSugarComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionNucleicAcidSubunitSugarComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -8256,8 +8256,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionNucleicAcidGeneComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNucleicAcidGeneComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionNucleicAcidGeneComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -8578,8 +8578,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionNucleicAcidGeneElementComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNucleicAcidGeneElementComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionNucleicAcidGeneElementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9125,8 +9125,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionPolymerComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPolymerComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionPolymerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9415,8 +9415,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionPolymerMonomerSetComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPolymerMonomerSetComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionPolymerMonomerSetComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9787,8 +9787,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionPolymerMonomerSetStartingMaterialComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPolymerMonomerSetStartingMaterialComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionPolymerMonomerSetStartingMaterialComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10133,8 +10133,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionPolymerRepeatComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPolymerRepeatComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionPolymerRepeatComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10625,8 +10625,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionPolymerRepeatRepeatUnitComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPolymerRepeatRepeatUnitComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionPolymerRepeatRepeatUnitComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -11053,8 +11053,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionPolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionPolymerRepeatRepeatUnitDegreeOfPolymerisationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -11604,8 +11604,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionProteinComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionProteinComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionProteinComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -12151,8 +12151,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinitionProteinSubunitComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionProteinSubunitComponent) dst, options);
       }
 
       public void copyValues(SubstanceDefinitionProteinSubunitComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -13837,8 +13837,8 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubstanceDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinition) dst, options);
       }
 
       public void copyValues(SubstanceDefinition dst, EnumSet<CopyObjectOptions> options) {

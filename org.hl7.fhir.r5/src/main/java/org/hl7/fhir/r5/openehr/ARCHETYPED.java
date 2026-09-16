@@ -295,8 +295,8 @@ public class ARCHETYPED extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ARCHETYPED) b);
+      public void assignValues(Base dst) {
+        copyValues((ARCHETYPED) dst);
       }
 
       public void copyValues(ARCHETYPED dst) {

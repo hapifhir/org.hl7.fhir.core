@@ -852,8 +852,8 @@ public class HumanName extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((HumanName) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((HumanName) dst, options);
       }
 
       public void copyValues(HumanName dst, EnumSet<CopyObjectOptions> options) {

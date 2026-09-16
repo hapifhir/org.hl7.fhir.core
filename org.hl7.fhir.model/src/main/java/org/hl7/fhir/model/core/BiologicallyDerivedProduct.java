@@ -437,8 +437,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((BiologicallyDerivedProductCollectionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((BiologicallyDerivedProductCollectionComponent) dst, options);
       }
 
       public void copyValues(BiologicallyDerivedProductCollectionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -878,8 +878,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((BiologicallyDerivedProductPropertyComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((BiologicallyDerivedProductPropertyComponent) dst, options);
       }
 
       public void copyValues(BiologicallyDerivedProductPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1946,8 +1946,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((BiologicallyDerivedProduct) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((BiologicallyDerivedProduct) dst, options);
       }
 
       public void copyValues(BiologicallyDerivedProduct dst, EnumSet<CopyObjectOptions> options) {

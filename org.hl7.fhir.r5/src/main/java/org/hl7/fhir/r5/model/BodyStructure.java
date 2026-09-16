@@ -464,8 +464,8 @@ public class BodyStructure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((BodyStructureIncludedStructureComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((BodyStructureIncludedStructureComponent) dst);
       }
 
       public void copyValues(BodyStructureIncludedStructureComponent dst) {
@@ -907,8 +907,8 @@ public class BodyStructure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((BodyStructureIncludedStructureBodyLandmarkOrientationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((BodyStructureIncludedStructureBodyLandmarkOrientationComponent) dst);
       }
 
       public void copyValues(BodyStructureIncludedStructureBodyLandmarkOrientationComponent dst) {
@@ -1201,8 +1201,8 @@ public class BodyStructure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent) dst);
       }
 
       public void copyValues(BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent dst) {
@@ -1876,8 +1876,8 @@ public class BodyStructure extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((BodyStructure) b);
+      public void assignValues(Base dst) {
+        copyValues((BodyStructure) dst);
       }
 
       public void copyValues(BodyStructure dst) {

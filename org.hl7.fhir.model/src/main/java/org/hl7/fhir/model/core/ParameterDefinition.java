@@ -681,8 +681,8 @@ public class ParameterDefinition extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ParameterDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ParameterDefinition) dst, options);
       }
 
       public void copyValues(ParameterDefinition dst, EnumSet<CopyObjectOptions> options) {

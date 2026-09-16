@@ -200,8 +200,8 @@ public class DV_BOOLEAN extends DATA_VALUE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_BOOLEAN) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_BOOLEAN) dst);
       }
 
       public void copyValues(DV_BOOLEAN dst) {

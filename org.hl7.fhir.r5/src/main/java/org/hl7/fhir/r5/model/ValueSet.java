@@ -513,8 +513,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ValueSetComposeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ValueSetComposeComponent) dst);
       }
 
       public void copyValues(ValueSetComposeComponent dst) {
@@ -1099,8 +1099,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConceptSetComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConceptSetComponent) dst);
       }
 
       public void copyValues(ConceptSetComponent dst) {
@@ -1471,8 +1471,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConceptReferenceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConceptReferenceComponent) dst);
       }
 
       public void copyValues(ConceptReferenceComponent dst) {
@@ -1871,8 +1871,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConceptReferenceDesignationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConceptReferenceDesignationComponent) dst);
       }
 
       public void copyValues(ConceptReferenceDesignationComponent dst) {
@@ -2216,8 +2216,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConceptSetFilterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConceptSetFilterComponent) dst);
       }
 
       public void copyValues(ConceptSetFilterComponent dst) {
@@ -2917,8 +2917,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ValueSetExpansionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ValueSetExpansionComponent) dst);
       }
 
       public void copyValues(ValueSetExpansionComponent dst) {
@@ -3330,8 +3330,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ValueSetExpansionParameterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ValueSetExpansionParameterComponent) dst);
       }
 
       public void copyValues(ValueSetExpansionParameterComponent dst) {
@@ -3604,8 +3604,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ValueSetExpansionPropertyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ValueSetExpansionPropertyComponent) dst);
       }
 
       public void copyValues(ValueSetExpansionPropertyComponent dst) {
@@ -4369,8 +4369,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ValueSetExpansionContainsComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ValueSetExpansionContainsComponent) dst);
       }
 
       public void copyValues(ValueSetExpansionContainsComponent dst) {
@@ -4849,8 +4849,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConceptPropertyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConceptPropertyComponent) dst);
       }
 
       public void copyValues(ConceptPropertyComponent dst) {
@@ -5236,8 +5236,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConceptSubPropertyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConceptSubPropertyComponent) dst);
       }
 
       public void copyValues(ConceptSubPropertyComponent dst) {
@@ -5500,8 +5500,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ValueSetScopeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ValueSetScopeComponent) dst);
       }
 
       public void copyValues(ValueSetScopeComponent dst) {
@@ -7716,8 +7716,8 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ValueSet) b);
+      public void assignValues(Base dst) {
+        copyValues((ValueSet) dst);
       }
 
       public void copyValues(ValueSet dst) {

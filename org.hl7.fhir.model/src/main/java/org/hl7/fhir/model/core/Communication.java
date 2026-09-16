@@ -276,8 +276,8 @@ public class Communication extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CommunicationPayloadComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CommunicationPayloadComponent) dst, options);
       }
 
       public void copyValues(CommunicationPayloadComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1799,8 +1799,8 @@ public class Communication extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Communication) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Communication) dst, options);
       }
 
       public void copyValues(Communication dst, EnumSet<CopyObjectOptions> options) {

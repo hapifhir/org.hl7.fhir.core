@@ -811,8 +811,8 @@ public class StructureDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((StructureDefinitionMappingComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureDefinitionMappingComponent) dst, options);
       }
 
       public void copyValues(StructureDefinitionMappingComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1114,8 +1114,8 @@ public class StructureDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((StructureDefinitionContextComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureDefinitionContextComponent) dst, options);
       }
 
       public void copyValues(StructureDefinitionContextComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1330,8 +1330,8 @@ public class StructureDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((StructureDefinitionSnapshotComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureDefinitionSnapshotComponent) dst, options);
       }
 
       public void copyValues(StructureDefinitionSnapshotComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1574,8 +1574,8 @@ public class StructureDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((StructureDefinitionDifferentialComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureDefinitionDifferentialComponent) dst, options);
       }
 
       public void copyValues(StructureDefinitionDifferentialComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3896,8 +3896,8 @@ public class StructureDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((StructureDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureDefinition) dst, options);
       }
 
       public void copyValues(StructureDefinition dst, EnumSet<CopyObjectOptions> options) {

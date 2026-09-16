@@ -308,8 +308,8 @@ public class Composition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CompositionAttesterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CompositionAttesterComponent) dst);
       }
 
       public void copyValues(CompositionAttesterComponent dst) {
@@ -555,8 +555,8 @@ public class Composition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CompositionEventComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CompositionEventComponent) dst);
       }
 
       public void copyValues(CompositionEventComponent dst) {
@@ -1215,8 +1215,8 @@ public class Composition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SectionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SectionComponent) dst);
       }
 
       public void copyValues(SectionComponent dst) {
@@ -2686,8 +2686,8 @@ public class Composition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Composition) b);
+      public void assignValues(Base dst) {
+        copyValues((Composition) dst);
       }
 
       public void copyValues(Composition dst) {

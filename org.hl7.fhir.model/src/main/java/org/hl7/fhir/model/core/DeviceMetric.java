@@ -592,8 +592,8 @@ public class DeviceMetric extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceMetricCalibrationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceMetricCalibrationComponent) dst, options);
       }
 
       public void copyValues(DeviceMetricCalibrationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1422,8 +1422,8 @@ public class DeviceMetric extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((DeviceMetric) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceMetric) dst, options);
       }
 
       public void copyValues(DeviceMetric dst, EnumSet<CopyObjectOptions> options) {

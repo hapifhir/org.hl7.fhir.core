@@ -931,8 +931,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationSummaryComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationSummaryComponent) dst);
       }
 
       public void copyValues(CitationSummaryComponent dst) {
@@ -1177,8 +1177,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationClassificationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationClassificationComponent) dst);
       }
 
       public void copyValues(CitationClassificationComponent dst) {
@@ -1474,8 +1474,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationStatusDateComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationStatusDateComponent) dst);
       }
 
       public void copyValues(CitationStatusDateComponent dst) {
@@ -2637,8 +2637,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactComponent dst) {
@@ -2945,8 +2945,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactVersionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactVersionComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactVersionComponent dst) {
@@ -3238,8 +3238,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactStatusDateComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactStatusDateComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactStatusDateComponent dst) {
@@ -3562,8 +3562,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactTitleComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactTitleComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactTitleComponent dst) {
@@ -3932,8 +3932,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactAbstractComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactAbstractComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactAbstractComponent dst) {
@@ -4224,8 +4224,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactPartComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactPartComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactPartComponent dst) {
@@ -4882,8 +4882,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactRelatesToComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactRelatesToComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactRelatesToComponent dst) {
@@ -6042,8 +6042,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactPublicationFormComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactPublicationFormComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactPublicationFormComponent dst) {
@@ -6506,8 +6506,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactPublicationFormPublishedInComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactPublicationFormPublishedInComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactPublicationFormPublishedInComponent dst) {
@@ -6786,8 +6786,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactWebLocationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactWebLocationComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactWebLocationComponent dst) {
@@ -7111,8 +7111,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactClassificationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactClassificationComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactClassificationComponent dst) {
@@ -7461,8 +7461,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactContributorshipComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactContributorshipComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactContributorshipComponent dst) {
@@ -8128,8 +8128,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactContributorshipEntryComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactContributorshipEntryComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactContributorshipEntryComponent dst) {
@@ -8402,8 +8402,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CitationCitedArtifactContributorshipEntryContributionInstanceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactContributorshipEntryContributionInstanceComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactContributorshipEntryContributionInstanceComponent dst) {
@@ -8743,8 +8743,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ContributorshipSummaryComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ContributorshipSummaryComponent) dst);
       }
 
       public void copyValues(ContributorshipSummaryComponent dst) {
@@ -11134,8 +11134,8 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Citation) b);
+      public void assignValues(Base dst) {
+        copyValues((Citation) dst);
       }
 
       public void copyValues(Citation dst) {

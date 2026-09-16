@@ -1840,8 +1840,8 @@ public class ActorDefinition extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ActorDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ActorDefinition) dst, options);
       }
 
       public void copyValues(ActorDefinition dst, EnumSet<CopyObjectOptions> options) {

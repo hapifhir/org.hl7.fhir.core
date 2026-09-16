@@ -940,8 +940,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestReportParticipantComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportParticipantComponent) dst, options);
       }
 
       public void copyValues(TestReportParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1207,8 +1207,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestReportParameterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportParameterComponent) dst, options);
       }
 
       public void copyValues(TestReportParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1405,8 +1405,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestReportSetupComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportSetupComponent) dst, options);
       }
 
       public void copyValues(TestReportSetupComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1605,8 +1605,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SetupActionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionComponent) dst, options);
       }
 
       public void copyValues(SetupActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1939,8 +1939,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SetupActionOperationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionOperationComponent) dst, options);
       }
 
       public void copyValues(SetupActionOperationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2349,8 +2349,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SetupActionAssertComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionAssertComponent) dst, options);
       }
 
       public void copyValues(SetupActionAssertComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2556,8 +2556,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SetupActionAssertRequirementComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionAssertRequirementComponent) dst, options);
       }
 
       public void copyValues(SetupActionAssertRequirementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3057,8 +3057,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestReportTestComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportTestComponent) dst, options);
       }
 
       public void copyValues(TestReportTestComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3278,8 +3278,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestActionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestActionComponent) dst, options);
       }
 
       public void copyValues(TestActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3476,8 +3476,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestReportTeardownComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportTeardownComponent) dst, options);
       }
 
       public void copyValues(TestReportTeardownComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3651,8 +3651,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TeardownActionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TeardownActionComponent) dst, options);
       }
 
       public void copyValues(TeardownActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4785,8 +4785,8 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((TestReport) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReport) dst, options);
       }
 
       public void copyValues(TestReport dst, EnumSet<CopyObjectOptions> options) {

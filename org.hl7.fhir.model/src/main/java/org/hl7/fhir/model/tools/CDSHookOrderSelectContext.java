@@ -479,8 +479,8 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((CDSHookOrderSelectContext) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHookOrderSelectContext) dst, options);
       }
 
       public void copyValues(CDSHookOrderSelectContext dst, EnumSet<CopyObjectOptions> options) {

@@ -292,8 +292,8 @@ public class INTERVAL_EVENT extends EVENT implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((INTERVAL_EVENT) b);
+      public void assignValues(Base dst) {
+        copyValues((INTERVAL_EVENT) dst);
       }
 
       public void copyValues(INTERVAL_EVENT dst) {

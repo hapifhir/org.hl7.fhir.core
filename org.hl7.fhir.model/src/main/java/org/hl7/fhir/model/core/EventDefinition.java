@@ -2495,8 +2495,8 @@ public class EventDefinition extends MetadataResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((EventDefinition) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((EventDefinition) dst, options);
       }
 
       public void copyValues(EventDefinition dst, EnumSet<CopyObjectOptions> options) {

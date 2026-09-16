@@ -236,8 +236,8 @@ public class Condition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConditionParticipantComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConditionParticipantComponent) dst);
       }
 
       public void copyValues(ConditionParticipantComponent dst) {
@@ -529,8 +529,8 @@ public class Condition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ConditionStageComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ConditionStageComponent) dst);
       }
 
       public void copyValues(ConditionStageComponent dst) {
@@ -1839,8 +1839,8 @@ public class Condition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Condition) b);
+      public void assignValues(Base dst) {
+        copyValues((Condition) dst);
       }
 
       public void copyValues(Condition dst) {

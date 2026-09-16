@@ -840,8 +840,8 @@ public class DeviceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionUdiDeviceIdentifierComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionUdiDeviceIdentifierComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionUdiDeviceIdentifierComponent dst) {
@@ -1095,8 +1095,8 @@ public class DeviceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((UdiDeviceIdentifierMarketDistributionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((UdiDeviceIdentifierMarketDistributionComponent) dst);
       }
 
       public void copyValues(UdiDeviceIdentifierMarketDistributionComponent dst) {
@@ -1502,8 +1502,8 @@ public class DeviceDefinition extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionRegulatoryIdentifierComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionRegulatoryIdentifierComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionRegulatoryIdentifierComponent dst) {
@@ -1781,8 +1781,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionDeviceNameComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionDeviceNameComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionDeviceNameComponent dst) {
@@ -2034,8 +2034,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionClassificationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionClassificationComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionClassificationComponent dst) {
@@ -2422,8 +2422,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionConformsToComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionConformsToComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionConformsToComponent dst) {
@@ -2678,8 +2678,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionHasPartComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionHasPartComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionHasPartComponent dst) {
@@ -3186,8 +3186,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionPackagingComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionPackagingComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionPackagingComponent dst) {
@@ -3473,8 +3473,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PackagingDistributorComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PackagingDistributorComponent) dst);
       }
 
       public void copyValues(PackagingDistributorComponent dst) {
@@ -3770,8 +3770,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionVersionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionVersionComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionVersionComponent dst) {
@@ -4133,8 +4133,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionPropertyComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionPropertyComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionPropertyComponent dst) {
@@ -4359,8 +4359,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionLinkComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionLinkComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionLinkComponent dst) {
@@ -4671,8 +4671,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionMaterialComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionMaterialComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionMaterialComponent dst) {
@@ -5314,8 +5314,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionGuidelineComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionGuidelineComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionGuidelineComponent dst) {
@@ -5664,8 +5664,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionCorrectiveActionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionCorrectiveActionComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionCorrectiveActionComponent dst) {
@@ -6013,8 +6013,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinitionChargeItemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinitionChargeItemComponent) dst);
       }
 
       public void copyValues(DeviceDefinitionChargeItemComponent dst) {
@@ -7986,8 +7986,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceDefinition) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceDefinition) dst);
       }
 
       public void copyValues(DeviceDefinition dst) {

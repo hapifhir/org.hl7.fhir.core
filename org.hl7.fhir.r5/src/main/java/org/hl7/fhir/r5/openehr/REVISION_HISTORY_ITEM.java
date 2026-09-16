@@ -254,8 +254,8 @@ public class REVISION_HISTORY_ITEM extends LogicalBase implements ICompositeType
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((REVISION_HISTORY_ITEM) b);
+      public void assignValues(Base dst) {
+        copyValues((REVISION_HISTORY_ITEM) dst);
       }
 
       public void copyValues(REVISION_HISTORY_ITEM dst) {

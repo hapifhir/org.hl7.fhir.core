@@ -352,8 +352,8 @@ public class UsageContext extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((UsageContext) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((UsageContext) dst, options);
       }
 
       public void copyValues(UsageContext dst, EnumSet<CopyObjectOptions> options) {

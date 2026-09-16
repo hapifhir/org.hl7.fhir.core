@@ -1294,8 +1294,8 @@ public class PaymentReconciliation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PaymentReconciliationAllocationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PaymentReconciliationAllocationComponent) dst, options);
       }
 
       public void copyValues(PaymentReconciliationAllocationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1771,8 +1771,8 @@ public class PaymentReconciliation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((NotesComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((NotesComponent) dst, options);
       }
 
       public void copyValues(NotesComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3866,8 +3866,8 @@ public class PaymentReconciliation extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PaymentReconciliation) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PaymentReconciliation) dst, options);
       }
 
       public void copyValues(PaymentReconciliation dst, EnumSet<CopyObjectOptions> options) {

@@ -486,8 +486,8 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SpecimenFeatureComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SpecimenFeatureComponent) dst);
       }
 
       public void copyValues(SpecimenFeatureComponent dst) {
@@ -1104,8 +1104,8 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SpecimenCollectionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SpecimenCollectionComponent) dst);
       }
 
       public void copyValues(SpecimenCollectionComponent dst) {
@@ -1513,8 +1513,8 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SpecimenProcessingComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SpecimenProcessingComponent) dst);
       }
 
       public void copyValues(SpecimenProcessingComponent dst) {
@@ -1792,8 +1792,8 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SpecimenContainerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SpecimenContainerComponent) dst);
       }
 
       public void copyValues(SpecimenContainerComponent dst) {
@@ -3007,8 +3007,8 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Specimen) b);
+      public void assignValues(Base dst) {
+        copyValues((Specimen) dst);
       }
 
       public void copyValues(Specimen dst) {

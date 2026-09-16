@@ -69,8 +69,8 @@ public class OBJECT_VERSION_ID extends UID_BASED_ID implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((OBJECT_VERSION_ID) b);
+      public void assignValues(Base dst) {
+        copyValues((OBJECT_VERSION_ID) dst);
       }
 
       public void copyValues(OBJECT_VERSION_ID dst) {

@@ -6197,8 +6197,8 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImplementationGuideDependsOnComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDependsOnComponent) dst, options);
       }
 
       public void copyValues(ImplementationGuideDependsOnComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6499,8 +6499,8 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImplementationGuideGlobalComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideGlobalComponent) dst, options);
       }
 
       public void copyValues(ImplementationGuideGlobalComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6976,8 +6976,8 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImplementationGuideDefinitionComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDefinitionComponent) dst, options);
       }
 
       public void copyValues(ImplementationGuideDefinitionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7300,8 +7300,8 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImplementationGuideDefinitionGroupingComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDefinitionGroupingComponent) dst, options);
       }
 
       public void copyValues(ImplementationGuideDefinitionGroupingComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7964,8 +7964,8 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImplementationGuideDefinitionResourceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDefinitionResourceComponent) dst, options);
       }
 
       public void copyValues(ImplementationGuideDefinitionResourceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -8545,8 +8545,8 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImplementationGuideDefinitionPageComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDefinitionPageComponent) dst, options);
       }
 
       public void copyValues(ImplementationGuideDefinitionPageComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -8835,8 +8835,8 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImplementationGuideDefinitionParameterComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDefinitionParameterComponent) dst, options);
       }
 
       public void copyValues(ImplementationGuideDefinitionParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9202,8 +9202,8 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImplementationGuideDefinitionTemplateComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDefinitionTemplateComponent) dst, options);
       }
 
       public void copyValues(ImplementationGuideDefinitionTemplateComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9736,8 +9736,8 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImplementationGuideManifestComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideManifestComponent) dst, options);
       }
 
       public void copyValues(ImplementationGuideManifestComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10195,8 +10195,8 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ManifestResourceComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ManifestResourceComponent) dst, options);
       }
 
       public void copyValues(ManifestResourceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10584,8 +10584,8 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ManifestPageComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ManifestPageComponent) dst, options);
       }
 
       public void copyValues(ManifestPageComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -12524,8 +12524,8 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ImplementationGuide) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuide) dst, options);
       }
 
       public void copyValues(ImplementationGuide dst, EnumSet<CopyObjectOptions> options) {

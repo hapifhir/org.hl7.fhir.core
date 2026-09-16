@@ -274,8 +274,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ClaimResponseEventComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ClaimResponseEventComponent) dst);
       }
 
       public void copyValues(ClaimResponseEventComponent dst) {
@@ -826,8 +826,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ItemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ItemComponent) dst);
       }
 
       public void copyValues(ItemComponent dst) {
@@ -1214,8 +1214,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ReviewOutcomeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ReviewOutcomeComponent) dst);
       }
 
       public void copyValues(ReviewOutcomeComponent dst) {
@@ -1542,8 +1542,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AdjudicationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AdjudicationComponent) dst);
       }
 
       public void copyValues(AdjudicationComponent dst) {
@@ -2098,8 +2098,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ItemDetailComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ItemDetailComponent) dst);
       }
 
       public void copyValues(ItemDetailComponent dst) {
@@ -2600,8 +2600,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((SubDetailComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((SubDetailComponent) dst);
       }
 
       public void copyValues(SubDetailComponent dst) {
@@ -4328,8 +4328,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AddedItemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AddedItemComponent) dst);
       }
 
       public void copyValues(AddedItemComponent dst) {
@@ -4692,8 +4692,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((BodySiteComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((BodySiteComponent) dst);
       }
 
       public void copyValues(BodySiteComponent dst) {
@@ -5674,8 +5674,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AddedItemDetailComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AddedItemDetailComponent) dst);
       }
 
       public void copyValues(AddedItemDetailComponent dst) {
@@ -6612,8 +6612,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((AddedItemSubDetailComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((AddedItemSubDetailComponent) dst);
       }
 
       public void copyValues(AddedItemSubDetailComponent dst) {
@@ -6872,8 +6872,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TotalComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TotalComponent) dst);
       }
 
       public void copyValues(TotalComponent dst) {
@@ -7311,8 +7311,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PaymentComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PaymentComponent) dst);
       }
 
       public void copyValues(PaymentComponent dst) {
@@ -7678,8 +7678,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NoteComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NoteComponent) dst);
       }
 
       public void copyValues(NoteComponent dst) {
@@ -8113,8 +8113,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((InsuranceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((InsuranceComponent) dst);
       }
 
       public void copyValues(InsuranceComponent dst) {
@@ -8582,8 +8582,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ErrorComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ErrorComponent) dst);
       }
 
       public void copyValues(ErrorComponent dst) {
@@ -10719,8 +10719,8 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ClaimResponse) b);
+      public void assignValues(Base dst) {
+        copyValues((ClaimResponse) dst);
       }
 
       public void copyValues(ClaimResponse dst) {

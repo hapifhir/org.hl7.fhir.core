@@ -934,8 +934,8 @@ public class SubscriptionTopic extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubscriptionTopicTriggerComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionTopicTriggerComponent) dst, options);
       }
 
       public void copyValues(SubscriptionTopicTriggerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1494,8 +1494,8 @@ public class SubscriptionTopic extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubscriptionTopicTriggerQueryCriteriaComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionTopicTriggerQueryCriteriaComponent) dst, options);
       }
 
       public void copyValues(SubscriptionTopicTriggerQueryCriteriaComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2125,8 +2125,8 @@ public class SubscriptionTopic extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubscriptionTopicTriggerCanFilterByComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionTopicTriggerCanFilterByComponent) dst, options);
       }
 
       public void copyValues(SubscriptionTopicTriggerCanFilterByComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2608,8 +2608,8 @@ public class SubscriptionTopic extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubscriptionTopicTriggerNotificationShapeComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionTopicTriggerNotificationShapeComponent) dst, options);
       }
 
       public void copyValues(SubscriptionTopicTriggerNotificationShapeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2901,8 +2901,8 @@ public class SubscriptionTopic extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubscriptionTopicTriggerNotificationShapeRelatedQueryComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionTopicTriggerNotificationShapeRelatedQueryComponent) dst, options);
       }
 
       public void copyValues(SubscriptionTopicTriggerNotificationShapeRelatedQueryComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4705,8 +4705,8 @@ public class SubscriptionTopic extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SubscriptionTopic) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionTopic) dst, options);
       }
 
       public void copyValues(SubscriptionTopic dst, EnumSet<CopyObjectOptions> options) {

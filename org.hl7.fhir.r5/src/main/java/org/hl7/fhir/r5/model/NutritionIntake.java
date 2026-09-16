@@ -495,8 +495,8 @@ public class NutritionIntake extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionIntakeConsumedItemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionIntakeConsumedItemComponent) dst);
       }
 
       public void copyValues(NutritionIntakeConsumedItemComponent dst) {
@@ -730,8 +730,8 @@ public class NutritionIntake extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionIntakeIngredientLabelComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionIntakeIngredientLabelComponent) dst);
       }
 
       public void copyValues(NutritionIntakeIngredientLabelComponent dst) {
@@ -955,8 +955,8 @@ public class NutritionIntake extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionIntakePerformerComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionIntakePerformerComponent) dst);
       }
 
       public void copyValues(NutritionIntakePerformerComponent dst) {
@@ -2503,8 +2503,8 @@ public class NutritionIntake extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((NutritionIntake) b);
+      public void assignValues(Base dst) {
+        copyValues((NutritionIntake) dst);
       }
 
       public void copyValues(NutritionIntake dst) {

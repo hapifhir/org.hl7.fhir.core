@@ -469,8 +469,8 @@ public class HealthcareService extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((HealthcareServiceEligibilityComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((HealthcareServiceEligibilityComponent) dst, options);
       }
 
       public void copyValues(HealthcareServiceEligibilityComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2326,8 +2326,8 @@ public class HealthcareService extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((HealthcareService) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((HealthcareService) dst, options);
       }
 
       public void copyValues(HealthcareService dst, EnumSet<CopyObjectOptions> options) {

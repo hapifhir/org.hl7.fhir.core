@@ -434,8 +434,8 @@ public class RegulatedAuthorization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RegulatedAuthorizationCaseComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RegulatedAuthorizationCaseComponent) dst);
       }
 
       public void copyValues(RegulatedAuthorizationCaseComponent dst) {
@@ -1494,8 +1494,8 @@ public class RegulatedAuthorization extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RegulatedAuthorization) b);
+      public void assignValues(Base dst) {
+        copyValues((RegulatedAuthorization) dst);
       }
 
       public void copyValues(RegulatedAuthorization dst) {

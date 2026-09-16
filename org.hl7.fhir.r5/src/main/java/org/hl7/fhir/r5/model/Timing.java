@@ -2019,8 +2019,8 @@ Normal practice is to use the 'mo' code as a calendar month when calculating the
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((TimingRepeatComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((TimingRepeatComponent) dst);
       }
 
       public void copyValues(TimingRepeatComponent dst) {
@@ -2359,8 +2359,8 @@ Normal practice is to use the 'mo' code as a calendar month when calculating the
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Timing) b);
+      public void assignValues(Base dst) {
+        copyValues((Timing) dst);
       }
 
       public void copyValues(Timing dst) {

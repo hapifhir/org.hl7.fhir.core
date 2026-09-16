@@ -682,8 +682,8 @@ public class Identifier extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Identifier) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Identifier) dst, options);
       }
 
       public void copyValues(Identifier dst, EnumSet<CopyObjectOptions> options) {

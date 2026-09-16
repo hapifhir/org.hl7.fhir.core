@@ -529,8 +529,8 @@ public class WebTemplate extends LogicalBase implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((WebTemplate) b);
+      public void assignValues(Base dst) {
+        copyValues((WebTemplate) dst);
       }
 
       public void copyValues(WebTemplate dst) {

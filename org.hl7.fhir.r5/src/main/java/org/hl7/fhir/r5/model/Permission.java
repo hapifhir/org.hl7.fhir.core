@@ -577,8 +577,8 @@ public class Permission extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PermissionJustificationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((PermissionJustificationComponent) dst);
       }
 
       public void copyValues(PermissionJustificationComponent dst) {
@@ -1008,8 +1008,8 @@ public class Permission extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RuleComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RuleComponent) dst);
       }
 
       public void copyValues(RuleComponent dst) {
@@ -1418,8 +1418,8 @@ public class Permission extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RuleDataComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RuleDataComponent) dst);
       }
 
       public void copyValues(RuleDataComponent dst) {
@@ -1683,8 +1683,8 @@ public class Permission extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RuleDataResourceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RuleDataResourceComponent) dst);
       }
 
       public void copyValues(RuleDataResourceComponent dst) {
@@ -2032,8 +2032,8 @@ public class Permission extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((RuleActivityComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((RuleActivityComponent) dst);
       }
 
       public void copyValues(RuleActivityComponent dst) {
@@ -2621,8 +2621,8 @@ public class Permission extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Permission) b);
+      public void assignValues(Base dst) {
+        copyValues((Permission) dst);
       }
 
       public void copyValues(Permission dst) {

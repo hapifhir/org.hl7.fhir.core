@@ -504,8 +504,8 @@ public class CareTeam extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CareTeamParticipantComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CareTeamParticipantComponent) dst);
       }
 
       public void copyValues(CareTeamParticipantComponent dst) {
@@ -1400,8 +1400,8 @@ public class CareTeam extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CareTeam) b);
+      public void assignValues(Base dst) {
+        copyValues((CareTeam) dst);
       }
 
       public void copyValues(CareTeam dst) {

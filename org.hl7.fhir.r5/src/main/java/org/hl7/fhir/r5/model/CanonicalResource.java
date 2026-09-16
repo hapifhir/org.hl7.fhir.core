@@ -555,8 +555,8 @@ public abstract class CanonicalResource extends DomainResource {
 
       public abstract CanonicalResource copy();
 
-      public void assign(Base b) {
-        copyValues((CanonicalResource) b);
+      public void assignValues(Base dst) {
+        copyValues((CanonicalResource) dst);
       }
 
       public void copyValues(CanonicalResource dst) {

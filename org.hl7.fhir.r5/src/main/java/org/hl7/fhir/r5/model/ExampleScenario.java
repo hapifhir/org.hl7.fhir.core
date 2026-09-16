@@ -420,8 +420,8 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ExampleScenarioActorComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioActorComponent) dst);
       }
 
       public void copyValues(ExampleScenarioActorComponent dst) {
@@ -1160,8 +1160,8 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ExampleScenarioInstanceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioInstanceComponent) dst);
       }
 
       public void copyValues(ExampleScenarioInstanceComponent dst) {
@@ -1563,8 +1563,8 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ExampleScenarioInstanceVersionComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioInstanceVersionComponent) dst);
       }
 
       public void copyValues(ExampleScenarioInstanceVersionComponent dst) {
@@ -1836,8 +1836,8 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ExampleScenarioInstanceContainedInstanceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioInstanceContainedInstanceComponent) dst);
       }
 
       public void copyValues(ExampleScenarioInstanceContainedInstanceComponent dst) {
@@ -2324,8 +2324,8 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ExampleScenarioProcessComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioProcessComponent) dst);
       }
 
       public void copyValues(ExampleScenarioProcessComponent dst) {
@@ -2834,8 +2834,8 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ExampleScenarioProcessStepComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioProcessStepComponent) dst);
       }
 
       public void copyValues(ExampleScenarioProcessStepComponent dst) {
@@ -3532,8 +3532,8 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ExampleScenarioProcessStepOperationComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioProcessStepOperationComponent) dst);
       }
 
       public void copyValues(ExampleScenarioProcessStepOperationComponent dst) {
@@ -3888,8 +3888,8 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ExampleScenarioProcessStepAlternativeComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioProcessStepAlternativeComponent) dst);
       }
 
       public void copyValues(ExampleScenarioProcessStepAlternativeComponent dst) {
@@ -5485,8 +5485,8 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ExampleScenario) b);
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenario) dst);
       }
 
       public void copyValues(ExampleScenario dst) {

@@ -799,8 +799,8 @@ public class Schedule extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Schedule) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Schedule) dst, options);
       }
 
       public void copyValues(Schedule dst, EnumSet<CopyObjectOptions> options) {

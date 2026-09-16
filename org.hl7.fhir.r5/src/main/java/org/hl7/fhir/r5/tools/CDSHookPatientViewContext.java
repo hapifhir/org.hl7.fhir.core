@@ -336,8 +336,8 @@ public class CDSHookPatientViewContext extends CDSHookContext implements ICompos
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CDSHookPatientViewContext) b);
+      public void assignValues(Base dst) {
+        copyValues((CDSHookPatientViewContext) dst);
       }
 
       public void copyValues(CDSHookPatientViewContext dst) {

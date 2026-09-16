@@ -438,8 +438,8 @@ public class WebTemplateInputValidationRange extends LogicalBase implements ICom
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((WebTemplateInputValidationRange) b);
+      public void assignValues(Base dst) {
+        copyValues((WebTemplateInputValidationRange) dst);
       }
 
       public void copyValues(WebTemplateInputValidationRange dst) {

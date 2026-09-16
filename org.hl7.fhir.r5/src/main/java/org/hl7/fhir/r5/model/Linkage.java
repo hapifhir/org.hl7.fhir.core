@@ -375,8 +375,8 @@ public class Linkage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((LinkageItemComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((LinkageItemComponent) dst);
       }
 
       public void copyValues(LinkageItemComponent dst) {
@@ -697,8 +697,8 @@ public class Linkage extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Linkage) b);
+      public void assignValues(Base dst) {
+        copyValues((Linkage) dst);
       }
 
       public void copyValues(Linkage dst) {

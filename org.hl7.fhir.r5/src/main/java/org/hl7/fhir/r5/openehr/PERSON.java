@@ -69,8 +69,8 @@ public class PERSON extends ACTOR implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PERSON) b);
+      public void assignValues(Base dst) {
+        copyValues((PERSON) dst);
       }
 
       public void copyValues(PERSON dst) {

@@ -297,8 +297,8 @@ public class Money extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((Money) b);
+      public void assignValues(Base dst) {
+        copyValues((Money) dst);
       }
 
       public void copyValues(Money dst) {

@@ -180,8 +180,8 @@ public class DV_CODED_TEXT extends DV_TEXT implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_CODED_TEXT) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_CODED_TEXT) dst);
       }
 
       public void copyValues(DV_CODED_TEXT dst) {

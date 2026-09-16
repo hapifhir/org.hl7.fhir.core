@@ -219,8 +219,8 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
 
       public abstract BackboneElement copy();
 
-      public void assign(Base b) {
-        copyValues((BackboneElement) b);
+      public void assignValues(Base dst) {
+        copyValues((BackboneElement) dst);
       }
 
       public void copyValues(BackboneElement dst) {

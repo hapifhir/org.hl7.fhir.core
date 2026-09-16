@@ -303,8 +303,8 @@ public class DeviceRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceRequestParameterComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceRequestParameterComponent) dst);
       }
 
       public void copyValues(DeviceRequestParameterComponent dst) {
@@ -2205,8 +2205,8 @@ public class DeviceRequest extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DeviceRequest) b);
+      public void assignValues(Base dst) {
+        copyValues((DeviceRequest) dst);
       }
 
       public void copyValues(DeviceRequest dst) {

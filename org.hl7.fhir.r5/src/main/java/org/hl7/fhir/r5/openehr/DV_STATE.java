@@ -246,8 +246,8 @@ public class DV_STATE extends DATA_VALUE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((DV_STATE) b);
+      public void assignValues(Base dst) {
+        copyValues((DV_STATE) dst);
       }
 
       public void copyValues(DV_STATE dst) {

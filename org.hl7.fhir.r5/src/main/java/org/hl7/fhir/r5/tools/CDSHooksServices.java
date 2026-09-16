@@ -524,8 +524,8 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CDSHooksServicesServicesComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CDSHooksServicesServicesComponent) dst);
       }
 
       public void copyValues(CDSHooksServicesServicesComponent dst) {
@@ -791,8 +791,8 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CDSHooksServicesServicesPrefetchComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CDSHooksServicesServicesPrefetchComponent) dst);
       }
 
       public void copyValues(CDSHooksServicesServicesPrefetchComponent dst) {
@@ -982,8 +982,8 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CDSHooksServices) b);
+      public void assignValues(Base dst) {
+        copyValues((CDSHooksServices) dst);
       }
 
       public void copyValues(CDSHooksServices dst) {

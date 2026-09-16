@@ -435,8 +435,8 @@ public class Practitioner extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PractitionerQualificationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PractitionerQualificationComponent) dst, options);
       }
 
       public void copyValues(PractitionerQualificationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -723,8 +723,8 @@ public class Practitioner extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PractitionerCommunicationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PractitionerCommunicationComponent) dst, options);
       }
 
       public void copyValues(PractitionerCommunicationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1686,8 +1686,8 @@ public class Practitioner extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Practitioner) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Practitioner) dst, options);
       }
 
       public void copyValues(Practitioner dst, EnumSet<CopyObjectOptions> options) {

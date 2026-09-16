@@ -312,8 +312,8 @@ public class Money extends DataType implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Money) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Money) dst, options);
       }
 
       public void copyValues(Money dst, EnumSet<CopyObjectOptions> options) {

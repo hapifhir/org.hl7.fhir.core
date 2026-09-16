@@ -270,8 +270,8 @@ public class PARTY_IDENTIFIED extends PARTY_PROXY implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PARTY_IDENTIFIED) b);
+      public void assignValues(Base dst) {
+        copyValues((PARTY_IDENTIFIED) dst);
       }
 
       public void copyValues(PARTY_IDENTIFIED dst) {

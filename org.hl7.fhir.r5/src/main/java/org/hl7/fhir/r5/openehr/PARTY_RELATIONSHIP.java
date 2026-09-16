@@ -311,8 +311,8 @@ public class PARTY_RELATIONSHIP extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((PARTY_RELATIONSHIP) b);
+      public void assignValues(Base dst) {
+        copyValues((PARTY_RELATIONSHIP) dst);
       }
 
       public void copyValues(PARTY_RELATIONSHIP dst) {

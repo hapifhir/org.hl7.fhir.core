@@ -287,8 +287,8 @@ public class ACTIVITY extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((ACTIVITY) b);
+      public void assignValues(Base dst) {
+        copyValues((ACTIVITY) dst);
       }
 
       public void copyValues(ACTIVITY dst) {

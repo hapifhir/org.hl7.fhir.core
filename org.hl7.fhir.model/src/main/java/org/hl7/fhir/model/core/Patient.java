@@ -930,8 +930,8 @@ public class Patient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((ContactComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((ContactComponent) dst, options);
       }
 
       public void copyValues(ContactComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1258,8 +1258,8 @@ public class Patient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PatientCommunicationComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PatientCommunicationComponent) dst, options);
       }
 
       public void copyValues(PatientCommunicationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1530,8 +1530,8 @@ public class Patient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((PatientLinkComponent) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((PatientLinkComponent) dst, options);
       }
 
       public void copyValues(PatientLinkComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2834,8 +2834,8 @@ public class Patient extends DomainResource {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((Patient) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((Patient) dst, options);
       }
 
       public void copyValues(Patient dst, EnumSet<CopyObjectOptions> options) {

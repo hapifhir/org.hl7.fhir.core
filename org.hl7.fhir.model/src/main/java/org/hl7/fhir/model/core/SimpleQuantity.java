@@ -77,8 +77,8 @@ public class SimpleQuantity extends Quantity {
         return dst;
       }
 
-      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
-        copyValues((SimpleQuantity) b, options);
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SimpleQuantity) dst, options);
       }
 
       public void copyValues(SimpleQuantity dst, EnumSet<CopyObjectOptions> options) {

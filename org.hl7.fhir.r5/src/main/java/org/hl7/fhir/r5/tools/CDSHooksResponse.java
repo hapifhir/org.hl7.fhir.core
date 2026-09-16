@@ -1155,8 +1155,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CDSHooksResponseCardsComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CDSHooksResponseCardsComponent) dst);
       }
 
       public void copyValues(CDSHooksResponseCardsComponent dst) {
@@ -1551,8 +1551,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CDSHooksResponseCardsSourceComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CDSHooksResponseCardsSourceComponent) dst);
       }
 
       public void copyValues(CDSHooksResponseCardsSourceComponent dst) {
@@ -1951,8 +1951,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CDSHooksResponseCardsSuggestionsComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CDSHooksResponseCardsSuggestionsComponent) dst);
       }
 
       public void copyValues(CDSHooksResponseCardsSuggestionsComponent dst) {
@@ -2328,8 +2328,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CDSHooksResponseCardsSuggestionsActionsComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CDSHooksResponseCardsSuggestionsActionsComponent) dst);
       }
 
       public void copyValues(CDSHooksResponseCardsSuggestionsActionsComponent dst) {
@@ -2728,8 +2728,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CDSHooksResponseCardsLinksComponent) b);
+      public void assignValues(Base dst) {
+        copyValues((CDSHooksResponseCardsLinksComponent) dst);
       }
 
       public void copyValues(CDSHooksResponseCardsLinksComponent dst) {
@@ -2997,8 +2997,8 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
-      public void assign(Base b) {
-        copyValues((CDSHooksResponse) b);
+      public void assignValues(Base dst) {
+        copyValues((CDSHooksResponse) dst);
       }
 
       public void copyValues(CDSHooksResponse dst) {
