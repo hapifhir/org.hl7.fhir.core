@@ -1753,6 +1753,48 @@ public class StructureMapTools {
         case C:
           Coding c = buildCoding(getParamStringNoNull(vars, tgt.getParameterList().get(0), tgt.toString()), getParamStringNoNull(vars, tgt.getParameterList().get(1), tgt.toString()));
           return c;
+        case ID:
+          org.hl7.fhir.model.core.Identifier id = new org.hl7.fhir.model.core.Identifier();
+          if (tgt.getParameterList().size() >= 2) {
+            id.setSystem(((PrimitiveType<?>) tgt.getParameterList().get(0).getValue()).asStringValue());
+            id.setValue(((PrimitiveType<?>) tgt.getParameterList().get(1).getValue()).asStringValue());
+          }
+          if (tgt.getParameterList().size() == 3) {
+            var typeCode = ((PrimitiveType<?>) tgt.getParameterList().get(2).getValue()).asStringValue();
+            id.setType(new CodeableConcept().addCoding(new Coding().setSystem("http://hl7.org/fhir/ValueSet/identifier-type").setCode(typeCode)));
+          }
+          return id;
+        case CP:
+          org.hl7.fhir.model.core.ContactPoint cp = new org.hl7.fhir.model.core.ContactPoint();
+          if (tgt.getParameterList().size() == 2) {
+            cp.setSystem(ContactPoint.ContactPointSystem.fromCode(((PrimitiveType<?>) tgt.getParameterList().get(0).getValue()).asStringValue()));
+            cp.setValue(((PrimitiveType<?>) tgt.getParameterList().get(1).getValue()).asStringValue());
+          }
+          if (tgt.getParameterList().size() == 1) {
+            var value = ((PrimitiveType<?>) tgt.getParameterList().get(0).getValue()).asStringValue();
+            cp.setValue(value);
+            // infer the system from the value (if starts with http or https is URL, if it has an @ character in it, that's an email address, otherwise ambiguous)
+            if (value.startsWith("http://") || value.startsWith("https://"))
+              cp.setSystem(ContactPoint.ContactPointSystem.URL);
+            else if (value.contains("@"))
+              cp.setSystem(ContactPoint.ContactPointSystem.EMAIL);
+          }
+          return cp;
+        case QTY:
+          org.hl7.fhir.model.core.Quantity qty = new org.hl7.fhir.model.core.Quantity();
+          var qtyValue = new java.math.BigDecimal(((PrimitiveType<?>) tgt.getParameterList().get(0).getValue()).asStringValue());
+          var qtyUnit = ((PrimitiveType<?>) tgt.getParameterList().get(1).getValue()).asStringValue();
+          qty.setValue(qtyValue);
+          qty.setUnit(qtyUnit);
+          if (tgt.getParameterList().size() >= 3) {
+            var qtySystem = ((PrimitiveType<?>) tgt.getParameterList().get(2).getValue()).asStringValue();
+            qty.setSystem(qtySystem);
+          }
+          if (tgt.getParameterList().size() >= 4) {
+            var qtyCode = ((PrimitiveType<?>) tgt.getParameterList().get(3).getValue()).asStringValue();
+            qty.setCode(qtyCode);
+          }
+          return qty;
         default:
           throw new FHIRException("Rule \"" + rulePath + "\": Transform Unknown: " + tgt.getTransform().toCode());
       }
@@ -2187,8 +2229,33 @@ public class StructureMapTools {
         return buildCoding(tgt.getParameterList().get(0).getValue(), tgt.getParameterList().get(1).getValue());
       case QTY:
         return null;
-      //case ID,
-      //case CP,
+      case ID:
+        org.hl7.fhir.model.core.Identifier id = new org.hl7.fhir.model.core.Identifier();
+        if (tgt.getParameterList().size() >= 2) {
+          id.setSystem(((PrimitiveType<?>) tgt.getParameterList().get(0).getValue()).asStringValue());
+          id.setValue(((PrimitiveType<?>) tgt.getParameterList().get(1).getValue()).asStringValue());
+        }
+        if (tgt.getParameterList().size() == 3) {
+          var typeCode = ((PrimitiveType<?>) tgt.getParameterList().get(2).getValue()).asStringValue();
+          id.setType(new CodeableConcept().addCoding(new Coding().setSystem("http://hl7.org/fhir/ValueSet/identifier-type").setCode(typeCode)));
+        }
+        return id;
+      case CP:
+        org.hl7.fhir.model.core.ContactPoint cp = new org.hl7.fhir.model.core.ContactPoint();
+        if (tgt.getParameterList().size() == 2) {
+          cp.setSystem(ContactPoint.ContactPointSystem.fromCode(((PrimitiveType<?>) tgt.getParameterList().get(0).getValue()).asStringValue()));
+          cp.setValue(((PrimitiveType<?>) tgt.getParameterList().get(1).getValue()).asStringValue());
+        }
+        if (tgt.getParameterList().size() == 1) {
+          var value = ((PrimitiveType<?>) tgt.getParameterList().get(0).getValue()).asStringValue();
+          cp.setValue(value);
+          // infer the system from the value (if starts with http or https is URL, if it has an @ character in it, that's an email address, otherwise ambiguous)
+          if (value.startsWith("http://") || value.startsWith("https://"))
+            cp.setSystem(ContactPoint.ContactPointSystem.URL);
+          else if (value.contains("@"))
+            cp.setSystem(ContactPoint.ContactPointSystem.EMAIL);
+        }
+        return cp;
       default:
         return null;
     }
