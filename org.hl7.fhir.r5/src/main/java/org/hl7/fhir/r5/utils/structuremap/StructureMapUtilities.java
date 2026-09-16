@@ -2382,10 +2382,22 @@ public class StructureMapUtilities {
             throw new FHIRException("Rule \"" + rulePath + "\": Transform engine cannot point at an element of type " + b.fhirType());
         case CC:
           CodeableConcept cc = new CodeableConcept();
-          cc.addCoding(buildCoding(getParamStringNoNull(vars, tgt.getParameter().get(0), tgt.toString()), getParamStringNoNull(vars, tgt.getParameter().get(1), tgt.toString())));
+          String display = null;
+          if (tgt.getParameter().size() == 1) {
+            cc.setText(getParamStringNoNull(vars, tgt.getParameter().get(0), tgt.toString()));
+            return cc;
+          }
+          if (tgt.getParameter().size() > 2) {
+            display = getParamStringNoNull(vars, tgt.getParameter().get(2), tgt.toString());
+          }
+          cc.addCoding(buildCoding(getParamStringNoNull(vars, tgt.getParameter().get(0), tgt.toString()), getParamStringNoNull(vars, tgt.getParameter().get(1), tgt.toString()), display));
           return cc;
         case C:
-          Coding c = buildCoding(getParamStringNoNull(vars, tgt.getParameter().get(0), tgt.toString()), getParamStringNoNull(vars, tgt.getParameter().get(1), tgt.toString()));
+          String displayForCoding = null;
+          if (tgt.getParameter().size() > 2) {
+            displayForCoding = getParamStringNoNull(vars, tgt.getParameter().get(2), tgt.toString());
+          }
+          Coding c = buildCoding(getParamStringNoNull(vars, tgt.getParameter().get(0), tgt.toString()), getParamStringNoNull(vars, tgt.getParameter().get(1), tgt.toString()), displayForCoding);
           return c;
         case ID:
           org.hl7.fhir.r5.model.Identifier id = new org.hl7.fhir.r5.model.Identifier();
@@ -2456,7 +2468,7 @@ public class StructureMapUtilities {
   }
 
 
-  private Coding buildCoding(String uri, String code) throws FHIRException {
+  private Coding buildCodingUsingCodeInValueset(String uri, String code) throws FHIRException {
     // if we can get this as a valueSet, we will
     String system = null;
     String display = null;
@@ -2873,10 +2885,19 @@ public class StructureMapUtilities {
       //case EVALUATE,
       case CC:
         CodeableConcept cc = new CodeableConcept();
-        cc.addCoding(buildCoding(tgt.getParameter().get(0).getValue(), tgt.getParameter().get(1).getValue()));
+        if (tgt.getParameter().size() == 1) {
+          cc.setText(((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue());
+        } else if (tgt.getParameter().size() == 2) {
+          cc.addCoding(buildCoding(tgt.getParameter().get(0).getValue(), tgt.getParameter().get(1).getValue(), null));
+        } else {
+          cc.addCoding(buildCoding(tgt.getParameter().get(0).getValue(), tgt.getParameter().get(1).getValue(), tgt.getParameter().get(2).getValue()));
+        }
         return cc;
       case C:
-        return buildCoding(tgt.getParameter().get(0).getValue(), tgt.getParameter().get(1).getValue());
+        if (tgt.getParameter().size() == 2) {
+          return buildCoding(tgt.getParameter().get(0).getValue(), tgt.getParameter().get(1).getValue(), null);
+        }
+        return buildCoding(tgt.getParameter().get(0).getValue(), tgt.getParameter().get(1).getValue(), tgt.getParameter().get(2).getValue());
       case QTY:
         return null;
       case ID:
@@ -2912,8 +2933,18 @@ public class StructureMapUtilities {
   }
 
   @SuppressWarnings("rawtypes")
-  private Coding buildCoding(DataType value1, DataType value2) {
-    return new Coding().setSystem(((PrimitiveType) value1).asStringValue()).setCode(((PrimitiveType) value2).asStringValue());
+  private Coding buildCoding(DataType system, DataType code, DataType display) {
+    var coding = new Coding().setSystem(((PrimitiveType) system).asStringValue()).setCode(((PrimitiveType) code).asStringValue());
+    if (display != null)
+      coding.setDisplay(((PrimitiveType) display).asStringValue());
+    return coding;
+  }
+
+  private Coding buildCoding(String system, String code, String display) {
+    var coding = new Coding().setSystem(system).setCode(code);
+    if (display != null)
+      coding.setDisplay(display);
+    return coding;
   }
 
   private boolean allParametersFixed(StructureMapGroupRuleTargetComponent tgt) {
@@ -2969,7 +3000,7 @@ public class StructureMapUtilities {
       throw new FHIRException("Describe Transform, but the uri is blank");
     if (Utilities.noString(code))
       throw new FHIRException("Describe Transform, but the code is blank");
-    Coding c = buildCoding(uri, code);
+    Coding c = buildCodingUsingCodeInValueset(uri, code);
     return c.getSystem() + "#" + c.getCode() + (c.hasDisplay() ? "(" + c.getDisplay() + ")" : "");
   }
 
