@@ -5422,3 +5422,149 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA20278-0",
+  "display" : "Prescription or over-the-counter (including herbal supplements)"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 1
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "a."
+        }],
+        "code" : "LA20278-0",
+        "display" : "Prescription or over-the-counter (including herbal supplements)"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 2
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "b."
+        }],
+        "code" : "LA20298-8",
+        "display" : "Compounded preparations"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 3
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "c."
+        }],
+        "code" : "LA20299-6",
+        "display" : "Investigational drugs"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-conceptOrder",
+          "valueInteger" : 4
+        },
+        {
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "d."
+        }],
+        "code" : "LA4489-6",
+        "display" : "Unknown"
+      }]
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Prescription or over-the-counter (including herbal supplements)",
+  "code" : "LA20278-0",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms unknown-valueset: Analysing undefined for validation purposes\n1ms unknown-valueset: Parameters: disp-lang=en-US, generate-narrative, default-to-latest\n1ms unknown-valueset: Prepare include[0]: \"(http://loinc.org)(LA20278-0,LA20298-8,LA20299-6,LA4489-6)\"\n5ms unknown-valueset: CodeSystem found: \"http://loinc.org|2.82\"\n5ms unknown-valueset: Validate \"[http://loinc.org#LA20278-0 (\"Prescription or over-the-counter (including herbal supplements)\")]\"\n7ms unknown-valueset: Check \"http://loinc.org#LA20278-0\"\n11ms unknown-valueset: CodeSystem found: http://loinc.org|2.82 for http://loinc.org\n11ms unknown-valueset: check code in (http://loinc.org)(LA20278-0,LA20298-8,LA20299-6,LA4489-6) at Coding\n11ms unknown-valueset: Code \"LA20278-0\" found in http://loinc.org|2.82",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA20275-6",
+  "display" : "Incorrect action (process failure or error) (e.g., such as administering overdose or incorrect medication)"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA20275-6",
+        "display" : "Incorrect action (process failure or error) (e.g., such as administering overdose or incorrect medication)",
+        "_display" : {
+          "extension" : [{
+            "url" : "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
+            "valueString" : "Incorrect action (process failure or error) (e.g., such as administering overdose or incorrect medication)"
+          }]
+        }
+      },
+      {
+        "code" : "LA20314-3",
+        "display" : "Unsafe condition",
+        "_display" : {
+          "extension" : [{
+            "url" : "http://hl7.org/fhir/StructureDefinition/rendering-style",
+            "valueString" : "color:green"
+          }]
+        }
+      },
+      {
+        "code" : "LA20315-0",
+        "display" : "Adverse reaction in patient to the administered substance without any apparent incorrect action"
+      },
+      {
+        "code" : "LA4489-6",
+        "display" : "Unknown"
+      }]
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Incorrect action (process failure or error) (e.g., such as administering overdose or incorrect medication)",
+  "code" : "LA20275-6",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms unknown-valueset: Analysing undefined for validation purposes\n1ms unknown-valueset: Parameters: disp-lang=en-US, generate-narrative, default-to-latest\n1ms unknown-valueset: Prepare include[0]: \"(http://loinc.org)(LA20275-6,LA20314-3,LA20315-0,LA4489-6)\"\n5ms unknown-valueset: CodeSystem found: \"http://loinc.org|2.82\"\n5ms unknown-valueset: Validate \"[http://loinc.org#LA20275-6 (\"Incorrect action (process failure or error) (e.g., such as administering overdose or incorrect medication)\")]\"\n7ms unknown-valueset: Check \"http://loinc.org#LA20275-6\"\n11ms unknown-valueset: CodeSystem found: http://loinc.org|2.82 for http://loinc.org\n11ms unknown-valueset: check code in (http://loinc.org)(LA20275-6,LA20314-3,LA20315-0,LA4489-6) at Coding\n11ms unknown-valueset: Code \"LA20275-6\" found in http://loinc.org|2.82",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
