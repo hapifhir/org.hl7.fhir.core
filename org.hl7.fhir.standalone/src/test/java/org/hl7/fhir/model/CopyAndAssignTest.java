@@ -1,25 +1,9 @@
-package org.hl7.fhir.model.core;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.TimeZone;
-import java.util.stream.Stream;
+package org.hl7.fhir.model;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-
-import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.Base.CopyObjectOptions;
-import org.hl7.fhir.model.Property;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.Enumeration;
 import org.hl7.fhir.model.core.Enumerations.AdministrativeGender;
 import org.hl7.fhir.model.core.Enumerations.AdministrativeGenderEnumFactory;
 import org.junit.jupiter.api.Test;
@@ -27,6 +11,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.*;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * copy() and assign() must both produce something indistinguishable from the source, and must

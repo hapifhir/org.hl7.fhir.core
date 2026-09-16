@@ -750,19 +750,35 @@ public abstract class Base implements Serializable, IBase, IElement {
 
   public void copyValues(Base dst, EnumSet<CopyObjectOptions> options) {
     dst.setModelContext(modelContext); // no-op on the normal path (copy() constructs dst with this context); adopts a fresh dst; throws rather than corrupting a dst that belongs to a different context
-    if (userData != null && options.contains(CopyObjectOptions.USER_DATA)) {
-      dst.userData = new HashMap<>();
-      dst.userData.putAll(userData);
+    if (options.contains(CopyObjectOptions.USER_DATA)) {
+      if (userData != null) {
+        dst.userData = new HashMap<>();
+        dst.userData.putAll(userData);
+      } else {
+        dst.userData = null;
+      }
     }
     if (options.contains(CopyObjectOptions.COMMENTS)) {
-      dst.formatCommentsPost = new ArrayList<>();
-      dst.formatCommentsPost.addAll(formatCommentsPost);
-      dst.formatCommentsPre = new ArrayList<>();
-      dst.formatCommentsPre.addAll(formatCommentsPre);
+      if (formatCommentsPost != null) {
+        dst.formatCommentsPost = new ArrayList<>();
+        dst.formatCommentsPost.addAll(formatCommentsPost);
+      } else {
+        dst.formatCommentsPost = null;
+      }
+      if (formatCommentsPre != null) {
+        dst.formatCommentsPre = new ArrayList<>();
+        dst.formatCommentsPre.addAll(formatCommentsPre);
+      } else {
+        dst.formatCommentsPre = null;
+      }
     }
     if (options.contains(CopyObjectOptions.VALIDATION_INFO)) {
-      dst.validationInfo = new ArrayList<>();
-      dst.validationInfo.addAll(validationInfo);
+      if (validationInfo != null) {
+        dst.validationInfo = new ArrayList<>();
+        dst.validationInfo.addAll(validationInfo);
+      } else {
+        dst.validationInfo = null;
+      }
     }
   }
 
