@@ -220,6 +220,10 @@ public class CAPABILITY extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CAPABILITY) b);
+      }
+
       public void copyValues(CAPABILITY dst) {
         super.copyValues(dst);
         dst.credentials = credentials == null ? null : credentials.copy();

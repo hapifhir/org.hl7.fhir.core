@@ -626,6 +626,10 @@ public class AuditEvent extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AuditEventOutcomeComponent) b, options);
+      }
+
       public void copyValues(AuditEventOutcomeComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -1339,6 +1343,10 @@ public class AuditEvent extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AuditEventAgentComponent) b, options);
+      }
+
       public void copyValues(AuditEventAgentComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -1697,6 +1705,10 @@ public class AuditEvent extends DomainResource {
         AuditEventSourceComponent dst = new AuditEventSourceComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AuditEventSourceComponent) b, options);
       }
 
       public void copyValues(AuditEventSourceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2318,6 +2330,10 @@ public class AuditEvent extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AuditEventEntityComponent) b, options);
+      }
+
       public void copyValues(AuditEventEntityComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.what = what == null ? null : what.copy(options);
@@ -2813,6 +2829,10 @@ public class AuditEvent extends DomainResource {
         AuditEventEntityDetailComponent dst = new AuditEventEntityDetailComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AuditEventEntityDetailComponent) b, options);
       }
 
       public void copyValues(AuditEventEntityDetailComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3910,6 +3930,10 @@ public class AuditEvent extends DomainResource {
         AuditEvent dst = new AuditEvent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AuditEvent) b, options);
       }
 
       public void copyValues(AuditEvent dst, EnumSet<CopyObjectOptions> options) {

@@ -547,6 +547,10 @@ public class SubscriptionStatus extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubscriptionStatusNotificationEventComponent) b);
+      }
+
       public void copyValues(SubscriptionStatusNotificationEventComponent dst) {
         super.copyValues(dst);
         dst.eventNumber = eventNumber == null ? null : eventNumber.copy();
@@ -1166,6 +1170,10 @@ public class SubscriptionStatus extends DomainResource {
         SubscriptionStatus dst = new SubscriptionStatus();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubscriptionStatus) b);
       }
 
       public void copyValues(SubscriptionStatus dst) {

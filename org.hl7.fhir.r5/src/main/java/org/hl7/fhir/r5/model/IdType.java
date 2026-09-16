@@ -252,6 +252,24 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   }
 
   @Override
+  public void assign(Base b) {
+    copyValues((IdType) b);
+  }
+
+  /**
+   * the parsed component parts are state on this class: derived from the value, but only rebuilt
+   * when the value is set through setValue()
+   */
+  public void copyValues(IdType dst) {
+    super.copyValues(dst);
+    dst.myBaseUrl = myBaseUrl;
+    dst.myHaveComponentParts = myHaveComponentParts;
+    dst.myResourceType = myResourceType;
+    dst.myUnqualifiedId = myUnqualifiedId;
+    dst.myUnqualifiedVersionId = myUnqualifiedVersionId;
+  }
+
+  @Override
   public IdType copy() {
     IdType ret = new IdType(getValue());
     copyValues(ret);

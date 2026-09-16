@@ -254,6 +254,10 @@ public class REVISION_HISTORY_ITEM extends LogicalBase implements ICompositeType
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((REVISION_HISTORY_ITEM) b);
+      }
+
       public void copyValues(REVISION_HISTORY_ITEM dst) {
         super.copyValues(dst);
         dst.version_id = version_id == null ? null : version_id.copy();

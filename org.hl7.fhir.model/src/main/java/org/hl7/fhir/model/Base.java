@@ -744,6 +744,10 @@ public abstract class Base implements Serializable, IBase, IElement {
    * Base-level features; the generated overrides copy their element content (passing the 
    * options down to every child they copy) and call super
    */
+  public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+    copyValues((Base) b, options);
+  }
+
   public void copyValues(Base dst, EnumSet<CopyObjectOptions> options) {
     dst.setModelContext(modelContext); // no-op on the normal path (copy() constructs dst with this context); adopts a fresh dst; throws rather than corrupting a dst that belongs to a different context
     if (userData != null && options.contains(CopyObjectOptions.USER_DATA)) {

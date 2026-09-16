@@ -362,6 +362,10 @@ public class Annotation extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((Annotation) b);
+      }
+
       public void copyValues(Annotation dst) {
         super.copyValues(dst);
         dst.author = author == null ? null : author.copy();

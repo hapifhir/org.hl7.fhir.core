@@ -243,6 +243,10 @@ public class Ratio extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Ratio) b, options);
+      }
+
       public void copyValues(Ratio dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.numerator = numerator == null ? null : numerator.copy(options);

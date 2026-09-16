@@ -267,6 +267,10 @@ public class WebTemplateTermBindingValue extends LogicalBase implements IComposi
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((WebTemplateTermBindingValue) b);
+      }
+
       public void copyValues(WebTemplateTermBindingValue dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

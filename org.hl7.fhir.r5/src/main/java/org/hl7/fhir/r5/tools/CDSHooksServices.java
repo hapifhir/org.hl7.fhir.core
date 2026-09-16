@@ -524,6 +524,10 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CDSHooksServicesServicesComponent) b);
+      }
+
       public void copyValues(CDSHooksServicesServicesComponent dst) {
         super.copyValues(dst);
         dst.hook = hook == null ? null : hook.copy();
@@ -787,6 +791,10 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CDSHooksServicesServicesPrefetchComponent) b);
+      }
+
       public void copyValues(CDSHooksServicesServicesPrefetchComponent dst) {
         super.copyValues(dst);
         dst.key = key == null ? null : key.copy();
@@ -972,6 +980,10 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         CDSHooksServices dst = new CDSHooksServices();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((CDSHooksServices) b);
       }
 
       public void copyValues(CDSHooksServices dst) {

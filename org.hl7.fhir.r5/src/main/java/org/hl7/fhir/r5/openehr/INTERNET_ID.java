@@ -69,6 +69,10 @@ public class INTERNET_ID extends UID implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((INTERNET_ID) b);
+      }
+
       public void copyValues(INTERNET_ID dst) {
         super.copyValues(dst);
       }

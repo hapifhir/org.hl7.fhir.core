@@ -540,6 +540,10 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderOralDietComponent) b, options);
+      }
+
       public void copyValues(NutritionOrderOralDietComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (typeList != null) {
@@ -899,6 +903,10 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((OralDietScheduleComponent) b, options);
+      }
+
       public void copyValues(OralDietScheduleComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (timingList != null) {
@@ -1144,6 +1152,10 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderOralDietNutrientComponent) b, options);
+      }
+
       public void copyValues(NutritionOrderOralDietNutrientComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.modifier = modifier == null ? null : modifier.copy(options);
@@ -1378,6 +1390,10 @@ public class NutritionOrder extends DomainResource {
         NutritionOrderOralDietTextureComponent dst = new NutritionOrderOralDietTextureComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderOralDietTextureComponent) b, options);
       }
 
       public void copyValues(NutritionOrderOralDietTextureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1875,6 +1891,10 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderSupplementComponent) b, options);
+      }
+
       public void copyValues(NutritionOrderSupplementComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -2221,6 +2241,10 @@ public class NutritionOrder extends DomainResource {
         SupplementScheduleComponent dst = new SupplementScheduleComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SupplementScheduleComponent) b, options);
       }
 
       public void copyValues(SupplementScheduleComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2931,6 +2955,10 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderEnteralFormulaComponent) b, options);
+      }
+
       public void copyValues(NutritionOrderEnteralFormulaComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (typeList != null) {
@@ -3296,6 +3324,10 @@ public class NutritionOrder extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderEnteralFormulaAdministrationComponent) b, options);
+      }
+
       public void copyValues(NutritionOrderEnteralFormulaAdministrationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.schedule = schedule == null ? null : schedule.copy(options);
@@ -3628,6 +3660,10 @@ public class NutritionOrder extends DomainResource {
         EnteralFormulaScheduleComponent dst = new EnteralFormulaScheduleComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EnteralFormulaScheduleComponent) b, options);
       }
 
       public void copyValues(EnteralFormulaScheduleComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4024,6 +4060,10 @@ public class NutritionOrder extends DomainResource {
         NutritionOrderAdditiveComponent dst = new NutritionOrderAdditiveComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrderAdditiveComponent) b, options);
       }
 
       public void copyValues(NutritionOrderAdditiveComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5609,6 +5649,10 @@ public class NutritionOrder extends DomainResource {
         NutritionOrder dst = new NutritionOrder(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionOrder) b, options);
       }
 
       public void copyValues(NutritionOrder dst, EnumSet<CopyObjectOptions> options) {

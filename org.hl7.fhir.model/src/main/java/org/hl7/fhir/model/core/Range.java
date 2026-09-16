@@ -243,6 +243,10 @@ public class Range extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Range) b, options);
+      }
+
       public void copyValues(Range dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.low = low == null ? null : low.copy(options);

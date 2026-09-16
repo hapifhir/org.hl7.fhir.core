@@ -367,6 +367,10 @@ public class FamilyMemberHistory extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((FamilyMemberHistoryParticipantComponent) b);
+      }
+
       public void copyValues(FamilyMemberHistoryParticipantComponent dst) {
         super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
@@ -851,6 +855,10 @@ public class FamilyMemberHistory extends DomainResource {
         FamilyMemberHistoryConditionComponent dst = new FamilyMemberHistoryConditionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((FamilyMemberHistoryConditionComponent) b);
       }
 
       public void copyValues(FamilyMemberHistoryConditionComponent dst) {
@@ -1366,6 +1374,10 @@ public class FamilyMemberHistory extends DomainResource {
         FamilyMemberHistoryProcedureComponent dst = new FamilyMemberHistoryProcedureComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((FamilyMemberHistoryProcedureComponent) b);
       }
 
       public void copyValues(FamilyMemberHistoryProcedureComponent dst) {
@@ -2940,6 +2952,10 @@ public class FamilyMemberHistory extends DomainResource {
         FamilyMemberHistory dst = new FamilyMemberHistory();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((FamilyMemberHistory) b);
       }
 
       public void copyValues(FamilyMemberHistory dst) {

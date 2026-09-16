@@ -684,7 +684,8 @@ public class ToolsXmlParser extends org.hl7.fhir.model.core.formats.XmlParser {
       throw new IOException("xpp == null!");
 
     } else {
-      throw new FHIRFormatError("Unknown resource type "+xpp.getName()+"");
+      // not one of this package's resource types - see the note in the json parser
+      return super.parseResource(xpp);
     }
   }
 
@@ -1515,7 +1516,8 @@ public class ToolsXmlParser extends org.hl7.fhir.model.core.formats.XmlParser {
       throw new IOException("resource == null");
       
     } else {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      // see the note in parseResource
+      super.composeResource(resource);
     }
   }
 
@@ -1526,7 +1528,8 @@ public class ToolsXmlParser extends org.hl7.fhir.model.core.formats.XmlParser {
       throw new IOException("resource == null");
       
     } else {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      // see the note in parseResource
+      super.composeResource(name, resource);
     }
   }
 

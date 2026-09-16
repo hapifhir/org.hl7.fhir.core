@@ -511,6 +511,10 @@ DEPRECATED usage: contains a string of the form ```'name:value; name:value…​
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DV_TEXT) b);
+      }
+
       public void copyValues(DV_TEXT dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

@@ -2614,6 +2614,10 @@ public class Library extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Library) b, options);
+      }
+
       public void copyValues(Library dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.url = url == null ? null : url.copy(options);

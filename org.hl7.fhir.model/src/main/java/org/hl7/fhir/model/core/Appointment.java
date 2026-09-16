@@ -1002,6 +1002,10 @@ public class Appointment extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AppointmentParticipantComponent) b, options);
+      }
+
       public void copyValues(AppointmentParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (typeList != null) {
@@ -1819,6 +1823,10 @@ public class Appointment extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AppointmentRecurrenceTemplateComponent) b, options);
+      }
+
       public void copyValues(AppointmentRecurrenceTemplateComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.timezone = timezone == null ? null : timezone.copy(options);
@@ -2165,6 +2173,10 @@ public class Appointment extends DomainResource {
         AppointmentRecurrenceTemplateWeeklyTemplateComponent dst = new AppointmentRecurrenceTemplateWeeklyTemplateComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AppointmentRecurrenceTemplateWeeklyTemplateComponent) b, options);
       }
 
       public void copyValues(AppointmentRecurrenceTemplateWeeklyTemplateComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2617,6 +2629,10 @@ public class Appointment extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AppointmentRecurrenceTemplateMonthlyTemplateComponent) b, options);
+      }
+
       public void copyValues(AppointmentRecurrenceTemplateMonthlyTemplateComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.dayOfMonth = dayOfMonth == null ? null : dayOfMonth.copy(options);
@@ -2840,6 +2856,10 @@ public class Appointment extends DomainResource {
         AppointmentRecurrenceTemplateYearlyTemplateComponent dst = new AppointmentRecurrenceTemplateYearlyTemplateComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AppointmentRecurrenceTemplateYearlyTemplateComponent) b, options);
       }
 
       public void copyValues(AppointmentRecurrenceTemplateYearlyTemplateComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5225,6 +5245,10 @@ public class Appointment extends DomainResource {
         Appointment dst = new Appointment(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Appointment) b, options);
       }
 
       public void copyValues(Appointment dst, EnumSet<CopyObjectOptions> options) {

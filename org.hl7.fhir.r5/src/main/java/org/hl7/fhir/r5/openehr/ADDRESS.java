@@ -175,6 +175,10 @@ public class ADDRESS extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ADDRESS) b);
+      }
+
       public void copyValues(ADDRESS dst) {
         super.copyValues(dst);
         dst.details = details == null ? null : details.copy();

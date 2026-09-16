@@ -69,6 +69,10 @@ public class POINT_EVENT extends EVENT implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((POINT_EVENT) b);
+      }
+
       public void copyValues(POINT_EVENT dst) {
         super.copyValues(dst);
       }

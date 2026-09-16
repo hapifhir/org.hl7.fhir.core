@@ -859,6 +859,10 @@ public class NamingSystem extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NamingSystemUniqueIdComponent) b, options);
+      }
+
       public void copyValues(NamingSystemUniqueIdComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -3317,6 +3321,10 @@ public class NamingSystem extends MetadataResource {
         NamingSystem dst = new NamingSystem(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NamingSystem) b, options);
       }
 
       public void copyValues(NamingSystem dst, EnumSet<CopyObjectOptions> options) {

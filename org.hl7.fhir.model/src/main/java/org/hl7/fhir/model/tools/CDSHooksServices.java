@@ -541,6 +541,10 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksServicesServicesComponent) b, options);
+      }
+
       public void copyValues(CDSHooksServicesServicesComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.hook = hook == null ? null : hook.copy(options);
@@ -809,6 +813,10 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksServicesServicesPrefetchComponent) b, options);
+      }
+
       public void copyValues(CDSHooksServicesServicesPrefetchComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.key = key == null ? null : key.copy(options);
@@ -995,6 +1003,10 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         CDSHooksServices dst = new CDSHooksServices(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksServices) b, options);
       }
 
       public void copyValues(CDSHooksServices dst, EnumSet<CopyObjectOptions> options) {

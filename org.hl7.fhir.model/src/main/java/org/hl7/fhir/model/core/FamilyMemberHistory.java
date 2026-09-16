@@ -665,6 +665,10 @@ public class FamilyMemberHistory extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((FamilyMemberHistoryConditionComponent) b, options);
+      }
+
       public void copyValues(FamilyMemberHistoryConditionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -1222,6 +1226,10 @@ public class FamilyMemberHistory extends DomainResource {
         FamilyMemberHistoryProcedureComponent dst = new FamilyMemberHistoryProcedureComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((FamilyMemberHistoryProcedureComponent) b, options);
       }
 
       public void copyValues(FamilyMemberHistoryProcedureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2664,6 +2672,10 @@ public class FamilyMemberHistory extends DomainResource {
         FamilyMemberHistory dst = new FamilyMemberHistory(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((FamilyMemberHistory) b, options);
       }
 
       public void copyValues(FamilyMemberHistory dst, EnumSet<CopyObjectOptions> options) {

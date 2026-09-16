@@ -449,6 +449,10 @@ public class FormularyItem extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((FormularyItem) b);
+      }
+
       public void copyValues(FormularyItem dst) {
         super.copyValues(dst);
         if (identifier != null) {

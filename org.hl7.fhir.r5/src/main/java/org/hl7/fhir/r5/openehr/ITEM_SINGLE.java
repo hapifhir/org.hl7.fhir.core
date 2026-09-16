@@ -180,6 +180,10 @@ public class ITEM_SINGLE extends ITEM_STRUCTURE implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ITEM_SINGLE) b);
+      }
+
       public void copyValues(ITEM_SINGLE dst) {
         super.copyValues(dst);
         dst.item = item == null ? null : item.copy();

@@ -438,6 +438,10 @@ public class WebTemplateInputValidationRange extends LogicalBase implements ICom
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((WebTemplateInputValidationRange) b);
+      }
+
       public void copyValues(WebTemplateInputValidationRange dst) {
         super.copyValues(dst);
         dst.minOp = minOp == null ? null : minOp.copy();

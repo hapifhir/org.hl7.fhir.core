@@ -897,6 +897,10 @@ public class SampledData extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SampledData) b);
+      }
+
       public void copyValues(SampledData dst) {
         super.copyValues(dst);
         dst.origin = origin == null ? null : origin.copy();

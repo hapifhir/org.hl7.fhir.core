@@ -295,6 +295,10 @@ public class ARCHETYPED extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ARCHETYPED) b);
+      }
+
       public void copyValues(ARCHETYPED dst) {
         super.copyValues(dst);
         dst.archetype_id = archetype_id == null ? null : archetype_id.copy();

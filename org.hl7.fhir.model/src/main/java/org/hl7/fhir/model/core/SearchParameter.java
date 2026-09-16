@@ -3397,6 +3397,10 @@ public class SearchParameter extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SearchParameterComponentComponent) b, options);
+      }
+
       public void copyValues(SearchParameterComponentComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.definition = definition == null ? null : definition.copy(options);
@@ -6002,6 +6006,10 @@ public class SearchParameter extends CanonicalResource {
         SearchParameter dst = new SearchParameter(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SearchParameter) b, options);
       }
 
       public void copyValues(SearchParameter dst, EnumSet<CopyObjectOptions> options) {

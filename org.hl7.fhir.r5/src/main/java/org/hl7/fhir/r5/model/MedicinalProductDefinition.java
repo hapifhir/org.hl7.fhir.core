@@ -237,6 +237,10 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((MedicinalProductDefinitionContactComponent) b);
+      }
+
       public void copyValues(MedicinalProductDefinitionContactComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -628,6 +632,10 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((MedicinalProductDefinitionNameComponent) b);
+      }
+
       public void copyValues(MedicinalProductDefinitionNameComponent dst) {
         super.copyValues(dst);
         dst.productName = productName == null ? null : productName.copy();
@@ -880,6 +888,10 @@ public class MedicinalProductDefinition extends DomainResource {
         MedicinalProductDefinitionNamePartComponent dst = new MedicinalProductDefinitionNamePartComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MedicinalProductDefinitionNamePartComponent) b);
       }
 
       public void copyValues(MedicinalProductDefinitionNamePartComponent dst) {
@@ -1153,6 +1165,10 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((MedicinalProductDefinitionNameUsageComponent) b);
+      }
+
       public void copyValues(MedicinalProductDefinitionNameUsageComponent dst) {
         super.copyValues(dst);
         dst.country = country == null ? null : country.copy();
@@ -1375,6 +1391,10 @@ public class MedicinalProductDefinition extends DomainResource {
         MedicinalProductDefinitionCrossReferenceComponent dst = new MedicinalProductDefinitionCrossReferenceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MedicinalProductDefinitionCrossReferenceComponent) b);
       }
 
       public void copyValues(MedicinalProductDefinitionCrossReferenceComponent dst) {
@@ -1710,6 +1730,10 @@ public class MedicinalProductDefinition extends DomainResource {
         MedicinalProductDefinitionOperationComponent dst = new MedicinalProductDefinitionOperationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MedicinalProductDefinitionOperationComponent) b);
       }
 
       public void copyValues(MedicinalProductDefinitionOperationComponent dst) {
@@ -2074,6 +2098,10 @@ public class MedicinalProductDefinition extends DomainResource {
         MedicinalProductDefinitionCharacteristicComponent dst = new MedicinalProductDefinitionCharacteristicComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MedicinalProductDefinitionCharacteristicComponent) b);
       }
 
       public void copyValues(MedicinalProductDefinitionCharacteristicComponent dst) {
@@ -4180,6 +4208,10 @@ public class MedicinalProductDefinition extends DomainResource {
         MedicinalProductDefinition dst = new MedicinalProductDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MedicinalProductDefinition) b);
       }
 
       public void copyValues(MedicinalProductDefinition dst) {

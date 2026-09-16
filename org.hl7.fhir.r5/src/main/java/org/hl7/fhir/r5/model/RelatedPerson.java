@@ -257,6 +257,10 @@ public class RelatedPerson extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((RelatedPersonCommunicationComponent) b);
+      }
+
       public void copyValues(RelatedPersonCommunicationComponent dst) {
         super.copyValues(dst);
         dst.language = language == null ? null : language.copy();
@@ -1217,6 +1221,10 @@ public class RelatedPerson extends DomainResource {
         RelatedPerson dst = new RelatedPerson();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((RelatedPerson) b);
       }
 
       public void copyValues(RelatedPerson dst) {

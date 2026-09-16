@@ -317,6 +317,10 @@ public class Condition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConditionStageComponent) b, options);
+      }
+
       public void copyValues(ConditionStageComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.summary = summary == null ? null : summary.copy(options);
@@ -1710,6 +1714,10 @@ public class Condition extends DomainResource {
         Condition dst = new Condition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Condition) b, options);
       }
 
       public void copyValues(Condition dst, EnumSet<CopyObjectOptions> options) {

@@ -351,6 +351,10 @@ public class Immunization extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ImmunizationPerformerComponent) b);
+      }
+
       public void copyValues(ImmunizationPerformerComponent dst) {
         super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
@@ -572,6 +576,10 @@ public class Immunization extends DomainResource {
         ImmunizationProgramEligibilityComponent dst = new ImmunizationProgramEligibilityComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ImmunizationProgramEligibilityComponent) b);
       }
 
       public void copyValues(ImmunizationProgramEligibilityComponent dst) {
@@ -876,6 +884,10 @@ public class Immunization extends DomainResource {
         ImmunizationReactionComponent dst = new ImmunizationReactionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ImmunizationReactionComponent) b);
       }
 
       public void copyValues(ImmunizationReactionComponent dst) {
@@ -1337,6 +1349,10 @@ public class Immunization extends DomainResource {
         ImmunizationProtocolAppliedComponent dst = new ImmunizationProtocolAppliedComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ImmunizationProtocolAppliedComponent) b);
       }
 
       public void copyValues(ImmunizationProtocolAppliedComponent dst) {
@@ -3231,6 +3247,10 @@ public class Immunization extends DomainResource {
         Immunization dst = new Immunization();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Immunization) b);
       }
 
       public void copyValues(Immunization dst) {

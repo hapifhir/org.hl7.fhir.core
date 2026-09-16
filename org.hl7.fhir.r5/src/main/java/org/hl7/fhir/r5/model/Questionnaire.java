@@ -2244,6 +2244,10 @@ public class Questionnaire extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((QuestionnaireItemComponent) b);
+      }
+
       public void copyValues(QuestionnaireItemComponent dst) {
         super.copyValues(dst);
         dst.linkId = linkId == null ? null : linkId.copy();
@@ -2841,6 +2845,10 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((QuestionnaireItemEnableWhenComponent) b);
+      }
+
       public void copyValues(QuestionnaireItemEnableWhenComponent dst) {
         super.copyValues(dst);
         dst.question = question == null ? null : question.copy();
@@ -3198,6 +3206,10 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         QuestionnaireItemAnswerOptionComponent dst = new QuestionnaireItemAnswerOptionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((QuestionnaireItemAnswerOptionComponent) b);
       }
 
       public void copyValues(QuestionnaireItemAnswerOptionComponent dst) {
@@ -3608,6 +3620,10 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         QuestionnaireItemInitialComponent dst = new QuestionnaireItemInitialComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((QuestionnaireItemInitialComponent) b);
       }
 
       public void copyValues(QuestionnaireItemInitialComponent dst) {
@@ -5685,6 +5701,10 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         Questionnaire dst = new Questionnaire();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Questionnaire) b);
       }
 
       public void copyValues(Questionnaire dst) {

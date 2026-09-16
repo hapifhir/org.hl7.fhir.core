@@ -464,6 +464,10 @@ public class AdministrableProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdministrableProductDefinitionPropertyComponent) b, options);
+      }
+
       public void copyValues(AdministrableProductDefinitionPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -1000,6 +1004,10 @@ public class AdministrableProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdministrableProductDefinitionRouteOfAdministrationComponent) b, options);
+      }
+
       public void copyValues(AdministrableProductDefinitionRouteOfAdministrationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -1292,6 +1300,10 @@ public class AdministrableProductDefinition extends DomainResource {
         AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent dst = new AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent) b, options);
       }
 
       public void copyValues(AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1622,6 +1634,10 @@ public class AdministrableProductDefinition extends DomainResource {
         AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent dst = new AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent) b, options);
       }
 
       public void copyValues(AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2597,6 +2613,10 @@ public class AdministrableProductDefinition extends DomainResource {
         AdministrableProductDefinition dst = new AdministrableProductDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdministrableProductDefinition) b, options);
       }
 
       public void copyValues(AdministrableProductDefinition dst, EnumSet<CopyObjectOptions> options) {

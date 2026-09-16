@@ -3384,6 +3384,10 @@ public class CompartmentDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompartmentDefinitionResourceComponent) b, options);
+      }
+
       public void copyValues(CompartmentDefinitionResourceComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -4897,6 +4901,10 @@ public class CompartmentDefinition extends CanonicalResource {
         CompartmentDefinition dst = new CompartmentDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompartmentDefinition) b, options);
       }
 
       public void copyValues(CompartmentDefinition dst, EnumSet<CopyObjectOptions> options) {

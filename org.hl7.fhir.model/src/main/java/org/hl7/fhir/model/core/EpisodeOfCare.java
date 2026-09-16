@@ -476,6 +476,10 @@ public class EpisodeOfCare extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EpisodeOfCareStatusHistoryComponent) b, options);
+      }
+
       public void copyValues(EpisodeOfCareStatusHistoryComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.status = status == null ? null : status.copy(options);
@@ -750,6 +754,10 @@ public class EpisodeOfCare extends DomainResource {
         ReasonComponent dst = new ReasonComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ReasonComponent) b, options);
       }
 
       public void copyValues(ReasonComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1034,6 +1042,10 @@ public class EpisodeOfCare extends DomainResource {
         DiagnosisComponent dst = new DiagnosisComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DiagnosisComponent) b, options);
       }
 
       public void copyValues(DiagnosisComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2058,6 +2070,10 @@ public class EpisodeOfCare extends DomainResource {
         EpisodeOfCare dst = new EpisodeOfCare(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EpisodeOfCare) b, options);
       }
 
       public void copyValues(EpisodeOfCare dst, EnumSet<CopyObjectOptions> options) {

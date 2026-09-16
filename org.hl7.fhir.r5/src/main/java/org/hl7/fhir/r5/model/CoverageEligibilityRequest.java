@@ -403,6 +403,10 @@ public class CoverageEligibilityRequest extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CoverageEligibilityRequestEventComponent) b);
+      }
+
       public void copyValues(CoverageEligibilityRequestEventComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -709,6 +713,10 @@ public class CoverageEligibilityRequest extends DomainResource {
         SupportingInformationComponent dst = new SupportingInformationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SupportingInformationComponent) b);
       }
 
       public void copyValues(SupportingInformationComponent dst) {
@@ -1024,6 +1032,10 @@ public class CoverageEligibilityRequest extends DomainResource {
         InsuranceComponent dst = new InsuranceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((InsuranceComponent) b);
       }
 
       public void copyValues(InsuranceComponent dst) {
@@ -1741,6 +1753,10 @@ public class CoverageEligibilityRequest extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DetailsComponent) b);
+      }
+
       public void copyValues(DetailsComponent dst) {
         super.copyValues(dst);
         if (supportingInfoSequence != null) {
@@ -1970,6 +1986,10 @@ public class CoverageEligibilityRequest extends DomainResource {
         DiagnosisComponent dst = new DiagnosisComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DiagnosisComponent) b);
       }
 
       public void copyValues(DiagnosisComponent dst) {
@@ -3067,6 +3087,10 @@ public class CoverageEligibilityRequest extends DomainResource {
         CoverageEligibilityRequest dst = new CoverageEligibilityRequest();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((CoverageEligibilityRequest) b);
       }
 
       public void copyValues(CoverageEligibilityRequest dst) {

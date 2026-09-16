@@ -273,6 +273,10 @@ If not present, assumed meaning is '=' .
 
       public abstract DV_QUANTIFIED copy();
 
+      public void assign(Base b) {
+        copyValues((DV_QUANTIFIED) b);
+      }
+
       public void copyValues(DV_QUANTIFIED dst) {
         super.copyValues(dst);
         dst.magnitude_status = magnitude_status == null ? null : magnitude_status.copy();

@@ -503,6 +503,10 @@ public class DiagnosticReport extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DiagnosticReportSupportingInfoComponent) b, options);
+      }
+
       public void copyValues(DiagnosticReportSupportingInfoComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -770,6 +774,10 @@ public class DiagnosticReport extends DomainResource {
         DiagnosticReportMediaComponent dst = new DiagnosticReportMediaComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DiagnosticReportMediaComponent) b, options);
       }
 
       public void copyValues(DiagnosticReportMediaComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2793,6 +2801,10 @@ public class DiagnosticReport extends DomainResource {
         DiagnosticReport dst = new DiagnosticReport(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DiagnosticReport) b, options);
       }
 
       public void copyValues(DiagnosticReport dst, EnumSet<CopyObjectOptions> options) {

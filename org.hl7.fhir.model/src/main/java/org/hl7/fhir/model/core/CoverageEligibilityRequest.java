@@ -426,6 +426,10 @@ public class CoverageEligibilityRequest extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CoverageEligibilityRequestEventComponent) b, options);
+      }
+
       public void copyValues(CoverageEligibilityRequestEventComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -763,6 +767,10 @@ public class CoverageEligibilityRequest extends DomainResource {
         SupportingInformationComponent dst = new SupportingInformationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SupportingInformationComponent) b, options);
       }
 
       public void copyValues(SupportingInformationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1112,6 +1120,10 @@ public class CoverageEligibilityRequest extends DomainResource {
         InsuranceComponent dst = new InsuranceComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((InsuranceComponent) b, options);
       }
 
       public void copyValues(InsuranceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1870,6 +1882,10 @@ public class CoverageEligibilityRequest extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DetailsComponent) b, options);
+      }
+
       public void copyValues(DetailsComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (supportingInfoSequenceList != null) {
@@ -2104,6 +2120,10 @@ public class CoverageEligibilityRequest extends DomainResource {
         DiagnosisComponent dst = new DiagnosisComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DiagnosisComponent) b, options);
       }
 
       public void copyValues(DiagnosisComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3326,6 +3346,10 @@ public class CoverageEligibilityRequest extends DomainResource {
         CoverageEligibilityRequest dst = new CoverageEligibilityRequest(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CoverageEligibilityRequest) b, options);
       }
 
       public void copyValues(CoverageEligibilityRequest dst, EnumSet<CopyObjectOptions> options) {

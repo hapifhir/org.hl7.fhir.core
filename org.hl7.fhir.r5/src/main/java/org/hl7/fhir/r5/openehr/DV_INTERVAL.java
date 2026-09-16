@@ -71,6 +71,10 @@ public class DV_INTERVAL extends DV_ORDERED implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DV_INTERVAL) b);
+      }
+
       public void copyValues(DV_INTERVAL dst) {
         super.copyValues(dst);
       }

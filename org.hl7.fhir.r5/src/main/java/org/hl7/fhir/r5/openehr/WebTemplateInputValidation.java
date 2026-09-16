@@ -217,6 +217,10 @@ public class WebTemplateInputValidation extends LogicalBase implements IComposit
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((WebTemplateInputValidation) b);
+      }
+
       public void copyValues(WebTemplateInputValidation dst) {
         super.copyValues(dst);
         dst.range = range == null ? null : range.copy();

@@ -649,6 +649,10 @@ public class Location extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((LocationPositionComponent) b, options);
+      }
+
       public void copyValues(LocationPositionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.longitude = longitude == null ? null : longitude.copy(options);
@@ -2065,6 +2069,10 @@ public class Location extends DomainResource {
         Location dst = new Location(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Location) b, options);
       }
 
       public void copyValues(Location dst, EnumSet<CopyObjectOptions> options) {

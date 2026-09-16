@@ -343,6 +343,10 @@ public class INSTRUCTION extends CARE_ENTRY implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((INSTRUCTION) b);
+      }
+
       public void copyValues(INSTRUCTION dst) {
         super.copyValues(dst);
         dst.narrative = narrative == null ? null : narrative.copy();

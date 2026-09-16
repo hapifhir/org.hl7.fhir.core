@@ -528,6 +528,10 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExampleScenarioActorComponent) b, options);
+      }
+
       public void copyValues(ExampleScenarioActorComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.key = key == null ? null : key.copy(options);
@@ -1327,6 +1331,10 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExampleScenarioInstanceComponent) b, options);
+      }
+
       public void copyValues(ExampleScenarioInstanceComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.key = key == null ? null : key.copy(options);
@@ -1785,6 +1793,10 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExampleScenarioInstanceVersionComponent) b, options);
+      }
+
       public void copyValues(ExampleScenarioInstanceVersionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.key = key == null ? null : key.copy(options);
@@ -2083,6 +2095,10 @@ public class ExampleScenario extends CanonicalResource {
         ExampleScenarioInstanceContainedInstanceComponent dst = new ExampleScenarioInstanceContainedInstanceComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExampleScenarioInstanceContainedInstanceComponent) b, options);
       }
 
       public void copyValues(ExampleScenarioInstanceContainedInstanceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2602,6 +2618,10 @@ public class ExampleScenario extends CanonicalResource {
         ExampleScenarioProcessComponent dst = new ExampleScenarioProcessComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExampleScenarioProcessComponent) b, options);
       }
 
       public void copyValues(ExampleScenarioProcessComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3156,6 +3176,10 @@ public class ExampleScenario extends CanonicalResource {
         ExampleScenarioProcessStepComponent dst = new ExampleScenarioProcessStepComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExampleScenarioProcessStepComponent) b, options);
       }
 
       public void copyValues(ExampleScenarioProcessStepComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4008,6 +4032,10 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExampleScenarioProcessStepOperationComponent) b, options);
+      }
+
       public void copyValues(ExampleScenarioProcessStepOperationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -4407,6 +4435,10 @@ public class ExampleScenario extends CanonicalResource {
         ExampleScenarioProcessStepAlternativeComponent dst = new ExampleScenarioProcessStepAlternativeComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExampleScenarioProcessStepAlternativeComponent) b, options);
       }
 
       public void copyValues(ExampleScenarioProcessStepAlternativeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6078,6 +6110,10 @@ public class ExampleScenario extends CanonicalResource {
         ExampleScenario dst = new ExampleScenario(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExampleScenario) b, options);
       }
 
       public void copyValues(ExampleScenario dst, EnumSet<CopyObjectOptions> options) {

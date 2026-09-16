@@ -1123,6 +1123,10 @@ public class MedicationRequest extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationRequestDispenseRequestComponent) b, options);
+      }
+
       public void copyValues(MedicationRequestDispenseRequestComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.initialFill = initialFill == null ? null : initialFill.copy(options);
@@ -1398,6 +1402,10 @@ public class MedicationRequest extends DomainResource {
         MedicationRequestDispenseRequestInitialFillComponent dst = new MedicationRequestDispenseRequestInitialFillComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationRequestDispenseRequestInitialFillComponent) b, options);
       }
 
       public void copyValues(MedicationRequestDispenseRequestInitialFillComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1680,6 +1688,10 @@ public class MedicationRequest extends DomainResource {
         MedicationRequestSubstitutionComponent dst = new MedicationRequestSubstitutionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationRequestSubstitutionComponent) b, options);
       }
 
       public void copyValues(MedicationRequestSubstitutionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3960,6 +3972,10 @@ public class MedicationRequest extends DomainResource {
         MedicationRequest dst = new MedicationRequest(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationRequest) b, options);
       }
 
       public void copyValues(MedicationRequest dst, EnumSet<CopyObjectOptions> options) {

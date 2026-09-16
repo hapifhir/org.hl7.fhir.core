@@ -269,6 +269,10 @@ public class Measure extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureTermComponent) b, options);
+      }
+
       public void copyValues(MeasureTermComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -1740,6 +1744,10 @@ public class Measure extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureGroupComponent) b, options);
+      }
+
       public void copyValues(MeasureGroupComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.linkId = linkId == null ? null : linkId.copy(options);
@@ -2221,6 +2229,10 @@ public class Measure extends MetadataResource {
         MeasureGroupComponentComponent dst = new MeasureGroupComponentComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureGroupComponentComponent) b, options);
       }
 
       public void copyValues(MeasureGroupComponentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2880,6 +2892,10 @@ public class Measure extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureGroupPopulationComponent) b, options);
+      }
+
       public void copyValues(MeasureGroupPopulationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.linkId = linkId == null ? null : linkId.copy(options);
@@ -3499,6 +3515,10 @@ public class Measure extends MetadataResource {
         MeasureGroupStratifierComponent dst = new MeasureGroupStratifierComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureGroupStratifierComponent) b, options);
       }
 
       public void copyValues(MeasureGroupStratifierComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4123,6 +4143,10 @@ public class Measure extends MetadataResource {
         MeasureGroupStratifierComponentComponent dst = new MeasureGroupStratifierComponentComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureGroupStratifierComponentComponent) b, options);
       }
 
       public void copyValues(MeasureGroupStratifierComponentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4775,6 +4799,10 @@ public class Measure extends MetadataResource {
         MeasureSupplementalDataComponent dst = new MeasureSupplementalDataComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureSupplementalDataComponent) b, options);
       }
 
       public void copyValues(MeasureSupplementalDataComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7873,6 +7901,10 @@ public class Measure extends MetadataResource {
         Measure dst = new Measure(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Measure) b, options);
       }
 
       public void copyValues(Measure dst, EnumSet<CopyObjectOptions> options) {

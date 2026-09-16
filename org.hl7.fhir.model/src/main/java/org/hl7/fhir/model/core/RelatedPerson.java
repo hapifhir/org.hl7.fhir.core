@@ -275,6 +275,10 @@ public class RelatedPerson extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RelatedPersonCommunicationComponent) b, options);
+      }
+
       public void copyValues(RelatedPersonCommunicationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.language = language == null ? null : language.copy(options);
@@ -1336,6 +1340,10 @@ public class RelatedPerson extends DomainResource {
         RelatedPerson dst = new RelatedPerson(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RelatedPerson) b, options);
       }
 
       public void copyValues(RelatedPerson dst, EnumSet<CopyObjectOptions> options) {

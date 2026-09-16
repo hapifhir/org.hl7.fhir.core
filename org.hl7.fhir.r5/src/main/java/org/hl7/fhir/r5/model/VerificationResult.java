@@ -754,6 +754,10 @@ public class VerificationResult extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((VerificationResultPrimarySourceComponent) b);
+      }
+
       public void copyValues(VerificationResultPrimarySourceComponent dst) {
         super.copyValues(dst);
         dst.who = who == null ? null : who.copy();
@@ -1342,6 +1346,10 @@ public class VerificationResult extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((VerificationResultAttestationComponent) b);
+      }
+
       public void copyValues(VerificationResultAttestationComponent dst) {
         super.copyValues(dst);
         dst.who = who == null ? null : who.copy();
@@ -1643,6 +1651,10 @@ public class VerificationResult extends DomainResource {
         VerificationResultValidatorComponent dst = new VerificationResultValidatorComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((VerificationResultValidatorComponent) b);
       }
 
       public void copyValues(VerificationResultValidatorComponent dst) {
@@ -2681,6 +2693,10 @@ public class VerificationResult extends DomainResource {
         VerificationResult dst = new VerificationResult();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((VerificationResult) b);
       }
 
       public void copyValues(VerificationResult dst) {

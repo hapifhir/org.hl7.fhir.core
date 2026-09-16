@@ -434,6 +434,10 @@ public class Organization extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((OrganizationQualificationComponent) b, options);
+      }
+
       public void copyValues(OrganizationQualificationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (identifierList != null) {
@@ -1308,6 +1312,10 @@ public class Organization extends DomainResource {
         Organization dst = new Organization(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Organization) b, options);
       }
 
       public void copyValues(Organization dst, EnumSet<CopyObjectOptions> options) {

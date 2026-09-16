@@ -564,6 +564,10 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
     return dst;
   }
 
+  public void assign(Base b) {
+    copyValues((Quantity) b);
+  }
+
   public void copyValues(Quantity dst) {
     super.copyValues(dst);
     dst.value = value == null ? null : value.copy();

@@ -873,6 +873,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((TestReportParticipantComponent) b);
+      }
+
       public void copyValues(TestReportParticipantComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1075,6 +1079,10 @@ public class TestReport extends DomainResource {
         TestReportSetupComponent dst = new TestReportSetupComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((TestReportSetupComponent) b);
       }
 
       public void copyValues(TestReportSetupComponent dst) {
@@ -1290,6 +1298,10 @@ public class TestReport extends DomainResource {
         SetupActionComponent dst = new SetupActionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SetupActionComponent) b);
       }
 
       public void copyValues(SetupActionComponent dst) {
@@ -1629,6 +1641,10 @@ public class TestReport extends DomainResource {
         SetupActionOperationComponent dst = new SetupActionOperationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SetupActionOperationComponent) b);
       }
 
       public void copyValues(SetupActionOperationComponent dst) {
@@ -2049,6 +2065,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SetupActionAssertComponent) b);
+      }
+
       public void copyValues(SetupActionAssertComponent dst) {
         super.copyValues(dst);
         dst.result = result == null ? null : result.copy();
@@ -2256,6 +2276,10 @@ public class TestReport extends DomainResource {
         SetupActionAssertRequirementComponent dst = new SetupActionAssertRequirementComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SetupActionAssertRequirementComponent) b);
       }
 
       public void copyValues(SetupActionAssertRequirementComponent dst) {
@@ -2600,6 +2624,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((TestReportTestComponent) b);
+      }
+
       public void copyValues(TestReportTestComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -2819,6 +2847,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((TestActionComponent) b);
+      }
+
       public void copyValues(TestActionComponent dst) {
         super.copyValues(dst);
         dst.operation = operation == null ? null : operation.copy();
@@ -3020,6 +3052,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((TestReportTeardownComponent) b);
+      }
+
       public void copyValues(TestReportTeardownComponent dst) {
         super.copyValues(dst);
         if (action != null) {
@@ -3194,6 +3230,10 @@ public class TestReport extends DomainResource {
         TeardownActionComponent dst = new TeardownActionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((TeardownActionComponent) b);
       }
 
       public void copyValues(TeardownActionComponent dst) {
@@ -4126,6 +4166,10 @@ public class TestReport extends DomainResource {
         TestReport dst = new TestReport();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((TestReport) b);
       }
 
       public void copyValues(TestReport dst) {

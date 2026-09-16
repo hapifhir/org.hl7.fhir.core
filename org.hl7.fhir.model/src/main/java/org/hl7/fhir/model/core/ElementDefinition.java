@@ -1507,6 +1507,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionSlicingComponent) b, options);
+      }
+
       public void copyValues(ElementDefinitionSlicingComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (discriminatorList != null) {
@@ -1847,6 +1851,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         ElementDefinitionSlicingDiscriminatorComponent dst = new ElementDefinitionSlicingDiscriminatorComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionSlicingDiscriminatorComponent) b, options);
       }
 
       public void copyValues(ElementDefinitionSlicingDiscriminatorComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2214,6 +2222,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         ElementDefinitionBaseComponent dst = new ElementDefinitionBaseComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionBaseComponent) b, options);
       }
 
       public void copyValues(ElementDefinitionBaseComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2757,6 +2769,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         TypeRefComponent dst = new TypeRefComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TypeRefComponent) b, options);
       }
 
       public void copyValues(TypeRefComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4234,6 +4250,10 @@ public boolean hasTarget() {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionExampleComponent) b, options);
+      }
+
       public void copyValues(ElementDefinitionExampleComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.label = label == null ? null : label.copy(options);
@@ -4900,6 +4920,10 @@ public boolean hasTarget() {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionConstraintComponent) b, options);
+      }
+
       public void copyValues(ElementDefinitionConstraintComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.key = key == null ? null : key.copy(options);
@@ -5364,6 +5388,10 @@ public boolean hasTarget() {
         ElementDefinitionBindingComponent dst = new ElementDefinitionBindingComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionBindingComponent) b, options);
       }
 
       public void copyValues(ElementDefinitionBindingComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6060,6 +6088,10 @@ public boolean hasTarget() {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionBindingAdditionalComponent) b, options);
+      }
+
       public void copyValues(ElementDefinitionBindingAdditionalComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.key = key == null ? null : key.copy(options);
@@ -6528,6 +6560,10 @@ public boolean hasTarget() {
         ElementDefinitionMappingComponent dst = new ElementDefinitionMappingComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinitionMappingComponent) b, options);
       }
 
       public void copyValues(ElementDefinitionMappingComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -12903,6 +12939,10 @@ public boolean hasTarget() {
         ElementDefinition dst = new ElementDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ElementDefinition) b, options);
       }
 
       public void copyValues(ElementDefinition dst, EnumSet<CopyObjectOptions> options) {

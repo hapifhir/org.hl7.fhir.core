@@ -525,6 +525,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ValueSetComposeComponent) b, options);
+      }
+
       public void copyValues(ValueSetComposeComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.lockedDate = lockedDate == null ? null : lockedDate.copy(options);
@@ -1139,6 +1143,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptSetComponent) b, options);
+      }
+
       public void copyValues(ConceptSetComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.system = system == null ? null : system.copy(options);
@@ -1543,6 +1551,10 @@ public class ValueSet extends MetadataResource {
         ConceptReferenceComponent dst = new ConceptReferenceComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptReferenceComponent) b, options);
       }
 
       public void copyValues(ConceptReferenceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1971,6 +1983,10 @@ public class ValueSet extends MetadataResource {
         ConceptReferenceDesignationComponent dst = new ConceptReferenceDesignationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptReferenceDesignationComponent) b, options);
       }
 
       public void copyValues(ConceptReferenceDesignationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2423,6 +2439,10 @@ public class ValueSet extends MetadataResource {
         ConceptSetFilterComponent dst = new ConceptSetFilterComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptSetFilterComponent) b, options);
       }
 
       public void copyValues(ConceptSetFilterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3171,6 +3191,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ValueSetExpansionComponent) b, options);
+      }
+
       public void copyValues(ValueSetExpansionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.identifier = identifier == null ? null : identifier.copy(options);
@@ -3628,6 +3652,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ValueSetExpansionParameterComponent) b, options);
+      }
+
       public void copyValues(ValueSetExpansionParameterComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -3915,6 +3943,10 @@ public class ValueSet extends MetadataResource {
         ValueSetExpansionPropertyComponent dst = new ValueSetExpansionPropertyComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ValueSetExpansionPropertyComponent) b, options);
       }
 
       public void copyValues(ValueSetExpansionPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4718,6 +4750,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ValueSetExpansionContainsComponent) b, options);
+      }
+
       public void copyValues(ValueSetExpansionContainsComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.system = system == null ? null : system.copy(options);
@@ -5238,6 +5274,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptPropertyComponent) b, options);
+      }
+
       public void copyValues(ConceptPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -5647,6 +5687,10 @@ public class ValueSet extends MetadataResource {
         ConceptSubPropertyComponent dst = new ConceptSubPropertyComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptSubPropertyComponent) b, options);
       }
 
       public void copyValues(ConceptSubPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7950,6 +7994,10 @@ public class ValueSet extends MetadataResource {
         ValueSet dst = new ValueSet(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ValueSet) b, options);
       }
 
       public void copyValues(ValueSet dst, EnumSet<CopyObjectOptions> options) {

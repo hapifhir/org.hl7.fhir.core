@@ -1063,6 +1063,10 @@ public class Slot extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((Slot) b);
+      }
+
       public void copyValues(Slot dst) {
         super.copyValues(dst);
         if (identifier != null) {

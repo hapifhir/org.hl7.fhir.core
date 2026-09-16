@@ -1822,6 +1822,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CapabilityStatementSoftwareComponent) b, options);
+      }
+
       public void copyValues(CapabilityStatementSoftwareComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -2169,6 +2173,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         CapabilityStatementImplementationComponent dst = new CapabilityStatementImplementationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CapabilityStatementImplementationComponent) b, options);
       }
 
       public void copyValues(CapabilityStatementImplementationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2894,6 +2902,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CapabilityStatementRestComponent) b, options);
+      }
+
       public void copyValues(CapabilityStatementRestComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.mode = mode == null ? null : mode.copy(options);
@@ -3293,6 +3305,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         CapabilityStatementRestSecurityComponent dst = new CapabilityStatementRestSecurityComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CapabilityStatementRestSecurityComponent) b, options);
       }
 
       public void copyValues(CapabilityStatementRestSecurityComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4896,6 +4912,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CapabilityStatementRestResourceComponent) b, options);
+      }
+
       public void copyValues(CapabilityStatementRestResourceComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -5301,6 +5321,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         ResourceInteractionComponent dst = new ResourceInteractionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResourceInteractionComponent) b, options);
       }
 
       public void copyValues(ResourceInteractionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5745,6 +5769,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CapabilityStatementRestResourceSearchParamComponent) b, options);
+      }
+
       public void copyValues(CapabilityStatementRestResourceSearchParamComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -6119,6 +6147,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CapabilityStatementRestResourceOperationComponent) b, options);
+      }
+
       public void copyValues(CapabilityStatementRestResourceOperationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -6415,6 +6447,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         SystemInteractionComponent dst = new SystemInteractionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SystemInteractionComponent) b, options);
       }
 
       public void copyValues(SystemInteractionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6841,6 +6877,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CapabilityStatementMessagingComponent) b, options);
+      }
+
       public void copyValues(CapabilityStatementMessagingComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (endpointList != null) {
@@ -7126,6 +7166,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         CapabilityStatementMessagingEndpointComponent dst = new CapabilityStatementMessagingEndpointComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CapabilityStatementMessagingEndpointComponent) b, options);
       }
 
       public void copyValues(CapabilityStatementMessagingEndpointComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7414,6 +7458,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         CapabilityStatementMessagingSupportedMessageComponent dst = new CapabilityStatementMessagingSupportedMessageComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CapabilityStatementMessagingSupportedMessageComponent) b, options);
       }
 
       public void copyValues(CapabilityStatementMessagingSupportedMessageComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7779,6 +7827,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         CapabilityStatementDocumentComponent dst = new CapabilityStatementDocumentComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CapabilityStatementDocumentComponent) b, options);
       }
 
       public void copyValues(CapabilityStatementDocumentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10274,6 +10326,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         CapabilityStatement dst = new CapabilityStatement(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CapabilityStatement) b, options);
       }
 
       public void copyValues(CapabilityStatement dst, EnumSet<CopyObjectOptions> options) {

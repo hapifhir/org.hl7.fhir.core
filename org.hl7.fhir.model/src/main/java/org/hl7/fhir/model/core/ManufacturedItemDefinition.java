@@ -410,6 +410,10 @@ public class ManufacturedItemDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ManufacturedItemDefinitionPropertyComponent) b, options);
+      }
+
       public void copyValues(ManufacturedItemDefinitionPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -967,6 +971,10 @@ public class ManufacturedItemDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ManufacturedItemDefinitionComponentComponent) b, options);
+      }
+
       public void copyValues(ManufacturedItemDefinitionComponentComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -1424,6 +1432,10 @@ public class ManufacturedItemDefinition extends DomainResource {
         ManufacturedItemDefinitionComponentConstituentComponent dst = new ManufacturedItemDefinitionComponentConstituentComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ManufacturedItemDefinitionComponentConstituentComponent) b, options);
       }
 
       public void copyValues(ManufacturedItemDefinitionComponentConstituentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2293,6 +2305,10 @@ public class ManufacturedItemDefinition extends DomainResource {
         ManufacturedItemDefinition dst = new ManufacturedItemDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ManufacturedItemDefinition) b, options);
       }
 
       public void copyValues(ManufacturedItemDefinition dst, EnumSet<CopyObjectOptions> options) {

@@ -654,6 +654,10 @@ public class Endpoint extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EndpointPayloadComponent) b, options);
+      }
+
       public void copyValues(EndpointPayloadComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (typeList != null) {
@@ -1733,6 +1737,10 @@ public class Endpoint extends DomainResource {
         Endpoint dst = new Endpoint(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Endpoint) b, options);
       }
 
       public void copyValues(Endpoint dst, EnumSet<CopyObjectOptions> options) {

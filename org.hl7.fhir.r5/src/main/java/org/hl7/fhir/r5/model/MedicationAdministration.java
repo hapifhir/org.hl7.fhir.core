@@ -415,6 +415,10 @@ public class MedicationAdministration extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((MedicationAdministrationPerformerComponent) b);
+      }
+
       public void copyValues(MedicationAdministrationPerformerComponent dst) {
         super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
@@ -885,6 +889,10 @@ The dosage instructions should reflect the dosage of the medication that was adm
         MedicationAdministrationDosageComponent dst = new MedicationAdministrationDosageComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MedicationAdministrationDosageComponent) b);
       }
 
       public void copyValues(MedicationAdministrationDosageComponent dst) {
@@ -2475,6 +2483,10 @@ The dosage instructions should reflect the dosage of the medication that was adm
         MedicationAdministration dst = new MedicationAdministration();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MedicationAdministration) b);
       }
 
       public void copyValues(MedicationAdministration dst) {

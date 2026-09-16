@@ -70,6 +70,10 @@ public class Age extends Quantity implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((Age) b);
+      }
+
       public void copyValues(Age dst) {
         super.copyValues(dst);
       }

@@ -94,6 +94,10 @@ public abstract class BaseReference extends DataType implements IBaseReference, 
 	}
 
   @Override
+  public void assign(Base b) {
+    copyValues((Element) b);
+  }
+
   public void copyValues(Element dst) {
     super.copyValues(dst);
     if (resource != null && dst instanceof BaseReference) {

@@ -445,6 +445,10 @@ public class Availability extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AvailabilityAvailableTimeComponent) b, options);
+      }
+
       public void copyValues(AvailabilityAvailableTimeComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (daysOfWeekList != null) {
@@ -718,6 +722,10 @@ public class Availability extends DataType implements ICompositeType {
         AvailabilityNotAvailableTimeComponent dst = new AvailabilityNotAvailableTimeComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AvailabilityNotAvailableTimeComponent) b, options);
       }
 
       public void copyValues(AvailabilityNotAvailableTimeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1048,6 +1056,10 @@ public class Availability extends DataType implements ICompositeType {
         Availability dst = new Availability(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Availability) b, options);
       }
 
       public void copyValues(Availability dst, EnumSet<CopyObjectOptions> options) {

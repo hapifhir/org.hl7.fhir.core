@@ -312,6 +312,10 @@ public class Money extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Money) b, options);
+      }
+
       public void copyValues(Money dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.value = value == null ? null : value.copy(options);

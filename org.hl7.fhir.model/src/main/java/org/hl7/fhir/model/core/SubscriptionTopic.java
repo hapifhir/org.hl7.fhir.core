@@ -934,6 +934,10 @@ public class SubscriptionTopic extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionTopicTriggerComponent) b, options);
+      }
+
       public void copyValues(SubscriptionTopicTriggerComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.description = description == null ? null : description.copy(options);
@@ -1488,6 +1492,10 @@ public class SubscriptionTopic extends CanonicalResource {
         SubscriptionTopicTriggerQueryCriteriaComponent dst = new SubscriptionTopicTriggerQueryCriteriaComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionTopicTriggerQueryCriteriaComponent) b, options);
       }
 
       public void copyValues(SubscriptionTopicTriggerQueryCriteriaComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2117,6 +2125,10 @@ public class SubscriptionTopic extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionTopicTriggerCanFilterByComponent) b, options);
+      }
+
       public void copyValues(SubscriptionTopicTriggerCanFilterByComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.description = description == null ? null : description.copy(options);
@@ -2596,6 +2608,10 @@ public class SubscriptionTopic extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionTopicTriggerNotificationShapeComponent) b, options);
+      }
+
       public void copyValues(SubscriptionTopicTriggerNotificationShapeComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.resource = resource == null ? null : resource.copy(options);
@@ -2883,6 +2899,10 @@ public class SubscriptionTopic extends CanonicalResource {
         SubscriptionTopicTriggerNotificationShapeRelatedQueryComponent dst = new SubscriptionTopicTriggerNotificationShapeRelatedQueryComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionTopicTriggerNotificationShapeRelatedQueryComponent) b, options);
       }
 
       public void copyValues(SubscriptionTopicTriggerNotificationShapeRelatedQueryComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4683,6 +4703,10 @@ public class SubscriptionTopic extends CanonicalResource {
         SubscriptionTopic dst = new SubscriptionTopic(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionTopic) b, options);
       }
 
       public void copyValues(SubscriptionTopic dst, EnumSet<CopyObjectOptions> options) {

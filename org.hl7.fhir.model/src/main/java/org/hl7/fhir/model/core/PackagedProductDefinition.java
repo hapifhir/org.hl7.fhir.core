@@ -245,6 +245,10 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PackagedProductDefinitionLegalStatusOfSupplyComponent) b, options);
+      }
+
       public void copyValues(PackagedProductDefinitionLegalStatusOfSupplyComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -1159,6 +1163,10 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PackagedProductDefinitionPackagingComponent) b, options);
+      }
+
       public void copyValues(PackagedProductDefinitionPackagingComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (identifierList != null) {
@@ -1575,6 +1583,10 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PackagedProductDefinitionPackagingPropertyComponent) b, options);
+      }
+
       public void copyValues(PackagedProductDefinitionPackagingPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -1818,6 +1830,10 @@ public class PackagedProductDefinition extends DomainResource {
         PackagedProductDefinitionPackagingContainedItemComponent dst = new PackagedProductDefinitionPackagingContainedItemComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PackagedProductDefinitionPackagingContainedItemComponent) b, options);
       }
 
       public void copyValues(PackagedProductDefinitionPackagingContainedItemComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2998,6 +3014,10 @@ public class PackagedProductDefinition extends DomainResource {
         PackagedProductDefinition dst = new PackagedProductDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PackagedProductDefinition) b, options);
       }
 
       public void copyValues(PackagedProductDefinition dst, EnumSet<CopyObjectOptions> options) {

@@ -356,6 +356,10 @@ public class Binary extends BaseBinary implements IBaseBinary {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Binary) b, options);
+      }
+
       public void copyValues(Binary dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.contentType = contentType == null ? null : contentType.copy(options);

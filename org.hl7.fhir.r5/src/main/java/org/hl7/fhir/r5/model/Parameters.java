@@ -1449,6 +1449,10 @@ public class Parameters extends Resource implements IBaseParameters {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ParametersParameterComponent) b);
+      }
+
       public void copyValues(ParametersParameterComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -1715,6 +1719,10 @@ public String toString() {
         Parameters dst = new Parameters();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Parameters) b);
       }
 
       public void copyValues(Parameters dst) {

@@ -1304,6 +1304,10 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((OperationDefinitionParameterComponent) b);
+      }
+
       public void copyValues(OperationDefinitionParameterComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -1609,6 +1613,10 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((OperationDefinitionParameterBindingComponent) b);
+      }
+
       public void copyValues(OperationDefinitionParameterBindingComponent dst) {
         super.copyValues(dst);
         dst.strength = strength == null ? null : strength.copy();
@@ -1871,6 +1879,10 @@ public class OperationDefinition extends CanonicalResource {
         OperationDefinitionParameterReferencedFromComponent dst = new OperationDefinitionParameterReferencedFromComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((OperationDefinitionParameterReferencedFromComponent) b);
       }
 
       public void copyValues(OperationDefinitionParameterReferencedFromComponent dst) {
@@ -2143,6 +2155,10 @@ public class OperationDefinition extends CanonicalResource {
         OperationDefinitionOverloadComponent dst = new OperationDefinitionOverloadComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((OperationDefinitionOverloadComponent) b);
       }
 
       public void copyValues(OperationDefinitionOverloadComponent dst) {
@@ -4439,6 +4455,10 @@ public class OperationDefinition extends CanonicalResource {
         OperationDefinition dst = new OperationDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((OperationDefinition) b);
       }
 
       public void copyValues(OperationDefinition dst) {

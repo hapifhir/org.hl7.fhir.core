@@ -319,6 +319,10 @@ public class DeviceRequest extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceRequestParameterComponent) b, options);
+      }
+
       public void copyValues(DeviceRequestParameterComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -2257,6 +2261,10 @@ public class DeviceRequest extends DomainResource {
         DeviceRequest dst = new DeviceRequest(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceRequest) b, options);
       }
 
       public void copyValues(DeviceRequest dst, EnumSet<CopyObjectOptions> options) {

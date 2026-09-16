@@ -292,6 +292,10 @@ public abstract class VERSION extends LogicalBase implements ICompositeType {
 
       public abstract VERSION copy();
 
+      public void assign(Base b) {
+        copyValues((VERSION) b);
+      }
+
       public void copyValues(VERSION dst) {
         super.copyValues(dst);
         dst.contribution = contribution == null ? null : contribution.copy();

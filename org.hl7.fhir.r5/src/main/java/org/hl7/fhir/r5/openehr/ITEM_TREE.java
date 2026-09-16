@@ -183,6 +183,10 @@ public class ITEM_TREE extends ITEM_STRUCTURE implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ITEM_TREE) b);
+      }
+
       public void copyValues(ITEM_TREE dst) {
         super.copyValues(dst);
         if (itemsList != null) {

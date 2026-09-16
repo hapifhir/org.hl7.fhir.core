@@ -1572,6 +1572,10 @@ public class MeasureReport extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureReportGroupComponent) b, options);
+      }
+
       public void copyValues(MeasureReportGroupComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.linkId = linkId == null ? null : linkId.copy(options);
@@ -2355,6 +2359,10 @@ public class MeasureReport extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureReportGroupPopulationComponent) b, options);
+      }
+
       public void copyValues(MeasureReportGroupPopulationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.linkId = linkId == null ? null : linkId.copy(options);
@@ -2876,6 +2884,10 @@ public class MeasureReport extends DomainResource {
         MeasureReportGroupStratifierComponent dst = new MeasureReportGroupStratifierComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureReportGroupStratifierComponent) b, options);
       }
 
       public void copyValues(MeasureReportGroupStratifierComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3569,6 +3581,10 @@ public class MeasureReport extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((StratifierGroupComponent) b, options);
+      }
+
       public void copyValues(StratifierGroupComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.value = value == null ? null : value.copy(options);
@@ -4122,6 +4138,10 @@ public class MeasureReport extends DomainResource {
         StratifierGroupComponentComponent dst = new StratifierGroupComponentComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((StratifierGroupComponentComponent) b, options);
       }
 
       public void copyValues(StratifierGroupComponentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4696,6 +4716,10 @@ public class MeasureReport extends DomainResource {
         StratifierGroupPopulationComponent dst = new StratifierGroupPopulationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((StratifierGroupPopulationComponent) b, options);
       }
 
       public void copyValues(StratifierGroupPopulationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5991,6 +6015,10 @@ public class MeasureReport extends DomainResource {
         MeasureReport dst = new MeasureReport(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MeasureReport) b, options);
       }
 
       public void copyValues(MeasureReport dst, EnumSet<CopyObjectOptions> options) {

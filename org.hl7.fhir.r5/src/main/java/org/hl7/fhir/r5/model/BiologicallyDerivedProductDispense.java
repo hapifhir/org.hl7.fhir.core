@@ -431,6 +431,10 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((BiologicallyDerivedProductDispensePerformerComponent) b);
+      }
+
       public void copyValues(BiologicallyDerivedProductDispensePerformerComponent dst) {
         super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
@@ -1550,6 +1554,10 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
         BiologicallyDerivedProductDispense dst = new BiologicallyDerivedProductDispense();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((BiologicallyDerivedProductDispense) b);
       }
 
       public void copyValues(BiologicallyDerivedProductDispense dst) {

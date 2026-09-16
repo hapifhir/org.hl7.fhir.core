@@ -794,6 +794,10 @@ public class ContactPoint extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ContactPoint) b);
+      }
+
       public void copyValues(ContactPoint dst) {
         super.copyValues(dst);
         dst.system = system == null ? null : system.copy();

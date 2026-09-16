@@ -352,6 +352,10 @@ public class EHR_STATUS extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((EHR_STATUS) b);
+      }
+
       public void copyValues(EHR_STATUS dst) {
         super.copyValues(dst);
         dst.subject = subject == null ? null : subject.copy();

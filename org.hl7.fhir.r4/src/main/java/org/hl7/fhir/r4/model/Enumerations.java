@@ -13766,6 +13766,11 @@ public class Enumerations {
             case _6_0_0CIBUILD: return "R6 Rolling ci-build.";
             case _6_0_0: return "R6 Final Version.";
             case _6_0_0_BALLOT1: return "R6 Ballot #1.";
+            case _6_0_0_BALLOT2: return "R6 2nd Draft Ballot.";
+            case _6_0_0_BALLOT3: return "R6 3rd Draft Ballot.";
+            case _6_0_0_BALLOT4: return "R6 1st Normative Ballot.";
+            case _6_0_0_BALLOT5: return "R6 2nd Normative Ballot.";
+            case _6_0_0_SNAPSHOT1: return "R6 Stable Version.";
             case NULL: return null;
             default: return "?";
           }

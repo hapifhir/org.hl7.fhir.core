@@ -386,6 +386,10 @@ public class Annotation extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Annotation) b, options);
+      }
+
       public void copyValues(Annotation dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.author = author == null ? null : author.copy(options);

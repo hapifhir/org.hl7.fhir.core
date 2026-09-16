@@ -298,6 +298,10 @@ public class ROLE extends PARTY implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ROLE) b);
+      }
+
       public void copyValues(ROLE dst) {
         super.copyValues(dst);
         dst.time_validity = time_validity == null ? null : time_validity.copy();

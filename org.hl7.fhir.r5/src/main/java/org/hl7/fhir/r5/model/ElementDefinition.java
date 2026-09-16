@@ -1400,6 +1400,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ElementDefinitionSlicingComponent) b);
+      }
+
       public void copyValues(ElementDefinitionSlicingComponent dst) {
         super.copyValues(dst);
         if (discriminator != null) {
@@ -1708,6 +1712,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         ElementDefinitionSlicingDiscriminatorComponent dst = new ElementDefinitionSlicingDiscriminatorComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ElementDefinitionSlicingDiscriminatorComponent) b);
       }
 
       public void copyValues(ElementDefinitionSlicingDiscriminatorComponent dst) {
@@ -2042,6 +2050,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         ElementDefinitionBaseComponent dst = new ElementDefinitionBaseComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ElementDefinitionBaseComponent) b);
       }
 
       public void copyValues(ElementDefinitionBaseComponent dst) {
@@ -2567,6 +2579,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         TypeRefComponent dst = new TypeRefComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((TypeRefComponent) b);
       }
 
       public void copyValues(TypeRefComponent dst) {
@@ -3990,6 +4006,10 @@ public boolean hasTarget() {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ElementDefinitionExampleComponent) b);
+      }
+
       public void copyValues(ElementDefinitionExampleComponent dst) {
         super.copyValues(dst);
         dst.label = label == null ? null : label.copy();
@@ -4603,6 +4623,10 @@ public boolean hasTarget() {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ElementDefinitionConstraintComponent) b);
+      }
+
       public void copyValues(ElementDefinitionConstraintComponent dst) {
         super.copyValues(dst);
         dst.key = key == null ? null : key.copy();
@@ -5030,6 +5054,10 @@ public boolean hasTarget() {
         ElementDefinitionBindingComponent dst = new ElementDefinitionBindingComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ElementDefinitionBindingComponent) b);
       }
 
       public void copyValues(ElementDefinitionBindingComponent dst) {
@@ -5601,6 +5629,10 @@ public boolean hasTarget() {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ElementDefinitionBindingAdditionalComponent) b);
+      }
+
       public void copyValues(ElementDefinitionBindingAdditionalComponent dst) {
         super.copyValues(dst);
         dst.purpose = purpose == null ? null : purpose.copy();
@@ -6020,6 +6052,10 @@ public boolean hasTarget() {
         ElementDefinitionMappingComponent dst = new ElementDefinitionMappingComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ElementDefinitionMappingComponent) b);
       }
 
       public void copyValues(ElementDefinitionMappingComponent dst) {
@@ -12858,6 +12894,10 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         ElementDefinition dst = new ElementDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ElementDefinition) b);
       }
 
       public void copyValues(ElementDefinition dst) {

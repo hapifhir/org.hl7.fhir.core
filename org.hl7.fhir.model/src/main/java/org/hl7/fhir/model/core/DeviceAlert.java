@@ -443,6 +443,10 @@ public class DeviceAlert extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceAlertDerivedFromComponent) b, options);
+      }
+
       public void copyValues(DeviceAlertDerivedFromComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.observation = observation == null ? null : observation.copy(options);
@@ -1002,6 +1006,10 @@ public class DeviceAlert extends DomainResource {
         DeviceAlertSignalComponent dst = new DeviceAlertSignalComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceAlertSignalComponent) b, options);
       }
 
       public void copyValues(DeviceAlertSignalComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2249,6 +2257,10 @@ public class DeviceAlert extends DomainResource {
         DeviceAlert dst = new DeviceAlert(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceAlert) b, options);
       }
 
       public void copyValues(DeviceAlert dst, EnumSet<CopyObjectOptions> options) {

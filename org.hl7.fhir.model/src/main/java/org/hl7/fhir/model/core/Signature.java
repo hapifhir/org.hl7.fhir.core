@@ -628,6 +628,10 @@ public class Signature extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Signature) b, options);
+      }
+
       public void copyValues(Signature dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (typeList != null) {

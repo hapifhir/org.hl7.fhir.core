@@ -272,6 +272,10 @@ public class LINK extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((LINK) b);
+      }
+
       public void copyValues(LINK dst) {
         super.copyValues(dst);
         dst.meaning = meaning == null ? null : meaning.copy();

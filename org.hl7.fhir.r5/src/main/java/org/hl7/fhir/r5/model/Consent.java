@@ -414,6 +414,10 @@ public class Consent extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ConsentPolicyBasisComponent) b);
+      }
+
       public void copyValues(ConsentPolicyBasisComponent dst) {
         super.copyValues(dst);
         dst.reference = reference == null ? null : reference.copy();
@@ -830,6 +834,10 @@ public class Consent extends DomainResource {
         ConsentVerificationComponent dst = new ConsentVerificationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ConsentVerificationComponent) b);
       }
 
       public void copyValues(ConsentVerificationComponent dst) {
@@ -1783,6 +1791,10 @@ public class Consent extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ProvisionComponent) b);
+      }
+
       public void copyValues(ProvisionComponent dst) {
         super.copyValues(dst);
         dst.period = period == null ? null : period.copy();
@@ -2048,6 +2060,10 @@ public class Consent extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ProvisionActorComponent) b);
+      }
+
       public void copyValues(ProvisionActorComponent dst) {
         super.copyValues(dst);
         dst.role = role == null ? null : role.copy();
@@ -2291,6 +2307,10 @@ public class Consent extends DomainResource {
         ProvisionDataComponent dst = new ProvisionDataComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ProvisionDataComponent) b);
       }
 
       public void copyValues(ProvisionDataComponent dst) {
@@ -3680,6 +3700,10 @@ public class Consent extends DomainResource {
         Consent dst = new Consent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Consent) b);
       }
 
       public void copyValues(Consent dst) {

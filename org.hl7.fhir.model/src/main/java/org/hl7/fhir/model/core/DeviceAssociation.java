@@ -885,6 +885,10 @@ public class DeviceAssociation extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceAssociation) b, options);
+      }
+
       public void copyValues(DeviceAssociation dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (identifierList != null) {

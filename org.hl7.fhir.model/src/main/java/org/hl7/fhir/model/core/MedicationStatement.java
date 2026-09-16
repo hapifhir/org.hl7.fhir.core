@@ -375,6 +375,10 @@ public class MedicationStatement extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationStatementAdherenceComponent) b, options);
+      }
+
       public void copyValues(MedicationStatementAdherenceComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -1682,6 +1686,10 @@ public class MedicationStatement extends DomainResource {
         MedicationStatement dst = new MedicationStatement(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationStatement) b, options);
       }
 
       public void copyValues(MedicationStatement dst, EnumSet<CopyObjectOptions> options) {

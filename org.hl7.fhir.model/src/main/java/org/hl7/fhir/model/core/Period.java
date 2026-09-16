@@ -292,6 +292,10 @@ public class Period extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Period) b, options);
+      }
+
       public void copyValues(Period dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.start = start == null ? null : start.copy(options);

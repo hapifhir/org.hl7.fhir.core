@@ -300,6 +300,10 @@ public class CONTRIBUTION extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CONTRIBUTION) b);
+      }
+
       public void copyValues(CONTRIBUTION dst) {
         super.copyValues(dst);
         dst.uid = uid == null ? null : uid.copy();

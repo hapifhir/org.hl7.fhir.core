@@ -1407,6 +1407,10 @@ public class ObservationDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ObservationDefinitionQualifiedValueComponent) b, options);
+      }
+
       public void copyValues(ObservationDefinitionQualifiedValueComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.context = context == null ? null : context.copy(options);
@@ -1891,6 +1895,10 @@ public class ObservationDefinition extends DomainResource {
         ObservationDefinitionComponentComponent dst = new ObservationDefinitionComponentComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ObservationDefinitionComponentComponent) b, options);
       }
 
       public void copyValues(ObservationDefinitionComponentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4870,6 +4878,10 @@ public class ObservationDefinition extends DomainResource {
         ObservationDefinition dst = new ObservationDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ObservationDefinition) b, options);
       }
 
       public void copyValues(ObservationDefinition dst, EnumSet<CopyObjectOptions> options) {

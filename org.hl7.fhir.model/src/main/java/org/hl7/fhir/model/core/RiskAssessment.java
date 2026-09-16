@@ -614,6 +614,10 @@ public class RiskAssessment extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RiskAssessmentPredictionComponent) b, options);
+      }
+
       public void copyValues(RiskAssessmentPredictionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.outcome = outcome == null ? null : outcome.copy(options);
@@ -1806,6 +1810,10 @@ public class RiskAssessment extends DomainResource {
         RiskAssessment dst = new RiskAssessment(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RiskAssessment) b, options);
       }
 
       public void copyValues(RiskAssessment dst, EnumSet<CopyObjectOptions> options) {

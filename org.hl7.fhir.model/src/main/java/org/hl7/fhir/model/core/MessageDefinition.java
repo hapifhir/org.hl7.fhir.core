@@ -704,6 +704,10 @@ public class MessageDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageDefinitionFocusComponent) b, options);
+      }
+
       public void copyValues(MessageDefinitionFocusComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -1002,6 +1006,10 @@ public class MessageDefinition extends CanonicalResource {
         MessageDefinitionAllowedResponseComponent dst = new MessageDefinitionAllowedResponseComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageDefinitionAllowedResponseComponent) b, options);
       }
 
       public void copyValues(MessageDefinitionAllowedResponseComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3074,6 +3082,10 @@ public class MessageDefinition extends CanonicalResource {
         MessageDefinition dst = new MessageDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageDefinition) b, options);
       }
 
       public void copyValues(MessageDefinition dst, EnumSet<CopyObjectOptions> options) {

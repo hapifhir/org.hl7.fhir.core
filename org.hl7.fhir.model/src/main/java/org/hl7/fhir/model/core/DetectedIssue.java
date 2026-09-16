@@ -435,6 +435,10 @@ public class DetectedIssue extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DetectedIssueEvidenceComponent) b, options);
+      }
+
       public void copyValues(DetectedIssueEvidenceComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (codeList != null) {
@@ -837,6 +841,10 @@ public class DetectedIssue extends DomainResource {
         DetectedIssueMitigationComponent dst = new DetectedIssueMitigationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DetectedIssueMitigationComponent) b, options);
       }
 
       public void copyValues(DetectedIssueMitigationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2199,6 +2207,10 @@ public class DetectedIssue extends DomainResource {
         DetectedIssue dst = new DetectedIssue(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DetectedIssue) b, options);
       }
 
       public void copyValues(DetectedIssue dst, EnumSet<CopyObjectOptions> options) {

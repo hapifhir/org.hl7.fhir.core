@@ -799,6 +799,10 @@ public class Schedule extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Schedule) b, options);
+      }
+
       public void copyValues(Schedule dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (identifierList != null) {

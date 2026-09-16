@@ -963,6 +963,10 @@ public class SampledData extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SampledData) b, options);
+      }
+
       public void copyValues(SampledData dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.origin = origin == null ? null : origin.copy(options);

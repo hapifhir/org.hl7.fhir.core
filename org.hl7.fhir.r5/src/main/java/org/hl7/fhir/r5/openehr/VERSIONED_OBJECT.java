@@ -272,6 +272,10 @@ public class VERSIONED_OBJECT extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((VERSIONED_OBJECT) b);
+      }
+
       public void copyValues(VERSIONED_OBJECT dst) {
         super.copyValues(dst);
         dst.uid = uid == null ? null : uid.copy();

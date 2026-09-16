@@ -311,6 +311,10 @@ public class PARTY_RELATIONSHIP extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((PARTY_RELATIONSHIP) b);
+      }
+
       public void copyValues(PARTY_RELATIONSHIP dst) {
         super.copyValues(dst);
         dst.details = details == null ? null : details.copy();

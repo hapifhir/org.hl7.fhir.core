@@ -1294,6 +1294,10 @@ public class PaymentReconciliation extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PaymentReconciliationAllocationComponent) b, options);
+      }
+
       public void copyValues(PaymentReconciliationAllocationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.identifier = identifier == null ? null : identifier.copy(options);
@@ -1765,6 +1769,10 @@ public class PaymentReconciliation extends DomainResource {
         NotesComponent dst = new NotesComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NotesComponent) b, options);
       }
 
       public void copyValues(NotesComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3856,6 +3864,10 @@ public class PaymentReconciliation extends DomainResource {
         PaymentReconciliation dst = new PaymentReconciliation(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PaymentReconciliation) b, options);
       }
 
       public void copyValues(PaymentReconciliation dst, EnumSet<CopyObjectOptions> options) {

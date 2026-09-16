@@ -197,6 +197,10 @@ public class DV_DURATION extends DV_AMOUNT implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DV_DURATION) b);
+      }
+
       public void copyValues(DV_DURATION dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

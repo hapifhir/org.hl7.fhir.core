@@ -634,6 +634,10 @@ public class DV_MULTIMEDIA extends DV_ENCAPSULATED implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DV_MULTIMEDIA) b);
+      }
+
       public void copyValues(DV_MULTIMEDIA dst) {
         super.copyValues(dst);
         dst.alternate_text = alternate_text == null ? null : alternate_text.copy();

@@ -253,6 +253,10 @@ public class ResearchStudy extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ResearchStudyLabelComponent) b);
+      }
+
       public void copyValues(ResearchStudyLabelComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -696,6 +700,10 @@ public class ResearchStudy extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ResearchStudyAssociatedPartyComponent) b);
+      }
+
       public void copyValues(ResearchStudyAssociatedPartyComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -995,6 +1003,10 @@ public class ResearchStudy extends DomainResource {
         ResearchStudyProgressStatusComponent dst = new ResearchStudyProgressStatusComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ResearchStudyProgressStatusComponent) b);
       }
 
       public void copyValues(ResearchStudyProgressStatusComponent dst) {
@@ -1343,6 +1355,10 @@ public class ResearchStudy extends DomainResource {
         ResearchStudyRecruitmentComponent dst = new ResearchStudyRecruitmentComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ResearchStudyRecruitmentComponent) b);
       }
 
       public void copyValues(ResearchStudyRecruitmentComponent dst) {
@@ -1856,6 +1872,10 @@ public class ResearchStudy extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ResearchStudyComparisonGroupComponent) b);
+      }
+
       public void copyValues(ResearchStudyComparisonGroupComponent dst) {
         super.copyValues(dst);
         dst.linkId = linkId == null ? null : linkId.copy();
@@ -2174,6 +2194,10 @@ public class ResearchStudy extends DomainResource {
         ResearchStudyObjectiveComponent dst = new ResearchStudyObjectiveComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ResearchStudyObjectiveComponent) b);
       }
 
       public void copyValues(ResearchStudyObjectiveComponent dst) {
@@ -2560,6 +2584,10 @@ public class ResearchStudy extends DomainResource {
         ResearchStudyOutcomeMeasureComponent dst = new ResearchStudyOutcomeMeasureComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ResearchStudyOutcomeMeasureComponent) b);
       }
 
       public void copyValues(ResearchStudyOutcomeMeasureComponent dst) {
@@ -4933,6 +4961,10 @@ public class ResearchStudy extends DomainResource {
         ResearchStudy dst = new ResearchStudy();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ResearchStudy) b);
       }
 
       public void copyValues(ResearchStudy dst) {

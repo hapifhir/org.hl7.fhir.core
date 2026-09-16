@@ -69,6 +69,10 @@ public class TERMINOLOGY_ID extends OBJECT_ID implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((TERMINOLOGY_ID) b);
+      }
+
       public void copyValues(TERMINOLOGY_ID dst) {
         super.copyValues(dst);
       }

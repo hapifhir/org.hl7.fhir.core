@@ -609,6 +609,10 @@ public class CareTeam extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CareTeamParticipantComponent) b, options);
+      }
+
       public void copyValues(CareTeamParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.role = role == null ? null : role.copy(options);
@@ -1532,6 +1536,10 @@ public class CareTeam extends DomainResource {
         CareTeam dst = new CareTeam(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CareTeam) b, options);
       }
 
       public void copyValues(CareTeam dst, EnumSet<CopyObjectOptions> options) {

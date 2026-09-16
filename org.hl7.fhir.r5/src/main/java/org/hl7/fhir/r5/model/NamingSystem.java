@@ -811,6 +811,10 @@ public class NamingSystem extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((NamingSystemUniqueIdComponent) b);
+      }
+
       public void copyValues(NamingSystemUniqueIdComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -3150,6 +3154,10 @@ public class NamingSystem extends MetadataResource {
         NamingSystem dst = new NamingSystem();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((NamingSystem) b);
       }
 
       public void copyValues(NamingSystem dst) {

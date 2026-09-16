@@ -330,6 +330,10 @@ public class ServiceRequest extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ServiceRequestOrderDetailComponent) b, options);
+      }
+
       public void copyValues(ServiceRequestOrderDetailComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.parameterFocus = parameterFocus == null ? null : parameterFocus.copy(options);
@@ -718,6 +722,10 @@ public class ServiceRequest extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ServiceRequestOrderDetailParameterComponent) b, options);
+      }
+
       public void copyValues(ServiceRequestOrderDetailParameterComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -932,6 +940,10 @@ public class ServiceRequest extends DomainResource {
         ServiceRequestPatientInstructionComponent dst = new ServiceRequestPatientInstructionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ServiceRequestPatientInstructionComponent) b, options);
       }
 
       public void copyValues(ServiceRequestPatientInstructionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3307,6 +3319,10 @@ public class ServiceRequest extends DomainResource {
         ServiceRequest dst = new ServiceRequest(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ServiceRequest) b, options);
       }
 
       public void copyValues(ServiceRequest dst, EnumSet<CopyObjectOptions> options) {

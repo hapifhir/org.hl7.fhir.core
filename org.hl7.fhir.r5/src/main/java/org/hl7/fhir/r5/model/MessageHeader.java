@@ -495,6 +495,10 @@ public class MessageHeader extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((MessageDestinationComponent) b);
+      }
+
       public void copyValues(MessageDestinationComponent dst) {
         super.copyValues(dst);
         dst.endpoint = endpoint == null ? null : endpoint.copy();
@@ -959,6 +963,10 @@ public class MessageHeader extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((MessageSourceComponent) b);
+      }
+
       public void copyValues(MessageSourceComponent dst) {
         super.copyValues(dst);
         dst.endpoint = endpoint == null ? null : endpoint.copy();
@@ -1255,6 +1263,10 @@ public class MessageHeader extends DomainResource {
         MessageHeaderResponseComponent dst = new MessageHeaderResponseComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MessageHeaderResponseComponent) b);
       }
 
       public void copyValues(MessageHeaderResponseComponent dst) {
@@ -1974,6 +1986,10 @@ public class MessageHeader extends DomainResource {
         MessageHeader dst = new MessageHeader();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MessageHeader) b);
       }
 
       public void copyValues(MessageHeader dst) {

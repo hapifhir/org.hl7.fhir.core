@@ -592,6 +592,10 @@ public class DeviceMetric extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceMetricCalibrationComponent) b, options);
+      }
+
       public void copyValues(DeviceMetricCalibrationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -1416,6 +1420,10 @@ public class DeviceMetric extends DomainResource {
         DeviceMetric dst = new DeviceMetric(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceMetric) b, options);
       }
 
       public void copyValues(DeviceMetric dst, EnumSet<CopyObjectOptions> options) {

@@ -697,6 +697,10 @@ public class BodyStructure extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BodyStructureIncludedStructureComponent) b, options);
+      }
+
       public void copyValues(BodyStructureIncludedStructureComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.structure = structure == null ? null : structure.copy(options);
@@ -1173,6 +1177,10 @@ public class BodyStructure extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BodyStructureIncludedStructureBodyLandmarkOrientationComponent) b, options);
+      }
+
       public void copyValues(BodyStructureIncludedStructureBodyLandmarkOrientationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (landmarkDescriptionList != null) {
@@ -1473,6 +1481,10 @@ public class BodyStructure extends DomainResource {
         BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent dst = new BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent) b, options);
       }
 
       public void copyValues(BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2119,6 +2131,10 @@ public class BodyStructure extends DomainResource {
         BodyStructure dst = new BodyStructure(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BodyStructure) b, options);
       }
 
       public void copyValues(BodyStructure dst, EnumSet<CopyObjectOptions> options) {

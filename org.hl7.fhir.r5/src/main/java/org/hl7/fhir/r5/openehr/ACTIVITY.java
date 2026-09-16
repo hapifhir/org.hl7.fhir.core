@@ -287,6 +287,10 @@ public class ACTIVITY extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ACTIVITY) b);
+      }
+
       public void copyValues(ACTIVITY dst) {
         super.copyValues(dst);
         dst.timing = timing == null ? null : timing.copy();

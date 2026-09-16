@@ -946,6 +946,10 @@ public class OrganizationAffiliation extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((OrganizationAffiliation) b);
+      }
+
       public void copyValues(OrganizationAffiliation dst) {
         super.copyValues(dst);
         if (identifier != null) {

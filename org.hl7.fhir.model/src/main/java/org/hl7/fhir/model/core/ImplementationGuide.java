@@ -6197,6 +6197,10 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDependsOnComponent) b, options);
+      }
+
       public void copyValues(ImplementationGuideDependsOnComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.uri = uri == null ? null : uri.copy(options);
@@ -6493,6 +6497,10 @@ public class ImplementationGuide extends CanonicalResource {
         ImplementationGuideGlobalComponent dst = new ImplementationGuideGlobalComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideGlobalComponent) b, options);
       }
 
       public void copyValues(ImplementationGuideGlobalComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6968,6 +6976,10 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDefinitionComponent) b, options);
+      }
+
       public void copyValues(ImplementationGuideDefinitionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (groupingList != null) {
@@ -7286,6 +7298,10 @@ public class ImplementationGuide extends CanonicalResource {
         ImplementationGuideDefinitionGroupingComponent dst = new ImplementationGuideDefinitionGroupingComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDefinitionGroupingComponent) b, options);
       }
 
       public void copyValues(ImplementationGuideDefinitionGroupingComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7948,6 +7964,10 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDefinitionResourceComponent) b, options);
+      }
+
       public void copyValues(ImplementationGuideDefinitionResourceComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.reference = reference == null ? null : reference.copy(options);
@@ -8525,6 +8545,10 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDefinitionPageComponent) b, options);
+      }
+
       public void copyValues(ImplementationGuideDefinitionPageComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.source = source == null ? null : source.copy(options);
@@ -8809,6 +8833,10 @@ public class ImplementationGuide extends CanonicalResource {
         ImplementationGuideDefinitionParameterComponent dst = new ImplementationGuideDefinitionParameterComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDefinitionParameterComponent) b, options);
       }
 
       public void copyValues(ImplementationGuideDefinitionParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9172,6 +9200,10 @@ public class ImplementationGuide extends CanonicalResource {
         ImplementationGuideDefinitionTemplateComponent dst = new ImplementationGuideDefinitionTemplateComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideDefinitionTemplateComponent) b, options);
       }
 
       public void copyValues(ImplementationGuideDefinitionTemplateComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9704,6 +9736,10 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuideManifestComponent) b, options);
+      }
+
       public void copyValues(ImplementationGuideManifestComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.rendering = rendering == null ? null : rendering.copy(options);
@@ -10159,6 +10195,10 @@ public class ImplementationGuide extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ManifestResourceComponent) b, options);
+      }
+
       public void copyValues(ManifestResourceComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.reference = reference == null ? null : reference.copy(options);
@@ -10542,6 +10582,10 @@ public class ImplementationGuide extends CanonicalResource {
         ManifestPageComponent dst = new ManifestPageComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ManifestPageComponent) b, options);
       }
 
       public void copyValues(ManifestPageComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -12478,6 +12522,10 @@ public class ImplementationGuide extends CanonicalResource {
         ImplementationGuide dst = new ImplementationGuide(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImplementationGuide) b, options);
       }
 
       public void copyValues(ImplementationGuide dst, EnumSet<CopyObjectOptions> options) {

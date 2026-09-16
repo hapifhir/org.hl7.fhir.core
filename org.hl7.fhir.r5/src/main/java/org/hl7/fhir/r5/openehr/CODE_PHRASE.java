@@ -316,6 +316,10 @@ public class CODE_PHRASE extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CODE_PHRASE) b);
+      }
+
       public void copyValues(CODE_PHRASE dst) {
         super.copyValues(dst);
         dst.terminology_id = terminology_id == null ? null : terminology_id.copy();

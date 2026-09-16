@@ -474,6 +474,10 @@ public class MessageHeader extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageDestinationComponent) b, options);
+      }
+
       public void copyValues(MessageDestinationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.endpoint = endpoint == null ? null : endpoint.copy(options);
@@ -1033,6 +1037,10 @@ public class MessageHeader extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageSourceComponent) b, options);
+      }
+
       public void copyValues(MessageSourceComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.endpoint = endpoint == null ? null : endpoint.copy(options);
@@ -1372,6 +1380,10 @@ public class MessageHeader extends DomainResource {
         MessageHeaderResponseComponent dst = new MessageHeaderResponseComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageHeaderResponseComponent) b, options);
       }
 
       public void copyValues(MessageHeaderResponseComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2013,6 +2025,10 @@ public class MessageHeader extends DomainResource {
         MessageHeader dst = new MessageHeader(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MessageHeader) b, options);
       }
 
       public void copyValues(MessageHeader dst, EnumSet<CopyObjectOptions> options) {

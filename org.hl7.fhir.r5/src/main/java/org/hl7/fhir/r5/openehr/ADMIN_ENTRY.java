@@ -175,6 +175,10 @@ public class ADMIN_ENTRY extends ENTRY implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ADMIN_ENTRY) b);
+      }
+
       public void copyValues(ADMIN_ENTRY dst) {
         super.copyValues(dst);
         dst.data = data == null ? null : data.copy();

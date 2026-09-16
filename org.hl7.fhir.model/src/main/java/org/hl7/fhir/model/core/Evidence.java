@@ -487,6 +487,10 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceRelatesToComponent) b, options);
+      }
+
       public void copyValues(EvidenceRelatesToComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -741,6 +745,10 @@ public class Evidence extends MetadataResource {
         EvidenceClassificationComponent dst = new EvidenceClassificationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceClassificationComponent) b, options);
       }
 
       public void copyValues(EvidenceClassificationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1400,6 +1408,10 @@ public class Evidence extends MetadataResource {
         EvidenceVariableDefinitionComponent dst = new EvidenceVariableDefinitionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceVariableDefinitionComponent) b, options);
       }
 
       public void copyValues(EvidenceVariableDefinitionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2219,6 +2231,10 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceStatisticComponent) b, options);
+      }
+
       public void copyValues(EvidenceStatisticComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.description = description == null ? null : description.copy(options);
@@ -2839,6 +2855,10 @@ public class Evidence extends MetadataResource {
         EvidenceStatisticSampleSizeComponent dst = new EvidenceStatisticSampleSizeComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceStatisticSampleSizeComponent) b, options);
       }
 
       public void copyValues(EvidenceStatisticSampleSizeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3473,6 +3493,10 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceStatisticAttributeEstimateComponent) b, options);
+      }
+
       public void copyValues(EvidenceStatisticAttributeEstimateComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.description = description == null ? null : description.copy(options);
@@ -4098,6 +4122,10 @@ public class Evidence extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceStatisticModelCharacteristicComponent) b, options);
+      }
+
       public void copyValues(EvidenceStatisticModelCharacteristicComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -4588,6 +4616,10 @@ public class Evidence extends MetadataResource {
         EvidenceStatisticModelCharacteristicVariableComponent dst = new EvidenceStatisticModelCharacteristicVariableComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceStatisticModelCharacteristicVariableComponent) b, options);
       }
 
       public void copyValues(EvidenceStatisticModelCharacteristicVariableComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5155,6 +5187,10 @@ public class Evidence extends MetadataResource {
         EvidenceCertaintyComponent dst = new EvidenceCertaintyComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceCertaintyComponent) b, options);
       }
 
       public void copyValues(EvidenceCertaintyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7936,6 +7972,10 @@ public class Evidence extends MetadataResource {
         Evidence dst = new Evidence(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Evidence) b, options);
       }
 
       public void copyValues(Evidence dst, EnumSet<CopyObjectOptions> options) {

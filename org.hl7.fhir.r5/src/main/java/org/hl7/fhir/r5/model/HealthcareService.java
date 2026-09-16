@@ -252,6 +252,10 @@ public class HealthcareService extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((HealthcareServiceEligibilityComponent) b);
+      }
+
       public void copyValues(HealthcareServiceEligibilityComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -2020,6 +2024,10 @@ public class HealthcareService extends DomainResource {
         HealthcareService dst = new HealthcareService();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((HealthcareService) b);
       }
 
       public void copyValues(HealthcareService dst) {

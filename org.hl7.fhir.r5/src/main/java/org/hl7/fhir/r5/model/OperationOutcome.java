@@ -1321,6 +1321,10 @@ For resource issues, this will be a simple XPath limited to element names, repet
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((OperationOutcomeIssueComponent) b);
+      }
+
       public void copyValues(OperationOutcomeIssueComponent dst) {
         super.copyValues(dst);
         dst.severity = severity == null ? null : severity.copy();
@@ -1597,6 +1601,10 @@ For resource issues, this will be a simple XPath limited to element names, repet
         OperationOutcome dst = new OperationOutcome();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((OperationOutcome) b);
       }
 
       public void copyValues(OperationOutcome dst) {

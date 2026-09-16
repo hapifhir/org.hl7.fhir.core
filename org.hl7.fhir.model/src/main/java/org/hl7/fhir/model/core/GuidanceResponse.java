@@ -1517,6 +1517,10 @@ public class GuidanceResponse extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((GuidanceResponse) b, options);
+      }
+
       public void copyValues(GuidanceResponse dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.requestIdentifier = requestIdentifier == null ? null : requestIdentifier.copy(options);

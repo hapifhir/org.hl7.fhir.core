@@ -664,6 +664,10 @@ public class MessageDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((MessageDefinitionFocusComponent) b);
+      }
+
       public void copyValues(MessageDefinitionFocusComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -931,6 +935,10 @@ public class MessageDefinition extends CanonicalResource {
         MessageDefinitionAllowedResponseComponent dst = new MessageDefinitionAllowedResponseComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MessageDefinitionAllowedResponseComponent) b);
       }
 
       public void copyValues(MessageDefinitionAllowedResponseComponent dst) {
@@ -2981,6 +2989,10 @@ public class MessageDefinition extends CanonicalResource {
         MessageDefinition dst = new MessageDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MessageDefinition) b);
       }
 
       public void copyValues(MessageDefinition dst) {

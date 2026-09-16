@@ -69,6 +69,10 @@ public class ISO_OID extends UID implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ISO_OID) b);
+      }
+
       public void copyValues(ISO_OID dst) {
         super.copyValues(dst);
       }

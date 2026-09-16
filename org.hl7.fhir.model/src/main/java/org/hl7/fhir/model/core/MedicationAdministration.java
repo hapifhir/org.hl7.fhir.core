@@ -438,6 +438,10 @@ public class MedicationAdministration extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationAdministrationPerformerComponent) b, options);
+      }
+
       public void copyValues(MedicationAdministrationPerformerComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.function = function == null ? null : function.copy(options);
@@ -944,6 +948,10 @@ public class MedicationAdministration extends DomainResource {
         MedicationAdministrationDosageComponent dst = new MedicationAdministrationDosageComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationAdministrationDosageComponent) b, options);
       }
 
       public void copyValues(MedicationAdministrationDosageComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2587,6 +2595,10 @@ public class MedicationAdministration extends DomainResource {
         MedicationAdministration dst = new MedicationAdministration(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MedicationAdministration) b, options);
       }
 
       public void copyValues(MedicationAdministration dst, EnumSet<CopyObjectOptions> options) {

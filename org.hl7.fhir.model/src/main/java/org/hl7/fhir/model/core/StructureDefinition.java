@@ -811,6 +811,10 @@ public class StructureDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureDefinitionMappingComponent) b, options);
+      }
+
       public void copyValues(StructureDefinitionMappingComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.identity = identity == null ? null : identity.copy(options);
@@ -1110,6 +1114,10 @@ public class StructureDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureDefinitionContextComponent) b, options);
+      }
+
       public void copyValues(StructureDefinitionContextComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -1320,6 +1328,10 @@ public class StructureDefinition extends CanonicalResource {
         StructureDefinitionSnapshotComponent dst = new StructureDefinitionSnapshotComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureDefinitionSnapshotComponent) b, options);
       }
 
       public void copyValues(StructureDefinitionSnapshotComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1560,6 +1572,10 @@ public class StructureDefinition extends CanonicalResource {
         StructureDefinitionDifferentialComponent dst = new StructureDefinitionDifferentialComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureDefinitionDifferentialComponent) b, options);
       }
 
       public void copyValues(StructureDefinitionDifferentialComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3878,6 +3894,10 @@ public class StructureDefinition extends CanonicalResource {
         StructureDefinition dst = new StructureDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureDefinition) b, options);
       }
 
       public void copyValues(StructureDefinition dst, EnumSet<CopyObjectOptions> options) {

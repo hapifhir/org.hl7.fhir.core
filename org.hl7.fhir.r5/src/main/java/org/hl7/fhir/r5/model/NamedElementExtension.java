@@ -117,6 +117,10 @@ public class NamedElementExtension extends Element  {
     return dst;
   }
 
+  public void assign(Base b) {
+    copyValues((NamedElementExtension) b);
+  }
+
   public void copyValues(NamedElementExtension dst) {
     super.copyValues(dst);
     dst.value = value == null ? null : value.copy();

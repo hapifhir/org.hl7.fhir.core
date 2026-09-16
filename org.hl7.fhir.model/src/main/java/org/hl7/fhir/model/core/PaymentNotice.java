@@ -1080,6 +1080,10 @@ public class PaymentNotice extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PaymentNotice) b, options);
+      }
+
       public void copyValues(PaymentNotice dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (identifierList != null) {

@@ -276,6 +276,10 @@ public class CommunicationRequest extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CommunicationRequestPayloadComponent) b, options);
+      }
+
       public void copyValues(CommunicationRequestPayloadComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.content = content == null ? null : content.copy(options);
@@ -1952,6 +1956,10 @@ public class CommunicationRequest extends DomainResource {
         CommunicationRequest dst = new CommunicationRequest(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CommunicationRequest) b, options);
       }
 
       public void copyValues(CommunicationRequest dst, EnumSet<CopyObjectOptions> options) {

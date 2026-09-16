@@ -840,6 +840,10 @@ public class DeviceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionUdiDeviceIdentifierComponent) b);
+      }
+
       public void copyValues(DeviceDefinitionUdiDeviceIdentifierComponent dst) {
         super.copyValues(dst);
         dst.deviceIdentifier = deviceIdentifier == null ? null : deviceIdentifier.copy();
@@ -1089,6 +1093,10 @@ public class DeviceDefinition extends DomainResource {
         UdiDeviceIdentifierMarketDistributionComponent dst = new UdiDeviceIdentifierMarketDistributionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((UdiDeviceIdentifierMarketDistributionComponent) b);
       }
 
       public void copyValues(UdiDeviceIdentifierMarketDistributionComponent dst) {
@@ -1494,6 +1502,10 @@ public class DeviceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionRegulatoryIdentifierComponent) b);
+      }
+
       public void copyValues(DeviceDefinitionRegulatoryIdentifierComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1769,6 +1781,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionDeviceNameComponent) b);
+      }
+
       public void copyValues(DeviceDefinitionDeviceNameComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -2016,6 +2032,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         DeviceDefinitionClassificationComponent dst = new DeviceDefinitionClassificationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionClassificationComponent) b);
       }
 
       public void copyValues(DeviceDefinitionClassificationComponent dst) {
@@ -2402,6 +2422,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionConformsToComponent) b);
+      }
+
       public void copyValues(DeviceDefinitionConformsToComponent dst) {
         super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
@@ -2652,6 +2676,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         DeviceDefinitionHasPartComponent dst = new DeviceDefinitionHasPartComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionHasPartComponent) b);
       }
 
       public void copyValues(DeviceDefinitionHasPartComponent dst) {
@@ -3158,6 +3186,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionPackagingComponent) b);
+      }
+
       public void copyValues(DeviceDefinitionPackagingComponent dst) {
         super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
@@ -3439,6 +3471,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         PackagingDistributorComponent dst = new PackagingDistributorComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((PackagingDistributorComponent) b);
       }
 
       public void copyValues(PackagingDistributorComponent dst) {
@@ -3732,6 +3768,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         DeviceDefinitionVersionComponent dst = new DeviceDefinitionVersionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionVersionComponent) b);
       }
 
       public void copyValues(DeviceDefinitionVersionComponent dst) {
@@ -4093,6 +4133,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionPropertyComponent) b);
+      }
+
       public void copyValues(DeviceDefinitionPropertyComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -4313,6 +4357,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         DeviceDefinitionLinkComponent dst = new DeviceDefinitionLinkComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionLinkComponent) b);
       }
 
       public void copyValues(DeviceDefinitionLinkComponent dst) {
@@ -4621,6 +4669,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         DeviceDefinitionMaterialComponent dst = new DeviceDefinitionMaterialComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionMaterialComponent) b);
       }
 
       public void copyValues(DeviceDefinitionMaterialComponent dst) {
@@ -5262,6 +5314,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionGuidelineComponent) b);
+      }
+
       public void copyValues(DeviceDefinitionGuidelineComponent dst) {
         super.copyValues(dst);
         if (useContext != null) {
@@ -5608,6 +5664,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionCorrectiveActionComponent) b);
+      }
+
       public void copyValues(DeviceDefinitionCorrectiveActionComponent dst) {
         super.copyValues(dst);
         dst.recall = recall == null ? null : recall.copy();
@@ -5951,6 +6011,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         DeviceDefinitionChargeItemComponent dst = new DeviceDefinitionChargeItemComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DeviceDefinitionChargeItemComponent) b);
       }
 
       public void copyValues(DeviceDefinitionChargeItemComponent dst) {
@@ -7920,6 +7984,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         DeviceDefinition dst = new DeviceDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DeviceDefinition) b);
       }
 
       public void copyValues(DeviceDefinition dst) {

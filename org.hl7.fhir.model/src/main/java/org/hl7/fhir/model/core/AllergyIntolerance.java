@@ -874,6 +874,10 @@ public class AllergyIntolerance extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AllergyIntoleranceReactionComponent) b, options);
+      }
+
       public void copyValues(AllergyIntoleranceReactionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.substance = substance == null ? null : substance.copy(options);
@@ -2149,6 +2153,10 @@ public class AllergyIntolerance extends DomainResource {
         AllergyIntolerance dst = new AllergyIntolerance(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AllergyIntolerance) b, options);
       }
 
       public void copyValues(AllergyIntolerance dst, EnumSet<CopyObjectOptions> options) {

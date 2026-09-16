@@ -1490,6 +1490,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CapabilityStatementSoftwareComponent) b);
+      }
+
       public void copyValues(CapabilityStatementSoftwareComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -1803,6 +1807,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         CapabilityStatementImplementationComponent dst = new CapabilityStatementImplementationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((CapabilityStatementImplementationComponent) b);
       }
 
       public void copyValues(CapabilityStatementImplementationComponent dst) {
@@ -2506,6 +2514,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CapabilityStatementRestComponent) b);
+      }
+
       public void copyValues(CapabilityStatementRestComponent dst) {
         super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
@@ -2866,6 +2878,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         CapabilityStatementRestSecurityComponent dst = new CapabilityStatementRestSecurityComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((CapabilityStatementRestSecurityComponent) b);
       }
 
       public void copyValues(CapabilityStatementRestSecurityComponent dst) {
@@ -4332,6 +4348,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CapabilityStatementRestResourceComponent) b);
+      }
+
       public void copyValues(CapabilityStatementRestResourceComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -4660,6 +4680,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         ResourceInteractionComponent dst = new ResourceInteractionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ResourceInteractionComponent) b);
       }
 
       public void copyValues(ResourceInteractionComponent dst) {
@@ -5069,6 +5093,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CapabilityStatementRestResourceSearchParamComponent) b);
+      }
+
       public void copyValues(CapabilityStatementRestResourceSearchParamComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -5406,6 +5434,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CapabilityStatementRestResourceOperationComponent) b);
+      }
+
       public void copyValues(CapabilityStatementRestResourceOperationComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -5676,6 +5708,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         SystemInteractionComponent dst = new SystemInteractionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SystemInteractionComponent) b);
       }
 
       public void copyValues(SystemInteractionComponent dst) {
@@ -6084,6 +6120,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CapabilityStatementMessagingComponent) b);
+      }
+
       public void copyValues(CapabilityStatementMessagingComponent dst) {
         super.copyValues(dst);
         if (endpoint != null) {
@@ -6338,6 +6378,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         CapabilityStatementMessagingEndpointComponent dst = new CapabilityStatementMessagingEndpointComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((CapabilityStatementMessagingEndpointComponent) b);
       }
 
       public void copyValues(CapabilityStatementMessagingEndpointComponent dst) {
@@ -6603,6 +6647,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         CapabilityStatementMessagingSupportedMessageComponent dst = new CapabilityStatementMessagingSupportedMessageComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((CapabilityStatementMessagingSupportedMessageComponent) b);
       }
 
       public void copyValues(CapabilityStatementMessagingSupportedMessageComponent dst) {
@@ -6939,6 +6987,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         CapabilityStatementDocumentComponent dst = new CapabilityStatementDocumentComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((CapabilityStatementDocumentComponent) b);
       }
 
       public void copyValues(CapabilityStatementDocumentComponent dst) {
@@ -9266,6 +9318,10 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         CapabilityStatement dst = new CapabilityStatement();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((CapabilityStatement) b);
       }
 
       public void copyValues(CapabilityStatement dst) {

@@ -446,6 +446,10 @@ public class DeviceDispense extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DeviceDispensePerformerComponent) b);
+      }
+
       public void copyValues(DeviceDispensePerformerComponent dst) {
         super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
@@ -1883,6 +1887,10 @@ public class DeviceDispense extends DomainResource {
         DeviceDispense dst = new DeviceDispense();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DeviceDispense) b);
       }
 
       public void copyValues(DeviceDispense dst) {

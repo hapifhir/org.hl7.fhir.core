@@ -2771,6 +2771,10 @@ public class Bundle extends Resource implements IBaseBundle {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((BundleLinkComponent) b);
+      }
+
       public void copyValues(BundleLinkComponent dst) {
         super.copyValues(dst);
         dst.relation = relation == null ? null : relation.copy();
@@ -3232,6 +3236,10 @@ public class Bundle extends Resource implements IBaseBundle {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((BundleEntryComponent) b);
+      }
+
       public void copyValues(BundleEntryComponent dst) {
         super.copyValues(dst);
         if (link != null) {
@@ -3572,6 +3580,10 @@ public class Bundle extends Resource implements IBaseBundle {
         BundleEntrySearchComponent dst = new BundleEntrySearchComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((BundleEntrySearchComponent) b);
       }
 
       public void copyValues(BundleEntrySearchComponent dst) {
@@ -4123,6 +4135,10 @@ public class Bundle extends Resource implements IBaseBundle {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((BundleEntryRequestComponent) b);
+      }
+
       public void copyValues(BundleEntryRequestComponent dst) {
         super.copyValues(dst);
         dst.method = method == null ? null : method.copy();
@@ -4577,6 +4593,10 @@ public class Bundle extends Resource implements IBaseBundle {
         BundleEntryResponseComponent dst = new BundleEntryResponseComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((BundleEntryResponseComponent) b);
       }
 
       public void copyValues(BundleEntryResponseComponent dst) {
@@ -5206,6 +5226,10 @@ public class Bundle extends Resource implements IBaseBundle {
         Bundle dst = new Bundle();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Bundle) b);
       }
 
       public void copyValues(Bundle dst) {

@@ -1266,6 +1266,10 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationOutcomeIssueComponent) b, options);
+      }
+
       public void copyValues(OperationOutcomeIssueComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.severity = severity == null ? null : severity.copy(options);
@@ -1554,6 +1558,10 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
         OperationOutcome dst = new OperationOutcome(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationOutcome) b, options);
       }
 
       public void copyValues(OperationOutcome dst, EnumSet<CopyObjectOptions> options) {

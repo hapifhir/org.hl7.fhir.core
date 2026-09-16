@@ -434,6 +434,10 @@ public class RegulatedAuthorization extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((RegulatedAuthorizationCaseComponent) b);
+      }
+
       public void copyValues(RegulatedAuthorizationCaseComponent dst) {
         super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
@@ -1488,6 +1492,10 @@ public class RegulatedAuthorization extends DomainResource {
         RegulatedAuthorization dst = new RegulatedAuthorization();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((RegulatedAuthorization) b);
       }
 
       public void copyValues(RegulatedAuthorization dst) {

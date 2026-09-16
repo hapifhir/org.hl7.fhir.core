@@ -407,6 +407,10 @@ public class ResearchSubject extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchSubjectSubjectStateComponent) b, options);
+      }
+
       public void copyValues(ResearchSubjectSubjectStateComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -759,6 +763,10 @@ public class ResearchSubject extends DomainResource {
         ResearchSubjectSubjectMilestoneComponent dst = new ResearchSubjectSubjectMilestoneComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchSubjectSubjectMilestoneComponent) b, options);
       }
 
       public void copyValues(ResearchSubjectSubjectMilestoneComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1513,6 +1521,10 @@ public class ResearchSubject extends DomainResource {
         ResearchSubject dst = new ResearchSubject(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ResearchSubject) b, options);
       }
 
       public void copyValues(ResearchSubject dst, EnumSet<CopyObjectOptions> options) {

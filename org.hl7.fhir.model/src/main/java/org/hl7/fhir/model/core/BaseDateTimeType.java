@@ -32,6 +32,8 @@ package org.hl7.fhir.model.core;
 
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import java.util.EnumSet;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.parser.DataFormatException;
@@ -60,6 +62,23 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   private TemporalPrecisionEnum myPrecision = null;
   private TimeZone myTimeZone;
   private boolean myTimeZoneZulu = false;
+
+  @Override
+  public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+    copyValues((BaseDateTimeType) b, options);
+  }
+
+  /**
+   * precision and timezone are state on this class rather than part of the Date value - copy()
+   * used to rebuild them by round-tripping the string form through the constructor
+   */
+  public void copyValues(BaseDateTimeType dst, EnumSet<CopyObjectOptions> options) {
+    super.copyValues(dst, options);
+    dst.myFractionalSeconds = myFractionalSeconds;
+    dst.myPrecision = myPrecision;
+    dst.myTimeZone = myTimeZone;
+    dst.myTimeZoneZulu = myTimeZoneZulu;
+  }
 
   /**
    * Constructor

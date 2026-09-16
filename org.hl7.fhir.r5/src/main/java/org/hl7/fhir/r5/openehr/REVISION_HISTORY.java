@@ -267,6 +267,10 @@ public class REVISION_HISTORY extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((REVISION_HISTORY) b);
+      }
+
       public void copyValues(REVISION_HISTORY dst) {
         super.copyValues(dst);
         dst.most_recent_version = most_recent_version == null ? null : most_recent_version.copy();

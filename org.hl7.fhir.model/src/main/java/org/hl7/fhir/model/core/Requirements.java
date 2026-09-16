@@ -454,6 +454,10 @@ public class Requirements extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequirementsImportsComponent) b, options);
+      }
+
       public void copyValues(RequirementsImportsComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.reference = reference == null ? null : reference.copy(options);
@@ -745,6 +749,10 @@ public class Requirements extends CanonicalResource {
         RequirementsActorComponent dst = new RequirementsActorComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequirementsActorComponent) b, options);
       }
 
       public void copyValues(RequirementsActorComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1762,6 +1770,10 @@ public class Requirements extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequirementsStatementComponent) b, options);
+      }
+
       public void copyValues(RequirementsStatementComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.key = key == null ? null : key.copy(options);
@@ -2125,6 +2137,10 @@ public class Requirements extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequirementsStatementDerivedFromComponent) b, options);
+      }
+
       public void copyValues(RequirementsStatementDerivedFromComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.reference = reference == null ? null : reference.copy(options);
@@ -2412,6 +2428,10 @@ public class Requirements extends CanonicalResource {
         RequirementsStatementPartOfComponent dst = new RequirementsStatementPartOfComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequirementsStatementPartOfComponent) b, options);
       }
 
       public void copyValues(RequirementsStatementPartOfComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4235,6 +4255,10 @@ public class Requirements extends CanonicalResource {
         Requirements dst = new Requirements(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Requirements) b, options);
       }
 
       public void copyValues(Requirements dst, EnumSet<CopyObjectOptions> options) {

@@ -440,6 +440,10 @@ public class Endpoint extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((EndpointPayloadComponent) b);
+      }
+
       public void copyValues(EndpointPayloadComponent dst) {
         super.copyValues(dst);
         if (type != null) {
@@ -1411,6 +1415,10 @@ public class Endpoint extends DomainResource {
         Endpoint dst = new Endpoint();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Endpoint) b);
       }
 
       public void copyValues(Endpoint dst) {

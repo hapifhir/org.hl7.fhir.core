@@ -399,6 +399,10 @@ public class CDSHookAppointmentBookContext extends CDSHookContext implements ICo
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHookAppointmentBookContext) b, options);
+      }
+
       public void copyValues(CDSHookAppointmentBookContext dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.userId = userId == null ? null : userId.copy(options);

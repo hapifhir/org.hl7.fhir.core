@@ -930,6 +930,10 @@ public class Patient extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ContactComponent) b, options);
+      }
+
       public void copyValues(ContactComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (relationshipList != null) {
@@ -1254,6 +1258,10 @@ public class Patient extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PatientCommunicationComponent) b, options);
+      }
+
       public void copyValues(PatientCommunicationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.language = language == null ? null : language.copy(options);
@@ -1520,6 +1528,10 @@ public class Patient extends DomainResource {
         PatientLinkComponent dst = new PatientLinkComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PatientLinkComponent) b, options);
       }
 
       public void copyValues(PatientLinkComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2820,6 +2832,10 @@ public class Patient extends DomainResource {
         Patient dst = new Patient(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Patient) b, options);
       }
 
       public void copyValues(Patient dst, EnumSet<CopyObjectOptions> options) {

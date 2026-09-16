@@ -602,6 +602,10 @@ public class InventoryReport extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((InventoryReportInventoryListingComponent) b);
+      }
+
       public void copyValues(InventoryReportInventoryListingComponent dst) {
         super.copyValues(dst);
         dst.location = location == null ? null : location.copy();
@@ -876,6 +880,10 @@ public class InventoryReport extends DomainResource {
         InventoryReportInventoryListingItemComponent dst = new InventoryReportInventoryListingItemComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((InventoryReportInventoryListingItemComponent) b);
       }
 
       public void copyValues(InventoryReportInventoryListingItemComponent dst) {
@@ -1632,6 +1640,10 @@ public class InventoryReport extends DomainResource {
         InventoryReport dst = new InventoryReport();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((InventoryReport) b);
       }
 
       public void copyValues(InventoryReport dst) {

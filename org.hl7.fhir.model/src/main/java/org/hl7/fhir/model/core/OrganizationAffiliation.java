@@ -884,6 +884,10 @@ public class OrganizationAffiliation extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((OrganizationAffiliation) b, options);
+      }
+
       public void copyValues(OrganizationAffiliation dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (identifierList != null) {

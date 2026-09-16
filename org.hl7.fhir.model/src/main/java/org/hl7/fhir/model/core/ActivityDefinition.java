@@ -717,6 +717,10 @@ public class ActivityDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ActivityDefinitionParticipantComponent) b, options);
+      }
+
       public void copyValues(ActivityDefinitionParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -995,6 +999,10 @@ public class ActivityDefinition extends MetadataResource {
         ActivityDefinitionDynamicValueComponent dst = new ActivityDefinitionDynamicValueComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ActivityDefinitionDynamicValueComponent) b, options);
       }
 
       public void copyValues(ActivityDefinitionDynamicValueComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4893,6 +4901,10 @@ public class ActivityDefinition extends MetadataResource {
         ActivityDefinition dst = new ActivityDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ActivityDefinition) b, options);
       }
 
       public void copyValues(ActivityDefinition dst, EnumSet<CopyObjectOptions> options) {

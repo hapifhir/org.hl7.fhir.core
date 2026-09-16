@@ -1109,6 +1109,10 @@ public class ImagingStudy extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingStudySeriesComponent) b, options);
+      }
+
       public void copyValues(ImagingStudySeriesComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.uid = uid == null ? null : uid.copy(options);
@@ -1417,6 +1421,10 @@ public class ImagingStudy extends DomainResource {
         ImagingStudySeriesPerformerComponent dst = new ImagingStudySeriesPerformerComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingStudySeriesPerformerComponent) b, options);
       }
 
       public void copyValues(ImagingStudySeriesPerformerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1926,6 +1934,10 @@ public class ImagingStudy extends DomainResource {
         ImagingStudySeriesInstanceComponent dst = new ImagingStudySeriesInstanceComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingStudySeriesInstanceComponent) b, options);
       }
 
       public void copyValues(ImagingStudySeriesInstanceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3257,6 +3269,10 @@ public class ImagingStudy extends DomainResource {
         ImagingStudy dst = new ImagingStudy(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingStudy) b, options);
       }
 
       public void copyValues(ImagingStudy dst, EnumSet<CopyObjectOptions> options) {

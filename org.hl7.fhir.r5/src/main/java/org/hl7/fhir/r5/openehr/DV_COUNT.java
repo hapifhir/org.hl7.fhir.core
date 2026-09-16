@@ -219,6 +219,10 @@ public class DV_COUNT extends DV_AMOUNT implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DV_COUNT) b);
+      }
+
       public void copyValues(DV_COUNT dst) {
         super.copyValues(dst);
         dst.magnitude = magnitude == null ? null : magnitude.copy();

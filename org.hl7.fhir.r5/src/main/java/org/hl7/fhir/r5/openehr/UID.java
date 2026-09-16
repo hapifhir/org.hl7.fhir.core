@@ -197,6 +197,10 @@ public abstract class UID extends LogicalBase implements ICompositeType {
 
       public abstract UID copy();
 
+      public void assign(Base b) {
+        copyValues((UID) b);
+      }
+
       public void copyValues(UID dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

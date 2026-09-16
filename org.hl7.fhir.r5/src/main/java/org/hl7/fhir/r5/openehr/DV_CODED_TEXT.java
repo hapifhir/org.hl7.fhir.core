@@ -180,6 +180,10 @@ public class DV_CODED_TEXT extends DV_TEXT implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DV_CODED_TEXT) b);
+      }
+
       public void copyValues(DV_CODED_TEXT dst) {
         super.copyValues(dst);
         dst.defining_code = defining_code == null ? null : defining_code.copy();

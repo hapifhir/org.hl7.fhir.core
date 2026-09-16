@@ -380,6 +380,10 @@ public class AUDIT_DETAILS extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((AUDIT_DETAILS) b);
+      }
+
       public void copyValues(AUDIT_DETAILS dst) {
         super.copyValues(dst);
         dst.system_id = system_id == null ? null : system_id.copy();

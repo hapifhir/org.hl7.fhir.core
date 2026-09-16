@@ -1491,6 +1491,10 @@ public class Parameters extends Resource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ParametersParameterComponent) b, options);
+      }
+
       public void copyValues(ParametersParameterComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -1751,6 +1755,10 @@ public String toString() {
         Parameters dst = new Parameters(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Parameters) b, options);
       }
 
       public void copyValues(Parameters dst, EnumSet<CopyObjectOptions> options) {

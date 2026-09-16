@@ -454,6 +454,10 @@ public class Reference extends BaseReference implements IBaseReference, IComposi
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Reference) b, options);
+      }
+
       public void copyValues(Reference dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.reference = reference == null ? null : reference.copy(options);

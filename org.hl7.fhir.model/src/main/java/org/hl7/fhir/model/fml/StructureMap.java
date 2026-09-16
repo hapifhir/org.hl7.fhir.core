@@ -1595,6 +1595,10 @@ public class StructureMap extends CanonicalResource {
       return dst;
     }
 
+    public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapStructureComponent) b, options);
+    }
+
     public void copyValues(StructureMapStructureComponent dst, EnumSet<CopyObjectOptions> options) {
       super.copyValues(dst, options);
       dst.url = url == null ? null : url.copy(options);
@@ -1858,6 +1862,10 @@ public class StructureMap extends CanonicalResource {
       StructureMapConstComponent dst = new StructureMapConstComponent(this.modelContext);
       copyValues(dst, options);
       return dst;
+    }
+
+    public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapConstComponent) b, options);
     }
 
     public void copyValues(StructureMapConstComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2420,6 +2428,10 @@ public class StructureMap extends CanonicalResource {
       return dst;
     }
 
+    public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupComponent) b, options);
+    }
+
     public void copyValues(StructureMapGroupComponent dst, EnumSet<CopyObjectOptions> options) {
       super.copyValues(dst, options);
       dst.name = name == null ? null : name.copy(options);
@@ -2850,6 +2862,10 @@ public class StructureMap extends CanonicalResource {
       StructureMapGroupInputComponent dst = new StructureMapGroupInputComponent(this.modelContext);
       copyValues(dst, options);
       return dst;
+    }
+
+    public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupInputComponent) b, options);
     }
 
     public void copyValues(StructureMapGroupInputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3420,6 +3436,10 @@ public class StructureMap extends CanonicalResource {
       StructureMapGroupRuleComponent dst = new StructureMapGroupRuleComponent(this.modelContext);
       copyValues(dst, options);
       return dst;
+    }
+
+    public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupRuleComponent) b, options);
     }
 
     public void copyValues(StructureMapGroupRuleComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4376,6 +4396,10 @@ public class StructureMap extends CanonicalResource {
       return dst;
     }
 
+    public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupRuleSourceComponent) b, options);
+    }
+
     public void copyValues(StructureMapGroupRuleSourceComponent dst, EnumSet<CopyObjectOptions> options) {
       super.copyValues(dst, options);
       dst.context = context == null ? null : context.copy(options);
@@ -5053,6 +5077,10 @@ public class StructureMap extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMapGroupRuleTargetComponent) b, options);
+      }
+
       public void copyValues(StructureMapGroupRuleTargetComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.context = context == null ? null : context.copy(options);
@@ -5423,6 +5451,10 @@ public class StructureMap extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMapGroupRuleTargetParameterComponent) b, options);
+      }
+
       public void copyValues(StructureMapGroupRuleTargetParameterComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.value = value == null ? null : value.copy(options);
@@ -5687,6 +5719,10 @@ public class StructureMap extends CanonicalResource {
         StructureMapGroupRuleDependentComponent dst = new StructureMapGroupRuleDependentComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMapGroupRuleDependentComponent) b, options);
       }
 
       public void copyValues(StructureMapGroupRuleDependentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7312,6 +7348,10 @@ public class StructureMap extends CanonicalResource {
         StructureMap dst = new StructureMap(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMap) b, options);
       }
 
       public void copyValues(StructureMap dst, EnumSet<CopyObjectOptions> options) {

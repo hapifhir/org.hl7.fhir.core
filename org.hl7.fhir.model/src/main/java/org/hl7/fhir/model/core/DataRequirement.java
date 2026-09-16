@@ -725,6 +725,10 @@ public class DataRequirement extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DataRequirementCodeFilterComponent) b, options);
+      }
+
       public void copyValues(DataRequirementCodeFilterComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.path = path == null ? null : path.copy(options);
@@ -1128,6 +1132,10 @@ public class DataRequirement extends DataType implements ICompositeType {
         DataRequirementDateFilterComponent dst = new DataRequirementDateFilterComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DataRequirementDateFilterComponent) b, options);
       }
 
       public void copyValues(DataRequirementDateFilterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1685,6 +1693,10 @@ public class DataRequirement extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DataRequirementValueFilterComponent) b, options);
+      }
+
       public void copyValues(DataRequirementValueFilterComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.path = path == null ? null : path.copy(options);
@@ -1982,6 +1994,10 @@ public class DataRequirement extends DataType implements ICompositeType {
         DataRequirementSortComponent dst = new DataRequirementSortComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DataRequirementSortComponent) b, options);
       }
 
       public void copyValues(DataRequirementSortComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2815,6 +2831,10 @@ public class DataRequirement extends DataType implements ICompositeType {
         DataRequirement dst = new DataRequirement(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DataRequirement) b, options);
       }
 
       public void copyValues(DataRequirement dst, EnumSet<CopyObjectOptions> options) {

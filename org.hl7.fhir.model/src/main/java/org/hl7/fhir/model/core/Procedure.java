@@ -361,6 +361,10 @@ public class Procedure extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ProcedurePerformerComponent) b, options);
+      }
+
       public void copyValues(ProcedurePerformerComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.function = function == null ? null : function.copy(options);
@@ -615,6 +619,10 @@ public class Procedure extends DomainResource {
         ProcedureFocalDeviceComponent dst = new ProcedureFocalDeviceComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ProcedureFocalDeviceComponent) b, options);
       }
 
       public void copyValues(ProcedureFocalDeviceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2641,6 +2649,10 @@ public class Procedure extends DomainResource {
         Procedure dst = new Procedure(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Procedure) b, options);
       }
 
       public void copyValues(Procedure dst, EnumSet<CopyObjectOptions> options) {

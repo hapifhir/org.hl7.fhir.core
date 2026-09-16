@@ -776,6 +776,10 @@ public class ProdCharacteristic extends BackboneType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ProdCharacteristic) b);
+      }
+
       public void copyValues(ProdCharacteristic dst) {
         super.copyValues(dst);
         dst.height = height == null ? null : height.copy();

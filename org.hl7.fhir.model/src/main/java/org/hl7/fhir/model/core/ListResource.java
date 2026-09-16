@@ -643,6 +643,10 @@ public class ListResource extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ListResourceEntryComponent) b, options);
+      }
+
       public void copyValues(ListResourceEntryComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.flag = flag == null ? null : flag.copy(options);
@@ -1731,6 +1735,10 @@ public class ListResource extends DomainResource {
         ListResource dst = new ListResource(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ListResource) b, options);
       }
 
       public void copyValues(ListResource dst, EnumSet<CopyObjectOptions> options) {

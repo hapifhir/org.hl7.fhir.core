@@ -613,6 +613,10 @@ public class Subscription extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubscriptionFilterByComponent) b);
+      }
+
       public void copyValues(SubscriptionFilterByComponent dst) {
         super.copyValues(dst);
         dst.resourceType = resourceType == null ? null : resourceType.copy();
@@ -880,6 +884,10 @@ public class Subscription extends DomainResource {
         SubscriptionParameterComponent dst = new SubscriptionParameterComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubscriptionParameterComponent) b);
       }
 
       public void copyValues(SubscriptionParameterComponent dst) {
@@ -2196,6 +2204,10 @@ public class Subscription extends DomainResource {
         Subscription dst = new Subscription();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Subscription) b);
       }
 
       public void copyValues(Subscription dst) {

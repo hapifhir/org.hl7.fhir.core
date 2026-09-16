@@ -584,6 +584,10 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionGoalComponent) b, options);
+      }
+
       public void copyValues(PlanDefinitionGoalComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.category = category == null ? null : category.copy(options);
@@ -1043,6 +1047,10 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionGoalTargetComponent) b, options);
+      }
+
       public void copyValues(PlanDefinitionGoalTargetComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.measure = measure == null ? null : measure.copy(options);
@@ -1412,6 +1420,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinitionActorComponent dst = new PlanDefinitionActorComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActorComponent) b, options);
       }
 
       public void copyValues(PlanDefinitionActorComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1813,6 +1825,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinitionActorOptionComponent dst = new PlanDefinitionActorOptionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActorOptionComponent) b, options);
       }
 
       public void copyValues(PlanDefinitionActorOptionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4286,6 +4302,10 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionComponent) b, options);
+      }
+
       public void copyValues(PlanDefinitionActionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.linkId = linkId == null ? null : linkId.copy(options);
@@ -4732,6 +4752,10 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionConditionComponent) b, options);
+      }
+
       public void copyValues(PlanDefinitionActionConditionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.kind = kind == null ? null : kind.copy(options);
@@ -5065,6 +5089,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinitionActionInputComponent dst = new PlanDefinitionActionInputComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionInputComponent) b, options);
       }
 
       public void copyValues(PlanDefinitionActionInputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5406,6 +5434,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinitionActionOutputComponent dst = new PlanDefinitionActionOutputComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionOutputComponent) b, options);
       }
 
       public void copyValues(PlanDefinitionActionOutputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5867,6 +5899,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinitionActionRelatedActionComponent dst = new PlanDefinitionActionRelatedActionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionRelatedActionComponent) b, options);
       }
 
       public void copyValues(PlanDefinitionActionRelatedActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6403,6 +6439,10 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionParticipantComponent) b, options);
+      }
+
       public void copyValues(PlanDefinitionActionParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.actorId = actorId == null ? null : actorId.copy(options);
@@ -6679,6 +6719,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinitionActionDynamicValueComponent dst = new PlanDefinitionActionDynamicValueComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinitionActionDynamicValueComponent) b, options);
       }
 
       public void copyValues(PlanDefinitionActionDynamicValueComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9473,6 +9517,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinition dst = new PlanDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PlanDefinition) b, options);
       }
 
       public void copyValues(PlanDefinition dst, EnumSet<CopyObjectOptions> options) {

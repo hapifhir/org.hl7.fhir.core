@@ -61,6 +61,23 @@ public abstract class PrimitiveType<T> extends DataType implements IPrimitiveTyp
 	public abstract DataType copy(EnumSet<CopyObjectOptions> options);
 
 	/**
+	 * the primitive value is state on this class, but historically every subclass carried it across
+	 * in the constructor argument of its own copy(), so copyValues() never touched it - which meant
+	 * copyValues(), and anything routed through it such as assign(), produced a valueless copy
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+		copyValues((PrimitiveType<T>) b, options);
+	}
+
+	public void copyValues(PrimitiveType<T> dst, EnumSet<CopyObjectOptions> options) {
+		super.copyValues(dst, options);
+		dst.myCoercedValue = myCoercedValue;
+		dst.myStringValue = myStringValue;
+	}
+
+	/**
 	 * Subclasses must override to convert a "coerced" value into an encoded one.
 	 * 
 	 * @param theValue

@@ -87,6 +87,10 @@ public class Duration extends Quantity implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Duration) b, options);
+      }
+
       public void copyValues(Duration dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
       }

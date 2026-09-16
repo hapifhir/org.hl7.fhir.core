@@ -246,6 +246,10 @@ public class DV_STATE extends DATA_VALUE implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DV_STATE) b);
+      }
+
       public void copyValues(DV_STATE dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

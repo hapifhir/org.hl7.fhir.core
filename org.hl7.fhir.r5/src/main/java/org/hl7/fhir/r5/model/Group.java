@@ -771,6 +771,10 @@ public class Group extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((GroupCharacteristicComponent) b);
+      }
+
       public void copyValues(GroupCharacteristicComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -1060,6 +1064,10 @@ public class Group extends DomainResource {
         GroupMemberComponent dst = new GroupMemberComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((GroupMemberComponent) b);
       }
 
       public void copyValues(GroupMemberComponent dst) {
@@ -1945,6 +1953,10 @@ public class Group extends DomainResource {
         Group dst = new Group();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Group) b);
       }
 
       public void copyValues(Group dst) {

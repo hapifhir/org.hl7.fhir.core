@@ -274,6 +274,10 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ClaimResponseEventComponent) b);
+      }
+
       public void copyValues(ClaimResponseEventComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -822,6 +826,10 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ItemComponent) b);
+      }
+
       public void copyValues(ItemComponent dst) {
         super.copyValues(dst);
         dst.itemSequence = itemSequence == null ? null : itemSequence.copy();
@@ -1206,6 +1214,10 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ReviewOutcomeComponent) b);
+      }
+
       public void copyValues(ReviewOutcomeComponent dst) {
         super.copyValues(dst);
         dst.decision = decision == null ? null : decision.copy();
@@ -1528,6 +1540,10 @@ public class ClaimResponse extends DomainResource {
         AdjudicationComponent dst = new AdjudicationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((AdjudicationComponent) b);
       }
 
       public void copyValues(AdjudicationComponent dst) {
@@ -2082,6 +2098,10 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ItemDetailComponent) b);
+      }
+
       public void copyValues(ItemDetailComponent dst) {
         super.copyValues(dst);
         dst.detailSequence = detailSequence == null ? null : detailSequence.copy();
@@ -2578,6 +2598,10 @@ public class ClaimResponse extends DomainResource {
         SubDetailComponent dst = new SubDetailComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubDetailComponent) b);
       }
 
       public void copyValues(SubDetailComponent dst) {
@@ -4304,6 +4328,10 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((AddedItemComponent) b);
+      }
+
       public void copyValues(AddedItemComponent dst) {
         super.copyValues(dst);
         if (itemSequence != null) {
@@ -4662,6 +4690,10 @@ public class ClaimResponse extends DomainResource {
         BodySiteComponent dst = new BodySiteComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((BodySiteComponent) b);
       }
 
       public void copyValues(BodySiteComponent dst) {
@@ -5642,6 +5674,10 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((AddedItemDetailComponent) b);
+      }
+
       public void copyValues(AddedItemDetailComponent dst) {
         super.copyValues(dst);
         if (traceNumber != null) {
@@ -6576,6 +6612,10 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((AddedItemSubDetailComponent) b);
+      }
+
       public void copyValues(AddedItemSubDetailComponent dst) {
         super.copyValues(dst);
         if (traceNumber != null) {
@@ -6830,6 +6870,10 @@ public class ClaimResponse extends DomainResource {
         TotalComponent dst = new TotalComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((TotalComponent) b);
       }
 
       public void copyValues(TotalComponent dst) {
@@ -7267,6 +7311,10 @@ public class ClaimResponse extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((PaymentComponent) b);
+      }
+
       public void copyValues(PaymentComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -7628,6 +7676,10 @@ public class ClaimResponse extends DomainResource {
         NoteComponent dst = new NoteComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((NoteComponent) b);
       }
 
       public void copyValues(NoteComponent dst) {
@@ -8059,6 +8111,10 @@ public class ClaimResponse extends DomainResource {
         InsuranceComponent dst = new InsuranceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((InsuranceComponent) b);
       }
 
       public void copyValues(InsuranceComponent dst) {
@@ -8524,6 +8580,10 @@ public class ClaimResponse extends DomainResource {
         ErrorComponent dst = new ErrorComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ErrorComponent) b);
       }
 
       public void copyValues(ErrorComponent dst) {
@@ -10657,6 +10717,10 @@ public class ClaimResponse extends DomainResource {
         ClaimResponse dst = new ClaimResponse();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ClaimResponse) b);
       }
 
       public void copyValues(ClaimResponse dst) {

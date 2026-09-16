@@ -252,6 +252,10 @@ public class SubstanceSourceMaterial extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubstanceSourceMaterialFractionDescriptionComponent) b);
+      }
+
       public void copyValues(SubstanceSourceMaterialFractionDescriptionComponent dst) {
         super.copyValues(dst);
         dst.fraction = fraction == null ? null : fraction.copy();
@@ -799,6 +803,10 @@ public class SubstanceSourceMaterial extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubstanceSourceMaterialOrganismComponent) b);
+      }
+
       public void copyValues(SubstanceSourceMaterialOrganismComponent dst) {
         super.copyValues(dst);
         dst.family = family == null ? null : family.copy();
@@ -1047,6 +1055,10 @@ public class SubstanceSourceMaterial extends DomainResource {
         SubstanceSourceMaterialOrganismAuthorComponent dst = new SubstanceSourceMaterialOrganismAuthorComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubstanceSourceMaterialOrganismAuthorComponent) b);
       }
 
       public void copyValues(SubstanceSourceMaterialOrganismAuthorComponent dst) {
@@ -1500,6 +1512,10 @@ public class SubstanceSourceMaterial extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubstanceSourceMaterialOrganismHybridComponent) b);
+      }
+
       public void copyValues(SubstanceSourceMaterialOrganismHybridComponent dst) {
         super.copyValues(dst);
         dst.maternalOrganismId = maternalOrganismId == null ? null : maternalOrganismId.copy();
@@ -1814,6 +1830,10 @@ public class SubstanceSourceMaterial extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubstanceSourceMaterialOrganismOrganismGeneralComponent) b);
+      }
+
       public void copyValues(SubstanceSourceMaterialOrganismOrganismGeneralComponent dst) {
         super.copyValues(dst);
         dst.kingdom = kingdom == null ? null : kingdom.copy();
@@ -2028,6 +2048,10 @@ public class SubstanceSourceMaterial extends DomainResource {
         SubstanceSourceMaterialPartDescriptionComponent dst = new SubstanceSourceMaterialPartDescriptionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubstanceSourceMaterialPartDescriptionComponent) b);
       }
 
       public void copyValues(SubstanceSourceMaterialPartDescriptionComponent dst) {
@@ -2968,6 +2992,10 @@ public class SubstanceSourceMaterial extends DomainResource {
         SubstanceSourceMaterial dst = new SubstanceSourceMaterial();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubstanceSourceMaterial) b);
       }
 
       public void copyValues(SubstanceSourceMaterial dst) {

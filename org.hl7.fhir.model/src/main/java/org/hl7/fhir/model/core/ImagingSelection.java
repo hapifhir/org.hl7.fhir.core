@@ -741,6 +741,10 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingSelectionPerformerComponent) b, options);
+      }
+
       public void copyValues(ImagingSelectionPerformerComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.function = function == null ? null : function.copy(options);
@@ -1581,6 +1585,10 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingSelectionInstanceComponent) b, options);
+      }
+
       public void copyValues(ImagingSelectionInstanceComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.uid = uid == null ? null : uid.copy(options);
@@ -1938,6 +1946,10 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImageRegion2DComponent) b, options);
+      }
+
       public void copyValues(ImageRegion2DComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.regionType = regionType == null ? null : regionType.copy(options);
@@ -2239,6 +2251,10 @@ public class ImagingSelection extends DomainResource {
         ImageRegion3DComponent dst = new ImageRegion3DComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImageRegion3DComponent) b, options);
       }
 
       public void copyValues(ImageRegion3DComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3718,6 +3734,10 @@ public class ImagingSelection extends DomainResource {
         ImagingSelection dst = new ImagingSelection(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ImagingSelection) b, options);
       }
 
       public void copyValues(ImagingSelection dst, EnumSet<CopyObjectOptions> options) {

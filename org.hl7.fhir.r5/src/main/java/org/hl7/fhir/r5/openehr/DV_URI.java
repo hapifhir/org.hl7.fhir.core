@@ -201,6 +201,10 @@ public class DV_URI extends DATA_VALUE implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DV_URI) b);
+      }
+
       public void copyValues(DV_URI dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

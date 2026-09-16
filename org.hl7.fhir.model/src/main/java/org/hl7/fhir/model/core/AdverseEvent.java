@@ -509,6 +509,10 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdverseEventParticipantComponent) b, options);
+      }
+
       public void copyValues(AdverseEventParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.function = function == null ? null : function.copy(options);
@@ -842,6 +846,10 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdverseEventSuspectEntityComponent) b, options);
+      }
+
       public void copyValues(AdverseEventSuspectEntityComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.instance = instance == null ? null : instance.copy(options);
@@ -1135,6 +1143,10 @@ public class AdverseEvent extends DomainResource {
         AdverseEventSuspectEntityCausalityComponent dst = new AdverseEventSuspectEntityCausalityComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdverseEventSuspectEntityCausalityComponent) b, options);
       }
 
       public void copyValues(AdverseEventSuspectEntityCausalityComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2953,6 +2965,10 @@ public class AdverseEvent extends DomainResource {
         AdverseEvent dst = new AdverseEvent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdverseEvent) b, options);
       }
 
       public void copyValues(AdverseEvent dst, EnumSet<CopyObjectOptions> options) {

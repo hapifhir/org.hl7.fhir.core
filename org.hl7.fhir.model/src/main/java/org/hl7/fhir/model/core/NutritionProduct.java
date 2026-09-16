@@ -409,6 +409,10 @@ public class NutritionProduct extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionProductNutrientComponent) b, options);
+      }
+
       public void copyValues(NutritionProductNutrientComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.item = item == null ? null : item.copy(options);
@@ -761,6 +765,10 @@ public class NutritionProduct extends DomainResource {
         NutritionProductIngredientComponent dst = new NutritionProductIngredientComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionProductIngredientComponent) b, options);
       }
 
       public void copyValues(NutritionProductIngredientComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1128,6 +1136,10 @@ public class NutritionProduct extends DomainResource {
         NutritionProductCharacteristicComponent dst = new NutritionProductCharacteristicComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionProductCharacteristicComponent) b, options);
       }
 
       public void copyValues(NutritionProductCharacteristicComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1743,6 +1755,10 @@ public class NutritionProduct extends DomainResource {
         NutritionProductInstanceComponent dst = new NutritionProductInstanceComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionProductInstanceComponent) b, options);
       }
 
       public void copyValues(NutritionProductInstanceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2678,6 +2694,10 @@ public class NutritionProduct extends DomainResource {
         NutritionProduct dst = new NutritionProduct(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionProduct) b, options);
       }
 
       public void copyValues(NutritionProduct dst, EnumSet<CopyObjectOptions> options) {

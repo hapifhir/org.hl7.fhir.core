@@ -427,6 +427,10 @@ public abstract class PARTY extends LOCATABLE implements ICompositeType {
 
       public abstract PARTY copy();
 
+      public void assign(Base b) {
+        copyValues((PARTY) b);
+      }
+
       public void copyValues(PARTY dst) {
         super.copyValues(dst);
         if (identitiesList != null) {

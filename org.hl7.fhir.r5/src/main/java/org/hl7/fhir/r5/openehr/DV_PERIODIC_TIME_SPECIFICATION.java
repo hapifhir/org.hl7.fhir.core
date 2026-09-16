@@ -69,6 +69,10 @@ public class DV_PERIODIC_TIME_SPECIFICATION extends DV_TIME_SPECIFICATION implem
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DV_PERIODIC_TIME_SPECIFICATION) b);
+      }
+
       public void copyValues(DV_PERIODIC_TIME_SPECIFICATION dst) {
         super.copyValues(dst);
       }

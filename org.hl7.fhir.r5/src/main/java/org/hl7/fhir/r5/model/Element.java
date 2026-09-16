@@ -287,6 +287,10 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
 
       public abstract Element copy();
 
+      public void assign(Base b) {
+        copyValues((Element) b);
+      }
+
       public void copyValues(Element dst) {
         super.copyValues(dst);
         dst.id = id == null ? null : id.copy();

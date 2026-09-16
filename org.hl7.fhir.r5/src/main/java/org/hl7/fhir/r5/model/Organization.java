@@ -358,6 +358,10 @@ public class Organization extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((OrganizationQualificationComponent) b);
+      }
+
       public void copyValues(OrganizationQualificationComponent dst) {
         super.copyValues(dst);
         if (identifier != null) {
@@ -1200,6 +1204,10 @@ public class Organization extends DomainResource {
         Organization dst = new Organization();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Organization) b);
       }
 
       public void copyValues(Organization dst) {

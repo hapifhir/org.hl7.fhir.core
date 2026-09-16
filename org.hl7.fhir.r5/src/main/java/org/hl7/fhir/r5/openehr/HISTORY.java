@@ -366,6 +366,10 @@ public class HISTORY extends DATA_STRUCTURE implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((HISTORY) b);
+      }
+
       public void copyValues(HISTORY dst) {
         super.copyValues(dst);
         dst.origin = origin == null ? null : origin.copy();

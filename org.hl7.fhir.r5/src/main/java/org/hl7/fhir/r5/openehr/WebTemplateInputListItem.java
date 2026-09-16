@@ -765,6 +765,10 @@ public class WebTemplateInputListItem extends LogicalBase implements ICompositeT
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((WebTemplateInputListItem) b);
+      }
+
       public void copyValues(WebTemplateInputListItem dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

@@ -87,6 +87,10 @@ public class Age extends Quantity implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Age) b, options);
+      }
+
       public void copyValues(Age dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
       }

@@ -1917,6 +1917,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((TestScriptTestSystemComponent) b);
+      }
+
       public void copyValues(TestScriptTestSystemComponent dst) {
         super.copyValues(dst);
         dst.index = index == null ? null : index.copy();
@@ -2192,6 +2196,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((TestScriptMetadataComponent) b);
+      }
+
       public void copyValues(TestScriptMetadataComponent dst) {
         super.copyValues(dst);
         if (linkList != null) {
@@ -2452,6 +2460,10 @@ public class TestScript extends CanonicalResource {
         TestScriptMetadataLinkComponent dst = new TestScriptMetadataLinkComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((TestScriptMetadataLinkComponent) b);
       }
 
       public void copyValues(TestScriptMetadataLinkComponent dst) {
@@ -3066,6 +3078,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((TestScriptMetadataCapabilityComponent) b);
+      }
+
       public void copyValues(TestScriptMetadataCapabilityComponent dst) {
         super.copyValues(dst);
         dst.required = required == null ? null : required.copy();
@@ -3358,6 +3374,10 @@ public class TestScript extends CanonicalResource {
         TestScriptScopeComponent dst = new TestScriptScopeComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((TestScriptScopeComponent) b);
       }
 
       public void copyValues(TestScriptScopeComponent dst) {
@@ -3701,6 +3721,10 @@ public class TestScript extends CanonicalResource {
         TestScriptFixtureComponent dst = new TestScriptFixtureComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((TestScriptFixtureComponent) b);
       }
 
       public void copyValues(TestScriptFixtureComponent dst) {
@@ -4351,6 +4375,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((TestScriptVariableComponent) b);
+      }
+
       public void copyValues(TestScriptVariableComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -4545,6 +4573,10 @@ public class TestScript extends CanonicalResource {
         TestScriptSetupComponent dst = new TestScriptSetupComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((TestScriptSetupComponent) b);
       }
 
       public void copyValues(TestScriptSetupComponent dst) {
@@ -4776,6 +4808,10 @@ public class TestScript extends CanonicalResource {
         SetupActionComponent dst = new SetupActionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SetupActionComponent) b);
       }
 
       public void copyValues(SetupActionComponent dst) {
@@ -5107,6 +5143,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SetupActionCommonComponent) b);
+      }
+
       public void copyValues(SetupActionCommonComponent dst) {
         super.copyValues(dst);
         dst.testScript = testScript == null ? null : testScript.copy();
@@ -5362,6 +5402,10 @@ public class TestScript extends CanonicalResource {
         SetupActionCommonParameterComponent dst = new SetupActionCommonParameterComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SetupActionCommonParameterComponent) b);
       }
 
       public void copyValues(SetupActionCommonParameterComponent dst) {
@@ -6631,6 +6675,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SetupActionOperationComponent) b);
+      }
+
       public void copyValues(SetupActionOperationComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -6911,6 +6959,10 @@ public class TestScript extends CanonicalResource {
         SetupActionOperationRequestHeaderComponent dst = new SetupActionOperationRequestHeaderComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SetupActionOperationRequestHeaderComponent) b);
       }
 
       public void copyValues(SetupActionOperationRequestHeaderComponent dst) {
@@ -8869,6 +8921,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SetupActionAssertComponent) b);
+      }
+
       public void copyValues(SetupActionAssertComponent dst) {
         super.copyValues(dst);
         dst.label = label == null ? null : label.copy();
@@ -9175,6 +9231,10 @@ public class TestScript extends CanonicalResource {
         SetupActionAssertRequirementComponent dst = new SetupActionAssertRequirementComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SetupActionAssertRequirementComponent) b);
       }
 
       public void copyValues(SetupActionAssertRequirementComponent dst) {
@@ -9499,6 +9559,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((TestScriptTestComponent) b);
+      }
+
       public void copyValues(TestScriptTestComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -9752,6 +9816,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((TestActionComponent) b);
+      }
+
       public void copyValues(TestActionComponent dst) {
         super.copyValues(dst);
         dst.common = common == null ? null : common.copy();
@@ -9945,6 +10013,10 @@ public class TestScript extends CanonicalResource {
         TestScriptTeardownComponent dst = new TestScriptTeardownComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((TestScriptTeardownComponent) b);
       }
 
       public void copyValues(TestScriptTeardownComponent dst) {
@@ -10157,6 +10229,10 @@ public class TestScript extends CanonicalResource {
         TeardownActionComponent dst = new TeardownActionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((TeardownActionComponent) b);
       }
 
       public void copyValues(TeardownActionComponent dst) {
@@ -10628,6 +10704,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((TestScriptCommonComponent) b);
+      }
+
       public void copyValues(TestScriptCommonComponent dst) {
         super.copyValues(dst);
         dst.key = key == null ? null : key.copy();
@@ -10892,6 +10972,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CommonParameterComponent) b);
+      }
+
       public void copyValues(CommonParameterComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -11091,6 +11175,10 @@ public class TestScript extends CanonicalResource {
         CommonActionComponent dst = new CommonActionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((CommonActionComponent) b);
       }
 
       public void copyValues(CommonActionComponent dst) {
@@ -13107,6 +13195,10 @@ public class TestScript extends CanonicalResource {
         TestScript dst = new TestScript();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((TestScript) b);
       }
 
       public void copyValues(TestScript dst) {

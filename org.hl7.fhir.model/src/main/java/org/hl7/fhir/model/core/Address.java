@@ -1162,6 +1162,10 @@ public class Address extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Address) b, options);
+      }
+
       public void copyValues(Address dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.use = use == null ? null : use.copy(options);

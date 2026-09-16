@@ -638,6 +638,10 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionUdiDeviceIdentifierComponent) b, options);
+      }
+
       public void copyValues(DeviceDefinitionUdiDeviceIdentifierComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.deviceIdentifier = deviceIdentifier == null ? null : deviceIdentifier.copy(options);
@@ -923,6 +927,10 @@ public class DeviceDefinition extends CanonicalResource {
         UdiDeviceIdentifierMarketDistributionComponent dst = new UdiDeviceIdentifierMarketDistributionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((UdiDeviceIdentifierMarketDistributionComponent) b, options);
       }
 
       public void copyValues(UdiDeviceIdentifierMarketDistributionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1419,6 +1427,10 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionRegulatoryIdentifierComponent) b, options);
+      }
+
       public void copyValues(DeviceDefinitionRegulatoryIdentifierComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -1702,6 +1714,10 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionDeviceNameComponent) b, options);
+      }
+
       public void copyValues(DeviceDefinitionDeviceNameComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -1966,6 +1982,10 @@ public class DeviceDefinition extends CanonicalResource {
         DeviceDefinitionClassificationComponent dst = new DeviceDefinitionClassificationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionClassificationComponent) b, options);
       }
 
       public void copyValues(DeviceDefinitionClassificationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2374,6 +2394,10 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionConformsToComponent) b, options);
+      }
+
       public void copyValues(DeviceDefinitionConformsToComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.category = category == null ? null : category.copy(options);
@@ -2692,6 +2716,10 @@ public class DeviceDefinition extends CanonicalResource {
         DeviceDefinitionHasPartComponent dst = new DeviceDefinitionHasPartComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionHasPartComponent) b, options);
       }
 
       public void copyValues(DeviceDefinitionHasPartComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3240,6 +3268,10 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionPackagingComponent) b, options);
+      }
+
       public void copyValues(DeviceDefinitionPackagingComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (identifierList != null) {
@@ -3551,6 +3583,10 @@ public class DeviceDefinition extends CanonicalResource {
         PackagingDistributorComponent dst = new PackagingDistributorComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PackagingDistributorComponent) b, options);
       }
 
       public void copyValues(PackagingDistributorComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3876,6 +3912,10 @@ public class DeviceDefinition extends CanonicalResource {
         DeviceDefinitionDeviceVersionComponent dst = new DeviceDefinitionDeviceVersionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionDeviceVersionComponent) b, options);
       }
 
       public void copyValues(DeviceDefinitionDeviceVersionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4265,6 +4305,10 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionPropertyComponent) b, options);
+      }
+
       public void copyValues(DeviceDefinitionPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -4546,6 +4590,10 @@ public class DeviceDefinition extends CanonicalResource {
         DeviceDefinitionLinkComponent dst = new DeviceDefinitionLinkComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionLinkComponent) b, options);
       }
 
       public void copyValues(DeviceDefinitionLinkComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4888,6 +4936,10 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionMaterialComponent) b, options);
+      }
+
       public void copyValues(DeviceDefinitionMaterialComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.substance = substance == null ? null : substance.copy(options);
@@ -5139,6 +5191,10 @@ public class DeviceDefinition extends CanonicalResource {
         DeviceDefinitionAdditiveComponent dst = new DeviceDefinitionAdditiveComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionAdditiveComponent) b, options);
       }
 
       public void copyValues(DeviceDefinitionAdditiveComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5791,6 +5847,10 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionGuidelineComponent) b, options);
+      }
+
       public void copyValues(DeviceDefinitionGuidelineComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (useContextList != null) {
@@ -6182,6 +6242,10 @@ public class DeviceDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionCorrectiveActionComponent) b, options);
+      }
+
       public void copyValues(DeviceDefinitionCorrectiveActionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.recall = recall == null ? null : recall.copy(options);
@@ -6558,6 +6622,10 @@ public class DeviceDefinition extends CanonicalResource {
         DeviceDefinitionChargeItemComponent dst = new DeviceDefinitionChargeItemComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinitionChargeItemComponent) b, options);
       }
 
       public void copyValues(DeviceDefinitionChargeItemComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9860,6 +9928,10 @@ public class DeviceDefinition extends CanonicalResource {
         DeviceDefinition dst = new DeviceDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDefinition) b, options);
       }
 
       public void copyValues(DeviceDefinition dst, EnumSet<CopyObjectOptions> options) {

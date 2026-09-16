@@ -310,6 +310,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((BiologicallyDerivedProductCollectionComponent) b);
+      }
+
       public void copyValues(BiologicallyDerivedProductCollectionComponent dst) {
         super.copyValues(dst);
         dst.collector = collector == null ? null : collector.copy();
@@ -708,6 +712,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
         BiologicallyDerivedProductPropertyComponent dst = new BiologicallyDerivedProductPropertyComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((BiologicallyDerivedProductPropertyComponent) b);
       }
 
       public void copyValues(BiologicallyDerivedProductPropertyComponent dst) {
@@ -1631,6 +1639,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
         BiologicallyDerivedProduct dst = new BiologicallyDerivedProduct();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((BiologicallyDerivedProduct) b);
       }
 
       public void copyValues(BiologicallyDerivedProduct dst) {

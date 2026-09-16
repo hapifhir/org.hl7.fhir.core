@@ -1840,6 +1840,10 @@ public class ActorDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ActorDefinition) b, options);
+      }
+
       public void copyValues(ActorDefinition dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.url = url == null ? null : url.copy(options);

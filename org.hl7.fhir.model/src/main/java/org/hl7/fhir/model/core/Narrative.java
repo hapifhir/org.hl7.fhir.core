@@ -406,6 +406,10 @@ public class Narrative extends BaseNarrative implements INarrative {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Narrative) b, options);
+      }
+
       public void copyValues(Narrative dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.status = status == null ? null : status.copy(options);

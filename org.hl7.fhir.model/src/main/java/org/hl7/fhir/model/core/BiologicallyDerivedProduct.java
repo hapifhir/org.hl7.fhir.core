@@ -437,6 +437,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BiologicallyDerivedProductCollectionComponent) b, options);
+      }
+
       public void copyValues(BiologicallyDerivedProductCollectionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.collector = collector == null ? null : collector.copy(options);
@@ -872,6 +876,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
         BiologicallyDerivedProductPropertyComponent dst = new BiologicallyDerivedProductPropertyComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BiologicallyDerivedProductPropertyComponent) b, options);
       }
 
       public void copyValues(BiologicallyDerivedProductPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1936,6 +1944,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
         BiologicallyDerivedProduct dst = new BiologicallyDerivedProduct(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BiologicallyDerivedProduct) b, options);
       }
 
       public void copyValues(BiologicallyDerivedProduct dst, EnumSet<CopyObjectOptions> options) {

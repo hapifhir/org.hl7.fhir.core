@@ -684,6 +684,10 @@ public class Goal extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((GoalAcceptanceComponent) b, options);
+      }
+
       public void copyValues(GoalAcceptanceComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.participant = participant == null ? null : participant.copy(options);
@@ -1146,6 +1150,10 @@ public class Goal extends DomainResource {
         GoalTargetComponent dst = new GoalTargetComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((GoalTargetComponent) b, options);
       }
 
       public void copyValues(GoalTargetComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2443,6 +2451,10 @@ public class Goal extends DomainResource {
         Goal dst = new Goal(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Goal) b, options);
       }
 
       public void copyValues(Goal dst, EnumSet<CopyObjectOptions> options) {

@@ -672,6 +672,10 @@ public class Consent extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConsentPolicyBasisComponent) b, options);
+      }
+
       public void copyValues(ConsentPolicyBasisComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.reference = reference == null ? null : reference.copy(options);
@@ -1123,6 +1127,10 @@ public class Consent extends DomainResource {
         ConsentVerificationComponent dst = new ConsentVerificationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConsentVerificationComponent) b, options);
       }
 
       public void copyValues(ConsentVerificationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2040,6 +2048,10 @@ public class Consent extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ProvisionComponent) b, options);
+      }
+
       public void copyValues(ProvisionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.period = period == null ? null : period.copy(options);
@@ -2353,6 +2365,10 @@ public class Consent extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ProvisionActorComponent) b, options);
+      }
+
       public void copyValues(ProvisionActorComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.role = role == null ? null : role.copy(options);
@@ -2619,6 +2635,10 @@ public class Consent extends DomainResource {
         ProvisionDataComponent dst = new ProvisionDataComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ProvisionDataComponent) b, options);
       }
 
       public void copyValues(ProvisionDataComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4029,6 +4049,10 @@ public class Consent extends DomainResource {
         Consent dst = new Consent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Consent) b, options);
       }
 
       public void copyValues(Consent dst, EnumSet<CopyObjectOptions> options) {

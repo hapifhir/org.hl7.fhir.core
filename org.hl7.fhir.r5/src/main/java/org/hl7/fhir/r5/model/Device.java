@@ -877,6 +877,10 @@ public class Device extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DeviceUdiCarrierComponent) b);
+      }
+
       public void copyValues(DeviceUdiCarrierComponent dst) {
         super.copyValues(dst);
         dst.deviceIdentifier = deviceIdentifier == null ? null : deviceIdentifier.copy();
@@ -1216,6 +1220,10 @@ public class Device extends DomainResource {
         DeviceNameComponent dst = new DeviceNameComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DeviceNameComponent) b);
       }
 
       public void copyValues(DeviceNameComponent dst) {
@@ -1580,6 +1588,10 @@ public class Device extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DeviceVersionComponent) b);
+      }
+
       public void copyValues(DeviceVersionComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1875,6 +1887,10 @@ public class Device extends DomainResource {
         DeviceConformsToComponent dst = new DeviceConformsToComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DeviceConformsToComponent) b);
       }
 
       public void copyValues(DeviceConformsToComponent dst) {
@@ -2235,6 +2251,10 @@ public class Device extends DomainResource {
         DevicePropertyComponent dst = new DevicePropertyComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DevicePropertyComponent) b);
       }
 
       public void copyValues(DevicePropertyComponent dst) {
@@ -4473,6 +4493,10 @@ public class Device extends DomainResource {
         Device dst = new Device();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Device) b);
       }
 
       public void copyValues(Device dst) {

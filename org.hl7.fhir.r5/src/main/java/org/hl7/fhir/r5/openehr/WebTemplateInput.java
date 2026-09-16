@@ -638,6 +638,10 @@ public class WebTemplateInput extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((WebTemplateInput) b);
+      }
+
       public void copyValues(WebTemplateInput dst) {
         super.copyValues(dst);
         dst.suffix = suffix == null ? null : suffix.copy();

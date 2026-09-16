@@ -391,6 +391,10 @@ public class SearchParameter extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SearchParameterComponentComponent) b);
+      }
+
       public void copyValues(SearchParameterComponentComponent dst) {
         super.copyValues(dst);
         dst.definition = definition == null ? null : definition.copy();
@@ -2812,6 +2816,10 @@ public class SearchParameter extends CanonicalResource {
         SearchParameter dst = new SearchParameter();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SearchParameter) b);
       }
 
       public void copyValues(SearchParameter dst) {

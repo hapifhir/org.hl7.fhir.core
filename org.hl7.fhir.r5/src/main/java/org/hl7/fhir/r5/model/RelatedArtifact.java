@@ -1456,6 +1456,10 @@ public class RelatedArtifact extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((RelatedArtifact) b);
+      }
+
       public void copyValues(RelatedArtifact dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();

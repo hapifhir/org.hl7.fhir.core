@@ -1158,6 +1158,10 @@ public class AppointmentResponse extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AppointmentResponse) b, options);
+      }
+
       public void copyValues(AppointmentResponse dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (identifierList != null) {

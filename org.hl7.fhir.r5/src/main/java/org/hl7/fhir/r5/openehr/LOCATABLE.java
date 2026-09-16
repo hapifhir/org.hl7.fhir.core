@@ -65,6 +65,10 @@ public abstract class LOCATABLE extends PATHABLE implements ICompositeType {
 
       public abstract LOCATABLE copy();
 
+      public void assign(Base b) {
+        copyValues((LOCATABLE) b);
+      }
+
       public void copyValues(LOCATABLE dst) {
         super.copyValues(dst);
       }

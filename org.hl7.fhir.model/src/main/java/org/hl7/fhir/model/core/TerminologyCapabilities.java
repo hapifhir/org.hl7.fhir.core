@@ -536,6 +536,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesSoftwareComponent) b, options);
+      }
+
       public void copyValues(TerminologyCapabilitiesSoftwareComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -977,6 +981,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         TerminologyCapabilitiesImplementationComponent dst = new TerminologyCapabilitiesImplementationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesImplementationComponent) b, options);
       }
 
       public void copyValues(TerminologyCapabilitiesImplementationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1588,6 +1596,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         TerminologyCapabilitiesCodeSystemComponent dst = new TerminologyCapabilitiesCodeSystemComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesCodeSystemComponent) b, options);
       }
 
       public void copyValues(TerminologyCapabilitiesCodeSystemComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2365,6 +2377,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesCodeSystemVersionComponent) b, options);
+      }
+
       public void copyValues(TerminologyCapabilitiesCodeSystemVersionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.value = value == null ? null : value.copy(options);
@@ -2706,6 +2722,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesCodeSystemVersionFilterComponent) b, options);
+      }
+
       public void copyValues(TerminologyCapabilitiesCodeSystemVersionFilterComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -2915,6 +2935,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         TerminologyCapabilitiesSupplementsComponent dst = new TerminologyCapabilitiesSupplementsComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesSupplementsComponent) b, options);
       }
 
       public void copyValues(TerminologyCapabilitiesSupplementsComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3410,6 +3434,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesExpansionComponent) b, options);
+      }
+
       public void copyValues(TerminologyCapabilitiesExpansionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.hierarchical = hierarchical == null ? null : hierarchical.copy(options);
@@ -3719,6 +3747,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesExpansionParameterComponent) b, options);
+      }
+
       public void copyValues(TerminologyCapabilitiesExpansionParameterComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -3931,6 +3963,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesValidateCodeComponent) b, options);
+      }
+
       public void copyValues(TerminologyCapabilitiesValidateCodeComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.translations = translations == null ? null : translations.copy(options);
@@ -4137,6 +4173,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         TerminologyCapabilitiesTranslationComponent dst = new TerminologyCapabilitiesTranslationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilitiesTranslationComponent) b, options);
       }
 
       public void copyValues(TerminologyCapabilitiesTranslationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6191,6 +6231,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         TerminologyCapabilities dst = new TerminologyCapabilities(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TerminologyCapabilities) b, options);
       }
 
       public void copyValues(TerminologyCapabilities dst, EnumSet<CopyObjectOptions> options) {

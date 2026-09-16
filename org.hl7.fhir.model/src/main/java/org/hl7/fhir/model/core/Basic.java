@@ -460,6 +460,10 @@ public class Basic extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Basic) b, options);
+      }
+
       public void copyValues(Basic dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (identifierList != null) {

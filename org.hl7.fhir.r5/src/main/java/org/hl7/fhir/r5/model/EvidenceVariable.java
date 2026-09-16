@@ -1212,6 +1212,10 @@ public class EvidenceVariable extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((EvidenceVariableCharacteristicComponent) b);
+      }
+
       public void copyValues(EvidenceVariableCharacteristicComponent dst) {
         super.copyValues(dst);
         dst.linkId = linkId == null ? null : linkId.copy();
@@ -1751,6 +1755,10 @@ public class EvidenceVariable extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((EvidenceVariableCharacteristicDefinitionByTypeAndValueComponent) b);
+      }
+
       public void copyValues(EvidenceVariableCharacteristicDefinitionByTypeAndValueComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -2098,6 +2106,10 @@ public class EvidenceVariable extends MetadataResource {
         EvidenceVariableCharacteristicDefinitionByCombinationComponent dst = new EvidenceVariableCharacteristicDefinitionByCombinationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((EvidenceVariableCharacteristicDefinitionByCombinationComponent) b);
       }
 
       public void copyValues(EvidenceVariableCharacteristicDefinitionByCombinationComponent dst) {
@@ -2588,6 +2600,10 @@ public class EvidenceVariable extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((EvidenceVariableCharacteristicTimeFromEventComponent) b);
+      }
+
       public void copyValues(EvidenceVariableCharacteristicTimeFromEventComponent dst) {
         super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
@@ -2886,6 +2902,10 @@ public class EvidenceVariable extends MetadataResource {
         EvidenceVariableCategoryComponent dst = new EvidenceVariableCategoryComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((EvidenceVariableCategoryComponent) b);
       }
 
       public void copyValues(EvidenceVariableCategoryComponent dst) {
@@ -5253,6 +5273,10 @@ See guidance around (not) making local changes to elements [here](canonicalresou
         EvidenceVariable dst = new EvidenceVariable();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((EvidenceVariable) b);
       }
 
       public void copyValues(EvidenceVariable dst) {

@@ -390,6 +390,10 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DocumentReferenceRelatedComponent) b, options);
+      }
+
       public void copyValues(DocumentReferenceRelatedComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -713,6 +717,10 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DocumentReferenceAttesterComponent) b, options);
+      }
+
       public void copyValues(DocumentReferenceAttesterComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.mode = mode == null ? null : mode.copy(options);
@@ -963,6 +971,10 @@ public class DocumentReference extends DomainResource {
         DocumentReferenceRelatesToComponent dst = new DocumentReferenceRelatesToComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DocumentReferenceRelatesToComponent) b, options);
       }
 
       public void copyValues(DocumentReferenceRelatesToComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1230,6 +1242,10 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DocumentReferenceContentComponent) b, options);
+      }
+
       public void copyValues(DocumentReferenceContentComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.attachment = attachment == null ? null : attachment.copy(options);
@@ -1481,6 +1497,10 @@ public class DocumentReference extends DomainResource {
         DocumentReferenceContentProfileComponent dst = new DocumentReferenceContentProfileComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DocumentReferenceContentProfileComponent) b, options);
       }
 
       public void copyValues(DocumentReferenceContentProfileComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3280,6 +3300,10 @@ public class DocumentReference extends DomainResource {
         DocumentReference dst = new DocumentReference(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DocumentReference) b, options);
       }
 
       public void copyValues(DocumentReference dst, EnumSet<CopyObjectOptions> options) {

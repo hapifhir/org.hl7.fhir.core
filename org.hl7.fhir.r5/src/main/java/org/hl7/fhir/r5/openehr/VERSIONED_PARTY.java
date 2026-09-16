@@ -69,6 +69,10 @@ public class VERSIONED_PARTY extends VERSIONED_OBJECT implements ICompositeType 
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((VERSIONED_PARTY) b);
+      }
+
       public void copyValues(VERSIONED_PARTY dst) {
         super.copyValues(dst);
       }

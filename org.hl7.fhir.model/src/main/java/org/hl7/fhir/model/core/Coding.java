@@ -533,6 +533,10 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Coding) b, options);
+      }
+
       public void copyValues(Coding dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.system = system == null ? null : system.copy(options);

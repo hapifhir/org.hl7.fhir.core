@@ -2323,6 +2323,10 @@ public class Questionnaire extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireItemComponent) b, options);
+      }
+
       public void copyValues(QuestionnaireItemComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.linkId = linkId == null ? null : linkId.copy(options);
@@ -3041,6 +3045,10 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireItemEnableWhenComponent) b, options);
+      }
+
       public void copyValues(QuestionnaireItemEnableWhenComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.question = question == null ? null : question.copy(options);
@@ -3508,6 +3516,10 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireItemAnswerOptionComponent) b, options);
+      }
+
       public void copyValues(QuestionnaireItemAnswerOptionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.value = value == null ? null : value.copy(options);
@@ -3935,6 +3947,10 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         QuestionnaireItemInitialComponent dst = new QuestionnaireItemInitialComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireItemInitialComponent) b, options);
       }
 
       public void copyValues(QuestionnaireItemInitialComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6101,6 +6117,10 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         Questionnaire dst = new Questionnaire(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Questionnaire) b, options);
       }
 
       public void copyValues(Questionnaire dst, EnumSet<CopyObjectOptions> options) {

@@ -500,6 +500,10 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((Coding) b);
+      }
+
       public void copyValues(Coding dst) {
         super.copyValues(dst);
         dst.system = system == null ? null : system.copy();

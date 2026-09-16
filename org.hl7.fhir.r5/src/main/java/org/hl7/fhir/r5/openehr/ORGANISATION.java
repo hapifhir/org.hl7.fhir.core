@@ -69,6 +69,10 @@ public class ORGANISATION extends ACTOR implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ORGANISATION) b);
+      }
+
       public void copyValues(ORGANISATION dst) {
         super.copyValues(dst);
       }

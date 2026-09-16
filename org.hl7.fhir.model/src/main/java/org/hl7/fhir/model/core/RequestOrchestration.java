@@ -2319,6 +2319,10 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequestOrchestrationActionComponent) b, options);
+      }
+
       public void copyValues(RequestOrchestrationActionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.linkId = linkId == null ? null : linkId.copy(options);
@@ -2752,6 +2756,10 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequestOrchestrationActionConditionComponent) b, options);
+      }
+
       public void copyValues(RequestOrchestrationActionConditionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.kind = kind == null ? null : kind.copy(options);
@@ -3085,6 +3093,10 @@ public class RequestOrchestration extends DomainResource {
         RequestOrchestrationActionInputComponent dst = new RequestOrchestrationActionInputComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequestOrchestrationActionInputComponent) b, options);
       }
 
       public void copyValues(RequestOrchestrationActionInputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3426,6 +3438,10 @@ public class RequestOrchestration extends DomainResource {
         RequestOrchestrationActionOutputComponent dst = new RequestOrchestrationActionOutputComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequestOrchestrationActionOutputComponent) b, options);
       }
 
       public void copyValues(RequestOrchestrationActionOutputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3887,6 +3903,10 @@ public class RequestOrchestration extends DomainResource {
         RequestOrchestrationActionRelatedActionComponent dst = new RequestOrchestrationActionRelatedActionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequestOrchestrationActionRelatedActionComponent) b, options);
       }
 
       public void copyValues(RequestOrchestrationActionRelatedActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4434,6 +4454,10 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequestOrchestrationActionParticipantComponent) b, options);
+      }
+
       public void copyValues(RequestOrchestrationActionParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -4709,6 +4733,10 @@ public class RequestOrchestration extends DomainResource {
         RequestOrchestrationActionDynamicValueComponent dst = new RequestOrchestrationActionDynamicValueComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequestOrchestrationActionDynamicValueComponent) b, options);
       }
 
       public void copyValues(RequestOrchestrationActionDynamicValueComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6098,6 +6126,10 @@ public class RequestOrchestration extends DomainResource {
         RequestOrchestration dst = new RequestOrchestration(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RequestOrchestration) b, options);
       }
 
       public void copyValues(RequestOrchestration dst, EnumSet<CopyObjectOptions> options) {

@@ -640,6 +640,10 @@ public class Identifier extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((Identifier) b);
+      }
+
       public void copyValues(Identifier dst) {
         super.copyValues(dst);
         dst.use = use == null ? null : use.copy();

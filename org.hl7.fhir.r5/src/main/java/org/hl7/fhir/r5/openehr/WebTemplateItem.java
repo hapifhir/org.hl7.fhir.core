@@ -1833,6 +1833,10 @@ public class WebTemplateItem extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((WebTemplateItem) b);
+      }
+
       public void copyValues(WebTemplateItem dst) {
         super.copyValues(dst);
         dst.id = id == null ? null : id.copy();

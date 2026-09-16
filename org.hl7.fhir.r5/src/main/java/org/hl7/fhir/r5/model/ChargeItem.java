@@ -415,6 +415,10 @@ public class ChargeItem extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ChargeItemPerformerComponent) b);
+      }
+
       public void copyValues(ChargeItemPerformerComponent dst) {
         super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
@@ -2225,6 +2229,10 @@ public class ChargeItem extends DomainResource {
         ChargeItem dst = new ChargeItem();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ChargeItem) b);
       }
 
       public void copyValues(ChargeItem dst) {

@@ -439,6 +439,10 @@ public class ATTESTATION extends AUDIT_DETAILS implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ATTESTATION) b);
+      }
+
       public void copyValues(ATTESTATION dst) {
         super.copyValues(dst);
         dst.attested_view = attested_view == null ? null : attested_view.copy();

@@ -2807,6 +2807,10 @@ public class Bundle extends Resource implements IBaseBundle {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BundleLinkComponent) b, options);
+      }
+
       public void copyValues(BundleLinkComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.relation = relation == null ? null : relation.copy(options);
@@ -3291,6 +3295,10 @@ public class Bundle extends Resource implements IBaseBundle {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BundleEntryComponent) b, options);
+      }
+
       public void copyValues(BundleEntryComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (linkList != null) {
@@ -3663,6 +3671,10 @@ public class Bundle extends Resource implements IBaseBundle {
         BundleEntrySearchComponent dst = new BundleEntrySearchComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BundleEntrySearchComponent) b, options);
       }
 
       public void copyValues(BundleEntrySearchComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4261,6 +4273,10 @@ public class Bundle extends Resource implements IBaseBundle {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BundleEntryRequestComponent) b, options);
+      }
+
       public void copyValues(BundleEntryRequestComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.method = method == null ? null : method.copy(options);
@@ -4770,6 +4786,10 @@ public class Bundle extends Resource implements IBaseBundle {
         BundleEntryResponseComponent dst = new BundleEntryResponseComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BundleEntryResponseComponent) b, options);
       }
 
       public void copyValues(BundleEntryResponseComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5398,6 +5418,10 @@ public class Bundle extends Resource implements IBaseBundle {
         Bundle dst = new Bundle(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Bundle) b, options);
       }
 
       public void copyValues(Bundle dst, EnumSet<CopyObjectOptions> options) {

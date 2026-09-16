@@ -647,6 +647,10 @@ public class GraphDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((GraphDefinitionNodeComponent) b, options);
+      }
+
       public void copyValues(GraphDefinitionNodeComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.nodeId = nodeId == null ? null : nodeId.copy(options);
@@ -1395,6 +1399,10 @@ public class GraphDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((GraphDefinitionLinkComponent) b, options);
+      }
+
       public void copyValues(GraphDefinitionLinkComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.description = description == null ? null : description.copy(options);
@@ -1877,6 +1885,10 @@ public class GraphDefinition extends CanonicalResource {
         GraphDefinitionLinkCompartmentComponent dst = new GraphDefinitionLinkCompartmentComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((GraphDefinitionLinkCompartmentComponent) b, options);
       }
 
       public void copyValues(GraphDefinitionLinkCompartmentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3426,6 +3438,10 @@ public class GraphDefinition extends CanonicalResource {
         GraphDefinition dst = new GraphDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((GraphDefinition) b, options);
       }
 
       public void copyValues(GraphDefinition dst, EnumSet<CopyObjectOptions> options) {

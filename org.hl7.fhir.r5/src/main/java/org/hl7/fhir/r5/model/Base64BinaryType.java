@@ -86,8 +86,24 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
   }
 
   @Override
+  public void assign(Base b) {
+    copyValues((Base64BinaryType) b);
+  }
+
+  /**
+   * myValue shadows PrimitiveType's coerced value, so it has to be carried across here too. The
+   * array itself is shared with dst, which is what copy() has always done
+   */
+  public void copyValues(Base64BinaryType dst) {
+    super.copyValues(dst);
+    dst.myValue = myValue;
+  }
+
+  @Override
   public Base64BinaryType copy() {
-    return new Base64BinaryType(getValue());
+    Base64BinaryType ret = new Base64BinaryType();
+    copyValues(ret);
+    return ret;
   }
 
   @Override

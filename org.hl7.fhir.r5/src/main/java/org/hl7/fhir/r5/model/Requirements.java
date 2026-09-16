@@ -1015,6 +1015,10 @@ public class Requirements extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((RequirementsStatementComponent) b);
+      }
+
       public void copyValues(RequirementsStatementComponent dst) {
         super.copyValues(dst);
         dst.key = key == null ? null : key.copy();
@@ -2730,6 +2734,10 @@ public class Requirements extends CanonicalResource {
         Requirements dst = new Requirements();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Requirements) b);
       }
 
       public void copyValues(Requirements dst) {

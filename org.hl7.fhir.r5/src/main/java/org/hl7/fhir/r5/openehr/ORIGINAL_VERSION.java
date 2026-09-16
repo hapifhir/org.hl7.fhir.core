@@ -459,6 +459,10 @@ public class ORIGINAL_VERSION extends VERSION implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ORIGINAL_VERSION) b);
+      }
+
       public void copyValues(ORIGINAL_VERSION dst) {
         super.copyValues(dst);
         dst.uid = uid == null ? null : uid.copy();

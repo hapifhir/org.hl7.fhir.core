@@ -1155,6 +1155,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CDSHooksResponseCardsComponent) b);
+      }
+
       public void copyValues(CDSHooksResponseCardsComponent dst) {
         super.copyValues(dst);
         dst.uuid = uuid == null ? null : uuid.copy();
@@ -1545,6 +1549,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         CDSHooksResponseCardsSourceComponent dst = new CDSHooksResponseCardsSourceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((CDSHooksResponseCardsSourceComponent) b);
       }
 
       public void copyValues(CDSHooksResponseCardsSourceComponent dst) {
@@ -1943,6 +1951,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CDSHooksResponseCardsSuggestionsComponent) b);
+      }
+
       public void copyValues(CDSHooksResponseCardsSuggestionsComponent dst) {
         super.copyValues(dst);
         dst.label = label == null ? null : label.copy();
@@ -2314,6 +2326,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         CDSHooksResponseCardsSuggestionsActionsComponent dst = new CDSHooksResponseCardsSuggestionsActionsComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((CDSHooksResponseCardsSuggestionsActionsComponent) b);
       }
 
       public void copyValues(CDSHooksResponseCardsSuggestionsActionsComponent dst) {
@@ -2712,6 +2728,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CDSHooksResponseCardsLinksComponent) b);
+      }
+
       public void copyValues(CDSHooksResponseCardsLinksComponent dst) {
         super.copyValues(dst);
         dst.label = label == null ? null : label.copy();
@@ -2975,6 +2995,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         CDSHooksResponse dst = new CDSHooksResponse();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((CDSHooksResponse) b);
       }
 
       public void copyValues(CDSHooksResponse dst) {

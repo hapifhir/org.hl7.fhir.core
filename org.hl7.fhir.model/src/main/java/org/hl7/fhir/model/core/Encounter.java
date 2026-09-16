@@ -682,6 +682,10 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EncounterBusinessStatusComponent) b, options);
+      }
+
       public void copyValues(EncounterBusinessStatusComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -996,6 +1000,10 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EncounterParticipantComponent) b, options);
+      }
+
       public void copyValues(EncounterParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (typeList != null) {
@@ -1282,6 +1290,10 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ReasonComponent) b, options);
+      }
+
       public void copyValues(ReasonComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (useList != null) {
@@ -1564,6 +1576,10 @@ public class Encounter extends DomainResource {
         DiagnosisComponent dst = new DiagnosisComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DiagnosisComponent) b, options);
       }
 
       public void copyValues(DiagnosisComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2024,6 +2040,10 @@ public class Encounter extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EncounterAdmissionComponent) b, options);
+      }
+
       public void copyValues(EncounterAdmissionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.preAdmissionIdentifier = preAdmissionIdentifier == null ? null : preAdmissionIdentifier.copy(options);
@@ -2420,6 +2440,10 @@ public class Encounter extends DomainResource {
         EncounterLocationComponent dst = new EncounterLocationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EncounterLocationComponent) b, options);
       }
 
       public void copyValues(EncounterLocationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4547,6 +4571,10 @@ public class Encounter extends DomainResource {
         Encounter dst = new Encounter(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Encounter) b, options);
       }
 
       public void copyValues(Encounter dst, EnumSet<CopyObjectOptions> options) {

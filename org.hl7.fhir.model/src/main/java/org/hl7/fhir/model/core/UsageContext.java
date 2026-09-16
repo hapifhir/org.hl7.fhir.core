@@ -352,6 +352,10 @@ public class UsageContext extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((UsageContext) b, options);
+      }
+
       public void copyValues(UsageContext dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);

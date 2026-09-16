@@ -311,6 +311,10 @@ public class DeviceAssociation extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DeviceAssociationOperationComponent) b);
+      }
+
       public void copyValues(DeviceAssociationOperationComponent dst) {
         super.copyValues(dst);
         dst.status = status == null ? null : status.copy();
@@ -983,6 +987,10 @@ public class DeviceAssociation extends DomainResource {
         DeviceAssociation dst = new DeviceAssociation();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DeviceAssociation) b);
       }
 
       public void copyValues(DeviceAssociation dst) {

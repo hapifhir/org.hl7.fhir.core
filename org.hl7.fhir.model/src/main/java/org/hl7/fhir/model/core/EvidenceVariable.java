@@ -351,6 +351,10 @@ public class EvidenceVariable extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceVariableRelatesToComponent) b, options);
+      }
+
       public void copyValues(EvidenceVariableRelatesToComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -773,6 +777,10 @@ public class EvidenceVariable extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceVariableDefinitionModifierComponent) b, options);
+      }
+
       public void copyValues(EvidenceVariableDefinitionModifierComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -1104,6 +1112,10 @@ public class EvidenceVariable extends MetadataResource {
         EvidenceVariableCategoryComponent dst = new EvidenceVariableCategoryComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceVariableCategoryComponent) b, options);
       }
 
       public void copyValues(EvidenceVariableCategoryComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1513,6 +1525,10 @@ public class EvidenceVariable extends MetadataResource {
         EvidenceVariableDataStorageComponent dst = new EvidenceVariableDataStorageComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceVariableDataStorageComponent) b, options);
       }
 
       public void copyValues(EvidenceVariableDataStorageComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2401,6 +2417,10 @@ public class EvidenceVariable extends MetadataResource {
         EvidenceVariableConstraintComponent dst = new EvidenceVariableConstraintComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceVariableConstraintComponent) b, options);
       }
 
       public void copyValues(EvidenceVariableConstraintComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5644,6 +5664,10 @@ public class EvidenceVariable extends MetadataResource {
         EvidenceVariable dst = new EvidenceVariable(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EvidenceVariable) b, options);
       }
 
       public void copyValues(EvidenceVariable dst, EnumSet<CopyObjectOptions> options) {

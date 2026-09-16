@@ -595,6 +595,10 @@ public class DosageSafety extends BackboneType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DosageSafetyDoseLimitComponent) b, options);
+      }
+
       public void copyValues(DosageSafetyDoseLimitComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.value = value == null ? null : value.copy(options);
@@ -884,6 +888,10 @@ public class DosageSafety extends BackboneType implements ICompositeType {
         DosageSafety dst = new DosageSafety(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DosageSafety) b, options);
       }
 
       public void copyValues(DosageSafety dst, EnumSet<CopyObjectOptions> options) {

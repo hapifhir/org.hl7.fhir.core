@@ -692,6 +692,10 @@ public class QuestionnaireResponse extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireResponseItemComponent) b, options);
+      }
+
       public void copyValues(QuestionnaireResponseItemComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.linkId = linkId == null ? null : linkId.copy(options);
@@ -1229,6 +1233,10 @@ public class QuestionnaireResponse extends DomainResource {
         QuestionnaireResponseItemAnswerComponent dst = new QuestionnaireResponseItemAnswerComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireResponseItemAnswerComponent) b, options);
       }
 
       public void copyValues(QuestionnaireResponseItemAnswerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2105,6 +2113,10 @@ public class QuestionnaireResponse extends DomainResource {
         QuestionnaireResponse dst = new QuestionnaireResponse(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((QuestionnaireResponse) b, options);
       }
 
       public void copyValues(QuestionnaireResponse dst, EnumSet<CopyObjectOptions> options) {

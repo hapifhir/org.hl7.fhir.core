@@ -213,6 +213,10 @@ public abstract class BackboneElement extends Element implements IBaseBackboneEl
 
       public abstract BackboneElement copy(EnumSet<CopyObjectOptions> options);
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BackboneElement) b, options);
+      }
+
       public void copyValues(BackboneElement dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (modifierExtensionList != null) {

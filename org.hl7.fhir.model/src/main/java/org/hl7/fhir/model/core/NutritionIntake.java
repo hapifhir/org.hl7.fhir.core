@@ -391,6 +391,10 @@ public class NutritionIntake extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionIntakeNutritionItemComponent) b, options);
+      }
+
       public void copyValues(NutritionIntakeNutritionItemComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -805,6 +809,10 @@ public class NutritionIntake extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionIntakeNutritionItemConsumedItemComponent) b, options);
+      }
+
       public void copyValues(NutritionIntakeNutritionItemConsumedItemComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.schedule = schedule == null ? null : schedule.copy(options);
@@ -1119,6 +1127,10 @@ public class NutritionIntake extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionIntakeNutritionItemConsumedItemTotalIntakeComponent) b, options);
+      }
+
       public void copyValues(NutritionIntakeNutritionItemConsumedItemTotalIntakeComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.nutrient = nutrient == null ? null : nutrient.copy(options);
@@ -1413,6 +1425,10 @@ public class NutritionIntake extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionIntakeNutritionItemNotConsumedItemComponent) b, options);
+      }
+
       public void copyValues(NutritionIntakeNutritionItemNotConsumedItemComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.reason = reason == null ? null : reason.copy(options);
@@ -1663,6 +1679,10 @@ public class NutritionIntake extends DomainResource {
         NutritionIntakePerformerComponent dst = new NutritionIntakePerformerComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionIntakePerformerComponent) b, options);
       }
 
       public void copyValues(NutritionIntakePerformerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3006,6 +3026,10 @@ public class NutritionIntake extends DomainResource {
         NutritionIntake dst = new NutritionIntake(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NutritionIntake) b, options);
       }
 
       public void copyValues(NutritionIntake dst, EnumSet<CopyObjectOptions> options) {

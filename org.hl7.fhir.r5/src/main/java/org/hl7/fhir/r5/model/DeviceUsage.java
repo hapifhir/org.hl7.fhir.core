@@ -445,6 +445,10 @@ public class DeviceUsage extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DeviceUsageAdherenceComponent) b);
+      }
+
       public void copyValues(DeviceUsageAdherenceComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -1678,6 +1682,10 @@ public class DeviceUsage extends DomainResource {
         DeviceUsage dst = new DeviceUsage();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((DeviceUsage) b);
       }
 
       public void copyValues(DeviceUsage dst) {

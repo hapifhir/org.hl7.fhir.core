@@ -1000,6 +1000,10 @@ public class Device extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceUdiCarrierComponent) b, options);
+      }
+
       public void copyValues(DeviceUdiCarrierComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.deviceIdentifier = deviceIdentifier == null ? null : deviceIdentifier.copy(options);
@@ -1363,6 +1367,10 @@ public class Device extends DomainResource {
         DeviceNameComponent dst = new DeviceNameComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceNameComponent) b, options);
       }
 
       public void copyValues(DeviceNameComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1766,6 +1774,10 @@ public class Device extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceDeviceVersionComponent) b, options);
+      }
+
       public void copyValues(DeviceDeviceVersionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -2098,6 +2110,10 @@ public class Device extends DomainResource {
         DeviceConformsToComponent dst = new DeviceConformsToComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceConformsToComponent) b, options);
       }
 
       public void copyValues(DeviceConformsToComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2488,6 +2504,10 @@ public class Device extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DevicePropertyComponent) b, options);
+      }
+
       public void copyValues(DevicePropertyComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -2732,6 +2752,10 @@ public class Device extends DomainResource {
         DeviceAdditiveComponent dst = new DeviceAdditiveComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DeviceAdditiveComponent) b, options);
       }
 
       public void copyValues(DeviceAdditiveComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4650,6 +4674,10 @@ public class Device extends DomainResource {
         Device dst = new Device(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Device) b, options);
       }
 
       public void copyValues(Device dst, EnumSet<CopyObjectOptions> options) {

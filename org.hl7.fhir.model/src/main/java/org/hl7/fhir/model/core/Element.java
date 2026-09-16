@@ -290,6 +290,10 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
 
       public abstract Element copy(EnumSet<CopyObjectOptions> options);
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Element) b, options);
+      }
+
       public void copyValues(Element dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.id = id == null ? null : id.copy(options);

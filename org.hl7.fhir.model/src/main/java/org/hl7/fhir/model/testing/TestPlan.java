@@ -280,6 +280,10 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanScopeComponent) b, options);
+      }
+
       public void copyValues(TestPlanScopeComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.reference = reference == null ? null : reference.copy(options);
@@ -540,6 +544,10 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanDependencyComponent) b, options);
+      }
+
       public void copyValues(TestPlanDependencyComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.reference = reference == null ? null : reference.copy(options);
@@ -798,6 +806,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanModeComponent dst = new TestPlanModeComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanModeComponent) b, options);
       }
 
       public void copyValues(TestPlanModeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1278,6 +1290,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanParameterComponent dst = new TestPlanParameterComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanParameterComponent) b, options);
       }
 
       public void copyValues(TestPlanParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1970,6 +1986,10 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanSuiteComponent) b, options);
+      }
+
       public void copyValues(TestPlanSuiteComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -2363,6 +2383,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanSuiteInputComponent dst = new TestPlanSuiteInputComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanSuiteInputComponent) b, options);
       }
 
       public void copyValues(TestPlanSuiteInputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3056,6 +3080,10 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanSuiteTestComponent) b, options);
+      }
+
       public void copyValues(TestPlanSuiteTestComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -3521,6 +3549,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanSuiteTestAssertionComponent dst = new TestPlanSuiteTestAssertionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanSuiteTestAssertionComponent) b, options);
       }
 
       public void copyValues(TestPlanSuiteTestAssertionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5284,6 +5316,10 @@ public class TestPlan extends CanonicalResource {
         TestPlan dst = new TestPlan(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlan) b, options);
       }
 
       public void copyValues(TestPlan dst, EnumSet<CopyObjectOptions> options) {

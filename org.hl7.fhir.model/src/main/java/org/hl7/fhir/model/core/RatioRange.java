@@ -296,6 +296,10 @@ public class RatioRange extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RatioRange) b, options);
+      }
+
       public void copyValues(RatioRange dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.lowNumerator = lowNumerator == null ? null : lowNumerator.copy(options);

@@ -282,6 +282,10 @@ public class ContactDetail extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ContactDetail) b);
+      }
+
       public void copyValues(ContactDetail dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();

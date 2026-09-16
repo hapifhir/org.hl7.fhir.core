@@ -736,6 +736,10 @@ public class MolecularSequence extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((MolecularSequenceRelativeComponent) b);
+      }
+
       public void copyValues(MolecularSequenceRelativeComponent dst) {
         super.copyValues(dst);
         dst.coordinateSystem = coordinateSystem == null ? null : coordinateSystem.copy();
@@ -1346,6 +1350,10 @@ public class MolecularSequence extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((MolecularSequenceRelativeStartingSequenceComponent) b);
+      }
+
       public void copyValues(MolecularSequenceRelativeStartingSequenceComponent dst) {
         super.copyValues(dst);
         dst.genomeAssembly = genomeAssembly == null ? null : genomeAssembly.copy();
@@ -1747,6 +1755,10 @@ public class MolecularSequence extends DomainResource {
         MolecularSequenceRelativeEditComponent dst = new MolecularSequenceRelativeEditComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MolecularSequenceRelativeEditComponent) b);
       }
 
       public void copyValues(MolecularSequenceRelativeEditComponent dst) {
@@ -2507,6 +2519,10 @@ public class MolecularSequence extends DomainResource {
         MolecularSequence dst = new MolecularSequence();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MolecularSequence) b);
       }
 
       public void copyValues(MolecularSequence dst) {

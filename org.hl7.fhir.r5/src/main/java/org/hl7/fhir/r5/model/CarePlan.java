@@ -478,6 +478,10 @@ public class CarePlan extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((CarePlanActivityComponent) b);
+      }
+
       public void copyValues(CarePlanActivityComponent dst) {
         super.copyValues(dst);
         if (performedActivity != null) {
@@ -2229,6 +2233,10 @@ public class CarePlan extends DomainResource {
         CarePlan dst = new CarePlan();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((CarePlan) b);
       }
 
       public void copyValues(CarePlan dst) {

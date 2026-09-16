@@ -401,6 +401,10 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((MarketingStatus) b);
+      }
+
       public void copyValues(MarketingStatus dst) {
         super.copyValues(dst);
         dst.country = country == null ? null : country.copy();

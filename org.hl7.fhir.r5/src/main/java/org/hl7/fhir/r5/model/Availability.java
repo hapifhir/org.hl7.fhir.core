@@ -428,6 +428,10 @@ public class Availability extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((AvailabilityAvailableTimeComponent) b);
+      }
+
       public void copyValues(AvailabilityAvailableTimeComponent dst) {
         super.copyValues(dst);
         if (daysOfWeek != null) {
@@ -671,6 +675,10 @@ public class Availability extends DataType implements ICompositeType {
         AvailabilityNotAvailableTimeComponent dst = new AvailabilityNotAvailableTimeComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((AvailabilityNotAvailableTimeComponent) b);
       }
 
       public void copyValues(AvailabilityNotAvailableTimeComponent dst) {
@@ -942,6 +950,10 @@ public class Availability extends DataType implements ICompositeType {
         Availability dst = new Availability();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Availability) b);
       }
 
       public void copyValues(Availability dst) {

@@ -378,6 +378,10 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((IngredientManufacturerComponent) b);
+      }
+
       public void copyValues(IngredientManufacturerComponent dst) {
         super.copyValues(dst);
         dst.role = role == null ? null : role.copy();
@@ -625,6 +629,10 @@ public class Ingredient extends DomainResource {
         IngredientSubstanceComponent dst = new IngredientSubstanceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((IngredientSubstanceComponent) b);
       }
 
       public void copyValues(IngredientSubstanceComponent dst) {
@@ -1404,6 +1412,10 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((IngredientSubstanceStrengthComponent) b);
+      }
+
       public void copyValues(IngredientSubstanceStrengthComponent dst) {
         super.copyValues(dst);
         dst.presentation = presentation == null ? null : presentation.copy();
@@ -1847,6 +1859,10 @@ public class Ingredient extends DomainResource {
         IngredientSubstanceStrengthReferenceStrengthComponent dst = new IngredientSubstanceStrengthReferenceStrengthComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((IngredientSubstanceStrengthReferenceStrengthComponent) b);
       }
 
       public void copyValues(IngredientSubstanceStrengthReferenceStrengthComponent dst) {
@@ -2610,6 +2626,10 @@ public class Ingredient extends DomainResource {
         Ingredient dst = new Ingredient();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Ingredient) b);
       }
 
       public void copyValues(Ingredient dst) {

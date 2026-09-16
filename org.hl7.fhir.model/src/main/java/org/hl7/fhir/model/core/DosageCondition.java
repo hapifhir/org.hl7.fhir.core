@@ -1808,6 +1808,10 @@ public class DosageCondition extends BackboneType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DosageCondition) b, options);
+      }
+
       public void copyValues(DosageCondition dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);

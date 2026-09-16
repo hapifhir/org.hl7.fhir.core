@@ -1098,6 +1098,10 @@ public class PractitionerRole extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((PractitionerRole) b);
+      }
+
       public void copyValues(PractitionerRole dst) {
         super.copyValues(dst);
         if (identifier != null) {

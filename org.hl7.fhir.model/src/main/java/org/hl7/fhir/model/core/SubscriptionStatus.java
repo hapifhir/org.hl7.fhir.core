@@ -793,6 +793,10 @@ public class SubscriptionStatus extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionStatusNotificationEventComponent) b, options);
+      }
+
       public void copyValues(SubscriptionStatusNotificationEventComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.eventNumber = eventNumber == null ? null : eventNumber.copy(options);
@@ -1100,6 +1104,10 @@ public class SubscriptionStatus extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionStatusNotificationEventRelatedQueryComponent) b, options);
+      }
+
       public void copyValues(SubscriptionStatusNotificationEventRelatedQueryComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.queryType = queryType == null ? null : queryType.copy(options);
@@ -1367,6 +1375,10 @@ public class SubscriptionStatus extends DomainResource {
         SubscriptionStatusNotificationEventAuthorizationHintComponent dst = new SubscriptionStatusNotificationEventAuthorizationHintComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionStatusNotificationEventAuthorizationHintComponent) b, options);
       }
 
       public void copyValues(SubscriptionStatusNotificationEventAuthorizationHintComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2014,6 +2026,10 @@ public class SubscriptionStatus extends DomainResource {
         SubscriptionStatus dst = new SubscriptionStatus(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubscriptionStatus) b, options);
       }
 
       public void copyValues(SubscriptionStatus dst, EnumSet<CopyObjectOptions> options) {

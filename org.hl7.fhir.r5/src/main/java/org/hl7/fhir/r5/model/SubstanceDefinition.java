@@ -596,6 +596,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubstanceDefinitionMoietyComponent) b);
+      }
+
       public void copyValues(SubstanceDefinitionMoietyComponent dst) {
         super.copyValues(dst);
         dst.role = role == null ? null : role.copy();
@@ -967,6 +971,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubstanceDefinitionCharacterizationComponent) b);
+      }
+
       public void copyValues(SubstanceDefinitionCharacterizationComponent dst) {
         super.copyValues(dst);
         dst.technique = technique == null ? null : technique.copy();
@@ -1291,6 +1299,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubstanceDefinitionPropertyComponent) b);
+      }
+
       public void copyValues(SubstanceDefinitionPropertyComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1558,6 +1570,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionMolecularWeightComponent dst = new SubstanceDefinitionMolecularWeightComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubstanceDefinitionMolecularWeightComponent) b);
       }
 
       public void copyValues(SubstanceDefinitionMolecularWeightComponent dst) {
@@ -2191,6 +2207,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubstanceDefinitionStructureComponent) b);
+      }
+
       public void copyValues(SubstanceDefinitionStructureComponent dst) {
         super.copyValues(dst);
         dst.stereochemistry = stereochemistry == null ? null : stereochemistry.copy();
@@ -2546,6 +2566,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionStructureRepresentationComponent dst = new SubstanceDefinitionStructureRepresentationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubstanceDefinitionStructureRepresentationComponent) b);
       }
 
       public void copyValues(SubstanceDefinitionStructureRepresentationComponent dst) {
@@ -2984,6 +3008,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionCodeComponent dst = new SubstanceDefinitionCodeComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubstanceDefinitionCodeComponent) b);
       }
 
       public void copyValues(SubstanceDefinitionCodeComponent dst) {
@@ -3883,6 +3911,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubstanceDefinitionNameComponent) b);
+      }
+
       public void copyValues(SubstanceDefinitionNameComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -4207,6 +4239,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionNameOfficialComponent dst = new SubstanceDefinitionNameOfficialComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubstanceDefinitionNameOfficialComponent) b);
       }
 
       public void copyValues(SubstanceDefinitionNameOfficialComponent dst) {
@@ -4807,6 +4843,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubstanceDefinitionRelationshipComponent) b);
+      }
+
       public void copyValues(SubstanceDefinitionRelationshipComponent dst) {
         super.copyValues(dst);
         dst.substanceDefinition = substanceDefinition == null ? null : substanceDefinition.copy();
@@ -5203,6 +5243,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionSourceMaterialComponent dst = new SubstanceDefinitionSourceMaterialComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubstanceDefinitionSourceMaterialComponent) b);
       }
 
       public void copyValues(SubstanceDefinitionSourceMaterialComponent dst) {
@@ -6904,6 +6948,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinition dst = new SubstanceDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubstanceDefinition) b);
       }
 
       public void copyValues(SubstanceDefinition dst) {

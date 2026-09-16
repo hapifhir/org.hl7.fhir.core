@@ -364,6 +364,10 @@ public class Dosage extends BackboneType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DosageDoseAndRateComponent) b);
+      }
+
       public void copyValues(DosageDoseAndRateComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1348,6 +1352,10 @@ public class Dosage extends BackboneType implements ICompositeType {
         Dosage dst = new Dosage();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Dosage) b);
       }
 
       public void copyValues(Dosage dst) {

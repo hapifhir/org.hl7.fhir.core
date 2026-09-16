@@ -488,6 +488,10 @@ public class CarePlan extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CarePlanActivityComponent) b, options);
+      }
+
       public void copyValues(CarePlanActivityComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (performedActivityList != null) {
@@ -2115,6 +2119,10 @@ public class CarePlan extends DomainResource {
         CarePlan dst = new CarePlan(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CarePlan) b, options);
       }
 
       public void copyValues(CarePlan dst, EnumSet<CopyObjectOptions> options) {

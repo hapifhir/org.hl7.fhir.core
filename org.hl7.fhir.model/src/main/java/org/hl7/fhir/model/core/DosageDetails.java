@@ -451,6 +451,10 @@ public class DosageDetails extends BackboneType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DosageDetailsStepComponent) b, options);
+      }
+
       public void copyValues(DosageDetailsStepComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.start = start == null ? null : start.copy(options);
@@ -801,6 +805,10 @@ public class DosageDetails extends BackboneType implements ICompositeType {
         DosageDetails dst = new DosageDetails(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DosageDetails) b, options);
       }
 
       public void copyValues(DosageDetails dst, EnumSet<CopyObjectOptions> options) {

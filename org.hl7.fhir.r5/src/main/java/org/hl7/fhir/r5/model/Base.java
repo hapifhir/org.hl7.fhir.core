@@ -555,6 +555,10 @@ public abstract class Base implements Serializable, IBase, IElement {
 
   public abstract Base copy();
   
+  public void assign(Base b) {
+    copyValues((Base) b);
+  }
+
   public void copyValues(Base dst) {  
     if (isCopyUserData() && userData != null) {
       dst.userData = new HashMap<>();

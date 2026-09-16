@@ -168,6 +168,10 @@ public abstract class CDSHooksElement extends LogicalBase implements ICompositeT
 
       public abstract CDSHooksElement copy();
 
+      public void assign(Base b) {
+        copyValues((CDSHooksElement) b);
+      }
+
       public void copyValues(CDSHooksElement dst) {
         super.copyValues(dst);
         dst.extension = extension == null ? null : extension.copy();

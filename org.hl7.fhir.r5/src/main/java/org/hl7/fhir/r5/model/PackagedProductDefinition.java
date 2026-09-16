@@ -230,6 +230,10 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((PackagedProductDefinitionLegalStatusOfSupplyComponent) b);
+      }
+
       public void copyValues(PackagedProductDefinitionLegalStatusOfSupplyComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -1132,6 +1136,10 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((PackagedProductDefinitionPackagingComponent) b);
+      }
+
       public void copyValues(PackagedProductDefinitionPackagingComponent dst) {
         super.copyValues(dst);
         if (identifier != null) {
@@ -1496,6 +1504,10 @@ public class PackagedProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((PackagedProductDefinitionPackagingPropertyComponent) b);
+      }
+
       public void copyValues(PackagedProductDefinitionPackagingPropertyComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1714,6 +1726,10 @@ public class PackagedProductDefinition extends DomainResource {
         PackagedProductDefinitionPackagingContainedItemComponent dst = new PackagedProductDefinitionPackagingContainedItemComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((PackagedProductDefinitionPackagingContainedItemComponent) b);
       }
 
       public void copyValues(PackagedProductDefinitionPackagingContainedItemComponent dst) {
@@ -2858,6 +2874,10 @@ public class PackagedProductDefinition extends DomainResource {
         PackagedProductDefinition dst = new PackagedProductDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((PackagedProductDefinition) b);
       }
 
       public void copyValues(PackagedProductDefinition dst) {

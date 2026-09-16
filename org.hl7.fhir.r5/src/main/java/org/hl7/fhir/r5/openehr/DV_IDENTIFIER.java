@@ -408,6 +408,10 @@ public class DV_IDENTIFIER extends DATA_VALUE implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DV_IDENTIFIER) b);
+      }
+
       public void copyValues(DV_IDENTIFIER dst) {
         super.copyValues(dst);
         dst.issuer = issuer == null ? null : issuer.copy();

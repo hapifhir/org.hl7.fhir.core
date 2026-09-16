@@ -248,6 +248,10 @@ public class DV_ORDINAL extends DV_ORDERED implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DV_ORDINAL) b);
+      }
+
       public void copyValues(DV_ORDINAL dst) {
         super.copyValues(dst);
         dst.symbol = symbol == null ? null : symbol.copy();

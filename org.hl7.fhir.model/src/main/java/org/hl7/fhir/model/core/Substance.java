@@ -757,6 +757,10 @@ public class Substance extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Substance) b, options);
+      }
+
       public void copyValues(Substance dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (identifierList != null) {

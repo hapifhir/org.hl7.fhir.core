@@ -1112,6 +1112,10 @@ public class Contract extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ContentDefinitionComponent) b);
+      }
+
       public void copyValues(ContentDefinitionComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -2007,6 +2011,10 @@ public class Contract extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((TermComponent) b);
+      }
+
       public void copyValues(TermComponent dst) {
         super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
@@ -2445,6 +2453,10 @@ public class Contract extends DomainResource {
         SecurityLabelComponent dst = new SecurityLabelComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SecurityLabelComponent) b);
       }
 
       public void copyValues(SecurityLabelComponent dst) {
@@ -3262,6 +3274,10 @@ public class Contract extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ContractOfferComponent) b);
+      }
+
       public void copyValues(ContractOfferComponent dst) {
         super.copyValues(dst);
         if (identifier != null) {
@@ -3547,6 +3563,10 @@ public class Contract extends DomainResource {
         ContractPartyComponent dst = new ContractPartyComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ContractPartyComponent) b);
       }
 
       public void copyValues(ContractPartyComponent dst) {
@@ -3959,6 +3979,10 @@ public class Contract extends DomainResource {
         AnswerComponent dst = new AnswerComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((AnswerComponent) b);
       }
 
       public void copyValues(AnswerComponent dst) {
@@ -5160,6 +5184,10 @@ public class Contract extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ContractAssetComponent) b);
+      }
+
       public void copyValues(ContractAssetComponent dst) {
         super.copyValues(dst);
         dst.scope = scope == null ? null : scope.copy();
@@ -5535,6 +5563,10 @@ public class Contract extends DomainResource {
         AssetContextComponent dst = new AssetContextComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((AssetContextComponent) b);
       }
 
       public void copyValues(AssetContextComponent dst) {
@@ -6580,6 +6612,10 @@ public class Contract extends DomainResource {
         ValuedItemComponent dst = new ValuedItemComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ValuedItemComponent) b);
       }
 
       public void copyValues(ValuedItemComponent dst) {
@@ -8070,6 +8106,10 @@ public class Contract extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ActionComponent) b);
+      }
+
       public void copyValues(ActionComponent dst) {
         super.copyValues(dst);
         dst.doNotPerform = doNotPerform == null ? null : doNotPerform.copy();
@@ -8393,6 +8433,10 @@ public class Contract extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ActionSubjectComponent) b);
+      }
+
       public void copyValues(ActionSubjectComponent dst) {
         super.copyValues(dst);
         if (reference != null) {
@@ -8695,6 +8739,10 @@ public class Contract extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SignatoryComponent) b);
+      }
+
       public void copyValues(SignatoryComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -8909,6 +8957,10 @@ public class Contract extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((FriendlyLanguageComponent) b);
+      }
+
       public void copyValues(FriendlyLanguageComponent dst) {
         super.copyValues(dst);
         dst.content = content == null ? null : content.copy();
@@ -9116,6 +9168,10 @@ public class Contract extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((LegalLanguageComponent) b);
+      }
+
       public void copyValues(LegalLanguageComponent dst) {
         super.copyValues(dst);
         dst.content = content == null ? null : content.copy();
@@ -9321,6 +9377,10 @@ public class Contract extends DomainResource {
         ComputableLanguageComponent dst = new ComputableLanguageComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ComputableLanguageComponent) b);
       }
 
       public void copyValues(ComputableLanguageComponent dst) {
@@ -11664,6 +11724,10 @@ public class Contract extends DomainResource {
         Contract dst = new Contract();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Contract) b);
       }
 
       public void copyValues(Contract dst) {

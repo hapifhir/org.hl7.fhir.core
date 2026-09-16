@@ -51,6 +51,10 @@ public class MoneyQuantity extends Quantity {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((MoneyQuantity) b);
+      }
+
       public void copyValues(MoneyQuantity dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

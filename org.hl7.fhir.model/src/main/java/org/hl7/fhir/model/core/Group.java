@@ -1675,6 +1675,10 @@ public class Group extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((GroupCharacteristicComponent) b, options);
+      }
+
       public void copyValues(GroupCharacteristicComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -2119,6 +2123,10 @@ public class Group extends CanonicalResource {
         GroupMemberComponent dst = new GroupMemberComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((GroupMemberComponent) b, options);
       }
 
       public void copyValues(GroupMemberComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4165,6 +4173,10 @@ public class Group extends CanonicalResource {
         Group dst = new Group(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Group) b, options);
       }
 
       public void copyValues(Group dst, EnumSet<CopyObjectOptions> options) {

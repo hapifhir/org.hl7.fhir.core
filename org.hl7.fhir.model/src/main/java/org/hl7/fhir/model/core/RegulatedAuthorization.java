@@ -479,6 +479,10 @@ public class RegulatedAuthorization extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RegulatedAuthorizationCaseComponent) b, options);
+      }
+
       public void copyValues(RegulatedAuthorizationCaseComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (identifierList != null) {
@@ -1598,6 +1602,10 @@ public class RegulatedAuthorization extends DomainResource {
         RegulatedAuthorization dst = new RegulatedAuthorization(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RegulatedAuthorization) b, options);
       }
 
       public void copyValues(RegulatedAuthorization dst, EnumSet<CopyObjectOptions> options) {

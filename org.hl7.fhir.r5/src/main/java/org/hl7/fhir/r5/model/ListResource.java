@@ -489,6 +489,10 @@ public class ListResource extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ListResourceEntryComponent) b);
+      }
+
       public void copyValues(ListResourceEntryComponent dst) {
         super.copyValues(dst);
         dst.flag = flag == null ? null : flag.copy();
@@ -1443,6 +1447,10 @@ public class ListResource extends DomainResource {
         ListResource dst = new ListResource();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ListResource) b);
       }
 
       public void copyValues(ListResource dst) {

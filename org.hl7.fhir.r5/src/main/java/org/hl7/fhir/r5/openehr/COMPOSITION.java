@@ -429,6 +429,10 @@ or any other code defined in the openEHR terminology group 'category'.)
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((COMPOSITION) b);
+      }
+
       public void copyValues(COMPOSITION dst) {
         super.copyValues(dst);
         dst.language = language == null ? null : language.copy();

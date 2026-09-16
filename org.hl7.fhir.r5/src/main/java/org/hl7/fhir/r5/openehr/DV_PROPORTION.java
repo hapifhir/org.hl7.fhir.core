@@ -436,6 +436,10 @@ public class DV_PROPORTION extends DV_AMOUNT implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DV_PROPORTION) b);
+      }
+
       public void copyValues(DV_PROPORTION dst) {
         super.copyValues(dst);
         dst.numerator = numerator == null ? null : numerator.copy();

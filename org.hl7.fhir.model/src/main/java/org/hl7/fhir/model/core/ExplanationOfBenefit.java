@@ -433,6 +433,10 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((RelatedClaimComponent) b, options);
+      }
+
       public void copyValues(RelatedClaimComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.claim = claim == null ? null : claim.copy(options);
@@ -721,6 +725,10 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExplanationOfBenefitEventComponent) b, options);
+      }
+
       public void copyValues(ExplanationOfBenefitEventComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -954,6 +962,10 @@ public class ExplanationOfBenefit extends DomainResource {
         PayeeComponent dst = new PayeeComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PayeeComponent) b, options);
       }
 
       public void copyValues(PayeeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1328,6 +1340,10 @@ public class ExplanationOfBenefit extends DomainResource {
         CareTeamComponent dst = new CareTeamComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CareTeamComponent) b, options);
       }
 
       public void copyValues(CareTeamComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3024,6 +3040,10 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SupportingInformationComponent) b, options);
+      }
+
       public void copyValues(SupportingInformationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.sequence = sequence == null ? null : sequence.copy(options);
@@ -3440,6 +3460,10 @@ public class ExplanationOfBenefit extends DomainResource {
         DiagnosisComponent dst = new DiagnosisComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DiagnosisComponent) b, options);
       }
 
       public void copyValues(DiagnosisComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3947,6 +3971,10 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ProcedureComponent) b, options);
+      }
+
       public void copyValues(ProcedureComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.sequence = sequence == null ? null : sequence.copy(options);
@@ -4316,6 +4344,10 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((InsuranceComponent) b, options);
+      }
+
       public void copyValues(InsuranceComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.focal = focal == null ? null : focal.copy(options);
@@ -4672,6 +4704,10 @@ public class ExplanationOfBenefit extends DomainResource {
         AccidentComponent dst = new AccidentComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AccidentComponent) b, options);
       }
 
       public void copyValues(AccidentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6834,6 +6870,10 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ItemComponent) b, options);
+      }
+
       public void copyValues(ItemComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.sequence = sequence == null ? null : sequence.copy(options);
@@ -7305,6 +7345,10 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ItemBodySiteComponent) b, options);
+      }
+
       public void copyValues(ItemBodySiteComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (siteList != null) {
@@ -7698,6 +7742,10 @@ public class ExplanationOfBenefit extends DomainResource {
         ItemReviewOutcomeComponent dst = new ItemReviewOutcomeComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ItemReviewOutcomeComponent) b, options);
       }
 
       public void copyValues(ItemReviewOutcomeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -8142,6 +8190,10 @@ public class ExplanationOfBenefit extends DomainResource {
         AdjudicationComponent dst = new AdjudicationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdjudicationComponent) b, options);
       }
 
       public void copyValues(AdjudicationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9518,6 +9570,10 @@ public class ExplanationOfBenefit extends DomainResource {
         DetailComponent dst = new DetailComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((DetailComponent) b, options);
       }
 
       public void copyValues(DetailComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10915,6 +10971,10 @@ public class ExplanationOfBenefit extends DomainResource {
         SubDetailComponent dst = new SubDetailComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubDetailComponent) b, options);
       }
 
       public void copyValues(SubDetailComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -13014,6 +13074,10 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AddedItemComponent) b, options);
+      }
+
       public void copyValues(AddedItemComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (itemSequenceList != null) {
@@ -13469,6 +13533,10 @@ public class ExplanationOfBenefit extends DomainResource {
         AddedItemBodySiteComponent dst = new AddedItemBodySiteComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AddedItemBodySiteComponent) b, options);
       }
 
       public void copyValues(AddedItemBodySiteComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -14557,6 +14625,10 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AddedItemDetailComponent) b, options);
+      }
+
       public void copyValues(AddedItemDetailComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (traceNumberList != null) {
@@ -15642,6 +15714,10 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AddedItemDetailSubDetailComponent) b, options);
+      }
+
       public void copyValues(AddedItemDetailSubDetailComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (traceNumberList != null) {
@@ -15960,6 +16036,10 @@ public class ExplanationOfBenefit extends DomainResource {
         TotalComponent dst = new TotalComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TotalComponent) b, options);
       }
 
       public void copyValues(TotalComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -16434,6 +16514,10 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PaymentComponent) b, options);
+      }
+
       public void copyValues(PaymentComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -16890,6 +16974,10 @@ public class ExplanationOfBenefit extends DomainResource {
         NoteComponent dst = new NoteComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((NoteComponent) b, options);
       }
 
       public void copyValues(NoteComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -17561,6 +17649,10 @@ public class ExplanationOfBenefit extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BenefitBalanceComponent) b, options);
+      }
+
       public void copyValues(BenefitBalanceComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.category = category == null ? null : category.copy(options);
@@ -17980,6 +18072,10 @@ public class ExplanationOfBenefit extends DomainResource {
         BenefitComponent dst = new BenefitComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((BenefitComponent) b, options);
       }
 
       public void copyValues(BenefitComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -21259,6 +21355,10 @@ public class ExplanationOfBenefit extends DomainResource {
         ExplanationOfBenefit dst = new ExplanationOfBenefit(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ExplanationOfBenefit) b, options);
       }
 
       public void copyValues(ExplanationOfBenefit dst, EnumSet<CopyObjectOptions> options) {

@@ -514,6 +514,10 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SpecimenFeatureComponent) b, options);
+      }
+
       public void copyValues(SpecimenFeatureComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -1213,6 +1217,10 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SpecimenCollectionComponent) b, options);
+      }
+
       public void copyValues(SpecimenCollectionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.collector = collector == null ? null : collector.copy(options);
@@ -1796,6 +1804,10 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SpecimenProcessingComponent) b, options);
+      }
+
       public void copyValues(SpecimenProcessingComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.description = description == null ? null : description.copy(options);
@@ -2065,6 +2077,10 @@ public class Specimen extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SpecimenProcessingAdditiveComponent) b, options);
+      }
+
       public void copyValues(SpecimenProcessingAdditiveComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -2309,6 +2325,10 @@ public class Specimen extends DomainResource {
         SpecimenContainerComponent dst = new SpecimenContainerComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SpecimenContainerComponent) b, options);
       }
 
       public void copyValues(SpecimenContainerComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3548,6 +3568,10 @@ public class Specimen extends DomainResource {
         Specimen dst = new Specimen(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Specimen) b, options);
       }
 
       public void copyValues(Specimen dst, EnumSet<CopyObjectOptions> options) {

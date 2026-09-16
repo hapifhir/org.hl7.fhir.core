@@ -1003,6 +1003,10 @@ public class ImmunizationRecommendation extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ImmunizationRecommendationRecommendationComponent) b);
+      }
+
       public void copyValues(ImmunizationRecommendationRecommendationComponent dst) {
         super.copyValues(dst);
         if (vaccineCode != null) {
@@ -1290,6 +1294,10 @@ public class ImmunizationRecommendation extends DomainResource {
         ImmunizationRecommendationRecommendationDateCriterionComponent dst = new ImmunizationRecommendationRecommendationDateCriterionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ImmunizationRecommendationRecommendationDateCriterionComponent) b);
       }
 
       public void copyValues(ImmunizationRecommendationRecommendationDateCriterionComponent dst) {
@@ -1732,6 +1740,10 @@ public class ImmunizationRecommendation extends DomainResource {
         ImmunizationRecommendation dst = new ImmunizationRecommendation();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ImmunizationRecommendation) b);
       }
 
       public void copyValues(ImmunizationRecommendation dst) {

@@ -885,6 +885,10 @@ public class SpecimenDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SpecimenDefinitionTypeTestedComponent) b);
+      }
+
       public void copyValues(SpecimenDefinitionTypeTestedComponent dst) {
         super.copyValues(dst);
         dst.isDerived = isDerived == null ? null : isDerived.copy();
@@ -1520,6 +1524,10 @@ public class SpecimenDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SpecimenDefinitionTypeTestedContainerComponent) b);
+      }
+
       public void copyValues(SpecimenDefinitionTypeTestedContainerComponent dst) {
         super.copyValues(dst);
         dst.material = material == null ? null : material.copy();
@@ -1741,6 +1749,10 @@ public class SpecimenDefinition extends DomainResource {
         SpecimenDefinitionTypeTestedContainerAdditiveComponent dst = new SpecimenDefinitionTypeTestedContainerAdditiveComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SpecimenDefinitionTypeTestedContainerAdditiveComponent) b);
       }
 
       public void copyValues(SpecimenDefinitionTypeTestedContainerAdditiveComponent dst) {
@@ -2071,6 +2083,10 @@ public class SpecimenDefinition extends DomainResource {
         SpecimenDefinitionTypeTestedHandlingComponent dst = new SpecimenDefinitionTypeTestedHandlingComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SpecimenDefinitionTypeTestedHandlingComponent) b);
       }
 
       public void copyValues(SpecimenDefinitionTypeTestedHandlingComponent dst) {
@@ -4192,6 +4208,10 @@ public class SpecimenDefinition extends DomainResource {
         SpecimenDefinition dst = new SpecimenDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SpecimenDefinition) b);
       }
 
       public void copyValues(SpecimenDefinition dst) {

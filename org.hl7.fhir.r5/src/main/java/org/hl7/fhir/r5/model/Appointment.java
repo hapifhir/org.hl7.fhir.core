@@ -806,6 +806,10 @@ public class Appointment extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((AppointmentParticipantComponent) b);
+      }
+
       public void copyValues(AppointmentParticipantComponent dst) {
         super.copyValues(dst);
         if (type != null) {
@@ -1565,6 +1569,10 @@ public class Appointment extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((AppointmentRecurrenceTemplateComponent) b);
+      }
+
       public void copyValues(AppointmentRecurrenceTemplateComponent dst) {
         super.copyValues(dst);
         dst.timezone = timezone == null ? null : timezone.copy();
@@ -2258,6 +2266,10 @@ e.g. For recurring every second week this interval would be 2, or every third we
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((AppointmentRecurrenceTemplateWeeklyTemplateComponent) b);
+      }
+
       public void copyValues(AppointmentRecurrenceTemplateWeeklyTemplateComponent dst) {
         super.copyValues(dst);
         dst.monday = monday == null ? null : monday.copy();
@@ -2625,6 +2637,10 @@ e.g. For recurring every second week this interval would be 2, or every third we
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((AppointmentRecurrenceTemplateMonthlyTemplateComponent) b);
+      }
+
       public void copyValues(AppointmentRecurrenceTemplateMonthlyTemplateComponent dst) {
         super.copyValues(dst);
         dst.dayOfMonth = dayOfMonth == null ? null : dayOfMonth.copy();
@@ -2822,6 +2838,10 @@ e.g. For recurring every second week this interval would be 2, or every third we
         AppointmentRecurrenceTemplateYearlyTemplateComponent dst = new AppointmentRecurrenceTemplateYearlyTemplateComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((AppointmentRecurrenceTemplateYearlyTemplateComponent) b);
       }
 
       public void copyValues(AppointmentRecurrenceTemplateYearlyTemplateComponent dst) {
@@ -5147,6 +5167,10 @@ The duration (usually in minutes) could also be provided to indicate the length 
         Appointment dst = new Appointment();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((Appointment) b);
       }
 
       public void copyValues(Appointment dst) {

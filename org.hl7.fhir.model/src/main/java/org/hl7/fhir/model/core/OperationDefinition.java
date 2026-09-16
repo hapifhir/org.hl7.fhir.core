@@ -1466,6 +1466,10 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationDefinitionParameterComponent) b, options);
+      }
+
       public void copyValues(OperationDefinitionParameterComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -1827,6 +1831,10 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationDefinitionParameterBindingComponent) b, options);
+      }
+
       public void copyValues(OperationDefinitionParameterBindingComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.strength = strength == null ? null : strength.copy(options);
@@ -2116,6 +2124,10 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationDefinitionParameterReferencedFromComponent) b, options);
+      }
+
       public void copyValues(OperationDefinitionParameterReferencedFromComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.source = source == null ? null : source.copy(options);
@@ -2400,6 +2412,10 @@ public class OperationDefinition extends CanonicalResource {
         OperationDefinitionOverloadComponent dst = new OperationDefinitionOverloadComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationDefinitionOverloadComponent) b, options);
       }
 
       public void copyValues(OperationDefinitionOverloadComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4906,6 +4922,10 @@ public class OperationDefinition extends CanonicalResource {
         OperationDefinition dst = new OperationDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((OperationDefinition) b, options);
       }
 
       public void copyValues(OperationDefinition dst, EnumSet<CopyObjectOptions> options) {

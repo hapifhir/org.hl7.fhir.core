@@ -303,6 +303,10 @@ public class SubstanceReferenceInformation extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubstanceReferenceInformationGeneComponent) b);
+      }
+
       public void copyValues(SubstanceReferenceInformationGeneComponent dst) {
         super.copyValues(dst);
         dst.geneSequenceOrigin = geneSequenceOrigin == null ? null : geneSequenceOrigin.copy();
@@ -595,6 +599,10 @@ public class SubstanceReferenceInformation extends DomainResource {
         SubstanceReferenceInformationGeneElementComponent dst = new SubstanceReferenceInformationGeneElementComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubstanceReferenceInformationGeneElementComponent) b);
       }
 
       public void copyValues(SubstanceReferenceInformationGeneElementComponent dst) {
@@ -1180,6 +1188,10 @@ public class SubstanceReferenceInformation extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SubstanceReferenceInformationTargetComponent) b);
+      }
+
       public void copyValues(SubstanceReferenceInformationTargetComponent dst) {
         super.copyValues(dst);
         dst.target = target == null ? null : target.copy();
@@ -1608,6 +1620,10 @@ public class SubstanceReferenceInformation extends DomainResource {
         SubstanceReferenceInformation dst = new SubstanceReferenceInformation();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SubstanceReferenceInformation) b);
       }
 
       public void copyValues(SubstanceReferenceInformation dst) {

@@ -733,6 +733,10 @@ public class ArtifactAssessment extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ArtifactAssessmentRelatesToComponent) b, options);
+      }
+
       public void copyValues(ArtifactAssessmentRelatesToComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -1490,6 +1494,10 @@ public class ArtifactAssessment extends DomainResource {
         ArtifactAssessmentContentComponent dst = new ArtifactAssessmentContentComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ArtifactAssessmentContentComponent) b, options);
       }
 
       public void copyValues(ArtifactAssessmentContentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2632,6 +2640,10 @@ public class ArtifactAssessment extends DomainResource {
         ArtifactAssessment dst = new ArtifactAssessment(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ArtifactAssessment) b, options);
       }
 
       public void copyValues(ArtifactAssessment dst, EnumSet<CopyObjectOptions> options) {

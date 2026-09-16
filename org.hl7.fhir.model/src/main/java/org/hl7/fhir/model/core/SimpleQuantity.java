@@ -77,6 +77,10 @@ public class SimpleQuantity extends Quantity {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SimpleQuantity) b, options);
+      }
+
       public void copyValues(SimpleQuantity dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.value = value == null ? null : value.copy(options);

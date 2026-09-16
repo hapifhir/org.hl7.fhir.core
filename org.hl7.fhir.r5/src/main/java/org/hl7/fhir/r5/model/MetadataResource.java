@@ -326,6 +326,10 @@ public abstract class MetadataResource extends CanonicalResource {
 
       public abstract MetadataResource copy();
 
+      public void assign(Base b) {
+        copyValues((MetadataResource) b);
+      }
+
       public void copyValues(MetadataResource dst) {
         super.copyValues(dst);
       }

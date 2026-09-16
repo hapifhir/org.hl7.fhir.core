@@ -649,6 +649,10 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ClinicalUseDefinitionContraindicationComponent) b);
+      }
+
       public void copyValues(ClinicalUseDefinitionContraindicationComponent dst) {
         super.copyValues(dst);
         dst.diseaseSymptomProcedure = diseaseSymptomProcedure == null ? null : diseaseSymptomProcedure.copy();
@@ -890,6 +894,10 @@ public class ClinicalUseDefinition extends DomainResource {
         ClinicalUseDefinitionContraindicationOtherTherapyComponent dst = new ClinicalUseDefinitionContraindicationOtherTherapyComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ClinicalUseDefinitionContraindicationOtherTherapyComponent) b);
       }
 
       public void copyValues(ClinicalUseDefinitionContraindicationOtherTherapyComponent dst) {
@@ -1511,6 +1519,10 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ClinicalUseDefinitionIndicationComponent) b);
+      }
+
       public void copyValues(ClinicalUseDefinitionIndicationComponent dst) {
         super.copyValues(dst);
         dst.diseaseSymptomProcedure = diseaseSymptomProcedure == null ? null : diseaseSymptomProcedure.copy();
@@ -1948,6 +1960,10 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ClinicalUseDefinitionInteractionComponent) b);
+      }
+
       public void copyValues(ClinicalUseDefinitionInteractionComponent dst) {
         super.copyValues(dst);
         if (interactant != null) {
@@ -2168,6 +2184,10 @@ public class ClinicalUseDefinition extends DomainResource {
         ClinicalUseDefinitionInteractionInteractantComponent dst = new ClinicalUseDefinitionInteractionInteractantComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ClinicalUseDefinitionInteractionInteractantComponent) b);
       }
 
       public void copyValues(ClinicalUseDefinitionInteractionInteractantComponent dst) {
@@ -2431,6 +2451,10 @@ public class ClinicalUseDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ClinicalUseDefinitionUndesirableEffectComponent) b);
+      }
+
       public void copyValues(ClinicalUseDefinitionUndesirableEffectComponent dst) {
         super.copyValues(dst);
         dst.symptomConditionEffect = symptomConditionEffect == null ? null : symptomConditionEffect.copy();
@@ -2669,6 +2693,10 @@ public class ClinicalUseDefinition extends DomainResource {
         ClinicalUseDefinitionWarningComponent dst = new ClinicalUseDefinitionWarningComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ClinicalUseDefinitionWarningComponent) b);
       }
 
       public void copyValues(ClinicalUseDefinitionWarningComponent dst) {
@@ -3536,6 +3564,10 @@ public class ClinicalUseDefinition extends DomainResource {
         ClinicalUseDefinition dst = new ClinicalUseDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ClinicalUseDefinition) b);
       }
 
       public void copyValues(ClinicalUseDefinition dst) {

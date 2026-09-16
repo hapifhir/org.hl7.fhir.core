@@ -2516,6 +2516,10 @@ public class Library extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((Library) b);
+      }
+
       public void copyValues(Library dst) {
         super.copyValues(dst);
         dst.url = url == null ? null : url.copy();

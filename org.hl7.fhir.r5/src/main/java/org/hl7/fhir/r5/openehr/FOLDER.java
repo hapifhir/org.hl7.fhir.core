@@ -313,6 +313,10 @@ public class FOLDER extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((FOLDER) b);
+      }
+
       public void copyValues(FOLDER dst) {
         super.copyValues(dst);
         if (itemsList != null) {

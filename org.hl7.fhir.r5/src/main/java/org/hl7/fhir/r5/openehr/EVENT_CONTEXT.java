@@ -500,6 +500,10 @@ public class EVENT_CONTEXT extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((EVENT_CONTEXT) b);
+      }
+
       public void copyValues(EVENT_CONTEXT dst) {
         super.copyValues(dst);
         dst.start_time = start_time == null ? null : start_time.copy();

@@ -399,6 +399,10 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((IngredientManufacturerComponent) b, options);
+      }
+
       public void copyValues(IngredientManufacturerComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.role = role == null ? null : role.copy(options);
@@ -663,6 +667,10 @@ public class Ingredient extends DomainResource {
         IngredientSubstanceComponent dst = new IngredientSubstanceComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((IngredientSubstanceComponent) b, options);
       }
 
       public void copyValues(IngredientSubstanceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1484,6 +1492,10 @@ public class Ingredient extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((IngredientSubstanceStrengthComponent) b, options);
+      }
+
       public void copyValues(IngredientSubstanceStrengthComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.presentation = presentation == null ? null : presentation.copy(options);
@@ -1974,6 +1986,10 @@ public class Ingredient extends DomainResource {
         IngredientSubstanceStrengthReferenceStrengthComponent dst = new IngredientSubstanceStrengthReferenceStrengthComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((IngredientSubstanceStrengthReferenceStrengthComponent) b, options);
       }
 
       public void copyValues(IngredientSubstanceStrengthReferenceStrengthComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2810,6 +2826,10 @@ public class Ingredient extends DomainResource {
         Ingredient dst = new Ingredient(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Ingredient) b, options);
       }
 
       public void copyValues(Ingredient dst, EnumSet<CopyObjectOptions> options) {

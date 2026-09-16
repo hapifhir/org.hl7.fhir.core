@@ -652,6 +652,10 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ImagingSelectionPerformerComponent) b);
+      }
+
       public void copyValues(ImagingSelectionPerformerComponent dst) {
         super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
@@ -1220,6 +1224,10 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ImagingSelectionInstanceComponent) b);
+      }
+
       public void copyValues(ImagingSelectionInstanceComponent dst) {
         super.copyValues(dst);
         dst.uid = uid == null ? null : uid.copy();
@@ -1526,6 +1534,10 @@ public class ImagingSelection extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((ImageRegion2DComponent) b);
+      }
+
       public void copyValues(ImageRegion2DComponent dst) {
         super.copyValues(dst);
         dst.regionType = regionType == null ? null : regionType.copy();
@@ -1811,6 +1823,10 @@ public class ImagingSelection extends DomainResource {
         ImageRegion3DComponent dst = new ImageRegion3DComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ImageRegion3DComponent) b);
       }
 
       public void copyValues(ImageRegion3DComponent dst) {
@@ -3113,6 +3129,10 @@ public class ImagingSelection extends DomainResource {
         ImagingSelection dst = new ImagingSelection();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((ImagingSelection) b);
       }
 
       public void copyValues(ImagingSelection dst) {

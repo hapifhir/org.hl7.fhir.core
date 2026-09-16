@@ -981,6 +981,10 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PropertyComponent) b, options);
+      }
+
       public void copyValues(PropertyComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -1438,6 +1442,10 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((AdditionalAttributeComponent) b, options);
+      }
+
       public void copyValues(AdditionalAttributeComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -1866,6 +1874,10 @@ public class ConceptMap extends MetadataResource {
         ConceptMapGroupComponent dst = new ConceptMapGroupComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptMapGroupComponent) b, options);
       }
 
       public void copyValues(ConceptMapGroupComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2474,6 +2486,10 @@ public class ConceptMap extends MetadataResource {
         SourceElementComponent dst = new SourceElementComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SourceElementComponent) b, options);
       }
 
       public void copyValues(SourceElementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3259,6 +3275,10 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((TargetElementComponent) b, options);
+      }
+
       public void copyValues(TargetElementComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -3701,6 +3721,10 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MappingPropertyComponent) b, options);
+      }
+
       public void copyValues(MappingPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -4136,6 +4160,10 @@ public class ConceptMap extends MetadataResource {
         OtherElementComponent dst = new OtherElementComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((OtherElementComponent) b, options);
       }
 
       public void copyValues(OtherElementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4820,6 +4848,10 @@ public class ConceptMap extends MetadataResource {
         ConceptMapGroupUnmappedComponent dst = new ConceptMapGroupUnmappedComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptMapGroupUnmappedComponent) b, options);
       }
 
       public void copyValues(ConceptMapGroupUnmappedComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7447,6 +7479,10 @@ public class ConceptMap extends MetadataResource {
         ConceptMap dst = new ConceptMap(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((ConceptMap) b, options);
       }
 
       public void copyValues(ConceptMap dst, EnumSet<CopyObjectOptions> options) {

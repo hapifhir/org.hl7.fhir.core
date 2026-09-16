@@ -2495,6 +2495,10 @@ public class EventDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((EventDefinition) b, options);
+      }
+
       public void copyValues(EventDefinition dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.url = url == null ? null : url.copy(options);

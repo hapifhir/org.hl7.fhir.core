@@ -394,6 +394,10 @@ public class SupplyDelivery extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((SupplyDeliverySuppliedItemComponent) b);
+      }
+
       public void copyValues(SupplyDeliverySuppliedItemComponent dst) {
         super.copyValues(dst);
         dst.quantity = quantity == null ? null : quantity.copy();
@@ -1254,6 +1258,10 @@ public class SupplyDelivery extends DomainResource {
         SupplyDelivery dst = new SupplyDelivery();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((SupplyDelivery) b);
       }
 
       public void copyValues(SupplyDelivery dst) {

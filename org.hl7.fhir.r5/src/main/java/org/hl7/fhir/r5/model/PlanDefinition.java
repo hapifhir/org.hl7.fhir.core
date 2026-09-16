@@ -560,6 +560,10 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((PlanDefinitionGoalComponent) b);
+      }
+
       public void copyValues(PlanDefinitionGoalComponent dst) {
         super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
@@ -975,6 +979,10 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((PlanDefinitionGoalTargetComponent) b);
+      }
+
       public void copyValues(PlanDefinitionGoalTargetComponent dst) {
         super.copyValues(dst);
         dst.measure = measure == null ? null : measure.copy();
@@ -1318,6 +1326,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinitionActorComponent dst = new PlanDefinitionActorComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((PlanDefinitionActorComponent) b);
       }
 
       public void copyValues(PlanDefinitionActorComponent dst) {
@@ -1684,6 +1696,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinitionActorOptionComponent dst = new PlanDefinitionActorOptionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((PlanDefinitionActorOptionComponent) b);
       }
 
       public void copyValues(PlanDefinitionActorOptionComponent dst) {
@@ -3968,6 +3984,10 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((PlanDefinitionActionComponent) b);
+      }
+
       public void copyValues(PlanDefinitionActionComponent dst) {
         super.copyValues(dst);
         dst.linkId = linkId == null ? null : linkId.copy();
@@ -4303,6 +4323,10 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((PlanDefinitionActionConditionComponent) b);
+      }
+
       public void copyValues(PlanDefinitionActionConditionComponent dst) {
         super.copyValues(dst);
         dst.kind = kind == null ? null : kind.copy();
@@ -4608,6 +4632,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinitionActionInputComponent dst = new PlanDefinitionActionInputComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((PlanDefinitionActionInputComponent) b);
       }
 
       public void copyValues(PlanDefinitionActionInputComponent dst) {
@@ -4918,6 +4946,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinitionActionOutputComponent dst = new PlanDefinitionActionOutputComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((PlanDefinitionActionOutputComponent) b);
       }
 
       public void copyValues(PlanDefinitionActionOutputComponent dst) {
@@ -5343,6 +5375,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinitionActionRelatedActionComponent dst = new PlanDefinitionActionRelatedActionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((PlanDefinitionActionRelatedActionComponent) b);
       }
 
       public void copyValues(PlanDefinitionActionRelatedActionComponent dst) {
@@ -5829,6 +5865,10 @@ public class PlanDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((PlanDefinitionActionParticipantComponent) b);
+      }
+
       public void copyValues(PlanDefinitionActionParticipantComponent dst) {
         super.copyValues(dst);
         dst.actorId = actorId == null ? null : actorId.copy();
@@ -6071,6 +6111,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinitionActionDynamicValueComponent dst = new PlanDefinitionActionDynamicValueComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((PlanDefinitionActionDynamicValueComponent) b);
       }
 
       public void copyValues(PlanDefinitionActionDynamicValueComponent dst) {
@@ -8756,6 +8800,10 @@ public class PlanDefinition extends MetadataResource {
         PlanDefinition dst = new PlanDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((PlanDefinition) b);
       }
 
       public void copyValues(PlanDefinition dst) {

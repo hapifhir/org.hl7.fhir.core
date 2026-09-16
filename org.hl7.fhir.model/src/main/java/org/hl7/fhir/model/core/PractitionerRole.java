@@ -1163,6 +1163,10 @@ public class PractitionerRole extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((PractitionerRole) b, options);
+      }
+
       public void copyValues(PractitionerRole dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (identifierList != null) {

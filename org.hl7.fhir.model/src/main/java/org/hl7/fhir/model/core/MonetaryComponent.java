@@ -577,6 +577,10 @@ public class MonetaryComponent extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((MonetaryComponent) b, options);
+      }
+
       public void copyValues(MonetaryComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);

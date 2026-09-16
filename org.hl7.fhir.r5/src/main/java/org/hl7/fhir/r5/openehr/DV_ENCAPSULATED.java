@@ -215,6 +215,10 @@ public abstract class DV_ENCAPSULATED extends DV_AMOUNT implements ICompositeTyp
 
       public abstract DV_ENCAPSULATED copy();
 
+      public void assign(Base b) {
+        copyValues((DV_ENCAPSULATED) b);
+      }
+
       public void copyValues(DV_ENCAPSULATED dst) {
         super.copyValues(dst);
         dst.charset = charset == null ? null : charset.copy();

@@ -667,6 +667,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionMoietyComponent) b, options);
+      }
+
       public void copyValues(SubstanceDefinitionMoietyComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.role = role == null ? null : role.copy(options);
@@ -1086,6 +1090,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionCharacterizationComponent) b, options);
+      }
+
       public void copyValues(SubstanceDefinitionCharacterizationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.technique = technique == null ? null : technique.copy(options);
@@ -1461,6 +1469,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPropertyComponent) b, options);
+      }
+
       public void copyValues(SubstanceDefinitionPropertyComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -1759,6 +1771,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionMolecularWeightComponent dst = new SubstanceDefinitionMolecularWeightComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionMolecularWeightComponent) b, options);
       }
 
       public void copyValues(SubstanceDefinitionMolecularWeightComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2429,6 +2445,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionStructureComponent) b, options);
+      }
+
       public void copyValues(SubstanceDefinitionStructureComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.stereochemistry = stereochemistry == null ? null : stereochemistry.copy(options);
@@ -2836,6 +2856,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionStructureRepresentationComponent dst = new SubstanceDefinitionStructureRepresentationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionStructureRepresentationComponent) b, options);
       }
 
       public void copyValues(SubstanceDefinitionStructureRepresentationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3304,6 +3328,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionCodeComponent dst = new SubstanceDefinitionCodeComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionCodeComponent) b, options);
       }
 
       public void copyValues(SubstanceDefinitionCodeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4235,6 +4263,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNameComponent) b, options);
+      }
+
       public void copyValues(SubstanceDefinitionNameComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -4617,6 +4649,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionNameOfficialComponent dst = new SubstanceDefinitionNameOfficialComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNameOfficialComponent) b, options);
       }
 
       public void copyValues(SubstanceDefinitionNameOfficialComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5470,6 +5506,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionRelationshipComponent) b, options);
+      }
+
       public void copyValues(SubstanceDefinitionRelationshipComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.substanceDefinition = substanceDefinition == null ? null : substanceDefinition.copy(options);
@@ -5928,6 +5968,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionSourceMaterialComponent dst = new SubstanceDefinitionSourceMaterialComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionSourceMaterialComponent) b, options);
       }
 
       public void copyValues(SubstanceDefinitionSourceMaterialComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6552,6 +6596,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionNucleicAcidComponent dst = new SubstanceDefinitionNucleicAcidComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNucleicAcidComponent) b, options);
       }
 
       public void copyValues(SubstanceDefinitionNucleicAcidComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7250,6 +7298,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNucleicAcidSubunitComponent) b, options);
+      }
+
       public void copyValues(SubstanceDefinitionNucleicAcidSubunitComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.subunit = subunit == null ? null : subunit.copy(options);
@@ -7622,6 +7674,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNucleicAcidSubunitLinkageComponent) b, options);
+      }
+
       public void copyValues(SubstanceDefinitionNucleicAcidSubunitLinkageComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.connectivity = connectivity == null ? null : connectivity.copy(options);
@@ -7885,6 +7941,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionNucleicAcidSubunitSugarComponent dst = new SubstanceDefinitionNucleicAcidSubunitSugarComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNucleicAcidSubunitSugarComponent) b, options);
       }
 
       public void copyValues(SubstanceDefinitionNucleicAcidSubunitSugarComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -8194,6 +8254,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionNucleicAcidGeneComponent dst = new SubstanceDefinitionNucleicAcidGeneComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNucleicAcidGeneComponent) b, options);
       }
 
       public void copyValues(SubstanceDefinitionNucleicAcidGeneComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -8512,6 +8576,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionNucleicAcidGeneElementComponent dst = new SubstanceDefinitionNucleicAcidGeneElementComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionNucleicAcidGeneElementComponent) b, options);
       }
 
       public void copyValues(SubstanceDefinitionNucleicAcidGeneElementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9057,6 +9125,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPolymerComponent) b, options);
+      }
+
       public void copyValues(SubstanceDefinitionPolymerComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.class_ = class_ == null ? null : class_.copy(options);
@@ -9341,6 +9413,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionPolymerMonomerSetComponent dst = new SubstanceDefinitionPolymerMonomerSetComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPolymerMonomerSetComponent) b, options);
       }
 
       public void copyValues(SubstanceDefinitionPolymerMonomerSetComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9711,6 +9787,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPolymerMonomerSetStartingMaterialComponent) b, options);
+      }
+
       public void copyValues(SubstanceDefinitionPolymerMonomerSetStartingMaterialComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.code = code == null ? null : code.copy(options);
@@ -10051,6 +10131,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionPolymerRepeatComponent dst = new SubstanceDefinitionPolymerRepeatComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPolymerRepeatComponent) b, options);
       }
 
       public void copyValues(SubstanceDefinitionPolymerRepeatComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10541,6 +10625,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPolymerRepeatRepeatUnitComponent) b, options);
+      }
+
       public void copyValues(SubstanceDefinitionPolymerRepeatRepeatUnitComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.unit = unit == null ? null : unit.copy(options);
@@ -10963,6 +11051,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionPolymerRepeatRepeatUnitDegreeOfPolymerisationComponent dst = new SubstanceDefinitionPolymerRepeatRepeatUnitDegreeOfPolymerisationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionPolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) b, options);
       }
 
       public void copyValues(SubstanceDefinitionPolymerRepeatRepeatUnitDegreeOfPolymerisationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -11512,6 +11604,10 @@ public class SubstanceDefinition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionProteinComponent) b, options);
+      }
+
       public void copyValues(SubstanceDefinitionProteinComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.sequenceType = sequenceType == null ? null : sequenceType.copy(options);
@@ -12053,6 +12149,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionProteinSubunitComponent dst = new SubstanceDefinitionProteinSubunitComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinitionProteinSubunitComponent) b, options);
       }
 
       public void copyValues(SubstanceDefinitionProteinSubunitComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -13735,6 +13835,10 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinition dst = new SubstanceDefinition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SubstanceDefinition) b, options);
       }
 
       public void copyValues(SubstanceDefinition dst, EnumSet<CopyObjectOptions> options) {

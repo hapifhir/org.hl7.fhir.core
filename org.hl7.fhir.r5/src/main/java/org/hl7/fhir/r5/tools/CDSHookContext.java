@@ -65,6 +65,10 @@ public abstract class CDSHookContext extends LogicalBase implements ICompositeTy
 
       public abstract CDSHookContext copy();
 
+      public void assign(Base b) {
+        copyValues((CDSHookContext) b);
+      }
+
       public void copyValues(CDSHookContext dst) {
         super.copyValues(dst);
       }

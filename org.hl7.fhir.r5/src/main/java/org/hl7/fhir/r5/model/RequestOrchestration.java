@@ -2147,6 +2147,10 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((RequestOrchestrationActionComponent) b);
+      }
+
       public void copyValues(RequestOrchestrationActionComponent dst) {
         super.copyValues(dst);
         dst.linkId = linkId == null ? null : linkId.copy();
@@ -2475,6 +2479,10 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((RequestOrchestrationActionConditionComponent) b);
+      }
+
       public void copyValues(RequestOrchestrationActionConditionComponent dst) {
         super.copyValues(dst);
         dst.kind = kind == null ? null : kind.copy();
@@ -2780,6 +2788,10 @@ public class RequestOrchestration extends DomainResource {
         RequestOrchestrationActionInputComponent dst = new RequestOrchestrationActionInputComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((RequestOrchestrationActionInputComponent) b);
       }
 
       public void copyValues(RequestOrchestrationActionInputComponent dst) {
@@ -3090,6 +3102,10 @@ public class RequestOrchestration extends DomainResource {
         RequestOrchestrationActionOutputComponent dst = new RequestOrchestrationActionOutputComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((RequestOrchestrationActionOutputComponent) b);
       }
 
       public void copyValues(RequestOrchestrationActionOutputComponent dst) {
@@ -3515,6 +3531,10 @@ public class RequestOrchestration extends DomainResource {
         RequestOrchestrationActionRelatedActionComponent dst = new RequestOrchestrationActionRelatedActionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((RequestOrchestrationActionRelatedActionComponent) b);
       }
 
       public void copyValues(RequestOrchestrationActionRelatedActionComponent dst) {
@@ -4012,6 +4032,10 @@ public class RequestOrchestration extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((RequestOrchestrationActionParticipantComponent) b);
+      }
+
       public void copyValues(RequestOrchestrationActionParticipantComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -4253,6 +4277,10 @@ public class RequestOrchestration extends DomainResource {
         RequestOrchestrationActionDynamicValueComponent dst = new RequestOrchestrationActionDynamicValueComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((RequestOrchestrationActionDynamicValueComponent) b);
       }
 
       public void copyValues(RequestOrchestrationActionDynamicValueComponent dst) {
@@ -5599,6 +5627,10 @@ public class RequestOrchestration extends DomainResource {
         RequestOrchestration dst = new RequestOrchestration();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((RequestOrchestration) b);
       }
 
       public void copyValues(RequestOrchestration dst) {

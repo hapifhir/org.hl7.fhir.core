@@ -287,6 +287,10 @@ In some cases, a scale may include values that have no code/symbol. In this case
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((DV_SCALE) b);
+      }
+
       public void copyValues(DV_SCALE dst) {
         super.copyValues(dst);
         dst.symbol = symbol == null ? null : symbol.copy();

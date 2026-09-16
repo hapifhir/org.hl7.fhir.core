@@ -403,6 +403,10 @@ public class Composition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompositionParticipantComponent) b, options);
+      }
+
       public void copyValues(CompositionParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (typeList != null) {
@@ -675,6 +679,10 @@ public class Composition extends DomainResource {
         CompositionClassificationComponent dst = new CompositionClassificationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompositionClassificationComponent) b, options);
       }
 
       public void copyValues(CompositionClassificationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1002,6 +1010,10 @@ public class Composition extends DomainResource {
         CompositionAttesterComponent dst = new CompositionAttesterComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompositionAttesterComponent) b, options);
       }
 
       public void copyValues(CompositionAttesterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1351,6 +1363,10 @@ public class Composition extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompositionRelatesToComponent) b, options);
+      }
+
       public void copyValues(CompositionRelatesToComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -1604,6 +1620,10 @@ public class Composition extends DomainResource {
         CompositionEventComponent dst = new CompositionEventComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((CompositionEventComponent) b, options);
       }
 
       public void copyValues(CompositionEventComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2373,6 +2393,10 @@ public class Composition extends DomainResource {
         SectionComponent dst = new SectionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((SectionComponent) b, options);
       }
 
       public void copyValues(SectionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4208,6 +4232,10 @@ public class Composition extends DomainResource {
         Composition dst = new Composition(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assign(Base b, EnumSet<CopyObjectOptions> options) {
+        copyValues((Composition) b, options);
       }
 
       public void copyValues(Composition dst, EnumSet<CopyObjectOptions> options) {

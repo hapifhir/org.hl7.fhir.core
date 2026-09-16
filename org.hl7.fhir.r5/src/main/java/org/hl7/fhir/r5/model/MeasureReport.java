@@ -954,6 +954,10 @@ public class MeasureReport extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((MeasureReportGroupComponent) b);
+      }
+
       public void copyValues(MeasureReportGroupComponent dst) {
         super.copyValues(dst);
         dst.linkId = linkId == null ? null : linkId.copy();
@@ -1442,6 +1446,10 @@ public class MeasureReport extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((MeasureReportGroupPopulationComponent) b);
+      }
+
       public void copyValues(MeasureReportGroupPopulationComponent dst) {
         super.copyValues(dst);
         dst.linkId = linkId == null ? null : linkId.copy();
@@ -1763,6 +1771,10 @@ public class MeasureReport extends DomainResource {
         MeasureReportGroupStratifierComponent dst = new MeasureReportGroupStratifierComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MeasureReportGroupStratifierComponent) b);
       }
 
       public void copyValues(MeasureReportGroupStratifierComponent dst) {
@@ -2344,6 +2356,10 @@ public class MeasureReport extends DomainResource {
         return dst;
       }
 
+      public void assign(Base b) {
+        copyValues((StratifierGroupComponent) b);
+      }
+
       public void copyValues(StratifierGroupComponent dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();
@@ -2743,6 +2759,10 @@ public class MeasureReport extends DomainResource {
         StratifierGroupComponentComponent dst = new StratifierGroupComponentComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((StratifierGroupComponentComponent) b);
       }
 
       public void copyValues(StratifierGroupComponentComponent dst) {
@@ -3218,6 +3238,10 @@ public class MeasureReport extends DomainResource {
         StratifierGroupPopulationComponent dst = new StratifierGroupPopulationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((StratifierGroupPopulationComponent) b);
       }
 
       public void copyValues(StratifierGroupPopulationComponent dst) {
@@ -4397,6 +4421,10 @@ public class MeasureReport extends DomainResource {
         MeasureReport dst = new MeasureReport();
         copyValues(dst);
         return dst;
+      }
+
+      public void assign(Base b) {
+        copyValues((MeasureReport) b);
       }
 
       public void copyValues(MeasureReport dst) {
