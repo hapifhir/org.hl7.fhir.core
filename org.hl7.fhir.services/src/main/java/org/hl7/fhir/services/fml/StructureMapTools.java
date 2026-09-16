@@ -1560,7 +1560,13 @@ public class StructureMapTools {
       if (p != null) {
         Set<String> types = new HashSet<String>();
         for (TypeRefComponent tr : p.getDefinition().getTypeList()) {
-          types.add(tr.getCode());
+          // Check for the fhir type extension first
+          if (tr.hasExtension(ExtensionDefinitions.EXT_FHIR_TYPE)) {
+            var fhirType = tr.getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE);
+            types.add(fhirType);
+          }
+          else
+            types.add(tr.getCode());
         }
         return types.toArray(new String[]{});
       }

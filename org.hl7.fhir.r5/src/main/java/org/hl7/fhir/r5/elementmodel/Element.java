@@ -1035,7 +1035,13 @@ public class Element extends Base implements NamedItem {
     if (p != null) {
       Set<String> types = new HashSet<String>();
       for (TypeRefComponent tr : p.getDefinition().getType()) {
-        types.add(tr.getCode());
+        // Check for the fhir type extension first
+        if (tr.hasExtension(ExtensionDefinitions.EXT_FHIR_TYPE)) {
+          var fhirType = tr.getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE);
+          types.add(fhirType);
+        }
+        else
+          types.add(tr.getCode());
       }
       return types.toArray(new String[]{});
     }
