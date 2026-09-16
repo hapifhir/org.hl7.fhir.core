@@ -2359,6 +2359,9 @@ public class StructureMapTools {
   private boolean isCompatibleType(String t, String code) {
     if (t.equals(code))
       return true;
+    TypeDetails allowedType = new TypeDetails(CollectionStatus.SINGLETON, code);
+    if (allowedType.hasType(worker, t))
+      return true;
     if (t.equals("string")) {
       StructureDefinition sd = worker.fetchTypeDefinition(code);
       return sd != null && sd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/string");
