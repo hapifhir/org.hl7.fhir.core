@@ -253,28 +253,6 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		  write("    return \""+escapeJavaString(analysis.getName())+"\";\r\n");
 		  write("   }\r\n");
 		  write("\r\n"); 
-		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(superName)) {
-      write("\r\n"); 
-      write("  @Override\r\n"); 
-      write("  public String getIdBase() {\r\n"); 
-      write("    return getId();\r\n"); 
-      write("  }\r\n"); 
-      write("  \r\n");
-      write("  @Override\r\n");
-      write("  public void setIdBase(String value) {\r\n");
-      write("    setId(value);\r\n");
-      write("  }\r\n");
-		  write("  public abstract String getResourceType();\r\n");
-		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(superName)) {
-      write("  @Override\r\n"); 
-      write("  public String getIdBase() {\r\n"); 
-      write("    return getId();\r\n"); 
-      write("  }\r\n"); 
-      write("  \r\n");
-      write("  @Override\r\n");
-      write("  public void setIdBase(String value) {\r\n");
-      write("    setId(value);\r\n");
-      write("  }\r\n");
 		}		
 
 		// Write resource fields which can be used as constants in client code

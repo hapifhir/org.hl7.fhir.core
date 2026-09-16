@@ -260,28 +260,6 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       write("    return \""+escapeJavaString(analysis.getName())+"\";\r\n");
       write("   }\r\n");
       write("\r\n"); 
-		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(superName)) {
-      write("\r\n"); 
-      write("  @Override\r\n"); 
-      write("  public String getIdBase() {\r\n"); 
-      write("    return getId();\r\n"); 
-      write("  }\r\n"); 
-      write("  \r\n");
-      write("  @Override\r\n");
-      write("  public void setIdBase(String value) {\r\n");
-      write("    setId(value);\r\n");
-      write("  }\r\n");
-		  write("  public abstract "+(isR6() ? "String" : "ResourceType")+" getResourceType();\r\n");
-		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(superName)) {
-      write("  @Override\r\n"); 
-      write("  public String getIdBase() {\r\n"); 
-      write("    return getId();\r\n"); 
-      write("  }\r\n"); 
-      write("  \r\n");
-      write("  @Override\r\n");
-      write("  public void setIdBase(String value) {\r\n");
-      write("    setId(value);\r\n");
-      write("  }\r\n");
 		}		
 
 		// Write resource fields which can be used as constants in client code
@@ -544,7 +522,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     Set<String> providesMembershipIn = new TreeSet<String>();
     for (CompartmentDefinition next : this.definitions.getCompartments().getList()) {
       for (CompartmentDefinitionResourceComponent nextEntry : next.getResourceList()) {
-        if (nextEntry.getCode().equals(upFirst(name))) {
+        if (nextEntry.getCode().toCode().equals(upFirst(name))) {
           for (StringType nextPart : nextEntry.getParamList()) {
             if (nextPart.toString().equals(code)) {
               providesMembershipIn.add(next.getName());
