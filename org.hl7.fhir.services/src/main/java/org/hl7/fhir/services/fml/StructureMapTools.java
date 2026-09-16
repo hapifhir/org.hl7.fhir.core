@@ -48,11 +48,7 @@ import org.hl7.fhir.services.elementmodel.Manager;
 import org.hl7.fhir.services.elementmodel.Property;
 import org.hl7.fhir.model.*;
 import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.model.core.ConceptMap;
 import org.hl7.fhir.model.core.Enumeration;
-import org.hl7.fhir.model.core.Enumerations;
-import org.hl7.fhir.model.core.Resource;
-import org.hl7.fhir.model.core.UriType;
 import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
@@ -64,6 +60,8 @@ import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.services.fhirpath.TypeDetails;
 import org.hl7.fhir.services.fhirpath.TypeDetails.ProfiledType;
 import org.hl7.fhir.model.fml.StructureMap;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapConstComponent;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapInputMode;
 import org.hl7.fhir.model.utilities.StructureMapUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -1049,6 +1047,9 @@ public class StructureMapTools {
     StructureMap.StructureMapGroupComponent g = map.getGroupList().get(0);
 
     Variables vars = new Variables();
+    if (map.hasConst()) {
+      vars.setConstants(new StructureMapConstantResolver(map, fpe));
+    }
     vars.add(VariableMode.INPUT, getInputName(g, StructureMap.StructureMapInputMode.SOURCE, "source"), source);
     if (target != null)
       vars.add(VariableMode.OUTPUT, getInputName(g, StructureMap.StructureMapInputMode.TARGET, "target"), target);
@@ -2029,6 +2030,16 @@ public class StructureMapTools {
     StructureMapAnalysis result = new StructureMapAnalysis();
     TransformContext context = new TransformContext(appInfo);
     VariablesForProfiling vars = new VariablesForProfiling(this, false, false);
+    if (map.hasConst()) {
+      StructureMapConstantResolver constantResolver = new StructureMapConstantResolver(map, fpe);
+      for (StructureMapConstComponent constant : map.getConstList()) {
+        TypeDetails constantTypes = new TypeDetails(CollectionStatus.SINGLETON);
+        for (Base value : constantResolver.resolve(constant.getName())) {
+          constantTypes.addType(value.fhirType());
+        }
+        vars.add(VariableMode.INPUT, constant.getName(), new PropertyWithType(constant.getName(), null, null, constantTypes));
+      }
+    }
     if (map.hasGroup()) {
       StructureMap.StructureMapGroupComponent start = map.getGroupList().get(0);
       for (StructureMap.StructureMapGroupInputComponent t : start.getInputList()) {
