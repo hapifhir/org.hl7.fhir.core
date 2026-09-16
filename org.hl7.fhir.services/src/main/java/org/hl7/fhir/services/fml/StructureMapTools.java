@@ -1103,7 +1103,7 @@ public class StructureMapTools {
     log(indent + "rule : " + rule.getName() + "; vars = " + vars.summary());
     Variables srcVars = vars.copy();
     if (rule.getSourceList().size() != 1)
-      throw new FHIRException("Rule \"" + rule.getName() + "\": not handled yet");
+      throw new FHIRException("Rule \"" + rule.getName() + "\": multiple sources not handled yet");
     List<Variables> source = processSource(rule.getName(), context, srcVars, rule.getSourceList().get(0), map.getUrl(), indent);
     if (source != null) {
       for (Variables v : source) {
