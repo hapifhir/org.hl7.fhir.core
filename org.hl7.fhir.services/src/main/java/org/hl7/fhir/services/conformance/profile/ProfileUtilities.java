@@ -4649,7 +4649,7 @@ public class ProfileUtilities {
     else if (slicer.getPath().equals("Bundle.entry"))
       slicer.getSlicing().addDiscriminator().setType(DiscriminatorType.VALUE).setPath("resource.@profile");
     else  
-      throw new Error("No slicing for "+slicer.getPath());
+      throw new FHIRException("No slicing for "+slicer.getPath());
   }
 
 
