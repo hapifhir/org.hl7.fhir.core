@@ -54,7 +54,7 @@ public class StructureMappingTests {
 
   public static Stream<Arguments> data()
     throws FileNotFoundException, IOException, ParserConfigurationException, SAXException {
-    Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "structure-mapping", "manifest.xml"));
+    Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r6", "structure-mapping", "manifest.xml"));
     Element test = XMLUtil.getFirstChild(tests.getDocumentElement());
     List<Arguments> objects = new ArrayList<>();
     while (test != null && test.getNodeName().equals("test")) {
@@ -96,7 +96,7 @@ public class StructureMappingTests {
     System.gc();
   }
   private StructureMap loadStructureMap(String map) throws Exception {
-    String stringMap = TestingUtilities.loadTestResource("r5", "structure-mapping", map);
+    String stringMap = TestingUtilities.loadTestResource("r6", "structure-mapping", map);
     if (map.endsWith(".json")) {
       return (StructureMap) new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(stringMap);
     } else if (map.endsWith(".map")) {
@@ -108,9 +108,9 @@ public class StructureMappingTests {
   @MethodSource("data")
   public void test(String name, String source, String map, String output) throws Exception {
 
-    ByteProvider byteSource = ByteProvider.forBytes(TestingUtilities.loadTestResourceBytes("r5", "structure-mapping", source));
+    ByteProvider byteSource = ByteProvider.forBytes(TestingUtilities.loadTestResourceBytes("r6", "structure-mapping", source));
 
-    String outputJson = TestingUtilities.loadTestResource("r5", "structure-mapping", output);
+    String outputJson = TestingUtilities.loadTestResource("r6", "structure-mapping", output);
     String fileOutputRes = TestingUtilities.tempFile("structure-mapping", output) + ".out";
     String fileOutputResOrig = TestingUtilities.tempFile("structure-mapping", output) + ".orig.out";
     ByteArrayOutputStream s = null;
