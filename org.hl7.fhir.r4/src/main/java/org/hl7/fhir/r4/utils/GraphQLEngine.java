@@ -79,7 +79,7 @@ import org.hl7.fhir.utilities.graphql.Value;
 import org.hl7.fhir.utilities.graphql.Variable;
 import org.hl7.fhir.utilities.graphql.VariableValue;
 
-
+@Deprecated
 public class GraphQLEngine implements IGraphQLEngine {
 
   private IWorkerContext context;

@@ -34,7 +34,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-
+@Deprecated
 public class IPSBuilder {
 
   public static class TypeAndId {

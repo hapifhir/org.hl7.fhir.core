@@ -93,10 +93,14 @@ import org.slf4j.event.Level;
  * This is a stand alone implementation of worker context for use inside a tool.
  * It loads from the validation package (validation-min.xml.zip), and has a 
  * very light client to connect to an open unauthenticated terminology service
+ *
+ * The implemetation of IWorkerContext is deprecated - it is no longer maintained by the core team
+ *
  */
 
 
 @Slf4j
+@Deprecated
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
 
   public interface IContextResourceLoader {

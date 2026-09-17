@@ -59,7 +59,7 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 /** this is the version of the library, as opposed to the version of FHIR */
-
+@Deprecated
 public class Version {
 
   /*

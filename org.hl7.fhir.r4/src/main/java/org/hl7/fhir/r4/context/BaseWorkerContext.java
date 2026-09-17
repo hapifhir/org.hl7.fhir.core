@@ -103,7 +103,11 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import com.google.gson.JsonObject;
 
 
+/**
+ * The implemetation of IWorkerContext is deprecated - it is no longer maintained by the core team
+ */
 @Slf4j
+@Deprecated
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
 

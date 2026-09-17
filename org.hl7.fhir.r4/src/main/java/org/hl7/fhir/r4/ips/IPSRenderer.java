@@ -17,7 +17,7 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-
+@Deprecated
 public class IPSRenderer {
 
   public class InternalTemplateEngine implements ITemplateImplementer {

@@ -17,12 +17,14 @@ import org.hl7.fhir.utilities.VersionUtilities;
  * This manages a cached list of resources, and provides high speed access by
  * URL / URL+version, and assumes that patch version doesn't matter for access
  * note, though, that not all resources have semver versions
- * 
- * @author graha
+ *
+ * The implemetation of IWorkerContext is deprecated - it is no longer maintained by the core team
+ *
+ * @author grahame
  *
  */
 
-
+@Deprecated
 public class CanonicalResourceManager<T extends MetadataResource> {
 
   public class MetadataResourceVersionComparator<T extends MetadataResource> implements Comparator<T> {
