@@ -264,6 +264,10 @@ public class ServiceRequest extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ServiceRequestOrderDetailComponent) dst);
+      }
+
       public void copyValues(ServiceRequestOrderDetailComponent dst) {
         super.copyValues(dst);
         dst.parameterFocus = parameterFocus == null ? null : parameterFocus.copy();
@@ -627,6 +631,10 @@ public class ServiceRequest extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ServiceRequestOrderDetailParameterComponent) dst);
+      }
+
       public void copyValues(ServiceRequestOrderDetailParameterComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -825,6 +833,10 @@ public class ServiceRequest extends DomainResource {
         ServiceRequestPatientInstructionComponent dst = new ServiceRequestPatientInstructionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ServiceRequestPatientInstructionComponent) dst);
       }
 
       public void copyValues(ServiceRequestPatientInstructionComponent dst) {
@@ -3298,6 +3310,10 @@ public class ServiceRequest extends DomainResource {
         ServiceRequest dst = new ServiceRequest();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ServiceRequest) dst);
       }
 
       public void copyValues(ServiceRequest dst) {

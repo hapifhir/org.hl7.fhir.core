@@ -17,12 +17,12 @@ public class PublicationHacker {
   
     // ServiceRequest.code
     if (md.getValue().contains("LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred]")) {
-      ret = md.copy(Base.COPY_DATA);
+      ret = md.copy(Base.COPY_NOTHING);
       ret.setValue(md.getValue().replace("LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred]", "LOINC is [preferred]("+Utilities.pathURL(VersionUtilities.getSpecUrl(context.getFHIRVersion()), "terminologies.html#preferred)")));
     }
     if (md.getValue().contains("[here](valueset-diagnostic-requests.html)")) {
       if (ret == null) {
-        ret = md.copy(Base.COPY_DATA);
+        ret = md.copy(Base.COPY_NOTHING);
       }
       ret.setValue(md.getValue().replace("[here](valueset-diagnostic-requests.html)", "here"));
     }       

@@ -769,6 +769,10 @@ public class StructureDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((StructureDefinitionMappingComponent) dst);
+      }
+
       public void copyValues(StructureDefinitionMappingComponent dst) {
         super.copyValues(dst);
         dst.identity = identity == null ? null : identity.copy();
@@ -1039,6 +1043,10 @@ public class StructureDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((StructureDefinitionContextComponent) dst);
+      }
+
       public void copyValues(StructureDefinitionContextComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1238,6 +1246,10 @@ public class StructureDefinition extends CanonicalResource {
         StructureDefinitionSnapshotComponent dst = new StructureDefinitionSnapshotComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((StructureDefinitionSnapshotComponent) dst);
       }
 
       public void copyValues(StructureDefinitionSnapshotComponent dst) {
@@ -1470,6 +1482,10 @@ public class StructureDefinition extends CanonicalResource {
         StructureDefinitionDifferentialComponent dst = new StructureDefinitionDifferentialComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((StructureDefinitionDifferentialComponent) dst);
       }
 
       public void copyValues(StructureDefinitionDifferentialComponent dst) {
@@ -3689,6 +3705,10 @@ public class StructureDefinition extends CanonicalResource {
         StructureDefinition dst = new StructureDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((StructureDefinition) dst);
       }
 
       public void copyValues(StructureDefinition dst) {

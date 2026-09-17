@@ -36,7 +36,7 @@ class RunnerTests {
   }
 
   private static Resource parseResource(String json) throws Exception {
-    return new org.hl7.fhir.model.core.formats.JsonParser(context)
+    return new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext())
         .parse(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)));
   }
 

@@ -422,6 +422,10 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DocumentReferenceAttesterComponent) dst);
+      }
+
       public void copyValues(DocumentReferenceAttesterComponent dst) {
         super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
@@ -644,6 +648,10 @@ public class DocumentReference extends DomainResource {
         DocumentReferenceRelatesToComponent dst = new DocumentReferenceRelatesToComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((DocumentReferenceRelatesToComponent) dst);
       }
 
       public void copyValues(DocumentReferenceRelatesToComponent dst) {
@@ -894,6 +902,10 @@ public class DocumentReference extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DocumentReferenceContentComponent) dst);
+      }
+
       public void copyValues(DocumentReferenceContentComponent dst) {
         super.copyValues(dst);
         dst.attachment = attachment == null ? null : attachment.copy();
@@ -1125,6 +1137,10 @@ public class DocumentReference extends DomainResource {
         DocumentReferenceContentProfileComponent dst = new DocumentReferenceContentProfileComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((DocumentReferenceContentProfileComponent) dst);
       }
 
       public void copyValues(DocumentReferenceContentProfileComponent dst) {
@@ -2803,6 +2819,10 @@ public class DocumentReference extends DomainResource {
         DocumentReference dst = new DocumentReference();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((DocumentReference) dst);
       }
 
       public void copyValues(DocumentReference dst) {

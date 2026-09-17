@@ -14,7 +14,6 @@ import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.utilities.EOperationOutcome;
 import org.hl7.fhir.model.utilities.Tuple;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
-import org.hl7.fhir.r5.comparison.CodeSystemComparer;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -178,8 +177,8 @@ public class ComparisonRenderer implements IHostApplicationServices {
 
     String cnt = processTemplate(template, "CodeSystem", vars);
     FileUtilities.stringToFile(cnt, file(comp.getId()+".html"));
-    new org.hl7.fhir.model.core.formats.JsonParser(contextLeft).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
-    new org.hl7.fhir.model.core.formats.JsonParser(contextLeft).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
+    new org.hl7.fhir.model.core.formats.JsonParser(contextLeft.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
+    new org.hl7.fhir.model.core.formats.JsonParser(contextLeft.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
 
     String union = new XhtmlComposer(true).compose(cs.renderUnion(comp, "", folder, "http://hl7.org/fhir"));
     String intersection = new XhtmlComposer(true).compose(cs.renderIntersection(comp, "", folder, "http://hl7.org/fhir"));
@@ -218,8 +217,8 @@ public class ComparisonRenderer implements IHostApplicationServices {
     String cnt = processTemplate(template, "ValueSet", vars);
     try {
       FileUtilities.stringToFile(cnt, file(comp.getId() + ".html"));
-      new org.hl7.fhir.model.core.formats.JsonParser(contextLeft).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
-      new org.hl7.fhir.model.core.formats.JsonParser(contextLeft).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
+      new org.hl7.fhir.model.core.formats.JsonParser(contextLeft.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
+      new org.hl7.fhir.model.core.formats.JsonParser(contextLeft.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
     } catch (Exception e) {
       log.error("Error saving ValueSet: "+e.getMessage());
     }
@@ -267,8 +266,8 @@ public class ComparisonRenderer implements IHostApplicationServices {
     cnt = processTemplate(template, "Profile-Intersection", vars);
     FileUtilities.stringToFile(cnt, file(comp.getId()+"-intersection.html"));
     
-    new org.hl7.fhir.model.core.formats.JsonParser(contextLeft).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
-    new org.hl7.fhir.model.core.formats.JsonParser(contextLeft).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
+    new org.hl7.fhir.model.core.formats.JsonParser(contextLeft.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
+    new org.hl7.fhir.model.core.formats.JsonParser(contextLeft.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
   }
   
   private void renderCapabilityStatement(String id, CapabilityStatementComparer.CapabilityStatementComparison comp) throws IOException {  
@@ -286,8 +285,8 @@ public class ComparisonRenderer implements IHostApplicationServices {
     vars.put("statement", new StringType(new XhtmlComposer(true).compose(cs.renderStatements(comp, "", ""))));
     String cnt = processTemplate(template, "CapabilityStatement", vars);
     FileUtilities.stringToFile(cnt, file(comp.getId()+".html"));
-    new org.hl7.fhir.model.core.formats.JsonParser(contextLeft).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
-    new org.hl7.fhir.model.core.formats.JsonParser(contextLeft).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
+    new org.hl7.fhir.model.core.formats.JsonParser(contextLeft.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
+    new org.hl7.fhir.model.core.formats.JsonParser(contextLeft.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
   }
 
   private String processTemplate(String template, String name, Map<String, Base> vars) {

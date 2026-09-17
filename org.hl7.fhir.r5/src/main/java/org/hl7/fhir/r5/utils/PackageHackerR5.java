@@ -1,6 +1,6 @@
 package org.hl7.fhir.r5.utils;
 
-import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
+import org.hl7.fhir.r5.context.CanonicalResourceProxy;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 

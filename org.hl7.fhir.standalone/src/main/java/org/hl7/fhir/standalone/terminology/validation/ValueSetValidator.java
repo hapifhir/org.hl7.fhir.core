@@ -11,7 +11,7 @@ import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.utilities.CodingUtilities;
 import org.hl7.fhir.model.utilities.VersionAlgorithm;
 import org.hl7.fhir.services.terminology.*;
-import org.hl7.fhir.services.utilities.OperationOutcomeUtilities;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.standalone.context.BaseWorkerContext;
 import org.hl7.fhir.standalone.context.ContextUtilities;
 import org.hl7.fhir.services.elementmodel.LanguageUtils;
@@ -47,6 +47,7 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -363,7 +364,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           // are those of the earliest coding that validated. vcc still accumulates
           // every valid coding below; only foundCoding is locked to the first.
           if (foundCoding == null) {
-            foundCoding = c.copy(Base.COPY_DATA);
+            foundCoding = c.copy(Base.COPY_NOTHING);
             foundCoding.setVersion(info.getFoundVersion());
           }
           if (!options.isMembershipOnly()) {

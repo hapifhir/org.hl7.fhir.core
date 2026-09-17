@@ -394,6 +394,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesSoftwareComponent) dst);
+      }
+
       public void copyValues(TerminologyCapabilitiesSoftwareComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -656,6 +660,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         TerminologyCapabilitiesImplementationComponent dst = new TerminologyCapabilitiesImplementationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesImplementationComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesImplementationComponent dst) {
@@ -1066,6 +1074,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         TerminologyCapabilitiesCodeSystemComponent dst = new TerminologyCapabilitiesCodeSystemComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesCodeSystemComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesCodeSystemComponent dst) {
@@ -1645,6 +1657,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesCodeSystemVersionComponent) dst);
+      }
+
       public void copyValues(TerminologyCapabilitiesCodeSystemVersionComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -1940,6 +1956,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         TerminologyCapabilitiesCodeSystemVersionFilterComponent dst = new TerminologyCapabilitiesCodeSystemVersionFilterComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesCodeSystemVersionFilterComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesCodeSystemVersionFilterComponent dst) {
@@ -2411,6 +2431,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesExpansionComponent) dst);
+      }
+
       public void copyValues(TerminologyCapabilitiesExpansionComponent dst) {
         super.copyValues(dst);
         dst.hierarchical = hierarchical == null ? null : hierarchical.copy();
@@ -2685,6 +2709,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesExpansionParameterComponent) dst);
+      }
+
       public void copyValues(TerminologyCapabilitiesExpansionParameterComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -2876,6 +2904,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         TerminologyCapabilitiesValidateCodeComponent dst = new TerminologyCapabilitiesValidateCodeComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesValidateCodeComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesValidateCodeComponent dst) {
@@ -3070,6 +3102,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesTranslationComponent) dst);
+      }
+
       public void copyValues(TerminologyCapabilitiesTranslationComponent dst) {
         super.copyValues(dst);
         dst.needsMap = needsMap == null ? null : needsMap.copy();
@@ -3252,6 +3288,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         TerminologyCapabilitiesClosureComponent dst = new TerminologyCapabilitiesClosureComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilitiesClosureComponent) dst);
       }
 
       public void copyValues(TerminologyCapabilitiesClosureComponent dst) {
@@ -5180,6 +5220,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         TerminologyCapabilities dst = new TerminologyCapabilities();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TerminologyCapabilities) dst);
       }
 
       public void copyValues(TerminologyCapabilities dst) {

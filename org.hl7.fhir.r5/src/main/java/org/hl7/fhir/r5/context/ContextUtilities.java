@@ -235,7 +235,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
             // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
           } catch (Exception e) {
             log.debug("Unable to generate snapshot @2 for " + tail(sd.getUrl()) + " from " + tail(sd.getBaseDefinition()) + " because " + e.getMessage());
-            context.getLogger().logDebugMessage(ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
+            context.getLogger().logDebugMessage(org.hl7.fhir.utilities.logging.ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
           }
           allStructuresList.add(sd);
           set.add(sd);

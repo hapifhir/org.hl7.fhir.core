@@ -29,12 +29,18 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
+import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
+import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -305,8 +311,64 @@ public class JavaCoreGenerator {
       ValueSet vse = expansions.getValuesets().get(vs.getUrl());
       if (vse != null) {
         vs.setUserData(UserDataNames.EXPANSION, vse);
+      } else if (vs.hasUserData("usages")) {
+        // a required binding in the core definitions, but the expansions package has no expansion
+        // for it. The expansions package holds one ValueSet-[id].json per id, so when a THO value set
+        // shares an id with a core one, one of them is lost (e.g. 6.0.0-snapshot1 lost the core
+        // variable-role and conformance-expectation to their THO namesakes). Without an expansion
+        // the enum is never generated, but the element is still typed as Enumeration<X>, so the
+        // model doesn't compile. If it's a simple value set, expand it here instead
+        vse = simpleExpansion(master, vs);
+        if (vse != null) {
+          System.out.println("  .. no expansion for "+vs.getVersionedUrl()+" in the expansions package - expanded locally ("+vse.getExpansion().getContains().size()+" codes)");
+          vs.setUserData(UserDataNames.EXPANSION, vse);
+        } else {
+          System.out.println("  .. no expansion for "+vs.getVersionedUrl()+" in the expansions package, and it can't be expanded locally");
+        }
       }
     }    
+  }
+
+  /**
+   * expand a value set that only includes whole code systems or enumerated codes from complete
+   * code systems in the definitions. Returns null for anything more complicated than that
+   */
+  private ValueSet simpleExpansion(Definitions defns, ValueSet vs) {
+    if (!vs.hasCompose() || vs.getCompose().hasExclude()) {
+      return null;
+    }
+    ValueSet vse = vs.copy();
+    ValueSetExpansionComponent exp = vse.getExpansion();
+    exp.setTimestamp(new Date());
+    for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+      if (!inc.hasSystem() || inc.hasValueSet() || inc.hasFilter()) {
+        return null;
+      }
+      CodeSystem cs = defns.getCodeSystems().get(inc.getSystem());
+      if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
+        return null;
+      }
+      if (inc.hasConcept()) {
+        for (ConceptReferenceComponent cr : inc.getConcept()) {
+          ConceptDefinitionComponent cd = CodeSystemUtilities.findCode(cs.getConcept(), cr.getCode());
+          if (cd == null) {
+            return null;
+          }
+          exp.addContains().setSystem(cs.getUrl()).setCode(cd.getCode()).setDisplay(cr.hasDisplay() ? cr.getDisplay() : cd.getDisplay());
+        }
+      } else {
+        addConcepts(exp, cs, cs.getConcept());
+      }
+    }
+    exp.setTotal(exp.getContains().size());
+    return vse;
+  }
+
+  private void addConcepts(ValueSetExpansionComponent exp, CodeSystem cs, List<ConceptDefinitionComponent> list) {
+    for (ConceptDefinitionComponent cd : list) {
+      exp.addContains().setSystem(cs.getUrl()).setCode(cd.getCode()).setDisplay(cd.getDisplay());
+      addConcepts(exp, cs, cd.getConcept()); // flat, like the excludeNested expansions in the package
+    }
   }
 
 

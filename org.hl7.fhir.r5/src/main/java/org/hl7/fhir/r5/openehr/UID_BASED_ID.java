@@ -65,6 +65,10 @@ public abstract class UID_BASED_ID extends OBJECT_ID implements ICompositeType {
 
       public abstract UID_BASED_ID copy();
 
+      public void assignValues(Base dst) {
+        copyValues((UID_BASED_ID) dst);
+      }
+
       public void copyValues(UID_BASED_ID dst) {
         super.copyValues(dst);
       }

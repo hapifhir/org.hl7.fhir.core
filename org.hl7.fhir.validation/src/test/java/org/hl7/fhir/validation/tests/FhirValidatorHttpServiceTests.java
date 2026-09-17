@@ -6,7 +6,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.*;
 
@@ -43,12 +45,25 @@ import java.util.function.Function;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class FhirValidatorHttpServiceTest {
 
+  /**
+   * A mocked engine with just enough context to stand a server up: startServer() builds every
+   * handler with the engine context's model context, and an R6 parser refuses a null one.
+   */
+  private static ValidationEngine mockEngine() {
+    ValidationEngine validationEngine = mock(ValidationEngine.class);
+    SimpleWorkerContext context = mock(SimpleWorkerContext.class);
+    when(context.getModelContext()).thenReturn(ModelContext.fullCoreContext());
+    when(validationEngine.getContext()).thenReturn(context);
+    return validationEngine;
+  }
+
   @Test
   void testLoopbackConfiguredCorrectly() throws IOException {
-    ValidationEngine validationEngine = mock(ValidationEngine.class);
+    ValidationEngine validationEngine = mockEngine();
     int port = 18080;
     FhirValidatorHttpService service = new FhirValidatorHttpService(validationEngine, true, port);
     service.startServer();
@@ -58,7 +73,7 @@ class FhirValidatorHttpServiceTest {
 
   @Test
   void testNetworkAccessibleConfiguredCorrectly() throws IOException {
-    ValidationEngine validationEngine = mock(ValidationEngine.class);
+    ValidationEngine validationEngine = mockEngine();
     int port = 18080;
     FhirValidatorHttpService service = new FhirValidatorHttpService(validationEngine, false, port);
     service.startServer();

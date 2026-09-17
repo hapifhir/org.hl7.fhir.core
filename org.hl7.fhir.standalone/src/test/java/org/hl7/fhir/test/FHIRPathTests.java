@@ -10,7 +10,6 @@ import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.services.elementmodel.Manager;
-import org.hl7.fhir.services.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.services.elementmodel.ValidatedFragment;
 import org.hl7.fhir.services.fhirpath.BaseHostServices;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
@@ -21,6 +20,7 @@ import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.services.terminology.TerminologyFunctions;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -212,9 +212,9 @@ public class FHIRPathTests {
           if ("cda".equals(test.getAttribute("mode"))) {
             res = Manager.makeParser(fp.getWorker(), FhirFormat.XML).parseSingle(TestingUtilities.loadTestResourceStream("r6", input), null);
           } else if (input.endsWith(".json")) {
-            res = new JsonParser(context).parse(TestingUtilities.loadTestResourceStream("r6", input));
+            res = new JsonParser(context.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", input));
           } else {
-            res = new XmlParser(context).parse(TestingUtilities.loadTestResourceStream("r6", input));
+            res = new XmlParser(context.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", input));
           }
           resources.put(input, res);
         }        

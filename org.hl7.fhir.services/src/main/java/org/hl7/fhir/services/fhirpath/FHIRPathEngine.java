@@ -2912,7 +2912,7 @@ public class FHIRPathEngine {
   }
 
   private BaseDateTimeType dateAdd(BaseDateTimeType d, Quantity q, boolean negate, ExpressionNode holder) {
-    BaseDateTimeType result = (BaseDateTimeType) d.copy(Base.COPY_DATA);
+    BaseDateTimeType result = (BaseDateTimeType) d.copy(Base.COPY_NOTHING);
 
     int value = negate ? 0 - q.getValue().intValue() : q.getValue().intValue();
     switch (q.hasCode() ? q.getCode() : q.getUnit()) {
@@ -2971,7 +2971,7 @@ public class FHIRPathEngine {
   }
 
 private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode holder) {
-    TimeType result = (TimeType) d.copy(Base.COPY_DATA);
+    TimeType result = (TimeType) d.copy(Base.COPY_NOTHING);
 
     int value = negate ? 0 - q.getValue().intValue() : q.getValue().intValue();
     switch (q.hasCode() ? q.getCode() : q.getUnit()) {
@@ -3210,7 +3210,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       String s = l.primitiveValue();
       if ("0".equals(s)) {
         Quantity qty = makeQuantity(r);
-        result.add(qty.copy(Base.COPY_DATA).setValue(qty.getValue().abs()));
+        result.add(qty.copy(Base.COPY_NOTHING).setValue(qty.getValue().abs()));
       }
     } else if (l.hasType("date") && r.hasType("Quantity")) {
       DateType dl = l instanceof DateType ? (DateType) l : new DateType(l.primitiveValue()); 
@@ -4425,7 +4425,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       }
     } else if (base.hasType("Quantity")) {
       Quantity qty = makeQuantity(base);
-      result.add(qty.copy(Base.COPY_DATA).setValue(qty.getValue().abs()));
+      result.add(qty.copy(Base.COPY_NOTHING).setValue(qty.getValue().abs()));
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "abs", "(focus)", base.fhirType(), "integer or decimal");
     }
@@ -4646,7 +4646,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new TimeType(DateTimeUtil.lowBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
-      Base v = base.copy(Base.COPY_DATA);
+      Base v = base.copy(Base.COPY_NOTHING);
       v.setProperty("value", new DecimalType(Utilities.lowBoundaryForDecimal(value, precision == null ? 8 : precision)));
       result.add(v);
     } else {
@@ -4690,7 +4690,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new TimeType(DateTimeUtil.highBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
-      Base v = base.copy(Base.COPY_DATA);
+      Base v = base.copy(Base.COPY_NOTHING);
       v.setProperty("value", new DecimalType(Utilities.highBoundaryForDecimal(value, precision == null ? 8 : precision)));
       result.add(v);
     } else {
@@ -4823,8 +4823,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       if ("hex".equals(param)) {
         result.add(new StringType(new String(hexStringToByteArray(cnt))));        
       } else if ("base64".equals(param)) {
-        Base64.Decoder enc = Base64.getDecoder();
-        result.add(new StringType(new String(enc.decode(cnt))));
+        result.add(new StringType(new String(Utilities.decodeBase64(cnt))));
       } else if ("urlbase64".equals(param)) {
         Base64.Decoder enc = Base64.getUrlDecoder();
         result.add(new StringType(new String(enc.decode(cnt))));

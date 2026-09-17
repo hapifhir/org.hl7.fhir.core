@@ -695,6 +695,10 @@ public class Transport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TransportRestrictionComponent) dst);
+      }
+
       public void copyValues(TransportRestrictionComponent dst) {
         super.copyValues(dst);
         dst.repetitions = repetitions == null ? null : repetitions.copy();
@@ -1998,6 +2002,10 @@ public class Transport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ParameterComponent) dst);
+      }
+
       public void copyValues(ParameterComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -3292,6 +3300,10 @@ public class Transport extends DomainResource {
         TransportOutputComponent dst = new TransportOutputComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TransportOutputComponent) dst);
       }
 
       public void copyValues(TransportOutputComponent dst) {
@@ -5406,6 +5418,10 @@ public class Transport extends DomainResource {
         Transport dst = new Transport();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Transport) dst);
       }
 
       public void copyValues(Transport dst) {

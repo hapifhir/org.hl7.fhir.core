@@ -240,7 +240,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     subset.setMustSupport(left.current().getMustSupport() || right.current().getMustSupport());
     def = comparePrimitivesWithTracking("mustSupport", left.current().getMustSupportElement(), right.current().getMustSupportElement(), null, IssueSeverity.INFORMATION, null, right.current()) || def;
 
-    ElementDefinition superset = subset.copy(Base.COPY_DATA);
+    ElementDefinition superset = subset.copy(Base.COPY_NOTHING);
 
     def = comparePrimitivesWithTracking("min", left.current().getMinElement(), right.current().getMinElement(), null, IssueSeverity.INFORMATION, null, right.current()) || def;
     def = comparePrimitivesWithTracking("max", left.current().getMaxElement(), right.current().getMaxElement(), null, IssueSeverity.INFORMATION, null, right.current()) || def;
@@ -359,7 +359,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     for (DefinitionNavigator l : lc) {
       DefinitionNavigator r = findInList(rc, l);
       if (r == null) {
-        comp.getUnion().getSnapshot().getElementList().add(l.current().copy(Base.COPY_DATA));
+        comp.getUnion().getSnapshot().getElementList().add(l.current().copy(Base.COPY_NOTHING));
         res.getChildren().add(new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(l.getStructure(), l.current()), vmI(IssueSeverity.INFORMATION, "Removed this element", path)));
       } else {
         matchR.add(r);
@@ -370,7 +370,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     }
     for (DefinitionNavigator r : rc) {
       if (!matchR.contains(r)) {
-        comp.getUnion().getSnapshot().getElementList().add(r.current().copy(Base.COPY_DATA));
+        comp.getUnion().getSnapshot().getElementList().add(r.current().copy(Base.COPY_NOTHING));
         res.getChildren().add(new StructuralMatch<ElementDefinitionNode>(vmI(IssueSeverity.INFORMATION, "Added this element", path), new ElementDefinitionNode(r.getStructure(), r.current())));
       }
     }
@@ -719,7 +719,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     if (val instanceof PrimitiveType) 
       return "'" + ((PrimitiveType) val).getValueAsString()+"'";
     
-    IParser jp = new JsonParser(left ? utilsLeft.getContext() : utilsRight.getContext());
+    IParser jp = new JsonParser(left ? utilsLeft.getContext().getModelContext() : utilsRight.getContext().getModelContext());
     return jp.composeString(val, "value");
   }
   
@@ -894,7 +894,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   private void checkAddTypeUnion(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, List<ElementDefinition.TypeRefComponent> results, ElementDefinition.TypeRefComponent nw, IWorkerContext ctxt, Resource nwSource) throws DefinitionException, IOException, FHIRFormatError {
     boolean pfound = false;
     boolean tfound = false;
-    nw = nw.copy(Base.COPY_DATA);
+    nw = nw.copy(Base.COPY_NOTHING);
     for (ElementDefinition.TypeRefComponent ex : results) {
       if (Utilities.equals(ex.getWorkingCode(), nw.getWorkingCode())) {
         for (Enumeration<ElementDefinition.AggregationMode> a : nw.getAggregationList()) {
@@ -1005,7 +1005,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     for (ElementDefinition.TypeRefComponent l : left) {
       boolean pfound = false;
       boolean tfound = false;
-      ElementDefinition.TypeRefComponent c = l.copy(Base.COPY_DATA);
+      ElementDefinition.TypeRefComponent c = l.copy(Base.COPY_NOTHING);
       for (ElementDefinition.TypeRefComponent r : right) {
         if (!l.hasProfile() && !r.hasProfile()) {
           pfound = true;    
@@ -1096,13 +1096,13 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     if (!lDef.hasBinding()) {
       subset.setBinding(rDef.getBinding());
       // technically, the super set is unbound, but that's not very useful - so we use the provided on as an example
-      superset.setBinding(rDef.getBinding().copy(Base.COPY_DATA));
+      superset.setBinding(rDef.getBinding().copy(Base.COPY_NOTHING));
       superset.getBinding().setStrength(Enumerations.BindingStrength.EXAMPLE);
       return true;
     }
     if (!rDef.hasBinding()) {
       subset.setBinding(lDef.getBinding());
-      superset.setBinding(lDef.getBinding().copy(Base.COPY_DATA));
+      superset.setBinding(lDef.getBinding().copy(Base.COPY_NOTHING));
       superset.getBinding().setStrength(Enumerations.BindingStrength.EXAMPLE);
       return true;
     }

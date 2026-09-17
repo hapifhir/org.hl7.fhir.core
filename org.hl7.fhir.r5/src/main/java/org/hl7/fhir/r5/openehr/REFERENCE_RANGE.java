@@ -226,6 +226,10 @@ public class REFERENCE_RANGE extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((REFERENCE_RANGE) dst);
+      }
+
       public void copyValues(REFERENCE_RANGE dst) {
         super.copyValues(dst);
         dst.meaning = meaning == null ? null : meaning.copy();

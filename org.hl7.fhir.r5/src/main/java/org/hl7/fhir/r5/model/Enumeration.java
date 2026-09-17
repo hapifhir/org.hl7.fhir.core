@@ -142,16 +142,28 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
     getExtension().addAll(source.getExtension());
   }
 
+  @SuppressWarnings("unchecked")
+  @Override
+  public void assignValues(Base dst) {
+    copyValues((Enumeration<T>) dst);
+  }
+
+  /**
+   * the factory is state on this class. The value comes across as both the coerced value and the
+   * string, so a CUSTOM code - which only exists in the string - survives the copy
+   */
+  public void copyValues(Enumeration<T> dst) {
+    super.copyValues(dst);
+    dst.myEnumFactory = myEnumFactory;
+  }
+
   @Override
   public Enumeration<T> copy() {
-    Enumeration dst= new Enumeration(this.myEnumFactory);
-    dst.setValueAsString(asStringValue()); // string based, not value based, so a CUSTOM value (where the real code lives in the string) survives the copy
-    //Copy the Extension
-    if (extension != null) {
-      dst.extension = new ArrayList<>();
-      for (Extension i : extension)
-        dst.extension.add(i.copy());
-    };
+    // copyValues carries the string form as well as the coerced value, so a CUSTOM value (where the
+    // real code only exists in the string) survives the copy, and so does the id, which this didn't
+    // used to copy at all
+    Enumeration<T> dst = new Enumeration<T>(this.myEnumFactory);
+    copyValues(dst);
     return dst;
   }
 

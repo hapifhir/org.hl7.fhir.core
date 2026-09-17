@@ -58,22 +58,22 @@ public class ResourceTester {
 
     IParser parser;
     if (isJson())
-      parser = new JsonParser(TestingUtilities.getSharedWorkerContext());
+      parser = new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext());
     else
-      parser = new XmlParser(TestingUtilities.getSharedWorkerContext(),false);
+      parser = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext(),false);
     Resource resource = parser.parse(ManagedFileAccess.inStream(source));
 
     FileOutputStream out = ManagedFileAccess.outStream(source.getAbsoluteFile()+".out.json");
-    JsonParser jsonPrettyParser = new JsonParser(TestingUtilities.getSharedWorkerContext());
+    JsonParser jsonPrettyParser = new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext());
     jsonPrettyParser.setOutputStyle(OutputStyle.PRETTY);
     jsonPrettyParser.compose(out, resource);
     out.close();
 
-    JsonParser jsonParser = new JsonParser(TestingUtilities.getSharedWorkerContext());
+    JsonParser jsonParser = new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext());
     resource = jsonParser.parse(ManagedFileAccess.inStream(source.getAbsoluteFile()+".out.json"));
 
     out = ManagedFileAccess.outStream(source.getAbsoluteFile()+".out.xml");
-    XmlParser xmlParser = new XmlParser(TestingUtilities.getSharedWorkerContext());
+    XmlParser xmlParser = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext());
     xmlParser.setOutputStyle(OutputStyle.PRETTY);
     xmlParser.compose(out, resource, true);
     out.close();

@@ -480,6 +480,10 @@ public class DiagnosticReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DiagnosticReportSupportingInfoComponent) dst);
+      }
+
       public void copyValues(DiagnosticReportSupportingInfoComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -722,6 +726,10 @@ public class DiagnosticReport extends DomainResource {
         DiagnosticReportMediaComponent dst = new DiagnosticReportMediaComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((DiagnosticReportMediaComponent) dst);
       }
 
       public void copyValues(DiagnosticReportMediaComponent dst) {
@@ -2313,6 +2321,10 @@ public class DiagnosticReport extends DomainResource {
         DiagnosticReport dst = new DiagnosticReport();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((DiagnosticReport) dst);
       }
 
       public void copyValues(DiagnosticReport dst) {

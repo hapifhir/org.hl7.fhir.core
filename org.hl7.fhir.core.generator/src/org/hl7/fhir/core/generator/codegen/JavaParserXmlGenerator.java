@@ -49,9 +49,9 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
   private StringBuilder pFrag = new StringBuilder();
   private StringBuilder pCtype   = new StringBuilder();
   private StringBuilder composer = new StringBuilder();
-  private StringBuilder cRes = new StringBuilder();
-  private StringBuilder cRN = new StringBuilder();
-  private StringBuilder cType = new StringBuilder();
+  private InstanceOfCases cRes = new InstanceOfCases();
+  private InstanceOfCases cRN = new InstanceOfCases();
+  private InstanceOfCases cType = new InstanceOfCases();
 
   public JavaParserXmlGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String jid) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, jid);
@@ -66,12 +66,12 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
       if (analysis.getStructure().getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         pTP.append(   "    } else if (xpp.getName().equals(prefix+\""+escapeJavaString(analysis.getName())+"\")) {\r\n      return parse"+analysis.getClassName()+"(xpp);\r\n");
         pT.append(    "    } else if (type.equals(\""+escapeJavaString(analysis.getName())+"\")) {\r\n      return parse"+analysis.getClassName()+"(xpp);\r\n");
-        cType.append( "    } else if (type instanceof "+analysis.getClassName()+") {\r\n       compose"+analysis.getClassName()+"(prefix+\""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+") type);\r\n");
+        cType.add(analysis.getStructure(), definitions, "    } else if (type instanceof "+analysis.getClassName()+") {\r\n       compose"+analysis.getClassName()+"(prefix+\""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+") type);\r\n");
       }
       if (analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE) {
         pRes.append("    } else if (xpp.getName().equals(\""+escapeJavaString(analysis.getName())+"\")) {\r\n      return parse"+analysis.getClassName()+"(xpp);\r\n");
-        cRes.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+")resource);\r\n");
-        cRN.append( "    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");
+        cRes.add(analysis.getStructure(), definitions, "    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+")resource);\r\n");
+        cRN.add(analysis.getStructure(), definitions, "    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");
       }
     }
   }

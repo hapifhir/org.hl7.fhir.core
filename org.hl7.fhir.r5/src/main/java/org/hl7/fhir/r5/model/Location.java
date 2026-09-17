@@ -615,6 +615,10 @@ public class Location extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((LocationPositionComponent) dst);
+      }
+
       public void copyValues(LocationPositionComponent dst) {
         super.copyValues(dst);
         dst.longitude = longitude == null ? null : longitude.copy();
@@ -1924,6 +1928,10 @@ public class Location extends DomainResource {
         Location dst = new Location();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Location) dst);
       }
 
       public void copyValues(Location dst) {

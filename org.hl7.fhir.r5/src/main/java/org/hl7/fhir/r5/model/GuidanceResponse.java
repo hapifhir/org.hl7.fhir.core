@@ -1210,6 +1210,10 @@ public class GuidanceResponse extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((GuidanceResponse) dst);
+      }
+
       public void copyValues(GuidanceResponse dst) {
         super.copyValues(dst);
         dst.requestIdentifier = requestIdentifier == null ? null : requestIdentifier.copy();

@@ -188,6 +188,10 @@ public abstract class DV_AMOUNT extends DV_QUANTIFIED implements ICompositeType 
 
       public abstract DV_AMOUNT copy();
 
+      public void assignValues(Base dst) {
+        copyValues((DV_AMOUNT) dst);
+      }
+
       public void copyValues(DV_AMOUNT dst) {
         super.copyValues(dst);
         dst.accuracy_is_percent = accuracy_is_percent == null ? null : accuracy_is_percent.copy();

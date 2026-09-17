@@ -3,15 +3,15 @@ package org.hl7.fhir.standalone.terminology.client;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.utilities.ImplicitValueSets;
-import org.hl7.fhir.services.context.ILoggingService;
 import org.hl7.fhir.model.core.Bundle.BundleEntryComponent;
 import org.hl7.fhir.model.core.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
 import org.hl7.fhir.model.utilities.ValueSetUtilities;
-import org.hl7.fhir.services.terminology.ITerminologyClient;
-import org.hl7.fhir.services.terminology.ITerminologyClientFactory;
+import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
+import org.hl7.fhir.services.terminology.ITerminologyClientManager;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -21,6 +21,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import java.io.File;
@@ -32,7 +33,7 @@ import java.net.URL;
 import java.util.*;
 
 
-public class TerminologyClientManager {
+public class TerminologyClientManager implements ITerminologyClientManager {
 
   private ImplicitValueSets implicitValueSets;
 
@@ -77,7 +78,7 @@ public class TerminologyClientManager {
     
   }
 
-  public ITerminologyClientFactory getFactory() {
+  public ITerminologyClientFactoryN getFactory() {
     return factory;
   }
 
@@ -135,7 +136,7 @@ public class TerminologyClientManager {
 
   private static final boolean IGNORE_TX_REGISTRY = false;
   
-  private ITerminologyClientFactory factory;
+  private ITerminologyClientFactoryN factory;
   private List<TerminologyClientContext> serverList = new ArrayList<>(); // clients by server address
   private Map<String, TerminologyClientContext> serverMap = new HashMap<>(); // clients by server address
   private Map<String, Boolean> serverSupportMap = new HashMap<>(); // clients by server address
@@ -163,7 +164,7 @@ public class TerminologyClientManager {
   private boolean isShutdown;
   private IModelContext context;
 
-  public TerminologyClientManager(IModelContext context, ITerminologyClientFactory factory, ILoggingService logger) {
+  public TerminologyClientManager(IModelContext context, ITerminologyClientFactoryN factory, ILoggingService logger) {
     super();
     this.context = context;
     this.factory = factory;
@@ -437,7 +438,7 @@ public class TerminologyClientManager {
     TerminologyClientContext client = serverMap.get(server);
     if (client == null) {
       try {
-        client = new TerminologyClientContext(factory.makeClient(context, "id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
+        client = new TerminologyClientContext(factory.makeClientN(context, "id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
       } catch (Exception e) {
         throw new TerminologyServiceException("Error accessing "+server+" for "+CommaSeparatedStringBuilder.join(",", systems)+": "+e.getMessage(), e);
       }
@@ -667,7 +668,7 @@ public class TerminologyClientManager {
     }
   }
 
-  public TerminologyClientContext setMasterClient(ITerminologyClient client, boolean useEcosystem) throws IOException {
+  public TerminologyClientContext setMasterClient(ITerminologyClientN client, boolean useEcosystem) throws IOException {
     this.useEcosystem = useEcosystem;
     TerminologyClientContext terminologyClientContext = new TerminologyClientContext(client, cache, true, logger);
     // Note: the cleared contexts are deliberately NOT released here. Releasing one
@@ -687,7 +688,7 @@ public class TerminologyClientManager {
     return serverList.isEmpty() ? null : serverList.get(0);
   }
 
-  public ITerminologyClient getMasterClient() {
+  public ITerminologyClientN getMasterClient() {
     return serverList.isEmpty() ? null : serverList.get(0).getClient();
   }
 
@@ -700,7 +701,7 @@ public class TerminologyClientManager {
   }
 
 
-  public void setFactory(ITerminologyClientFactory factory) {
+  public void setFactory(ITerminologyClientFactoryN factory) {
     this.factory = factory;    
   }
 
@@ -862,7 +863,7 @@ public class TerminologyClientManager {
       TerminologyClientContext client = serverMap.get(server);
       if (client == null) {
         try {
-          client = new TerminologyClientContext(factory.makeClient(context,"id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
+          client = new TerminologyClientContext(factory.makeClientN(context,"id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
         } catch (URISyntaxException | IOException e) {
           throw new TerminologyServiceException(e);
         }
@@ -956,7 +957,7 @@ public class TerminologyClientManager {
       TerminologyClientContext client = serverMap.get(server);
       if (client == null) {
         try {
-          client = new TerminologyClientContext(factory.makeClient(context, "id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
+          client = new TerminologyClientContext(factory.makeClientN(context, "id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
         } catch (URISyntaxException | IOException e) {
           throw new TerminologyServiceException("Error accessing "+server+" for "+canonical+": "+e.getMessage(), e);
         }

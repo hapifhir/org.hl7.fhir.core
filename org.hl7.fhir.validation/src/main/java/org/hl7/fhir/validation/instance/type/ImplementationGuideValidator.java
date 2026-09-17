@@ -6,10 +6,11 @@ import java.util.Collections;
 import java.util.List;
 
 
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.core.ImplementationGuide;
+import org.hl7.fhir.services.elementmodel.ElementUtilities;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -83,7 +84,7 @@ public class ImplementationGuideValidator extends BaseValidator {
     ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), validPackageId, I18nConstants.IG_DEPENDENCY_INVALID_PACKAGEID, packageId) && ok;
 
     try {
-      ImplementationGuide fetchedIgDependency = context.fetchResource(ImplementationGuide.class, uri, ExtensionUtilities.getVersionResolutionRules(dependency.getNamedChild("uri")));
+      ImplementationGuide fetchedIgDependency = context.fetchResource(ImplementationGuide.class, uri, ElementUtilities.getVersionResolutionRules(dependency.getNamedChild("uri")));
       warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), fetchedIgDependency != null, I18nConstants.IG_DEPENDENCY_INVALID_URL, uri);
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       if (uri != null && packageId != null && (fetchedIgDependency == null || !fetchedIgDependency.hasUserData(UserDataNames.IG_FAKE))) {
@@ -144,7 +145,7 @@ public class ImplementationGuideValidator extends BaseValidator {
 
   private @Nonnull String getVersionSuffix() {
     // This is a workaround for the fact that R6 is not fully defined at this time.
-    String version = context.getVersion();
+    String version = context.getFHIRVersion();
     if (version.startsWith("6.")) {
       version = "5.0.0";
     }

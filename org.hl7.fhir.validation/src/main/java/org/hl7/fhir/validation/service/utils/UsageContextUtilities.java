@@ -3,12 +3,12 @@ package org.hl7.fhir.validation.service.utils;
 import java.math.BigDecimal;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.model.UsageContext;
+import org.hl7.fhir.model.core.CodeableConcept;
+import org.hl7.fhir.model.core.Coding;
+import org.hl7.fhir.model.core.DataType;
+import org.hl7.fhir.model.core.Quantity;
+import org.hl7.fhir.model.core.Reference;
+import org.hl7.fhir.model.core.UsageContext;
 import org.hl7.fhir.utilities.Utilities;
 
 /**
