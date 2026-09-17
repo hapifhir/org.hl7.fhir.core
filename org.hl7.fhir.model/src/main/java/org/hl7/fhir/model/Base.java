@@ -75,6 +75,14 @@ public abstract class Base implements Serializable, IBase, IElement {
 
   //region version/context
 
+  public Base() {
+    this.modelContext = null;
+  }
+
+  public Base(IModelContext modelContext) {
+    this.modelContext = modelContext;
+  }
+
   /**
    * Set the model context. Adoption only: an instance without a context can be given one, and 
    * re-asserting the same context is a (fast) no-op, but changing an existing context throws. 
@@ -194,6 +202,13 @@ public abstract class Base implements Serializable, IBase, IElement {
       userData.remove(name);
   }
 
+  /**
+   * Clear all user Data
+   */
+  public void clearUserData() {
+    userData  = null;
+  }
+
   /** set the named user data item If Not Null: a null value leaves any existing entry untouched */
   public void setUserDataINN(String name, Object value) {
     if (value == null)
@@ -231,13 +246,26 @@ public abstract class Base implements Serializable, IBase, IElement {
 
   /** merge the other object's user data into this one - shared names are overwritten, others are kept */
   public void copyUserData(Base other) {
-    if (other.userData != null) {
+    // through the accessors, not other.userData: a subclass (e.g. a version adaptor) may keep its user data somewhere else
+    Set<String> names = other.getUserDataNames();
+    if (!names.isEmpty()) {
       if (userData == null) {
         userData = new HashMap<>();
       }
-      userData.putAll(other.userData);
+      for (String n : names) {
+        userData.put(n, other.getUserData(n));
+      }
     }
   }
+
+  public Set<String> getUserDataNames() {
+    if (userData == null) {
+      return new HashSet<>();
+    } else {
+      return userData.keySet();
+    }
+  }
+
   //endregion
 
   //region Format Comments
@@ -320,9 +348,7 @@ public abstract class Base implements Serializable, IBase, IElement {
       if (n.equalsIgnoreCase(t))
         return true;
       if (n.contains(".")) {
-        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-        //single literal character split
-        String[] p = n.split("\\.");
+        String[] p = Utilities.simpleSplit(n, ".");
         if (p.length == 2 && Utilities.existsInList(p[0], "FHIR", "CDA") && p[1].equalsIgnoreCase(t))
           return true;
       }
