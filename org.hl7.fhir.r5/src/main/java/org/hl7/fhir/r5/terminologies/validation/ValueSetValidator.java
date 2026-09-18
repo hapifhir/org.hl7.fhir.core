@@ -128,6 +128,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
   @Setter
   @Getter
   private boolean throwToServer;
+  // required supplements to code systems we have no full copy of, which the server applies when it checks their codes
+  private Set<String> serverAppliedSupplements = new HashSet<>();
   private LanguageSubtagRegistry registry;
   private Set<String> checkedVersionCombinations = new HashSet<>();
 
@@ -205,6 +207,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
     ElementHolder vssrc = new ElementHolder();
     String version = determineVersion(c.getSystem(), c.getVersionElement(), va, vssrc);
     CodeSystem cs = resolveCodeSystem(c.getSystem(), version, vssrc.getElement(), valueset);
+    if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
+      serverAppliedSupplements.addAll(supplementsFor(c.getSystem(), version));
+    }
     if (cs == null) {
       // well, it doesn't really matter at this point. Mainly we're triggering the supplement analysis to happen 
       opContext.note("Unable to resolve "+c.getSystem()+"#"+version);
@@ -567,6 +572,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private boolean checkRequiredSupplements(ValidationProcessInfo info) {
+    if (throwToServer) {
+      // these count as used even if no code from their code system has been checked yet, as local ones do
+      for (String s : serverAppliedSupplements) {
+        seeUsedSupplement(s);
+      }
+    }
     List<String> missingSupplements = checkForMissingSupplements();
     if (!missingSupplements.isEmpty()) {
       String msg = context.formatMessagePlural(missingSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(missingSupplements));
