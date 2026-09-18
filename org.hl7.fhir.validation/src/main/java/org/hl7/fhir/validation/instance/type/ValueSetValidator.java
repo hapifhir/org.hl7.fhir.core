@@ -7,7 +7,7 @@ import java.util.regex.PatternSyntaxException;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.services.elementmodel.ElementUtilities;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.elementmodel.ObjectConverter;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
@@ -325,14 +325,14 @@ public class ValueSetValidator extends BaseValidator {
       int i = 0;
       for (Element ve : valuesets) {
         String v = ve.getValue();
-        ValueSet vs = context.findTxResource(ValueSet.class, v, ElementUtilities.getVersionResolutionRules(ve));
+        ValueSet vs = context.findTxResource(ValueSet.class, v, ElementModelUtilities.getVersionResolutionRules(ve));
         if (vs == null) {
           // we couldn't find it, but it might be an implicit value set 
           ValueSetExpansionOutcome vse = context.expandVS(new ExpansionOptions().withCacheOk(true).withHierarchical(false).withMaxCount(0), v);
           if (!vse.isOk() ) {
             NodeStack ns = stack.push(ve, i, ve.getProperty().getDefinition(), ve.getProperty().getDefinition());
 
-            Resource rs = context.fetchResource(Resource.class, v, ElementUtilities.getVersionResolutionRules(ve));
+            Resource rs = context.fetchResource(Resource.class, v, ElementModelUtilities.getVersionResolutionRules(ve));
             if (rs != null) {
               warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE, v, rs.fhirType());                      
             } else { 
@@ -370,9 +370,9 @@ public class ValueSetValidator extends BaseValidator {
         }
       }
       if (version == null) {
-        CodeSystem cs = context.fetchCodeSystem(system, ElementUtilities.getVersionResolutionRules(include));
+        CodeSystem cs = context.fetchCodeSystem(system, ElementModelUtilities.getVersionResolutionRules(include));
 
-        if (cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(system) && fetcher != null && ElementUtilities.getVersionResolutionRules(include) != VersionResolutionRules.LATEST) {
+        if (cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(system) && fetcher != null && ElementModelUtilities.getVersionResolutionRules(include) != VersionResolutionRules.LATEST) {
           Set<IValidatorResourceFetcher.ResourceVersionInformation> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), system);
           warning(errors, NO_RULE_DATE, IssueType.INVALID,  stack.getLiteralPath()+".system", possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS,
               system, cs.getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(IValidatorResourceFetcher.ResourceVersionInformation.toStrings(possibleVersions))));
@@ -385,10 +385,10 @@ public class ValueSetValidator extends BaseValidator {
     CodeSystemChecker csChecker = getSystemValidator(system, errors);
     CodeSystem cs = null;
     if (!Utilities.noString(system)) {
-      cs = context.fetchCodeSystem(system, ElementUtilities.getVersionResolutionRules(include), version, null);
+      cs = context.fetchCodeSystem(system, ElementModelUtilities.getVersionResolutionRules(include), version, null);
       if (cs == null) {
         // can we get it from a terminology server? 
-        cs = context.findTxResource(CodeSystem.class, system, ElementUtilities.getVersionResolutionRules(include), version, null);
+        cs = context.findTxResource(CodeSystem.class, system, ElementModelUtilities.getVersionResolutionRules(include), version, null);
       }
       boolean validateConcepts = true;
       if (cs != null) { // if it's null, we can't analyse this
@@ -433,7 +433,7 @@ public class ValueSetValidator extends BaseValidator {
             }
           }
         }
-        ValueSet vs = context.findTxResource(ValueSet.class, system, ElementUtilities.getVersionResolutionRules(include), version, null);
+        ValueSet vs = context.findTxResource(ValueSet.class, system, ElementModelUtilities.getVersionResolutionRules(include), version, null);
         if (vs != null) {
           validateConcepts = false;
           List<String> systems = TerminologyUtilities.listSystems(vs);

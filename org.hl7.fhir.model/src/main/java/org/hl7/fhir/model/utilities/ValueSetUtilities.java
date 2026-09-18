@@ -153,7 +153,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
   public static void checkExpansionIsFlat(ValueSet vs) throws FHIRException {
     if (vs != null && vs.hasExpansion()) {
       String explanation = ". There is no expansion excludeNested parameter";
-      for (ValueSet.ValueSetExpansionParameterComponent p : vs.getExpansion().getParameter()) {
+      for (ValueSet.ValueSetExpansionParameterComponent p : vs.getExpansion().getParameterList()) {
         if ("excludeNested".equals(p.getName())) {
           if ("true".equals(p.getValue().primitiveValue())) {
             explanation = ". The expansion expansion parameter is excludeNested true";
@@ -163,9 +163,9 @@ public class ValueSetUtilities extends TerminologyUtilities {
         }
       }
       String purpose = vs.getUserString(UserDataNames.EXPANSION_PURPOSE);
-      for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContains()) {
+      for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContainsList()) {
         if (cc.hasContains()) {
-          throw new FHIRException("The "+(purpose == null ? "" : purpose+" ")+"expansion of the value set "+vs.getVersionedUrl()+" is not flat: the code '"+cc.getCode()+"' contains nested codes (starting with '"+cc.getContains().get(0).getCode()+"')"+explanation);
+          throw new FHIRException("The "+(purpose == null ? "" : purpose+" ")+"expansion of the value set "+vs.getVersionedUrl()+" is not flat: the code '"+cc.getCode()+"' contains nested codes (starting with '"+cc.getContainsList().get(0).getCode()+"')"+explanation);
         }
       }
     }
@@ -388,22 +388,6 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return i;
   }
 
-  public static Set<String> listSystems(IWorkerContext ctxt, ValueSet vs) {
-    Set<String> systems = new HashSet<>();
-    for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-      for (CanonicalType ct : inc.getValueSet()) {
-        ValueSet vsr = ctxt.findTxResource(ValueSet.class, ct.asStringValue(), ExtensionUtilities.getVersionResolutionRules(ct), null, vs);
-        if (vsr != null) {
-          systems.addAll(listSystems(ctxt, vsr));
-        }
-      }
-      if (inc.hasSystem()) {
-        systems.add(inc.getSystem());
-      }
-    }
-    return systems;
-  }
-  
 
   public static boolean isIncompleteExpansion(ValueSet valueSet) {
     if (valueSet.hasExpansion()) {
@@ -416,7 +400,6 @@ public class ValueSetUtilities extends TerminologyUtilities {
     }
     return false;
   }
-
 
   public static Set<String> codes(ValueSet vs, CodeSystem cs) {
     Set<String> res = new HashSet<>();

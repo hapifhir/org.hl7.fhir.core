@@ -6,7 +6,7 @@ import java.util.List;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
-import org.hl7.fhir.services.elementmodel.ElementUtilities;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.model.core.CanonicalType;
 import org.hl7.fhir.model.core.DataType;
@@ -39,7 +39,7 @@ public class OperationDefinitionValidator extends BaseValidator {
       String url = od.getNamedChildValue("url");
       String base = od.getNamedChildValue("base");
       String last = url;
-      OperationDefinition opDef = context.fetchResource(OperationDefinition.class, base, ElementUtilities.getVersionResolutionRules(od.getNamedChild("url")));
+      OperationDefinition opDef = context.fetchResource(OperationDefinition.class, base, ElementModelUtilities.getVersionResolutionRules(od.getNamedChild("url")));
       while (opDef != null) {
         if (url.equals(opDef.getUrl())) {
           ok = false;
@@ -63,7 +63,7 @@ public class OperationDefinitionValidator extends BaseValidator {
 
   private boolean validateProfile(List<ValidationMessage> errors, NodeStack stack, Element od, Element url, String use) {
     boolean  ok = true;
-    StructureDefinition sdt = context.fetchResource(StructureDefinition.class, url.primitiveValue(), ElementUtilities.getVersionResolutionRules(url));
+    StructureDefinition sdt = context.fetchResource(StructureDefinition.class, url.primitiveValue(), ElementModelUtilities.getVersionResolutionRules(url));
     if (rule(errors, "2025-04-08", IssueType.UNKNOWN, stack, sdt != null, I18nConstants.OPDEF_PROFILE_NOT_FOUND, use, url) &&
         rule(errors, "2025-04-08", IssueType.INVALID, stack, "Parameters".equals(sdt.getType()), I18nConstants.OPDEF_PROFILE_NOT_PARAMETERS, use, url)) {
       DefinitionNavigator profile = new DefinitionNavigator(context, sdt, false, true);

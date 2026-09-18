@@ -9,7 +9,7 @@ import org.hl7.fhir.model.core.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.model.core.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.model.core.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
-import org.hl7.fhir.services.elementmodel.ElementUtilities;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
 import org.hl7.fhir.services.terminology.CodingValidationRequest;
@@ -157,7 +157,7 @@ public class ConceptMapValidator extends BaseValidator {
         String code = property.getChildValue("code");
         String type = property.getChildValue("type");
         String system = property.getChildValue("system");
-        CodeSystem cs = system != null ? context.fetchCodeSystem(system, ElementUtilities.getVersionResolutionRules(property.getNamedChild("system"))) : null;
+        CodeSystem cs = system != null ? context.fetchCodeSystem(system, ElementModelUtilities.getVersionResolutionRules(property.getNamedChild("system"))) : null;
         ok = rule(errors, "2023-03-05", IssueType.REQUIRED, property.line(), property.col(), stack.push(property, ci, null, null).getLiteralPath(), 
             !"code".equals(type) || system != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_NO_SYSTEM) && ok;
         warning(errors, "2023-03-05", IssueType.REQUIRED, property.line(), property.col(), stack.push(property, ci, null, null).getLiteralPath(), 
@@ -243,7 +243,7 @@ public class ConceptMapValidator extends BaseValidator {
           if (ref.contains("|")) {
             res.url = ref.substring(0, ref.indexOf("|"));
             res.version = ref.substring(ref.indexOf("|")+1);
-            Resource r = context.fetchResource(Resource.class, res.url, ElementUtilities.getVersionResolutionRules(refCtxt), res.version, null);
+            Resource r = context.fetchResource(Resource.class, res.url, ElementModelUtilities.getVersionResolutionRules(refCtxt), res.version, null);
             if (r != null) {
               if (r instanceof ValueSet) {
                 res.vs = (ValueSet) r;
@@ -257,7 +257,7 @@ public class ConceptMapValidator extends BaseValidator {
             }
           } else {
             res.url = ref;
-            Resource r = context.fetchResource(Resource.class, res.url, ElementUtilities.getVersionResolutionRules(refCtxt));
+            Resource r = context.fetchResource(Resource.class, res.url, ElementModelUtilities.getVersionResolutionRules(refCtxt));
             if (r != null) {
               if (r instanceof ValueSet) {
                 res.vs = (ValueSet) r;
@@ -296,7 +296,7 @@ public class ConceptMapValidator extends BaseValidator {
       } else {
         warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), sourceScope != null, I18nConstants.CONCEPTMAP_GROUP_SOURCE_UNKNOWN, e.getValue());
       }
-      if (fetcher != null && ctxt.source.version == null && ctxt.source.cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(ctxt.source.url) && fetcher != null && ElementUtilities.getVersionResolutionRules(ctxt.source.src) != VersionResolutionRules.LATEST) {
+      if (fetcher != null && ctxt.source.version == null && ctxt.source.cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(ctxt.source.url) && fetcher != null && ElementModelUtilities.getVersionResolutionRules(ctxt.source.src) != VersionResolutionRules.LATEST) {
           Set<IValidatorResourceFetcher.ResourceVersionInformation> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), ctxt.source.url);
           warning(errors, NO_RULE_DATE, IssueType.INVALID, grp.line(), grp.col(), stack.getLiteralPath(), possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
               ctxt.source.url,  ctxt.source.cs.getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(IValidatorResourceFetcher.ResourceVersionInformation.toStrings(possibleVersions))));
@@ -316,7 +316,7 @@ public class ConceptMapValidator extends BaseValidator {
         warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), targetScope != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_UNKNOWN, e.getValue());                              
         
       }
-      if (fetcher != null && ctxt.target.version == null && ctxt.target.cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(ctxt.target.url) && ElementUtilities.getVersionResolutionRules(ctxt.target.src) != VersionResolutionRules.LATEST) {
+      if (fetcher != null && ctxt.target.version == null && ctxt.target.cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(ctxt.target.url) && ElementModelUtilities.getVersionResolutionRules(ctxt.target.src) != VersionResolutionRules.LATEST) {
         Set<IValidatorResourceFetcher.ResourceVersionInformation> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), ctxt.target.url);
         warning(errors, NO_RULE_DATE, IssueType.INVALID, grp.line(), grp.col(), stack.getLiteralPath(), possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
             ctxt.target.url,  ctxt.target.cs.getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(IValidatorResourceFetcher.ResourceVersionInformation.toStrings(possibleVersions))));
@@ -354,7 +354,7 @@ public class ConceptMapValidator extends BaseValidator {
         }
       }
     }
-    res.cs = context.fetchCodeSystem(res.url, ElementUtilities.getVersionResolutionRules(res.src), res.version, vs);
+    res.cs = context.fetchCodeSystem(res.url, ElementModelUtilities.getVersionResolutionRules(res.src), res.version, vs);
     return res;
   }
 

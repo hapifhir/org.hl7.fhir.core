@@ -895,4 +895,6 @@ public class ExtensionDefinitions {
   public static final String EXT_IGP_LOADVERSION = "http://hl7.org/fhir/StructureDefinition/igpublisher-loadversion";
   public static final String EXT_IGP_CONTAINED_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/contained-resource-information";
   public static final String EXT_LIST_PACKAGE = "http://hl7.org/fhir/StructureDefinition/list-packageId";
+  public static final String EXT_ED_HIERARCHY = "http://hl7.org/fhir/StructureDefinition/elementdefinition-hierarchy";
+
 }

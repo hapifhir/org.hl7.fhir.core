@@ -222,3 +222,7 @@ public Resource getContained(String ref) {
   }
 
 
+  public void setStandardsStatus(StandardsStatus status, String thisVersion) {
+    ExtensionUtilities.setStandardsStatus(this, status, null, thisVersion);
+  }
+

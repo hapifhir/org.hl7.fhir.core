@@ -7,8 +7,7 @@ import java.util.List;
 
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
-import org.hl7.fhir.model.extensions.ExtensionUtilities;
-import org.hl7.fhir.services.elementmodel.ElementUtilities;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.services.fhirpath.ExpressionNode.Kind;
@@ -64,7 +63,7 @@ public class SearchParameterValidator extends BaseValidator {
     }
     String master = cs.getNamedChildValue("derivedFrom", false);
     if (!Utilities.noString(master)) {
-      SearchParameter sp = context.fetchResource(SearchParameter.class, master, ElementUtilities.getVersionResolutionRules(cs.getNamedChild("derivedFrom")));
+      SearchParameter sp = context.fetchResource(SearchParameter.class, master, ElementModelUtilities.getVersionResolutionRules(cs.getNamedChild("derivedFrom")));
       if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE,stack.getLiteralPath(), sp != null, I18nConstants.SEARCHPARAMETER_NOTFOUND, master)) {
         // base must be in the master list of base
         List<Element> bl = cs.getChildren("base");

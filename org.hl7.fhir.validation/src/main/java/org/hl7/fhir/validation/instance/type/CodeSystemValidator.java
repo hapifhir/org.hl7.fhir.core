@@ -17,7 +17,7 @@ import org.hl7.fhir.model.core.CodeSystem.PropertyComponent;
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
-import org.hl7.fhir.services.elementmodel.ElementUtilities;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.terminology.CodingValidationRequest;
 import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.services.terminology.ValidationResult;
@@ -156,7 +156,7 @@ public class CodeSystemValidator extends BaseValidator {
       String vsu = cs.getNamedChildValue("valueSet", false);
       if (!Utilities.noString(vsu)) {
         if ("supplement".equals(content)) {
-          csB = context.fetchCodeSystem(supp, ElementUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
+          csB = context.fetchCodeSystem(supp, ElementModelUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
           if (csB != null) {
             if (csB.hasValueSet()) {
               warning(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), vsu.equals(csB.getValueSet()), I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT2, csB.getValueSet());            
@@ -171,7 +171,7 @@ public class CodeSystemValidator extends BaseValidator {
         }
         ValueSet vs;
         try {
-          vs = context.fetchResourceWithException(ValueSet.class, vsu, ElementUtilities.getVersionResolutionRules(cs.getNamedChild("valueSet")));
+          vs = context.fetchResourceWithException(ValueSet.class, vsu, ElementModelUtilities.getVersionResolutionRules(cs.getNamedChild("valueSet")));
         } catch (FHIRException e) {
           vs = null;
         }
@@ -203,7 +203,7 @@ public class CodeSystemValidator extends BaseValidator {
       if ("supplement".equals(content) || supp != null) {      
         if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), !Utilities.noString(supp), I18nConstants.CODESYSTEM_CS_SUPP_NO_SUPP)) {
           if (context.getTxSupportInfo(supp, null).isSupported()) {
-            csSupp = context.fetchCodeSystem(supp, ElementUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
+            csSupp = context.fetchCodeSystem(supp, ElementModelUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
             if (csSupp != null) {
               if (csSupp.hasHierarchyMeaningElement() && cs.hasChild("hierarchyMeaning")) {
                 String hm = cs.getNamedChildValue("hierarchyMeaning");
@@ -877,7 +877,7 @@ public class CodeSystemValidator extends BaseValidator {
           }
           break;
         case "supplement": 
-          CodeSystem css = context.fetchCodeSystem(supp, ElementUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
+          CodeSystem css = context.fetchCodeSystem(supp, ElementModelUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
           if (css != null) {
             rule(errors, "2023-08-15", IssueType.INVALID, nstack, count == css.getCount(), I18nConstants.CODESYSTEM_CS_COUNT_SUPPLEMENT_WRONG, css.getCount(), statedCount);
           }

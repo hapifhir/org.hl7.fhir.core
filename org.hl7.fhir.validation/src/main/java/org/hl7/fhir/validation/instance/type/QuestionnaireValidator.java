@@ -20,7 +20,7 @@ import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.services.elementmodel.ElementUtilities;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.elementmodel.Manager;
 import org.hl7.fhir.services.elementmodel.ObjectConverter;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
@@ -180,7 +180,7 @@ public class QuestionnaireValidator extends BaseValidator {
       Element e = list.get(i);
       NodeStack ns = stack.push(e, i, e.getProperty().getDefinition(), e.getProperty().getDefinition());
       String url = e.primitiveValue();
-      Questionnaire q = context.fetchResource(Questionnaire.class, url, ElementUtilities.getVersionResolutionRules(e));
+      Questionnaire q = context.fetchResource(Questionnaire.class, url, ElementModelUtilities.getVersionResolutionRules(e));
       if (warning(errors, "2023-06-15", IssueType.BUSINESSRULE, ns, q != null, I18nConstants.QUESTIONNAIRE_Q_UNKNOWN_DERIVATION, url)) {
         Element ext = e.getExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-derivationType");
         if (warning(errors, "2023-06-15", IssueType.BUSINESSRULE, ns, ext != null, I18nConstants.QUESTIONNAIRE_Q_NO_DERIVATION_TYPE, url)) {
@@ -254,7 +254,7 @@ public class QuestionnaireValidator extends BaseValidator {
     if ((VersionUtilities.isR4Plus(context.getFHIRVersion())) && (item.hasChildren("answerValueSet"))) {
       String url = item.getNamedChildValue("answerValueSet");
       if (url != null) {
-        ValueSet vs = context.findTxResource(ValueSet.class, url, ElementUtilities.getVersionResolutionRules(item.getNamedChild("answerValueSet")));
+        ValueSet vs = context.findTxResource(ValueSet.class, url, ElementModelUtilities.getVersionResolutionRules(item.getNamedChild("answerValueSet")));
         if (vs != null && vs.hasExtension(ExtensionDefinitions.EXT_VALUESET_PARAMETER)) {
           List<Element> list = item.getNamedChild("answerValueSet").getExtensions(ExtensionDefinitions.EXT_BINDING_PARAMETER);
           for (Extension ve : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VALUESET_PARAMETER)) {
@@ -546,7 +546,7 @@ public class QuestionnaireValidator extends BaseValidator {
       if (questionnaire.startsWith("#")) {
         qsrc = QuestionnaireWithContext.fromContainedResource(stack.getLiteralPath(), element, (Questionnaire) loadContainedResource(errors, stack.getLiteralPath(), element, questionnaire.substring(1), Questionnaire.class));        
       } else {
-        qsrc = QuestionnaireWithContext.fromQuestionnaire(context.fetchResource(Questionnaire.class, questionnaire, ElementUtilities.getVersionResolutionRules(qCtxt)));
+        qsrc = QuestionnaireWithContext.fromQuestionnaire(context.fetchResource(Questionnaire.class, questionnaire, ElementModelUtilities.getVersionResolutionRules(qCtxt)));
       }
       if (questionnaireMode == QuestionnaireMode.REQUIRED) {
         qok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);

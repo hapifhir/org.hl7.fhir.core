@@ -584,9 +584,9 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   public StandardsStatus getStandardsStatus() {
     return ExtensionUtilities.getStandardsStatus(this);
   }
-  
-  public void setStandardsStatus(StandardsStatus status) {
-    ExtensionUtilities.setStandardsStatus(this, status, null, null);
+
+  public void setStandardsStatus(StandardsStatus status, String thisVersion) {
+    ExtensionUtilities.setStandardsStatus(this, status, null, thisVersion);
   }
 
    public FhirPublication getFHIRPublicationVersion() {

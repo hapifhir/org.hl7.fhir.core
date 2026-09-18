@@ -4027,7 +4027,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                r = fetcher.fetchCanonicalResource(this, valContext.getAppContext(), url);
               }
               if (r == null) {
-                r = this.context.fetchResource(Resource.class, url, ElementUtilities.getVersionResolutionRules(urlCtxt));
+                r = this.context.fetchResource(Resource.class, url, ElementModelUtilities.getVersionResolutionRules(urlCtxt));
               }
               if (r == null) {
                 warningOrError(internal, errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, rp != ReferenceValidationPolicy.CHECK_VALID, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE_NC, url);                    
@@ -4040,7 +4040,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 if (!url.contains("|") && r instanceof CanonicalResource) {
 
                   if (!Utilities.existsInList(context.getBase().getPath(), "ImplementationGuide.dependsOn.uri", "ConceptMap.group.source", "ConceptMap.group.target") &&
-                    ElementUtilities.getVersionResolutionRules(e) != VersionResolutionRules.LATEST) {
+                    ElementModelUtilities.getVersionResolutionRules(e) != VersionResolutionRules.LATEST) {
                     // ImplementationGuide.dependsOn.version is mandatory, and ConceptMap is checked in the ConceptMap validator
                     Set<IValidatorResourceFetcher.ResourceVersionInformation> possibleVersions = fetcher.fetchCanonicalResourceVersions(this, valContext.getAppContext(), url);
                     warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
@@ -4065,7 +4065,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       boolean found = isDefinitionURL(url) || (settings.isAllowExamples() && isExampleUrl(url)) /* || (url.startsWith("http://hl7.org/fhir/tools")) */ || isCommunicationsUrl(url) ||
         SpecialExtensions.isKnownExtension(url) || isXverUrl(url) || SIDUtilities.isKnownSID(url) || isKnownNamespaceUri(url) || isRfcRef(url) || isKnownMappingUri(url) || oids.isKnownOID(url);
       if (!found) {
-        return fetcher.resolveURL(this, valContext, context.getBase().getPath(), url, ElementUtilities.getVersionResolutionRules(ctxt),
+        return fetcher.resolveURL(this, valContext, context.getBase().getPath(), url, ElementModelUtilities.getVersionResolutionRules(ctxt),
           type, type.equals("canonical"), context.getByType(type) != null ? context.getByType(type).getTargetProfileList() : null);
       } else {
         return true;
@@ -7461,7 +7461,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           String ref = searchParam.getChildValue("definition");
           String type = searchParam.getChildValue(TYPE);
           if (!Utilities.noString(ref)) {
-            SearchParameter sp = context.fetchResource(SearchParameter.class, ref, ElementUtilities.getVersionResolutionRules(searchParam.getNamedChild("definition")));
+            SearchParameter sp = context.fetchResource(SearchParameter.class, ref, ElementModelUtilities.getVersionResolutionRules(searchParam.getNamedChild("definition")));
             if (sp != null) {
               ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, searchParam.line(), searchParam.col(), stack.getLiteralPath() + ".rest[" + iRest + "].resource[" + iResource + "].searchParam[" + iSP + "]",
                 sp.getType().toCode().equals(type), I18nConstants.CAPABALITYSTATEMENT_CS_SP_WRONGTYPE, sp.getVersionedUrl(), sp.getType().toCode(), type) && ok;

@@ -294,3 +294,8 @@
     }
     return null;
   }
+
+
+  public void setStandardsStatus(StandardsStatus status, String thisVersion) {
+    ExtensionUtilities.setStandardsStatus(this, status, null, thisVersion);
+  }

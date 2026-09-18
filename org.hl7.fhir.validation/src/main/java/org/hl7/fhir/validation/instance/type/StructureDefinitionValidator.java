@@ -17,7 +17,7 @@ import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.services.elementmodel.ElementUtilities;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.Manager;
@@ -350,7 +350,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     String tgt = extension.getNamedChildValue("value", false);
     if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), tgt != null, 
         I18nConstants.SD_OBGLIGATION_INHERITS_PROFILE_NO_TARGET)) {
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, tgt, ElementUtilities.getVersionResolutionRules(extension.getNamedChild("value")));
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, tgt, ElementModelUtilities.getVersionResolutionRules(extension.getNamedChild("value")));
       if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), src != null, 
           I18nConstants.SD_OBGLIGATION_INHERITS_PROFILE_TARGET_NOT_FOUND, tgt))  {
         if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), ExtensionUtilities.readBoolExtension(sd, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD),
@@ -1479,7 +1479,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       Element valueSet = binding.getNamedChild("valueSet", false);
       String ref = valueSet.hasPrimitiveValue() ? valueSet.primitiveValue() : valueSet.getNamedChildValue("reference", false);
       if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || ref != null, I18nConstants.SD_ED_SHOULD_BIND_WITH_VS, path)) {
-        Resource vs = context.findTxResource(Resource.class, ref, ElementUtilities.getVersionResolutionRules(valueSet));
+        Resource vs = context.findTxResource(Resource.class, ref, ElementModelUtilities.getVersionResolutionRules(valueSet));
 
         // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
 
@@ -1528,7 +1528,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       Element valueSet = binding.getNamedChild("valueSet", false);
       String ref = valueSet.hasPrimitiveValue() ? valueSet.primitiveValue() : valueSet.getNamedChildValue("reference", false);
       if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || ref != null, I18nConstants.SD_ED_SHOULD_BIND_WITH_VS, path)) {
-        Resource vs = context.fetchResource(Resource.class, ref, ElementUtilities.getVersionResolutionRules(valueSet));
+        Resource vs = context.fetchResource(Resource.class, ref, ElementModelUtilities.getVersionResolutionRules(valueSet));
 
         // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
 
@@ -1562,7 +1562,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       Element vv = valueSet.getNamedChild("value");
       String ref = vv.hasPrimitiveValue() ? vv.primitiveValue() : vv.getNamedChildValue("reference", false);
       if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || ref != null, I18nConstants.SD_ED_SHOULD_BIND_WITH_VS, path)) {
-        Resource vs = context.fetchResource(Resource.class, ref, ElementUtilities.getVersionResolutionRules(vv));
+        Resource vs = context.fetchResource(Resource.class, ref, ElementModelUtilities.getVersionResolutionRules(vv));
 
         // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
 
@@ -1666,7 +1666,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   private boolean validateProfileTypeOrTarget(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path) {
     boolean ok = true;
     String p = profile.primitiveValue();
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, p, ElementUtilities.getVersionResolutionRules(profile));
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, p, ElementModelUtilities.getVersionResolutionRules(profile));
     BooleanHolder errored = new BooleanHolder();
     if (code.equals("Reference")) {
       if (warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
@@ -1733,7 +1733,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   private boolean validateTypeProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path, StructureDefinition source) {
     boolean ok = true;
     String p = profile.primitiveValue();
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, p, ElementUtilities.getVersionResolutionRules(profile));
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, p, ElementModelUtilities.getVersionResolutionRules(profile));
     BooleanHolder errored = new BooleanHolder();
     if (sd == null ) {
       sd = getXverExt(errors, stack.getLiteralPath(), profile, p, errored);
@@ -1769,7 +1769,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   private boolean validateTargetProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path, boolean logical) {
     boolean ok = true;
     String p = profile.primitiveValue();
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, p, ElementUtilities.getVersionResolutionRules(profile));
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, p, ElementModelUtilities.getVersionResolutionRules(profile));
     if (code.equals("Reference") || code.equals("CodeableReference")) {
       if (warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
         StructureDefinition t = determineBaseType(sd);

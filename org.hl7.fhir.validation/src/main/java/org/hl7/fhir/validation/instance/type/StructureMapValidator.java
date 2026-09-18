@@ -9,7 +9,7 @@ import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.services.context.ContextUtilities;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
-import org.hl7.fhir.services.elementmodel.ElementUtilities;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.services.fhirpath.TypeDetails;
 import org.hl7.fhir.model.core.Coding;
@@ -397,7 +397,7 @@ public class StructureMapValidator extends BaseValidator {
   private boolean validateImport(List<ValidationMessage> errors, Element src, Element import_, NodeStack stack) {
     String url = import_.primitiveValue();
     boolean ok = false;
-    StructureMap map = context.fetchResource(StructureMap.class, url, ElementUtilities.getVersionResolutionRules(import_));
+    StructureMap map = context.fetchResource(StructureMap.class, url, ElementModelUtilities.getVersionResolutionRules(import_));
     if (map != null) {
       imports.add(map);
       ok = true;
@@ -524,7 +524,7 @@ public class StructureMapValidator extends BaseValidator {
           if (structure != null) {
             smode = structure.getChildValue("mode");
             String url = structure.getChildValue("url");
-            sd = context.fetchResource(StructureDefinition.class, url, ElementUtilities.getVersionResolutionRules(structure.getNamedChild("url")));
+            sd = context.fetchResource(StructureDefinition.class, url, ElementModelUtilities.getVersionResolutionRules(structure.getNamedChild("url")));
             if (sd == null) {
               try {
                 sd = (StructureDefinition) fetcher.fetchCanonicalResource((IResourceValidator) parent, valContext.getAppContext(), url);
@@ -937,7 +937,7 @@ public class StructureMapValidator extends BaseValidator {
                     ok = rule(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), srcE != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, ref) && ok;                          
                   } else {
                     // todo: look in Bundle?
-                    cm = this.context.fetchResource(ConceptMap.class, ref, ElementUtilities.getVersionResolutionRules(mapE));
+                    cm = this.context.fetchResource(ConceptMap.class, ref, ElementModelUtilities.getVersionResolutionRules(mapE));
                     warning(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), srcE != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, ref);                          
                   }
                   if (cm != null && (v != null && v.hasTypeInfo() || (sv != null && sv.hasTypeInfo()))) {
