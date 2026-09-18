@@ -297,6 +297,10 @@ public class Money extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Money) dst);
+      }
+
       public void copyValues(Money dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

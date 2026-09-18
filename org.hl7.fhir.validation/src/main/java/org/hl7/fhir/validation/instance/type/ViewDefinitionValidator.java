@@ -6,19 +6,20 @@ import java.util.List;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.fhirpath.ExpressionNode;
-import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
-import org.hl7.fhir.r5.fhirpath.TypeDetails;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.validation.ValidatorSession;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.fhirpath.ExpressionNode;
+import org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine.IssueMessage;
+import org.hl7.fhir.services.fhirpath.TypeDetails;
 import org.hl7.fhir.utilities.UserDataNames;
-import org.hl7.fhir.r5.utils.sql.Column;
-import org.hl7.fhir.r5.utils.sql.ColumnKind;
-import org.hl7.fhir.r5.utils.sql.Runner;
-import org.hl7.fhir.r5.utils.validation.ValidatorSession;
+import org.hl7.fhir.services.sql.Column;
+import org.hl7.fhir.services.sql.ColumnKind;
+import org.hl7.fhir.services.sql.Runner;
+
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -66,7 +67,7 @@ public class ViewDefinitionValidator extends BaseValidator {
     if (vd.hasChildren("fhirVersion")) {
       for (Element v : vd.getChildren("fhirVersion")) {
         String ver = v.primitiveValue();
-        if (ver.equals(context.getVersion())) {
+        if (ver.equals(context.getFHIRVersion())) {
           makeDefaultContext(versions);
         } else {
           try {
@@ -82,7 +83,7 @@ public class ViewDefinitionValidator extends BaseValidator {
 
     boolean first = true;
     for (VersionEvaluationContext vec : versions) {
-      String vdesc = versions.size() == 1 ? "" : " for version "+VersionUtilities.getNameForVersion(vec.context.getVersion());
+      String vdesc = versions.size() == 1 ? "" : " for version "+VersionUtilities.getNameForVersion(vec.context.getFHIRVersion());
 
       String resourceName = vd.getNamedChildValue("resource");
       if (resourceName != null) {
@@ -121,19 +122,19 @@ public class ViewDefinitionValidator extends BaseValidator {
     } else {
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(ver));
-      SimpleWorkerContext context = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm);
+      SimpleWorkerContext context = new SimpleWorkerContext.SimpleWorkerContextBuilder(this.context.getModelContext()).withAllowLoadingDuplicates(true).fromPackage(npm);
       var vec = new VersionEvaluationContext(context);
-      session.getObjects().put(ValidatorSession.VIEW_DEFINITION_CONTEXT+"."+context.getVersion(), vec);
+      session.getObjects().put(ValidatorSession.VIEW_DEFINITION_CONTEXT+"."+context.getFHIRVersion(), vec);
       versions.add(vec);
     }
   }
 
   private void makeDefaultContext(List<VersionEvaluationContext> versions) {
-    if (session.getObjects().containsKey(ValidatorSession.VIEW_DEFINITION_CONTEXT+"."+context.getVersion())) {
-      versions.add((VersionEvaluationContext) session.getObjects().get(ValidatorSession.VIEW_DEFINITION_CONTEXT+"."+context.getVersion()));
+    if (session.getObjects().containsKey(ValidatorSession.VIEW_DEFINITION_CONTEXT+"."+context.getFHIRVersion())) {
+      versions.add((VersionEvaluationContext) session.getObjects().get(ValidatorSession.VIEW_DEFINITION_CONTEXT+"."+context.getFHIRVersion()));
     } else {
       var vec = new VersionEvaluationContext(context);
-      session.getObjects().put(ValidatorSession.VIEW_DEFINITION_CONTEXT+"."+context.getVersion(), vec);
+      session.getObjects().put(ValidatorSession.VIEW_DEFINITION_CONTEXT+"."+context.getFHIRVersion(), vec);
       versions.add(vec);
     }
   }

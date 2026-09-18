@@ -105,8 +105,8 @@ public interface IWorkerContextManager {
    * @param isMaster - marks that the package being loaded is the very first package loaded, the master definitions
    * @return the number of resources loaded
    */
-  int loadFromPackage(NpmPackage npmPackage, IContextResourceLoader loader, boolean isMaster) throws  IOException, FHIRException;
-  default int loadFromPackage(NpmPackage npmPackage, IContextResourceLoader loader) throws IOException, FHIRException {
+  int loadFromPackage(NpmPackage npmPackage, IContextResourceLoaderN loader, boolean isMaster) throws  IOException, FHIRException;
+  default int loadFromPackage(NpmPackage npmPackage, IContextResourceLoaderN loader) throws IOException, FHIRException {
     return loadFromPackage(npmPackage, loader, false);
   }
 
@@ -151,7 +151,7 @@ public interface IWorkerContextManager {
    * @param pcm - used to find and load additional dependencies
    * @return the number of resources loaded
    */
-  int loadFromPackageAndDependencies(NpmPackage npmPackage, IContextResourceLoader loader, BasePackageCacheManager pcm) throws IOException, FHIRException;
+  int loadFromPackageAndDependencies(NpmPackage npmPackage, IContextResourceLoaderN loader, BasePackageCacheManager pcm) throws IOException, FHIRException;
 
   List<String> getLoadedPackages();
 

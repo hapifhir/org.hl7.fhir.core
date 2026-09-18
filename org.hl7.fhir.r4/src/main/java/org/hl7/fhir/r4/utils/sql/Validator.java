@@ -66,6 +66,8 @@ public class Validator {
     TRUE, FALSE, UNKNOWN
   }
 
+  @SuppressWarnings("checkstyle:patternUsage")
+  //fixed anchored pattern from the spec's sql-name invariant, no input of any kind, compiled once
   private static final Pattern SQL_NAME = Pattern.compile("^[A-Za-z][A-Za-z0-9_]*$");
   private static final String STRUCTURE_DEFINITION_NS = "http://hl7.org/fhir/StructureDefinition/";
   private static final String FHIRPATH_SYSTEM_NS = "http://hl7.org/fhirpath/System.";
@@ -802,6 +804,8 @@ public class Validator {
   }
 
   /** The spec's sql-name invariant: {@code ^[A-Za-z][A-Za-z0-9_]*$}. */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //Matcher.matches() on the precompiled SQL_NAME - nothing is compiled per call
   private boolean isValidName(String name) {
     return SQL_NAME.matcher(name).matches();
   }

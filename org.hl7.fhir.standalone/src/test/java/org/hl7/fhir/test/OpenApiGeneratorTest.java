@@ -44,7 +44,7 @@ class OpenApiGeneratorTest {
   }
 
   public void run(InputStream sfn, String dfn) throws IOException, FHIRFormatError {
-    CapabilityStatement cs = (CapabilityStatement) new JsonParser(TestingUtilities.getSharedWorkerContext()).parse(sfn);
+    CapabilityStatement cs = (CapabilityStatement) new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(sfn);
     Writer oa = new Writer(ManagedFileAccess.outStream(dfn));
     OpenApiGenerator gen = new OpenApiGenerator(TestingUtilities.getSharedWorkerContext(), cs, oa);
     gen.generate("test-lic", "http://spdx.org/licenses/test-lic.html");

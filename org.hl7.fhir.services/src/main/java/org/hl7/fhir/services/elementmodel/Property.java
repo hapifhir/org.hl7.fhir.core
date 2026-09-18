@@ -729,7 +729,7 @@ public class Property {
   public Property cloneToType(StructureDefinition sd) {
     Property res = new Property(context, definition.copy(Base64BinaryType.COPY_DATA), sd);
     res.definition.getTypeList().clear();
-    res.definition.getTypeList().add(new TypeRefComponent(context, sd.getUrl()));
+    res.definition.getTypeList().add(new TypeRefComponent(context.getModelContext(), sd.getUrl()));
     return res;
   }
 

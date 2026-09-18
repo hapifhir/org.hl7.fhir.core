@@ -313,6 +313,10 @@ public class PARTICIPATION extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((PARTICIPATION) dst);
+      }
+
       public void copyValues(PARTICIPATION dst) {
         super.copyValues(dst);
         dst.function = function == null ? null : function.copy();

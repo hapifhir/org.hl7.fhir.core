@@ -451,6 +451,10 @@ Reflex | Repeat | Re-run.
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ObservationTriggeredByComponent) dst);
+      }
+
       public void copyValues(ObservationTriggeredByComponent dst) {
         super.copyValues(dst);
         dst.observation = observation == null ? null : observation.copy();
@@ -954,6 +958,10 @@ Reflex | Repeat | Re-run.
         ObservationReferenceRangeComponent dst = new ObservationReferenceRangeComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ObservationReferenceRangeComponent) dst);
       }
 
       public void copyValues(ObservationReferenceRangeComponent dst) {
@@ -1641,6 +1649,10 @@ Reflex | Repeat | Re-run.
         ObservationComponentComponent dst = new ObservationComponentComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ObservationComponentComponent) dst);
       }
 
       public void copyValues(ObservationComponentComponent dst) {
@@ -3837,6 +3849,10 @@ Reflex | Repeat | Re-run.
         Observation dst = new Observation();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Observation) dst);
       }
 
       public void copyValues(Observation dst) {

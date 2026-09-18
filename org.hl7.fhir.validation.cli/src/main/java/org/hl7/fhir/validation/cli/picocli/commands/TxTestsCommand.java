@@ -1,7 +1,8 @@
 package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
@@ -113,7 +114,7 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
       // and tests' version gates are FHIR version gates, and TxTester evaluates them against
       // the version the server under test reports.
       TxTester txTester = new TxTester(
-        new TxTester.InternalTxLoader(version),
+        new TxTester.InternalTxLoader(ModelContext.fullCoreContext(), version),
         tx,
         false,
         externalsJson,
@@ -144,7 +145,7 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
       boolean ok = txTester.setOutput(outputDir).execute(modeSet, filter, suite);
 
       // Write report
-      new org.hl7.fhir.r5.formats.JsonParser()
+      new org.hl7.fhir.model.core.formats.JsonParser(ModelContext.fullCoreContext())
         .setOutputStyle(OutputStyle.PRETTY)
         .compose(
           new FileOutputStream(Utilities.path(outputDir, "report.json")),

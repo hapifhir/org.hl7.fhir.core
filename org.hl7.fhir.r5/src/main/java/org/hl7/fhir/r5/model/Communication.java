@@ -244,6 +244,10 @@ public class Communication extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((CommunicationPayloadComponent) dst);
+      }
+
       public void copyValues(CommunicationPayloadComponent dst) {
         super.copyValues(dst);
         dst.content = content == null ? null : content.copy();
@@ -1889,6 +1893,10 @@ public class Communication extends DomainResource {
         Communication dst = new Communication();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Communication) dst);
       }
 
       public void copyValues(Communication dst) {

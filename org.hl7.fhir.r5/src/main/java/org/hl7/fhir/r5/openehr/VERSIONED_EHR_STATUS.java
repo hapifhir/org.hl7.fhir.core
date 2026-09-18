@@ -69,6 +69,10 @@ public class VERSIONED_EHR_STATUS extends VERSIONED_OBJECT implements IComposite
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((VERSIONED_EHR_STATUS) dst);
+      }
+
       public void copyValues(VERSIONED_EHR_STATUS dst) {
         super.copyValues(dst);
       }

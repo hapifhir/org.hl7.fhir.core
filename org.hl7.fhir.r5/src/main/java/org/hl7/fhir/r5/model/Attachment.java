@@ -1058,6 +1058,10 @@ public class Attachment extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Attachment) dst);
+      }
+
       public void copyValues(Attachment dst) {
         super.copyValues(dst);
         dst.contentType = contentType == null ? null : contentType.copy();

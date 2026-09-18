@@ -5,17 +5,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.validation.IMessagingServices;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
-import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
-import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.ValueSet;
+import org.hl7.fhir.services.validation.IMessagingServices;
+import org.hl7.fhir.services.validation.IResourceValidator;
+import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.services.validation.constants.BindingKind;
+import org.hl7.fhir.services.validation.constants.ContainedReferenceValidationPolicy;
+import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 public class DisabledValidationPolicyAdvisor implements IValidationPolicyAdvisor {
@@ -39,8 +39,8 @@ public class DisabledValidationPolicyAdvisor implements IValidationPolicyAdvisor
 
   @Override
   public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator, Object appContext,
-      StructureDefinition structure, ElementDefinition element, String containerType, String containerId,
-      SpecialElement containingResourceType, String path, String url) {
+                                                               StructureDefinition structure, ElementDefinition element, String containerType, String containerId,
+                                                               SpecialElement containingResourceType, String path, String url) {
     return policyAdvisor.policyForContained(validator, appContext, structure, element, containerType, containerId, containingResourceType, path, url);
   }
 
@@ -65,8 +65,8 @@ public class DisabledValidationPolicyAdvisor implements IValidationPolicyAdvisor
 
   @Override
   public List<StructureDefinition> getImpliedProfilesForResource(IResourceValidator validator, Object appContext,
-      String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
-      IMessagingServices msgServices, List<ValidationMessage> messages) {
+                                                                 String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
+                                                                 IMessagingServices msgServices, List<ValidationMessage> messages) {
     return policyAdvisor.getImpliedProfilesForResource(validator, appContext, stackPath, definition, structure, resource, valid, msgServices, messages);
   }
 

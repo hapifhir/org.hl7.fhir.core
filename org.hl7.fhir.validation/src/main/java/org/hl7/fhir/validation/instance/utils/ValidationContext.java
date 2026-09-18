@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 public class ValidationContext {

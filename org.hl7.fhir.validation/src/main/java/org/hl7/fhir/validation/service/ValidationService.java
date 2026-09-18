@@ -23,34 +23,37 @@ import javax.annotation.Nonnull;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.context.Slf4JLoggingService;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.elementmodel.LanguageUtils;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.elementmodel.ValidatedFragment;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.formats.IParser;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.liquid.BaseTableWrapper;
-import org.hl7.fhir.r5.liquid.GlobalObject.GlobalObjectRandomFunction;
-import org.hl7.fhir.r5.liquid.LiquidEngine;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator;
-import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
-import org.hl7.fhir.r5.renderers.RendererFactory;
-import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
-import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
-import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
-import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.InternalLogEvent;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
-import org.hl7.fhir.r5.testfactory.TestDataFactory;
-import org.hl7.fhir.r5.testfactory.TestDataHostServices;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.fml.StructureMap;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.services.context.ContextUtilities;
+
+import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.LanguageUtils;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.services.elementmodel.ValidatedFragment;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.model.utilities.formats.IParser;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.liquid.BaseTableWrapper;
+import org.hl7.fhir.services.liquid.GlobalObject.GlobalObjectRandomFunction;
+import org.hl7.fhir.services.liquid.LiquidEngine;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.services.profilemodel.gen.PECodeGenerator;
+import org.hl7.fhir.services.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
+import org.hl7.fhir.services.renderers.RendererFactory;
+import org.hl7.fhir.services.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
+import org.hl7.fhir.services.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
+import org.hl7.fhir.services.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
+import org.hl7.fhir.services.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
+import org.hl7.fhir.standalone.terminology.client.TerminologyClientManager.InternalLogEvent;
+import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
+import org.hl7.fhir.services.testfactory.TestDataFactory;
+import org.hl7.fhir.services.testfactory.TestDataHostServices;
 import org.hl7.fhir.r5.Constants;
-import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -66,6 +69,7 @@ import org.hl7.fhir.utilities.i18n.PoGetTextProducer;
 import org.hl7.fhir.utilities.i18n.XLIFFProducer;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.logging.Slf4JLoggingService;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -202,7 +206,7 @@ public class ValidationService {
 
     for (FileInfo fileToValidate : request.getFilesToValidate()) {
       if (fileToValidate.getFileType() == null) {
-        Manager.FhirFormat format = ResourceChecker.checkIsResource(validationEngine.getContext(),
+        FhirFormat format = ResourceChecker.checkIsResource(validationEngine.getContext(),
           fileToValidate.getFileContent().getBytes(),
           fileToValidate.getFileName(),
           false);
@@ -218,7 +222,7 @@ public class ValidationService {
             new FileInfo(fileToValidate.getFileName(), fileToValidate.getFileContent(), null));
           response.addOutcome(outcome);
       } else {
-        ValidatedFragments validatedFragments = validationEngine.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
+        ValidatedFragments validatedFragments = validationEngine.validateAsFragments(fileToValidate.getFileContent().getBytes(), FhirFormat.getFhirFormat(fileToValidate.getFileType()),
           instanceValidatorParameters, messages);
 
         List<ValidationOutcome> validationOutcomes = getValidationOutcomesFromValidatedFragments(fileToValidate, validatedFragments);
@@ -286,7 +290,7 @@ public class ValidationService {
    VersionSourceInformation versions = new VersionSourceInformation();
     IgLoader igLoader = new IgLoader(
       new FilesystemPackageCacheManager.Builder().build(),
-      new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing(),
+      new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).fromNothing(),
       null);
 
     for (String src : igs) {
@@ -493,14 +497,14 @@ public class ValidationService {
         }
       }
       validationEngine.setMapLog(transformParameters.mapLog());
-      org.hl7.fhir.r5.elementmodel.Element r = validationEngine.transform(transformParameters.sources().get(0), transformParameters.map());
+      org.hl7.fhir.services.elementmodel.Element r = validationEngine.transform(transformParameters.sources().get(0), transformParameters.map());
       log.info(" ...success");
       if (transformParameters.output() != null) {
         FileOutputStream s = ManagedFileAccess.outStream(transformParameters.output());
         if (transformParameters.output() != null && transformParameters.output().endsWith(".json"))
-          new org.hl7.fhir.r5.elementmodel.JsonParser(validationEngine.getContext()).compose(r, s, IParser.OutputStyle.PRETTY, null);
+          new org.hl7.fhir.services.elementmodel.JsonParser(validationEngine.getContext()).compose(r, s, OutputStyle.PRETTY, null);
         else
-          new org.hl7.fhir.r5.elementmodel.XmlParser(validationEngine.getContext()).compose(r, s, IParser.OutputStyle.PRETTY, null);
+          new org.hl7.fhir.services.elementmodel.XmlParser(validationEngine.getContext()).compose(r, s, OutputStyle.PRETTY, null);
         s.close();
       }
     } catch (Exception e) {
@@ -568,7 +572,7 @@ public class ValidationService {
       if (transformVersionParameters.mapLog() != null) {
         validationEngine.setMapLog(transformVersionParameters.mapLog());
       }
-      byte[] r = validationEngine.transformVersion(transformVersionParameters.sources().get(0), transformVersionParameters.targetVer(), transformVersionParameters.output().endsWith(".json") ? Manager.FhirFormat.JSON : Manager.FhirFormat.XML, transformVersionParameters.canDoNative());
+      byte[] r = validationEngine.transformVersion(transformVersionParameters.sources().get(0), transformVersionParameters.targetVer(), transformVersionParameters.output().endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML, transformVersionParameters.canDoNative());
       log.info(" ...success");
       FileUtilities.bytesToFile(r, transformVersionParameters.output());
     } catch (Exception e) {
@@ -670,7 +674,7 @@ public class ValidationService {
     validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
     loadIgsAndExtensions(validationEngine, validationEngineParameters.getIgs(), validationEngineParameters.isRecursive());
     if (validationEngineParameters.getTxCache() != null) {
-      TerminologyCache cache = new TerminologyCache(new Object(), validationEngineParameters.getTxCache());
+      TerminologyCache cache = new TerminologyCache(new Object(), validationEngineParameters.getTxCache(), validationEngine.getContext());
       validationEngine.getContext().initTxCache(cache);
     }
     if (validationEngine.getContext().getTxCache() == null || validationEngine.getContext().getTxCache().getFolder() == null) {
@@ -734,7 +738,7 @@ public class ValidationService {
   protected void loadIgsAndExtensions(ValidationEngine validationEngine, List<String> igs, boolean isRecursive) throws IOException, URISyntaxException {
     IgLoader igLoader = new IgLoader(validationEngine.getPcm(), validationEngine.getContext(), validationEngine.getVersion(), validationEngine.isDebug());
     igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.terminology", false);
-    if (!VersionUtilities.isR5Ver(validationEngine.getContext().getVersion())) {
+    if (!VersionUtilities.isR5Ver(validationEngine.getContext().getFHIRVersion())) {
       igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.fhir.uv.extensions", false);
     }
 
@@ -1054,7 +1058,7 @@ public class ValidationService {
       TestDataHostServices hs = new TestDataHostServices(validationEngine.getContext(),
         new DateTimeType(new Date()),
         new DateType(new Date()),
-        new StringType(VersionUtilities.getSpecUrl(validationEngine.getContext().getVersion())));
+        new StringType(VersionUtilities.getSpecUrl(validationEngine.getContext().getFHIRVersion())));
       hs.registerFunction(new GlobalObjectRandomFunction());
       hs.registerFunction(new BaseTableWrapper.TableColumnFunction());
       hs.registerFunction(new BaseTableWrapper.TableDateColumnFunction());

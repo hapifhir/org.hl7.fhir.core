@@ -131,3 +131,13 @@
     }
     return java.util.Collections.unmodifiableList(retVal);
   }
+
+
+  public Base getExtensionValue(String... theUrls) {
+    for (Extension next : getModifierExtensionsForRead()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        return next.getValue();
+      }
+    }
+    return super.getExtensionValue(theUrls);
+  }

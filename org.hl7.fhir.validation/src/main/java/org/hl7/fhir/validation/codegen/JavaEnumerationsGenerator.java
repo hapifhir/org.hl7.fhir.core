@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.model.core.ValueSet;
+import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -120,9 +120,9 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     CommaSeparatedStringBuilder el = new CommaSeparatedStringBuilder();
 
 		write("    public enum "+name+" {\r\n");
-		int l = vs.getExpansion().getContains().size();
+		int l = vs.getExpansion().getContainsList().size();
 		int i = 0;
-		for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
+		for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContainsList()) {
 				i++;
 				String cc = Utilities.camelCase(c.getCode());
 	      cc = makeConst(cc);
@@ -143,7 +143,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 		write("        public static "+name+" fromCode(String codeString) throws FHIRException {\r\n");
 		write("            if (codeString == null || \"\".equals(codeString))\r\n");
 		write("                return null;\r\n");
-    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
+    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContainsList()) {
 				String cc = Utilities.camelCase(c.getCode());
 				cc = makeConst(cc);
 				write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
@@ -156,7 +156,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     write("            if (codeString == null || \"\".equals(codeString))\r\n");
     write("                return false;\r\n");
     write("          return Utilities.existsInList(codeString");
-    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
+    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContainsList()) {
         write(", \""+escapeJavaString(c.getCode())+"\"");
     }
     write(");\r\n");
@@ -164,7 +164,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 
 		write("        public String toCode() {\r\n");
 		write("          switch (this) {\r\n");
-    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
+    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContainsList()) {
 				String cc = Utilities.camelCase(c.getCode());
 	      cc = makeConst(cc);
         write("            case "+cc+": return \""+escapeJavaString(c.getCode())+"\";\r\n");
@@ -176,7 +176,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 
     write("        public String getSystem() {\r\n");
     write("          switch (this) {\r\n");
-    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
+    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContainsList()) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
       write("            case "+cc+": return \""+escapeJavaString(c.getSystem())+"\";\r\n");
@@ -188,7 +188,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 
     write("        public String getDefinition() {\r\n");
     write("          switch (this) {\r\n");
-    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
+    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContainsList()) {
 	      String cc = Utilities.camelCase(c.getCode());
 	      cc = makeConst(cc);
 	      write("            case "+cc+": return \""+escapeJavaString(definitions.getCodeDefinition(c.getSystem(), c.getCode()))+"\";\r\n");
@@ -200,7 +200,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 
     write("        public String getDisplay() {\r\n");
     write("          switch (this) {\r\n");
-    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
+    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContainsList()) {
 	      String cc = Utilities.camelCase(c.getCode());
 	      cc = makeConst(cc);
 	      write("            case "+cc+": return \""+escapeJavaString(Utilities.noString(c.getDisplay()) ? c.getCode() : c.getDisplay())+"\";\r\n");
@@ -226,7 +226,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 		write("      if (codeString == null || \"\".equals(codeString))\r\n");
     write("            if (codeString == null || \"\".equals(codeString))\r\n");
     write("                return null;\r\n");
-    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
+    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContainsList()) {
 	      String cc = Utilities.camelCase(c.getCode());
 	      cc = makeConst(cc);
 	      write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
@@ -243,7 +243,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     write("          String codeString = ((PrimitiveType) code).asStringValue();\r\n");
     write("          if (codeString == null || \"\".equals(codeString))\r\n");
     write("            return new Enumeration<"+name+">(this, "+name+".NULL, code);\r\n");
-    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
+    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContainsList()) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
       write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
@@ -252,7 +252,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     write("        throw new FHIRException(\"Unknown "+escapeJavaString(name)+" code '\"+codeString+\"'\");\r\n");
     write("        }\r\n"); 
     write("    public String toCode("+name+" code) {\r\n");
-    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
+    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContainsList()) {
 	      String cc = Utilities.camelCase(c.getCode());
 	      cc = makeConst(cc);
 	      write("      if (code == "+name+"."+cc+")\r\n        return \""+escapeJavaString(c.getCode())+"\";\r\n");

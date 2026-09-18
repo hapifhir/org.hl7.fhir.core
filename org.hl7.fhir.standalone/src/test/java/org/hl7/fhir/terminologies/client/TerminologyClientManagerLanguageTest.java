@@ -1,12 +1,11 @@
 package org.hl7.fhir.terminologies.client;
 
 import org.hl7.fhir.model.IModelContext;
-import org.hl7.fhir.services.context.ILoggingService;
+import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.model.core.CapabilityStatement;
 import org.hl7.fhir.model.core.Parameters;
 import org.hl7.fhir.model.core.TerminologyCapabilities;
-import org.hl7.fhir.services.terminology.ITerminologyClient;
-import org.hl7.fhir.services.terminology.ITerminologyClientFactory;
+import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientManager;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
@@ -15,6 +14,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -64,8 +64,8 @@ public class TerminologyClientManagerLanguageTest {
   private static class TestManager extends TerminologyClientManager {
     List<String> requests = new ArrayList<>();
 
-    TestManager(ITerminologyClientFactory factory, ILoggingService logger) {
-      super(TestingUtilities.getSharedWorkerContext(), factory, logger);
+    TestManager(ITerminologyClientFactoryN factory, ILoggingService logger) {
+      super(TestingUtilities.getSharedWorkerContext().getModelContext(), factory, logger);
     }
 
     @Override
@@ -87,9 +87,9 @@ public class TerminologyClientManagerLanguageTest {
     }
   }
 
-  private static ITerminologyClient makeFakeClient(final String address) {
-    return (ITerminologyClient) Proxy.newProxyInstance(TerminologyClientManagerLanguageTest.class.getClassLoader(),
-        new Class<?>[] { ITerminologyClient.class }, (proxy, method, args) -> {
+  private static ITerminologyClientN makeFakeClient(final String address) {
+    return (ITerminologyClientN) Proxy.newProxyInstance(TerminologyClientManagerLanguageTest.class.getClassLoader(),
+        new Class<?>[] { ITerminologyClientN.class }, (proxy, method, args) -> {
       switch (method.getName()) {
       case "getAddress": return address;
       case "getUserAgent": return "fhir-core-tests";
@@ -109,9 +109,9 @@ public class TerminologyClientManagerLanguageTest {
     });
   }
 
-  private static class TestFactory implements ITerminologyClientFactory {
+  private static class TestFactory implements ITerminologyClientFactoryN {
     @Override
-    public ITerminologyClient makeClient(IModelContext context, String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException {
+    public ITerminologyClientN makeClientN(IModelContext context, String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException {
       return makeFakeClient(url);
     }
     @Override

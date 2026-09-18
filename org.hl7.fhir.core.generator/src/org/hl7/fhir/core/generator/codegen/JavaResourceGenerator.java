@@ -253,28 +253,6 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		  write("    return \""+escapeJavaString(analysis.getName())+"\";\r\n");
 		  write("   }\r\n");
 		  write("\r\n"); 
-		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(superName)) {
-      write("\r\n"); 
-      write("  @Override\r\n"); 
-      write("  public String getIdBase() {\r\n"); 
-      write("    return getId();\r\n"); 
-      write("  }\r\n"); 
-      write("  \r\n");
-      write("  @Override\r\n");
-      write("  public void setIdBase(String value) {\r\n");
-      write("    setId(value);\r\n");
-      write("  }\r\n");
-		  write("  public abstract String getResourceType();\r\n");
-		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(superName)) {
-      write("  @Override\r\n"); 
-      write("  public String getIdBase() {\r\n"); 
-      write("    return getId();\r\n"); 
-      write("  }\r\n"); 
-      write("  \r\n");
-      write("  @Override\r\n");
-      write("  public void setIdBase(String value) {\r\n");
-      write("    setId(value);\r\n");
-      write("  }\r\n");
 		}		
 
 		// Write resource fields which can be used as constants in client code
@@ -1266,7 +1244,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		  return;
 		}
     if (vse == null) {
-      return;
+      // the analyser has already typed the element(s) as Enumeration<tns>, so skipping the enum
+      // just produces code that doesn't compile. Fail here instead, where the cause is visible
+      throw new Error("No expansion available for "+vs.getVersionedUrl()+", so the enum "+tns+" can't be generated (is it missing from the expansions package?)");
     }
     ValueSetUtilities.checkExpansionIsFlat(vse);
     
@@ -1550,6 +1530,18 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     write("      }\r\n\r\n");  
   }
   
+  /**
+   * copyValues is declared with a different argument type at every level of the hierarchy
+   * (Base -> DataType -> HumanName), so a call made through a Base reference binds statically to
+   * Base.copyValues and never reaches the leaf. assignValues has the same signature all the way down, so
+   * it dispatches virtually, and each override casts to its own type to select the right copyValues
+   */
+  private void generateAssignValues(String tn) throws Exception {
+    write("      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {\r\n");
+    write("        copyValues(("+tn+") dst, options);\r\n");
+    write("      }\r\n\r\n");
+  }
+
 	private void generateCopy(Analysis analysis, TypeInfo ti, boolean owner) throws Exception {
 	  List<ElementDefinition> children = ti.getChildren();
 	  String tn = ti.getName();
@@ -1559,6 +1551,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 	  
 	  if (isAbstract) {
       write("      public abstract "+tn+" copy(EnumSet<CopyObjectOptions> options);\r\n\r\n");
+      generateAssignValues(tn);
       write("      public void copyValues("+tn+" dst, EnumSet<CopyObjectOptions> options) {\r\n");
       write("        super.copyValues(dst, options);\r\n");
 	  } else {
@@ -1567,6 +1560,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       write("        copyValues(dst, options);\r\n");
       write("        return dst;\r\n");
       write("      }\r\n\r\n");
+      generateAssignValues(tn);
       write("      public void copyValues("+tn+" dst, EnumSet<CopyObjectOptions> options) {\r\n");
       write("        super.copyValues(dst, options);\r\n");
 	  }

@@ -8,14 +8,14 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
-import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
+import org.hl7.fhir.r5.context.PackageResourceLoader;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5.TerminologyClientR5Factory;
+ import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory5;
+ import org.hl7.fhir.r5.terminologies.client.TerminologyClient5R5.TerminologyClientR5Factory;
 
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
@@ -80,7 +80,7 @@ public class TestPackageLoader implements IContextResourceLoader {
   }
 
   @Override
-  public ITerminologyClientFactory txFactory() {
+  public ITerminologyClientFactory5 txFactory() {
     return new TerminologyClientR5Factory();
   }
 

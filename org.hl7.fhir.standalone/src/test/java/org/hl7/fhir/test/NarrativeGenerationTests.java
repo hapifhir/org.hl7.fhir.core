@@ -24,7 +24,7 @@ import org.hl7.fhir.services.renderers.utils.RenderingContext.ResourceRendererMo
 import org.hl7.fhir.services.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
 import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.services.testing.CompareUtilities;
-import org.hl7.fhir.standalone.terminology.client.TerminologyClientR6;
+import org.hl7.fhir.services.client.TerminologyClientR6;
 import org.hl7.fhir.standalone.testing.TestPackageLoader;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -140,7 +140,7 @@ public class NarrativeGenerationTests {
 
     @Override
     public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
-      return new org.hl7.fhir.model.core.formats.XmlParser(TestingUtilities.getSharedWorkerContext()).parseType(xml, type);
+      return new org.hl7.fhir.model.core.formats.XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parseType(xml, type);
     }
     @Override
     public Base parseType(org.hl7.fhir.services.elementmodel.Element e) throws FHIRFormatError, IOException, FHIRException {
@@ -235,7 +235,7 @@ public class NarrativeGenerationTests {
 
   @BeforeAll
   static void setUp() throws IOException {
-    var simpleContext = TestingUtilities.getSharedWorkerContext("6.0.0-ballot5");
+    var simpleContext = TestingUtilities.getSharedWorkerContext("6.0.0-snapshot1");
     simpleContext.connectToTSServer(new TerminologyClientR6.TerminologyClientR6Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
     context = simpleContext;
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
@@ -254,9 +254,9 @@ public class NarrativeGenerationTests {
     XhtmlNode.setCheckParaGeneral(true);
     if (test.getRegister() != null) {
       if (test.getRegister().endsWith(".json")) {
-        context.getManager().cacheResource(new JsonParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getRegister())));
       } else {
-        context.getManager().cacheResource(new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getRegister())));
       }
     }
     RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
@@ -286,11 +286,11 @@ public class NarrativeGenerationTests {
     
     Resource source;
     if (TestingUtilities.findTestResource("r6", "narrative", test.getId() + ".json")) {
-      source = (Resource) new JsonParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getId() + ".json"));
+      source = (Resource) new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getId() + ".json"));
     } else  if (TestingUtilities.findTestResource("r6", "narrative", test.getId() + ".fml")) {
       source = (Resource) new StructureMapTools(context).parse(FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getId() + ".fml")), "source");
     } else {
-      source = (Resource) new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getId() + ".xml"));
+      source = (Resource) new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "narrative", test.getId() + ".xml"));
     }
     
     XhtmlNode x = new RendererFactory().factory(source, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), source));

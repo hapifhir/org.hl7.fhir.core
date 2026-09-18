@@ -920,6 +920,10 @@ public class DeviceMetric extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DeviceMetricCalibrationComponent) dst);
+      }
+
       public void copyValues(DeviceMetricCalibrationComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1610,6 +1614,10 @@ public class DeviceMetric extends DomainResource {
         DeviceMetric dst = new DeviceMetric();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((DeviceMetric) dst);
       }
 
       public void copyValues(DeviceMetric dst) {

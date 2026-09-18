@@ -647,6 +647,10 @@ public class QuestionnaireResponse extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((QuestionnaireResponseItemComponent) dst);
+      }
+
       public void copyValues(QuestionnaireResponseItemComponent dst) {
         super.copyValues(dst);
         dst.linkId = linkId == null ? null : linkId.copy();
@@ -1143,6 +1147,10 @@ public class QuestionnaireResponse extends DomainResource {
         QuestionnaireResponseItemAnswerComponent dst = new QuestionnaireResponseItemAnswerComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((QuestionnaireResponseItemAnswerComponent) dst);
       }
 
       public void copyValues(QuestionnaireResponseItemAnswerComponent dst) {
@@ -1974,6 +1982,10 @@ public class QuestionnaireResponse extends DomainResource {
         QuestionnaireResponse dst = new QuestionnaireResponse();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((QuestionnaireResponse) dst);
       }
 
       public void copyValues(QuestionnaireResponse dst) {

@@ -698,6 +698,10 @@ public class RESOURCE_DESCRIPTION_ITEM extends LogicalBase implements IComposite
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((RESOURCE_DESCRIPTION_ITEM) dst);
+      }
+
       public void copyValues(RESOURCE_DESCRIPTION_ITEM dst) {
         super.copyValues(dst);
         dst.language = language == null ? null : language.copy();

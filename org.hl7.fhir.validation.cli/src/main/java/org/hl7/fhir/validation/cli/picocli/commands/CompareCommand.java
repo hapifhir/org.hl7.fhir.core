@@ -1,7 +1,7 @@
 package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.model.utilities.EOperationOutcome;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.validation.ValidationEngine;

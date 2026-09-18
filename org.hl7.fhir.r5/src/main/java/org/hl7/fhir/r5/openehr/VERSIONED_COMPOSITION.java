@@ -69,6 +69,10 @@ public class VERSIONED_COMPOSITION extends VERSIONED_OBJECT implements IComposit
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((VERSIONED_COMPOSITION) dst);
+      }
+
       public void copyValues(VERSIONED_COMPOSITION dst) {
         super.copyValues(dst);
       }

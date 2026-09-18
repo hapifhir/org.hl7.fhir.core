@@ -62,7 +62,7 @@ public class ObjectConverter  {
     if (ig == null)
       return null;
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
-    org.hl7.fhir.model.core.formats.JsonParser jp = new org.hl7.fhir.model.core.formats.JsonParser(context);
+    org.hl7.fhir.model.core.formats.JsonParser jp = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext());
     jp.compose(bs, ig);
     ByteArrayInputStream bi = new ByteArrayInputStream(bs.toByteArray());
     List<ValidatedFragment> list = new JsonParser(context).parse(bi);
@@ -130,7 +130,7 @@ public class ObjectConverter  {
     ByteArrayOutputStream bo = new ByteArrayOutputStream();
     try {
       new JsonParser(context).compose(element, bo, OutputStyle.NORMAL, null);
-      return new org.hl7.fhir.model.core.formats.JsonParser(context).parse(bo.toByteArray());
+      return new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(bo.toByteArray());
     } catch (IOException e) {
       // won't happen
       throw new FHIRException(e);

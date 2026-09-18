@@ -2,7 +2,7 @@ package org.hl7.fhir.validation.codegen;
 
 import java.util.List;
 
-import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.model.core.ElementDefinition;
 
 public class TypeInfo {
 

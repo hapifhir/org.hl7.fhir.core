@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation.instance.type;
 
-import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;

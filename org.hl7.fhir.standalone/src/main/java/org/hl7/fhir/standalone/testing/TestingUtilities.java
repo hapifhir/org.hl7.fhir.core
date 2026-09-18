@@ -2,14 +2,15 @@ package org.hl7.fhir.standalone.testing;
 
 import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.UcumEssenceService;
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.core.Constants;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.fml.FmlRegistration;
 import org.hl7.fhir.model.testing.TestingRegistration;
 import org.hl7.fhir.model.tools.ToolsRegistration;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.services.context.IContextResourceLoaderN;
 import org.hl7.fhir.model.core.Parameters;
-import org.hl7.fhir.services.context.IContextResourceLoader;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -47,7 +48,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 
   static public Map<String, SimpleWorkerContext> sharedContexts;
 
-  final static public String DEFAULT_CONTEXT_VERSION = "6.0.0-ballot5";
+  final static public String DEFAULT_CONTEXT_VERSION = "6.0.0-snapshot1";
 
   /** Get an existing instantiation of a WorkerContext if available
    *
@@ -64,7 +65,7 @@ public class TestingUtilities extends BaseTestingUtilities {
    * @return
    */
   public static SimpleWorkerContext getSharedWorkerContext(String fhirVersion) {
-    if (!Utilities.existsInList(fhirVersion, "1.0.2", "3.0.1", "4.0.1", "4.3.0", "5.0.0", "6.0.0-ballot5")) {
+    if (!Utilities.existsInList(fhirVersion, "1.0.2", "3.0.1", "4.0.1", "4.3.0", "5.0.0", "6.0.0-snapshot1")) {
       throw new Error("illegal version: "+fhirVersion);
       
     }
@@ -104,11 +105,6 @@ public class TestingUtilities extends BaseTestingUtilities {
         log.info("Loading Extensions: "+ext.name()+"#"+ext.version());
         sharedContext.loadFromPackage(ext, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "StructureDefinition"), sharedContext));
       }
-      if (VersionUtilities.isR6Ver(fhirVersion)) {
-        FmlRegistration.register(sharedContext, false);
-        TestingRegistration.register(sharedContext, false);
-        ToolsRegistration.register(sharedContext, false);
-      }
       return sharedContext;
     } catch (Exception e) {
       e.printStackTrace();
@@ -129,14 +125,14 @@ public class TestingUtilities extends BaseTestingUtilities {
   }
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
         .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage);
     TerminologyCache.setCacheErrors(true);
     return swc;
   }
 
-  public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage, IContextResourceLoader loader) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
+  public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage, IContextResourceLoaderN loader) throws Exception {
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
         .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage, loader, true);
     TerminologyCache.setCacheErrors(true);
     return swc;

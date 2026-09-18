@@ -1,9 +1,12 @@
 package org.hl7.fhir.context;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.services.client.ITerminologyClientN;
+import org.hl7.fhir.model.ModelContext;
 import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.services.context.IContextResourceLoader;
+import org.hl7.fhir.services.context.IContextResourceLoaderN;
 import org.hl7.fhir.services.terminology.*;
+import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.standalone.context.BaseWorkerContext;
 import org.hl7.fhir.standalone.terminology.expansion.ValueSetExpander;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
@@ -46,7 +49,7 @@ public class BaseWorkerContextTests {
   private static final String DUMMY_URL = "http://dummyUrl";
 
   @Spy
-  BaseWorkerContext context = new BaseWorkerContext() {
+  BaseWorkerContext context = new BaseWorkerContext(ModelContext.fullCoreContext()) {
     @Override
     public String getFHIRVersion() {
       return "4.0.1";
@@ -69,6 +72,10 @@ public class BaseWorkerContextTests {
     }
 
     @Override
+    public IResourceValidator newValidator() throws FHIRException {
+      return null;
+    }
+    @Override
     public PackageLoadController getPackageLoadController() {
       return null;
     }
@@ -89,7 +96,7 @@ public class BaseWorkerContextTests {
     }
 
     @Override
-    public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
+    public int loadFromPackage(NpmPackage pi, IContextResourceLoaderN loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
@@ -104,7 +111,7 @@ public class BaseWorkerContextTests {
     }
 
     @Override
-    public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
+    public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoaderN loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
@@ -141,7 +148,7 @@ public class BaseWorkerContextTests {
   ToolingClientLogger txLog;
 
   @Mock
-  ITerminologyClient terminologyClient;
+  ITerminologyClientN terminologyClient;
 
   @Mock
   CacheToken cacheToken;
@@ -267,7 +274,7 @@ public class BaseWorkerContextTests {
   }
 
   private BaseWorkerContext getBaseWorkerContext() throws IOException {
-    BaseWorkerContext baseWorkerContext = new BaseWorkerContext() {
+    BaseWorkerContext baseWorkerContext = new BaseWorkerContext(ModelContext.fullCoreContext()) {
       @Override
       public String getFHIRVersion() {
         return null;
@@ -289,6 +296,10 @@ public class BaseWorkerContextTests {
       }
 
       @Override
+      public IResourceValidator newValidator() throws FHIRException {
+        return null;
+      }
+      @Override
       public PackageLoadController getPackageLoadController() {
         return null;
       }
@@ -309,7 +320,7 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
+      public int loadFromPackage(NpmPackage pi, IContextResourceLoaderN loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
         return 0;
       }
 
@@ -324,7 +335,7 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
+      public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoaderN loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
         return 0;
       }
 

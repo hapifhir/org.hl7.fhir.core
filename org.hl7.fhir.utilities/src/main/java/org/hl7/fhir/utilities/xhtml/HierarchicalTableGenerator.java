@@ -1351,7 +1351,11 @@ public class HierarchicalTableGenerator {
       id = Character.toString(c);
     }
     path = path + id;
-    r.setId(path);
+    // the row id is hierarchical on purpose: fhir-table-scripts.js finds a row's descendants with
+    // row.id.startsWith(parent.id) to expand/collapse the tree, so it can't just be the element
+    // path. But several of these tables appear on one page, so it has to carry the generator's
+    // unique prefix as well, or every table on the page issues the same ids (a, aa, ab, ...)
+    r.setId(prefixAnchor(path));
     int tc = 0;
     for (Cell c : r.getCells()) {
       tc = tc + c.span;

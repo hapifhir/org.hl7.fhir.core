@@ -4834,8 +4834,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       if ("hex".equals(param)) {
         result.add(new StringType(new String(hexStringToByteArray(cnt))));        
       } else if ("base64".equals(param)) {
-        Base64.Decoder enc = Base64.getDecoder();
-        result.add(new StringType(new String(enc.decode(cnt))));
+        result.add(new StringType(new String(Utilities.decodeBase64(cnt))));
       } else if ("urlbase64".equals(param)) {
         Base64.Decoder enc = Base64.getUrlDecoder();
         result.add(new StringType(new String(enc.decode(cnt))));

@@ -25,3 +25,31 @@
     } 
     return this; 
   }
+
+
+  public boolean valueMatches(Reference value) {
+    if (value.hasReference() || hasReference()) {
+      if (!(value.hasReference() && hasReference())) {
+        return false;
+      }
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean refMatches = reference.matches(value.getReference());
+      if (!refMatches) {
+        return true;
+      }
+    }
+    if (value.hasIdentifier() || hasIdentifier()) {
+      if (!(value.hasIdentifier() && hasIdentifier())) {
+        return false;
+      }
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean idMatches = identifier.valueMatches(value.getIdentifier());
+      if (!idMatches) {
+        return true;
+      }
+    }
+    return false;
+  }
+

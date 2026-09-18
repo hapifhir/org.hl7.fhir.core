@@ -210,10 +210,26 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
     this((IModelContext) null, theEnumFactory, source);
   }
 
+  @SuppressWarnings("unchecked")
+  @Override
+  public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+    copyValues((Enumeration<T>) dst, options);
+  }
+
+  /**
+   * the factory is state on this class. The value comes across as both the coerced value and the
+   * string, so a CUSTOM code - which only exists in the string - survives the copy
+   */
+  public void copyValues(Enumeration<T> dst, EnumSet<CopyObjectOptions> options) {
+    super.copyValues(dst, options);
+    dst.myEnumFactory = myEnumFactory;
+  }
+
   @Override
   public Enumeration<T> copy(EnumSet<CopyObjectOptions> options) {
-    Enumeration dst= new Enumeration(modelContext, this.myEnumFactory);
-    dst.setValueAsString(asStringValue()); // string based, not value based, so a CUSTOM value (where the real code lives in the string) survives the copy
+    // copyValues carries the string form as well as the coerced value, so a CUSTOM value (where the
+    // real code only exists in the string) survives the copy
+    Enumeration<T> dst = new Enumeration<T>(modelContext, this.myEnumFactory);
     copyValues(dst, options);
     return dst;
   }

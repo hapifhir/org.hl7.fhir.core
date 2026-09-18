@@ -464,6 +464,10 @@ public class BodyStructure extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((BodyStructureIncludedStructureComponent) dst);
+      }
+
       public void copyValues(BodyStructureIncludedStructureComponent dst) {
         super.copyValues(dst);
         dst.structure = structure == null ? null : structure.copy();
@@ -903,6 +907,10 @@ public class BodyStructure extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((BodyStructureIncludedStructureBodyLandmarkOrientationComponent) dst);
+      }
+
       public void copyValues(BodyStructureIncludedStructureBodyLandmarkOrientationComponent dst) {
         super.copyValues(dst);
         if (landmarkDescription != null) {
@@ -1191,6 +1199,10 @@ public class BodyStructure extends DomainResource {
         BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent dst = new BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent) dst);
       }
 
       public void copyValues(BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent dst) {
@@ -1862,6 +1874,10 @@ public class BodyStructure extends DomainResource {
         BodyStructure dst = new BodyStructure();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((BodyStructure) dst);
       }
 
       public void copyValues(BodyStructure dst) {

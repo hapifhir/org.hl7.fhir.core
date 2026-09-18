@@ -62,7 +62,7 @@ public class PECodeGenTests {
   @Test
   public void testProfile() throws IOException {
     load();
-    MedicinalProductDefinition res = (MedicinalProductDefinition) new JsonParser(ctxt).parse(emed.load("example", "MedicinalProductDefinition-800a51a2-d81d-49a4-a4eb-f2417d301837.json"));
+    MedicinalProductDefinition res = (MedicinalProductDefinition) new JsonParser(ctxt.getModelContext()).parse(emed.load("example", "MedicinalProductDefinition-800a51a2-d81d-49a4-a4eb-f2417d301837.json"));
     Assertions.assertEquals("800a51a2-d81d-49a4-a4eb-f2417d301837", res.getIdBase());
     MedicinalProductDefinitionUvEpi pr = MedicinalProductDefinitionUvEpi.fromSource(ctxt, res);
     Assertions.assertEquals("800a51a2-d81d-49a4-a4eb-f2417d301837", pr.getId());
