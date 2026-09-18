@@ -50,6 +50,7 @@ public class ProfileBasedFactory {
   private FHIRPathEngine fpe;
   private PrintStream log;
   private boolean testing;
+  private boolean requiredOnly;
   private boolean markProfile;
   
   private static class LogSet {
@@ -134,11 +135,34 @@ public class ProfileBasedFactory {
   protected void populateByProfile(Element element, PEDefinition definition, int level, String path, Map<String, String> values) throws SQLException, IOException {
     if (definition.types().size() == 1) {
       for (PEDefinition pe : definition.directChildren(true)) {
+          // requiredOnly prunes at the resource's top level only. Deeper optional elements are
+          // left to the normal path, which already drops the ones that end up with no content.
+          if (requiredOnly && level == 0 && pe.min() == 0 && !pe.hasFixedValue() && !hasMappingFor(pe)
+              && (values == null || !values.containsKey(pe.schemaName()))) {
+            continue;
+          }
         if (pe.max() > 0 && (!isIgnoredElement(pe.definition().getBase().getPath()) || pe.hasFixedValue())) {
           populateElement(element, pe, level, path, values);
         }
       }
     }
+  }
+
+  private boolean hasMappingFor(PEDefinition pe) {
+    if (mappings == null) return false;
+    String defId = pe.definition().getId();
+    String defPath = pe.definition().getPath();
+    String pePath = pe.path();
+    for (JsonObject entry : mappings.asJsonObjects()) {
+      String p = entry.asString("path");
+      if (p != null) {
+        if (p.equals(defId) || p.equals(defPath) || p.equals(pePath)) return true;
+        if (defPath != null && p.startsWith(defPath + ".")) return true;
+        if (pePath != null && p.startsWith(pePath + ".")) return true;
+        if (defId != null && p.startsWith(defId + ".")) return true;
+      }
+    }
+    return false;
   }
 
   private boolean isIgnoredElement(String path) {
@@ -677,6 +701,14 @@ public class ProfileBasedFactory {
 
   public boolean isMarkProfile() {
     return markProfile;
+  }
+
+  public boolean isRequiredOnly() {
+    return requiredOnly;
+  }
+
+  public void setRequiredOnly(boolean requiredOnly) {
+    this.requiredOnly = requiredOnly;
   }
 
   public void setMarkProfile(boolean markProfile) {
