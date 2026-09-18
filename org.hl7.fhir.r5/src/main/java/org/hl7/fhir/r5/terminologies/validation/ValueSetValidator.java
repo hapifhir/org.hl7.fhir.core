@@ -651,18 +651,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return cs;
   }
 
-  private List<String> supplementsFor(String system) {
+  // an unversioned supplement applies to every version, a versioned one only to that version - the same rule
+  // as CanonicalResourceManager.getSupplements(url, version)
+  private List<String> supplementsFor(String system, String version) {
     List<String> res = new ArrayList<>();
     for (String s : requiredSupplements) {
       CodeSystem scs = context.fetchResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
-      if (scs != null && scs.hasSupplements()) {
-        String base = scs.getSupplements();
-        if (base.contains("|")) {
-          base = base.substring(0, base.indexOf("|"));
-        }
-        if (system.equals(base)) {
-          res.add(s);
-        }
+      if (scs != null && Utilities.existsInList(scs.getSupplements(), system, CanonicalType.urlWithVersion(system, version))) {
+        res.add(s);
       }
     }
     return res;
@@ -2060,8 +2056,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
         vs.setUrl(valueset.getUrl()+"--"+vsiIndex);
         vs.setVersion(valueset.getVersion());
         vs.getCompose().addInclude(vsi);
-        // the supplements can't be merged into a code system we don't have, so the server has to apply them
-        for (String s : supplementsFor(system)) {
+        // the server does this check, so the value set it gets has to require the supplements - there's no local
+        // code system (or only a stub) to merge them into
+        for (String s : supplementsFor(system, actualVersion)) {
           vs.addExtension(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new CanonicalType(s));
           seeUsedSupplement(s);
         }

@@ -2031,6 +2031,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private void addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ValueSet vs) {
+    // send the value set's own required supplements too: through its code systems, a supplement to a particular
+    // version is only found when the copy of the code system we resolve is that version
+    for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+      if (ext.hasValueCanonicalType()) {
+        String url = ext.getValueCanonicalType().asStringValue();
+        CodeSystem supp = fetchResource(CodeSystem.class, url, ExtensionUtilities.getVersionResolutionRules(ext.getValue()));
+        if (supp != null) {
+          if (opCtxt != null) {
+            opCtxt.seeSupplement(supp);
+          }
+          if (!hasCanonicalResource(pin, "tx-resource", supp.getVUrl())) {
+            checkAddToParams(tc, pin, supp);
+          }
+        }
+      }
+    }
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       addDependentResources(opCtxt, tc, pin, inc, vs);
     }
@@ -2045,18 +2061,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (vs != null && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
         checkAddToParams(tc, pin, vs);
         addDependentResources(opCtxt, tc, pin, vs);
-        for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
-          if (ext.hasValueCanonicalType()) {
-            String url = ext.getValueCanonicalType().asStringValue();
-            CodeSystem supp = fetchResource(CodeSystem.class, url, ExtensionUtilities.getVersionResolutionRules(ext.getValue()));
-            if (supp != null) {
-              if (opCtxt != null) {
-                opCtxt.seeSupplement(supp);
-              }
-              checkAddToParams(tc, pin, supp);
-            }
-          }
-        }
       }
     }
     String sys = inc.getSystem();
