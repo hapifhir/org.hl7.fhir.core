@@ -779,6 +779,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
+  public List<CodeSystem> fetchSupplements(String canonical) {
+    if (canonical == null) {
+      return new ArrayList<>();
+    }
+    String url = canonical;
+    String version = null;
+    if (canonical.contains("|")) {
+      url = canonical.substring(0, canonical.indexOf("|"));
+      version = canonical.substring(canonical.indexOf("|") + 1);
+    }
+    synchronized (lock) {
+      return codeSystems.getSupplements(url, version);
+    }
+  }
+
+  @Override
   public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules) {
     CodeSystem cs = fetchCodeSystem(system, rules);
     if (cs != null) {

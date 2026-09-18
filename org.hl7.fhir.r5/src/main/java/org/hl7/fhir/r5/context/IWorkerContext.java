@@ -17,6 +17,7 @@ import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -615,6 +616,23 @@ public interface IWorkerContext {
    * @param sourceOfReference where the reference was found (if the reference is in a resource)
    */
   public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules, String version, List<String> specifiedSupplements, Resource sourceOfReference);
+
+  /**
+   * Fetch the CodeSystem supplements that declare (in CodeSystem.supplements) that they supplement
+   * the given canonical, optionally with a |version suffix.
+   * <p>
+   * Normally the canonical is a CodeSystem. Translation supplements - the CodeSystem supplements that
+   * language packs and IG translation files produce for StructureDefinitions and Questionnaires -
+   * supplement those resources instead, carrying translated text keyed by element id or item linkId.
+   * This returns them all, unfiltered; callers decide which apply (e.g. by language, or by
+   * {@link org.hl7.fhir.r5.terminologies.CodeSystemUtilities#isLangPack(CodeSystem)}).
+   *
+   * @param canonical the URL of the supplemented resource, optionally with a |version suffix
+   * @return the supplements known to this context, or an empty list
+   */
+  default List<CodeSystem> fetchSupplements(String canonical) {
+    return new ArrayList<>();
+  }
   @Deprecated(since="2026-03-10") default public CodeSystem fetchSupplementedCodeSystem(String system, String version, List<String> specifiedSupplements, Resource sourceOfReference) {
     return fetchSupplementedCodeSystem(system, VersionResolutionRules.defaultRule(), version, specifiedSupplements, sourceOfReference);
   }
