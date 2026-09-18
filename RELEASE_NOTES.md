@@ -10,4 +10,6 @@
 
 ## Other code changes
 
+* Rendering: when a StructureDefinition is copied to a language for rendering, apply the translation supplements for it and for the profiles it derives from (the CodeSystem supplements that language packs and IG translation files produce), so element text inherited from an upstream profile renders translated. Text the profile has changed is left alone. New `IWorkerContext.fetchSupplements(canonical)` exposes the supplement index
+
 * R5 -> R4 and R5 -> R4B conversion dropped `ValueSet.compose.property` - the element a client uses to say which properties it wants back in an expansion. Neither R4 nor R4B has the element, so it now travels as the cross-version extension `http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.property` and is read back on the way up. Before this, a value set that asked for properties came back without them after a round trip, which looks like a terminology server fault rather than a conversion one

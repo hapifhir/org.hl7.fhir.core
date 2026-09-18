@@ -1064,6 +1064,151 @@ public class LanguageUtils {
     }
     Resource r = res.copy();
     switchLanguage(r, lang, markLanguage, false, res.getLanguage(), defaultLang, errors);    
+    if (r instanceof StructureDefinition) {
+      applyTranslationSupplements((StructureDefinition) r, lang);
+    }
     return r;
+  }
+
+  // -- translation supplements for StructureDefinitions -------------------------------------------
+
+  /** ElementDefinition text properties a translation supplement can carry; also the sub-code used for each. */
+  private static final String[] ELEMENT_TEXT_PROPERTIES = { "definition", "comment", "requirements", "meaningWhenMissing", "orderMeaning", "isModifierMeaning", "binding" };
+
+  /**
+   * Apply the translations carried by CodeSystem supplements to the element definitions of a
+   * StructureDefinition, in place. Call this on a copy that is being rendered in {@code lang}.
+   * <p>
+   * A translation supplement is a CodeSystem with {@code supplements} = the StructureDefinition's
+   * canonical, {@code language} = the target language, and one concept per element: the concept code
+   * is the element id and its display is the translated definition; sub-properties use the codes
+   * {@code <id>@comment}, {@code <id>@requirements}, {@code <id>@meaningWhenMissing},
+   * {@code <id>@orderMeaning}, {@code <id>@isModifierMeaning} and {@code <id>@binding} (the binding
+   * description). This is the shape the IG publisher produces from a translation file, whether in a
+   * language pack or in an IG's own translation-sources folder.
+   * <p>
+   * Supplements are looked up for the profile itself and then for each StructureDefinition up its
+   * baseDefinition chain, so text a profile inherits from an upstream profile is translated by a
+   * supplement for that upstream profile - the case of a national profile derived from IPS, say. A
+   * translation from an ancestor is only applied to an element whose text is still the ancestor's;
+   * text the profile has changed is left alone. Only supplements whose language matches {@code lang}
+   * are used.
+   *
+   * @return the number of property values replaced
+   */
+  public int applyTranslationSupplements(StructureDefinition sd, String lang) {
+    if (sd == null || lang == null || context == null) {
+      return 0;
+    }
+    List<StructureDefinition> chain = new ArrayList<>();
+    Set<String> seen = new HashSet<>();
+    StructureDefinition cur = sd;
+    while (cur != null && chain.size() < 100 && seen.add(cur.hasUrl() ? cur.getUrl() : Integer.toString(System.identityHashCode(cur)))) {
+      chain.add(cur);
+      cur = cur.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, cur.getBaseDefinition()) : null;
+    }
+    int count = 0;
+    for (StructureDefinition source : chain) {
+      if (!source.hasUrl()) {
+        continue;
+      }
+      List<CodeSystem> supplements = new ArrayList<>();
+      for (CodeSystem cs : context.fetchSupplements(source.getUrl())) {
+        if (cs.hasLanguage() && langsMatch(lang, cs.getLanguage())) {
+          supplements.add(cs);
+        }
+      }
+      if (supplements.isEmpty()) {
+        continue;
+      }
+      StructureDefinition ancestor = source == sd ? null : source;
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        count += applyTranslationSupplements(ed, ancestor, supplements);
+      }
+      for (ElementDefinition ed : sd.getDifferential().getElement()) {
+        count += applyTranslationSupplements(ed, ancestor, supplements);
+      }
+    }
+    return count;
+  }
+
+  private int applyTranslationSupplements(ElementDefinition ed, StructureDefinition ancestor, List<CodeSystem> supplements) {
+    if (!ed.hasId()) {
+      return 0;
+    }
+    ElementDefinition sourceEd = ancestor == null ? ed : findElement(ancestor, ed);
+    if (sourceEd == null) {
+      return 0;
+    }
+    int count = 0;
+    for (String prop : ELEMENT_TEXT_PROPERTIES) {
+      String current = getElementText(ed, prop);
+      if (Utilities.noString(current)) {
+        continue;
+      }
+      if (ancestor != null && !current.equals(getElementText(sourceEd, prop))) {
+        continue; // the profile changed this text, so the ancestor's translation does not apply
+      }
+      String code = "definition".equals(prop) ? ed.getId() : ed.getId() + "@" + prop;
+      for (CodeSystem cs : supplements) {
+        ConceptDefinitionComponent concept = CodeSystemUtilities.getCode(cs, code);
+        if (concept != null && !Utilities.noString(concept.getDisplay())) {
+          // the publisher escapes line breaks as literal \r \n when it builds the supplement
+          String text = concept.getDisplay().replace("\\r", "\r").replace("\\n", "\n");
+          if (setElementText(ed, prop, text)) {
+            count++;
+          }
+          break;
+        }
+      }
+    }
+    return count;
+  }
+
+  private ElementDefinition findElement(StructureDefinition sd, ElementDefinition ed) {
+    for (ElementDefinition t : sd.getSnapshot().getElement()) {
+      if (ed.getId().equals(t.getId())) {
+        return t;
+      }
+    }
+    if (ed.hasPath()) {
+      for (ElementDefinition t : sd.getSnapshot().getElement()) {
+        if (ed.getPath().equals(t.getPath())) {
+          return t;
+        }
+      }
+    }
+    return null;
+  }
+
+  private String getElementText(ElementDefinition ed, String prop) {
+    switch (prop) {
+    case "definition": return ed.getDefinition();
+    case "comment": return ed.getComment();
+    case "requirements": return ed.getRequirements();
+    case "meaningWhenMissing": return ed.getMeaningWhenMissing();
+    case "orderMeaning": return ed.getOrderMeaning();
+    case "isModifierMeaning": return ed.getIsModifierReason();
+    case "binding": return ed.hasBinding() ? ed.getBinding().getDescription() : null;
+    default: return null;
+    }
+  }
+
+  private boolean setElementText(ElementDefinition ed, String prop, String value) {
+    switch (prop) {
+    case "definition": ed.setDefinition(value); return true;
+    case "comment": ed.setComment(value); return true;
+    case "requirements": ed.setRequirements(value); return true;
+    case "meaningWhenMissing": ed.setMeaningWhenMissing(value); return true;
+    case "orderMeaning": ed.setOrderMeaning(value); return true;
+    case "isModifierMeaning": ed.setIsModifierReason(value); return true;
+    case "binding":
+      if (ed.hasBinding()) {
+        ed.getBinding().setDescription(value);
+        return true;
+      }
+      return false;
+    default: return false;
+    }
   }
 }
