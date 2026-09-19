@@ -1,11 +1,11 @@
 package org.hl7.fhir.model.core;
 
 import java.io.IOException;
-import java.util.regex.Pattern;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.regex.PrimitiveRegexes;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
@@ -137,7 +137,7 @@ public class TypeConvertor {
     }
     if (v.isPrimitive()) {
       String s = v.primitiveValue();
-      if (s == null || BASE64_PATTERN.matcher(s).matches()) {
+      if (s == null || isBase64(s)) {
         Base64BinaryType t = new Base64BinaryType();
         if (s != null) {
           t.setValueAsString(s);
@@ -258,7 +258,7 @@ public class TypeConvertor {
     }
     if (v.isPrimitive()) {
       String s = v.primitiveValue();
-      if (s == null || UUID_PATTERN.matcher(s).matches()) {
+      if (s == null || hasFormat(UUID_REGEX, s)) {
         UuidType t = new UuidType();
         if (s != null) {
           t.setValueAsString(s);
@@ -358,7 +358,7 @@ public class TypeConvertor {
     }
     if (v.isPrimitive()) {
       String s = v.primitiveValue();
-      if (s == null || TIME_PATTERN.matcher(s).matches()) {
+      if (s == null || isTime(s)) {
         TimeType t = new TimeType();
         if (s != null) {
           t.setValueAsString(s);
@@ -383,7 +383,7 @@ public class TypeConvertor {
     }
     if (v.isPrimitive()) {
       String s = v.primitiveValue();
-      if (s == null || CODE_PATTERN.matcher(s).matches()) {
+      if (s == null || hasFormat(CODE_REGEX, s)) {
         CodeType t = new CodeType();
         if (s != null) {
           t.setValueAsString(s);
@@ -408,7 +408,7 @@ public class TypeConvertor {
     }
     if (v.isPrimitive()) {
       String s = v.primitiveValue();
-      if (s == null || OID_PATTERN.matcher(s).matches()) {
+      if (s == null || hasFormat(OID_REGEX, s)) {
         OidType t = new OidType();
         if (s != null) {
           t.setValueAsString(s);
@@ -433,7 +433,7 @@ public class TypeConvertor {
     }
     if (v.isPrimitive()) {
       String s = v.primitiveValue();
-      if (s == null || ID_PATTERN.matcher(s).matches()) {
+      if (s == null || hasFormat(ID_REGEX, s)) {
         IdType t = new IdType();
         if (s != null) {
           t.setValueAsString(s);
@@ -521,13 +521,59 @@ public class TypeConvertor {
 
   // -- support for the primitive casts --------------------------------------------------------
 
-  // the regexes from the FHIR specification for the primitive types that have format rules the classes don't enforce
-  private static final Pattern BASE64_PATTERN = Pattern.compile("(\\s*([0-9a-zA-Z\\+\\/\\=]){4}\\s*)+");
-  private static final Pattern UUID_PATTERN = Pattern.compile("urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
-  private static final Pattern TIME_PATTERN = Pattern.compile("([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]{1,9})?");
-  private static final Pattern CODE_PATTERN = Pattern.compile("[^\\s]+( [^\\s]+)*");
-  private static final Pattern OID_PATTERN = Pattern.compile("urn:oid:[0-2](\\.(0|[1-9][0-9]*))+");
-  private static final Pattern ID_PATTERN = Pattern.compile("[A-Za-z0-9\\-\\.]{1,64}");
+  // the spec's regexes for the primitive types with format rules the classes don't enforce. These are
+  // evaluated by PrimitiveRegexes' hand written equivalents, so no regex is compiled or run here
+  private static final String UUID_REGEX = "urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+  private static final String CODE_REGEX = "[^\\s]+( [^\\s]+)*";
+  private static final String OID_REGEX = "urn:oid:[0-2](\\.(0|[1-9][0-9]*))+";
+  private static final String ID_REGEX = "[A-Za-z0-9\\-\\.]{1,64}";
+
+  private static boolean hasFormat(String regex, String s) {
+    Boolean ok = PrimitiveRegexes.matchesRegex(regex, s);
+    if (ok == null) {
+      throw new Error("No hand written equivalent for the regex " + regex);
+    }
+    return ok;
+  }
+
+  /** base64, allowing whitespace (the same decoding the parsers use) */
+  private static boolean isBase64(String s) {
+    try {
+      Utilities.decodeBase64(s, false);
+      return true;
+    } catch (IllegalArgumentException e) {
+      return false;
+    }
+  }
+
+  /** hh:mm:ss with optional fractional seconds (up to 9 digits) - the spec's regex for time */
+  private static boolean isTime(String s) {
+    if (s.length() < 8 || s.charAt(2) != ':' || s.charAt(5) != ':') {
+      return false;
+    }
+    if (!isDigits(s, 0, 2) || !isDigits(s, 3, 5) || !isDigits(s, 6, 8)) {
+      return false;
+    }
+    int hh = Integer.parseInt(s.substring(0, 2));
+    int mm = Integer.parseInt(s.substring(3, 5));
+    int ss = Integer.parseInt(s.substring(6, 8));
+    if (hh > 23 || mm > 59 || ss > 60) {
+      return false;
+    }
+    if (s.length() == 8) {
+      return true;
+    }
+    return s.charAt(8) == '.' && s.length() > 9 && s.length() <= 18 && isDigits(s, 9, s.length());
+  }
+
+  private static boolean isDigits(String s, int start, int end) {
+    for (int i = start; i < end; i++) {
+      if (!Character.isDigit(s.charAt(i)) || s.charAt(i) > '9') {
+        return false;
+      }
+    }
+    return true;
+  }
 
   /**
    * copy the id and extensions of the source primitive to the new one, so that a conversion
