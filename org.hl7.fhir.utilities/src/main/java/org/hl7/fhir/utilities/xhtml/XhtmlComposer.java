@@ -46,6 +46,68 @@ import org.w3c.dom.Element;
 
 public class XhtmlComposer {
 
+  /**
+   * A Writer over a StringBuilder. StringWriter is backed by StringBuffer, so every append
+   * made while composing narrative takes a lock; nothing here is shared between threads.
+   */
+  private static final class StringBuilderWriter extends java.io.Writer {
+    private final StringBuilder b = new StringBuilder();
+
+    @Override
+    public void write(char[] cbuf, int off, int len) {
+      b.append(cbuf, off, len);
+    }
+
+    @Override
+    public void write(int c) {
+      b.append((char) c);
+    }
+
+    @Override
+    public void write(String str) {
+      b.append(str);
+    }
+
+    @Override
+    public void write(String str, int off, int len) {
+      b.append(str, off, off + len);
+    }
+
+    @Override
+    public java.io.Writer append(CharSequence csq) {
+      b.append(csq);
+      return this;
+    }
+
+    @Override
+    public java.io.Writer append(CharSequence csq, int start, int end) {
+      b.append(csq, start, end);
+      return this;
+    }
+
+    @Override
+    public java.io.Writer append(char c) {
+      b.append(c);
+      return this;
+    }
+
+    @Override
+    public void flush() {
+      // nothing to flush
+    }
+
+    @Override
+    public void close() {
+      // nothing to close
+    }
+
+    @Override
+    public String toString() {
+      return b.toString();
+    }
+  }
+
+
   protected static Set<String> BLOCK_NAMES =  Set.of("li", "ul", "ol", "tr", "td", "th", "div", "table");
   public static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
   private boolean pretty;
@@ -74,7 +136,7 @@ public class XhtmlComposer {
     if (!xml && !pretty) {
       breakBlocksWithLines(doc);
     }
-    StringWriter sdst = new StringWriter();
+    StringBuilderWriter sdst = new StringBuilderWriter();
     dst = sdst;
     try {
       composeDoc(doc);
@@ -106,7 +168,7 @@ public class XhtmlComposer {
     if (!xml && !pretty) {
       breakBlocksWithLines(node);
     }
-    StringWriter sdst = new StringWriter();
+    StringBuilderWriter sdst = new StringBuilderWriter();
     dst = sdst;
     try {
       writeNode("", node, false);
@@ -119,7 +181,7 @@ public class XhtmlComposer {
     if (!xml && !pretty) {
       breakBlocksWithLines(nodes);
     }
-    StringWriter sdst = new StringWriter();
+    StringBuilderWriter sdst = new StringBuilderWriter();
     dst = sdst;
     for (XhtmlNode node : nodes) {      
       writeNode("", node, false);
@@ -488,7 +550,7 @@ public class XhtmlComposer {
   }
 
   public String compose(XhtmlNodeList nodes) throws IOException {
-    StringWriter sdst = new StringWriter();
+    StringBuilderWriter sdst = new StringBuilderWriter();
     dst = sdst;
     for (XhtmlNode node : nodes) {
       writeNode("", node, false);

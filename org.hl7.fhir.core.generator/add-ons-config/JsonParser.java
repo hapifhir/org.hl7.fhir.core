@@ -40,7 +40,10 @@ public class {{jname}}JsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
 {{parse-resource}}
     } else {
-      throw new FHIRFormatError("Unknown/Unrecognised resource type '"+t+"' (in property 'resourceType')");
+      // not one of this package's resource types - the base parser knows the core ones, and the
+      // model context's registry knows the other add-on packages'. This matters for contained
+      // resources, which are parsed through this same call
+      return super.parseResource(json);
     }
   }
 
@@ -55,10 +58,12 @@ public class {{jname}}JsonParser extends org.hl7.fhir.r5.formats.JsonParser {
   @Override
   protected void composeResource(Resource resource) throws IOException {
     if (resource == null) {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      throw new Error("Unhandled resource type: null");
 {{compose-resource}} 
-    } else
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+    } else {
+      // see the note in parseResource
+      super.composeResource(resource);
+    }
   }
 
 }

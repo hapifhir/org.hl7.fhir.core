@@ -1,0 +1,37 @@
+# en -> it
+
+#: CanonicalResource.name
+#. A natural language name identifying the code system. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+msgid "BasicAnswer"
+msgstr ""
+
+#: CanonicalResource.title
+#. A short, descriptive, user-friendly title for the code system.
+msgid "Administration-Method"
+msgstr ""
+
+#: CanonicalResource.publisher
+#. The name of the organization or individual that published the code system.
+msgid "Example Publisher"
+msgstr ""
+
+#: CanonicalResource.description
+#. A free text natural language description of the code system from a consumer's perspective.
+msgid "Basic answers for any kind of questions."
+msgstr ""
+
+#: CodeSystem.concept.display
+#. A human readable string that is the recommended default way to present this concept to a user.
+msgid "OK"
+msgstr "OK"
+
+#: CodeSystem.concept.display
+#. A human readable string that is the recommended default way to present this concept to a user.
+msgid "Yes"
+msgstr "Si"
+
+#: CodeSystem.concept.display
+#. A human readable string that is the recommended default way to present this concept to a user.
+msgid "No"
+msgstr "No"
+

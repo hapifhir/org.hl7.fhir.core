@@ -35,12 +35,11 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.model.utilities.EFhirClientException;
+import org.hl7.fhir.services.client.EFhirClientException;
 import org.hl7.fhir.services.terminology.OpIssueCode;
-import org.hl7.fhir.services.terminology.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
 import org.hl7.fhir.standalone.context.BaseWorkerContext;
-import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.LanguageUtils;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
@@ -58,8 +57,6 @@ import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.ValueSet.*;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
 import org.hl7.fhir.model.utilities.ValueSetUtilities;
-import org.hl7.fhir.standalone.terminology.expansion.ConceptFilter;
-import org.hl7.fhir.standalone.terminology.expansion.WorkingContext;
 import org.hl7.fhir.standalone.terminology.providers.CodeSystemProvider;
 import org.hl7.fhir.standalone.terminology.providers.CodeSystemProviderExtension;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyOperationContext;
@@ -286,9 +283,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     for (ParametersParameterComponent p : expParams.getParameterList()) {
       if ("property".equals(p.getName())) {
+        // '*' means every property the server knows about for this concept - see the definition
+        // of ValueSet.compose.property, and of the 'property' expansion parameter
+        boolean allProperties = p.hasValue() && "*".equals(p.getValue().primitiveValue());
         if (csProps != null && p.hasValue()) {
           for (ConceptPropertyComponent cp : csProps) {
-            if (p.getValue().primitiveValue().equals(cp.getCode())) {
+            if (allProperties || p.getValue().primitiveValue().equals(cp.getCode())) {
               PropertyComponent pd = cs.getProperty(cp.getCode());
               String url = pd == null ? null : pd.getUri();
               if (url == null) {
@@ -304,7 +304,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         }
         if (expProps != null && p.hasValue()) {
           for (org.hl7.fhir.model.core.ValueSet.ConceptPropertyComponent cp : expProps) {
-            if (p.getValue().primitiveValue().equals(cp.getCode())) {
+            if (allProperties || p.getValue().primitiveValue().equals(cp.getCode())) {
               String url = null;
               for (ValueSetExpansionPropertyComponent t : vsProp) {
                 if (t.hasCode() && t.getCode().equals(cp.getCode())) {
@@ -813,7 +813,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
         throw e;
       }
     } catch (OperationIsTooCostly e) {
-      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false);
+      // the tx-issue-type is what a client keys on; the error class only reaches the
+      // OperationOutcome as the FHIR issue type, which does not say this was a limit
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false,
+          I18nConstants.VALUESET_TOO_COSTLY, OpIssueCode.TooCostly);
     } catch (UnknownValueSetException e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.VALUESET_UNKNOWN, allErrors, false);
     } catch (VSCheckerException e) {
@@ -838,7 +841,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     altCodeParams.seeParameters(expParams);
     altCodeParams.seeValueSet(source);
     source.checkNoModifiers("ValueSet", "expanding");
-    focus = source.copy(Base.COPY_DATA);
+    focus = source.copy(Base.COPY_NOTHING);
     focus.setIdBase(null);
     focus.setExpansion(new ValueSet.ValueSetExpansionComponent());
     focus.getExpansion().setTimestampElement(DateTimeType.now());
@@ -850,6 +853,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ParametersParameterComponent p : expParams.getParameterList()) {
       processParameter(p.getName(), p.getValue());
     }
+    expParams = checkComposeProperties(source, expParams);
     for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
       requiredSupplements.add(s.getValue().primitiveValue());
     }
@@ -933,6 +937,18 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return new ValueSetExpansionOutcome(focus);
   }
 
+  private static Parameters checkComposeProperties(ValueSet source, Parameters expParams) {
+    // ValueSet.compose.property names the properties to return "if the client doesn't ask for any
+    // particular properties", so it is only consulted when the request named none
+    if (source.hasCompose() && !source.getCompose().getPropertyList().isEmpty() && !expParams.hasParameter("property")) {
+      expParams = expParams.copy(Base.COPY_NOTHING);
+      for (StringType t : source.getCompose().getPropertyList()) {
+        expParams.addParameter("property", new StringType(t.getValue()));
+      }
+    }
+    return expParams;
+  }
+
   private void processParameter(String name, DataType value) {
     if (Utilities.existsInList(name, "default-valueset-version")) {
       boolean found = false;
@@ -1005,7 +1021,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     altCodeParams.seeParameters(expParams);
     altCodeParams.seeValueSet(source);
     source.checkNoModifiers("ValueSet", "expanding");
-    focus = source.copy(Base.COPY_DATA);
+    focus = source.copy(Base.COPY_NOTHING);
     focus.setIdBase(null);
     focus.setExpansion(new ValueSet.ValueSetExpansionComponent());
     focus.getExpansion().setTimestampElement(DateTimeType.now());
@@ -1017,6 +1033,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ParametersParameterComponent p : expParams.getParameterList()) {
       processParameter(p.getName(), p.getValue());
     }
+    expParams = checkComposeProperties(source, expParams);
     for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
       requiredSupplements.add(s.getValue().primitiveValue());
     }
@@ -1207,7 +1224,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
     checkCanonical(exp, vs, focus);
-    expParams = expParams.copy(Base.COPY_DATA);
+    expParams = expParams.copy(Base.COPY_NOTHING);
     expParams.getParameterList().removeIf(pp -> Utilities.existsInList(pp.getName(), "offset", "count"));
     if (noInactive) {
       expParams.addParameter("activeOnly", true);
@@ -1273,7 +1290,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     checkCanonical(exp, vs, focus);
     if (noInactive) {
-      expParams = expParams.copy(Base.COPY_DATA);
+      expParams = expParams.copy(Base.COPY_NOTHING);
       expParams.addParameter("activeOnly", true);
     }
     ValueSetExpander expander = new ValueSetExpander(context, opContext.copy(), allErrors);

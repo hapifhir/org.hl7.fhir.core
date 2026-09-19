@@ -338,6 +338,10 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ProductShelfLife) dst);
+      }
+
       public void copyValues(ProductShelfLife dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();

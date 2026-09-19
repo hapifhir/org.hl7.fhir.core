@@ -396,6 +396,10 @@ public abstract class Resource extends BaseResource implements IAnyResource {
 
       public abstract Resource copy();
 
+      public void assignValues(Base dst) {
+        copyValues((Resource) dst);
+      }
+
       public void copyValues(Resource dst) {
         super.copyValues(dst);
         dst.id = id == null ? null : id.copy();

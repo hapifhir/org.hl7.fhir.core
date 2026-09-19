@@ -468,6 +468,10 @@ public class ResearchSubject extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ResearchSubjectProgressComponent) dst);
+      }
+
       public void copyValues(ResearchSubjectProgressComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1183,6 +1187,10 @@ public class ResearchSubject extends DomainResource {
         ResearchSubject dst = new ResearchSubject();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ResearchSubject) dst);
       }
 
       public void copyValues(ResearchSubject dst) {

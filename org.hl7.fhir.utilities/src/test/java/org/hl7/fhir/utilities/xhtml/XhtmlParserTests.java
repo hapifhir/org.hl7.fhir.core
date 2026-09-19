@@ -32,4 +32,36 @@ class XhtmlParserTests {
   void testModeratelyNestedDivStillParses() throws FHIRFormatError, IOException {
     Assertions.assertNotNull(new XhtmlParser().parse(nestedDiv(100), "div"));
   }
+
+  private static final String DIV = "<div xmlns=\"http://www.w3.org/1999/xhtml\">";
+
+  // An entity reference that runs into end-of-input must fail with a FHIRFormatError. Both
+  // readUntil overloads used to test peekChar() != 0, but peekChar() returns END_OF_CHARS
+  // ((char) -1) at EOF and does not consume, so the loop never terminated and appended
+  // (char) -1 to the StringBuilder until the heap was exhausted. A few bytes were enough.
+  @ParameterizedTest
+  @ValueSource(strings = {
+      DIV + "&",
+      "<div xmlns=\"http://www.w3.org/1999/xhtml\" title=\"&",
+  })
+  void testTruncatedEntityFailsCleanly(String src) {
+    Assertions.assertThrows(FHIRFormatError.class, () -> new XhtmlParser().parse(src, "div"));
+  }
+
+  // The same EOF path, reached where the partial entity is still resolvable, must simply
+  // terminate. These parse leniently rather than throwing; the point is that they return.
+  @ParameterizedTest
+  @ValueSource(strings = {
+      DIV + "text &amp",
+      DIV + "<p>&#3",
+  })
+  void testTruncatedEntityTerminates(String src) throws FHIRFormatError, IOException {
+    Assertions.assertNotNull(new XhtmlParser().parse(src, "div"));
+  }
+
+  // Guard the ordinary paths against an over-tight EOF check.
+  @Test
+  void testWellFormedEntitiesStillParse() throws FHIRFormatError, IOException {
+    Assertions.assertNotNull(new XhtmlParser().parse(DIV + "a &amp; b</div>", "div"));
+  }
 }

@@ -35,7 +35,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.core.*;
@@ -55,6 +54,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 
 /**
  * This implements a two level cache. 
@@ -158,6 +158,31 @@ public class TerminologyCache {
   private static final String ENTRY_MARKER = "-------------------------------------------------------------------------------------";
   private static final String BREAK = "####";
   private static final String CACHE_FILE_EXTENSION = ".cache";
+  /**
+   * Extension of the partner file that carries a cache file's nonce: {@code foo.cache} is
+   * accompanied by {@code foo.cache.nonce}. The nonce is a fresh random value written on every
+   * save, used to detect that someone else has rewritten the cache since we last read or wrote
+   * it.
+   *
+   * <p>It lives beside the cache rather than in a header line inside it because cache folders
+   * are routinely kept in version control - core's own test txCache, IG repositories, the
+   * auto-builder's cache repo - and a value that changes on every save would turn every run
+   * into a diff of every file. This file is local bookkeeping only: deleting it costs one
+   * extra merge and nothing else, and a repository holding a cache folder should ignore
+   * {@code *.cache.nonce}. Where one does get committed it still costs nothing, because only a
+   * cache that is being rewritten gets a new nonce: the partner file never changes on its own.
+   *
+   * <p>Deliberately does not end in {@link #CACHE_FILE_EXTENSION}, so {@link #load()} does not
+   * mistake it for a cache.
+   */
+  private static final String NONCE_FILE_EXTENSION = ".cache.nonce";
+
+  /**
+   * Suffix for the scratch file a save writes into before swapping it over the real one.
+   * Deliberately does not end in {@link #CACHE_FILE_EXTENSION}, so {@link #load()} skips
+   * any that a hard kill left behind.
+   */
+  private static final String TEMP_FILE_EXTENSION = ".tmp";
   private static final String CAPABILITY_STATEMENT_TITLE = ".capabilityStatement";
   private static final String TERMINOLOGY_CAPABILITIES_TITLE = ".terminologyCapabilities";
   private static final String FIXED_CACHE_VERSION = "4"; // last change: change the way tx.fhir.org handles expansions
@@ -166,9 +191,33 @@ public class TerminologyCache {
    * Minimum interval between persistent saves of a single NamedCache. Writes within this
    * window are coalesced: the in-memory cache is updated immediately, and the entry is
    * flushed to disk on the first subsequent write past the window, or by an explicit
-   * {@link #save()} call (which is what shutdown handling should use).
+   * {@link #save()} call.
+   *
+   * <p>Five minutes, which is long enough that this is no longer the main way anything
+   * reaches disk. Callers are expected to {@link #save()} when a unit of work finishes - the
+   * validator at the end of a command, the IG publisher after validation and again at the end
+   * of a build - and this window is the backstop for the long stretches in between, plus a
+   * bound on how much is at risk if the process dies. A shutdown hook catches the ordinary
+   * interruptions; see {@link #ensureShutdownHook}.
    */
-  private static final long SAVE_DELAY_MS = 5000;
+  private static final long SAVE_DELAY_MS = 300000;
+
+  /**
+   * How long a JVM shutdown waits for pending cache entries to be written before giving up.
+   */
+  private static final long SHUTDOWN_SAVE_TIMEOUT_MS = 10000;
+
+  /**
+   * Every cache that has a folder, so a shutdown can flush them all. Held weakly, so a cache
+   * that is simply dropped without {@link #unload()} being called does not leak; synchronized,
+   * because the shutdown thread walks it while the rest of the program may still be creating
+   * caches.
+   */
+  private static final Set<TerminologyCache> liveCaches =
+      Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<TerminologyCache, Boolean>()));
+
+  /** Guarded by {@link #liveCaches}. */
+  private static boolean shutdownHookAdded = false;
 
   /**
    * Upper bound on the number of persistent entries kept in a single NamedCache, both in
@@ -287,13 +336,25 @@ public class TerminologyCache {
   }
 
   private class NamedCache {
-    private String name;
+    private final String name;
     private Set<CacheEntry> list = new LinkedHashSet<CacheEntry>(); // persistent entries, in insertion order
     private Map<String, CacheEntry> map = new HashMap<String, CacheEntry>();
     /** True when {@link #list} has persistent entries that haven't yet been flushed to disk. */
     private boolean dirty = false;
     /** Wall-clock time of the last on-disk save for this cache (0 = never saved this session). */
     private long lastSaveAt = 0;
+    /**
+     * The nonce of the copy of this cache we last read or wrote, as recorded in the partner
+     * file described by {@link #NONCE_FILE_EXTENSION}. Null when we have never touched the
+     * file, or when writing the nonce failed. If the partner file no longer carries this
+     * value, another process has rewritten the cache and we must merge before saving over the
+     * top - see {@link #mergeWithDiskCache}.
+     */
+    private String nonce = null;
+
+    protected NamedCache(String name) {
+      this.name = name;
+    }
   }
 
 
@@ -342,7 +403,7 @@ public class TerminologyCache {
   @Getter @Setter private static boolean noCaching;
   @Getter @Setter private static boolean cacheErrors;
 
-  protected TerminologyCache(Object lock, String folder, Long capabilityCacheExpirationMilliseconds, IWorkerContext context) throws FileNotFoundException, IOException, FHIRException {
+  public TerminologyCache(Object lock, String folder, Long capabilityCacheExpirationMilliseconds, IWorkerContext context) throws FileNotFoundException, IOException, FHIRException {
     super();
    this.lock = lock;
    this.context = context;
@@ -370,6 +431,8 @@ public class TerminologyCache {
       }
       checkVersion();
       load();
+      liveCaches.add(this);
+      ensureShutdownHook();
     }
   }
 
@@ -427,10 +490,66 @@ public class TerminologyCache {
     return s.replace("/", ".");
   }
   
+  /**
+   * Arrange for pending entries to be written when the JVM goes down.
+   *
+   * <p>Saves are coalesced into {@value #SAVE_DELAY_MS}ms windows, so a run that is interrupted
+   * - Ctrl-C on a long IG build, a CI job that hits its time limit - would otherwise discard
+   * terminology work that has already been paid for. {@link #unload()} saves, but nothing
+   * guarantees it is ever reached.
+   *
+   * <p>The writing happens on a separate thread that the hook waits a bounded time for, because
+   * {@link #save()} takes the context lock: if another thread holds it as the JVM starts to shut
+   * down, doing this inline would hang the exit instead of merely losing a cache entry. Timing
+   * out leaves us exactly where we would have been without a hook, and a partial flush is safe
+   * because each file is swapped into place atomically.
+   */
+  private static void ensureShutdownHook() {
+    synchronized (liveCaches) {
+      if (shutdownHookAdded) {
+        return;
+      }
+      shutdownHookAdded = true;
+    }
+    try {
+      Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+        Thread saver = new Thread(TerminologyCache::saveAll, "terminology-cache-shutdown-save");
+        saver.setDaemon(true);
+        saver.start();
+        try {
+          saver.join(SHUTDOWN_SAVE_TIMEOUT_MS);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+        }
+      }, "terminology-cache-shutdown"));
+    } catch (IllegalStateException e) {
+      // shutdown is already under way; there is nothing left to register with
+    }
+  }
+
+  private static void saveAll() {
+    List<TerminologyCache> caches;
+    synchronized (liveCaches) {
+      caches = new ArrayList<TerminologyCache>(liveCaches);
+    }
+    for (TerminologyCache cache : caches) {
+      try {
+        cache.save();
+      } catch (Throwable t) {
+        // Throwable, not Exception, and deliberately: the most likely way to get here is a
+        // JVM going down under memory pressure, where writing a large cache throws
+        // OutOfMemoryError. That must not stop the smaller caches from being written. We are
+        // on the way out and there is nothing left to protect, so there is nowhere useful for
+        // this to go either.
+      }
+    }
+  }
+
   public void unload() {
     // not useable after this is called — flush any pending writes first so we don't lose
     // entries that were waiting out the SAVE_DELAY_MS coalescing window.
     save();
+    liveCaches.remove(this);
     caches.clear();
     vsCache.clear();
     csCache.clear();
@@ -479,18 +598,25 @@ public class TerminologyCache {
     save(terminologyCapabilities, TERMINOLOGY_CAPABILITIES_TITLE+"."+getServerId(address));
   }
 
+  private String getSystemName(String name, String oldName) {
+    String systemName = getSystemNameKeyGenerator().getNameForSystem(name);
+    if (oldName == null)
+      oldName = systemName;
+    else if (!systemName.equals(oldName))
+      oldName = NAME_FOR_NO_SYSTEM;
+    return oldName;
+  }
 
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs, Parameters expParameters) {
     try {
       CacheToken ct = new CacheToken();
       if (code.hasSystem()) {
-        ct.setName(code.getSystem());
-        ct.setHasVersion(code.hasVersion());
+        ct.setName(getSystemName(code.getSystem(), ct.getName()));
+      } else {
+        ct.setName(getSystemName(NAME_FOR_NO_SYSTEM, ct.getName()));
       }
-      else
-        ct.setName(NAME_FOR_NO_SYSTEM);
       nameCacheToken(vs, ct);
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
 
@@ -517,13 +643,12 @@ public class TerminologyCache {
     try {
       CacheToken ct = new CacheToken();
       if (code.hasSystem()) {
-        ct.setName(code.getSystem());
-        ct.setHasVersion(code.hasVersion());
+        ct.setName(getSystemName(code.getSystem(), ct.getName()));
       } else {
-        ct.setName(NAME_FOR_NO_SYSTEM);
+        ct.setName(getSystemName(NAME_FOR_NO_SYSTEM, ct.getName()));
       }
-      ct.setName(vsUrl);
-      JsonParser json = new JsonParser(context);
+      ct.setName(getSystemName(vsUrl, ct.getName()));
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
 
@@ -569,12 +694,11 @@ public class TerminologyCache {
       CacheToken ct = new CacheToken();
       for (Coding c : code.getCodingList()) {
         if (c.hasSystem()) {
-          ct.setName(c.getSystem());
-          ct.setHasVersion(c.hasVersion());
+          ct.setName(getSystemName(c.getSystem(), ct.getName()));
         }
       }
       nameCacheToken(vs, ct);
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
@@ -596,7 +720,7 @@ public class TerminologyCache {
   public ValueSet getVSEssense(ValueSet vs) {
     if (vs == null)
       return null;
-    ValueSet vsc = new ValueSet();
+    ValueSet vsc = new ValueSet(vs.getModelContext());
     vsc.setCompose(vs.getCompose());
     if (vs.hasExpansion()) {
       vsc.getExpansion().getParameterList().addAll(vs.getExpansion().getParameterList());
@@ -612,7 +736,7 @@ public class TerminologyCache {
       ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\"}\r\n");
     } else {
       ValueSet vsc = getVSEssense(vs);
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       try {
         ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n");
@@ -635,20 +759,17 @@ public class TerminologyCache {
     if (vs != null) {
       for (ValueSet.ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
         if (inc.hasSystem()) {
-          ct.setName(inc.getSystem());
-          ct.setHasVersion(inc.hasVersion());
+          ct.setName(getSystemName(inc.getSystem(), ct.getName()));
         }
       }
       for (ValueSet.ConceptSetComponent inc : vs.getCompose().getExcludeList()) {
         if (inc.hasSystem()) {
-          ct.setName(inc.getSystem());
-          ct.setHasVersion(inc.hasVersion());
+          ct.setName(getSystemName(inc.getSystem(), ct.getName()));
         }
       }
       for (ValueSet.ValueSetExpansionContainsComponent inc : vs.getExpansion().getContainsList()) {
         if (inc.hasSystem()) {
-          ct.setName(inc.getSystem());
-          ct.setHasVersion(inc.hasVersion());
+          ct.setName(getSystemName(inc.getSystem(), ct.getName()));
         }
       }
     }
@@ -678,8 +799,7 @@ public class TerminologyCache {
     NamedCache nc = caches.get(cacheName);
 
     if (nc == null) {
-      nc = new NamedCache();
-      nc.name = cacheName;
+      nc = new NamedCache(cacheName);
       caches.put(nc.name, nc);
     }
     return nc;
@@ -712,11 +832,18 @@ public class TerminologyCache {
       return;
     }
 
-    if ( !cacheErrors &&
-        ( e.v!= null
-        && e.v.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED
-        && !cacheToken.isHasVersion())) {
-      return;
+    // Two kinds of result describe the state of the terminology server rather than the content
+    // being validated, and so must not outlive this session:
+    //  - SERVER_ERROR / NOSERVICE: the server could not be reached this time. Written to disk,
+    //    a single timeout becomes permanent for every later run and every later version of the
+    //    validator, with no recovery short of deleting the cache directory by hand (see #2524).
+    //  - CODESYSTEM_UNSUPPORTED: the server does not have that code system. Load it and the
+    //    answer changes, so it is no more durable than the one above (see #2262).
+    // Both are still held in memory, so repeat validation of the same code stays cheap within
+    // the run; they are simply asked again next time.
+    if (persistent && (isTransientFailure(e) || (!cacheErrors && isCodeSystemUnsupported(e)))) {
+      persistent = false;
+      e.persistent = false;
     }
 
     // map.put returns the entry this key previously held (or null). Removing that exact
@@ -739,6 +866,35 @@ public class TerminologyCache {
         save(nc, now);
       }
     }
+  }
+
+  private boolean isCodeSystemUnsupported(CacheEntry e) {
+    return errorClassOf(e) == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
+  }
+
+  /**
+   * The error class of whatever kind of answer this entry holds - a validation, or an expansion.
+   */
+  private TerminologyServiceErrorClass errorClassOf(CacheEntry e) {
+    if (e.v != null) {
+      return e.v.getErrorClass();
+    } else if (e.e != null) {
+      return e.e.getErrorClass();
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Is this a failure to reach the terminology server, rather than an answer about the content?
+   *
+   * Deliberately not {@link TerminologyServiceErrorClass#isInfrastructure()}, which also covers
+   * VALUESET_UNSUPPORTED: that describes the request the server was asked to answer, and is
+   * reproducible, where these two describe the connection at one moment in time.
+   */
+  private boolean isTransientFailure(CacheEntry e) {
+    TerminologyServiceErrorClass ec = errorClassOf(e);
+    return ec == TerminologyServiceErrorClass.SERVER_ERROR || ec == TerminologyServiceErrorClass.NOSERVICE;
   }
 
   /**
@@ -819,123 +975,352 @@ public class TerminologyCache {
       return;
 
     try {
-      OutputStreamWriter sw = new OutputStreamWriter(ManagedFileAccess.outStream(Utilities.path(folder, title + CACHE_FILE_EXTENSION)), "UTF-8");
-
-      JsonParser json = new JsonParser(context);
-      json.setOutputStyle(OutputStyle.PRETTY);
-
-      sw.write(json.composeString(resource).trim());
-      sw.close();
+      String target = Utilities.path(folder, title + CACHE_FILE_EXTENSION);
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target))) {
+        try (OutputStreamWriter tempFileWriter = new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8)) {
+          JsonParser jsonParser = new JsonParser(context.getModelContext());
+          jsonParser.setOutputStyle(OutputStyle.PRETTY);
+          tempFileWriter.write(jsonParser.composeString(resource).trim());
+        }
+        FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
+        tempFile.setDeleted();
+      }
     } catch (Exception e) {
       log.error("error saving capability statement "+e.getMessage(), e);
     }
   }
 
-  private void save(NamedCache nc, long lastSaveAt) {
+  /**
+   * The scratch file a save writes into before swapping it over {@code target}.
+   *
+   * <p>It sits beside the target - the swap can only be atomic within one filesystem - and
+   * carries a random discriminator so that two processes saving the same cache at the same
+   * moment write to different scratch files. Without that they would interleave into one
+   * shared temp file and swap the mess into place. With it, the only contended operation is
+   * the swap itself, which is atomic, so the loser is simply overwritten.
+   */
+  private String tempFileFor(String target) {
+    return target + "." + UUID.randomUUID().toString() + TEMP_FILE_EXTENSION;
+  }
+
+  /**
+   * What the nonce file beside a cache says: the nonce written by the save that produced the
+   * cache file, and the length that file had when it was written.
+   */
+  private static class DiskNonce {
+    private final String nonce;
+    private final long length;
+
+    private DiskNonce(String nonce, long length) {
+      this.nonce = nonce;
+      this.length = length;
+    }
+  }
+
+  /**
+   * Read the nonce file beside a cache.
+   *
+   * @return what it says, or null if there isn't one, or it can't be read or understood - all
+   *   of which mean the same thing to the caller: we can't prove the cache is untouched
+   */
+  private DiskNonce readNonce(String name) {
+    try {
+      String path = Utilities.path(folder, name+NONCE_FILE_EXTENSION);
+      if (!ManagedFileAccess.file(path).exists()) {
+        return null;
+      }
+      try (BufferedReader r = new BufferedReader(new InputStreamReader(
+          ManagedFileAccess.inStream(path), StandardCharsets.UTF_8))) {
+        String line;
+        while ((line = r.readLine()) != null) {
+          line = line.trim();
+          if (line.isEmpty() || line.startsWith("#")) {
+            continue;
+          }
+          int i = line.indexOf(' ');
+          if (i < 1) {
+            return null;
+          }
+          return new DiskNonce(line.substring(0, i), Long.parseLong(line.substring(i+1).trim()));
+        }
+      }
+      return null;
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  /**
+   * Write the nonce file beside a cache we have just saved. Records the cache file's length as
+   * well as the nonce, because the nonce alone only proves that the last writer to come
+   * through this code was us: a checkout of a version-controlled cache folder, a hand edit or
+   * an older build can all replace the cache without touching its partner, and the lengths not
+   * agreeing is what catches that.
+   *
+   * @return true if it was written
+   */
+  private boolean writeNonce(String name, String nonce, long length) {
+    try {
+      String target = Utilities.path(folder, name+NONCE_FILE_EXTENSION);
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target))) {
+        try (BufferedWriter w = new BufferedWriter(new OutputStreamWriter(
+            ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8))) {
+          w.write("# nonce for "+name+CACHE_FILE_EXTENSION+" - local bookkeeping, safe to delete, do not commit\r\n");
+          w.write(nonce+" "+length+"\r\n");
+        }
+        FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
+        tempFile.setDeleted();
+      }
+      return true;
+    } catch (Exception e) {
+      log.debug("Unable to write the nonce for "+name+" ("+e.getMessage()+") - the next save will merge from disk");
+      return false;
+    }
+  }
+
+  /**
+   * Deletes the scratch file it wraps on close(), unless {@link #setDeleted()} has been called -
+   * i.e. cleans up a save's temp file if the save didn't reach the atomic rename.
+   */
+  private static final class AutoCloseableTempFile implements AutoCloseable {
+    private final String filePath;
+    private boolean isDeleted = false;
+
+    private AutoCloseableTempFile(String path) {
+      this.filePath = path;
+    }
+
+    String getFilePath() {
+      return filePath;
+    }
+
+    void setDeleted() {
+      isDeleted = true;
+    }
+
+    @Override
+    public void close() {
+      if (!isDeleted && filePath != null) {
+          try {
+            ManagedFileAccess.file(filePath).delete();
+          } catch (Exception e) {
+            log.debug("Exception deleting " + filePath + " after try-catch", e);
+          }
+        }
+
+    }
+  }
+
+  /**
+   * Has the file behind this cache been rewritten by someone else since we last read or wrote
+   * it?
+   *
+   * <p>Answered from the nonce beside the file rather than from its timestamp: mtime
+   * granularity is a whole second on some filesystems, which sits well inside the window in
+   * which two processes can both save, whereas the nonce is exact. Answering costs one small
+   * read and a stat.
+   *
+   * <p>A cache with no nonce beside it counts as changed - it was written by a version of this
+   * code from before the partner file existed, or the folder came out of version control, or
+   * someone tidied up. That happens once: our own save writes a nonce, so it converges
+   * immediately.
+   */
+  private boolean shouldMergeWithDiskCache(NamedCache nc) {
+    try {
+      String path = Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION);
+      if (!ManagedFileAccess.file(path).exists()) {
+        return false;
+      }
+      DiskNonce disk = readNonce(nc.name);
+      if (disk == null || !disk.nonce.equals(nc.nonce)) {
+        return true;
+      }
+      // the nonce is ours, but it only vouches for a file of the length we wrote it for
+      return disk.length != ManagedFileAccess.file(path).length();
+    } catch (Exception e) {
+      // if we can't tell, assume it changed: re-reading a file needlessly is cheap, and
+      // dropping another process's entries is not
+      log.debug("Unable to check "+nc.name+" for concurrent changes ("+e.getMessage()+") - merging anyway");
+      return true;
+    }
+  }
+
+  /**
+   * Fold the on-disk copy of this cache into our in-memory one, so that saving over the top
+   * does not discard what another process learned.
+   *
+   * <p>Direction matters, and it is this way round: start from what is on disk, then replay
+   * our own entries on top. For a request we both hold, ours wins - we just got it from the
+   * server, so it is the fresher answer - and it lands at the tail of the insertion order.
+   * {@link #enforceEntryLimit} evicts oldest-first, so a merge that overflows the cap discards
+   * stale entries from disk rather than anything we just fetched.
+   *
+   * <p>Transient entries are the one wrinkle. They live in the map but never in the list, so
+   * they are never written; where disk has a persistent answer for a request we only hold
+   * transiently, we take the disk entry - a real answer beats a local outage, and keeping it
+   * is also what stops our save from dropping it from the file.
+   */
+  private void mergeWithDiskCache(NamedCache memoryCache) {
+    NamedCache diskCache = readNamedCache(memoryCache.name+CACHE_FILE_EXTENSION, memoryCache.name);
+    if (diskCache == null) {
+      return; // unreadable: keep what we have rather than losing that too
+    }
+    Set<CacheEntry> mergedCacheList = new LinkedHashSet<CacheEntry>();
+    for (CacheEntry diskEntry : diskCache.list) {
+      String key = String.valueOf(hashJson(diskEntry.request));
+      CacheEntry memoryEntry = memoryCache.map.get(key);
+      if (memoryEntry != null && memoryEntry.persistent) {
+        continue; // ours is newer; it goes in below, after everything from disk
+      }
+      mergedCacheList.add(diskEntry);
+      memoryCache.map.put(key, diskEntry);
+    }
+    mergedCacheList.addAll(memoryCache.list);
+    memoryCache.list = mergedCacheList;
+    enforceEntryLimit(memoryCache);
+    memoryCache.nonce = diskCache.nonce;
+  }
+
+  private void save(NamedCache namedCache, long lastSaveAt) {
     if (folder == null)
       return;
 
-    try {
-      BufferedWriter sw = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION)), "UTF-8"));
-      sw.write(ENTRY_MARKER+"\r\n");
-      JsonParser json = new JsonParser(context);
-      json.setOutputStyle(OutputStyle.PRETTY);
-      for (CacheEntry ce : nc.list) {
-        sw.write(ce.request.trim());
-        sw.write(BREAK+"\r\n");
-        if (ce.e != null) {
-          sw.write("e: {\r\n");
-          if (ce.e.isFromServer()) {
-            sw.write("  \"from-server\" : true,\r\n");
-          }
-          if (ce.e.getErrorClass() != null) {
-            sw.write("  \"class\" : \""+ce.e.getErrorClass().toString()+"\",\r\n");
-          }
-          if (ce.e.getValueset() != null) {
-            if (ce.e.getValueset().hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
-              sw.write("  \"source\" : "+Utilities.escapeJson(ce.e.getValueset().getUserString(UserDataNames.VS_EXPANSION_SOURCE)).trim()+",\r\n");              
-            }
-            sw.write("  \"valueSet\" : "+json.composeString(ce.e.getValueset()).trim()+",\r\n");
-          }
-          sw.write("  \"error\" : \""+Utilities.escapeJson(ce.e.getError()).trim()+"\"\r\n}\r\n");
-        } else if (ce.s != null) {
-          sw.write("s: {\r\n");
-          sw.write("  \"result\" : "+ce.s.result+"\r\n}\r\n");
-        } else {
-          sw.write("v: {\r\n");
-          boolean first = true;
-          if (ce.v.getDisplay() != null) {            
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"display\" : \""+Utilities.escapeJson(ce.v.getDisplay()).trim()+"\"");
-          }
-          if (ce.v.getCode() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"code\" : \""+Utilities.escapeJson(ce.v.getCode()).trim()+"\"");
-          }
-          if (ce.v.getSystem() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"system\" : \""+Utilities.escapeJson(ce.v.getSystem()).trim()+"\"");
-          }
-          if (ce.v.getVersion() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"version\" : \""+Utilities.escapeJson(ce.v.getVersion()).trim()+"\"");
-          }
-          if (ce.v.getSeverity() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"severity\" : "+"\""+ce.v.getSeverity().toCode().trim()+"\""+"");
-          }
-          if (ce.v.getMessage() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"error\" : \""+Utilities.escapeJson(ce.v.getMessage()).trim()+"\"");
-          }
-          if (ce.v.getErrorClass() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"class\" : \""+Utilities.escapeJson(ce.v.getErrorClass().toString())+"\"");
-          }
-          if (ce.v.getDefinition() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"definition\" : \""+Utilities.escapeJson(ce.v.getDefinition()).trim()+"\"");
-          }
-          if (ce.v.getStatus() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"status\" : \""+Utilities.escapeJson(ce.v.getStatus()).trim()+"\"");
-          }
-          if (ce.v.getServer() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"server\" : \""+Utilities.escapeJson(ce.v.getServer()).trim()+"\"");
-          }
-          if (ce.v.isInactive()) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"inactive\" : true");
-          }
-          if (ce.v.getDiagnostics() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"diagnostics\" : \""+Utilities.escapeJson(ce.v.getDiagnostics()).trim()+"\"");
-          }
-          if (ce.v.getUnknownSystems() != null && ce.v.getUnknownSystems().size() > 0) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"unknown-systems\" : \""+Utilities.escapeJson(CommaSeparatedStringBuilder.join(",", ce.v.getUnknownSystems())).trim()+"\"");
-          }
-          if (ce.v.getParameters() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"parameters\" : "+json.composeString(ce.v.getParameters()).trim()+"\r\n");
-          }
-          if (ce.v.getIssues() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            OperationOutcome oo = new OperationOutcome();
-            oo.setIssueList(ce.v.getIssues());
-            sw.write("  \"issues\" : "+json.composeString(oo).trim()+"\r\n");
-          }
-          sw.write("\r\n}\r\n");
-        }
-        sw.write(ENTRY_MARKER+"\r\n");
-      }      
-      sw.close();
-    } catch (Exception e) {
-      log.error("error saving "+nc.name+": "+e.getMessage(), e);
+    // Another process sharing this cache folder may have rewritten this file since we last
+    // read or wrote it; fold what it learned in before we save over the top. Costs one line
+    // read unless the file really has changed.
+    if (shouldMergeWithDiskCache(namedCache)) {
+      mergeWithDiskCache(namedCache);
     }
-    nc.dirty = false;
-    nc.lastSaveAt = lastSaveAt;
+
+    // Write the whole file into a scratch file beside it and swap that into place once it is
+    // complete, rather than writing over the live file. Anything reading concurrently - another
+    // validator process sharing this cache folder, our own load(), TerminologyCacheManager
+    // zipping the folder up, a git add in the auto-builder - then sees either the old file or
+    // the new one, never a truncated one. See FileUtilities.replaceFileAtomically.
+    boolean saved = false;
+    try {
+      String target = Utilities.path(folder, namedCache.name+CACHE_FILE_EXTENSION);
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target))) {
+        // the writer has to be closed - so everything is flushed - before the swap, or the file
+        // that lands in place can be missing its tail (and on Windows the move of a file that is
+        // still open fails outright)
+        try (BufferedWriter tempFileWriter = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8))) {
+          tempFileWriter.write(ENTRY_MARKER+"\r\n");
+          JsonParser jsonParser = new JsonParser(context.getModelContext());
+          jsonParser.setOutputStyle(OutputStyle.PRETTY);
+          for (CacheEntry cacheEntry : namedCache.list) {
+            writeCacheEntryToFile(cacheEntry, tempFileWriter, jsonParser);
+          }
+        }
+        FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
+        tempFile.setDeleted();
+      }
+      // The nonce goes in the partner file, and only once the cache itself is in place: if we
+      // die between the two, the nonce is stale or missing and the next save merges, which is
+      // the safe way round.
+      String nonce = UUID.randomUUID().toString();
+      namedCache.nonce = writeNonce(namedCache.name, nonce, ManagedFileAccess.file(target).length()) ? nonce : null;
+      saved = true;
+    } catch (Exception e) {
+      log.error("error saving "+namedCache.name+": "+e.getMessage(), e);
+    }
+    // A failed write leaves the cache dirty so that the next save retries these entries,
+    // instead of clearing the flag and dropping them silently. lastSaveAt is advanced either
+    // way, so a write that keeps failing (a read-only folder, say) retries once per
+    // SAVE_DELAY_MS window rather than on every single store.
+    namedCache.dirty = !saved;
+    namedCache.lastSaveAt = lastSaveAt;
+  }
+
+  private static void writeCacheEntryToFile(CacheEntry cacheEntry, BufferedWriter writer, JsonParser json) throws IOException {
+    writer.write(cacheEntry.request.trim());
+    writer.write(BREAK+"\r\n");
+    if (cacheEntry.e != null) {
+      writer.write("e: {\r\n");
+      if (cacheEntry.e.isFromServer()) {
+        writer.write("  \"from-server\" : true,\r\n");
+      }
+      if (cacheEntry.e.getErrorClass() != null) {
+        writer.write("  \"class\" : \""+ cacheEntry.e.getErrorClass().toString()+"\",\r\n");
+      }
+      if (cacheEntry.e.getValueset() != null) {
+        if (cacheEntry.e.getValueset().hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
+          writer.write("  \"source\" : "+Utilities.escapeJson(cacheEntry.e.getValueset().getUserString(UserDataNames.VS_EXPANSION_SOURCE)).trim()+",\r\n");
+        }
+        writer.write("  \"valueSet\" : "+ json.composeString(cacheEntry.e.getValueset()).trim()+",\r\n");
+      }
+      writer.write("  \"error\" : \""+Utilities.escapeJson(cacheEntry.e.getError()).trim()+"\"\r\n}\r\n");
+    } else if (cacheEntry.s != null) {
+      writer.write("s: {\r\n");
+      writer.write("  \"result\" : "+ cacheEntry.s.result+"\r\n}\r\n");
+    } else {
+      writer.write("v: {\r\n");
+      boolean first = true;
+      if (cacheEntry.v.getDisplay() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"display\" : \""+Utilities.escapeJson(cacheEntry.v.getDisplay()).trim()+"\"");
+      }
+      if (cacheEntry.v.getCode() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"code\" : \""+Utilities.escapeJson(cacheEntry.v.getCode()).trim()+"\"");
+      }
+      if (cacheEntry.v.getSystem() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"system\" : \""+Utilities.escapeJson(cacheEntry.v.getSystem()).trim()+"\"");
+      }
+      if (cacheEntry.v.getVersion() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"version\" : \""+Utilities.escapeJson(cacheEntry.v.getVersion()).trim()+"\"");
+      }
+      if (cacheEntry.v.getSeverity() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"severity\" : "+"\""+ cacheEntry.v.getSeverity().toCode().trim()+"\"");
+      }
+      if (cacheEntry.v.getMessage() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"error\" : \""+Utilities.escapeJson(cacheEntry.v.getMessage()).trim()+"\"");
+      }
+      if (cacheEntry.v.getErrorClass() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"class\" : \""+Utilities.escapeJson(cacheEntry.v.getErrorClass().toString())+"\"");
+      }
+      if (cacheEntry.v.getDefinition() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"definition\" : \""+Utilities.escapeJson(cacheEntry.v.getDefinition()).trim()+"\"");
+      }
+      if (cacheEntry.v.getStatus() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"status\" : \""+Utilities.escapeJson(cacheEntry.v.getStatus()).trim()+"\"");
+      }
+      if (cacheEntry.v.getServer() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"server\" : \""+Utilities.escapeJson(cacheEntry.v.getServer()).trim()+"\"");
+      }
+      if (cacheEntry.v.isInactive()) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"inactive\" : true");
+      }
+      if (cacheEntry.v.getDiagnostics() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"diagnostics\" : \""+Utilities.escapeJson(cacheEntry.v.getDiagnostics()).trim()+"\"");
+      }
+      if (cacheEntry.v.getUnknownSystems() != null && !cacheEntry.v.getUnknownSystems().isEmpty()) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"unknown-systems\" : \""+Utilities.escapeJson(CommaSeparatedStringBuilder.join(",", cacheEntry.v.getUnknownSystems())).trim()+"\"");
+      }
+      if (cacheEntry.v.getParameters() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"parameters\" : "+ json.composeString(cacheEntry.v.getParameters()).trim()+"\r\n");
+      }
+      if (cacheEntry.v.getIssues() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        OperationOutcome oo = new OperationOutcome();
+        oo.setIssueList(cacheEntry.v.getIssues());
+        writer.write("  \"issues\" : "+ json.composeString(oo).trim()+"\r\n");
+      }
+      writer.write("\r\n}\r\n");
+    }
+    writer.write(ENTRY_MARKER+"\r\n");
   }
 
   private boolean isCapabilityCache(String fn) {
@@ -957,7 +1342,7 @@ public class TerminologyCache {
       String address = getServerForId(serverId);
       if (address != null) {
         JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(src);
-        Resource resource = new JsonParser(context).parse(o);
+        Resource resource = new JsonParser(context.getModelContext()).parse(o);
 
         if (fn.startsWith(CAPABILITY_STATEMENT_TITLE)) {
           this.capabilityStatementCache.put(address, (CapabilityStatement) resource);
@@ -991,7 +1376,7 @@ public class TerminologyCache {
     if (e == 'e') {
       TerminologyServiceErrorClass errorClass = o.has("class") ? TerminologyServiceErrorClass.valueOf(o.get("class").getAsString()) : TerminologyServiceErrorClass.UNKNOWN;
       if (o.has("valueSet")) {
-        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser(context).parse(o.getAsJsonObject("valueSet")), error, errorClass, o.has("from-server"));
+        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser(context.getModelContext()).parse(o.getAsJsonObject("valueSet")), error, errorClass, o.has("from-server"));
         if (o.has("source")) {
           ce.e.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, o.get("source").getAsString());
         }
@@ -1012,8 +1397,8 @@ public class TerminologyCache {
       String status = loadJS(o.get("status"));
       boolean inactive = "true".equals(loadJS(o.get("inactive")));
       String unknownSystems = loadJS(o.get("unknown-systems"));
-      OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser(context).parse(o.getAsJsonObject("issues")) : null;
-      Parameters p = o.has("parameters") ? (Parameters) new JsonParser(context).parse(o.getAsJsonObject("parameters")) : null;
+      OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser(context.getModelContext()).parse(o.getAsJsonObject("issues")) : null;
+      Parameters p = o.has("parameters") ? (Parameters) new JsonParser(context.getModelContext()).parse(o.getAsJsonObject("parameters")) : null;
       t = loadJS(o.get("class")); 
       TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
       ce.v = new ValidationResult(severity, error, system, version, new CodeSystem.ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display, null).setErrorClass(errorClass);
@@ -1032,9 +1417,26 @@ public class TerminologyCache {
   }
 
   private void loadNamedCache(String fn) throws IOException {
+    NamedCache nc = readNamedCache(fn, fn.substring(0, fn.lastIndexOf(".")));
+    if (nc != null) {
+      caches.put(nc.name, nc);
+    }
+  }
+
+  /**
+   * Read a cache file into a fresh NamedCache, without registering it in {@link #caches}.
+   *
+   * @return the loaded cache, or null if the file could not be read at all
+   */
+  private NamedCache readNamedCache(String fn, String name) {
     int c = 0;
-    NamedCache nc = new NamedCache();
-    nc.name = fn.substring(0, fn.lastIndexOf("."));
+    NamedCache nc = new NamedCache(name);
+
+    // The nonce is read before the content, not after: if a save lands between the two we end
+    // up holding the older nonce for newer content, which costs a needless merge next time
+    // rather than losing an entry.
+    DiskNonce dn = readNonce(name);
+    nc.nonce = dn == null ? null : dn.nonce;
 
     // Stream the file one entry at a time. Cache files can be very large (e.g. the ICD-11
     // cache), and reading the whole file into a single String (as FileUtilities.fileToString
@@ -1052,7 +1454,9 @@ public class TerminologyCache {
           if (seenMarker) {
             loadCacheEntry(nc, segment.toString(), fn, ++c);
           }
-          // Content before the first marker (including any legacy '?' prefix) is discarded.
+          // Content before the first marker is discarded: a legacy '?' prefix, and the nonce
+          // header that builds between #2332 and this change wrote there. Rewriting the file
+          // drops that line, so a cache folder in version control settles down after one save.
           seenMarker = true;
           segment.setLength(0);
         } else {
@@ -1061,10 +1465,11 @@ public class TerminologyCache {
       }
       // Trailing content after the last marker is intentionally ignored: only
       // marker-terminated entries are loaded (matching the original behavior).
-      caches.put(nc.name, nc);
     } catch (Exception e) {
       log.error("Error loading "+fn+": "+e.getMessage()+" entry "+c+" - ignoring it", e);
+      return null;
     }
+    return nc;
   }
 
   private void loadCacheEntry(NamedCache nc, String s, String fn, int c) {
@@ -1081,6 +1486,13 @@ public class TerminologyCache {
       String resultString = s.substring(breakIndex + BREAK.length() + 1).trim();
 
       CacheEntry cacheEntry = getCacheEntry(request, resultString);
+
+      // Caches written before #2524 can hold transient failures. Drop them on the way in
+      // rather than serving a stale outage back: the file is rewritten without them the
+      // next time this cache saves.
+      if (isTransientFailure(cacheEntry)) {
+        return;
+      }
 
       // Mirror store()'s dedup so the set and map stay consistent even if a file somehow
       // holds the same request twice: the last occurrence wins, no orphan is left behind.
@@ -1295,7 +1707,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser(context).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser(context.getModelContext()).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
       } catch (Exception e) {
         return null;
       }
@@ -1308,7 +1720,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser(context).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser(context.getModelContext()).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
       } catch (Exception e) {
         return null;
       }
@@ -1326,7 +1738,7 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "vs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser(context).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
+          new JsonParser(context.getModelContext()).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
         }
         vsCache.put(canonical, new SourcedValueSetEntry(svs.getServer(), fn));
       }    
@@ -1363,7 +1775,7 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "cs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser(context).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
+          new JsonParser(context.getModelContext()).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
         }
         csCache.put(canonical, new SourcedCodeSystemEntry(scs.getServer(), fn));
       }    
@@ -1393,13 +1805,12 @@ public class TerminologyCache {
     try {
       CacheToken ct = new CacheToken();
       if (parent.hasSystem()) {
-        ct.setName(parent.getSystem());
+        ct.setName(getSystemName(parent.getSystem(), ct.getName()));
       }
       if (child.hasSystem()) {
-        ct.setName(child.getSystem());
+        ct.setName(getSystemName(child.getSystem(), ct.getName()));
       }
-      ct.setHasVersion(parent.hasVersion() || child.hasVersion());
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
       ct.setRequest( "{\"op\": \"subsumes\", \"parent\" : "+json.composeString(parent, "code")+", \"child\" :"+json.composeString(child, "code")+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}");

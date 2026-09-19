@@ -167,6 +167,10 @@ public class PARTY_IDENTITY extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((PARTY_IDENTITY) dst);
+      }
+
       public void copyValues(PARTY_IDENTITY dst) {
         super.copyValues(dst);
         dst.details = details == null ? null : details.copy();

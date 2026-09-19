@@ -48,15 +48,12 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.UcumEssenceService;
-import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
-import org.hl7.fhir.convertors.loaders.loaderR5.R2016MayToR5Loader;
-import org.hl7.fhir.convertors.loaders.loaderR5.R2ToR5Loader;
-import org.hl7.fhir.convertors.loaders.loaderR5.R3ToR5Loader;
-import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
-import org.hl7.fhir.r5.context.IContextResourceLoader;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.convertors.loaders.loaderRN.*;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.services.context.IContextResourceLoaderN;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.model.core.Parameters;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -93,7 +90,7 @@ public class ConversionTestUtilities {
 	      fcontext.setUcumService(new UcumEssenceService(ConversionTestUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionParameters(new Parameters());
         fcontext.setPackageManager(new FilesystemPackageCacheManager.Builder().build());
-        fcontext.setLoaderFactory(new IgLoader(fcontext.packageManager(), fcontext, fcontext.getVersion(), true));
+        fcontext.setLoaderFactory(new IgLoader(fcontext.packageManager(), fcontext, fcontext.getFHIRVersion(), true));
 	      fcontexts.put(version, fcontext);
 	    } catch (Exception e) {
 	      throw new Error(e);
@@ -102,17 +99,19 @@ public class ConversionTestUtilities {
 	  return fcontexts.get(version);
 	}
 
-  private static IContextResourceLoader loaderForVersion(String version) {
+  private static IContextResourceLoaderN loaderForVersion(String version) {
     if (Utilities.noString(version))
       return null;
     if (version.startsWith("1.0"))
-      return new R2ToR5Loader(Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5());
+      return new R2ToRNLoader(ModelContext.fullCoreContext(), Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN());
     if (version.startsWith("1.4"))
-      return new R2016MayToR5Loader(Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5()); // special case
+      return new R2016MayToRNLoader(ModelContext.fullCoreContext(), Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN()); // special case
     if (version.startsWith("3.0"))
-      return new R3ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5());
+      return new R3ToRNLoader(ModelContext.fullCoreContext(), Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN());
     if (version.startsWith("4.0"))
-      return new R4ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderR5(), version);
+      return new R4ToRNLoader(ModelContext.fullCoreContext(), Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN(), version);
+    if (version.startsWith("5.0"))
+      return new R5ToRNLoader(ModelContext.fullCoreContext(), Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"), new NullLoaderKnowledgeProviderRN());
     return null;
   }
 

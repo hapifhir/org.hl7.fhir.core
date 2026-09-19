@@ -1013,11 +1013,19 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     }
   }
 
+  /**
+   * A simple subsumption test that only looks at nested concepts - it does not consider the
+   * #parent / #child properties, hierarchyMeaning, or the content mode, and it cannot tell
+   * 'no' from 'don't know'. Use TerminologySubsumptionTester instead, which does all of that.
+   */
   public static Boolean subsumes(@Nonnull CodeSystem cs, @Nonnull String pc, @Nonnull String cc) {
     if (pc.equals(cc)) {
       return true;
     }
     List<ConceptDefinitionComponent> child = findCodeWithParents(null, cs.getConcept(), cc);
+    if (child == null) { // cc isn't in the code system at all
+      return false;
+    }
     for (ConceptDefinitionComponent item : child) {
       if (pc.equals(item.getCode())) {
         return true;

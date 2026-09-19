@@ -375,6 +375,10 @@ public class Linkage extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((LinkageItemComponent) dst);
+      }
+
       public void copyValues(LinkageItemComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -691,6 +695,10 @@ public class Linkage extends DomainResource {
         Linkage dst = new Linkage();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Linkage) dst);
       }
 
       public void copyValues(Linkage dst) {

@@ -1398,14 +1398,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (min.isEmpty() && definition.getUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER) != null) { 
       ElementDefinition base = (ElementDefinition) definition.getUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER); 
       if (base.hasMinElement()) { 
-        min = base.getMinElement().copy(Base.COPY_DATA); 
+        min = base.getMinElement().copy(Base.COPY_NOTHING); 
         min.setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, true); 
       } 
     } 
     if (max.isEmpty() && definition.getUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER) != null) { 
       ElementDefinition base = (ElementDefinition) definition.getUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER); 
       if (base.hasMaxElement()) { 
-        max = base.getMaxElement().copy(Base.COPY_DATA); 
+        max = base.getMaxElement().copy(Base.COPY_NOTHING); 
         max.setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, true); 
       } 
     } 
@@ -2322,7 +2322,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (d != null && d.hasType()) { 
           types = new ArrayList<ElementDefinition.TypeRefComponent>(); 
           for (TypeRefComponent tr : d.getTypeList()) { 
-            TypeRefComponent tt = tr.copy(Base.COPY_DATA); 
+            TypeRefComponent tt = tr.copy(Base.COPY_NOTHING); 
             tt.setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, true); 
             types.add(tt); 
           } 
@@ -2899,7 +2899,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       List<Base> merged = mergedPatternValues.computeIfAbsent(ed, k -> new ArrayList<>());
       for (Base value : values) {
         if (isRenderableMergedPatternValue(value) && !containsMergedValue(merged, value)) {
-          merged.add(value.copy(Base.COPY_DATA));
+          merged.add(value.copy(Base.COPY_NOTHING));
         }
       }
     }
@@ -3482,7 +3482,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (value instanceof PrimitiveType) 
       return ((PrimitiveType<?>) value).asStringValue(); 
  
-    IParser json = new JsonParser(context.getContext());
+    IParser json = new JsonParser(context.getContext().getModelContext());
     return json.composeString(value, null); 
   } 
  
@@ -5322,7 +5322,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
     ByteArrayOutputStream bs = new ByteArrayOutputStream(); 
     if (context.getFixedFormat().isXml()) { 
-      XmlParser parser = new XmlParser(context.getContext());
+      XmlParser parser = new XmlParser(context.getContext().getModelContext());
       parser.setOutputStyle(OutputStyle.PRETTY); 
       parser.compose(bs, value, null); 
     } else if (value instanceof PrimitiveType<?>) { 
@@ -5332,7 +5332,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         FileUtilities.stringToStream("\""+Utilities.escapeJson(((PrimitiveType<?>) value).asStringValue())+"\"", bs);         
       } 
     } else { 
-      JsonParser parser = new JsonParser(context.getContext());
+      JsonParser parser = new JsonParser(context.getContext().getModelContext());
       parser.setOutputStyle(OutputStyle.PRETTY); 
       parser.compose(bs, value, null); 
     } 

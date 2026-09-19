@@ -1,6 +1,6 @@
 package org.hl7.fhir.services.elementmodel;
 
-import org.hl7.fhir.services.fml.StructureMapUtilities;
+import org.hl7.fhir.services.fml.StructureMapTools;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
 import org.hl7.fhir.services.fhirpath.FHIRLexer;
@@ -463,8 +463,8 @@ public class FmlParser extends ParserBase {
       }
 
       if (isSimpleSyntax(rule)) {
-        rule.forceElement("source").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
-        rule.forceElement("target").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+        rule.forceElement("source").makeElement("variable").setValue(StructureMapTools.AUTO_VAR_NAME);
+        rule.forceElement("target").makeElement("variable").setValue(StructureMapTools.AUTO_VAR_NAME);
         rule.forceElement("target").makeElement("transform").setValue(StructureMap.StructureMapTransform.CREATE.toCode());
         // no dependencies - imply what is to be done based on types
       }
@@ -517,9 +517,9 @@ public class FmlParser extends ParserBase {
     Element firstSource = rule.getChildren("source").get(0);
     Element firstTarget = rule.getChildren("target").get(0);
     firstSource.makeElement("element").setValue(elementName);
-    firstSource.makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+    firstSource.makeElement("variable").setValue(StructureMapTools.AUTO_VAR_NAME);
     firstTarget.makeElement("element").setValue(elementName);
-    firstTarget.makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+    firstTarget.makeElement("variable").setValue(StructureMapTools.AUTO_VAR_NAME);
     firstTarget.makeElement("transform").setValue(StructureMap.StructureMapTransform.CREATE.toCode());
     while (lexer.hasToken(",")) {
       lexer.token(",");
@@ -534,7 +534,7 @@ public class FmlParser extends ParserBase {
         ruleName = lexer.take();
       }
     }
-    String namePrefix = ruleName != null ? ruleName : StructureMapUtilities.BATCH_IDENTITY_UNNAMED_NAME;
+    String namePrefix = ruleName != null ? ruleName : StructureMapTools.BATCH_IDENTITY_UNNAMED_NAME;
     rule.makeElement("name").setValue(Utilities.makeId(namePrefix + elementName));
     // Consume the `;` plus any same-line trailing `// foo` comment.
     // StructureMapUtilities stores that trailing comment in
@@ -549,11 +549,11 @@ public class FmlParser extends ParserBase {
       Element newSource = newRule.addElement("source");
       newSource.makeElement("context").setValue(sourceContext);
       newSource.makeElement("element").setValue(element);
-      newSource.makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+      newSource.makeElement("variable").setValue(StructureMapTools.AUTO_VAR_NAME);
       Element newTarget = newRule.addElement("target");
       newTarget.makeElement("context").setValue(targetContext);
       newTarget.makeElement("element").setValue(element);
-      newTarget.makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+      newTarget.makeElement("variable").setValue(StructureMapTools.AUTO_VAR_NAME);
       newTarget.makeElement("transform").setValue(StructureMap.StructureMapTransform.CREATE.toCode());
     }
   }
@@ -584,7 +584,7 @@ public class FmlParser extends ParserBase {
       lexer.take();
       SourceLocation loc = lexer.getCurrentLocation();
       ExpressionNode node = fpe.parse(lexer);
-      source.setUserData(StructureMapUtilities.MAP_SEARCH_EXPRESSION, node);
+      source.setUserData(StructureMapTools.MAP_SEARCH_EXPRESSION, node);
       source.makeElement("element").markLocation(loc).setValue(node.toString());
       lexer.token(")");
     } else if (lexer.hasToken(".")) {
@@ -632,21 +632,21 @@ public class FmlParser extends ParserBase {
       lexer.take();
       SourceLocation loc = lexer.getCurrentLocation();
       ExpressionNode node = parseCanonicalFhirPath(lexer);
-      source.setUserData(StructureMapUtilities.MAP_WHERE_EXPRESSION, node);
+      source.setUserData(StructureMapTools.MAP_WHERE_EXPRESSION, node);
       source.makeElement("condition").markLocation(loc).setValue(node.toString());
     }
     if (lexer.hasToken("check")) {
       lexer.take();
       SourceLocation loc = lexer.getCurrentLocation();
       ExpressionNode node = parseCanonicalFhirPath(lexer);
-      source.setUserData(StructureMapUtilities.MAP_WHERE_CHECK, node);
+      source.setUserData(StructureMapTools.MAP_WHERE_CHECK, node);
       source.makeElement("check").markLocation(loc).setValue(node.toString());
     }
     if (lexer.hasToken("log")) {
       lexer.take();
       SourceLocation loc = lexer.getCurrentLocation();
       ExpressionNode node = parseCanonicalFhirPath(lexer);
-      source.setUserData(StructureMapUtilities.MAP_WHERE_LOG, node);
+      source.setUserData(StructureMapTools.MAP_WHERE_LOG, node);
       source.makeElement("logMessage").markLocation(loc).setValue(node.toString());
     }
   }
@@ -684,7 +684,7 @@ public class FmlParser extends ParserBase {
       target.makeElement("transform").markLocation(lexer.getCurrentLocation()).setValue(StructureMap.StructureMapTransform.EVALUATE.toCode());
       loc = lexer.getCurrentLocation();
       ExpressionNode node = fpe.parse(lexer);
-      target.setUserData(StructureMapUtilities.MAP_EXPRESSION, node);
+      target.setUserData(StructureMapTools.MAP_EXPRESSION, node);
       target.addElement("parameter").markLocation(loc).makeElement("valueString").setValue(node.toString());
       lexer.token(")");
     } else if (lexer.hasToken("(")) {
@@ -695,7 +695,7 @@ public class FmlParser extends ParserBase {
         lexer.token(",");
         loc = lexer.getCurrentLocation();
         ExpressionNode node = fpe.parse(lexer);
-        target.setUserData(StructureMapUtilities.MAP_EXPRESSION, node);
+        target.setUserData(StructureMapTools.MAP_EXPRESSION, node);
         target.addElement("parameter").markLocation(loc).makeElement("valueString").setValue(node.toString());
       } else {
         while (!lexer.hasToken(")")) {

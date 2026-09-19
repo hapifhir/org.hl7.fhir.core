@@ -3318,9 +3318,30 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://id.who.int/icd/entity",
+    "version" : [{
+      "code" : "2026-01"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/icf",
+    "version" : [{
+      "code" : "2026-01"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/mms",
+    "version" : [{
+      "code" : "2026-01"
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
     "version" : [{
-      "code" : "1.5.0"
+      "code" : "1.6.0"
     }],
     "content" : "complete"
   },
@@ -10123,10 +10144,19 @@
       "name" : "check-system-version"
     },
     {
+      "name" : "check-valueset-version"
+    },
+    {
       "name" : "count"
     },
     {
       "name" : "default-to-latest-version"
+    },
+    {
+      "name" : "default-valueset-version"
+    },
+    {
+      "name" : "designation"
     },
     {
       "name" : "displayLanguage"
@@ -10141,7 +10171,13 @@
       "name" : "excludePostCoordinated"
     },
     {
+      "name" : "filter"
+    },
+    {
       "name" : "force-system-version"
+    },
+    {
+      "name" : "force-valueset-version"
     },
     {
       "name" : "inactive"
@@ -10157,6 +10193,10 @@
     },
     {
       "name" : "incomplete-ok"
+    },
+    {
+      "name" : "limit",
+      "documentation" : "Upper bound on the size of the expansion; the operation fails as too-costly beyond it"
     },
     {
       "name" : "limitedExpansion"
@@ -10178,11 +10218,27 @@
       "name" : "property"
     },
     {
+      "name" : "sort",
+      "documentation" : "code | display | design | prop:{name}; prefix with - to reverse. Ignored for hierarchical expansions"
+    },
+    {
       "name" : "system-version"
+    },
+    {
+      "name" : "url"
+    },
+    {
+      "name" : "useSupplement"
+    },
+    {
+      "name" : "valueSet"
     },
     {
       "name" : "valueSetMode",
       "documentation" : "= CHECK_MEMBERSHIP_ONLY | NO_MEMBERSHIP_CHECK"
+    },
+    {
+      "name" : "valueSetVersion"
     }]
   },
   "validateCode" : {

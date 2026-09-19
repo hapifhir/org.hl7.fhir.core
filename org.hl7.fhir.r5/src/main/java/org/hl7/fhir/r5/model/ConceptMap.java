@@ -932,6 +932,10 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((PropertyComponent) dst);
+      }
+
       public void copyValues(PropertyComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -1345,6 +1349,10 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((AdditionalAttributeComponent) dst);
+      }
+
       public void copyValues(AdditionalAttributeComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -1738,6 +1746,10 @@ public class ConceptMap extends MetadataResource {
         ConceptMapGroupComponent dst = new ConceptMapGroupComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ConceptMapGroupComponent) dst);
       }
 
       public void copyValues(ConceptMapGroupComponent dst) {
@@ -2233,6 +2245,10 @@ public class ConceptMap extends MetadataResource {
         SourceElementComponent dst = new SourceElementComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SourceElementComponent) dst);
       }
 
       public void copyValues(SourceElementComponent dst) {
@@ -2971,6 +2987,10 @@ public class ConceptMap extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TargetElementComponent) dst);
+      }
+
       public void copyValues(TargetElementComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -3367,6 +3387,10 @@ public class ConceptMap extends MetadataResource {
         MappingPropertyComponent dst = new MappingPropertyComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MappingPropertyComponent) dst);
       }
 
       public void copyValues(MappingPropertyComponent dst) {
@@ -3773,6 +3797,10 @@ public class ConceptMap extends MetadataResource {
         OtherElementComponent dst = new OtherElementComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((OtherElementComponent) dst);
       }
 
       public void copyValues(OtherElementComponent dst) {
@@ -4332,6 +4360,10 @@ public class ConceptMap extends MetadataResource {
         ConceptMapGroupUnmappedComponent dst = new ConceptMapGroupUnmappedComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ConceptMapGroupUnmappedComponent) dst);
       }
 
       public void copyValues(ConceptMapGroupUnmappedComponent dst) {
@@ -6731,6 +6763,10 @@ public class ConceptMap extends MetadataResource {
         ConceptMap dst = new ConceptMap();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ConceptMap) dst);
       }
 
       public void copyValues(ConceptMap dst) {

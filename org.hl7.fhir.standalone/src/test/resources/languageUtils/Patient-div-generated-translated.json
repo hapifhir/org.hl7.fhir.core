@@ -1,0 +1,12 @@
+{
+  "resourceType": "Patient",
+  "id": "div-additional",
+  "language": "fr",
+  "text": {
+    "status": "generated"
+  },
+  "name": [{
+    "family": "Doe",
+    "given": ["John"]
+  }]
+}

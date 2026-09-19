@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 
@@ -59,7 +59,7 @@ public class ChildIterator {
     }
 
     public Element element() {
-        return parent.getChildren().get(cursor);
+        return parent.getChildList().get(cursor);
     }
 
     public String name() {
@@ -67,8 +67,8 @@ public class ChildIterator {
     }
 
     public int count() {
-        String nb = cursor == 0 ? "--" : parent.getChildren().get(cursor - 1).getName();
-        String na = cursor >= parent.getChildren().size() - 1 ? "--" : parent.getChildren().get(cursor + 1).getName();
+        String nb = cursor == 0 ? "--" : parent.getChildList().get(cursor - 1).getName();
+        String na = cursor >= parent.getChildList().size() - 1 ? "--" : parent.getChildList().get(cursor + 1).getName();
         if (name().equals(nb) || name().equals(na)) {
           return lastCount;
         } else if (element().isBaseList()) {
@@ -85,12 +85,12 @@ public class ChildIterator {
         } else {
             String lastName = name();
             cursor++;
-            if (cursor < parent.getChildren().size() && name().equals(lastName))
+            if (cursor < parent.getChildList().size() && name().equals(lastName))
                 lastCount++;
             else
                 lastCount = 0;
         }
-        return cursor < parent.getChildren().size();
+        return cursor < parent.getChildList().size();
     }
 
     public String path() {

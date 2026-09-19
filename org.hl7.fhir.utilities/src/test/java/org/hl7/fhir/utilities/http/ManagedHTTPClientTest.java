@@ -21,7 +21,7 @@ import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.checkerframework.checker.nullness.qual.NonNull;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -32,6 +32,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+
+import javax.annotation.Nonnull;
 
 public class ManagedHTTPClientTest {
 
@@ -229,7 +231,7 @@ public class ManagedHTTPClientTest {
     verify(authenticationProvider, times(1)).getHeaders(exampleInvalidUrl);
   }
 
-  private HttpUrl @NonNull [] enqueueSameServerRedirectsExceptLast(int code, String[] urlArgs) {
+  private HttpUrl [] enqueueSameServerRedirectsExceptLast(int code, String[] urlArgs) {
     HttpUrl[] urls = new HttpUrl[urlArgs.length];
     for (int i = 0; i < urlArgs.length; i++) {
       if (i < urlArgs.length - 1) {

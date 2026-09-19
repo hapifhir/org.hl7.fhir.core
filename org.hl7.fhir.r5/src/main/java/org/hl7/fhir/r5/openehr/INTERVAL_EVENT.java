@@ -292,6 +292,10 @@ public class INTERVAL_EVENT extends EVENT implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((INTERVAL_EVENT) dst);
+      }
+
       public void copyValues(INTERVAL_EVENT dst) {
         super.copyValues(dst);
         dst.width = width == null ? null : width.copy();

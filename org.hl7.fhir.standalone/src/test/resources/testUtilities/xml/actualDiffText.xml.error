@@ -1,0 +1,3 @@
+Text differs at /root/blah
+Expected:"expected" for expected.xml
+Actual  :"different"

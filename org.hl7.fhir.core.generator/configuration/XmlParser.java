@@ -352,8 +352,19 @@ public class XmlParser extends XmlParserBase {
   protected Resource parseResource(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     if (xpp == null) {
       throw new IOException("xpp == null!");
+    }
+    // a handler registered in the model context as overriding the base specification takes
+    // precedence over the generated dispatch below
+    Resource custom = parseOverridingCustomResource(xpp);
+    if (custom != null) {
+      return custom;
 {{parse-resource}}
     } else {
+      // not a resource this parser knows - the model context may have a handler for it
+      Resource res = parseCustomResource(xpp);
+      if (res != null) {
+        return res;
+      }
       throw new FHIRFormatError("Unknown resource type "+xpp.getName()+"");
     }
   }
@@ -850,7 +861,8 @@ public class XmlParser extends XmlParserBase {
     if (resource == null) {
       throw new IOException("resource == null");
 {{compose-resource}}      
-    } else {
+    } else if (!composeCustomResource(resource)) {
+      // the model context may have a handler registered for this resource type
       throw new Error("Unhandled resource type "+resource.getClass().getName());
     }
   }

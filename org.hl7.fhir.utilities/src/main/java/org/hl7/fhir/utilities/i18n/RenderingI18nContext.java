@@ -1218,6 +1218,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONSENT_HT_CODE = "CONSENT_HT_CODE";
   public static final String STRUC_DEF_TYPE_CHARACTERISTICS = "STRUC_DEF_TYPE_CHARACTERISTICS";
   public static final String STRUCTURAL_REQUIREMENTS = "STRUCTURAL_REQUIREMENTS";
+  public static final String STRUC_DEF_ELE_TRANSLATABLE = "STRUC_DEF_ELE_TRANSLATABLE";
+  public static final String STRUC_DEF_TRANSLATABLE = "STRUC_DEF_TRANSLATABLE";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";

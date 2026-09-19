@@ -22,19 +22,25 @@ import org.hl7.fhir.convertors.loaders.loaderR5.R4BToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R5ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R6ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderRN.*;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.renderers.RendererFactory;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
-import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
-import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.services.renderers.IMarkdownProcessor;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.services.renderers.RendererFactory;
+import org.hl7.fhir.services.renderers.utils.RenderingContext;
+import org.hl7.fhir.services.renderers.utils.RenderingContext.GenerationRules;
+import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.model.utilities.EOperationOutcome;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -86,34 +92,34 @@ public class ValidatorUtils {
     }
   }
 
-  public static BaseLoaderR5 loaderForVersion(String version) {
-    return loaderForVersion(version, new NullLoaderKnowledgeProviderR5());
+  public static BaseLoaderRN loaderForVersion(IModelContext context, String version) {
+    return loaderForVersion(context, version, new NullLoaderKnowledgeProviderRN());
   }
   
-  public static BaseLoaderR5 loaderForVersion(String version, ILoaderKnowledgeProviderR5 loader) {
+  public static BaseLoaderRN loaderForVersion(IModelContext context, String version, ILoaderKnowledgeProviderRN loader) {
     if (Utilities.noString(version)) {
       return null;
     }
     if (VersionUtilities.isR2Ver(version)) { 
-      return new R2ToR5Loader(Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+      return new R2ToRNLoader(context, Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     } 
     if (VersionUtilities.isR2BVer(version)) {
-      return new R2016MayToR5Loader(Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader); // special case
+      return new R2016MayToRNLoader(context, Utilities.stringSet("Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader); // special case
     }
     if (VersionUtilities.isR3Ver(version)) {
-      return new R3ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+      return new R3ToRNLoader(context, Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     }
     if (VersionUtilities.isR4Ver(version)) {
-      return new R4ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
+      return new R4ToRNLoader(context, Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
     }
     if (VersionUtilities.isR4BVer(version)) {
-      return new R4BToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
+      return new R4BToRNLoader(context, Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader, version);
     }
     if (VersionUtilities.isR5Ver(version)) {
-      return new R5ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+      return new R5ToRNLoader(context, Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     }
     if (VersionUtilities.isR6Ver(version)) {
-      return new R6ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
+      return new RNToRNLoader(context, Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"), loader);
     }
     return null;
   }
@@ -150,14 +156,23 @@ public class ValidatorUtils {
       } catch (Exception e) {
         log.error("Internal error in location for message: '" + e.getMessage() + "', loc = '" + vm.getLocation() + "', err = '" + vm.getMessage() + "'");
       }
-      op.getIssue().add(OperationOutcomeUtilities.convertToIssue(vm, op));
+      op.getIssueList().add(OperationOutcomeUtilities.convertToIssue(vm, op));
     }
     if (!op.hasIssue()) {
       op.addIssue().setSeverity(OperationOutcome.IssueSeverity.INFORMATION).setCode(OperationOutcome.IssueType.INFORMATIONAL).getDetails().setText(context.formatMessage(I18nConstants.ALL_OK));
     }
+    ExtensionUtilities.addStringExtension(op, ExtensionDefinitions.EXT_VALIDATOR_VERSION, getValidatorVersionDescription());
     RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", context.getLocale(), RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     new RendererFactory().factory(op, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), op));
     return op;
+  }
+
+  /**
+   * A human readable description of this validator - the same string that the CLI logs on start up.
+   * It goes into the OperationOutcome so that a report always says what produced it (see FHIR-2459).
+   */
+  public static String getValidatorVersionDescription() {
+    return "FHIR Validation tool " + VersionUtil.getVersionString();
   }
 
   /**

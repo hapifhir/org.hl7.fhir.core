@@ -170,9 +170,20 @@ public class ValueSetUtilities extends TerminologyUtilities {
    */
   public static void checkExpansionIsFlat(ValueSet vs) throws FHIRException {
     if (vs != null && vs.hasExpansion()) {
+      String explanation = ". There is no expansion excludeNested parameter";
+      for (ValueSet.ValueSetExpansionParameterComponent p : vs.getExpansion().getParameter()) {
+        if ("excludeNested".equals(p.getName())) {
+          if ("true".equals(p.getValue().primitiveValue())) {
+            explanation = ". The expansion expansion parameter is excludeNested true";
+          } else {
+            explanation = ". The expansion expansion parameter is false";
+          }
+        }
+      }
+      String purpose = vs.getUserString(UserDataNames.EXPANSION_PURPOSE);
       for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContains()) {
         if (cc.hasContains()) {
-          throw new FHIRException("The expansion of the value set "+vs.getVersionedUrl()+" is not flat: the code '"+cc.getCode()+"' contains nested codes (starting with '"+cc.getContains().get(0).getCode()+"')");
+          throw new FHIRException("The "+(purpose == null ? "" : purpose+" ")+"expansion of the value set "+vs.getVersionedUrl()+" is not flat: the code '"+cc.getCode()+"' contains nested codes (starting with '"+cc.getContains().get(0).getCode()+"')"+explanation);
         }
       }
     }
@@ -393,12 +404,18 @@ public class ValueSetUtilities extends TerminologyUtilities {
     }
     for (ValueSetExpansionPropertyComponent p : vs.getExpansion().getProperty()) {
       if (p.hasCode() && p.getCode().equals(code)) {
-        p.setUri(url);
+        if (url != null) {
+          // a code system property need not have a uri, and when it doesn't, the declaration is by
+          // code alone - which must not clear a uri that another source provided
+          p.setUri(url);
+        }
         return code;
       }
     }
     ValueSetExpansionPropertyComponent p = vs.getExpansion().addProperty();
-    p.setUri(url);
+    if (url != null) {
+      p.setUri(url);
+    }
     p.setCode(code);
     return code;  
   }

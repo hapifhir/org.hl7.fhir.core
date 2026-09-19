@@ -1,5 +1,6 @@
 package org.hl7.fhir.services.renderers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.services.terminology.ExpansionOptions;
 import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@Slf4j
 public class QuestionnaireRenderer extends TerminologyRenderer {
 
   public QuestionnaireRenderer(RenderingContext context) { 
@@ -923,7 +925,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         ResourceWrapper contained = q.getContained(i.primitiveValue("answerValueSet").substring(1));
         vs = contained == null ? null : (ValueSet) contained.getResourceNative(); 
         if (vs != null && !vs.hasUrl()) { 
-          vs = vs.copy(Base.COPY_DATA);
+          vs = vs.copy(Base.COPY_NOTHING);
           vs.setUrl(q.primitiveValue("url")+"--"+contained); 
         } 
       } else { 
@@ -937,7 +939,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
             select.option(cc.getCode(), cc.hasDisplay() ? cc.getDisplay() : cc.getCode(), false);     
           } 
           return; 
-        } 
+        } else {
+          log.warn("No expansion for "+vs.getUrl()+": "+exp);
+        }
       } 
     } else if (i.has("answerOption")) { 
       renderItemOptions(select, i);  

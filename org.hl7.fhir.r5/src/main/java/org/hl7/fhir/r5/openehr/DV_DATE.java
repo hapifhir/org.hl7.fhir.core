@@ -196,6 +196,10 @@ public class DV_DATE extends DV_TEMPORAL implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DV_DATE) dst);
+      }
+
       public void copyValues(DV_DATE dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

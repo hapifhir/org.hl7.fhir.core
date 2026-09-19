@@ -49,7 +49,7 @@ import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 
-
+@Deprecated
 public class LiquidEngine implements IHostApplicationServices {
 
   public interface ILiquidEngineIcludeResolver {

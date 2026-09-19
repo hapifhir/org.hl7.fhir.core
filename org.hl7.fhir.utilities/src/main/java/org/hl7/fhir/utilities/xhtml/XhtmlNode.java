@@ -480,6 +480,82 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return this;    
   }
 
+  /**
+   * Shift every heading in this tree so that the highest one (the h1..h6 with the smallest number)
+   * ends up at {@code level}, keeping the relative structure intact. h1/h2/h2 shifted to 3 becomes
+   * h3/h4/h4; h4/h5 shifted to 3 becomes h3/h4.
+   * <p>
+   * This is for content that is about to be composed into a page as a fragment. Whoever wrote the
+   * content cannot know how deep in the including page it will land - the same narrative can be
+   * included under headings at different levels - so the including code has to say what depth it is
+   * putting the fragment at, and the heading levels are made to match.
+   * <p>
+   * The shift is calculated from the highest heading rather than the first one, so that afterwards
+   * nothing in the tree sits above {@code level}. That is the property the caller actually needs:
+   * the fragment must not compete with the heading of the page including it.
+   * <p>
+   * Headings inside an svg are left alone - that is markup inside a picture, not document structure.
+   * <p>
+   * NOTE: this MUTATES the tree. Narrative read off a resource shares its nodes with the resource,
+   * so copy() first unless you intend to change the resource's own narrative as well.
+   *
+   * @param level the level the highest heading should end up at, 1-6
+   * @throws FHIRException if level is out of range, or the shift would push a heading past h6
+   */
+  public void ensureTopHeadingIs(int level) {
+    if (level < 1 || level > 6) {
+      throw new FHIRException("Illegal Header level "+level);
+    }
+    List<XhtmlNode> headings = new ArrayList<XhtmlNode>();
+    listHeadings(this, headings);
+    if (headings.isEmpty()) {
+      return;
+    }
+    int min = 7;
+    int max = 0;
+    for (XhtmlNode h : headings) {
+      int l = headingLevel(h);
+      min = Math.min(min, l);
+      max = Math.max(max, l);
+    }
+    int delta = level - min;
+    if (delta == 0) {
+      return;
+    }
+    if (max + delta > 6) {
+      throw new FHIRException("Unable to make the top heading in this content h"+level+": the deepest heading in it is h"+max+
+          ", which would have to become h"+(max + delta)+", and HTML has no heading below h6");
+    }
+    for (XhtmlNode h : headings) {
+      h.setName("h"+Integer.toString(headingLevel(h) + delta));
+    }
+  }
+
+  private static void listHeadings(XhtmlNode focus, List<XhtmlNode> headings) {
+    if ("svg".equals(focus.getName())) {
+      return;
+    }
+    if (headingLevel(focus) > 0) {
+      headings.add(focus);
+    }
+    if (focus.hasChildren()) {
+      for (XhtmlNode c : focus.getChildNodes()) {
+        listHeadings(c, headings);
+      }
+    }
+  }
+
+  /**
+   * @return 1-6 for h1..h6, or 0 for any other node
+   */
+  private static int headingLevel(XhtmlNode focus) {
+    String n = focus.getName();
+    if (n != null && n.length() == 2 && (n.charAt(0) == 'h' || n.charAt(0) == 'H') && n.charAt(1) >= '1' && n.charAt(1) <= '6') {
+      return n.charAt(1) - '0';
+    }
+    return 0;
+  }
+
   public XhtmlNode copy() {
     XhtmlNode dst = new XhtmlNode(nodeType);
     dst.name = name;

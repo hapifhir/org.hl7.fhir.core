@@ -2,9 +2,9 @@ package org.hl7.fhir.services.elementmodel;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.Element.SpecialElement;
-import org.hl7.fhir.services.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
@@ -351,7 +351,7 @@ public abstract class TurtleParserBase extends ParserBase {
   }
 
   private boolean hasModifierExtension(Element e) {
-    return e.getChildren().stream().anyMatch(p -> p.getName().equals("modifierExtension"));
+    return e.getChildList().stream().anyMatch(p -> p.getName().equals("modifierExtension"));
   }
 
   protected String getURIType(String uri) {
@@ -438,8 +438,8 @@ public abstract class TurtleParserBase extends ParserBase {
       t.linkedPredicate("a", FHIR_BASE_PREFIX+className(element.fhirType()), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
     if (element.hasValue()) {
         String elementLiteral = null;
-        if ("xhtml".equals(element.getType())) {
-          elementLiteral = new XhtmlComposer(XhtmlComposer.XML, false).setCanonical(true).compose(element.getXhtml());;
+        if (element.isXhtml()) {
+          elementLiteral = element.getXhtmlSource(true);
         } else {
           elementLiteral = element.getValue();
         }

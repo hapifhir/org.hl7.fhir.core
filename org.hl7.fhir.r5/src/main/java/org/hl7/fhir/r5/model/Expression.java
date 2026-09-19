@@ -491,6 +491,10 @@ public class Expression extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Expression) dst);
+      }
+
       public void copyValues(Expression dst) {
         super.copyValues(dst);
         dst.description = description == null ? null : description.copy();

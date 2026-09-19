@@ -1,0 +1,13 @@
+{
+  "resourceType": "Patient",
+  "id": "div-additional",
+  "language": "fr",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"fr\">Nom: John Doe</div></div>"
+  },
+  "name": [{
+    "family": "Doe",
+    "given": ["John"]
+  }]
+}

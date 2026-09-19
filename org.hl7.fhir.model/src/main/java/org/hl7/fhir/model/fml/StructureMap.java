@@ -1595,6 +1595,10 @@ public class StructureMap extends CanonicalResource {
       return dst;
     }
 
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapStructureComponent) dst, options);
+    }
+
     public void copyValues(StructureMapStructureComponent dst, EnumSet<CopyObjectOptions> options) {
       super.copyValues(dst, options);
       dst.url = url == null ? null : url.copy(options);
@@ -1858,6 +1862,10 @@ public class StructureMap extends CanonicalResource {
       StructureMapConstComponent dst = new StructureMapConstComponent(this.modelContext);
       copyValues(dst, options);
       return dst;
+    }
+
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapConstComponent) dst, options);
     }
 
     public void copyValues(StructureMapConstComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2420,6 +2428,10 @@ public class StructureMap extends CanonicalResource {
       return dst;
     }
 
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupComponent) dst, options);
+    }
+
     public void copyValues(StructureMapGroupComponent dst, EnumSet<CopyObjectOptions> options) {
       super.copyValues(dst, options);
       dst.name = name == null ? null : name.copy(options);
@@ -2472,6 +2484,12 @@ public class StructureMap extends CanonicalResource {
       return "StructureMap.group";
 
     }
+
+    // Additional Code from StructureMap.group.java:
+    public String toString() {
+        return org.hl7.fhir.model.utilities.StructureMapUtilities.groupToString(this);
+    }
+    // end addition
 
   }
 
@@ -2844,6 +2862,10 @@ public class StructureMap extends CanonicalResource {
       StructureMapGroupInputComponent dst = new StructureMapGroupInputComponent(this.modelContext);
       copyValues(dst, options);
       return dst;
+    }
+
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupInputComponent) dst, options);
     }
 
     public void copyValues(StructureMapGroupInputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3416,6 +3438,10 @@ public class StructureMap extends CanonicalResource {
       return dst;
     }
 
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupRuleComponent) dst, options);
+    }
+
     public void copyValues(StructureMapGroupRuleComponent dst, EnumSet<CopyObjectOptions> options) {
       super.copyValues(dst, options);
       dst.name = name == null ? null : name.copy(options);
@@ -3477,6 +3503,12 @@ public class StructureMap extends CanonicalResource {
       return "StructureMap.group.rule";
 
     }
+
+    // Additional Code from StructureMap.group.rule.java:
+    public String toString() {
+        return org.hl7.fhir.model.utilities.StructureMapUtilities.ruleToString(this);
+    }
+    // end addition
 
   }
 
@@ -4364,6 +4396,10 @@ public class StructureMap extends CanonicalResource {
       return dst;
     }
 
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupRuleSourceComponent) dst, options);
+    }
+
     public void copyValues(StructureMapGroupRuleSourceComponent dst, EnumSet<CopyObjectOptions> options) {
       super.copyValues(dst, options);
       dst.context = context == null ? null : context.copy(options);
@@ -4420,6 +4456,12 @@ public class StructureMap extends CanonicalResource {
       return "StructureMap.group.rule.source";
 
     }
+
+    // Additional Code from StructureMap.group.rule.source.java:
+    public String toString() {
+        return org.hl7.fhir.model.utilities.StructureMapUtilities.sourceToString(this);
+    }
+    // end addition
 
     public String getElementName() {
       if (this.elementList == null || this.elementList.isEmpty()) {
@@ -5035,6 +5077,10 @@ public class StructureMap extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMapGroupRuleTargetComponent) dst, options);
+      }
+
       public void copyValues(StructureMapGroupRuleTargetComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.context = context == null ? null : context.copy(options);
@@ -5092,6 +5138,12 @@ public class StructureMap extends CanonicalResource {
     return "StructureMap.group.rule.target";
 
   }
+
+    // Additional Code from StructureMap.group.rule.target.java:
+    public String toString() {
+        return org.hl7.fhir.model.utilities.StructureMapUtilities.targetToString(this);
+    }
+    // end addition
 
     public String getElementName() {
       if (this.elementList == null || this.elementList.isEmpty()) {
@@ -5399,6 +5451,10 @@ public class StructureMap extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMapGroupRuleTargetParameterComponent) dst, options);
+      }
+
       public void copyValues(StructureMapGroupRuleTargetParameterComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.value = value == null ? null : value.copy(options);
@@ -5432,6 +5488,12 @@ public class StructureMap extends CanonicalResource {
     return "StructureMap.group.rule.target.parameter";
 
   }
+
+    // Additional Code from StructureMap.group.rule.target.parameter.java:
+    public String toString() {
+        return value == null ? "null!" : value.toString();
+    }
+    // end addition
 
   }
 
@@ -5657,6 +5719,10 @@ public class StructureMap extends CanonicalResource {
         StructureMapGroupRuleDependentComponent dst = new StructureMapGroupRuleDependentComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMapGroupRuleDependentComponent) dst, options);
       }
 
       public void copyValues(StructureMapGroupRuleDependentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -7284,6 +7350,10 @@ public class StructureMap extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMap) dst, options);
+      }
+
       public void copyValues(StructureMap dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.url = url == null ? null : url.copy(options);
@@ -7748,6 +7818,10 @@ public class StructureMap extends CanonicalResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
+// Manual code (from Configuration.txt):
+  public String toString() {
+      return org.hl7.fhir.model.utilities.StructureMapUtilities.render(this);
+  }
+// end addition
 
 }
-

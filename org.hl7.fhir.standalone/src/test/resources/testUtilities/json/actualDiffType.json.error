@@ -1,0 +1,3 @@
+property types differ at .expectedString
+Expected:"expected value" for expected.json
+Actual  :"1"

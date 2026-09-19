@@ -2,12 +2,12 @@ package org.hl7.fhir.validation.service.renderers;
 
 import java.io.File;
 
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
-import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.core.CanonicalResource;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -21,7 +21,7 @@ public class DefaultRenderer extends ValidationOutputRenderer {
     int info = 0;
     String file = ExtensionUtilities.readStringExtension(oo, ExtensionDefinitions.EXT_OO_FILE);
 
-    for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
+    for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssueList()) {
       if (issue.getSeverity() == OperationOutcome.IssueSeverity.FATAL || issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR)
         error++;
       else if (issue.getSeverity() == OperationOutcome.IssueSeverity.WARNING)
@@ -37,7 +37,7 @@ public class DefaultRenderer extends ValidationOutputRenderer {
       dst.println(Utilities.padLeft("", '-', Integer.max(38, file.length() + 6)));
     }
     dst.println((error == 0 ? "Success" : "*FAILURE*") + ": " + Integer.toString(error) + " errors, " + Integer.toString(warn) + " warnings, " + Integer.toString(info) + " notes");
-    for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
+    for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssueList()) {
       dst.println(getIssueSummary(issue)+renderMessageId(issue));
       ValidationMessage vm = (ValidationMessage) issue.getUserData(UserDataNames.validator_source_msg);
       if (vm != null && vm.getSliceInfo() != null && (crumbTrails || vm.isCriticalSignpost())) {
@@ -67,9 +67,9 @@ public class DefaultRenderer extends ValidationOutputRenderer {
     if (issue.hasExpression()) {
       int line = ExtensionUtilities.readIntegerExtension(issue, ExtensionDefinitions.EXT_ISSUE_LINE, -1);
       int col = ExtensionUtilities.readIntegerExtension(issue, ExtensionDefinitions.EXT_ISSUE_COL, -1);
-      loc = " @ "+issue.getExpression().get(0).asStringValue() + (line >= 0 && col >= 0 ? " (line " + Integer.toString(line) + ", col" + Integer.toString(col) + ")" : "");
+      loc = " @ "+issue.getExpressionList().get(0).asStringValue() + (line >= 0 && col >= 0 ? " (line " + Integer.toString(line) + ", col" + Integer.toString(col) + ")" : "");
     } else if (issue.hasExpression()) {
-      loc = " @ "+issue.getExpression().get(0).asStringValue();
+      loc = " @ "+issue.getExpressionList().get(0).asStringValue();
     } else {
       int line = ExtensionUtilities.readIntegerExtension(issue, ExtensionDefinitions.EXT_ISSUE_LINE, -1);
       int col = ExtensionUtilities.readIntegerExtension(issue, ExtensionDefinitions.EXT_ISSUE_COL, -1);

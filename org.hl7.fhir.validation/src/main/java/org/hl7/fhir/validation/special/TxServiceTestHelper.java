@@ -2,15 +2,15 @@ package org.hl7.fhir.validation.special;
 
 import com.google.gson.JsonSyntaxException;
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.formats.IParser;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
-import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.test.utils.CompareUtilities;
+import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.terminology.ValidationResult;
+import org.hl7.fhir.services.testing.CompareUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -29,7 +29,7 @@ import java.util.Set;
 @Slf4j
 public class TxServiceTestHelper {
   public static String getDiffForValidation(String id, IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String expectedResponse2, String lang, String fp, JsonObject externals, boolean isCodeSystem, Set<String> modes) throws JsonSyntaxException, FileNotFoundException, IOException {
-    org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) requestParameters;
+    org.hl7.fhir.model.core.Parameters p = (org.hl7.fhir.model.core.Parameters) requestParameters;
     ValueSet valueSet = null;
     String valueSetUrl = null;
     if (!isCodeSystem) {
@@ -38,10 +38,10 @@ public class TxServiceTestHelper {
         valueSetUrl = valueSet.getVUrl();
       } else if (p.hasParameter("valueSetVersion")) {
         valueSetUrl = p.getParameterValue("url").primitiveValue()+"|"+p.getParameterValue("valueSetVersion").primitiveValue();
-        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule(), p.getParameterValue("valueSetVersion").primitiveValue(), null);
+        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), VersionResolutionRules.defaultRule(), p.getParameterValue("valueSetVersion").primitiveValue(), null);
       } else {
         valueSetUrl = p.getParameterValue("url").primitiveValue();
-        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule());
+        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), VersionResolutionRules.defaultRule());
       }
     }
     ValidationResult validationResult = null;
@@ -50,7 +50,7 @@ public class TxServiceTestHelper {
     String version = null;
     String display = null;
     CodeableConcept codeableConcept = null;
-    org.hl7.fhir.r5.model.Parameters parameters = null;
+    org.hl7.fhir.model.core.Parameters parameters = null;
     OperationOutcome operationOutcome = null;
 
     if (valueSet == null && valueSetUrl != null) {
@@ -81,18 +81,18 @@ public class TxServiceTestHelper {
         options = options.setNoAbstract(true);
       }
       Parameters newParameters = context.getExpansionParameters();
-      for (ParametersParameterComponent pp : p.getParameter()) {
+      for (Parameters.ParametersParameterComponent pp : p.getParameterList()) {
         if (Utilities.existsInList(pp.getName(), "default-valueset-version", "system-version", "force-system-version", "default-system-version")) {
-          newParameters.getParameter().add(pp);
+          newParameters.getParameterList().add(pp);
         }
       }
       newParameters.clearParameters("includeAlternateCodes");
-      for (Parameters.ParametersParameterComponent pp : p.getParameter()) {
+      for (Parameters.ParametersParameterComponent pp : p.getParameterList()) {
         if ("includeAlternateCodes".equals(pp.getName())) {
-          newParameters.addParameter(pp.copy());
+          newParameters.addParameter(pp.copy(Base.COPY_NOTHING));
         }
         if ("useSupplement".equals(pp.getName())) {
-          newParameters.addParameter(pp.copy());
+          newParameters.addParameter(pp.copy(Base.COPY_NOTHING));
         }
       }
       context.getManager().setExpansionParameters(newParameters);
@@ -120,13 +120,13 @@ public class TxServiceTestHelper {
     }
     if (operationOutcome == null && validationResult != null && validationResult.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.FATAL) {
       operationOutcome = new OperationOutcome();
-      operationOutcome.getIssue().addAll(validationResult.getIssues());
+      operationOutcome.getIssueList().addAll(validationResult.getIssues());
     }
     if (operationOutcome != null) {
       TxTesterSorters.sortOperationOutcome(operationOutcome);
       TxTesterScrubbers.scrubOperationOutcome(operationOutcome, false);
 
-      String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(operationOutcome);
+      String actualResponse = new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(operationOutcome);
 
 
       boolean option2 = false;
@@ -148,7 +148,7 @@ public class TxServiceTestHelper {
       return diff;
     } else {
       if (parameters == null) {
-        parameters = new org.hl7.fhir.r5.model.Parameters();
+        parameters = new org.hl7.fhir.model.core.Parameters();
         if (validationResult.getSystem() != null) {
           parameters.addParameter("system", new UriType(validationResult.getSystem()));
         } else if (system != null) {
@@ -194,7 +194,7 @@ public class TxServiceTestHelper {
         }
         if (validationResult.getIssues().size() > 0) { 
           operationOutcome = new OperationOutcome();
-          operationOutcome.getIssue().addAll(validationResult.getIssues());
+          operationOutcome.getIssueList().addAll(validationResult.getIssues());
           parameters.addParameter().setName("issues").setResource(operationOutcome);
         }
       }
@@ -202,7 +202,7 @@ public class TxServiceTestHelper {
       TxTesterSorters.sortParameters(parameters);
       TxTesterScrubbers.scrubParameters(parameters, false);
 
-      String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(parameters);
+      String actualResponse = new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(parameters);
 
       boolean option2 = false;
       String diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse, actualResponse);

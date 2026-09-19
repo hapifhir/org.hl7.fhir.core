@@ -1,7 +1,6 @@
 package org.hl7.fhir.r5.utils.sql;
 
-
-
+import java.util.Objects;
 
 public class Column {
 
@@ -63,6 +62,12 @@ public class Column {
     this.isColl = isColl;
   }
 
+  /**
+   * Describes the first difference between this column and another that would stop them being
+   * the same column of a unionAll, or returns null when they match. The spec requires the branches
+   * to agree on name, order and FHIR type - not merely on storage family. A column whose path is
+   * the empty collection has no type of its own and takes on the other column's.
+   */
   public String diff(Column other) {
     if (!name.equals(other.name)) {
       return "Names differ: '"+name+"' vs '"+other.name+"'"; 
@@ -71,14 +76,15 @@ public class Column {
       if (length != other.length) {
         return "Lengths differ: '"+length+"' vs '"+other.length+"'"; 
       }
-      if (kind != other.kind) {
-        return "Kinds differ: '"+kind+"' vs '"+other.kind+"'"; 
+      if (!Objects.equals(type, other.type)) {
+        return "Types differ: '"+type+"' vs '"+other.type+"'"; 
       }
-      if (isColl != other.isColl) {
+      if (!Objects.equals(isColl, other.isColl)) {
         return "Collection status differs: '"+isColl+"' vs '"+other.isColl+"'"; 
       }
     } else if (kind == ColumnKind.Null) {
       kind = other.kind;
+      type = other.type;
       length = other.length;
       isColl = other.isColl;
     }

@@ -69,6 +69,10 @@ public class TEMPLATE_ID extends OBJECT_ID implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TEMPLATE_ID) dst);
+      }
+
       public void copyValues(TEMPLATE_ID dst) {
         super.copyValues(dst);
       }

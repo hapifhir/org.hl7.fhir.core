@@ -8,3 +8,7 @@
           throw new FHIRException("Cannot call getElementName() when multiple elements exist");
         }
     }
+
+    public String toString() {
+        return org.hl7.fhir.model.utilities.StructureMapUtilities.sourceToString(this);
+    }

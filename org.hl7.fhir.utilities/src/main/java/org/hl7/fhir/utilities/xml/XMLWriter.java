@@ -60,6 +60,65 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 	private int attributeLineWrap;
   private boolean xml1_1;
   private boolean ignoreComments;
+
+	// XMLWriter emits its output in very small pieces - a '<', a name, ' ', an attribute
+	// name, '="', the value, '"' - and each one written straight to OutputStreamWriter costs
+	// a lock and a charset encoder pass. Batch them here and hand the encoder whole buffers.
+	// Everything this class writes goes through the overrides below, and flush()/close() drain
+	// the buffer first, so ordering with writeBytes() is preserved.
+	private static final int OUT_BUFFER_SIZE = 8192;
+	private final char[] outBuffer = new char[OUT_BUFFER_SIZE];
+	private int outLength;
+
+	private void drainBuffer() throws IOException {
+		if (outLength > 0) {
+			super.write(outBuffer, 0, outLength);
+			outLength = 0;
+		}
+	}
+
+	@Override
+	public void write(int c) throws IOException {
+		if (outLength == OUT_BUFFER_SIZE) {
+			drainBuffer();
+		}
+		outBuffer[outLength++] = (char) c;
+	}
+
+	@Override
+	public void write(char[] cbuf, int off, int len) throws IOException {
+		if (len >= OUT_BUFFER_SIZE) {
+			drainBuffer();
+			super.write(cbuf, off, len);
+			return;
+		}
+		if (outLength + len > OUT_BUFFER_SIZE) {
+			drainBuffer();
+		}
+		System.arraycopy(cbuf, off, outBuffer, outLength, len);
+		outLength += len;
+	}
+
+	@Override
+	public void write(String str, int off, int len) throws IOException {
+		if (len >= OUT_BUFFER_SIZE) {
+			drainBuffer();
+			super.write(str, off, len);
+			return;
+		}
+		if (outLength + len > OUT_BUFFER_SIZE) {
+			drainBuffer();
+		}
+		str.getChars(off, off + len, outBuffer, outLength);
+		outLength += len;
+	}
+
+	@Override
+	public void flush() throws IOException {
+		drainBuffer();
+		super.flush();
+	}
+
 	
 	public final static int LINE_UNIX = 0;
 	public final static int LINE_WINDOWS = 1;
@@ -610,6 +669,7 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
     checkStarted();
     if (!levels.empty()) 
       throw new IOException("Called close before exiting all opened elements");
+     drainBuffer();
      super.close();
   }
     
@@ -829,13 +889,39 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 		return writePretty(true);
 	}
 	
+	// indents, cached so writePretty makes one write rather than one per level
+	private static final String[] INDENTS = makeIndents(64);
+
+	private static String[] makeIndents(int count) {
+		String[] result = new String[count];
+		StringBuilder b = new StringBuilder();
+		for (int i = 0; i < count; i++) {
+			result[i] = b.toString();
+			b.append("  ");
+		}
+		return result;
+	}
+
+	private static String indent(int depth) {
+		if (depth < INDENTS.length) {
+			return INDENTS[depth];
+		}
+		StringBuilder b = new StringBuilder(depth * 2);
+		for (int i = 0; i < depth; i++) {
+			b.append("  ");
+		}
+		return b.toString();
+	}
+
 	public int writePretty(boolean eoln) throws IOException {
 		if (isPretty()) {
 			if (eoln)
 				write(lineType == LINE_UNIX ? "\n" : "\r\n");
-			for (int i = 0; i < levels.size() - 1; i++)
-				write("  ");
-			return (levels.size() - 1) * 2;
+			int depth = levels.size() - 1;
+			if (depth > 0) {
+				write(indent(depth));
+			}
+			return depth * 2;
 		} else
 			return 0;
 	}

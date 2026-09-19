@@ -4,18 +4,19 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.elementmodel.Manager;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.xml.sax.SAXException;
 
 public class SchemaValidator {
 
-  public static void validateSchema(String location, Manager.FhirFormat cntType, List<ValidationMessage> messages) throws IOException, SAXException {
-    if (cntType == Manager.FhirFormat.JSON)
+  public static void validateSchema(String location, FhirFormat cntType, List<ValidationMessage> messages) throws IOException, SAXException {
+    if (cntType == FhirFormat.JSON)
       validateJsonSchema(location, messages);
-    if (cntType == Manager.FhirFormat.XML)
+    if (cntType == FhirFormat.XML)
       validateXmlSchema(location, messages);
-    if (cntType == Manager.FhirFormat.TURTLE)
+    if (cntType == FhirFormat.TURTLE)
       validateSHEX(location, messages);
   }
 

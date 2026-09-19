@@ -289,12 +289,13 @@ public class FHIRPathEngine {
         }
       }
     }
-    Base[] list = item.getNamedValue(name, false);
-    if (list != null) {
-      for (Base v : list) {
-        if (v != null && (tn == null || v.fhirType().equalsIgnoreCase(tn))) {
-          result.add(filterIdType(v));
-        }
+    // getChildValues, not getNamedValue: getNamedValue is the raw per-element switch generated
+    // onto each class, and it does not implement the "*" wildcard that children() and
+    // descendants() pass in here. getChildValues is the accessor that does (and it filters
+    // nulls, and never returns null itself)
+    for (Base v : item.getChildValues(name, false)) {
+      if (tn == null || v.fhirType().equalsIgnoreCase(tn)) {
+        result.add(filterIdType(v));
       }
     }
   }
@@ -821,12 +822,34 @@ public class FHIRPathEngine {
    * @
    */
   public List<Base> evaluate(Object appContext, Base focusResource, Base rootResource, Base base, ExpressionNode expressionNode) throws FHIRException {
+    return evaluate(appContext, focusResource, rootResource, base, expressionNode, null);
+  }
+
+  /**
+   * evaluate a path with a set of variables already in scope, and return the matching elements.
+   *
+   * <p>The variables are visible to the expression as %name, exactly as if they had been introduced
+   * by defineVariable(). This is for callers that have their own notion of named variables to make
+   * available - e.g. the Questionnaire 'variable' extension, whose variables are in scope for the
+   * expressions in the Questionnaire that declares them.
+   *
+   * @param base - the object against which the path is being evaluated
+   * @param expressionNode - the parsed ExpressionNode statement to use
+   * @param variables - variables to define before evaluation; may be null
+   */
+  public List<Base> evaluate(Object appContext, Base focusResource, Base rootResource, Base base, ExpressionNode expressionNode, Map<String, List<Base>> variables) throws FHIRException {
     List<Base> list = new ArrayList<Base>();
     if (base != null) {
       list.add(base);
     }
     traceLog = new StringBuilder();
-    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list, expressionNode, true);
+    ExecutionContext context = new ExecutionContext(appContext, focusResource, rootResource, base, base);
+    if (variables != null) {
+      for (Map.Entry<String, List<Base>> e : variables.entrySet()) {
+        context.setDefinedVariable(e.getKey(), e.getValue());
+      }
+    }
+    return execute(context, list, expressionNode, true);
   }
 
   /**
@@ -896,6 +919,16 @@ public class FHIRPathEngine {
    */
   public boolean evaluateToBoolean(Object appInfo, Base focusResource, Base rootResource, Base base, ExpressionNode node) throws FHIRException {
     return convertToBoolean(evaluate(appInfo, focusResource, rootResource, base, node));
+  }
+
+  /**
+   * evaluate a path with a set of variables already in scope, and return true or false
+   *
+   * @param base - the object against which the path is being evaluated
+   * @param variables - variables to define before evaluation; may be null
+   */
+  public boolean evaluateToBoolean(Object appInfo, Base focusResource, Base rootResource, Base base, ExpressionNode node, Map<String, List<Base>> variables) throws FHIRException {
+    return convertToBoolean(evaluate(appInfo, focusResource, rootResource, base, node, variables));
   }
 
   /**
@@ -2879,7 +2912,7 @@ public class FHIRPathEngine {
   }
 
   private BaseDateTimeType dateAdd(BaseDateTimeType d, Quantity q, boolean negate, ExpressionNode holder) {
-    BaseDateTimeType result = (BaseDateTimeType) d.copy(Base.COPY_DATA);
+    BaseDateTimeType result = (BaseDateTimeType) d.copy(Base.COPY_NOTHING);
 
     int value = negate ? 0 - q.getValue().intValue() : q.getValue().intValue();
     switch (q.hasCode() ? q.getCode() : q.getUnit()) {
@@ -2938,7 +2971,7 @@ public class FHIRPathEngine {
   }
 
 private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode holder) {
-    TimeType result = (TimeType) d.copy(Base.COPY_DATA);
+    TimeType result = (TimeType) d.copy(Base.COPY_NOTHING);
 
     int value = negate ? 0 - q.getValue().intValue() : q.getValue().intValue();
     switch (q.hasCode() ? q.getCode() : q.getUnit()) {
@@ -3177,7 +3210,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       String s = l.primitiveValue();
       if ("0".equals(s)) {
         Quantity qty = makeQuantity(r);
-        result.add(qty.copy(Base.COPY_DATA).setValue(qty.getValue().abs()));
+        result.add(qty.copy(Base.COPY_NOTHING).setValue(qty.getValue().abs()));
       }
     } else if (l.hasType("date") && r.hasType("Quantity")) {
       DateType dl = l instanceof DateType ? (DateType) l : new DateType(l.primitiveValue()); 
@@ -3858,7 +3891,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     case Split:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
-      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+      return new TypeDetails(CollectionStatus.ORDERED, TypeDetails.FP_String);
     case Join:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
@@ -4392,7 +4425,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       }
     } else if (base.hasType("Quantity")) {
       Quantity qty = makeQuantity(base);
-      result.add(qty.copy(Base.COPY_DATA).setValue(qty.getValue().abs()));
+      result.add(qty.copy(Base.COPY_NOTHING).setValue(qty.getValue().abs()));
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "abs", "(focus)", base.fhirType(), "integer or decimal");
     }
@@ -4613,7 +4646,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new TimeType(DateTimeUtil.lowBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
-      Base v = base.copy(Base.COPY_DATA);
+      Base v = base.copy(Base.COPY_NOTHING);
       v.setProperty("value", new DecimalType(Utilities.lowBoundaryForDecimal(value, precision == null ? 8 : precision)));
       result.add(v);
     } else {
@@ -4657,7 +4690,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new TimeType(DateTimeUtil.highBoundaryForTime(base.primitiveValue(), precision == null ? 9 : precision)));
     } else if (base.hasType("Quantity")) {
       String value = getNamedValue(base, "value");
-      Base v = base.copy(Base.COPY_DATA);
+      Base v = base.copy(Base.COPY_NOTHING);
       v.setProperty("value", new DecimalType(Utilities.highBoundaryForDecimal(value, precision == null ? 8 : precision)));
       result.add(v);
     } else {
@@ -4790,8 +4823,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       if ("hex".equals(param)) {
         result.add(new StringType(new String(hexStringToByteArray(cnt))));        
       } else if ("base64".equals(param)) {
-        Base64.Decoder enc = Base64.getDecoder();
-        result.add(new StringType(new String(enc.decode(cnt))));
+        result.add(new StringType(new String(Utilities.decodeBase64(cnt, true))));
       } else if ("urlbase64".equals(param)) {
         Base64.Decoder enc = Base64.getUrlDecoder();
         result.add(new StringType(new String(enc.decode(cnt))));
@@ -4867,6 +4899,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcJoin(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    // FHIRPath: "If the input is empty, the result is empty".
+    if (focus.isEmpty()) {
+      return new ArrayList<Base>();
+    }
     List<Base> nl = exp.getParameters().size() > 0 ? execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true) : new ArrayList<Base>();
     String param = "";
     String param2 = "";

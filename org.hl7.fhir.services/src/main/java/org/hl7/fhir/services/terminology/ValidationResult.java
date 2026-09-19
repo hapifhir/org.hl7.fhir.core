@@ -10,6 +10,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 import java.util.*;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 
 public class ValidationResult {
   private ConceptDefinitionComponent definition;
@@ -37,7 +38,7 @@ public class ValidationResult {
   }
 
   public ValidationResult(ValidationResult validationResult) {
-    this.definition = validationResult.definition == null ? null : validationResult.definition.copy(Base.COPY_DATA);
+    this.definition = validationResult.definition == null ? null : validationResult.definition.copy(Base.COPY_NOTHING);
     this.preferredDisplay = validationResult.preferredDisplay;
     this.system = validationResult.system;
     this.version = validationResult.version;
@@ -50,10 +51,10 @@ public class ValidationResult {
     this.diagnostics = validationResult.diagnostics;
     if (validationResult.issues != null) {
       for (OperationOutcomeIssueComponent issue : validationResult.issues) {
-        this.issues.add(issue.copy(Base.COPY_DATA));
+        this.issues.add(issue.copy(Base.COPY_NOTHING));
       }
     }
-    this.codeableConcept = validationResult.codeableConcept == null ? null : validationResult.codeableConcept.copy(Base.COPY_DATA);
+    this.codeableConcept = validationResult.codeableConcept == null ? null : validationResult.codeableConcept.copy(Base.COPY_NOTHING);
     this.unknownSystems = validationResult.unknownSystems == null ? null : new HashSet<>(validationResult.unknownSystems);
     this.inactive = validationResult.inactive;
     this.status = validationResult.status;
@@ -370,7 +371,9 @@ public class ValidationResult {
 
   public ValidationResult setStatus(boolean inactive, String status) {
     this.inactive = inactive;
-    if (!"inactive".equals(status)) {
+    // 'active' and 'inactive' say nothing that the inactive flag doesn't already say, so they're
+    // not worth reporting. status is for the statuses that add something: retired, deprecated...
+    if (!"inactive".equals(status) && !"active".equals(status)) {
       this.status = status;
     }
     return this;

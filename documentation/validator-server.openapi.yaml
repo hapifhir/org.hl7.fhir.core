@@ -480,9 +480,10 @@ paths:
       summary: Load an implementation guide into the running engine
       description: >-
         Loads an IG into the shared validation engine, making its profiles, value sets and maps
-        available to every subsequent request. The value may be a package reference
-        (`id#version`), a URL, or a path on the server's file system. The load is permanent for
-        the lifetime of the process - there is no unload.
+        available to every subsequent request. The value may be a package reference (`id#version`)
+        or a URL. A path on the server's file system is accepted only while the server is bound to
+        loopback (the default); with `-allowNetworkAccess` a path is refused with 400. The load is
+        permanent for the lifetime of the process - there is no unload.
       requestBody:
         required: true
         content:
@@ -493,7 +494,7 @@ paths:
               properties:
                 ig:
                   type: string
-                  description: Package reference, URL, or local path.
+                  description: Package reference or URL; a local path only while the server is bound to loopback.
             example: { ig: 'hl7.fhir.us.core#5.0.1' }
       responses:
         '200':
@@ -502,7 +503,7 @@ paths:
             application/fhir+json:
               schema: { $ref: '#/components/schemas/OperationOutcome' }
         '400':
-          description: Missing `ig` field.
+          description: Missing `ig` field, or a server-local path while the server is not bound to loopback.
           content:
             application/fhir+json:
               schema: { $ref: '#/components/schemas/OperationOutcome' }

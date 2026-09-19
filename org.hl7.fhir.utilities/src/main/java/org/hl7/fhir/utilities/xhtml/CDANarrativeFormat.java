@@ -30,15 +30,15 @@ package org.hl7.fhir.utilities.xhtml;
  */
 
 
-
-import java.io.IOException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import java.io.IOException;
+import java.util.Set;
 
 public class CDANarrativeFormat {
 
@@ -336,82 +336,90 @@ public class CDANarrativeFormat {
 
   /**
    * For XHTML return the matching CDA narrative. This is only guaranteed to work for XML produced from CDA, but will try whatever
-   * @param node
-   * @return
-   * @throws IOException 
-   * @throws FHIRException 
+   * @param xml      the writer to which the CDA narrative will be written
+   * @param div      the root node of the FHIR narrative
+   * @throws IOException   if a write operation on the XML writer fails
+   * @throws FHIRException if unexpected elements are encountered in strict mode
    */
   public void convert(IXMLWriter xml, XhtmlNode div) throws IOException, FHIRException {
+    convert(xml, div, true);
+  }
+
+  /**
+   * For XHTML return the matching CDA narrative. In strict mode, conversion will fail if invalid XHTML is encountered. In lenient mode, a best-effort conversion will skip unrecognized elements.
+   *
+   * @param xml      the writer to which the CDA narrative will be written
+   * @param div      the root node of the FHIR narrative
+   * @param isStrict if true (default), the method will throw an exception if it encounters any elements within the FHIR narrative that are not valid XHTML. If false, the method will ignore invalid XHTML tags and continue on a best-effort basis.
+   * @throws IOException   if a write operation on the XML writer fails
+   * @throws FHIRException if invalid XHTML is encountered in strict mode
+   */
+  public void convert(IXMLWriter xml, XhtmlNode div, boolean isStrict) throws IOException, FHIRException {
     processAttributes(div, xml, "ID", "language", "styleCode");
     xml.enter("text");
-    processChildren(xml, div);
+    processChildren(xml, div, isStrict);
     xml.exit("text");
   }
 
-  private void processChildren(IXMLWriter xml, XhtmlNode x) throws IOException, FHIRException {
+  private void processChildren(IXMLWriter xml, XhtmlNode x, boolean isStrict) throws IOException, FHIRException {
     for (XhtmlNode n : x.getChildNodes()) 
-      processChildNode(xml, n);
+      processChildNode(xml, n, isStrict);
   }
   
-  private void processChildNode(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processChildNode(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     switch (n.getNodeType()) {
-    case DocType: 
-    case Document: 
-    case Instruction: 
+      case DocType, Document, Instruction, CData:
       return;
-    case Comment: 
+    case Comment:
       xml.comment(n.getContent(), true);
       return;
     case Text: 
       xml.text(n.getContent());
       return;
     case Element:
-      if (n.getName().equals("br"))
-        processBreak(xml, n);
-      else if (n.getName().equals("h2") || n.getName().equals("caption"))
-        processCaption(xml, n);
-      else if (n.getName().equals("col"))
-        processCol(xml, n);
-      else if (n.getName().equals("colgroup"))
-        processColGroup(xml, n);
-      else if (n.getName().equals("span"))
-        processContent(xml, n);
-      else if (n.getName().equals("footnote"))
-        processFootNote(xml, n);
-      else if (n.getName().equals("footnoteRef"))
-        processFootNodeRef(xml, n);
-      else if (n.getName().equals("li"))
-        processItem(xml, n);
-      else if (n.getName().equals("linkHtml"))
-        processlinkHtml(xml, n);
-      else if (n.getName().equals("ul") || n.getName().equals("ol"))
-        processList(xml, n);
-      else if (n.getName().equals("p"))
-        processParagraph(xml, n);
-      else if (n.getName().equals("img"))
-        processRenderMultiMedia(xml, n);
-      else if (n.getName().equals("sub"))
-        processSub(xml, n);
-      else if (n.getName().equals("sup"))
-        processSup(xml, n);
-      else if (n.getName().equals("table"))
-        processTable(xml, n);
-      else if (n.getName().equals("tbody"))
-        processTBody(xml, n);
-      else if (n.getName().equals("td"))
-        processTd(xml, n);
-      else if (n.getName().equals("tfoot"))
-        processTFoot(xml, n);
-      else if (n.getName().equals("th"))
-        processTh(xml, n);
-      else if (n.getName().equals("thead"))
-        processTHead(xml, n);
-      else if (n.getName().equals("a"))
-        processA(xml, n);
-      else if (n.getName().equals("tr"))
-        processTr(xml, n);
-      else
-        throw new FHIRException("Unknown element "+n.getName());
+      processElement(xml, n, isStrict);
+    }
+  }
+
+  private void processElement(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException {
+    String elementName = n.getName().toLowerCase();
+    switch (elementName) {
+      case "br" -> processBreak(xml, n);
+      case "h1", "h2", "h3", "h4", "h5", "h6", "caption" -> processCaption(xml, n, isStrict);
+      case "col" -> processCol(xml, n, isStrict);
+      case "colgroup" -> processColGroup(xml, n, isStrict);
+      case "span", "div" -> processContent(xml, n, isStrict);
+      case "footnote" -> processFootNote(xml, n, isStrict);
+      case "footnoteref" -> processFootNodeRef(xml, n, isStrict);
+      case "li" -> processItem(xml, n, isStrict);
+      case "linkhtml" -> processlinkHtml(xml, n, isStrict);
+      case "ul", "ol" -> processList(xml, n, isStrict);
+      case "p" -> processParagraph(xml, n, isStrict);
+      case "img" -> processRenderMultiMedia(xml, n, isStrict);
+      case "sub" -> processSub(xml, n, isStrict);
+      case "sup" -> processSup(xml, n, isStrict);
+      case "table" -> processTable(xml, n, isStrict);
+      case "tbody" -> processTBody(xml, n, isStrict);
+      case "td" -> processTd(xml, n, isStrict);
+      case "tfoot" -> processTFoot(xml, n, isStrict);
+      case "th" -> processTh(xml, n, isStrict);
+      case "thead" -> processTHead(xml, n, isStrict);
+      case "a" -> processA(xml, n, isStrict);
+      case "tr" -> processTr(xml, n, isStrict);
+      case "list", "item", "paragraph", "rendermultimedia", "content" -> {
+        if (isStrict) {
+          throw new FHIRException("Unknown element " + elementName);
+        } else {
+          processPassThrough(xml, n, false);
+        }
+      }
+      default -> {
+        if (isStrict) {
+          throw new FHIRException("Unknown element " + elementName);
+        } else {
+          stripTag(xml, n, false);
+        }
+      }
     }
   }
 
@@ -419,152 +427,180 @@ public class CDANarrativeFormat {
     xml.element("br");
   }
 
-  private void processCaption(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processCaption(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     processAttributes(n, xml, "id", "language", "styleCode");
     xml.enter("caption");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("caption");
   }
 
-  private void processCol(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processCol(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     processAttributes(n, xml, "id", "language", "styleCode", "span", "width", "align", "char", "charoff", "valign");
     xml.enter("col");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("col");
   }
 
-  private void processColGroup(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processColGroup(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     processAttributes(n, xml, "id", "language", "styleCode", "span", "width", "align", "char", "charoff", "valign");
     xml.enter("colgroup");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("colgroup");
   }
 
-  private void processContent(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processContent(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     processAttributes(n, xml, "id", "language", "styleCode");
     xml.enter("content");
     // todo: do something with revised..., "revised"
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("content");
   }
 
-  private void processFootNote(IXMLWriter xml, XhtmlNode n) {
-    throw new Error("element "+n.getName()+" not handled yet");
+  private void processFootNote(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
+    if (isStrict) {
+      throw new Error("element " + n.getName() + " not handled yet");
+    } else {
+      processPassThrough(xml, n, isStrict);
+    }
   }
 
-  private void processFootNodeRef(IXMLWriter xml, XhtmlNode n) {
-    throw new Error("element "+n.getName()+" not handled yet");
+  private void processFootNodeRef(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
+    if (isStrict) {
+      throw new Error("element " + n.getName() + " not handled yet");
+    } else {
+      processPassThrough(xml, n, isStrict);
+    }
   }
 
-  private void processItem(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processItem(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     processAttributes(n, xml, "id", "language", "styleCode");
     xml.enter("item");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("item");
   }
 
-  private void processlinkHtml(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processlinkHtml(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     String v = n.getAttribute("src");
     xml.attribute("referencedObject", v);
     processAttributes(n, xml, "name", "href", "rel", "rev", "title", "id", "language", "styleCode");
     xml.enter("linkHtml");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("linkHtml");
   }
 
-  private void processList(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processList(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     if (n.getName().equals("ol"))
       xml.attribute("listType", "ordered");
     else
       xml.attribute("listType", "unordered");
     processAttributes(n, xml, "id", "language", "styleCode");
     xml.enter("list");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("list");
   }
 
-  private void processParagraph(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processParagraph(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     processAttributes(n, xml, "id", "language", "styleCode");
     xml.enter("paragraph");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("paragraph");
   }
 
-  private void processRenderMultiMedia(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processRenderMultiMedia(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     String v = n.getAttribute("src");
-    xml.attribute("referencedObject", v);
+    if (StringUtils.isNotBlank(v))
+      xml.attribute("referencedObject", v);
     processAttributes(n, xml, "id", "language", "styleCode");
     xml.enter("renderMultiMedia");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("renderMultiMedia");
   }
 
-  private void processSub(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processSub(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     xml.enter("sub");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("sub");
   }
 
-  private void processSup(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processSup(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     xml.enter("sup");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("sup");
   }
 
-  private void processTable(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processTable(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     processAttributes(n, xml, "id", "language", "styleCode", "summary", "width", "border", "frame", "rules", "cellspacing", "cellpadding");
     xml.enter("table");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("table");
   }
 
-  private void processTBody(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processTBody(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     processAttributes(n, xml, "id", "language", "styleCode", "align", "char", "charoff", "valign");
     xml.enter("tbody");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("tbody");
   }
 
-  private void processTd(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processTd(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     processAttributes(n, xml, "id", "language", "styleCode", "abbr", "axis", "headers", "scope", "rowspan", "colspan", "align", "char", "charoff", "valign");
     xml.enter("td");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("td");
   }
 
-  private void processTFoot(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processTFoot(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     processAttributes(n, xml, "id", "language", "styleCode", "align", "char", "charoff", "valign");
     xml.enter("tfoot");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("tfoot");
   }
 
-  private void processTh(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processTh(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     processAttributes(n, xml, "id", "language", "styleCode", "abbr", "axis", "headers", "scope", "rowspan", "colspan", "align", "char", "charoff", "valign");
     xml.enter("th");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("th");
   }
 
-  private void processTHead(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processTHead(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     processAttributes(n, xml, "id", "language", "styleCode", "align", "char", "charoff", "valign");
     xml.enter("thead");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("thead");
   }
 
-  private void processTr(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processTr(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
     processAttributes(n, xml, "id", "language", "styleCode", "align", "char", "charoff", "valign");
     xml.enter("tr");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("tr");
   }
 
-  private void processA(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+  private void processA(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
+    String v = n.getAttribute("href");
+    if (StringUtils.isNotBlank(v))
+      xml.attribute("referencedObject", v);
+
     processAttributes(n, xml, "id", "language", "styleCode", "align", "char", "charoff", "valign");
     xml.enter("linkHtml");
-    processChildren(xml, n);
+    processChildren(xml, n, isStrict);
     xml.exit("linkHtml");
+  }
+
+  /**
+   * Pass an element and all its children through from the source XHTML to the CDA Narrative unchanged.
+   */
+  private void processPassThrough(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
+    processAllAttributes(n, xml);
+    xml.enter(n.getName());
+    processChildren(xml, n, isStrict);
+    xml.exit(n.getName());
+  }
+
+  private void processAllAttributes(XhtmlNode xn, IXMLWriter xml) throws IOException, FHIRException {
+    Set<String> attributeNames = xn.getAttributes().keySet();
+    processAttributes(xn, xml, attributeNames.toArray(new String[0]));
   }
 
   private void processAttributes(XhtmlNode xn, IXMLWriter xml, String... names) throws IOException {
@@ -637,5 +673,10 @@ public class CDANarrativeFormat {
     }
   }
 
-
+  /**
+   * drop an element from the document while preserving its children (if possible).
+   */
+  private void stripTag(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
+    processChildren(xml, n, isStrict);
+  }
 }

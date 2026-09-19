@@ -622,6 +622,10 @@ public class SubstanceProtein extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SubstanceProteinSubunitComponent) dst);
+      }
+
       public void copyValues(SubstanceProteinSubunitComponent dst) {
         super.copyValues(dst);
         dst.subunit = subunit == null ? null : subunit.copy();
@@ -1026,6 +1030,10 @@ public class SubstanceProtein extends DomainResource {
         SubstanceProtein dst = new SubstanceProtein();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SubstanceProtein) dst);
       }
 
       public void copyValues(SubstanceProtein dst) {

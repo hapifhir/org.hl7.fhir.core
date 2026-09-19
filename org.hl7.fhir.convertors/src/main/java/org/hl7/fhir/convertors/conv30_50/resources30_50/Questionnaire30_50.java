@@ -26,6 +26,14 @@ import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireAnswerConstraint;
 
 public class Questionnaire30_50 {
 
+  /**
+   * STU3 has no Questionnaire.item.answerConstraint; the STU3 item type carries part of the
+   * meaning (choice = optionsOnly, open-choice = optionsOrString) and there is no way at all to say
+   * optionsOrType. So an STU3 questionnaire says it with the cross-version extension, and that is
+   * what the author actually wrote - it wins over whatever the item type implies. See #2549.
+   */
+  public static final String ANSWER_CONSTRAINT_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Questionnaire.item.answerConstraint";
+
   public static org.hl7.fhir.r5.model.Questionnaire convertQuestionnaire(org.hl7.fhir.dstu3.model.Questionnaire src) throws FHIRException {
     if (src == null)
       return null;
@@ -126,7 +134,7 @@ public class Questionnaire30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemComponent tgt = new org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src, tgt, ANSWER_CONSTRAINT_EXTENSION_URL);
     if (src.hasLinkId())
       tgt.setLinkIdElement(String30_50.convertString(src.getLinkIdElement()));
     if (src.hasDefinition())
@@ -138,6 +146,11 @@ public class Questionnaire30_50 {
       tgt.setTextElement(String30_50.convertString(src.getTextElement()));
     if (src.hasType())
       tgt.setTypeElement(convertQuestionnaireItemType(src.getTypeElement(), src.getAnswerConstraint()));
+    if (src.hasAnswerConstraint() && src.getAnswerConstraint() == QuestionnaireAnswerConstraint.OPTIONSORTYPE) {
+      // optionsOnly and optionsOrString are both carried by the STU3 item type, but optionsOrType has
+      // nowhere to go, so it goes into the cross-version extension rather than being lost (#2549)
+      tgt.addExtension(ANSWER_CONSTRAINT_EXTENSION_URL, new org.hl7.fhir.dstu3.model.CodeType(src.getAnswerConstraint().toCode()));
+    }
     for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen())
       tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
     if (src.hasRequired())
@@ -163,7 +176,7 @@ public class Questionnaire30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent tgt = new org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src, tgt, ANSWER_CONSTRAINT_EXTENSION_URL);
     if (src.hasLinkId())
       tgt.setLinkIdElement(String30_50.convertString(src.getLinkIdElement()));
     if (src.hasDefinition())
@@ -179,6 +192,12 @@ public class Questionnaire30_50 {
         tgt.setAnswerConstraint(QuestionnaireAnswerConstraint.OPTIONSONLY);
       } else if (src.getType() == QuestionnaireItemType.OPENCHOICE) {
         tgt.setAnswerConstraint(QuestionnaireAnswerConstraint.OPTIONSORSTRING);
+      }
+    }
+    if (src.hasExtension(ANSWER_CONSTRAINT_EXTENSION_URL)) {
+      org.hl7.fhir.dstu3.model.Type v = src.getExtensionByUrl(ANSWER_CONSTRAINT_EXTENSION_URL).getValue();
+      if (v != null && v.primitiveValue() != null) {
+        tgt.setAnswerConstraint(QuestionnaireAnswerConstraint.fromCode(v.primitiveValue()));
       }
     }
     for (org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen())

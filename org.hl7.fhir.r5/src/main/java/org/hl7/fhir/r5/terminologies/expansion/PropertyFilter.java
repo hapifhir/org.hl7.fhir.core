@@ -88,7 +88,7 @@ public class PropertyFilter extends ConceptFilter {
             boolean matches = RegexTimeout.matches(value, filter.getValue());
             return value != null && matches;
           } catch (TimeoutException e) {
-            throw fail("The regex filter '"+filter.getValue()+"' took too long to evaluate");
+            throw failFilter("The regex filter '"+filter.getValue()+"' took too long to evaluate");
           }
         default:
           throw fail("Shouldn't get here");

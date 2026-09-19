@@ -10,13 +10,13 @@ import java.util.List;
 
 
 public class VariablesForProfiling {
-  private final StructureMapUtilities structureMapUtilities;
+  private final StructureMapTools structureMapTools;
   private List<VariableForProfiling> list = new ArrayList<VariableForProfiling>();
   private boolean optional;
   private boolean repeating;
 
-  public VariablesForProfiling(StructureMapUtilities structureMapUtilities, boolean optional, boolean repeating) {
-    this.structureMapUtilities = structureMapUtilities;
+  public VariablesForProfiling(StructureMapTools structureMapTools, boolean optional, boolean repeating) {
+    this.structureMapTools = structureMapTools;
     this.optional = optional;
     this.repeating = repeating;
   }
@@ -40,13 +40,13 @@ public class VariablesForProfiling {
   }
 
   public VariablesForProfiling copy(boolean optional, boolean repeating) {
-    VariablesForProfiling result = new VariablesForProfiling(structureMapUtilities, optional, repeating);
+    VariablesForProfiling result = new VariablesForProfiling(structureMapTools, optional, repeating);
     result.list.addAll(list);
     return result;
   }
 
   public VariablesForProfiling copy() {
-    VariablesForProfiling result = new VariablesForProfiling(structureMapUtilities, optional, repeating);
+    VariablesForProfiling result = new VariablesForProfiling(structureMapTools, optional, repeating);
     result.list.addAll(list);
     return result;
   }

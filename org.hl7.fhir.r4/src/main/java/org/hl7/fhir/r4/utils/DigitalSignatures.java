@@ -65,7 +65,7 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.utilities.xml.XmlGenerator;
 import org.w3c.dom.Document;
 
-
+@Deprecated
 public class DigitalSignatures {
 
   public static PrivateKey getPrivateKey(String filename) throws Exception {
