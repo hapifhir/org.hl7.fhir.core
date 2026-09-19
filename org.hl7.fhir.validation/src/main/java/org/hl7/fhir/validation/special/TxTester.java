@@ -27,6 +27,7 @@ import org.hl7.fhir.services.client.ResourceFormat;
 import org.hl7.fhir.model.core.Bundle;
 import org.hl7.fhir.model.core.Bundle.BundleEntryComponent;
 import org.hl7.fhir.model.core.CapabilityStatement;
+import org.hl7.fhir.model.core.ConceptMap;
 import org.hl7.fhir.model.core.OperationOutcome;
 import org.hl7.fhir.model.core.Parameters;
 import org.hl7.fhir.model.core.Resource;
@@ -825,6 +826,8 @@ public class TxTester implements ITerminologyRequestIdProvider {
           msg = compare(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("subsumes")) {
           msg = subsumes(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+        } else if (test.asString("operation").equals("closure")) {
+          msg = closure(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -1045,6 +1048,50 @@ public class TxTester implements ITerminologyRequestIdProvider {
       code = e.getCode();
       OperationOutcome oo = e.getServerErrors().get(0);
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
+      pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null) {
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(resp, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(pj, actFn);
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    return diff;
+  }
+
+  /**
+   * $closure. The response is a ConceptMap rather than a Parameters. Closure tests are
+   * stateful - each builds on the table the previous one left - so their suite is marked
+   * "sequential" and the runners run it in order on one thread, after everything else.
+   */
+  private String closure(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+    for (Resource r : setup) {
+      p.addParameter().setName("tx-resource").setResource(r);
+    }
+    client().setAcceptLanguage(lang);
+    p.getParameterList().addAll(profile.getParameterList());
+    int code = 0;
+    String pj;
+    try {
+      ConceptMap cm = client().closure(p);
+      cm.setText(null);
+      TxTesterSorters.sortConceptMap(cm);
+      pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(cm);
+      code = 200;
+    } catch (EFhirClientException e) {
+      code = e.getCode();
+      OperationOutcome oo = e.getServerErrors().get(0);
+      if (oo == null) {
+        throw e;
+      }
+      TxTesterScrubbers.scrubOperationOutcome(oo, tight);
+      oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
     CompareUtilities c = new CompareUtilities(modes, ext, vars());

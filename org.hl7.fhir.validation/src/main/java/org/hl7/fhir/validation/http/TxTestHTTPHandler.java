@@ -167,6 +167,7 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
         modes.add("snomed");
         modes.add("mimetypes");
         modes.add("icd-11");
+        modes.add("closure");
       }
 
       if (suiteName == null) {
