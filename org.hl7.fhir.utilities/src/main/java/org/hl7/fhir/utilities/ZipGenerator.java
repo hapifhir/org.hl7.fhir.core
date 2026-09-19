@@ -103,7 +103,11 @@ public class ZipGenerator {
 	  String files[] = fd.list();
 	  for (String f : files) {
 	    if (!".DS_Store".equals(f)) {
-	      if (ManagedFileAccess.csfile(Utilities.path(actualDir, f)).isDirectory())
+	      File cf = ManagedFileAccess.csfile(Utilities.path(actualDir, f));
+	      if (!cf.exists()) {
+	        continue;
+	      }
+	      if (cf.isDirectory())
 	        addFolder(Utilities.path(actualDir, f), Utilities.pathURL(statedDir, f), omitIfExists);
 	      else
 	        addFileName(Utilities.pathURL(statedDir, f), Utilities.path(actualDir, f), omitIfExists);
@@ -116,7 +120,11 @@ public class ZipGenerator {
     String files[] = fd.list();
     for (String f : files) {
       if (!".DS_Store".equals(f)) {
-        if (ManagedFileAccess.csfile(Utilities.path(actualDir, f)).isDirectory())
+        File cf = ManagedFileAccess.csfile(Utilities.path(actualDir, f));
+        if (!cf.exists()) {
+          continue;
+        }
+        if (cf.isDirectory())
           addFolder(Utilities.path(actualDir, f), Utilities.pathURL(statedDir, f), omitIfExists, noExt);
         else if (noExt == null || !f.endsWith(noExt))
           addFileName(Utilities.pathURL(statedDir, f), Utilities.path(actualDir, f), omitIfExists);
