@@ -4831,7 +4831,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private byte[] readBase64Data(List<ValidationMessage> errors, NodeStack theStack, String name, String b64) {
     try {
-      return Utilities.decodeBase64(b64);
+      return Utilities.decodeBase64(b64, false);
     } catch (Exception e) {
       rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL, name, e.getMessage());
     }
@@ -4923,7 +4923,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           // avoid that, but only the whole-array decoder checks that nothing follows the padding, and it 
           // words the error differently, so the checking is worth more than the memory here. Whitespace 
           // is ignored (readers should ignore it), so it makes no difference to the size or the hash
-          summariseContent(res, Utilities.decodeBase64(b64), wantHash);
+          summariseContent(res, Utilities.decodeBase64(b64, false), wantHash);
         } catch (Exception e) {
           res.decodeError = e.getMessage();
         }

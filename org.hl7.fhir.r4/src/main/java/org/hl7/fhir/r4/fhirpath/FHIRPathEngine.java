@@ -4524,7 +4524,7 @@ public class FHIRPathEngine {
       if ("hex".equals(param)) {
         result.add(new StringType(new String(hexStringToByteArray(cnt))));        
       } else if ("base64".equals(param)) {
-        result.add(new StringType(new String(Utilities.decodeBase64(cnt))));
+        result.add(new StringType(new String(Utilities.decodeBase64(cnt, true))));
       } else if ("urlbase64".equals(param)) {
         Base64.Decoder enc = Base64.getUrlDecoder();
         result.add(new StringType(new String(enc.decode(cnt))));
