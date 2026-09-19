@@ -46,8 +46,11 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
   }
 
   @Override
-  public Map<String, String> getHeaders(URL url) {
+  public Map<String, String> getHeaders(URL url) throws java.io.IOException {
     ServerDetailsPOJO serverDetails = getServerDetails(url);
+    if (serverDetails == null) {
+      return Collections.emptyMap();
+    }
     HTTPAuthenticationMode authenticationMode = getHTTPAuthenticationMode(serverDetails);
 
     if (authenticationMode == null) {
@@ -68,6 +71,11 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
         String providedAPIKey = serverDetails.getApikey();
         headers.put("Api-Key", providedAPIKey);
       }
+      case CLIENT_CREDENTIALS -> {
+        // A token-fetch failure propagates as IOException, so callers that already handle a
+        // failed web request handle this too.
+        headers.put("Authorization", "Bearer " + HTTPTokenManager.getToken(serverDetails));
+      }
       default -> { /* do nothing */ }
 
   }
@@ -83,10 +91,16 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
       return HTTPAuthenticationMode.NONE;
     }
 
-    return switch (serverDetails.getAuthenticationType()) {
+    String type = serverDetails.getAuthenticationType();
+    if (type == null) {
+      return HTTPAuthenticationMode.NONE;
+    }
+
+    return switch (type) {
       case "basic" -> HTTPAuthenticationMode.BASIC;
       case "token" -> HTTPAuthenticationMode.TOKEN;
       case "apikey" -> HTTPAuthenticationMode.APIKEY;
+      case "client_credentials" -> HTTPAuthenticationMode.CLIENT_CREDENTIALS;
       default -> HTTPAuthenticationMode.NONE;
     };
   }
@@ -101,5 +115,18 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
    */
   private ServerDetailsPOJO getServerDetails(URL url) {
     return ManagedWebAccessUtils.getServer(url.toString(), servers);
+  }
+
+  @Override
+  public boolean invalidateCachedCredentials(URL url) {
+    ServerDetailsPOJO serverDetails = getServerDetails(url);
+    if (serverDetails != null
+        && getHTTPAuthenticationMode(serverDetails) == HTTPAuthenticationMode.CLIENT_CREDENTIALS) {
+      // Only report an invalidation when a token was actually cached. A server that rejects a
+      // freshly-minted token (insufficient scope, client not authorised) would otherwise cost
+      // two round-trips plus a token fetch on every request, forever.
+      return HTTPTokenManager.invalidateToken(serverDetails);
+    }
+    return false;
   }
 }
