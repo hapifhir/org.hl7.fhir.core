@@ -71,11 +71,26 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
       }
     }
   }
+
+  private class CompliesWithReasonRule {
+    private String profileUrl;
+    private String elementPath;
+
+    protected CompliesWithReasonRule(String profileUrl, String elementPath) {
+      super();
+      this.profileUrl = profileUrl;
+      this.elementPath = elementPath;
+    }
+
+    public boolean matches(String url, String path) {
+      return stringMatches(profileUrl, url) && compliesWithPathMatches(elementPath, path);
+    }
+  }
   
   // string matching 
 
   boolean pathMatches(String[] specifier, String[] actual) {
-    if (specifier == null) {
+    if (specifier == null || specifier.length == 0) {
       return true;
     }
     for (int i = 0; i < specifier.length; i++) {
@@ -105,9 +120,23 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
     }
   }
 
-  boolean stringMatches(String specifier, @Nonnull String actual) {
+  boolean compliesWithPathMatches(String specifier, String actual) {
     if (specifier == null) {
       return true;
+    } else if (actual == null) {
+      return false;
+    }
+    // Reuse the same path matching as message suppression (messageId@path) so the two advisor
+    // formats behave identically: sub-paths require an explicit trailing ".*" and slices (":")
+    // are not normalized.
+    return pathMatches(specifier.split("\\."), actual.split("\\."));
+  }
+
+  boolean stringMatches(String specifier, String actual) {
+    if (specifier == null) {
+      return true;
+    } else if (actual == null) {
+      return false;
     } else if (specifier.endsWith("*")) {
       return specifier.substring(0, specifier.length()-1).equalsIgnoreCase(actual.substring(0, Integer.min(specifier.length()-1, actual.length())));      
     } else {
@@ -126,6 +155,7 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
   }
   
   private List<SuppressMessageRule> suppressMessageRules = new ArrayList<>();
+  private List<CompliesWithReasonRule> compliesWithReasonRules = new ArrayList<>();
   private int suppressed = 0;
 
   protected void addSuppressMessageRule(@Nonnull String id, String path, boolean regex) {
@@ -136,6 +166,11 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
   protected void addSuppressMessageRule(@Nonnull String id) {
     log.debug("SuppressingRule was added for: " + id);
     suppressMessageRules.add(new SuppressMessageRule(id));
+  }
+
+  protected void addCompliesWithReasonRule(String profileUrl, String elementPath) {
+    log.debug("CompliesWithReasonRule was added for: " + profileUrl + " at path " + elementPath);
+    compliesWithReasonRules.add(new CompliesWithReasonRule(profileUrl, elementPath));
   }
   
   @Override
@@ -156,6 +191,21 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
       return base.isSuppressMessageId(path, messageId, theMessageArguments);
     } else {
       return super.isSuppressMessageId(path, messageId, theMessageArguments);
+    }
+  }
+
+  @Override
+  public boolean isSuppressCompliesWithReason(String claimedProfileUrl, String elementPath) {
+    for (CompliesWithReasonRule rule : compliesWithReasonRules) {
+      if (rule.matches(claimedProfileUrl, elementPath)) {
+        log.debug("Suppressed compliesWith reason for profile " + claimedProfileUrl + " at path " + elementPath);
+        return true;
+      }
+    }
+    if (base != null) {
+      return base.isSuppressCompliesWithReason(claimedProfileUrl, elementPath);
+    } else {
+      return super.isSuppressCompliesWithReason(claimedProfileUrl, elementPath);
     }
   }
 
