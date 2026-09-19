@@ -499,6 +499,7 @@ public class I18nConstants {
   public static final String MSG_DEPRECATED_SRC = "MSG_DEPRECATED_SRC";
   public static final String MSG_DRAFT = "MSG_DRAFT";
   public static final String MSG_DRAFT_SRC = "MSG_DRAFT_SRC";
+  public static final String MSG_DRAFT_SRC_STATUS = "MSG_DRAFT_SRC_STATUS";
   public static final String MSG_EXPERIMENTAL = "MSG_EXPERIMENTAL";
   public static final String MSG_EXPERIMENTAL_SRC = "MSG_EXPERIMENTAL_SRC";
   public static final String MSG_RETIRED = "MSG_RETIRED";

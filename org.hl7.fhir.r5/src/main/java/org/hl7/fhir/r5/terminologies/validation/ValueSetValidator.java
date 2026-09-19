@@ -761,7 +761,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
         CodeSystem csa = context.fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule()); // get the latest
         VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
         String wv = determineVersion(path, system, null, workingVersion, code.getVersion(), issues, va);
-        CodeSystem cs = resolveCodeSystem(system, wv, null, null);
+        // the code system has to be resolved against the package of the value set that referenced it,
+        // not against the master definitions: a value set from (say) hl7.fhir.uv.extensions.r3 means that
+        // package's code system, and resolving the two from different packages produces spurious status
+        // issues in checkCanonical below (e.g. a draft R3 core code system under a non-draft value set)
+        CodeSystem cs = resolveCodeSystem(system, wv, null, valueset);
         if (cs == null) {
           if (!VersionUtilities.isR6Plus(context.getVersion()) && "urn:ietf:bcp:13".equals(system) && Utilities.existsInList(code.getCode(), "xml", "json", "ttl") && "http://hl7.org/fhir/ValueSet/mimetypes".equals(valueset.getUrl())) {
             return new ValidationResult(system, null, new ConceptDefinitionComponent(code.getCode()), "application/fhir+"+code.getCode());        

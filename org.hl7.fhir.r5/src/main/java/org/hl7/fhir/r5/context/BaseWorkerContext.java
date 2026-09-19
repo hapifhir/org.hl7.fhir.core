@@ -2219,7 +2219,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         } else if (p.getName().equals("warning-draft")) {
           String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DRAFT : I18nConstants.MSG_DRAFT_SRC, msg, vs, impliedType(msg)));
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DRAFT : I18nConstants.MSG_DRAFT_SRC, msg, vs, impliedType(msg), vs));
           issues.add(iss);
         } else if (p.getName().equals("cause")) {
           try {

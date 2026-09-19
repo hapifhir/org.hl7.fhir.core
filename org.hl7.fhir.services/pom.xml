@@ -52,6 +52,13 @@
             <groupId>org.antlr</groupId>
             <artifactId>ST4</artifactId>
         </dependency>
+        <!-- XML Parsers: not imported here, but XmlParserBase's inherited members mention
+             XmlPullParser, so it has to be on the compile classpath to use model.core.formats.XmlParser -->
+        <dependency>
+            <groupId>org.codelibs</groupId>
+            <artifactId>xpp3</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
