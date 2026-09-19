@@ -36,6 +36,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.hl7.fhir.r4b.fhirpath.ExpressionNode.CollectionStatus;
 
 public class FHIRPathTests {
 
@@ -359,5 +360,20 @@ public class FHIRPathTests {
     input.setBirthDateElement(dtv);
     List<Base> results = fp.evaluate(input, "Patient.birthDate.toString()");
     assertEquals(0, results.size());
+  }
+
+  // split() returns an ordered collection of strings; it was typed as a singleton (#2640).
+  // r4b emits no collection-status warnings, but check() still hands callers the type.
+  @Test
+  public void testCheck_SplitIsAnOrderedCollection() throws Exception {
+    TypeDetails td = fp.check(null, "Patient", "Patient", fp.parse("'fr-BE'.split('-')"));
+    assertEquals(CollectionStatus.ORDERED, td.getCollectionStatus());
+  }
+
+  @Test
+  public void testEvaluate_FirstOnSplit() throws Exception {
+    List<Base> results = fp.evaluate(new Patient(), "'fr-BE'.split('-').first().lower()");
+    assertEquals(1, results.size());
+    assertEquals("fr", results.get(0).primitiveValue());
   }
 }
