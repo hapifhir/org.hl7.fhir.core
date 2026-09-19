@@ -3205,7 +3205,7 @@ public class ProfileUtilities {
       }
     }
     if (source.getAny()) {
-      source.setAny(true);
+      dest.setAny(true);
     }
     if (source.hasShortDoco()) {
       dest.setShortDoco(source.getShortDoco());
