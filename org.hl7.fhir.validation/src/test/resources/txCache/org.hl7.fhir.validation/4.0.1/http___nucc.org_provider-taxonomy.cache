@@ -1,0 +1,79 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://nucc.org/provider-taxonomy",
+  "code" : "208D00000X",
+  "display" : "General Practice"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "General Practice Physician",
+  "code" : "208D00000X",
+  "system" : "http://nucc.org/provider-taxonomy",
+  "version" : "22.1",
+  "severity" : "error",
+  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X. Valid display is 'General Practice Physician' (for the language(s) 'en-US')",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: Validate \"[http://nucc.org/provider-taxonomy#208D00000X (\"General Practice\")]\"\n2ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: Check \"http://nucc.org/provider-taxonomy#208D00000X\"\n2ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: CodeSystem found: http://nucc.org/provider-taxonomy|22.1 for http://nucc.org/provider-taxonomy|22.1\n2ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: check code in (http://nucc.org/provider-taxonomy) at Coding\n2ms http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy|22.1: Code \"208D00000X\" found in http://nucc.org/provider-taxonomy|22.1",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X. Valid display is 'General Practice Physician' (for the language(s) 'en-US')"
+    },
+    "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://nucc.org/provider-taxonomy",
+  "code" : "208D00000X"
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0", "version": "4.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "General Practice Physician",
+  "code" : "208D00000X",
+  "system" : "http://nucc.org/provider-taxonomy",
+  "version" : "22.1",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Analysing http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0 for validation purposes\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Prepare include[0]: \"(http://nucc.org/provider-taxonomy)\"\n1ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: CodeSystem found: \"http://nucc.org/provider-taxonomy|22.1\"\n2ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Validate \"[http://nucc.org/provider-taxonomy#208D00000X (\"undefined\")]\"\n2ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Check \"http://nucc.org/provider-taxonomy#208D00000X\"\n2ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: CodeSystem found: http://nucc.org/provider-taxonomy|22.1 for http://nucc.org/provider-taxonomy\n2ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: check code in (http://nucc.org/provider-taxonomy) at Coding\n2ms http://hl7.org/fhir/us/core/ValueSet/us-core-provider-role--0|4.0.0: Code \"208D00000X\" found in http://nucc.org/provider-taxonomy|22.1",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

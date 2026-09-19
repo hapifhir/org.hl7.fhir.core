@@ -1,0 +1,47 @@
+{
+  "systems" : [{
+    "system" : "http://loinc.org",
+    "url" : "http://loinc.org",
+    "authoritative" : [],
+    "candidates" : ["http://tx-dev.fhir.org/r5",
+    "http://tx.hl7europe.eu/r5",
+    "https://tx.hl7.cz/r5"]
+  },
+  {
+    "system" : "http://loinc.org in en, en-US",
+    "url" : "http://loinc.org",
+    "language" : "en, en-US",
+    "authoritative" : [],
+    "candidates" : ["http://tx-dev.fhir.org/r5",
+    "http://tx.hl7europe.eu/r5",
+    "https://tx.hl7.cz/r5"]
+  },
+  {
+    "system" : "http://loinc.org in en-AU",
+    "url" : "http://loinc.org",
+    "language" : "en-AU",
+    "authoritative" : [],
+    "candidates" : ["http://tx-dev.fhir.org/r5",
+    "http://tx.hl7europe.eu/r5",
+    "https://tx.hl7.cz/r5"]
+  },
+  {
+    "system" : "http://unitsofmeasure.org in en-AU",
+    "url" : "http://unitsofmeasure.org",
+    "language" : "en-AU",
+    "authoritative" : [],
+    "candidates" : ["http://tx-dev.fhir.org/r5",
+    "http://tx.hl7europe.eu/r5",
+    "https://tx.hl7.cz/r5"]
+  },
+  {
+    "system" : "urn:ietf:bcp:47 in en-AU",
+    "url" : "urn:ietf:bcp:47",
+    "language" : "en-AU",
+    "authoritative" : [],
+    "candidates" : ["http://tx-dev.fhir.org/r5",
+    "http://tx.hl7europe.eu/r5",
+    "https://term.tehik.ee/fhir",
+    "https://tx.hl7.cz/r5"]
+  }]
+}

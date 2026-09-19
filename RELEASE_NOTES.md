@@ -11,4 +11,5 @@
 
 ## Other code changes
 
+* Fix the copy of a worker context: keep the package information and the master definitions, so that unversioned canonicals resolve to the same version as in the original context (e.g. R4 core CodeSystem instead of the R5 one from hl7.fhir.uv.xver-r5.r4)
 * R5 -> R4 and R5 -> R4B conversion dropped `ValueSet.compose.property` - the element a client uses to say which properties it wants back in an expansion. Neither R4 nor R4B has the element, so it now travels as the cross-version extension `http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.property` and is read back on the way up. Before this, a value set that asked for properties came back without them after a round trip, which looks like a terminology server fault rather than a conversion one
