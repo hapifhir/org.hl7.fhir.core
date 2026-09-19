@@ -394,7 +394,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         composer.append("      composeEnumeration(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+en+"EnumFactory(modelContext));\r\n");
       } else if (!"xhtml".equals(ed.typeSummary()) && (isJavaPrimitive(ed) || ed.typeSummary().startsWith("canonical("))) {
         composer.append("    if (element.has"+upFirst(getElementName(name, false))+"Element()) {\r\n");
-        composer.append("      "+comp+"(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element());\r\n");
+        composer.append("      "+comp+"(\""+escapeJavaString(name)+"\", element."+primitiveElementGetter(ed, name)+");\r\n");
         composer.append("    }\r\n");
       } else if (ed.typeSummary().equals("Resource")) {
         composer.append("    if (element.has"+upFirst(getElementName(name, false))+"()) {\r\n");
@@ -515,4 +515,13 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
   }
 
 
+
+  /**
+   * the getter for the object that holds a primitive element (value, id, extensions). Reference.reference
+   * is special: BaseReference defines getReferenceElement() as the HAPI IIdType view, which is a new object
+   * each time, so the generated Reference class calls the real one getReferenceElement_()
+   */
+  private String primitiveElementGetter(ElementDefinition ed, String name) {
+    return "get"+upFirst(getElementName(name, false))+"Element"+("Reference.reference".equals(ed.getPath()) ? "_" : "")+"()";
+  }
 }
