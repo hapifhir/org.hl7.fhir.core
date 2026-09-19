@@ -228,80 +228,84 @@ public class Factory {
     return "urn:uuid:"+UUID.randomUUID().toString().toLowerCase();
   }
 
+  /**
+   * Create an empty instance of the named data type - any concrete type that specializes DataType
+   * (primitives, including xhtml, general purpose types, and BackboneTypes). Throws for anything else,
+   * including resources and abstract types. See ResourceFactory for resources.
+   */
   public DataType create(String name) throws FHIRException {
-    if (name.equals("boolean"))
-      return new BooleanType();
-    else if (name.equals("integer"))
-      return new IntegerType();
-    else if (name.equals("integer64"))
-      return new Integer64Type();
-    else if (name.equals("decimal"))
-      return new DecimalType();
-    else if (name.equals("base64Binary"))
-      return new Base64BinaryType();
-    else if (name.equals("instant"))
-      return new InstantType();
-    else if (name.equals("string"))
-      return new StringType();
-    else if (name.equals("uri"))
-      return new UriType();
-    else if (name.equals("url"))
-      return new UrlType();
-    else if (name.equals("canonical"))
-      return new CanonicalType();
-    else if (name.equals("date"))
-      return new DateType();
-    else if (name.equals("dateTime"))
-      return new DateTimeType();
-    else if (name.equals("time"))
-      return new TimeType();
-    else if (name.equals("code"))
-      return new CodeType();
-    else if (name.equals("oid"))
-      return new OidType();
-    else if (name.equals("id"))
-      return new IdType();
-    else if (name.equals("unsignedInt"))
-      return new UnsignedIntType();
-    else if (name.equals("positiveInt"))
-      return new PositiveIntType();
-    else if (name.equals("markdown"))
-      return new MarkdownType();
-    else if (name.equals("Annotation"))
-      return new Annotation();
-    else if (name.equals("Attachment"))
-      return new Attachment();
-    else if (name.equals("Identifier"))
-      return new Identifier();
-    else if (name.equals("CodeableConcept"))
-      return new CodeableConcept();
-    else if (name.equals("Coding"))
-      return new Coding();
-    else if (name.equals("Quantity"))
-      return new Quantity();
-    else if (name.equals("Range"))
-      return new Range();
-    else if (name.equals("Period"))
-      return new Period();
-    else if (name.equals("Ratio"))
-      return new Ratio();
-    else if (name.equals("SampledData"))
-      return new SampledData();
-    else if (name.equals("Signature"))
-      return new Signature();
-    else if (name.equals("HumanName"))
-      return new HumanName();
-    else if (name.equals("Address"))
-      return new Address();
-    else if (name.equals("ContactPoint"))
-      return new ContactPoint();
-    else if (name.equals("Timing"))
-      return new Timing();
-    else if (name.equals("Reference"))
-      return new Reference();
-    else if (name.equals("Meta"))
-      return new Meta();
-    else
+    switch (name) {
+    // primitive types
+    case "base64Binary":          return new Base64BinaryType();
+    case "boolean":               return new BooleanType();
+    case "canonical":             return new CanonicalType();
+    case "code":                  return new CodeType();
+    case "date":                  return new DateType();
+    case "dateTime":              return new DateTimeType();
+    case "decimal":               return new DecimalType();
+    case "id":                    return new IdType();
+    case "instant":               return new InstantType();
+    case "integer":               return new IntegerType();
+    case "integer64":             return new Integer64Type();
+    case "markdown":              return new MarkdownType();
+    case "oid":                   return new OidType();
+    case "positiveInt":           return new PositiveIntType();
+    case "string":                return new StringType();
+    case "time":                  return new TimeType();
+    case "unsignedInt":           return new UnsignedIntType();
+    case "uri":                   return new UriType();
+    case "url":                   return new UrlType();
+    case "uuid":                  return new UuidType();
+    case "xhtml":                 return new XhtmlType(new Narrative()); // XhtmlType is a view onto a narrative
+    // complex types
+    case "Address":               return new Address();
+    case "Age":                   return new Age();
+    case "Annotation":            return new Annotation();
+    case "Attachment":            return new Attachment();
+    case "Availability":          return new Availability();
+    case "CodeableConcept":       return new CodeableConcept();
+    case "CodeableReference":     return new CodeableReference();
+    case "Coding":                return new Coding();
+    case "ContactDetail":         return new ContactDetail();
+    case "ContactPoint":          return new ContactPoint();
+    case "Count":                 return new Count();
+    case "DataRequirement":       return new DataRequirement();
+    case "Distance":              return new Distance();
+    case "Dosage":                return new Dosage();
+    case "DosageCondition":       return new DosageCondition();
+    case "DosageDetails":         return new DosageDetails();
+    case "DosageSafety":          return new DosageSafety();
+    case "Duration":              return new Duration();
+    case "ElementDefinition":     return new ElementDefinition();
+    case "Expression":            return new Expression();
+    case "ExtendedContactDetail": return new ExtendedContactDetail();
+    case "Extension":             return new Extension();
+    case "HumanName":             return new HumanName();
+    case "Identifier":            return new Identifier();
+    case "MarketingStatus":       return new MarketingStatus();
+    case "Meta":                  return new Meta();
+    case "MonetaryComponent":     return new MonetaryComponent();
+    case "Money":                 return new Money();
+    case "Narrative":             return new Narrative();
+    case "ParameterDefinition":   return new ParameterDefinition();
+    case "Period":                return new Period();
+    case "ProductShelfLife":      return new ProductShelfLife();
+    case "Quantity":              return new Quantity();
+    case "Range":                 return new Range();
+    case "Ratio":                 return new Ratio();
+    case "RatioRange":            return new RatioRange();
+    case "Reference":             return new Reference();
+    case "RelatedArtifact":       return new RelatedArtifact();
+    case "RelativeTime":          return new RelativeTime();
+    case "SampledData":           return new SampledData();
+    case "Signature":             return new Signature();
+    case "SimpleQuantity":        return new SimpleQuantity();
+    case "Timing":                return new Timing();
+    case "TriggerDefinition":     return new TriggerDefinition();
+    case "UsageContext":          return new UsageContext();
+    case "VirtualServiceDetail":  return new VirtualServiceDetail();
+    default:
       throw new FHIRException("Unknown data type name "+name);
+    }
   }
 }
