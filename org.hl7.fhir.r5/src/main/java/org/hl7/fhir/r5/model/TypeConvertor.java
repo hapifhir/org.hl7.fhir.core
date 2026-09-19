@@ -224,6 +224,8 @@ public class TypeConvertor {
 
     if (b instanceof IdType)
       return (IdType) b;
+    else if (b.isPrimitive())
+      return new IdType(b.primitiveValue());
     else
       throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Id");
   }
