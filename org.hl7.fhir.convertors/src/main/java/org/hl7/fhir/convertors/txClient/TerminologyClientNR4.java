@@ -415,6 +415,11 @@ public class TerminologyClientNR4 implements ITerminologyClientN {
     return (Parameters) convertResource("compare", "response", client.doCompare((org.hl7.fhir.r4.model.Parameters) convertResource("compare", "request", params)));
   }
 
+  @Override
+  public ConceptMap closure(Parameters params) throws FHIRException {
+    return (ConceptMap) convertResource("closure", "response", client.closure((org.hl7.fhir.r4.model.Parameters) convertResource("closure", "request", params)));
+  }
+
   private Resource convertResource(String name, String mode, org.hl7.fhir.model.core.Resource resource) {
     if (logger != null) {
       try {

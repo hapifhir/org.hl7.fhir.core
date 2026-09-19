@@ -320,6 +320,11 @@ public class TerminologyClientR6 implements ITerminologyClientN {
   }
 
   @Override
+  public ConceptMap closure(Parameters params) throws FHIRException {
+    return client.closure(params);
+  }
+
+  @Override
   public void setConversionLogger(ITerminologyConversionLogger logger) {
     // TODO Auto-generated method stub
     

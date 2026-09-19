@@ -89,6 +89,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   public static final String DATE_FORMAT = "yyyy-MM-dd";
   public static final String hostKey = "http.proxyHost";
   public static final String portKey = "http.proxyPort";
+  private static final int MAX_GET_URL_LENGTH = 2000;
 
   private String base;
   private ResourceAddress resourceAddress;
@@ -351,6 +352,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
             ps += Utilities.encodeUriParam(p.getName(), ((PrimitiveType) p.getValue()).asStringValue()) + "&";
       ResourceRequest<T> result;
       URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
+      if (!complex && url.toString().length() > MAX_GET_URL_LENGTH) {
+        // all the parameters are simple, but the URL is too long for a GET, so send them in the body instead
+        complex = true;
+        url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, "");
+      }
       if (complex) {
         byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true);
         result = client.issuePostRequest(url, body, withVer(getPreferredResourceFormat(), "5.0"), generateHeaders(true),
@@ -533,11 +539,24 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return result == null ? null : (ValueSet) result.getPayload();
   }
 
+  private Parameters asParameters(Map<String, String> params) {
+    Parameters p = new Parameters();
+    for (Map.Entry<String, String> e : params.entrySet()) {
+      p.addParameter().setName(e.getKey()).setValue(new StringType(e.getValue()));
+    }
+    return p;
+  }
+
   public Parameters lookupCode(Map<String, String> params) {
     recordUse();
+    URI url = resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params);
+    if (url.toString().length() > MAX_GET_URL_LENGTH) {
+      // too long for a GET, so send the parameters in the body instead
+      return lookupCode(asParameters(params));
+    }
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
-      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params),
+      result = client.issueGetResourceRequest(url,
         withVer(getPreferredResourceFormat(), "5.0"),
         generateHeaders(false),
         "CodeSystem/$lookup",
@@ -610,6 +629,29 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   public String getAddress() {
     return base;
+  }
+
+  /**
+   * $closure with the caller's own Parameters (name, concept, version, and whatever else the
+   * server supports), for callers that need more than initializeClosure / updateClosure offer.
+   */
+  public ConceptMap closure(Parameters p) {
+    recordUse();
+    ResourceRequest<Resource> result = null;
+    try {
+      result = client.issuePostRequest(resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
+        withVer(getPreferredResourceFormat(), "5.0"),
+        generateHeaders(true),
+        "Closure",
+        timeoutOperation);
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+    }
+    return (ConceptMap) result.getPayload();
   }
 
   public ConceptMap initializeClosure(String name) {
