@@ -925,7 +925,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         ResourceWrapper contained = q.getContained(i.primitiveValue("answerValueSet").substring(1));
         vs = contained == null ? null : (ValueSet) contained.getResourceNative(); 
         if (vs != null && !vs.hasUrl()) { 
-          vs = vs.copy(Base.COPY_DATA);
+          vs = vs.copy(Base.COPY_NOTHING);
           vs.setUrl(q.primitiveValue("url")+"--"+contained); 
         } 
       } else { 

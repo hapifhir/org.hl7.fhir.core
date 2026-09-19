@@ -3,16 +3,17 @@ package org.hl7.fhir.validation.instance.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.OperationDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.utils.DefinitionNavigator;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.services.elementmodel.ElementUtilities;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.model.core.CanonicalType;
+import org.hl7.fhir.model.core.DataType;
+import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.model.core.OperationDefinition;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.services.utilities.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -38,7 +39,7 @@ public class OperationDefinitionValidator extends BaseValidator {
       String url = od.getNamedChildValue("url");
       String base = od.getNamedChildValue("base");
       String last = url;
-      OperationDefinition opDef = context.fetchResource(OperationDefinition.class, base, ExtensionUtilities.getVersionResolutionRules(od.getNamedChild("url")));
+      OperationDefinition opDef = context.fetchResource(OperationDefinition.class, base, ElementUtilities.getVersionResolutionRules(od.getNamedChild("url")));
       while (opDef != null) {
         if (url.equals(opDef.getUrl())) {
           ok = false;
@@ -62,7 +63,7 @@ public class OperationDefinitionValidator extends BaseValidator {
 
   private boolean validateProfile(List<ValidationMessage> errors, NodeStack stack, Element od, Element url, String use) {
     boolean  ok = true;
-    StructureDefinition sdt = context.fetchResource(StructureDefinition.class, url.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(url));
+    StructureDefinition sdt = context.fetchResource(StructureDefinition.class, url.primitiveValue(), ElementUtilities.getVersionResolutionRules(url));
     if (rule(errors, "2025-04-08", IssueType.UNKNOWN, stack, sdt != null, I18nConstants.OPDEF_PROFILE_NOT_FOUND, use, url) &&
         rule(errors, "2025-04-08", IssueType.INVALID, stack, "Parameters".equals(sdt.getType()), I18nConstants.OPDEF_PROFILE_NOT_PARAMETERS, use, url)) {
       DefinitionNavigator profile = new DefinitionNavigator(context, sdt, false, true);
@@ -141,20 +142,20 @@ public class OperationDefinitionValidator extends BaseValidator {
     DefinitionNavigator resDefn = slice.childByName("resource");
     DefinitionNavigator partDefn = slice.childByName("part");
     if (valueDefn != null && isUsed(valueDefn, resDefn, partDefn)) {
-      for (TypeRefComponent tr : valueDefn.current().getType()) {
+      for (TypeRefComponent tr : valueDefn.current().getTypeList()) {
         String t = tr.getWorkingCode();
         profileTypes.add(t);
         ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, allowedTypes.contains(t), I18nConstants.OPDEF_PROFILE_TYPE_NOT_IN_PARAMS, use, paramName, t, presentProfilesList(allowedTypes), sdt.getVersionedUrl()) && ok;
-        for (CanonicalType ct : tr.getTargetProfile()) {
+        for (CanonicalType ct : tr.getTargetProfileList()) {
           profileTargets.add(ct.asStringValue());
         }
       }
     }
     if (resDefn != null && isUsed(resDefn, valueDefn, partDefn)) {
-      for (TypeRefComponent tr : resDefn.current().getType()) {
+      for (TypeRefComponent tr : resDefn.current().getTypeList()) {
         String t = tr.getWorkingCode();
         profileTypes.add(t);
-        for (CanonicalType ct : tr.getTargetProfile()) {
+        for (CanonicalType ct : tr.getTargetProfileList()) {
           profileTargets.add(ct.asStringValue());
         }
         ok = rule(errors, "2025-04-08", IssueType.INVALID, nsp, allowedTypes.contains(t), I18nConstants.OPDEF_PROFILE_TYPE_NOT_IN_PARAMS, use, paramName, t, presentProfilesList(allowedTypes), sdt.getVersionedUrl()) && ok;

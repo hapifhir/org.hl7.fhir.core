@@ -73,7 +73,13 @@
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>org.hl7.fhir.support</artifactId>
+            <artifactId>org.hl7.fhir.services</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.standalone</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -100,7 +106,7 @@
             <artifactId>Saxon-HE</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.ogce</groupId>
+            <groupId>org.codelibs</groupId>
             <artifactId>xpp3</artifactId>
         </dependency>
 
@@ -108,14 +114,6 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-        </dependency>
-
-        <!-- JSON Schema -->
-        <dependency>
-            <groupId>org.everit.json</groupId>
-            <artifactId>org.everit.json.schema</artifactId>
-            <version>1.1.0</version>
-            <scope>test</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
@@ -289,6 +287,7 @@
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
         </dependency>
+
     </dependencies>
 
     <build>

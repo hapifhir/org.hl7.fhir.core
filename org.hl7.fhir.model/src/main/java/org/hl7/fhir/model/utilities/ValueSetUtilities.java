@@ -557,5 +557,4 @@ public class ValueSetUtilities extends TerminologyUtilities {
       return s1.equals(s2);
     }
   }
-
 }

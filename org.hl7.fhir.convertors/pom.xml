@@ -88,7 +88,7 @@
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>org.hl7.fhir.support</artifactId>
+            <artifactId>org.hl7.fhir.services</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -100,7 +100,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.ogce</groupId>
+            <groupId>org.codelibs</groupId>
             <artifactId>xpp3</artifactId>
             <optional>true</optional>
         </dependency>

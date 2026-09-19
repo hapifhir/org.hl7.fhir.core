@@ -2,7 +2,7 @@ package org.hl7.fhir.r5.context;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient5;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
@@ -148,7 +148,7 @@ public class BaseWorkerContextTests {
   ToolingClientLogger txLog;
 
   @Mock
-  ITerminologyClient terminologyClient;
+  ITerminologyClient5 terminologyClient;
 
   @Mock
   TerminologyCache.CacheToken cacheToken;

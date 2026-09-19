@@ -77,7 +77,10 @@ public class FmlJsonParser extends org.hl7.fhir.model.core.formats.JsonParser {
       return parseFmlStructureMap(json);
 
     } else {
-      throw new FHIRFormatError("Unknown/Unrecognised resource type '"+t+"' (in property 'resourceType')");
+      // not one of this package's resource types - the base parser knows the core ones, and the
+      // model context's registry knows the other add-on packages'. This matters for contained
+      // resources, which are parsed through this same call
+      return super.parseResource(json);
     }
   }
 
@@ -982,8 +985,10 @@ public class FmlJsonParser extends org.hl7.fhir.model.core.formats.JsonParser {
     } else if (resource instanceof StructureMap) {
       composeStructureMap("StructureMap", (StructureMap)resource);
  
-    } else
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+    } else {
+      // see the note in parseResource
+      super.composeResource(resource);
+    }
   }
 
 }

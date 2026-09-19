@@ -33,7 +33,6 @@ package org.hl7.fhir.r5.terminologies.utilities;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -172,13 +171,23 @@ public class TerminologyCache {
   private static final String BREAK = "####";
   private static final String CACHE_FILE_EXTENSION = ".cache";
   /**
-   * Prefix of the header line that carries a cache file's nonce - a fresh random value
-   * written on every save, used to detect that someone else has rewritten the file since we
-   * last read or wrote it. It sits before the first {@link #ENTRY_MARKER}, and everything
-   * before that marker is discarded on load, so older readers simply ignore it and a file
-   * without one still loads.
+   * Extension of the partner file that carries a cache file's nonce: {@code foo.cache} is
+   * accompanied by {@code foo.cache.nonce}. The nonce is a fresh random value written on every
+   * save, used to detect that someone else has rewritten the cache since we last read or wrote
+   * it.
+   *
+   * <p>It lives beside the cache rather than in a header line inside it because cache folders
+   * are routinely kept in version control - core's own test txCache, IG repositories, the
+   * auto-builder's cache repo - and a value that changes on every save would turn every run
+   * into a diff of every file. This file is local bookkeeping only: deleting it costs one
+   * extra merge and nothing else, and a repository holding a cache folder should ignore
+   * {@code *.cache.nonce}. Where one does get committed it still costs nothing, because only a
+   * cache that is being rewritten gets a new nonce: the partner file never changes on its own.
+   *
+   * <p>Deliberately does not end in {@link #CACHE_FILE_EXTENSION}, so {@link #load()} does not
+   * mistake it for a cache.
    */
-  private static final String NONCE_MARKER = "# nonce: ";
+  private static final String NONCE_FILE_EXTENSION = ".cache.nonce";
 
   /**
    * Suffix for the scratch file a save writes into before swapping it over the real one.
@@ -220,7 +229,7 @@ public class TerminologyCache {
       Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<TerminologyCache, Boolean>()));
 
   /** Guarded by {@link #liveCaches}. */
-  private static boolean shutdownHookInstalled = false;
+  private static boolean shutdownHookAdded = false;
 
   /**
    * Upper bound on the number of persistent entries kept in a single NamedCache, both in
@@ -355,7 +364,7 @@ public class TerminologyCache {
   }
 
   private class NamedCache {
-    private String name;
+    private final String name;
     private Set<CacheEntry> list = new LinkedHashSet<CacheEntry>(); // persistent entries, in insertion order
     private Map<String, CacheEntry> map = new HashMap<String, CacheEntry>();
     /** True when {@link #list} has persistent entries that haven't yet been flushed to disk. */
@@ -363,11 +372,17 @@ public class TerminologyCache {
     /** Wall-clock time of the last on-disk save for this cache (0 = never saved this session). */
     private long lastSaveAt = 0;
     /**
-     * The nonce in the copy of this cache we last read or wrote. Null when we have never
-     * touched the file. If what is on disk no longer carries this value, another process has
-     * rewritten it and we must merge before saving over the top - see {@link #mergeFromDisk}.
+     * The nonce of the copy of this cache we last read or wrote, as recorded in the partner
+     * file described by {@link #NONCE_FILE_EXTENSION}. Null when we have never touched the
+     * file, or when writing the nonce failed. If the partner file no longer carries this
+     * value, another process has rewritten the cache and we must merge before saving over the
+     * top - see {@link #mergeWithDiskCache}.
      */
     private String nonce = null;
+
+    protected NamedCache(String name) {
+      this.name = name;
+    }
   }
 
 
@@ -517,10 +532,10 @@ public class TerminologyCache {
    */
   private static void ensureShutdownHook() {
     synchronized (liveCaches) {
-      if (shutdownHookInstalled) {
+      if (shutdownHookAdded) {
         return;
       }
-      shutdownHookInstalled = true;
+      shutdownHookAdded = true;
     }
     try {
       Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -802,8 +817,7 @@ public class TerminologyCache {
     NamedCache nc = caches.get(cacheName);
 
     if (nc == null) {
-      nc = new NamedCache();
-      nc.name = cacheName;
+      nc = new NamedCache(cacheName);
       caches.put(nc.name, nc);
     }
     return nc;
@@ -978,26 +992,19 @@ public class TerminologyCache {
     if (folder == null)
       return;
 
-    String temp = null;
-    OutputStreamWriter sw = null;
     try {
       String target = Utilities.path(folder, title + CACHE_FILE_EXTENSION);
-      temp = tempFileFor(target);
-      sw = new OutputStreamWriter(ManagedFileAccess.outStream(temp), "UTF-8");
-
-      JsonParser json = new JsonParser();
-      json.setOutputStyle(OutputStyle.PRETTY);
-
-      sw.write(json.composeString(resource).trim());
-      sw.close();
-      sw = null;
-      FileUtilities.replaceFileAtomically(ManagedFileAccess.file(temp), ManagedFileAccess.file(target));
-      temp = null;
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target))) {
+        try (OutputStreamWriter tempFileWriter = new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8)) {
+          JsonParser jsonParser = new JsonParser();
+          jsonParser.setOutputStyle(OutputStyle.PRETTY);
+          tempFileWriter.write(jsonParser.composeString(resource).trim());
+        }
+        FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
+        tempFile.setDeleted();
+      }
     } catch (Exception e) {
       log.error("error saving capability statement "+e.getMessage(), e);
-    } finally {
-      closeQuietly(sw);
-      deleteQuietly(temp);
     }
   }
 
@@ -1014,27 +1021,111 @@ public class TerminologyCache {
     return target + "." + UUID.randomUUID().toString() + TEMP_FILE_EXTENSION;
   }
 
-  private void closeQuietly(Closeable c) {
-    if (c != null) {
-      try {
-        c.close();
-      } catch (IOException e) {
-        // the save has already failed; nothing useful to do with this
-      }
+  /**
+   * Deletes the scratch file it wraps on close(), unless {@link #setDeleted()} has been called -
+   * i.e. cleans up a save's temp file if the save didn't reach the atomic rename.
+   */
+  private static final class AutoCloseableTempFile implements AutoCloseable {
+    private final String filePath;
+    private boolean isDeleted = false;
+
+    private AutoCloseableTempFile(String path) {
+      this.filePath = path;
+    }
+
+    String getFilePath() {
+      return filePath;
+    }
+
+    void setDeleted() {
+      isDeleted = true;
+    }
+
+    @Override
+    public void close() {
+      if (!isDeleted && filePath != null) {
+          try {
+            ManagedFileAccess.file(filePath).delete();
+          } catch (Exception e) {
+            log.debug("Exception deleting " + filePath + " after try-catch", e);
+          }
+        }
+
     }
   }
 
   /**
-   * Remove a scratch file that never made it into place. Best effort: an orphan is harmless
-   * (load() ignores it) and only survives a hard kill mid-save.
+   * What the nonce file beside a cache says: the nonce written by the save that produced the
+   * cache file, and the length that file had when it was written.
    */
-  private void deleteQuietly(String path) {
-    if (path != null) {
-      try {
-        ManagedFileAccess.file(path).delete();
-      } catch (Exception e) {
-        // nothing useful to do
+  private static class DiskNonce {
+    private final String nonce;
+    private final long length;
+
+    private DiskNonce(String nonce, long length) {
+      this.nonce = nonce;
+      this.length = length;
+    }
+  }
+
+  /**
+   * Read the nonce file beside a cache.
+   *
+   * @return what it says, or null if there isn't one, or it can't be read or understood - all
+   *   of which mean the same thing to the caller: we can't prove the cache is untouched
+   */
+  private DiskNonce readNonce(String name) {
+    try {
+      String path = Utilities.path(folder, name+NONCE_FILE_EXTENSION);
+      if (!ManagedFileAccess.file(path).exists()) {
+        return null;
       }
+      try (BufferedReader r = new BufferedReader(new InputStreamReader(
+          ManagedFileAccess.inStream(path), StandardCharsets.UTF_8))) {
+        String line;
+        while ((line = r.readLine()) != null) {
+          line = line.trim();
+          if (line.isEmpty() || line.startsWith("#")) {
+            continue;
+          }
+          int i = line.indexOf(' ');
+          if (i < 1) {
+            return null;
+          }
+          return new DiskNonce(line.substring(0, i), Long.parseLong(line.substring(i+1).trim()));
+        }
+      }
+      return null;
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  /**
+   * Write the nonce file beside a cache we have just saved. Records the cache file's length as
+   * well as the nonce, because the nonce alone only proves that the last writer to come
+   * through this code was us: a checkout of a version-controlled cache folder, a hand edit or
+   * an older build can all replace the cache without touching its partner, and the lengths not
+   * agreeing is what catches that.
+   *
+   * @return true if it was written
+   */
+  private boolean writeNonce(String name, String nonce, long length) {
+    try {
+      String target = Utilities.path(folder, name+NONCE_FILE_EXTENSION);
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target))) {
+        try (BufferedWriter w = new BufferedWriter(new OutputStreamWriter(
+            ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8))) {
+          w.write("# nonce for "+name+CACHE_FILE_EXTENSION+" - local bookkeeping, safe to delete, do not commit\r\n");
+          w.write(nonce+" "+length+"\r\n");
+        }
+        FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
+        tempFile.setDeleted();
+      }
+      return true;
+    } catch (Exception e) {
+      log.debug("Unable to write the nonce for "+name+" ("+e.getMessage()+") - the next save will merge from disk");
+      return false;
     }
   }
 
@@ -1042,29 +1133,28 @@ public class TerminologyCache {
    * Has the file behind this cache been rewritten by someone else since we last read or wrote
    * it?
    *
-   * <p>Answered from a nonce in the file's header rather than from its timestamp: mtime
+   * <p>Answered from the nonce beside the file rather than from its timestamp: mtime
    * granularity is a whole second on some filesystems, which sits well inside the window in
-   * which two processes can both save, whereas the nonce is exact. Answering costs one line.
+   * which two processes can both save, whereas the nonce is exact. Answering costs one small
+   * read and a stat.
    *
-   * <p>A file carrying no nonce was written by a version of this code from before the header
-   * existed, so it counts as changed. That happens once: our own save writes a nonce, so it
-   * converges immediately.
+   * <p>A cache with no nonce beside it counts as changed - it was written by a version of this
+   * code from before the partner file existed, or the folder came out of version control, or
+   * someone tidied up. That happens once: our own save writes a nonce, so it converges
+   * immediately.
    */
-  private boolean isChangedOnDisk(NamedCache nc) {
+  private boolean shouldMergeWithDiskCache(NamedCache nc) {
     try {
       String path = Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION);
       if (!ManagedFileAccess.file(path).exists()) {
         return false;
       }
-      String nonce = null;
-      try (BufferedReader r = new BufferedReader(new InputStreamReader(
-          ManagedFileAccess.inStream(path), StandardCharsets.UTF_8))) {
-        String line = r.readLine();
-        if (line != null && line.startsWith(NONCE_MARKER)) {
-          nonce = line.substring(NONCE_MARKER.length()).trim();
-        }
+      DiskNonce disk = readNonce(nc.name);
+      if (disk == null || !disk.nonce.equals(nc.nonce)) {
+        return true;
       }
-      return nonce == null || !nonce.equals(nc.nonce);
+      // the nonce is ours, but it only vouches for a file of the length we wrote it for
+      return disk.length != ManagedFileAccess.file(path).length();
     } catch (Exception e) {
       // if we can't tell, assume it changed: re-reading a file needlessly is cheap, and
       // dropping another process's entries is not
@@ -1088,36 +1178,36 @@ public class TerminologyCache {
    * transiently, we take the disk entry - a real answer beats a local outage, and keeping it
    * is also what stops our save from dropping it from the file.
    */
-  private void mergeFromDisk(NamedCache nc) {
-    NamedCache disk = readNamedCache(nc.name+CACHE_FILE_EXTENSION, nc.name);
-    if (disk == null) {
+  private void mergeWithDiskCache(NamedCache memoryCache) {
+    NamedCache diskCache = readNamedCache(memoryCache.name+CACHE_FILE_EXTENSION, memoryCache.name);
+    if (diskCache == null) {
       return; // unreadable: keep what we have rather than losing that too
     }
-    Set<CacheEntry> merged = new LinkedHashSet<CacheEntry>();
-    for (CacheEntry ce : disk.list) {
-      String key = String.valueOf(hashJson(ce.request));
-      CacheEntry ours = nc.map.get(key);
-      if (ours != null && ours.persistent) {
+    Set<CacheEntry> mergedCacheList = new LinkedHashSet<CacheEntry>();
+    for (CacheEntry diskEntry : diskCache.list) {
+      String key = String.valueOf(hashJson(diskEntry.request));
+      CacheEntry memoryEntry = memoryCache.map.get(key);
+      if (memoryEntry != null && memoryEntry.persistent) {
         continue; // ours is newer; it goes in below, after everything from disk
       }
-      merged.add(ce);
-      nc.map.put(key, ce);
+      mergedCacheList.add(diskEntry);
+      memoryCache.map.put(key, diskEntry);
     }
-    merged.addAll(nc.list);
-    nc.list = merged;
-    enforceEntryLimit(nc);
-    nc.nonce = disk.nonce;
+    mergedCacheList.addAll(memoryCache.list);
+    memoryCache.list = mergedCacheList;
+    enforceEntryLimit(memoryCache);
+    memoryCache.nonce = diskCache.nonce;
   }
 
-  private void save(NamedCache nc, long lastSaveAt) {
+  private void save(NamedCache namedCache, long lastSaveAt) {
     if (folder == null)
       return;
 
     // Another process sharing this cache folder may have rewritten this file since we last
     // read or wrote it; fold what it learned in before we save over the top. Costs one line
     // read unless the file really has changed.
-    if (isChangedOnDisk(nc)) {
-      mergeFromDisk(nc);
+    if (shouldMergeWithDiskCache(namedCache)) {
+      mergeWithDiskCache(namedCache);
     }
 
     // Write the whole file into a scratch file beside it and swap that into place once it is
@@ -1126,125 +1216,129 @@ public class TerminologyCache {
     // zipping the folder up, a git add in the auto-builder - then sees either the old file or
     // the new one, never a truncated one. See FileUtilities.replaceFileAtomically.
     boolean saved = false;
-    String temp = null;
-    BufferedWriter sw = null;
     try {
-      String target = Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION);
-      temp = tempFileFor(target);
-      sw = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(temp), "UTF-8"));
-      String nonce = UUID.randomUUID().toString();
-      sw.write(NONCE_MARKER+nonce+"\r\n");
-      sw.write(ENTRY_MARKER+"\r\n");
-      JsonParser json = new JsonParser();
-      json.setOutputStyle(OutputStyle.PRETTY);
-      for (CacheEntry ce : nc.list) {
-        sw.write(ce.request.trim());
-        sw.write(BREAK+"\r\n");
-        if (ce.e != null) {
-          sw.write("e: {\r\n");
-          if (ce.e.isFromServer()) {
-            sw.write("  \"from-server\" : true,\r\n");
+      String target = Utilities.path(folder, namedCache.name+CACHE_FILE_EXTENSION);
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target))) {
+        // the writer has to be closed - so everything is flushed - before the swap, or the file
+        // that lands in place can be missing its tail (and on Windows the move of a file that is
+        // still open fails outright)
+        try (BufferedWriter tempFileWriter = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8))) {
+          tempFileWriter.write(ENTRY_MARKER+"\r\n");
+          JsonParser jsonParser = new JsonParser();
+          jsonParser.setOutputStyle(OutputStyle.PRETTY);
+          for (CacheEntry cacheEntry : namedCache.list) {
+            writeCacheEntryToFile(cacheEntry, tempFileWriter, jsonParser);
           }
-          if (ce.e.getErrorClass() != null) {
-            sw.write("  \"class\" : \""+ce.e.getErrorClass().toString()+"\",\r\n");
-          }
-          if (ce.e.getValueset() != null) {
-            if (ce.e.getValueset().hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
-              sw.write("  \"source\" : "+Utilities.escapeJson(ce.e.getValueset().getUserString(UserDataNames.VS_EXPANSION_SOURCE)).trim()+",\r\n");              
-            }
-            sw.write("  \"valueSet\" : "+json.composeString(ce.e.getValueset()).trim()+",\r\n");
-          }
-          sw.write("  \"error\" : \""+Utilities.escapeJson(ce.e.getError()).trim()+"\"\r\n}\r\n");
-        } else if (ce.s != null) {
-          sw.write("s: {\r\n");
-          sw.write("  \"result\" : "+ce.s.result+"\r\n}\r\n");
-        } else {
-          sw.write("v: {\r\n");
-          boolean first = true;
-          if (ce.v.getDisplay() != null) {            
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"display\" : \""+Utilities.escapeJson(ce.v.getDisplay()).trim()+"\"");
-          }
-          if (ce.v.getCode() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"code\" : \""+Utilities.escapeJson(ce.v.getCode()).trim()+"\"");
-          }
-          if (ce.v.getSystem() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"system\" : \""+Utilities.escapeJson(ce.v.getSystem()).trim()+"\"");
-          }
-          if (ce.v.getVersion() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"version\" : \""+Utilities.escapeJson(ce.v.getVersion()).trim()+"\"");
-          }
-          if (ce.v.getSeverity() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"severity\" : "+"\""+ce.v.getSeverity().toCode().trim()+"\""+"");
-          }
-          if (ce.v.getMessage() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"error\" : \""+Utilities.escapeJson(ce.v.getMessage()).trim()+"\"");
-          }
-          if (ce.v.getErrorClass() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"class\" : \""+Utilities.escapeJson(ce.v.getErrorClass().toString())+"\"");
-          }
-          if (ce.v.getDefinition() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"definition\" : \""+Utilities.escapeJson(ce.v.getDefinition()).trim()+"\"");
-          }
-          if (ce.v.getStatus() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"status\" : \""+Utilities.escapeJson(ce.v.getStatus()).trim()+"\"");
-          }
-          if (ce.v.getServer() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"server\" : \""+Utilities.escapeJson(ce.v.getServer()).trim()+"\"");
-          }
-          if (ce.v.isInactive()) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"inactive\" : true");
-          }
-          if (ce.v.getDiagnostics() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"diagnostics\" : \""+Utilities.escapeJson(ce.v.getDiagnostics()).trim()+"\"");
-          }
-          if (ce.v.getUnknownSystems() != null && ce.v.getUnknownSystems().size() > 0) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"unknown-systems\" : \""+Utilities.escapeJson(CommaSeparatedStringBuilder.join(",", ce.v.getUnknownSystems())).trim()+"\"");
-          }
-          if (ce.v.getParameters() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            sw.write("  \"parameters\" : "+json.composeString(ce.v.getParameters()).trim()+"\r\n");
-          }
-          if (ce.v.getIssues() != null) {
-            if (first) first = false; else sw.write(",\r\n");
-            OperationOutcome oo = new OperationOutcome();
-            oo.setIssue(ce.v.getIssues());
-            sw.write("  \"issues\" : "+json.composeString(oo).trim()+"\r\n");
-          }
-          sw.write("\r\n}\r\n");
         }
-        sw.write(ENTRY_MARKER+"\r\n");
-      }      
-      sw.close();
-      sw = null;
-      FileUtilities.replaceFileAtomically(ManagedFileAccess.file(temp), ManagedFileAccess.file(target));
-      temp = null;
-      nc.nonce = nonce;
+        FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
+        tempFile.setDeleted();
+      }
+      // The nonce goes in the partner file, and only once the cache itself is in place: if we
+      // die between the two, the nonce is stale or missing and the next save merges, which is
+      // the safe way round.
+      String nonce = UUID.randomUUID().toString();
+      namedCache.nonce = writeNonce(namedCache.name, nonce, ManagedFileAccess.file(target).length()) ? nonce : null;
       saved = true;
     } catch (Exception e) {
-      log.error("error saving "+nc.name+": "+e.getMessage(), e);
-    } finally {
-      closeQuietly(sw);
-      deleteQuietly(temp);
+      log.error("error saving "+namedCache.name+": "+e.getMessage(), e);
     }
     // A failed write leaves the cache dirty so that the next save retries these entries,
     // instead of clearing the flag and dropping them silently. lastSaveAt is advanced either
     // way, so a write that keeps failing (a read-only folder, say) retries once per
     // SAVE_DELAY_MS window rather than on every single store.
-    nc.dirty = !saved;
-    nc.lastSaveAt = lastSaveAt;
+    namedCache.dirty = !saved;
+    namedCache.lastSaveAt = lastSaveAt;
+  }
+
+  private static void writeCacheEntryToFile(CacheEntry cacheEntry, BufferedWriter writer, JsonParser json) throws IOException {
+    writer.write(cacheEntry.request.trim());
+    writer.write(BREAK+"\r\n");
+    if (cacheEntry.e != null) {
+      writer.write("e: {\r\n");
+      if (cacheEntry.e.isFromServer()) {
+        writer.write("  \"from-server\" : true,\r\n");
+      }
+      if (cacheEntry.e.getErrorClass() != null) {
+        writer.write("  \"class\" : \""+ cacheEntry.e.getErrorClass().toString()+"\",\r\n");
+      }
+      if (cacheEntry.e.getValueset() != null) {
+        if (cacheEntry.e.getValueset().hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
+          writer.write("  \"source\" : "+Utilities.escapeJson(cacheEntry.e.getValueset().getUserString(UserDataNames.VS_EXPANSION_SOURCE)).trim()+",\r\n");
+        }
+        writer.write("  \"valueSet\" : "+ json.composeString(cacheEntry.e.getValueset()).trim()+",\r\n");
+      }
+      writer.write("  \"error\" : \""+Utilities.escapeJson(cacheEntry.e.getError()).trim()+"\"\r\n}\r\n");
+    } else if (cacheEntry.s != null) {
+      writer.write("s: {\r\n");
+      writer.write("  \"result\" : "+ cacheEntry.s.result+"\r\n}\r\n");
+    } else {
+      writer.write("v: {\r\n");
+      boolean first = true;
+      if (cacheEntry.v.getDisplay() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"display\" : \""+Utilities.escapeJson(cacheEntry.v.getDisplay()).trim()+"\"");
+      }
+      if (cacheEntry.v.getCode() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"code\" : \""+Utilities.escapeJson(cacheEntry.v.getCode()).trim()+"\"");
+      }
+      if (cacheEntry.v.getSystem() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"system\" : \""+Utilities.escapeJson(cacheEntry.v.getSystem()).trim()+"\"");
+      }
+      if (cacheEntry.v.getVersion() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"version\" : \""+Utilities.escapeJson(cacheEntry.v.getVersion()).trim()+"\"");
+      }
+      if (cacheEntry.v.getSeverity() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"severity\" : "+"\""+ cacheEntry.v.getSeverity().toCode().trim()+"\"");
+      }
+      if (cacheEntry.v.getMessage() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"error\" : \""+Utilities.escapeJson(cacheEntry.v.getMessage()).trim()+"\"");
+      }
+      if (cacheEntry.v.getErrorClass() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"class\" : \""+Utilities.escapeJson(cacheEntry.v.getErrorClass().toString())+"\"");
+      }
+      if (cacheEntry.v.getDefinition() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"definition\" : \""+Utilities.escapeJson(cacheEntry.v.getDefinition()).trim()+"\"");
+      }
+      if (cacheEntry.v.getStatus() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"status\" : \""+Utilities.escapeJson(cacheEntry.v.getStatus()).trim()+"\"");
+      }
+      if (cacheEntry.v.getServer() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"server\" : \""+Utilities.escapeJson(cacheEntry.v.getServer()).trim()+"\"");
+      }
+      if (cacheEntry.v.isInactive()) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"inactive\" : true");
+      }
+      if (cacheEntry.v.getDiagnostics() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"diagnostics\" : \""+Utilities.escapeJson(cacheEntry.v.getDiagnostics()).trim()+"\"");
+      }
+      if (cacheEntry.v.getUnknownSystems() != null && !cacheEntry.v.getUnknownSystems().isEmpty()) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"unknown-systems\" : \""+Utilities.escapeJson(CommaSeparatedStringBuilder.join(",", cacheEntry.v.getUnknownSystems())).trim()+"\"");
+      }
+      if (cacheEntry.v.getParameters() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        writer.write("  \"parameters\" : "+ json.composeString(cacheEntry.v.getParameters()).trim()+"\r\n");
+      }
+      if (cacheEntry.v.getIssues() != null) {
+        if (first) first = false; else writer.write(",\r\n");
+        OperationOutcome oo = new OperationOutcome();
+        oo.setIssue(cacheEntry.v.getIssues());
+        writer.write("  \"issues\" : "+ json.composeString(oo).trim()+"\r\n");
+      }
+      writer.write("\r\n}\r\n");
+    }
+    writer.write(ENTRY_MARKER+"\r\n");
   }
 
   private boolean isCapabilityCache(String fn) {
@@ -1354,8 +1448,13 @@ public class TerminologyCache {
    */
   private NamedCache readNamedCache(String fn, String name) {
     int c = 0;
-    NamedCache nc = new NamedCache();
-    nc.name = name;
+    NamedCache nc = new NamedCache(name);
+
+    // The nonce is read before the content, not after: if a save lands between the two we end
+    // up holding the older nonce for newer content, which costs a needless merge next time
+    // rather than losing an entry.
+    DiskNonce dn = readNonce(name);
+    nc.nonce = dn == null ? null : dn.nonce;
 
     // Stream the file one entry at a time. Cache files can be very large (e.g. the ICD-11
     // cache), and reading the whole file into a single String (as FileUtilities.fileToString
@@ -1373,14 +1472,12 @@ public class TerminologyCache {
           if (seenMarker) {
             loadCacheEntry(nc, segment.toString(), fn, ++c);
           }
-          // Content before the first marker (including any legacy '?' prefix) is discarded,
-          // apart from the nonce header, which is picked out on the way past.
+          // Content before the first marker is discarded: a legacy '?' prefix, and the nonce
+          // header that builds between #2332 and this change wrote there. Rewriting the file
+          // drops that line, so a cache folder in version control settles down after one save.
           seenMarker = true;
           segment.setLength(0);
         } else {
-          if (!seenMarker && line.startsWith(NONCE_MARKER)) {
-            nc.nonce = line.substring(NONCE_MARKER.length()).trim();
-          }
           segment.append(line).append("\r\n");
         }
       }

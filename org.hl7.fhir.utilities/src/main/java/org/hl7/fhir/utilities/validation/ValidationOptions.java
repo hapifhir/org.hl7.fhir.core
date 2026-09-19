@@ -46,7 +46,7 @@ public class ValidationOptions {
   private boolean englishOk = true;
   private boolean activeOnly = false;
   private boolean exampleOK = false;
-  private FhirPublication fhirVersion;
+  final private FhirPublication fhirVersion;
   private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
   private boolean isDefaultLang = false;
   private boolean noAbstract = false;
@@ -62,6 +62,7 @@ public class ValidationOptions {
 
   public ValidationOptions(FhirPublication fhirVersion, String language) {
     super();
+    this.fhirVersion = fhirVersion;
     if (!Utilities.noString(language)) {
       langs = new AcceptLanguageHeader(language, false);
       isDefaultLang = false;

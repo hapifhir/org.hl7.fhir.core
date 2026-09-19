@@ -554,6 +554,10 @@ public class RiskAssessment extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((RiskAssessmentPredictionComponent) dst);
+      }
+
       public void copyValues(RiskAssessmentPredictionComponent dst) {
         super.copyValues(dst);
         dst.outcome = outcome == null ? null : outcome.copy();
@@ -1665,6 +1669,10 @@ public class RiskAssessment extends DomainResource {
         RiskAssessment dst = new RiskAssessment();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((RiskAssessment) dst);
       }
 
       public void copyValues(RiskAssessment dst) {

@@ -353,4 +353,22 @@ public class FHIRPathTests {
     assertEquals(1, results.size());
     assertEquals("123", results.get(0).toString());
   }
+
+  // join() on an empty input collection must return an empty collection, not an
+  // empty string (FHIRPath: "If the input is empty, the result is empty").
+  @Test
+  public void testEvaluate_JoinOnEmptyInput() {
+    Patient input = new Patient();
+    List<Base> results = fp.evaluate(input, "Patient.name.given.join(',')");
+    assertEquals(0, results.size());
+  }
+
+  @Test
+  public void testEvaluate_JoinOnNonEmptyInput() {
+    Patient input = new Patient();
+    input.addName().addGiven("g1").addGiven("g2");
+    List<Base> results = fp.evaluate(input, "Patient.name.given.join(',')");
+    assertEquals(1, results.size());
+    assertEquals("g1,g2", results.get(0).primitiveValue());
+  }
 }

@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation.service.model;
 
-import org.hl7.fhir.r5.elementmodel.ValidatedFragment;
+import org.hl7.fhir.services.elementmodel.ValidatedFragment;
 
 import java.util.List;
 

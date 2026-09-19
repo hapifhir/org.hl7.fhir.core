@@ -141,11 +141,25 @@ public class ValueSet43_50 {
     return tgt;
   }
 
+  /**
+   * ValueSet.compose.property is R5 and up: it is how a client says which properties it wants
+   * back in an expansion. R4B has nowhere to put it, so it travels as a cross-version
+   * extension and is read back on the way up. Without this, a round trip through R4B drops
+   * the request silently, and the expansion comes back without the properties that were asked
+   * for - which looks like a server fault rather than a conversion one.
+   */
+  public static final String COMPOSE_PROPERTY_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.property";
+
   public static org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent convertValueSetComposeComponent(org.hl7.fhir.r4b.model.ValueSet.ValueSetComposeComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt, COMPOSE_PROPERTY_EXTENSION_URL);
+    for (org.hl7.fhir.r4b.model.Extension e : src.getExtensionsByUrl(COMPOSE_PROPERTY_EXTENSION_URL)) {
+      if (e.hasValue() && e.getValue().isPrimitive()) {
+        tgt.addProperty(e.getValue().primitiveValue());
+      }
+    }
     if (src.hasLockedDate())
       tgt.setLockedDateElement(Date43_50.convertDate(src.getLockedDateElement()));
     if (src.hasInactive())
@@ -170,6 +184,8 @@ public class ValueSet43_50 {
       tgt.addInclude(convertConceptSetComponent(t));
     for (org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent t : src.getExclude())
       tgt.addExclude(convertConceptSetComponent(t));
+    for (org.hl7.fhir.r5.model.StringType t : src.getProperty())
+      tgt.addExtension(COMPOSE_PROPERTY_EXTENSION_URL, String43_50.convertString(t));
     return tgt;
   }
 

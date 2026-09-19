@@ -2,7 +2,7 @@ package org.hl7.fhir.validation.service.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
-import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
+import org.hl7.fhir.model.utilities.SnomedUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 

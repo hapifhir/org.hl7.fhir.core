@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -1875,6 +1876,57 @@ public class Utilities {
       return "";
     }
     return s.substring(start, end+1);    
+  }
+
+  /**
+   * Decode FHIR base64Binary content.
+   *
+   * FHIR says that base64Binary content does not include whitespace, but that readers should ignore it
+   * (per RFC 4648), and before R5 line-wrapped content was common. So whitespace is skipped, but otherwise
+   * this is as strict as {@link Base64#getDecoder()}: illegal characters, bad padding and content after
+   * the padding all throw an IllegalArgumentException with the JDK's message. (Don't use the MIME decoder
+   * or commons-codec for this: they skip whitespace, but they also silently skip every other illegal
+   * character, so they will "decode" any string at all.)
+   *
+   * This costs no more than Base64.getDecoder().decode(String), which copies the string into a byte[]
+   * before decoding anyway; this just makes that copy itself and leaves the whitespace out. When there
+   * is no whitespace, it is exactly that call. Note that when there is whitespace, the offset in a
+   * 'incorrect ending byte at n' message is into the content without the whitespace.
+   *
+   * @param value the base64 content
+   * @return the decoded bytes
+   * @throws IllegalArgumentException if the content is not valid base64
+   */
+  public static byte[] decodeBase64(String value) {
+    int len = value.length();
+    int ws = 0;
+    for (int i = 0; i < len; i++) {
+      if (isBase64Whitespace(value.charAt(i))) {
+        ws++;
+      }
+    }
+    if (ws == 0) {
+      return Base64.getDecoder().decode(value);
+    }
+    byte[] src = new byte[len - ws];
+    int n = 0;
+    for (int i = 0; i < len; i++) {
+      char ch = value.charAt(i);
+      if (!isBase64Whitespace(ch)) {
+        // a non-ASCII character is never valid base64. Map it to a character that isn't either, rather
+        // than letting the cast truncate it into one that is (U+0141 would become 'A')
+        src[n++] = ch < 0x80 ? (byte) ch : (byte) '?';
+      }
+    }
+    return Base64.getDecoder().decode(src);
+  }
+
+  /**
+   * The whitespace that is skipped in base64 content: the ASCII whitespace (space, tab, LF, VT, FF, CR) -
+   * the same characters that {@link #isWhitespace(int)} accepts below 0x80.
+   */
+  private static boolean isBase64Whitespace(char ch) {
+    return ch == ' ' || (ch >= 0x09 && ch <= 0x0D);
   }
 
   // from https://en.wikipedia.org/wiki/Whitespace_character#Unicode  

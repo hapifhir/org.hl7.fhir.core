@@ -8,29 +8,22 @@ import java.util.*;
 
 import org.apache.commons.io.IOUtils;
 
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.context.ExpansionOptions;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
-import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
-import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.terminologies.subsumption.SubsumptionException;
-import org.hl7.fhir.r5.terminologies.subsumption.SubsumptionOutcome;
-import org.hl7.fhir.r5.terminologies.subsumption.TerminologySubsumptionTester;
-import org.hl7.fhir.r5.test.utils.CompareUtilities;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.OperationOutcome.*;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.terminology.ExpansionOptions;
+import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
+import org.hl7.fhir.services.testing.CompareUtilities;
+import org.hl7.fhir.standalone.terminology.subsumption.SubsumptionException;
+import org.hl7.fhir.standalone.terminology.subsumption.SubsumptionOutcome;
+import org.hl7.fhir.standalone.terminology.subsumption.TerminologySubsumptionTester;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -129,7 +122,6 @@ private static TxTestData testData;
 
     ValidationEngine engine = new ValidationEngine(this.baseEngine);
     for (String s : setup.getSuite().forceArray("setup").asStrings()) {
-      // System.out.println(s);
       Resource res = loadResource(s);
       engine.seeResource(res);
     }
@@ -138,9 +130,9 @@ private static TxTestData testData;
     // The test case's lenient-display property is carried to the server as the
     // lenient-display-validation parameter (see TxTester.runTest, which does the same for
     // the HTTP path). It only means anything for the two $validate-code operations.
-    if (setup.getTest().has("lenient-display") && req instanceof org.hl7.fhir.r5.model.Parameters
+    if (setup.getTest().has("lenient-display") && req instanceof org.hl7.fhir.model.core.Parameters
         && Utilities.existsInList(setup.getTest().asString("operation"), "validate-code", "cs-validate-code")) {
-      ((org.hl7.fhir.r5.model.Parameters) req).addParameter("lenient-display-validation", setup.getTest().asBoolean("lenient-display"));
+      ((org.hl7.fhir.model.core.Parameters) req).addParameter("lenient-display-validation", setup.getTest().asBoolean("lenient-display"));
     }
     String fn = setup.getTest().has("response:tx.fhir.org") ? setup.getTest().asString("response:tx.fhir.org") : setup.getTest().asString("response");
     String fn2 = setup.getTest().has("response2") ? setup.getTest().asString("response2") : null; // alternative allowed response for servers unable to implement a feature
@@ -155,9 +147,9 @@ private static TxTestData testData;
     }
 
     if (setup.getTest().has("profile")) {
-      engine.getContext().setExpansionParameters((org.hl7.fhir.r5.model.Parameters) loadResource(setup.getTest().asString("profile")));
+      engine.getContext().setExpansionParameters((org.hl7.fhir.model.core.Parameters) loadResource(setup.getTest().asString("profile")));
     } else {
-      engine.getContext().setExpansionParameters((org.hl7.fhir.r5.model.Parameters) loadResource("parameters-default.json"));
+      engine.getContext().setExpansionParameters((org.hl7.fhir.model.core.Parameters) loadResource("parameters-default.json"));
     }
     engine.getContext().setNoTerminologyServer(true);
     if (setup.getTest().asString("operation").equals("expand")) {
@@ -217,7 +209,7 @@ private static TxTestData testData;
    * passed through to the tester so that any issues are reported against the right parameter.
    */
   private void subsumes(String id, ValidationEngine engine, Resource req, String resp, String fp, JsonObject ext) throws IOException {
-    org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) req;
+    org.hl7.fhir.model.core.Parameters p = (org.hl7.fhir.model.core.Parameters) req;
     Coding codingA;
     Coding codingB;
     String pathA;
@@ -239,15 +231,15 @@ private static TxTestData testData;
     String actual;
     try {
       SubsumptionOutcome outcome = new TerminologySubsumptionTester(engine.getContext()).subsumes(codingA, codingB, pathA, pathB);
-      org.hl7.fhir.r5.model.Parameters po = new org.hl7.fhir.r5.model.Parameters();
+      org.hl7.fhir.model.core.Parameters po = new org.hl7.fhir.model.core.Parameters();
       po.addParameter("outcome", new CodeType(outcome.toCode()));
-      actual = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+      actual = new JsonParser(engine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(po);
     } catch (SubsumptionException e) {
       OperationOutcome oo = new OperationOutcome();
-      oo.getIssue().addAll(e.getIssues());
+      oo.getIssueList().addAll(e.getIssues());
       TxTesterSorters.sortOperationOutcome(oo);
       TxTesterScrubbers.scrubOperationOutcome(oo, false);
-      actual = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      actual = new JsonParser(engine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
 
     String diff = new CompareUtilities(modes(), ext, vars()).checkJsonSrcIsSame(id, resp, actual);
@@ -258,7 +250,7 @@ private static TxTestData testData;
     Assertions.assertNull(diff, diff);
   }
 
-  private String primitive(org.hl7.fhir.r5.model.Parameters p, String name) {
+  private String primitive(org.hl7.fhir.model.core.Parameters p, String name) {
     return p.hasParameter(name) && p.getParameterValue(name) != null ? p.getParameterValue(name).primitiveValue() : null;
   }
 
@@ -281,15 +273,15 @@ private static TxTestData testData;
   }
 
   private void expand(String id, ValidationEngine engine, Resource req, String resp, String resp2, String lang, String fp, JsonObject ext) throws IOException {
-    org.hl7.fhir.r5.model.Parameters p = ( org.hl7.fhir.r5.model.Parameters) req;
+    org.hl7.fhir.model.core.Parameters p = ( org.hl7.fhir.model.core.Parameters) req;
     ValueSet vs = null;
     if (p.hasParameter("valueSetVersion")) {      
-      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule(), p.getParameterValue("valueSetVersion").primitiveValue());
+      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), VersionResolutionRules.defaultRule(), p.getParameterValue("valueSetVersion").primitiveValue());
     } else if (p.hasParameter("url")) {
-      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule());
+      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), VersionResolutionRules.defaultRule());
     }
     if (vs == null) {
-      for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent pp : p.getParameter()) {
+      for (org.hl7.fhir.model.core.Parameters.ParametersParameterComponent pp : p.getParameterList()) {
         if (pp.getName().equals("valueSet")) {
           vs = (ValueSet) pp.getResource();
           break;
@@ -316,7 +308,7 @@ private static TxTestData testData;
         if (resp2 != null) {
           OperationOutcome oo = makeOperationOutcome(vse);
 
-          String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+          String ooj = new JsonParser(engine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
           String diff = new CompareUtilities(modes(), ext, vars()).checkJsonSrcIsSame(id, resp2, ooj);
           if (diff != null) {
             FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
@@ -335,7 +327,7 @@ private static TxTestData testData;
         }
         TxTesterSorters.sortValueSet(vse.getValueset());
         TxTesterScrubbers.scrubValueSet(vse.getValueset(), false);
-        String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
+        String vsj = new JsonParser(engine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
         CompareUtilities c = new CompareUtilities(modes(), ext, vars());
         String diff = c.checkJsonSrcIsSame(id, resp, vsj);
         if (diff != null) {
@@ -348,7 +340,7 @@ private static TxTestData testData;
     } else {
       OperationOutcome oo = makeOperationOutcome(vse);
 
-      String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      String ooj = new JsonParser(engine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
       String diff = new CompareUtilities(modes(), ext, vars()).checkJsonSrcIsSame(id, resp, ooj);
       if (diff != null) {
         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
@@ -361,7 +353,7 @@ private static TxTestData testData;
   private static @Nonnull OperationOutcome makeOperationOutcome(ValueSetExpansionOutcome vse) {
     OperationOutcome oo = new OperationOutcome();
     if (vse.getIssues() != null) {
-      oo.getIssue().addAll(vse.getIssues());
+      oo.getIssueList().addAll(vse.getIssues());
     } else if (vse.getErrorClass() == null) {
       Assertions.fail("Expected an error, but none received");
     } else {
@@ -424,9 +416,9 @@ private static TxTestData testData;
   }
 
   private void removeParameter(ValueSet valueset, String name) {
-    for (ValueSetExpansionParameterComponent exp : valueset.getExpansion().getParameter()) {
+    for (ValueSet.ValueSetExpansionParameterComponent exp : valueset.getExpansion().getParameterList()) {
       if (exp.getName().equals(name)) {
-        valueset.getExpansion().getParameter().remove(exp);
+        valueset.getExpansion().getParameterList().remove(exp);
         return;
       }
     }
@@ -438,29 +430,33 @@ private static TxTestData testData;
     String contents = testData.load(filename);
     try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
       if (filename.contains(".json")) {
-        if (Constants.VERSION.equals(version) || "5.0".equals(version))
-          return new JsonParser().parse(inputStream);
+        if (Constants.VERSION.equals(version) || "6.0".equals(version))
+          return new JsonParser(baseEngine.getContext().getModelContext()).parse(inputStream);
         else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
-          return VersionConvertorFactory_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream));
+          return VersionConvertorFactory_30_N.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))
-          return VersionConvertorFactory_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(inputStream));
+          return VersionConvertorFactory_14_N.convertResource(new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(version) || "1.0".equals(version))
-          return VersionConvertorFactory_10_50.convertResource(new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream));
+          return VersionConvertorFactory_10_N.convertResource(new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream));
         else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(version) || "4.0".equals(version))
-          return VersionConvertorFactory_40_50.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(inputStream));
+          return VersionConvertorFactory_40_N.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(inputStream));
+        else if (org.hl7.fhir.r5.model.Constants.VERSION.equals(version) || "5.0".equals(version))
+          return VersionConvertorFactory_50_N.convertResource(new org.hl7.fhir.r5.formats.JsonParser().parse(inputStream));
         else
           throw new FHIRException("unknown version " + version);
       } else {
-        if (Constants.VERSION.equals(version) || "5.0".equals(version))
-          return new XmlParser().parse(inputStream);
+        if (Constants.VERSION.equals(version) || "6.0".equals(version))
+          return new XmlParser(baseEngine.getContext().getModelContext()).parse(inputStream);
         else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
-          return VersionConvertorFactory_30_50.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(inputStream));
+          return VersionConvertorFactory_30_N.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))
-          return VersionConvertorFactory_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(inputStream));
+          return VersionConvertorFactory_14_N.convertResource(new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(version) || "1.0".equals(version))
-          return VersionConvertorFactory_10_50.convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(inputStream));
+          return VersionConvertorFactory_10_N.convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(inputStream));
         else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(version) || "4.0".equals(version))
-          return VersionConvertorFactory_40_50.convertResource(new org.hl7.fhir.r4.formats.XmlParser().parse(inputStream));
+          return VersionConvertorFactory_40_N.convertResource(new org.hl7.fhir.r4.formats.XmlParser().parse(inputStream));
+        else if (org.hl7.fhir.r5.model.Constants.VERSION.equals(version) || "5.0".equals(version))
+          return VersionConvertorFactory_50_N.convertResource(new org.hl7.fhir.r5.formats.XmlParser().parse(inputStream));
         else
           throw new FHIRException("unknown version " + version);
       }

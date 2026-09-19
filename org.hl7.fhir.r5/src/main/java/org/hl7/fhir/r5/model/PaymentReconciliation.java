@@ -1069,6 +1069,10 @@ public class PaymentReconciliation extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((PaymentReconciliationAllocationComponent) dst);
+      }
+
       public void copyValues(PaymentReconciliationAllocationComponent dst) {
         super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
@@ -1348,6 +1352,10 @@ public class PaymentReconciliation extends DomainResource {
         NotesComponent dst = new NotesComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((NotesComponent) dst);
       }
 
       public void copyValues(NotesComponent dst) {
@@ -3193,6 +3201,10 @@ public class PaymentReconciliation extends DomainResource {
         PaymentReconciliation dst = new PaymentReconciliation();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((PaymentReconciliation) dst);
       }
 
       public void copyValues(PaymentReconciliation dst) {

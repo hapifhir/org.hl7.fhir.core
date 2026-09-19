@@ -21,11 +21,11 @@ class ResourceLanguageFileBuilderTests {
   void testXLIFFGeneration() throws FHIRFormatError {
     assertDoesNotThrow(() -> {
       IWorkerContext ctxt = TestingUtilities.getSharedWorkerContext();
-      Resource res = new JsonParser(ctxt).parse(TestingUtilities.loadTestResourceStream("r5", "structuredefinition-language.json"));
+      Resource res = new JsonParser(ctxt.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "structuredefinition-language.json"));
       res.setWebPath("test.resource.xml");
       ResourceLanguageFileBuilder lang = new ResourceLanguageFileBuilder();
-      ctxt.getManager().cacheResource(new JsonParser(ctxt).parse(TestingUtilities.loadTestResourceStream("r5", "languages", "StructureDefinition-ed-translatable.json")));
-      ctxt.getManager().cacheResource(new JsonParser(ctxt).parse(TestingUtilities.loadTestResourceStream("r5", "languages", "StructureDefinition-sd-translatable.json")));
+      ctxt.getManager().cacheResource(new JsonParser(ctxt.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "languages", "StructureDefinition-ed-translatable.json")));
+      ctxt.getManager().cacheResource(new JsonParser(ctxt.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "languages", "StructureDefinition-sd-translatable.json")));
       lang.setProfile(ctxt.fetchResource(StructureDefinition.class, "http://hl7.org/tests/fhir/StructureDefinition/sd-translatable", VersionResolutionRules.defaultRule()));
       lang.prepare(new XLIFFProducer("[tmp]", "language", false), ctxt, "en", "fr");
       lang.build(res);

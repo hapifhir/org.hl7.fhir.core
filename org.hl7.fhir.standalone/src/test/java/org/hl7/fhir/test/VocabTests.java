@@ -44,7 +44,7 @@ public class VocabTests {
 
     @Override
     public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
-      return new org.hl7.fhir.model.core.formats.XmlParser(TestingUtilities.getSharedWorkerContext()).parseType(xml, type);
+      return new org.hl7.fhir.model.core.formats.XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parseType(xml, type);
     }
 
     @Override
@@ -125,16 +125,16 @@ public class VocabTests {
     
     Resource source;
     if (test.getSource().endsWith(".json")) {
-      source = (Resource) new JsonParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r5", "vocab", test.getSource()));
+      source = (Resource) new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "vocab", test.getSource()));
     } else {
-      source = (Resource) new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r5", "vocab", test.getSource()));
+      source = (Resource) new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "vocab", test.getSource()));
     }
     
     Resource target;
     if (test.getTarget().endsWith(".json")) {
-      target = (Resource) new JsonParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r5", "vocab", test.getTarget()));
+      target = (Resource) new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "vocab", test.getTarget()));
     } else {
-      target = (Resource) new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r5", "vocab", test.getTarget()));
+      target = (Resource) new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "vocab", test.getTarget()));
     }
 
     if (test.getType() == TestType.Expansion) {
@@ -151,8 +151,8 @@ public class VocabTests {
     if (outcome.isOk()) {
       outcome.getValueset().getExpansion().setIdentifier(null);
       outcome.getValueset().getExpansion().setTimestamp(null);
-      String expected = new XmlParser(TestingUtilities.getSharedWorkerContext()).setOutputStyle(OutputStyle.PRETTY).composeString(targetVS);
-      String actual = new XmlParser(TestingUtilities.getSharedWorkerContext()).setOutputStyle(OutputStyle.PRETTY).composeString(outcome.getValueset());
+      String expected = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(targetVS);
+      String actual = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(outcome.getValueset());
       String expectedFileName = CompareUtilities.tempFile("vocab", test.getId() + ".expected.html");
       String actualFileName = CompareUtilities.tempFile("vocab", test.getId() + ".actual.html");
       FileUtilities.stringToFile(expected, expectedFileName);

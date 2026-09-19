@@ -591,6 +591,10 @@ public class Signature extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Signature) dst);
+      }
+
       public void copyValues(Signature dst) {
         super.copyValues(dst);
         if (type != null) {

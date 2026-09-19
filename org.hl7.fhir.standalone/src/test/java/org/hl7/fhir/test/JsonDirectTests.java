@@ -29,11 +29,11 @@ public class JsonDirectTests {
       File json = ManagedFileAccess.file(Utilities.path("[tmp]", "json.json"));
       File json2 = ManagedFileAccess.file(Utilities.path("[tmp]", "json2.json"));
       FileUtils.copyFile(ManagedFileAccess.file("C:\\work\\org.hl7.fhir\\build\\publish\\observation-decimal.xml"), src);
-      Observation obs = (Observation) new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(ManagedFileAccess.inStream(src));
-      new JsonParser(TestingUtilities.getSharedWorkerContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(json), obs);
-      obs = (Observation) new JsonParser(TestingUtilities.getSharedWorkerContext()).parse(ManagedFileAccess.inStream(json));
-      new JsonParser(TestingUtilities.getSharedWorkerContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(json2), obs);
-      new XmlParser(TestingUtilities.getSharedWorkerContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(xml), obs);
+      Observation obs = (Observation) new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(ManagedFileAccess.inStream(src));
+      new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(json), obs);
+      obs = (Observation) new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(ManagedFileAccess.inStream(json));
+      new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(json2), obs);
+      new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(xml), obs);
     });
   }
 

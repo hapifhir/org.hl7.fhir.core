@@ -654,9 +654,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     if (context.isCopyButton()) {
       td = tr.td();
-      clipboard(td, "icon_clipboard_x.png", "XML", "<system value=\""+Utilities.escapeXml(cs.getUrl())+"\">\n"+(cs.getVersionNeeded() ? "<version value=\""+Utilities.escapeXml(cs.getVersion())+"\">\n" : "")+"<code value=\""+Utilities.escapeXml(c.getCode())+"\">\n<display value=\""+Utilities.escapeXml(c.getDisplay())+"\">\n");
+      clipboard(td, "icon_clipboard_x.png", "XML", "<system value=\""+Utilities.escapeXml(cs.getUrl())+"\"/>\n"+(cs.getVersionNeeded() ? "<version value=\""+Utilities.escapeXml(cs.getVersion())+"\"/>\n" : "")+"<code value=\""+Utilities.escapeXml(c.getCode())+"\"/>\n<display value=\""+Utilities.escapeXml(c.getDisplay())+"\"/>\n");
       td.nbsp();
-      clipboard(td, "icon_clipboard_j.png", "JSON", "\"system\" : \""+Utilities.escapeXml(cs.getUrl())+"\",\n"+(cs.getVersionNeeded() ? "\"version\" : \""+Utilities.escapeXml(cs.getVersion())+"\",\n" : "")+"\"code\" : \""+Utilities.escapeXml(c.getCode())+"\",\n\"display\" : \""+Utilities.escapeXml(c.getDisplay())+"\"\n");
+      clipboard(td, "icon_clipboard_j.png", "JSON", "\"system\" : \""+Utilities.escapeJson(cs.getUrl())+"\",\n"+(cs.getVersionNeeded() ? "\"version\" : \""+Utilities.escapeJson(cs.getVersion())+"\",\n" : "")+"\"code\" : \""+Utilities.escapeJson(c.getCode())+"\",\n\"display\" : \""+Utilities.escapeJson(c.getDisplay())+"\"\n");
     }
   }
 

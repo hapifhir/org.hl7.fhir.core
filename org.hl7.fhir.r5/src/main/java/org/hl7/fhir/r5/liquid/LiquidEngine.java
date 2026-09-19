@@ -503,7 +503,7 @@ public class LiquidEngine implements IHostApplicationServices {
           t = List.of(singleString(t) + liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)));
           break;
         case BASE64_DECODE:
-          t = List.of(new String(java.util.Base64.getDecoder().decode(singleString(t)), java.nio.charset.StandardCharsets.UTF_8));
+          t = List.of(new String(Utilities.decodeBase64(singleString(t)), java.nio.charset.StandardCharsets.UTF_8));
           break;
         case PREPEND:
           t = List.of(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)) + singleString(t));

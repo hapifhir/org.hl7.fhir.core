@@ -51,7 +51,7 @@ class ResourceTests {
   
   @Test
   void testSchemaLocation() throws IOException {
-    XmlParser xml = new XmlParser(TestingUtilities.getSharedWorkerContext());
+    XmlParser xml = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext());
     xml.setSchemaPath("http://test.org");
     xml.setOutputStyle(OutputStyle.NORMAL);
     Resource res = xml.parse(SRC);

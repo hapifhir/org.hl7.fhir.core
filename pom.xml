@@ -25,7 +25,7 @@
         <guava_version>32.0.1-jre</guava_version>
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>8.10.0</hapi_fhir_version>
-        <validator_test_case_version>1.7.69</validator_test_case_version>
+        <validator_test_case_version>1.7.70-SNAPSHOT</validator_test_case_version>
         <jackson_version>2.22.2</jackson_version>
         <jackson_annotations_version>2.22</jackson_annotations_version>
         <junit_jupiter_version>5.14.0</junit_jupiter_version>
@@ -368,12 +368,12 @@
                 <artifactId>thymeleaf</artifactId>
                 <version>3.1.5.RELEASE</version>
             </dependency>
+			
             <dependency>
-                <groupId>org.ogce</groupId>
+                <groupId>org.codelibs</groupId>
                 <artifactId>xpp3</artifactId>
-                <version>1.1.6</version>
+                <version>1.1.4c.0</version>
             </dependency>
-
 
             <dependency>
               <groupId>com.nimbusds</groupId>
@@ -1010,6 +1010,70 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>LICENSE_CHECK</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>license-maven-plugin</artifactId>
+                        <configuration>
+                            <includedScopes>compile,runtime</includedScopes>
+                            <failOnBlacklist>true</failOnBlacklist>
+                            <failOnMissing>true</failOnMissing>
+                            <!-- This project has no conventional src/ layout at this level, so the override file
+                                 lives at license/override-THIRD-PARTY.properties instead of the plugin's default
+                                 location (src/license/override-THIRD-PARTY.properties resolved against ${basedir}).
+                                 overrideUrl must be a real file: URL (a bare relative path is not a recognized URI
+                                 scheme and would silently fall back to the plugin's default path). -->
+                            <overrideUrl>file:${project.basedir}/license/override-THIRD-PARTY.properties</overrideUrl>
+                            <includedLicenses>
+                                <includedLicense>The Apache Software License, Version 2.0</includedLicense>
+                                <includedLicense>Apache Software License, version 1.1</includedLicense>
+                                <includedLicense>The Apache Software License, Version 1.1</includedLicense>
+                                <includedLicense>Apache Software License 2.0</includedLicense>
+                                <includedLicense>The Apache License, Version 2.0</includedLicense>
+                                <includedLicense>The Apache Software License, version 2.0</includedLicense>
+                                <includedLicense>Apache License, Version 2.0</includedLicense>
+                                <includedLicense>MIT License</includedLicense>
+                                <includedLicense>The MIT License</includedLicense>
+                                <includedLicense>MIT</includedLicense>
+                                <includedLicense>Apache-2.0</includedLicense>
+                                <includedLicense>Apache 2</includedLicense>
+                                <includedLicense>Apache 2.0</includedLicense>
+                                <includedLicense>Apache License 2.0</includedLicense>
+                                <includedLicense>Apache License version 2.0</includedLicense>
+                                <includedLicense>Eclipse Public License v2.0</includedLicense>
+                                <includedLicense>BSD licence</includedLicense>
+                                <includedLicense>BSD License</includedLicense>
+                                <includedLicense>The BSD License</includedLicense>
+                                <includedLicense>BSD-Style License</includedLicense>
+                                <includedLicense>BSD License 3</includedLicense>
+                                <includedLicense>New BSD License</includedLicense>
+                                <includedLicense>BSD 3 Clause</includedLicense>
+                                <includedLicense>BSD-3-Clause</includedLicense>
+                                <includedLicense>Eclipse Public License 1.0</includedLicense>
+                                <includedLicense>Eclipse Public License - v 1.0</includedLicense>
+                                <includedLicense>Eclipse Public License v. 2.0</includedLicense>
+                                <includedLicense>Eclipse Distribution License v. 1.0</includedLicense>
+                                <includedLicense>Eclipse Distribution License - v 1.0</includedLicense>
+                                <includedLicense>EDL 1.0</includedLicense>
+                                <includedLicense>Unicode/ICU License</includedLicense>
+                                <includedLicense>BSD 2-Clause License</includedLicense>
+                                <includedLicense>MPL 1.1</includedLicense>
+                                <includedLicense>Mozilla Public License Version 2.0</includedLicense>
+                                <includedLicense>Unicode-3.0</includedLicense>
+                                <!-- SPDX-style spellings not present in the long-form list above,
+                                     needed for exact-string matching against dependencies that
+                                     declare their license this way (e.g. logback, jakarta.annotation-api). -->
+                                <includedLicense>EPL-2.0</includedLicense>
+                                <includedLicense>EPL 2.0</includedLicense>
+                            </includedLicenses>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

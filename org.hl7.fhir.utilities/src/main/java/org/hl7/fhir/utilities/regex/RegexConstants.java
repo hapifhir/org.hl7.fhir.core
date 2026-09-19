@@ -37,4 +37,11 @@ public final class RegexConstants {
 
   public static final String TOKEN_REGEX =
       "[0-9a-zA-Z_][0-9a-zA-Z_\\.\\-]*";
+
+  /**
+   * Matches base/Type/id/_history/version, capturing base(1), type(3), id(5) and version(7).
+   */
+  //bounded quantifiers throughout, no nested repetition, safe
+  public static final String ID_WITH_HISTORY_REGEX =
+      "(.*)(/)([a-zA-Z0-9]*)(/)(" + ID_REGEX + ")(/_history/)(" + ID_REGEX + ")$";
 }

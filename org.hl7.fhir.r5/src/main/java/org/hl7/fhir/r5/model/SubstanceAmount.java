@@ -228,6 +228,10 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SubstanceAmountReferenceRangeComponent) dst);
+      }
+
       public void copyValues(SubstanceAmountReferenceRangeComponent dst) {
         super.copyValues(dst);
         dst.lowLimit = lowLimit == null ? null : lowLimit.copy();
@@ -614,6 +618,10 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
         SubstanceAmount dst = new SubstanceAmount();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SubstanceAmount) dst);
       }
 
       public void copyValues(SubstanceAmount dst) {

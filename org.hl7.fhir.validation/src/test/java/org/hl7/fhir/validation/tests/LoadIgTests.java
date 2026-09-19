@@ -2,7 +2,7 @@ package org.hl7.fhir.validation.tests;
 
 import java.text.NumberFormat;
 
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.IgLoader;

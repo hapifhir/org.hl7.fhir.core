@@ -2,8 +2,13 @@ package org.hl7.fhir.model;
 
 import lombok.Getter;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.model.core.CoreRegistration;
+import org.hl7.fhir.model.api.ApiRegistration;
+import org.hl7.fhir.model.core.Constants;
+import org.hl7.fhir.model.core.CoreResourceNameList;
 import org.hl7.fhir.model.core.formats.ParserBase;
+import org.hl7.fhir.model.fml.FmlRegistration;
+import org.hl7.fhir.model.testing.TestingRegistration;
+import org.hl7.fhir.model.tools.ToolsRegistration;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -53,8 +58,22 @@ public class ModelContextInformation {
 
   public ModelContextInformation() {
     id = MASTER_ID.incrementAndGet();
-    corePackage = CoreRegistration.register(this);
+    corePackage = registerCoreResources();
     packageList.add(corePackage);
+  }
+
+  /**
+   * Registers every core resource named in {@link CoreResourceNameList} against this context,
+   * under the package the core model classes were generated from
+   *
+   * @return the core package name, in "id#version" form
+   */
+  private String registerCoreResources() {
+    String packageName = Constants.PACKAGE_NAME + "#" + Constants.VERSION;
+    for (String name : CoreResourceNameList.getInstance()) {
+      registerCoreResource(name, packageName);
+    }
+    return packageName;
   }
 
   /**
@@ -67,8 +86,8 @@ public class ModelContextInformation {
    * not shared, so registering something on the copy does not change the original - the two just
    * stop being compatible from that point on, which is the correct answer
    * <p>
-   * Note that CoreRegistration is deliberately not run here - the core registrations are already
-   * in the source's resourceList, and running it again would register them twice
+   * Note that registerCoreResources() is deliberately not run here - the core registrations are
+   * already in the source's resourceList, and running it again would register them twice
    */
   public ModelContextInformation(@Nonnull ModelContextInformation source) {
     id = MASTER_ID.incrementAndGet();
@@ -104,7 +123,7 @@ public class ModelContextInformation {
   private volatile String canonicalForm;
 
   /**
-   * This is only called from the generated CoreRegistration class
+   * This is only called from {@link #registerCoreResources()}
    *
    * @param name        - name of the resource
    * @param packageName - the package it was compiled from
@@ -237,4 +256,5 @@ public class ModelContextInformation {
   public String toString() {
     return "ModelContext#" + id + " (" + corePackage + ", " + resourceList.size() + " resources)";
   }
+
 }

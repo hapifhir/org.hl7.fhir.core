@@ -9554,6 +9554,10 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDependsOnComponent) dst);
+    }
+
     public void copyValues(ImplementationGuideDependsOnComponent dst) {
       super.copyValues(dst);
       dst.uri = uri == null ? null : uri.copy();
@@ -9819,6 +9823,10 @@ public class ImplementationGuide extends CanonicalResource {
       ImplementationGuideGlobalComponent dst = new ImplementationGuideGlobalComponent();
       copyValues(dst);
       return dst;
+    }
+
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideGlobalComponent) dst);
     }
 
     public void copyValues(ImplementationGuideGlobalComponent dst) {
@@ -10286,6 +10294,10 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDefinitionComponent) dst);
+    }
+
     public void copyValues(ImplementationGuideDefinitionComponent dst) {
       super.copyValues(dst);
       if (grouping != null) {
@@ -10569,6 +10581,10 @@ public class ImplementationGuide extends CanonicalResource {
       ImplementationGuideDefinitionGroupingComponent dst = new ImplementationGuideDefinitionGroupingComponent();
       copyValues(dst);
       return dst;
+    }
+
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDefinitionGroupingComponent) dst);
     }
 
     public void copyValues(ImplementationGuideDefinitionGroupingComponent dst) {
@@ -11200,6 +11216,10 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDefinitionResourceComponent) dst);
+    }
+
     public void copyValues(ImplementationGuideDefinitionResourceComponent dst) {
       super.copyValues(dst);
       dst.reference = reference == null ? null : reference.copy();
@@ -11731,6 +11751,10 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDefinitionPageComponent) dst);
+    }
+
     public void copyValues(ImplementationGuideDefinitionPageComponent dst) {
       super.copyValues(dst);
       dst.source = source == null ? null : source.copy();
@@ -11981,6 +12005,10 @@ public class ImplementationGuide extends CanonicalResource {
       ImplementationGuideDefinitionParameterComponent dst = new ImplementationGuideDefinitionParameterComponent();
       copyValues(dst);
       return dst;
+    }
+
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDefinitionParameterComponent) dst);
     }
 
     public void copyValues(ImplementationGuideDefinitionParameterComponent dst) {
@@ -12313,6 +12341,10 @@ public class ImplementationGuide extends CanonicalResource {
       ImplementationGuideDefinitionTemplateComponent dst = new ImplementationGuideDefinitionTemplateComponent();
       copyValues(dst);
       return dst;
+    }
+
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideDefinitionTemplateComponent) dst);
     }
 
     public void copyValues(ImplementationGuideDefinitionTemplateComponent dst) {
@@ -12831,6 +12863,10 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
+    public void assignValues(Base dst) {
+      copyValues((ImplementationGuideManifestComponent) dst);
+    }
+
     public void copyValues(ImplementationGuideManifestComponent dst) {
       super.copyValues(dst);
       dst.rendering = rendering == null ? null : rendering.copy();
@@ -13247,6 +13283,10 @@ public class ImplementationGuide extends CanonicalResource {
       return dst;
     }
 
+    public void assignValues(Base dst) {
+      copyValues((ManifestResourceComponent) dst);
+    }
+
     public void copyValues(ManifestResourceComponent dst) {
       super.copyValues(dst);
       dst.reference = reference == null ? null : reference.copy();
@@ -13604,6 +13644,10 @@ public class ImplementationGuide extends CanonicalResource {
       ManifestPageComponent dst = new ManifestPageComponent();
       copyValues(dst);
       return dst;
+    }
+
+    public void assignValues(Base dst) {
+      copyValues((ManifestPageComponent) dst);
     }
 
     public void copyValues(ManifestPageComponent dst) {
@@ -15441,6 +15485,10 @@ public class ImplementationGuide extends CanonicalResource {
     ImplementationGuide dst = new ImplementationGuide();
     copyValues(dst);
     return dst;
+  }
+
+  public void assignValues(Base dst) {
+    copyValues((ImplementationGuide) dst);
   }
 
   public void copyValues(ImplementationGuide dst) {

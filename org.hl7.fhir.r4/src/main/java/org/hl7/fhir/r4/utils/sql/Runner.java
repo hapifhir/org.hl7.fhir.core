@@ -16,7 +16,8 @@ import org.hl7.fhir.r4.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4.model.*;
-
+import org.hl7.fhir.utilities.UserDataNames;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -59,8 +60,29 @@ public class Runner implements IHostApplicationServices {
       super();
       this.vd = vd;
     }
-    
+
   }
+
+  /**
+   * The evaluation scope threaded through select recursion, and the appContext
+   * handed to the FHIRPath engine. It is immutable, so a nested scope cannot
+   * disturb its parent, and the row index that reaches resolveConstant always
+   * belongs to the select currently being evaluated.
+   */
+  private static class ExecutionContext {
+    private final JsonObject vd;
+    private final int rowIndex;
+
+    private ExecutionContext(JsonObject vd, int rowIndex) {
+      this.vd = vd;
+      this.rowIndex = rowIndex;
+    }
+
+    private ExecutionContext withRowIndex(int rowIndex) {
+      return new ExecutionContext(vd, rowIndex);
+    }
+  }
+
   private IWorkerContext context;
   private Provider provider;
   private Storage storage;
@@ -71,6 +93,18 @@ public class Runner implements IHostApplicationServices {
   private String resourceName;
   private List<ValidationMessage> issues;
   private int resCount;
+
+  /**
+   * Cap on the nesting depth of the repeat directive, protecting against cyclical repeat
+   * paths such as $this. Far deeper than any real FHIR resource nests.
+   */
+  private int maxRepeatDepth = 100;
+
+  /**
+   * Cap on the number of nodes a repeat directive may collect, protecting against repeat
+   * paths whose output grows exponentially with nesting depth, such as descendants().
+   */
+  private int maxRepeatNodes = 100000;
 
 
   public IWorkerContext getContext() {
@@ -92,6 +126,32 @@ public class Runner implements IHostApplicationServices {
   }
   public void setStorage(Storage storage) {
     this.storage = storage;
+  }
+
+  /**
+   * The maximum nesting depth the repeat directive will traverse. Raising it increases
+   * the risk of deep, cyclical recursion.
+   *
+   * @param maxRepeatDepth the maximum nesting depth; must be at least 1
+   */
+  public void setMaxRepeatDepth(int maxRepeatDepth) {
+    if (maxRepeatDepth < 1) {
+      throw new IllegalArgumentException("maxRepeatDepth must be at least 1");
+    }
+    this.maxRepeatDepth = maxRepeatDepth;
+  }
+
+  /**
+   * The maximum number of nodes a repeat directive may collect. Raising it increases the
+   * risk of unbounded time and memory consumption.
+   *
+   * @param maxRepeatNodes the maximum number of nodes; must be at least 1
+   */
+  public void setMaxRepeatNodes(int maxRepeatNodes) {
+    if (maxRepeatNodes < 1) {
+      throw new IllegalArgumentException("maxRepeatNodes must be at least 1");
+    }
+    this.maxRepeatNodes = maxRepeatNodes;
   }
 
   public List<String> getProhibitedNames() {
@@ -147,7 +207,7 @@ public class Runner implements IHostApplicationServices {
     validator.dump();
     validator.check();
     resourceName = validator.getResourceName();
-    wc.store = storage.createStore(wc.vd.asString("name"), (List<Column>) wc.vd.getUserData("columns"));
+    wc.store = storage.createStore(wc.vd.asString("name"), (List<Column>) wc.vd.getUserData(UserDataNames.db_columns));
     return wc;
   }
   
@@ -161,22 +221,30 @@ public class Runner implements IHostApplicationServices {
   }
   
   private void processResource(JsonObject vd, Store store, Base b) {
+    // Spec, "Process a Resource" step 1: a resource of another type emits nothing. Batch mode
+    // fetches by type, but trickle mode hands over whatever the caller has.
+    if (!resourceName.equals(b.fhirType())) {
+      return;
+    }
+    // The resource is row 0 of its own scope: %rowIndex is 0 until a select
+    // starts iterating.
+    ExecutionContext ctx = new ExecutionContext(vd, 0);
     boolean ok = true;
     for (JsonObject w : vd.getJsonObjects("where")) {
       String expr = w.asString("path");
       ExpressionNode node = fpe.parse(expr);
-      boolean pass = fpe.evaluateToBoolean(vd, b, b, b, node);
+      boolean pass = fpe.evaluateToBoolean(ctx, b, b, b, node);
       if (!pass) {
         ok = false;
         break;
-      }  
+      }
     }
     if (ok) {
       List<List<Cell>> rows = new ArrayList<>();
       rows.add(new ArrayList<Cell>());
 
       for (JsonObject select : vd.getJsonObjects("select")) {
-        executeSelect(vd, select, b, rows);
+        executeSelect(ctx, select, b, rows);
       }
       for (List<Cell> row : rows) {
         storage.addRow(store, row);
@@ -188,55 +256,73 @@ public class Runner implements IHostApplicationServices {
     storage.finish(wc.store);
   }
 
-  private void executeSelect(JsonObject vd, JsonObject select, Base b, List<List<Cell>> rows) {
+  private void executeSelect(ExecutionContext ctx, JsonObject select, Base b, List<List<Cell>> rows) {
     List<Base> focus = new ArrayList<>();
 
+    // An iterating select opens a new %rowIndex scope, numbering the elements
+    // it produces. A select without one leaves the enclosing scope in place.
+    boolean iterates = true;
     if (select.has("forEach")) {
-      focus.addAll(executeForEach(vd, select, b));
+      focus.addAll(executeForEach(ctx, select, b));
     } else if (select.has("forEachOrNull")) {
-
-      focus.addAll(executeForEachOrNull(vd, select, b));  
+      focus.addAll(executeForEachOrNull(ctx, select, b));
+      // Emit one synthetic null row when the iterated collection is empty, so
+      // that %rowIndex still resolves to 0 and other paths yield null cells.
       if (focus.isEmpty()) {
-        List<Column> columns = (List<Column>) select.getUserData("columns");
-        for (List<Cell> row : rows) {
-          for (Column c : columns) {
-            Cell cell = cell(row, c.getName());
-            if (cell == null) {
-              row.add(new Cell(c, null));
-            }
-          }
-        }
-        return;
+        focus.add(null);
       }
+    } else if (select.has("repeat")) {
+      // The index runs over the flattened traversal, not over each level of it.
+      focus.addAll(executeRepeat(ctx, select, b));
     } else {
+      iterates = false;
       focus.add(b);
     }
-
-    //  } else if (select.has("unionAll")) {
-    //    focus.addAll(executeUnion(select, b));
 
     List<List<Cell>> tempRows = new ArrayList<>();
     tempRows.addAll(rows);
     rows.clear();
 
+    int idx = 0;
     for (Base f : focus) {
-      List<List<Cell>> rowsToAdd = cloneRows(tempRows);  
+      ExecutionContext fctx = iterates ? ctx.withRowIndex(idx) : ctx;
+      List<List<Cell>> rowsToAdd = cloneRows(tempRows);
 
       for (JsonObject column : select.getJsonObjects("column")) {
-        executeColumn(vd, column, f, rowsToAdd);
+        executeColumn(fctx, column, f, rowsToAdd);
       }
 
-      for (JsonObject sub : select.getJsonObjects("select")) {
-        executeSelect(vd, sub, f, rowsToAdd);
-      }
+      // For the synthetic null row produced by an empty forEachOrNull, do
+      // not descend into nested selects or unions: they would clear the
+      // pending rows and add nothing back, swallowing the null row. Instead
+      // ensure every column declared anywhere under this select (including
+      // nested selects and unionAll branches) is present with a null cell.
+      if (f != null) {
+        for (JsonObject sub : select.getJsonObjects("select")) {
+          executeSelect(fctx, sub, f, rowsToAdd);
+        }
 
-      executeUnionAll(vd, select.getJsonObjects("unionAll"), f, rowsToAdd);
+        executeUnionAll(fctx, select.getJsonObjects("unionAll"), f, rowsToAdd);
+      } else {
+        @SuppressWarnings("unchecked")
+        List<Column> allColumns = (List<Column>) select.getUserData(UserDataNames.db_columns);
+        if (allColumns != null) {
+          for (List<Cell> row : rowsToAdd) {
+            for (Column c : allColumns) {
+              if (cell(row, c.getName()) == null) {
+                row.add(new Cell(c));
+              }
+            }
+          }
+        }
+      }
 
       rows.addAll(rowsToAdd);
+      idx++;
     }
   }
 
-  private void executeUnionAll(JsonObject vd, List<JsonObject> unionList,  Base b, List<List<Cell>> rows) {
+  private void executeUnionAll(ExecutionContext ctx, List<JsonObject> unionList,  Base b, List<List<Cell>> rows) {
     if (unionList.isEmpty()) {
       return;
     }
@@ -246,8 +332,8 @@ public class Runner implements IHostApplicationServices {
 
     for (JsonObject union : unionList) {
       List<List<Cell>> tempRows = new ArrayList<>();
-      tempRows.addAll(sourceRows);      
-      executeSelect(vd, union, b, tempRows);
+      tempRows.addAll(sourceRows);
+      executeSelect(ctx, union, b, tempRows);
       rows.addAll(tempRows);
     }
   }
@@ -268,27 +354,70 @@ public class Runner implements IHostApplicationServices {
     return list;
   }
 
-  private List<Base> executeForEach(JsonObject vd, JsonObject focus, Base b) {
-    ExpressionNode n = (ExpressionNode) focus.getUserData("forEach");
+  private List<Base> executeForEach(ExecutionContext ctx, JsonObject focus, Base b) {
+    ExpressionNode n = (ExpressionNode) focus.getUserData(UserDataNames.db_forEach);
     List<Base> result = new ArrayList<>();
-    result.addAll(fpe.evaluate(vd, b, n));
-    return result;  
+    result.addAll(fpe.evaluate(ctx, b, n));
+    return result;
   }
 
-  private List<Base> executeForEachOrNull(JsonObject vd, JsonObject focus, Base b) {
-    ExpressionNode n = (ExpressionNode) focus.getUserData("forEachOrNull");
+  private List<Base> executeForEachOrNull(ExecutionContext ctx, JsonObject focus, Base b) {
+    ExpressionNode n = (ExpressionNode) focus.getUserData(UserDataNames.db_forEachOrNull);
     List<Base> result = new ArrayList<>();
-    result.addAll(fpe.evaluate(vd, b, n));
-    return result;  
+    result.addAll(fpe.evaluate(ctx, b, n));
+    return result;
   }
 
-  private void executeColumn(JsonObject vd, JsonObject column, Base b, List<List<Cell>> rows) {
-    ExpressionNode n = (ExpressionNode) column.getUserData("path");
-    List<Base> bl2 = new ArrayList<>();
-    if (b != null) {
-      bl2.addAll(fpe.evaluate(vd, b, n));
+  @SuppressWarnings("unchecked")
+  private List<Base> executeRepeat(ExecutionContext ctx, JsonObject focus, Base b) {
+    List<ExpressionNode> nodes = (List<ExpressionNode>) focus.getUserData(UserDataNames.db_repeat);
+    List<Base> result = new ArrayList<>();
+    if (nodes != null && b != null) {
+      expandRepeat(ctx, b, nodes, result, 0);
     }
-    Column col = (Column) column.getUserData("column");
+    return result;
+  }
+  /**
+   * Collects the nodes matched by the repeat directive, depth-first. The root node is
+   * not included; a node reached by more than one path is added once per path, matching
+   * the spec algorithm and the reference implementation.
+   *
+   * <p>Recursion is bounded so that a cyclical path such as $this stops with a
+   * FHIRException (an Exception, which callers catch) rather than a StackOverflowError,
+   * and an expression whose output grows exponentially with nesting depth, such as
+   * descendants(), cannot consume unbounded time and memory.
+   *
+   * @param ctx the evaluation context threaded through the select recursion
+   * @param b the node whose children are being visited
+   * @param nodes the repeat path expressions
+   * @param result the nodes collected so far
+   * @param depth the nesting depth of b below the repeat root
+   * @throws FHIRException when the depth or node limit is hit
+   */
+  private void expandRepeat(ExecutionContext ctx, Base b, List<ExpressionNode> nodes, List<Base> result, int depth) {
+    if (depth >= maxRepeatDepth) {
+      throw new FHIRException("ViewDefinition repeat reached the maximum nesting depth of " + maxRepeatDepth
+          + "; the repeat expressions are likely cyclical (for example, a path that matches its own result)");
+    }
+    for (ExpressionNode node : nodes) {
+      for (Base child : fpe.evaluate(ctx, b, node)) {
+        if (result.size() >= maxRepeatNodes) {
+          throw new FHIRException("ViewDefinition repeat produced more than " + maxRepeatNodes
+              + " nodes; constrain the repeat expressions or raise the configured limit");
+        }
+        result.add(child);
+        expandRepeat(ctx, child, nodes, result, depth + 1);
+      }
+    }
+  }
+
+  private void executeColumn(ExecutionContext ctx, JsonObject column, Base b, List<List<Cell>> rows) {
+    ExpressionNode n = (ExpressionNode) column.getUserData(UserDataNames.db_path);
+    // Evaluate even when b is null: this is the synthetic null row produced by
+    // an empty forEachOrNull. The engine tolerates a null base; %rowIndex still
+    // resolves via resolveConstant, and field navigation yields the empty list.
+    List<Base> bl2 = new ArrayList<>(fpe.evaluate(ctx, b, n));
+    Column col = (Column) column.getUserData(UserDataNames.db_column);
     if (col == null) {
       log.error("Error");
     } else {
@@ -348,10 +477,12 @@ public class Runner implements IHostApplicationServices {
       if (b instanceof BaseDateTimeType) {
         BaseDateTimeType d = (BaseDateTimeType) b;
         return Value.makeDate(d.primitiveValue(), d.getValue());
-      } else if (b.isPrimitive() && b.isDateTime()) { // ElementModel
-        return Value.makeDate(b.primitiveValue(), b.dateTimeValue().getValue());
+      } else if (b.isPrimitive() && Utilities.existsInList(b.fhirType(), "date", "dateTime", "instant")) {
+        // ElementModel does not override isDateTime() / dateTimeValue(); reconstruct via the model class.
+        DateTimeType d = new DateTimeType(b.primitiveValue());
+        return Value.makeDate(d.primitiveValue(), d.getValue());
       } else {
-        throw new FHIRException("Attempt to add a type "+b.fhirType()+" to an integer column for column "+column.getName());
+        throw new FHIRException("Attempt to add a type "+b.fhirType()+" to a dateTime column for column "+column.getName());
       }
     case Decimal:
       if (b instanceof DecimalType) {
@@ -360,14 +491,15 @@ public class Runner implements IHostApplicationServices {
       } else if (b.isPrimitive()) { // ElementModel
         return Value.makeDecimal(b.primitiveValue(), new BigDecimal(b.primitiveValue()));
       } else {
-        throw new FHIRException("Attempt to add a type "+b.fhirType()+" to an integer column for column "+column.getName());
+        throw new FHIRException("Attempt to add a type "+b.fhirType()+" to a decimal column for column "+column.getName());
       }
     case Integer:
+      // The r4 model has no integer64, but element-model values may still exceed the int range.
       if (b instanceof IntegerType) {
         IntegerType i = (IntegerType) b;
-        return Value.makeInteger(i.primitiveValue(), i.getValue());
+        return Value.makeInteger(i.primitiveValue(), i.getValue().longValue());
       } else if (b.isPrimitive()) { // ElementModel
-        return Value.makeInteger(b.primitiveValue(), Integer.valueOf(b.primitiveValue()));
+        return Value.makeInteger(b.primitiveValue(), Long.valueOf(b.primitiveValue()));
       } else {
         throw new FHIRException("Attempt to add a type "+b.fhirType()+" to an integer column for column "+column.getName());
       }
@@ -410,31 +542,61 @@ public class Runner implements IHostApplicationServices {
   public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     List<Base> list = new ArrayList<Base>();
     if (mode == FHIRPathConstantEvaluationMode.EXPLICIT) {
-      JsonObject vd = (JsonObject) appContext;
-      JsonObject constant = findConstant(vd, name);
+      // %rowIndex - in R4 the FHIRPathEngine strips the leading '%' before
+      // calling resolveConstant on host services.
+      if ("rowIndex".equals(name)) {
+        list.add(new IntegerType(rowIndexOf(appContext)));
+        return list;
+      }
+      JsonObject vd = viewDefinitionOf(appContext);
+      JsonObject constant = vd == null ? null : findConstant(vd, name);
       if (constant != null) {
-        Base b = (Base) constant.getUserData("value");
+        Base b = (Base) constant.getUserData(UserDataNames.db_value);
         if (b != null) {
           list.add(b);
         }
       }
     }
-    return list;    
+    return list;
   }
 
   @Override
   public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if (mode == FHIRPathConstantEvaluationMode.EXPLICIT) {
-      JsonObject vd = (JsonObject) appContext;
-      JsonObject constant = findConstant(vd, name.substring(1));
+      // %rowIndex - the R4 engine passes the '%' prefix through to
+      // resolveConstantType (unlike resolveConstant), so match the full token.
+      if ("%rowIndex".equals(name)) {
+        return new TypeDetails(CollectionStatus.SINGLETON, "integer");
+      }
+      JsonObject vd = viewDefinitionOf(appContext);
+      JsonObject constant = vd == null ? null : findConstant(vd, name.substring(1));
       if (constant != null) {
-        Base b = (Base) constant.getUserData("value");
+        Base b = (Base) constant.getUserData(UserDataNames.db_value);
         if (b != null) {
           return new TypeDetails(CollectionStatus.SINGLETON, b.fhirType());
         }
       }
     }
     return null;
+  }
+
+  /**
+   * The Runner supplies an ExecutionContext as the FHIRPath appContext, but the
+   * Validator checks expressions with the bare ViewDefinition, so both forms
+   * reach the host service callbacks.
+   */
+  private JsonObject viewDefinitionOf(Object appContext) {
+    if (appContext instanceof ExecutionContext) {
+      return ((ExecutionContext) appContext).vd;
+    } else if (appContext instanceof JsonObject) {
+      return (JsonObject) appContext;
+    } else {
+      return null;
+    }
+  }
+
+  private int rowIndexOf(Object appContext) {
+    return appContext instanceof ExecutionContext ? ((ExecutionContext) appContext).rowIndex : 0;
   }
 
   private JsonObject findConstant(JsonObject vd, String name) {
@@ -445,9 +607,14 @@ public class Runner implements IHostApplicationServices {
     }
     return null;
   }
+
+  // The FHIRPath features below need services (a reference resolver, a terminology server, a
+  // profile validator, a trace sink) this runner does not have. Using one is a failure of the
+  // view, reported as a FHIRException the caller can handle - never as a java.lang.Error.
+
   @Override
   public boolean log(String argument, List<Base> focus) {
-    throw new Error("Not implemented yet: log");
+    throw new FHIRException("The SQL on FHIR runner does not support the FHIRPath function trace()");
   }
 
   @Override
@@ -463,7 +630,7 @@ public class Runner implements IHostApplicationServices {
     switch (functionName) {
     case "getResourceKey" : return new TypeDetails(CollectionStatus.SINGLETON, "string");
     case "getReferenceKey" : return new TypeDetails(CollectionStatus.SINGLETON, "string");
-    default: throw new Error("Not known: "+functionName);
+    default: throw new FHIRException("Unknown function "+functionName);
     }
   }
 
@@ -472,7 +639,7 @@ public class Runner implements IHostApplicationServices {
     switch (functionName) {
     case "getResourceKey" : return executeResourceKey(focus);
     case "getReferenceKey" : return executeReferenceKey(null, focus, parameters);
-    default: throw new Error("Not known: "+functionName);
+    default: throw new FHIRException("Unknown function "+functionName);
     }
   }
 
@@ -480,15 +647,15 @@ public class Runner implements IHostApplicationServices {
     List<Base> base = new ArrayList<Base>();
     if (focus.size() == 1) {
       Base res = focus.get(0);
-      if (!res.hasUserData("Storage.key")) {
+      if (!res.hasUserData(UserDataNames.Storage_key)) {
         String key = storage.getKeyForSourceResource(res);
         if (key == null) {
           throw new FHIRException("Unidentified resource: "+res.fhirType()+"/"+res.getIdBase());
         } else {
-          res.setUserData("Storage.key", key);
+          res.setUserData(UserDataNames.Storage_key, key);
         }
       }
-      base.add(new StringType(res.getUserString("Storage.key")));
+      base.add(new StringType(res.getUserString(UserDataNames.Storage_key)));
     }
     return base;
   }
@@ -515,15 +682,21 @@ public class Runner implements IHostApplicationServices {
       if (ref !=  null) {
         Base target = provider.resolveReference(rootResource, ref, rt);
         if (target != null) {
-          if (!res.hasUserData("Storage.key")) {
+          // The cache slot has to be per type specifier, not one slot on the Reference: the same
+          // Reference can be asked for getReferenceKey(), getReferenceKey(Patient) and
+          // getReferenceKey(Observation) in one view, and those do not all resolve to the same
+          // target - or to a target at all. A single slot returned whichever key was calculated
+          // first for all of them
+          String slot = rt == null ? UserDataNames.Storage_key : UserDataNames.Storage_key+"."+rt;
+          if (!res.hasUserData(slot)) {
             String key = storage.getKeyForTargetResource(target);
             if (key == null) {
-              throw new FHIRException("Unidentified resource: "+res.fhirType()+"/"+res.getIdBase());
+              throw new FHIRException("Unidentified resource: "+target.fhirType()+"/"+target.getIdBase());
             } else {
-              res.setUserData("Storage.key", key);
+              res.setUserData(slot, key);
             }
           }
-          base.add(new StringType(res.getUserString("Storage.key")));
+          base.add(new StringType(res.getUserString(slot)));
         }
       }
     }
@@ -540,17 +713,17 @@ public class Runner implements IHostApplicationServices {
 
   @Override
   public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
-    throw new Error("Not implemented yet: resolveReference");
+    throw new FHIRException("The SQL on FHIR runner does not support the FHIRPath function resolve()");
   }
 
   @Override
   public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
-    throw new Error("Not implemented yet: conformsToProfile");
+    throw new FHIRException("The SQL on FHIR runner does not support the FHIRPath function conformsTo()");
   }
 
   @Override
   public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
-    throw new Error("Not implemented yet: resolveValueSet");
+    throw new FHIRException("The SQL on FHIR runner does not support the FHIRPath function memberOf()");
   }
   @Override
   public boolean paramIsType(String name, int index) {

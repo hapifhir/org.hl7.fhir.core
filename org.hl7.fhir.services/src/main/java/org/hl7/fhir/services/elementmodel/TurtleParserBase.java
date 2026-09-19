@@ -2,9 +2,9 @@ package org.hl7.fhir.services.elementmodel;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.Element.SpecialElement;
-import org.hl7.fhir.services.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
@@ -351,7 +351,7 @@ public abstract class TurtleParserBase extends ParserBase {
   }
 
   private boolean hasModifierExtension(Element e) {
-    return e.getChildren().stream().anyMatch(p -> p.getName().equals("modifierExtension"));
+    return e.getChildList().stream().anyMatch(p -> p.getName().equals("modifierExtension"));
   }
 
   protected String getURIType(String uri) {

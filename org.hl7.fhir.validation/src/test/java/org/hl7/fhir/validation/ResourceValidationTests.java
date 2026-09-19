@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.core.Resource;
+
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.r5.Constants;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -46,7 +48,7 @@ public class ResourceValidationTests {
       val.getSettings().setDebug(false);
     }
     List<ValidationMessage> errors = new ArrayList<>();
-    Resource res = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", filename));
+    Resource res = (Resource) new XmlParser(ModelContext.fullCoreContext()).parse(TestingUtilities.loadTestResourceStream("r5", filename));
     val.validate(val, errors, res);
     Assertions.assertNotNull(errors);
     return errors;

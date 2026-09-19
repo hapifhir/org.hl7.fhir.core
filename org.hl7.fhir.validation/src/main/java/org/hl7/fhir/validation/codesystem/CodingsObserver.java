@@ -10,13 +10,13 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
-import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
-import org.hl7.fhir.r5.utils.validation.ValidatorSession;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.model.core.CodeableConcept;
+import org.hl7.fhir.model.core.Coding;
+import org.hl7.fhir.model.core.ValueSet;
+import org.hl7.fhir.services.terminology.CodingValidationRequest;
+import org.hl7.fhir.services.validation.ValidatorSession;
+import org.hl7.fhir.services.xver.XVerExtensionManager;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -61,7 +61,7 @@ public class CodingsObserver extends BaseValidator {
 
 
   public void seeCode(NodeStack stack, CodeableConcept cc) {
-    for (Coding c : cc.getCoding()) {
+    for (Coding c : cc.getCodingList()) {
       seeCode(stack, c);
     }
   }

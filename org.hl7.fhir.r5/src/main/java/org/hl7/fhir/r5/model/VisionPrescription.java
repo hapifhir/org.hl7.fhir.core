@@ -1431,6 +1431,10 @@ public class VisionPrescription extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((VisionPrescriptionLensSpecificationComponent) dst);
+      }
+
       public void copyValues(VisionPrescriptionLensSpecificationComponent dst) {
         super.copyValues(dst);
         dst.product = product == null ? null : product.copy();
@@ -1741,6 +1745,10 @@ public class VisionPrescription extends DomainResource {
         PrismComponent dst = new PrismComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((PrismComponent) dst);
       }
 
       public void copyValues(PrismComponent dst) {
@@ -2371,6 +2379,10 @@ public class VisionPrescription extends DomainResource {
         VisionPrescription dst = new VisionPrescription();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((VisionPrescription) dst);
       }
 
       public void copyValues(VisionPrescription dst) {

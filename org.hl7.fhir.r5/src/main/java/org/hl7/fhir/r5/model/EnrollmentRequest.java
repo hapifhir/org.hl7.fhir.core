@@ -546,6 +546,10 @@ public class EnrollmentRequest extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((EnrollmentRequest) dst);
+      }
+
       public void copyValues(EnrollmentRequest dst) {
         super.copyValues(dst);
         if (identifier != null) {

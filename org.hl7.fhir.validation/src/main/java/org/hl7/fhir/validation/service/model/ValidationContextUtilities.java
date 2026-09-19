@@ -80,6 +80,8 @@ public class ValidationContextUtilities {
     validationContext.setOutputStyle(instanceValidatorParameters.getOutputStyle());
     validationContext.setR5BundleRelativeReferencePolicy(instanceValidatorParameters.getR5BundleRelativeReferencePolicy());
     validationContext.setExtensions(instanceValidatorParameters.getExtensions());
+    validationContext.setUsages(instanceValidatorParameters.getUsages());
+    validationContext.setLaunchContexts(instanceValidatorParameters.getLaunchContexts());
     validationContext.setWantInvariantsInMessages(instanceValidatorParameters.isWantInvariantsInMessages());
     validationContext.setNoInvariants(instanceValidatorParameters.isNoInvariants());
     validationContext.setQuestionnaireMode(instanceValidatorParameters.getQuestionnaireMode());
@@ -213,6 +215,8 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setOutputStyle(validationContext.getOutputStyle());
     instanceValidatorParameters.setR5BundleRelativeReferencePolicy(validationContext.getR5BundleRelativeReferencePolicy());
     instanceValidatorParameters.setExtensions(validationContext.getExtensions());
+    instanceValidatorParameters.setUsages(validationContext.getUsages());
+    instanceValidatorParameters.setLaunchContexts(validationContext.getLaunchContexts());
     instanceValidatorParameters.setWantInvariantsInMessages(validationContext.isWantInvariantsInMessages());
     instanceValidatorParameters.setNoInvariants(validationContext.isNoInvariants());
     instanceValidatorParameters.setQuestionnaireMode(validationContext.getQuestionnaireMode());

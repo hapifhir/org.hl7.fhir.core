@@ -5,14 +5,14 @@ import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.terminologies.ConceptMapEngine;
-import org.hl7.fhir.r5.utils.structuremap.ITransformerServices;
+import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.services.terminology.ConceptMapEngine;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.core.Coding;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.services.fml.ITransformerServices;
 
 @Slf4j
 public class TransformSupportServices implements ITransformerServices {

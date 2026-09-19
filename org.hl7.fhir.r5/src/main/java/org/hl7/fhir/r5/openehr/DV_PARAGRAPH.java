@@ -200,6 +200,10 @@ public class DV_PARAGRAPH extends DATA_VALUE implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DV_PARAGRAPH) dst);
+      }
+
       public void copyValues(DV_PARAGRAPH dst) {
         super.copyValues(dst);
         if (itemsList != null) {

@@ -13,18 +13,18 @@ import java.util.zip.ZipInputStream;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.renderers.RendererFactory;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
-import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
-import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.services.context.ContextUtilities;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.model.core.ImplementationGuide;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.services.renderers.RendererFactory;
+import org.hl7.fhir.services.renderers.utils.RenderingContext;
+import org.hl7.fhir.services.renderers.utils.RenderingContext.GenerationRules;
+import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.model.utilities.EOperationOutcome;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -32,6 +32,8 @@ import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
 import org.hl7.fhir.validation.service.model.ScanOutputItem;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -294,7 +296,7 @@ public class Scanner {
     if (item == null)
       return "<td></td>";
     boolean ok = true;
-    for (OperationOutcome.OperationOutcomeIssueComponent iss : item.getOutcome().getIssue()) {
+    for (OperationOutcome.OperationOutcomeIssueComponent iss : item.getOutcome().getIssueList()) {
       if (iss.getSeverity() == OperationOutcome.IssueSeverity.ERROR || iss.getSeverity() == OperationOutcome.IssueSeverity.FATAL) {
         ok = false;
       }
@@ -308,6 +310,7 @@ public class Scanner {
   protected OperationOutcome exceptionToOutcome(Exception ex) throws IOException, FHIRException, EOperationOutcome {
     OperationOutcome op = new OperationOutcome();
     op.addIssue().setCode(OperationOutcome.IssueType.EXCEPTION).setSeverity(OperationOutcome.IssueSeverity.FATAL).getDetails().setText(ex.getMessage());
+    ExtensionUtilities.addStringExtension(op, ExtensionDefinitions.EXT_VALIDATOR_VERSION, ValidatorUtils.getValidatorVersionDescription());
     RenderingContext rc = new RenderingContext(getContext(), new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     new RendererFactory().factory(op, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), op));
     return op;
@@ -369,7 +372,7 @@ public class Scanner {
   }
 
   protected String getGlobal(ImplementationGuide ig, String rt) {
-    for (ImplementationGuide.ImplementationGuideGlobalComponent igg : ig.getGlobal()) {
+    for (ImplementationGuide.ImplementationGuideGlobalComponent igg : ig.getGlobalList()) {
       if (rt.equals(igg.getType()))
         return igg.getProfile();
     }

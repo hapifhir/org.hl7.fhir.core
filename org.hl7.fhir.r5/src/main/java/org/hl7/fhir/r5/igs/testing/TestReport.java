@@ -931,6 +931,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TestReportParticipantComponent) dst);
+      }
+
       public void copyValues(TestReportParticipantComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1189,6 +1193,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TestReportParameterComponent) dst);
+      }
+
       public void copyValues(TestReportParameterComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -1381,6 +1389,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TestReportSetupComponent) dst);
+      }
+
       public void copyValues(TestReportSetupComponent dst) {
         super.copyValues(dst);
         if (actionList != null) {
@@ -1571,6 +1583,10 @@ public class TestReport extends DomainResource {
         SetupActionComponent dst = new SetupActionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SetupActionComponent) dst);
       }
 
       public void copyValues(SetupActionComponent dst) {
@@ -1896,6 +1912,10 @@ public class TestReport extends DomainResource {
         SetupActionOperationComponent dst = new SetupActionOperationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SetupActionOperationComponent) dst);
       }
 
       public void copyValues(SetupActionOperationComponent dst) {
@@ -2300,6 +2320,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SetupActionAssertComponent) dst);
+      }
+
       public void copyValues(SetupActionAssertComponent dst) {
         super.copyValues(dst);
         dst.result = result == null ? null : result.copy();
@@ -2498,6 +2522,10 @@ public class TestReport extends DomainResource {
         SetupActionAssertRequirementComponent dst = new SetupActionAssertRequirementComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SetupActionAssertRequirementComponent) dst);
       }
 
       public void copyValues(SetupActionAssertRequirementComponent dst) {
@@ -2991,6 +3019,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TestReportTestComponent) dst);
+      }
+
       public void copyValues(TestReportTestComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -3204,6 +3236,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TestActionComponent) dst);
+      }
+
       public void copyValues(TestActionComponent dst) {
         super.copyValues(dst);
         dst.operation = operation == null ? null : operation.copy();
@@ -3396,6 +3432,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TestReportTeardownComponent) dst);
+      }
+
       public void copyValues(TestReportTeardownComponent dst) {
         super.copyValues(dst);
         if (actionList != null) {
@@ -3561,6 +3601,10 @@ public class TestReport extends DomainResource {
         TeardownActionComponent dst = new TeardownActionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TeardownActionComponent) dst);
       }
 
       public void copyValues(TeardownActionComponent dst) {
@@ -4680,6 +4724,10 @@ public class TestReport extends DomainResource {
         TestReport dst = new TestReport();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TestReport) dst);
       }
 
       public void copyValues(TestReport dst) {

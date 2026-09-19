@@ -29,12 +29,13 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.renderers.RendererFactory;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.services.renderers.RendererFactory;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -123,7 +124,7 @@ class ValidationServiceTests {
     List<FileInfo> filesToValidate = new ArrayList<>();
     String resource = IOUtils.toString(getFileFromResourceAsStream("detected_issues.json"), StandardCharsets.UTF_8);
 
-    filesToValidate.add(new FileInfo().setFileName("test_resource.json").setFileContent(resource).setFileType(Manager.FhirFormat.JSON.getExtension()));
+    filesToValidate.add(new FileInfo().setFileName("test_resource.json").setFileContent(resource).setFileType(FhirFormat.JSON.getExtension()));
   return filesToValidate;
   }
 

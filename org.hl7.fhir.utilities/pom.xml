@@ -79,7 +79,7 @@
 
         <!-- XML Utilities -->
         <dependency>
-            <groupId>org.ogce</groupId>
+            <groupId>org.codelibs</groupId>
             <artifactId>xpp3</artifactId>
             <optional>true</optional>
         </dependency>
