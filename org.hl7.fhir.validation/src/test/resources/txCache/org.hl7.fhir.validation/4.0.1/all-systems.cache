@@ -7122,3 +7122,53 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "OK"
+}, "url": "urn:uuid:a3240740-fd14-4fd7-838a-1875837d19a6", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Oklahoma",
+  "code" : "OK",
+  "system" : "https://www.usps.com/",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:a3240740-fd14-4fd7-838a-1875837d19a6|1: Analysing urn:uuid:a3240740-fd14-4fd7-838a-1875837d19a6|1 for validation purposes\n1ms urn:uuid:a3240740-fd14-4fd7-838a-1875837d19a6|1: Parameters: disp-lang=en-US, generate-narrative\n2ms urn:uuid:a3240740-fd14-4fd7-838a-1875837d19a6|1: Prepare include[0]: \"(https://www.usps.com/)\"\n2ms urn:uuid:a3240740-fd14-4fd7-838a-1875837d19a6|1: CodeSystem found: \"https://www.usps.com/|null\"\n2ms urn:uuid:a3240740-fd14-4fd7-838a-1875837d19a6|1: Validate \"[undefined#OK (\"undefined\")]\" and infer system\n3ms urn:uuid:a3240740-fd14-4fd7-838a-1875837d19a6|1: Check \"undefined#OK\"\n3ms urn:uuid:a3240740-fd14-4fd7-838a-1875837d19a6|1: Inferred CodeSystem = \"https://www.usps.com/\"\n4ms urn:uuid:a3240740-fd14-4fd7-838a-1875837d19a6|1: CodeSystem found: https://www.usps.com/|null for https://www.usps.com/\n4ms urn:uuid:a3240740-fd14-4fd7-838a-1875837d19a6|1: check code in (https://www.usps.com/) at \n4ms urn:uuid:a3240740-fd14-4fd7-838a-1875837d19a6|1: Code \"OK\" found in https://www.usps.com/|null",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "OK"
+}, "url": "urn:uuid:725246f7-097a-4f3d-8fd0-6d5cf8508d27", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Oklahoma",
+  "code" : "OK",
+  "system" : "https://www.usps.com/",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:725246f7-097a-4f3d-8fd0-6d5cf8508d27|1: Analysing urn:uuid:725246f7-097a-4f3d-8fd0-6d5cf8508d27|1 for validation purposes\n1ms urn:uuid:725246f7-097a-4f3d-8fd0-6d5cf8508d27|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:725246f7-097a-4f3d-8fd0-6d5cf8508d27|1: Prepare include[0]: \"(https://www.usps.com/)\"\n2ms urn:uuid:725246f7-097a-4f3d-8fd0-6d5cf8508d27|1: CodeSystem found: \"https://www.usps.com/|null\"\n2ms urn:uuid:725246f7-097a-4f3d-8fd0-6d5cf8508d27|1: Validate \"[undefined#OK (\"undefined\")]\" and infer system\n2ms urn:uuid:725246f7-097a-4f3d-8fd0-6d5cf8508d27|1: Check \"undefined#OK\"\n2ms urn:uuid:725246f7-097a-4f3d-8fd0-6d5cf8508d27|1: Inferred CodeSystem = \"https://www.usps.com/\"\n2ms urn:uuid:725246f7-097a-4f3d-8fd0-6d5cf8508d27|1: CodeSystem found: https://www.usps.com/|null for https://www.usps.com/\n2ms urn:uuid:725246f7-097a-4f3d-8fd0-6d5cf8508d27|1: check code in (https://www.usps.com/) at \n2ms urn:uuid:725246f7-097a-4f3d-8fd0-6d5cf8508d27|1: Code \"OK\" found in https://www.usps.com/|null",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
