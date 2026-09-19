@@ -19,11 +19,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.github.spotbugs</groupId>
-			<artifactId>spotbugs-annotations</artifactId>
-		</dependency>
-
 		<!-- HAPI Dependencies -->
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
@@ -41,20 +36,12 @@
 			</exclusions>
 		</dependency>
 
-		<!-- UCUM -->
-		<dependency>
-			<groupId>org.fhir</groupId>
-			<artifactId>ucum</artifactId>
-			<optional>true</optional>
-		</dependency>
-
 		<!-- XML Parsers -->
 		<dependency>
             <groupId>org.codelibs</groupId>
             <artifactId>xpp3</artifactId>
 			<optional>true</optional>
 		</dependency>
-
 
 		<!-- JSON Parsers -->
 		<dependency>
@@ -69,62 +56,6 @@
 			<artifactId>commons-lang3</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<!-- Apache POI -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml-full</artifactId>
-			<optional>true</optional>
-		</dependency>
-
-		<dependency>
-			<groupId>org.antlr</groupId>
-			<artifactId>ST4</artifactId>
-			<version>4.1</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<optional>true</optional>
-		</dependency>
-
-        <!-- HTTP Client -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp-jvm</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>logging-interceptor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.okio</groupId>
-            <artifactId>okio</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.okio</groupId>
-            <artifactId>okio-jvm</artifactId>
-            <optional>true</optional>
-        </dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -142,51 +73,10 @@
 				<artifactId>slf4j-api</artifactId>
 				<version>2.0.17</version>
 		</dependency>
-			<!-- Test dependencies -->
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<scope>test</scope>
-		</dependency>
+		<!-- Test dependencies -->
 		<dependency>
 			<groupId>net.sf.saxon</groupId>
 			<artifactId>Saxon-HE</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hl7.fhir.testcases</groupId>
-			<artifactId>fhir-test-cases</artifactId>
-			<version>${validator_test_case_version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.squareup.okhttp3</groupId>
-			<artifactId>mockwebserver</artifactId>
-			<optional>true</optional>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- JUnit Jupiter -->
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-params</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.github.java-diff-utils</groupId>
-			<artifactId>java-diff-utils</artifactId>
-			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -200,10 +90,6 @@
             <artifactId>plantuml-mit</artifactId>
             <version>1.2026.1</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>org.hl7.fhir.utilities</artifactId>
         </dependency>
 
     </dependencies>
