@@ -50,6 +50,7 @@ public class ProfileBasedFactory {
   private FHIRPathEngine fpe;
   private PrintStream log;
   private boolean testing;
+  private boolean requiredOnly;
   private boolean markProfile;
   
   private static class LogSet {
@@ -134,11 +135,34 @@ public class ProfileBasedFactory {
   protected void populateByProfile(Element element, PEDefinition definition, int level, String path, Map<String, String> values) throws SQLException, IOException {
     if (definition.types().size() == 1) {
       for (PEDefinition pe : definition.directChildren(true)) {
+          // requiredOnly prunes at the resource's top level only. Deeper optional elements are
+          // left to the normal path, which already drops the ones that end up with no content.
+          if (requiredOnly && level == 0 && pe.min() == 0 && !pe.hasFixedValue() && !hasMappingFor(pe)
+              && (values == null || !values.containsKey(pe.schemaName()))) {
+            continue;
+          }
         if (pe.max() > 0 && (!isIgnoredElement(pe.definition().getBase().getPath()) || pe.hasFixedValue())) {
           populateElement(element, pe, level, path, values);
         }
       }
     }
+  }
+
+  private boolean hasMappingFor(PEDefinition pe) {
+    if (mappings == null) return false;
+    String defId = pe.definition().getId();
+    String defPath = pe.definition().getPath();
+    String pePath = pe.path();
+    for (JsonObject entry : mappings.asJsonObjects()) {
+      String p = entry.asString("path");
+      if (p != null) {
+        if (p.equals(defId) || p.equals(defPath) || p.equals(pePath)) return true;
+        if (defPath != null && p.startsWith(defPath + ".")) return true;
+        if (pePath != null && p.startsWith(pePath + ".")) return true;
+        if (defId != null && p.startsWith(defId + ".")) return true;
+      }
+    }
+    return false;
   }
 
   private boolean isIgnoredElement(String path) {
@@ -220,6 +244,9 @@ public class ProfileBasedFactory {
           if (val == null && data != null) { 
             val = getPrimitiveValue(ls, b.fhirType(), path, pe.path(), pe.definition().getId(), pe.definition().getPath());
           }
+          if (val != null && "base64Binary".equals(b.fhirType())) {
+            val = checkBase64(ls, pe.path(), val);
+          }
           if (val == null && pe.valueSet() != null) {
             ValueSet.ValueSetExpansionContainsComponent cc = doExpansion(ls, pe.valueSet());
             if (cc != null) {
@@ -247,7 +274,7 @@ public class ProfileBasedFactory {
               b.setValue("Some String value");
               break;
             case "base64Binary" : 
-              b.setValue(java.util.Base64.getMimeEncoder().encodeToString("Some Binary Value".getBytes(StandardCharsets.UTF_8)));
+              b.setValue(java.util.Base64.getEncoder().encodeToString("Some Binary Value".getBytes(StandardCharsets.UTF_8)));
               break;
             case "boolean" : 
               b.setValue(testing ? "true" : ThreadLocalRandom.current().nextInt(0, 2) == 1 ? "true" : "false");
@@ -544,6 +571,11 @@ public class ProfileBasedFactory {
   private String getPrimitiveValue(LogSet ls, String fhirType, String... ids) {
     JsonObject entry = findMatchingEntry(ls, ids);
     if (entry != null) {
+      String literal = literalValue(entry, "entry for "+entry.asString("path"));
+      if (literal != null) {
+        ls.others.add("literal value = '"+literal+"'");
+        return literal;
+      }
       JsonElement expression = entry.get("expression");
       if (expression == null || !expression.isJsonPrimitive() || Utilities.noString(expression.asString())) {
         ls.others.add("Found an entry for "+entry.asString("path")+" but it had no expression");
@@ -573,6 +605,39 @@ public class ProfileBasedFactory {
     return val;
   }
 
+  /**
+   * The literal value of a mapping entry or part, if it has one. A value is stringified whatever
+   * its JSON type - a number or boolean gives its literal, an object or array its JSON text - so
+   * an author never has to quote. An empty string suppresses the element, the same as an entry
+   * with no expression. An entry with both a value and an expression is a mistake, and is
+   * reported rather than one silently winning.
+   */
+  private String literalValue(JsonObject entry, String what) {
+    if (!entry.has("value")) {
+      return null;
+    }
+    if (entry.has("expression")) {
+      throw new FHIRException("The mapping "+what+" has both a 'value' and an 'expression'; use one or the other");
+    }
+    JsonElement v = entry.get("value");
+    return v.isJsonPrimitive() ? v.asString() : org.hl7.fhir.utilities.json.parser.JsonParser.compose(v, false);
+  }
+
+  /**
+   * A base64Binary value supplied by a mapping or a data column. FHIR allows whitespace in
+   * base64Binary (line-wrapped content was common before R5), so it is stripped and what
+   * remains is validated. A value that is not base64 is rejected with a line in the log saying
+   * why, and a generated value is used instead - as if none had been supplied.
+   */
+  private String checkBase64(LogSet ls, String path, String val) {
+    try {
+      return java.util.Base64.getEncoder().encodeToString(Utilities.decodeBase64(val));
+    } catch (IllegalArgumentException e) {
+      ls.others.add("base64Binary value for "+path+" rejected ("+e.getMessage()+"); a generated value is used instead");
+      return null;
+    }
+  }
+
   private JsonObject findMatchingEntry(LogSet ls, String[] ids) {
     for (JsonObject entry : mappings.asJsonObjects()) {
       if (Utilities.existsInList(entry.asString("path"), ids)) {
@@ -600,9 +665,10 @@ public class ProfileBasedFactory {
       } else {
         for (JsonObject src : a.asJsonObjects()) {
           if (!src.has("name")) {
-            throw new FHIRException("Found an entry for "+entry.asString("path")+" but it had no proeprty name");            
-          } 
-          result.put(src.asString("name"), evaluateExpression(ls.others, src.get("expression"), src.asString("name")));
+            throw new FHIRException("Found an entry for "+entry.asString("path")+" but it had no property name");
+          }
+          String literal = literalValue(src, "part '"+src.asString("name")+"' of the entry for "+entry.asString("path"));
+          result.put(src.asString("name"), literal != null ? literal : evaluateExpression(ls.others, src.get("expression"), src.asString("name")));
         }
       }
     }
@@ -635,6 +701,14 @@ public class ProfileBasedFactory {
 
   public boolean isMarkProfile() {
     return markProfile;
+  }
+
+  public boolean isRequiredOnly() {
+    return requiredOnly;
+  }
+
+  public void setRequiredOnly(boolean requiredOnly) {
+    this.requiredOnly = requiredOnly;
   }
 
   public void setMarkProfile(boolean markProfile) {
