@@ -1,10 +1,6 @@
 msgid ""
 msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-Project: orghl7fhircore\n"
-"X-Crowdin-Project-ID: 792848\n"
-"X-Crowdin-Language: sv\n"
-"X-Crowdin-File: rendering-phrases.po\n"
 "Project-Id-Version: orghl7fhircore\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Swedish\n"
@@ -425,6 +421,7 @@ msgstr "Operationer"
 
 # CAPABILITY_OPER
 #: CAPABILITY_OPER
+msgctxt "CAPABILITY_OPER"
 msgid "Operation"
 msgstr "Operation"
 
@@ -2037,6 +2034,7 @@ msgstr "Definition:"
 
 # GENERAL_DESC
 #: GENERAL_DESC
+msgctxt "GENERAL_DESC"
 msgid "Description"
 msgstr "Beskrivning"
 
@@ -2153,6 +2151,7 @@ msgstr "Parameter"
 
 # GENERAL_PARS
 #: GENERAL_PARS
+msgctxt "GENERAL_PARS"
 msgid "Parameters"
 msgstr "Parametrar"
 
@@ -2467,6 +2466,7 @@ msgstr "Poster"
 
 # LIST_REND_MODE
 #: LIST_REND_MODE
+msgctxt "LIST_REND_MODE"
 msgid "Mode: {0}"
 msgstr "Läge: {0}"
 
@@ -4580,6 +4580,11 @@ msgstr "Detta element måste stödjas"
 msgid "When this element is read"
 msgstr "När detta element läses"
 
+# STRUC_DEF_ELE_TRANSLATABLE
+#: STRUC_DEF_ELE_TRANSLATABLE
+msgid "This element is a candidate for being translated"
+msgstr ""
+
 # STRUC_DEF_ERROR
 #: STRUC_DEF_ERROR
 msgid "Unknown structure mode"
@@ -5275,6 +5280,11 @@ msgstr "då är typen"
 msgid "This structure refers to these other structures"
 msgstr "Denna struktur refererar till dessa andra strukturer"
 
+# STRUC_DEF_TRANSLATABLE
+#: STRUC_DEF_TRANSLATABLE
+msgid "Translatable"
+msgstr ""
+
 # STRUC_DEF_TYPE_BOUND
 #: STRUC_DEF_TYPE_BOUND
 msgid "This type can be bound to a value set using the {0}"
@@ -5535,6 +5545,85 @@ msgstr "Testplansberoenden:"
 #: TEST_PLAN_DESC
 msgid "Dependency - no description"
 msgstr "Beroende - ingen beskrivning"
+
+# TEST_PLAN_IG_DEPENDENCIES
+#: TEST_PLAN_IG_DEPENDENCIES
+msgid "Dependencies"
+msgstr ""
+
+# TEST_PLAN_IG_DESCRIPTION
+#: TEST_PLAN_IG_DESCRIPTION
+msgctxt "TEST_PLAN_IG_DESCRIPTION"
+msgid "Description"
+msgstr ""
+
+# TEST_PLAN_IG_EXPECTED
+#: TEST_PLAN_IG_EXPECTED
+msgid "Expected"
+msgstr ""
+
+# TEST_PLAN_IG_FILE
+#: TEST_PLAN_IG_FILE
+msgid "File"
+msgstr ""
+
+# TEST_PLAN_IG_INPUT
+#: TEST_PLAN_IG_INPUT
+msgid "Input"
+msgstr ""
+
+# TEST_PLAN_IG_INPUTS
+#: TEST_PLAN_IG_INPUTS
+msgid "Inputs"
+msgstr ""
+
+# TEST_PLAN_IG_MODE
+#: TEST_PLAN_IG_MODE
+msgid "Mode"
+msgstr ""
+
+# TEST_PLAN_IG_MODES
+#: TEST_PLAN_IG_MODES
+msgid "Modes"
+msgstr ""
+
+# TEST_PLAN_IG_MODE_LABEL
+#: TEST_PLAN_IG_MODE_LABEL
+msgctxt "TEST_PLAN_IG_MODE_LABEL"
+msgid "Mode: {0}"
+msgstr ""
+
+# TEST_PLAN_IG_OPERATION
+#: TEST_PLAN_IG_OPERATION
+msgctxt "TEST_PLAN_IG_OPERATION"
+msgid "Operation"
+msgstr ""
+
+# TEST_PLAN_IG_PARAMETERS
+#: TEST_PLAN_IG_PARAMETERS
+msgctxt "TEST_PLAN_IG_PARAMETERS"
+msgid "Parameters"
+msgstr ""
+
+# TEST_PLAN_IG_REFERENCE
+#: TEST_PLAN_IG_REFERENCE
+msgid "Reference"
+msgstr ""
+
+# TEST_PLAN_IG_SCOPES
+#: TEST_PLAN_IG_SCOPES
+msgid "Scopes"
+msgstr ""
+
+# TEST_PLAN_IG_SUITE_LABEL
+#: TEST_PLAN_IG_SUITE_LABEL
+msgid "Suite: {0}"
+msgstr ""
+
+# TEST_PLAN_IG_TESTS
+#: TEST_PLAN_IG_TESTS
+msgid "Tests"
+msgstr ""
 
 # TEST_PLAN_LANG
 #: TEST_PLAN_LANG
