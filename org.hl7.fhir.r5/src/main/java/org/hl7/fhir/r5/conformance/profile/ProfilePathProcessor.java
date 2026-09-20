@@ -1589,7 +1589,11 @@ public class ProfilePathProcessor {
     start++;
 
     String fixedType = null;
-    List<BaseTypeSlice> baseSlices = profileUtilities.findBaseSlices(cursors.base, newBaseLimit);
+    // findBaseSlices wants the index of the slicer itself: it skips the slicer's
+    // children and then collects the named slices that follow. newBaseLimit is the
+    // slicer's last child, so passing it only worked when the slicer had no children
+    // in the base snapshot, and found nothing at all when it did.
+    List<BaseTypeSlice> baseSlices = profileUtilities.findBaseSlices(cursors.base, cursors.baseCursor);
     // now process the siblings, which should each be type constrained - and may also have their own children. they may match existing slices
     // now we process the base scope repeatedly for each instance of the item in the differential list
     for (int i = start; i < diffMatches.size(); i++) {
@@ -1648,8 +1652,10 @@ public class ProfilePathProcessor {
 
       }
     }
-    // ok, done with that - next in the base list
-    cursors.baseCursor = baseSlices.get(baseSlices.size() - 1).getEnd() + 1;
+    // ok, done with that - next in the base list. A base slicing entry with no named
+    // slice rows yields no slices at all, in which case the slicer's own scope is what
+    // has been dealt with
+    cursors.baseCursor = baseSlices.isEmpty() ? newBaseLimit + 1 : baseSlices.get(baseSlices.size() - 1).getEnd() + 1;
     cursors.diffCursor = newDiffLimit + 1;
     //throw new Error("not done yet - slicing / types @ "+cpath);
   }
