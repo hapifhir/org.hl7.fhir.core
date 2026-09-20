@@ -35,10 +35,28 @@ class SnapshotGenerationPreProcessorExtensionSlicingTest {
   }
 
   /**
-   * Standard extension slicing: open, one discriminator of type value on "url".
-   * Ordered is set explicitly, since the predicate does not accept a slicing that
-   * leaves it absent.
+   * slicing.ordered is 0..1 and its absence means "not ordered", so an entry that simply
+   * omits it is ordinary extension slicing. Tools that always write ordered=false never
+   * hit this; hand-authored profiles do.
    */
+  @Test
+  void extensionSlicingWithoutAnExplicitOrderedIsRecognised() throws Exception {
+    ElementDefinition ed = slicedElement("Patient.extension");
+    ed.getSlicing().setOrderedElement(null);
+
+    assertFalse(ed.getSlicing().hasOrdered(), "the fixture must leave ordered absent");
+    assertTrue(isExtensionSlicing(ed));
+  }
+
+  @Test
+  void orderedExtensionSlicingIsNotExtensionSlicing() throws Exception {
+    ElementDefinition ed = slicedElement("Patient.extension");
+    ed.getSlicing().setOrdered(true);
+
+    assertFalse(isExtensionSlicing(ed));
+  }
+
+  /** Standard extension slicing: open, not ordered, one discriminator of type value on "url". */
   private ElementDefinition slicedElement(String path) {
     ElementDefinition ed = new ElementDefinition();
     ed.setPath(path);
