@@ -54,6 +54,7 @@ import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.fml.StructureMap;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapInputMode;
 import org.hl7.fhir.model.core.Bundle;
 import org.hl7.fhir.model.core.Bundle.BundleEntryComponent;
 import org.hl7.fhir.model.core.CanonicalResource;
@@ -791,7 +792,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return resource;
   }
 
-  private org.hl7.fhir.r5.elementmodel.Element getTargetResourceFromStructureMap(StructureMap map) {
+  private org.hl7.fhir.services.elementmodel.Element getTargetResourceFromStructureMap(StructureMap map) {
     // only have support for a single output parameter to generate
     StructureMap.StructureMapGroupInputComponent gpReturnTypeParameter = null;
     for (var gp : map.getGroupFirstRep().getInputList()) {
@@ -812,7 +813,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     StructureDefinition structureDefinition = null;
 
     // Need to lookup this type in the imported structures/aliases
-    for (StructureMap.StructureMapStructureComponent component : map.getStructure()) {
+    for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
       if (component.getMode() == StructureMap.StructureMapModelMode.TARGET && component.getAlias() == gpReturnTypeParameter.getType()) {
         targetTypeUrl = component.getUrl();
         for (StructureDefinition sd : allStructures) {
@@ -826,7 +827,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     if (targetTypeUrl == null) {
       // lets just scan through all the structures to see if this type is named (not an alias)
-      for (StructureMap.StructureMapStructureComponent component : map.getStructure()) {
+      for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
         if (component.getMode() == StructureMap.StructureMapModelMode.TARGET) {
           for (StructureDefinition sd : allStructures) {
             if (sd.getUrl().equalsIgnoreCase(component.getUrl()) && sd.getName().equalsIgnoreCase(gpReturnTypeParameter.getType())) {
@@ -848,9 +849,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   private StructureDefinition getSourceResourceFromStructureMap(StructureMap map) {
-    StructureMap.StructureMapGroupComponent g = map.getGroup().get(0);
+    StructureMap.StructureMapGroupComponent g = map.getGroupList().get(0);
     String type = null;
-    for (StructureMap.StructureMapGroupInputComponent inp : g.getInput()) {
+    for (StructureMap.StructureMapGroupInputComponent inp : g.getInputList()) {
       if (inp.getMode() == StructureMap.StructureMapInputMode.SOURCE)
         if (type != null)
           throw new DefinitionException("This engine does not support multiple source inputs");
@@ -861,7 +862,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     // Check if the source type is one of the aliased types in the structure map.
     // (and lookup the StructureDefinition for that type)
     String sourceTypeUrl = null;
-    for (StructureMap.StructureMapStructureComponent component : map.getStructure()) {
+    for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
       if (component.getMode() == StructureMap.StructureMapModelMode.SOURCE) {
         if (component.hasAlias() && component.getAlias().equalsIgnoreCase(type)) {
           sourceTypeUrl = component.getUrl();
@@ -879,7 +880,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         }
       } else {
         // handle any parameter types that weren't "used" with an alias
-        for (StructureMap.StructureMapStructureComponent component : map.getStructure()) {
+        for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
           if (component.getMode() == StructureMap.StructureMapModelMode.SOURCE) {
             if (sd.getUrl().equalsIgnoreCase(component.getUrl()) && sd.getName().equalsIgnoreCase(type)) {
               structureDefinition = sd;

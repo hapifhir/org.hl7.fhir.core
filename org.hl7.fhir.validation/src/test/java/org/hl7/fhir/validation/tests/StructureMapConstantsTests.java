@@ -10,15 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.elementmodel.FmlParser;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.model.Patient;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureMap;
-import org.hl7.fhir.r5.test.utils.CompareUtilities;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.services.elementmodel.FmlParser;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.model.core.Patient;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.fml.StructureMap;
+import org.hl7.fhir.services.testing.CompareUtilities;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
+import org.hl7.fhir.model.utilities.StructureMapUtilities;
+import org.hl7.fhir.services.fml.StructureMapTools;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -32,7 +33,7 @@ import org.junit.jupiter.api.Test;
 class StructureMapConstantsTests {
 
   static SimpleWorkerContext context;
-  static StructureMapUtilities utils;
+  static StructureMapTools utils;
   static FmlParser fmlParser;
   static FHIRPathEngine fpe;
   static InstanceValidator validator;
@@ -67,7 +68,7 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
   static void setUp() throws Exception {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     context = new SimpleWorkerContext(TestingUtilities.getWorkerContext(pcm.loadPackage("hl7.fhir.r5.core", "5.0.0")));
-    utils = new StructureMapUtilities(context);
+    utils = new StructureMapTools(context);
     fpe = new FHIRPathEngine(context);
     fmlParser = new FmlParser(context, fpe);
     validator = new InstanceValidator(context, null, null, null, new ValidatorSettings());
@@ -76,7 +77,7 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
   @Test
   void testFmlConstantValidation() throws IOException, FHIRException {
     List<ValidationMessage> errors = new ArrayList<>();
-    org.hl7.fhir.r5.elementmodel.Element map = fmlParser.parse(errors, SAMPLE_FML);
+    org.hl7.fhir.services.elementmodel.Element map = fmlParser.parse(errors, SAMPLE_FML);
     validator.validate(null, errors, null, map);
 
     // filter out all the information messages, we only care about errors and warnings
@@ -88,7 +89,7 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
   @Test
   void testFmlConstantValidationForcedErrorName() throws IOException, FHIRException {
     List<ValidationMessage> errors = new ArrayList<>();
-    org.hl7.fhir.r5.elementmodel.Element map = fmlParser.parse(errors, SAMPLE_FML);
+    org.hl7.fhir.services.elementmodel.Element map = fmlParser.parse(errors, SAMPLE_FML);
     map.getChildrenByName("const").get(0).removeChild("name");
     validator.validate(null, errors, null, map);
     assertEquals(1, errors.size(), "Expected validation errors due to missing constant name: " + errors.toString());
@@ -97,7 +98,7 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
   @Test
   void testFmlConstantValidationForcedErrorValue() throws IOException, FHIRException {
     List<ValidationMessage> errors = new ArrayList<>();
-    org.hl7.fhir.r5.elementmodel.Element map = fmlParser.parse(errors, SAMPLE_FML);
+    org.hl7.fhir.services.elementmodel.Element map = fmlParser.parse(errors, SAMPLE_FML);
     map.getChildrenByName("const").get(0).removeChild("value");
     validator.validate(null, errors, null, map);
     assertEquals(1, errors.size(), "Expected validation errors due to missing constant value: " + errors.toString());
@@ -106,7 +107,7 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
   @Test
   void testFmlConstantValidationForcedErrorValueType() throws IOException, FHIRException {
     List<ValidationMessage> errors = new ArrayList<>();
-    org.hl7.fhir.r5.elementmodel.Element map = fmlParser.parse(errors, SAMPLE_FML);
+    org.hl7.fhir.services.elementmodel.Element map = fmlParser.parse(errors, SAMPLE_FML);
     map.getChildrenByName("const").get(0).setChildValue("value", "'Intentional Error in fhirpath");
     validator.validate(null, errors, null, map);
     assertEquals(1, errors.size(), "Expected validation errors due to missing constant value type: " + errors.toString());
@@ -136,13 +137,13 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
   void testFmlConstantEvaluateObjectModel() throws IOException, FHIRException {
     String originalFml = SAMPLE_FML;
     StructureMap map = utils.parse(originalFml, "constant-evaluate");
-    Resource input = new org.hl7.fhir.r5.formats.JsonParser().parse(SAMPLE_PATIENT_JSON);
-    Patient target = new org.hl7.fhir.r5.model.Patient();
+    Resource input = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(SAMPLE_PATIENT_JSON);
+    Patient target = new org.hl7.fhir.model.core.Patient();
 
     utils.transform(null, input, map, target);
 
     // Test that the result is a Patient resource with the expected truncated id `constant-truncation-`
-    assertEquals("constant-truncation-", target.getName().get(0).getFamily(), "Patient id does not start with 'constant-truncation-'");  
+    assertEquals("constant-truncation-", target.getNameList().get(0).getFamily(), "Patient id does not start with 'constant-truncation-'");  
   }
 
   @Test
@@ -177,8 +178,8 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     String renderedFml = StructureMapUtilities.render(sm1);
     StructureMap sm2 = utils.parse(renderedFml, "SAMPLE_FML");
 
-    String json1 = new org.hl7.fhir.r5.formats.JsonParser().composeString(sm1);
-    String json2 = new org.hl7.fhir.r5.formats.JsonParser().composeString(sm2);
+    String json1 = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).composeString(sm1);
+    String json2 = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).composeString(sm2);
     String msg = new CompareUtilities().checkJsonSrcIsSame("SAMPLE_FML", json1, json2);
     assertNull(msg, "FML -> SM -> FML -> SM: StructureMaps differ for SAMPLE_FML: " + msg);
   }
@@ -188,17 +189,17 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     String originalFml = SAMPLE_FML;
     // parse FML text using the regular StructureMapUtilities parser (to StructureMap object)
     StructureMap sm1 = utils.parse(originalFml, "SAMPLE_FML");
-    org.hl7.fhir.r5.formats.IParser parserR5 = new org.hl7.fhir.r5.formats.JsonParser();
-    parserR5.setOutputStyle(org.hl7.fhir.r5.formats.IParser.OutputStyle.PRETTY);
+    var parserR5 = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext());
+    parserR5.setOutputStyle(org.hl7.fhir.model.utilities.formats.OutputStyle.PRETTY);
     String jsonText = parserR5.composeString(sm1);
 
     // Now parse using the ElementModel FML parser
     var errors = new ArrayList<ValidationMessage>();
     var smAsElements = fmlParser.parse(errors, originalFml);
     smAsElements.sort();
-    var parserElements = new org.hl7.fhir.r5.elementmodel.JsonParser(context);
+    var parserElements = new org.hl7.fhir.services.elementmodel.JsonParser(context);
     var bs = new java.io.ByteArrayOutputStream();
-    parserElements.compose(smAsElements, bs, org.hl7.fhir.r5.formats.IParser.OutputStyle.PRETTY, null);
+    parserElements.compose(smAsElements, bs, org.hl7.fhir.model.utilities.formats.OutputStyle.PRETTY, null);
     var jsonTextFromElements = bs.toString();
 
     // compare the 2 JSON outputs

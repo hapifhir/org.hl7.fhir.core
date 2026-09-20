@@ -831,7 +831,7 @@ public class StructureMapValidator extends BaseValidator {
                 transform = "create"; // implied
                 rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 0, I18nConstants.SM_TARGET_NO_TRANSFORM_NO_CHECKED, transform);
               } 
-              if (targetElement.getEd().getType().size() == 1) {
+              if (targetElement.getEd().getTypeList().size() == 1) {
                 initialType = targetElement.getEd().getTypeFirstRep().getWorkingCode();
               } else {                  
                 initialType = inferType(ruleInfo, variables, rule, transform, params);
@@ -865,7 +865,7 @@ public class StructureMapValidator extends BaseValidator {
           outputVariable.setType(ruleInfo.getMaxCount(), targetElement.getSd(), targetElement.getEd(), transformResult.type);
         }
       }
-      if (targetElement != null && targetElement.getEd().getType().size() > 1) {
+      if (targetElement != null && targetElement.getEd().getTypeList().size() > 1) {
         warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), transformResult.type != null, I18nConstants.SM_TARGET_TYPE_MULTIPLE_POSSIBLE, targetElement.getEd().typeSummary());
       }
     }
@@ -1066,7 +1066,7 @@ public class StructureMapValidator extends BaseValidator {
         conceptMap = (ConceptMap) loadContainedResource(errors, stack.getLiteralPath(), src, reference.substring(1), ConceptMap.class);
         ok = rule(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), conceptMap != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, reference) && ok;
       } else {
-        conceptMap = this.context.fetchResource(ConceptMap.class, reference, ExtensionUtilities.getVersionResolutionRules(map));
+        conceptMap = this.context.fetchResource(ConceptMap.class, reference, ExtensionUtilities.getVersionResolutionRulesBase(map));
         warning(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), conceptMap != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, reference);
       }
       if (conceptMap != null && ((contextVariable != null && contextVariable.hasTypeInfo()) || (sourceVariable != null && sourceVariable.hasTypeInfo()))) {
