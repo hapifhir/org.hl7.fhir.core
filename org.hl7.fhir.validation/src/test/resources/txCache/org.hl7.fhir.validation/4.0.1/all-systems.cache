@@ -7172,3 +7172,28 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "OK"
+}, "url": "urn:uuid:1bffe284-67c1-44ea-8901-98b99b7e6e65", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Oklahoma",
+  "code" : "OK",
+  "system" : "https://www.usps.com/",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:1bffe284-67c1-44ea-8901-98b99b7e6e65|1: Analysing urn:uuid:1bffe284-67c1-44ea-8901-98b99b7e6e65|1 for validation purposes\n1ms urn:uuid:1bffe284-67c1-44ea-8901-98b99b7e6e65|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:1bffe284-67c1-44ea-8901-98b99b7e6e65|1: Prepare include[0]: \"(https://www.usps.com/)\"\n2ms urn:uuid:1bffe284-67c1-44ea-8901-98b99b7e6e65|1: CodeSystem found: \"https://www.usps.com/|null\"\n2ms urn:uuid:1bffe284-67c1-44ea-8901-98b99b7e6e65|1: Validate \"[undefined#OK (\"undefined\")]\" and infer system\n3ms urn:uuid:1bffe284-67c1-44ea-8901-98b99b7e6e65|1: Check \"undefined#OK\"\n3ms urn:uuid:1bffe284-67c1-44ea-8901-98b99b7e6e65|1: Inferred CodeSystem = \"https://www.usps.com/\"\n3ms urn:uuid:1bffe284-67c1-44ea-8901-98b99b7e6e65|1: CodeSystem found: https://www.usps.com/|null for https://www.usps.com/\n3ms urn:uuid:1bffe284-67c1-44ea-8901-98b99b7e6e65|1: check code in (https://www.usps.com/) at \n4ms urn:uuid:1bffe284-67c1-44ea-8901-98b99b7e6e65|1: Code \"OK\" found in https://www.usps.com/|null",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
