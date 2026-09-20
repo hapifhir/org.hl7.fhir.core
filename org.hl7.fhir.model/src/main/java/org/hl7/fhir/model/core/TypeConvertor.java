@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.regex.PrimitiveRegexes;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
@@ -22,7 +23,7 @@ public class TypeConvertor {
     else if (b.isMetadataBased())
       return b.asType();
     else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Reference");
+      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a DataType");
   }
   
 
@@ -30,238 +31,621 @@ public class TypeConvertor {
     if (b == null) {
       return null;
     }
-    if (b instanceof BooleanType)
-      return (BooleanType) b;
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Boolean");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof BooleanType) {
+      return (BooleanType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || "true".equals(s) || "false".equals(s)) {
+        BooleanType t = new BooleanType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Boolean");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Boolean");
+    }
   }
-  
+
   public static IntegerType castToInteger(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-    if (b instanceof IntegerType)
-      return (IntegerType) b;
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Integer");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof IntegerType) {
+      return (IntegerType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || isInteger(s, Integer.MIN_VALUE)) {
+        IntegerType t = new IntegerType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Integer");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Integer");
+    }
   }
-  
+
   public static Integer64Type castToInteger64(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-    if (b instanceof Integer64Type)
-      return (Integer64Type) b;
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Integer");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof Integer64Type) {
+      return (Integer64Type) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || isInteger64(s)) {
+        Integer64Type t = new Integer64Type();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Integer64");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Integer64");
+    }
   }
-  
+
   public static DecimalType castToDecimal(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-    if (b instanceof DecimalType)
-      return (DecimalType) b;
-    else if (b.hasPrimitiveValue())
-      return new DecimalType(b.primitiveValue());
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Decimal");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof DecimalType) {
+      return (DecimalType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || Utilities.isDecimal(s, true)) {
+        DecimalType t = new DecimalType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Decimal");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Decimal");
+    }
   }
-  
+
   public static Base64BinaryType castToBase64Binary(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-    if (b instanceof Base64BinaryType)
-      return (Base64BinaryType) b;
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Base64Binary");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof Base64BinaryType) {
+      return (Base64BinaryType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || isBase64(s)) {
+        Base64BinaryType t = new Base64BinaryType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Base64Binary");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Base64Binary");
+    }
   }
-  
+
   public static InstantType castToInstant(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-    if (b instanceof InstantType)
-      return (InstantType) b;
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Instant");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof InstantType) {
+      return (InstantType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || parses(new InstantType(), s)) {
+        InstantType t = new InstantType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Instant");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Instant");
+    }
   }
-  
+
   public static StringType castToString(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof StringType)
-      return (StringType) b;
-    else if (b.hasPrimitiveValue())
-      return new StringType(b.primitiveValue());
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a String");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof StringType) {
+      return (StringType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      StringType t = new StringType();
+      if (s != null) {
+        t.setValueAsString(s);
+      }
+      copyIdAndExtensions(v, t);
+      return t;
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a String");
+    }
   }
-  
+
   public static UriType castToUri(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof UriType)
-      return (UriType) b;
-    else if (b.hasPrimitiveValue())
-      return new UriType(b.primitiveValue());
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Uri");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof UriType) {
+      return (UriType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || !containsWhitespace(s)) {
+        UriType t = new UriType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Uri");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Uri");
+    }
   }
-  
+
   public static UrlType castToUrl(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof UrlType)
-      return (UrlType) b;
-    else if (b.hasPrimitiveValue())
-      return new UrlType(b.primitiveValue());
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Uri");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof UrlType) {
+      return (UrlType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || !containsWhitespace(s)) {
+        UrlType t = new UrlType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Url");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Url");
+    }
   }
 
   public static UuidType castToUuid(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof UuidType)
-      return (UuidType) b;
-    else if (b.hasPrimitiveValue())
-      return new UuidType(b.primitiveValue());
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Uuid");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof UuidType) {
+      return (UuidType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || hasFormat(UUID_REGEX, s)) {
+        UuidType t = new UuidType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Uuid");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Uuid");
+    }
   }
-  
+
   public static CanonicalType castToCanonical(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof CanonicalType)
-      return (CanonicalType) b;
-    else if (b.hasPrimitiveValue())
-      return new CanonicalType(b.primitiveValue());
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Uri");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof CanonicalType) {
+      return (CanonicalType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || !containsWhitespace(s)) {
+        CanonicalType t = new CanonicalType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Canonical");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Canonical");
+    }
   }
-  
+
   public static DateType castToDate(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof DateType)
-      return (DateType) b;
-    else if (b.hasPrimitiveValue())
-      return new DateType(b.primitiveValue());
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Date");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof DateType) {
+      return (DateType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || parses(new DateType(), s)) {
+        DateType t = new DateType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Date");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Date");
+    }
   }
-  
+
   public static DateTimeType castToDateTime(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof DateTimeType)
-      return (DateTimeType) b;
-    else if (Utilities.existsInList(b.fhirType(), "dateTime", "date", "instant"))
-      return new DateTimeType(b.primitiveValue());
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a DateTime");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof DateTimeType) {
+      return (DateTimeType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || parses(new DateTimeType(), s)) {
+        DateTimeType t = new DateTimeType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a DateTime");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a DateTime");
+    }
   }
-  
+
   public static TimeType castToTime(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof TimeType)
-      return (TimeType) b;
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Time");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof TimeType) {
+      return (TimeType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || isTime(s)) {
+        TimeType t = new TimeType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Time");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Time");
+    }
   }
-  
+
   public static CodeType castToCode(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof CodeType)
-      return (CodeType) b;
-    else if (b instanceof PrimitiveType<?>) {      
-      return new CodeType(b.primitiveValue(), (PrimitiveType<?>) b);
-    } else if (b.isPrimitive())
-      return new CodeType(b.primitiveValue());
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Code");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof CodeType) {
+      return (CodeType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || hasFormat(CODE_REGEX, s)) {
+        CodeType t = new CodeType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Code");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Code");
+    }
   }
-  
+
   public static OidType castToOid(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof OidType)
-      return (OidType) b;
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Oid");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof OidType) {
+      return (OidType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || hasFormat(OID_REGEX, s)) {
+        OidType t = new OidType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Oid");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Oid");
+    }
   }
-  
+
   public static IdType castToId(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof IdType)
-      return (IdType) b;
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Id");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof IdType) {
+      return (IdType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || hasFormat(ID_REGEX, s)) {
+        IdType t = new IdType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a Id");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Id");
+    }
   }
-  
+
   public static UnsignedIntType castToUnsignedInt(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof UnsignedIntType)
-      return (UnsignedIntType) b;
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a UnsignedInt");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof UnsignedIntType) {
+      return (UnsignedIntType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || isInteger(s, 0)) {
+        UnsignedIntType t = new UnsignedIntType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a UnsignedInt");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a UnsignedInt");
+    }
   }
-  
+
   public static PositiveIntType castToPositiveInt(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof PositiveIntType)
-      return (PositiveIntType) b;
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a PositiveInt");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof PositiveIntType) {
+      return (PositiveIntType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      if (s == null || isInteger(s, 1)) {
+        PositiveIntType t = new PositiveIntType();
+        if (s != null) {
+          t.setValueAsString(s);
+        }
+        copyIdAndExtensions(v, t);
+        return t;
+      } else {
+        throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") with value '" + s + "' to a PositiveInt");
+      }
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a PositiveInt");
+    }
   }
-  
+
   public static MarkdownType castToMarkdown(Base b) throws FHIRException {
     if (b == null) {
       return null;
     }
-
-    if (b instanceof MarkdownType)
-      return (MarkdownType) b;
-    else if (b.hasPrimitiveValue())
-      return new MarkdownType(b.primitiveValue());
-    else
-      throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Markdown");
+    Base v = b.isMetadataBased() ? b.asType() : b;
+    if (v instanceof MarkdownType) {
+      return (MarkdownType) v;
+    }
+    if (v.isPrimitive()) {
+      String s = v.primitiveValue();
+      MarkdownType t = new MarkdownType();
+      if (s != null) {
+        t.setValueAsString(s);
+      }
+      copyIdAndExtensions(v, t);
+      return t;
+    } else {
+      throw new FHIRException("Unable to convert a " + b.fhirType() + "(" + b.getClass().getName() + ") to a Markdown");
+    }
   }
-    
+
+  // -- support for the primitive casts --------------------------------------------------------
+
+  // the spec's regexes for the primitive types with format rules the classes don't enforce. These are
+  // evaluated by PrimitiveRegexes' hand written equivalents, so no regex is compiled or run here
+  private static final String UUID_REGEX = "urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+  private static final String CODE_REGEX = "[^\\s]+( [^\\s]+)*";
+  private static final String OID_REGEX = "urn:oid:[0-2](\\.(0|[1-9][0-9]*))+";
+  private static final String ID_REGEX = "[A-Za-z0-9\\-\\.]{1,64}";
+
+  private static boolean hasFormat(String regex, String s) {
+    Boolean ok = PrimitiveRegexes.matchesRegex(regex, s);
+    if (ok == null) {
+      throw new Error("No hand written equivalent for the regex " + regex);
+    }
+    return ok;
+  }
+
+  /** base64, allowing whitespace (the same decoding the parsers use) */
+  private static boolean isBase64(String s) {
+    try {
+      Utilities.decodeBase64(s, false);
+      return true;
+    } catch (IllegalArgumentException e) {
+      return false;
+    }
+  }
+
+  /** hh:mm:ss with optional fractional seconds (up to 9 digits) - the spec's regex for time */
+  private static boolean isTime(String s) {
+    if (s.length() < 8 || s.charAt(2) != ':' || s.charAt(5) != ':') {
+      return false;
+    }
+    if (!isDigits(s, 0, 2) || !isDigits(s, 3, 5) || !isDigits(s, 6, 8)) {
+      return false;
+    }
+    int hh = Integer.parseInt(s.substring(0, 2));
+    int mm = Integer.parseInt(s.substring(3, 5));
+    int ss = Integer.parseInt(s.substring(6, 8));
+    if (hh > 23 || mm > 59 || ss > 60) {
+      return false;
+    }
+    if (s.length() == 8) {
+      return true;
+    }
+    return s.charAt(8) == '.' && s.length() > 9 && s.length() <= 18 && isDigits(s, 9, s.length());
+  }
+
+  private static boolean isDigits(String s, int start, int end) {
+    for (int i = start; i < end; i++) {
+      if (!Character.isDigit(s.charAt(i)) || s.charAt(i) > '9') {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * copy the id and extensions of the source primitive to the new one, so that a conversion
+   * between primitive types doesn't lose them
+   */
+  private static void copyIdAndExtensions(Base src, PrimitiveType<?> tgt) {
+    if (src instanceof Element) {
+      Element e = (Element) src;
+      tgt.setId(e.getId());
+      for (Extension ext : e.getExtensionList()) {
+        tgt.addExtension(ext.copy(Base.COPY_DATA));
+      }
+    }
+  }
+
+  /** a 32 bit integer, no less than min (Utilities.isInteger alone doesn't catch all overflows) */
+  private static boolean isInteger(String s, int min) {
+    if (!Utilities.isInteger(s)) {
+      return false;
+    }
+    try {
+      return Integer.parseInt(s) >= min;
+    } catch (NumberFormatException e) {
+      return false;
+    }
+  }
+
+  private static boolean isInteger64(String s) {
+    if (!Utilities.isLong(s)) {
+      return false;
+    }
+    try {
+      Long.parseLong(s);
+      return true;
+    } catch (NumberFormatException e) {
+      return false;
+    }
+  }
+
+  /** the date/time classes check the format when they are given a value */
+  private static boolean parses(PrimitiveType<?> t, String s) {
+    try {
+      t.setValueAsString(s);
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  /**
+   * whether the value contains any of the characters that the spec's \S excludes for uri, url and
+   * canonical: space, tab, line feed, vertical tab, form feed and carriage return. Deliberately not
+   * Character.isWhitespace(), which also includes the Unicode space separators and U+001C..U+001F:
+   * the spec allows those (and the validator does too)
+   */
+  private static boolean containsWhitespace(String s) {
+    for (int i = 0; i < s.length(); i++) {
+      switch (s.charAt(i)) {
+      case ' ':
+      case '\t':
+      case '\n':
+      case 0x0B: // vertical tab
+      case '\f':
+      case '\r':
+        return true;
+      default:
+        // not whitespace
+      }
+    }
+    return false;
+  }
+
   public static Annotation castToAnnotation(Base b) throws FHIRException {
     if (b == null) {
       return null;

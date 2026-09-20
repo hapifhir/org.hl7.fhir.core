@@ -136,7 +136,11 @@ public class JsonParser extends ParserBase {
       ElementDefinition bEd = sd.getSnapshot().addElement();
       ElementDefinition nEd = sd.getSnapshot().addElement();
       bEd.setPath("Wrapper");
-      nEd.setPath("Wrapper."+obj.getProperties().get(0).getName());
+      String pn = obj.getProperties().get(0).getName();
+      if (pn.startsWith("_")) {
+        pn = pn.substring(1); // a primitive with no value, only an id and/or extensions
+      }
+      nEd.setPath("Wrapper."+pn);
       nEd.addType().setCode(type);
       nEd.setMax(obj.getProperties().get(0).getValue().isJsonArray() ? "*" : "1"); 
     }
