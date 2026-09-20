@@ -782,7 +782,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           case "Measure":
             return ImplicitCodeSystemSupport.convertMeasure((Measure) resource);
           default:
-            log.warn("The resource type " + resource.fhirType() + " cannot be treated as a CodeSystem");
+            log.warn("The resource type " + resource.fhirType() + " for "+system+" cannot be treated as a CodeSystem");
             return null;
         }
       }
