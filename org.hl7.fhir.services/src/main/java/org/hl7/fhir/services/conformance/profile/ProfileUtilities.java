@@ -949,66 +949,7 @@ public class ProfileUtilities {
           }
         }
         // check slicing is ok while we're at it. and while we're doing this. update the minimum count if we need to
-        String tn = derived.getType();
-        if (tn.contains("/")) {
-          tn = tn.substring(tn.lastIndexOf("/")+1);
-        }
-        Map<String, ElementDefinitionCounter> slices = new HashMap<>();
-        i = 0;
-        for (ElementDefinition ed : derived.getSnapshot().getElementList()) {
-          if (ed.hasSlicing()) {
-            slices.put(ed.getPath(), new ElementDefinitionCounter(ed, i));            
-          } else {
-            Set<String> toRemove = new HashSet<>();
-            for (String s : slices.keySet()) {
-              if (Utilities.charCount(s, '.') >= Utilities.charCount(ed.getPath(), '.') && !s.equals(ed.getPath())) {
-                toRemove.add(s);
-              }
-            }
-            for (String s : toRemove) {
-              ElementDefinitionCounter slice = slices.get(s);
-              int count = slice.checkMin();
-              boolean repeats = !"1".equals(slice.getFocus().getBase().getMax()); // type slicing if repeats = 1
-              if (count > -1 && repeats) {
-                if (slice.getFocus().hasUserData(UserDataNames.SNAPSHOT_auto_added_slicing)) {
-                  slice.getFocus().setMin(count);
-                } else {
-                  String msg = "The slice definition for "+slice.getFocus().getId()+" has a minimum of "+slice.getFocus().getMin()+" but the slices add up to a minimum of "+count; 
-                  addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
-                      "StructureDefinition.snapshot.element["+slice.getIndex()+"]", msg, forPublication ? IssueSeverity.ERROR : IssueSeverity.INFORMATION).setIgnorableError(true));
-                }
-              }
-              count = slice.checkMax();
-              if (count > -1 && repeats) {
-                String msg = "The slice definition for "+slice.getFocus().getId()+" has a maximum of "+slice.getFocus().getMax()+" but the slices add up to a maximum of "+count+". Check that this is what is intended"; 
-                addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
-                    "StructureDefinition.snapshot.element["+slice.getIndex()+"]", msg, IssueSeverity.INFORMATION));
-              }
-              if (!slice.checkMinMax()) {
-                String msg = "The slice definition for "+slice.getFocus().getId()+" has a maximum of "+slice.getFocus().getMax()+" which is less than the minimum of "+slice.getFocus().getMin(); 
-                addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
-                    "StructureDefinition.snapshot.element["+slice.getIndex()+"]", msg, IssueSeverity.WARNING));
-              }
-              slices.remove(s);
-            }            
-          }
-          if (ed.getPath().contains(".") && !ed.getPath().startsWith(tn+".")) {
-            throw new Error("The element "+ed.getId()+" in the profile '"+derived.getVersionedUrl()+" doesn't have the right path (should start with "+tn+".");
-          }
-          if (ed.hasSliceName() && !slices.containsKey(ed.getPath())) {
-            String msg = "The element "+ed.getId()+" launches straight into slicing without the slicing being set up properly first";
-            addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
-                "StructureDefinition.snapshot.element["+i+"]", msg, IssueSeverity.ERROR).setIgnorableError(true));
-          }
-          if (ed.hasSliceName() && slices.containsKey(ed.getPath())) {
-            if (!slices.get(ed.getPath()).count(ed, ed.getSliceName())) {
-              String msg = "Duplicate slice name "+ed.getSliceName()+" on "+ed.getId()+" (["+i+"])";
-              addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
-                  "StructureDefinition.snapshot.element["+i+"]", msg, IssueSeverity.ERROR).setIgnorableError(true));
-            }
-          }
-          i++;
-        }
+        checkSliceCardinalitySums(derived);
         
         i = 0;
         // last, check for wrong profiles or target profiles, or unlabeled extensions
@@ -1153,6 +1094,79 @@ public class ProfileUtilities {
     }
   }
 
+
+  protected void checkSliceCardinalitySums(StructureDefinition derived) {
+    String tn = derived.getType();
+    if (tn.contains("/")) {
+      tn = tn.substring(tn.lastIndexOf("/")+1);
+    }
+    Map<String, ElementDefinitionCounter> slices = new HashMap<>();
+    int i = 0;
+    for (ElementDefinition ed : derived.getSnapshot().getElementList()) {
+      if (ed.hasSlicing()) {
+        slices.put(ed.getPath(), new ElementDefinitionCounter(ed, i));            
+      } else {
+        Set<String> toRemove = new HashSet<>();
+        for (String s : slices.keySet()) {
+          if (Utilities.charCount(s, '.') >= Utilities.charCount(ed.getPath(), '.') && !s.equals(ed.getPath())) {
+            toRemove.add(s);
+          }
+        }
+        for (String s : toRemove) {
+          ElementDefinitionCounter slice = slices.get(s);
+          checkSliceCounts(slice);
+          slices.remove(s);
+        }            
+      }
+      if (ed.getPath().contains(".") && !ed.getPath().startsWith(tn+".")) {
+        throw new Error("The element "+ed.getId()+" in the profile '"+derived.getVersionedUrl()+" doesn't have the right path (should start with "+tn+".");
+      }
+      if (ed.hasSliceName() && !slices.containsKey(ed.getPath())) {
+        String msg = "The element "+ed.getId()+" launches straight into slicing without the slicing being set up properly first";
+        addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
+            "StructureDefinition.snapshot.element["+i+"]", msg, IssueSeverity.ERROR).setIgnorableError(true));
+      }
+      if (ed.hasSliceName() && slices.containsKey(ed.getPath())) {
+        if (!slices.get(ed.getPath()).count(ed, ed.getSliceName())) {
+          String msg = "Duplicate slice name "+ed.getSliceName()+" on "+ed.getId()+" (["+i+"])";
+          addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
+              "StructureDefinition.snapshot.element["+i+"]", msg, IssueSeverity.ERROR).setIgnorableError(true));
+        }
+      }
+      i++;
+    }
+
+    // counters still open when the elements run out belong to slice groups that reach the
+    // end of the snapshot; without this they were never checked or adjusted at all
+    for (ElementDefinitionCounter slice : slices.values()) {
+      checkSliceCounts(slice);
+    }
+  }
+
+  private void checkSliceCounts(ElementDefinitionCounter slice) {
+    int count = slice.checkMin();
+    boolean repeats = !"1".equals(slice.getFocus().getBase().getMax()); // type slicing if repeats = 1
+    if (count > -1 && repeats) {
+      if (slice.getFocus().hasUserData(UserDataNames.SNAPSHOT_auto_added_slicing)) {
+        slice.getFocus().setMin(count);
+      } else {
+        String msg = "The slice definition for "+slice.getFocus().getId()+" has a minimum of "+slice.getFocus().getMin()+" but the slices add up to a minimum of "+count; 
+        addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
+            "StructureDefinition.snapshot.element["+slice.getIndex()+"]", msg, forPublication ? IssueSeverity.ERROR : IssueSeverity.INFORMATION).setIgnorableError(true));
+      }
+    }
+    count = slice.checkMax();
+    if (count > -1 && repeats) {
+      String msg = "The slice definition for "+slice.getFocus().getId()+" has a maximum of "+slice.getFocus().getMax()+" but the slices add up to a maximum of "+count+". Check that this is what is intended"; 
+      addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
+          "StructureDefinition.snapshot.element["+slice.getIndex()+"]", msg, IssueSeverity.INFORMATION));
+    }
+    if (!slice.checkMinMax()) {
+      String msg = "The slice definition for "+slice.getFocus().getId()+" has a maximum of "+slice.getFocus().getMax()+" which is less than the minimum of "+slice.getFocus().getMin(); 
+      addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
+          "StructureDefinition.snapshot.element["+slice.getIndex()+"]", msg, IssueSeverity.WARNING));
+    }
+  }
   private XVerExtensionManager makeXVer() {
     if (xver == null) {
       xver = XVerExtensionManagerFactory.createExtensionManager(context);
