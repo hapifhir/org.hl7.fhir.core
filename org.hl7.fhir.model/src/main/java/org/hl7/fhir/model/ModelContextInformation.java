@@ -2,9 +2,13 @@ package org.hl7.fhir.model;
 
 import lombok.Getter;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.api.ApiRegistration;
 import org.hl7.fhir.model.core.Constants;
 import org.hl7.fhir.model.core.CoreResourceNameList;
 import org.hl7.fhir.model.core.formats.ParserBase;
+import org.hl7.fhir.model.fml.FmlRegistration;
+import org.hl7.fhir.model.testing.TestingRegistration;
+import org.hl7.fhir.model.tools.ToolsRegistration;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -252,4 +256,5 @@ public class ModelContextInformation {
   public String toString() {
     return "ModelContext#" + id + " (" + corePackage + ", " + resourceList.size() + " resources)";
   }
+
 }

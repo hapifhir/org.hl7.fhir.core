@@ -2381,6 +2381,7 @@ public class StructureMapUtilities {
           else
             throw new FHIRException("Rule \"" + rulePath + "\": Transform engine cannot point at an element of type " + b.fhirType());
         case CC:
+          // cc(system, code [, display]), or cc(text) for a CodeableConcept with only a text value
           CodeableConcept cc = new CodeableConcept();
           String display = null;
           if (tgt.getParameter().size() == 1) {
@@ -2884,6 +2885,7 @@ public class StructureMapUtilities {
       //case POINTER,
       //case EVALUATE,
       case CC:
+        // cc(system, code [, display]), or cc(text) for a CodeableConcept with only a text value
         CodeableConcept cc = new CodeableConcept();
         if (tgt.getParameter().size() == 1) {
           cc.setText(((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue());
@@ -2944,6 +2946,29 @@ public class StructureMapUtilities {
     var coding = new Coding().setSystem(system).setCode(code);
     if (display != null)
       coding.setDisplay(display);
+    return coding;
+  }
+
+  /**
+   * The value of a fixed (non-variable) transform parameter as a string, or null if it isn't one
+   * we can read - allParametersFixed only rules out IdType, so the value can still be complex
+   */
+  @SuppressWarnings("rawtypes")
+  private String fixedString(DataType value) {
+    return value instanceof PrimitiveType ? ((PrimitiveType) value).asStringValue() : null;
+  }
+
+  /**
+   * cc() and c() take an optional third parameter, the display. An explicit one wins over
+   * whatever buildCoding worked out from the value set
+   */
+  private Coding applyFixedDisplay(Coding coding, StructureMapGroupRuleTargetComponent tgt) {
+    if (tgt.getParameter().size() > 2) {
+      String display = fixedString(tgt.getParameter().get(2).getValue());
+      if (display != null) {
+        coding.setDisplay(display);
+      }
+    }
     return coding;
   }
 

@@ -1,16 +1,16 @@
 package org.hl7.fhir.standalone.testing;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.services.context.IContextResourceLoader;
 import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.services.context.IContextResourceLoaderN;
 import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.standalone.context.PackageResourceLoader;
 import org.hl7.fhir.model.core.Bundle;
 import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.Resource;
-import org.hl7.fhir.services.terminology.ITerminologyClientFactory;
-import org.hl7.fhir.standalone.terminology.client.TerminologyClientR6;
+import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
+import org.hl7.fhir.services.client.TerminologyClientR6;
+import org.hl7.fhir.services.context.PackageResourceLoader;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public class TestPackageLoader implements IContextResourceLoader {
+public class TestPackageLoader implements IContextResourceLoaderN {
 
   private Set<String> types;
   private IWorkerContext context;
@@ -39,7 +39,7 @@ public class TestPackageLoader implements IContextResourceLoader {
 
   @Override
   public Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
-    return isJson ? new JsonParser(context).parse(stream) : new XmlParser(context).parse(stream);
+    return isJson ? new JsonParser(context.getModelContext()).parse(stream) : new XmlParser(context.getModelContext()).parse(stream);
   }
 
   @Override
@@ -53,7 +53,7 @@ public class TestPackageLoader implements IContextResourceLoader {
   }
 
   @Override
-  public IContextResourceLoader getNewLoader(NpmPackage npm) {
+  public IContextResourceLoaderN getNewLoader(NpmPackage npm) {
     return this;
   }
 
@@ -73,7 +73,7 @@ public class TestPackageLoader implements IContextResourceLoader {
   }
 
   @Override
-  public IContextResourceLoader setLoadProfiles(boolean value) {
+  public IContextResourceLoaderN setLoadProfiles(boolean value) {
     return this;
   }
 
@@ -83,13 +83,18 @@ public class TestPackageLoader implements IContextResourceLoader {
   }
 
   @Override
-  public ITerminologyClientFactory txFactory() {
+  public ITerminologyClientFactoryN txFactory() {
     return new TerminologyClientR6.TerminologyClientR6Factory();
   }
 
   @Override
   public Set<String> reviewActualTypes(Set<String> types) {
     return types;
+  }
+
+  @Override
+  public PackageResourceLoader editInfo(PackageResourceLoader pri) {
+    return pri;
   }
 
 }

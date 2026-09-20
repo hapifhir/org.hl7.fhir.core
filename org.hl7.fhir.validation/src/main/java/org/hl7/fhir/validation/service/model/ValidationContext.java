@@ -10,12 +10,11 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.google.gson.annotations.SerializedName;
-
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
-import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.model.utilities.JurisdictionUtilities;
+import org.hl7.fhir.model.utilities.SnomedUtilities;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.validation.BundleValidationRule;
+import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;

@@ -532,7 +532,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     vs.setUrl("http://dummy.org");
     vs.getExpansion().setContainsList(list);
 
-    org.hl7.fhir.model.core.formats.JsonParser json = new org.hl7.fhir.model.core.formats.JsonParser(TestingUtilities.getSharedWorkerContext());
+    org.hl7.fhir.model.core.formats.JsonParser json = new org.hl7.fhir.model.core.formats.JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext());
     json.setOutputStyle(OutputStyle.PRETTY);
     String extracted = cache.extracted(json, vs);
 
@@ -555,7 +555,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     vs.setUrl("http://dummy.org");
     vs.getExpansion().setContainsList(list);
 
-    org.hl7.fhir.model.core.formats.JsonParser json = new org.hl7.fhir.model.core.formats.JsonParser(TestingUtilities.getSharedWorkerContext());
+    org.hl7.fhir.model.core.formats.JsonParser json = new org.hl7.fhir.model.core.formats.JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext());
     json.setOutputStyle(OutputStyle.PRETTY);
     String extracted = cache.extracted(json, vs);
 

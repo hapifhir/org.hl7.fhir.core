@@ -19,19 +19,9 @@
         <checkstyle_config_location>${project.parent.basedir}</checkstyle_config_location>
         <!-- in development - do not publish yet -->
         <maven.deploy.skip>true</maven.deploy.skip>
-        <!-- The R6 tests here only pass against a locally patched set of R6 packages, so they
-             cannot run on any pipeline (PR, master or release) until the R6 package build is
-             sorted out. Tests are still COMPILED, just not executed. To run them locally:
-             mvn test -pl org.hl7.fhir.standalone -DskipTests=false -->
-        <skipTests>true</skipTests>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs-annotations</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.utilities</artifactId>
@@ -110,27 +100,15 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>ST4</artifactId>
-        </dependency>
         <!-- XML Parsers -->
         <dependency>
-            <groupId>org.ogce</groupId>
+            <groupId>org.codelibs</groupId>
             <artifactId>xpp3</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml-full</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -155,6 +133,12 @@
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.convertors</artifactId>
+            <version>6.10.5-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

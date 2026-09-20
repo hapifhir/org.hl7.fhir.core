@@ -8,25 +8,19 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.elementmodel.JsonParser;
-import org.hl7.fhir.r5.elementmodel.ObjectConverter;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.Library;
-import org.hl7.fhir.r5.model.Measure;
-import org.hl7.fhir.r5.model.Measure.MeasureGroupComponent;
-import org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent;
-import org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.DataRenderer;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
+import org.hl7.fhir.services.elementmodel.JsonParser;
+import org.hl7.fhir.services.elementmodel.ObjectConverter;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.model.core.Measure.MeasureGroupComponent;
+import org.hl7.fhir.model.core.Measure.MeasureGroupPopulationComponent;
+import org.hl7.fhir.model.core.Measure.MeasureGroupStratifierComponent;
+import org.hl7.fhir.services.renderers.DataRenderer;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
@@ -56,7 +50,7 @@ public class MeasureValidator extends BaseValidator {
     for (Element lib : libs) {
       String ref = lib.isPrimitive() ? lib.primitiveValue() : lib.getChildValue("reference");
       if (!Utilities.noString(ref)) {
-        Library l = context.fetchResource(Library.class, ref, ExtensionUtilities.getVersionResolutionRules(lib));
+        Library l = context.fetchResource(Library.class, ref, ElementModelUtilities.getVersionResolutionRules(lib));
         if (hint(errors, NO_RULE_DATE, IssueType.NOTFOUND, lib.line(), lib.col(), stack.getLiteralPath(), l != null, I18nConstants.MEASURE_M_LIB_UNKNOWN, ref)) {
           mctxt.seeLibrary(l);
         }
@@ -249,13 +243,14 @@ public class MeasureValidator extends BaseValidator {
     }
     if (hint(errors, NO_RULE_DATE, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), measure != null, I18nConstants.MEASURE_MR_M_NONE)) {
       long t = System.nanoTime();
-      Measure msrc = measure.startsWith("#") ? loadMeasure(element, measure.substring(1)) : context.fetchResource(Measure.class, measure, IWorkerContext.VersionResolutionRules.defaultRule());
+      Measure msrc = measure.startsWith("#") ? loadMeasure(element, measure.substring(1)) : context.fetchResource(Measure.class, measure, VersionResolutionRules.defaultRule());
       timeTracker.sd(t);
       if (warning(errors, NO_RULE_DATE, IssueType.REQUIRED, m.line(), m.col(), stack.getLiteralPath(), msrc != null, I18nConstants.MEASURE_MR_M_NOTFOUND, measure)) {
         boolean inComplete = !"complete".equals(element.getNamedChildValue("status", false));
         MeasureContext mc = new MeasureContext(msrc, element);
         NodeStack ns = stack.push(m, -1, m.getProperty().getDefinition(), m.getProperty().getDefinition());
-        hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, m.line(), m.col(), ns.getLiteralPath(), mc.scoring() == null || Utilities.existsInList(mc.scoring(), "proportion", "ratio", "continuous-variable", "cohort", "composite", "attestation"), I18nConstants.MEASURE_MR_M_SCORING_UNK);
+        // todo disabled in R6?
+        // hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, m.line(), m.col(), ns.getLiteralPath(), mc.scoring() == null || Utilities.existsInList(mc.scoring(), "proportion", "ratio", "continuous-variable", "cohort", "composite", "attestation"), I18nConstants.MEASURE_MR_M_SCORING_UNK);
         ok = validateMeasureReportGroups(hostContext, mc, errors, element, stack, inComplete) && ok;
       } else {
         if (measure.contains("|")) {
@@ -277,7 +272,7 @@ public class MeasureValidator extends BaseValidator {
     try {
       for (Element contained : resource.getChildren("contained")) {
         if (contained.getIdBase().equals(id)) {
-          FhirPublication v = FhirPublication.fromCode(context.getVersion());
+          FhirPublication v = FhirPublication.fromCode(context.getFHIRVersion());
           ByteArrayOutputStream bs = new ByteArrayOutputStream();
           new JsonParser(context).compose(contained, bs, OutputStyle.NORMAL, id);
           byte[] json = bs.toByteArray();
@@ -290,22 +285,22 @@ public class MeasureValidator extends BaseValidator {
               throw new FHIRException(context.formatMessage(I18nConstants.UNSUPPORTED_VERSION_R2B));
             case STU3:
               org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(json);
-              Resource r5 = VersionConvertorFactory_30_50.convertResource(r3);
-              if (r5 instanceof Measure)
-                return (Measure) r5;
+              Resource rN = VersionConvertorFactory_30_N.convertResource(r3);
+              if (rN instanceof Measure)
+                return (Measure) rN;
               else
                 return null;
             case R4:
               org.hl7.fhir.r4.model.Resource r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(json);
-              r5 = VersionConvertorFactory_40_50.convertResource(r4);
-              if (r5 instanceof Measure)
-                return (Measure) r5;
+              rN = VersionConvertorFactory_40_N.convertResource(r4);
+              if (rN instanceof Measure)
+                return (Measure) rN;
               else
                 return null;
             case R5:
-              r5 = new org.hl7.fhir.r5.formats.JsonParser().parse(json);
-              if (r5 instanceof Measure)
-                return (Measure) r5;
+              rN = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(json);
+              if (rN instanceof Measure)
+                return (Measure) rN;
               else
                 return null;
           }
@@ -341,7 +336,7 @@ public class MeasureValidator extends BaseValidator {
         
         if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), ns.getLiteralPath(), hasUseableCode(cc), I18nConstants.MEASURE_MR_GRP_NO_USABLE_CODE)) {
           MeasureGroupComponent mg = m.groups().get(0);
-          if (VersionUtilities.isR5Plus(context.getVersion())) {
+          if (VersionUtilities.isR5Plus(context.getFHIRVersion())) {
             ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), ns.getLiteralPath(), cc == null || mg.getCode() == null || codesMatch(cc, mg.getCode()), I18nConstants.MEASURE_MR_GRP_NO_WRONG_CODE, genCC(cc), genCC(mg.getCode())) && ok;
             ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), ns.getLiteralPath(), linkId == null || mg.getLinkId() == null || linkId.equals(mg.getLinkId()), I18nConstants.MEASURE_MR_GRP_NO_WRONG_LINKID, linkId, mg.getLinkId()) && ok;
             ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), ns.getLiteralPath(), mg.getLinkId() == null && (id == null || mg.getId() == null || id.equals(mg.getId())), I18nConstants.MEASURE_MR_GRP_NO_WRONG_LINKID, id, mg.getId()) && ok;
@@ -365,7 +360,7 @@ public class MeasureValidator extends BaseValidator {
         String id = mrg.getIdBase();
         
         if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), ns.getLiteralPath(), cc != null || linkId != null, 
-            VersionUtilities.isR5Plus(context.getVersion()) ? I18nConstants.MEASURE_MR_GRP_NO_CODE_R5 : I18nConstants.MEASURE_MR_GRP_NO_CODE)) {
+            VersionUtilities.isR5Plus(context.getFHIRVersion()) ? I18nConstants.MEASURE_MR_GRP_NO_CODE_R5 : I18nConstants.MEASURE_MR_GRP_NO_CODE)) {
           MeasureGroupComponent mg = null;
           if (linkId != null) {
             mg = getGroupForLinkId(linkId, m.measure());
@@ -402,7 +397,7 @@ public class MeasureValidator extends BaseValidator {
       for (MeasureGroupComponent mg : m.groups()) {
         if (!groups.contains(mg)) {
           ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mr.line(), mr.col(), stack.getLiteralPath(), groups.contains(mg) || dataCollection,
-              VersionUtilities.isR5Plus(context.getVersion()) ? I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE_R5 : I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE, genCC(mg.getCode()), mg.hasLinkId() ? mg.getLinkId() : "") && ok;
+              VersionUtilities.isR5Plus(context.getFHIRVersion()) ? I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE_R5 : I18nConstants.MEASURE_MR_GRP_MISSING_BY_CODE, genCC(mg.getCode()), mg.hasLinkId() ? mg.getLinkId() : "") && ok;
         }
       }
     }
@@ -415,11 +410,11 @@ public class MeasureValidator extends BaseValidator {
     }
     StringBuilder b = new StringBuilder();
     if (cc.hasCoding()) {
-      if (cc.getCoding().size() > 1) {
+      if (cc.getCodingList().size() > 1) {
         b.append("[");
       }
       boolean first = true;
-      for (Coding c : cc.getCoding()) {
+      for (Coding c : cc.getCodingList()) {
         if (first) first = false; else b.append(", ");
         b.append(c.getSystem());
         if (c.hasVersion()) {
@@ -429,7 +424,7 @@ public class MeasureValidator extends BaseValidator {
         b.append("#");
         b.append(c.getCode());
       }
-      if (cc.getCoding().size() > 1) {
+      if (cc.getCodingList().size() > 1) {
         b.append("]");
       } 
     }
@@ -445,7 +440,7 @@ public class MeasureValidator extends BaseValidator {
   }
 
   private boolean codesMatch(CodeableConcept cc, CodeableConcept code) {
-    for (Coding c : cc.getCoding()) {
+    for (Coding c : cc.getCodingList()) {
       if (code.hasCoding(c)) {
         return true;
       }
@@ -454,7 +449,7 @@ public class MeasureValidator extends BaseValidator {
   }
 
   private MeasureGroupComponent getGroupForLinkId(String linkId, Measure m) {
-    for (MeasureGroupComponent t : m.getGroup()) {
+    for (MeasureGroupComponent t : m.getGroupList()) {
       if (linkId.equals(t.getLinkId())) {
         return t;
       }
@@ -463,7 +458,7 @@ public class MeasureValidator extends BaseValidator {
   }
 
   private MeasureGroupComponent getGroupForId(String id, Measure m) {
-    for (MeasureGroupComponent t : m.getGroup()) {
+    for (MeasureGroupComponent t : m.getGroupList()) {
       if (id.equals(t.getId())) {
         return t;
       }
@@ -623,7 +618,7 @@ public class MeasureValidator extends BaseValidator {
       String id = mrgp.getIdBase();
       
       if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrgp.line(), mrgp.col(), ns.getLiteralPath(), cc != null || linkId != null || id != null,
-            VersionUtilities.isR5Plus(context.getVersion()) ? I18nConstants.MEASURE_MR_GRP_POP_NO_CODE_R5 :  I18nConstants.MEASURE_MR_GRP_POP_NO_CODE)) {
+            VersionUtilities.isR5Plus(context.getFHIRVersion()) ? I18nConstants.MEASURE_MR_GRP_POP_NO_CODE_R5 :  I18nConstants.MEASURE_MR_GRP_POP_NO_CODE)) {
         MeasureGroupPopulationComponent mgp = null;
         if (linkId != null) {
           mgp = getGroupPopForLinkId(linkId, mg);
@@ -658,7 +653,7 @@ public class MeasureValidator extends BaseValidator {
       }
       i++;
     }
-    for (MeasureGroupPopulationComponent mgp : mg.getPopulation()) {
+    for (MeasureGroupPopulationComponent mgp : mg.getPopulationList()) {
       if (!pops.contains(mgp) && !mgp.getCode().hasCoding("http://terminology.hl7.org/CodeSystem/measure-population", "measure-observation")) {
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), stack.getLiteralPath(), false, I18nConstants.MEASURE_MR_GRP_POP_MISSING_BY_CODE, mgp.hasLinkId() ? mgp.getLinkId() : mgp.getId(), DataRenderer.display(context, mgp.getCode())) && ok;
       }
@@ -780,7 +775,7 @@ public class MeasureValidator extends BaseValidator {
       String linkId = mrgs.getNamedChildValue("linkId");
       String id = mrgs.getIdBase();
       if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrgs.line(), mrgs.col(), ns.getLiteralPath(), cc != null || linkId != null || id != null,
-          VersionUtilities.isR5Plus(context.getVersion()) ? I18nConstants.MEASURE_MR_GRP_STRAT_NO_CODE_R5 :  I18nConstants.MEASURE_MR_GRP_STRAT_NO_CODE)) {
+          VersionUtilities.isR5Plus(context.getFHIRVersion()) ? I18nConstants.MEASURE_MR_GRP_STRAT_NO_CODE_R5 :  I18nConstants.MEASURE_MR_GRP_STRAT_NO_CODE)) {
         MeasureGroupStratifierComponent mgs = null;
         if (linkId != null) {
           mgs = getGroupStratifierForLinkId(linkId, mg);
@@ -817,10 +812,10 @@ public class MeasureValidator extends BaseValidator {
       }
       i++;
     }
-    for (MeasureGroupStratifierComponent mgs : mg.getStratifier()) {
+    for (MeasureGroupStratifierComponent mgs : mg.getStratifierList()) {
       if (!strats.contains(mgs)) {
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, mrg.line(), mrg.col(), stack.getLiteralPath(), false, 
-            VersionUtilities.isR5Plus(context.getVersion()) ? I18nConstants.MEASURE_MR_GRP_STRAT_MISSING_BY_CODE_R5 :  I18nConstants.MEASURE_MR_GRP_STRAT_MISSING_BY_CODE, 
+            VersionUtilities.isR5Plus(context.getFHIRVersion()) ? I18nConstants.MEASURE_MR_GRP_STRAT_MISSING_BY_CODE_R5 :  I18nConstants.MEASURE_MR_GRP_STRAT_MISSING_BY_CODE,
                 genCC(mgs.getCode()), mg.hasLinkId() ? mgs.getLinkId() : "", mg.hasId() ? mgs.getId() : "") && ok;
       }
     }
@@ -833,7 +828,7 @@ public class MeasureValidator extends BaseValidator {
   }
 
   private MeasureGroupStratifierComponent getGroupStratifierForLinkId(String linkId, MeasureGroupComponent mg) {
-    for (MeasureGroupStratifierComponent t : mg.getStratifier()) {
+    for (MeasureGroupStratifierComponent t : mg.getStratifierList()) {
       if (linkId.equals(t.getLinkId())) {
         return t;
       }
@@ -842,7 +837,7 @@ public class MeasureValidator extends BaseValidator {
   }
 
   private MeasureGroupStratifierComponent getGroupStratifierForId(String id, MeasureGroupComponent mg) {
-    for (MeasureGroupStratifierComponent t : mg.getStratifier()) {
+    for (MeasureGroupStratifierComponent t : mg.getStratifierList()) {
       if (id.equals(t.getId())) {
         return t;
       }
@@ -851,9 +846,9 @@ public class MeasureValidator extends BaseValidator {
   }
 
   private MeasureGroupStratifierComponent getGroupStratifierForCode(CodeableConcept cc, MeasureGroupComponent mg) {
-    for (MeasureGroupStratifierComponent t : mg.getStratifier()) {
+    for (MeasureGroupStratifierComponent t : mg.getStratifierList()) {
       if (t.hasCode()) {
-        for (Coding c : t.getCode().getCoding()) {
+        for (Coding c : t.getCode().getCodingList()) {
           if (cc.hasCoding(c.getSystem(), c.getCode())) {
             return t;
           }
@@ -871,7 +866,7 @@ public class MeasureValidator extends BaseValidator {
   }
 
   private boolean hasUseableCode(CodeableConcept cc) {
-    for (Coding c : cc.getCoding()) {
+    for (Coding c : cc.getCodingList()) {
       if (c.hasSystem() && c.hasCode()) {
         return true;
       }
@@ -880,7 +875,7 @@ public class MeasureValidator extends BaseValidator {
   }
 
   private MeasureGroupPopulationComponent getGroupPopForLinkId(String linkId, MeasureGroupComponent mg) {
-    for (MeasureGroupPopulationComponent t : mg.getPopulation()) {
+    for (MeasureGroupPopulationComponent t : mg.getPopulationList()) {
       if (linkId.equals(t.getLinkId())) {
         return t;
       }
@@ -888,7 +883,7 @@ public class MeasureValidator extends BaseValidator {
     return null;
   }
   private MeasureGroupPopulationComponent getGroupPopForId(String id, MeasureGroupComponent mg) {
-    for (MeasureGroupPopulationComponent t : mg.getPopulation()) {
+    for (MeasureGroupPopulationComponent t : mg.getPopulationList()) {
       if (id.equals(t.getId())) {
         return t;
       }
@@ -896,9 +891,9 @@ public class MeasureValidator extends BaseValidator {
     return null;
   }
   private MeasureGroupPopulationComponent getGroupPopForCode(CodeableConcept cc, MeasureGroupComponent mg) {
-    for (MeasureGroupPopulationComponent t : mg.getPopulation()) {
+    for (MeasureGroupPopulationComponent t : mg.getPopulationList()) {
       if (t.hasCode()) {
-        for (Coding c : t.getCode().getCoding()) {
+        for (Coding c : t.getCode().getCodingList()) {
           if (cc.hasCoding(c.getSystem(), c.getCode())) {
             return t;
           }
@@ -908,9 +903,9 @@ public class MeasureValidator extends BaseValidator {
     return null;
   }
   private MeasureGroupComponent getGroupForCode(CodeableConcept cc, Measure m) {
-    for (MeasureGroupComponent t : m.getGroup()) {
+    for (MeasureGroupComponent t : m.getGroupList()) {
       if (t.hasCode()) {
-        for (Coding c : t.getCode().getCoding()) {
+        for (Coding c : t.getCode().getCodingList()) {
           if (cc.hasCoding(c.getSystem(), c.getCode())) {
             return t;
           }

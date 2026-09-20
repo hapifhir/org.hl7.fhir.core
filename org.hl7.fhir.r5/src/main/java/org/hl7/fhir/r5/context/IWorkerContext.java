@@ -1,36 +1,24 @@
 package org.hl7.fhir.r5.context;
 
-import com.sun.jdi.ClassType;
 import lombok.Getter;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
-import org.hl7.fhir.utilities.FhirPublication;
 
 import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.IPackageCacheManager;
-import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
-import javax.annotation.Nonnull;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -122,7 +110,7 @@ public interface IWorkerContext {
   /**
    * @return the logging service configured for the context
    */
-  public ILoggingService getLogger();
+  public org.hl7.fhir.utilities.logging.ILoggingService getLogger();
 
   /**
    * @return Get the UCUM service that provides access to units of measure reasoning services (if available)
@@ -984,11 +972,7 @@ public interface IWorkerContext {
 
   //endregion
 
-  /**
-  * Note: This currently returns an implementation, not an interface, and will likely be changed at a later time.
-  * @return null if you do not want to use TerminologyClientManager (recommended)
-  */
-  TerminologyClientManager getTerminologyClientManager();
+  ITerminologyClientManager getTerminologyClientManager();
 
   @Deprecated
   public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();

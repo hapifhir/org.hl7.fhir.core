@@ -62,8 +62,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
+import org.hl7.fhir.utilities.logging.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
@@ -87,7 +86,7 @@ import org.hl7.fhir.r5.terminologies.ImplicitValueSets;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClient5R5;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.subsumption.SubsumptionException;
@@ -304,8 +303,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected boolean canRunWithoutTerminology;
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
-  protected org.hl7.fhir.r5.context.ILoggingService logger = new Slf4JLoggingService(log);
-  @Getter protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClientR5.TerminologyClientR5Factory(), logger);
+  protected org.hl7.fhir.utilities.logging.ILoggingService logger = new org.hl7.fhir.utilities.logging.Slf4JLoggingService(log);
+  @Getter protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClient5R5.TerminologyClientR5Factory(), logger);
   protected AtomicReference<Parameters> expansionParameters = new AtomicReference<>(null);
   private Map<String, PackageInformation> packages = new HashMap<>();
 
@@ -405,6 +404,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       cachingAllowed = other.cachingAllowed;
       suppressedMappings = other.suppressedMappings;
       cutils.setSuppressedMappings(other.suppressedMappings);
+      // the package information is needed to resolve canonicals with the dependencies of the package of the 
+      // referencing resource (see populatePVList), without it the copy falls back to the latest version
+      packages.putAll(other.packages);
     }
   }
 
@@ -931,8 +933,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       TerminologyServiceErrorClass errorClass = TerminologyServiceErrorClass.UNKNOWN;
       if (e instanceof EFhirClientException) {
         EFhirClientException fhirClientException = (EFhirClientException) e;
-        if (fhirClientException.hasServerError()) {
-          errorClass = OperationOutcomeUtilities.getTerminologyErrorClass(((EFhirClientException) e).getServerError());
+        if (fhirClientException.hasServerErrors()) {
+          errorClass = OperationOutcomeUtilities.getTerminologyErrorClass(((EFhirClientException) e).getServerErrors().get(0));
         }
       }
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), errorClass, true);
@@ -2031,6 +2033,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private void addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ValueSet vs) {
+    // send the value set's own required supplements too: through its code systems, a supplement to a particular
+    // version is only found when the copy of the code system we resolve is that version
+    for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+      if (ext.hasValueCanonicalType()) {
+        String url = ext.getValueCanonicalType().asStringValue();
+        CodeSystem supp = fetchResource(CodeSystem.class, url, ExtensionUtilities.getVersionResolutionRules(ext.getValue()));
+        if (supp != null) {
+          if (opCtxt != null) {
+            opCtxt.seeSupplement(supp);
+          }
+          if (!hasCanonicalResource(pin, "tx-resource", supp.getVUrl())) {
+            checkAddToParams(tc, pin, supp);
+          }
+        }
+      }
+    }
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       addDependentResources(opCtxt, tc, pin, inc, vs);
     }
@@ -2045,18 +2063,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (vs != null && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
         checkAddToParams(tc, pin, vs);
         addDependentResources(opCtxt, tc, pin, vs);
-        for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
-          if (ext.hasValueCanonicalType()) {
-            String url = ext.getValueCanonicalType().asStringValue();
-            CodeSystem supp = fetchResource(CodeSystem.class, url, ExtensionUtilities.getVersionResolutionRules(ext.getValue()));
-            if (supp != null) {
-              if (opCtxt != null) {
-                opCtxt.seeSupplement(supp);
-              }
-              checkAddToParams(tc, pin, supp);
-            }
-          }
-        }
       }
     }
     String sys = inc.getSystem();
@@ -2216,7 +2222,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         } else if (p.getName().equals("warning-draft")) {
           String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DRAFT : I18nConstants.MSG_DRAFT_SRC, msg, vs, impliedType(msg)));
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DRAFT : I18nConstants.MSG_DRAFT_SRC, msg, vs, impliedType(msg), vs));
           issues.add(iss);
         } else if (p.getName().equals("cause")) {
           try {
@@ -2337,7 +2343,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.canRunWithoutTerminology = canRunWithoutTerminology;
   }
 
-  public void setLogger(@Nonnull org.hl7.fhir.r5.context.ILoggingService logger) {
+  public void setLogger(@Nonnull org.hl7.fhir.utilities.logging.ILoggingService logger) {
     this.logger = logger;
     getTxClientManager().setLogger(logger);
   }
@@ -3192,7 +3198,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public org.hl7.fhir.r5.context.ILoggingService getLogger() {
+  public org.hl7.fhir.utilities.logging.ILoggingService getLogger() {
     return logger;
   }
 
@@ -3232,7 +3238,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } catch (Exception e) {
         // not sure what to do in this case?
         log.error("Unable to generate snapshot in @" + breadcrumb + " for " + structureDefinition.getVersionedUrl() + ": " + e.getMessage());
-        logger.logDebugMessage(ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
+        logger.logDebugMessage(org.hl7.fhir.utilities.logging.ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
       }
     }
   }

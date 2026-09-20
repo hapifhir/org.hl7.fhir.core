@@ -41,14 +41,13 @@
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:2f99c066-bf65-4e72-8bd5-0866816980ab",
-    "timestamp" : "2026-08-31T05:39:56.294Z",
+    "identifier" : "urn:uuid:b0ca6ed1-b677-475a-97d0-496385be2565",
+    "timestamp" : "2026-09-19T06:47:45.998Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
@@ -131,14 +130,13 @@ e: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:07602ee5-5abd-400f-8a55-71b15df6853a",
-    "timestamp" : "2026-08-31T05:39:56.507Z",
+    "identifier" : "urn:uuid:9f6328b8-620f-46d6-8ae7-54943a78e3a0",
+    "timestamp" : "2026-09-19T06:47:46.058Z",
     "total" : 8,
     "offset" : 0,
     "parameter" : [{
@@ -248,14 +246,13 @@ e: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:188a1a39-3319-47bb-8d75-6af6713fd036",
-    "timestamp" : "2026-08-31T05:39:57.557Z",
+    "identifier" : "urn:uuid:3b880e7b-7323-4195-9aac-7b803ffa3488",
+    "timestamp" : "2026-09-19T06:47:46.347Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
@@ -336,7 +333,7 @@ v: {
   "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.82'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#LP43571-6 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.82: Check \"http://loinc.org#LP43571-6\"\n8ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n8ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n8ms http://loinc.org/vs|2.82: Code \"LP43571-6\" not found in http://loinc.org|2.82: undefined",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#LP43571-6 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.82: Check \"http://loinc.org#LP43571-6\"\n14ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n14ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n15ms http://loinc.org/vs|2.82: Code \"LP43571-6\" not found in http://loinc.org|2.82: undefined",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -377,14 +374,13 @@ v: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:391d233a-cf16-42f1-a605-889e99ebd06c",
-    "timestamp" : "2026-08-31T05:39:59.198Z",
+    "identifier" : "urn:uuid:0b700105-ae52-473b-8ae0-5ad909395ec0",
+    "timestamp" : "2026-09-19T06:47:47.007Z",
     "total" : 1,
     "offset" : 0,
     "parameter" : [{
@@ -429,7 +425,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.82",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#38269-7 (\"undefined\")]\"\n5ms http://loinc.org/vs|2.82: Check \"http://loinc.org#38269-7\"\n9ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n9ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n9ms http://loinc.org/vs|2.82: Code \"38269-7\" found in http://loinc.org|2.82",
+  "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#38269-7 (\"undefined\")]\"\n6ms http://loinc.org/vs|2.82: Check \"http://loinc.org#38269-7\"\n16ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n16ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n16ms http://loinc.org/vs|2.82: Code \"38269-7\" found in http://loinc.org|2.82",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -466,14 +462,13 @@ v: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:bcc0e5b1-2313-4771-9994-37fd0420a776",
-    "timestamp" : "2026-08-31T05:40:02.574Z",
+    "identifier" : "urn:uuid:60c0040d-7646-47bb-9274-a3169ae8f365",
+    "timestamp" : "2026-09-19T06:47:48.128Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
@@ -560,14 +555,13 @@ e: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:056d9038-066d-4daf-b947-1ba9b3379b35",
-    "timestamp" : "2026-09-01T01:03:28.078Z",
+    "identifier" : "urn:uuid:8a34fe9a-6256-4292-867c-26e7c1c2cc5e",
+    "timestamp" : "2026-09-19T06:47:48.183Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
@@ -651,14 +645,13 @@ e: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:b3c7d462-095b-40d2-be3a-eea11798009f",
-    "timestamp" : "2026-09-01T21:37:47.538Z",
+    "identifier" : "urn:uuid:e8678b65-13f3-4c10-b003-e59dcddf803b",
+    "timestamp" : "2026-09-19T06:47:48.247Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
@@ -740,14 +733,13 @@ e: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:734b8828-8a81-481c-990e-9fcf5532a7af",
-    "timestamp" : "2026-09-01T22:16:33.472Z",
+    "identifier" : "urn:uuid:c3f9e004-2586-422c-bd7e-e15e99297ddb",
+    "timestamp" : "2026-09-19T06:47:48.300Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
@@ -835,14 +827,13 @@ e: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:b3ffff82-8a53-4856-bc67-7ba30a949f8c",
-    "timestamp" : "2026-09-02T00:16:47.786Z",
+    "identifier" : "urn:uuid:fffc536a-6c5f-4e75-95c5-7bc77441e89d",
+    "timestamp" : "2026-09-19T06:47:48.355Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
@@ -926,8 +917,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:96bfd5ce-c703-468b-b732-cbb598e48e67",
-    "timestamp" : "2026-09-02T00:21:09.530Z",
+    "identifier" : "urn:uuid:4306caf3-35a8-4230-a3dc-8dcc8b104aee",
+    "timestamp" : "2026-09-19T06:47:48.416Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{

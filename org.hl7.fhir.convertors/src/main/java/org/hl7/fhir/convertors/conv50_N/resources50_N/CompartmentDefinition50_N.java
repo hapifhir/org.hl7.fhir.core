@@ -147,6 +147,9 @@ public class CompartmentDefinition50_N {
         case EPISODEOFCARE:
           tgt.setValue(org.hl7.fhir.model.core.CompartmentDefinition.CompartmentType.EPISODEOFCARE);
           break;
+        case GROUP:
+          tgt.setValue(org.hl7.fhir.model.core.CompartmentDefinition.CompartmentType.GROUP);
+          break;
         default:
           tgt.setValue(org.hl7.fhir.model.core.CompartmentDefinition.CompartmentType.NULL);
           break;
@@ -181,6 +184,9 @@ public class CompartmentDefinition50_N {
           break;
         case EPISODEOFCARE:
           tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.EPISODEOFCARE);
+          break;
+        case GROUP:
+          tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.GROUP);
           break;
         default:
           tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.NULL);

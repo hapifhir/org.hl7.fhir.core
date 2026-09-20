@@ -12,7 +12,7 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.context.ILoggingService;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
@@ -72,7 +72,7 @@ public class TerminologyClientContext {
   @Getter
   private static boolean canUseCacheId;
 
-  private ITerminologyClient client;
+  private ITerminologyClient5 client;
 
   private CapabilityStatement capabilitiesStatement;
   private TerminologyCapabilities txcaps;
@@ -110,7 +110,7 @@ public class TerminologyClientContext {
   private int holders = 1;
   private final ILoggingService logger;
 
-  protected TerminologyClientContext(ITerminologyClient client, TerminologyCache txCache, boolean master, ILoggingService logger) throws IOException {
+  protected TerminologyClientContext(ITerminologyClient5 client, TerminologyCache txCache, boolean master, ILoggingService logger) throws IOException {
     super();
     this.client = client;
     this.txCache = txCache;
@@ -148,7 +148,7 @@ public class TerminologyClientContext {
     return master;
   }
 
-  public ITerminologyClient getClient() {
+  public ITerminologyClient5 getClient() {
     return client;
   }
 
@@ -284,7 +284,7 @@ public class TerminologyClientContext {
       // R3/R4 clients convert it down before sending.
       Parameters body = new Parameters();
       body.addParameter("sealed", false);
-      Parameters res = client.cacheControl(ITerminologyClient.CacheControlMode.START_CACHE, body);
+      Parameters res = client.cacheControl(ITerminologyClient5.CacheControlMode.START_CACHE, body);
       String id = (res != null && res.hasParameter("cache-id")) ? res.getParameterValue("cache-id").primitiveValue() : null;
       if (id != null && !id.isEmpty()) {
         applyCacheIdHeader(id);
@@ -354,7 +354,7 @@ public class TerminologyClientContext {
     isShutdown = true;
     if (cacheId != null && cacheOwned) {
       try {
-        client.cacheControl(ITerminologyClient.CacheControlMode.END_CACHE, null);
+        client.cacheControl(ITerminologyClient5.CacheControlMode.END_CACHE, null);
       } catch (Exception e) {
         // best-effort release; ignore
       }

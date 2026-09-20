@@ -38,7 +38,7 @@ public class PEModelTest1343 {
     var peBuilder = new PEBuilder(ctxt, PEBuilder.PEElementPropertiesPolicy.NONE, false);
     Patient res = (Patient) peBuilder.createResource(profileURL, true);
 
-    String json = new JsonParser(TestingUtilities.getSharedWorkerContext("4.0.1")).setOutputStyle(OutputStyle.PRETTY).composeString(res);
+    String json = new JsonParser(TestingUtilities.getSharedWorkerContext("4.0.1").getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(res);
     System.out.println(json);
   }
 

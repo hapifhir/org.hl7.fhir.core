@@ -2,9 +2,9 @@ package org.hl7.fhir.validation.instance.utils;
 
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
+import org.hl7.fhir.services.client.ITerminologyClientN;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.model.core.CanonicalResource;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.validation.service.utils.Common;
@@ -29,7 +29,7 @@ public class CanonicalResourceClient {
 
     final String root = getRoot(p, url);
     if (root != null) {
-      ITerminologyClient terminologyClient = getTerminologyClient(root);
+      ITerminologyClientN terminologyClient = getTerminologyClient(root);
       return terminologyClient.read(p[p.length - 2], p[p.length - 1]);
     } else {
       throw new FHIRException("The URL '" + url + "' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
@@ -46,9 +46,9 @@ public class CanonicalResourceClient {
   }
 
   @Nonnull
-  public ITerminologyClient getTerminologyClient(String root) throws URISyntaxException {
+  public ITerminologyClientN getTerminologyClient(String root) throws URISyntaxException {
     final String secureRoot = ManagedWebAccess.makeSecureRef(root);
-    return new TerminologyClientFactory(context.getVersion()).makeClient("source", secureRoot, Common.getValidatorUserAgent(), null);
+    return new TerminologyClientFactory(context.getFHIRVersion()).makeClientN(context.getModelContext(), "source", secureRoot, Common.getValidatorUserAgent(), null);
   }
 
 

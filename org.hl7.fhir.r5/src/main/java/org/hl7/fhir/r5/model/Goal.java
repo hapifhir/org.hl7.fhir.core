@@ -656,6 +656,10 @@ public class Goal extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((GoalTargetComponent) dst);
+      }
+
       public void copyValues(GoalTargetComponent dst) {
         super.copyValues(dst);
         dst.measure = measure == null ? null : measure.copy();
@@ -1840,6 +1844,10 @@ public class Goal extends DomainResource {
         Goal dst = new Goal();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Goal) dst);
       }
 
       public void copyValues(Goal dst) {

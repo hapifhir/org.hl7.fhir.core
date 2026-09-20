@@ -71,7 +71,7 @@ public class R5ExtensionsLoader {
   }
 
   private void loadDetails(NpmPackage pck) throws IOException {
-    json = new JsonParser(context);
+    json = new JsonParser(context.getModelContext());
 
     String[] types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem" };
     for (PackageResourceInformation pri : pck.listIndexedResources(types)) {

@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.services.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.model.*;
@@ -524,7 +524,16 @@ public class Element extends Base implements NamedItem {
     else if (value.isPrimitive()) {
       if (childForValue.property.getName().endsWith("[x]"))
         childForValue.name = childForValue.name.replace("[x]", "")+Utilities.capitalize(value.fhirType());
-      childForValue.setValue(value.primitiveValue());
+      if (!childForValue.isXhtml()) {
+        childForValue.setValue(value.primitiveValue());
+      } else {
+        if (value instanceof final XhtmlType xhtmlValue) {
+          // Avoid reparsing the XHTML content if we can
+          childForValue.setXhtml(xhtmlValue.getXhtml());
+        } else {
+          childForValue.setXhtml(null, value.primitiveValue());
+        }
+      }
     } else {
       Element ve = (Element) value;
       childForValue.type = ve.getType();

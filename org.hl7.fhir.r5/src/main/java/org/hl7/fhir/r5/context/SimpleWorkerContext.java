@@ -30,7 +30,6 @@ package org.hl7.fhir.r5.context;
  */
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,8 +49,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
+import org.hl7.fhir.utilities.logging.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -69,10 +67,9 @@ import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
-import org.hl7.fhir.r5.utils.R5Hacker;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient5;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory5;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClient5R5;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -123,54 +120,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       throw new Error("not done yet");
     }
 
-  }
-
-  public static class PackageResourceLoader extends CanonicalResourceProxy {
-
-    private final String filename;
-    private final IContextResourceLoader loader;
-    private final PackageInformation packageInformation;
-
-    public PackageResourceLoader(PackageResourceInformation pri, IContextResourceLoader loader, PackageInformation pi) {
-      super(pri.getResourceType(), pri.getId(), loader == null ? pri.getUrl() :loader.patchUrl(pri.getUrl(), pri.getResourceType()), pri.getVersion(), pri.getSupplements(), pri.getDerivation(), pri.getContent());
-      this.filename = pri.getFilename();
-      this.loader = loader;
-      this.packageInformation = pi;
-    }
-
-    @Override
-    public CanonicalResource loadResource() {
-      try {
-        FileInputStream f = ManagedFileAccess.inStream(filename);
-        try  {
-          if (loader != null) {
-            return setPi(R5Hacker.fixR5BrokenResource((CanonicalResource) loader.loadResource(f, true)));
-          } else {
-            return setPi(R5Hacker.fixR5BrokenResource((CanonicalResource) new JsonParser().parse(f)));
-          }
-        } finally {
-          f.close();
-        }
-      } catch (Exception e) {
-        throw new FHIRException("Error loading "+filename+": "+e.getMessage(), e);
-      }
-    }
-
-    private CanonicalResource setPi(CanonicalResource cr) {
-      cr.setSourcePackage(packageInformation);
-      return cr;
-    }
-
-    /**
-     * This is not intended for use outside the package loaders
-     * 
-     * @return
-     * @throws IOException 
-     */
-    public InputStream getStream() throws IOException {
-      return ManagedFileAccess.inStream(filename);
-    }
-    
   }
 
   public interface ILoadFilter {
@@ -259,7 +208,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     private final boolean allowLoadingDuplicates;
 
     @With
-    private final org.hl7.fhir.r5.context.ILoggingService loggingService;
+    private final org.hl7.fhir.utilities.logging.ILoggingService loggingService;
     private boolean defaultExpParams;
 
     public SimpleWorkerContextBuilder() {
@@ -270,7 +219,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       locale = null;
       userAgent = null;
       allowLoadingDuplicates = false;
-      loggingService = new Slf4JLoggingService(log);
+      loggingService = new org.hl7.fhir.utilities.logging.Slf4JLoggingService(log);
     }
 
     private SimpleWorkerContext getSimpleWorkerContextInstance() throws IOException {
@@ -303,7 +252,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     public SimpleWorkerContext fromPackage(NpmPackage pi) throws IOException, FHIRException {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       context.setAllowLoadingDuplicates(allowLoadingDuplicates);
-      context.terminologyClientManager.setFactory(TerminologyClientR5.factory());
+      context.terminologyClientManager.setFactory(TerminologyClient5R5.factory());
       context.loadFromPackage(pi, null, true);
       return build(context);
     }
@@ -404,7 +353,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return null;
   }
 
-  public void connectToTSServer(ITerminologyClientFactory factory, ITerminologyClient client, boolean useEcosystem) {
+  public void connectToTSServer(ITerminologyClientFactory5 factory, ITerminologyClient5 client, boolean useEcosystem) {
     terminologyClientManager.setFactory(factory);
     if (txLog == null) {
       txLog = client.getLogger();
@@ -428,7 +377,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }      
   }
   
-  public void connectToTSServer(ITerminologyClientFactory factory, String address, String software, String log, boolean useEcosystem) {
+  public void connectToTSServer(ITerminologyClientFactory5 factory, String address, String software, String log, boolean useEcosystem) {
     try {
       terminologyClientManager.setFactory(factory);
       if (log != null) {
@@ -440,7 +389,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
           throw new IllegalArgumentException("Unknown extension for text file logging: \"" + log + "\" expected: .html, .htm, .txt or .log");
         }
       }
-      ITerminologyClient client = factory.makeClient("tx-server", ManagedWebAccess.makeSecureRef(address), software, txLog);
+      ITerminologyClient5 client = factory.makeClientR5("tx-server", ManagedWebAccess.makeSecureRef(address), software, txLog);
       // txFactory.makeClient("Tx-Server", txServer, "fhir/publisher", null)
 //      terminologyClientManager.setLogger(txLog);
 //      terminologyClientManager.setUserAgent(userAgent);
@@ -838,7 +787,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       } catch (Exception e) {
         // not sure what to do in this case?
         log.error("Unable to generate snapshot @3 for "+uri+": "+e.getMessage());
-        logger.logDebugMessage(org.hl7.fhir.r5.context.ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
+        logger.logDebugMessage(org.hl7.fhir.utilities.logging.ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
       }
     }
     return r;

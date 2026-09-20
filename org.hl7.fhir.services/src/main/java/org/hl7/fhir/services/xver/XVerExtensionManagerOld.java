@@ -129,7 +129,7 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
       throw new FHIRException("Internal error - attempt to define extension for "+url+" when it is invalid");
     }
     if (path.has("modifier") && path.asBoolean("modifier")) {
-      ElementDefinition baseDef = new ElementDefinition(context,"Extension");
+      ElementDefinition baseDef = new ElementDefinition(context.getModelContext(),"Extension");
       sd.getDifferential().getElementList().add(0, baseDef);
       baseDef.setIsModifier(true);
     }

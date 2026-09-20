@@ -93,13 +93,13 @@ public class TestingRoundTripTests {
     byte[] sourceJson = FileUtilities.streamToBytes(npm.load("example", filename));
 
     // what the example says, as parsed from the package
-    Resource expected = new TestingJsonParser(TestingUtilities.getSharedWorkerContext(), true, true).parse(sourceJson);
-    String expectedJson = new TestingJsonParser(TestingUtilities.getSharedWorkerContext(), true, true).composeString(expected);
+    Resource expected = new TestingJsonParser(TestingUtilities.getSharedWorkerContext().getModelContext(), true, true).parse(sourceJson);
+    String expectedJson = new TestingJsonParser(TestingUtilities.getSharedWorkerContext().getModelContext(), true, true).composeString(expected);
 
     // the same content after a trip out to xml and back
-    String intermediateXml = new TestingXmlParser(TestingUtilities.getSharedWorkerContext(), true).composeString(expected);
-    Resource actual = new TestingXmlParser(TestingUtilities.getSharedWorkerContext(), true).parse(intermediateXml.getBytes(StandardCharsets.UTF_8));
-    String actualJson = new TestingJsonParser(TestingUtilities.getSharedWorkerContext(), true, true).composeString(actual);
+    String intermediateXml = new TestingXmlParser(TestingUtilities.getSharedWorkerContext().getModelContext(), true).composeString(expected);
+    Resource actual = new TestingXmlParser(TestingUtilities.getSharedWorkerContext().getModelContext(), true).parse(intermediateXml.getBytes(StandardCharsets.UTF_8));
+    String actualJson = new TestingJsonParser(TestingUtilities.getSharedWorkerContext().getModelContext(), true, true).composeString(actual);
 
     assertTrue(expected.equalsDeep(actual), name+": resources differ after round trip json -> xml -> json"
         +"\r\nexpected:\r\n"+expectedJson+"\r\nactual:\r\n"+actualJson+"\r\nintermediate xml:\r\n"+intermediateXml);

@@ -1,6 +1,9 @@
 {
   "urn:oid:2.16.840.1.113883.3.464.1003.111.12.1006" : null,
   "http://hl7.org/fhir/Library/library-quick-model-definition" : null,
-  "http://loinc.org" : null,
+  "http://loinc.org" : {
+    "server" : "http://tx-dev.fhir.org/r5",
+    "filename" : "cs-6563e437-f691-485a-ba30-418fc2dcd990.json"
+  },
   "http://snomed.info/sct" : null
 }

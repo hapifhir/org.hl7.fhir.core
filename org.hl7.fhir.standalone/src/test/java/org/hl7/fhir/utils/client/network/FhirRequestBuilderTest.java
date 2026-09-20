@@ -1,7 +1,7 @@
 package org.hl7.fhir.utils.client.network;
 
 import org.hl7.fhir.model.core.OperationOutcome;
-import org.hl7.fhir.standalone.terminology.client.FhirRequestBuilder;
+import org.hl7.fhir.services.client.FhirRequestBuilder;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.http.HTTPHeaderUtil;
 import org.hl7.fhir.utilities.http.HTTPRequest;

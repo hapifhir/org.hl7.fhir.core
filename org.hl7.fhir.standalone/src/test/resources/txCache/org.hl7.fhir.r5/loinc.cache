@@ -41,14 +41,13 @@
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:6d1c312f-3957-4667-ade7-3ee840aef53a",
-    "timestamp" : "2026-08-28T11:15:36.697Z",
+    "identifier" : "urn:uuid:7a2d704a-a1af-4c21-a7c8-280cb9c51954",
+    "timestamp" : "2026-09-19T06:49:40.787Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
@@ -131,14 +130,13 @@ e: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:ac932467-cdf0-4e34-955a-02a597efcf0e",
-    "timestamp" : "2026-08-28T11:15:52.714Z",
+    "identifier" : "urn:uuid:c99a5a58-6486-4800-9244-781bf9d7963f",
+    "timestamp" : "2026-09-19T06:49:40.862Z",
     "total" : 8,
     "offset" : 0,
     "parameter" : [{
@@ -248,14 +246,13 @@ e: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:db83cbd4-1d52-4873-9711-5a0a85596e05",
-    "timestamp" : "2026-08-28T11:15:53.114Z",
+    "identifier" : "urn:uuid:9dfccad4-151a-47c0-a2d1-be6069a6edc5",
+    "timestamp" : "2026-09-19T06:49:41.168Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
@@ -377,14 +374,13 @@ v: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:4ca67267-f9b0-4c56-b6dc-90971e9f2daa",
-    "timestamp" : "2026-08-28T11:15:55.737Z",
+    "identifier" : "urn:uuid:a12a08e1-9808-474f-818f-72668f9d16ad",
+    "timestamp" : "2026-09-19T06:49:41.744Z",
     "total" : 1,
     "offset" : 0,
     "parameter" : [{
@@ -417,6 +413,25 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "38269-7"
+}, "valueSet" :null, "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters"
+}}####
+v: {
+  "display" : "Study report Skeletal system DXA",
+  "code" : "38269-7",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#38269-7 (\"undefined\")]\"\n6ms http://loinc.org/vs|2.82: Check \"http://loinc.org#38269-7\"\n9ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n9ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n9ms http://loinc.org/vs|2.82: Code \"38269-7\" found in http://loinc.org|2.82",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
 {"hierarchical" : false, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
@@ -447,14 +462,13 @@ e: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:0f59728b-2555-4e49-aee2-75e237c8852e",
-    "timestamp" : "2026-08-28T11:16:01.146Z",
+    "identifier" : "urn:uuid:806e9d0e-67a8-4a97-ab49-542abcfe905f",
+    "timestamp" : "2026-09-19T06:49:42.701Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
@@ -507,25 +521,6 @@ e: {
   "error" : ""
 }
 -------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "38269-7"
-}, "valueSet" :null, "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters"
-}}####
-v: {
-  "display" : "Study report Skeletal system DXA",
-  "code" : "38269-7",
-  "system" : "http://loinc.org",
-  "version" : "2.82",
-  "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#38269-7 (\"undefined\")]\"\n6ms http://loinc.org/vs|2.82: Check \"http://loinc.org#38269-7\"\n10ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n10ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n10ms http://loinc.org/vs|2.82: Code \"38269-7\" found in http://loinc.org|2.82",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
 {"hierarchical" : false, "valueSet" :{
   "resourceType" : "ValueSet",
   "compose" : {
@@ -560,14 +555,13 @@ v: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:bfcf3b01-d841-4c15-807d-54f5940ec1a6",
-    "timestamp" : "2026-08-28T11:29:30.489Z",
+    "identifier" : "urn:uuid:2a25b4ea-1c6f-4477-883a-acc29f749f61",
+    "timestamp" : "2026-09-19T06:49:42.755Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
@@ -651,14 +645,13 @@ e: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:1cae1f77-81d5-454b-a34a-3b45bc98af17",
-    "timestamp" : "2026-08-28T11:31:09.573Z",
+    "identifier" : "urn:uuid:441032cd-9a8c-4107-824a-1c5293c99672",
+    "timestamp" : "2026-09-19T06:49:42.869Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
@@ -740,14 +733,13 @@ e: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:af065da3-7164-408d-98d1-4ce1ab84c776",
-    "timestamp" : "2026-08-28T11:32:02.368Z",
+    "identifier" : "urn:uuid:034f56a3-ed3e-4759-a900-18f5dc33493a",
+    "timestamp" : "2026-09-19T06:49:42.921Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
@@ -835,14 +827,13 @@ e: {
   }
 }}####
 e: {
-  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:601327a0-9e25-43fd-b45e-cf3e111517e6",
-    "timestamp" : "2026-08-28T11:32:31.527Z",
+    "identifier" : "urn:uuid:acc4a904-2cfe-432d-882e-0dc21f621523",
+    "timestamp" : "2026-09-19T06:49:42.975Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
@@ -926,8 +917,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:138cb8e7-8b2e-4a45-8b02-2e49bc5fe7ea",
-    "timestamp" : "2026-08-28T11:33:02.785Z",
+    "identifier" : "urn:uuid:f791aa90-5f8b-477f-94dc-fe5061bf4adf",
+    "timestamp" : "2026-09-19T06:49:43.028Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{

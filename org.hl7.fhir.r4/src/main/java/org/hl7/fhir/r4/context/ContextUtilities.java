@@ -38,7 +38,13 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 
+
+/**
+ * The implemetation of IWorkerContext is deprecated - it is no longer maintained by the core team
+ */
+
 @Slf4j
+@Deprecated
 public class ContextUtilities implements ProfileKnowledgeProvider {
 
   private IWorkerContext context;

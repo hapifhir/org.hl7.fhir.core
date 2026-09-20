@@ -283,3 +283,19 @@
      }
      return java.util.Collections.unmodifiableList(retVal);
    }
+
+
+  public Base getExtensionValue(String... theUrls) {
+
+    for (Extension next : getExtensionsForRead()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        return next.getValue();
+      }
+    }
+    return null;
+  }
+
+
+  public void setStandardsStatus(StandardsStatus status, String thisVersion) {
+    ExtensionUtilities.setStandardsStatus(this, status, null, thisVersion);
+  }

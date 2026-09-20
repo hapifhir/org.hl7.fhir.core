@@ -1,7 +1,7 @@
 package org.hl7.fhir.validation.cli.logging;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.validation.instance.ResourcePercentageLogger;
 
 

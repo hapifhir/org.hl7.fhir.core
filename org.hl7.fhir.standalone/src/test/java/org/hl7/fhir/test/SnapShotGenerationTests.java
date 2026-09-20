@@ -201,27 +201,27 @@ public class SnapShotGenerationTests {
     public void load() throws FHIRFormatError, FileNotFoundException, IOException {
       if (TestingUtilities.findTestResource("r6", "snapshot-generation", id + "-input.json")) {
         sourceJson = true;
-        source = (StructureDefinition) new JsonParser(testContext).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", id + "-input.json"));
+        source = (StructureDefinition) new JsonParser(testContext.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", id + "-input.json"));
       } else {
         sourceJson = false;
-        source = (StructureDefinition) new XmlParser(testContext).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", id + "-input.xml"));
+        source = (StructureDefinition) new XmlParser(testContext.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", id + "-input.xml"));
       }
       if (!fail) {
         if (TestingUtilities.findTestResource("r6", "snapshot-generation", id + "-expected.json")) {
           json = true;
-          expected = (StructureDefinition) new JsonParser(testContext).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", id + "-expected.json"));
+          expected = (StructureDefinition) new JsonParser(testContext.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", id + "-expected.json"));
         } else {
-          expected = (StructureDefinition) new XmlParser(testContext).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", id + "-expected.xml"));
+          expected = (StructureDefinition) new XmlParser(testContext.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", id + "-expected.xml"));
         }
       }
       if (!Utilities.noString(include))
-        included.add((StructureDefinition) new XmlParser(testContext).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", include + ".xml")));
+        included.add((StructureDefinition) new XmlParser(testContext.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", include + ".xml")));
       if (!Utilities.noString(register)) {
         for (String s : register.split("\\,")) {
           if (TestingUtilities.findTestResource("r6", "snapshot-generation", s + ".xml")) {
-            included.add((StructureDefinition) new XmlParser(testContext).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", s + ".xml")));
+            included.add((StructureDefinition) new XmlParser(testContext.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", s + ".xml")));
           } else {
-            included.add((StructureDefinition) new JsonParser(testContext).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", s + ".json")));
+            included.add((StructureDefinition) new JsonParser(testContext.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", s + ".json")));
           }
         }
       }
@@ -547,7 +547,7 @@ public class SnapShotGenerationTests {
     if (!errors.isEmpty())
       throw new FHIRException(errors.get(0));
 //    IOUtils.copy(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", test.getId() + "-expected.xml"), ManagedFileAccess.outStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")));
-    new XmlParser(testContext).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")), test.getOutput());
+    new XmlParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")), test.getOutput());
     Assertions.assertTrue(test.expected.equalsDeep(test.output), "Output does not match expected");
   }
 
@@ -610,9 +610,9 @@ public class SnapShotGenerationTests {
     StructureDefinition sdc = test.getSource().copy(Base.COPY_DATA);
     new SnapshotGenerationPreProcessor(pu).process(sdc.getDifferential(), sdc);
     if (test.sourceJson) {
-      new JsonParser(testContext).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.json")), sdc);
+      new JsonParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.json")), sdc);
     } else {
-      new XmlParser(testContext).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.xml")), sdc);
+      new XmlParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", "input", test.id + "-input.xml")), sdc);
     }
 
 
@@ -648,9 +648,9 @@ public class SnapShotGenerationTests {
       }
 //      IOUtils.copy(TestingUtilities.loadTestResourceStream("r6", "snapshot-generation", test.getId() + "-expected.xml"), ManagedFileAccess.outStream(dst));
       if (test.json) {
-        new JsonParser(testContext).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst.getAbsolutePath()), output);
+        new JsonParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst.getAbsolutePath()), output);
       } else {
-        new XmlParser(testContext).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst.getAbsolutePath()), output);
+        new XmlParser(testContext.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst.getAbsolutePath()), output);
       }
       StructureDefinition t1 = test.expected.copy(Base.COPY_DATA);
       t1.setText(null);
@@ -664,9 +664,9 @@ public class SnapShotGenerationTests {
       }
 
       if (!structureDefinitionEquality) {
-        System.out.println("snapshot test "+test.id+" failed: " + new JsonParser(testContext).composeString(t1));
-        System.out.println("t1: " + new JsonParser(testContext).composeString(t1));
-        System.out.println("t2: " + new JsonParser(testContext).composeString(t2));
+        System.out.println("snapshot test "+test.id+" failed: " + new JsonParser(testContext.getModelContext()).composeString(t1));
+        System.out.println("t1: " + new JsonParser(testContext.getModelContext()).composeString(t1));
+        System.out.println("t2: " + new JsonParser(testContext.getModelContext()).composeString(t2));
       }
       Assertions.assertTrue(structureDefinitionEquality, "Output for "+test.id+" does not match expected");
     }

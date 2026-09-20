@@ -3504,7 +3504,7 @@ public class FHIRPathEngine {
     case Split:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes,
           new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
-      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+      return new TypeDetails(CollectionStatus.ORDERED, TypeDetails.FP_String);
     case Join:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes,
           new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
@@ -4352,8 +4352,7 @@ public class FHIRPathEngine {
       if ("hex".equals(param)) {
         result.add(new StringType(new String(hexStringToByteArray(cnt))));
       } else if ("base64".equals(param)) {
-        Base64.Decoder enc = Base64.getDecoder();
-        result.add(new StringType(new String(enc.decode(cnt))));
+        result.add(new StringType(new String(Utilities.decodeBase64(cnt, true))));
       } else if ("urlbase64".equals(param)) {
         Base64.Decoder enc = Base64.getUrlDecoder();
         result.add(new StringType(new String(enc.decode(cnt))));
@@ -4422,6 +4421,10 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcJoin(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    // FHIRPath: "If the input is empty, the result is empty".
+    if (focus.isEmpty()) {
+      return new ArrayList<Base>();
+    }
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
     String param2 = param;

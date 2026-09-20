@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -104,6 +106,38 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
       checkNumberChildren(target, "");
       FHIRPathEngine fp = new FHIRPathEngine(context);
       assertEquals("true", fp.evaluateToString(target, "rest.resource.interaction.where(code='create').exists()"));
+  }
+
+  @Test
+  void testCopyXhtmlAndPrimitive() throws IOException, FHIRException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    String fileMap = """
+      map "http://github.com/FHIR/testCopyXhtml" = "testCopyXhtml"
+      uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as source
+      uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as target
+      group Patient(source src : Patient, target tgt : Patient) {
+        src.gender as g -> tgt.gender = g;
+        src.text as st -> tgt.text as tt then {
+          st.status as s -> tt.status = s;
+          st.div as d -> tt.div = d;
+        };
+      }""";
+    String patient = "{\"resourceType\":\"Patient\",\"gender\":\"female\",\"text\":{\"status\":\"generated\","
+      + "\"div\":\"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><p>Hello <b>world</b></p></div>\"}}";
+
+    StructureMap structureMap = scu.parse(fileMap, "testCopyXhtml");
+    Element source = Manager.parseSingle(context, new ByteArrayInputStream(patient.getBytes(StandardCharsets.UTF_8)), FhirFormat.JSON);
+    Element target = Manager.build(context, scu.getTargetType(structureMap));
+    scu.transform(null, source, structureMap, target);
+
+    FHIRPathEngine fp = new FHIRPathEngine(context);
+    assertEquals("female", fp.evaluateToString(target, "gender"));
+    assertEquals("generated", fp.evaluateToString(target, "text.status"));
+    Element div = target.getNamedChild("text").getNamedChild("div");
+    Assertions.assertTrue(div.isXhtml());
+    Assertions.assertNotNull(div.getXhtml());
+    assertEquals("Hello world", div.getXhtml().allText().trim());
+    assertEquals(source.getNamedChild("text").getNamedChild("div").getXhtmlSource(false), div.getXhtmlSource(false));
   }
 
   private void assertSerializeDeserialize(StructureMap structureMap) {

@@ -5,36 +5,37 @@ import java.util.Collections;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.fhirpath.TypeDetails;
-import org.hl7.fhir.r5.fhirpath.FHIRLexer.FHIRLexerException;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.ConceptMap;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureMap;
-import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupComponent;
-import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupInputComponent;
-import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode;
-import org.hl7.fhir.r5.model.StructureMap.StructureMapInputMode;
-import org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode;
-import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.terminologies.ConceptMapUtilities;
-import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
-import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.services.context.ContextUtilities;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
+import org.hl7.fhir.services.fhirpath.FHIRLexer.FHIRLexerException;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.fhirpath.TypeDetails;
+import org.hl7.fhir.model.core.Coding;
+import org.hl7.fhir.model.core.ConceptMap;
+import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.model.core.Enumerations.BindingStrength;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.fml.StructureMap;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapGroupComponent;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapGroupInputComponent;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeMode;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapInputMode;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapModelMode;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapStructureComponent;
+import org.hl7.fhir.model.core.ValueSet;
+import org.hl7.fhir.model.core.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.model.utilities.ConceptMapUtilities;
+import org.hl7.fhir.model.utilities.ValueSetUtilities;
+import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
+import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.utilities.UserDataNames;
-import org.hl7.fhir.r5.utils.structuremap.ResolvedGroup;
-import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.services.fml.ResolvedGroup;
+import org.hl7.fhir.model.utilities.StructureMapUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -163,7 +164,7 @@ public class StructureMapValidator extends BaseValidator {
     public String getWorkingType() {
       if (type != null) {
         if (ed != null) {
-          for (TypeRefComponent td : ed.getType()) {
+          for (TypeRefComponent td : ed.getTypeList()) {
             StructureDefinition sd = context.fetchTypeDefinition(td.getWorkingCode());
             if (sd != null && sd.getType().equals(type)) {
               return td.getWorkingCode();
@@ -175,10 +176,10 @@ public class StructureMapValidator extends BaseValidator {
       if (ed != null) {
         if (!ed.getPath().contains(".")) {
           return ed.getPath();
-        } else if (isAbstractType(ed.getType())) {
+        } else if (isAbstractType(ed.getTypeList())) {
           return sd.getUrl()+"#"+ed.getPath();
-        } else if (ed.getType().size() == 1) {
-          return ed.getType().get(0).getWorkingCode();
+        } else if (ed.getTypeList().size() == 1) {
+          return ed.getTypeList().get(0).getWorkingCode();
         }
       }
       return null;
@@ -393,7 +394,7 @@ public class StructureMapValidator extends BaseValidator {
               ok = false;
             }
             if (v != null && type != null) {
-              int max = td.getCollectionStatus() == org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus.SINGLETON ? 1 : Integer.MAX_VALUE;
+              int max = td.getCollectionStatus() == org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus.SINGLETON ? 1 : Integer.MAX_VALUE;
               v.setType(max, this.context.fetchTypeDefinition(type), null, type);
             }
           }
@@ -447,7 +448,7 @@ public class StructureMapValidator extends BaseValidator {
   private boolean validateImport(List<ValidationMessage> errors, Element src, Element import_, NodeStack stack) {
     String url = import_.primitiveValue();
     boolean ok = false;
-    StructureMap map = context.fetchResource(StructureMap.class, url, ExtensionUtilities.getVersionResolutionRules(import_));
+    StructureMap map = context.fetchResource(StructureMap.class, url, ElementModelUtilities.getVersionResolutionRules(import_));
     if (map != null) {
       imports.add(map);
       ok = true;
@@ -513,7 +514,7 @@ public class StructureMapValidator extends BaseValidator {
       } 
     }  
     for (StructureMap map : imports) {
-      for (StructureMapGroupComponent grp : map.getGroup()) {
+      for (StructureMapGroupComponent grp : map.getGroupList()) {
         if (grpName.equals(grp.getName())) {
           return new ResolvedGroup(map, grp);
         }
@@ -575,7 +576,7 @@ public class StructureMapValidator extends BaseValidator {
           if (structure != null) {
             smode = structure.getChildValue("mode");
             String url = structure.getChildValue("url");
-            sd = context.fetchResource(StructureDefinition.class, url, ExtensionUtilities.getVersionResolutionRules(structure.getNamedChild("url")));
+            sd = context.fetchResource(StructureDefinition.class, url, ElementModelUtilities.getVersionResolutionRules(structure.getNamedChild("url")));
             if (sd == null) {
               try {
                 sd = (StructureDefinition) fetcher.fetchCanonicalResource((IResourceValidator) parent, valContext.getAppContext(), url);
@@ -746,7 +747,7 @@ public class StructureMapValidator extends BaseValidator {
   }
 
   private boolean hasType(ElementDefinition ed, String type) {
-    for (TypeRefComponent td : ed.getType()) {
+    for (TypeRefComponent td : ed.getTypeList()) {
       StructureDefinition sd = context.fetchTypeDefinition(td.getWorkingCode());
       if (sd != null && type.equals(sd.getType())) {
         return true;
@@ -1145,7 +1146,7 @@ public class StructureMapValidator extends BaseValidator {
           ValueSetExpansionOutcome vse = context.expandVS(srcVS, true, false);
           if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vse.isOk(), I18nConstants.SM_TARGET_TRANSLATE_BINDING_VSE_SOURCE, vse.getError())) {
             CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-            for (ValueSetExpansionContainsComponent c : vse.getValueset().getExpansion().getContains()) {
+            for (ValueSetExpansionContainsComponent c : vse.getValueset().getExpansion().getContainsList()) {
               if (ConceptMapUtilities.hasMappingForSource(cm, c.getSystem(), c.getVersion(), c.getCode())) {
                 b.append(c.getCode());
               }
@@ -1165,7 +1166,7 @@ public class StructureMapValidator extends BaseValidator {
           if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vse.isOk(), I18nConstants.SM_TARGET_TRANSLATE_BINDING_VSE_TARGET, vse.getError())) {
             List<String> systems = new ArrayList<>();
             if (srcVS != null) {
-              for (ConceptSetComponent  inc : srcVS.getCompose().getInclude()) {
+              for (ConceptSetComponent  inc : srcVS.getCompose().getIncludeList()) {
                 systems.add(inc.getSystem());
               }
             }
@@ -1197,7 +1198,7 @@ public class StructureMapValidator extends BaseValidator {
     
     if (ruleInfo.getDefVariable() != null && Utilities.existsInList(transform, "create", "copy") && params.isEmpty()) {
       VariableDefn v = variables.getVariable(ruleInfo.getDefVariable(), SOURCE);
-      if (v != null && v.getEd() != null  && (v.getEd().getType().size() == 1 || v.getType() != null)) {
+      if (v != null && v.getEd() != null  && (v.getEd().getTypeList().size() == 1 || v.getType() != null)) {
         List<Element> dependents = rule.getChildrenByName("dependent");
         String type = v.getType() != null ? getTypeFromDefn(v.getEd(), v.getType()) : v.getEd().getTypeFirstRep().getWorkingCode();
         if (dependents.size() == 1 && StructureMapUtilities.DEF_GROUP_NAME.equals(dependents.get(0).getChildValue("name"))) {
@@ -1205,11 +1206,11 @@ public class StructureMapValidator extends BaseValidator {
           // todo: look in this source
           // now look through the inputs
           for (StructureMap map : imports) {
-            for (StructureMapGroupComponent grp : map.getGroup()) {
-              if (grp.getTypeMode() != StructureMapGroupTypeMode.NULL && grp.getInput().size() == 2) {
-                String grpType = getTypeForGroupInput(map, grp, grp.getInput().get(0));
+            for (StructureMapGroupComponent grp : map.getGroupList()) {
+              if (grp.getTypeMode() != StructureMapGroupTypeMode.NULL && grp.getInputList().size() == 2) {
+                String grpType = getTypeForGroupInput(map, grp, grp.getInputList().get(0));
                 if (sameTypes(type, grpType)) {
-                  String tgtType = getTypeForGroupInput(map, grp, grp.getInput().get(1));
+                  String tgtType = getTypeForGroupInput(map, grp, grp.getInputList().get(1));
                   if (tgtType != null) {
                     return tgtType;
                   }
@@ -1219,11 +1220,11 @@ public class StructureMapValidator extends BaseValidator {
           }
         } else if (dependents.size() == 0) {
           for (StructureMap map : imports) {
-            for (StructureMapGroupComponent grp : map.getGroup()) {
-              if (grp.getTypeMode() == StructureMapGroupTypeMode.TYPEANDTYPES && grp.getInput().size() == 2) {
-                String grpType = getTypeForGroupInput(map, grp, grp.getInput().get(0));
+            for (StructureMapGroupComponent grp : map.getGroupList()) {
+              if (grp.getTypeMode() == StructureMapGroupTypeMode.TYPEANDTYPES && grp.getInputList().size() == 2) {
+                String grpType = getTypeForGroupInput(map, grp, grp.getInputList().get(0));
                 if (sameTypes(type, grpType)) {
-                  String tgtType = getTypeForGroupInput(map, grp, grp.getInput().get(1));
+                  String tgtType = getTypeForGroupInput(map, grp, grp.getInputList().get(1));
                   if (tgtType != null) {
                     return tgtType;
                   }
@@ -1239,7 +1240,7 @@ public class StructureMapValidator extends BaseValidator {
   }
 
   private String getTypeFromDefn(ElementDefinition ed, String type) {
-    for (TypeRefComponent td : ed.getType()) {
+    for (TypeRefComponent td : ed.getTypeList()) {
       StructureDefinition sd = context.fetchTypeDefinition(td.getWorkingCode());
       if (sd != null && type.equals(sd.getType())) {
         return td.getWorkingCode();
@@ -1270,7 +1271,7 @@ public class StructureMapValidator extends BaseValidator {
       return null;
     }
     StructureMapModelMode mode = input.getMode() == StructureMapInputMode.SOURCE ? StructureMapModelMode.SOURCE : StructureMapModelMode.TARGET;
-    for (StructureMapStructureComponent st : map.getStructure()) {
+    for (StructureMapStructureComponent st : map.getStructureList()) {
       if (type.equals(st.getAlias()) && mode == st.getMode()) {
         return st.getUrl();
       }
@@ -1331,7 +1332,7 @@ public class StructureMapValidator extends BaseValidator {
   }
 
   private void getElementDefinitionChildrenFromTypes(List<ElementDefinitionSource> result, ElementDefinition ed, String type, String element) {
-    for (TypeRefComponent td : ed.getType()) {
+    for (TypeRefComponent td : ed.getTypeList()) {
       String tn = td.getWorkingCode();
       StructureDefinition sdt = context.fetchTypeDefinition(tn);
       if (sdt != null) {
@@ -1347,7 +1348,7 @@ public class StructureMapValidator extends BaseValidator {
   private void addElementsToResult(List<ElementDefinitionSource> result, String type, String element, String tn, StructureDefinition sdt) {
     if (type == null || typeMatches(tn, type) || (sdt != null && sdt.getType().equals(type))) {
       if (sdt != null) {
-        for (ElementDefinition t : sdt.getSnapshot().getElement()) {
+        for (ElementDefinition t : sdt.getSnapshot().getElementList()) {
           if (Utilities.charCount(t.getPath(), '.') == 1 && t.getNameBase().equals(element)) {
             result.add(new ElementDefinitionSource(sdt, t));
           }
@@ -1408,13 +1409,13 @@ public class StructureMapValidator extends BaseValidator {
     } else {
       ResolvedGroup grp = resolveGroup(name, src);
       if (rule(errors, "2023-03-01", IssueType.NOTFOUND, dependent.line(), dependent.col(), stack.getLiteralPath(), grp != null, I18nConstants.SM_RULEGROUP_NOT_FOUND, name)) {
-        List<Element> params = dependent.getChildren(VersionUtilities.isR5Plus(context.getVersion()) ? "parameter" : "variable");
-        if (rule(errors, "2023-03-01", IssueType.INVALID, dependent.line(), dependent.col(), stack.getLiteralPath(), params.size() == grp.getTargetGroup().getInput().size(), I18nConstants.SM_RULEGROUP_PARAM_COUNT_MISMATCH, name, params.size(), grp.getTargetGroup().getInput().size())) {
+        List<Element> params = dependent.getChildren(VersionUtilities.isR5Plus(context.getFHIRVersion()) ? "parameter" : "variable");
+        if (rule(errors, "2023-03-01", IssueType.INVALID, dependent.line(), dependent.col(), stack.getLiteralPath(), params.size() == grp.getTargetGroup().getInputList().size(), I18nConstants.SM_RULEGROUP_PARAM_COUNT_MISMATCH, name, params.size(), grp.getTargetGroup().getInputList().size())) {
           VariableSet lvars = new VariableSet();
           int cc = 0;
           for (Element param : params) {
             NodeStack pstack = stack.push(param, cc, null, null);
-            StructureMapGroupInputComponent input = grp.getTargetGroup().getInput().get(cc);
+            StructureMapGroupInputComponent input = grp.getTargetGroup().getInputList().get(cc);
             String iType = resolveType(grp, input, src);
             String pname = input.getName();
             VariableDefn v = getParameter(errors, param, pstack, variables, input.getMode());
@@ -1467,7 +1468,7 @@ public class StructureMapValidator extends BaseValidator {
         }
       }      
     } else {
-      for (StructureMapStructureComponent struc : grp.getTargetMap().getStructure()) {
+      for (StructureMapStructureComponent struc : grp.getTargetMap().getStructureList()) {
         if (struc.hasAlias() && struc.getAlias().equals(input.getType())) {
           return struc.getUrl();
         }
@@ -1503,11 +1504,11 @@ public class StructureMapValidator extends BaseValidator {
       }
     }
     for (StructureMap map : imports) {
-      for (StructureMapGroupComponent grp : map.getGroup()) {
+      for (StructureMapGroupComponent grp : map.getGroupList()) {
         if ((grp.getTypeMode() == StructureMapGroupTypeMode.TYPES || grp.getTypeMode() == StructureMapGroupTypeMode.TYPEANDTYPES) &&
-            grp.getInput().size() == 2 && grp.getInput().get(0).getMode() == StructureMapInputMode.SOURCE && grp.getInput().get(1).getMode() == StructureMapInputMode.TARGET) {
-          String srcT = resolveInputType(map, grp.getInput().get(0));
-          String tgtT = resolveInputType(map, grp.getInput().get(1));
+            grp.getInputList().size() == 2 && grp.getInputList().get(0).getMode() == StructureMapInputMode.SOURCE && grp.getInputList().get(1).getMode() == StructureMapInputMode.TARGET) {
+          String srcT = resolveInputType(map, grp.getInputList().get(0));
+          String tgtT = resolveInputType(map, grp.getInputList().get(1));
           if (sameTypes(srcT, srcType) && sameTypes(tgtT, tgtType) || sameTypes(srcT, srcUrl) && sameTypes(tgtT, tgtUrl)) {
             return grp;
           }
@@ -1523,7 +1524,7 @@ public class StructureMapValidator extends BaseValidator {
     if (type == null) {
       return null;
     }
-    for (StructureMapStructureComponent structure : map.getStructure()) {
+    for (StructureMapStructureComponent structure : map.getStructureList()) {
       if (type.equals(structure.getAlias())) {
         return structure.getUrl();
       }
@@ -1554,7 +1555,7 @@ public class StructureMapValidator extends BaseValidator {
     } else if (v.getType() != null && v.getType().equals(type)) {
       return true;
     } else {
-      for (TypeRefComponent tr : v.getEd().getType()) {
+      for (TypeRefComponent tr : v.getEd().getTypeList()) {
         if (typeMatches(type, tr.getWorkingCode())) {
           return true;
         }
@@ -1585,7 +1586,7 @@ public class StructureMapValidator extends BaseValidator {
   }
 
   private VariableDefn getParameter(List<ValidationMessage> errors, Element param, NodeStack pstack, VariableSet variables, StructureMapInputMode mode) {
-    if (VersionUtilities.isR5Plus(context.getVersion())) {
+    if (VersionUtilities.isR5Plus(context.getFHIRVersion())) {
       Element v = param.getNamedChild("value", false);
       if (v.fhirType().equals("id")) {
         return variables.getVariable(v.primitiveValue(), mode == StructureMapInputMode.SOURCE);

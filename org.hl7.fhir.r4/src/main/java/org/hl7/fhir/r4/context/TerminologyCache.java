@@ -76,12 +76,15 @@ import com.google.gson.JsonPrimitive;
  * the cache is a series of pairs: a map, and a list. the map is the loaded
  * cache, the list is the persiistent cache, carefully maintained in order for
  * version control consistency
- * 
- * @author graha
+ *
+ * The implemetation of IWorkerContext is deprecated - it is no longer maintained by the core team
+ *
+ * @author grahame
  *
  */
 
 @Slf4j
+@Deprecated
 public class TerminologyCache {
   public static final boolean TRANSIENT = false;
   public static final boolean PERMANENT = true;

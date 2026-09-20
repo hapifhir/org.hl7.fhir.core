@@ -11,7 +11,7 @@ import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.utilities.CodingUtilities;
 import org.hl7.fhir.model.utilities.VersionAlgorithm;
 import org.hl7.fhir.services.terminology.*;
-import org.hl7.fhir.services.utilities.OperationOutcomeUtilities;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.standalone.context.BaseWorkerContext;
 import org.hl7.fhir.standalone.context.ContextUtilities;
 import org.hl7.fhir.services.elementmodel.LanguageUtils;
@@ -47,6 +47,7 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -118,6 +119,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
   @Setter
   @Getter
   private boolean throwToServer;
+  // required supplements to code systems we have no full copy of, which the server applies when it checks their codes
+  private Set<String> serverAppliedSupplements = new HashSet<>();
   private LanguageSubtagRegistry registry;
   private Set<String> checkedVersionCombinations = new HashSet<>();
 
@@ -195,6 +198,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
     ElementHolder vssrc = new ElementHolder();
     String version = determineVersion(c.getSystem(), c.getVersionElement(), va, vssrc);
     CodeSystem cs = resolveCodeSystem(c.getSystem(), version, vssrc.getElement(), valueset);
+    if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
+      serverAppliedSupplements.addAll(supplementsFor(c.getSystem(), version));
+    }
     if (cs == null) {
       // well, it doesn't really matter at this point. Mainly we're triggering the supplement analysis to happen 
       opContext.note("Unable to resolve "+c.getSystem()+"#"+version);
@@ -363,7 +369,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           // are those of the earliest coding that validated. vcc still accumulates
           // every valid coding below; only foundCoding is locked to the first.
           if (foundCoding == null) {
-            foundCoding = c.copy(Base.COPY_DATA);
+            foundCoding = c.copy(Base.COPY_NOTHING);
             foundCoding.setVersion(info.getFoundVersion());
           }
           if (!options.isMembershipOnly()) {
@@ -557,6 +563,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private boolean checkRequiredSupplements(ValidationProcessInfo info) {
+    if (throwToServer) {
+      // these count as used even if no code from their code system has been checked yet, as local ones do
+      for (String s : serverAppliedSupplements) {
+        seeUsedSupplement(s);
+      }
+    }
     List<String> missingSupplements = checkForMissingSupplements();
     if (!missingSupplements.isEmpty()) {
       String msg = context.formatMessagePlural(missingSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(missingSupplements));
@@ -638,6 +650,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     }
     return cs;
+  }
+
+  // an unversioned supplement applies to every version, a versioned one only to that version - the same rule
+  // as CanonicalResourceManager.getSupplements(url, version)
+  private List<String> supplementsFor(String system, String version) {
+    List<String> res = new ArrayList<>();
+    for (String s : requiredSupplements) {
+      CodeSystem scs = context.fetchResource(CodeSystem.class, s, VersionResolutionRules.defaultRule());
+      if (scs != null && Utilities.existsInList(scs.getSupplements(), system, CanonicalType.urlWithVersion(system, version))) {
+        res.add(s);
+      }
+    }
+    return res;
   }
 
   public Set<String> resolveCodeSystemVersions(String system) {
@@ -726,7 +751,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
         CodeSystem csa = context.fetchCodeSystem(system, VersionResolutionRules.defaultRule()); // get the latest
         VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
         String wv = determineVersion(path, system, null, workingVersion, code.getVersion(), issues, va);
-        CodeSystem cs = resolveCodeSystem(system, wv, null, null);
+        // the code system has to be resolved against the package of the value set that referenced it,
+        // not against the master definitions: a value set from (say) hl7.fhir.uv.extensions.r3 means that
+        // package's code system, and resolving the two from different packages produces spurious status
+        // issues in checkCanonical below (e.g. a draft R3 core code system under a non-draft value set)
+        CodeSystem cs = resolveCodeSystem(system, wv, null, valueset);
         if (cs == null) {
           if (!VersionUtilities.isR6Plus(context.getFHIRVersion()) && "urn:ietf:bcp:13".equals(system) && Utilities.existsInList(code.getCode(), "xml", "json", "ttl") && "http://hl7.org/fhir/ValueSet/mimetypes".equals(valueset.getUrl())) {
             return new ValidationResult(system, null, new ConceptDefinitionComponent(null, code.getCode()), "application/fhir+"+code.getCode());
@@ -2032,6 +2061,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
         vs.setUrl(valueset.getUrl()+"--"+vsiIndex);
         vs.setVersion(valueset.getVersion());
         vs.getCompose().addInclude(vsi);
+        // the server does this check, so the value set it gets has to require the supplements - there's no local
+        // code system (or only a stub) to merge them into
+        for (String s : supplementsFor(system, actualVersion)) {
+          vs.addExtension(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new CanonicalType(s));
+          seeUsedSupplement(s);
+        }
         opContext.deadCheck("hit server "+vs.getVersionedUrl());
         ValidationResult res = context.validateCode(options.withNoClient(), new Coding(system, code, null), vs);
         if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {

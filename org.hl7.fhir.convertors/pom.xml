@@ -88,7 +88,7 @@
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>org.hl7.fhir.support</artifactId>
+            <artifactId>org.hl7.fhir.services</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -125,6 +125,17 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- the baseAdaptors tests read fixtures from the test cases via
+             BaseTestingUtilities, which falls back to the classpath when no local
+             fhir-test-cases directory is configured. utilities declares this
+             provided+optional, so it does not arrive transitively -->
+        <dependency>
+            <groupId>org.hl7.fhir.testcases</groupId>
+            <artifactId>fhir-test-cases</artifactId>
+            <version>${validator_test_case_version}</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- JUnit Jupiter -->

@@ -112,7 +112,7 @@ class LanguageUtilsTest implements ResourceLoaderTests {
     LanguageUtils languageUtils = new LanguageUtils(context);
 
     InputStream resource = getResourceAsInputStream("languageUtils", fName + ".json");
-    org.hl7.fhir.model.core.formats.JsonParser jp = new org.hl7.fhir.model.core.formats.JsonParser(TestingUtilities.getSharedWorkerContext());
+    org.hl7.fhir.model.core.formats.JsonParser jp = new org.hl7.fhir.model.core.formats.JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext());
     Resource origResource = jp.parse(resource);
 
     InputStream expectedJson = getResourceAsInputStream("languageUtils", fName + "-translated.json");

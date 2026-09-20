@@ -213,6 +213,9 @@ public class I18nConstants {
   public static final String ED_INVARIANT_DIFF_NO_SOURCE = "ED_INVARIANT_DIFF_NO_SOURCE";
   public static final String ED_INVARIANT_EXPRESSION_CONFLICT = "ED_INVARIANT_EXPRESSION_CONFLICT";
   public static final String ED_INVARIANT_EXPRESSION_ERROR = "ED_INVARIANT_EXPRESSION_ERROR";
+  public static final String ED_INVARIANT_IMPOSE_DIFFERENT = "ED_INVARIANT_IMPOSE_DIFFERENT";
+  public static final String ED_INVARIANT_IMPOSE_NOT_DEFINED = "ED_INVARIANT_IMPOSE_NOT_DEFINED";
+  public static final String ED_INVARIANT_IMPOSE_NOT_FOUND = "ED_INVARIANT_IMPOSE_NOT_FOUND";
   public static final String ED_INVARIANT_KEY_ALREADY_USED = "ED_INVARIANT_KEY_ALREADY_USED";
   public static final String ED_INVARIANT_NO_EXPRESSION = "ED_INVARIANT_NO_EXPRESSION";
   public static final String ED_INVARIANT_NO_KEY = "ED_INVARIANT_NO_KEY";
@@ -496,6 +499,7 @@ public class I18nConstants {
   public static final String MSG_DEPRECATED_SRC = "MSG_DEPRECATED_SRC";
   public static final String MSG_DRAFT = "MSG_DRAFT";
   public static final String MSG_DRAFT_SRC = "MSG_DRAFT_SRC";
+  public static final String MSG_DRAFT_SRC_STATUS = "MSG_DRAFT_SRC_STATUS";
   public static final String MSG_EXPERIMENTAL = "MSG_EXPERIMENTAL";
   public static final String MSG_EXPERIMENTAL_SRC = "MSG_EXPERIMENTAL_SRC";
   public static final String MSG_RETIRED = "MSG_RETIRED";

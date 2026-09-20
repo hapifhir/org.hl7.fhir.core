@@ -54,7 +54,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.conformance.ProfileUtilities.ProfileKnowledgeProvider;
-import org.hl7.fhir.r4.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r4.formats.IParser;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.ParserType;
@@ -80,6 +79,7 @@ import org.hl7.fhir.r4.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -93,10 +93,14 @@ import org.slf4j.event.Level;
  * This is a stand alone implementation of worker context for use inside a tool.
  * It loads from the validation package (validation-min.xml.zip), and has a 
  * very light client to connect to an open unauthenticated terminology service
+ *
+ * The implemetation of IWorkerContext is deprecated - it is no longer maintained by the core team
+ *
  */
 
 
 @Slf4j
+@Deprecated
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
 
   public interface IContextResourceLoader {
@@ -119,20 +123,26 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     super();
   }
 
-  public SimpleWorkerContext(SimpleWorkerContext other) throws FileNotFoundException, IOException, FHIRException {
-    super();
-    copy(other);
-  }
+  // Copying a worker context has been withdrawn in this version. A copy is not properly isolated
+  // from the context it was copied from: it shares the terminology client, the translator, the
+  // validator factory and the resources themselves (the registries are copied, the resources in them
+  // are not), so changes made through one can show up in the other. This code base is only
+  // maintained for FHIRPath, so rather than fix it, the copy support is commented out. If you need
+  // it, raise an issue at https://github.com/hapifhir/org.hl7.fhir.core/issues
+//  public SimpleWorkerContext(SimpleWorkerContext other) throws FileNotFoundException, IOException, FHIRException {
+//    super();
+//    copy(other);
+//  }
 
-  protected void copy(SimpleWorkerContext other) {
-    super.copy(other);
-    questionnaire = other.questionnaire;
-    binaries.putAll(other.binaries);
-    version = other.version;
-    revision = other.revision;
-    date = other.date;
-    validatorFactory = other.validatorFactory;
-  }
+//  protected void copy(SimpleWorkerContext other) {
+//    super.copy(other);
+//    questionnaire = other.questionnaire;
+//    binaries.putAll(other.binaries);
+//    version = other.version;
+//    revision = other.revision;
+//    date = other.date;
+//    validatorFactory = other.validatorFactory;
+//  }
 
   // -- Initializations
   /**
@@ -281,7 +291,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   private void logContextDebugMessage(String message) {
     log.makeLoggingEventBuilder(Level.DEBUG)
-      .addMarker(MarkerFactory.getMarker(LogCategory.CONTEXT.name().toLowerCase()))
+      .addMarker(MarkerFactory.getMarker(ILoggingService.LogCategory.CONTEXT.name().toLowerCase()))
       .setMessage(message)
       .log();
   }

@@ -287,6 +287,10 @@ public abstract class DV_ORDERED extends DATA_VALUE implements ICompositeType {
 
       public abstract DV_ORDERED copy();
 
+      public void assignValues(Base dst) {
+        copyValues((DV_ORDERED) dst);
+      }
+
       public void copyValues(DV_ORDERED dst) {
         super.copyValues(dst);
         dst.normal_status = normal_status == null ? null : normal_status.copy();

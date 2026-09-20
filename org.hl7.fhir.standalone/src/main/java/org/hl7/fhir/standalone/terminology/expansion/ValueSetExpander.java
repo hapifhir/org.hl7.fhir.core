@@ -35,12 +35,11 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.model.utilities.EFhirClientException;
+import org.hl7.fhir.services.client.EFhirClientException;
 import org.hl7.fhir.services.terminology.OpIssueCode;
-import org.hl7.fhir.services.terminology.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
 import org.hl7.fhir.standalone.context.BaseWorkerContext;
-import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.LanguageUtils;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
@@ -58,8 +57,6 @@ import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.ValueSet.*;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
 import org.hl7.fhir.model.utilities.ValueSetUtilities;
-import org.hl7.fhir.standalone.terminology.expansion.ConceptFilter;
-import org.hl7.fhir.standalone.terminology.expansion.WorkingContext;
 import org.hl7.fhir.standalone.terminology.providers.CodeSystemProvider;
 import org.hl7.fhir.standalone.terminology.providers.CodeSystemProviderExtension;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyOperationContext;
@@ -844,7 +841,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     altCodeParams.seeParameters(expParams);
     altCodeParams.seeValueSet(source);
     source.checkNoModifiers("ValueSet", "expanding");
-    focus = source.copy(Base.COPY_DATA);
+    focus = source.copy(Base.COPY_NOTHING);
     focus.setIdBase(null);
     focus.setExpansion(new ValueSet.ValueSetExpansionComponent());
     focus.getExpansion().setTimestampElement(DateTimeType.now());
@@ -944,7 +941,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     // ValueSet.compose.property names the properties to return "if the client doesn't ask for any
     // particular properties", so it is only consulted when the request named none
     if (source.hasCompose() && !source.getCompose().getPropertyList().isEmpty() && !expParams.hasParameter("property")) {
-      expParams = expParams.copy(Base.COPY_DATA);
+      expParams = expParams.copy(Base.COPY_NOTHING);
       for (StringType t : source.getCompose().getPropertyList()) {
         expParams.addParameter("property", new StringType(t.getValue()));
       }
@@ -1024,7 +1021,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     altCodeParams.seeParameters(expParams);
     altCodeParams.seeValueSet(source);
     source.checkNoModifiers("ValueSet", "expanding");
-    focus = source.copy(Base.COPY_DATA);
+    focus = source.copy(Base.COPY_NOTHING);
     focus.setIdBase(null);
     focus.setExpansion(new ValueSet.ValueSetExpansionComponent());
     focus.getExpansion().setTimestampElement(DateTimeType.now());
@@ -1227,7 +1224,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
     checkCanonical(exp, vs, focus);
-    expParams = expParams.copy(Base.COPY_DATA);
+    expParams = expParams.copy(Base.COPY_NOTHING);
     expParams.getParameterList().removeIf(pp -> Utilities.existsInList(pp.getName(), "offset", "count"));
     if (noInactive) {
       expParams.addParameter("activeOnly", true);
@@ -1293,7 +1290,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     checkCanonical(exp, vs, focus);
     if (noInactive) {
-      expParams = expParams.copy(Base.COPY_DATA);
+      expParams = expParams.copy(Base.COPY_NOTHING);
       expParams.addParameter("activeOnly", true);
     }
     ValueSetExpander expander = new ValueSetExpander(context, opContext.copy(), allErrors);

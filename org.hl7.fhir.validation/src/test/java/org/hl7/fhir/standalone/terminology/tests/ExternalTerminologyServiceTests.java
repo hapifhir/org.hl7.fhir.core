@@ -23,10 +23,11 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.formats.XmlParser;
+
 import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -40,6 +41,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
+import org.junit.runner.Runner;
+import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.model.RunnerScheduler;
@@ -59,6 +62,12 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
    * so the eager TxTester initialisation remains single-threaded.
    */
   public static class ParallelParameterized extends Parameterized {
+    // Tests from a "sequential" suite (e.g. closure, where each test builds on the table the
+    // one before left) are not run as they are scheduled. They are held here, and run on the
+    // main thread in manifest order once the pool has drained - after everything else.
+    private final List<Runner> deferred = new ArrayList<>();
+    private RunNotifier deferredNotifier;
+
     public ParallelParameterized(Class<?> klass) throws Throwable {
       super(klass);
       setScheduler(new RunnerScheduler() {
@@ -77,14 +86,70 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
         public void finished() {
           pool.shutdown();
           try {
-            pool.awaitTermination(1, TimeUnit.MINUTES);
+            // long enough for the whole parallel run: the sequential suites must not start
+            // while anything else is still running
+            pool.awaitTermination(2, TimeUnit.HOURS);
           } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
           }
+          runDeferred();
         }
       });
     }
+
+    @Override
+    protected void runChild(Runner child, RunNotifier notifier) {
+      if (isSequential(child)) {
+        synchronized (deferred) {
+          deferred.add(child);
+          deferredNotifier = notifier;
+        }
+      } else {
+        super.runChild(child, notifier);
+      }
+    }
+
+    private void runDeferred() {
+      List<Runner> list;
+      RunNotifier notifier;
+      synchronized (deferred) {
+        list = new ArrayList<>(deferred);
+        notifier = deferredNotifier;
+        deferred.clear();
+      }
+      // the pool handed them over in whatever order its threads got to them
+      list.sort((a, b) -> Integer.compare(childIndex(a), childIndex(b)));
+      for (Runner r : list) {
+        super.runChild(r, notifier);
+      }
+    }
+
+    // display names are "[{index}: id {suite}.{test}]" - see @Parameters below
+    private static boolean isSequential(Runner child) {
+      String n = child.getDescription().getDisplayName();
+      int i = n.indexOf(": id ");
+      if (i < 0) {
+        return false;
+      }
+      String id = n.substring(i + 5);
+      int dot = id.indexOf('.');
+      return dot > 0 && SEQUENTIAL_SUITES.contains(id.substring(0, dot));
+    }
+
+    private static int childIndex(Runner child) {
+      String n = child.getDescription().getDisplayName();
+      int s = n.indexOf('[');
+      int e = n.indexOf(':');
+      try {
+        return Integer.parseInt(n.substring(s + 1, e).trim());
+      } catch (Exception ex) {
+        return Integer.MAX_VALUE;
+      }
+    }
   }
+
+  // names of suites marked "sequential" in the manifest; filled in by data()
+  private static final Set<String> SEQUENTIAL_SUITES = java.util.concurrent.ConcurrentHashMap.newKeySet();
 
   public static class JsonObjectPair {
     public JsonObjectPair(JsonObject suite, JsonObject test) {
@@ -107,14 +172,23 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(txtests.load("messages-tx.fhir.org.json"));
 
     Map<String, JsonObjectPair> examples = new HashMap<String, JsonObjectPair>();
+    // sequential suites keep manifest order, and go after everything else
+    List<String> sequentialNames = new ArrayList<>();
     manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
     for (org.hl7.fhir.utilities.json.model.JsonObject suite : manifest.getJsonObjects("suites")) {
       if (!suite.has("version") || suite.asString("version").startsWith("5.0")) {
         String sn = suite.asString("name");
+        boolean sequential = suite.asBoolean("sequential");
+        if (sequential) {
+          SEQUENTIAL_SUITES.add(sn);
+        }
         for (org.hl7.fhir.utilities.json.model.JsonObject test : suite.getJsonObjects("tests")) {
           if (!test.has("version") || test.asString("version").startsWith("5.0")) {
             String tn = test.asString("name");
             examples.put(sn + "." + tn, new JsonObjectPair(suite, test));
+            if (sequential) {
+              sequentialNames.add(sn + "." + tn);
+            }
           }
         }
       }
@@ -122,7 +196,9 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
 
     List<String> names = new ArrayList<String>(examples.size());
     names.addAll(examples.keySet());
+    names.removeAll(sequentialNames);
     Collections.sort(names);
+    names.addAll(sequentialNames);
 
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
@@ -164,6 +240,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     initModes.add("snomed");
     initModes.add("mimetypes");
     initModes.add("icd-11");
+    initModes.add("closure");
     // Loader only uses the static txtests field, so a throwaway instance is fine.
     tester = new TxTester(new ExternalTerminologyServiceTests("init", null), SERVER, true, externals, "5.0.0");
     tester.initialise(initModes);
@@ -196,6 +273,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     modes.add("general");
     modes.add("snomed");
     modes.add("mimetypes");
+    modes.add("closure");
   }
 
   private void logTestSkip(String reason) {
@@ -237,9 +315,9 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     String contents = txtests.load(filename);
     try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
       if (filename.contains(".json")) {
-        return new JsonParser().parse(inputStream);
+        return new JsonParser(ModelContext.fullCoreContext()).parse(inputStream);
       } else {
-        return new XmlParser().parse(inputStream);
+        return new XmlParser(ModelContext.fullCoreContext()).parse(inputStream);
       }
     }
   }

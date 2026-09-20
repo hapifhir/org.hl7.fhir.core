@@ -41,3 +41,13 @@
       }
     }
   }
+
+  public String getText() {
+    if (getDetails().hasText()) {
+      return getDetails().getText();
+    }
+    if (hasDiagnostics()) {
+      return getDiagnostics();
+    }
+    return null;
+  }

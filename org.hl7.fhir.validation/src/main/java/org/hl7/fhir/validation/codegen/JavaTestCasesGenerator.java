@@ -29,7 +29,7 @@ public class JavaTestCasesGenerator extends JavaBaseGenerator {
     write("import java.util.List;\r\n");
     write("import java.util.stream.Stream;\r\n");
     write("\r\n");
-    write("import org.hl7.fhir.r5.model.Resource;\r\n");
+    write("import org.hl7.fhir.model.core.Resource;\r\n");
     write("import org.hl7.fhir.utilities.FileUtilities;\r\n");
     write("import org.hl7.fhir.utilities.Utilities;\r\n");
     write("import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;\r\n");

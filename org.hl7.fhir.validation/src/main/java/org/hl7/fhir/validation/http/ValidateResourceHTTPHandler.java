@@ -5,13 +5,15 @@ import com.sun.net.httpserver.HttpHandler;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
-import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
+import org.hl7.fhir.services.validation.BundleValidationRule;
+import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.ValidationRecord;
@@ -35,7 +37,8 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
 
   private final FhirValidatorHttpService fhirValidatorHttpService;
 
-  public ValidateResourceHTTPHandler(FhirValidatorHttpService fhirValidatorHttpService) {
+  public ValidateResourceHTTPHandler(IModelContext context, FhirValidatorHttpService fhirValidatorHttpService) {
+    super(context);
     this.fhirValidatorHttpService = fhirValidatorHttpService;
   }
 
@@ -47,7 +50,7 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
     }
 
     byte[] resourceBytes = null;
-    Manager.FhirFormat format = null;
+    FhirFormat format = null;
     InstanceValidatorParameters instanceValidatorParameters = new InstanceValidatorParameters();
     try {
       // Read resource bytes from request body

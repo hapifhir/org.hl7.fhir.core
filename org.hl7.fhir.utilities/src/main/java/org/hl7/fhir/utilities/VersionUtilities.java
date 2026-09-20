@@ -198,7 +198,7 @@ public class VersionUtilities {
       return "5.0.0";
     }
     if (isR6Ver(v)) {
-      return "6.0.0-ballot3";
+      return "6.0.0-snapshot1";
     }
     return v;
   }

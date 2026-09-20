@@ -19,6 +19,8 @@ public class TypeConvertor {
     }
     if (b instanceof DataType)
       return (DataType) b;
+    else if (b.isMetadataBased())
+      return b.asType();
     else
       throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to a Reference");
   }
@@ -314,7 +316,9 @@ public class TypeConvertor {
 
     if (b instanceof CodeableConcept)
       return (CodeableConcept) b;
-    else if (b instanceof CodeType) {
+    else if (b.isMetadataBased()) {
+      return castToCodeableConcept(b.asType());
+    } else if (b instanceof CodeType) {
       CodeableConcept cc = new CodeableConcept();
       cc.addCoding().setCode(((CodeType) b).asStringValue());
       return cc;
@@ -356,7 +360,13 @@ public class TypeConvertor {
 
     if (b instanceof Coding)
       return (Coding) b;
-    else if (b instanceof ICoding) {
+    else if (b.isMetadataBased()) {
+      ICoding c = b.getAsICoding();
+      if (c != null) {
+        return new Coding().setCode(c.getCode()).setSystem(c.getSystem()).setVersion(c.getVersion()).setDisplay(c.getDisplay());
+      }
+      return castToCoding(b.asType());
+    } else if (b instanceof ICoding) {
       ICoding c = (ICoding) b;
       return new Coding().setCode(c.getCode()).setSystem(c.getSystem()).setVersion(c.getVersion()).setDisplay(c.getDisplay());
     } else if (b instanceof PrimitiveType<?>) {
@@ -400,6 +410,8 @@ public class TypeConvertor {
 
     if (b instanceof Money)
       return (Money) b;
+    else if (b.isMetadataBased() && Utilities.tail(b.fhirType()).equals("Money"))
+      return castToMoney(b.asType());
     else
       throw new FHIRException("Unable to convert a "+b.fhirType()+"("+b.getClass().getName()+") to an Money");
   }
@@ -575,6 +587,8 @@ public class TypeConvertor {
 
     if (b instanceof Reference)
       return (Reference) b;
+    else if (b.isMetadataBased() && Utilities.tail(b.fhirType()).equals("Reference"))
+      return castToReference(b.asType());
     else if (b.isPrimitive() && Utilities.isURL(b.primitiveValue()))
       return new Reference().setReference(b.primitiveValue());
     else

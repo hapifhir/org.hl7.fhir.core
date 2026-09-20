@@ -6,7 +6,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.model.utilities.VersionAlgorithm;
 import org.hl7.fhir.services.terminology.OpIssueCode;
-import org.hl7.fhir.services.terminology.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
 import org.hl7.fhir.standalone.context.BaseWorkerContext;
 import org.hl7.fhir.standalone.context.ContextUtilities;
@@ -197,7 +197,7 @@ public class ValueSetProcessBase {
           addToIssues(issues, makeStatusIssue(path, "experimental", I18nConstants.MSG_EXPERIMENTAL, resource));
         } else if ((resource.getStatus() == PublicationStatus.DRAFT || standardsStatus == StandardsStatus.DRAFT)
             && !(source.getStatus() == PublicationStatus.DRAFT || ExtensionUtilities.getStandardsStatus(source) == StandardsStatus.DRAFT)) {
-          addToIssues(issues, makeStatusIssue(path, "draft", I18nConstants.MSG_DRAFT, resource));
+          addToIssues(issues, makeStatusIssue(path, "draft", I18nConstants.MSG_DRAFT_SRC_STATUS, resource, source));
         }
       } else {
         if (resource.getExperimental()) {
@@ -217,10 +217,22 @@ public class ValueSetProcessBase {
     iss.get(0).setUserData(UserDataNames.tx_status_msg_name, "warning-"+id);
     iss.get(0).setUserData(UserDataNames.tx_status_msg_value, new UriType(resource.getVersionedUrl()));
     ExtensionUtilities.setStringExtension(iss.get(0), ExtensionDefinitions.EXT_ISSUE_MSG_ID, msg);
-    
+
     return iss;
   }
-  
+
+  private List<OperationOutcomeIssueComponent> makeStatusIssue(String path, String id, String msg, CanonicalResource resource, CanonicalResource source) {
+    List<OperationOutcomeIssueComponent> iss = makeIssue(IssueSeverity.INFORMATION, IssueType.BUSINESSRULE, null,
+      context.formatMessage(msg, resource.getVersionedUrl(), source.getVersionedUrl(), resource.fhirType(), source.getStatus().toCode(), source.fhirType()), OpIssueCode.StatusCheck, null, msg);
+
+    // this is a testing hack - see TerminologyServiceTests
+    iss.get(0).setUserData(UserDataNames.tx_status_msg_name, "warning-"+id);
+    iss.get(0).setUserData(UserDataNames.tx_status_msg_value, new UriType(resource.getVersionedUrl()));
+    ExtensionUtilities.setStringExtension(iss.get(0), ExtensionDefinitions.EXT_ISSUE_MSG_ID, msg);
+
+    return iss;
+  }
+
   private void addToIssues(List<OperationOutcomeIssueComponent> issues, List<OperationOutcomeIssueComponent> toAdd) {
     for (OperationOutcomeIssueComponent t : toAdd) {
       boolean found = false;

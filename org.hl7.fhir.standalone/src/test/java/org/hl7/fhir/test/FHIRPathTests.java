@@ -10,7 +10,6 @@ import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.services.elementmodel.Manager;
-import org.hl7.fhir.services.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.services.elementmodel.ValidatedFragment;
 import org.hl7.fhir.services.fhirpath.BaseHostServices;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
@@ -21,6 +20,7 @@ import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.services.terminology.TerminologyFunctions;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -41,6 +41,8 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus;
 
 
 public class FHIRPathTests {
@@ -212,9 +214,9 @@ public class FHIRPathTests {
           if ("cda".equals(test.getAttribute("mode"))) {
             res = Manager.makeParser(fp.getWorker(), FhirFormat.XML).parseSingle(TestingUtilities.loadTestResourceStream("r6", input), null);
           } else if (input.endsWith(".json")) {
-            res = new JsonParser(context).parse(TestingUtilities.loadTestResourceStream("r6", input));
+            res = new JsonParser(context.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", input));
           } else {
-            res = new XmlParser(context).parse(TestingUtilities.loadTestResourceStream("r6", input));
+            res = new XmlParser(context.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", input));
           }
           resources.put(input, res);
         }        
@@ -377,5 +379,31 @@ public class FHIRPathTests {
     List<Base> results = fp.evaluate(input, "Patient.name.given.join(',')");
     assertEquals(1, results.size());
     assertEquals("g1,g2", results.get(0).primitiveValue());
+  }
+
+  // split() returns an ordered collection of strings, so first() on its result is legal.
+  // Typing it as a singleton raised a spurious FHIRPATH_NOT_A_COLLECTION warning (#2640).
+  @Test
+  public void testCheck_SplitIsAnOrderedCollection() throws Exception {
+    TypeDetails focus = new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+    TypeDetails td = fp.checkOnTypes(null, "Resource", "string", focus, fp.parse("'fr-BE'.split('-')"), new ArrayList<>());
+    assertEquals(CollectionStatus.ORDERED, td.getCollectionStatus());
+  }
+
+  @Test
+  public void testCheck_FirstOnSplitIsNotReportedAsNotACollection() throws Exception {
+    TypeDetails focus = new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+    List<FHIRPathEngine.IssueMessage> warnings = new ArrayList<>();
+    fp.checkOnTypes(null, "Resource", "string", focus, fp.parse("'fr-BE'.split('-').first().lower()"), warnings);
+    for (FHIRPathEngine.IssueMessage w : warnings) {
+      assertNotEquals("FHIRPATH_NOT_A_COLLECTION", w.getId());
+    }
+  }
+
+  @Test
+  public void testEvaluate_FirstOnSplit() throws Exception {
+    List<Base> results = fp.evaluate(new Patient(), "'fr-BE'.split('-').first().lower()");
+    assertEquals(1, results.size());
+    assertEquals("fr", results.get(0).primitiveValue());
   }
 }

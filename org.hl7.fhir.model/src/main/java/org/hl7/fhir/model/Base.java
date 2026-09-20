@@ -75,6 +75,14 @@ public abstract class Base implements Serializable, IBase, IElement {
 
   //region version/context
 
+  public Base() {
+    this.modelContext = null;
+  }
+
+  public Base(IModelContext modelContext) {
+    this.modelContext = modelContext;
+  }
+
   /**
    * Set the model context. Adoption only: an instance without a context can be given one, and 
    * re-asserting the same context is a (fast) no-op, but changing an existing context throws. 
@@ -194,6 +202,13 @@ public abstract class Base implements Serializable, IBase, IElement {
       userData.remove(name);
   }
 
+  /**
+   * Clear all user Data
+   */
+  public void clearUserData() {
+    userData  = null;
+  }
+
   /** set the named user data item If Not Null: a null value leaves any existing entry untouched */
   public void setUserDataINN(String name, Object value) {
     if (value == null)
@@ -231,13 +246,26 @@ public abstract class Base implements Serializable, IBase, IElement {
 
   /** merge the other object's user data into this one - shared names are overwritten, others are kept */
   public void copyUserData(Base other) {
-    if (other.userData != null) {
+    // through the accessors, not other.userData: a subclass (e.g. a version adaptor) may keep its user data somewhere else
+    Set<String> names = other.getUserDataNames();
+    if (!names.isEmpty()) {
       if (userData == null) {
         userData = new HashMap<>();
       }
-      userData.putAll(other.userData);
+      for (String n : names) {
+        userData.put(n, other.getUserData(n));
+      }
     }
   }
+
+  public Set<String> getUserDataNames() {
+    if (userData == null) {
+      return new HashSet<>();
+    } else {
+      return userData.keySet();
+    }
+  }
+
   //endregion
 
   //region Format Comments
@@ -320,9 +348,7 @@ public abstract class Base implements Serializable, IBase, IElement {
       if (n.equalsIgnoreCase(t))
         return true;
       if (n.contains(".")) {
-        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-        //single literal character split
-        String[] p = n.split("\\.");
+        String[] p = Utilities.simpleSplit(n, ".");
         if (p.length == 2 && Utilities.existsInList(p[0], "FHIR", "CDA") && p[1].equalsIgnoreCase(t))
           return true;
       }
@@ -401,8 +427,27 @@ public abstract class Base implements Serializable, IBase, IElement {
    * StructureDefinition at runtime. Affects which operand drives deep equality (see 
    * compareDeep) - the outcomes are the same either way
    */
-  protected boolean isMetadataBased() {
+  public boolean isMetadataBased() {
     return false;
+  }
+
+  /**
+   * If this object navigates by metadata (i.e. it is an element model Element), produce the
+   * equivalent typed object, else null. The element model lives in org.hl7.fhir.services, which
+   * the model classes cannot see, so this is the hook they reach it through (and it is why
+   * TypeConvertor can convert an element model tree to a type - see castToType)
+   */
+  public DataType asType() {
+    return null;
+  }
+
+  /**
+   * If this object can present itself as a coding, return that view of it, else null. The element
+   * model does this for Coding and Quantity, and for code elements with a required binding (by
+   * expanding the value set to find the system). Same hook arrangement as asType()
+   */
+  public ICoding getAsICoding() {
+    return null;
   }
 
   /** the xhtml content if this is an xhtml node (Narrative.div's value), else null */
@@ -721,25 +766,52 @@ public abstract class Base implements Serializable, IBase, IElement {
   public abstract Base copy(EnumSet<CopyObjectOptions> options); //
 
   /**
+   * Copy this object's content onto dst, the same as copyValues, but with one signature all the
+   * way down the hierarchy so that a call made through a Base reference reaches the leaf type.
+   * copyValues takes a different argument type at every level, so a call bound through Base
+   * would stop at Base.copyValues; each override of this casts dst to its own type to pick the
+   * right one
+   */
+  public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+    copyValues((Base) dst, options);
+  }
+
+  /**
    * Copy this object's content onto dst: this implementation copies the option-selected 
    * Base-level features; the generated overrides copy their element content (passing the 
    * options down to every child they copy) and call super
    */
   public void copyValues(Base dst, EnumSet<CopyObjectOptions> options) {
     dst.setModelContext(modelContext); // no-op on the normal path (copy() constructs dst with this context); adopts a fresh dst; throws rather than corrupting a dst that belongs to a different context
-    if (userData != null && options.contains(CopyObjectOptions.USER_DATA)) {
-      dst.userData = new HashMap<>();
-      dst.userData.putAll(userData);
+    if (options.contains(CopyObjectOptions.USER_DATA)) {
+      if (userData != null) {
+        dst.userData = new HashMap<>();
+        dst.userData.putAll(userData);
+      } else {
+        dst.userData = null;
+      }
     }
     if (options.contains(CopyObjectOptions.COMMENTS)) {
-      dst.formatCommentsPost = new ArrayList<>();
-      dst.formatCommentsPost.addAll(formatCommentsPost);
-      dst.formatCommentsPre = new ArrayList<>();
-      dst.formatCommentsPre.addAll(formatCommentsPre);
+      if (formatCommentsPost != null) {
+        dst.formatCommentsPost = new ArrayList<>();
+        dst.formatCommentsPost.addAll(formatCommentsPost);
+      } else {
+        dst.formatCommentsPost = null;
+      }
+      if (formatCommentsPre != null) {
+        dst.formatCommentsPre = new ArrayList<>();
+        dst.formatCommentsPre.addAll(formatCommentsPre);
+      } else {
+        dst.formatCommentsPre = null;
+      }
     }
     if (options.contains(CopyObjectOptions.VALIDATION_INFO)) {
-      dst.validationInfo = new ArrayList<>();
-      dst.validationInfo.addAll(validationInfo);
+      if (validationInfo != null) {
+        dst.validationInfo = new ArrayList<>();
+        dst.validationInfo.addAll(validationInfo);
+      } else {
+        dst.validationInfo = null;
+      }
     }
   }
 
