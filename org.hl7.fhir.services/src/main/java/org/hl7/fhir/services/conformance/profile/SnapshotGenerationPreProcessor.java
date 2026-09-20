@@ -1059,7 +1059,7 @@ public class SnapshotGenerationPreProcessor {
   }
 
   private boolean isExtensionSlicing(ElementDefinition ed) {
-    if (!Utilities.existsInList(ed.getName(), "extension", "modiferExtension")) {
+    if (!Utilities.existsInList(ed.getName(), "extension", "modifierExtension")) {
       return false;
     }
     if (ed.getSlicing().getRules() != SlicingRules.OPEN || (!ed.getSlicing().hasOrdered() || ed.getSlicing().getOrdered()) || ed.getSlicing().getDiscriminatorList().size() != 1) {
