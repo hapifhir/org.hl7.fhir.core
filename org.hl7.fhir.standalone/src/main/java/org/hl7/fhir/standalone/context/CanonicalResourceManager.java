@@ -381,15 +381,22 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
 
     // special case logic for UTG support prior to version 5
-    if (cr.getPackageInfo() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology")) {
-      List<CachedCanonicalResource<T>> toDrop = new ArrayList<>();
-      for (CachedCanonicalResource<T> n : allResources) {
-        if (n.getUrl() != null && n.getUrl().equals(cr.getUrl()) && isBasePackage(n.getPackageInfo())) {
-          toDrop.add(n);
+    // listForUrl holds exactly the same resources as allResources, indexed by url, and drop() keeps the two
+    // in step - so look the url up instead of scanning. Scanning made each hl7.terminology package cost
+    // O(resources already loaded), which is why the THO loads got slower the later they came: the vsac
+    // packages ahead of them add ~70k ValueSets that can never match this url
+    if (cr.getPackageInfo() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology") && cr.getUrl() != null) {
+      List<CachedCanonicalResource<T>> sameUrl = listForUrl.get(cr.getUrl());
+      if (sameUrl != null) {
+        List<CachedCanonicalResource<T>> toDrop = new ArrayList<>();
+        for (CachedCanonicalResource<T> n : sameUrl) {
+          if (isBasePackage(n.getPackageInfo())) {
+            toDrop.add(n);
+          }
         }
-      }
-      for (CachedCanonicalResource<T> n : toDrop) {
-        drop(n);
+        for (CachedCanonicalResource<T> n : toDrop) {
+          drop(n);
+        }
       }
     }
 //    CachedCanonicalResource<T> existing = cr.hasVersion() ? map.get(cr.getUrl()+"|"+cr.getVersion()) : map.get(cr.getUrl()+"|#0");
@@ -414,10 +421,22 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         masterDefinitions.put(cr.getUrl(), cr);
       }
     }
+    addToSupplements(cr);
+    addToMap(cr.getId(), cr); // we do this so we can drop by id - if not enforcing id, it's just the most recent resource with this id
+
+    // a resource with no url cannot be found by url, so none of the url indexes below mean anything for it.
+    // It used to go into listForUrl under the null key, which put every url-less resource into one shared
+    // list that was re-sorted and then scanned by indexOf() on each insertion - quadratic in the number of
+    // url-less resources loaded. That is why an hl7.terminology.r4 package cost ~20x its r5 twin: R4
+    // NamingSystem has no url element (it arrived in R5), and each THO r4 package carries ~617 of them
+    if (cr.getUrl() == null) {
+      cr.setLoadingOrder(++loadCount);
+      return true;
+    }
+
     if (!listForUrl.containsKey(cr.getUrl())) {
       listForUrl.put(cr.getUrl(), new ArrayList<>());
     }
-    addToSupplements(cr);
     List<CachedCanonicalResource<T>> set = listForUrl.get(cr.getUrl());
     set.add(cr);
     if (set.size() > 1) {
@@ -426,7 +445,6 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
     // -- 4. add to the map all the ways ---------------------------------------------------------------
     String pv = cr.getPackageInfo() != null ? cr.getPackageInfo().getVID() : null;
-    addToMap(cr.getId(), cr); // we do this so we can drop by id - if not enforcing id, it's just the most recent resource with this id
     addToMap(cr.hasVersion() ? cr.getUrl()+"|"+cr.getVersion() : cr.getUrl()+"|#0", cr);
     if (pv != null) {
       if (cr.hasVersion()) {
@@ -498,7 +516,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   private int compareByLoadCount(int o1, int o2) {
-    if (01 == 0 && o2 == 0) {
+    if (o1 == 0 && o2 == 0) {
       return 0;
     } else if (o1 == 0) {
       return 1;
@@ -843,6 +861,86 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
 
+
+  /**
+   * exists() and existsByPackage() mirror the resolution order of get() and getByPackage() exactly, but
+   * answer whether a resource is registered without resolving it. get() ends in
+   * CachedCanonicalResource.getResource(), which for a lazily loaded resource reads, parses and
+   * version-converts the file - far more work than an existence check needs, and the reason that loading a
+   * package whose urls were already registered cost so much. Any change to the order in get() or
+   * getByPackage() has to be mirrored here.
+   */
+  public boolean exists(String url) {
+    return masterDefinitions.containsKey(url) || indexedResources.containsKey(url);
+  }
+
+  public boolean exists(String system, String version) {
+    if (version == null) {
+      return exists(system);
+    } else {
+      if (indexedResources.containsKey(system+"|"+version)) {
+        return true;
+      }
+      if (VersionUtilities.isSemVer(version, true) && !Utilities.containsInList(version, "+", "-")) {
+        String mm = VersionUtilities.getMajMin(version);
+        if (mm != null && indexedResources.containsKey(system + "|" + mm)) {
+          return true;
+        }
+      }
+      if (VersionUtilities.isSemVerWithWildcards(version)) {
+        for (CachedCanonicalResource<T> t : allResources) {
+          if (system.equals(t.getUrl()) && t.getVersion() != null && VersionUtilities.versionMatches(version, t.getVersion())) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+  }
+
+  public boolean existsByPackage(String url, List<String> pvlist) {
+    for (String pv : pvlist) {
+      if (indexedResources.containsKey(pv+":"+url)) {
+        return true;
+      }
+    }
+    return masterDefinitions.containsKey(url) || indexedResources.containsKey(url);
+  }
+
+  public boolean existsByPackage(String system, String version, List<String> pvlist) {
+    if (version == null) {
+      return existsByPackage(system, pvlist);
+    } else {
+      for (String pv : pvlist) {
+        if (indexedResources.containsKey(pv+":"+system+"|"+version)) {
+          return true;
+        }
+      }
+      String mm = VersionUtilities.getMajMin(version);
+      if (mm != null && indexedResources.containsKey(system+"|"+mm)) {
+        for (String pv : pvlist) {
+          if (indexedResources.containsKey(pv+":"+system+"|"+mm)) {
+            return true;
+          }
+        }
+      }
+      if (indexedResources.containsKey(system+"|"+version)) {
+        return true;
+      }
+      if (mm != null && indexedResources.containsKey(system+"|"+mm)) {
+        return true;
+      }
+      List<CachedCanonicalResource<T>> list = listForUrl.get(system);
+      if (list != null) {
+        for (CachedCanonicalResource<T> t : list) {
+          if (VersionUtilities.isSemVerWithWildcards(version) && VersionUtilities.isSemVer(t.getVersion(), true) && VersionUtilities.versionMatches(version, t.getVersion())) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+  }
 
   public PackageInformation getPackageInfo(String system, String version) {
     if (version == null) {
