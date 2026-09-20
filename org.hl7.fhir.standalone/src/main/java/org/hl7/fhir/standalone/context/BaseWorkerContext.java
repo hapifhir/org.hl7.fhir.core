@@ -3879,7 +3879,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (scs != null) {
         String web = ExtensionUtilities.readStringExtension(scs.getCs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
         if (web == null) {
-          web = Utilities.pathURL(scs.getServer(), "ValueSet", scs.getCs().getIdBase());
+          web = Utilities.pathURL(scs.getServer(), "CodeSystem", scs.getCs().getIdBase());
         }
         scs.getCs().setWebPath(web);
         scs.getCs().setUserData(UserDataNames.render_external_link, scs.getServer()); // so we can render it differently
