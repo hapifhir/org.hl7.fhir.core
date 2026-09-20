@@ -17,6 +17,8 @@ import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionDifferenti
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 import java.math.BigDecimal;
@@ -700,6 +702,10 @@ public class SnapshotGenerationPreProcessor {
           if (ed.hasSlicing() && !isExtensionSlicing(ed)) {
             String message = context.formatMessage(I18nConstants.UNSUPPORTED_SLICING_COMPLEXITY, si.slicer.getPath(), ed.getPath(), ed.getSlicing().summary());
             log.warn(message);
+            // a log line is easy to miss for something that changes the generated snapshot
+            utils.getMessages().add(new ValidationMessage(Source.ProfileValidator,
+                ValidationMessage.IssueType.STRUCTURE, ed.getPath(), message,
+                ValidationMessage.IssueSeverity.WARNING));
             return;
           }
         }
@@ -1058,15 +1064,17 @@ public class SnapshotGenerationPreProcessor {
     }
   }
 
+  /**
+   * Whether this is the slicing entry on extension or modifierExtension.
+   *
+   * Nothing in the merge below depends on how such an element is sliced, so the shape of
+   * the slicing is not examined: a restatement that leaves the discriminator to the base,
+   * or closes the slicing, or writes the discriminator differently, is still extension
+   * slicing and must not be taken for unsupported nested slicing. Anything genuinely odd
+   * about it is reported later by the snapshot generator and the validator.
+   */
   private boolean isExtensionSlicing(ElementDefinition ed) {
-    if (!Utilities.existsInList(ed.getName(), "extension", "modifierExtension")) {
-      return false;
-    }
-    if (ed.getSlicing().getRules() != SlicingRules.OPEN || (!ed.getSlicing().hasOrdered() || ed.getSlicing().getOrdered()) || ed.getSlicing().getDiscriminatorList().size() != 1) {
-      return false;
-    }
-    ElementDefinitionSlicingDiscriminatorComponent d = ed.getSlicing().getDiscriminatorFirstRep();
-    return d.getType() == DiscriminatorType.VALUE && "url".equals(d.getPath());
+    return Utilities.existsInList(ed.getName(), "extension", "modifierExtension");
   }
 
   private SliceInfo getSlicing(ElementDefinition ed) {
