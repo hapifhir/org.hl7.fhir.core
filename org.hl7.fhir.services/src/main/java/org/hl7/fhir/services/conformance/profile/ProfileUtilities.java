@@ -2928,7 +2928,7 @@ public class ProfileUtilities {
           }
           for (ElementDefinitionBindingAdditionalComponent ab : ed.getBinding().getAdditionalList()) {
             if (!Utilities.existsInList(ab.getPurpose().toCode(), "maximum", "required", "extensible")) {
-              if (binding.hasAdditional(ab)) {
+              if (!binding.hasAdditional(ab)) {
                 binding.getAdditionalList().add(ab.copy(Base.COPY_DATA));
               }
             }
