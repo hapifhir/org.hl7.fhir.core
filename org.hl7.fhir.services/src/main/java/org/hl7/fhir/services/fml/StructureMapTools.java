@@ -2120,7 +2120,7 @@ public class StructureMapTools {
 
     VariablesForProfiling srcVars = vars.copy();
     if (rule.getSourceList().size() != 1)
-      throw new FHIRException("Rule \"" + rule.getName() + "\": not handled yet");
+      throw new FHIRException("Rule \"" + rule.getName() + "\": multiple sources not handled yet");
     VariablesForProfiling source = analyseSource(rule.getName(), context, srcVars, rule.getSourceFirstRep(), xs);
 
     TargetWriter tw = new TargetWriter();
