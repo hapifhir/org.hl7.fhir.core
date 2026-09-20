@@ -697,8 +697,8 @@ public class ProfilePathProcessor {
       CanonicalType firstTypeProfile = diffMatches.get(0).getType().get(0).getProfile().get(0);
       StructureDefinition firstTypeStructureDefinition = profileUtilities.getContext().fetchResource(StructureDefinition.class, firstTypeProfile.getValue(),
         ExtensionUtilities.getVersionResolutionRules(firstTypeProfile));
-      if (firstTypeStructureDefinition == null && profileUtilities.getXver() != null && profileUtilities.getXver().matchingUrl(firstTypeProfile.getValue())) {
-        switch (profileUtilities.getXver().status(firstTypeProfile.getValue())) {
+      if (firstTypeStructureDefinition == null && profileUtilities.makeXVer().matchingUrl(firstTypeProfile.getValue())) {
+        switch (profileUtilities.makeXVer().status(firstTypeProfile.getValue())) {
           case BadVersion:
             throw new FHIRException("Reference to invalid version in extension url " + firstTypeProfile.getValue());
           case Invalid:
@@ -706,7 +706,7 @@ public class ProfilePathProcessor {
           case Unknown:
             throw new FHIRException("Reference to unknown extension " + firstTypeProfile.getValue());
           case Valid:
-            firstTypeStructureDefinition = profileUtilities.getXver().getDefinition(firstTypeProfile.getValue());
+            firstTypeStructureDefinition = profileUtilities.makeXVer().getDefinition(firstTypeProfile.getValue());
             profileUtilities.generateSnapshot(profileUtilities.getContext().fetchTypeDefinition("Extension"), firstTypeStructureDefinition, firstTypeStructureDefinition.getUrl(), getWebUrl(), firstTypeStructureDefinition.getName());
         }
       }
