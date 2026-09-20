@@ -25,6 +25,8 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.junit.jupiter.api.BeforeAll;
@@ -67,7 +69,11 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
   @BeforeAll
   static void setUp() throws Exception {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-    context = new SimpleWorkerContext(TestingUtilities.getWorkerContext(pcm.loadPackage("hl7.fhir.r5.core", "5.0.0")));
+    context = new SimpleWorkerContext(TestingUtilities.getWorkerContext(pcm.loadPackage("hl7.fhir.r6.core", "6.0.0-snapshot1")));
+
+    // also include the FML structure definition
+    var fmlPackage = pcm.loadPackage("hl7.fhir.uv.fml#dev");
+    context.loadFromPackage(fmlPackage, ValidatorUtils.loaderForVersion(context.getModelContext(), fmlPackage.fhirVersion()), true);
     utils = new StructureMapTools(context);
     fpe = new FHIRPathEngine(context);
     fmlParser = new FmlParser(context, fpe);
@@ -80,8 +86,8 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     org.hl7.fhir.services.elementmodel.Element map = fmlParser.parse(errors, SAMPLE_FML);
     validator.validate(null, errors, null, map);
 
-    // filter out all the information messages, we only care about errors and warnings
-    errors.removeIf(e -> e.getLevel() == IssueSeverity.INFORMATION);
+    RemoveKnownIssuesToIgnore(errors);
+
     assertEquals(0, errors.size(), errors.toString());
     // assertTrue(errors.stream().noneMatch(this::isTransformRuleMessage), errors.toString());
   }
@@ -92,6 +98,9 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     org.hl7.fhir.services.elementmodel.Element map = fmlParser.parse(errors, SAMPLE_FML);
     map.getChildrenByName("const").get(0).removeChild("name");
     validator.validate(null, errors, null, map);
+
+    RemoveKnownIssuesToIgnore(errors);
+
     assertEquals(1, errors.size(), "Expected validation errors due to missing constant name: " + errors.toString());
   }
 
@@ -101,7 +110,20 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     org.hl7.fhir.services.elementmodel.Element map = fmlParser.parse(errors, SAMPLE_FML);
     map.getChildrenByName("const").get(0).removeChild("value");
     validator.validate(null, errors, null, map);
+
+    RemoveKnownIssuesToIgnore(errors);
+
     assertEquals(1, errors.size(), "Expected validation errors due to missing constant value: " + errors.toString());
+  }
+
+  private void RemoveKnownIssuesToIgnore(List<ValidationMessage> errors) {
+    // filter out the other issues (dom-3)
+    errors.removeIf(e -> e.getInvId() != null && e.getInvId().equalsIgnoreCase("http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"));
+
+    // the additional resources message
+    errors.removeIf(e -> e.getLevel() == IssueSeverity.ERROR
+                      && e.getType() == IssueType.INVALID
+                      && e.getMessage().equalsIgnoreCase("This resource is an additional resource, so must have a resourceDefinition of 'http://hl7.org/fhir/StructureDefinition/StructureMap|0.1.0'"));
   }
 
   @Test
@@ -110,6 +132,9 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     org.hl7.fhir.services.elementmodel.Element map = fmlParser.parse(errors, SAMPLE_FML);
     map.getChildrenByName("const").get(0).setChildValue("value", "'Intentional Error in fhirpath");
     validator.validate(null, errors, null, map);
+
+    RemoveKnownIssuesToIgnore(errors);
+
     assertEquals(1, errors.size(), "Expected validation errors due to missing constant value type: " + errors.toString());
   }
 
