@@ -63,7 +63,7 @@ public class MappingAssistant {
               n = m.getIdentity() + i;
             }
             renames.put(m.getIdentity(), n);
-            masterList.add(m.copy(Base.COPY_DATA).setName(n));
+            masterList.add(m.copy(Base.COPY_DATA).setIdentity(n));
           } else {
             masterList.add(m.copy(Base.COPY_DATA));
           }
