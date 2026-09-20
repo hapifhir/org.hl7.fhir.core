@@ -2590,7 +2590,9 @@ public class ProfileUtilities {
     for (ElementDefinition ed : obligationProfileElements) {
       for (Extension ext : ed.getExtensionList()) {
         if (Utilities.existsInList(ext.getUrl(), ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) {
-          dest.getExtensionList().add(new Extension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ext.getValue().copy(Base.COPY_DATA)));
+          Extension obligation = ext.copy(Base.COPY_DATA);
+          obligation.setUrl(ExtensionDefinitions.EXT_OBLIGATION_CORE);
+          dest.getExtensionList().add(obligation);
         }      
       }
     }
@@ -2928,7 +2930,7 @@ public class ProfileUtilities {
           }
           for (ElementDefinitionBindingAdditionalComponent ab : ed.getBinding().getAdditionalList()) {
             if (!Utilities.existsInList(ab.getPurpose().toCode(), "maximum", "required", "extensible")) {
-              if (binding.hasAdditional(ab)) {
+              if (!binding.hasAdditional(ab)) {
                 binding.getAdditionalList().add(ab.copy(Base.COPY_DATA));
               }
             }
@@ -3136,7 +3138,7 @@ public class ProfileUtilities {
     if (!res.hasValue() && source.hasValue()) {
       res.setValue(source.getValue());
     } else if (res.hasValue() && source.hasValue() && res.getValue().startsWith("...")) {
-      res.setValue(Utilities.appendDerivedTextToBase(res.getValue(), source.getValue()));
+      res.setValue(Utilities.appendDerivedTextToBase(source.getValue(), res.getValue()));
     }
     for (Extension sourceExtension : source.getExtensionList()) {
       Extension matchingExtension = findMatchingExtension(res, sourceExtension);
@@ -3205,7 +3207,7 @@ public class ProfileUtilities {
       }
     }
     if (source.getAny()) {
-      source.setAny(true);
+      dest.setAny(true);
     }
     if (source.hasShortDoco()) {
       dest.setShortDoco(source.getShortDoco());

@@ -112,16 +112,50 @@ public class ObjectConverter  {
       return path;
   }
 
+  /**
+   * Convert an element model node to the equivalent object model data type. The type is created
+   * from the node's type, and then all the content is copied across: primitive values, ids,
+   * extensions, and children at any depth. Throws if there's content the object model has
+   * no place for.
+   */
   public DataType convertToType(Element element) throws FHIRException {
     DataType b = new Factory().create(element.fhirType());
-    if (b instanceof PrimitiveType) {
-      ((PrimitiveType) b).setValueAsString(element.primitiveValue());
-    } else {
-      for (Element child : element.getChildren()) {
-        b.setProperty(child.getName(), convertToType(child));
+    populate(element, b);
+    return b;
+  }
+
+  private void populate(Element src, Base tgt) throws FHIRException {
+    if ("xhtml".equals(tgt.fhirType())) {
+      tgt.setXhtml(src.getXhtml());
+    } else if (tgt.isPrimitive() && src.getValue() != null) {
+      ((PrimitiveType<?>) tgt).setValueAsString(src.getValue());
+    }
+    for (Element child : src.getChildren()) {
+      // the name in the definition, which is the [x] form for choice elements (the element's name is valueString etc)
+      String path = child.getProperty().getDefinition().getPath();
+      String name = path.substring(path.lastIndexOf('.') + 1);
+      if (isAnonymousType(child)) {
+        // an element defined inline (e.g. Timing.repeat) - the parent creates it, and we fill it in
+        Base value;
+        try {
+          value = tgt.makeProperty(name.hashCode(), name);
+        } catch (FHIRException e) {
+          throw new FHIRException("Unable to convert " + child.getPath() + ": " + e.getMessage(), e);
+        }
+        populate(child, value);
+      } else {
+        DataType value = convertToType(child);
+        try {
+          tgt.setProperty(name, value);
+        } catch (FHIRException e) {
+          throw new FHIRException("Unable to convert " + child.getPath() + ": " + e.getMessage(), e);
+        }
       }
     }
-    return b;
+  }
+
+  private boolean isAnonymousType(Element e) {
+    return "Element".equals(e.fhirType()) || "BackboneElement".equals(e.fhirType());
   }
 
   public DateTimeType readAsDateTime(Element e) {
