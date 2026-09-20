@@ -172,8 +172,8 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
    * the enum factories map a code with no value (only an id and/or extensions) to their NULL
    * constant, but the enumeration should have no value, like the code it came from
    */
-  private static boolean hasNoValue(Element source) {
-    return source instanceof PrimitiveType && !((PrimitiveType<?>) source).hasValue();
+  private static boolean hasValue(Element source) {
+    return source instanceof PrimitiveType && ((PrimitiveType<?>) source).hasValue();
   }
 
   /**
@@ -184,7 +184,7 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
     if (theEnumFactory == null)
       throw new IllegalArgumentException("An enumeration factory must be provided");
     myEnumFactory = theEnumFactory;
-    setValue(hasNoValue(source) ? null : theValue);
+    setValue(!hasValue(source) ? null : theValue);
     setId(source.getId());
     getExtension().addAll(source.getExtension());
   }
@@ -196,7 +196,7 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
     if (theEnumFactory == null)
       throw new IllegalArgumentException("An enumeration factory must be provided");
     myEnumFactory = theEnumFactory;
-    setValue(hasNoValue(source) ? null : theValue);
+    setValue(!hasValue(source) ? null : theValue);
     setId(source.getId());
     getExtension().addAll(source.getExtension());
   }

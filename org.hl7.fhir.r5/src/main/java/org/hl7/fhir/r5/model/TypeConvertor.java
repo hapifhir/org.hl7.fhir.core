@@ -624,10 +624,24 @@ public class TypeConvertor {
     }
   }
 
+  /**
+   * whether the value contains any of the characters that the spec's \S excludes for uri, url and
+   * canonical: space, tab, line feed, vertical tab, form feed and carriage return. Deliberately not
+   * Character.isWhitespace(), which also includes the Unicode space separators and U+001C..U+001F:
+   * the spec allows those (and the validator does too)
+   */
   private static boolean containsWhitespace(String s) {
-    for (char c : s.toCharArray()) {
-      if (Character.isWhitespace(c)) {
+    for (int i = 0; i < s.length(); i++) {
+      switch (s.charAt(i)) {
+      case ' ':
+      case '\t':
+      case '\n':
+      case 0x0B: // vertical tab
+      case '\f':
+      case '\r':
         return true;
+      default:
+        // not whitespace
       }
     }
     return false;

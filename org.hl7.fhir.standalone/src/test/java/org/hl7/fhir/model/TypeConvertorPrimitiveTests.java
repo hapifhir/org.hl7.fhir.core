@@ -164,6 +164,79 @@ class TypeConvertorPrimitiveTests {
     Assertions.assertThrows(FHIRException.class, () -> CASTS.get(type).apply(c));
   }
 
+  // -- uri, url and canonical ----------------------------------------------------------------
+  // the spec's only format rule for these is \S* - no whitespace. Everything else about them
+  // (absolute or not, urn:uuid/urn:oid syntax, versions) depends on context and is checked by the
+  // validator, which has to be able to convert invalid content in order to report on it
+
+  private static final String[] URI_TYPES = { "uri", "url", "canonical" };
+
+  private static final String[] URI_VALUES = {
+    "http://example.org/fhir",
+    "Patient/123",                                     // relative reference
+    "#p1",                                             // local reference
+    "urn:uuid:c757873d-ec9a-4326-a141-556f43239520",
+    "urn:oid:1.2.36.146.595.217.0.1",
+    "http://example.org/fhir/ValueSet/vs|1.0",         // canonical with a version
+    "http://example.org/fhir/ValueSet/vs#frag",
+    "http://example.org/fhir/ValueSet/vs|1.0#frag",
+    "http://example.org/ünïcode",            // an IRI
+    "oid:1.2.3",                                       // wrong, but it's the validator that says so
+    "http://example.org/a b",                     // no-break space: not \s
+    "http://example.org/a b",                     // em space: not \s
+    "http://example.org/a b",                     // line separator: not \s
+    "http://example.org/a\u001Cb",                     // file separator: Character.isWhitespace, but not \s
+  };
+
+  /** the characters \s matches: space, tab, line feed, vertical tab, form feed, carriage return */
+  private static final char[] WHITESPACE = { ' ', '\t', '\n', 0x0B, '\f', '\r' };
+
+  static Stream<Arguments> validUris() {
+    return Stream.of(URI_TYPES).flatMap(t -> Stream.of(URI_VALUES).map(v -> Arguments.of(t, v)));
+  }
+
+  static Stream<Arguments> whitespaceUris() {
+    return Stream.of(URI_TYPES).flatMap(t -> {
+      Stream.Builder<Arguments> b = Stream.builder();
+      for (char c : WHITESPACE) {
+        String name = "U+" + String.format("%04X", (int) c);
+        b.add(Arguments.of(t, name + " leading", c + "http://example.org/fhir"));
+        b.add(Arguments.of(t, name + " inside", "http://example.org/" + c + "fhir"));
+        b.add(Arguments.of(t, name + " trailing", "http://example.org/fhir" + c));
+        b.add(Arguments.of(t, name + " only", String.valueOf(c)));
+      }
+      return b.build();
+    });
+  }
+
+  @ParameterizedTest(name = "{0} {index}")
+  @MethodSource("validUris")
+  void testUriAccepted(String type, String value) {
+    PrimitiveType<?> result = CASTS.get(type).apply(new StringType(value));
+    Assertions.assertEquals(type, result.fhirType());
+    Assertions.assertEquals(value, result.primitiveValue());
+  }
+
+  @ParameterizedTest(name = "{0} {1}")
+  @MethodSource("whitespaceUris")
+  void testUriWhitespaceRejected(String type, String description, String value) {
+    FHIRException e = Assertions.assertThrows(FHIRException.class, () -> CASTS.get(type).apply(new StringType(value)));
+    Assertions.assertTrue(e.getMessage().contains("'" + value + "'"), e.getMessage());
+  }
+
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("uriTypes")
+  void testUriSameTypeNotChecked(String type) {
+    // an instance that's already the right type comes back as is - the cast doesn't re-validate it
+    PrimitiveType<?> p = (PrimitiveType<?>) new Factory().create(type);
+    p.setValueAsString("not a uri");
+    Assertions.assertSame(p, CASTS.get(type).apply(p));
+  }
+
+  static Stream<String> uriTypes() {
+    return Stream.of(URI_TYPES);
+  }
+
   @Test
   void testElementModel() throws Exception {
     Element wrapper = new JsonParser(TestingUtilities.getSharedWorkerContext())
