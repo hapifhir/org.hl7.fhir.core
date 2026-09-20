@@ -2590,7 +2590,9 @@ public class ProfileUtilities {
     for (ElementDefinition ed : obligationProfileElements) {
       for (Extension ext : ed.getExtensionList()) {
         if (Utilities.existsInList(ext.getUrl(), ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) {
-          dest.getExtensionList().add(new Extension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ext.getValue().copy(Base.COPY_DATA)));
+          Extension obligation = ext.copy(Base.COPY_DATA);
+          obligation.setUrl(ExtensionDefinitions.EXT_OBLIGATION_CORE);
+          dest.getExtensionList().add(obligation);
         }      
       }
     }
