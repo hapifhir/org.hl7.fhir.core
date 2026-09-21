@@ -18,8 +18,7 @@ public class TestModules {
   };
 
   public static final List<String> JUNIT4_CLASSNAMES = Arrays.asList(
-   "org.hl7.fhir.terminology.tests.LocalTerminologyServiceTests",
     "org.hl7.fhir.validation.tests.ValidationTests",
-    "org.hl7.fhir.terminology.tests.ExternalTerminologyServiceTests",
-    "org.hl7.fhir.terminology.tests.TerminologyServiceTests");
+    "org.hl7.fhir.standalone.terminology.tests.ExternalTerminologyServiceTests",
+    "org.hl7.fhir.standalone.terminology.tests.TerminologyServiceTests");
 }

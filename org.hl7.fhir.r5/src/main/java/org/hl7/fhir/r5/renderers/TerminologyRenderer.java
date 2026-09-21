@@ -204,6 +204,10 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   }
 
   protected XhtmlNode addTableHeaderRowStandard(XhtmlNode t, boolean hasHierarchy, boolean hasDisplay, boolean definitions, boolean comments, boolean version, boolean deprecated, List<PropertyComponent> properties, List<String> langs, Map<String, String> designations, boolean doDesignations) {
+    return addTableHeaderRowStandard(t, hasHierarchy, hasDisplay, definitions, comments, false, version, deprecated, properties, langs, designations, doDesignations);
+  }
+
+  protected XhtmlNode addTableHeaderRowStandard(XhtmlNode t, boolean hasHierarchy, boolean hasDisplay, boolean definitions, boolean comments, boolean status, boolean version, boolean deprecated, List<PropertyComponent> properties, List<String> langs, Map<String, String> designations, boolean doDesignations) {
     XhtmlNode tr = t.tr();
     if (hasHierarchy) {
       tr.td().b().tx(context.formatPhrase(RenderingI18nContext.TERMINOLOGY_LVL));
@@ -220,6 +224,9 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }
     if (comments) {
       tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_COMMENTS));
+    }
+    if (status) {
+      tr.td().b().tx(formatPhrase(RenderingI18nContext.GENERAL_STATUS));
     }
     if (version) {
       tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_VER));

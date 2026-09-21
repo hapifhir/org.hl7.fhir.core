@@ -430,7 +430,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
 
       String url = r.getUrl();
-      if (!allowLoadingDuplicates && hasResourceVersion(r.getType(), url, r.getVersion()) && !packageInfo.isTHO()) {
+      // isTHO() is tested before hasResourceVersion() deliberately: hasResourceVersion() resolves the
+      // resource, and resolving a proxy parses and version-converts it. For a THO package - where
+      // duplicate urls across versions are expected and allowed - this was materialising an already
+      // registered resource for every resource loaded, and then discarding the answer
+      if (!allowLoadingDuplicates && (packageInfo == null || !packageInfo.isTHO()) && hasResourceVersion(r.getType(), url, r.getVersion())) {
         // special workaround for known problems with existing packages
         if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
           return;
@@ -778,7 +782,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           case "Measure":
             return ImplicitCodeSystemSupport.convertMeasure((Measure) resource);
           default:
-            log.warn("The resource type " + resource.fhirType() + " cannot be treated as a CodeSystem");
+            log.warn("The resource type " + resource.fhirType() + " for "+system+" cannot be treated as a CodeSystem");
             return null;
         }
       }
@@ -3188,6 +3192,137 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  /**
+   * a boolean twin of fetchResourceWithExceptionByVersion(String, ...), mirroring its resolution order but
+   * never resolving the resource. That method ends in CanonicalResourceManager.get(), which for a lazily
+   * loaded resource reads, parses and version-converts the file, so using it to ask merely whether something
+   * is registered - all hasResourceVersion() ever wanted - materialised a resource on every call. Any change
+   * to the resolution order there has to be mirrored here.
+   *
+   * Two deliberate differences, neither visible to a caller that only wants the boolean: where the fetch
+   * would throw NOT_DONE_YET_CANT_FETCH_ this returns false, and a resource that is registered but fails to
+   * parse counts as present here, where the fetch would have thrown and been read as absent.
+   */
+  public boolean checkResourceExists(String cls, String uri, VersionResolutionRules rules) {
+    return checkResourceExistsByVersion(cls, uri, rules, null);
+  }
+
+  public boolean checkResourceExistsByVersion(String cls, String uri, VersionResolutionRules rules, String version) {
+    if (uri == null) {
+      return false;
+    }
+    if ("StructureDefinition".equals(cls)) {
+      uri = ProfileUtilities.sdNs(uri, null);
+    }
+    synchronized (lock) {
+      if (version == null) {
+        if (uri.contains("|")) {
+          version = uri.substring(uri.lastIndexOf("|") + 1);
+          uri = uri.substring(0, uri.lastIndexOf("|"));
+        }
+      }
+      if (uri.contains("#")) {
+        uri = uri.substring(0, uri.indexOf("#"));
+      }
+      if (cls == null || "Resource".equals(cls)) {
+        if (structures.has(uri)) {
+          return structures.exists(uri, version);
+        }
+        if (guides.has(uri)) {
+          return guides.exists(uri, version);
+        }
+        if (capstmts.has(uri)) {
+          return capstmts.exists(uri, version);
+        }
+        if (measures.has(uri)) {
+          return measures.exists(uri, version);
+        }
+        if (libraries.has(uri)) {
+          return libraries.exists(uri, version);
+        }
+        if (valueSets.has(uri)) {
+          return valueSets.exists(uri, version);
+        }
+        if (codeSystems.has(uri)) {
+          return codeSystems.exists(uri, version);
+        }
+        if (operations.has(uri)) {
+          return operations.exists(uri, version);
+        }
+        if (searchParameters.has(uri)) {
+          return searchParameters.exists(uri, version);
+        }
+        if (plans.has(uri)) {
+          return plans.exists(uri, version);
+        }
+        if (maps.has(uri)) {
+          return maps.exists(uri, version);
+        }
+        if (transforms.has(uri)) {
+          return transforms.exists(uri, version);
+        }
+        if (actors.has(uri)) {
+          return actors.exists(uri, version);
+        }
+        if (requirements.has(uri)) {
+          return requirements.exists(uri, version);
+        }
+        if (questionnaires.has(uri)) {
+          return questionnaires.exists(uri, version);
+        }
+        for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
+          for (ResourceProxy r : rt.values()) {
+            if (uri.equals(r.getUrl())) {
+              return true;
+            }
+          }
+        }
+      } else if ("ImplementationGuide".equals(cls)) {
+        return guides.exists(uri, version);
+      } else if ("CapabilityStatement".equals(cls)) {
+        return capstmts.exists(uri, version);
+      } else if ("Measure".equals(cls)) {
+        return measures.exists(uri, version);
+      } else if ("Library".equals(cls)) {
+        return libraries.exists(uri, version);
+      } else if ("StructureDefinition".equals(cls)) {
+        return structures.exists(uri, version);
+      } else if ("StructureMap".equals(cls)) {
+        return transforms.exists(uri, version);
+      } else if ("Requirements".equals(cls)) {
+        return requirements.exists(uri, version);
+      } else if ("ActorDefinition".equals(cls)) {
+        return actors.exists(uri, version);
+      } else if ("ValueSet".equals(cls)) {
+        return valueSets.exists(uri, version);
+      } else if ("CodeSystem".equals(cls)) {
+        return codeSystems.exists(uri, version);
+      } else if ("NamingSystem".equals(cls)) {
+        return systems.exists(uri, version);
+      } else if ("ConceptMap".equals(cls)) {
+        return maps.exists(uri, version);
+      } else if ("PlanDefinition".equals(cls)) {
+        return plans.exists(uri, version);
+      } else if ("OperationDefinition".equals(cls)) {
+        return operations.exists(uri, version);
+      } else if ("Questionnaire".equals(cls)) {
+        return questionnaires.exists(uri, version);
+      } else if ("SearchParameter".equals(cls)) {
+        return searchParameters.exists(uri, version);
+      }
+      if ("CodeSystem".equals(cls) && codeSystems.has(uri)) {
+        return codeSystems.exists(uri, version);
+      }
+      if ("ValueSet".equals(cls) && valueSets.has(uri)) {
+        return valueSets.exists(uri, version);
+      }
+      if ("Questionnaire".equals(cls)) {
+        return questionnaires.exists(uri, version);
+      }
+      return false;
+    }
+  }
+
   public <T extends Resource> boolean hasResourceVersion(Class<T> class_, String uri, String version) {
     try {
       return fetchResourceWithExceptionByVersion(class_, uri, VersionResolutionRules.defaultRule(), version, null) != null;
@@ -3198,7 +3333,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public <T extends Resource> boolean hasResourceVersion(String cls, String uri, String version) {
     try {
-      return fetchResourceWithExceptionByVersion(cls, uri, VersionResolutionRules.defaultRule(), version, null) != null;
+      return checkResourceExistsByVersion(cls, uri, VersionResolutionRules.defaultRule(), version);
     } catch (Exception e) {
       return false;
     }
