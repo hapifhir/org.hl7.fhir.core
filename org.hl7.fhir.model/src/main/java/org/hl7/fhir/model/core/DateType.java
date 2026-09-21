@@ -34,6 +34,11 @@ package org.hl7.fhir.model.core;
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.Base.CopyObjectOptions;
 import org.hl7.fhir.model.Base;
+
+import java.io.Serial;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
@@ -60,12 +65,13 @@ import java.util.TimeZone;
 @DatatypeDef(name = "date")
 public class DateType extends BaseDateTimeType {
 
-	private static final long serialVersionUID = 3L;
+	@Serial
+  private static final long serialVersionUID = 4L;
 	
 	/**
 	 * The default precision for this type
 	 */
-	public static final TemporalPrecisionEnum DEFAULT_PRECISION = TemporalPrecisionEnum.DAY;
+	public static final ChronoUnit DEFAULT_PRECISION = ChronoUnit.DAYS;
 
 	/**
 	 * Constructor
@@ -77,7 +83,7 @@ public class DateType extends BaseDateTimeType {
 	/**
 	 * Constructor
 	 *
-	 * @param context the model context this object belongs to - all objects in a tree must share the same context
+	 * @param modelContext the model context this object belongs to - all objects in a tree must share the same context
 	 */
 	public DateType(IModelContext modelContext) {
 	  this();
@@ -88,11 +94,25 @@ public class DateType extends BaseDateTimeType {
 	 * Constructor which accepts a date value and uses the {@link #DEFAULT_PRECISION} for this type
 	 */
 	public DateType(IModelContext modelContext, Date theDate) {
-		super(modelContext, theDate, DEFAULT_PRECISION);
+		this(modelContext, toZdt(theDate));
+	}
+
+	/**
+	 * Constructor which accepts a date value and uses the {@link #DEFAULT_PRECISION} for this type
+	 */
+	public DateType(IModelContext modelContext, LocalDate theDate) {
+		this(modelContext, toZdt(theDate));
+	}
+
+	/**
+	 * Constructor which accepts a date value and uses the {@link #DEFAULT_PRECISION} for this type
+	 */
+	public DateType(IModelContext modelContext, ZonedDateTime theDateTime) {
+		super(modelContext, theDateTime, DEFAULT_PRECISION);
 	}
 
 	public DateType(Date theDate) {
-	  this((IModelContext) null, theDate);
+	  this(null, theDate);
 	}
 
 	/**
@@ -107,7 +127,7 @@ public class DateType extends BaseDateTimeType {
 	 *             If the specified precision is not allowed for this type
 	 */
 	public DateType(IModelContext modelContext, Date theDate, TemporalPrecisionEnum thePrecision) {
-		super(modelContext, theDate, thePrecision);
+		super(modelContext, toZdt(theDate), toChronoUnit(thePrecision));
 	}
 
 	public DateType(Date theDate, TemporalPrecisionEnum thePrecision) {
@@ -138,12 +158,11 @@ public class DateType extends BaseDateTimeType {
 	 * Constructor which accepts a date value and uses the {@link #DEFAULT_PRECISION} for this type.
 	 */
 	public DateType(IModelContext modelContext, Calendar theCalendar) {
-		super(modelContext, theCalendar.getTime(), DEFAULT_PRECISION);
-		setTimeZone(theCalendar.getTimeZone());
+		super(modelContext, toZdt(theCalendar), DEFAULT_PRECISION);
 	}
 
 	public DateType(Calendar theCalendar) {
-	  this((IModelContext) null, theCalendar);
+	  this(null, theCalendar);
 	}
 
 	/**
@@ -162,7 +181,7 @@ public class DateType extends BaseDateTimeType {
 	}
 
 	public DateType(int theYear, int theMonth, int theDay) {
-	  this((IModelContext) null, theYear, theMonth, theDay);
+	  this(null, theYear, theMonth, theDay);
 	}
 
 	private static GregorianCalendar toCalendarZulu(int theYear, int theMonth, int theDay) {
@@ -179,15 +198,11 @@ public class DateType extends BaseDateTimeType {
 	}
 
 	@Override
-	boolean isPrecisionAllowed(TemporalPrecisionEnum thePrecision) {
-		switch (thePrecision) {
-			case YEAR:
-			case MONTH:
-			case DAY:
-				return true;
-			default:
-				return false;
-		}
+	boolean isPrecisionAllowed(ChronoUnit thePrecision) {
+    return switch (thePrecision) {
+      case YEARS, MONTHS, DAYS -> true;
+      default -> false;
+    };
 	}
 
 	/**
@@ -196,7 +211,7 @@ public class DateType extends BaseDateTimeType {
 	 * @see #DEFAULT_PRECISION
 	 */
 	@Override
-	protected TemporalPrecisionEnum getDefaultPrecisionForDatatype() {
+	protected ChronoUnit getDefaultPrecisionForDatatype() {
 		return DEFAULT_PRECISION;
 	}
 

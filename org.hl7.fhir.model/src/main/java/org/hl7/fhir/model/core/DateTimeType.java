@@ -31,9 +31,13 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.Base.CopyObjectOptions;
 import org.hl7.fhir.model.Base;
+
+import java.io.Serial;
+import java.time.ZonedDateTime;
 import java.util.EnumSet;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
@@ -44,26 +48,29 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.zip.DataFormatException;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Represents a FHIR dateTime datatype. Valid precisions values for this type are:
  * <ul>
- * <li>{@link TemporalPrecisionEnum#YEAR}
- * <li>{@link TemporalPrecisionEnum#MONTH}
- * <li>{@link TemporalPrecisionEnum#DAY}
- * <li>{@link TemporalPrecisionEnum#SECOND}
- * <li>{@link TemporalPrecisionEnum#MILLI}
+ * <li>{@link ChronoUnit#YEARS}
+ * <li>{@link ChronoUnit#MONTHS}
+ * <li>{@link ChronoUnit#DAYS}
+ * <li>{@link ChronoUnit#SECONDS}
+ * <li>{@link ChronoUnit#MILLIS}
+ * <li>{@link ChronoUnit#NANOS}
  * </ul>
  */
 @DatatypeDef(name = "dateTime")
 public class DateTimeType extends BaseDateTimeType {
 
-	private static final long serialVersionUID = 3L;
+	@Serial
+  private static final long serialVersionUID = 4L;
 	
 	/**
 	 * The default precision for this type
 	 */
-	public static final TemporalPrecisionEnum DEFAULT_PRECISION = TemporalPrecisionEnum.SECOND;
+	public static final ChronoUnit DEFAULT_PRECISION = ChronoUnit.SECONDS;
 
 	/**
 	 * Constructor
@@ -75,7 +82,7 @@ public class DateTimeType extends BaseDateTimeType {
 	/**
 	 * Constructor
 	 *
-	 * @param context the model context this object belongs to - all objects in a tree must share the same context
+	 * @param modelContext the model context this object belongs to - all objects in a tree must share the same context
 	 */
 	public DateTimeType(IModelContext modelContext) {
 	  this();
@@ -83,50 +90,103 @@ public class DateTimeType extends BaseDateTimeType {
 	}
 
   /**
-   * Create a new DateTimeDt with seconds precision and the local time zone
+   * Create a new DateTimeType with seconds precision and the local time zone
    */
   public DateTimeType(IModelContext modelContext, Date theDate) {
-    super(modelContext, theDate, DEFAULT_PRECISION, TimeZone.getDefault());
+    this(modelContext, toZdt(theDate));
   }
+
   /**
-   * Create a new DateTimeDt with seconds precision and the local time zone
+   * Create a new DateTimeType with seconds precision and the local time zone
+   */
+  public DateTimeType(IModelContext modelContext, ZonedDateTime theDateTime) {
+    super(modelContext, theDateTime, DEFAULT_PRECISION);
+  }
+  
+  /**
+   * Create a new DateTimeType with seconds precision and the local time zone
    */
   public DateTimeType(Date theDate) {
-    super(theDate, DEFAULT_PRECISION, TimeZone.getDefault());
+    this(toZdt(theDate));
+  }
+
+  /**
+   * Create a new DateTimeType with seconds precision and the local time zone
+   */
+  public DateTimeType(ZonedDateTime theDateTime) {
+    super(theDateTime, DEFAULT_PRECISION);
   }
 
   /**
    * Constructor which accepts a date value and a precision value. Valid precisions values for this type are:
    * <ul>
-   * <li>{@link TemporalPrecisionEnum#YEAR}
-   * <li>{@link TemporalPrecisionEnum#MONTH}
-   * <li>{@link TemporalPrecisionEnum#DAY}
-   * <li>{@link TemporalPrecisionEnum#SECOND}
-   * <li>{@link TemporalPrecisionEnum#MILLI}
+   * <li>{@link ChronoUnit#YEARS}
+   * <li>{@link ChronoUnit#MONTHS}
+   * <li>{@link ChronoUnit#DAYS}
+   * <li>{@link ChronoUnit#SECONDS}
+   * <li>{@link ChronoUnit#MILLIS}
+   * <li>{@link ChronoUnit#NANOS}
    * </ul>
    *
    * @throws DataFormatException
    *             If the specified precision is not allowed for this type
    */
-  public DateTimeType(IModelContext modelContext, Date theDate, TemporalPrecisionEnum thePrecision) {
-    super(modelContext, theDate, thePrecision, TimeZone.getDefault());
+  public DateTimeType(IModelContext modelContext, Date theDate, ChronoUnit thePrecision) {
+    this(modelContext, toZdt(theDate), thePrecision);
   }
 
   /**
    * Constructor which accepts a date value and a precision value. Valid precisions values for this type are:
    * <ul>
-   * <li>{@link TemporalPrecisionEnum#YEAR}
-   * <li>{@link TemporalPrecisionEnum#MONTH}
-   * <li>{@link TemporalPrecisionEnum#DAY}
-   * <li>{@link TemporalPrecisionEnum#SECOND}
-   * <li>{@link TemporalPrecisionEnum#MILLI}
+   * <li>{@link ChronoUnit#YEARS}
+   * <li>{@link ChronoUnit#MONTHS}
+   * <li>{@link ChronoUnit#DAYS}
+   * <li>{@link ChronoUnit#SECONDS}
+   * <li>{@link ChronoUnit#MILLIS}
+   * <li>{@link ChronoUnit#NANOS}
    * </ul>
    *
    * @throws DataFormatException
    *             If the specified precision is not allowed for this type
    */
-  public DateTimeType(Date theDate, TemporalPrecisionEnum thePrecision) {
-    super(theDate, thePrecision, TimeZone.getDefault());
+  public DateTimeType(IModelContext modelContext, ZonedDateTime theDateTime, ChronoUnit thePrecision) {
+    super(modelContext, theDateTime, thePrecision);
+  }
+
+  /**
+   * Constructor which accepts a date value and a precision value. Valid precisions values for this type are:
+   * <ul>
+   * <li>{@link ChronoUnit#YEARS}
+   * <li>{@link ChronoUnit#MONTHS}
+   * <li>{@link ChronoUnit#DAYS}
+   * <li>{@link ChronoUnit#SECONDS}
+   * <li>{@link ChronoUnit#MILLIS}
+   * <li>{@link ChronoUnit#NANOS}
+   * </ul>
+   *
+   * @throws DataFormatException
+   *             If the specified precision is not allowed for this type
+   */
+  public DateTimeType(Date theDate, ChronoUnit thePrecision) {
+    this(toZdt(theDate), thePrecision);
+  }
+
+  /**
+   * Constructor which accepts a date value and a precision value. Valid precisions values for this type are:
+   * <ul>
+   * <li>{@link ChronoUnit#YEARS}
+   * <li>{@link ChronoUnit#MONTHS}
+   * <li>{@link ChronoUnit#DAYS}
+   * <li>{@link ChronoUnit#SECONDS}
+   * <li>{@link ChronoUnit#MILLIS}
+   * <li>{@link ChronoUnit#NANOS}
+   * </ul>
+   *
+   * @throws DataFormatException
+   *             If the specified precision is not allowed for this type
+   */
+  public DateTimeType(ZonedDateTime theDate, ChronoUnit thePrecision) {
+    super(theDate, thePrecision);
   }
 
   /**
@@ -161,7 +221,7 @@ public class DateTimeType extends BaseDateTimeType {
    * </ul>
    */
   public DateTimeType(IModelContext modelContext, Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimezone) {
-    super(modelContext, theDate, thePrecision, theTimezone);
+    this(modelContext, toZdt(theDate, theTimezone), toChronoUnit(thePrecision));
   }
 
   /**
@@ -176,43 +236,29 @@ public class DateTimeType extends BaseDateTimeType {
    * </ul>
    */
   public DateTimeType(Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimezone) {
-    super(theDate, thePrecision, theTimezone);
+    this(toZdt(theDate, theTimezone), toChronoUnit(thePrecision));
   }
 
   /**
    * Constructor
    */
   public DateTimeType(IModelContext modelContext, Calendar theCalendar) {
-    this.modelContext = modelContext;
-    if (theCalendar != null) {
-      setValue(theCalendar.getTime());
-      setPrecision(DEFAULT_PRECISION);
-      setTimeZone(theCalendar.getTimeZone());
-    }
+    this(modelContext, toZdt(theCalendar));
   }
+
   /**
    * Constructor
    */
   public DateTimeType(Calendar theCalendar) {
-    if (theCalendar != null) {
-      setValue(theCalendar.getTime());
-      setPrecision(DEFAULT_PRECISION);
-      setTimeZone(theCalendar.getTimeZone());
-    }
+    this(toZdt(theCalendar));
   }
 
 	@Override
-	boolean isPrecisionAllowed(TemporalPrecisionEnum thePrecision) {
-		switch (thePrecision) {
-		case YEAR:
-		case MONTH:
-		case DAY:
-		case SECOND:
-		case MILLI:
-			return true;
-		default:
-			return false;
-		}
+	boolean isPrecisionAllowed(ChronoUnit thePrecision) {
+    return switch (thePrecision) {
+      case YEARS, MONTHS, DAYS, SECONDS, MILLIS, NANOS -> true;
+      default -> false;
+    };
 	}
 
 	/**
@@ -220,7 +266,7 @@ public class DateTimeType extends BaseDateTimeType {
 	 * zone
 	 */
 	public static DateTimeType now() {
-		return new DateTimeType(new Date(), TemporalPrecisionEnum.SECOND, TimeZone.getDefault());
+		return new DateTimeType(ZonedDateTime.now(), ChronoUnit.SECONDS);
 	}
 
 	/**
@@ -229,7 +275,7 @@ public class DateTimeType extends BaseDateTimeType {
 	 * @see #DEFAULT_PRECISION
 	 */
 	@Override
-	protected TemporalPrecisionEnum getDefaultPrecisionForDatatype() {
+	protected ChronoUnit getDefaultPrecisionForDatatype() {
 		return DEFAULT_PRECISION;
 	}
 
@@ -250,9 +296,7 @@ public class DateTimeType extends BaseDateTimeType {
 	}
 
 	public static DateTimeType today() {
-		DateTimeType retVal = now();
-		retVal.setPrecision(TemporalPrecisionEnum.DAY);
-		return retVal;
+    return new DateTimeType(ZonedDateTime.now(), ChronoUnit.DAYS);
 	}
 
 	public boolean getTzSign() {

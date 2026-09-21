@@ -30,19 +30,18 @@ package org.hl7.fhir.model.core;
  */
 
 
-
-import org.hl7.fhir.model.IModelContext;
-import org.hl7.fhir.model.Base.CopyObjectOptions;
-import org.hl7.fhir.model.Base;
-import java.util.EnumSet;
-
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.parser.DataFormatException;
+import org.hl7.fhir.model.IModelContext;
 
+import java.io.Serial;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.TimeZone;
-import java.util.zip.DataFormatException;
 
 /**
  * Represents a FHIR instant datatype. Valid precisions values for this type are:
@@ -54,15 +53,16 @@ import java.util.zip.DataFormatException;
 @DatatypeDef(name="instant")
 public class InstantType extends BaseDateTimeType {
 
-	private static final long serialVersionUID = 3L;
+	@Serial
+  private static final long serialVersionUID = 4L;
 	
 	/**
 	 * The default precision for this type
 	 */
-	public static final TemporalPrecisionEnum DEFAULT_PRECISION = TemporalPrecisionEnum.MILLI;
+	public static final ChronoUnit DEFAULT_PRECISION = ChronoUnit.MILLIS;
 
 	/**
-	 * Constructor which creates an InstantDt with <b>no timne value</b>. Note
+	 * Constructor which creates an InstantType with <b>no timne value</b>. Note
 	 * that unlike the default constructor for the Java {@link Date} or
 	 * {@link Calendar} objects, this constructor does not initialize the object
 	 * with the current time.
@@ -77,7 +77,7 @@ public class InstantType extends BaseDateTimeType {
 	/**
 	 * Constructor
 	 *
-	 * @param context the model context this object belongs to - all objects in a tree must share the same context
+	 * @param modelContext the model context this object belongs to - all objects in a tree must share the same context
 	 */
 	public InstantType(IModelContext modelContext) {
 	  this();
@@ -85,14 +85,14 @@ public class InstantType extends BaseDateTimeType {
 	}
 
 	/**
-	 * Create a new DateTimeDt
+	 * Create a new InstantType
 	 */
 	public InstantType(IModelContext modelContext, Calendar theCalendar) {
-		super(modelContext, theCalendar.getTime(), DEFAULT_PRECISION, theCalendar.getTimeZone());
+		this(modelContext, toZdt(theCalendar));
 	}
 
 	public InstantType(Calendar theCalendar) {
-	  this((IModelContext) null, theCalendar);
+	  this(null, theCalendar);
 	}
 
   /**
@@ -102,7 +102,7 @@ public class InstantType extends BaseDateTimeType {
    *             If the specified precision is not allowed for this type
    */
   public InstantType(IModelContext modelContext, Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimezone) {
-    super(modelContext, theDate, thePrecision, theTimezone);
+    this(modelContext, toZdt(theDate, theTimezone), toChronoUnit(thePrecision));
   }
 
   /**
@@ -112,14 +112,14 @@ public class InstantType extends BaseDateTimeType {
    *             If the specified precision is not allowed for this type
    */
   public InstantType(Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimezone) {
-    super(theDate, thePrecision, theTimezone);
+    this(toZdt(theDate, theTimezone), toChronoUnit(thePrecision));
   }
 
 
 	/**
-	 * Create a new DateTimeDt using an existing value. <b>Use this constructor with caution</b>,
+	 * Create a new InstantType using an existing value. <b>Use this constructor with caution</b>,
 	 * as it may create more precision than warranted (since for example it is possible to pass in
-	 * a DateTime with only a year, and this constructor will convert to an InstantDt with 
+	 * a DateTime with only a year, and this constructor will convert to an InstantType with 
 	 * milliseconds precision).
 	 */
 	public InstantType(IModelContext modelContext, BaseDateTimeType theDateTime) {
@@ -131,18 +131,36 @@ public class InstantType extends BaseDateTimeType {
 	}
 
 	public InstantType(BaseDateTimeType theDateTime) {
-	  this((IModelContext) null, theDateTime);
+	  this(null, theDateTime);
 	}
 
 	/**
-	 * Create a new DateTimeDt with the given date/time and {@link TemporalPrecisionEnum#MILLI} precision
+	 * Create a new InstantType with the given date/time and {@link TemporalPrecisionEnum#MILLI} precision
 	 */
 	public InstantType(IModelContext modelContext, Date theDate) {
-		super(modelContext, theDate, DEFAULT_PRECISION, TimeZone.getDefault());
+		this(modelContext, toZdt(theDate), DEFAULT_PRECISION);
+	}
+
+	/**
+	 * Create a new InstantType with the given date/time and {@link TemporalPrecisionEnum#MILLI} precision
+	 */
+	public InstantType(IModelContext modelContext, ZonedDateTime theDateTime) {
+		super(modelContext, theDateTime, DEFAULT_PRECISION);
+	}
+
+	/**
+	 * Create a new InstantType with the given date/time and precision
+	 */
+	public InstantType(IModelContext modelContext, ZonedDateTime theDateTime, ChronoUnit thePrecision) {
+		super(modelContext, theDateTime, thePrecision);
 	}
 
 	public InstantType(Date theDate) {
-	  this((IModelContext) null, theDate);
+	  this(null, theDate);
+	}
+
+	public InstantType(ZonedDateTime theZonedDateTime) {
+	  this(null, theZonedDateTime);
 	}
 
   /**
@@ -154,10 +172,7 @@ public class InstantType extends BaseDateTimeType {
    * </ul>
    */
   public InstantType(IModelContext modelContext, Date theDate, TemporalPrecisionEnum thePrecision) {
-    this.modelContext = modelContext;
-    setValue(theDate);
-    setPrecision(thePrecision);
-    setTimeZone(TimeZone.getDefault());
+    this(modelContext, toZdt(theDate), toChronoUnit(thePrecision));
   }
 
   /**
@@ -169,32 +184,42 @@ public class InstantType extends BaseDateTimeType {
    * </ul>
    */
   public InstantType(Date theDate, TemporalPrecisionEnum thePrecision) {
-    setValue(theDate);
-    setPrecision(thePrecision);
-    setTimeZone(TimeZone.getDefault());
+    this(toZdt(theDate), toChronoUnit(thePrecision));
   }
 
   /**
-   * Create a new InstantDt from a string value
+   * Constructor which accepts a date value and a precision value. Valid
+   * precisions values for this type are:
+   * <ul>
+   * <li>{@link TemporalPrecisionEnum#SECOND}
+   * <li>{@link TemporalPrecisionEnum#MILLI}
+   * </ul>
+   */
+  public InstantType(ZonedDateTime theDateTime, ChronoUnit thePrecision) {
+    super(theDateTime, thePrecision);
+  }
+
+  /**
+   * Create a new InstantType from a string value
    *
    * @param theString
    *            The string representation of the string. Must be in a valid
    *            format according to the FHIR specification
-   * @throws DataFormatException
+   * @throws DataFormatException If the string is not in a valid format for the datatype
    */
-  public InstantType(IModelContext modelContext, String theString) {
+  public InstantType(IModelContext modelContext, String theString) throws DataFormatException {
     super(modelContext, theString);
   }
 
   /**
-   * Create a new InstantDt from a string value
+   * Create a new InstantType from a string value
    *
    * @param theString
    *            The string representation of the string. Must be in a valid
    *            format according to the FHIR specification
-   * @throws DataFormatException
+   * @throws DataFormatException If the string is not in a valid format for the datatype
    */
-  public InstantType(String theString) {
+  public InstantType(String theString) throws DataFormatException {
     super(theString);
   }
 
@@ -206,7 +231,7 @@ public class InstantType extends BaseDateTimeType {
 	 *             If the {@link #getValue() contained Date} is null
 	 */
 	public boolean after(Date theDate) {
-		return getValue().after(theDate);
+		return getValue().toInstant().isAfter(theDate.toInstant());
 	}
 
 	/**
@@ -217,7 +242,7 @@ public class InstantType extends BaseDateTimeType {
 	 *             If the {@link #getValue() contained Date} is null
 	 */
 	public boolean before(Date theDate) {
-		return getValue().before(theDate);
+		return getValue().toInstant().isAfter(theDate.toInstant());
 	}
 
 	/**
@@ -227,23 +252,19 @@ public class InstantType extends BaseDateTimeType {
 	 * the underlying OS.
 	 */
 	public void setToCurrentTimeInLocalTimeZone() {
-		setValue(new Date());
-		setTimeZone(TimeZone.getDefault());
+		setValue(ZonedDateTime.now());
 	}
 
 	@Override
-	boolean isPrecisionAllowed(TemporalPrecisionEnum thePrecision) {
-		switch (thePrecision) {
-		case SECOND:
-		case MILLI:
-			return true;
-		default:
-			return false;
-		}
+	boolean isPrecisionAllowed(ChronoUnit thePrecision) {
+    return switch (thePrecision) {
+      case SECONDS, MILLIS, NANOS -> true;
+      default -> false;
+    };
 	}
 
 	/**
-	 * Factory method which creates a new InstantDt with millisecond precision and initializes it with the
+	 * Factory method which creates a new InstantType with millisecond precision and initializes it with the
 	 * current time and the system local timezone.
 	 */
 	public static InstantType withCurrentTime() {
@@ -256,7 +277,7 @@ public class InstantType extends BaseDateTimeType {
 	 * @see #DEFAULT_PRECISION
 	 */
 	@Override
-	protected TemporalPrecisionEnum getDefaultPrecisionForDatatype() {
+	protected ChronoUnit getDefaultPrecisionForDatatype() {
 		return DEFAULT_PRECISION;
 	}
 

@@ -1,5 +1,10 @@
 package org.hl7.fhir.utilities;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -11,6 +16,9 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class DateTimeUtil {
+
+  private static final DateTimeFormatter FORMAT_DATE_TIME_MEDIUM = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
+  private static final DateTimeFormatter FORMAT_DATE_MEDIUM = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
 
   public static String toHumanDisplay(TimeZone theTimeZone, TemporalPrecisionEnum thePrecision, Date theValue, String theValueAsString) {
     Calendar value = theTimeZone != null ? Calendar.getInstance(theTimeZone) : Calendar.getInstance();
@@ -60,6 +68,26 @@ public class DateTimeUtil {
         return dateTimeFormat.format(value);
     }
 
+  }
+
+  public static String toHumanDisplay(ChronoUnit thePrecision, ZonedDateTime theValue) {
+    return switch (thePrecision) {
+      case YEARS, MONTHS, DAYS -> theValue.format(FORMAT_DATE_MEDIUM);
+      default -> theValue.format(FORMAT_DATE_TIME_MEDIUM);
+    };
+
+  }
+
+  public static String toHumanDisplayLocalTimezone(ChronoUnit thePrecision, ZonedDateTime theValue) {
+    ZonedDateTime valueLocalTimezone = theValue.withZoneSameInstant(ZoneId.systemDefault());
+    return toHumanDisplay(thePrecision, valueLocalTimezone);
+  }
+
+  public static String toHumanDisplay(Locale locale, ChronoUnit thePrecision, ZonedDateTime theValue) {
+    return switch (thePrecision) {
+      case YEARS, MONTHS, DAYS -> theValue.format(FORMAT_DATE_MEDIUM.localizedBy(locale));
+      default -> theValue.format(FORMAT_DATE_TIME_MEDIUM.localizedBy(locale));
+    };
   }
 
   public static String lowBoundaryForDate(String value, int precision) {
