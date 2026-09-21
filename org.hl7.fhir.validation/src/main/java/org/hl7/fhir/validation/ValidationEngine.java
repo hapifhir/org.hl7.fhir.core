@@ -830,7 +830,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
         if (component.getMode() == StructureMap.StructureMapModelMode.TARGET) {
           for (StructureDefinition sd : allStructures) {
-            if (sd.getUrl().equalsIgnoreCase(component.getUrl()) && sd.getName().equalsIgnoreCase(gpReturnTypeParameter.getType())) {
+            if (sd.getUrl().equalsIgnoreCase(component.getUrl()) && sd.getName() != null && sd.getName().equalsIgnoreCase(gpReturnTypeParameter.getType())) {
               targetTypeUrl = sd.getUrl();
               structureDefinition = sd;
               break;
