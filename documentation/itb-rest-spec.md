@@ -217,6 +217,7 @@ Returns a TAR with the OperationOutcome and (when `includeContentInReport` is tr
 |---|---|---|
 | `contentToValidate` | yes | Actual resource (FHIR JSON). |
 | `matchetype` | yes | Expected pattern (FHIR JSON) — may use `$string$`, `$date$`, `$uuid$`, `$choice:a\|b\|c$` wildcards. |
+| `normalize` | no | `tx`: before comparing, normalise `contentToValidate` with the rules the validator's terminology test runner (`-txTests`) uses: server-only detail removed (narrative, `meta`, `diagnostics`), and the arrays whose order carries no meaning sorted (parameters and parts, expansion contents, designations, properties, issues, capability statements). The HL7 terminology test set's expected files are stored in that form, which is what this was built for, but the rules suit any comparison of a `Parameters`, `ValueSet`, `OperationOutcome`, `CapabilityStatement`, `TerminologyCapabilities` or `ConceptMap` that should not fail on array order or server detail. Applies to `contentToValidate` only; the `matchetype` is used as given, and the report echoes the normalised content. Absent: compared as given. |
 | `mode` | no | `complete` (default) or `partial`. |
 
 Returns a TAR; mismatches produce `result: FAILURE` with one item per mismatching path.

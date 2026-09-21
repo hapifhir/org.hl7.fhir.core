@@ -5,6 +5,25 @@ import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.validation.ValidationEngine;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.Parameters;
+import org.hl7.fhir.model.core.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.validation.instance.MatchetypeValidator;
+import org.hl7.fhir.validation.special.TxTesterNormalizer;
 import org.hl7.fhir.validation.http.FhirValidatorHttpService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,9 +61,11 @@ class GitbHttpHandlersTest {
   private FhirValidatorHttpService service;
   private HttpClient client;
 
+  private ValidationEngine engine;
+
   @BeforeEach
   void setUp() throws IOException {
-    ValidationEngine engine = mock(ValidationEngine.class);
+    engine = mock(ValidationEngine.class);
     service = new FhirValidatorHttpService(engine, true, TEST_PORT);
     service.startServer();
     client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
@@ -446,6 +467,119 @@ class GitbHttpHandlersTest {
     // Sanity: the old /<svc>/definition path is gone; only /<svc>/getModuleDefinition works.
     HttpResponse<String> response = get("/itb/fhir/definition");
     assertEquals(404, response.statusCode());
+  }
+
+  // ------------------------------------------------------------------
+  // POST /itb/matchetype/validate with normalize=tx
+  //
+  // The terminology test set's expected files are stored scrubbed and sorted. Without the
+  // input, the comparison is positional and a response that differs only in array order
+  // fails; with normalize=tx the actual is put in the same form first. The mocked engine is
+  // given a real context and a real comparison, so the handler's own work is what is tested.
+  // ------------------------------------------------------------------
+
+  /** A $lookup response as a server might return it. */
+  private static final String LOOKUP = "{\"resourceType\":\"Parameters\",\"parameter\":["
+    + "{\"name\":\"name\",\"valueString\":\"LOINC\"},"
+    + "{\"name\":\"display\",\"valueString\":\"Body weight\"},"
+    + "{\"name\":\"designation\",\"part\":[{\"name\":\"language\",\"valueCode\":\"en\"},"
+    + "{\"name\":\"use\",\"valueCoding\":{\"system\":\"http://snomed.info/sct\",\"code\":\"900000000000013009\"}},"
+    + "{\"name\":\"value\",\"valueString\":\"Weight\"}]},"
+    + "{\"name\":\"property\",\"part\":[{\"name\":\"code\",\"valueCode\":\"CLASS\"},{\"name\":\"value\",\"valueString\":\"BDYWGT.ATOM\"}]},"
+    + "{\"name\":\"result\",\"valueBoolean\":true}"
+    + "]}";
+
+  private SimpleWorkerContext txContext() throws Exception {
+    // the engine's context type; the shared test context is one
+    return (SimpleWorkerContext) TestingUtilities.getSharedWorkerContext();
+  }
+
+  /** Stub the mocked engine with a real context and the comparison the real engine performs. */
+  private void stubEngineForComparison() throws Exception {
+    SimpleWorkerContext ctx = txContext();
+    when(engine.getContext()).thenReturn(ctx);
+    when(engine.compareMatchetype(any(), any(), any(), any())).thenAnswer(inv -> {
+      byte[] actual = inv.getArgument(0);
+      byte[] expected = inv.getArgument(2);
+      Element act = Manager.parseSingle(ctx, new ByteArrayInputStream(actual), FhirFormat.JSON);
+      Element exp = Manager.parseSingle(ctx, new ByteArrayInputStream(expected), FhirFormat.JSON);
+      List<ValidationMessage> messages = new ArrayList<>();
+      new MatchetypeValidator(new FHIRPathEngine(ctx)).compare(messages, act.fhirType(), exp, act);
+      OperationOutcome oo = new OperationOutcome();
+      if (messages.isEmpty()) {
+        oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.INFORMATION).setCode(OperationOutcome.IssueType.INFORMATIONAL).setDiagnostics("Resource matches the matchetype");
+      } else {
+        for (ValidationMessage m : messages) {
+          oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.INVALID).setDiagnostics(m.getMessage());
+        }
+      }
+      return oo;
+    });
+  }
+
+  /** The expected file's form: the runner's scrub and sort applied to the fixture. */
+  private String lookupAsExpectedFile() throws Exception {
+    return new String(TxTesterNormalizer.normalizeJson(txContext().getModelContext(), LOOKUP.getBytes(StandardCharsets.UTF_8), false), StandardCharsets.UTF_8);
+  }
+
+  /** The same content with the parameter array and every part array reversed. */
+  private String lookupReversed() throws Exception {
+    org.hl7.fhir.model.core.formats.JsonParser jp = new org.hl7.fhir.model.core.formats.JsonParser(txContext().getModelContext());
+    Parameters p = (Parameters) jp.parse(LOOKUP.getBytes(StandardCharsets.UTF_8));
+    Collections.reverse(p.getParameterList());
+    for (ParametersParameterComponent pp : p.getParameterList()) {
+      Collections.reverse(pp.getPartList());
+    }
+    return new String(jp.composeBytes(p), StandardCharsets.UTF_8);
+  }
+
+  private JsonObject postMatchetype(JsonObject... inputs) throws Exception {
+    HttpResponse<String> response = post("/itb/matchetype/validate", JsonParser.compose(validateRequestBody(inputs)));
+    assertEquals(200, response.statusCode(), response.body());
+    return JsonParser.parseObject(response.body());
+  }
+
+  @Test
+  void matchetypeWithoutNormalizeStillFailsOnArrayOrder() throws Exception {
+    stubEngineForComparison();
+    JsonObject report = postMatchetype(
+      anyContent("contentToValidate", lookupReversed()),
+      anyContent("matchetype", lookupAsExpectedFile())).getJsonObject("report");
+    assertEquals("FAILURE", report.asString("result"));
+    assertTrue(report.getJsonObject("counters").asInteger("nrOfErrors") > 0);
+  }
+
+  @Test
+  void matchetypeWithNormalizeTxAcceptsReorderedResponse() throws Exception {
+    stubEngineForComparison();
+    JsonObject report = postMatchetype(
+      anyContent("contentToValidate", lookupReversed()),
+      anyContent("matchetype", lookupAsExpectedFile()),
+      anyContent("normalize", "tx")).getJsonObject("report");
+    assertEquals("SUCCESS", report.asString("result"));
+    assertEquals(0, report.getJsonObject("counters").asInteger("nrOfErrors"));
+  }
+
+  @Test
+  void matchetypeNormalizeTouchesOnlyTheActual() throws Exception {
+    // The matchetype is used as given: a reversed matchetype against a sorted actual fails
+    // even with normalize=tx, because normalisation is never applied to the pattern.
+    stubEngineForComparison();
+    JsonObject report = postMatchetype(
+      anyContent("contentToValidate", lookupAsExpectedFile()),
+      anyContent("matchetype", lookupReversed()),
+      anyContent("normalize", "tx")).getJsonObject("report");
+    assertEquals("FAILURE", report.asString("result"));
+  }
+
+  @Test
+  void matchetypeRejectsUnknownNormalizeValue() throws Exception {
+    HttpResponse<String> response = post("/itb/matchetype/validate", JsonParser.compose(validateRequestBody(
+      anyContent("contentToValidate", LOOKUP),
+      anyContent("matchetype", LOOKUP),
+      anyContent("normalize", "json"))));
+    assertEquals(400, response.statusCode());
+    assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("normalize");
   }
 
   // ------------------------------------------------------------------

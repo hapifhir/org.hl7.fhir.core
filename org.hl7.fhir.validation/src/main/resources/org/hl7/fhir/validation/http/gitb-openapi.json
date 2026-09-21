@@ -58,7 +58,7 @@
         "tags": ["MatchetypeValidator"],
         "summary": "Compare a resource against an expected matchetype pattern",
         "operationId": "matchetypeValidate",
-        "description": "Inputs (in `input[]`): `contentToValidate`, `matchetype`, optional `mode` (`complete`|`partial`).",
+        "description": "Inputs (in `input[]`): `contentToValidate`, `matchetype`, optional `mode` (`complete`|`partial`), optional `normalize` (`tx`: before comparing, normalise `contentToValidate` with the validator's terminology test runner rules - server detail removed, order-free arrays sorted - for any comparison that should not fail on array order or server detail; applies to the actual only).",
         "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ValidateRequest" } } } },
         "responses": { "200": { "description": "Comparison result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ValidationResponse" } } } } }
       }
