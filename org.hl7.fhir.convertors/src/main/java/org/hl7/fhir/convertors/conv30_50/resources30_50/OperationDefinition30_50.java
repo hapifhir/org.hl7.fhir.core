@@ -202,7 +202,8 @@ public class OperationDefinition30_50 {
     if (src.hasDocumentation())
       tgt.setDocumentationElement(String30_50.convertStringToMarkdown(src.getDocumentationElement()));
     if (src.hasType())
-      tgt.setType(Enumerations.FHIRTypes.fromCode(src.getType()));
+      // R5 renamed Any to Resource
+      tgt.setType(Enumerations.FHIRTypes.fromCode("Any".equals(src.getType()) ? "Resource" : src.getType()));
     if (src.hasSearchType())
       tgt.setSearchTypeElement(Enumerations30_50.convertSearchParamType(src.getSearchTypeElement()));
     if (src.hasProfile())

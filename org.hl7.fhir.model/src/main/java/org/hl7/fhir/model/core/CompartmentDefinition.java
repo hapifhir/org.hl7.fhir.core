@@ -735,6 +735,10 @@ public class CompartmentDefinition extends CanonicalResource {
         /**
          * 
          */
+        CITATION, 
+        /**
+         * 
+         */
         CONFORMANCE, 
         /**
          * 
@@ -887,6 +891,26 @@ public class CompartmentDefinition extends CanonicalResource {
         /**
          * 
          */
+        SUBSTANCENUCLEICACID, 
+        /**
+         * 
+         */
+        SUBSTANCEPOLYMER, 
+        /**
+         * 
+         */
+        SUBSTANCEPROTEIN, 
+        /**
+         * 
+         */
+        SUBSTANCEREFERENCEINFORMATION, 
+        /**
+         * 
+         */
+        SUBSTANCESOURCEMATERIAL, 
+        /**
+         * 
+         */
         SUBSTANCESPECIFICATION, 
         /**
          * 
@@ -912,6 +936,138 @@ public class CompartmentDefinition extends CanonicalResource {
          * 
          */
         STRUCTUREMAP, 
+        /**
+         * 
+         */
+        GRAPHDEFINITION, 
+        /**
+         * 
+         */
+        BIOLOGICALLYDERIVEDPRODUCTDISPENSE, 
+        /**
+         * 
+         */
+        CHARGEITEM, 
+        /**
+         * 
+         */
+        CHARGEITEMDEFINITION, 
+        /**
+         * 
+         */
+        CLINICALASSESSMENT, 
+        /**
+         * 
+         */
+        CONDITIONDEFINITION, 
+        /**
+         * 
+         */
+        DEVICEDISPENSE, 
+        /**
+         * 
+         */
+        DEVICEUSAGE, 
+        /**
+         * 
+         */
+        ENCOUNTERHISTORY, 
+        /**
+         * 
+         */
+        ENROLLMENTREQUEST, 
+        /**
+         * 
+         */
+        ENROLLMENTRESPONSE, 
+        /**
+         * 
+         */
+        FORMULARYITEM, 
+        /**
+         * 
+         */
+        GENOMICSTUDY, 
+        /**
+         * 
+         */
+        IMMUNIZATIONEVALUATION, 
+        /**
+         * 
+         */
+        IMMUNIZATIONRECOMMENDATION, 
+        /**
+         * 
+         */
+        INSURANCEPLAN, 
+        /**
+         * 
+         */
+        INSURANCEPRODUCT, 
+        /**
+         * 
+         */
+        INVENTORYITEM, 
+        /**
+         * 
+         */
+        INVENTORYREPORT, 
+        /**
+         * 
+         */
+        INVOICE, 
+        /**
+         * 
+         */
+        LINKAGE, 
+        /**
+         * 
+         */
+        MOLECULARDEFINITION, 
+        /**
+         * 
+         */
+        PERSONALRELATIONSHIP, 
+        /**
+         * 
+         */
+        SUPPLYDELIVERY, 
+        /**
+         * 
+         */
+        SUPPLYREQUEST, 
+        /**
+         * 
+         */
+        TRANSPORT, 
+        /**
+         * 
+         */
+        VERIFICATIONRESULT, 
+        /**
+         * 
+         */
+        CLINICALIMPRESSION, 
+        /**
+         * 
+         */
+        CONTRACT, 
+        /**
+         * 
+         */
+        EVIDENCEREPORT, 
+        /**
+         * 
+         */
+        MEDICATIONKNOWLEDGE, 
+        /**
+         * 
+         */
+        MOLECULARSEQUENCE, 
+        /**
+         * 
+         */
+        PERMISSION, 
         /**
          * added to help the parsers with the generic types
          */
@@ -1163,6 +1319,8 @@ public class CompartmentDefinition extends CanonicalResource {
           return BODYSITE;
         if ("CatalogEntry".equals(codeString))
           return CATALOGENTRY;
+        if ("Citation".equals(codeString))
+          return CITATION;
         if ("Conformance".equals(codeString))
           return CONFORMANCE;
         if ("DataElement".equals(codeString))
@@ -1239,6 +1397,16 @@ public class CompartmentDefinition extends CanonicalResource {
           return SEQUENCE;
         if ("ServiceDefinition".equals(codeString))
           return SERVICEDEFINITION;
+        if ("SubstanceNucleicAcid".equals(codeString))
+          return SUBSTANCENUCLEICACID;
+        if ("SubstancePolymer".equals(codeString))
+          return SUBSTANCEPOLYMER;
+        if ("SubstanceProtein".equals(codeString))
+          return SUBSTANCEPROTEIN;
+        if ("SubstanceReferenceInformation".equals(codeString))
+          return SUBSTANCEREFERENCEINFORMATION;
+        if ("SubstanceSourceMaterial".equals(codeString))
+          return SUBSTANCESOURCEMATERIAL;
         if ("SubstanceSpecification".equals(codeString))
           return SUBSTANCESPECIFICATION;
         if ("ViewDefinition".equals(codeString))
@@ -1253,6 +1421,72 @@ public class CompartmentDefinition extends CanonicalResource {
           return PUBLICATIONRECORD;
         if ("StructureMap".equals(codeString))
           return STRUCTUREMAP;
+        if ("GraphDefinition".equals(codeString))
+          return GRAPHDEFINITION;
+        if ("BiologicallyDerivedProductDispense".equals(codeString))
+          return BIOLOGICALLYDERIVEDPRODUCTDISPENSE;
+        if ("ChargeItem".equals(codeString))
+          return CHARGEITEM;
+        if ("ChargeItemDefinition".equals(codeString))
+          return CHARGEITEMDEFINITION;
+        if ("ClinicalAssessment".equals(codeString))
+          return CLINICALASSESSMENT;
+        if ("ConditionDefinition".equals(codeString))
+          return CONDITIONDEFINITION;
+        if ("DeviceDispense".equals(codeString))
+          return DEVICEDISPENSE;
+        if ("DeviceUsage".equals(codeString))
+          return DEVICEUSAGE;
+        if ("EncounterHistory".equals(codeString))
+          return ENCOUNTERHISTORY;
+        if ("EnrollmentRequest".equals(codeString))
+          return ENROLLMENTREQUEST;
+        if ("EnrollmentResponse".equals(codeString))
+          return ENROLLMENTRESPONSE;
+        if ("FormularyItem".equals(codeString))
+          return FORMULARYITEM;
+        if ("GenomicStudy".equals(codeString))
+          return GENOMICSTUDY;
+        if ("ImmunizationEvaluation".equals(codeString))
+          return IMMUNIZATIONEVALUATION;
+        if ("ImmunizationRecommendation".equals(codeString))
+          return IMMUNIZATIONRECOMMENDATION;
+        if ("InsurancePlan".equals(codeString))
+          return INSURANCEPLAN;
+        if ("InsuranceProduct".equals(codeString))
+          return INSURANCEPRODUCT;
+        if ("InventoryItem".equals(codeString))
+          return INVENTORYITEM;
+        if ("InventoryReport".equals(codeString))
+          return INVENTORYREPORT;
+        if ("Invoice".equals(codeString))
+          return INVOICE;
+        if ("Linkage".equals(codeString))
+          return LINKAGE;
+        if ("MolecularDefinition".equals(codeString))
+          return MOLECULARDEFINITION;
+        if ("PersonalRelationship".equals(codeString))
+          return PERSONALRELATIONSHIP;
+        if ("SupplyDelivery".equals(codeString))
+          return SUPPLYDELIVERY;
+        if ("SupplyRequest".equals(codeString))
+          return SUPPLYREQUEST;
+        if ("Transport".equals(codeString))
+          return TRANSPORT;
+        if ("VerificationResult".equals(codeString))
+          return VERIFICATIONRESULT;
+        if ("ClinicalImpression".equals(codeString))
+          return CLINICALIMPRESSION;
+        if ("Contract".equals(codeString))
+          return CONTRACT;
+        if ("EvidenceReport".equals(codeString))
+          return EVIDENCEREPORT;
+        if ("MedicationKnowledge".equals(codeString))
+          return MEDICATIONKNOWLEDGE;
+        if ("MolecularSequence".equals(codeString))
+          return MOLECULARSEQUENCE;
+        if ("Permission".equals(codeString))
+          return PERMISSION;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -1382,6 +1616,7 @@ public class CompartmentDefinition extends CanonicalResource {
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case BODYSITE: return "BodySite";
             case CATALOGENTRY: return "CatalogEntry";
+            case CITATION: return "Citation";
             case CONFORMANCE: return "Conformance";
             case DATAELEMENT: return "DataElement";
             case DEVICECOMPONENT: return "DeviceComponent";
@@ -1420,6 +1655,11 @@ public class CompartmentDefinition extends CanonicalResource {
             case RISKEVIDENCESYNTHESIS: return "RiskEvidenceSynthesis";
             case SEQUENCE: return "Sequence";
             case SERVICEDEFINITION: return "ServiceDefinition";
+            case SUBSTANCENUCLEICACID: return "SubstanceNucleicAcid";
+            case SUBSTANCEPOLYMER: return "SubstancePolymer";
+            case SUBSTANCEPROTEIN: return "SubstanceProtein";
+            case SUBSTANCEREFERENCEINFORMATION: return "SubstanceReferenceInformation";
+            case SUBSTANCESOURCEMATERIAL: return "SubstanceSourceMaterial";
             case SUBSTANCESPECIFICATION: return "SubstanceSpecification";
             case VIEWDEFINITION: return "ViewDefinition";
             case TESTPLAN: return "TestPlan";
@@ -1427,6 +1667,39 @@ public class CompartmentDefinition extends CanonicalResource {
             case TESTREPORT: return "TestReport";
             case PUBLICATIONRECORD: return "PublicationRecord";
             case STRUCTUREMAP: return "StructureMap";
+            case GRAPHDEFINITION: return "GraphDefinition";
+            case BIOLOGICALLYDERIVEDPRODUCTDISPENSE: return "BiologicallyDerivedProductDispense";
+            case CHARGEITEM: return "ChargeItem";
+            case CHARGEITEMDEFINITION: return "ChargeItemDefinition";
+            case CLINICALASSESSMENT: return "ClinicalAssessment";
+            case CONDITIONDEFINITION: return "ConditionDefinition";
+            case DEVICEDISPENSE: return "DeviceDispense";
+            case DEVICEUSAGE: return "DeviceUsage";
+            case ENCOUNTERHISTORY: return "EncounterHistory";
+            case ENROLLMENTREQUEST: return "EnrollmentRequest";
+            case ENROLLMENTRESPONSE: return "EnrollmentResponse";
+            case FORMULARYITEM: return "FormularyItem";
+            case GENOMICSTUDY: return "GenomicStudy";
+            case IMMUNIZATIONEVALUATION: return "ImmunizationEvaluation";
+            case IMMUNIZATIONRECOMMENDATION: return "ImmunizationRecommendation";
+            case INSURANCEPLAN: return "InsurancePlan";
+            case INSURANCEPRODUCT: return "InsuranceProduct";
+            case INVENTORYITEM: return "InventoryItem";
+            case INVENTORYREPORT: return "InventoryReport";
+            case INVOICE: return "Invoice";
+            case LINKAGE: return "Linkage";
+            case MOLECULARDEFINITION: return "MolecularDefinition";
+            case PERSONALRELATIONSHIP: return "PersonalRelationship";
+            case SUPPLYDELIVERY: return "SupplyDelivery";
+            case SUPPLYREQUEST: return "SupplyRequest";
+            case TRANSPORT: return "Transport";
+            case VERIFICATIONRESULT: return "VerificationResult";
+            case CLINICALIMPRESSION: return "ClinicalImpression";
+            case CONTRACT: return "Contract";
+            case EVIDENCEREPORT: return "EvidenceReport";
+            case MEDICATIONKNOWLEDGE: return "MedicationKnowledge";
+            case MOLECULARSEQUENCE: return "MolecularSequence";
+            case PERMISSION: return "Permission";
             case NULL: return null;
             default: return "?";
           }
@@ -1555,6 +1828,7 @@ public class CompartmentDefinition extends CanonicalResource {
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/fhir-types";
             case BODYSITE: return "http://hl7.org/fhir/fhir-old-types";
             case CATALOGENTRY: return "http://hl7.org/fhir/fhir-old-types";
+            case CITATION: return "http://hl7.org/fhir/fhir-old-types";
             case CONFORMANCE: return "http://hl7.org/fhir/fhir-old-types";
             case DATAELEMENT: return "http://hl7.org/fhir/fhir-old-types";
             case DEVICECOMPONENT: return "http://hl7.org/fhir/fhir-old-types";
@@ -1593,6 +1867,11 @@ public class CompartmentDefinition extends CanonicalResource {
             case RISKEVIDENCESYNTHESIS: return "http://hl7.org/fhir/fhir-old-types";
             case SEQUENCE: return "http://hl7.org/fhir/fhir-old-types";
             case SERVICEDEFINITION: return "http://hl7.org/fhir/fhir-old-types";
+            case SUBSTANCENUCLEICACID: return "http://hl7.org/fhir/fhir-old-types";
+            case SUBSTANCEPOLYMER: return "http://hl7.org/fhir/fhir-old-types";
+            case SUBSTANCEPROTEIN: return "http://hl7.org/fhir/fhir-old-types";
+            case SUBSTANCEREFERENCEINFORMATION: return "http://hl7.org/fhir/fhir-old-types";
+            case SUBSTANCESOURCEMATERIAL: return "http://hl7.org/fhir/fhir-old-types";
             case SUBSTANCESPECIFICATION: return "http://hl7.org/fhir/fhir-old-types";
             case VIEWDEFINITION: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
             case TESTPLAN: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
@@ -1600,6 +1879,39 @@ public class CompartmentDefinition extends CanonicalResource {
             case TESTREPORT: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
             case PUBLICATIONRECORD: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
             case STRUCTUREMAP: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case GRAPHDEFINITION: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case BIOLOGICALLYDERIVEDPRODUCTDISPENSE: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case CHARGEITEM: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case CHARGEITEMDEFINITION: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case CLINICALASSESSMENT: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case CONDITIONDEFINITION: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case DEVICEDISPENSE: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case DEVICEUSAGE: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case ENCOUNTERHISTORY: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case ENROLLMENTREQUEST: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case ENROLLMENTRESPONSE: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case FORMULARYITEM: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case GENOMICSTUDY: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case IMMUNIZATIONEVALUATION: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case IMMUNIZATIONRECOMMENDATION: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case INSURANCEPLAN: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case INSURANCEPRODUCT: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case INVENTORYITEM: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case INVENTORYREPORT: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case INVOICE: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case LINKAGE: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case MOLECULARDEFINITION: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case PERSONALRELATIONSHIP: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case SUPPLYDELIVERY: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case SUPPLYREQUEST: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case TRANSPORT: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case VERIFICATIONRESULT: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case CLINICALIMPRESSION: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case CONTRACT: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case EVIDENCEREPORT: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case MEDICATIONKNOWLEDGE: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case MOLECULARSEQUENCE: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
+            case PERMISSION: return "http://hl7.org/fhir/tools/CodeSystem/additional-resources";
             case NULL: return null;
             default: return "?";
           }
@@ -1728,6 +2040,7 @@ public class CompartmentDefinition extends CanonicalResource {
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
             case BODYSITE: return "";
             case CATALOGENTRY: return "";
+            case CITATION: return "";
             case CONFORMANCE: return "";
             case DATAELEMENT: return "";
             case DEVICECOMPONENT: return "";
@@ -1766,6 +2079,11 @@ public class CompartmentDefinition extends CanonicalResource {
             case RISKEVIDENCESYNTHESIS: return "";
             case SEQUENCE: return "";
             case SERVICEDEFINITION: return "";
+            case SUBSTANCENUCLEICACID: return "";
+            case SUBSTANCEPOLYMER: return "";
+            case SUBSTANCEPROTEIN: return "";
+            case SUBSTANCEREFERENCEINFORMATION: return "";
+            case SUBSTANCESOURCEMATERIAL: return "";
             case SUBSTANCESPECIFICATION: return "";
             case VIEWDEFINITION: return "";
             case TESTPLAN: return "";
@@ -1773,6 +2091,39 @@ public class CompartmentDefinition extends CanonicalResource {
             case TESTREPORT: return "";
             case PUBLICATIONRECORD: return "";
             case STRUCTUREMAP: return "";
+            case GRAPHDEFINITION: return "";
+            case BIOLOGICALLYDERIVEDPRODUCTDISPENSE: return "";
+            case CHARGEITEM: return "";
+            case CHARGEITEMDEFINITION: return "";
+            case CLINICALASSESSMENT: return "";
+            case CONDITIONDEFINITION: return "";
+            case DEVICEDISPENSE: return "";
+            case DEVICEUSAGE: return "";
+            case ENCOUNTERHISTORY: return "";
+            case ENROLLMENTREQUEST: return "";
+            case ENROLLMENTRESPONSE: return "";
+            case FORMULARYITEM: return "";
+            case GENOMICSTUDY: return "";
+            case IMMUNIZATIONEVALUATION: return "";
+            case IMMUNIZATIONRECOMMENDATION: return "";
+            case INSURANCEPLAN: return "";
+            case INSURANCEPRODUCT: return "";
+            case INVENTORYITEM: return "";
+            case INVENTORYREPORT: return "";
+            case INVOICE: return "";
+            case LINKAGE: return "";
+            case MOLECULARDEFINITION: return "";
+            case PERSONALRELATIONSHIP: return "";
+            case SUPPLYDELIVERY: return "";
+            case SUPPLYREQUEST: return "";
+            case TRANSPORT: return "";
+            case VERIFICATIONRESULT: return "";
+            case CLINICALIMPRESSION: return "";
+            case CONTRACT: return "";
+            case EVIDENCEREPORT: return "";
+            case MEDICATIONKNOWLEDGE: return "";
+            case MOLECULARSEQUENCE: return "";
+            case PERMISSION: return "";
             case NULL: return null;
             default: return "?";
           }
@@ -1901,6 +2252,7 @@ public class CompartmentDefinition extends CanonicalResource {
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case BODYSITE: return "BodySite";
             case CATALOGENTRY: return "CatalogEntry";
+            case CITATION: return "Citation";
             case CONFORMANCE: return "Conformance";
             case DATAELEMENT: return "DataElement";
             case DEVICECOMPONENT: return "DeviceComponent";
@@ -1939,13 +2291,51 @@ public class CompartmentDefinition extends CanonicalResource {
             case RISKEVIDENCESYNTHESIS: return "RiskEvidenceSynthesis";
             case SEQUENCE: return "Sequence";
             case SERVICEDEFINITION: return "ServiceDefinition";
+            case SUBSTANCENUCLEICACID: return "SubstanceNucleicAcid";
+            case SUBSTANCEPOLYMER: return "SubstancePolymer";
+            case SUBSTANCEPROTEIN: return "SubstanceProtein";
+            case SUBSTANCEREFERENCEINFORMATION: return "SubstanceReferenceInformation";
+            case SUBSTANCESOURCEMATERIAL: return "SubstanceSourceMaterial";
             case SUBSTANCESPECIFICATION: return "SubstanceSpecification";
             case VIEWDEFINITION: return "ViewDefinition";
             case TESTPLAN: return "TestPlan";
             case TESTSCRIPT: return "TestScript";
             case TESTREPORT: return "TestReport";
             case PUBLICATIONRECORD: return "PublicationRecord";
-            case STRUCTUREMAP: return "PublicationRecord";
+            case STRUCTUREMAP: return "StructureMap";
+            case GRAPHDEFINITION: return "GraphDefinition";
+            case BIOLOGICALLYDERIVEDPRODUCTDISPENSE: return "BiologicallyDerivedProductDispense";
+            case CHARGEITEM: return "ChargeItem";
+            case CHARGEITEMDEFINITION: return "ChargeItemDefinition";
+            case CLINICALASSESSMENT: return "ClinicalAssessment";
+            case CONDITIONDEFINITION: return "ConditionDefinition";
+            case DEVICEDISPENSE: return "DeviceDispense";
+            case DEVICEUSAGE: return "DeviceUsage";
+            case ENCOUNTERHISTORY: return "EncounterHistory";
+            case ENROLLMENTREQUEST: return "EnrollmentRequest";
+            case ENROLLMENTRESPONSE: return "EnrollmentResponse";
+            case FORMULARYITEM: return "FormularyItem";
+            case GENOMICSTUDY: return "GenomicStudy";
+            case IMMUNIZATIONEVALUATION: return "ImmunizationEvaluation";
+            case IMMUNIZATIONRECOMMENDATION: return "ImmunizationRecommendation";
+            case INSURANCEPLAN: return "InsurancePlan";
+            case INSURANCEPRODUCT: return "InsuranceProduct";
+            case INVENTORYITEM: return "InventoryItem";
+            case INVENTORYREPORT: return "InventoryReport";
+            case INVOICE: return "Invoice";
+            case LINKAGE: return "Linkage";
+            case MOLECULARDEFINITION: return "MolecularDefinition";
+            case PERSONALRELATIONSHIP: return "PersonalRelationship";
+            case SUPPLYDELIVERY: return "SupplyDelivery";
+            case SUPPLYREQUEST: return "SupplyRequest";
+            case TRANSPORT: return "Transport";
+            case VERIFICATIONRESULT: return "VerificationResult";
+            case CLINICALIMPRESSION: return "ClinicalImpression";
+            case CONTRACT: return "Contract";
+            case EVIDENCEREPORT: return "EvidenceReport";
+            case MEDICATIONKNOWLEDGE: return "MedicationKnowledge";
+            case MOLECULARSEQUENCE: return "MolecularSequence";
+            case PERMISSION: return "Permission";
             case NULL: return null;
             default: return "?";
           }
@@ -2208,6 +2598,8 @@ public class CompartmentDefinition extends CanonicalResource {
           return ExtendedResourceTypes.BODYSITE;
         if ("CatalogEntry".equals(codeString))
           return ExtendedResourceTypes.CATALOGENTRY;
+        if ("Citation".equals(codeString))
+          return ExtendedResourceTypes.CITATION;
         if ("Conformance".equals(codeString))
           return ExtendedResourceTypes.CONFORMANCE;
         if ("DataElement".equals(codeString))
@@ -2284,6 +2676,16 @@ public class CompartmentDefinition extends CanonicalResource {
           return ExtendedResourceTypes.SEQUENCE;
         if ("ServiceDefinition".equals(codeString))
           return ExtendedResourceTypes.SERVICEDEFINITION;
+        if ("SubstanceNucleicAcid".equals(codeString))
+          return ExtendedResourceTypes.SUBSTANCENUCLEICACID;
+        if ("SubstancePolymer".equals(codeString))
+          return ExtendedResourceTypes.SUBSTANCEPOLYMER;
+        if ("SubstanceProtein".equals(codeString))
+          return ExtendedResourceTypes.SUBSTANCEPROTEIN;
+        if ("SubstanceReferenceInformation".equals(codeString))
+          return ExtendedResourceTypes.SUBSTANCEREFERENCEINFORMATION;
+        if ("SubstanceSourceMaterial".equals(codeString))
+          return ExtendedResourceTypes.SUBSTANCESOURCEMATERIAL;
         if ("SubstanceSpecification".equals(codeString))
           return ExtendedResourceTypes.SUBSTANCESPECIFICATION;
         if ("ViewDefinition".equals(codeString))
@@ -2298,6 +2700,72 @@ public class CompartmentDefinition extends CanonicalResource {
           return ExtendedResourceTypes.PUBLICATIONRECORD;
         if ("StructureMap".equals(codeString))
           return ExtendedResourceTypes.STRUCTUREMAP;
+        if ("GraphDefinition".equals(codeString))
+          return ExtendedResourceTypes.GRAPHDEFINITION;
+        if ("BiologicallyDerivedProductDispense".equals(codeString))
+          return ExtendedResourceTypes.BIOLOGICALLYDERIVEDPRODUCTDISPENSE;
+        if ("ChargeItem".equals(codeString))
+          return ExtendedResourceTypes.CHARGEITEM;
+        if ("ChargeItemDefinition".equals(codeString))
+          return ExtendedResourceTypes.CHARGEITEMDEFINITION;
+        if ("ClinicalAssessment".equals(codeString))
+          return ExtendedResourceTypes.CLINICALASSESSMENT;
+        if ("ConditionDefinition".equals(codeString))
+          return ExtendedResourceTypes.CONDITIONDEFINITION;
+        if ("DeviceDispense".equals(codeString))
+          return ExtendedResourceTypes.DEVICEDISPENSE;
+        if ("DeviceUsage".equals(codeString))
+          return ExtendedResourceTypes.DEVICEUSAGE;
+        if ("EncounterHistory".equals(codeString))
+          return ExtendedResourceTypes.ENCOUNTERHISTORY;
+        if ("EnrollmentRequest".equals(codeString))
+          return ExtendedResourceTypes.ENROLLMENTREQUEST;
+        if ("EnrollmentResponse".equals(codeString))
+          return ExtendedResourceTypes.ENROLLMENTRESPONSE;
+        if ("FormularyItem".equals(codeString))
+          return ExtendedResourceTypes.FORMULARYITEM;
+        if ("GenomicStudy".equals(codeString))
+          return ExtendedResourceTypes.GENOMICSTUDY;
+        if ("ImmunizationEvaluation".equals(codeString))
+          return ExtendedResourceTypes.IMMUNIZATIONEVALUATION;
+        if ("ImmunizationRecommendation".equals(codeString))
+          return ExtendedResourceTypes.IMMUNIZATIONRECOMMENDATION;
+        if ("InsurancePlan".equals(codeString))
+          return ExtendedResourceTypes.INSURANCEPLAN;
+        if ("InsuranceProduct".equals(codeString))
+          return ExtendedResourceTypes.INSURANCEPRODUCT;
+        if ("InventoryItem".equals(codeString))
+          return ExtendedResourceTypes.INVENTORYITEM;
+        if ("InventoryReport".equals(codeString))
+          return ExtendedResourceTypes.INVENTORYREPORT;
+        if ("Invoice".equals(codeString))
+          return ExtendedResourceTypes.INVOICE;
+        if ("Linkage".equals(codeString))
+          return ExtendedResourceTypes.LINKAGE;
+        if ("MolecularDefinition".equals(codeString))
+          return ExtendedResourceTypes.MOLECULARDEFINITION;
+        if ("PersonalRelationship".equals(codeString))
+          return ExtendedResourceTypes.PERSONALRELATIONSHIP;
+        if ("SupplyDelivery".equals(codeString))
+          return ExtendedResourceTypes.SUPPLYDELIVERY;
+        if ("SupplyRequest".equals(codeString))
+          return ExtendedResourceTypes.SUPPLYREQUEST;
+        if ("Transport".equals(codeString))
+          return ExtendedResourceTypes.TRANSPORT;
+        if ("VerificationResult".equals(codeString))
+          return ExtendedResourceTypes.VERIFICATIONRESULT;
+        if ("ClinicalImpression".equals(codeString))
+          return ExtendedResourceTypes.CLINICALIMPRESSION;
+        if ("Contract".equals(codeString))
+          return ExtendedResourceTypes.CONTRACT;
+        if ("EvidenceReport".equals(codeString))
+          return ExtendedResourceTypes.EVIDENCEREPORT;
+        if ("MedicationKnowledge".equals(codeString))
+          return ExtendedResourceTypes.MEDICATIONKNOWLEDGE;
+        if ("MolecularSequence".equals(codeString))
+          return ExtendedResourceTypes.MOLECULARSEQUENCE;
+        if ("Permission".equals(codeString))
+          return ExtendedResourceTypes.PERMISSION;
         throw new IllegalArgumentException("Unknown ExtendedResourceTypes code '"+codeString+"'");
         }
         public Enumeration<ExtendedResourceTypes> fromType(PrimitiveType<?> code) throws FHIRException {
@@ -2552,6 +3020,8 @@ public class CompartmentDefinition extends CanonicalResource {
           return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.BODYSITE, code);
         if ("CatalogEntry".equals(codeString))
           return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.CATALOGENTRY, code);
+        if ("Citation".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.CITATION, code);
         if ("Conformance".equals(codeString))
           return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.CONFORMANCE, code);
         if ("DataElement".equals(codeString))
@@ -2628,6 +3098,16 @@ public class CompartmentDefinition extends CanonicalResource {
           return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.SEQUENCE, code);
         if ("ServiceDefinition".equals(codeString))
           return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.SERVICEDEFINITION, code);
+        if ("SubstanceNucleicAcid".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.SUBSTANCENUCLEICACID, code);
+        if ("SubstancePolymer".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.SUBSTANCEPOLYMER, code);
+        if ("SubstanceProtein".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.SUBSTANCEPROTEIN, code);
+        if ("SubstanceReferenceInformation".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.SUBSTANCEREFERENCEINFORMATION, code);
+        if ("SubstanceSourceMaterial".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.SUBSTANCESOURCEMATERIAL, code);
         if ("SubstanceSpecification".equals(codeString))
           return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.SUBSTANCESPECIFICATION, code);
         if ("ViewDefinition".equals(codeString))
@@ -2642,6 +3122,72 @@ public class CompartmentDefinition extends CanonicalResource {
           return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.PUBLICATIONRECORD, code);
         if ("StructureMap".equals(codeString))
           return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.STRUCTUREMAP, code);
+        if ("GraphDefinition".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.GRAPHDEFINITION, code);
+        if ("BiologicallyDerivedProductDispense".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.BIOLOGICALLYDERIVEDPRODUCTDISPENSE, code);
+        if ("ChargeItem".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.CHARGEITEM, code);
+        if ("ChargeItemDefinition".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.CHARGEITEMDEFINITION, code);
+        if ("ClinicalAssessment".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.CLINICALASSESSMENT, code);
+        if ("ConditionDefinition".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.CONDITIONDEFINITION, code);
+        if ("DeviceDispense".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.DEVICEDISPENSE, code);
+        if ("DeviceUsage".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.DEVICEUSAGE, code);
+        if ("EncounterHistory".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.ENCOUNTERHISTORY, code);
+        if ("EnrollmentRequest".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.ENROLLMENTREQUEST, code);
+        if ("EnrollmentResponse".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.ENROLLMENTRESPONSE, code);
+        if ("FormularyItem".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.FORMULARYITEM, code);
+        if ("GenomicStudy".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.GENOMICSTUDY, code);
+        if ("ImmunizationEvaluation".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.IMMUNIZATIONEVALUATION, code);
+        if ("ImmunizationRecommendation".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.IMMUNIZATIONRECOMMENDATION, code);
+        if ("InsurancePlan".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.INSURANCEPLAN, code);
+        if ("InsuranceProduct".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.INSURANCEPRODUCT, code);
+        if ("InventoryItem".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.INVENTORYITEM, code);
+        if ("InventoryReport".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.INVENTORYREPORT, code);
+        if ("Invoice".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.INVOICE, code);
+        if ("Linkage".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.LINKAGE, code);
+        if ("MolecularDefinition".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.MOLECULARDEFINITION, code);
+        if ("PersonalRelationship".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.PERSONALRELATIONSHIP, code);
+        if ("SupplyDelivery".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.SUPPLYDELIVERY, code);
+        if ("SupplyRequest".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.SUPPLYREQUEST, code);
+        if ("Transport".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.TRANSPORT, code);
+        if ("VerificationResult".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.VERIFICATIONRESULT, code);
+        if ("ClinicalImpression".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.CLINICALIMPRESSION, code);
+        if ("Contract".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.CONTRACT, code);
+        if ("EvidenceReport".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.EVIDENCEREPORT, code);
+        if ("MedicationKnowledge".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.MEDICATIONKNOWLEDGE, code);
+        if ("MolecularSequence".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.MOLECULARSEQUENCE, code);
+        if ("Permission".equals(codeString))
+          return new Enumeration<ExtendedResourceTypes>(modelContext, this, ExtendedResourceTypes.PERMISSION, code);
         throw new FHIRException("Unknown ExtendedResourceTypes code '"+codeString+"'");
         }
     public String toCode(ExtendedResourceTypes code) {
@@ -2889,6 +3435,8 @@ public class CompartmentDefinition extends CanonicalResource {
         return "BodySite";
       if (code == ExtendedResourceTypes.CATALOGENTRY)
         return "CatalogEntry";
+      if (code == ExtendedResourceTypes.CITATION)
+        return "Citation";
       if (code == ExtendedResourceTypes.CONFORMANCE)
         return "Conformance";
       if (code == ExtendedResourceTypes.DATAELEMENT)
@@ -2965,6 +3513,16 @@ public class CompartmentDefinition extends CanonicalResource {
         return "Sequence";
       if (code == ExtendedResourceTypes.SERVICEDEFINITION)
         return "ServiceDefinition";
+      if (code == ExtendedResourceTypes.SUBSTANCENUCLEICACID)
+        return "SubstanceNucleicAcid";
+      if (code == ExtendedResourceTypes.SUBSTANCEPOLYMER)
+        return "SubstancePolymer";
+      if (code == ExtendedResourceTypes.SUBSTANCEPROTEIN)
+        return "SubstanceProtein";
+      if (code == ExtendedResourceTypes.SUBSTANCEREFERENCEINFORMATION)
+        return "SubstanceReferenceInformation";
+      if (code == ExtendedResourceTypes.SUBSTANCESOURCEMATERIAL)
+        return "SubstanceSourceMaterial";
       if (code == ExtendedResourceTypes.SUBSTANCESPECIFICATION)
         return "SubstanceSpecification";
       if (code == ExtendedResourceTypes.VIEWDEFINITION)
@@ -2979,6 +3537,72 @@ public class CompartmentDefinition extends CanonicalResource {
         return "PublicationRecord";
       if (code == ExtendedResourceTypes.STRUCTUREMAP)
         return "StructureMap";
+      if (code == ExtendedResourceTypes.GRAPHDEFINITION)
+        return "GraphDefinition";
+      if (code == ExtendedResourceTypes.BIOLOGICALLYDERIVEDPRODUCTDISPENSE)
+        return "BiologicallyDerivedProductDispense";
+      if (code == ExtendedResourceTypes.CHARGEITEM)
+        return "ChargeItem";
+      if (code == ExtendedResourceTypes.CHARGEITEMDEFINITION)
+        return "ChargeItemDefinition";
+      if (code == ExtendedResourceTypes.CLINICALASSESSMENT)
+        return "ClinicalAssessment";
+      if (code == ExtendedResourceTypes.CONDITIONDEFINITION)
+        return "ConditionDefinition";
+      if (code == ExtendedResourceTypes.DEVICEDISPENSE)
+        return "DeviceDispense";
+      if (code == ExtendedResourceTypes.DEVICEUSAGE)
+        return "DeviceUsage";
+      if (code == ExtendedResourceTypes.ENCOUNTERHISTORY)
+        return "EncounterHistory";
+      if (code == ExtendedResourceTypes.ENROLLMENTREQUEST)
+        return "EnrollmentRequest";
+      if (code == ExtendedResourceTypes.ENROLLMENTRESPONSE)
+        return "EnrollmentResponse";
+      if (code == ExtendedResourceTypes.FORMULARYITEM)
+        return "FormularyItem";
+      if (code == ExtendedResourceTypes.GENOMICSTUDY)
+        return "GenomicStudy";
+      if (code == ExtendedResourceTypes.IMMUNIZATIONEVALUATION)
+        return "ImmunizationEvaluation";
+      if (code == ExtendedResourceTypes.IMMUNIZATIONRECOMMENDATION)
+        return "ImmunizationRecommendation";
+      if (code == ExtendedResourceTypes.INSURANCEPLAN)
+        return "InsurancePlan";
+      if (code == ExtendedResourceTypes.INSURANCEPRODUCT)
+        return "InsuranceProduct";
+      if (code == ExtendedResourceTypes.INVENTORYITEM)
+        return "InventoryItem";
+      if (code == ExtendedResourceTypes.INVENTORYREPORT)
+        return "InventoryReport";
+      if (code == ExtendedResourceTypes.INVOICE)
+        return "Invoice";
+      if (code == ExtendedResourceTypes.LINKAGE)
+        return "Linkage";
+      if (code == ExtendedResourceTypes.MOLECULARDEFINITION)
+        return "MolecularDefinition";
+      if (code == ExtendedResourceTypes.PERSONALRELATIONSHIP)
+        return "PersonalRelationship";
+      if (code == ExtendedResourceTypes.SUPPLYDELIVERY)
+        return "SupplyDelivery";
+      if (code == ExtendedResourceTypes.SUPPLYREQUEST)
+        return "SupplyRequest";
+      if (code == ExtendedResourceTypes.TRANSPORT)
+        return "Transport";
+      if (code == ExtendedResourceTypes.VERIFICATIONRESULT)
+        return "VerificationResult";
+      if (code == ExtendedResourceTypes.CLINICALIMPRESSION)
+        return "ClinicalImpression";
+      if (code == ExtendedResourceTypes.CONTRACT)
+        return "Contract";
+      if (code == ExtendedResourceTypes.EVIDENCEREPORT)
+        return "EvidenceReport";
+      if (code == ExtendedResourceTypes.MEDICATIONKNOWLEDGE)
+        return "MedicationKnowledge";
+      if (code == ExtendedResourceTypes.MOLECULARSEQUENCE)
+        return "MolecularSequence";
+      if (code == ExtendedResourceTypes.PERMISSION)
+        return "Permission";
       return "?";
       }
     public String toSystem(ExtendedResourceTypes code) {

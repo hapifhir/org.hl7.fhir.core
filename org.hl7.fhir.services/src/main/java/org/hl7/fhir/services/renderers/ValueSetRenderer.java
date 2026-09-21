@@ -28,6 +28,7 @@ import org.hl7.fhir.model.utilities.EOperationOutcome;
 import org.hl7.fhir.model.utilities.SnomedUtilities;
 import org.hl7.fhir.model.utilities.ValueSetUtilities;
 import org.hl7.fhir.utilities.LoincLinker;
+import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
@@ -1445,20 +1446,22 @@ public class ValueSetRenderer extends TerminologyRenderer {
           XhtmlNode t = li.table("none", false).markGenerated(!context.forValidResource());
           boolean hasComments = false;
           boolean hasDefinition = false;
+          boolean hasStatus = false;
           for (ConceptReferenceComponent c : inc.getConceptList()) {
             hasComments = hasComments || ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_VS_COMMENT);
+            hasStatus = hasStatus || ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_STANDARDS_STATUS);
             ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
             hasDefinition = hasDefinition || ((cc != null && cc.hasDefinition()) || ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_DEFINITION));
           }
-          if (hasComments || hasDefinition) {
+          if (hasComments || hasDefinition || hasStatus) {
             status.setExtensions(true);
           }
-          addMapHeaders(addTableHeaderRowStandard(t, false, true, hasDefinition, hasComments, false, false, null, langs, designations, doDesignations), maps);
+          addMapHeaders(addTableHeaderRowStandard(t, false, true, hasDefinition, hasComments, hasStatus, false, false, null, langs, designations, doDesignations), maps);
           for (ConceptReferenceComponent c : inc.getConceptList()) {
-            renderConcept(inc, langs, doDesignations, maps, designations, definitions, t, hasComments, hasDefinition, c, inc.getVersion(), vsRes);
+            renderConcept(inc, langs, doDesignations, maps, designations, definitions, t, hasComments, hasDefinition, hasStatus, c, inc.getVersion(), vsRes);
           }
           for (Base b : VersionComparisonAnnotation.getDeleted(inc, "concept" )) {
-            renderConcept(inc, langs, doDesignations, maps, designations, definitions, t, hasComments, hasDefinition, (ConceptReferenceComponent) b, inc.getVersion(), vsRes);
+            renderConcept(inc, langs, doDesignations, maps, designations, definitions, t, hasComments, hasDefinition, hasStatus, (ConceptReferenceComponent) b, inc.getVersion(), vsRes);
           }
         }
         if (inc.getFilterList().size() > 0) {
@@ -1563,7 +1566,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private void renderConcept(ConceptSetComponent inc, List<String> langs, boolean doDesignations,
       List<UsedConceptMap> maps, Map<String, String> designations, Map<String, ConceptDefinitionComponent> definitions,
-      XhtmlNode t, boolean hasComments, boolean hasDefinition, ConceptReferenceComponent c, String version, ValueSet vs) {
+      XhtmlNode t, boolean hasComments, boolean hasDefinition, boolean hasStatus, ConceptReferenceComponent c, String version, ValueSet vs) {
     XhtmlNode tr = t.tr();
     XhtmlNode td = renderStatusRow(c, t, tr);
     ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
@@ -1590,6 +1593,24 @@ public class ValueSetRenderer extends TerminologyRenderer {
       td = tr.td();
       if (ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_VS_COMMENT)) {
         td.addTextWithLineBreaks(context.formatPhrase(RenderingI18nContext.VALUE_SET_NOTE, ExtensionUtilities.readStringExtension(c, ExtensionDefinitions.EXT_VS_COMMENT)+" "));
+      }
+    }
+    if (hasStatus) {
+      td = tr.td();
+      if (ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_STANDARDS_STATUS)) {
+        String code = ExtensionUtilities.readStringExtension(c, ExtensionDefinitions.EXT_STANDARDS_STATUS);
+        StandardsStatus ss = null;
+        try {
+          ss = StandardsStatus.fromCode(code);
+        } catch (Exception e) {
+          // not a known standards status code - just show it as is
+        }
+        if (ss != null) {
+          td.tx(ss.toDisplay());
+          genStandardsStatus(td, ss);
+        } else if (code != null) {
+          td.tx(code);
+        }
       }
     }
     if (doDesignations) {
