@@ -35,7 +35,6 @@ import ca.uhn.fhir.parser.DataFormatException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateUtils;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.utilities.DateTimeUtil;
@@ -51,6 +50,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
 
+  private static final int SECONDS_PER_MINUTE = 60;
+  private static final int SECONDS_PER_HOUR = 60 * SECONDS_PER_MINUTE;
   private static final ZoneId SYSTEM_DEFAULT_ZONE_ID = ZoneId.systemDefault();
   static final int NANOS_PER_MILLIS = 1_000_000;
   static final int NANOS_PER_SECOND = 1_000_000_000;
@@ -425,21 +426,21 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
       StringBuilder b = new StringBuilder();
       leftPadWithZeros(theValue.getYear(), 4, b);
 
-      if (thePrecision.ordinal() > ChronoUnit.YEARS.ordinal()) {
+      if (thePrecision.ordinal() < ChronoUnit.YEARS.ordinal()) {
         b.append('-');
         leftPadWithZeros(theValue.getMonthValue(), 2, b);
-        if (thePrecision.ordinal() > ChronoUnit.MONTHS.ordinal()) {
+        if (thePrecision.ordinal() < ChronoUnit.MONTHS.ordinal()) {
           b.append('-');
           leftPadWithZeros(theValue.getDayOfMonth(), 2, b);
-          if (thePrecision.ordinal() > ChronoUnit.DAYS.ordinal()) {
+          if (thePrecision.ordinal() < ChronoUnit.DAYS.ordinal()) {
             b.append('T');
             leftPadWithZeros(theValue.getHour(), 2, b);
             b.append(':');
             leftPadWithZeros(theValue.getMinute(), 2, b);
-            if (thePrecision.ordinal() > ChronoUnit.MINUTES.ordinal()) {
+            if (thePrecision.ordinal() < ChronoUnit.MINUTES.ordinal()) {
               b.append(':');
               leftPadWithZeros(theValue.getSecond(), 2, b);
-              if (thePrecision.ordinal() > ChronoUnit.SECONDS.ordinal()) {
+              if (thePrecision.ordinal() < ChronoUnit.SECONDS.ordinal()) {
                 b.append('.');
                 leftPadWithZeros(theValue.get(ChronoField.MILLI_OF_SECOND), 3, b);
               }
@@ -458,11 +459,11 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
                   offset = Math.abs(offset);
                 }
 
-                int hoursOffset = (int) (offset / DateUtils.MILLIS_PER_HOUR);
+                int hoursOffset = (int) (offset / SECONDS_PER_HOUR);
                 leftPadWithZeros(hoursOffset, 2, b);
                 b.append(':');
-                int minutesOffset = (int) (offset % DateUtils.MILLIS_PER_HOUR);
-                minutesOffset = (int) (minutesOffset / DateUtils.MILLIS_PER_MINUTE);
+                int minutesOffset = (int) (offset % SECONDS_PER_HOUR);
+                minutesOffset = (int) (minutesOffset / SECONDS_PER_MINUTE);
                 leftPadWithZeros(minutesOffset, 2, b);
               }
             }
@@ -586,10 +587,10 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    * @see #getZoneId()
    */
   public TimeZone getTimeZone() {
-    ZoneId zone = getValueNotNull().getZone();
-    if (zone == null) {
+    if (myTimeZoneMissing) {
       return null;
     }
+    ZoneId zone = getValueNotNull().getZone();
     return TimeZone.getTimeZone(zone);
   }
 
@@ -599,6 +600,9 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    * {@link ChronoUnit#MONTHS}, {@link ChronoUnit#DAYS})
    */
   public ZoneId getZoneId() {
+    if (myTimeZoneMissing) {
+      return null;
+    }
     ZonedDateTime value = getValue();
     if (value == null || getPrecision().ordinal() >= ChronoUnit.DAYS.ordinal()) {
       return null;
@@ -657,6 +661,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
   @Override
   protected ZonedDateTime parse(String theValue) throws DataFormatException {
     String value = theValue;
+    myTimeZoneMissing = false;
 
     if (value.length() > 0 && (value.charAt(0) == ' ' || value.charAt(value.length() - 1) == ' ')) {
       value = value.trim();
@@ -679,13 +684,13 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
     int minute = 0;
     int second = 0;
     int nanos = 0;
-    ZoneId zoneId = SYSTEM_DEFAULT_ZONE_ID;
+    ZoneId zoneId = ZoneOffset.UTC;
     year = parseInt(value, value.substring(0, 4), 0, 9999);
     precision = ChronoUnit.YEARS;
     if (length > 4) {
       validateCharAtIndexIs(value, 4, '-');
       validateLengthIsAtLeast(value, 7);
-      month = parseInt(value, value.substring(5, 7), 1, 12) - 1;
+      month = parseInt(value, value.substring(5, 7), 1, 12);
       precision = ChronoUnit.MONTHS;
       if (length > 7) {
         validateCharAtIndexIs(value, 7, '-');
@@ -699,8 +704,10 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
           int offsetIdx = getOffsetIndex(value);
           String time;
           if (offsetIdx == -1) {
-            // throwBadDateFormat(theValue);
-            // No offset - should this be an error?
+            // If we have a time but no zone, it's not actually valid in FHIR. But we need some
+            // zone for our internal representation, so let's use the system default.
+            zoneId = ZoneId.systemDefault();
+            myTimeZoneMissing = true;
             time = value.substring(11);
           } else {
             time = value.substring(11, offsetIdx);
@@ -716,7 +723,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
           if (timeLength > 5) {
             validateLengthIsAtLeast(value, 19);
             validateCharAtIndexIs(value, 16, ':'); // yyyy-mm-ddThh:mm:ss
-            second = parseInt(value, value.substring(17, 19), 0, 60); // note: this allows leap seconds
+            second = parseInt(value, value.substring(17, 19), 0, SECONDS_PER_MINUTE); // note: this allows leap seconds
             precision = ChronoUnit.SECONDS;
             if (timeLength > 8) {
               validateCharAtIndexIs(value, 19, '.'); // yyyy-mm-ddThh:mm:ss.SSSS
@@ -780,6 +787,10 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
     validateValueInRange(theValue, theMinimum, theMaximum);
 
     ZonedDateTime currentValue = getValue();
+    if (currentValue == null) {
+      currentValue = ZonedDateTime.of(0, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+    }
+
     ZonedDateTime newValue = switch (theField) {
       case YEAR -> currentValue.withYear(theValue);
       case MONTH_OF_YEAR -> currentValue.withMonth(theValue);
@@ -793,6 +804,14 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
     };
 
     super.setValue(newValue);
+  }
+
+  /**
+   * @deprecated Use {@link #setValue(ZonedDateTime)}
+   */
+  @Deprecated
+  public BaseDateTimeType setValue(Date theValue) {
+    return setValue(toZdt(theValue));
   }
 
   /**
@@ -832,7 +851,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    */
   @Deprecated
   public BaseDateTimeType setMonth(int theMonth) {
-    setFieldValue(ChronoField.MONTH_OF_YEAR, theMonth - 1, 0, 11);
+    validateValueInRange(theMonth, 0, 11);
+    setFieldValue(ChronoField.MONTH_OF_YEAR, theMonth + 1, 1, 12);
     return this;
   }
 
@@ -1006,7 +1026,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
 
   protected void setValueAsV3String(String theV3String) {
     if (StringUtils.isBlank(theV3String)) {
-      setValue(null);
+      setValue((ZonedDateTime) null);
     } else {
       StringBuilder b = new StringBuilder();
       String timeZone = null;
@@ -1204,13 +1224,13 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
   }
 
   boolean hasTimezoneIfRequired() {
-    return getPrecision().ordinal() <= ChronoUnit.DAYS.ordinal() ||
-      getTimeZone() != null;
+    return getPrecision().ordinal() >= ChronoUnit.DAYS.ordinal() ||
+      getZoneId() != null;
   }
 
 
   boolean hasTimezone() {
-    return getTimeZone() != null;
+    return getZoneId() != null;
   }
 
   public static Integer compareTimes(BaseDateTimeType left, BaseDateTimeType right, Integer def) {
@@ -1311,7 +1331,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
     if (theDate == null) {
       return null;
     }
-    return ZonedDateTime.from(theDate.toInstant());
+    return theDate.toInstant().atZone(ZoneId.systemDefault());
   }
 
   @Nullable
@@ -1338,7 +1358,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
     if (theDate == null) {
       return null;
     }
-    return ZonedDateTime.from(theDate.toInstant()).withZoneSameInstant(toZoneId(theTimeZone));
+    return theDate.toInstant().atZone(toZoneId(theTimeZone));
   }
 
   static ZoneId toZoneId(TimeZone theTimeZone) {

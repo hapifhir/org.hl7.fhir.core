@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -2319,14 +2319,14 @@ public class NutritionIntake extends DomainResource {
     /**
      * @return The date when the Nutrition Intake was asserted by the information source.
      */
-    public Date getRecorded() { 
+    public ZonedDateTime getRecorded() {
       return this.recorded == null ? null : this.recorded.getValue();
     }
 
     /**
      * @param value The date when the Nutrition Intake was asserted by the information source.
      */
-    public NutritionIntake setRecorded(Date value) { 
+    public NutritionIntake setRecorded(ZonedDateTime value) { 
       if (value == null)
         this.recorded = null;
       else {

@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1578,14 +1578,14 @@ public class Device extends DomainResource {
         /**
          * @return The date the version was installed on the device.
          */
-        public Date getInstallDate() { 
+        public ZonedDateTime getInstallDate() {
           return this.installDate == null ? null : this.installDate.getValue();
         }
 
         /**
          * @param value The date the version was installed on the device.
          */
-        public DeviceDeviceVersionComponent setInstallDate(Date value) { 
+        public DeviceDeviceVersionComponent setInstallDate(ZonedDateTime value) { 
           if (value == null)
             this.installDate = null;
           else {
@@ -3358,14 +3358,14 @@ public class Device extends DomainResource {
     /**
      * @return The date and time when the device was manufactured.
      */
-    public Date getManufactureDate() { 
+    public ZonedDateTime getManufactureDate() {
       return this.manufactureDate == null ? null : this.manufactureDate.getValue();
     }
 
     /**
      * @param value The date and time when the device was manufactured.
      */
-    public Device setManufactureDate(Date value) { 
+    public Device setManufactureDate(ZonedDateTime value) { 
       if (value == null)
         this.manufactureDate = null;
       else {
@@ -3410,14 +3410,14 @@ public class Device extends DomainResource {
     /**
      * @return The date and time beyond which this device is no longer valid or should not be used (if applicable).
      */
-    public Date getExpirationDate() { 
+    public ZonedDateTime getExpirationDate() {
       return this.expirationDate == null ? null : this.expirationDate.getValue();
     }
 
     /**
      * @param value The date and time beyond which this device is no longer valid or should not be used (if applicable).
      */
-    public Device setExpirationDate(Date value) { 
+    public Device setExpirationDate(ZonedDateTime value) { 
       if (value == null)
         this.expirationDate = null;
       else {

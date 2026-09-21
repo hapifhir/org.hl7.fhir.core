@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -855,14 +855,14 @@ public class Composition extends DomainResource {
         /**
          * @return When the composition was attested by the party.
          */
-        public Date getTime() { 
+        public ZonedDateTime getTime() {
           return this.time == null ? null : this.time.getValue();
         }
 
         /**
          * @param value When the composition was attested by the party.
          */
-        public CompositionAttesterComponent setTime(Date value) { 
+        public CompositionAttesterComponent setTime(ZonedDateTime value) {
           if (value == null)
             this.time = null;
           else {
@@ -2690,7 +2690,7 @@ public class Composition extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Composition(IModelContext modelContext, CompositionStatus status, CodeableConcept type, Date date) {
+    public Composition(IModelContext modelContext, CompositionStatus status, CodeableConcept type, ZonedDateTime date) {
       super();
       this.modelContext = modelContext;
       this.setStatus(status);
@@ -3203,14 +3203,14 @@ public class Composition extends DomainResource {
     /**
      * @return The composition editing time, when the composition was last logically changed by the author.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The composition editing time, when the composition was last logically changed by the author.
      */
-    public Composition setDate(Date value) { 
+    public Composition setDate(ZonedDateTime value) {
         if (this.date == null)
           this.date = new DateTimeType(modelContext);
         this.date.setValue(value);

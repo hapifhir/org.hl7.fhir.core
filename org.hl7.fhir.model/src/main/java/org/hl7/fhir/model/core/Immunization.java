@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -758,14 +758,14 @@ public class Immunization extends DomainResource {
         /**
          * @return Date of reaction to the immunization.
          */
-        public Date getDate() { 
+        public ZonedDateTime getDate() {
           return this.date == null ? null : this.date.getValue();
         }
 
         /**
          * @param value Date of reaction to the immunization.
          */
-        public ImmunizationReactionComponent setDate(Date value) { 
+        public ImmunizationReactionComponent setDate(ZonedDateTime value) { 
           if (value == null)
             this.date = null;
           else {
@@ -2070,14 +2070,14 @@ public class Immunization extends DomainResource {
     /**
      * @return Date vaccine batch expires.
      */
-    public Date getExpirationDate() { 
+    public ZonedDateTime getExpirationDate() {
       return this.expirationDate == null ? null : this.expirationDate.getValue();
     }
 
     /**
      * @param value Date vaccine batch expires.
      */
-    public Immunization setExpirationDate(Date value) { 
+    public Immunization setExpirationDate(ZonedDateTime value) { 
       if (value == null)
         this.expirationDate = null;
       else {

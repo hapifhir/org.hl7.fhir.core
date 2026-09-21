@@ -22,6 +22,7 @@ import org.hl7.fhir.services.profilemodel.PEInstance;
 import org.hl7.fhir.services.profilemodel.gen.*;
 import org.hl7.fhir.services.profilemodel.gen.ValueSet;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -150,7 +151,7 @@ public class TestProfile extends PEGeneratedBase {
 
   @Min("1") @Max("1") @Doco("Clinically relevant time/time-period for observation")
   @Definition("Time of observation")
-  private Date effective;// @NotNull  // Clinically relevant time/time-period for observation
+  private ZonedDateTime effective;// @NotNull  // Clinically relevant time/time-period for observation
 
   @Min("0") @Max("*") @Doco("Who is responsible for the observation")
   @Definition("Who was responsible for asserting the observed value as \"true\".")
@@ -505,11 +506,11 @@ public class TestProfile extends PEGeneratedBase {
    * Test Observation Profile.
    *
    */
-  public Date getEffective() {
+  public ZonedDateTime getEffective() {
     return effective;
   }
 
-  public TestProfile setEffective(Date value) {
+  public TestProfile setEffective(ZonedDateTime value) {
     this.effective = value;
     return this;
   }

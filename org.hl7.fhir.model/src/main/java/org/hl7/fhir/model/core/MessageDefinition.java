@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1268,7 +1268,7 @@ public class MessageDefinition extends CanonicalResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public MessageDefinition(IModelContext modelContext, PublicationStatus status, Date date, DataType event) {
+    public MessageDefinition(IModelContext modelContext, PublicationStatus status, ZonedDateTime date, DataType event) {
       super();
       this.modelContext = modelContext;
       this.setStatus(status);
@@ -1782,14 +1782,14 @@ public class MessageDefinition extends CanonicalResource {
     /**
      * @return The date  (and optionally time) when the message definition was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the message definition changes.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The date  (and optionally time) when the message definition was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the message definition changes.
      */
-    public MessageDefinition setDate(Date value) { 
+    public MessageDefinition setDate(ZonedDateTime value) { 
         if (this.date == null)
           this.date = new DateTimeType(modelContext);
         this.date.setValue(value);

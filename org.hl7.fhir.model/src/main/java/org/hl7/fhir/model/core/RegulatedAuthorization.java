@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import java.util.EnumSet;
@@ -984,14 +984,14 @@ public class RegulatedAuthorization extends DomainResource {
     /**
      * @return The date at which the current status was assigned.
      */
-    public Date getStatusDate() { 
+    public ZonedDateTime getStatusDate() {
       return this.statusDate == null ? null : this.statusDate.getValue();
     }
 
     /**
      * @param value The date at which the current status was assigned.
      */
-    public RegulatedAuthorization setStatusDate(Date value) { 
+    public RegulatedAuthorization setStatusDate(ZonedDateTime value) {
       if (value == null)
         this.statusDate = null;
       else {

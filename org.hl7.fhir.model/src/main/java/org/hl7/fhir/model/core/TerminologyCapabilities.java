@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -4444,7 +4444,7 @@ public class TerminologyCapabilities extends CanonicalResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public TerminologyCapabilities(IModelContext modelContext, PublicationStatus status, Date date, CapabilityStatementKind kind) {
+    public TerminologyCapabilities(IModelContext modelContext, PublicationStatus status, ZonedDateTime date, CapabilityStatementKind kind) {
       super();
       this.modelContext = modelContext;
       this.setStatus(status);
@@ -4897,14 +4897,14 @@ public class TerminologyCapabilities extends CanonicalResource {
     /**
      * @return The date  (and optionally time) when the terminology capabilities was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the terminology capabilities changes.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The date  (and optionally time) when the terminology capabilities was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the terminology capabilities changes.
      */
-    public TerminologyCapabilities setDate(Date value) { 
+    public TerminologyCapabilities setDate(ZonedDateTime value) { 
         if (this.date == null)
           this.date = new DateTimeType(modelContext);
         this.date.setValue(value);

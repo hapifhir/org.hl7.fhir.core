@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -552,14 +552,14 @@ public class Encounter extends DomainResource {
         /**
          * @return The date/time when the encounter entered this business status.
          */
-        public Date getEffectiveDate() { 
+        public ZonedDateTime getEffectiveDate() {
           return this.effectiveDate == null ? null : this.effectiveDate.getValue();
         }
 
         /**
          * @param value The date/time when the encounter entered this business status.
          */
-        public EncounterBusinessStatusComponent setEffectiveDate(Date value) { 
+        public EncounterBusinessStatusComponent setEffectiveDate(ZonedDateTime value) { 
           if (value == null)
             this.effectiveDate = null;
           else {
@@ -3576,14 +3576,14 @@ public class Encounter extends DomainResource {
     /**
      * @return The planned start date/time (or admission date) of the encounter.
      */
-    public Date getPlannedStartDate() { 
+    public ZonedDateTime getPlannedStartDate() {
       return this.plannedStartDate == null ? null : this.plannedStartDate.getValue();
     }
 
     /**
      * @param value The planned start date/time (or admission date) of the encounter.
      */
-    public Encounter setPlannedStartDate(Date value) { 
+    public Encounter setPlannedStartDate(ZonedDateTime value) { 
       if (value == null)
         this.plannedStartDate = null;
       else {
@@ -3628,14 +3628,14 @@ public class Encounter extends DomainResource {
     /**
      * @return The planned end date/time (or discharge date) of the encounter.
      */
-    public Date getPlannedEndDate() { 
+    public ZonedDateTime getPlannedEndDate() {
       return this.plannedEndDate == null ? null : this.plannedEndDate.getValue();
     }
 
     /**
      * @param value The planned end date/time (or discharge date) of the encounter.
      */
-    public Encounter setPlannedEndDate(Date value) { 
+    public Encounter setPlannedEndDate(ZonedDateTime value) { 
       if (value == null)
         this.plannedEndDate = null;
       else {

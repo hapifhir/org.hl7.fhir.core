@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1181,7 +1181,7 @@ public class NamingSystem extends MetadataResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public NamingSystem(IModelContext modelContext, String name, PublicationStatus status, NamingSystemType kind, Date date, NamingSystemUniqueIdComponent uniqueId) {
+    public NamingSystem(IModelContext modelContext, String name, PublicationStatus status, NamingSystemType kind, ZonedDateTime date, NamingSystemUniqueIdComponent uniqueId) {
       super();
       this.modelContext = modelContext;
       this.setName(name);
@@ -1680,14 +1680,14 @@ public class NamingSystem extends MetadataResource {
     /**
      * @return The date  (and optionally time) when the naming system was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the naming system changes.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The date  (and optionally time) when the naming system was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the naming system changes.
      */
-    public NamingSystem setDate(Date value) { 
+    public NamingSystem setDate(ZonedDateTime value) {
         if (this.date == null)
           this.date = new DateTimeType(modelContext);
         this.date.setValue(value);
@@ -2226,14 +2226,14 @@ public class NamingSystem extends MetadataResource {
     /**
      * @return The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    public Date getApprovalDate() { 
+    public ZonedDateTime getApprovalDate() {
       return this.approvalDate == null ? null : this.approvalDate.getValue();
     }
 
     /**
      * @param value The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    public NamingSystem setApprovalDate(Date value) { 
+    public NamingSystem setApprovalDate(ZonedDateTime value) {
       if (value == null)
         this.approvalDate = null;
       else {
@@ -2278,14 +2278,14 @@ public class NamingSystem extends MetadataResource {
     /**
      * @return The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    public Date getLastReviewDate() { 
+    public ZonedDateTime getLastReviewDate() {
       return this.lastReviewDate == null ? null : this.lastReviewDate.getValue();
     }
 
     /**
      * @param value The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    public NamingSystem setLastReviewDate(Date value) { 
+    public NamingSystem setLastReviewDate(ZonedDateTime value) {
       if (value == null)
         this.lastReviewDate = null;
       else {

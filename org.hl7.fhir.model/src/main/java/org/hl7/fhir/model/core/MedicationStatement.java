@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -976,14 +976,14 @@ public class MedicationStatement extends DomainResource {
     /**
      * @return The date when the Medication Statement was asserted by the information source.
      */
-    public Date getDateAsserted() { 
+    public ZonedDateTime getDateAsserted() {
       return this.dateAsserted == null ? null : this.dateAsserted.getValue();
     }
 
     /**
      * @param value The date when the Medication Statement was asserted by the information source.
      */
-    public MedicationStatement setDateAsserted(Date value) { 
+    public MedicationStatement setDateAsserted(ZonedDateTime value) {
       if (value == null)
         this.dateAsserted = null;
       else {

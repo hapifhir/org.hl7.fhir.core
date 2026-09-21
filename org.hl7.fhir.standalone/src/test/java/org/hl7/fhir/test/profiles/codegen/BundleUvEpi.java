@@ -11,6 +11,7 @@ import org.hl7.fhir.services.profilemodel.gen.*;
 import org.hl7.fhir.services.profilemodel.gen.ValueSet;
 
 import javax.annotation.Nullable;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +42,7 @@ public class BundleUvEpi extends PEGeneratedBase {
 
   @Min("1") @Max("1") @Doco("Persistent original date of approval")
   @Definition("Original date in which this ePI document received its first authorization. As with the identifier, this date persists across versions. ")
-  private Date timestamp;// @NotNull  // Persistent original date of approval
+  private ZonedDateTime timestamp;// @NotNull  // Persistent original date of approval
 
   @Min("0") @Max("1") @Doco("If search, the total number of matches")
   @Definition("If a set of search matches, this is the (potentially estimated) total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.")
@@ -369,11 +370,11 @@ public class BundleUvEpi extends PEGeneratedBase {
    * with the identifier, this date persists across versions. 
    *
    */
-  public Date getTimestamp() {
+  public ZonedDateTime getTimestamp() {
     return timestamp;
   }
 
-  public BundleUvEpi setTimestamp(Date value) {
+  public BundleUvEpi setTimestamp(ZonedDateTime value) {
     this.timestamp = value;
     return this;
   }

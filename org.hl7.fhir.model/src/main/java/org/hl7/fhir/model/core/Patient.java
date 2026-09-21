@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -2011,14 +2011,14 @@ public class Patient extends DomainResource {
     /**
      * @return The date of birth for the individual.
      */
-    public Date getBirthDate() { 
+    public ZonedDateTime getBirthDate() {
       return this.birthDate == null ? null : this.birthDate.getValue();
     }
 
     /**
      * @param value The date of birth for the individual.
      */
-    public Patient setBirthDate(Date value) { 
+    public Patient setBirthDate(ZonedDateTime value) { 
       if (value == null)
         this.birthDate = null;
       else {

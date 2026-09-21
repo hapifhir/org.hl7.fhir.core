@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -5056,14 +5056,14 @@ public class Task extends DomainResource {
     /**
      * @return The date and time this task was created.
      */
-    public Date getAuthoredOn() { 
+    public ZonedDateTime getAuthoredOn() {
       return this.authoredOn == null ? null : this.authoredOn.getValue();
     }
 
     /**
      * @param value The date and time this task was created.
      */
-    public Task setAuthoredOn(Date value) { 
+    public Task setAuthoredOn(ZonedDateTime value) { 
       if (value == null)
         this.authoredOn = null;
       else {
@@ -5108,14 +5108,14 @@ public class Task extends DomainResource {
     /**
      * @return The date and time of last modification to this task.
      */
-    public Date getLastModified() { 
+    public ZonedDateTime getLastModified() {
       return this.lastModified == null ? null : this.lastModified.getValue();
     }
 
     /**
      * @param value The date and time of last modification to this task.
      */
-    public Task setLastModified(Date value) { 
+    public Task setLastModified(ZonedDateTime value) { 
       if (value == null)
         this.lastModified = null;
       else {

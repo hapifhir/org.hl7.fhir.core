@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1438,14 +1438,14 @@ public class MedicationDispense extends DomainResource {
     /**
      * @return The date (and maybe time) when the status of the dispense record changed.
      */
-    public Date getStatusChanged() { 
+    public ZonedDateTime getStatusChanged() {
       return this.statusChanged == null ? null : this.statusChanged.getValue();
     }
 
     /**
      * @param value The date (and maybe time) when the status of the dispense record changed.
      */
-    public MedicationDispense setStatusChanged(Date value) { 
+    public MedicationDispense setStatusChanged(ZonedDateTime value) { 
       if (value == null)
         this.statusChanged = null;
       else {
@@ -1939,14 +1939,14 @@ public class MedicationDispense extends DomainResource {
     /**
      * @return The date the occurrence of the MedicationDispense was first captured in the system.
      */
-    public Date getRecorded() { 
+    public ZonedDateTime getRecorded() {
       return this.recorded == null ? null : this.recorded.getValue();
     }
 
     /**
      * @param value The date the occurrence of the MedicationDispense was first captured in the system.
      */
-    public MedicationDispense setRecorded(Date value) { 
+    public MedicationDispense setRecorded(ZonedDateTime value) { 
       if (value == null)
         this.recorded = null;
       else {
@@ -1991,14 +1991,14 @@ public class MedicationDispense extends DomainResource {
     /**
      * @return The time when the dispensed product was packaged and reviewed.
      */
-    public Date getWhenPrepared() { 
+    public ZonedDateTime getWhenPrepared() {
       return this.whenPrepared == null ? null : this.whenPrepared.getValue();
     }
 
     /**
      * @param value The time when the dispensed product was packaged and reviewed.
      */
-    public MedicationDispense setWhenPrepared(Date value) { 
+    public MedicationDispense setWhenPrepared(ZonedDateTime value) { 
       if (value == null)
         this.whenPrepared = null;
       else {
@@ -2043,14 +2043,14 @@ public class MedicationDispense extends DomainResource {
     /**
      * @return The time the dispensed product was provided to the patient or their representative.
      */
-    public Date getWhenHandedOver() { 
+    public ZonedDateTime getWhenHandedOver() {
       return this.whenHandedOver == null ? null : this.whenHandedOver.getValue();
     }
 
     /**
      * @param value The time the dispensed product was provided to the patient or their representative.
      */
-    public MedicationDispense setWhenHandedOver(Date value) { 
+    public MedicationDispense setWhenHandedOver(ZonedDateTime value) { 
       if (value == null)
         this.whenHandedOver = null;
       else {

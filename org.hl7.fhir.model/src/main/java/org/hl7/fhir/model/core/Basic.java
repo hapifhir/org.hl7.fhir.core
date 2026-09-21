@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import java.util.EnumSet;
@@ -266,14 +266,14 @@ public class Basic extends DomainResource {
     /**
      * @return Identifies when the resource was first created.
      */
-    public Date getCreated() { 
+    public ZonedDateTime getCreated() {
       return this.created == null ? null : this.created.getValue();
     }
 
     /**
      * @param value Identifies when the resource was first created.
      */
-    public Basic setCreated(Date value) { 
+    public Basic setCreated(ZonedDateTime value) {
       if (value == null)
         this.created = null;
       else {

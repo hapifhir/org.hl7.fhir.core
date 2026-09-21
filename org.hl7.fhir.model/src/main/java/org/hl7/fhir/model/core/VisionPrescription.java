@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
@@ -2061,7 +2061,7 @@ public class VisionPrescription extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public VisionPrescription(IModelContext modelContext, FinancialResourceStatusCodes status, RequestIntent intent, Date created, Reference patient, Date dateWritten, Reference prescriber, VisionPrescriptionLensSpecificationComponent lensSpecification) {
+    public VisionPrescription(IModelContext modelContext, FinancialResourceStatusCodes status, RequestIntent intent, ZonedDateTime created, Reference patient, ZonedDateTime dateWritten, Reference prescriber, VisionPrescriptionLensSpecificationComponent lensSpecification) {
       super();
       this.modelContext = modelContext;
       this.setStatus(status);
@@ -2388,14 +2388,14 @@ public class VisionPrescription extends DomainResource {
     /**
      * @return The date this resource was created.
      */
-    public Date getCreated() { 
+    public ZonedDateTime getCreated() {
       return this.created == null ? null : this.created.getValue();
     }
 
     /**
      * @param value The date this resource was created.
      */
-    public VisionPrescription setCreated(Date value) { 
+    public VisionPrescription setCreated(ZonedDateTime value) {
         if (this.created == null)
           this.created = new DateTimeType(modelContext);
         this.created.setValue(value);
@@ -2490,14 +2490,14 @@ public class VisionPrescription extends DomainResource {
     /**
      * @return The date (and perhaps time) when the prescription was written.
      */
-    public Date getDateWritten() { 
+    public ZonedDateTime getDateWritten() {
       return this.dateWritten == null ? null : this.dateWritten.getValue();
     }
 
     /**
      * @param value The date (and perhaps time) when the prescription was written.
      */
-    public VisionPrescription setDateWritten(Date value) { 
+    public VisionPrescription setDateWritten(ZonedDateTime value) {
         if (this.dateWritten == null)
           this.dateWritten = new DateTimeType(modelContext);
         this.dateWritten.setValue(value);
@@ -2538,14 +2538,14 @@ public class VisionPrescription extends DomainResource {
     /**
      * @return The date/time after which the prescription is considered expired and can no longer be used to obtain lenses.
      */
-    public Date getEffectiveEndDate() { 
+    public ZonedDateTime getEffectiveEndDate() {
       return this.effectiveEndDate == null ? null : this.effectiveEndDate.getValue();
     }
 
     /**
      * @param value The date/time after which the prescription is considered expired and can no longer be used to obtain lenses.
      */
-    public VisionPrescription setEffectiveEndDate(Date value) { 
+    public VisionPrescription setEffectiveEndDate(ZonedDateTime value) {
       if (value == null)
         this.effectiveEndDate = null;
       else {

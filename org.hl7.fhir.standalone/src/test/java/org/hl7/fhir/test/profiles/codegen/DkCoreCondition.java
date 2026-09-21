@@ -9,6 +9,7 @@ import org.hl7.fhir.services.profilemodel.PEInstance;
 import org.hl7.fhir.services.profilemodel.gen.*;
 import org.hl7.fhir.services.profilemodel.gen.ValueSet;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,11 +35,11 @@ public class DkCoreCondition extends PEGeneratedBase {
 
   @Min("0") @Max("1") @Doco("Last date a condition was confirmed valid in its current state")
   @Definition("Extension for the last date a Condition-instance was confirmed valid in its current state. E.g. with its current clinical- and verification status, stage and severity. Typically the last performed follow-up")
-  private Date conditionLastAssertedDate;  // Last date a condition was confirmed valid in its current state
+  private ZonedDateTime conditionLastAssertedDate;  // Last date a condition was confirmed valid in its current state
 
   @Min("0") @Max("1") @Doco("Date where a condition lost focus in a specific clinical context")
   @Definition("Extension for the date where a condition lost focus in a specific clinical context")
-  private Date notFollowedAnymore;  // Date where a condition lost focus in a specific clinical context
+  private ZonedDateTime notFollowedAnymore;  // Date where a condition lost focus in a specific clinical context
 
   @Min("0") @Max("*") @Doco("Extensions that cannot be ignored")
   @Definition("May be used to represent additional information that is not part of the basic definition of the resource and that modifies the understanding of the element that contains it and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).")
@@ -327,11 +328,11 @@ public class DkCoreCondition extends PEGeneratedBase {
    * and severity. Typically the last performed follow-up
    *
    */
-  public Date getConditionLastAssertedDate() {
+  public ZonedDateTime getConditionLastAssertedDate() {
     return conditionLastAssertedDate;
   }
 
-  public DkCoreCondition setConditionLastAssertedDate(Date value) {
+  public DkCoreCondition setConditionLastAssertedDate(ZonedDateTime value) {
     this.conditionLastAssertedDate = value;
     return this;
   }
@@ -345,11 +346,11 @@ public class DkCoreCondition extends PEGeneratedBase {
    * context
    *
    */
-  public Date getNotFollowedAnymore() {
+  public ZonedDateTime getNotFollowedAnymore() {
     return notFollowedAnymore;
   }
 
-  public DkCoreCondition setNotFollowedAnymore(Date value) {
+  public DkCoreCondition setNotFollowedAnymore(ZonedDateTime value) {
     this.notFollowedAnymore = value;
     return this;
   }

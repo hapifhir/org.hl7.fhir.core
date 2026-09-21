@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
@@ -208,14 +208,28 @@ public class Meta extends DataType implements IBaseMetaType {
     /**
      * @return When the resource last changed - e.g. when the version changed.
      */
-    public Date getLastUpdated() { 
-      return this.lastUpdated == null ? null : this.lastUpdated.getValue();
+    public Date getLastUpdated() {
+      return this.lastUpdated == null ? null : Date.from(this.lastUpdated.getValue().toInstant());
     }
 
     /**
      * @param value When the resource last changed - e.g. when the version changed.
      */
-    public Meta setLastUpdated(Date value) { 
+    public Meta setLastUpdated(ZonedDateTime value) {
+      if (value == null)
+        this.lastUpdated = null;
+      else {
+        if (this.lastUpdated == null)
+          this.lastUpdated = new InstantType(modelContext);
+        this.lastUpdated.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @param value When the resource last changed - e.g. when the version changed.
+     */
+    public Meta setLastUpdated(Date value) {
       if (value == null)
         this.lastUpdated = null;
       else {

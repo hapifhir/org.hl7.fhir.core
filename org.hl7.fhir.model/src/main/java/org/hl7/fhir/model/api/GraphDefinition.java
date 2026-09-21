@@ -37,6 +37,7 @@ package org.hl7.fhir.model.api;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -2525,14 +2526,14 @@ public class GraphDefinition extends CanonicalResource {
     /**
      * @return The date  (and optionally time) when the graph definition was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the graph definition changes.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The date  (and optionally time) when the graph definition was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the graph definition changes.
      */
-    public GraphDefinition setDate(Date value) { 
+    public GraphDefinition setDate(ZonedDateTime value) {
       if (value == null)
         this.date = null;
       else {

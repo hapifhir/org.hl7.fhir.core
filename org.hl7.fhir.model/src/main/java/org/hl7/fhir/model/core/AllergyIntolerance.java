@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -549,14 +549,14 @@ public class AllergyIntolerance extends DomainResource {
         /**
          * @return Record of the date and/or time of the onset of the Reaction.
          */
-        public Date getOnset() { 
+        public ZonedDateTime getOnset() {
           return this.onset == null ? null : this.onset.getValue();
         }
 
         /**
          * @param value Record of the date and/or time of the onset of the Reaction.
          */
-        public AllergyIntoleranceReactionComponent setOnset(Date value) { 
+        public AllergyIntoleranceReactionComponent setOnset(ZonedDateTime value) {
           if (value == null)
             this.onset = null;
           else {
@@ -1563,14 +1563,14 @@ public class AllergyIntolerance extends DomainResource {
     /**
      * @return The recordedDate represents when this particular AllergyIntolerance record was created in the system, which is often a system-generated date.
      */
-    public Date getRecordedDate() { 
+    public ZonedDateTime getRecordedDate() {
       return this.recordedDate == null ? null : this.recordedDate.getValue();
     }
 
     /**
      * @param value The recordedDate represents when this particular AllergyIntolerance record was created in the system, which is often a system-generated date.
      */
-    public AllergyIntolerance setRecordedDate(Date value) { 
+    public AllergyIntolerance setRecordedDate(ZonedDateTime value) {
       if (value == null)
         this.recordedDate = null;
       else {
@@ -1669,14 +1669,14 @@ public class AllergyIntolerance extends DomainResource {
     /**
      * @return Represents the date and/or time of the last known occurrence of a reaction event.
      */
-    public Date getLastOccurrence() { 
+    public ZonedDateTime getLastOccurrence() {
       return this.lastOccurrence == null ? null : this.lastOccurrence.getValue();
     }
 
     /**
      * @param value Represents the date and/or time of the last known occurrence of a reaction event.
      */
-    public AllergyIntolerance setLastOccurrence(Date value) { 
+    public AllergyIntolerance setLastOccurrence(ZonedDateTime value) {
       if (value == null)
         this.lastOccurrence = null;
       else {

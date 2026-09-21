@@ -256,7 +256,7 @@ public class DateTimeType extends BaseDateTimeType {
 	@Override
 	boolean isPrecisionAllowed(ChronoUnit thePrecision) {
     return switch (thePrecision) {
-      case YEARS, MONTHS, DAYS, SECONDS, MILLIS, NANOS -> true;
+      case YEARS, MONTHS, DAYS, MINUTES, SECONDS, MILLIS, NANOS -> true;
       default -> false;
     };
 	}

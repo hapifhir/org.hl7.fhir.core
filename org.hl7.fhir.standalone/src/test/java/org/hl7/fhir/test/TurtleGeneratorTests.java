@@ -30,6 +30,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -330,7 +331,7 @@ public class TurtleGeneratorTests {
 
   private IWorkerContext r6ContextWithTestNamingSystem() throws Exception {
     IWorkerContext context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R6_VERSION);
-    NamingSystem namingSystem = new NamingSystem(null, "TestCodeSystem", PublicationStatus.ACTIVE, NamingSystemType.CODESYSTEM, new Date(),
+    NamingSystem namingSystem = new NamingSystem(null, "TestCodeSystem", PublicationStatus.ACTIVE, NamingSystemType.CODESYSTEM, ZonedDateTime.now(),
         new NamingSystem.NamingSystemUniqueIdComponent(null, NamingSystemIdentifierType.URI, TEST_CODE_SYSTEM));
     namingSystem.setUrl("http://example.org/fhir/NamingSystem/test-code-system");
     namingSystem.addUniqueId(new NamingSystem.NamingSystemUniqueIdComponent(null, NamingSystemIdentifierType.IRISTEM, TEST_IRI_STEM));

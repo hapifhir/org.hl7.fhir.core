@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1585,14 +1585,14 @@ public class Goal extends DomainResource {
     /**
      * @return Identifies when the current achievement status took effect.  I.e. When achieved, when improving, etc.
      */
-    public Date getAchievementStatusDate() { 
+    public ZonedDateTime getAchievementStatusDate() {
       return this.achievementStatusDate == null ? null : this.achievementStatusDate.getValue();
     }
 
     /**
      * @param value Identifies when the current achievement status took effect.  I.e. When achieved, when improving, etc.
      */
-    public Goal setAchievementStatusDate(Date value) { 
+    public Goal setAchievementStatusDate(ZonedDateTime value) { 
       if (value == null)
         this.achievementStatusDate = null;
       else {

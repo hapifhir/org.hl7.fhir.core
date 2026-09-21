@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -532,14 +532,14 @@ public class Substance extends DomainResource {
     /**
      * @return When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.
      */
-    public Date getExpiry() { 
+    public ZonedDateTime getExpiry() {
       return this.expiry == null ? null : this.expiry.getValue();
     }
 
     /**
      * @param value When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.
      */
-    public Substance setExpiry(Date value) { 
+    public Substance setExpiry(ZonedDateTime value) { 
       if (value == null)
         this.expiry = null;
       else {

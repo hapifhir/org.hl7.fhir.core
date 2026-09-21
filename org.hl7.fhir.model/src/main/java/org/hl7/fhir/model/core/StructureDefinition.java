@@ -36,7 +36,8 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.time.ZonedDateTime;
+import java.util.*; import java.time.*;
 
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.utilities.Utilities;
@@ -2327,14 +2328,14 @@ public class StructureDefinition extends CanonicalResource {
     /**
      * @return The date  (and optionally time) when the structure definition was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the structure definition changes.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The date  (and optionally time) when the structure definition was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the structure definition changes.
      */
-    public StructureDefinition setDate(Date value) { 
+    public StructureDefinition setDate(ZonedDateTime value) {
       if (value == null)
         this.date = null;
       else {

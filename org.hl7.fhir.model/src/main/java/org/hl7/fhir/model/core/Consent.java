@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -964,7 +964,7 @@ public class Consent extends DomainResource {
         /**
          * @param value {@link #date} (Date(s) verification was collected.)
          */
-        public ConsentVerificationComponent addDate(Date value) { //1
+        public ConsentVerificationComponent addDate(ZonedDateTime value) { //1
           DateTimeType t = new DateTimeType(modelContext);
           t.setValue(value);
           if (this.dateList == null)
@@ -976,7 +976,7 @@ public class Consent extends DomainResource {
         /**
          * @param value {@link #date} (Date(s) verification was collected.)
          */
-        public boolean hasDate(Date value) { 
+        public boolean hasDate(ZonedDateTime value) {
           if (this.dateList == null)
             return false;
           for (DateTimeType v : this.dateList)
@@ -3067,14 +3067,14 @@ public class Consent extends DomainResource {
     /**
      * @return Date the consent instance was agreed to.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value Date the consent instance was agreed to.
      */
-    public Consent setDate(Date value) { 
+    public Consent setDate(ZonedDateTime value) {
       if (value == null)
         this.date = null;
       else {

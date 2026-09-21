@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -787,14 +787,14 @@ public class PaymentReconciliation extends DomainResource {
         /**
          * @return The date from the response resource containing a commitment to pay.
          */
-        public Date getDate() { 
+        public ZonedDateTime getDate() {
           return this.date == null ? null : this.date.getValue();
         }
 
         /**
          * @param value The date from the response resource containing a commitment to pay.
          */
-        public PaymentReconciliationAllocationComponent setDate(Date value) { 
+        public PaymentReconciliationAllocationComponent setDate(ZonedDateTime value) {
           if (value == null)
             this.date = null;
           else {
@@ -2078,7 +2078,7 @@ public class PaymentReconciliation extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public PaymentReconciliation(IModelContext modelContext, CodeableConcept type, FinancialResourceStatusCodes status, Date created, Date date) {
+    public PaymentReconciliation(IModelContext modelContext, CodeableConcept type, FinancialResourceStatusCodes status, ZonedDateTime created, ZonedDateTime date) {
       super();
       this.modelContext = modelContext;
       this.setType(type);
@@ -2355,14 +2355,14 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @return The date when the resource was created.
      */
-    public Date getCreated() { 
+    public ZonedDateTime getCreated() {
       return this.created == null ? null : this.created.getValue();
     }
 
     /**
      * @param value The date when the resource was created.
      */
-    public PaymentReconciliation setCreated(Date value) { 
+    public PaymentReconciliation setCreated(ZonedDateTime value) {
         if (this.created == null)
           this.created = new DateTimeType(modelContext);
         this.created.setValue(value);
@@ -2642,14 +2642,14 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @return The date of payment as indicated on the financial instrument.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The date of payment as indicated on the financial instrument.
      */
-    public PaymentReconciliation setDate(Date value) { 
+    public PaymentReconciliation setDate(ZonedDateTime value) {
         if (this.date == null)
           this.date = new DateType(modelContext);
         this.date.setValue(value);
@@ -2848,14 +2848,14 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @return The year and month (YYYY-MM) when the instrument, typically card, expires.
      */
-    public Date getExpirationDate() { 
+    public ZonedDateTime getExpirationDate() {
       return this.expirationDate == null ? null : this.expirationDate.getValue();
     }
 
     /**
      * @param value The year and month (YYYY-MM) when the instrument, typically card, expires.
      */
-    public PaymentReconciliation setExpirationDate(Date value) { 
+    public PaymentReconciliation setExpirationDate(ZonedDateTime value) {
       if (value == null)
         this.expirationDate = null;
       else {

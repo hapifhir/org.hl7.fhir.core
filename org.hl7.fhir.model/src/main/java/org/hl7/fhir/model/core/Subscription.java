@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1537,14 +1537,14 @@ public class Subscription extends DomainResource {
     /**
      * @return The time for the server to turn the subscription off.
      */
-    public Date getEnd() { 
+    public ZonedDateTime getEnd() {
       return this.end == null ? null : this.end.getValue();
     }
 
     /**
      * @param value The time for the server to turn the subscription off.
      */
-    public Subscription setEnd(Date value) { 
+    public Subscription setEnd(ZonedDateTime value) { 
       if (value == null)
         this.end = null;
       else {

@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -487,7 +488,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     vs.getExpansion().setParameterList(Arrays.asList(vsepc));
     vs.getExpansion().setContainsList(Arrays.asList(new ValueSet.ValueSetExpansionContainsComponent().setCode("dummyVSExpansionContainsComponent")));
     vs.getExpansion().setIdentifier("dummyIdentifier");
-    vs.getExpansion().setTimestamp(new Date());
+    vs.getExpansion().setTimestamp(ZonedDateTime.now());
 
     assertTrue(vs.getExpansion().hasIdentifier());
 

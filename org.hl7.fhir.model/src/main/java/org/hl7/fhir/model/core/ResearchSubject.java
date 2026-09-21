@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -116,7 +116,7 @@ public class ResearchSubject extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ResearchSubjectSubjectStateComponent(IModelContext modelContext, CodeableConcept code, Date startDate) {
+      public ResearchSubjectSubjectStateComponent(IModelContext modelContext, CodeableConcept code, ZonedDateTime startDate) {
         super();
         this.modelContext = modelContext;
         this.setCode(code);
@@ -184,14 +184,14 @@ public class ResearchSubject extends DomainResource {
         /**
          * @return The date a research subject entered the given state.
          */
-        public Date getStartDate() { 
+        public ZonedDateTime getStartDate() {
           return this.startDate == null ? null : this.startDate.getValue();
         }
 
         /**
          * @param value The date a research subject entered the given state.
          */
-        public ResearchSubjectSubjectStateComponent setStartDate(Date value) { 
+        public ResearchSubjectSubjectStateComponent setStartDate(ZonedDateTime value) {
             if (this.startDate == null)
               this.startDate = new DateTimeType(modelContext);
             this.startDate.setValue(value);
@@ -232,14 +232,14 @@ public class ResearchSubject extends DomainResource {
         /**
          * @return The date a research subject exited or left the given state.
          */
-        public Date getEndDate() { 
+        public ZonedDateTime getEndDate() {
           return this.endDate == null ? null : this.endDate.getValue();
         }
 
         /**
          * @param value The date a research subject exited or left the given state.
          */
-        public ResearchSubjectSubjectStateComponent setEndDate(Date value) { 
+        public ResearchSubjectSubjectStateComponent setEndDate(ZonedDateTime value) {
           if (value == null)
             this.endDate = null;
           else {
@@ -588,14 +588,14 @@ public class ResearchSubject extends DomainResource {
         /**
          * @return The date/time when this milestone event was completed.
          */
-        public Date getDate() { 
+        public ZonedDateTime getDate() {
           return this.date == null ? null : this.date.getValue();
         }
 
         /**
          * @param value The date/time when this milestone event was completed.
          */
-        public ResearchSubjectSubjectMilestoneComponent setDate(Date value) { 
+        public ResearchSubjectSubjectMilestoneComponent setDate(ZonedDateTime value) {
           if (value == null)
             this.date = null;
           else {

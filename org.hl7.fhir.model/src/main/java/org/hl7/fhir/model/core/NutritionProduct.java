@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1481,14 +1481,14 @@ public class NutritionProduct extends DomainResource {
         /**
          * @return The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.
          */
-        public Date getExpiry() { 
+        public ZonedDateTime getExpiry() {
           return this.expiry == null ? null : this.expiry.getValue();
         }
 
         /**
          * @param value The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.
          */
-        public NutritionProductInstanceComponent setExpiry(Date value) { 
+        public NutritionProductInstanceComponent setExpiry(ZonedDateTime value) { 
           if (value == null)
             this.expiry = null;
           else {
@@ -1533,14 +1533,14 @@ public class NutritionProduct extends DomainResource {
         /**
          * @return The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.
          */
-        public Date getUseBy() { 
+        public ZonedDateTime getUseBy() {
           return this.useBy == null ? null : this.useBy.getValue();
         }
 
         /**
          * @param value The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.
          */
-        public NutritionProductInstanceComponent setUseBy(Date value) { 
+        public NutritionProductInstanceComponent setUseBy(ZonedDateTime value) { 
           if (value == null)
             this.useBy = null;
           else {

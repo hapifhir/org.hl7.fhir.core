@@ -22,6 +22,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,7 +85,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     cs.setName("Union"+left.getName()+"And"+right.getName());
     cs.setTitle("Union of "+left.getTitle()+" And "+right.getTitle());
     cs.setStatus(left.getStatus());
-    cs.setDate(new Date());
+    cs.setDate(ZonedDateTime.now());
 
     CapabilityStatement cs1 = new CapabilityStatement();
     res.setIntersection(cs1);
@@ -92,7 +93,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     cs1.setName("Intersection"+left.getName()+"And"+right.getName());
     cs1.setTitle("Intersection of "+left.getTitle()+" And "+right.getTitle());
     cs1.setStatus(left.getStatus());
-    cs1.setDate(new Date());
+    cs1.setDate(ZonedDateTime.now());
 
     compareMetadata(left, right, res.getMetadata(), res, new ArrayList<>(), right);
     comparePrimitives("kind", left.getKindElement(), right.getKindElement(), res.getMetadata(), IssueSeverity.ERROR, res);

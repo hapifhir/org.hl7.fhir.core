@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -490,14 +490,14 @@ public class AppointmentResponse extends DomainResource {
     /**
      * @return Date/Time that the appointment is to take place, or requested new start time.
      */
-    public Date getStart() { 
+    public ZonedDateTime getStart() {
       return this.start == null ? null : this.start.getValue();
     }
 
     /**
      * @param value Date/Time that the appointment is to take place, or requested new start time.
      */
-    public AppointmentResponse setStart(Date value) { 
+    public AppointmentResponse setStart(ZonedDateTime value) {
       if (value == null)
         this.start = null;
       else {
@@ -542,14 +542,14 @@ public class AppointmentResponse extends DomainResource {
     /**
      * @return This may be either the same as the appointment request to confirm the details of the appointment, or alternately a new time to request a re-negotiation of the end time.
      */
-    public Date getEnd() { 
+    public ZonedDateTime getEnd() {
       return this.end == null ? null : this.end.getValue();
     }
 
     /**
      * @param value This may be either the same as the appointment request to confirm the details of the appointment, or alternately a new time to request a re-negotiation of the end time.
      */
-    public AppointmentResponse setEnd(Date value) { 
+    public AppointmentResponse setEnd(ZonedDateTime value) {
       if (value == null)
         this.end = null;
       else {
@@ -822,14 +822,14 @@ public class AppointmentResponse extends DomainResource {
     /**
      * @return The original date within a recurring request. This could be used in place of the recurrenceId to be more direct (or where the template is provided through the simple list of dates in `Appointment.occurrenceDate`).
      */
-    public Date getOccurrenceDate() { 
+    public ZonedDateTime getOccurrenceDate() {
       return this.occurrenceDate == null ? null : this.occurrenceDate.getValue();
     }
 
     /**
      * @param value The original date within a recurring request. This could be used in place of the recurrenceId to be more direct (or where the template is provided through the simple list of dates in `Appointment.occurrenceDate`).
      */
-    public AppointmentResponse setOccurrenceDate(Date value) { 
+    public AppointmentResponse setOccurrenceDate(ZonedDateTime value) {
       if (value == null)
         this.occurrenceDate = null;
       else {

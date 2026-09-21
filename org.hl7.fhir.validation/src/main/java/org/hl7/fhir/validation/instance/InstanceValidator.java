@@ -43,6 +43,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.Base64;
 
@@ -3718,8 +3719,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               rule(errors, "2026-04-09", IssueType.INVALID, node, qty.isExactTime(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_VALUE, qtyString)) {
             DateTimeType limit = new DateTimeType(new Date());
             limit.add(qty);
-            dok = rule(errors, "2026-04-09", IssueType.INVALID, e.line(), e.col(), path, !limit.before(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX, v.getValueAsString(TemporalPrecisionEnum.DAY), qtyString,
-              policyAdvisor.relativeDatePlaceHolder() != null ? policyAdvisor.relativeDatePlaceHolder() : limit.getValueAsString(TemporalPrecisionEnum.DAY)) && dok;
+            dok = rule(errors, "2026-04-09", IssueType.INVALID, e.line(), e.col(), path, !limit.before(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX, v.getValueAsString(ChronoUnit.DAYS), qtyString,
+              policyAdvisor.relativeDatePlaceHolder() != null ? policyAdvisor.relativeDatePlaceHolder() : limit.getValueAsString(ChronoUnit.DAYS)) && dok;
           } else {
             dok = false;
           }
@@ -3740,7 +3741,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             DateTimeType limit = new DateTimeType(new Date());
             limit.subtract(qty);
             dok = rule(errors, "2026-04-09", IssueType.INVALID, e.line(), e.col(), path, !limit.after(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN, v.toString(), qtyString,
-              policyAdvisor.relativeDatePlaceHolder() != null ? policyAdvisor.relativeDatePlaceHolder() : limit.getValueAsString(TemporalPrecisionEnum.DAY)) && dok;
+              policyAdvisor.relativeDatePlaceHolder() != null ? policyAdvisor.relativeDatePlaceHolder() : limit.getValueAsString(ChronoUnit.DAYS)) && dok;
           } else {
             dok = false;
           }
@@ -3776,8 +3777,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rule(errors, "2026-04-09", IssueType.INVALID, node, qty.isExactTime(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_VALUE, qtyString)) {
             DateTimeType limit = new DateTimeType(new Date());
             limit.add(qty);
-            dok = rule(errors, "2026-04-09", IssueType.INVALID, e.line(), e.col(), path, !limit.before(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX, v.getValueAsString(TemporalPrecisionEnum.DAY), qtyString,
-              policyAdvisor.relativeDatePlaceHolder() != null ? policyAdvisor.relativeDatePlaceHolder() : limit.getValueAsString(TemporalPrecisionEnum.MILLI)) && dok;
+            dok = rule(errors, "2026-04-09", IssueType.INVALID, e.line(), e.col(), path, !limit.before(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX, v.getValueAsString(ChronoUnit.DAYS), qtyString,
+              policyAdvisor.relativeDatePlaceHolder() != null ? policyAdvisor.relativeDatePlaceHolder() : limit.getValueAsString(ChronoUnit.MILLIS)) && dok;
           } else {
             dok = false;
           }
@@ -3804,7 +3805,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             DateTimeType limit = new DateTimeType(new Date());
             limit.subtract(qty);
             dok = rule(errors, "2026-04-09", IssueType.INVALID, e.line(), e.col(), path, !limit.after(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN, v.toString(), qtyString,
-              policyAdvisor.relativeDatePlaceHolder() != null ? policyAdvisor.relativeDatePlaceHolder() : limit.getValueAsString(TemporalPrecisionEnum.MILLI)) && dok;
+              policyAdvisor.relativeDatePlaceHolder() != null ? policyAdvisor.relativeDatePlaceHolder() : limit.getValueAsString(ChronoUnit.MILLIS)) && dok;
           } else {
             dok = false;
           }

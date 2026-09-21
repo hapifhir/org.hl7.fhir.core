@@ -9,6 +9,7 @@ import org.hl7.fhir.services.profilemodel.PEInstance;
 import org.hl7.fhir.services.profilemodel.gen.*;
 import org.hl7.fhir.services.profilemodel.gen.ValueSet;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -201,7 +202,7 @@ public class CompositionUvEpi extends PEGeneratedBase {
 
   @Min("1") @Max("1") @Doco("Date of last revision for this version of the authorized ePI.")
   @Definition("The composition editing time, when the composition was last logically changed by the author.")
-  private Date date;// @NotNull  // Date of last revision for this version of the authorized ePI.
+  private ZonedDateTime date;// @NotNull  // Date of last revision for this version of the authorized ePI.
 
   @Min("0") @Max("*") @Doco("The context that the content is intended to support")
   @Definition("The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate Composition instances.")
@@ -655,11 +656,11 @@ public class CompositionUvEpi extends PEGeneratedBase {
    * the author.
    *
    */
-  public Date getDate() {
+  public ZonedDateTime getDate() {
     return date;
   }
 
-  public CompositionUvEpi setDate(Date value) {
+  public CompositionUvEpi setDate(ZonedDateTime value) {
     this.date = value;
     return this;
   }

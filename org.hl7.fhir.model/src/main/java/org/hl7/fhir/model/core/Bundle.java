@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
@@ -3986,14 +3986,14 @@ public class Bundle extends Resource implements IBaseBundle {
         /**
          * @return Only perform the operation if the last updated date matches. See the API documentation for ["Conditional Read"](http.html#cread).
          */
-        public Date getIfModifiedSince() { 
+        public ZonedDateTime getIfModifiedSince() {
           return this.ifModifiedSince == null ? null : this.ifModifiedSince.getValue();
         }
 
         /**
          * @param value Only perform the operation if the last updated date matches. See the API documentation for ["Conditional Read"](http.html#cread).
          */
-        public BundleEntryRequestComponent setIfModifiedSince(Date value) { 
+        public BundleEntryRequestComponent setIfModifiedSince(ZonedDateTime value) {
           if (value == null)
             this.ifModifiedSince = null;
           else {
@@ -4602,14 +4602,14 @@ public class Bundle extends Resource implements IBaseBundle {
         /**
          * @return The date/time that the resource was modified on the server.
          */
-        public Date getLastModified() { 
+        public ZonedDateTime getLastModified() {
           return this.lastModified == null ? null : this.lastModified.getValue();
         }
 
         /**
          * @param value The date/time that the resource was modified on the server.
          */
-        public BundleEntryResponseComponent setLastModified(Date value) { 
+        public BundleEntryResponseComponent setLastModified(ZonedDateTime value) {
           if (value == null)
             this.lastModified = null;
           else {
@@ -5047,14 +5047,14 @@ public class Bundle extends Resource implements IBaseBundle {
     /**
      * @return The date/time that the bundle was assembled - i.e. when the resources were placed in the bundle.
      */
-    public Date getTimestamp() { 
+    public ZonedDateTime getTimestamp() {
       return this.timestamp == null ? null : this.timestamp.getValue();
     }
 
     /**
      * @param value The date/time that the bundle was assembled - i.e. when the resources were placed in the bundle.
      */
-    public Bundle setTimestamp(Date value) { 
+    public Bundle setTimestamp(ZonedDateTime value) {
       if (value == null)
         this.timestamp = null;
       else {

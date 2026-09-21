@@ -12,6 +12,7 @@ import org.hl7.fhir.model.*;
 import org.hl7.fhir.model.core.*;
 
 import java.math.BigDecimal;
+import java.time.temporal.ChronoUnit;
 import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
@@ -490,23 +491,23 @@ class BaseDateTimeTypeUcumTest {
     @Test
     void addPreservesSecondPrecision() {
       DateTimeType dt = utcDateTime("2020-06-15T10:30:00+00:00");
-      assertEquals(TemporalPrecisionEnum.SECOND, dt.getPrecision());
+      assertEquals(ChronoUnit.SECONDS, dt.getPrecision());
       dt.add(1, "d");
-      assertEquals(TemporalPrecisionEnum.SECOND, dt.getPrecision());
+      assertEquals(ChronoUnit.SECONDS, dt.getPrecision());
     }
 
     @Test
     void addPreservesMilliPrecision() {
       DateTimeType dt = utcDateTime("2020-06-15T10:30:00.123+00:00");
-      assertEquals(TemporalPrecisionEnum.MILLI, dt.getPrecision());
+      assertEquals(ChronoUnit.MILLIS, dt.getPrecision());
       dt.add(5, "h");
-      assertEquals(TemporalPrecisionEnum.MILLI, dt.getPrecision());
+      assertEquals(ChronoUnit.MILLIS, dt.getPrecision());
     }
 
     @Test
     void subtractPreservesPrecision() {
       DateTimeType dt = utcDateTime("2020-06-15T10:30:00+00:00");
-      TemporalPrecisionEnum original = dt.getPrecision();
+      ChronoUnit original = dt.getPrecision();
       dt.subtract(2, "mo");
       assertEquals(original, dt.getPrecision());
     }
@@ -538,7 +539,7 @@ class BaseDateTimeTypeUcumTest {
     @Test
     void addRejectsNullUnit() {
       DateTimeType dt = utcDateTime("2020-06-15T10:30:00+00:00");
-      assertThrows(NullPointerException.class, () -> dt.add(1, null));
+      assertThrows(NullPointerException.class, () -> dt.add(1, (ChronoUnit) null));
     }
 
     @Test
