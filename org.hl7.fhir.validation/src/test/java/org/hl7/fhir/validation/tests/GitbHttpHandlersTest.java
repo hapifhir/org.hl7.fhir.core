@@ -6,23 +6,25 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.validation.ValidationEngine;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.hl7.fhir.model.core.OperationOutcome;
-import org.hl7.fhir.model.core.Parameters;
-import org.hl7.fhir.model.core.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.model.utilities.formats.FhirFormat;
-import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.services.elementmodel.Manager;
-import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.standalone.context.SimpleWorkerContext;
-import org.hl7.fhir.standalone.testing.TestingUtilities;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.instance.MatchetypeValidator;
+import org.hl7.fhir.validation.instance.MatchetypeMarkers;
 import org.hl7.fhir.validation.special.TxTesterNormalizer;
 import org.hl7.fhir.validation.http.FhirValidatorHttpService;
 import org.junit.jupiter.api.AfterEach;
@@ -472,10 +474,10 @@ class GitbHttpHandlersTest {
   // ------------------------------------------------------------------
   // POST /itb/matchetype/validate with normalize=tx
   //
-  // The terminology test set's expected files are stored scrubbed and sorted. Without the
-  // input, the comparison is positional and a response that differs only in array order
-  // fails; with normalize=tx the actual is put in the same form first. The mocked engine is
-  // given a real context and a real comparison, so the handler's own work is what is tested.
+  // Without the input the comparison is positional and a response that differs only in
+  // array order fails; with normalize=tx the actual is scrubbed and sorted first, the way
+  // the terminology test runner does it. The mocked engine is given a real context and the
+  // comparison the real engine performs, so the handler's own work is what is tested.
   // ------------------------------------------------------------------
 
   /** A $lookup response as a server might return it. */
@@ -498,13 +500,16 @@ class GitbHttpHandlersTest {
   private void stubEngineForComparison() throws Exception {
     SimpleWorkerContext ctx = txContext();
     when(engine.getContext()).thenReturn(ctx);
-    when(engine.compareMatchetype(any(), any(), any(), any())).thenAnswer(inv -> {
+    when(engine.compareMatchetype(any(), any(), any(), any(), anyBoolean(), any(), any())).thenAnswer(inv -> {
       byte[] actual = inv.getArgument(0);
       byte[] expected = inv.getArgument(2);
+      boolean patternMode = inv.getArgument(4);
+      java.util.Set<String> modes = inv.getArgument(5);
+      java.util.Map<String, String> variables = inv.getArgument(6);
       Element act = Manager.parseSingle(ctx, new ByteArrayInputStream(actual), FhirFormat.JSON);
-      Element exp = Manager.parseSingle(ctx, new ByteArrayInputStream(expected), FhirFormat.JSON);
+      Element exp = Manager.parseSingle(ctx, new ByteArrayInputStream(MatchetypeMarkers.toExtensions(expected)), FhirFormat.JSON);
       List<ValidationMessage> messages = new ArrayList<>();
-      new MatchetypeValidator(new FHIRPathEngine(ctx)).compare(messages, act.fhirType(), exp, act);
+      new MatchetypeValidator(new FHIRPathEngine(ctx), modes, null, variables).setPatternMode(patternMode).compare(messages, act.fhirType(), exp, act);
       OperationOutcome oo = new OperationOutcome();
       if (messages.isEmpty()) {
         oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.INFORMATION).setCode(OperationOutcome.IssueType.INFORMATIONAL).setDiagnostics("Resource matches the matchetype");
@@ -519,16 +524,16 @@ class GitbHttpHandlersTest {
 
   /** The expected file's form: the runner's scrub and sort applied to the fixture. */
   private String lookupAsExpectedFile() throws Exception {
-    return new String(TxTesterNormalizer.normalizeJson(txContext().getModelContext(), LOOKUP.getBytes(StandardCharsets.UTF_8), false), StandardCharsets.UTF_8);
+    return new String(TxTesterNormalizer.normalizeJson(LOOKUP.getBytes(StandardCharsets.UTF_8), false), StandardCharsets.UTF_8);
   }
 
   /** The same content with the parameter array and every part array reversed. */
   private String lookupReversed() throws Exception {
-    org.hl7.fhir.model.core.formats.JsonParser jp = new org.hl7.fhir.model.core.formats.JsonParser(txContext().getModelContext());
+    org.hl7.fhir.r5.formats.JsonParser jp = new org.hl7.fhir.r5.formats.JsonParser();
     Parameters p = (Parameters) jp.parse(LOOKUP.getBytes(StandardCharsets.UTF_8));
-    Collections.reverse(p.getParameterList());
-    for (ParametersParameterComponent pp : p.getParameterList()) {
-      Collections.reverse(pp.getPartList());
+    Collections.reverse(p.getParameter());
+    for (ParametersParameterComponent pp : p.getParameter()) {
+      Collections.reverse(pp.getPart());
     }
     return new String(jp.composeBytes(p), StandardCharsets.UTF_8);
   }
@@ -580,6 +585,139 @@ class GitbHttpHandlersTest {
       anyContent("normalize", "json"))));
     assertEquals(400, response.statusCode());
     assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("normalize");
+  }
+
+  /** A capability statement as a server returns it, and the subset an expected file lists. */
+  private static final String CAPSTMT_FULL = "{\"resourceType\":\"CapabilityStatement\",\"id\":\"srv\",\"status\":\"active\",\"date\":\"2026-01-01\",\"kind\":\"instance\",\"fhirVersion\":\"4.0.1\",\"format\":[\"application/fhir+xml\",\"application/fhir+json\"],\"rest\":[{\"mode\":\"server\",\"security\":{\"cors\":true},\"operation\":[{\"name\":\"expand\",\"definition\":\"http://hl7.org/fhir/OperationDefinition/ValueSet-expand\"},{\"name\":\"versions\",\"definition\":\"http://hl7.org/fhir/OperationDefinition/fhir-versions\"}]}]}";
+  private static final String CAPSTMT_SUBSET = "{\"resourceType\":\"CapabilityStatement\",\"status\":\"active\",\"kind\":\"instance\",\"fhirVersion\":\"4.0.1\",\"format\":[\"application/fhir+json\"],\"rest\":[{\"mode\":\"server\",\"operation\":[{\"name\":\"versions\",\"definition\":\"http://hl7.org/fhir/OperationDefinition/fhir-versions\"}]}]}";
+
+  @Test
+  void matchetypeCompleteModeRejectsExtraContent() throws Exception {
+    // The default: the resource must match the matchetype exactly, so a server's fuller
+    // capability statement fails against the subset an expected file lists.
+    stubEngineForComparison();
+    JsonObject report = postMatchetype(
+      anyContent("contentToValidate", CAPSTMT_FULL),
+      anyContent("matchetype", CAPSTMT_SUBSET),
+      anyContent("normalize", "tx")).getJsonObject("report");
+    assertEquals("FAILURE", report.asString("result"));
+  }
+
+  @Test
+  void matchetypePartialModeAcceptsASubsetMatchetype() throws Exception {
+    // mode=partial: the matchetype is a subset the resource must contain, which is how the
+    // terminology test runner compares the metadata tests.
+    stubEngineForComparison();
+    JsonObject report = postMatchetype(
+      anyContent("contentToValidate", CAPSTMT_FULL),
+      anyContent("matchetype", CAPSTMT_SUBSET),
+      anyContent("normalize", "tx"),
+      anyContent("mode", "partial")).getJsonObject("report");
+    assertEquals("SUCCESS", report.asString("result"));
+    assertEquals(0, report.getJsonObject("counters").asInteger("nrOfErrors"));
+  }
+
+  @Test
+  void matchetypeRejectsUnknownMode() throws Exception {
+    HttpResponse<String> response = post("/itb/matchetype/validate", JsonParser.compose(validateRequestBody(
+      anyContent("contentToValidate", LOOKUP),
+      anyContent("matchetype", LOOKUP),
+      anyContent("mode", "lenient"))));
+    assertEquals(400, response.statusCode());
+    assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("mode");
+  }
+
+  /** Repro A: an expansion parameter the expected file marks $optional$, and a server that omits it. */
+  private static final String EXPAND_EXPECTED = "{\"resourceType\":\"ValueSet\",\"status\":\"active\",\"expansion\":{\"identifier\":\"$uuid$\",\"timestamp\":\"$instant$\",\"parameter\":[{\"name\":\"excludeNested\",\"valueBoolean\":true},{\"$optional$\":true,\"name\":\"version\",\"valueUri\":\"http://hl7.org/fhir/test/CodeSystem/simple|0.1.0\"}],\"contains\":[{\"system\":\"http://hl7.org/fhir/test/CodeSystem/simple\",\"code\":\"code1\",\"display\":\"Display 1\"}]}}";
+  private static final String EXPAND_WITHOUT_OPTIONAL = "{\"resourceType\":\"ValueSet\",\"status\":\"active\",\"expansion\":{\"identifier\":\"urn:uuid:c0ffee00-0000-4000-8000-000000000001\",\"timestamp\":\"2026-01-01T00:00:00Z\",\"parameter\":[{\"name\":\"excludeNested\",\"valueBoolean\":true}],\"contains\":[{\"system\":\"http://hl7.org/fhir/test/CodeSystem/simple\",\"code\":\"code1\",\"display\":\"Display 1\"}]}}";
+  /** Repro B: a designation use coding whose display is in $optional-properties$, and a server that omits it. */
+  private static final String LOOKUP_EXPECTED = "{\"resourceType\":\"Parameters\",\"parameter\":[{\"name\":\"designation\",\"part\":[{\"name\":\"language\",\"valueCode\":\"en\"},{\"name\":\"use\",\"valueCoding\":{\"$optional-properties$\":[\"display\"],\"system\":\"http://snomed.info/sct\",\"code\":\"900000000000003001\",\"display\":\"Fully specified name\"}},{\"name\":\"value\",\"valueString\":\"Display 1\"}]},{\"name\":\"display\",\"valueString\":\"Display 1\"},{\"name\":\"name\",\"valueString\":\"Simple\"}]}";
+  private static final String LOOKUP_WITHOUT_DISPLAY = "{\"resourceType\":\"Parameters\",\"parameter\":[{\"name\":\"designation\",\"part\":[{\"name\":\"language\",\"valueCode\":\"en\"},{\"name\":\"use\",\"valueCoding\":{\"system\":\"http://snomed.info/sct\",\"code\":\"900000000000003001\"}},{\"name\":\"value\",\"valueString\":\"Display 1\"}]},{\"name\":\"display\",\"valueString\":\"Display 1\"},{\"name\":\"name\",\"valueString\":\"Simple\"}]}";
+
+  @Test
+  void matchetypeOptionalArrayItemMayBeAbsent() throws Exception {
+    // What the expected file marks $optional$ is allowed to be absent: the item count and
+    // the positional comparison both skip it.
+    stubEngineForComparison();
+    JsonObject report = postMatchetype(
+      anyContent("contentToValidate", EXPAND_WITHOUT_OPTIONAL),
+      anyContent("matchetype", EXPAND_EXPECTED),
+      anyContent("normalize", "tx")).getJsonObject("report");
+    assertEquals("SUCCESS", report.asString("result"), JsonParser.compose(report));
+  }
+
+  @Test
+  void matchetypeOptionalPropertyMayBeAbsent() throws Exception {
+    // A property listed in $optional-properties$ is allowed to be absent.
+    stubEngineForComparison();
+    JsonObject report = postMatchetype(
+      anyContent("contentToValidate", LOOKUP_WITHOUT_DISPLAY),
+      anyContent("matchetype", LOOKUP_EXPECTED),
+      anyContent("normalize", "tx")).getJsonObject("report");
+    assertEquals("SUCCESS", report.asString("result"), JsonParser.compose(report));
+  }
+
+  @Test
+  void matchetypeStillRequiresWhatIsNotMarkedOptional() throws Exception {
+    // The markers relax only what they name: the same response against the expected file
+    // with the marker removed fails on the count, as before.
+    stubEngineForComparison();
+    JsonObject report = postMatchetype(
+      anyContent("contentToValidate", EXPAND_WITHOUT_OPTIONAL),
+      anyContent("matchetype", EXPAND_EXPECTED.replace("\"$optional$\":true,", "")),
+      anyContent("normalize", "tx")).getJsonObject("report");
+    assertEquals("FAILURE", report.asString("result"));
+  }
+
+  /** A parameter that is optional in the tx.fhir.org mode only, and one that exists in FHIR 4 only. */
+  private static final String EXPAND_MODE_FILTER = "{\"resourceType\":\"ValueSet\",\"status\":\"active\",\"expansion\":{\"identifier\":\"urn:uuid:c0ffee00-0000-4000-8000-000000000001\",\"timestamp\":\"2026-01-01T00:00:00Z\",\"parameter\":[{\"name\":\"excludeNested\",\"valueBoolean\":true},{\"$optional$\":\"tx.fhir.org\",\"name\":\"warning-draft\",\"valueString\":\"draft\"}],\"contains\":[{\"system\":\"http://hl7.org/fhir/test/CodeSystem/simple\",\"code\":\"code1\",\"display\":\"Display 1\"}]}}";
+  private static final String EXPAND_VERSION_FILTER = "{\"resourceType\":\"ValueSet\",\"status\":\"active\",\"expansion\":{\"identifier\":\"urn:uuid:c0ffee00-0000-4000-8000-000000000001\",\"timestamp\":\"2026-01-01T00:00:00Z\",\"parameter\":[{\"name\":\"excludeNested\",\"valueBoolean\":true},{\"$only$\":\"version:4\",\"name\":\"used-codesystem\",\"valueUri\":\"http://hl7.org/fhir/test/CodeSystem/simple|0.1.0\"}],\"contains\":[{\"system\":\"http://hl7.org/fhir/test/CodeSystem/simple\",\"code\":\"code1\",\"display\":\"Display 1\"}]}}";
+  private static final String EXPAND_TWO_PARAMETERS = "{\"resourceType\":\"ValueSet\",\"status\":\"active\",\"expansion\":{\"identifier\":\"urn:uuid:c0ffee00-0000-4000-8000-000000000001\",\"timestamp\":\"2026-01-01T00:00:00Z\",\"parameter\":[{\"name\":\"excludeNested\",\"valueBoolean\":true},{\"name\":\"used-codesystem\",\"valueUri\":\"http://hl7.org/fhir/test/CodeSystem/simple|0.1.0\"}],\"contains\":[{\"system\":\"http://hl7.org/fhir/test/CodeSystem/simple\",\"code\":\"code1\",\"display\":\"Display 1\"}]}}";
+
+  @Test
+  void matchetypeModesInputDecidesModeFilters() throws Exception {
+    // $optional$: "tx.fhir.org" - the item may be absent only when that mode is given.
+    stubEngineForComparison();
+    JsonObject without = postMatchetype(
+      anyContent("contentToValidate", EXPAND_WITHOUT_OPTIONAL),
+      anyContent("matchetype", EXPAND_MODE_FILTER),
+      anyContent("normalize", "tx")).getJsonObject("report");
+    assertEquals("FAILURE", without.asString("result"), JsonParser.compose(without));
+    JsonObject with = postMatchetype(
+      anyContent("contentToValidate", EXPAND_WITHOUT_OPTIONAL),
+      anyContent("matchetype", EXPAND_MODE_FILTER),
+      anyContent("normalize", "tx"),
+      anyContent("modes", "general, tx.fhir.org")).getJsonObject("report");
+    assertEquals("SUCCESS", with.asString("result"), JsonParser.compose(with));
+  }
+
+  @Test
+  void matchetypeVersionInputDecidesVersionFilters() throws Exception {
+    // $only$: "version:4" - required from a FHIR 4 server, not to be sent by a FHIR 5 one.
+    stubEngineForComparison();
+    JsonObject r4 = postMatchetype(
+      anyContent("contentToValidate", EXPAND_TWO_PARAMETERS),
+      anyContent("matchetype", EXPAND_VERSION_FILTER),
+      anyContent("normalize", "tx"),
+      anyContent("version", "4.0.1")).getJsonObject("report");
+    assertEquals("SUCCESS", r4.asString("result"), JsonParser.compose(r4));
+    JsonObject r5 = postMatchetype(
+      anyContent("contentToValidate", EXPAND_TWO_PARAMETERS),
+      anyContent("matchetype", EXPAND_VERSION_FILTER),
+      anyContent("normalize", "tx"),
+      anyContent("version", "5.0.0")).getJsonObject("report");
+    assertEquals("FAILURE", r5.asString("result"), JsonParser.compose(r5));
+    assertThat(JsonParser.compose(r5)).contains("not expected in this version or mode");
+  }
+
+  @Test
+  void matchetypeRejectsUnknownVersion() throws Exception {
+    HttpResponse<String> response = post("/itb/matchetype/validate", JsonParser.compose(validateRequestBody(
+      anyContent("contentToValidate", LOOKUP),
+      anyContent("matchetype", LOOKUP),
+      anyContent("version", "2.0"))));
+    assertEquals(400, response.statusCode());
+    assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("version");
   }
 
   // ------------------------------------------------------------------
