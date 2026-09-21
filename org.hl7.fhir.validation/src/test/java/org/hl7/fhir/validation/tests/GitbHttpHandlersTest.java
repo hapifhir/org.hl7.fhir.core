@@ -658,6 +658,18 @@ class GitbHttpHandlersTest {
   }
 
   @Test
+  void matchetypeOptionalPropertyMayBePresentWhenTheMatchetypeLacksIt() throws Exception {
+    // $optional-properties$ relaxes the property either way, as in the runner: a server that
+    // sends a display the expected file lists as optional but does not itself carry passes.
+    stubEngineForComparison();
+    JsonObject report = postMatchetype(
+      anyContent("contentToValidate", LOOKUP_EXPECTED.replace("\"$optional-properties$\":[\"display\"],", "")),
+      anyContent("matchetype", LOOKUP_EXPECTED.replace(",\"display\":\"Fully specified name\"", "")),
+      anyContent("normalize", "tx")).getJsonObject("report");
+    assertEquals("SUCCESS", report.asString("result"), JsonParser.compose(report));
+  }
+
+  @Test
   void matchetypeStillRequiresWhatIsNotMarkedOptional() throws Exception {
     // The markers relax only what they name: the same response against the expected file
     // with the marker removed fails on the count, as before.

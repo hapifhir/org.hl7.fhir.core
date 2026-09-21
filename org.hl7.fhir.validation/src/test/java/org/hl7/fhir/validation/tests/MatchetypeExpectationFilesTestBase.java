@@ -283,6 +283,16 @@ abstract class MatchetypeExpectationFilesTestBase {
     return filter.startsWith("!") || filter.startsWith("warning:");
   }
 
+  /** The comparer's $fragments$ / $external:n:fragments$ rule: every |-separated fragment occurs, case-insensitively. */
+  private static boolean containsAll(String text, String fragments) {
+    for (String f : fragments.split("\\|")) {
+      if (!text.toLowerCase().contains(f.toLowerCase())) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   private static boolean isPlaceholder(String s) {
     return s.length() >= 2 && s.startsWith("$") && s.endsWith("$");
   }
@@ -291,24 +301,28 @@ abstract class MatchetypeExpectationFilesTestBase {
    * A value the placeholder accepts, and that the element's type accepts too. A message stands
    * in for a real server message: the real one where the package records it, since the sorted
    * order the files are stored in depends on the real text; otherwise the fragments the
-   * placeholder asks for, behind a word so that the value is not itself a "; " list the
-   * normaliser would reorder.
+   * placeholder asks for, behind a marker that sorts before any letter (the one file where a
+   * message competes with a literal sibling in the sort puts it first) and keeps the value
+   * from being a "; " list the normaliser would reorder.
    */
   private String fill(String name, String placeholder, JsonObject ext) {
     if (placeholder.startsWith("$choice:")) {
       return placeholder.substring(8, placeholder.length() - 1).split("\\|")[0];
     }
     if (placeholder.startsWith("$fragments:")) {
-      return "Message " + placeholder.substring(11, placeholder.length() - 1).replace('|', ' ');
+      return "! " + placeholder.substring(11, placeholder.length() - 1).replace('|', ' ');
     }
     if (placeholder.startsWith("$external:")) {
       // $external:n$ is the message the package's externals file records under n;
       // $external:n:a|b$ must contain a and b when no externals are given, as in the service
       String[] cmd = placeholder.substring(1, placeholder.length() - 1).split(":", 3);
-      if (ext.has(cmd[1])) {
+      String fragments = cmd.length > 2 ? cmd[2] : "";
+      if (ext.has(cmd[1]) && containsAll(ext.asString(cmd[1]), fragments)) {
         return ext.asString(cmd[1]);
       }
-      return cmd.length > 2 ? "Message " + cmd[2].replace('|', ' ') : "Message";
+      // no recorded message, or one the placeholder's own fragments do not occur in (which
+      // the service, having no externals, would reject): the fragments are the contract
+      return fragments.isEmpty() ? "!" : "! " + fragments.replace('|', ' ');
     }
     switch (placeholder) {
     case "$instant$": return "2026-01-01T00:00:00Z";
