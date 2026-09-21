@@ -368,6 +368,7 @@ public class XhtmlParser {
   }
 
   private XhtmlNode parseNode(Element node, String defaultNS) throws FHIRFormatError  {
+    // FIXME depth check here. Add `int depth` param.
     XhtmlNode res = new XhtmlNode(NodeType.Element);
     res.setName(node.getLocalName());
     defaultNS = checkNS(res, node, defaultNS);
@@ -411,6 +412,7 @@ public class XhtmlParser {
 
   }
   private XhtmlNode parseNode(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError  {
+    //FIXME put depth check here (add `int depth` param)
     XhtmlNode res = new XhtmlNode(NodeType.Element);
     res.setName(xpp.getName());
 
@@ -749,12 +751,7 @@ public class XhtmlParser {
 
   private void parseElement(XhtmlNode parent, List<XhtmlNode> parents, NamespaceNormalizationMap namespaceMap) throws IOException, FHIRFormatError
   {
-    // guard against unbounded recursion (parseElement <-> parseElementInner) on deeply nested
-    // narratives, which would otherwise cause a StackOverflowError. parents grows by one per
-    // nesting level, so it is a faithful proxy for the current depth.
-    if (parents.size() > MAX_XHTML_DEPTH) {
-      throw new FHIRFormatError("XHTML nesting depth exceeds maximum of "+MAX_XHTML_DEPTH+descLoc());
-    }
+    checkRecursionLimit(parents);
     markLocation();
     ElementName name = new ElementName(readName());
     XhtmlNode node = parent.addTag(name.getName());
@@ -775,6 +772,18 @@ public class XhtmlParser {
     } else {
       node.setEmptyExpanded(true);
       parseElementInner(node, newParents, namespaceMap);
+    }
+  }
+
+  /*
+   guard against unbounded recursion (parseElement <-> parseElementInner) on deeply nested
+   narratives, which would otherwise cause a StackOverflowError. parents grows by one per
+   nesting level, so it is a faithful proxy for the current depth.
+   */
+  private void checkRecursionLimit(List<XhtmlNode> parents) {
+
+    if (parents.size() > MAX_XHTML_DEPTH) {
+      throw new FHIRFormatError("XHTML nesting depth exceeds maximum of "+MAX_XHTML_DEPTH+descLoc());
     }
   }
 
