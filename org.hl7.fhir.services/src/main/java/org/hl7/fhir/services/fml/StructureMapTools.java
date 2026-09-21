@@ -2556,8 +2556,15 @@ public class StructureMapTools {
             res.addBinding(td.getBinding());
         }
         return new TypeDetails(CollectionStatus.SINGLETON, res);
+      case TRUNCATE:
+        return new TypeDetails(CollectionStatus.SINGLETON, "string");
       case C:
         return new TypeDetails(CollectionStatus.SINGLETON, "Coding");
+      case CP:
+        return new TypeDetails(CollectionStatus.SINGLETON, "ContactPoint");
+      case CAST:
+        var castType = getParamString(vars, tgtParameters.get(1));
+        return new TypeDetails(CollectionStatus.SINGLETON, castType);
       case QTY:
         return new TypeDetails(CollectionStatus.SINGLETON, "Quantity");
       case REFERENCE:
@@ -2570,6 +2577,8 @@ public class StructureMapTools {
         return td;
       case UUID:
         return new TypeDetails(CollectionStatus.SINGLETON, "id");
+      case ID:
+        return new TypeDetails(CollectionStatus.SINGLETON, "Identifier");
       default:
         throw new FHIRException("Transform Unknown or not handled yet: " + tgt.getTransform().toCode());
     }
