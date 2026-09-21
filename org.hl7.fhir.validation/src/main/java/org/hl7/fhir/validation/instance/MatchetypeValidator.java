@@ -534,6 +534,13 @@ public class MatchetypeValidator {
 
   private boolean allOptional(List<Element> value, String name, Element parent) {
     for (Element e : value) {
+      // A primitive carries no marker of its own, and the reference comparer
+      // (CompareUtilities, which the expectation files are written against) lets a
+      // repeating primitive be absent for that reason. OperationOutcome.issue.location
+      // is the common case: a list of strings the file states and the server may omit.
+      if (e.isPrimitive()) {
+        continue;
+      }
       if (!isOptional(e, name, parent)) {
         return false;
       }
