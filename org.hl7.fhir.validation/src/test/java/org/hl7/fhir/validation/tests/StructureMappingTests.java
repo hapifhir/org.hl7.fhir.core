@@ -343,7 +343,7 @@ public class StructureMappingTests {
     new org.hl7.fhir.services.elementmodel.JsonParser(context).compose(element, s, OutputStyle.PRETTY, null);
     Composition comp = (Composition) new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(s.toString());
     //System.out.println(s.toString());
-    assertEquals(2,  comp.getSection().get(0).getSection().size());
-    assertEquals(1,  comp.getSection().get(1).getSection().size());
+    assertEquals(2,  comp.getSectionList().get(0).getSectionList().size());
+    assertEquals(1,  comp.getSectionList().get(1).getSectionList().size());
   }
 }
