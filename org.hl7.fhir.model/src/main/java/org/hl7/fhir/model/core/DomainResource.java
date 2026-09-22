@@ -519,6 +519,9 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
   }
 
   public boolean hasExtension(String url) {
+    for (Extension e : getModifierExtensionsForRead())
+      if (url.equals(e.getUrl()))
+        return true;
     for (Extension e : getExtensionsForRead())
       if (url.equals(e.getUrl()))
         return true;
@@ -685,9 +688,12 @@ public Resource getContained(String ref) {
   }
 
   public String getExtensionString(String... theUrls) throws FHIRException {
+    // Select ordinary extensions only; hasExtension can also match modifiers.
     for (String url : theUrls) {
-      if (hasExtension(url)) {
-        return getExtensionString(url);
+      for (Extension next : getExtensionsForRead()) {
+        if (url.equals(next.getUrl())) {
+          return getExtensionString(url);
+        }
       }
     }
     return null;
