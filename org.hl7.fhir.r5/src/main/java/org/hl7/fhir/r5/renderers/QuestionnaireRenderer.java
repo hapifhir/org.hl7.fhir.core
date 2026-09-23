@@ -98,7 +98,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (doOpts) { 
       x.b().tx(context.formatPhrase(RenderingI18nContext.QUEST_STRUCT)); 
     } 
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true, ""); 
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true, tablePrefix("qt", q)); 
+    gen.setPrefixLocalHrefs(false); // the #item. and #opt-item. links point at anchors named through context.prefixAnchor 
     TableModel model = gen.new TableModel("qtree="+q.getId(), context.getRules() == GenerationRules.IG_PUBLISHER);     
     model.setAlternating(true); 
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) { 
@@ -527,9 +528,19 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     x.code(exp.primitiveValue("expression")); 
   } 
 
+  /**
+   * the row ids of the tree and logic tables must be unique on the page: both tables can be on the
+   * same page, and so can several questionnaires (e.g. a bundle), so the prefix carries both
+   */
+  private String tablePrefix(String kind, ResourceWrapper q) {
+    String id = q.getId();
+    return context.prefixAnchor(Utilities.noString(id) ? kind : kind + "-" + Utilities.nmtokenize(id));
+  }
+
   private void renderLogic(RenderingStatus status, XhtmlNode x, ResourceWrapper q) throws FHIRException, IOException { 
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true, ""); 
-    TableModel model = gen.new TableModel("qtree="+q.getId(), true);     
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true, tablePrefix("ql", q)); 
+    gen.setPrefixLocalHrefs(false); // the #item. and #opt-item. links point at anchors named through context.prefixAnchor 
+    TableModel model = gen.new TableModel("qlogic="+q.getId(), true);     
     model.setAlternating(true); 
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) { 
       model.setDocoImg(HierarchicalTableGenerator.help16AsData());     
