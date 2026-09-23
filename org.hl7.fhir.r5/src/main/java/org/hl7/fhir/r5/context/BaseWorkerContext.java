@@ -1255,7 +1255,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (!options.isUseServer()) {
           t.setResult(new ValidationResult(IssueSeverity.WARNING, formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, null));
         } else if (unsupportedCodeSystems.contains(codeKey)) {
-          t.setResult(new ValidationResult(IssueSeverity.ERROR, formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, t.getCoding().getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, null));
+          // the same answer, and the same issue, as the one code path gives for this - see the note
+          // there. Without the issue the message lands on the element rather than on the system, and
+          // the two read as two different problems with the one coding
+          String msg = formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, t.getCoding().getSystem());
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.r5.model.OperationOutcome.IssueType.NOTFOUND);
+          iss.getDetails().setText(msg);
+          iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
+          iss.addExpression("Coding.system"); // the path the batch validates its codings at
+          t.setResult(new ValidationResult(IssueSeverity.ERROR, msg, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, new ArrayList<>(Collections.singletonList(iss))));
         } else if (noTerminologyServer) {
           t.setResult(new ValidationResult(IssueSeverity.ERROR, formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES, t.getCoding().getCode(), t.getCoding().getSystem()), TerminologyServiceErrorClass.NOSERVICE, null));
         }
@@ -1478,7 +1486,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       codeSystemsUsed.add(code.getSystem());
     }
 
-    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken()) : null;
+    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken(), path) : null;
     ValidationResult res = null;
     if (cachingAllowed && txCache != null) {
       res = txCache.getValidation(cacheToken);
@@ -1570,7 +1578,20 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     String codeKey = getCodeKey(code);
     if (unsupportedCodeSystems.contains(codeKey)) {
-      return new ValidationResult(IssueSeverity.ERROR, formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, code.getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues);
+      // this is the same answer we already got for this code system, so it is reported the same way:
+      // against the system, which is the part that could not be resolved, and not against the coding.
+      // Without the expression it lands on the element instead, and reads as a second, different problem.
+      // The issue severity has to match the result's, or ValidationResult.messageIsInIssues() will not
+      // see the message in the issues (it compares severity ordinals) and the CodeableConcept walk in
+      // ValueSetValidator adds the message a second time, at the coding. The validator lowers a
+      // not-found error to a warning itself, where the binding calls for that
+      String msg = formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, code.getSystem());
+      OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.r5.model.OperationOutcome.IssueType.NOTFOUND);
+      iss.getDetails().setText(msg);
+      iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
+      iss.addExpression(path+".system");
+      issues.add(iss);
+      return new ValidationResult(IssueSeverity.ERROR, msg, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues);
     }
 
     // if that failed, we try to validate on the server
