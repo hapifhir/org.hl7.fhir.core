@@ -1,0 +1,173 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "19935-6",
+    "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter"
+  }]
+}, "langs":"fi", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
+  "code" : "19935-6",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "severity" : "warning",
+  "error" : "There are no valid display names found for the code http://loinc.org#19935-6 for language(s) 'fi'. The display is 'Maximum expiratory gas flow Respiratory system airway by Peak flow meter' which is a valid display for the default language",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#19935-6 (\"Maximum expiratory gas flow Respiratory system airway by Peak flow meter\")]\"\n7ms http://loinc.org/vs|2.82: Check \"http://loinc.org#19935-6\"\n10ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n10ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at CodeableConcept.coding[0]\n10ms http://loinc.org/vs|2.82: Code \"19935-6\" found in http://loinc.org|2.82",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r3"
+    }],
+    "severity" : "information",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "There are no valid display names found for the code http://loinc.org#19935-6 for language(s) 'fi'. The display is 'Maximum expiratory gas flow Respiratory system airway by Peak flow meter' which is a valid display for the default language"
+    },
+    "expression" : ["CodeableConcept.coding[0].display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "19935-6",
+    "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter"
+  }]
+}, "url": "http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns", "version": "0.03", "langs":"fi", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "externalSource":"StructureDefinition[http://phr.kanta.fi/StructureDefinition/fiphr-pef-stu3|0.06]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
+  "code" : "19935-6",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: Analysing http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03 for validation purposes\n1ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: Parameters: disp-lang=fi, generate-narrative\n1ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: Prepare include[0]: \"(http://loinc.org)(85353-1,9279-1,8867-4,41924-2,8883-1,8873-2,8310-5,8331-1,8332-9,76011-6,8328-7,8302-2,29463-7,85354-9,8480-6,8462-4,77135-2,19935-6,8280-0)\"\n3ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: CodeSystem found: \"http://loinc.org|2.82\"\n3ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: Validate \"[http://loinc.org#19935-6 (\"Maximum expiratory gas flow Respiratory system airway by Peak flow meter\")]\"\n5ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: Check \"http://loinc.org#19935-6\"\n8ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: CodeSystem found: http://loinc.org|2.82 for http://loinc.org\n8ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: check code in (http://loinc.org)(85353-1,9279-1,8867-4,41924-2,8883-1,8873-2,8310-5,8331-1,8332-9,76011-6,8328-7,8302-2,29463-7,85354-9,8480-6,8462-4,77135-2,19935-6,8280-0) at CodeableConcept.coding[0]\n8ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: Code \"19935-6\" found in http://loinc.org|2.82",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "28655-9"
+  }],
+  "text" : "Discharge Summary from Responsible Clinician"
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "3.0.2", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "externalSource":"StructureDefinition[http://hl7.org/fhir/StructureDefinition/Composition]", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Attending Discharge summary",
+  "code" : "28655-9",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Analysing http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Prepare include[0]: \"(http://loinc.org)(SCALE_TYP=Doc)\"\n4ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: CodeSystem found: \"http://loinc.org|2.82\"\n4ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Validate \"[http://loinc.org#28655-9 (\"undefined\")]\"\n6ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Check \"http://loinc.org#28655-9\"\n9ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: CodeSystem found: http://loinc.org|2.82 for http://loinc.org\n9ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: check code in (http://loinc.org)(SCALE_TYP=Doc) at CodeableConcept.coding[0]\n116ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Filter SCALE_TYP = Doc: Code \"28655-9\" found in http://loinc.org|2.82",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "29299-5",
+    "display" : "Reason for visit Narrative"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Reason for visit Narrative",
+  "code" : "29299-5",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#29299-5 (\"Reason for visit Narrative\")]\"\n6ms http://loinc.org/vs|2.82: Check \"http://loinc.org#29299-5\"\n9ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n10ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at CodeableConcept.coding[0]\n10ms http://loinc.org/vs|2.82: Code \"29299-5\" found in http://loinc.org|2.82",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "10183-2",
+    "display" : "Hospital discharge medications Narrative"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Hospital discharge medications Narrative",
+  "code" : "10183-2",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#10183-2 (\"Hospital discharge medications Narrative\")]\"\n6ms http://loinc.org/vs|2.82: Check \"http://loinc.org#10183-2\"\n10ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n10ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at CodeableConcept.coding[0]\n10ms http://loinc.org/vs|2.82: Code \"10183-2\" found in http://loinc.org|2.82",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

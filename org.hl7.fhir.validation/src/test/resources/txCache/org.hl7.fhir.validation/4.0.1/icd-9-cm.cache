@@ -1,0 +1,30 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://hl7.org/fhir/sid/icd-9-cm",
+    "code" : "99.00"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Periop aut trans hol bld",
+  "code" : "99.00",
+  "system" : "http://hl7.org/fhir/sid/icd-9-cm",
+  "version" : "2015",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/sid/icd-9-cm/vs|2015: Validate \"[http://hl7.org/fhir/sid/icd-9-cm#99.00 (\"undefined\")]\"\n2ms http://hl7.org/fhir/sid/icd-9-cm/vs|2015: Check \"http://hl7.org/fhir/sid/icd-9-cm#99.00\"\n3ms http://hl7.org/fhir/sid/icd-9-cm/vs|2015: CodeSystem found: http://hl7.org/fhir/sid/icd-9-cm|2015 for http://hl7.org/fhir/sid/icd-9-cm|2015\n3ms http://hl7.org/fhir/sid/icd-9-cm/vs|2015: check code in (http://hl7.org/fhir/sid/icd-9-cm) at CodeableConcept.coding[0]\n3ms http://hl7.org/fhir/sid/icd-9-cm/vs|2015: Code \"99.00\" found in http://hl7.org/fhir/sid/icd-9-cm|2015",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

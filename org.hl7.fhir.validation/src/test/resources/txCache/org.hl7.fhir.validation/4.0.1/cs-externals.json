@@ -1,0 +1,22 @@
+{
+  "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9" : {
+    "server" : "http://tx-dev.fhir.org/r4",
+    "filename" : "cs-f94ca62b-fd43-42fc-af62-af7d8d276253.json"
+  },
+  "#c1" : null,
+  "http://something/something" : null,
+  "http://hl7.org/fhir/ValueSet/birthDate" : null,
+  "http://loinc.org" : {
+    "server" : "http://tx-dev.fhir.org/r4",
+    "filename" : "cs-b657e727-392d-4c99-89e1-31fccecaff1a.json"
+  },
+  "urn:oid:2.16.840.1.113883.6.238" : {
+    "server" : "http://tx-dev.fhir.org/r4",
+    "filename" : "cs-a8e4bb22-27de-4cba-a7e7-fe2920a13c8c.json"
+  },
+  "http://hl7.org/fhir/CodeSystem/c1" : null,
+  "http://hl7.org/fhir/test/CodeSystem/big" : null,
+  "#f3b2bd36-199b-4591-b4db-f49db0912b62" : null,
+  "http://snomed.info/sct" : null,
+  "#f3b2bd36-199b-4591-b4db-f49db0912b6" : null
+}

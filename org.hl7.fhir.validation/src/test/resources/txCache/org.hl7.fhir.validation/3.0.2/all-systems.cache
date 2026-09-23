@@ -1,0 +1,194 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "fi"
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "3.0.2", "langs":"fi", "useServer":"true", "useClient":"true", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Finnish",
+  "code" : "fi",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Analysing http://hl7.org/fhir/ValueSet/languages|3.0.2 for validation purposes\n2ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Parameters: disp-lang=fi, generate-narrative\n2ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Prepare include[0]: \"(urn:ietf:bcp:47)(ar,bn,cs,da,de,de-AT,de-CH,de-DE,el,en,en-AU,en-CA,en-GB,en-IN,en-NZ,en-SG,en-US,es,es-AR,es-ES,es-UY,fi,fr,fr-BE,fr-CH,fr-FR,fy,fy-NL,hi,hr,it,it-CH,it-IT,ja,ko,nl,nl-BE,nl-NL,no,no-NO,pa,pt,pt-BR,ru,ru-RU,sr,sr-SP,sv,sv-SE,te,zh,zh-CN,zh-HK,zh-SG,zh-TW)\"\n3ms http://hl7.org/fhir/ValueSet/languages|3.0.2: CodeSystem found: \"urn:ietf:bcp:47|null\"\n3ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Validate \"[undefined#fi (\"undefined\")]\" and infer system\n3ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Check \"undefined#fi\"\n3ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Inferred CodeSystem = \"urn:ietf:bcp:47\"\n4ms http://hl7.org/fhir/ValueSet/languages|3.0.2: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47\n4ms http://hl7.org/fhir/ValueSet/languages|3.0.2: check code in (urn:ietf:bcp:47)(ar,bn,cs,da,de,de-AT,de-CH,de-DE,el,en,en-AU,en-CA,en-GB,en-IN,en-NZ,en-SG,en-US,es,es-AR,es-ES,es-UY,fi,fr,fr-BE,fr-CH,fr-FR,fy,fy-NL,hi,hr,it,it-CH,it-IT,ja,ko,nl,nl-BE,nl-NL,no,no-NO,pa,pt,pt-BR,ru,ru-RU,sr,sr-SP,sv,sv-SE,te,zh,zh-CN,zh-HK,zh-SG,zh-TW) at \n4ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Code \"fi\" found in urn:ietf:bcp:47|null",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "d"
+}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "3.0.2", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "d",
+  "code" : "d",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.2",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: Analysing http://hl7.org/fhir/ValueSet/units-of-time|3.0.2 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: Prepare include[0]: \"(http://unitsofmeasure.org)(s,min,h,d,wk,mo,a)\"\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: CodeSystem found: \"http://unitsofmeasure.org|2.2\"\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: Validate \"[undefined#d (\"undefined\")]\" and infer system\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: Check \"undefined#d\"\n2ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: Inferred CodeSystem = \"http://unitsofmeasure.org\"\n2ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org\n2ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: check code in (http://unitsofmeasure.org)(s,min,h,d,wk,mo,a) at \n2ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: Code \"d\" found in http://unitsofmeasure.org|2.2",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "image/jpg"
+}, "url": "urn:uuid:a90b6a18-6e12-474d-93ed-96d463774b79", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "image/jpg",
+  "code" : "image/jpg",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:a90b6a18-6e12-474d-93ed-96d463774b79|1: Analysing urn:uuid:a90b6a18-6e12-474d-93ed-96d463774b79|1 for validation purposes\n1ms urn:uuid:a90b6a18-6e12-474d-93ed-96d463774b79|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:a90b6a18-6e12-474d-93ed-96d463774b79|1: Prepare include[0]: \"(urn:ietf:bcp:13)\"\n1ms urn:uuid:a90b6a18-6e12-474d-93ed-96d463774b79|1: CodeSystem found: \"urn:ietf:bcp:13|null\"\n1ms urn:uuid:a90b6a18-6e12-474d-93ed-96d463774b79|1: Validate \"[undefined#image/jpg (\"undefined\")]\" and infer system\n1ms urn:uuid:a90b6a18-6e12-474d-93ed-96d463774b79|1: Check \"undefined#image/jpg\"\n2ms urn:uuid:a90b6a18-6e12-474d-93ed-96d463774b79|1: Inferred CodeSystem = \"urn:ietf:bcp:13\"\n2ms urn:uuid:a90b6a18-6e12-474d-93ed-96d463774b79|1: CodeSystem found: urn:ietf:bcp:13|null for urn:ietf:bcp:13\n2ms urn:uuid:a90b6a18-6e12-474d-93ed-96d463774b79|1: check code in (urn:ietf:bcp:13) at \n2ms urn:uuid:a90b6a18-6e12-474d-93ed-96d463774b79|1: Code \"image/jpg\" found in urn:ietf:bcp:13|null",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "image/jpg"
+}, "url": "urn:uuid:00930774-3e3e-4938-a9fb-c89cb0a81751", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "image/jpg",
+  "code" : "image/jpg",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:00930774-3e3e-4938-a9fb-c89cb0a81751|1: Analysing urn:uuid:00930774-3e3e-4938-a9fb-c89cb0a81751|1 for validation purposes\n1ms urn:uuid:00930774-3e3e-4938-a9fb-c89cb0a81751|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:00930774-3e3e-4938-a9fb-c89cb0a81751|1: Prepare include[0]: \"(urn:ietf:bcp:13)\"\n1ms urn:uuid:00930774-3e3e-4938-a9fb-c89cb0a81751|1: CodeSystem found: \"urn:ietf:bcp:13|null\"\n1ms urn:uuid:00930774-3e3e-4938-a9fb-c89cb0a81751|1: Validate \"[undefined#image/jpg (\"undefined\")]\" and infer system\n1ms urn:uuid:00930774-3e3e-4938-a9fb-c89cb0a81751|1: Check \"undefined#image/jpg\"\n2ms urn:uuid:00930774-3e3e-4938-a9fb-c89cb0a81751|1: Inferred CodeSystem = \"urn:ietf:bcp:13\"\n2ms urn:uuid:00930774-3e3e-4938-a9fb-c89cb0a81751|1: CodeSystem found: urn:ietf:bcp:13|null for urn:ietf:bcp:13\n2ms urn:uuid:00930774-3e3e-4938-a9fb-c89cb0a81751|1: check code in (urn:ietf:bcp:13) at \n2ms urn:uuid:00930774-3e3e-4938-a9fb-c89cb0a81751|1: Code \"image/jpg\" found in urn:ietf:bcp:13|null",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "29463-7",
+    "display" : "Body Weight"
+  },
+  {
+    "system" : "http://loinc.org",
+    "code" : "3141-9",
+    "display" : "Body weight Measured"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "code" : "27113001",
+    "display" : "Body weight"
+  },
+  {
+    "system" : "http://acme.org/devices/clinical-codes",
+    "code" : "body-weight",
+    "display" : "Body Weight"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Body weight",
+  "code" : "29463-7",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "severity" : "warning",
+  "error" : "A definition for the code system 'http://acme.org/devices/clinical-codes' could not be found, so this coding was not checked. The CodeableConcept is still valid: another coding is in the value set",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#29463-7 (\"Body Weight\"), http://loinc.org#3141-9 (\"Body weight Measured\"), http://snomed.info/sct#27113001 (\"Body weight\"), http://acme.org/devices/clinical-codes#body-weight (\"Body Weight\")]\"\n5ms http://loinc.org/vs|2.82: Check \"http://loinc.org#29463-7\"\n9ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n9ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at CodeableConcept.coding[0]\n9ms http://loinc.org/vs|2.82: Code \"29463-7\" found in http://loinc.org|2.82\n11ms http://loinc.org/vs|2.82: Check \"http://loinc.org#3141-9\"\n13ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n13ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at CodeableConcept.coding[1]\n13ms http://loinc.org/vs|2.82: Code \"3141-9\" found in http://loinc.org|2.82\n18ms http://loinc.org/vs|2.82: Check \"http://snomed.info/sct#27113001\"\n18ms http://loinc.org/vs|2.82: Include for http://loinc.org|2.82 not considered for \"http://snomed.info/sct\"\n19ms http://loinc.org/vs|2.82: Check \"http://acme.org/devices/clinical-codes#body-weight\"\n19ms http://loinc.org/vs|2.82: Include for http://loinc.org|2.82 not considered for \"http://acme.org/devices/clinical-codes\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r3"
+    }],
+    "severity" : "warning",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for the code system 'http://acme.org/devices/clinical-codes' could not be found, so this coding was not checked. The CodeableConcept is still valid: another coding is in the value set"
+    },
+    "expression" : ["CodeableConcept.coding[3].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "image/jpg"
+}, "url": "urn:uuid:eeadea62-06e2-4c50-bb15-6377e9be1053", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "image/jpg",
+  "code" : "image/jpg",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:eeadea62-06e2-4c50-bb15-6377e9be1053|1: Analysing urn:uuid:eeadea62-06e2-4c50-bb15-6377e9be1053|1 for validation purposes\n1ms urn:uuid:eeadea62-06e2-4c50-bb15-6377e9be1053|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:eeadea62-06e2-4c50-bb15-6377e9be1053|1: Prepare include[0]: \"(urn:ietf:bcp:13)\"\n2ms urn:uuid:eeadea62-06e2-4c50-bb15-6377e9be1053|1: CodeSystem found: \"urn:ietf:bcp:13|null\"\n2ms urn:uuid:eeadea62-06e2-4c50-bb15-6377e9be1053|1: Validate \"[undefined#image/jpg (\"undefined\")]\" and infer system\n2ms urn:uuid:eeadea62-06e2-4c50-bb15-6377e9be1053|1: Check \"undefined#image/jpg\"\n2ms urn:uuid:eeadea62-06e2-4c50-bb15-6377e9be1053|1: Inferred CodeSystem = \"urn:ietf:bcp:13\"\n2ms urn:uuid:eeadea62-06e2-4c50-bb15-6377e9be1053|1: CodeSystem found: urn:ietf:bcp:13|null for urn:ietf:bcp:13\n2ms urn:uuid:eeadea62-06e2-4c50-bb15-6377e9be1053|1: check code in (urn:ietf:bcp:13) at \n2ms urn:uuid:eeadea62-06e2-4c50-bb15-6377e9be1053|1: Code \"image/jpg\" found in urn:ietf:bcp:13|null",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

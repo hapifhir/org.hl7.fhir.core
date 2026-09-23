@@ -2666,7 +2666,23 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-affiliate",
+    "content" : "complete"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-document-format-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-jira-spec-work-group-concept-properties",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-organizational-entity-concept-properties",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-staff-role",
     "content" : "complete"
   },
   {
@@ -2983,10 +2999,6 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
-    "content" : "complete"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/published-in-type",
     "content" : "complete"
   },
   {
@@ -5367,7 +5379,7 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-mediaType",
-    "content" : "fragment"
+    "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-MessageCondition",
