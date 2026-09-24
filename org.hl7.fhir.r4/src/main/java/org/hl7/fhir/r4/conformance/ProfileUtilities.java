@@ -2784,7 +2784,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private Piece checkForNoChange(Element src1, Element src2, Piece piece) {
     if (src1.hasUserData(DERIVATION_EQUALS) && src2.hasUserData(DERIVATION_EQUALS)) {
-      piece.addStyle("opacity: 0.5");
+      piece.addStyle("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
     }
     return piece;
   }

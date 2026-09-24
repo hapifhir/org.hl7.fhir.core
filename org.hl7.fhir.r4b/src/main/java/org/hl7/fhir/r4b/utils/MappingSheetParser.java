@@ -441,7 +441,7 @@ public class MappingSheetParser {
     return null;
   }
 
-  private static final String PFX = "<html><link rel=\"stylesheet\" href=\"file:c:\\work\\org.hl7.fhir\\build\\publish\\fhir.css\"/></head><body>\r\n";
+  private static final String PFX = "<html lang=\"en\"><link rel=\"stylesheet\" href=\"file:c:\\work\\org.hl7.fhir\\build\\publish\\fhir.css\"/></head><body>\r\n";
   private static final String SFX = "<body></html>";
 
   public static void main(String[] args) throws FileNotFoundException, IOException, FHIRException {

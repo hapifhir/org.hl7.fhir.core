@@ -741,7 +741,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       break;
     case CHOICE:
     case OPENCHOICE:
-      input = p.select(i.getLinkId());
+      input = p.select(i.getLinkId(), i.getText());
       listOptions(q, i, input);
       break;
     case DATE:

@@ -769,7 +769,7 @@ public class ElementTable {
     } else {
       String s = dr.lookupCode(c.getSystem(), c.getVersion(), c.getCode());
       if (s != null) {
-        div.span().style("opacity: 0.5").tx("(\""+s+"\")");
+        div.span().style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY).tx("(\""+s+"\")");
       }
     }
   }

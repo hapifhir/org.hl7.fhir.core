@@ -134,7 +134,7 @@ public class AdditionalBindingsRenderer {
     for (AdditionalBindingDetail binding : bindings) {
       tr = new XhtmlNode(NodeType.Element, "tr");
       if (binding.unchanged) {
-        tr.style("opacity: 0.5");
+        tr.style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
       }
       children.add(tr);
       BindingResolution br = pkp == null ? makeNullBr(binding) : pkp.resolveBinding(profile, binding.valueSet, path);

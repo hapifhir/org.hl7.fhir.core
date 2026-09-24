@@ -958,7 +958,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         row.setIcon("icon_resource.png", context.formatPhrase(RenderingI18nContext.GENERAL_RESOURCE));
       }
       if (element.hasUserData(UserDataNames.render_opaque)) { 
-        row.setOpacity("0.5"); 
+        row.setOpacity(HierarchicalTableGenerator.STANDARD_OPACITY);
       } 
       UnusedTracker used = new UnusedTracker(); 
       String ref = defPath == null ? null : defPath + element.getId(); 

@@ -42,6 +42,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -556,7 +557,7 @@ public class SpecDifferenceEvaluator {
       left.addTag("a").setAttribute("href", link).addText(name);
     else
       left.addText(name);
-    right.span("opacity: 0.5", null).addText("(No Changes)");
+    right.span("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY, null).addText("(No Changes)");
   }
 
   private void markChanged(String name, String change, boolean item) {
