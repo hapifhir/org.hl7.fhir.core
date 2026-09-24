@@ -153,6 +153,7 @@ public class I18nConstants {
   public static final String CODE_CASE_DIFFERENCE = "CODE_CASE_DIFFERENCE";
   public static final String CODE_FOUND_IN_EXPANSION_HOWEVER_ = "Code_found_in_expansion_however_";
   public static final String CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE = "Coding_has_no_system__cannot_validate";
+  public static final String CODING_HAS_NO_SYSTEM_OR_CODE__CANNOT_VALIDATE = "Coding_has_no_system_or_code__cannot_validate";
   public static final String CONCEPTMAP_GROUP_SOURCE_CODE_INVALID = "CONCEPTMAP_GROUP_SOURCE_CODE_INVALID";
   public static final String CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS = "CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS";
   public static final String CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID = "CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID";

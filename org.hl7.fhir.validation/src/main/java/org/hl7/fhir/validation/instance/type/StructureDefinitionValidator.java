@@ -548,7 +548,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     List<String> versionList = VersionUtilities.iterateCorePublishedVersions(startVer, endVer);
     for (String v : versionList) {
       IWorkerContext ctxt;
-      if (VersionUtilities.versionMatches(v, context.getFHIRVersion())) {
+      if (v.equals(VersionUtilities.getMajMin(context.getFHIRVersion()))) { // v is major.minor only
         ctxt = context;
       } else {
         if (!session.getOtherVersions().containsKey(v)) {

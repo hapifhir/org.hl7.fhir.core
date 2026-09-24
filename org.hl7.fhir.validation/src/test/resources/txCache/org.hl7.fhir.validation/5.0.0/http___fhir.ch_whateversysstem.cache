@@ -3,7 +3,7 @@
   "system" : "http://fhir.ch/whateversysstem",
   "code" : "adfasfdf",
   "display" : "I dont know what this value means"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "externalSource":"StructureDefinition[http://hl7.org/fhir/StructureDefinition/Patient|5.0.0]", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",

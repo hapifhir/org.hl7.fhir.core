@@ -3,7 +3,7 @@
   "system" : "http://spms.min-saude.pt/valueset-list-empty-reason",
   "code" : "not-found",
   "display" : "Not Found"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "externalSource":"StructureDefinition[http://hl7.org/fhir/StructureDefinition/Composition]", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
