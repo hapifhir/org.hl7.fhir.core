@@ -386,7 +386,15 @@ public class ValidationOptions {
       "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"noAbstract\":\""+Boolean.toString(noAbstract)+"\", \"activeOnly\":\""+Boolean.toString(activeOnly)+(exampleOK ? "\", \"exampleOK\":\""+Boolean.toString(exampleOK) : "")+
        "\", \"membershipOnly\":\""+Boolean.toString(membershipOnly)+"\", \"displayWarningMode\":\""+Boolean.toString(displayWarningMode)+
        "\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\""+
-       (r5BundleRelativeReferencePolicy != R5BundleRelativeReferencePolicy.DEFAULT ? ", \"r5BundleRelativeReferencePolicy\":\""+r5BundleRelativeReferencePolicy.toCode()+"\"" : "");
+       (r5BundleRelativeReferencePolicy != R5BundleRelativeReferencePolicy.DEFAULT ? ", \"r5BundleRelativeReferencePolicy\":\""+r5BundleRelativeReferencePolicy.toCode()+"\"" : "")+
+       // everything below here also changes the answer, so it has to be part of the terminology cache key
+       // (see TerminologyCache.generateValidationToken). Each is only emitted when it is not at its default
+       // value, so that cache entries recorded before these were added still match where they never varied
+       (englishOk ? "" : ", \"englishOk\":\"false\"")+
+       (useValueSetDisplays ? ", \"useValueSetDisplays\":\"true\"" : "")+
+       (vsAsUrl ? ", \"vsAsUrl\":\"true\"" : "")+
+       (isDefaultLang ? ", \"isDefaultLang\":\"true\"" : "")+
+       (externalSource == null ? "" : ", \"externalSource\":\""+Utilities.escapeJson(externalSource.toString())+"\"");
   }
 
   public String langSummary() {

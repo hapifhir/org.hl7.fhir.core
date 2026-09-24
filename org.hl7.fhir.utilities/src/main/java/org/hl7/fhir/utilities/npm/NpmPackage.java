@@ -522,7 +522,10 @@ public class NpmPackage {
   private void loadSubFolders(String rootPath, File dir) throws IOException {
     for (File f : dir.listFiles()) {
       if (f.isDirectory()) {
-        if (!"custom".equals(f.getName()) || loadCustomResources) {
+        // "del" is not a valid package folder. us.nlm.vsac#0.18.0 shipped one by mistake, and without
+        // this every context that loads that package also registers the ~14.8k superseded ValueSets in
+        // it, alongside - and competing with - the real ones
+        if ((!"custom".equals(f.getName()) || loadCustomResources) && !"del".equals(f.getName())) {
           String d = f.getAbsolutePath().substring(rootPath.length()+1);
           if (!d.startsWith("package")) {
             d = Utilities.path("package", d);

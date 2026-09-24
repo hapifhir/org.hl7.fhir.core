@@ -430,7 +430,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
 
       String url = r.getUrl();
-      if (!allowLoadingDuplicates && hasResourceVersion(r.getType(), url, r.getVersion()) && !packageInfo.isTHO()) {
+      // isTHO() is tested before hasResourceVersion() deliberately: hasResourceVersion() resolves the
+      // resource, and resolving a proxy parses and version-converts it. For a THO package - where
+      // duplicate urls across versions are expected and allowed - this was materialising an already
+      // registered resource for every resource loaded, and then discarding the answer
+      if (!allowLoadingDuplicates && (packageInfo == null || !packageInfo.isTHO()) && hasResourceVersion(r.getType(), url, r.getVersion())) {
         // special workaround for known problems with existing packages
         if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
           return;
@@ -778,7 +782,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           case "Measure":
             return ImplicitCodeSystemSupport.convertMeasure((Measure) resource);
           default:
-            log.warn("The resource type " + resource.fhirType() + " cannot be treated as a CodeSystem");
+            log.warn("The resource type " + resource.fhirType() + " for "+system+" cannot be treated as a CodeSystem");
             return null;
         }
       }
@@ -1270,7 +1274,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (!options.isUseServer()) {
           t.setResult(new ValidationResult(IssueSeverity.WARNING, formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, null));
         } else if (unsupportedCodeSystems.contains(codeKey)) {
-          t.setResult(new ValidationResult(IssueSeverity.ERROR, formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, t.getCoding().getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, null));
+          // the same answer, and the same issue, as the one code path gives for this - see the note
+          // there. Without the issue the message lands on the element rather than on the system, and
+          // the two read as two different problems with the one coding
+          String msg = formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, t.getCoding().getSystem());
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(getModelContext(), org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.model.core.OperationOutcome.IssueType.NOTFOUND);
+          iss.getDetails().setText(msg);
+          iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
+          iss.addExpression("Coding.system"); // the path the batch validates its codings at
+          t.setResult(new ValidationResult(IssueSeverity.ERROR, msg, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, new ArrayList<>(Collections.singletonList(iss))));
         } else if (noTerminologyServer) {
           t.setResult(new ValidationResult(IssueSeverity.ERROR, formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES, t.getCoding().getCode(), t.getCoding().getSystem()), TerminologyServiceErrorClass.NOSERVICE, null));
         }
@@ -1501,7 +1513,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       codeSystemsUsed.add(code.getSystem());
     }
 
-    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken()) : null;
+    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken(), path) : null;
     ValidationResult res = null;
     if (cachingAllowed && txCache != null) {
       res = txCache.getValidation(cacheToken);
@@ -1593,7 +1605,20 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     String codeKey = getCodeKey(code);
     if (unsupportedCodeSystems.contains(codeKey)) {
-      return new ValidationResult(IssueSeverity.ERROR, formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, code.getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues);
+      // this is the same answer we already got for this code system, so it is reported the same way:
+      // against the system, which is the part that could not be resolved, and not against the coding.
+      // Without the expression it lands on the element instead, and reads as a second, different problem.
+      // The issue severity has to match the result's, or ValidationResult.messageIsInIssues() will not
+      // see the message in the issues (it compares severity ordinals) and the CodeableConcept walk in
+      // ValueSetValidator adds the message a second time, at the coding. The validator lowers a
+      // not-found error to a warning itself, where the binding calls for that
+      String msg = formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, code.getSystem());
+      OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(getModelContext(), org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.model.core.OperationOutcome.IssueType.NOTFOUND);
+      iss.getDetails().setText(msg);
+      iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
+      iss.addExpression(path+".system");
+      issues.add(iss);
+      return new ValidationResult(IssueSeverity.ERROR, msg, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues);
     }
 
     // if that failed, we try to validate on the server
@@ -3188,6 +3213,137 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  /**
+   * a boolean twin of fetchResourceWithExceptionByVersion(String, ...), mirroring its resolution order but
+   * never resolving the resource. That method ends in CanonicalResourceManager.get(), which for a lazily
+   * loaded resource reads, parses and version-converts the file, so using it to ask merely whether something
+   * is registered - all hasResourceVersion() ever wanted - materialised a resource on every call. Any change
+   * to the resolution order there has to be mirrored here.
+   *
+   * Two deliberate differences, neither visible to a caller that only wants the boolean: where the fetch
+   * would throw NOT_DONE_YET_CANT_FETCH_ this returns false, and a resource that is registered but fails to
+   * parse counts as present here, where the fetch would have thrown and been read as absent.
+   */
+  public boolean checkResourceExists(String cls, String uri, VersionResolutionRules rules) {
+    return checkResourceExistsByVersion(cls, uri, rules, null);
+  }
+
+  public boolean checkResourceExistsByVersion(String cls, String uri, VersionResolutionRules rules, String version) {
+    if (uri == null) {
+      return false;
+    }
+    if ("StructureDefinition".equals(cls)) {
+      uri = ProfileUtilities.sdNs(uri, null);
+    }
+    synchronized (lock) {
+      if (version == null) {
+        if (uri.contains("|")) {
+          version = uri.substring(uri.lastIndexOf("|") + 1);
+          uri = uri.substring(0, uri.lastIndexOf("|"));
+        }
+      }
+      if (uri.contains("#")) {
+        uri = uri.substring(0, uri.indexOf("#"));
+      }
+      if (cls == null || "Resource".equals(cls)) {
+        if (structures.has(uri)) {
+          return structures.exists(uri, version);
+        }
+        if (guides.has(uri)) {
+          return guides.exists(uri, version);
+        }
+        if (capstmts.has(uri)) {
+          return capstmts.exists(uri, version);
+        }
+        if (measures.has(uri)) {
+          return measures.exists(uri, version);
+        }
+        if (libraries.has(uri)) {
+          return libraries.exists(uri, version);
+        }
+        if (valueSets.has(uri)) {
+          return valueSets.exists(uri, version);
+        }
+        if (codeSystems.has(uri)) {
+          return codeSystems.exists(uri, version);
+        }
+        if (operations.has(uri)) {
+          return operations.exists(uri, version);
+        }
+        if (searchParameters.has(uri)) {
+          return searchParameters.exists(uri, version);
+        }
+        if (plans.has(uri)) {
+          return plans.exists(uri, version);
+        }
+        if (maps.has(uri)) {
+          return maps.exists(uri, version);
+        }
+        if (transforms.has(uri)) {
+          return transforms.exists(uri, version);
+        }
+        if (actors.has(uri)) {
+          return actors.exists(uri, version);
+        }
+        if (requirements.has(uri)) {
+          return requirements.exists(uri, version);
+        }
+        if (questionnaires.has(uri)) {
+          return questionnaires.exists(uri, version);
+        }
+        for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
+          for (ResourceProxy r : rt.values()) {
+            if (uri.equals(r.getUrl())) {
+              return true;
+            }
+          }
+        }
+      } else if ("ImplementationGuide".equals(cls)) {
+        return guides.exists(uri, version);
+      } else if ("CapabilityStatement".equals(cls)) {
+        return capstmts.exists(uri, version);
+      } else if ("Measure".equals(cls)) {
+        return measures.exists(uri, version);
+      } else if ("Library".equals(cls)) {
+        return libraries.exists(uri, version);
+      } else if ("StructureDefinition".equals(cls)) {
+        return structures.exists(uri, version);
+      } else if ("StructureMap".equals(cls)) {
+        return transforms.exists(uri, version);
+      } else if ("Requirements".equals(cls)) {
+        return requirements.exists(uri, version);
+      } else if ("ActorDefinition".equals(cls)) {
+        return actors.exists(uri, version);
+      } else if ("ValueSet".equals(cls)) {
+        return valueSets.exists(uri, version);
+      } else if ("CodeSystem".equals(cls)) {
+        return codeSystems.exists(uri, version);
+      } else if ("NamingSystem".equals(cls)) {
+        return systems.exists(uri, version);
+      } else if ("ConceptMap".equals(cls)) {
+        return maps.exists(uri, version);
+      } else if ("PlanDefinition".equals(cls)) {
+        return plans.exists(uri, version);
+      } else if ("OperationDefinition".equals(cls)) {
+        return operations.exists(uri, version);
+      } else if ("Questionnaire".equals(cls)) {
+        return questionnaires.exists(uri, version);
+      } else if ("SearchParameter".equals(cls)) {
+        return searchParameters.exists(uri, version);
+      }
+      if ("CodeSystem".equals(cls) && codeSystems.has(uri)) {
+        return codeSystems.exists(uri, version);
+      }
+      if ("ValueSet".equals(cls) && valueSets.has(uri)) {
+        return valueSets.exists(uri, version);
+      }
+      if ("Questionnaire".equals(cls)) {
+        return questionnaires.exists(uri, version);
+      }
+      return false;
+    }
+  }
+
   public <T extends Resource> boolean hasResourceVersion(Class<T> class_, String uri, String version) {
     try {
       return fetchResourceWithExceptionByVersion(class_, uri, VersionResolutionRules.defaultRule(), version, null) != null;
@@ -3198,7 +3354,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public <T extends Resource> boolean hasResourceVersion(String cls, String uri, String version) {
     try {
-      return fetchResourceWithExceptionByVersion(cls, uri, VersionResolutionRules.defaultRule(), version, null) != null;
+      return checkResourceExistsByVersion(cls, uri, VersionResolutionRules.defaultRule(), version);
     } catch (Exception e) {
       return false;
     }
@@ -3744,7 +3900,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (scs != null) {
         String web = ExtensionUtilities.readStringExtension(scs.getCs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
         if (web == null) {
-          web = Utilities.pathURL(scs.getServer(), "ValueSet", scs.getCs().getIdBase());
+          web = Utilities.pathURL(scs.getServer(), "CodeSystem", scs.getCs().getIdBase());
         }
         scs.getCs().setWebPath(web);
         scs.getCs().setUserData(UserDataNames.render_external_link, scs.getServer()); // so we can render it differently

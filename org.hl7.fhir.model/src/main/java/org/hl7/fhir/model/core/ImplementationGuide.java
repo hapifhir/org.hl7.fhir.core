@@ -198,6 +198,12 @@ public class ImplementationGuide extends CanonicalResource {
       }
     }
 
+    // This enumeration is deliberately larger than CodeSystem/spdx-license as published in R6.
+    // It carries the full SPDX licence list from org.hl7.fhir.utilities spdx.json, the same list
+    // registered into the context by SimpleWorkerContext.build(). R4, R4B and R5 were extended the
+    // same way in b5ff11cffd. The additional codes are appended at the end of each section below.
+    // Regenerating this file drops them, so they have to be re-applied - or better, the R6 source
+    // CodeSystem gets fixed so that the generated enum is correct without any of this.
     public enum SPDXLicense {
         /**
          * Not an open source license.
@@ -1584,6 +1590,854 @@ public class ImplementationGuide extends CanonicalResource {
          */
         ZPL2_1, 
         /**
+         * AdaCore Doc License
+         */
+        ADACOREDOC, 
+        /**
+         * Affero General Public License v1.0
+         */
+        AGPL1_0, 
+        /**
+         * GNU Affero General Public License v3.0
+         */
+        AGPL3_0, 
+        /**
+         * ANTLR Software Rights Notice with license fallback
+         */
+        ANTLRPDFALLBACK, 
+        /**
+         * App::s2p License
+         */
+        APPS2P, 
+        /**
+         * Arphic Public License
+         */
+        ARPHIC1999, 
+        /**
+         * ASWF Digital Assets License version 1.0
+         */
+        ASWFDIGITALASSETS1_0, 
+        /**
+         * ASWF Digital Assets License 1.1
+         */
+        ASWFDIGITALASSETS1_1, 
+        /**
+         * Baekmuk License
+         */
+        BAEKMUK, 
+        /**
+         * Bitstream Charter Font License
+         */
+        BITSTREAMCHARTER, 
+        /**
+         * Bitstream Vera Font License
+         */
+        BITSTREAMVERA, 
+        /**
+         * SQLite Blessing
+         */
+        BLESSING, 
+        /**
+         * Blue Oak Model License 1.0.0
+         */
+        BLUEOAK1_0_0, 
+        /**
+         * Boehm-Demers-Weiser GC License
+         */
+        BOEHMGC, 
+        /**
+         * Brian Gladman 3-Clause License
+         */
+        BRIANGLADMAN3CLAUSE, 
+        /**
+         * BSD 2-Clause with views sentence
+         */
+        BSD2CLAUSEVIEWS, 
+        /**
+         * BSD 3-Clause Modification
+         */
+        BSD3CLAUSEMODIFICATION, 
+        /**
+         * BSD 3-Clause No Military License
+         */
+        BSD3CLAUSENOMILITARYLICENSE, 
+        /**
+         * BSD 3-Clause Open MPI variant
+         */
+        BSD3CLAUSEOPENMPI, 
+        /**
+         * BSD 4 Clause Shortened
+         */
+        BSD4CLAUSESHORTENED, 
+        /**
+         * BSD 4.3 RENO License
+         */
+        BSD4_3RENO, 
+        /**
+         * BSD 4.3 TAHOE License
+         */
+        BSD4_3TAHOE, 
+        /**
+         * BSD Advertising Acknowledgement License
+         */
+        BSDADVERTISINGACKNOWLEDGEMENT, 
+        /**
+         * BSD with Attribution and HPND disclaimer
+         */
+        BSDATTRIBUTIONHPNDDISCLAIMER, 
+        /**
+         * Business Source License 1.1
+         */
+        BUSL1_1, 
+        /**
+         * Computational Use of Data Agreement v1.0
+         */
+        CUDA1_0, 
+        /**
+         * Cryptographic Autonomy License 1.0
+         */
+        CAL1_0, 
+        /**
+         * Cryptographic Autonomy License 1.0 (Combined Work Exception)
+         */
+        CAL1_0COMBINEDWORKEXCEPTION, 
+        /**
+         * Creative Commons Attribution 2.5 Australia
+         */
+        CCBY2_5AU, 
+        /**
+         * Creative Commons Attribution 3.0 Austria
+         */
+        CCBY3_0AT, 
+        /**
+         * Creative Commons Attribution 3.0 Germany
+         */
+        CCBY3_0DE, 
+        /**
+         * Creative Commons Attribution 3.0 IGO
+         */
+        CCBY3_0IGO, 
+        /**
+         * Creative Commons Attribution 3.0 Netherlands
+         */
+        CCBY3_0NL, 
+        /**
+         * Creative Commons Attribution 3.0 United States
+         */
+        CCBY3_0US, 
+        /**
+         * Creative Commons Attribution Non Commercial 3.0 Germany
+         */
+        CCBYNC3_0DE, 
+        /**
+         * Creative Commons Attribution Non Commercial No Derivatives 3.0 Germany
+         */
+        CCBYNCND3_0DE, 
+        /**
+         * Creative Commons Attribution Non Commercial No Derivatives 3.0 IGO
+         */
+        CCBYNCND3_0IGO, 
+        /**
+         * Creative Commons Attribution Non Commercial Share Alike 2.0 Germany
+         */
+        CCBYNCSA2_0DE, 
+        /**
+         * Creative Commons Attribution-NonCommercial-ShareAlike 2.0 France
+         */
+        CCBYNCSA2_0FR, 
+        /**
+         * Creative Commons Attribution Non Commercial Share Alike 2.0 England and Wales
+         */
+        CCBYNCSA2_0UK, 
+        /**
+         * Creative Commons Attribution Non Commercial Share Alike 3.0 Germany
+         */
+        CCBYNCSA3_0DE, 
+        /**
+         * Creative Commons Attribution Non Commercial Share Alike 3.0 IGO
+         */
+        CCBYNCSA3_0IGO, 
+        /**
+         * Creative Commons Attribution No Derivatives 3.0 Germany
+         */
+        CCBYND3_0DE, 
+        /**
+         * Creative Commons Attribution Share Alike 2.0 England and Wales
+         */
+        CCBYSA2_0UK, 
+        /**
+         * Creative Commons Attribution Share Alike 2.1 Japan
+         */
+        CCBYSA2_1JP, 
+        /**
+         * Creative Commons Attribution Share Alike 3.0 Austria
+         */
+        CCBYSA3_0AT, 
+        /**
+         * Creative Commons Attribution Share Alike 3.0 Germany
+         */
+        CCBYSA3_0DE, 
+        /**
+         * Creative Commons Attribution-ShareAlike 3.0 IGO
+         */
+        CCBYSA3_0IGO, 
+        /**
+         * Creative Commons Public Domain Dedication and Certification
+         */
+        CCPDDC, 
+        /**
+         * Common Documentation License 1.0
+         */
+        CDL1_0, 
+        /**
+         * Community Data License Agreement Permissive 2.0
+         */
+        CDLAPERMISSIVE2_0, 
+        /**
+         * CERN Open Hardware Licence v1.1
+         */
+        CERNOHL1_1, 
+        /**
+         * CERN Open Hardware Licence v1.2
+         */
+        CERNOHL1_2, 
+        /**
+         * CERN Open Hardware Licence Version 2 - Permissive
+         */
+        CERNOHLP2_0, 
+        /**
+         * CERN Open Hardware Licence Version 2 - Strongly Reciprocal
+         */
+        CERNOHLS2_0, 
+        /**
+         * CERN Open Hardware Licence Version 2 - Weakly Reciprocal
+         */
+        CERNOHLW2_0, 
+        /**
+         * CFITSIO License
+         */
+        CFITSIO, 
+        /**
+         * Checkmk License
+         */
+        CHECKMK, 
+        /**
+         * Clips License
+         */
+        CLIPS, 
+        /**
+         * CMU Mach License
+         */
+        CMUMACH, 
+        /**
+         * Copyfree Open Innovation License
+         */
+        COIL1_0, 
+        /**
+         * Community Specification License 1.0
+         */
+        COMMUNITYSPEC1_0, 
+        /**
+         * copyleft-next 0.3.0
+         */
+        COPYLEFTNEXT0_3_0, 
+        /**
+         * copyleft-next 0.3.1
+         */
+        COPYLEFTNEXT0_3_1, 
+        /**
+         * Cornell Lossless JPEG License
+         */
+        CORNELLLOSSLESSJPEG, 
+        /**
+         * Data licence Germany – attribution – version 2.0
+         */
+        DLDEBY2_0, 
+        /**
+         * Detection Rule License 1.0
+         */
+        DRL1_0, 
+        /**
+         * David M. Gay dtoa License
+         */
+        DTOA, 
+        /**
+         * eCos license version 2.0
+         */
+        ECOS2_0, 
+        /**
+         * Elastic License 2.0
+         */
+        ELASTIC2_0, 
+        /**
+         * EPICS Open License
+         */
+        EPICS, 
+        /**
+         * Etalab Open License 2.0
+         */
+        ETALAB2_0, 
+        /**
+         * Fraunhofer FDK AAC Codec Library
+         */
+        FDKAAC, 
+        /**
+         * FreeBSD Documentation License
+         */
+        FREEBSDDOC, 
+        /**
+         * FSF Unlimited License (With License Retention and Warranty Disclaimer)
+         */
+        FSFULLRWD, 
+        /**
+         * GD License
+         */
+        GD, 
+        /**
+         * GNU Free Documentation License v1.1
+         */
+        GFDL1_1, 
+        /**
+         * GNU Free Documentation License v1.1 only - invariants
+         */
+        GFDL1_1INVARIANTSONLY, 
+        /**
+         * GNU Free Documentation License v1.1 or later - invariants
+         */
+        GFDL1_1INVARIANTSORLATER, 
+        /**
+         * GNU Free Documentation License v1.1 only - no invariants
+         */
+        GFDL1_1NOINVARIANTSONLY, 
+        /**
+         * GNU Free Documentation License v1.1 or later - no invariants
+         */
+        GFDL1_1NOINVARIANTSORLATER, 
+        /**
+         * GNU Free Documentation License v1.2
+         */
+        GFDL1_2, 
+        /**
+         * GNU Free Documentation License v1.2 only - invariants
+         */
+        GFDL1_2INVARIANTSONLY, 
+        /**
+         * GNU Free Documentation License v1.2 or later - invariants
+         */
+        GFDL1_2INVARIANTSORLATER, 
+        /**
+         * GNU Free Documentation License v1.2 only - no invariants
+         */
+        GFDL1_2NOINVARIANTSONLY, 
+        /**
+         * GNU Free Documentation License v1.2 or later - no invariants
+         */
+        GFDL1_2NOINVARIANTSORLATER, 
+        /**
+         * GNU Free Documentation License v1.3
+         */
+        GFDL1_3, 
+        /**
+         * GNU Free Documentation License v1.3 only - invariants
+         */
+        GFDL1_3INVARIANTSONLY, 
+        /**
+         * GNU Free Documentation License v1.3 or later - invariants
+         */
+        GFDL1_3INVARIANTSORLATER, 
+        /**
+         * GNU Free Documentation License v1.3 only - no invariants
+         */
+        GFDL1_3NOINVARIANTSONLY, 
+        /**
+         * GNU Free Documentation License v1.3 or later - no invariants
+         */
+        GFDL1_3NOINVARIANTSORLATER, 
+        /**
+         * Good Luck With That Public License
+         */
+        GLWTPL, 
+        /**
+         * GNU General Public License v1.0 only
+         */
+        GPL1_0, 
+        /**
+         * GNU General Public License v1.0 or later
+         */
+        GPL1_0PLUS, 
+        /**
+         * GNU General Public License v2.0 only
+         */
+        GPL2_0, 
+        /**
+         * GNU General Public License v2.0 or later
+         */
+        GPL2_0PLUS, 
+        /**
+         * GNU General Public License v2.0 w/Autoconf exception
+         */
+        GPL2_0WITHAUTOCONFEXCEPTION, 
+        /**
+         * GNU General Public License v2.0 w/Bison exception
+         */
+        GPL2_0WITHBISONEXCEPTION, 
+        /**
+         * GNU General Public License v2.0 w/Classpath exception
+         */
+        GPL2_0WITHCLASSPATHEXCEPTION, 
+        /**
+         * GNU General Public License v2.0 w/Font exception
+         */
+        GPL2_0WITHFONTEXCEPTION, 
+        /**
+         * GNU General Public License v2.0 w/GCC Runtime Library exception
+         */
+        GPL2_0WITHGCCEXCEPTION, 
+        /**
+         * GNU General Public License v3.0 only
+         */
+        GPL3_0, 
+        /**
+         * GNU General Public License v3.0 or later
+         */
+        GPL3_0PLUS, 
+        /**
+         * GNU General Public License v3.0 w/Autoconf exception
+         */
+        GPL3_0WITHAUTOCONFEXCEPTION, 
+        /**
+         * GNU General Public License v3.0 w/GCC Runtime Library exception
+         */
+        GPL3_0WITHGCCEXCEPTION, 
+        /**
+         * Graphics Gems License
+         */
+        GRAPHICSGEMS, 
+        /**
+         * Hippocratic License 2.1
+         */
+        HIPPOCRATIC2_1, 
+        /**
+         * Hewlett-Packard 1986 License
+         */
+        HP1986, 
+        /**
+         * HPND with US Government export control warning
+         */
+        HPNDEXPORTUS, 
+        /**
+         * Historical Permission Notice and Disclaimer - Markus Kuhn variant
+         */
+        HPNDMARKUSKUHN, 
+        /**
+         * Historical Permission Notice and Disclaimer - sell variant
+         */
+        HPNDSELLVARIANT, 
+        /**
+         * HPND sell variant with MIT disclaimer
+         */
+        HPNDSELLVARIANTMITDISCLAIMER, 
+        /**
+         * HTML Tidy License
+         */
+        HTMLTIDY, 
+        /**
+         * IEC    Code Components End-user licence agreement
+         */
+        IECCODECOMPONENTSEULA, 
+        /**
+         * Independent JPEG Group License - short
+         */
+        IJGSHORT, 
+        /**
+         * Inner Net License v2.0
+         */
+        INNERNET2_0, 
+        /**
+         * Jam License
+         */
+        JAM, 
+        /**
+         * JPL Image Use Policy
+         */
+        JPLIMAGE, 
+        /**
+         * Japan Network Information Center License
+         */
+        JPNIC, 
+        /**
+         * Kazlib License
+         */
+        KAZLIB, 
+        /**
+         * Knuth CTAN License
+         */
+        KNUTHCTAN, 
+        /**
+         * Latex2e with translated notice permission
+         */
+        LATEX2ETRANSLATEDNOTICE, 
+        /**
+         * GNU Library General Public License v2 only
+         */
+        LGPL2_0, 
+        /**
+         * GNU Library General Public License v2 or later
+         */
+        LGPL2_0PLUS, 
+        /**
+         * GNU Lesser General Public License v2.1 only
+         */
+        LGPL2_1, 
+        /**
+         * GNU Lesser General Public License v2.1 or later
+         */
+        LGPL2_1PLUS, 
+        /**
+         * GNU Lesser General Public License v3.0 only
+         */
+        LGPL3_0, 
+        /**
+         * GNU Lesser General Public License v3.0 or later
+         */
+        LGPL3_0PLUS, 
+        /**
+         * PNG Reference Library version 2
+         */
+        LIBPNG2_0, 
+        /**
+         * libselinux public domain notice
+         */
+        LIBSELINUX1_0, 
+        /**
+         * libutil David Nugent License
+         */
+        LIBUTILDAVIDNUGENT, 
+        /**
+         * Linux man-pages - 1 paragraph
+         */
+        LINUXMANPAGES1PARA, 
+        /**
+         * Linux man-pages Copyleft
+         */
+        LINUXMANPAGESCOPYLEFT, 
+        /**
+         * Linux man-pages Copyleft - 2 paragraphs
+         */
+        LINUXMANPAGESCOPYLEFT2PARA, 
+        /**
+         * Linux man-pages Copyleft Variant
+         */
+        LINUXMANPAGESCOPYLEFTVAR, 
+        /**
+         * Common Lisp LOOP License
+         */
+        LOOP, 
+        /**
+         * LZMA SDK License (versions 9.11 to 9.20)
+         */
+        LZMASDK9_11TO9_20, 
+        /**
+         * LZMA SDK License (versions 9.22 and beyond)
+         */
+        LZMASDK9_22, 
+        /**
+         * Martin Birgmeier License
+         */
+        MARTINBIRGMEIER, 
+        /**
+         * metamail License
+         */
+        METAMAIL, 
+        /**
+         * Minpack License
+         */
+        MINPACK, 
+        /**
+         * MIT Festival Variant
+         */
+        MITFESTIVAL, 
+        /**
+         * MIT License Modern Variant
+         */
+        MITMODERNVARIANT, 
+        /**
+         * MIT Open Group variant
+         */
+        MITOPENGROUP, 
+        /**
+         * MIT Tom Wu Variant
+         */
+        MITWU, 
+        /**
+         * mpi Permissive License
+         */
+        MPIPERMISSIVE, 
+        /**
+         * mplus Font License
+         */
+        MPLUS, 
+        /**
+         * Microsoft Limited Public License
+         */
+        MSLPL, 
+        /**
+         * Mulan Permissive Software License, Version 1
+         */
+        MULANPSL1_0, 
+        /**
+         * Mulan Permissive Software License, Version 2
+         */
+        MULANPSL2_0, 
+        /**
+         * Nara Institute of Science and Technology License (2003)
+         */
+        NAIST2003, 
+        /**
+         * Non-Commercial Government Licence
+         */
+        NCGLUK2_0, 
+        /**
+         * NICTA Public Software License, Version 1.0
+         */
+        NICTA1_0, 
+        /**
+         * NIST Public Domain Notice
+         */
+        NISTPD, 
+        /**
+         * NIST Public Domain Notice with license fallback
+         */
+        NISTPDFALLBACK, 
+        /**
+         * NIST Software License
+         */
+        NISTSOFTWARE, 
+        /**
+         * Norwegian Licence for Open Government Data (NLOD) 2.0
+         */
+        NLOD2_0, 
+        /**
+         * NTP No Attribution
+         */
+        NTP0, 
+        /**
+         * Nunit License
+         */
+        NUNIT, 
+        /**
+         * Open Use of Data Agreement v1.0
+         */
+        OUDA1_0, 
+        /**
+         * Open Data Commons Attribution License v1.0
+         */
+        ODCBY1_0, 
+        /**
+         * OFFIS License
+         */
+        OFFIS, 
+        /**
+         * SIL Open Font License 1.0 with no Reserved Font Name
+         */
+        OFL1_0NORFN, 
+        /**
+         * SIL Open Font License 1.0 with Reserved Font Name
+         */
+        OFL1_0RFN, 
+        /**
+         * SIL Open Font License 1.1 with no Reserved Font Name
+         */
+        OFL1_1NORFN, 
+        /**
+         * SIL Open Font License 1.1 with Reserved Font Name
+         */
+        OFL1_1RFN, 
+        /**
+         * OGC Software License, Version 1.0
+         */
+        OGC1_0, 
+        /**
+         * Taiwan Open Government Data License, version 1.0
+         */
+        OGDLTAIWAN1_0, 
+        /**
+         * Open Government Licence - Canada
+         */
+        OGLCANADA2_0, 
+        /**
+         * Open Government Licence v1.0
+         */
+        OGLUK1_0, 
+        /**
+         * Open Government Licence v2.0
+         */
+        OGLUK2_0, 
+        /**
+         * Open Government Licence v3.0
+         */
+        OGLUK3_0, 
+        /**
+         * Open Logistics Foundation License Version 1.3
+         */
+        OLFL1_3, 
+        /**
+         * OpenPBS v2.3 Software License
+         */
+        OPENPBS2_3, 
+        /**
+         * United    Kingdom Open Parliament Licence v3.0
+         */
+        OPLUK3_0, 
+        /**
+         * Open Publication License v1.0
+         */
+        OPUBL1_0, 
+        /**
+         * The Parity Public License 6.0.0
+         */
+        PARITY6_0_0, 
+        /**
+         * The Parity Public License 7.0.0
+         */
+        PARITY7_0_0, 
+        /**
+         * PolyForm Noncommercial License 1.0.0
+         */
+        POLYFORMNONCOMMERCIAL1_0_0, 
+        /**
+         * PolyForm Small Business License 1.0.0
+         */
+        POLYFORMSMALLBUSINESS1_0_0, 
+        /**
+         * Python Software Foundation License 2.0
+         */
+        PSF2_0, 
+        /**
+         * Python License 2.0.1
+         */
+        PYTHON2_0_1, 
+        /**
+         * Q Public License 1.0 - INRIA 2004 variant
+         */
+        QPL1_0INRIA2004, 
+        /**
+         * Scheme Language Report License
+         */
+        SCHEMEREPORT, 
+        /**
+         * Sendmail License 8.23
+         */
+        SENDMAIL8_23, 
+        /**
+         * SGP4 Permission Notice
+         */
+        SGP4, 
+        /**
+         * Solderpad Hardware License v0.5
+         */
+        SHL0_5, 
+        /**
+         * Solderpad Hardware License, Version 0.51
+         */
+        SHL0_51, 
+        /**
+         * snprintf License
+         */
+        SNPRINTF, 
+        /**
+         * SSH OpenSSH license
+         */
+        SSHOPENSSH, 
+        /**
+         * SSH short notice
+         */
+        SSHSHORT, 
+        /**
+         * Server Side Public License, v 1
+         */
+        SSPL1_0, 
+        /**
+         * Standard ML of New Jersey License
+         */
+        STANDARDMLNJ, 
+        /**
+         * SunPro License
+         */
+        SUNPRO, 
+        /**
+         * Symlinks License
+         */
+        SYMLINKS, 
+        /**
+         * TAPR Open Hardware License v1.0
+         */
+        TAPROHL1_0, 
+        /**
+         * TermReadKey License
+         */
+        TERMREADKEY, 
+        /**
+         * Time::ParseDate License
+         */
+        TPDL, 
+        /**
+         * THOR Public License 1.0
+         */
+        TPL1_0, 
+        /**
+         * Text-Tabs+Wrap License
+         */
+        TTWL, 
+        /**
+         * Technische Universitaet Berlin License 1.0
+         */
+        TUBERLIN1_0, 
+        /**
+         * Technische Universitaet Berlin License 2.0
+         */
+        TUBERLIN2_0, 
+        /**
+         * UCAR License
+         */
+        UCAR, 
+        /**
+         * Upstream Compatibility License v1.0
+         */
+        UCL1_0, 
+        /**
+         * UnixCrypt License
+         */
+        UNIXCRYPT, 
+        /**
+         * w3m License
+         */
+        W3M, 
+        /**
+         * Widget Workshop License
+         */
+        WIDGETWORKSHOP, 
+        /**
+         * wxWindows Library License
+         */
+        WXWINDOWS, 
+        /**
+         * X11 License Distribution Modification Variant
+         */
+        X11DISTRIBUTEMODIFICATIONSVARIANT, 
+        /**
+         * Xdebug License v 1.03
+         */
+        XDEBUG1_03, 
+        /**
+         * Xfig License
+         */
+        XFIG, 
+        /**
+         * xlock License
+         */
+        XLOCK, 
+        /**
          * added to help the parsers with the generic types
          */
         NULL;
@@ -2282,6 +3136,430 @@ public class ImplementationGuide extends CanonicalResource {
           return ZPL2_0;
         if ("ZPL-2.1".equals(codeString))
           return ZPL2_1;
+        if ("AdaCore-doc".equals(codeString))
+          return ADACOREDOC;
+        if ("AGPL-1.0".equals(codeString))
+          return AGPL1_0;
+        if ("AGPL-3.0".equals(codeString))
+          return AGPL3_0;
+        if ("ANTLR-PD-fallback".equals(codeString))
+          return ANTLRPDFALLBACK;
+        if ("App-s2p".equals(codeString))
+          return APPS2P;
+        if ("Arphic-1999".equals(codeString))
+          return ARPHIC1999;
+        if ("ASWF-Digital-Assets-1.0".equals(codeString))
+          return ASWFDIGITALASSETS1_0;
+        if ("ASWF-Digital-Assets-1.1".equals(codeString))
+          return ASWFDIGITALASSETS1_1;
+        if ("Baekmuk".equals(codeString))
+          return BAEKMUK;
+        if ("Bitstream-Charter".equals(codeString))
+          return BITSTREAMCHARTER;
+        if ("Bitstream-Vera".equals(codeString))
+          return BITSTREAMVERA;
+        if ("blessing".equals(codeString))
+          return BLESSING;
+        if ("BlueOak-1.0.0".equals(codeString))
+          return BLUEOAK1_0_0;
+        if ("Boehm-GC".equals(codeString))
+          return BOEHMGC;
+        if ("Brian-Gladman-3-Clause".equals(codeString))
+          return BRIANGLADMAN3CLAUSE;
+        if ("BSD-2-Clause-Views".equals(codeString))
+          return BSD2CLAUSEVIEWS;
+        if ("BSD-3-Clause-Modification".equals(codeString))
+          return BSD3CLAUSEMODIFICATION;
+        if ("BSD-3-Clause-No-Military-License".equals(codeString))
+          return BSD3CLAUSENOMILITARYLICENSE;
+        if ("BSD-3-Clause-Open-MPI".equals(codeString))
+          return BSD3CLAUSEOPENMPI;
+        if ("BSD-4-Clause-Shortened".equals(codeString))
+          return BSD4CLAUSESHORTENED;
+        if ("BSD-4.3RENO".equals(codeString))
+          return BSD4_3RENO;
+        if ("BSD-4.3TAHOE".equals(codeString))
+          return BSD4_3TAHOE;
+        if ("BSD-Advertising-Acknowledgement".equals(codeString))
+          return BSDADVERTISINGACKNOWLEDGEMENT;
+        if ("BSD-Attribution-HPND-disclaimer".equals(codeString))
+          return BSDATTRIBUTIONHPNDDISCLAIMER;
+        if ("BUSL-1.1".equals(codeString))
+          return BUSL1_1;
+        if ("C-UDA-1.0".equals(codeString))
+          return CUDA1_0;
+        if ("CAL-1.0".equals(codeString))
+          return CAL1_0;
+        if ("CAL-1.0-Combined-Work-Exception".equals(codeString))
+          return CAL1_0COMBINEDWORKEXCEPTION;
+        if ("CC-BY-2.5-AU".equals(codeString))
+          return CCBY2_5AU;
+        if ("CC-BY-3.0-AT".equals(codeString))
+          return CCBY3_0AT;
+        if ("CC-BY-3.0-DE".equals(codeString))
+          return CCBY3_0DE;
+        if ("CC-BY-3.0-IGO".equals(codeString))
+          return CCBY3_0IGO;
+        if ("CC-BY-3.0-NL".equals(codeString))
+          return CCBY3_0NL;
+        if ("CC-BY-3.0-US".equals(codeString))
+          return CCBY3_0US;
+        if ("CC-BY-NC-3.0-DE".equals(codeString))
+          return CCBYNC3_0DE;
+        if ("CC-BY-NC-ND-3.0-DE".equals(codeString))
+          return CCBYNCND3_0DE;
+        if ("CC-BY-NC-ND-3.0-IGO".equals(codeString))
+          return CCBYNCND3_0IGO;
+        if ("CC-BY-NC-SA-2.0-DE".equals(codeString))
+          return CCBYNCSA2_0DE;
+        if ("CC-BY-NC-SA-2.0-FR".equals(codeString))
+          return CCBYNCSA2_0FR;
+        if ("CC-BY-NC-SA-2.0-UK".equals(codeString))
+          return CCBYNCSA2_0UK;
+        if ("CC-BY-NC-SA-3.0-DE".equals(codeString))
+          return CCBYNCSA3_0DE;
+        if ("CC-BY-NC-SA-3.0-IGO".equals(codeString))
+          return CCBYNCSA3_0IGO;
+        if ("CC-BY-ND-3.0-DE".equals(codeString))
+          return CCBYND3_0DE;
+        if ("CC-BY-SA-2.0-UK".equals(codeString))
+          return CCBYSA2_0UK;
+        if ("CC-BY-SA-2.1-JP".equals(codeString))
+          return CCBYSA2_1JP;
+        if ("CC-BY-SA-3.0-AT".equals(codeString))
+          return CCBYSA3_0AT;
+        if ("CC-BY-SA-3.0-DE".equals(codeString))
+          return CCBYSA3_0DE;
+        if ("CC-BY-SA-3.0-IGO".equals(codeString))
+          return CCBYSA3_0IGO;
+        if ("CC-PDDC".equals(codeString))
+          return CCPDDC;
+        if ("CDL-1.0".equals(codeString))
+          return CDL1_0;
+        if ("CDLA-Permissive-2.0".equals(codeString))
+          return CDLAPERMISSIVE2_0;
+        if ("CERN-OHL-1.1".equals(codeString))
+          return CERNOHL1_1;
+        if ("CERN-OHL-1.2".equals(codeString))
+          return CERNOHL1_2;
+        if ("CERN-OHL-P-2.0".equals(codeString))
+          return CERNOHLP2_0;
+        if ("CERN-OHL-S-2.0".equals(codeString))
+          return CERNOHLS2_0;
+        if ("CERN-OHL-W-2.0".equals(codeString))
+          return CERNOHLW2_0;
+        if ("CFITSIO".equals(codeString))
+          return CFITSIO;
+        if ("checkmk".equals(codeString))
+          return CHECKMK;
+        if ("Clips".equals(codeString))
+          return CLIPS;
+        if ("CMU-Mach".equals(codeString))
+          return CMUMACH;
+        if ("COIL-1.0".equals(codeString))
+          return COIL1_0;
+        if ("Community-Spec-1.0".equals(codeString))
+          return COMMUNITYSPEC1_0;
+        if ("copyleft-next-0.3.0".equals(codeString))
+          return COPYLEFTNEXT0_3_0;
+        if ("copyleft-next-0.3.1".equals(codeString))
+          return COPYLEFTNEXT0_3_1;
+        if ("Cornell-Lossless-JPEG".equals(codeString))
+          return CORNELLLOSSLESSJPEG;
+        if ("DL-DE-BY-2.0".equals(codeString))
+          return DLDEBY2_0;
+        if ("DRL-1.0".equals(codeString))
+          return DRL1_0;
+        if ("dtoa".equals(codeString))
+          return DTOA;
+        if ("eCos-2.0".equals(codeString))
+          return ECOS2_0;
+        if ("Elastic-2.0".equals(codeString))
+          return ELASTIC2_0;
+        if ("EPICS".equals(codeString))
+          return EPICS;
+        if ("etalab-2.0".equals(codeString))
+          return ETALAB2_0;
+        if ("FDK-AAC".equals(codeString))
+          return FDKAAC;
+        if ("FreeBSD-DOC".equals(codeString))
+          return FREEBSDDOC;
+        if ("FSFULLRWD".equals(codeString))
+          return FSFULLRWD;
+        if ("GD".equals(codeString))
+          return GD;
+        if ("GFDL-1.1".equals(codeString))
+          return GFDL1_1;
+        if ("GFDL-1.1-invariants-only".equals(codeString))
+          return GFDL1_1INVARIANTSONLY;
+        if ("GFDL-1.1-invariants-or-later".equals(codeString))
+          return GFDL1_1INVARIANTSORLATER;
+        if ("GFDL-1.1-no-invariants-only".equals(codeString))
+          return GFDL1_1NOINVARIANTSONLY;
+        if ("GFDL-1.1-no-invariants-or-later".equals(codeString))
+          return GFDL1_1NOINVARIANTSORLATER;
+        if ("GFDL-1.2".equals(codeString))
+          return GFDL1_2;
+        if ("GFDL-1.2-invariants-only".equals(codeString))
+          return GFDL1_2INVARIANTSONLY;
+        if ("GFDL-1.2-invariants-or-later".equals(codeString))
+          return GFDL1_2INVARIANTSORLATER;
+        if ("GFDL-1.2-no-invariants-only".equals(codeString))
+          return GFDL1_2NOINVARIANTSONLY;
+        if ("GFDL-1.2-no-invariants-or-later".equals(codeString))
+          return GFDL1_2NOINVARIANTSORLATER;
+        if ("GFDL-1.3".equals(codeString))
+          return GFDL1_3;
+        if ("GFDL-1.3-invariants-only".equals(codeString))
+          return GFDL1_3INVARIANTSONLY;
+        if ("GFDL-1.3-invariants-or-later".equals(codeString))
+          return GFDL1_3INVARIANTSORLATER;
+        if ("GFDL-1.3-no-invariants-only".equals(codeString))
+          return GFDL1_3NOINVARIANTSONLY;
+        if ("GFDL-1.3-no-invariants-or-later".equals(codeString))
+          return GFDL1_3NOINVARIANTSORLATER;
+        if ("GLWTPL".equals(codeString))
+          return GLWTPL;
+        if ("GPL-1.0".equals(codeString))
+          return GPL1_0;
+        if ("GPL-1.0+".equals(codeString))
+          return GPL1_0PLUS;
+        if ("GPL-2.0".equals(codeString))
+          return GPL2_0;
+        if ("GPL-2.0+".equals(codeString))
+          return GPL2_0PLUS;
+        if ("GPL-2.0-with-autoconf-exception".equals(codeString))
+          return GPL2_0WITHAUTOCONFEXCEPTION;
+        if ("GPL-2.0-with-bison-exception".equals(codeString))
+          return GPL2_0WITHBISONEXCEPTION;
+        if ("GPL-2.0-with-classpath-exception".equals(codeString))
+          return GPL2_0WITHCLASSPATHEXCEPTION;
+        if ("GPL-2.0-with-font-exception".equals(codeString))
+          return GPL2_0WITHFONTEXCEPTION;
+        if ("GPL-2.0-with-GCC-exception".equals(codeString))
+          return GPL2_0WITHGCCEXCEPTION;
+        if ("GPL-3.0".equals(codeString))
+          return GPL3_0;
+        if ("GPL-3.0+".equals(codeString))
+          return GPL3_0PLUS;
+        if ("GPL-3.0-with-autoconf-exception".equals(codeString))
+          return GPL3_0WITHAUTOCONFEXCEPTION;
+        if ("GPL-3.0-with-GCC-exception".equals(codeString))
+          return GPL3_0WITHGCCEXCEPTION;
+        if ("Graphics-Gems".equals(codeString))
+          return GRAPHICSGEMS;
+        if ("Hippocratic-2.1".equals(codeString))
+          return HIPPOCRATIC2_1;
+        if ("HP-1986".equals(codeString))
+          return HP1986;
+        if ("HPND-export-US".equals(codeString))
+          return HPNDEXPORTUS;
+        if ("HPND-Markus-Kuhn".equals(codeString))
+          return HPNDMARKUSKUHN;
+        if ("HPND-sell-variant".equals(codeString))
+          return HPNDSELLVARIANT;
+        if ("HPND-sell-variant-MIT-disclaimer".equals(codeString))
+          return HPNDSELLVARIANTMITDISCLAIMER;
+        if ("HTMLTIDY".equals(codeString))
+          return HTMLTIDY;
+        if ("IEC-Code-Components-EULA".equals(codeString))
+          return IECCODECOMPONENTSEULA;
+        if ("IJG-short".equals(codeString))
+          return IJGSHORT;
+        if ("Inner-Net-2.0".equals(codeString))
+          return INNERNET2_0;
+        if ("Jam".equals(codeString))
+          return JAM;
+        if ("JPL-image".equals(codeString))
+          return JPLIMAGE;
+        if ("JPNIC".equals(codeString))
+          return JPNIC;
+        if ("Kazlib".equals(codeString))
+          return KAZLIB;
+        if ("Knuth-CTAN".equals(codeString))
+          return KNUTHCTAN;
+        if ("Latex2e-translated-notice".equals(codeString))
+          return LATEX2ETRANSLATEDNOTICE;
+        if ("LGPL-2.0".equals(codeString))
+          return LGPL2_0;
+        if ("LGPL-2.0+".equals(codeString))
+          return LGPL2_0PLUS;
+        if ("LGPL-2.1".equals(codeString))
+          return LGPL2_1;
+        if ("LGPL-2.1+".equals(codeString))
+          return LGPL2_1PLUS;
+        if ("LGPL-3.0".equals(codeString))
+          return LGPL3_0;
+        if ("LGPL-3.0+".equals(codeString))
+          return LGPL3_0PLUS;
+        if ("libpng-2.0".equals(codeString))
+          return LIBPNG2_0;
+        if ("libselinux-1.0".equals(codeString))
+          return LIBSELINUX1_0;
+        if ("libutil-David-Nugent".equals(codeString))
+          return LIBUTILDAVIDNUGENT;
+        if ("Linux-man-pages-1-para".equals(codeString))
+          return LINUXMANPAGES1PARA;
+        if ("Linux-man-pages-copyleft".equals(codeString))
+          return LINUXMANPAGESCOPYLEFT;
+        if ("Linux-man-pages-copyleft-2-para".equals(codeString))
+          return LINUXMANPAGESCOPYLEFT2PARA;
+        if ("Linux-man-pages-copyleft-var".equals(codeString))
+          return LINUXMANPAGESCOPYLEFTVAR;
+        if ("LOOP".equals(codeString))
+          return LOOP;
+        if ("LZMA-SDK-9.11-to-9.20".equals(codeString))
+          return LZMASDK9_11TO9_20;
+        if ("LZMA-SDK-9.22".equals(codeString))
+          return LZMASDK9_22;
+        if ("Martin-Birgmeier".equals(codeString))
+          return MARTINBIRGMEIER;
+        if ("metamail".equals(codeString))
+          return METAMAIL;
+        if ("Minpack".equals(codeString))
+          return MINPACK;
+        if ("MIT-Festival".equals(codeString))
+          return MITFESTIVAL;
+        if ("MIT-Modern-Variant".equals(codeString))
+          return MITMODERNVARIANT;
+        if ("MIT-open-group".equals(codeString))
+          return MITOPENGROUP;
+        if ("MIT-Wu".equals(codeString))
+          return MITWU;
+        if ("mpi-permissive".equals(codeString))
+          return MPIPERMISSIVE;
+        if ("mplus".equals(codeString))
+          return MPLUS;
+        if ("MS-LPL".equals(codeString))
+          return MSLPL;
+        if ("MulanPSL-1.0".equals(codeString))
+          return MULANPSL1_0;
+        if ("MulanPSL-2.0".equals(codeString))
+          return MULANPSL2_0;
+        if ("NAIST-2003".equals(codeString))
+          return NAIST2003;
+        if ("NCGL-UK-2.0".equals(codeString))
+          return NCGLUK2_0;
+        if ("NICTA-1.0".equals(codeString))
+          return NICTA1_0;
+        if ("NIST-PD".equals(codeString))
+          return NISTPD;
+        if ("NIST-PD-fallback".equals(codeString))
+          return NISTPDFALLBACK;
+        if ("NIST-Software".equals(codeString))
+          return NISTSOFTWARE;
+        if ("NLOD-2.0".equals(codeString))
+          return NLOD2_0;
+        if ("NTP-0".equals(codeString))
+          return NTP0;
+        if ("Nunit".equals(codeString))
+          return NUNIT;
+        if ("O-UDA-1.0".equals(codeString))
+          return OUDA1_0;
+        if ("ODC-By-1.0".equals(codeString))
+          return ODCBY1_0;
+        if ("OFFIS".equals(codeString))
+          return OFFIS;
+        if ("OFL-1.0-no-RFN".equals(codeString))
+          return OFL1_0NORFN;
+        if ("OFL-1.0-RFN".equals(codeString))
+          return OFL1_0RFN;
+        if ("OFL-1.1-no-RFN".equals(codeString))
+          return OFL1_1NORFN;
+        if ("OFL-1.1-RFN".equals(codeString))
+          return OFL1_1RFN;
+        if ("OGC-1.0".equals(codeString))
+          return OGC1_0;
+        if ("OGDL-Taiwan-1.0".equals(codeString))
+          return OGDLTAIWAN1_0;
+        if ("OGL-Canada-2.0".equals(codeString))
+          return OGLCANADA2_0;
+        if ("OGL-UK-1.0".equals(codeString))
+          return OGLUK1_0;
+        if ("OGL-UK-2.0".equals(codeString))
+          return OGLUK2_0;
+        if ("OGL-UK-3.0".equals(codeString))
+          return OGLUK3_0;
+        if ("OLFL-1.3".equals(codeString))
+          return OLFL1_3;
+        if ("OpenPBS-2.3".equals(codeString))
+          return OPENPBS2_3;
+        if ("OPL-UK-3.0".equals(codeString))
+          return OPLUK3_0;
+        if ("OPUBL-1.0".equals(codeString))
+          return OPUBL1_0;
+        if ("Parity-6.0.0".equals(codeString))
+          return PARITY6_0_0;
+        if ("Parity-7.0.0".equals(codeString))
+          return PARITY7_0_0;
+        if ("PolyForm-Noncommercial-1.0.0".equals(codeString))
+          return POLYFORMNONCOMMERCIAL1_0_0;
+        if ("PolyForm-Small-Business-1.0.0".equals(codeString))
+          return POLYFORMSMALLBUSINESS1_0_0;
+        if ("PSF-2.0".equals(codeString))
+          return PSF2_0;
+        if ("Python-2.0.1".equals(codeString))
+          return PYTHON2_0_1;
+        if ("QPL-1.0-INRIA-2004".equals(codeString))
+          return QPL1_0INRIA2004;
+        if ("SchemeReport".equals(codeString))
+          return SCHEMEREPORT;
+        if ("Sendmail-8.23".equals(codeString))
+          return SENDMAIL8_23;
+        if ("SGP4".equals(codeString))
+          return SGP4;
+        if ("SHL-0.5".equals(codeString))
+          return SHL0_5;
+        if ("SHL-0.51".equals(codeString))
+          return SHL0_51;
+        if ("snprintf".equals(codeString))
+          return SNPRINTF;
+        if ("SSH-OpenSSH".equals(codeString))
+          return SSHOPENSSH;
+        if ("SSH-short".equals(codeString))
+          return SSHSHORT;
+        if ("SSPL-1.0".equals(codeString))
+          return SSPL1_0;
+        if ("StandardML-NJ".equals(codeString))
+          return STANDARDMLNJ;
+        if ("SunPro".equals(codeString))
+          return SUNPRO;
+        if ("Symlinks".equals(codeString))
+          return SYMLINKS;
+        if ("TAPR-OHL-1.0".equals(codeString))
+          return TAPROHL1_0;
+        if ("TermReadKey".equals(codeString))
+          return TERMREADKEY;
+        if ("TPDL".equals(codeString))
+          return TPDL;
+        if ("TPL-1.0".equals(codeString))
+          return TPL1_0;
+        if ("TTWL".equals(codeString))
+          return TTWL;
+        if ("TU-Berlin-1.0".equals(codeString))
+          return TUBERLIN1_0;
+        if ("TU-Berlin-2.0".equals(codeString))
+          return TUBERLIN2_0;
+        if ("UCAR".equals(codeString))
+          return UCAR;
+        if ("UCL-1.0".equals(codeString))
+          return UCL1_0;
+        if ("UnixCrypt".equals(codeString))
+          return UNIXCRYPT;
+        if ("w3m".equals(codeString))
+          return W3M;
+        if ("Widget-Workshop".equals(codeString))
+          return WIDGETWORKSHOP;
+        if ("wxWindows".equals(codeString))
+          return WXWINDOWS;
+        if ("X11-distribute-modifications-variant".equals(codeString))
+          return X11DISTRIBUTEMODIFICATIONSVARIANT;
+        if ("Xdebug-1.03".equals(codeString))
+          return XDEBUG1_03;
+        if ("Xfig".equals(codeString))
+          return XFIG;
+        if ("xlock".equals(codeString))
+          return XLOCK;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -2635,6 +3913,218 @@ public class ImplementationGuide extends CanonicalResource {
             case ZPL1_1: return "ZPL-1.1";
             case ZPL2_0: return "ZPL-2.0";
             case ZPL2_1: return "ZPL-2.1";
+            case ADACOREDOC: return "AdaCore-doc";
+            case AGPL1_0: return "AGPL-1.0";
+            case AGPL3_0: return "AGPL-3.0";
+            case ANTLRPDFALLBACK: return "ANTLR-PD-fallback";
+            case APPS2P: return "App-s2p";
+            case ARPHIC1999: return "Arphic-1999";
+            case ASWFDIGITALASSETS1_0: return "ASWF-Digital-Assets-1.0";
+            case ASWFDIGITALASSETS1_1: return "ASWF-Digital-Assets-1.1";
+            case BAEKMUK: return "Baekmuk";
+            case BITSTREAMCHARTER: return "Bitstream-Charter";
+            case BITSTREAMVERA: return "Bitstream-Vera";
+            case BLESSING: return "blessing";
+            case BLUEOAK1_0_0: return "BlueOak-1.0.0";
+            case BOEHMGC: return "Boehm-GC";
+            case BRIANGLADMAN3CLAUSE: return "Brian-Gladman-3-Clause";
+            case BSD2CLAUSEVIEWS: return "BSD-2-Clause-Views";
+            case BSD3CLAUSEMODIFICATION: return "BSD-3-Clause-Modification";
+            case BSD3CLAUSENOMILITARYLICENSE: return "BSD-3-Clause-No-Military-License";
+            case BSD3CLAUSEOPENMPI: return "BSD-3-Clause-Open-MPI";
+            case BSD4CLAUSESHORTENED: return "BSD-4-Clause-Shortened";
+            case BSD4_3RENO: return "BSD-4.3RENO";
+            case BSD4_3TAHOE: return "BSD-4.3TAHOE";
+            case BSDADVERTISINGACKNOWLEDGEMENT: return "BSD-Advertising-Acknowledgement";
+            case BSDATTRIBUTIONHPNDDISCLAIMER: return "BSD-Attribution-HPND-disclaimer";
+            case BUSL1_1: return "BUSL-1.1";
+            case CUDA1_0: return "C-UDA-1.0";
+            case CAL1_0: return "CAL-1.0";
+            case CAL1_0COMBINEDWORKEXCEPTION: return "CAL-1.0-Combined-Work-Exception";
+            case CCBY2_5AU: return "CC-BY-2.5-AU";
+            case CCBY3_0AT: return "CC-BY-3.0-AT";
+            case CCBY3_0DE: return "CC-BY-3.0-DE";
+            case CCBY3_0IGO: return "CC-BY-3.0-IGO";
+            case CCBY3_0NL: return "CC-BY-3.0-NL";
+            case CCBY3_0US: return "CC-BY-3.0-US";
+            case CCBYNC3_0DE: return "CC-BY-NC-3.0-DE";
+            case CCBYNCND3_0DE: return "CC-BY-NC-ND-3.0-DE";
+            case CCBYNCND3_0IGO: return "CC-BY-NC-ND-3.0-IGO";
+            case CCBYNCSA2_0DE: return "CC-BY-NC-SA-2.0-DE";
+            case CCBYNCSA2_0FR: return "CC-BY-NC-SA-2.0-FR";
+            case CCBYNCSA2_0UK: return "CC-BY-NC-SA-2.0-UK";
+            case CCBYNCSA3_0DE: return "CC-BY-NC-SA-3.0-DE";
+            case CCBYNCSA3_0IGO: return "CC-BY-NC-SA-3.0-IGO";
+            case CCBYND3_0DE: return "CC-BY-ND-3.0-DE";
+            case CCBYSA2_0UK: return "CC-BY-SA-2.0-UK";
+            case CCBYSA2_1JP: return "CC-BY-SA-2.1-JP";
+            case CCBYSA3_0AT: return "CC-BY-SA-3.0-AT";
+            case CCBYSA3_0DE: return "CC-BY-SA-3.0-DE";
+            case CCBYSA3_0IGO: return "CC-BY-SA-3.0-IGO";
+            case CCPDDC: return "CC-PDDC";
+            case CDL1_0: return "CDL-1.0";
+            case CDLAPERMISSIVE2_0: return "CDLA-Permissive-2.0";
+            case CERNOHL1_1: return "CERN-OHL-1.1";
+            case CERNOHL1_2: return "CERN-OHL-1.2";
+            case CERNOHLP2_0: return "CERN-OHL-P-2.0";
+            case CERNOHLS2_0: return "CERN-OHL-S-2.0";
+            case CERNOHLW2_0: return "CERN-OHL-W-2.0";
+            case CFITSIO: return "CFITSIO";
+            case CHECKMK: return "checkmk";
+            case CLIPS: return "Clips";
+            case CMUMACH: return "CMU-Mach";
+            case COIL1_0: return "COIL-1.0";
+            case COMMUNITYSPEC1_0: return "Community-Spec-1.0";
+            case COPYLEFTNEXT0_3_0: return "copyleft-next-0.3.0";
+            case COPYLEFTNEXT0_3_1: return "copyleft-next-0.3.1";
+            case CORNELLLOSSLESSJPEG: return "Cornell-Lossless-JPEG";
+            case DLDEBY2_0: return "DL-DE-BY-2.0";
+            case DRL1_0: return "DRL-1.0";
+            case DTOA: return "dtoa";
+            case ECOS2_0: return "eCos-2.0";
+            case ELASTIC2_0: return "Elastic-2.0";
+            case EPICS: return "EPICS";
+            case ETALAB2_0: return "etalab-2.0";
+            case FDKAAC: return "FDK-AAC";
+            case FREEBSDDOC: return "FreeBSD-DOC";
+            case FSFULLRWD: return "FSFULLRWD";
+            case GD: return "GD";
+            case GFDL1_1: return "GFDL-1.1";
+            case GFDL1_1INVARIANTSONLY: return "GFDL-1.1-invariants-only";
+            case GFDL1_1INVARIANTSORLATER: return "GFDL-1.1-invariants-or-later";
+            case GFDL1_1NOINVARIANTSONLY: return "GFDL-1.1-no-invariants-only";
+            case GFDL1_1NOINVARIANTSORLATER: return "GFDL-1.1-no-invariants-or-later";
+            case GFDL1_2: return "GFDL-1.2";
+            case GFDL1_2INVARIANTSONLY: return "GFDL-1.2-invariants-only";
+            case GFDL1_2INVARIANTSORLATER: return "GFDL-1.2-invariants-or-later";
+            case GFDL1_2NOINVARIANTSONLY: return "GFDL-1.2-no-invariants-only";
+            case GFDL1_2NOINVARIANTSORLATER: return "GFDL-1.2-no-invariants-or-later";
+            case GFDL1_3: return "GFDL-1.3";
+            case GFDL1_3INVARIANTSONLY: return "GFDL-1.3-invariants-only";
+            case GFDL1_3INVARIANTSORLATER: return "GFDL-1.3-invariants-or-later";
+            case GFDL1_3NOINVARIANTSONLY: return "GFDL-1.3-no-invariants-only";
+            case GFDL1_3NOINVARIANTSORLATER: return "GFDL-1.3-no-invariants-or-later";
+            case GLWTPL: return "GLWTPL";
+            case GPL1_0: return "GPL-1.0";
+            case GPL1_0PLUS: return "GPL-1.0+";
+            case GPL2_0: return "GPL-2.0";
+            case GPL2_0PLUS: return "GPL-2.0+";
+            case GPL2_0WITHAUTOCONFEXCEPTION: return "GPL-2.0-with-autoconf-exception";
+            case GPL2_0WITHBISONEXCEPTION: return "GPL-2.0-with-bison-exception";
+            case GPL2_0WITHCLASSPATHEXCEPTION: return "GPL-2.0-with-classpath-exception";
+            case GPL2_0WITHFONTEXCEPTION: return "GPL-2.0-with-font-exception";
+            case GPL2_0WITHGCCEXCEPTION: return "GPL-2.0-with-GCC-exception";
+            case GPL3_0: return "GPL-3.0";
+            case GPL3_0PLUS: return "GPL-3.0+";
+            case GPL3_0WITHAUTOCONFEXCEPTION: return "GPL-3.0-with-autoconf-exception";
+            case GPL3_0WITHGCCEXCEPTION: return "GPL-3.0-with-GCC-exception";
+            case GRAPHICSGEMS: return "Graphics-Gems";
+            case HIPPOCRATIC2_1: return "Hippocratic-2.1";
+            case HP1986: return "HP-1986";
+            case HPNDEXPORTUS: return "HPND-export-US";
+            case HPNDMARKUSKUHN: return "HPND-Markus-Kuhn";
+            case HPNDSELLVARIANT: return "HPND-sell-variant";
+            case HPNDSELLVARIANTMITDISCLAIMER: return "HPND-sell-variant-MIT-disclaimer";
+            case HTMLTIDY: return "HTMLTIDY";
+            case IECCODECOMPONENTSEULA: return "IEC-Code-Components-EULA";
+            case IJGSHORT: return "IJG-short";
+            case INNERNET2_0: return "Inner-Net-2.0";
+            case JAM: return "Jam";
+            case JPLIMAGE: return "JPL-image";
+            case JPNIC: return "JPNIC";
+            case KAZLIB: return "Kazlib";
+            case KNUTHCTAN: return "Knuth-CTAN";
+            case LATEX2ETRANSLATEDNOTICE: return "Latex2e-translated-notice";
+            case LGPL2_0: return "LGPL-2.0";
+            case LGPL2_0PLUS: return "LGPL-2.0+";
+            case LGPL2_1: return "LGPL-2.1";
+            case LGPL2_1PLUS: return "LGPL-2.1+";
+            case LGPL3_0: return "LGPL-3.0";
+            case LGPL3_0PLUS: return "LGPL-3.0+";
+            case LIBPNG2_0: return "libpng-2.0";
+            case LIBSELINUX1_0: return "libselinux-1.0";
+            case LIBUTILDAVIDNUGENT: return "libutil-David-Nugent";
+            case LINUXMANPAGES1PARA: return "Linux-man-pages-1-para";
+            case LINUXMANPAGESCOPYLEFT: return "Linux-man-pages-copyleft";
+            case LINUXMANPAGESCOPYLEFT2PARA: return "Linux-man-pages-copyleft-2-para";
+            case LINUXMANPAGESCOPYLEFTVAR: return "Linux-man-pages-copyleft-var";
+            case LOOP: return "LOOP";
+            case LZMASDK9_11TO9_20: return "LZMA-SDK-9.11-to-9.20";
+            case LZMASDK9_22: return "LZMA-SDK-9.22";
+            case MARTINBIRGMEIER: return "Martin-Birgmeier";
+            case METAMAIL: return "metamail";
+            case MINPACK: return "Minpack";
+            case MITFESTIVAL: return "MIT-Festival";
+            case MITMODERNVARIANT: return "MIT-Modern-Variant";
+            case MITOPENGROUP: return "MIT-open-group";
+            case MITWU: return "MIT-Wu";
+            case MPIPERMISSIVE: return "mpi-permissive";
+            case MPLUS: return "mplus";
+            case MSLPL: return "MS-LPL";
+            case MULANPSL1_0: return "MulanPSL-1.0";
+            case MULANPSL2_0: return "MulanPSL-2.0";
+            case NAIST2003: return "NAIST-2003";
+            case NCGLUK2_0: return "NCGL-UK-2.0";
+            case NICTA1_0: return "NICTA-1.0";
+            case NISTPD: return "NIST-PD";
+            case NISTPDFALLBACK: return "NIST-PD-fallback";
+            case NISTSOFTWARE: return "NIST-Software";
+            case NLOD2_0: return "NLOD-2.0";
+            case NTP0: return "NTP-0";
+            case NUNIT: return "Nunit";
+            case OUDA1_0: return "O-UDA-1.0";
+            case ODCBY1_0: return "ODC-By-1.0";
+            case OFFIS: return "OFFIS";
+            case OFL1_0NORFN: return "OFL-1.0-no-RFN";
+            case OFL1_0RFN: return "OFL-1.0-RFN";
+            case OFL1_1NORFN: return "OFL-1.1-no-RFN";
+            case OFL1_1RFN: return "OFL-1.1-RFN";
+            case OGC1_0: return "OGC-1.0";
+            case OGDLTAIWAN1_0: return "OGDL-Taiwan-1.0";
+            case OGLCANADA2_0: return "OGL-Canada-2.0";
+            case OGLUK1_0: return "OGL-UK-1.0";
+            case OGLUK2_0: return "OGL-UK-2.0";
+            case OGLUK3_0: return "OGL-UK-3.0";
+            case OLFL1_3: return "OLFL-1.3";
+            case OPENPBS2_3: return "OpenPBS-2.3";
+            case OPLUK3_0: return "OPL-UK-3.0";
+            case OPUBL1_0: return "OPUBL-1.0";
+            case PARITY6_0_0: return "Parity-6.0.0";
+            case PARITY7_0_0: return "Parity-7.0.0";
+            case POLYFORMNONCOMMERCIAL1_0_0: return "PolyForm-Noncommercial-1.0.0";
+            case POLYFORMSMALLBUSINESS1_0_0: return "PolyForm-Small-Business-1.0.0";
+            case PSF2_0: return "PSF-2.0";
+            case PYTHON2_0_1: return "Python-2.0.1";
+            case QPL1_0INRIA2004: return "QPL-1.0-INRIA-2004";
+            case SCHEMEREPORT: return "SchemeReport";
+            case SENDMAIL8_23: return "Sendmail-8.23";
+            case SGP4: return "SGP4";
+            case SHL0_5: return "SHL-0.5";
+            case SHL0_51: return "SHL-0.51";
+            case SNPRINTF: return "snprintf";
+            case SSHOPENSSH: return "SSH-OpenSSH";
+            case SSHSHORT: return "SSH-short";
+            case SSPL1_0: return "SSPL-1.0";
+            case STANDARDMLNJ: return "StandardML-NJ";
+            case SUNPRO: return "SunPro";
+            case SYMLINKS: return "Symlinks";
+            case TAPROHL1_0: return "TAPR-OHL-1.0";
+            case TERMREADKEY: return "TermReadKey";
+            case TPDL: return "TPDL";
+            case TPL1_0: return "TPL-1.0";
+            case TTWL: return "TTWL";
+            case TUBERLIN1_0: return "TU-Berlin-1.0";
+            case TUBERLIN2_0: return "TU-Berlin-2.0";
+            case UCAR: return "UCAR";
+            case UCL1_0: return "UCL-1.0";
+            case UNIXCRYPT: return "UnixCrypt";
+            case W3M: return "w3m";
+            case WIDGETWORKSHOP: return "Widget-Workshop";
+            case WXWINDOWS: return "wxWindows";
+            case X11DISTRIBUTEMODIFICATIONSVARIANT: return "X11-distribute-modifications-variant";
+            case XDEBUG1_03: return "Xdebug-1.03";
+            case XFIG: return "Xfig";
+            case XLOCK: return "xlock";
             case NULL: return null;
             default: return "?";
           }
@@ -2987,6 +4477,218 @@ public class ImplementationGuide extends CanonicalResource {
             case ZPL1_1: return "http://hl7.org/fhir/spdx-license";
             case ZPL2_0: return "http://hl7.org/fhir/spdx-license";
             case ZPL2_1: return "http://hl7.org/fhir/spdx-license";
+            case ADACOREDOC: return "http://hl7.org/fhir/spdx-license";
+            case AGPL1_0: return "http://hl7.org/fhir/spdx-license";
+            case AGPL3_0: return "http://hl7.org/fhir/spdx-license";
+            case ANTLRPDFALLBACK: return "http://hl7.org/fhir/spdx-license";
+            case APPS2P: return "http://hl7.org/fhir/spdx-license";
+            case ARPHIC1999: return "http://hl7.org/fhir/spdx-license";
+            case ASWFDIGITALASSETS1_0: return "http://hl7.org/fhir/spdx-license";
+            case ASWFDIGITALASSETS1_1: return "http://hl7.org/fhir/spdx-license";
+            case BAEKMUK: return "http://hl7.org/fhir/spdx-license";
+            case BITSTREAMCHARTER: return "http://hl7.org/fhir/spdx-license";
+            case BITSTREAMVERA: return "http://hl7.org/fhir/spdx-license";
+            case BLESSING: return "http://hl7.org/fhir/spdx-license";
+            case BLUEOAK1_0_0: return "http://hl7.org/fhir/spdx-license";
+            case BOEHMGC: return "http://hl7.org/fhir/spdx-license";
+            case BRIANGLADMAN3CLAUSE: return "http://hl7.org/fhir/spdx-license";
+            case BSD2CLAUSEVIEWS: return "http://hl7.org/fhir/spdx-license";
+            case BSD3CLAUSEMODIFICATION: return "http://hl7.org/fhir/spdx-license";
+            case BSD3CLAUSENOMILITARYLICENSE: return "http://hl7.org/fhir/spdx-license";
+            case BSD3CLAUSEOPENMPI: return "http://hl7.org/fhir/spdx-license";
+            case BSD4CLAUSESHORTENED: return "http://hl7.org/fhir/spdx-license";
+            case BSD4_3RENO: return "http://hl7.org/fhir/spdx-license";
+            case BSD4_3TAHOE: return "http://hl7.org/fhir/spdx-license";
+            case BSDADVERTISINGACKNOWLEDGEMENT: return "http://hl7.org/fhir/spdx-license";
+            case BSDATTRIBUTIONHPNDDISCLAIMER: return "http://hl7.org/fhir/spdx-license";
+            case BUSL1_1: return "http://hl7.org/fhir/spdx-license";
+            case CUDA1_0: return "http://hl7.org/fhir/spdx-license";
+            case CAL1_0: return "http://hl7.org/fhir/spdx-license";
+            case CAL1_0COMBINEDWORKEXCEPTION: return "http://hl7.org/fhir/spdx-license";
+            case CCBY2_5AU: return "http://hl7.org/fhir/spdx-license";
+            case CCBY3_0AT: return "http://hl7.org/fhir/spdx-license";
+            case CCBY3_0DE: return "http://hl7.org/fhir/spdx-license";
+            case CCBY3_0IGO: return "http://hl7.org/fhir/spdx-license";
+            case CCBY3_0NL: return "http://hl7.org/fhir/spdx-license";
+            case CCBY3_0US: return "http://hl7.org/fhir/spdx-license";
+            case CCBYNC3_0DE: return "http://hl7.org/fhir/spdx-license";
+            case CCBYNCND3_0DE: return "http://hl7.org/fhir/spdx-license";
+            case CCBYNCND3_0IGO: return "http://hl7.org/fhir/spdx-license";
+            case CCBYNCSA2_0DE: return "http://hl7.org/fhir/spdx-license";
+            case CCBYNCSA2_0FR: return "http://hl7.org/fhir/spdx-license";
+            case CCBYNCSA2_0UK: return "http://hl7.org/fhir/spdx-license";
+            case CCBYNCSA3_0DE: return "http://hl7.org/fhir/spdx-license";
+            case CCBYNCSA3_0IGO: return "http://hl7.org/fhir/spdx-license";
+            case CCBYND3_0DE: return "http://hl7.org/fhir/spdx-license";
+            case CCBYSA2_0UK: return "http://hl7.org/fhir/spdx-license";
+            case CCBYSA2_1JP: return "http://hl7.org/fhir/spdx-license";
+            case CCBYSA3_0AT: return "http://hl7.org/fhir/spdx-license";
+            case CCBYSA3_0DE: return "http://hl7.org/fhir/spdx-license";
+            case CCBYSA3_0IGO: return "http://hl7.org/fhir/spdx-license";
+            case CCPDDC: return "http://hl7.org/fhir/spdx-license";
+            case CDL1_0: return "http://hl7.org/fhir/spdx-license";
+            case CDLAPERMISSIVE2_0: return "http://hl7.org/fhir/spdx-license";
+            case CERNOHL1_1: return "http://hl7.org/fhir/spdx-license";
+            case CERNOHL1_2: return "http://hl7.org/fhir/spdx-license";
+            case CERNOHLP2_0: return "http://hl7.org/fhir/spdx-license";
+            case CERNOHLS2_0: return "http://hl7.org/fhir/spdx-license";
+            case CERNOHLW2_0: return "http://hl7.org/fhir/spdx-license";
+            case CFITSIO: return "http://hl7.org/fhir/spdx-license";
+            case CHECKMK: return "http://hl7.org/fhir/spdx-license";
+            case CLIPS: return "http://hl7.org/fhir/spdx-license";
+            case CMUMACH: return "http://hl7.org/fhir/spdx-license";
+            case COIL1_0: return "http://hl7.org/fhir/spdx-license";
+            case COMMUNITYSPEC1_0: return "http://hl7.org/fhir/spdx-license";
+            case COPYLEFTNEXT0_3_0: return "http://hl7.org/fhir/spdx-license";
+            case COPYLEFTNEXT0_3_1: return "http://hl7.org/fhir/spdx-license";
+            case CORNELLLOSSLESSJPEG: return "http://hl7.org/fhir/spdx-license";
+            case DLDEBY2_0: return "http://hl7.org/fhir/spdx-license";
+            case DRL1_0: return "http://hl7.org/fhir/spdx-license";
+            case DTOA: return "http://hl7.org/fhir/spdx-license";
+            case ECOS2_0: return "http://hl7.org/fhir/spdx-license";
+            case ELASTIC2_0: return "http://hl7.org/fhir/spdx-license";
+            case EPICS: return "http://hl7.org/fhir/spdx-license";
+            case ETALAB2_0: return "http://hl7.org/fhir/spdx-license";
+            case FDKAAC: return "http://hl7.org/fhir/spdx-license";
+            case FREEBSDDOC: return "http://hl7.org/fhir/spdx-license";
+            case FSFULLRWD: return "http://hl7.org/fhir/spdx-license";
+            case GD: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_1: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_1INVARIANTSONLY: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_1INVARIANTSORLATER: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_1NOINVARIANTSONLY: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_1NOINVARIANTSORLATER: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_2: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_2INVARIANTSONLY: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_2INVARIANTSORLATER: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_2NOINVARIANTSONLY: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_2NOINVARIANTSORLATER: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_3: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_3INVARIANTSONLY: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_3INVARIANTSORLATER: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_3NOINVARIANTSONLY: return "http://hl7.org/fhir/spdx-license";
+            case GFDL1_3NOINVARIANTSORLATER: return "http://hl7.org/fhir/spdx-license";
+            case GLWTPL: return "http://hl7.org/fhir/spdx-license";
+            case GPL1_0: return "http://hl7.org/fhir/spdx-license";
+            case GPL1_0PLUS: return "http://hl7.org/fhir/spdx-license";
+            case GPL2_0: return "http://hl7.org/fhir/spdx-license";
+            case GPL2_0PLUS: return "http://hl7.org/fhir/spdx-license";
+            case GPL2_0WITHAUTOCONFEXCEPTION: return "http://hl7.org/fhir/spdx-license";
+            case GPL2_0WITHBISONEXCEPTION: return "http://hl7.org/fhir/spdx-license";
+            case GPL2_0WITHCLASSPATHEXCEPTION: return "http://hl7.org/fhir/spdx-license";
+            case GPL2_0WITHFONTEXCEPTION: return "http://hl7.org/fhir/spdx-license";
+            case GPL2_0WITHGCCEXCEPTION: return "http://hl7.org/fhir/spdx-license";
+            case GPL3_0: return "http://hl7.org/fhir/spdx-license";
+            case GPL3_0PLUS: return "http://hl7.org/fhir/spdx-license";
+            case GPL3_0WITHAUTOCONFEXCEPTION: return "http://hl7.org/fhir/spdx-license";
+            case GPL3_0WITHGCCEXCEPTION: return "http://hl7.org/fhir/spdx-license";
+            case GRAPHICSGEMS: return "http://hl7.org/fhir/spdx-license";
+            case HIPPOCRATIC2_1: return "http://hl7.org/fhir/spdx-license";
+            case HP1986: return "http://hl7.org/fhir/spdx-license";
+            case HPNDEXPORTUS: return "http://hl7.org/fhir/spdx-license";
+            case HPNDMARKUSKUHN: return "http://hl7.org/fhir/spdx-license";
+            case HPNDSELLVARIANT: return "http://hl7.org/fhir/spdx-license";
+            case HPNDSELLVARIANTMITDISCLAIMER: return "http://hl7.org/fhir/spdx-license";
+            case HTMLTIDY: return "http://hl7.org/fhir/spdx-license";
+            case IECCODECOMPONENTSEULA: return "http://hl7.org/fhir/spdx-license";
+            case IJGSHORT: return "http://hl7.org/fhir/spdx-license";
+            case INNERNET2_0: return "http://hl7.org/fhir/spdx-license";
+            case JAM: return "http://hl7.org/fhir/spdx-license";
+            case JPLIMAGE: return "http://hl7.org/fhir/spdx-license";
+            case JPNIC: return "http://hl7.org/fhir/spdx-license";
+            case KAZLIB: return "http://hl7.org/fhir/spdx-license";
+            case KNUTHCTAN: return "http://hl7.org/fhir/spdx-license";
+            case LATEX2ETRANSLATEDNOTICE: return "http://hl7.org/fhir/spdx-license";
+            case LGPL2_0: return "http://hl7.org/fhir/spdx-license";
+            case LGPL2_0PLUS: return "http://hl7.org/fhir/spdx-license";
+            case LGPL2_1: return "http://hl7.org/fhir/spdx-license";
+            case LGPL2_1PLUS: return "http://hl7.org/fhir/spdx-license";
+            case LGPL3_0: return "http://hl7.org/fhir/spdx-license";
+            case LGPL3_0PLUS: return "http://hl7.org/fhir/spdx-license";
+            case LIBPNG2_0: return "http://hl7.org/fhir/spdx-license";
+            case LIBSELINUX1_0: return "http://hl7.org/fhir/spdx-license";
+            case LIBUTILDAVIDNUGENT: return "http://hl7.org/fhir/spdx-license";
+            case LINUXMANPAGES1PARA: return "http://hl7.org/fhir/spdx-license";
+            case LINUXMANPAGESCOPYLEFT: return "http://hl7.org/fhir/spdx-license";
+            case LINUXMANPAGESCOPYLEFT2PARA: return "http://hl7.org/fhir/spdx-license";
+            case LINUXMANPAGESCOPYLEFTVAR: return "http://hl7.org/fhir/spdx-license";
+            case LOOP: return "http://hl7.org/fhir/spdx-license";
+            case LZMASDK9_11TO9_20: return "http://hl7.org/fhir/spdx-license";
+            case LZMASDK9_22: return "http://hl7.org/fhir/spdx-license";
+            case MARTINBIRGMEIER: return "http://hl7.org/fhir/spdx-license";
+            case METAMAIL: return "http://hl7.org/fhir/spdx-license";
+            case MINPACK: return "http://hl7.org/fhir/spdx-license";
+            case MITFESTIVAL: return "http://hl7.org/fhir/spdx-license";
+            case MITMODERNVARIANT: return "http://hl7.org/fhir/spdx-license";
+            case MITOPENGROUP: return "http://hl7.org/fhir/spdx-license";
+            case MITWU: return "http://hl7.org/fhir/spdx-license";
+            case MPIPERMISSIVE: return "http://hl7.org/fhir/spdx-license";
+            case MPLUS: return "http://hl7.org/fhir/spdx-license";
+            case MSLPL: return "http://hl7.org/fhir/spdx-license";
+            case MULANPSL1_0: return "http://hl7.org/fhir/spdx-license";
+            case MULANPSL2_0: return "http://hl7.org/fhir/spdx-license";
+            case NAIST2003: return "http://hl7.org/fhir/spdx-license";
+            case NCGLUK2_0: return "http://hl7.org/fhir/spdx-license";
+            case NICTA1_0: return "http://hl7.org/fhir/spdx-license";
+            case NISTPD: return "http://hl7.org/fhir/spdx-license";
+            case NISTPDFALLBACK: return "http://hl7.org/fhir/spdx-license";
+            case NISTSOFTWARE: return "http://hl7.org/fhir/spdx-license";
+            case NLOD2_0: return "http://hl7.org/fhir/spdx-license";
+            case NTP0: return "http://hl7.org/fhir/spdx-license";
+            case NUNIT: return "http://hl7.org/fhir/spdx-license";
+            case OUDA1_0: return "http://hl7.org/fhir/spdx-license";
+            case ODCBY1_0: return "http://hl7.org/fhir/spdx-license";
+            case OFFIS: return "http://hl7.org/fhir/spdx-license";
+            case OFL1_0NORFN: return "http://hl7.org/fhir/spdx-license";
+            case OFL1_0RFN: return "http://hl7.org/fhir/spdx-license";
+            case OFL1_1NORFN: return "http://hl7.org/fhir/spdx-license";
+            case OFL1_1RFN: return "http://hl7.org/fhir/spdx-license";
+            case OGC1_0: return "http://hl7.org/fhir/spdx-license";
+            case OGDLTAIWAN1_0: return "http://hl7.org/fhir/spdx-license";
+            case OGLCANADA2_0: return "http://hl7.org/fhir/spdx-license";
+            case OGLUK1_0: return "http://hl7.org/fhir/spdx-license";
+            case OGLUK2_0: return "http://hl7.org/fhir/spdx-license";
+            case OGLUK3_0: return "http://hl7.org/fhir/spdx-license";
+            case OLFL1_3: return "http://hl7.org/fhir/spdx-license";
+            case OPENPBS2_3: return "http://hl7.org/fhir/spdx-license";
+            case OPLUK3_0: return "http://hl7.org/fhir/spdx-license";
+            case OPUBL1_0: return "http://hl7.org/fhir/spdx-license";
+            case PARITY6_0_0: return "http://hl7.org/fhir/spdx-license";
+            case PARITY7_0_0: return "http://hl7.org/fhir/spdx-license";
+            case POLYFORMNONCOMMERCIAL1_0_0: return "http://hl7.org/fhir/spdx-license";
+            case POLYFORMSMALLBUSINESS1_0_0: return "http://hl7.org/fhir/spdx-license";
+            case PSF2_0: return "http://hl7.org/fhir/spdx-license";
+            case PYTHON2_0_1: return "http://hl7.org/fhir/spdx-license";
+            case QPL1_0INRIA2004: return "http://hl7.org/fhir/spdx-license";
+            case SCHEMEREPORT: return "http://hl7.org/fhir/spdx-license";
+            case SENDMAIL8_23: return "http://hl7.org/fhir/spdx-license";
+            case SGP4: return "http://hl7.org/fhir/spdx-license";
+            case SHL0_5: return "http://hl7.org/fhir/spdx-license";
+            case SHL0_51: return "http://hl7.org/fhir/spdx-license";
+            case SNPRINTF: return "http://hl7.org/fhir/spdx-license";
+            case SSHOPENSSH: return "http://hl7.org/fhir/spdx-license";
+            case SSHSHORT: return "http://hl7.org/fhir/spdx-license";
+            case SSPL1_0: return "http://hl7.org/fhir/spdx-license";
+            case STANDARDMLNJ: return "http://hl7.org/fhir/spdx-license";
+            case SUNPRO: return "http://hl7.org/fhir/spdx-license";
+            case SYMLINKS: return "http://hl7.org/fhir/spdx-license";
+            case TAPROHL1_0: return "http://hl7.org/fhir/spdx-license";
+            case TERMREADKEY: return "http://hl7.org/fhir/spdx-license";
+            case TPDL: return "http://hl7.org/fhir/spdx-license";
+            case TPL1_0: return "http://hl7.org/fhir/spdx-license";
+            case TTWL: return "http://hl7.org/fhir/spdx-license";
+            case TUBERLIN1_0: return "http://hl7.org/fhir/spdx-license";
+            case TUBERLIN2_0: return "http://hl7.org/fhir/spdx-license";
+            case UCAR: return "http://hl7.org/fhir/spdx-license";
+            case UCL1_0: return "http://hl7.org/fhir/spdx-license";
+            case UNIXCRYPT: return "http://hl7.org/fhir/spdx-license";
+            case W3M: return "http://hl7.org/fhir/spdx-license";
+            case WIDGETWORKSHOP: return "http://hl7.org/fhir/spdx-license";
+            case WXWINDOWS: return "http://hl7.org/fhir/spdx-license";
+            case X11DISTRIBUTEMODIFICATIONSVARIANT: return "http://hl7.org/fhir/spdx-license";
+            case XDEBUG1_03: return "http://hl7.org/fhir/spdx-license";
+            case XFIG: return "http://hl7.org/fhir/spdx-license";
+            case XLOCK: return "http://hl7.org/fhir/spdx-license";
             case NULL: return null;
             default: return "?";
           }
@@ -3339,6 +5041,218 @@ public class ImplementationGuide extends CanonicalResource {
             case ZPL1_1: return "Zope Public License 1.1.";
             case ZPL2_0: return "Zope Public License 2.0.";
             case ZPL2_1: return "Zope Public License 2.1.";
+            case ADACOREDOC: return "AdaCore Doc License";
+            case AGPL1_0: return "Affero General Public License v1.0";
+            case AGPL3_0: return "GNU Affero General Public License v3.0";
+            case ANTLRPDFALLBACK: return "ANTLR Software Rights Notice with license fallback";
+            case APPS2P: return "App::s2p License";
+            case ARPHIC1999: return "Arphic Public License";
+            case ASWFDIGITALASSETS1_0: return "ASWF Digital Assets License version 1.0";
+            case ASWFDIGITALASSETS1_1: return "ASWF Digital Assets License 1.1";
+            case BAEKMUK: return "Baekmuk License";
+            case BITSTREAMCHARTER: return "Bitstream Charter Font License";
+            case BITSTREAMVERA: return "Bitstream Vera Font License";
+            case BLESSING: return "SQLite Blessing";
+            case BLUEOAK1_0_0: return "Blue Oak Model License 1.0.0";
+            case BOEHMGC: return "Boehm-Demers-Weiser GC License";
+            case BRIANGLADMAN3CLAUSE: return "Brian Gladman 3-Clause License";
+            case BSD2CLAUSEVIEWS: return "BSD 2-Clause with views sentence";
+            case BSD3CLAUSEMODIFICATION: return "BSD 3-Clause Modification";
+            case BSD3CLAUSENOMILITARYLICENSE: return "BSD 3-Clause No Military License";
+            case BSD3CLAUSEOPENMPI: return "BSD 3-Clause Open MPI variant";
+            case BSD4CLAUSESHORTENED: return "BSD 4 Clause Shortened";
+            case BSD4_3RENO: return "BSD 4.3 RENO License";
+            case BSD4_3TAHOE: return "BSD 4.3 TAHOE License";
+            case BSDADVERTISINGACKNOWLEDGEMENT: return "BSD Advertising Acknowledgement License";
+            case BSDATTRIBUTIONHPNDDISCLAIMER: return "BSD with Attribution and HPND disclaimer";
+            case BUSL1_1: return "Business Source License 1.1";
+            case CUDA1_0: return "Computational Use of Data Agreement v1.0";
+            case CAL1_0: return "Cryptographic Autonomy License 1.0";
+            case CAL1_0COMBINEDWORKEXCEPTION: return "Cryptographic Autonomy License 1.0 (Combined Work Exception)";
+            case CCBY2_5AU: return "Creative Commons Attribution 2.5 Australia";
+            case CCBY3_0AT: return "Creative Commons Attribution 3.0 Austria";
+            case CCBY3_0DE: return "Creative Commons Attribution 3.0 Germany";
+            case CCBY3_0IGO: return "Creative Commons Attribution 3.0 IGO";
+            case CCBY3_0NL: return "Creative Commons Attribution 3.0 Netherlands";
+            case CCBY3_0US: return "Creative Commons Attribution 3.0 United States";
+            case CCBYNC3_0DE: return "Creative Commons Attribution Non Commercial 3.0 Germany";
+            case CCBYNCND3_0DE: return "Creative Commons Attribution Non Commercial No Derivatives 3.0 Germany";
+            case CCBYNCND3_0IGO: return "Creative Commons Attribution Non Commercial No Derivatives 3.0 IGO";
+            case CCBYNCSA2_0DE: return "Creative Commons Attribution Non Commercial Share Alike 2.0 Germany";
+            case CCBYNCSA2_0FR: return "Creative Commons Attribution-NonCommercial-ShareAlike 2.0 France";
+            case CCBYNCSA2_0UK: return "Creative Commons Attribution Non Commercial Share Alike 2.0 England and Wales";
+            case CCBYNCSA3_0DE: return "Creative Commons Attribution Non Commercial Share Alike 3.0 Germany";
+            case CCBYNCSA3_0IGO: return "Creative Commons Attribution Non Commercial Share Alike 3.0 IGO";
+            case CCBYND3_0DE: return "Creative Commons Attribution No Derivatives 3.0 Germany";
+            case CCBYSA2_0UK: return "Creative Commons Attribution Share Alike 2.0 England and Wales";
+            case CCBYSA2_1JP: return "Creative Commons Attribution Share Alike 2.1 Japan";
+            case CCBYSA3_0AT: return "Creative Commons Attribution Share Alike 3.0 Austria";
+            case CCBYSA3_0DE: return "Creative Commons Attribution Share Alike 3.0 Germany";
+            case CCBYSA3_0IGO: return "Creative Commons Attribution-ShareAlike 3.0 IGO";
+            case CCPDDC: return "Creative Commons Public Domain Dedication and Certification";
+            case CDL1_0: return "Common Documentation License 1.0";
+            case CDLAPERMISSIVE2_0: return "Community Data License Agreement Permissive 2.0";
+            case CERNOHL1_1: return "CERN Open Hardware Licence v1.1";
+            case CERNOHL1_2: return "CERN Open Hardware Licence v1.2";
+            case CERNOHLP2_0: return "CERN Open Hardware Licence Version 2 - Permissive";
+            case CERNOHLS2_0: return "CERN Open Hardware Licence Version 2 - Strongly Reciprocal";
+            case CERNOHLW2_0: return "CERN Open Hardware Licence Version 2 - Weakly Reciprocal";
+            case CFITSIO: return "CFITSIO License";
+            case CHECKMK: return "Checkmk License";
+            case CLIPS: return "Clips License";
+            case CMUMACH: return "CMU Mach License";
+            case COIL1_0: return "Copyfree Open Innovation License";
+            case COMMUNITYSPEC1_0: return "Community Specification License 1.0";
+            case COPYLEFTNEXT0_3_0: return "copyleft-next 0.3.0";
+            case COPYLEFTNEXT0_3_1: return "copyleft-next 0.3.1";
+            case CORNELLLOSSLESSJPEG: return "Cornell Lossless JPEG License";
+            case DLDEBY2_0: return "Data licence Germany – attribution – version 2.0";
+            case DRL1_0: return "Detection Rule License 1.0";
+            case DTOA: return "David M. Gay dtoa License";
+            case ECOS2_0: return "eCos license version 2.0";
+            case ELASTIC2_0: return "Elastic License 2.0";
+            case EPICS: return "EPICS Open License";
+            case ETALAB2_0: return "Etalab Open License 2.0";
+            case FDKAAC: return "Fraunhofer FDK AAC Codec Library";
+            case FREEBSDDOC: return "FreeBSD Documentation License";
+            case FSFULLRWD: return "FSF Unlimited License (With License Retention and Warranty Disclaimer)";
+            case GD: return "GD License";
+            case GFDL1_1: return "GNU Free Documentation License v1.1";
+            case GFDL1_1INVARIANTSONLY: return "GNU Free Documentation License v1.1 only - invariants";
+            case GFDL1_1INVARIANTSORLATER: return "GNU Free Documentation License v1.1 or later - invariants";
+            case GFDL1_1NOINVARIANTSONLY: return "GNU Free Documentation License v1.1 only - no invariants";
+            case GFDL1_1NOINVARIANTSORLATER: return "GNU Free Documentation License v1.1 or later - no invariants";
+            case GFDL1_2: return "GNU Free Documentation License v1.2";
+            case GFDL1_2INVARIANTSONLY: return "GNU Free Documentation License v1.2 only - invariants";
+            case GFDL1_2INVARIANTSORLATER: return "GNU Free Documentation License v1.2 or later - invariants";
+            case GFDL1_2NOINVARIANTSONLY: return "GNU Free Documentation License v1.2 only - no invariants";
+            case GFDL1_2NOINVARIANTSORLATER: return "GNU Free Documentation License v1.2 or later - no invariants";
+            case GFDL1_3: return "GNU Free Documentation License v1.3";
+            case GFDL1_3INVARIANTSONLY: return "GNU Free Documentation License v1.3 only - invariants";
+            case GFDL1_3INVARIANTSORLATER: return "GNU Free Documentation License v1.3 or later - invariants";
+            case GFDL1_3NOINVARIANTSONLY: return "GNU Free Documentation License v1.3 only - no invariants";
+            case GFDL1_3NOINVARIANTSORLATER: return "GNU Free Documentation License v1.3 or later - no invariants";
+            case GLWTPL: return "Good Luck With That Public License";
+            case GPL1_0: return "GNU General Public License v1.0 only";
+            case GPL1_0PLUS: return "GNU General Public License v1.0 or later";
+            case GPL2_0: return "GNU General Public License v2.0 only";
+            case GPL2_0PLUS: return "GNU General Public License v2.0 or later";
+            case GPL2_0WITHAUTOCONFEXCEPTION: return "GNU General Public License v2.0 w/Autoconf exception";
+            case GPL2_0WITHBISONEXCEPTION: return "GNU General Public License v2.0 w/Bison exception";
+            case GPL2_0WITHCLASSPATHEXCEPTION: return "GNU General Public License v2.0 w/Classpath exception";
+            case GPL2_0WITHFONTEXCEPTION: return "GNU General Public License v2.0 w/Font exception";
+            case GPL2_0WITHGCCEXCEPTION: return "GNU General Public License v2.0 w/GCC Runtime Library exception";
+            case GPL3_0: return "GNU General Public License v3.0 only";
+            case GPL3_0PLUS: return "GNU General Public License v3.0 or later";
+            case GPL3_0WITHAUTOCONFEXCEPTION: return "GNU General Public License v3.0 w/Autoconf exception";
+            case GPL3_0WITHGCCEXCEPTION: return "GNU General Public License v3.0 w/GCC Runtime Library exception";
+            case GRAPHICSGEMS: return "Graphics Gems License";
+            case HIPPOCRATIC2_1: return "Hippocratic License 2.1";
+            case HP1986: return "Hewlett-Packard 1986 License";
+            case HPNDEXPORTUS: return "HPND with US Government export control warning";
+            case HPNDMARKUSKUHN: return "Historical Permission Notice and Disclaimer - Markus Kuhn variant";
+            case HPNDSELLVARIANT: return "Historical Permission Notice and Disclaimer - sell variant";
+            case HPNDSELLVARIANTMITDISCLAIMER: return "HPND sell variant with MIT disclaimer";
+            case HTMLTIDY: return "HTML Tidy License";
+            case IECCODECOMPONENTSEULA: return "IEC    Code Components End-user licence agreement";
+            case IJGSHORT: return "Independent JPEG Group License - short";
+            case INNERNET2_0: return "Inner Net License v2.0";
+            case JAM: return "Jam License";
+            case JPLIMAGE: return "JPL Image Use Policy";
+            case JPNIC: return "Japan Network Information Center License";
+            case KAZLIB: return "Kazlib License";
+            case KNUTHCTAN: return "Knuth CTAN License";
+            case LATEX2ETRANSLATEDNOTICE: return "Latex2e with translated notice permission";
+            case LGPL2_0: return "GNU Library General Public License v2 only";
+            case LGPL2_0PLUS: return "GNU Library General Public License v2 or later";
+            case LGPL2_1: return "GNU Lesser General Public License v2.1 only";
+            case LGPL2_1PLUS: return "GNU Lesser General Public License v2.1 or later";
+            case LGPL3_0: return "GNU Lesser General Public License v3.0 only";
+            case LGPL3_0PLUS: return "GNU Lesser General Public License v3.0 or later";
+            case LIBPNG2_0: return "PNG Reference Library version 2";
+            case LIBSELINUX1_0: return "libselinux public domain notice";
+            case LIBUTILDAVIDNUGENT: return "libutil David Nugent License";
+            case LINUXMANPAGES1PARA: return "Linux man-pages - 1 paragraph";
+            case LINUXMANPAGESCOPYLEFT: return "Linux man-pages Copyleft";
+            case LINUXMANPAGESCOPYLEFT2PARA: return "Linux man-pages Copyleft - 2 paragraphs";
+            case LINUXMANPAGESCOPYLEFTVAR: return "Linux man-pages Copyleft Variant";
+            case LOOP: return "Common Lisp LOOP License";
+            case LZMASDK9_11TO9_20: return "LZMA SDK License (versions 9.11 to 9.20)";
+            case LZMASDK9_22: return "LZMA SDK License (versions 9.22 and beyond)";
+            case MARTINBIRGMEIER: return "Martin Birgmeier License";
+            case METAMAIL: return "metamail License";
+            case MINPACK: return "Minpack License";
+            case MITFESTIVAL: return "MIT Festival Variant";
+            case MITMODERNVARIANT: return "MIT License Modern Variant";
+            case MITOPENGROUP: return "MIT Open Group variant";
+            case MITWU: return "MIT Tom Wu Variant";
+            case MPIPERMISSIVE: return "mpi Permissive License";
+            case MPLUS: return "mplus Font License";
+            case MSLPL: return "Microsoft Limited Public License";
+            case MULANPSL1_0: return "Mulan Permissive Software License, Version 1";
+            case MULANPSL2_0: return "Mulan Permissive Software License, Version 2";
+            case NAIST2003: return "Nara Institute of Science and Technology License (2003)";
+            case NCGLUK2_0: return "Non-Commercial Government Licence";
+            case NICTA1_0: return "NICTA Public Software License, Version 1.0";
+            case NISTPD: return "NIST Public Domain Notice";
+            case NISTPDFALLBACK: return "NIST Public Domain Notice with license fallback";
+            case NISTSOFTWARE: return "NIST Software License";
+            case NLOD2_0: return "Norwegian Licence for Open Government Data (NLOD) 2.0";
+            case NTP0: return "NTP No Attribution";
+            case NUNIT: return "Nunit License";
+            case OUDA1_0: return "Open Use of Data Agreement v1.0";
+            case ODCBY1_0: return "Open Data Commons Attribution License v1.0";
+            case OFFIS: return "OFFIS License";
+            case OFL1_0NORFN: return "SIL Open Font License 1.0 with no Reserved Font Name";
+            case OFL1_0RFN: return "SIL Open Font License 1.0 with Reserved Font Name";
+            case OFL1_1NORFN: return "SIL Open Font License 1.1 with no Reserved Font Name";
+            case OFL1_1RFN: return "SIL Open Font License 1.1 with Reserved Font Name";
+            case OGC1_0: return "OGC Software License, Version 1.0";
+            case OGDLTAIWAN1_0: return "Taiwan Open Government Data License, version 1.0";
+            case OGLCANADA2_0: return "Open Government Licence - Canada";
+            case OGLUK1_0: return "Open Government Licence v1.0";
+            case OGLUK2_0: return "Open Government Licence v2.0";
+            case OGLUK3_0: return "Open Government Licence v3.0";
+            case OLFL1_3: return "Open Logistics Foundation License Version 1.3";
+            case OPENPBS2_3: return "OpenPBS v2.3 Software License";
+            case OPLUK3_0: return "United    Kingdom Open Parliament Licence v3.0";
+            case OPUBL1_0: return "Open Publication License v1.0";
+            case PARITY6_0_0: return "The Parity Public License 6.0.0";
+            case PARITY7_0_0: return "The Parity Public License 7.0.0";
+            case POLYFORMNONCOMMERCIAL1_0_0: return "PolyForm Noncommercial License 1.0.0";
+            case POLYFORMSMALLBUSINESS1_0_0: return "PolyForm Small Business License 1.0.0";
+            case PSF2_0: return "Python Software Foundation License 2.0";
+            case PYTHON2_0_1: return "Python License 2.0.1";
+            case QPL1_0INRIA2004: return "Q Public License 1.0 - INRIA 2004 variant";
+            case SCHEMEREPORT: return "Scheme Language Report License";
+            case SENDMAIL8_23: return "Sendmail License 8.23";
+            case SGP4: return "SGP4 Permission Notice";
+            case SHL0_5: return "Solderpad Hardware License v0.5";
+            case SHL0_51: return "Solderpad Hardware License, Version 0.51";
+            case SNPRINTF: return "snprintf License";
+            case SSHOPENSSH: return "SSH OpenSSH license";
+            case SSHSHORT: return "SSH short notice";
+            case SSPL1_0: return "Server Side Public License, v 1";
+            case STANDARDMLNJ: return "Standard ML of New Jersey License";
+            case SUNPRO: return "SunPro License";
+            case SYMLINKS: return "Symlinks License";
+            case TAPROHL1_0: return "TAPR Open Hardware License v1.0";
+            case TERMREADKEY: return "TermReadKey License";
+            case TPDL: return "Time::ParseDate License";
+            case TPL1_0: return "THOR Public License 1.0";
+            case TTWL: return "Text-Tabs+Wrap License";
+            case TUBERLIN1_0: return "Technische Universitaet Berlin License 1.0";
+            case TUBERLIN2_0: return "Technische Universitaet Berlin License 2.0";
+            case UCAR: return "UCAR License";
+            case UCL1_0: return "Upstream Compatibility License v1.0";
+            case UNIXCRYPT: return "UnixCrypt License";
+            case W3M: return "w3m License";
+            case WIDGETWORKSHOP: return "Widget Workshop License";
+            case WXWINDOWS: return "wxWindows Library License";
+            case X11DISTRIBUTEMODIFICATIONSVARIANT: return "X11 License Distribution Modification Variant";
+            case XDEBUG1_03: return "Xdebug License v 1.03";
+            case XFIG: return "Xfig License";
+            case XLOCK: return "xlock License";
             case NULL: return null;
             default: return "?";
           }
@@ -3691,6 +5605,218 @@ public class ImplementationGuide extends CanonicalResource {
             case ZPL1_1: return "Zope Public License 1.1";
             case ZPL2_0: return "Zope Public License 2.0";
             case ZPL2_1: return "Zope Public License 2.1";
+            case ADACOREDOC: return "AdaCore Doc License";
+            case AGPL1_0: return "Affero General Public License v1.0";
+            case AGPL3_0: return "GNU Affero General Public License v3.0";
+            case ANTLRPDFALLBACK: return "ANTLR Software Rights Notice with license fallback";
+            case APPS2P: return "App::s2p License";
+            case ARPHIC1999: return "Arphic Public License";
+            case ASWFDIGITALASSETS1_0: return "ASWF Digital Assets License version 1.0";
+            case ASWFDIGITALASSETS1_1: return "ASWF Digital Assets License 1.1";
+            case BAEKMUK: return "Baekmuk License";
+            case BITSTREAMCHARTER: return "Bitstream Charter Font License";
+            case BITSTREAMVERA: return "Bitstream Vera Font License";
+            case BLESSING: return "SQLite Blessing";
+            case BLUEOAK1_0_0: return "Blue Oak Model License 1.0.0";
+            case BOEHMGC: return "Boehm-Demers-Weiser GC License";
+            case BRIANGLADMAN3CLAUSE: return "Brian Gladman 3-Clause License";
+            case BSD2CLAUSEVIEWS: return "BSD 2-Clause with views sentence";
+            case BSD3CLAUSEMODIFICATION: return "BSD 3-Clause Modification";
+            case BSD3CLAUSENOMILITARYLICENSE: return "BSD 3-Clause No Military License";
+            case BSD3CLAUSEOPENMPI: return "BSD 3-Clause Open MPI variant";
+            case BSD4CLAUSESHORTENED: return "BSD 4 Clause Shortened";
+            case BSD4_3RENO: return "BSD 4.3 RENO License";
+            case BSD4_3TAHOE: return "BSD 4.3 TAHOE License";
+            case BSDADVERTISINGACKNOWLEDGEMENT: return "BSD Advertising Acknowledgement License";
+            case BSDATTRIBUTIONHPNDDISCLAIMER: return "BSD with Attribution and HPND disclaimer";
+            case BUSL1_1: return "Business Source License 1.1";
+            case CUDA1_0: return "Computational Use of Data Agreement v1.0";
+            case CAL1_0: return "Cryptographic Autonomy License 1.0";
+            case CAL1_0COMBINEDWORKEXCEPTION: return "Cryptographic Autonomy License 1.0 (Combined Work Exception)";
+            case CCBY2_5AU: return "Creative Commons Attribution 2.5 Australia";
+            case CCBY3_0AT: return "Creative Commons Attribution 3.0 Austria";
+            case CCBY3_0DE: return "Creative Commons Attribution 3.0 Germany";
+            case CCBY3_0IGO: return "Creative Commons Attribution 3.0 IGO";
+            case CCBY3_0NL: return "Creative Commons Attribution 3.0 Netherlands";
+            case CCBY3_0US: return "Creative Commons Attribution 3.0 United States";
+            case CCBYNC3_0DE: return "Creative Commons Attribution Non Commercial 3.0 Germany";
+            case CCBYNCND3_0DE: return "Creative Commons Attribution Non Commercial No Derivatives 3.0 Germany";
+            case CCBYNCND3_0IGO: return "Creative Commons Attribution Non Commercial No Derivatives 3.0 IGO";
+            case CCBYNCSA2_0DE: return "Creative Commons Attribution Non Commercial Share Alike 2.0 Germany";
+            case CCBYNCSA2_0FR: return "Creative Commons Attribution-NonCommercial-ShareAlike 2.0 France";
+            case CCBYNCSA2_0UK: return "Creative Commons Attribution Non Commercial Share Alike 2.0 England and Wales";
+            case CCBYNCSA3_0DE: return "Creative Commons Attribution Non Commercial Share Alike 3.0 Germany";
+            case CCBYNCSA3_0IGO: return "Creative Commons Attribution Non Commercial Share Alike 3.0 IGO";
+            case CCBYND3_0DE: return "Creative Commons Attribution No Derivatives 3.0 Germany";
+            case CCBYSA2_0UK: return "Creative Commons Attribution Share Alike 2.0 England and Wales";
+            case CCBYSA2_1JP: return "Creative Commons Attribution Share Alike 2.1 Japan";
+            case CCBYSA3_0AT: return "Creative Commons Attribution Share Alike 3.0 Austria";
+            case CCBYSA3_0DE: return "Creative Commons Attribution Share Alike 3.0 Germany";
+            case CCBYSA3_0IGO: return "Creative Commons Attribution-ShareAlike 3.0 IGO";
+            case CCPDDC: return "Creative Commons Public Domain Dedication and Certification";
+            case CDL1_0: return "Common Documentation License 1.0";
+            case CDLAPERMISSIVE2_0: return "Community Data License Agreement Permissive 2.0";
+            case CERNOHL1_1: return "CERN Open Hardware Licence v1.1";
+            case CERNOHL1_2: return "CERN Open Hardware Licence v1.2";
+            case CERNOHLP2_0: return "CERN Open Hardware Licence Version 2 - Permissive";
+            case CERNOHLS2_0: return "CERN Open Hardware Licence Version 2 - Strongly Reciprocal";
+            case CERNOHLW2_0: return "CERN Open Hardware Licence Version 2 - Weakly Reciprocal";
+            case CFITSIO: return "CFITSIO License";
+            case CHECKMK: return "Checkmk License";
+            case CLIPS: return "Clips License";
+            case CMUMACH: return "CMU Mach License";
+            case COIL1_0: return "Copyfree Open Innovation License";
+            case COMMUNITYSPEC1_0: return "Community Specification License 1.0";
+            case COPYLEFTNEXT0_3_0: return "copyleft-next 0.3.0";
+            case COPYLEFTNEXT0_3_1: return "copyleft-next 0.3.1";
+            case CORNELLLOSSLESSJPEG: return "Cornell Lossless JPEG License";
+            case DLDEBY2_0: return "Data licence Germany – attribution – version 2.0";
+            case DRL1_0: return "Detection Rule License 1.0";
+            case DTOA: return "David M. Gay dtoa License";
+            case ECOS2_0: return "eCos license version 2.0";
+            case ELASTIC2_0: return "Elastic License 2.0";
+            case EPICS: return "EPICS Open License";
+            case ETALAB2_0: return "Etalab Open License 2.0";
+            case FDKAAC: return "Fraunhofer FDK AAC Codec Library";
+            case FREEBSDDOC: return "FreeBSD Documentation License";
+            case FSFULLRWD: return "FSF Unlimited License (With License Retention and Warranty Disclaimer)";
+            case GD: return "GD License";
+            case GFDL1_1: return "GNU Free Documentation License v1.1";
+            case GFDL1_1INVARIANTSONLY: return "GNU Free Documentation License v1.1 only - invariants";
+            case GFDL1_1INVARIANTSORLATER: return "GNU Free Documentation License v1.1 or later - invariants";
+            case GFDL1_1NOINVARIANTSONLY: return "GNU Free Documentation License v1.1 only - no invariants";
+            case GFDL1_1NOINVARIANTSORLATER: return "GNU Free Documentation License v1.1 or later - no invariants";
+            case GFDL1_2: return "GNU Free Documentation License v1.2";
+            case GFDL1_2INVARIANTSONLY: return "GNU Free Documentation License v1.2 only - invariants";
+            case GFDL1_2INVARIANTSORLATER: return "GNU Free Documentation License v1.2 or later - invariants";
+            case GFDL1_2NOINVARIANTSONLY: return "GNU Free Documentation License v1.2 only - no invariants";
+            case GFDL1_2NOINVARIANTSORLATER: return "GNU Free Documentation License v1.2 or later - no invariants";
+            case GFDL1_3: return "GNU Free Documentation License v1.3";
+            case GFDL1_3INVARIANTSONLY: return "GNU Free Documentation License v1.3 only - invariants";
+            case GFDL1_3INVARIANTSORLATER: return "GNU Free Documentation License v1.3 or later - invariants";
+            case GFDL1_3NOINVARIANTSONLY: return "GNU Free Documentation License v1.3 only - no invariants";
+            case GFDL1_3NOINVARIANTSORLATER: return "GNU Free Documentation License v1.3 or later - no invariants";
+            case GLWTPL: return "Good Luck With That Public License";
+            case GPL1_0: return "GNU General Public License v1.0 only";
+            case GPL1_0PLUS: return "GNU General Public License v1.0 or later";
+            case GPL2_0: return "GNU General Public License v2.0 only";
+            case GPL2_0PLUS: return "GNU General Public License v2.0 or later";
+            case GPL2_0WITHAUTOCONFEXCEPTION: return "GNU General Public License v2.0 w/Autoconf exception";
+            case GPL2_0WITHBISONEXCEPTION: return "GNU General Public License v2.0 w/Bison exception";
+            case GPL2_0WITHCLASSPATHEXCEPTION: return "GNU General Public License v2.0 w/Classpath exception";
+            case GPL2_0WITHFONTEXCEPTION: return "GNU General Public License v2.0 w/Font exception";
+            case GPL2_0WITHGCCEXCEPTION: return "GNU General Public License v2.0 w/GCC Runtime Library exception";
+            case GPL3_0: return "GNU General Public License v3.0 only";
+            case GPL3_0PLUS: return "GNU General Public License v3.0 or later";
+            case GPL3_0WITHAUTOCONFEXCEPTION: return "GNU General Public License v3.0 w/Autoconf exception";
+            case GPL3_0WITHGCCEXCEPTION: return "GNU General Public License v3.0 w/GCC Runtime Library exception";
+            case GRAPHICSGEMS: return "Graphics Gems License";
+            case HIPPOCRATIC2_1: return "Hippocratic License 2.1";
+            case HP1986: return "Hewlett-Packard 1986 License";
+            case HPNDEXPORTUS: return "HPND with US Government export control warning";
+            case HPNDMARKUSKUHN: return "Historical Permission Notice and Disclaimer - Markus Kuhn variant";
+            case HPNDSELLVARIANT: return "Historical Permission Notice and Disclaimer - sell variant";
+            case HPNDSELLVARIANTMITDISCLAIMER: return "HPND sell variant with MIT disclaimer";
+            case HTMLTIDY: return "HTML Tidy License";
+            case IECCODECOMPONENTSEULA: return "IEC    Code Components End-user licence agreement";
+            case IJGSHORT: return "Independent JPEG Group License - short";
+            case INNERNET2_0: return "Inner Net License v2.0";
+            case JAM: return "Jam License";
+            case JPLIMAGE: return "JPL Image Use Policy";
+            case JPNIC: return "Japan Network Information Center License";
+            case KAZLIB: return "Kazlib License";
+            case KNUTHCTAN: return "Knuth CTAN License";
+            case LATEX2ETRANSLATEDNOTICE: return "Latex2e with translated notice permission";
+            case LGPL2_0: return "GNU Library General Public License v2 only";
+            case LGPL2_0PLUS: return "GNU Library General Public License v2 or later";
+            case LGPL2_1: return "GNU Lesser General Public License v2.1 only";
+            case LGPL2_1PLUS: return "GNU Lesser General Public License v2.1 or later";
+            case LGPL3_0: return "GNU Lesser General Public License v3.0 only";
+            case LGPL3_0PLUS: return "GNU Lesser General Public License v3.0 or later";
+            case LIBPNG2_0: return "PNG Reference Library version 2";
+            case LIBSELINUX1_0: return "libselinux public domain notice";
+            case LIBUTILDAVIDNUGENT: return "libutil David Nugent License";
+            case LINUXMANPAGES1PARA: return "Linux man-pages - 1 paragraph";
+            case LINUXMANPAGESCOPYLEFT: return "Linux man-pages Copyleft";
+            case LINUXMANPAGESCOPYLEFT2PARA: return "Linux man-pages Copyleft - 2 paragraphs";
+            case LINUXMANPAGESCOPYLEFTVAR: return "Linux man-pages Copyleft Variant";
+            case LOOP: return "Common Lisp LOOP License";
+            case LZMASDK9_11TO9_20: return "LZMA SDK License (versions 9.11 to 9.20)";
+            case LZMASDK9_22: return "LZMA SDK License (versions 9.22 and beyond)";
+            case MARTINBIRGMEIER: return "Martin Birgmeier License";
+            case METAMAIL: return "metamail License";
+            case MINPACK: return "Minpack License";
+            case MITFESTIVAL: return "MIT Festival Variant";
+            case MITMODERNVARIANT: return "MIT License Modern Variant";
+            case MITOPENGROUP: return "MIT Open Group variant";
+            case MITWU: return "MIT Tom Wu Variant";
+            case MPIPERMISSIVE: return "mpi Permissive License";
+            case MPLUS: return "mplus Font License";
+            case MSLPL: return "Microsoft Limited Public License";
+            case MULANPSL1_0: return "Mulan Permissive Software License, Version 1";
+            case MULANPSL2_0: return "Mulan Permissive Software License, Version 2";
+            case NAIST2003: return "Nara Institute of Science and Technology License (2003)";
+            case NCGLUK2_0: return "Non-Commercial Government Licence";
+            case NICTA1_0: return "NICTA Public Software License, Version 1.0";
+            case NISTPD: return "NIST Public Domain Notice";
+            case NISTPDFALLBACK: return "NIST Public Domain Notice with license fallback";
+            case NISTSOFTWARE: return "NIST Software License";
+            case NLOD2_0: return "Norwegian Licence for Open Government Data (NLOD) 2.0";
+            case NTP0: return "NTP No Attribution";
+            case NUNIT: return "Nunit License";
+            case OUDA1_0: return "Open Use of Data Agreement v1.0";
+            case ODCBY1_0: return "Open Data Commons Attribution License v1.0";
+            case OFFIS: return "OFFIS License";
+            case OFL1_0NORFN: return "SIL Open Font License 1.0 with no Reserved Font Name";
+            case OFL1_0RFN: return "SIL Open Font License 1.0 with Reserved Font Name";
+            case OFL1_1NORFN: return "SIL Open Font License 1.1 with no Reserved Font Name";
+            case OFL1_1RFN: return "SIL Open Font License 1.1 with Reserved Font Name";
+            case OGC1_0: return "OGC Software License, Version 1.0";
+            case OGDLTAIWAN1_0: return "Taiwan Open Government Data License, version 1.0";
+            case OGLCANADA2_0: return "Open Government Licence - Canada";
+            case OGLUK1_0: return "Open Government Licence v1.0";
+            case OGLUK2_0: return "Open Government Licence v2.0";
+            case OGLUK3_0: return "Open Government Licence v3.0";
+            case OLFL1_3: return "Open Logistics Foundation License Version 1.3";
+            case OPENPBS2_3: return "OpenPBS v2.3 Software License";
+            case OPLUK3_0: return "United    Kingdom Open Parliament Licence v3.0";
+            case OPUBL1_0: return "Open Publication License v1.0";
+            case PARITY6_0_0: return "The Parity Public License 6.0.0";
+            case PARITY7_0_0: return "The Parity Public License 7.0.0";
+            case POLYFORMNONCOMMERCIAL1_0_0: return "PolyForm Noncommercial License 1.0.0";
+            case POLYFORMSMALLBUSINESS1_0_0: return "PolyForm Small Business License 1.0.0";
+            case PSF2_0: return "Python Software Foundation License 2.0";
+            case PYTHON2_0_1: return "Python License 2.0.1";
+            case QPL1_0INRIA2004: return "Q Public License 1.0 - INRIA 2004 variant";
+            case SCHEMEREPORT: return "Scheme Language Report License";
+            case SENDMAIL8_23: return "Sendmail License 8.23";
+            case SGP4: return "SGP4 Permission Notice";
+            case SHL0_5: return "Solderpad Hardware License v0.5";
+            case SHL0_51: return "Solderpad Hardware License, Version 0.51";
+            case SNPRINTF: return "snprintf License";
+            case SSHOPENSSH: return "SSH OpenSSH license";
+            case SSHSHORT: return "SSH short notice";
+            case SSPL1_0: return "Server Side Public License, v 1";
+            case STANDARDMLNJ: return "Standard ML of New Jersey License";
+            case SUNPRO: return "SunPro License";
+            case SYMLINKS: return "Symlinks License";
+            case TAPROHL1_0: return "TAPR Open Hardware License v1.0";
+            case TERMREADKEY: return "TermReadKey License";
+            case TPDL: return "Time::ParseDate License";
+            case TPL1_0: return "THOR Public License 1.0";
+            case TTWL: return "Text-Tabs+Wrap License";
+            case TUBERLIN1_0: return "Technische Universitaet Berlin License 1.0";
+            case TUBERLIN2_0: return "Technische Universitaet Berlin License 2.0";
+            case UCAR: return "UCAR License";
+            case UCL1_0: return "Upstream Compatibility License v1.0";
+            case UNIXCRYPT: return "UnixCrypt License";
+            case W3M: return "w3m License";
+            case WIDGETWORKSHOP: return "Widget Workshop License";
+            case WXWINDOWS: return "wxWindows Library License";
+            case X11DISTRIBUTEMODIFICATIONSVARIANT: return "X11 License Distribution Modification Variant";
+            case XDEBUG1_03: return "Xdebug License v 1.03";
+            case XFIG: return "Xfig License";
+            case XLOCK: return "xlock License";
             case NULL: return null;
             default: return "?";
           }
@@ -4401,6 +6527,430 @@ public class ImplementationGuide extends CanonicalResource {
           return SPDXLicense.ZPL2_0;
         if ("ZPL-2.1".equals(codeString))
           return SPDXLicense.ZPL2_1;
+        if ("AdaCore-doc".equals(codeString))
+          return SPDXLicense.ADACOREDOC;
+        if ("AGPL-1.0".equals(codeString))
+          return SPDXLicense.AGPL1_0;
+        if ("AGPL-3.0".equals(codeString))
+          return SPDXLicense.AGPL3_0;
+        if ("ANTLR-PD-fallback".equals(codeString))
+          return SPDXLicense.ANTLRPDFALLBACK;
+        if ("App-s2p".equals(codeString))
+          return SPDXLicense.APPS2P;
+        if ("Arphic-1999".equals(codeString))
+          return SPDXLicense.ARPHIC1999;
+        if ("ASWF-Digital-Assets-1.0".equals(codeString))
+          return SPDXLicense.ASWFDIGITALASSETS1_0;
+        if ("ASWF-Digital-Assets-1.1".equals(codeString))
+          return SPDXLicense.ASWFDIGITALASSETS1_1;
+        if ("Baekmuk".equals(codeString))
+          return SPDXLicense.BAEKMUK;
+        if ("Bitstream-Charter".equals(codeString))
+          return SPDXLicense.BITSTREAMCHARTER;
+        if ("Bitstream-Vera".equals(codeString))
+          return SPDXLicense.BITSTREAMVERA;
+        if ("blessing".equals(codeString))
+          return SPDXLicense.BLESSING;
+        if ("BlueOak-1.0.0".equals(codeString))
+          return SPDXLicense.BLUEOAK1_0_0;
+        if ("Boehm-GC".equals(codeString))
+          return SPDXLicense.BOEHMGC;
+        if ("Brian-Gladman-3-Clause".equals(codeString))
+          return SPDXLicense.BRIANGLADMAN3CLAUSE;
+        if ("BSD-2-Clause-Views".equals(codeString))
+          return SPDXLicense.BSD2CLAUSEVIEWS;
+        if ("BSD-3-Clause-Modification".equals(codeString))
+          return SPDXLicense.BSD3CLAUSEMODIFICATION;
+        if ("BSD-3-Clause-No-Military-License".equals(codeString))
+          return SPDXLicense.BSD3CLAUSENOMILITARYLICENSE;
+        if ("BSD-3-Clause-Open-MPI".equals(codeString))
+          return SPDXLicense.BSD3CLAUSEOPENMPI;
+        if ("BSD-4-Clause-Shortened".equals(codeString))
+          return SPDXLicense.BSD4CLAUSESHORTENED;
+        if ("BSD-4.3RENO".equals(codeString))
+          return SPDXLicense.BSD4_3RENO;
+        if ("BSD-4.3TAHOE".equals(codeString))
+          return SPDXLicense.BSD4_3TAHOE;
+        if ("BSD-Advertising-Acknowledgement".equals(codeString))
+          return SPDXLicense.BSDADVERTISINGACKNOWLEDGEMENT;
+        if ("BSD-Attribution-HPND-disclaimer".equals(codeString))
+          return SPDXLicense.BSDATTRIBUTIONHPNDDISCLAIMER;
+        if ("BUSL-1.1".equals(codeString))
+          return SPDXLicense.BUSL1_1;
+        if ("C-UDA-1.0".equals(codeString))
+          return SPDXLicense.CUDA1_0;
+        if ("CAL-1.0".equals(codeString))
+          return SPDXLicense.CAL1_0;
+        if ("CAL-1.0-Combined-Work-Exception".equals(codeString))
+          return SPDXLicense.CAL1_0COMBINEDWORKEXCEPTION;
+        if ("CC-BY-2.5-AU".equals(codeString))
+          return SPDXLicense.CCBY2_5AU;
+        if ("CC-BY-3.0-AT".equals(codeString))
+          return SPDXLicense.CCBY3_0AT;
+        if ("CC-BY-3.0-DE".equals(codeString))
+          return SPDXLicense.CCBY3_0DE;
+        if ("CC-BY-3.0-IGO".equals(codeString))
+          return SPDXLicense.CCBY3_0IGO;
+        if ("CC-BY-3.0-NL".equals(codeString))
+          return SPDXLicense.CCBY3_0NL;
+        if ("CC-BY-3.0-US".equals(codeString))
+          return SPDXLicense.CCBY3_0US;
+        if ("CC-BY-NC-3.0-DE".equals(codeString))
+          return SPDXLicense.CCBYNC3_0DE;
+        if ("CC-BY-NC-ND-3.0-DE".equals(codeString))
+          return SPDXLicense.CCBYNCND3_0DE;
+        if ("CC-BY-NC-ND-3.0-IGO".equals(codeString))
+          return SPDXLicense.CCBYNCND3_0IGO;
+        if ("CC-BY-NC-SA-2.0-DE".equals(codeString))
+          return SPDXLicense.CCBYNCSA2_0DE;
+        if ("CC-BY-NC-SA-2.0-FR".equals(codeString))
+          return SPDXLicense.CCBYNCSA2_0FR;
+        if ("CC-BY-NC-SA-2.0-UK".equals(codeString))
+          return SPDXLicense.CCBYNCSA2_0UK;
+        if ("CC-BY-NC-SA-3.0-DE".equals(codeString))
+          return SPDXLicense.CCBYNCSA3_0DE;
+        if ("CC-BY-NC-SA-3.0-IGO".equals(codeString))
+          return SPDXLicense.CCBYNCSA3_0IGO;
+        if ("CC-BY-ND-3.0-DE".equals(codeString))
+          return SPDXLicense.CCBYND3_0DE;
+        if ("CC-BY-SA-2.0-UK".equals(codeString))
+          return SPDXLicense.CCBYSA2_0UK;
+        if ("CC-BY-SA-2.1-JP".equals(codeString))
+          return SPDXLicense.CCBYSA2_1JP;
+        if ("CC-BY-SA-3.0-AT".equals(codeString))
+          return SPDXLicense.CCBYSA3_0AT;
+        if ("CC-BY-SA-3.0-DE".equals(codeString))
+          return SPDXLicense.CCBYSA3_0DE;
+        if ("CC-BY-SA-3.0-IGO".equals(codeString))
+          return SPDXLicense.CCBYSA3_0IGO;
+        if ("CC-PDDC".equals(codeString))
+          return SPDXLicense.CCPDDC;
+        if ("CDL-1.0".equals(codeString))
+          return SPDXLicense.CDL1_0;
+        if ("CDLA-Permissive-2.0".equals(codeString))
+          return SPDXLicense.CDLAPERMISSIVE2_0;
+        if ("CERN-OHL-1.1".equals(codeString))
+          return SPDXLicense.CERNOHL1_1;
+        if ("CERN-OHL-1.2".equals(codeString))
+          return SPDXLicense.CERNOHL1_2;
+        if ("CERN-OHL-P-2.0".equals(codeString))
+          return SPDXLicense.CERNOHLP2_0;
+        if ("CERN-OHL-S-2.0".equals(codeString))
+          return SPDXLicense.CERNOHLS2_0;
+        if ("CERN-OHL-W-2.0".equals(codeString))
+          return SPDXLicense.CERNOHLW2_0;
+        if ("CFITSIO".equals(codeString))
+          return SPDXLicense.CFITSIO;
+        if ("checkmk".equals(codeString))
+          return SPDXLicense.CHECKMK;
+        if ("Clips".equals(codeString))
+          return SPDXLicense.CLIPS;
+        if ("CMU-Mach".equals(codeString))
+          return SPDXLicense.CMUMACH;
+        if ("COIL-1.0".equals(codeString))
+          return SPDXLicense.COIL1_0;
+        if ("Community-Spec-1.0".equals(codeString))
+          return SPDXLicense.COMMUNITYSPEC1_0;
+        if ("copyleft-next-0.3.0".equals(codeString))
+          return SPDXLicense.COPYLEFTNEXT0_3_0;
+        if ("copyleft-next-0.3.1".equals(codeString))
+          return SPDXLicense.COPYLEFTNEXT0_3_1;
+        if ("Cornell-Lossless-JPEG".equals(codeString))
+          return SPDXLicense.CORNELLLOSSLESSJPEG;
+        if ("DL-DE-BY-2.0".equals(codeString))
+          return SPDXLicense.DLDEBY2_0;
+        if ("DRL-1.0".equals(codeString))
+          return SPDXLicense.DRL1_0;
+        if ("dtoa".equals(codeString))
+          return SPDXLicense.DTOA;
+        if ("eCos-2.0".equals(codeString))
+          return SPDXLicense.ECOS2_0;
+        if ("Elastic-2.0".equals(codeString))
+          return SPDXLicense.ELASTIC2_0;
+        if ("EPICS".equals(codeString))
+          return SPDXLicense.EPICS;
+        if ("etalab-2.0".equals(codeString))
+          return SPDXLicense.ETALAB2_0;
+        if ("FDK-AAC".equals(codeString))
+          return SPDXLicense.FDKAAC;
+        if ("FreeBSD-DOC".equals(codeString))
+          return SPDXLicense.FREEBSDDOC;
+        if ("FSFULLRWD".equals(codeString))
+          return SPDXLicense.FSFULLRWD;
+        if ("GD".equals(codeString))
+          return SPDXLicense.GD;
+        if ("GFDL-1.1".equals(codeString))
+          return SPDXLicense.GFDL1_1;
+        if ("GFDL-1.1-invariants-only".equals(codeString))
+          return SPDXLicense.GFDL1_1INVARIANTSONLY;
+        if ("GFDL-1.1-invariants-or-later".equals(codeString))
+          return SPDXLicense.GFDL1_1INVARIANTSORLATER;
+        if ("GFDL-1.1-no-invariants-only".equals(codeString))
+          return SPDXLicense.GFDL1_1NOINVARIANTSONLY;
+        if ("GFDL-1.1-no-invariants-or-later".equals(codeString))
+          return SPDXLicense.GFDL1_1NOINVARIANTSORLATER;
+        if ("GFDL-1.2".equals(codeString))
+          return SPDXLicense.GFDL1_2;
+        if ("GFDL-1.2-invariants-only".equals(codeString))
+          return SPDXLicense.GFDL1_2INVARIANTSONLY;
+        if ("GFDL-1.2-invariants-or-later".equals(codeString))
+          return SPDXLicense.GFDL1_2INVARIANTSORLATER;
+        if ("GFDL-1.2-no-invariants-only".equals(codeString))
+          return SPDXLicense.GFDL1_2NOINVARIANTSONLY;
+        if ("GFDL-1.2-no-invariants-or-later".equals(codeString))
+          return SPDXLicense.GFDL1_2NOINVARIANTSORLATER;
+        if ("GFDL-1.3".equals(codeString))
+          return SPDXLicense.GFDL1_3;
+        if ("GFDL-1.3-invariants-only".equals(codeString))
+          return SPDXLicense.GFDL1_3INVARIANTSONLY;
+        if ("GFDL-1.3-invariants-or-later".equals(codeString))
+          return SPDXLicense.GFDL1_3INVARIANTSORLATER;
+        if ("GFDL-1.3-no-invariants-only".equals(codeString))
+          return SPDXLicense.GFDL1_3NOINVARIANTSONLY;
+        if ("GFDL-1.3-no-invariants-or-later".equals(codeString))
+          return SPDXLicense.GFDL1_3NOINVARIANTSORLATER;
+        if ("GLWTPL".equals(codeString))
+          return SPDXLicense.GLWTPL;
+        if ("GPL-1.0".equals(codeString))
+          return SPDXLicense.GPL1_0;
+        if ("GPL-1.0+".equals(codeString))
+          return SPDXLicense.GPL1_0PLUS;
+        if ("GPL-2.0".equals(codeString))
+          return SPDXLicense.GPL2_0;
+        if ("GPL-2.0+".equals(codeString))
+          return SPDXLicense.GPL2_0PLUS;
+        if ("GPL-2.0-with-autoconf-exception".equals(codeString))
+          return SPDXLicense.GPL2_0WITHAUTOCONFEXCEPTION;
+        if ("GPL-2.0-with-bison-exception".equals(codeString))
+          return SPDXLicense.GPL2_0WITHBISONEXCEPTION;
+        if ("GPL-2.0-with-classpath-exception".equals(codeString))
+          return SPDXLicense.GPL2_0WITHCLASSPATHEXCEPTION;
+        if ("GPL-2.0-with-font-exception".equals(codeString))
+          return SPDXLicense.GPL2_0WITHFONTEXCEPTION;
+        if ("GPL-2.0-with-GCC-exception".equals(codeString))
+          return SPDXLicense.GPL2_0WITHGCCEXCEPTION;
+        if ("GPL-3.0".equals(codeString))
+          return SPDXLicense.GPL3_0;
+        if ("GPL-3.0+".equals(codeString))
+          return SPDXLicense.GPL3_0PLUS;
+        if ("GPL-3.0-with-autoconf-exception".equals(codeString))
+          return SPDXLicense.GPL3_0WITHAUTOCONFEXCEPTION;
+        if ("GPL-3.0-with-GCC-exception".equals(codeString))
+          return SPDXLicense.GPL3_0WITHGCCEXCEPTION;
+        if ("Graphics-Gems".equals(codeString))
+          return SPDXLicense.GRAPHICSGEMS;
+        if ("Hippocratic-2.1".equals(codeString))
+          return SPDXLicense.HIPPOCRATIC2_1;
+        if ("HP-1986".equals(codeString))
+          return SPDXLicense.HP1986;
+        if ("HPND-export-US".equals(codeString))
+          return SPDXLicense.HPNDEXPORTUS;
+        if ("HPND-Markus-Kuhn".equals(codeString))
+          return SPDXLicense.HPNDMARKUSKUHN;
+        if ("HPND-sell-variant".equals(codeString))
+          return SPDXLicense.HPNDSELLVARIANT;
+        if ("HPND-sell-variant-MIT-disclaimer".equals(codeString))
+          return SPDXLicense.HPNDSELLVARIANTMITDISCLAIMER;
+        if ("HTMLTIDY".equals(codeString))
+          return SPDXLicense.HTMLTIDY;
+        if ("IEC-Code-Components-EULA".equals(codeString))
+          return SPDXLicense.IECCODECOMPONENTSEULA;
+        if ("IJG-short".equals(codeString))
+          return SPDXLicense.IJGSHORT;
+        if ("Inner-Net-2.0".equals(codeString))
+          return SPDXLicense.INNERNET2_0;
+        if ("Jam".equals(codeString))
+          return SPDXLicense.JAM;
+        if ("JPL-image".equals(codeString))
+          return SPDXLicense.JPLIMAGE;
+        if ("JPNIC".equals(codeString))
+          return SPDXLicense.JPNIC;
+        if ("Kazlib".equals(codeString))
+          return SPDXLicense.KAZLIB;
+        if ("Knuth-CTAN".equals(codeString))
+          return SPDXLicense.KNUTHCTAN;
+        if ("Latex2e-translated-notice".equals(codeString))
+          return SPDXLicense.LATEX2ETRANSLATEDNOTICE;
+        if ("LGPL-2.0".equals(codeString))
+          return SPDXLicense.LGPL2_0;
+        if ("LGPL-2.0+".equals(codeString))
+          return SPDXLicense.LGPL2_0PLUS;
+        if ("LGPL-2.1".equals(codeString))
+          return SPDXLicense.LGPL2_1;
+        if ("LGPL-2.1+".equals(codeString))
+          return SPDXLicense.LGPL2_1PLUS;
+        if ("LGPL-3.0".equals(codeString))
+          return SPDXLicense.LGPL3_0;
+        if ("LGPL-3.0+".equals(codeString))
+          return SPDXLicense.LGPL3_0PLUS;
+        if ("libpng-2.0".equals(codeString))
+          return SPDXLicense.LIBPNG2_0;
+        if ("libselinux-1.0".equals(codeString))
+          return SPDXLicense.LIBSELINUX1_0;
+        if ("libutil-David-Nugent".equals(codeString))
+          return SPDXLicense.LIBUTILDAVIDNUGENT;
+        if ("Linux-man-pages-1-para".equals(codeString))
+          return SPDXLicense.LINUXMANPAGES1PARA;
+        if ("Linux-man-pages-copyleft".equals(codeString))
+          return SPDXLicense.LINUXMANPAGESCOPYLEFT;
+        if ("Linux-man-pages-copyleft-2-para".equals(codeString))
+          return SPDXLicense.LINUXMANPAGESCOPYLEFT2PARA;
+        if ("Linux-man-pages-copyleft-var".equals(codeString))
+          return SPDXLicense.LINUXMANPAGESCOPYLEFTVAR;
+        if ("LOOP".equals(codeString))
+          return SPDXLicense.LOOP;
+        if ("LZMA-SDK-9.11-to-9.20".equals(codeString))
+          return SPDXLicense.LZMASDK9_11TO9_20;
+        if ("LZMA-SDK-9.22".equals(codeString))
+          return SPDXLicense.LZMASDK9_22;
+        if ("Martin-Birgmeier".equals(codeString))
+          return SPDXLicense.MARTINBIRGMEIER;
+        if ("metamail".equals(codeString))
+          return SPDXLicense.METAMAIL;
+        if ("Minpack".equals(codeString))
+          return SPDXLicense.MINPACK;
+        if ("MIT-Festival".equals(codeString))
+          return SPDXLicense.MITFESTIVAL;
+        if ("MIT-Modern-Variant".equals(codeString))
+          return SPDXLicense.MITMODERNVARIANT;
+        if ("MIT-open-group".equals(codeString))
+          return SPDXLicense.MITOPENGROUP;
+        if ("MIT-Wu".equals(codeString))
+          return SPDXLicense.MITWU;
+        if ("mpi-permissive".equals(codeString))
+          return SPDXLicense.MPIPERMISSIVE;
+        if ("mplus".equals(codeString))
+          return SPDXLicense.MPLUS;
+        if ("MS-LPL".equals(codeString))
+          return SPDXLicense.MSLPL;
+        if ("MulanPSL-1.0".equals(codeString))
+          return SPDXLicense.MULANPSL1_0;
+        if ("MulanPSL-2.0".equals(codeString))
+          return SPDXLicense.MULANPSL2_0;
+        if ("NAIST-2003".equals(codeString))
+          return SPDXLicense.NAIST2003;
+        if ("NCGL-UK-2.0".equals(codeString))
+          return SPDXLicense.NCGLUK2_0;
+        if ("NICTA-1.0".equals(codeString))
+          return SPDXLicense.NICTA1_0;
+        if ("NIST-PD".equals(codeString))
+          return SPDXLicense.NISTPD;
+        if ("NIST-PD-fallback".equals(codeString))
+          return SPDXLicense.NISTPDFALLBACK;
+        if ("NIST-Software".equals(codeString))
+          return SPDXLicense.NISTSOFTWARE;
+        if ("NLOD-2.0".equals(codeString))
+          return SPDXLicense.NLOD2_0;
+        if ("NTP-0".equals(codeString))
+          return SPDXLicense.NTP0;
+        if ("Nunit".equals(codeString))
+          return SPDXLicense.NUNIT;
+        if ("O-UDA-1.0".equals(codeString))
+          return SPDXLicense.OUDA1_0;
+        if ("ODC-By-1.0".equals(codeString))
+          return SPDXLicense.ODCBY1_0;
+        if ("OFFIS".equals(codeString))
+          return SPDXLicense.OFFIS;
+        if ("OFL-1.0-no-RFN".equals(codeString))
+          return SPDXLicense.OFL1_0NORFN;
+        if ("OFL-1.0-RFN".equals(codeString))
+          return SPDXLicense.OFL1_0RFN;
+        if ("OFL-1.1-no-RFN".equals(codeString))
+          return SPDXLicense.OFL1_1NORFN;
+        if ("OFL-1.1-RFN".equals(codeString))
+          return SPDXLicense.OFL1_1RFN;
+        if ("OGC-1.0".equals(codeString))
+          return SPDXLicense.OGC1_0;
+        if ("OGDL-Taiwan-1.0".equals(codeString))
+          return SPDXLicense.OGDLTAIWAN1_0;
+        if ("OGL-Canada-2.0".equals(codeString))
+          return SPDXLicense.OGLCANADA2_0;
+        if ("OGL-UK-1.0".equals(codeString))
+          return SPDXLicense.OGLUK1_0;
+        if ("OGL-UK-2.0".equals(codeString))
+          return SPDXLicense.OGLUK2_0;
+        if ("OGL-UK-3.0".equals(codeString))
+          return SPDXLicense.OGLUK3_0;
+        if ("OLFL-1.3".equals(codeString))
+          return SPDXLicense.OLFL1_3;
+        if ("OpenPBS-2.3".equals(codeString))
+          return SPDXLicense.OPENPBS2_3;
+        if ("OPL-UK-3.0".equals(codeString))
+          return SPDXLicense.OPLUK3_0;
+        if ("OPUBL-1.0".equals(codeString))
+          return SPDXLicense.OPUBL1_0;
+        if ("Parity-6.0.0".equals(codeString))
+          return SPDXLicense.PARITY6_0_0;
+        if ("Parity-7.0.0".equals(codeString))
+          return SPDXLicense.PARITY7_0_0;
+        if ("PolyForm-Noncommercial-1.0.0".equals(codeString))
+          return SPDXLicense.POLYFORMNONCOMMERCIAL1_0_0;
+        if ("PolyForm-Small-Business-1.0.0".equals(codeString))
+          return SPDXLicense.POLYFORMSMALLBUSINESS1_0_0;
+        if ("PSF-2.0".equals(codeString))
+          return SPDXLicense.PSF2_0;
+        if ("Python-2.0.1".equals(codeString))
+          return SPDXLicense.PYTHON2_0_1;
+        if ("QPL-1.0-INRIA-2004".equals(codeString))
+          return SPDXLicense.QPL1_0INRIA2004;
+        if ("SchemeReport".equals(codeString))
+          return SPDXLicense.SCHEMEREPORT;
+        if ("Sendmail-8.23".equals(codeString))
+          return SPDXLicense.SENDMAIL8_23;
+        if ("SGP4".equals(codeString))
+          return SPDXLicense.SGP4;
+        if ("SHL-0.5".equals(codeString))
+          return SPDXLicense.SHL0_5;
+        if ("SHL-0.51".equals(codeString))
+          return SPDXLicense.SHL0_51;
+        if ("snprintf".equals(codeString))
+          return SPDXLicense.SNPRINTF;
+        if ("SSH-OpenSSH".equals(codeString))
+          return SPDXLicense.SSHOPENSSH;
+        if ("SSH-short".equals(codeString))
+          return SPDXLicense.SSHSHORT;
+        if ("SSPL-1.0".equals(codeString))
+          return SPDXLicense.SSPL1_0;
+        if ("StandardML-NJ".equals(codeString))
+          return SPDXLicense.STANDARDMLNJ;
+        if ("SunPro".equals(codeString))
+          return SPDXLicense.SUNPRO;
+        if ("Symlinks".equals(codeString))
+          return SPDXLicense.SYMLINKS;
+        if ("TAPR-OHL-1.0".equals(codeString))
+          return SPDXLicense.TAPROHL1_0;
+        if ("TermReadKey".equals(codeString))
+          return SPDXLicense.TERMREADKEY;
+        if ("TPDL".equals(codeString))
+          return SPDXLicense.TPDL;
+        if ("TPL-1.0".equals(codeString))
+          return SPDXLicense.TPL1_0;
+        if ("TTWL".equals(codeString))
+          return SPDXLicense.TTWL;
+        if ("TU-Berlin-1.0".equals(codeString))
+          return SPDXLicense.TUBERLIN1_0;
+        if ("TU-Berlin-2.0".equals(codeString))
+          return SPDXLicense.TUBERLIN2_0;
+        if ("UCAR".equals(codeString))
+          return SPDXLicense.UCAR;
+        if ("UCL-1.0".equals(codeString))
+          return SPDXLicense.UCL1_0;
+        if ("UnixCrypt".equals(codeString))
+          return SPDXLicense.UNIXCRYPT;
+        if ("w3m".equals(codeString))
+          return SPDXLicense.W3M;
+        if ("Widget-Workshop".equals(codeString))
+          return SPDXLicense.WIDGETWORKSHOP;
+        if ("wxWindows".equals(codeString))
+          return SPDXLicense.WXWINDOWS;
+        if ("X11-distribute-modifications-variant".equals(codeString))
+          return SPDXLicense.X11DISTRIBUTEMODIFICATIONSVARIANT;
+        if ("Xdebug-1.03".equals(codeString))
+          return SPDXLicense.XDEBUG1_03;
+        if ("Xfig".equals(codeString))
+          return SPDXLicense.XFIG;
+        if ("xlock".equals(codeString))
+          return SPDXLicense.XLOCK;
         throw new IllegalArgumentException("Unknown SPDXLicense code '"+codeString+"'");
         }
         public Enumeration<SPDXLicense> fromType(PrimitiveType<?> code) throws FHIRException {
@@ -5103,6 +7653,430 @@ public class ImplementationGuide extends CanonicalResource {
           return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.ZPL2_0, code);
         if ("ZPL-2.1".equals(codeString))
           return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.ZPL2_1, code);
+        if ("AdaCore-doc".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.ADACOREDOC, code);
+        if ("AGPL-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.AGPL1_0, code);
+        if ("AGPL-3.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.AGPL3_0, code);
+        if ("ANTLR-PD-fallback".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.ANTLRPDFALLBACK, code);
+        if ("App-s2p".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.APPS2P, code);
+        if ("Arphic-1999".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.ARPHIC1999, code);
+        if ("ASWF-Digital-Assets-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.ASWFDIGITALASSETS1_0, code);
+        if ("ASWF-Digital-Assets-1.1".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.ASWFDIGITALASSETS1_1, code);
+        if ("Baekmuk".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BAEKMUK, code);
+        if ("Bitstream-Charter".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BITSTREAMCHARTER, code);
+        if ("Bitstream-Vera".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BITSTREAMVERA, code);
+        if ("blessing".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BLESSING, code);
+        if ("BlueOak-1.0.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BLUEOAK1_0_0, code);
+        if ("Boehm-GC".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BOEHMGC, code);
+        if ("Brian-Gladman-3-Clause".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BRIANGLADMAN3CLAUSE, code);
+        if ("BSD-2-Clause-Views".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BSD2CLAUSEVIEWS, code);
+        if ("BSD-3-Clause-Modification".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BSD3CLAUSEMODIFICATION, code);
+        if ("BSD-3-Clause-No-Military-License".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BSD3CLAUSENOMILITARYLICENSE, code);
+        if ("BSD-3-Clause-Open-MPI".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BSD3CLAUSEOPENMPI, code);
+        if ("BSD-4-Clause-Shortened".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BSD4CLAUSESHORTENED, code);
+        if ("BSD-4.3RENO".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BSD4_3RENO, code);
+        if ("BSD-4.3TAHOE".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BSD4_3TAHOE, code);
+        if ("BSD-Advertising-Acknowledgement".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BSDADVERTISINGACKNOWLEDGEMENT, code);
+        if ("BSD-Attribution-HPND-disclaimer".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BSDATTRIBUTIONHPNDDISCLAIMER, code);
+        if ("BUSL-1.1".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.BUSL1_1, code);
+        if ("C-UDA-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CUDA1_0, code);
+        if ("CAL-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CAL1_0, code);
+        if ("CAL-1.0-Combined-Work-Exception".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CAL1_0COMBINEDWORKEXCEPTION, code);
+        if ("CC-BY-2.5-AU".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBY2_5AU, code);
+        if ("CC-BY-3.0-AT".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBY3_0AT, code);
+        if ("CC-BY-3.0-DE".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBY3_0DE, code);
+        if ("CC-BY-3.0-IGO".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBY3_0IGO, code);
+        if ("CC-BY-3.0-NL".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBY3_0NL, code);
+        if ("CC-BY-3.0-US".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBY3_0US, code);
+        if ("CC-BY-NC-3.0-DE".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYNC3_0DE, code);
+        if ("CC-BY-NC-ND-3.0-DE".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYNCND3_0DE, code);
+        if ("CC-BY-NC-ND-3.0-IGO".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYNCND3_0IGO, code);
+        if ("CC-BY-NC-SA-2.0-DE".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYNCSA2_0DE, code);
+        if ("CC-BY-NC-SA-2.0-FR".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYNCSA2_0FR, code);
+        if ("CC-BY-NC-SA-2.0-UK".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYNCSA2_0UK, code);
+        if ("CC-BY-NC-SA-3.0-DE".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYNCSA3_0DE, code);
+        if ("CC-BY-NC-SA-3.0-IGO".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYNCSA3_0IGO, code);
+        if ("CC-BY-ND-3.0-DE".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYND3_0DE, code);
+        if ("CC-BY-SA-2.0-UK".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYSA2_0UK, code);
+        if ("CC-BY-SA-2.1-JP".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYSA2_1JP, code);
+        if ("CC-BY-SA-3.0-AT".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYSA3_0AT, code);
+        if ("CC-BY-SA-3.0-DE".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYSA3_0DE, code);
+        if ("CC-BY-SA-3.0-IGO".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCBYSA3_0IGO, code);
+        if ("CC-PDDC".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CCPDDC, code);
+        if ("CDL-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CDL1_0, code);
+        if ("CDLA-Permissive-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CDLAPERMISSIVE2_0, code);
+        if ("CERN-OHL-1.1".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CERNOHL1_1, code);
+        if ("CERN-OHL-1.2".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CERNOHL1_2, code);
+        if ("CERN-OHL-P-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CERNOHLP2_0, code);
+        if ("CERN-OHL-S-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CERNOHLS2_0, code);
+        if ("CERN-OHL-W-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CERNOHLW2_0, code);
+        if ("CFITSIO".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CFITSIO, code);
+        if ("checkmk".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CHECKMK, code);
+        if ("Clips".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CLIPS, code);
+        if ("CMU-Mach".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CMUMACH, code);
+        if ("COIL-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.COIL1_0, code);
+        if ("Community-Spec-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.COMMUNITYSPEC1_0, code);
+        if ("copyleft-next-0.3.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.COPYLEFTNEXT0_3_0, code);
+        if ("copyleft-next-0.3.1".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.COPYLEFTNEXT0_3_1, code);
+        if ("Cornell-Lossless-JPEG".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.CORNELLLOSSLESSJPEG, code);
+        if ("DL-DE-BY-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.DLDEBY2_0, code);
+        if ("DRL-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.DRL1_0, code);
+        if ("dtoa".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.DTOA, code);
+        if ("eCos-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.ECOS2_0, code);
+        if ("Elastic-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.ELASTIC2_0, code);
+        if ("EPICS".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.EPICS, code);
+        if ("etalab-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.ETALAB2_0, code);
+        if ("FDK-AAC".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.FDKAAC, code);
+        if ("FreeBSD-DOC".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.FREEBSDDOC, code);
+        if ("FSFULLRWD".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.FSFULLRWD, code);
+        if ("GD".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GD, code);
+        if ("GFDL-1.1".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_1, code);
+        if ("GFDL-1.1-invariants-only".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_1INVARIANTSONLY, code);
+        if ("GFDL-1.1-invariants-or-later".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_1INVARIANTSORLATER, code);
+        if ("GFDL-1.1-no-invariants-only".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_1NOINVARIANTSONLY, code);
+        if ("GFDL-1.1-no-invariants-or-later".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_1NOINVARIANTSORLATER, code);
+        if ("GFDL-1.2".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_2, code);
+        if ("GFDL-1.2-invariants-only".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_2INVARIANTSONLY, code);
+        if ("GFDL-1.2-invariants-or-later".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_2INVARIANTSORLATER, code);
+        if ("GFDL-1.2-no-invariants-only".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_2NOINVARIANTSONLY, code);
+        if ("GFDL-1.2-no-invariants-or-later".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_2NOINVARIANTSORLATER, code);
+        if ("GFDL-1.3".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_3, code);
+        if ("GFDL-1.3-invariants-only".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_3INVARIANTSONLY, code);
+        if ("GFDL-1.3-invariants-or-later".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_3INVARIANTSORLATER, code);
+        if ("GFDL-1.3-no-invariants-only".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_3NOINVARIANTSONLY, code);
+        if ("GFDL-1.3-no-invariants-or-later".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GFDL1_3NOINVARIANTSORLATER, code);
+        if ("GLWTPL".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GLWTPL, code);
+        if ("GPL-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GPL1_0, code);
+        if ("GPL-1.0+".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GPL1_0PLUS, code);
+        if ("GPL-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GPL2_0, code);
+        if ("GPL-2.0+".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GPL2_0PLUS, code);
+        if ("GPL-2.0-with-autoconf-exception".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GPL2_0WITHAUTOCONFEXCEPTION, code);
+        if ("GPL-2.0-with-bison-exception".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GPL2_0WITHBISONEXCEPTION, code);
+        if ("GPL-2.0-with-classpath-exception".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GPL2_0WITHCLASSPATHEXCEPTION, code);
+        if ("GPL-2.0-with-font-exception".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GPL2_0WITHFONTEXCEPTION, code);
+        if ("GPL-2.0-with-GCC-exception".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GPL2_0WITHGCCEXCEPTION, code);
+        if ("GPL-3.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GPL3_0, code);
+        if ("GPL-3.0+".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GPL3_0PLUS, code);
+        if ("GPL-3.0-with-autoconf-exception".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GPL3_0WITHAUTOCONFEXCEPTION, code);
+        if ("GPL-3.0-with-GCC-exception".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GPL3_0WITHGCCEXCEPTION, code);
+        if ("Graphics-Gems".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.GRAPHICSGEMS, code);
+        if ("Hippocratic-2.1".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.HIPPOCRATIC2_1, code);
+        if ("HP-1986".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.HP1986, code);
+        if ("HPND-export-US".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.HPNDEXPORTUS, code);
+        if ("HPND-Markus-Kuhn".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.HPNDMARKUSKUHN, code);
+        if ("HPND-sell-variant".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.HPNDSELLVARIANT, code);
+        if ("HPND-sell-variant-MIT-disclaimer".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.HPNDSELLVARIANTMITDISCLAIMER, code);
+        if ("HTMLTIDY".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.HTMLTIDY, code);
+        if ("IEC-Code-Components-EULA".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.IECCODECOMPONENTSEULA, code);
+        if ("IJG-short".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.IJGSHORT, code);
+        if ("Inner-Net-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.INNERNET2_0, code);
+        if ("Jam".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.JAM, code);
+        if ("JPL-image".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.JPLIMAGE, code);
+        if ("JPNIC".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.JPNIC, code);
+        if ("Kazlib".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.KAZLIB, code);
+        if ("Knuth-CTAN".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.KNUTHCTAN, code);
+        if ("Latex2e-translated-notice".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LATEX2ETRANSLATEDNOTICE, code);
+        if ("LGPL-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LGPL2_0, code);
+        if ("LGPL-2.0+".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LGPL2_0PLUS, code);
+        if ("LGPL-2.1".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LGPL2_1, code);
+        if ("LGPL-2.1+".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LGPL2_1PLUS, code);
+        if ("LGPL-3.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LGPL3_0, code);
+        if ("LGPL-3.0+".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LGPL3_0PLUS, code);
+        if ("libpng-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LIBPNG2_0, code);
+        if ("libselinux-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LIBSELINUX1_0, code);
+        if ("libutil-David-Nugent".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LIBUTILDAVIDNUGENT, code);
+        if ("Linux-man-pages-1-para".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LINUXMANPAGES1PARA, code);
+        if ("Linux-man-pages-copyleft".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LINUXMANPAGESCOPYLEFT, code);
+        if ("Linux-man-pages-copyleft-2-para".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LINUXMANPAGESCOPYLEFT2PARA, code);
+        if ("Linux-man-pages-copyleft-var".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LINUXMANPAGESCOPYLEFTVAR, code);
+        if ("LOOP".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LOOP, code);
+        if ("LZMA-SDK-9.11-to-9.20".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LZMASDK9_11TO9_20, code);
+        if ("LZMA-SDK-9.22".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.LZMASDK9_22, code);
+        if ("Martin-Birgmeier".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.MARTINBIRGMEIER, code);
+        if ("metamail".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.METAMAIL, code);
+        if ("Minpack".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.MINPACK, code);
+        if ("MIT-Festival".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.MITFESTIVAL, code);
+        if ("MIT-Modern-Variant".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.MITMODERNVARIANT, code);
+        if ("MIT-open-group".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.MITOPENGROUP, code);
+        if ("MIT-Wu".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.MITWU, code);
+        if ("mpi-permissive".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.MPIPERMISSIVE, code);
+        if ("mplus".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.MPLUS, code);
+        if ("MS-LPL".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.MSLPL, code);
+        if ("MulanPSL-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.MULANPSL1_0, code);
+        if ("MulanPSL-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.MULANPSL2_0, code);
+        if ("NAIST-2003".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.NAIST2003, code);
+        if ("NCGL-UK-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.NCGLUK2_0, code);
+        if ("NICTA-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.NICTA1_0, code);
+        if ("NIST-PD".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.NISTPD, code);
+        if ("NIST-PD-fallback".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.NISTPDFALLBACK, code);
+        if ("NIST-Software".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.NISTSOFTWARE, code);
+        if ("NLOD-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.NLOD2_0, code);
+        if ("NTP-0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.NTP0, code);
+        if ("Nunit".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.NUNIT, code);
+        if ("O-UDA-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OUDA1_0, code);
+        if ("ODC-By-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.ODCBY1_0, code);
+        if ("OFFIS".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OFFIS, code);
+        if ("OFL-1.0-no-RFN".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OFL1_0NORFN, code);
+        if ("OFL-1.0-RFN".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OFL1_0RFN, code);
+        if ("OFL-1.1-no-RFN".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OFL1_1NORFN, code);
+        if ("OFL-1.1-RFN".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OFL1_1RFN, code);
+        if ("OGC-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OGC1_0, code);
+        if ("OGDL-Taiwan-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OGDLTAIWAN1_0, code);
+        if ("OGL-Canada-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OGLCANADA2_0, code);
+        if ("OGL-UK-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OGLUK1_0, code);
+        if ("OGL-UK-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OGLUK2_0, code);
+        if ("OGL-UK-3.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OGLUK3_0, code);
+        if ("OLFL-1.3".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OLFL1_3, code);
+        if ("OpenPBS-2.3".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OPENPBS2_3, code);
+        if ("OPL-UK-3.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OPLUK3_0, code);
+        if ("OPUBL-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.OPUBL1_0, code);
+        if ("Parity-6.0.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.PARITY6_0_0, code);
+        if ("Parity-7.0.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.PARITY7_0_0, code);
+        if ("PolyForm-Noncommercial-1.0.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.POLYFORMNONCOMMERCIAL1_0_0, code);
+        if ("PolyForm-Small-Business-1.0.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.POLYFORMSMALLBUSINESS1_0_0, code);
+        if ("PSF-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.PSF2_0, code);
+        if ("Python-2.0.1".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.PYTHON2_0_1, code);
+        if ("QPL-1.0-INRIA-2004".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.QPL1_0INRIA2004, code);
+        if ("SchemeReport".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.SCHEMEREPORT, code);
+        if ("Sendmail-8.23".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.SENDMAIL8_23, code);
+        if ("SGP4".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.SGP4, code);
+        if ("SHL-0.5".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.SHL0_5, code);
+        if ("SHL-0.51".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.SHL0_51, code);
+        if ("snprintf".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.SNPRINTF, code);
+        if ("SSH-OpenSSH".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.SSHOPENSSH, code);
+        if ("SSH-short".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.SSHSHORT, code);
+        if ("SSPL-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.SSPL1_0, code);
+        if ("StandardML-NJ".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.STANDARDMLNJ, code);
+        if ("SunPro".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.SUNPRO, code);
+        if ("Symlinks".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.SYMLINKS, code);
+        if ("TAPR-OHL-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.TAPROHL1_0, code);
+        if ("TermReadKey".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.TERMREADKEY, code);
+        if ("TPDL".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.TPDL, code);
+        if ("TPL-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.TPL1_0, code);
+        if ("TTWL".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.TTWL, code);
+        if ("TU-Berlin-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.TUBERLIN1_0, code);
+        if ("TU-Berlin-2.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.TUBERLIN2_0, code);
+        if ("UCAR".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.UCAR, code);
+        if ("UCL-1.0".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.UCL1_0, code);
+        if ("UnixCrypt".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.UNIXCRYPT, code);
+        if ("w3m".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.W3M, code);
+        if ("Widget-Workshop".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.WIDGETWORKSHOP, code);
+        if ("wxWindows".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.WXWINDOWS, code);
+        if ("X11-distribute-modifications-variant".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.X11DISTRIBUTEMODIFICATIONSVARIANT, code);
+        if ("Xdebug-1.03".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.XDEBUG1_03, code);
+        if ("Xfig".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.XFIG, code);
+        if ("xlock".equals(codeString))
+          return new Enumeration<SPDXLicense>(modelContext, this, SPDXLicense.XLOCK, code);
         throw new FHIRException("Unknown SPDXLicense code '"+codeString+"'");
         }
     public String toCode(SPDXLicense code) {
@@ -5798,6 +8772,430 @@ public class ImplementationGuide extends CanonicalResource {
         return "ZPL-2.0";
       if (code == SPDXLicense.ZPL2_1)
         return "ZPL-2.1";
+      if (code == SPDXLicense.ADACOREDOC)
+        return "AdaCore-doc";
+      if (code == SPDXLicense.AGPL1_0)
+        return "AGPL-1.0";
+      if (code == SPDXLicense.AGPL3_0)
+        return "AGPL-3.0";
+      if (code == SPDXLicense.ANTLRPDFALLBACK)
+        return "ANTLR-PD-fallback";
+      if (code == SPDXLicense.APPS2P)
+        return "App-s2p";
+      if (code == SPDXLicense.ARPHIC1999)
+        return "Arphic-1999";
+      if (code == SPDXLicense.ASWFDIGITALASSETS1_0)
+        return "ASWF-Digital-Assets-1.0";
+      if (code == SPDXLicense.ASWFDIGITALASSETS1_1)
+        return "ASWF-Digital-Assets-1.1";
+      if (code == SPDXLicense.BAEKMUK)
+        return "Baekmuk";
+      if (code == SPDXLicense.BITSTREAMCHARTER)
+        return "Bitstream-Charter";
+      if (code == SPDXLicense.BITSTREAMVERA)
+        return "Bitstream-Vera";
+      if (code == SPDXLicense.BLESSING)
+        return "blessing";
+      if (code == SPDXLicense.BLUEOAK1_0_0)
+        return "BlueOak-1.0.0";
+      if (code == SPDXLicense.BOEHMGC)
+        return "Boehm-GC";
+      if (code == SPDXLicense.BRIANGLADMAN3CLAUSE)
+        return "Brian-Gladman-3-Clause";
+      if (code == SPDXLicense.BSD2CLAUSEVIEWS)
+        return "BSD-2-Clause-Views";
+      if (code == SPDXLicense.BSD3CLAUSEMODIFICATION)
+        return "BSD-3-Clause-Modification";
+      if (code == SPDXLicense.BSD3CLAUSENOMILITARYLICENSE)
+        return "BSD-3-Clause-No-Military-License";
+      if (code == SPDXLicense.BSD3CLAUSEOPENMPI)
+        return "BSD-3-Clause-Open-MPI";
+      if (code == SPDXLicense.BSD4CLAUSESHORTENED)
+        return "BSD-4-Clause-Shortened";
+      if (code == SPDXLicense.BSD4_3RENO)
+        return "BSD-4.3RENO";
+      if (code == SPDXLicense.BSD4_3TAHOE)
+        return "BSD-4.3TAHOE";
+      if (code == SPDXLicense.BSDADVERTISINGACKNOWLEDGEMENT)
+        return "BSD-Advertising-Acknowledgement";
+      if (code == SPDXLicense.BSDATTRIBUTIONHPNDDISCLAIMER)
+        return "BSD-Attribution-HPND-disclaimer";
+      if (code == SPDXLicense.BUSL1_1)
+        return "BUSL-1.1";
+      if (code == SPDXLicense.CUDA1_0)
+        return "C-UDA-1.0";
+      if (code == SPDXLicense.CAL1_0)
+        return "CAL-1.0";
+      if (code == SPDXLicense.CAL1_0COMBINEDWORKEXCEPTION)
+        return "CAL-1.0-Combined-Work-Exception";
+      if (code == SPDXLicense.CCBY2_5AU)
+        return "CC-BY-2.5-AU";
+      if (code == SPDXLicense.CCBY3_0AT)
+        return "CC-BY-3.0-AT";
+      if (code == SPDXLicense.CCBY3_0DE)
+        return "CC-BY-3.0-DE";
+      if (code == SPDXLicense.CCBY3_0IGO)
+        return "CC-BY-3.0-IGO";
+      if (code == SPDXLicense.CCBY3_0NL)
+        return "CC-BY-3.0-NL";
+      if (code == SPDXLicense.CCBY3_0US)
+        return "CC-BY-3.0-US";
+      if (code == SPDXLicense.CCBYNC3_0DE)
+        return "CC-BY-NC-3.0-DE";
+      if (code == SPDXLicense.CCBYNCND3_0DE)
+        return "CC-BY-NC-ND-3.0-DE";
+      if (code == SPDXLicense.CCBYNCND3_0IGO)
+        return "CC-BY-NC-ND-3.0-IGO";
+      if (code == SPDXLicense.CCBYNCSA2_0DE)
+        return "CC-BY-NC-SA-2.0-DE";
+      if (code == SPDXLicense.CCBYNCSA2_0FR)
+        return "CC-BY-NC-SA-2.0-FR";
+      if (code == SPDXLicense.CCBYNCSA2_0UK)
+        return "CC-BY-NC-SA-2.0-UK";
+      if (code == SPDXLicense.CCBYNCSA3_0DE)
+        return "CC-BY-NC-SA-3.0-DE";
+      if (code == SPDXLicense.CCBYNCSA3_0IGO)
+        return "CC-BY-NC-SA-3.0-IGO";
+      if (code == SPDXLicense.CCBYND3_0DE)
+        return "CC-BY-ND-3.0-DE";
+      if (code == SPDXLicense.CCBYSA2_0UK)
+        return "CC-BY-SA-2.0-UK";
+      if (code == SPDXLicense.CCBYSA2_1JP)
+        return "CC-BY-SA-2.1-JP";
+      if (code == SPDXLicense.CCBYSA3_0AT)
+        return "CC-BY-SA-3.0-AT";
+      if (code == SPDXLicense.CCBYSA3_0DE)
+        return "CC-BY-SA-3.0-DE";
+      if (code == SPDXLicense.CCBYSA3_0IGO)
+        return "CC-BY-SA-3.0-IGO";
+      if (code == SPDXLicense.CCPDDC)
+        return "CC-PDDC";
+      if (code == SPDXLicense.CDL1_0)
+        return "CDL-1.0";
+      if (code == SPDXLicense.CDLAPERMISSIVE2_0)
+        return "CDLA-Permissive-2.0";
+      if (code == SPDXLicense.CERNOHL1_1)
+        return "CERN-OHL-1.1";
+      if (code == SPDXLicense.CERNOHL1_2)
+        return "CERN-OHL-1.2";
+      if (code == SPDXLicense.CERNOHLP2_0)
+        return "CERN-OHL-P-2.0";
+      if (code == SPDXLicense.CERNOHLS2_0)
+        return "CERN-OHL-S-2.0";
+      if (code == SPDXLicense.CERNOHLW2_0)
+        return "CERN-OHL-W-2.0";
+      if (code == SPDXLicense.CFITSIO)
+        return "CFITSIO";
+      if (code == SPDXLicense.CHECKMK)
+        return "checkmk";
+      if (code == SPDXLicense.CLIPS)
+        return "Clips";
+      if (code == SPDXLicense.CMUMACH)
+        return "CMU-Mach";
+      if (code == SPDXLicense.COIL1_0)
+        return "COIL-1.0";
+      if (code == SPDXLicense.COMMUNITYSPEC1_0)
+        return "Community-Spec-1.0";
+      if (code == SPDXLicense.COPYLEFTNEXT0_3_0)
+        return "copyleft-next-0.3.0";
+      if (code == SPDXLicense.COPYLEFTNEXT0_3_1)
+        return "copyleft-next-0.3.1";
+      if (code == SPDXLicense.CORNELLLOSSLESSJPEG)
+        return "Cornell-Lossless-JPEG";
+      if (code == SPDXLicense.DLDEBY2_0)
+        return "DL-DE-BY-2.0";
+      if (code == SPDXLicense.DRL1_0)
+        return "DRL-1.0";
+      if (code == SPDXLicense.DTOA)
+        return "dtoa";
+      if (code == SPDXLicense.ECOS2_0)
+        return "eCos-2.0";
+      if (code == SPDXLicense.ELASTIC2_0)
+        return "Elastic-2.0";
+      if (code == SPDXLicense.EPICS)
+        return "EPICS";
+      if (code == SPDXLicense.ETALAB2_0)
+        return "etalab-2.0";
+      if (code == SPDXLicense.FDKAAC)
+        return "FDK-AAC";
+      if (code == SPDXLicense.FREEBSDDOC)
+        return "FreeBSD-DOC";
+      if (code == SPDXLicense.FSFULLRWD)
+        return "FSFULLRWD";
+      if (code == SPDXLicense.GD)
+        return "GD";
+      if (code == SPDXLicense.GFDL1_1)
+        return "GFDL-1.1";
+      if (code == SPDXLicense.GFDL1_1INVARIANTSONLY)
+        return "GFDL-1.1-invariants-only";
+      if (code == SPDXLicense.GFDL1_1INVARIANTSORLATER)
+        return "GFDL-1.1-invariants-or-later";
+      if (code == SPDXLicense.GFDL1_1NOINVARIANTSONLY)
+        return "GFDL-1.1-no-invariants-only";
+      if (code == SPDXLicense.GFDL1_1NOINVARIANTSORLATER)
+        return "GFDL-1.1-no-invariants-or-later";
+      if (code == SPDXLicense.GFDL1_2)
+        return "GFDL-1.2";
+      if (code == SPDXLicense.GFDL1_2INVARIANTSONLY)
+        return "GFDL-1.2-invariants-only";
+      if (code == SPDXLicense.GFDL1_2INVARIANTSORLATER)
+        return "GFDL-1.2-invariants-or-later";
+      if (code == SPDXLicense.GFDL1_2NOINVARIANTSONLY)
+        return "GFDL-1.2-no-invariants-only";
+      if (code == SPDXLicense.GFDL1_2NOINVARIANTSORLATER)
+        return "GFDL-1.2-no-invariants-or-later";
+      if (code == SPDXLicense.GFDL1_3)
+        return "GFDL-1.3";
+      if (code == SPDXLicense.GFDL1_3INVARIANTSONLY)
+        return "GFDL-1.3-invariants-only";
+      if (code == SPDXLicense.GFDL1_3INVARIANTSORLATER)
+        return "GFDL-1.3-invariants-or-later";
+      if (code == SPDXLicense.GFDL1_3NOINVARIANTSONLY)
+        return "GFDL-1.3-no-invariants-only";
+      if (code == SPDXLicense.GFDL1_3NOINVARIANTSORLATER)
+        return "GFDL-1.3-no-invariants-or-later";
+      if (code == SPDXLicense.GLWTPL)
+        return "GLWTPL";
+      if (code == SPDXLicense.GPL1_0)
+        return "GPL-1.0";
+      if (code == SPDXLicense.GPL1_0PLUS)
+        return "GPL-1.0+";
+      if (code == SPDXLicense.GPL2_0)
+        return "GPL-2.0";
+      if (code == SPDXLicense.GPL2_0PLUS)
+        return "GPL-2.0+";
+      if (code == SPDXLicense.GPL2_0WITHAUTOCONFEXCEPTION)
+        return "GPL-2.0-with-autoconf-exception";
+      if (code == SPDXLicense.GPL2_0WITHBISONEXCEPTION)
+        return "GPL-2.0-with-bison-exception";
+      if (code == SPDXLicense.GPL2_0WITHCLASSPATHEXCEPTION)
+        return "GPL-2.0-with-classpath-exception";
+      if (code == SPDXLicense.GPL2_0WITHFONTEXCEPTION)
+        return "GPL-2.0-with-font-exception";
+      if (code == SPDXLicense.GPL2_0WITHGCCEXCEPTION)
+        return "GPL-2.0-with-GCC-exception";
+      if (code == SPDXLicense.GPL3_0)
+        return "GPL-3.0";
+      if (code == SPDXLicense.GPL3_0PLUS)
+        return "GPL-3.0+";
+      if (code == SPDXLicense.GPL3_0WITHAUTOCONFEXCEPTION)
+        return "GPL-3.0-with-autoconf-exception";
+      if (code == SPDXLicense.GPL3_0WITHGCCEXCEPTION)
+        return "GPL-3.0-with-GCC-exception";
+      if (code == SPDXLicense.GRAPHICSGEMS)
+        return "Graphics-Gems";
+      if (code == SPDXLicense.HIPPOCRATIC2_1)
+        return "Hippocratic-2.1";
+      if (code == SPDXLicense.HP1986)
+        return "HP-1986";
+      if (code == SPDXLicense.HPNDEXPORTUS)
+        return "HPND-export-US";
+      if (code == SPDXLicense.HPNDMARKUSKUHN)
+        return "HPND-Markus-Kuhn";
+      if (code == SPDXLicense.HPNDSELLVARIANT)
+        return "HPND-sell-variant";
+      if (code == SPDXLicense.HPNDSELLVARIANTMITDISCLAIMER)
+        return "HPND-sell-variant-MIT-disclaimer";
+      if (code == SPDXLicense.HTMLTIDY)
+        return "HTMLTIDY";
+      if (code == SPDXLicense.IECCODECOMPONENTSEULA)
+        return "IEC-Code-Components-EULA";
+      if (code == SPDXLicense.IJGSHORT)
+        return "IJG-short";
+      if (code == SPDXLicense.INNERNET2_0)
+        return "Inner-Net-2.0";
+      if (code == SPDXLicense.JAM)
+        return "Jam";
+      if (code == SPDXLicense.JPLIMAGE)
+        return "JPL-image";
+      if (code == SPDXLicense.JPNIC)
+        return "JPNIC";
+      if (code == SPDXLicense.KAZLIB)
+        return "Kazlib";
+      if (code == SPDXLicense.KNUTHCTAN)
+        return "Knuth-CTAN";
+      if (code == SPDXLicense.LATEX2ETRANSLATEDNOTICE)
+        return "Latex2e-translated-notice";
+      if (code == SPDXLicense.LGPL2_0)
+        return "LGPL-2.0";
+      if (code == SPDXLicense.LGPL2_0PLUS)
+        return "LGPL-2.0+";
+      if (code == SPDXLicense.LGPL2_1)
+        return "LGPL-2.1";
+      if (code == SPDXLicense.LGPL2_1PLUS)
+        return "LGPL-2.1+";
+      if (code == SPDXLicense.LGPL3_0)
+        return "LGPL-3.0";
+      if (code == SPDXLicense.LGPL3_0PLUS)
+        return "LGPL-3.0+";
+      if (code == SPDXLicense.LIBPNG2_0)
+        return "libpng-2.0";
+      if (code == SPDXLicense.LIBSELINUX1_0)
+        return "libselinux-1.0";
+      if (code == SPDXLicense.LIBUTILDAVIDNUGENT)
+        return "libutil-David-Nugent";
+      if (code == SPDXLicense.LINUXMANPAGES1PARA)
+        return "Linux-man-pages-1-para";
+      if (code == SPDXLicense.LINUXMANPAGESCOPYLEFT)
+        return "Linux-man-pages-copyleft";
+      if (code == SPDXLicense.LINUXMANPAGESCOPYLEFT2PARA)
+        return "Linux-man-pages-copyleft-2-para";
+      if (code == SPDXLicense.LINUXMANPAGESCOPYLEFTVAR)
+        return "Linux-man-pages-copyleft-var";
+      if (code == SPDXLicense.LOOP)
+        return "LOOP";
+      if (code == SPDXLicense.LZMASDK9_11TO9_20)
+        return "LZMA-SDK-9.11-to-9.20";
+      if (code == SPDXLicense.LZMASDK9_22)
+        return "LZMA-SDK-9.22";
+      if (code == SPDXLicense.MARTINBIRGMEIER)
+        return "Martin-Birgmeier";
+      if (code == SPDXLicense.METAMAIL)
+        return "metamail";
+      if (code == SPDXLicense.MINPACK)
+        return "Minpack";
+      if (code == SPDXLicense.MITFESTIVAL)
+        return "MIT-Festival";
+      if (code == SPDXLicense.MITMODERNVARIANT)
+        return "MIT-Modern-Variant";
+      if (code == SPDXLicense.MITOPENGROUP)
+        return "MIT-open-group";
+      if (code == SPDXLicense.MITWU)
+        return "MIT-Wu";
+      if (code == SPDXLicense.MPIPERMISSIVE)
+        return "mpi-permissive";
+      if (code == SPDXLicense.MPLUS)
+        return "mplus";
+      if (code == SPDXLicense.MSLPL)
+        return "MS-LPL";
+      if (code == SPDXLicense.MULANPSL1_0)
+        return "MulanPSL-1.0";
+      if (code == SPDXLicense.MULANPSL2_0)
+        return "MulanPSL-2.0";
+      if (code == SPDXLicense.NAIST2003)
+        return "NAIST-2003";
+      if (code == SPDXLicense.NCGLUK2_0)
+        return "NCGL-UK-2.0";
+      if (code == SPDXLicense.NICTA1_0)
+        return "NICTA-1.0";
+      if (code == SPDXLicense.NISTPD)
+        return "NIST-PD";
+      if (code == SPDXLicense.NISTPDFALLBACK)
+        return "NIST-PD-fallback";
+      if (code == SPDXLicense.NISTSOFTWARE)
+        return "NIST-Software";
+      if (code == SPDXLicense.NLOD2_0)
+        return "NLOD-2.0";
+      if (code == SPDXLicense.NTP0)
+        return "NTP-0";
+      if (code == SPDXLicense.NUNIT)
+        return "Nunit";
+      if (code == SPDXLicense.OUDA1_0)
+        return "O-UDA-1.0";
+      if (code == SPDXLicense.ODCBY1_0)
+        return "ODC-By-1.0";
+      if (code == SPDXLicense.OFFIS)
+        return "OFFIS";
+      if (code == SPDXLicense.OFL1_0NORFN)
+        return "OFL-1.0-no-RFN";
+      if (code == SPDXLicense.OFL1_0RFN)
+        return "OFL-1.0-RFN";
+      if (code == SPDXLicense.OFL1_1NORFN)
+        return "OFL-1.1-no-RFN";
+      if (code == SPDXLicense.OFL1_1RFN)
+        return "OFL-1.1-RFN";
+      if (code == SPDXLicense.OGC1_0)
+        return "OGC-1.0";
+      if (code == SPDXLicense.OGDLTAIWAN1_0)
+        return "OGDL-Taiwan-1.0";
+      if (code == SPDXLicense.OGLCANADA2_0)
+        return "OGL-Canada-2.0";
+      if (code == SPDXLicense.OGLUK1_0)
+        return "OGL-UK-1.0";
+      if (code == SPDXLicense.OGLUK2_0)
+        return "OGL-UK-2.0";
+      if (code == SPDXLicense.OGLUK3_0)
+        return "OGL-UK-3.0";
+      if (code == SPDXLicense.OLFL1_3)
+        return "OLFL-1.3";
+      if (code == SPDXLicense.OPENPBS2_3)
+        return "OpenPBS-2.3";
+      if (code == SPDXLicense.OPLUK3_0)
+        return "OPL-UK-3.0";
+      if (code == SPDXLicense.OPUBL1_0)
+        return "OPUBL-1.0";
+      if (code == SPDXLicense.PARITY6_0_0)
+        return "Parity-6.0.0";
+      if (code == SPDXLicense.PARITY7_0_0)
+        return "Parity-7.0.0";
+      if (code == SPDXLicense.POLYFORMNONCOMMERCIAL1_0_0)
+        return "PolyForm-Noncommercial-1.0.0";
+      if (code == SPDXLicense.POLYFORMSMALLBUSINESS1_0_0)
+        return "PolyForm-Small-Business-1.0.0";
+      if (code == SPDXLicense.PSF2_0)
+        return "PSF-2.0";
+      if (code == SPDXLicense.PYTHON2_0_1)
+        return "Python-2.0.1";
+      if (code == SPDXLicense.QPL1_0INRIA2004)
+        return "QPL-1.0-INRIA-2004";
+      if (code == SPDXLicense.SCHEMEREPORT)
+        return "SchemeReport";
+      if (code == SPDXLicense.SENDMAIL8_23)
+        return "Sendmail-8.23";
+      if (code == SPDXLicense.SGP4)
+        return "SGP4";
+      if (code == SPDXLicense.SHL0_5)
+        return "SHL-0.5";
+      if (code == SPDXLicense.SHL0_51)
+        return "SHL-0.51";
+      if (code == SPDXLicense.SNPRINTF)
+        return "snprintf";
+      if (code == SPDXLicense.SSHOPENSSH)
+        return "SSH-OpenSSH";
+      if (code == SPDXLicense.SSHSHORT)
+        return "SSH-short";
+      if (code == SPDXLicense.SSPL1_0)
+        return "SSPL-1.0";
+      if (code == SPDXLicense.STANDARDMLNJ)
+        return "StandardML-NJ";
+      if (code == SPDXLicense.SUNPRO)
+        return "SunPro";
+      if (code == SPDXLicense.SYMLINKS)
+        return "Symlinks";
+      if (code == SPDXLicense.TAPROHL1_0)
+        return "TAPR-OHL-1.0";
+      if (code == SPDXLicense.TERMREADKEY)
+        return "TermReadKey";
+      if (code == SPDXLicense.TPDL)
+        return "TPDL";
+      if (code == SPDXLicense.TPL1_0)
+        return "TPL-1.0";
+      if (code == SPDXLicense.TTWL)
+        return "TTWL";
+      if (code == SPDXLicense.TUBERLIN1_0)
+        return "TU-Berlin-1.0";
+      if (code == SPDXLicense.TUBERLIN2_0)
+        return "TU-Berlin-2.0";
+      if (code == SPDXLicense.UCAR)
+        return "UCAR";
+      if (code == SPDXLicense.UCL1_0)
+        return "UCL-1.0";
+      if (code == SPDXLicense.UNIXCRYPT)
+        return "UnixCrypt";
+      if (code == SPDXLicense.W3M)
+        return "w3m";
+      if (code == SPDXLicense.WIDGETWORKSHOP)
+        return "Widget-Workshop";
+      if (code == SPDXLicense.WXWINDOWS)
+        return "wxWindows";
+      if (code == SPDXLicense.X11DISTRIBUTEMODIFICATIONSVARIANT)
+        return "X11-distribute-modifications-variant";
+      if (code == SPDXLicense.XDEBUG1_03)
+        return "Xdebug-1.03";
+      if (code == SPDXLicense.XFIG)
+        return "Xfig";
+      if (code == SPDXLicense.XLOCK)
+        return "xlock";
       return "?";
       }
     public String toSystem(SPDXLicense code) {

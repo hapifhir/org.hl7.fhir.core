@@ -782,6 +782,10 @@ public class HierarchicalTableGenerator {
   private TableGenerationMode mode;
   private RenderingI18nContext i18n;
   private String uniqueLocalPrefix;
+  // whether local (#...) links in cells get the unique prefix too. Only right when they point at
+  // anchors this generator made (row anchors). Callers whose links point at anchors they named
+  // themselves (e.g. through the RenderingContext) turn this off
+  private boolean prefixLocalHrefs = true;
   private boolean treelines = true;
 
   public HierarchicalTableGenerator(RenderingI18nContext i18n) {
@@ -1149,7 +1153,7 @@ public class HierarchicalTableGenerator {
         if (p.attributes != null)
           for (String n : p.attributes.keySet())
             a.setAttribute(n, p.attributes.get(n));
-        a.setAttribute("href", prefixLocalHref(p.getReference()));
+        a.setAttribute("href", prefixLocalHrefs ? prefixLocalHref(p.getReference()) : p.getReference());
         if (mode == TableGenerationMode.XHTML && suppressExternals) {
           a.setAttribute("no-external", "true"); // deprecated - will be removed once everyone has dealt with the change
           a.setAttribute("data-no-external", "true");
@@ -1491,6 +1495,14 @@ public class HierarchicalTableGenerator {
       return url;
     }
     return "#"+uniqueLocalPrefix+"-"+url.substring(1);
+  }
+
+  public boolean isPrefixLocalHrefs() {
+    return prefixLocalHrefs;
+  }
+
+  public void setPrefixLocalHrefs(boolean prefixLocalHrefs) {
+    this.prefixLocalHrefs = prefixLocalHrefs;
   }
 
   public boolean isTreelines() {

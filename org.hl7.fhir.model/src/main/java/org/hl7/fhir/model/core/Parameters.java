@@ -1928,7 +1928,7 @@ public Parameters addParameter(String name, boolean b) {
       if (p.getName().equals(name)) {
         if (p.getValue() instanceof BooleanType)
           return ((BooleanType) p.getValue()).booleanValue();
-        boolean ok = Boolean.getBoolean(p.getValue().primitiveValue());
+        boolean ok = "true".equals(p.getValue().primitiveValue());
         return ok;
       }
     }

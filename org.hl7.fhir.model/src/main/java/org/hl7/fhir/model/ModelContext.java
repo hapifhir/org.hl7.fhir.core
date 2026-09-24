@@ -25,6 +25,19 @@ public class ModelContext implements IModelContext  {
     }
   }
 
+  /**
+   * Lazily initialised on first use of {@link #fullCoreContext()}; the class loader
+   * makes that thread safe and exactly-once
+   */
+  private static final class MinimalCore {
+    private static final ModelContext INSTANCE = build();
+
+    private static ModelContext build() {
+      ModelContext mc = new ModelContext();
+      return mc;
+    }
+  }
+
   private final @NonNull ModelContextInformation contextInformation;
 
   public ModelContext() {
@@ -45,6 +58,22 @@ public class ModelContext implements IModelContext  {
    */
   public static ModelContext fullCoreContext() {
     return FullCore.INSTANCE;
+  }
+
+  /**
+   * The shared model context for the core specification itself, and no additional resources.
+   * This is a singleton: every
+   * caller gets the same context, so objects created under any of them are usable
+   * under all of them, and nothing is registered twice
+   * <p>
+   * Because it is shared, callers must not register anything further on it - an
+   * application that needs its own registrations (e.g. custom resources generated
+   * by the validator's -codegen) builds its own {@link ModelContext} instead
+   *
+   * @return the shared full-core model context
+   */
+  public static ModelContext minimalContext() {
+    return MinimalCore.INSTANCE;
   }
 
   @Override

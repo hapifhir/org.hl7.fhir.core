@@ -89,6 +89,7 @@ private static TxTestData testData;
   @Test
   public void test() throws Exception {
     String id = setup.getTest().asString("name");
+    System.out.println("Running "+id);
     try {
       if (runTest()) {
         log(id, "pass", null);

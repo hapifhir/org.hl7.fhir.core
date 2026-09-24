@@ -3,7 +3,7 @@
   "system" : "https://gen.kanta.fi/fhir/tahdonilmaisut/figen-cs-consentcategory",
   "code" : "2",
   "display" : "Lupa luovuttaa sosiaalihuollon asiakastietoja terveydenhuoltoon"
-}, "valueSet" :null, "langs":"fi", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"fi", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "externalSource":"StructureDefinition[http://hl7.org/fhir/StructureDefinition/Consent|4.0.1]", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",

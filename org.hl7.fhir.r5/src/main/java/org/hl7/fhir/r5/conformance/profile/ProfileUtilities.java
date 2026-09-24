@@ -2618,7 +2618,9 @@ public class ProfileUtilities {
     for (ElementDefinition ed : obligationProfileElements) {
       for (Extension ext : ed.getExtension()) {
         if (Utilities.existsInList(ext.getUrl(), ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) {
-          dest.getExtension().add(new Extension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ext.getValue().copy()));
+          Extension obligation = ext.copy();
+          obligation.setUrl(ExtensionDefinitions.EXT_OBLIGATION_CORE);
+          dest.getExtension().add(obligation);
         }      
       }
     }
@@ -2956,7 +2958,7 @@ public class ProfileUtilities {
           }
           for (ElementDefinitionBindingAdditionalComponent ab : ed.getBinding().getAdditional()) {
             if (!Utilities.existsInList(ab.getPurpose().toCode(), "maximum", "required", "extensible")) {
-              if (binding.hasAdditional(ab)) {
+              if (!binding.hasAdditional(ab)) {
                 binding.getAdditional().add(ab.copy());
               }
             }
@@ -3164,7 +3166,9 @@ public class ProfileUtilities {
     if (!res.hasValue() && source.hasValue()) {
       res.setValue(source.getValue());
     } else if (res.hasValue() && source.hasValue() && res.getValue().startsWith("...")) {
-      res.setValue(Utilities.appendDerivedTextToBase(res.getValue(), source.getValue()));
+      // labels are short display strings, so the derived text is appended with a space, not the
+      // line break appendDerivedTextToBase uses for markdown
+      res.setValue(source.getValue() + " " + res.getValue().substring(3).trim());
     }
     for (Extension sourceExtension : source.getExtension()) {
       Extension matchingExtension = findMatchingExtension(res, sourceExtension);
@@ -3232,8 +3236,8 @@ public class ProfileUtilities {
         dest.addUsage(t);
       }
     }
-    if (source.getAny()) {
-      source.setAny(true);
+    if (source.hasAny()) {
+      dest.setAny(source.getAny());
     }
     if (source.hasShortDoco()) {
       dest.setShortDoco(source.getShortDoco());

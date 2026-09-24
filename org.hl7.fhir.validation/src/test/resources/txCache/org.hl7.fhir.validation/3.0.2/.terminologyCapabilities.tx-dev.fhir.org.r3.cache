@@ -3466,7 +3466,19 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/history-absent-reason"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-affiliate"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-document-format-codes"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-jira-spec-work-group-concept-properties"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-organizational-entity-concept-properties"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-staff-role"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group"
@@ -3704,9 +3716,6 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/published-in-type"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/push-type-available"

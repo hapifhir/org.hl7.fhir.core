@@ -252,8 +252,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
       for (Coding c : code.getCodingList()) {
         if (!c.hasSystem() && !c.hasUserData(UserDataNames.tx_val_sys_error)) {
           c.setUserData(UserDataNames.tx_val_sys_error, true);
+          // see the note in validateCode(String, Coding): no system and no code is one problem
+          String noneMsgId = c.hasCode() ? I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE : I18nConstants.CODING_HAS_NO_SYSTEM_OR_CODE__CANNOT_VALIDATE;
+          String invalidDataMsg = context.formatMessage(noneMsgId);
           info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".coding["+i+"]",
-            context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE), OpIssueCode.InvalidData, null, I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE));
+            invalidDataMsg, OpIssueCode.InvalidData, null, noneMsgId));
         } else {
           checkExpansion(c);
           checkInclude(c);
@@ -354,11 +357,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
       
       int i = 0;
       for (Coding c : code.getCodingList()) {
-        String cs = "'"+c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "")+"#"+c.getCode()+(c.hasDisplay() ? " ('"+c.getDisplay()+"')" : "")+"'";
+        String cs = (c.getSystem() == null ? "" : "'"+c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : ""))+"#"+c.getCode()+(c.hasDisplay() ? " ('"+c.getDisplay()+"')" : "")+"'";
         String cs2 = c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "");
         cpath.add(path+".coding["+i+"]");
         b.append(cs2);
-        Boolean ok = codeInValueSet(path+".coding["+i+"]", c.getSystem(), c.getVersion(), c.getVersion(), c.getCode(), c.getDisplay(), info);
+        // a coding with no code has nothing to look up, so the value set has nothing to say
+        // about it. The missing code is already reported against the coding, and "not in the
+        // value set" on top of that is a second complaint about the same absence
+        Boolean ok = c.hasCode() ? codeInValueSet(path+".coding["+i+"]", c.getSystem(), c.getVersion(), c.getVersion(), c.getCode(), c.getDisplay(), info) : Boolean.FALSE;
         if (ok == null && result != null && result == false) {
           result = null;
         } else if (ok != null && ok) {
@@ -382,7 +388,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         if ((ok == null || !ok) && !info.isFragment()) {
           vcc.removeCoding(c.getSystem(), c.getVersion(), c.getCode());          
         }
-        if (ok != null && !ok && !info.isFragment()) {
+        if (ok != null && !ok && c.hasCode() && !info.isFragment()) {
           msg = context.formatMessage(I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ONE, null, valueset.getVersionedUrl(), cs);
           info.getIssues().addAll(makeIssue(IssueSeverity.INFORMATION, IssueType.CODEINVALID, path+".coding["+i+"].code", msg, OpIssueCode.ThisNotInVS, null, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ONE));
         }
@@ -444,7 +450,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (!checkRequiredSupplements(info)) {
       return new ValidationResult(IssueSeverity.ERROR, info.getIssues().get(info.getIssues().size()-1).getDetails().getText(), info.getIssues());
     } else if (info.hasErrors()) {
-      ValidationResult res = new ValidationResult(IssueSeverity.ERROR, null, info.getIssues());
+      ValidationResult res = new ValidationResult(IssueSeverity.ERROR, invalidDataMessage(info.getIssues()), info.getIssues());
       if (foundCoding != null) {
         ConceptDefinitionComponent cd = new ConceptDefinitionComponent(null, foundCoding.getCode());
         cd.setDisplay(lookupDisplay(foundCoding));
@@ -495,6 +501,23 @@ public class ValueSetValidator extends ValueSetProcessBase {
     } else {
       throw new Error("This should never happen - ther response from the server could not be understood");
     }
+  }
+
+  /**
+   * The messages for the codings that could not even be looked at - no system, no code. They are
+   * warnings, and ValidationResult's issue mining drops warnings as soon as there is an error to
+   * report, but they are the reason the CodeableConcept did not validate, so they belong in the
+   * message either way
+   */
+  private String invalidDataMessage(List<OperationOutcomeIssueComponent> issues) {
+    List<String> msgs = new ArrayList<>();
+    for (OperationOutcomeIssueComponent iss : issues) {
+      if (iss.getSeverity() == org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.WARNING && iss.hasDetails()
+          && iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", OpIssueCode.InvalidData.toCode())) {
+        msgs.add(iss.getDetails().getText());
+      }
+    }
+    return msgs.isEmpty() ? null : CommaSeparatedStringBuilder.join("; ", msgs);
   }
 
   private String getUnknownCodeSystemMessage(String system, String version) {
@@ -734,10 +757,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
       }
       if (!code.hasSystem()) {
-        res = new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE), null);
+        // a coding with no system and no code at all (a display on its own, say) gets one message
+        // about the pair of them, not one about the system and another about the code: there is
+        // nothing there to validate, and saying so twice does not make it clearer
+        String noneMsgId = code.hasCode() ? I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE : I18nConstants.CODING_HAS_NO_SYSTEM_OR_CODE__CANNOT_VALIDATE;
+        res = new ValidationResult(IssueSeverity.WARNING, context.formatMessage(noneMsgId), null);
         if (!code.hasUserData(UserDataNames.tx_val_sys_error)) {
           code.setUserData(UserDataNames.tx_val_sys_error, true);
-          res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path, context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE), OpIssueCode.InvalidData, null, I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE));res.mineIssues(res.getIssues());
+          res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path, context.formatMessage(noneMsgId), OpIssueCode.InvalidData, null, noneMsgId));
           res.mineIssues(res.getIssues());
         }
       } else {
@@ -891,8 +918,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
 
     
-    // then, if we have a value set, we check it's in the value set
-    if (valueset != null) {
+    // then, if we have a value set, we check it's in the value set - but only if there is a code
+    // to check. With no code there is nothing to look for, and the missing code has been reported
+    if (valueset != null && code.hasCode()) {
       if ((res==null || res.isOk())) {
         Boolean ok = codeInValueSet(path, system, wv, code.getVersion(), code.getCode(), code.getDisplay(), info);
         if (ok == null || !ok) {
@@ -1208,7 +1236,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (code.getCode() == null) {
       String msgid = cs.getVersion() == null ? I18nConstants.NO_CODE_PROVIDED : I18nConstants.NO_CODE_PROVIDED_VERSION;
       String msg = context.formatMessage(msgid, cs.getUrl(), cs.getVersion());
-      return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.VALUE, path + ".code", msg, OpIssueCode.InvalidData, null, msgid));
+      return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path, msg, OpIssueCode.InvalidData, null, msgid));
     }
     ConceptDefinitionComponent cc = cs.hasUserData(UserDataNames.tx_cs_special) ? ((SpecialCodeSystem) cs.getUserData(UserDataNames.tx_cs_special)).findConcept(code) : findCodeInConcept(cs.getConceptList(), code.getCode(), cs.getCaseSensitive(), allAltCodes);
     if (cc == null) {

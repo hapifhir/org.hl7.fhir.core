@@ -607,7 +607,16 @@ public class TerminologyCache {
     return oldName;
   }
 
+  /**
+   * The path defaults to "Coding" - the path the great majority of callers validate at. Callers
+   * that validate at some other path (the code parameter form, which uses "$") must say so, or
+   * they will share cache entries with a query that has a different answer
+   */
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs, Parameters expParameters) {
+    return generateValidationToken(options, code, vs, expParameters, "Coding");
+  }
+
+  public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs, Parameters expParameters, String path) {
     try {
       CacheToken ct = new CacheToken();
       if (code.hasSystem()) {
@@ -620,17 +629,24 @@ public class TerminologyCache {
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
 
+      // the path is part of the answer, not just the question: it is the prefix of every issue
+      // expression in the result, so two calls that differ only in it get different answers and
+      // must not share a cache entry (a code validated as "$" - the code parameter form - and the
+      // same code validated as "Coding" are not the same query). "Coding" is the common case and
+      // is left out, so that entries cached before this was added still match
+      String pathJS = (path == null || "Coding".equals(path)) ? "" : ", \"path\": \""+Utilities.escapeJson(path)+"\"";
+
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
         ct.setRequest("{\"code\" : " + json.composeString(code, "codeableConcept") + ", \"url\": \"" + Utilities.escapeJson(vs.getUrl())
-          + "\", \"version\": \"" + Utilities.escapeJson(vs.getVersion()) + "\"" + (options == null ? "" : ", " + options.toJson()) + ", \"profile\": " + expJS + "}\r\n");
+          + "\", \"version\": \"" + Utilities.escapeJson(vs.getVersion()) + "\"" + (options == null ? "" : ", " + options.toJson()) + pathJS + ", \"profile\": " + expJS + "}\r\n");
       } else  if (vs != null && vs.hasUrl()) {
           ct.setRequest("{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
-            +"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n");
+            +"\""+(options == null ? "" : ", "+options.toJson())+pathJS+", \"profile\": "+expJS+"}\r\n");
       } else if (options.getVsAsUrl()) {
-        ct.setRequest("{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+extracted(json, vs)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}");
+        ct.setRequest("{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+extracted(json, vs)+(options == null ? "" : ", "+options.toJson())+pathJS+", \"profile\": "+expJS+"}");
       } else {
         ValueSet vsc = getVSEssense(vs);
-        ct.setRequest("{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}");
+        ct.setRequest("{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+pathJS+", \"profile\": "+expJS+"}");
       }
       ct.setKey(String.valueOf(hashJson(ct.getRequest())));
       return ct;
