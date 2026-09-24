@@ -52,7 +52,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
 
   private static final int SECONDS_PER_MINUTE = 60;
   private static final int SECONDS_PER_HOUR = 60 * SECONDS_PER_MINUTE;
-  private static final ZoneId SYSTEM_DEFAULT_ZONE_ID = ZoneId.systemDefault();
   static final int NANOS_PER_MILLIS = 1_000_000;
   static final int NANOS_PER_SECOND = 1_000_000_000;
   private static final Map<String, ZoneId> timezoneCache = new ConcurrentHashMap<>();
@@ -62,6 +61,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
 
   private ChronoUnit myPrecision = null;
   private boolean myTimeZoneMissing;
+  private boolean myTimeZoneZulu;
 
   @Override
   public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
@@ -75,6 +75,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
   public void copyValues(BaseDateTimeType dst, EnumSet<CopyObjectOptions> options) {
     super.copyValues(dst, options);
     dst.myTimeZoneMissing = this.myTimeZoneMissing;
+    dst.myTimeZoneZulu = this.myTimeZoneZulu;
     dst.myPrecision = myPrecision;
   }
 
@@ -360,6 +361,17 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
     }
   }
 
+  public void set(long theI, ChronoField theChronoUnit) {
+    // FIXME: implement
+  }
+
+  public Date toDate() {
+    if (getValue() != null) {
+      return Date.from(getValue().toInstant());
+    }
+    return null;
+  }
+
   /**
    * Converts a value in the given fixed-duration UCUM unit to milliseconds.
    *
@@ -636,8 +648,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    * Returns true if the timezone is set to GMT-0:00 (Z)
    */
   public boolean isTimeZoneZulu() {
-    ZoneId zoneId = getZoneId();
-    return zoneId != null && zoneId.getId().equals("Z");
+    return myTimeZoneZulu;
   }
 
   /**
@@ -662,6 +673,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
   protected ZonedDateTime parse(String theValue) throws DataFormatException {
     String value = theValue;
     myTimeZoneMissing = false;
+    myTimeZoneZulu = false;
 
     if (value.length() > 0 && (value.charAt(0) == ' ' || value.charAt(value.length() - 1) == ' ')) {
       value = value.trim();
@@ -713,6 +725,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
             time = value.substring(11, offsetIdx);
             String offsetString = value.substring(offsetIdx);
             zoneId = getTimeZone(offsetString);
+            myTimeZoneZulu = offsetString.equals("Z") || offsetString.equals("z");
           }
           int timeLength = time.length();
 

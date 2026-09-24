@@ -167,8 +167,8 @@ public class DateTimeType extends BaseDateTimeType {
    * @throws DataFormatException
    *             If the specified precision is not allowed for this type
    */
-  public DateTimeType(Date theDate, ChronoUnit thePrecision) {
-    this(toZdt(theDate), thePrecision);
+  public DateTimeType(Date theDate, TemporalPrecisionEnum thePrecision) {
+    this(toZdt(theDate), toChronoUnit(thePrecision));
   }
 
   /**

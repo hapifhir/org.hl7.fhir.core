@@ -176,7 +176,7 @@ public class FHIRPathTests {
   public void test(String name, Element test) throws FileNotFoundException, IOException, FHIRException, FHIRException, UcumException {
     // Setting timezone for this test. Grahame is in UTC+11, Travis is in GMT, and I'm here in Toronto, Canada with
     // all my time based tests failing locally...
-    TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC+1100")));
+    TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
 
     fp.setHostServices(new FHIRPathTestEvaluationServices(this.context));
     String input = test.getAttribute("inputfile");
