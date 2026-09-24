@@ -1210,6 +1210,7 @@ public class HierarchicalTableGenerator {
       span.tx("Filter: ");
       XhtmlNode input = span.input("filter", "text", null, 10);
       input.style("border: 1px #F0F0F0 solid; background-color: rgb(254, 254, 231);");
+      input.setAttribute("aria-label", "Filter");
       input.setAttribute("onInput", "filterTree(document.getElementById('"+mid+"'), event.target.value)");
       if (checkboxes != null) {
         span.tx(" ");

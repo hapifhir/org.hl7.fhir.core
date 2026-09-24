@@ -1242,13 +1242,16 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
 
-  public XhtmlNode button(String class_, String title) {
+  public XhtmlNode button(String class_, String alt, String title) {
     XhtmlNode btn = addTag("button");
     if (class_ != null) {
       btn.attribute("class", class_);
     }
     if (title != null) {
       btn.attribute("title", title);
+    }
+    if (alt != null) {
+      btn.attribute("aria-label", alt);
     }
     return btn;
   }

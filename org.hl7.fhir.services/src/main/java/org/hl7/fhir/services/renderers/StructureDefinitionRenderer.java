@@ -64,7 +64,7 @@ import java.util.*;
 @Slf4j
 public class StructureDefinitionRenderer extends ResourceRenderer {
 
-  public static final String RED_BACKGROUND_COLOR = "#D50000";
+  public static final String RED_BACKGROUND_COLOR = "#B60000";
 
   public enum MapStructureMode {
     IN_LIST, NOT_IN_LIST, OTHER
@@ -5256,7 +5256,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         span.tx("to "); 
         XhtmlNode ispan = span.spanClss("copy-text-inline"); 
         ispan.code().tx(binding.getValueSet()); 
-        ispan.button("btn-copy", context.formatPhrase(RenderingI18nContext.STRUC_DEF_COPY_URL)).attribute("data-clipboard-text", binding.getValueSet()); 
+        ispan.button("btn-copy", "copy", context.formatPhrase(RenderingI18nContext.STRUC_DEF_COPY_URL)).attribute("data-clipboard-text", binding.getValueSet());
       } 
       span.tx(")"); 
     } 
