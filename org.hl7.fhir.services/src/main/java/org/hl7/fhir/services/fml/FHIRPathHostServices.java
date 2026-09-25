@@ -81,7 +81,7 @@ public class FHIRPathHostServices implements IHostApplicationServices {
   public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
     if (structureMapTools.getServices() == null)
       return null;
-    return structureMapTools.getServices().resolveReference(appContext, url);
+    return structureMapTools.getServices().resolveReference(engine, appContext, url, identifier, refContext);
   }
 
   private boolean noErrorValidationMessages(List<ValidationMessage> valerrors) {
