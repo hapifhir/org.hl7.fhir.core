@@ -253,11 +253,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
       }
       FileUtilities.stringToFile(JsonParser.compose(json, true), Utilities.path(outputDir, "test-results.json"));
 
-      int c = counter.intValue() * 100;
-      int e = errCount.intValue() * 100;
-      double s = counter.intValue() == 0 ? 0 : (c - e) / counter.intValue();
-
-      testReport.setScore(s / 100);
+      // TestReport.score is the percentage of tests passed (0..100), not a fraction. Kept to
+      // two decimal places, so a single failure in a large run doesn't round away to 100
+      int total = counter.intValue();
+      double score = total == 0 ? 0 : Math.round((total - errCount.intValue()) * 10000.0 / total) / 100.0;
+      testReport.setScore(score);
       testReport.setResult(errCount.intValue() == 0 ? TestReportResultValueSet.PASS : TestReportResultValueSet.FAIL);
 
       if (filter == null && suite == null) {
