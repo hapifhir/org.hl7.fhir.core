@@ -1080,7 +1080,7 @@ public class HierarchicalTableGenerator {
     boolean first = true;
     for (Cell t : r.getCells()) {
       XhtmlNode tc = renderCell(tr, t, "td", first ? r.getIcon() : null, first ? r.getHint() : null, first ? indents : null, !r.getSubRows().isEmpty(), first ? r.getAnchor() : null, color, r.getLineColor(), imagePath, border, outputTracker, model, r, first, false, model.getId(), null, first ? srPrefix : null);
-      if (first) {
+      if (model.active && first) {
         tc.setAttribute("role", "rowheader");
       }
       first = false;
