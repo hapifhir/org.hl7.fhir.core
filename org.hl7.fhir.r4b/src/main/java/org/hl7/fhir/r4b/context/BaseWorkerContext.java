@@ -129,6 +129,7 @@ import org.slf4j.event.Level;
 
 
 @Slf4j
+@Deprecated
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   public class ResourceProxy {

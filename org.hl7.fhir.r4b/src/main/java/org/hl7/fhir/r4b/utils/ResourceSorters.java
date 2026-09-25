@@ -4,6 +4,7 @@ import java.util.Comparator;
 
 import org.hl7.fhir.r4b.model.CanonicalResource;
 
+@Deprecated
 public class ResourceSorters {
 
   public static class CanonicalResourceSortByUrl implements Comparator<CanonicalResource> {

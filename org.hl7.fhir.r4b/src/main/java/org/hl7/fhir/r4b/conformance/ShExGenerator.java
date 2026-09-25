@@ -53,6 +53,7 @@ import org.hl7.fhir.r4b.terminologies.ValueSetExpander;
 import org.stringtemplate.v4.ST;
 
 
+@Deprecated
 public class ShExGenerator {
 
   public enum HTMLLinkPolicy {

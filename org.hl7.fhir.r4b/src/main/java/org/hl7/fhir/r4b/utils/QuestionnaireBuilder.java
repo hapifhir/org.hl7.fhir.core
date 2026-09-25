@@ -94,6 +94,7 @@ import org.hl7.fhir.utilities.Utilities;
  *
  */
 
+@Deprecated
 public class QuestionnaireBuilder {
 
   private static final int MaxListboxCodings = 20;

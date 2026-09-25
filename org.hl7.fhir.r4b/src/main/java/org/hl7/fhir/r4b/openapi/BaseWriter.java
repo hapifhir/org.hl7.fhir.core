@@ -36,6 +36,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 
+@Deprecated
 public class BaseWriter {
 
   protected JsonObject object;

@@ -60,6 +60,7 @@ import org.hl7.fhir.r4b.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.utilities.Utilities;
 
 
+@Deprecated
 public class GraphQLSchemaGenerator {
 
   public enum FHIROperationType {

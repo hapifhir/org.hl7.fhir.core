@@ -34,6 +34,7 @@ import org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideDefinitionP
 
 
 
+@Deprecated
 public class IGHelper {
 
   public static final String EXT_SPREADSHEET = ToolingExtensions.EXT_IGP_SPREADSHEET;

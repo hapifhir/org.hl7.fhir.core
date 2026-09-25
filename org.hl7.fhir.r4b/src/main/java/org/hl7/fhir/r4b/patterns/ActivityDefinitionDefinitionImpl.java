@@ -52,6 +52,7 @@ import org.hl7.fhir.r4b.model.StringType;
 import org.hl7.fhir.r4b.model.UriType;
 import org.hl7.fhir.r4b.model.UsageContext;
 
+@Deprecated
 public class ActivityDefinitionDefinitionImpl extends PatternBaseImpl implements Definition {
 
   private ActivityDefinition wrapped;

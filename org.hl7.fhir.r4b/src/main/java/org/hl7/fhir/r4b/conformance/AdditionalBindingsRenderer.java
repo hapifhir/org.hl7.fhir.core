@@ -27,6 +27,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
+@Deprecated
 public class AdditionalBindingsRenderer {
   public class AdditionalBindingDetail {
     private String purpose;

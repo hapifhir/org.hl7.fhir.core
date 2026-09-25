@@ -47,6 +47,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
+@Deprecated
 public class CapabilityStatementComparer extends CanonicalResourceComparer {
 
   public class CapabilityStatementComparison extends CanonicalResourceComparison<CapabilityStatement> {

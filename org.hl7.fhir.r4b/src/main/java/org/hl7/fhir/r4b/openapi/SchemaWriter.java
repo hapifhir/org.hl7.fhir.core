@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 
+@Deprecated
 public class SchemaWriter extends BaseWriter {
 
   public enum SchemaType {

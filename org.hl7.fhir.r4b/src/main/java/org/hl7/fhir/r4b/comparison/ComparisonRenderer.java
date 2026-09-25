@@ -40,6 +40,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
 
 @Slf4j
+@Deprecated
 public class ComparisonRenderer implements IHostApplicationServices {
 
   private IWorkerContext contextLeft;
