@@ -198,9 +198,9 @@ public class ProfileUtilities {
   }
 
   public enum AllowUnknownProfile {
-    NONE, // exception if there's any unknown profiles (the default)
+    NONE, // exception if there's any unknown profiles
     NON_EXTNEIONS, // don't raise an exception except on Extension (because more is going on there
-    ALL_TYPES // allow any unknow profile
+    ALL_TYPES // allow any unknown profile. This is the default - see allowUnknownProfile below
   }
 
   /**
