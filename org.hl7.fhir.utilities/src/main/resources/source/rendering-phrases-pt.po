@@ -26,7 +26,7 @@ msgstr "Tipo: {0}"
 #: ACTOR_DERIVED_FROM
 msgctxt "ACTOR_DERIVED_FROM"
 msgid "Derived From"
-msgstr ""
+msgstr "Derivado de"
 
 # ACTOR_DERIVED_FROM_NONE
 #: ACTOR_DERIVED_FROM_NONE
@@ -162,12 +162,12 @@ msgstr "Este conjunto de valores é um componente do conjunto de valores de base
 # BUNDLE_DOCUMENT_CONTENT
 #: BUNDLE_DOCUMENT_CONTENT
 msgid "Document Content"
-msgstr ""
+msgstr "Conteúdo do Documento"
 
 # BUNDLE_DOCUMENT_DETAILS
 #: BUNDLE_DOCUMENT_DETAILS
 msgid "Document Details"
-msgstr ""
+msgstr "Detalhes do Documento"
 
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
@@ -484,6 +484,7 @@ msgstr "Operações"
 # CAPABILITY_OPER
 #: CAPABILITY_OPER
 #, fuzzy
+msgctxt "CAPABILITY_OPER"
 msgid "Operation"
 msgstr "Funcionamento"
 
@@ -974,13 +975,13 @@ msgstr "Código fonte"
 #: CONC_MAP_SOURCE_CARD
 msgctxt "CONC_MAP_SOURCE_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Card."
 
 # CONC_MAP_SOURCE_TYPE
 #: CONC_MAP_SOURCE_TYPE
 msgctxt "CONC_MAP_SOURCE_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
@@ -1005,7 +1006,7 @@ msgstr "Código de destino"
 #: CONC_MAP_TRGT_CARD
 msgctxt "CONC_MAP_TRGT_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Card."
 
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
@@ -1017,7 +1018,7 @@ msgstr "Detalhes do conceito-alvo"
 #: CONC_MAP_TRGT_TYPE
 msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 # CONF_MAY
 #: CONF_MAY
@@ -2178,7 +2179,7 @@ msgstr "Nenhuma descrição fornecida"
 # GENERAL_BINDING_NO_VS_1
 #: GENERAL_BINDING_NO_VS_1
 msgid "Binding Description"
-msgstr ""
+msgstr "Descrição de vínculo"
 
 # GENERAL_BINDING_NO_VS_2
 #: GENERAL_BINDING_NO_VS_2
@@ -2312,6 +2313,7 @@ msgstr "Definição:"
 # GENERAL_DESC
 #: GENERAL_DESC
 #, fuzzy
+msgctxt "GENERAL_DESC"
 msgid "Description"
 msgstr "Descrição"
 
@@ -2449,6 +2451,7 @@ msgstr "Parâmetro"
 # GENERAL_PARS
 #: GENERAL_PARS
 #, fuzzy
+msgctxt "GENERAL_PARS"
 msgid "Parameters"
 msgstr "Parâmetros"
 
@@ -2824,6 +2827,7 @@ msgstr "Artigos"
 # LIST_REND_MODE
 #: LIST_REND_MODE
 #, fuzzy
+msgctxt "LIST_REND_MODE"
 msgid "Mode: {0}"
 msgstr "Modo: {0}"
 
@@ -3095,7 +3099,7 @@ msgstr "Médico de clínica geral"
 #: PAT_LANG
 msgid "Language:"
 msgid_plural "Languages:"
-msgstr[0] ""
+msgstr[0] "Língua:"
 msgstr[1] ""
 
 # PAT_LANG_HINT
@@ -4049,7 +4053,7 @@ msgstr ""
 # SDR_CLICK_COPY
 #: SDR_CLICK_COPY
 msgid "Click to copy URL"
-msgstr ""
+msgstr "Clicar para copiar o URL"
 
 # SDR_CODE_FROM
 #: SDR_CODE_FROM
@@ -4065,7 +4069,7 @@ msgstr "Cumpre com este perfil {0}"
 # SDR_CONCEPT_DOMAIN
 #: SDR_CONCEPT_DOMAIN
 msgid "Concept Domain"
-msgstr ""
+msgstr "Domínio de Conceito"
 
 # SDR_CONT_CH_DET_CS
 #: SDR_CONT_CH_DET_CS
@@ -4096,13 +4100,13 @@ msgstr ""
 # SDR_DEFN_CH_DET_SD
 #: SDR_DEFN_CH_DET_SD
 msgid "One or more text definitions, invariants or bindings have changed"
-msgstr ""
+msgstr "Uma ou mais definições de texto, invariantes ou vínculos foram alteradas"
 
 # SDR_DEFN_CH_DET_VS
 #: SDR_DEFN_CH_DET_VS
 msgctxt "SDR_DEFN_CH_DET_VS"
 msgid "One or more text definitions/displays have changed"
-msgstr ""
+msgstr "Uma ou mais definições de texto/visualização foram alteradas"
 
 # SDR_DEFN_CH_NO
 #: SDR_DEFN_CH_NO
@@ -4187,7 +4191,7 @@ msgstr ""
 #: SDR_EXT_EXT
 msgctxt "SDR_EXT_EXT"
 msgid "Extension"
-msgstr ""
+msgstr "Extensão"
 
 # SDR_EXT_MOD
 #: SDR_EXT_MOD
@@ -4198,7 +4202,7 @@ msgstr ""
 #: SDR_EXT_PATH
 msgctxt "SDR_EXT_PATH"
 msgid "Path"
-msgstr ""
+msgstr "Caminho"
 
 # SDR_EXT_UNCHANGED
 #: SDR_EXT_UNCHANGED
@@ -4397,7 +4401,7 @@ msgstr "Para a versão {0}"
 #: SDR_VER_FROM_PFX
 msgctxt "SDR_VER_FROM_PFX"
 msgid "FHIR versions"
-msgstr ""
+msgstr "Versão FHIR"
 
 # SDR_VER_FROM_SFX
 #: SDR_VER_FROM_SFX
@@ -4418,13 +4422,13 @@ msgstr ""
 #: SDR_VER_RANGE_MID
 msgctxt "SDR_VER_RANGE_MID"
 msgid "to"
-msgstr ""
+msgstr "para"
 
 # SDR_VER_RANGE_PFX
 #: SDR_VER_RANGE_PFX
 msgctxt "SDR_VER_RANGE_PFX"
 msgid "FHIR versions"
-msgstr ""
+msgstr "Versões FHIR"
 
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
@@ -5242,6 +5246,11 @@ msgstr "Este elemento deve ser suportado"
 #, fuzzy
 msgid "When this element is read"
 msgstr "Quando este elemento é lido"
+
+# STRUC_DEF_ELE_TRANSLATABLE
+#: STRUC_DEF_ELE_TRANSLATABLE
+msgid "This element is a candidate for being translated"
+msgstr ""
 
 # STRUC_DEF_ERROR
 #: STRUC_DEF_ERROR
@@ -6074,6 +6083,11 @@ msgstr "então o tipo é"
 msgid "This structure refers to these other structures"
 msgstr "Esta estrutura refere-se a estas outras estruturas"
 
+# STRUC_DEF_TRANSLATABLE
+#: STRUC_DEF_TRANSLATABLE
+msgid "Translatable"
+msgstr ""
+
 # STRUC_DEF_TYPE_BOUND
 #: STRUC_DEF_TYPE_BOUND
 #, fuzzy
@@ -6382,6 +6396,85 @@ msgstr "Dependências do plano de teste:"
 #, fuzzy
 msgid "Dependency - no description"
 msgstr "Dependência - sem descrição"
+
+# TEST_PLAN_IG_DEPENDENCIES
+#: TEST_PLAN_IG_DEPENDENCIES
+msgid "Dependencies"
+msgstr ""
+
+# TEST_PLAN_IG_DESCRIPTION
+#: TEST_PLAN_IG_DESCRIPTION
+msgctxt "TEST_PLAN_IG_DESCRIPTION"
+msgid "Description"
+msgstr ""
+
+# TEST_PLAN_IG_EXPECTED
+#: TEST_PLAN_IG_EXPECTED
+msgid "Expected"
+msgstr ""
+
+# TEST_PLAN_IG_FILE
+#: TEST_PLAN_IG_FILE
+msgid "File"
+msgstr ""
+
+# TEST_PLAN_IG_INPUT
+#: TEST_PLAN_IG_INPUT
+msgid "Input"
+msgstr ""
+
+# TEST_PLAN_IG_INPUTS
+#: TEST_PLAN_IG_INPUTS
+msgid "Inputs"
+msgstr ""
+
+# TEST_PLAN_IG_MODE
+#: TEST_PLAN_IG_MODE
+msgid "Mode"
+msgstr ""
+
+# TEST_PLAN_IG_MODES
+#: TEST_PLAN_IG_MODES
+msgid "Modes"
+msgstr ""
+
+# TEST_PLAN_IG_MODE_LABEL
+#: TEST_PLAN_IG_MODE_LABEL
+msgctxt "TEST_PLAN_IG_MODE_LABEL"
+msgid "Mode: {0}"
+msgstr ""
+
+# TEST_PLAN_IG_OPERATION
+#: TEST_PLAN_IG_OPERATION
+msgctxt "TEST_PLAN_IG_OPERATION"
+msgid "Operation"
+msgstr ""
+
+# TEST_PLAN_IG_PARAMETERS
+#: TEST_PLAN_IG_PARAMETERS
+msgctxt "TEST_PLAN_IG_PARAMETERS"
+msgid "Parameters"
+msgstr ""
+
+# TEST_PLAN_IG_REFERENCE
+#: TEST_PLAN_IG_REFERENCE
+msgid "Reference"
+msgstr ""
+
+# TEST_PLAN_IG_SCOPES
+#: TEST_PLAN_IG_SCOPES
+msgid "Scopes"
+msgstr ""
+
+# TEST_PLAN_IG_SUITE_LABEL
+#: TEST_PLAN_IG_SUITE_LABEL
+msgid "Suite: {0}"
+msgstr ""
+
+# TEST_PLAN_IG_TESTS
+#: TEST_PLAN_IG_TESTS
+msgid "Tests"
+msgstr ""
 
 # TEST_PLAN_LANG
 #: TEST_PLAN_LANG
@@ -7074,12 +7167,12 @@ msgstr ", onde os códigos estão contidos em"
 # VSR_LOGICAL
 #: VSR_LOGICAL
 msgid "Logical Definition (CLD)"
-msgstr ""
+msgstr "Definição lógica (CLD)"
 
 # VSR_NO_DEF
 #: VSR_NO_DEF
 msgid "No formal definition provided for this value set"
-msgstr ""
+msgstr "Nenhuma definição formal para este conjunto de valores"
 
 # VSR_RULES_TEXT
 #: VSR_RULES_TEXT
@@ -7089,7 +7182,7 @@ msgstr ""
 # VSR_TRIGGER
 #: VSR_TRIGGER
 msgid "Used as a trigger criteria in"
-msgstr ""
+msgstr "Usado como um critério de ativação em"
 
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
