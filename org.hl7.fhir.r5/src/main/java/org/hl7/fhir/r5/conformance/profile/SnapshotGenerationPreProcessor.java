@@ -447,7 +447,7 @@ public class SnapshotGenerationPreProcessor {
         merged.setFixed(base.getFixed().copy());          
       }
     } else if (source.hasPattern() && base.hasPattern()) {
-      merged.setPattern(checkPatternValues(baseSD.getVersionedUrl(), source.getPath()+".pattern", source.getFixed(), base.getFixed(), true));
+      merged.setPattern(checkPatternValues(baseSD.getVersionedUrl(), source.getPath()+".pattern", source.getPattern(), base.getPattern(), true));
     } else {
       merged.setPattern(chooseProp(source.getPattern(), base.getPattern()));
     }
@@ -636,7 +636,7 @@ public class SnapshotGenerationPreProcessor {
       Quantity q1 = (Quantity) v1;
       Quantity q2 = (Quantity) v2;
       if (q1.hasUnit() || q2.hasUnit()) {
-        if (Utilities.stringsEqual(q1.getUnit(), q2.getUnit())) {
+        if (!Utilities.stringsEqual(q1.getUnit(), q2.getUnit())) {
           throw new FHIRException(context.formatMessage(I18nConstants.SD_ADDITIONAL_BASE_INCOMPATIBLE_VALUES, vurl, path+"."+property+".unit", v1.fhirType(), v2.fhirType()));
         }
       }
@@ -667,7 +667,7 @@ public class SnapshotGenerationPreProcessor {
     for (Property p1 : v1.children()) {
       Property p2 = v2.getChildByName(p1.getName());
       if (p1.hasValues() && p2.hasValues()) {
-        if (p1.getValues().size() > 1 || p1.getValues().size() > 2) {
+        if (p1.getValues().size() > 1 || p2.getValues().size() > 1) {
           throw new Error("Not supported");          
         }
         merged.setProperty(p1.getName(), checkPatternValues(vurl, path+"."+p1.getName(), (DataType) p1.getValues().get(0), (DataType) p2.getValues().get(0), extras));
