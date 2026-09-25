@@ -42,13 +42,13 @@ start=@<Patient> AND {fhir:nodeRole [fhir:treeRoot]}
     	{fhir:v @fhirvs:administrative-gender}?;  # male | female | other | unknown
     fhir:birthDate @<date>?;                # The date of birth for the 
                                             # individual 
-    fhir:deceased @<boolean>  OR 
-    			@<dateTime>  ?;  # Indicates if the individual is 
+    fhir:deceased  @<boolean>  OR 
+    			@<dateTime> ?;  # Indicates if the individual is 
                                             # deceased or not 
     fhir:address @<OneOrMore_Address>?;     # An address for the individual
     fhir:maritalStatus @<CodeableConcept>?;  # Marital (civil) status of a patient
-    fhir:multipleBirth @<boolean>  OR 
-    			@<integer>  ?;  # Whether patient is part of a 
+    fhir:multipleBirth  @<boolean>  OR 
+    			@<integer> ?;  # Whether patient is part of a 
                                             # multiple birth 
     fhir:photo @<OneOrMore_Attachment>?;    # Image of the patient
     fhir:contact @<OneOrMore_Patient.contact>?;  # A contact party (e.g. guardian, 
@@ -59,7 +59,7 @@ start=@<Patient> AND {fhir:nodeRole [fhir:treeRoot]}
     fhir:generalPractitioner @<OneOrMore_Reference_Organization_OR_Practitioner_OR_PractitionerRole>?;  # Patient's nominated primary care 
                                             # provider 
     fhir:managingOrganization @<Reference> AND {fhir:link 
-    			@<Organization> ? }?;  # Organization that is the custodian 
+    			@<Organization> ?}?;  # Organization that is the custodian 
                                             # of the patient record 
     fhir:link @<OneOrMore_Patient.link>?;   # Link to a Patient or RelatedPerson 
                                             # resource that concerns the same 
@@ -76,7 +76,7 @@ start=@<Patient> AND {fhir:nodeRole [fhir:treeRoot]}
     fhir:gender @<code> AND
     	{fhir:v @fhirvs:administrative-gender}?;  # male | female | other | unknown
     fhir:organization @<Reference> AND {fhir:link 
-    			@<Organization> ? }?;  # Organization that is associated 
+    			@<Organization> ?}?;  # Organization that is associated 
                                             # with the contact 
     fhir:period @<Period>?;                 # The period during which this 
                                             # contact person or organization is 
@@ -96,7 +96,7 @@ start=@<Patient> AND {fhir:nodeRole [fhir:treeRoot]}
 <Patient.link> EXTENDS @<BackboneElement> CLOSED {   
     fhir:other @<Reference> AND {fhir:link 
     			@<Patient> OR 
-    			@<RelatedPerson> ? };  # The other patient or related 
+    			@<RelatedPerson> ?};  # The other patient or related 
                                             # person resource that the link 
                                             # refers to 
     fhir:type @<code> AND
@@ -145,7 +145,7 @@ start=@<Patient> AND {fhir:nodeRole [fhir:treeRoot]}
     rdf:first @<Reference> AND {fhir:link 
 			@<Organization> OR 
 			@<Practitioner> OR 
-			@<PractitionerRole> } ;
+			@<PractitionerRole> ?} ;
     rdf:rest [rdf:nil] OR @<OneOrMore_Reference_Organization_OR_Practitioner_OR_PractitionerRole> 
 }
 

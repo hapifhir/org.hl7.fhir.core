@@ -136,6 +136,8 @@ public abstract class ShExGeneratorBase {
 
   private static final String ALL_ENTRY_TEMPLATE = "(NOT { fhir:nodeRole [fhir:treeRoot] ; a [fhir:$id$] } OR @<$id$>)";
 
+// imports to avoid (this is a bug is FHIR R5 TODO: verify
+  public static List<String> importsToAvoid = Arrays.asList("http:", "HealthCareService", "rendering-xhtml");
 
   // Shape Definition
   //      the shape name
@@ -143,11 +145,14 @@ public abstract class ShExGeneratorBase {
   //      the list of element declarations
   //      an optional index element (for appearances inside ordered lists)
   private static final String SHAPE_DEFINITION_TEMPLATE =
-    "$comment$\n<$id$> CLOSED { $fhirType$ " +
+    "$comment$\n$abstract$<$id$> CLOSED { $fhirType$ " +
       "\n    $resourceDecl$" +
       "\n    $elements$" +
-      "\n    $contextOfUse$" +
+//      "\n    $contextOfUse$" +
       "\n} $constraints$ \n";
+
+  private static String DATATYPE_DEFINITION_TEMPLATE =
+    "$comment$\n<$id$> $datatype$ $constraints$\n";
 
   // Base DataTypes
   private List<String> baseDataTypes = Arrays.asList(
@@ -159,7 +164,7 @@ public abstract class ShExGeneratorBase {
   private List<String> shortIdException = Arrays.asList(
     "base64Binary", "boolean",
     "date", "dateTime", "decimal", "instant", "integer64",
-    "integer", "string", "time", "uri"
+    "integer", "string", "time", "uri", "xhtml"
   );
 
   private List<String> mappedFunctions = Arrays.asList(
@@ -181,18 +186,16 @@ public abstract class ShExGeneratorBase {
       "\n    rdf:rest [rdf:nil] OR @<$oomType$> " +
       "\n}\n";
 
-  // Resource Definition
-  //      an open shape of type Resource.  Used when completeModel = false.
-  private static final String RESOURCE_SHAPE_TEMPLATE =
-    "$comment$\n<Resource> {" +
-      "\n    $elements$" +
-      "\n    $contextOfUse$" +
-      "\n} $constraints$ \n";
+  private static String SIMPLEQUANTITY =
+    "\n<$restriction$> EXTENDS @<$base$> CLOSED {   " +
+      "\n    a [fhir:$restriction$]?;" +
+      "\n    fhir:comparator . {0}" +
+      "\n} \n";
 
   // If we have knowledge of all of the possible resources available to us (completeModel = true), we can build
   // a model of all possible resources.
   private static final String COMPLETE_RESOURCE_TEMPLATE =
-    "<Resource>  @<$resources$>" +
+	    "<Resource>  @<$resources$>" +
       "\n\n";
 
   // Resource Declaration
@@ -241,7 +244,7 @@ public abstract class ShExGeneratorBase {
   private static final String REFERENCE_DEFN_TEMPLATE = "@<$ref$Reference>";
 
   // What we emit for an xhtml
-  private static final String XHTML_TYPE_TEMPLATE = "xsd:string";
+  private static String XHTML_TYPE_TEMPLATE = "rdf:XMLLiteral";
 
   // Additional type for Coding
   private static final String CONCEPT_REFERENCE_TEMPLATE = "a NONLITERAL?;";
@@ -279,6 +282,7 @@ public abstract class ShExGeneratorBase {
    * doDataTypes -- whether or not to emit the data types.
    */
   private LinkedHashSet<Pair<StructureDefinition, ElementDefinition>> innerTypes, emittedInnerTypes;
+  private List<String> innerTypeNames;
 
   private List<String> oneOrMoreTypes;
 
@@ -289,7 +293,7 @@ public abstract class ShExGeneratorBase {
   private LinkedHashSet<String> datatypes, emittedDatatypes;
   private LinkedHashSet<String> references;
   private LinkedList<StructureDefinition> uniq_structures;
-  private HashSet<String> uniq_structure_urls;
+  private LinkedHashSet<String> uniq_structure_urls;
   private LinkedHashSet<ValueSet> required_value_sets;
   private LinkedHashSet<String> known_resources;          // Used when generating a full definition
 
@@ -310,6 +314,7 @@ public abstract class ShExGeneratorBase {
     applyConfiguration(Objects.requireNonNull(config, "config"));
     profileUtilities = new ProfileUtilities(context, null, null);
     innerTypes = new LinkedHashSet<Pair<StructureDefinition, ElementDefinition>>();
+    innerTypeNames = new ArrayList<String>();
     oneOrMoreTypes = new ArrayList<String>();
     constraintsList = new ArrayList<String>();
     unMappedFunctions = new ArrayList<String>();
@@ -330,6 +335,14 @@ public abstract class ShExGeneratorBase {
   protected abstract String getClassName(String name);
 
   protected abstract String getLinkPredicate();
+
+  /**
+   * Whether choice ([x]) elements should be emitted with a "{rdf:type IRI} AND " prefix.
+   * Defaults to false; overridden by R6 generator.
+   */
+  protected boolean emitChoiceTypeIriConstraint() {
+    return false;
+  }
 
   protected final void applyConfiguration(ShExGeneratorConfig config) {
     doDatatypes = config.isDoDatatypes();
@@ -372,6 +385,7 @@ public abstract class ShExGeneratorBase {
     List<StructureDefinition> list = new ArrayList<StructureDefinition>();
     list.add(structure);
     innerTypes.clear();
+    innerTypeNames.clear();
     oneOrMoreTypes.clear();
     constraintsList.clear();
     unMappedFunctions.clear();
@@ -390,7 +404,10 @@ public abstract class ShExGeneratorBase {
   }
 
   public void setExcludedStructureDefinitionUrls(List<String> excludedSDs){
-    this.excludedSDUrls = excludedSDs;
+    if (excludedSDs == null)
+      this.excludedSDUrls.clear();
+    else
+      this.excludedSDUrls = excludedSDs;
   }
 
   public List<StructureDefinition> getSelectedExtensions(){
@@ -469,10 +486,10 @@ public abstract class ShExGeneratorBase {
     // For unknown reasons, the list of structures carries duplicates.
     // We remove them.  Also, it is possible for the same sd to have multiple hashes...
     uniq_structures = new LinkedList<StructureDefinition>();
-    uniq_structure_urls = new HashSet<String>();
+    uniq_structure_urls = new LinkedHashSet<String>();
     StringBuffer allStructures = new StringBuffer("");
     for (StructureDefinition sd : structures) {
-      // Exclusion Criteria...
+	      // Exclusion Criteria for constraints
       if ((excludedSDUrls != null) &&
         (excludedSDUrls.contains(sd.getUrl()))) {
         log.trace("SKIPPED Generating ShEx for " + sd.getName() + "  [ " + sd.getUrl() + " ] !");
@@ -551,6 +568,8 @@ public abstract class ShExGeneratorBase {
       if (completeModel && known_resources.size() > 0) {
         shapeDefinitions.append("\n").append(tmplt(COMPLETE_RESOURCE_TEMPLATE)
           .add("resources", StringUtils.join(known_resources, "> OR\n\t@<")).render());
+        shapeDefinitions.append("\n").append(tmplt(SIMPLEQUANTITY)
+          .add("restriction", "SimpleQuantity").add("base", "Quantity").render());
         List<String> all_entries = new ArrayList<String>();
         for (String kr : known_resources)
           all_entries.add(tmplt(ALL_ENTRY_TEMPLATE).add("id", getClassName(kr)).render());
@@ -564,10 +583,32 @@ public abstract class ShExGeneratorBase {
         for (ValueSet vs : required_value_sets)
           sortedVS.add(genValueSet(vs));
 
-        Collections.sort(sortedVS, new BaseShExComparator());
+          Collections.sort(sortedVS, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+              if ((o1 == null)||(o2 == null))
+                return 0;
 
-        for (String svs : sortedVS)
-          shapeDefinitions.append("\n").append(svs);
+              try {
+                String s1 = (o1.indexOf("fhirvs:") != -1) ? StringUtils.substringBetween(o1, "fhirvs:", " ") : o1;
+                String s2 = (o2.indexOf("fhirvs:") != -1) ? StringUtils.substringBetween(o2, "fhirvs:", " ") : o2;
+                //debug("Comparing " + s1 + " and  " + s2);
+                if ((s1 == null)||(s2 == null))
+                  return 0;
+
+                return s1.compareTo(s2);
+              }
+              catch(Exception e){
+                debug("SORT COMPARISON FAILED BETWEEN \n\t\t" + o1 + "\n\t\t and \n\t\t" + o2);
+                debug(e.getMessage());
+                return 0;
+              }
+            }
+          });
+          
+          for (String svs : sortedVS) {
+              shapeDefinitions.append("\n").append(/*"#value_set_begins\n" +*/ svs /*+ "#value_set_ends"*/);
+          }
       }
 
       if ((unMappedFunctions != null) && (!unMappedFunctions.isEmpty())) {
@@ -581,6 +622,9 @@ public abstract class ShExGeneratorBase {
 
     StringBuffer allImports = new StringBuffer("");
     if (!imports.isEmpty()) {
+	    if (false && oneOrMoreTypes.size() > 0)
+        imports.add("aux");
+
       uniq_structures.forEach((StructureDefinition sdstruct) -> {
           imports.removeIf(s -> s.contains(getClassName(sdstruct.getName())));
       });
@@ -610,7 +654,7 @@ public abstract class ShExGeneratorBase {
       bd = sd.getBaseDefinitionNoVersion();
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //single literal character split
-      String[] els = bd.split("/");
+      String[] els = StringUtils.splitByWholeSeparator(bd, "/");
       bd = els[els.length - 1];
     }
 
@@ -655,46 +699,49 @@ public abstract class ShExGeneratorBase {
    * @return ShEx definition
    */
   private String genShapeDefinition(StructureDefinition sd, boolean top_level) {
-    // xhtml is treated as an atom
-    if("xhtml".equals(sd.getName()) || (completeModel && "Resource".equals(sd.getName())))
-      return "";
+    if("xhtml".equals(sd.getName())) {
+      return tmplt(SHAPE_DEFINITION_TEMPLATE)
+        .add("abstract", sd.getAbstract() ? "ABSTRACT " : "")
+        .add("id", getClassName(getExtendedType(sd)))
+        .add("fhirType", "")
+        .add("resourceDecl", "")
+        .add("elements", "fhir:v " + tmplt(XHTML_TYPE_TEMPLATE).render() + ";\nfhir:extension . {0};")
+        .add("comment", "")
+        .add("constraints", "")
+        .render();
+    }
 
     ST shape_defn;
     // Resources are either incomplete items or consist of everything that is defined as a resource (completeModel)
-    //    if (sd.getName().equals("ActivityDefinition")){
-    //      debug("ActivityDefinition found");
-    //    }
+    var className = getClassName(sd.getName());
 
-      var className = getClassName(sd.getName());
+    shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE)
+      .add("abstract", sd.getAbstract() ? "ABSTRACT " : "")
+      .add("id", getClassName(getExtendedType(sd)));
+    known_resources.add(className);
 
-      if("Resource".equals(className)) {
-        shape_defn = tmplt(RESOURCE_SHAPE_TEMPLATE);
-        known_resources.add(className);
-        } else {
-        shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", getClassName(getExtendedType(sd)));
-        known_resources.add(className);
+    if (baseDataTypes.contains(sd.getType())) {
+      shape_defn.add("resourceDecl", "\n");
+    } else {
+      if ("Element".equals(sd.getName()))
+        shape_defn.add("resourceDecl", tmplt(ROOT_TEMPLATE).render());
+      else {
+        String rootTmpl = tmplt(ROOT_TEMPLATE).render();
+        String btn = getBaseTypeName(sd);
+        if ((baseDataTypes.contains(btn)) ||
+          (shortIdException.contains(btn)))
+          rootTmpl = "\n";
 
-        if (baseDataTypes.contains(sd.getType())) {
-          shape_defn.add("resourceDecl", "\n");
-        } else {
-          if ("Element".equals(sd.getName()))
-            shape_defn.add("resourceDecl", tmplt(ROOT_TEMPLATE).render());
-          else {
-            String rootTmpl = tmplt(ROOT_TEMPLATE).render();
-            String btn = getBaseTypeName(sd);
-            if ((baseDataTypes.contains(btn))||
-              (shortIdException.contains(btn)))
-              rootTmpl = "\n";
+        String id = sd.getId();
 
-            ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
-              add("id", getClassName(sd.getId())).
-              add("root", rootTmpl);
+        ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
+          add("id", getClassName(id)).
+          add("root", rootTmpl);
 
-            shape_defn.add("resourceDecl", resource_decl.render());
-          }
-        }
+        shape_defn.add("resourceDecl", resource_decl.render());
       }
-      shape_defn.add("fhirType", " ");
+    }
+    shape_defn.add("fhirType", " ");
 
     // Generate the defining elements
     List<String> elements = new ArrayList<String>();
@@ -706,6 +753,8 @@ public abstract class ShExGeneratorBase {
     else if (sdn.equals("CodeableConcept"))
       elements.add(tmplt(CONCEPT_REFERENCES_TEMPLATE).render());
     else if (sdn.equals("Reference"))
+      elements.add(getResourceLinkTemplate());
+    else if (sdn.equals("canonical")) // TODO: inspect
       elements.add(getResourceLinkTemplate());
 
     String root_comment = null;
@@ -732,7 +781,7 @@ public abstract class ShExGeneratorBase {
           isInnerType = true;
         }
 
-        if (processConstraints) {
+        if (toProcessConstraints(sd)) {
           // Process constraints
           for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
             String sdType = sd.getType();
@@ -740,7 +789,7 @@ public abstract class ShExGeneratorBase {
             if ((!cstype.isEmpty()) && (cstype.indexOf("/") != -1)) {
               @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
               //single literal character split
-              String[] els = cstype.split("/");
+              String[] els = StringUtils.splitByWholeSeparator(cstype, "/");
               cstype = els[els.length - 1];
             }
 
@@ -766,13 +815,17 @@ public abstract class ShExGeneratorBase {
         if (children.size() > 0) {
           for (ElementDefinition child : children) {
             if (child.getPath().startsWith(ed.getPath()))
-              innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
+              addInnerType(sd, ed);
           }
         }
       }
     }
 
-    if (processConstraints) {
+    if (sd.getName().equals("uri")) {
+      elements.add(getResourceLinkTemplate());
+    }
+
+    if (toProcessConstraints(sd)) {
       // Constraints for differential to cover constraints on SD itself without any elements of its own
       for (ElementDefinition ded : sd.getDifferential().getElement()) {
         // Process constraints
@@ -794,7 +847,7 @@ public abstract class ShExGeneratorBase {
     }
 
     shape_defn.add("elements", StringUtils.join(elements, "\n"));
-    shape_defn.add("comment", root_comment == null? " " : "# " + root_comment);
+    shape_defn.add("comment", root_comment == null? " " : "# " + root_comment.replace("\n", "\n#")); // TODO: inspect
 
     String constraintStr = "";
 
@@ -804,39 +857,39 @@ public abstract class ShExGeneratorBase {
 
     shape_defn.add("constraints", constraintStr);
 
-    String contextOfUseStr = "";
-    ArrayList<String> contextOfUse = new ArrayList<String>();
-    if (!sd.getContext().isEmpty()) {
-      for (StructureDefinition.StructureDefinitionContextComponent uc : sd.getContext()) {
-        if (!uc.getExpression().isEmpty()) {
-          String toStore = uc.getExpression();
-          log.debug("CONTEXT-OF-USE FOUND: " + toStore);
-          if (toStore.indexOf("http") != -1) {
-            log.debug("\t\tWARNING: CONTEXT-OF-USE SKIPPED as it has 'http' in it, might be a URL, instead of '.' delimited string");
-            continue;  // some erroneous context of use may use a URL; ignore them
-          }
-          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-          //single literal character split
-          String[] backRefs = toStore.split("\\.");
-          toStore = "a [fhir:" + getClassName(backRefs[0]) + "]";
-          for (int i = 1; i < backRefs.length; i++)
-            toStore = "^fhir:" + getClassName(backRefs[i]) + " {" + toStore + "}";
+    // String contextOfUseStr = "";
+    // ArrayList<String> contextOfUse = new ArrayList<String>();
+    // if (!sd.getContext().isEmpty()) {
+    //   for (StructureDefinition.StructureDefinitionContextComponent uc : sd.getContext()) {
+    //     if (!uc.getExpression().isEmpty()) {
+    //       String toStore = uc.getExpression();
+    //       log.debug("CONTEXT-OF-USE FOUND: " + toStore);
+    //       if (toStore.indexOf("http") != -1) {
+    //         log.debug("\t\tWARNING: CONTEXT-OF-USE SKIPPED as it has 'http' in it, might be a URL, instead of '.' delimited string");
+    //         continue;  // some erroneous context of use may use a URL; ignore them
+    //       }
+    //       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //       //single literal character split
+    //       String[] backRefs = StringUtils.splitByWholeSeparator(toStore, ".");
+    //       toStore = "a [fhir:" + getClassName(backRefs[0]) + "]";
+    //       for (int i = 1; i < backRefs.length; i++)
+    //         toStore = "^fhir:" + getClassName(backRefs[i]) + " {" + toStore + "}";
 
-          if (!contextOfUse.contains(toStore)) {
-            contextOfUse.add(toStore);
-          }
-        }
-      }
+    //       if (!contextOfUse.contains(toStore)) {
+    //         contextOfUse.add(toStore);
+    //       }
+    //     }
+    //   }
 
-      if (!contextOfUse.isEmpty()) {
-        if (contextOfUse.size() > 1)
-          contextOfUseStr = "^fhir:extension { " + StringUtils.join(contextOfUse, "} OR \n      {") + "}\n";
-        else
-          contextOfUseStr = "^fhir:extension { " + contextOfUse.get(0) + "}\n";
-      }
-    }
+    //   if (!contextOfUse.isEmpty()) {
+    //     if (contextOfUse.size() > 1)
+    //       contextOfUseStr = "^fhir:extension { " + StringUtils.join(contextOfUse, "} OR \n      {") + "}\n";
+    //     else
+    //       contextOfUseStr = "^fhir:extension { " + contextOfUse.get(0) + "}\n";
+    //   }
+    // }
 
-    shape_defn.add("contextOfUse", contextOfUseStr);
+    // shape_defn.add("contextOfUse", contextOfUseStr);
 
     return shape_defn.render();
   }
@@ -868,10 +921,9 @@ public abstract class ShExGeneratorBase {
       } catch (Exception e) {
         //String message = "        FAILED to parse the constraint from Structure Definition: " + constItem + " [ " + e.getMessage() + " ]";
         String message = "        FAILED to parse the constraint from Structure Definition: " + constItem;
-        e.printStackTrace();
 
         translated = "";
-        log.debug(message);
+        log.debug(message, e);
       }
     }
     return commentUnmapped(translated);
@@ -924,8 +976,8 @@ public abstract class ShExGeneratorBase {
           break;
         case "NotEquals":
           if (!node.getOpNext().getKind().equals(ExpressionNode.Kind.Name)) {
-            ops = " [fhir:v  . -";
-            endOps = "] ";
+            ops = " {fhir:v [ . -";
+            endOps = "]} ";
             toQuote = true;
           } else {
             String toStore = "UNMAPPED_OPERATOR_" + opName + " in Node type: " + node.getKind();
@@ -1134,7 +1186,7 @@ public abstract class ShExGeneratorBase {
         pre += "\n# Unmapped construct found: " + StringUtils.substringBetween(temp, "SHEX_", "_SHEX");
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //fixed-width literal strings; safe
-        String tempNext = temp.replaceFirst("SHEX_", " ").replaceFirst("_SHEX", " ");
+        String tempNext = replaceOnceLiteral(replaceOnceLiteral(temp, "SHEX_", " "), "_SHEX", " ");
         temp = tempNext;
       }
 
@@ -1173,7 +1225,7 @@ public abstract class ShExGeneratorBase {
       if (depth == 0) {
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //CALLER is a fixed-width literal string constant; safe
-        String toReturn = funCall.replaceFirst(CALLER, mainTxt);
+        String toReturn = replaceOnceLiteral(funCall, CALLER, mainTxt + "");
         toReturn = postProcessing(toReturn, nextText);
         return toReturn.replace(CALLER, "");
       }
@@ -1182,8 +1234,12 @@ public abstract class ShExGeneratorBase {
         String dR = (mT.startsWith(".") || mT.startsWith("{") || mT.startsWith("[")) ? "" : ".";
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //CALLER is a fixed-width literal string constant; safe
-        String replacedCaller = funCall.replaceFirst(CALLER, Matcher.quoteReplacement(CALLER + dR + mT));
-        return postProcessing(replacedCaller, nextText);
+        // TODO: inspect
+        String replacement = CALLER + dR + mT;
+        if (".".equals(mT))
+          replacement = CALLER + " " + dR + mT;
+
+        return  postProcessing(replaceOnceLiteral(funCall, CALLER, replacement), nextText) ;
       }
     }
 
@@ -1229,7 +1285,7 @@ public abstract class ShExGeneratorBase {
     if ((q != null)&&(q.trim().startsWith("XOR"))){
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //fixed-width, safe
-      String[] xorParts = q.split("XOR");
+      String[] xorParts = StringUtils.splitByWholeSeparator(q, "XOR");
       qp = xorParts[1];
 
       // because p xor q = ( p and not q) OR (not p and q)
@@ -1261,6 +1317,19 @@ public abstract class ShExGeneratorBase {
     return str;
   }
 
+  private String replaceOnceLiteral(String text, String searchString, String replacement) {
+    if (text == null || searchString == null || searchString.isEmpty() || replacement == null) {
+      return text;
+    }
+
+    int index = text.indexOf(searchString);
+    if (index < 0) {
+      return text;
+    }
+
+    return text.substring(0, index) + replacement + text.substring(index + searchString.length());
+  }
+
   /**
    * Generate a flattened definition for the inner types
    * @return stringified inner type definitions
@@ -1268,7 +1337,7 @@ public abstract class ShExGeneratorBase {
   private String emitInnerTypes() {
     StringBuilder itDefs = new StringBuilder();
     while(emittedInnerTypes.size() < innerTypes.size()) {
-      for (Pair<StructureDefinition, ElementDefinition> it : new ArrayList<Pair<StructureDefinition, ElementDefinition>>(innerTypes)) {
+      for (Pair<StructureDefinition, ElementDefinition> it : new LinkedHashSet<Pair<StructureDefinition, ElementDefinition>>(innerTypes)) {
         if ((!emittedInnerTypes.contains(it))
           // && (it.getRight().hasBase() && it.getRight().getBase().getPath().startsWith(it.getLeft().getName()))
         ){
@@ -1303,7 +1372,7 @@ public abstract class ShExGeneratorBase {
   private String emitDataTypes() {
     StringBuilder dtDefs = new StringBuilder();
     while (emittedDatatypes.size() < datatypes.size()) {
-      for (String dt : new ArrayList<String>(datatypes)) {
+      for (String dt : new LinkedHashSet<String>(datatypes)) {
         if (!emittedDatatypes.contains(dt)) {
           StructureDefinition sd = context.fetchResource(StructureDefinition.class,
             ProfileUtilities.sdNs(dt, null), IWorkerContext.VersionResolutionRules.defaultRule());
@@ -1331,7 +1400,7 @@ public abstract class ShExGeneratorBase {
     } else {
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //single literal character split
-      String[] words = text.split(" ");
+      String[] words = StringUtils.splitByWholeSeparator(text, " ");
       int word_idx = 0;
       while(word_idx < words.length) {
         StringBuilder accum = new StringBuilder();
@@ -1414,19 +1483,19 @@ public abstract class ShExGeneratorBase {
     String card = ("*".equals(ed.getMax()) ? (ed.getMin() == 0 ? "*" : "+") : (ed.getMin() == 0 ? "?" : "")) + ";";
 
     element_def = tmplt(ELEMENT_TEMPLATE);
-    if (id.endsWith("[x]")) {
-      element_def.add("id", "fhir:" + shortId.replace("[x]", ""));
+    if (id.endsWith("[x]") && emitChoiceTypeIriConstraint()) {
+      element_def.add("id", "fhir:" + removeMultipleX(shortId) + " {rdf:type IRI} AND ");
     } else {
-      element_def.add("id", "fhir:" + shortId + " ");
+      element_def.add("id", "fhir:" + removeMultipleX(shortId) + " ");
     }
 
     List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
     if (children.size() > 0) {
-      String parentPath = sd.getName();
+      String parentPath = getStructurePathRoot(sd);
       if ((ed.hasContentReference() && (!ed.hasType())) || (!id.equals(parentPath + "." + shortId))) {
         //debug("Not Adding innerType:" + id + " to " + sd.getName());
       } else
-        innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
+        addInnerType(sd, ed);
     }
 
     if ("BackboneElement".equals(typ))
@@ -1435,15 +1504,14 @@ public abstract class ShExGeneratorBase {
     defn = simpleElement(sd, ed, typ);
 
     String refChoices = "";
+    List<String> refValues = new ArrayList<String>();
 
     if (id.endsWith("[x]")) {
-      //defn = " (" + genChoiceTypes(sd, ed, shortId) + ")";
-      defn = " " + genChoiceTypes(sd, ed, shortId) + " ";
-      //defn += " AND { rdf:type IRI } ";
+      defn = " " + genChoiceTypes(sd, ed, removeMultipleX(shortId));
     } else {
       if (ed.getType().size() == 1) {
         // Single entry
-        if ((defn.isEmpty())||(typ.equals(sd.getName())))
+        if ((defn.isEmpty())||(typ.equals(sd.getName()))||("xhtml".equals(sd.getName()))) // TODO: inspect
           defn = genTypeRef(sd, ed, id, ed.getType().get(0));
       } else if (ed.getContentReference() != null) {
         // Reference to another element
@@ -1464,7 +1532,6 @@ public abstract class ShExGeneratorBase {
       }
 
 
-      List<String> refValues = new ArrayList<String>();
       if (ed.hasType() && (ed.getType().get(0).getWorkingCode().equals("Reference"))) {
         if (ed.getType().get(0).hasTargetProfile()) {
 
@@ -1476,6 +1543,10 @@ public abstract class ShExGeneratorBase {
       }
 
       if (!refValues.isEmpty()) {
+        // First store the original type, if not already there
+//        if (!oneOrMoreTypes.contains(defn))
+//          oneOrMoreTypes.add(defn);
+
         Collections.sort(refValues);
         refChoices = StringUtils.join(refValues, "_OR_");
       }
@@ -1486,6 +1557,18 @@ public abstract class ShExGeneratorBase {
       card = card.replace("+", "");
       card = card.replace("*", "?");
       defn = defn.replace("<", "<" + ONE_OR_MORE_PREFIX);
+
+      if (refChoices.isEmpty()) {
+        String[] alltags = StringUtils.splitByWholeSeparator(defn, "<");
+        for (String st : alltags) {
+          if (!st.startsWith(ONE_OR_MORE_PREFIX))
+            continue;
+          String stbr = "<" + st;
+          String origTypeDef = StringUtils.substringBetween(stbr, "<", ">");
+          if (!oneOrMoreTypes.contains(origTypeDef))
+            oneOrMoreTypes.add(origTypeDef);
+        }
+      }
 
       String defnToStore = defn;
       if (!refChoices.isEmpty()) {
@@ -1498,8 +1581,8 @@ public abstract class ShExGeneratorBase {
         oneOrMoreTypes.add(defnToStore);
     } else {
       if (!refChoices.isEmpty()) {
-        defn += " AND {"+ getLinkPredicate() + " \n\t\t\t@<" +
-          refChoices.replace("_OR_", "> OR \n\t\t\t@<") + "> ? }";
+        defn += " AND {" + getLinkPredicate() + " \n\t\t\t@<" +
+          refChoices.replace("_OR_", "> OR \n\t\t\t@<") + "> ?}";
       }
     }
 
@@ -1517,17 +1600,15 @@ public abstract class ShExGeneratorBase {
 
   private void addImport(String typeDefn) {
       if ((typeDefn != null) && (!typeDefn.isEmpty())) {
-  //        String importType = StringUtils.substringBetween(typeDefn, "<", ">");
-  //        if ((importType.indexOf(ONE_OR_MORE_PREFIX) == -1) &&
-  //          (!imports.contains(importType)))
-  //            imports.add(importType);
-  //    }
-        @SuppressWarnings("checkstyle:patternUsage")
         //simple character class match; safe
+        @SuppressWarnings("checkstyle:patternUsage")
         Pattern p = Pattern.compile("<([^\\s>/]+)");
         Matcher m = p.matcher(typeDefn);
         while (m.find()) {
           String tag = m.group(1);
+
+          if (importsToAvoid.contains(tag)) // TODO: inspect
+            continue;
 
           if (tag.indexOf(ONE_OR_MORE_PREFIX) != -1) {
             tag = tag.substring(ONE_OR_MORE_PREFIX.length());
@@ -1585,20 +1666,47 @@ public abstract class ShExGeneratorBase {
     return tmplt(SIMPLE_ELEMENT_DEFN_TEMPLATE).add("typ", getClassName(typ)).add("vsdef", addldef).render();
   }
 
+  // TODO: inspect
+  private String removeMultipleX(String str) {
+    if ((str != null) && (!"".equals(str))) {
+      str = str.replace("[x]", "");
+    }
+
+    return str;
+  }
+
   private String vsprefix(String uri) {
     if(uri.startsWith(FHIR_VS))
       return "fhirvs:" + uri.replace(FHIR_VS, "");
     return "<" + uri + ">";
   }
 
+  private String getStructurePathRoot(StructureDefinition sd) {
+    if (sd.hasSnapshot() && sd.getSnapshot().hasElement() && sd.getSnapshot().getElementFirstRep().hasPath()) {
+      return sd.getSnapshot().getElementFirstRep().getPath();
+    }
+    return sd.getName();
+  }
+
+  private void addInnerType(StructureDefinition sd, ElementDefinition ed){
+    String pathRoot = getStructurePathRoot(sd);
+    if (!ed.getPath().startsWith(pathRoot))
+      throw new AssertionError("Expected element path " + ed.getPath() + " to start wtih " + pathRoot);
+    if (!ed.getType().isEmpty() && // if there's no type, the element's type is defined by a reference to another element
+      !innerTypeNames.contains(ed.getPath())) {
+      innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
+      innerTypeNames.add(ed.getPath());
+    }
+  }
+
   private String getCanonicalShapeName(String canonical) {
     // Remove | version suffix -- not relevant/specified for ShEx
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //single literal character split
-    String[] elements = canonical.split("/");
+    String[] elements = StringUtils.splitByWholeSeparator(canonical, "/");
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //single literal character split
-    String[] versionParts = elements[elements.length - 1].split("\\|");
+    String[] versionParts = StringUtils.splitByWholeSeparator(elements[elements.length - 1], "|");
     return versionParts[0];
   }
 
@@ -1617,7 +1725,7 @@ public abstract class ShExGeneratorBase {
         return genReference("", typ);
       else if(profileUtilities.getChildList(sd, ed).size() > 0) {
         // inline anonymous type - give it a name and factor it out
-        innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
+        addInnerType(sd, ed);
         return simpleElement(sd, ed, id);
       }
       else {
@@ -1628,6 +1736,9 @@ public abstract class ShExGeneratorBase {
 
     } else if (typ.getCode().startsWith(Constants.NS_SYSTEM_TYPE)) {
       String xt = getShexCode(typ.getWorkingCode());
+
+      if ("xhtml.value".equals(id))
+        xt = tmplt(XHTML_TYPE_TEMPLATE).render();
 
       // TODO: Remove the next line when the type of token gets switched to string
       // TODO: Add a rdf-type entry for valueInteger to xsd:integer (instead of int)
@@ -1657,7 +1768,7 @@ public abstract class ShExGeneratorBase {
       primitive_entry.add("typ", "xsd:string");
       return primitive_entry.render();
 
-    } else if(typ.getWorkingCode().equals("xhtml")) {
+    } else if(typ.getWorkingCode().equals("xhtml")) { // TODO: inspect
       return tmplt(XHTML_TYPE_TEMPLATE).render();
     } else {
       datatypes.add(typ.getWorkingCode());
@@ -1762,7 +1873,7 @@ public abstract class ShExGeneratorBase {
                                 String id) {
     List<String> choiceEntries = new ArrayList<String>();
     List<String> refValues = new ArrayList<String>();
-    String base = id.replace("[x]", "");
+    String base = removeMultipleX(id);
 
     for (ElementDefinition.TypeRefComponent typ : ed.getType()) {
       String entry = genChoiceEntry(sd, ed, base, typ);
@@ -1774,11 +1885,14 @@ public abstract class ShExGeneratorBase {
       }
 
       if (!refValues.isEmpty())
-        choiceEntries.add("(" + entry + " AND {" + getLinkPredicate() + " " + StringUtils.join(refValues, " OR \n\t\t\t ") + " }) ");
+        choiceEntries.add("(" + entry + " AND {" + getLinkPredicate() + " " + StringUtils.join(refValues, " OR \n\t\t\t ") + " ?}) ");
       else
         choiceEntries.add(entry);
     }
-    return StringUtils.join(choiceEntries, " OR \n\t\t\t");
+    String joined = StringUtils.join(choiceEntries, " OR \n\t\t\t");
+    if (choiceEntries.size() > 1 && emitChoiceTypeIriConstraint())
+      joined = "(" + joined + ")";
+    return joined;
   }
 
   /**
@@ -1820,12 +1934,12 @@ public abstract class ShExGeneratorBase {
       oomType = oneOrMoreType.replace(ONE_OR_MORE_CHOICES, "_");
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //ONE_OR_MORE_CHOICES is a literal string constant; safe
-      String[] choicesParts = oneOrMoreType.split(ONE_OR_MORE_CHOICES);
+      String[] choicesParts = StringUtils.splitByWholeSeparator(oneOrMoreType, ONE_OR_MORE_CHOICES);
       origType = choicesParts[0];
       restriction = "AND {" + getLinkPredicate() + " \n\t\t\t@<";
 
       String choices = choicesParts[1];
-      restriction += choices.replace("_OR_", "> OR \n\t\t\t@<") + "> }";
+      restriction += choices.replace("_OR_", "> OR \n\t\t\t@<") + "> ?}";
     }
 
     origType = origType.replace(ONE_OR_MORE_PREFIX, "");
@@ -1836,7 +1950,14 @@ public abstract class ShExGeneratorBase {
     addImport(origType);
     addImport(restriction);
     one_or_more_type.add("comment", "");
-    return one_or_more_type.render();
+
+    String rendered = one_or_more_type.render();
+    if (rendered.trim().isEmpty())
+      throw new RuntimeException("genOneOrMoreType(" + oneOrMoreType + ") got empty string");
+    if (false && origType.indexOf(".") == -1)
+      return "\n#oneOrMore_begin\n" + rendered + "\n#oneOrMore_end\n";
+
+    return rendered;
   }
 
   /**
@@ -1848,8 +1969,9 @@ public abstract class ShExGeneratorBase {
   private String genInnerTypeDef(StructureDefinition sd, ElementDefinition ed) {
     String path = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
     ST element_reference = tmplt(SHAPE_DEFINITION_TEMPLATE);
+    element_reference.add("abstract", "");
     element_reference.add("resourceDecl", "");  // Not a resource
-    element_reference.add("id", getClassName(path + getExtendedType(ed)));
+    element_reference.add("id", getClassName(removeMultipleX(path) + getExtendedType(ed)));
     element_reference.add("fhirType", " ");
     String comment = ed.getShort();
     element_reference.add("comment", comment == null? " " : "# " + comment);
@@ -1865,7 +1987,7 @@ public abstract class ShExGeneratorBase {
 
     List<String> innerConstraintsList = new ArrayList<String>();
 
-    if (processConstraints) {
+    if (toProcessConstraints(sd)) {
       // Process constraints
       for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
         String sdType = sd.getType();
@@ -1873,7 +1995,7 @@ public abstract class ShExGeneratorBase {
         if ((cstype != null) && (cstype.indexOf("/") != -1)) {
           @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
           //single literal character split
-          String[] els = cstype.split("/");
+          String[] els = StringUtils.splitByWholeSeparator(cstype, "/");
           cstype = els[els.length - 1];
         }
 
@@ -1907,6 +2029,23 @@ public abstract class ShExGeneratorBase {
     return element_reference.render();
   }
 
+  private boolean toProcessConstraints(StructureDefinition sd){
+    if (sd == null)
+      return false;
+
+    if (!processConstraints)
+      return false;
+
+    // Exclusion Criteria for constraints
+    if ((excludedSDUrls != null) &&
+      (excludedSDUrls.contains(sd.getUrl()))) {
+      printBuildMessage("SKIPPED Translating Constraints for " + sd.getName() + "  [ " + sd.getUrl() + " ] !");
+      printBuildMessage("Reason: It is in excluded list of structures to process constraints.");
+      return false;
+    }
+    return true;
+  }
+
   /**
    * Generate a reference to a resource
    * @param id attribute identifier
@@ -1921,6 +2060,15 @@ public abstract class ShExGeneratorBase {
     shex_ref.add("ref", ref);
     references.add(ref);
     return shex_ref.render();
+  }
+
+  private void debug(String message) {
+    if (this.debugMode)
+      log.debug(message);
+  }
+
+  private void printBuildMessage(String message){
+    // log.debug("ShExGenerator: {}", message);
   }
 
   /**
