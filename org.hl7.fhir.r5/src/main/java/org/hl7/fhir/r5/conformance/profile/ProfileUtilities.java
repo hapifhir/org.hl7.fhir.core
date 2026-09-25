@@ -1181,7 +1181,11 @@ public class ProfileUtilities {
     }
   }
 
-  private XVerExtensionManager makeXVer() {
+  /**
+   * Lazily creates the manager. Package visible because ProfilePathProcessor has to use
+   * this rather than getXver(), whose raw field is null until something else has run.
+   */
+  XVerExtensionManager makeXVer() {
     if (xver == null) {
       xver = XVerExtensionManagerFactory.createExtensionManager(context);
     }
