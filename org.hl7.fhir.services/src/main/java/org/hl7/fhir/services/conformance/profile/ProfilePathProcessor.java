@@ -1645,8 +1645,10 @@ public class ProfilePathProcessor {
 
       }
     }
-    // ok, done with that - next in the base list
-    cursors.baseCursor = baseSlices.get(baseSlices.size() - 1).getEnd() + 1;
+    // ok, done with that - next in the base list. findBaseSlices can return nothing (a
+    // slicing entry with no named slice rows, or one anchored on the slicer's own child),
+    // in which case the slicer's own scope is what has been dealt with
+    cursors.baseCursor = baseSlices.isEmpty() ? newBaseLimit + 1 : baseSlices.get(baseSlices.size() - 1).getEnd() + 1;
     cursors.diffCursor = newDiffLimit + 1;
     //throw new Error("not done yet - slicing / types @ "+cpath);
   }
