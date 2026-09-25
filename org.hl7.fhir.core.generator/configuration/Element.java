@@ -171,9 +171,12 @@
     * Returns the value as a string of the first extension found for any of the given URLs (in the order given)
     */
    public String getExtensionString(String... theUrls) throws FHIRException {
+     // Select ordinary extensions only; hasExtension can also match modifiers.
      for (String url : theUrls) {
-       if (hasExtension(url)) {
-         return getExtensionString(url);
+       for (Extension next : getExtensionsForRead()) {
+         if (url.equals(next.getUrl())) {
+           return getExtensionString(url);
+         }
        }
      }
      return null;
@@ -259,8 +262,17 @@
 
    public void copyNewExtensions(org.hl7.fhir.model.core.Element src, String... urls) {
      for (Extension e : src.getExtensionList()) {
-       if (Utilities.existsInList(e.getUrl(), urls) && !hasExtension(e.getUrl())) {
-         addExtension(e.copy(Base.COPY_DATA));
+       if (Utilities.existsInList(e.getUrl(), urls)) {
+         boolean exists = false;
+         for (Extension next : getExtensionsForRead()) {
+           if (e.getUrl().equals(next.getUrl())) {
+             exists = true;
+             break;
+           }
+         }
+         if (!exists) {
+           addExtension(e.copy(Base.COPY_DATA));
+         }
        }
      }
    }
