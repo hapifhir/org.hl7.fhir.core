@@ -1078,7 +1078,7 @@ public class SnapshotGenerationPreProcessor {
     if (!Utilities.existsInList(ed.getName(), "extension", "modifierExtension")) {
       return false;
     }
-    if (ed.getSlicing().getRules() != SlicingRules.OPEN || (!ed.getSlicing().hasOrdered() || ed.getSlicing().getOrdered()) || ed.getSlicing().getDiscriminator().size() != 1) {
+    if (ed.getSlicing().getRules() != SlicingRules.OPEN || ed.getSlicing().getOrdered() || ed.getSlicing().getDiscriminator().size() != 1) {
       return false;
     }
     ElementDefinitionSlicingDiscriminatorComponent d = ed.getSlicing().getDiscriminatorFirstRep();
