@@ -757,6 +757,8 @@ public class I18nConstants {
   public static final String SD_PATH_SLICING_DEPRECATED = "SD_PATH_SLICING_DEPRECATED";
   public static final String SD_PATH_SLICING_DEPRECATED_R5 = "SD_PATH_SLICING_DEPRECATED_R5";
   public static final String SD_PATH_TYPE_MISMATCH = "SD_PATH_TYPE_MISMATCH";
+  public static final String SD_ROOT_CHANGED = "SD_ROOT_CHANGED";
+  public static final String SD_ROOT_PROHIBITED = "SD_ROOT_PROHIBITED";
   public static final String SD_SPECIALIZED_TYPE_MATCHES = "SD_SPECIALIZED_TYPE_MATCHES";
   public static final String SD_TABLE_PROHIBITED = "SD_TABLE_PROHIBITED";
   public static final String SD_TABLE_REQUIRED = "SD_TABLE_REQUIRED";
@@ -848,6 +850,11 @@ public class I18nConstants {
   public static final String SM_TARGET_TYPE_UNKNOWN = "SM_TARGET_TYPE_UNKNOWN";
   public static final String SNAPSHOT_EXISTING_PROBLEM = "SNAPSHOT_EXISTING_PROBLEM";
   public static final String SNAPSHOT_IS_EMPTY = "SNAPSHOT_IS_EMPTY";
+  public static final String SNAPSHOT_TYPE_ROOT_CONSTRAINT_CONFLICT = "SNAPSHOT_TYPE_ROOT_CONSTRAINT_CONFLICT";
+  public static final String SNAPSHOT_TYPE_ROOT_DEFAULT_CONFLICT = "SNAPSHOT_TYPE_ROOT_DEFAULT_CONFLICT";
+  public static final String SNAPSHOT_TYPE_ROOT_FIXED_CONFLICT = "SNAPSHOT_TYPE_ROOT_FIXED_CONFLICT";
+  public static final String SNAPSHOT_TYPE_ROOT_SLICING = "SNAPSHOT_TYPE_ROOT_SLICING";
+  public static final String SNAPSHOT_TYPE_ROOT_VALUE_UNCOMPARABLE = "SNAPSHOT_TYPE_ROOT_VALUE_UNCOMPARABLE";
   public static final String STATUS_CODE_WARNING_CODE = "STATUS_CODE_WARNING_CODE";
   public static final String STRUCTUREDEFINITION__AT__ILLEGAL_CONSTRAINED_TYPE__FROM__IN_ = "StructureDefinition__at__illegal_constrained_type__from__in_";
   public static final String SUBSUMPTION_CS_HIERARCHY_MEANING = "SUBSUMPTION_CS_HIERARCHY_MEANING";

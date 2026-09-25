@@ -187,16 +187,17 @@ class ConceptMapRendererTest {
 
   @ParameterizedTest
   @MethodSource("ownerCases")
-  void missingWebPathRetainsNullPrefixedAnchor(RenderPath path, boolean legacy) throws IOException {
+  void missingWebPathRendersUnlinkedText(RenderPath path, boolean legacy) throws IOException {
     Fixture fixture = ownerFixture(path, legacy);
     fixture.codeSystems.get(legacy ? CS_EQUIVALENCE : CS_RELATIONSHIP).setWebPath(null);
 
     XhtmlNode cell = relationshipCell(fixture.render(), path, 0);
 
-    assertLink(cell, legacy ? "null#concept-map-equivalence-narrower"
-        : "null#concept-map-relationship-source-is-broader-than-target",
-        legacy ? "narrower" : "source-is-broader-than-target",
-        legacy ? "maps to narrower concept" : "is broader than");
+    assertEquals(legacy ? "maps to narrower concept" : "is broader than", cell.allText());
+    assertNull(cell.getElement("a"));
+    assertFalse(compose(cell).contains("href="));
+    assertFalse(compose(cell).contains("null#"));
+    assertEquals(legacy ? "narrower" : "source-is-broader-than-target", cell.getElement("span").getAttribute("title"));
   }
 
   @ParameterizedTest

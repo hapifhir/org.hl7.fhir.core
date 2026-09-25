@@ -662,6 +662,9 @@ public class StructureDefinitionValidator extends BaseValidator {
       ok = rule(errors, "2023-01-17", IssueType.INVALID, stack.getLiteralPath(), path.contains(".") || !element.hasChild("slicing", false), I18nConstants.SD_NO_SLICING_ON_ROOT, path) && ok;
     }
     ok = rule(errors, "2023-05-22", IssueType.NOTFOUND, stack.getLiteralPath(), snapshot || !constraint || !element.hasChild("meaningWhenMissing", false) || meaningWhenMissingAllowed(element), I18nConstants.SD_ELEMENT_NOT_IN_CONSTRAINT, "meaningWhenMissing", path) && ok;
+    if (!snapshot && path != null && !path.contains(".")) {
+      ok = validateRootElement(errors, element, stack, path, logical, constraint, "Extension".equals(typeName), base) && ok;
+    }
 
     List<Element> types = element.getChildrenByName("type");
     Set<String> typeCodes = new HashSet<>();
@@ -1334,6 +1337,54 @@ public class StructureDefinitionValidator extends BaseValidator {
   private boolean isAbstractType(String t) {
     StructureDefinition sd = context.fetchTypeDefinition(t);
     return sd != null && sd.getAbstract();
+  }
+
+  /**
+   * The root element of a structure describes the type (or the resource), not its use in some context, so
+   * some properties of ElementDefinition make no sense on it. This is checked on the differential, since
+   * that's what authors write (and snapshot generation drops most of these from a profile anyway)
+   */
+  private boolean validateRootElement(List<ValidationMessage> errors, Element element, NodeStack stack, String path, boolean logical, boolean constraint, boolean extension, StructureDefinition base) {
+    boolean ok = true;
+    // never possible: there's nothing before the root for a contentReference to point to, and whether
+    // an element is allowed to appear can't depend on its own content
+    ok = validateRootProhibited(errors, element, stack, path, "contentReference") && ok;
+    ok = validateRootProhibited(errors, element, stack, path, "condition") && ok;
+    if (!logical) {
+      // these are about the meaning of an element in context, which a type doesn't have (except in a logical model).
+      // meaningWhenMissing is allowed on an extension (what it means when the extension is absent), and in
+      // a profile it's already reported by SD_ELEMENT_NOT_IN_CONSTRAINT
+      if (!extension && !constraint) {
+        ok = validateRootProhibited(errors, element, stack, path, "meaningWhenMissing") && ok;
+      }
+      ok = validateRootProhibited(errors, element, stack, path, "orderMeaning") && ok;
+    }
+    // isModifier, isModifierReason and isSummary can only be defined by a specialization; a profile
+    // can't change them from the base. Extensions are the exception: a modifier extension says so on its root
+    if (constraint && !extension && base != null && base.hasSnapshot() && !base.getSnapshot().getElementList().isEmpty()) {
+      ElementDefinition baseRoot = base.getSnapshot().getElementList().get(0);
+      ok = validateRootUnchanged(errors, element, stack, path, "isModifier", baseRoot.hasIsModifierElement() ? baseRoot.getIsModifierElement().primitiveValue() : null, "false") && ok;
+      ok = validateRootUnchanged(errors, element, stack, path, "isModifierReason", baseRoot.hasIsModifierReasonElement() ? baseRoot.getIsModifierReasonElement().primitiveValue() : null, null) && ok;
+      ok = validateRootUnchanged(errors, element, stack, path, "isSummary", baseRoot.hasIsSummaryElement() ? baseRoot.getIsSummaryElement().primitiveValue() : null, "false") && ok;
+    }
+    return ok;
+  }
+
+  private boolean validateRootProhibited(List<ValidationMessage> errors, Element element, NodeStack stack, String path, String name) {
+    return rule(errors, "2026-09-25", IssueType.INVALID, stack.getLiteralPath(), !element.hasChild(name, false), I18nConstants.SD_ROOT_PROHIBITED, name, path);
+  }
+
+  /**
+   * @param baseValue the value on the root of the base structure, or null if it has none
+   * @param defaultValue what no value means (for the booleans, false - so isModifier = false in a profile is not a change)
+   */
+  private boolean validateRootUnchanged(List<ValidationMessage> errors, Element element, NodeStack stack, String path, String name, String baseValue, String defaultValue) {
+    if (!element.hasChild(name, false)) {
+      return true;
+    }
+    String value = element.getNamedChildValue(name, false);
+    String effectiveBase = baseValue != null ? baseValue : defaultValue;
+    return rule(errors, "2026-09-25", IssueType.INVALID, stack.getLiteralPath(), value != null && value.equals(effectiveBase), I18nConstants.SD_ROOT_CHANGED, name, path, value, baseValue != null ? baseValue : "(none)");
   }
 
   private boolean meaningWhenMissingAllowed(Element element) {
