@@ -36,15 +36,12 @@ import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.eclipse.jgit.ignore.IgnoreNode;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.model.core.Enumeration;
-import org.hl7.fhir.model.core.Enumerations.FHIRVersion;
-import org.hl7.fhir.model.core.ImplementationGuide.ImplementationGuideDependsOnComponent;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.model.core.ImplementationGuide.ImplementationGuideManifestComponent;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -115,8 +112,8 @@ public class NPMPackageGenerator {
     this.destFile = destFile;
     start();
     List<String> fhirVersion = new ArrayList<>();
-    for (Enumeration<FHIRVersion> v : ig.getFhirVersionList())
-      fhirVersion.add(v.asStringValue());
+    for (Base v : ig.getNamedValue("fhirVersion", false))
+      fhirVersion.add(((Enumeration<?>) v).asStringValue());
     buildPackageJson(pid, canonical, kind, url, date, ig, fhirVersion, notForPublication, relatedIgs);
   }
 
@@ -189,25 +186,6 @@ public class NPMPackageGenerator {
     String dtHuman = new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(date);
     String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
 
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    if (!ig.hasPackageId()) {
-      b.append("packageId");
-    }
-    if (!ig.hasVersion()) {
-      b.append("version");
-    }
-    if (!ig.hasFhirVersion()) {
-      b.append("fhirVersion");
-    }
-    if (!ig.hasLicense()) {
-      b.append("license");
-    }
-    for (ImplementationGuideDependsOnComponent d : ig.getDependsOnList()) {
-      if (!d.hasVersion()) {
-        b.append("dependsOn.version("+d.getUri()+")");
-      }
-    }
-
     JsonObject npm = new JsonObject();
     npm.add("name", pid);
     npm.add("version", ig.getVersion());
@@ -236,32 +214,30 @@ public class NPMPackageGenerator {
       vl.add(new JsonString(v));
     }
     
-    if (kind != PackageType.CORE) {
+    PackageDependencyPlanner.Result dependencies = PackageDependencyPlanner.plan(ig, fhirVersion, kind);
+    if (dependencies.hasDependencies()) {
       JsonObject dep = new JsonObject();
       npm.add("dependencies", dep);
-      for (String v : fhirVersion) { 
-        String vp = packageForVersion(v);
-        if (vp != null ) {
-          dep.add(vp, v);
+      for (PackageDependencyPlanner.Entry entry : dependencies.getEntries()) {
+        if (entry.getValue() == null) {
+          dep.addNull(entry.getName());
+        } else {
+          dep.add(entry.getName(), entry.getValue());
         }
       }
-      for (ImplementationGuideDependsOnComponent d : ig.getDependsOnList()) {
-        if (!d.hasExtension(ExtensionDefinitions.EXT_IGDEP_NO_SAVE)) {
-          if (d.getPackageIdElement().hasUserData(UserDataNames.IG_DEP_ALIASED)) {
-            dep.add(d.getId() + "@npm:" + d.getPackageId(), d.getVersion());
-          } else {
-            dep.add(d.getPackageId(), d.getVersion());
-          }
-        }
-      }
+    }
+    for (String warning : dependencies.getWarnings()) {
+      log.warn(warning);
     }
     if (ig.hasPublisher()) {
       npm.add("author", ig.getPublisher());
     }
     JsonArray m = new JsonArray();
-    for (ContactDetail t : ig.getContactList()) {
-      String email = email(t.getTelecomList());
-      String url = url(t.getTelecomList());
+    for (Base contact : ig.getNamedValue("contact", false)) {
+      ContactDetail t = (ContactDetail) contact;
+      Base[] telecom = t.getNamedValue("telecom", false);
+      String email = email(telecom);
+      String url = url(telecom);
       if (t.hasName() && (email != null || url != null)) {
         JsonObject md = new JsonObject();
         m.add(md);
@@ -274,14 +250,18 @@ public class NPMPackageGenerator {
     }
     if (m.size() > 0)
       npm.add("maintainers", m);
-    if (ig.getManifest().hasRendering())
-      npm.add("homepage", ig.getManifest().getRendering());
+    Base[] manifests = ig.getNamedValue("manifest", false);
+    if (manifests.length > 0) {
+      ImplementationGuideManifestComponent manifest = (ImplementationGuideManifestComponent) manifests[0];
+      if (manifest.hasRendering())
+        npm.add("homepage", manifest.getRendering());
+    }
     JsonObject dir = new JsonObject();
     npm.add("directories", dir);
     dir.add("lib", "package");
     dir.add("example", "example");
-    if (ig.hasJurisdiction() && ig.getJurisdictionList().size() == 1 && ig.getJurisdictionFirstRep().getCodingList().size() == 1) {
-      Coding c = ig.getJurisdictionFirstRep().getCodingFirstRep();
+    Coding c = jurisdiction(ig);
+    if (c != null) {
       npm.add("jurisdiction", c.getSystem()+"#"+c.getCode());
     }
     if (relatedIgs != null) {
@@ -306,26 +286,21 @@ public class NPMPackageGenerator {
     packageManifest.add("fhirVersion", fv);
     packageManifest.add("date", dt);
     packageManifest.add("name", ig.getPackageId());
-    if (ig.hasJurisdiction() && ig.getJurisdictionList().size() == 1 && ig.getJurisdictionFirstRep().getCodingList().size() == 1) {
-      Coding c = ig.getJurisdictionFirstRep().getCodingFirstRep();
+    if (c != null) {
       packageManifest.add("jurisdiction", c.getSystem()+"#"+c.getCode());
     }
   }
 
 
-  private String packageForVersion(String v) {
-    if (v == null)
-      return null;
-    if (v.startsWith("1.0"))
-      return "hl7.fhir.r2.core";
-    if (v.startsWith("1.4"))
-      return "hl7.fhir.r2b.core";
-    if (v.startsWith("3.0"))
-      return "hl7.fhir.r3.core";
-    if (v.startsWith("4.0"))
-      return "hl7.fhir.r4.core";
-    if (v.startsWith("4.1") || v.startsWith("4.3"))
-      return "hl7.fhir.r4b.core";
+  private Coding jurisdiction(ImplementationGuide ig) {
+    if (ig.hasJurisdiction()) {
+      Base[] jurisdictions = ig.getNamedValue("jurisdiction", false);
+      if (jurisdictions.length == 1) {
+        Base[] codings = ((CodeableConcept) jurisdictions[0]).getNamedValue("coding", false);
+        if (codings.length == 1)
+          return (Coding) codings[0];
+      }
+    }
     return null;
   }
 
@@ -341,8 +316,9 @@ public class NPMPackageGenerator {
   }
 
 
-  private String url(List<ContactPoint> telecom) {
-    for (ContactPoint cp : telecom) {
+  private String url(Base[] telecom) {
+    for (Base value : telecom) {
+      ContactPoint cp = (ContactPoint) value;
       if (cp.getSystem() == ContactPointSystem.URL)
         return cp.getValue();
     }
@@ -350,8 +326,9 @@ public class NPMPackageGenerator {
   }
 
 
-  private String email(List<ContactPoint> telecom) {
-    for (ContactPoint cp : telecom) {
+  private String email(Base[] telecom) {
+    for (Base value : telecom) {
+      ContactPoint cp = (ContactPoint) value;
       if (cp.getSystem() == ContactPointSystem.EMAIL)
         return cp.getValue();
     }
