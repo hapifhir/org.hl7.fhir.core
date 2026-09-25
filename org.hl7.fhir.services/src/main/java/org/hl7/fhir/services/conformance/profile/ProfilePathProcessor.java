@@ -673,6 +673,7 @@ public class ProfilePathProcessor {
     ElementDefinition res;
     ElementDefinition template = null;
     StructureDefinition templateSD = null;
+    StructureDefinition typeProfileForRoot = null; // a data type profile whose root has to be merged into this element
     if (diffMatches.get(0).hasType() && "Reference".equals(diffMatches.get(0).getTypeList().get(0).getWorkingCode()) && !profileUtilities.isValidType(diffMatches.get(0).getTypeList().get(0), currentBase)) {
       if (!ProfileUtilities.isSuppressIgnorableExceptions()) {
         throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT, getUrl(), diffMatches.get(0).getPath(), diffMatches.get(0).getTypeList().get(0), currentBase.typeSummary()));
@@ -708,6 +709,10 @@ public class ProfilePathProcessor {
         }
       }
       if (firstTypeStructureDefinition != null) {
+        if (isDataTypeProfile(firstTypeStructureDefinition) && diffMatches.get(0).getTypeList().get(0).getProfileList().size() == 1
+            && !firstTypeProfile.hasExtension(ExtensionDefinitions.EXT_PROFILE_ELEMENT) && !baseHasProfile(currentBase, firstTypeProfile.getValue())) {
+          typeProfileForRoot = firstTypeStructureDefinition;
+        }
         if (!firstTypeStructureDefinition.isGeneratingSnapshot()) { // can't do this check while generating
           if (!profileUtilities.isMatchingType(firstTypeStructureDefinition, diffMatches.get(0).getTypeList(), firstTypeProfile.getExtensionString(ExtensionDefinitions.EXT_PROFILE_ELEMENT))) {
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE2, firstTypeStructureDefinition.getUrl(), diffMatches.get(0).getPath(), firstTypeStructureDefinition.getType(), firstTypeProfile.getValue(), diffMatches.get(0).getTypeList().get(0).getWorkingCode()));
@@ -807,6 +812,13 @@ public class ProfilePathProcessor {
       }
     }
     profileUtilities.markExtensions(outcome, false, templateSD);
+    if (typeProfileForRoot != null) {
+      // the constraints on the root of the data type profile apply to this element too. This happens before the
+      // differential is applied, since the differential overrides both the base and the type profile
+      for (ValidationMessage vm : new TypeProfileRootMerger(profileUtilities.getContext()).merge(outcome, typeProfileForRoot, getProfileName() + "." + outcome.getPath())) {
+        profileUtilities.addMessage(vm);
+      }
+    }
     profileUtilities.updateFromDefinition(outcome, diffMatches.get(0), getProfileName(), isTrimDifferential(), getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffMatches.get(0)), mapHelper, fromSlicer);
 //          if (outcome.getPath().endsWith("[x]") && outcome.getTypeList().size() == 1 && !outcome.getTypeList().get(0).getCode().equals("*") && !diffMatches.get(0).hasSlicing()) // if the base profile allows multiple types, but the profile only allows one, rename it
 //            outcome.setPath(outcome.getPath().substring(0, outcome.getPath().length()-3)+Utilities.capitalize(outcome.getTypeList().get(0).getCode()));
@@ -932,6 +944,66 @@ public class ProfilePathProcessor {
       }
     }
     return res;
+  }
+
+  /**
+   * If the differential element gives the element a data type profile (and the base doesn't already have it),
+   * return that profile, with a snapshot, so its root can be merged into the element. Otherwise null
+   */
+  private StructureDefinition getTypeProfileForRootMerge(ElementDefinition diffItem, ElementDefinition base) {
+    if (diffItem.getTypeList().size() != 1 || diffItem.getTypeList().get(0).getProfileList().size() != 1 || "Reference".equals(diffItem.getTypeList().get(0).getWorkingCode())) {
+      return null;
+    }
+    CanonicalType profile = diffItem.getTypeList().get(0).getProfileList().get(0);
+    if (profile.hasExtension(ExtensionDefinitions.EXT_PROFILE_ELEMENT)) {
+      return null;
+    }
+    if (baseHasProfile(base, profile.getValue())) {
+      return null; // already in the base, so already merged
+    }
+    StructureDefinition sd = profileUtilities.getContext().fetchResource(StructureDefinition.class, profile.getValue(), ExtensionUtilities.getVersionResolutionRules(profile));
+    if (sd == null || !isDataTypeProfile(sd)) {
+      return null;
+    }
+    if (!sd.hasSnapshot() && !sd.isGeneratingSnapshot()) {
+      StructureDefinition sdb = profileUtilities.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
+      if (sdb == null) {
+        throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), sd.getUrl()));
+      }
+      profileUtilities.checkNotGenerating(sdb, "a data type profile base");
+      profileUtilities.generateSnapshot(sdb, sd, sd.getUrl(), (sdb.hasWebPath()) ? Utilities.extractBaseUrl(sdb.getWebPath()) : getWebUrl(), sd.getName());
+    }
+    return sd.getSnapshot().getElementList().isEmpty() ? null : sd;
+  }
+
+  /**
+   * true if the base element already has this type profile. The version is ignored: a base loaded from another
+   * version of FHIR carries versioned canonicals (e.g. SimpleQuantity|4.0.1) where the differential usually doesn't
+   */
+  private boolean baseHasProfile(ElementDefinition base, String profile) {
+    String p = canonicalWithoutVersion(profile);
+    for (TypeRefComponent tr : base.getTypeList()) {
+      for (CanonicalType ct : tr.getProfileList()) {
+        if (p != null && p.equals(canonicalWithoutVersion(ct.getValue()))) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private String canonicalWithoutVersion(String url) {
+    return url == null || !url.contains("|") ? url : url.substring(0, url.indexOf("|"));
+  }
+
+  /**
+   * true if this is a profile on a data type (not an extension, a resource or a logical model), so the
+   * constraints on its root get merged into the element that uses it
+   */
+  private boolean isDataTypeProfile(StructureDefinition sd) {
+    return (sd.getKind() == StructureDefinitionKind.COMPLEXTYPE || sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE)
+        && sd.getDerivation() == StructureDefinition.TypeDerivationRule.CONSTRAINT
+        && !"Extension".equals(sd.getType());
   }
 
   private ElementDefinition merge(ElementDefinition src, ElementDefinition slicer) {
@@ -1390,9 +1462,16 @@ public class ProfilePathProcessor {
         ProfileUtilities.markExtensions(outcome, false, sourceStructureDefinition);
         debugCheck(outcome);
         addToResult(outcome);
+        // a data type profile on the new slice: merge the constraints on its root (before the differential, which overrides both)
+        StructureDefinition typeProfileForRoot = getTypeProfileForRootMerge(diffItem, template);
+        if (typeProfileForRoot != null) {
+          for (ValidationMessage vm : new TypeProfileRootMerger(profileUtilities.getContext()).merge(outcome, typeProfileForRoot, getProfileName() + "." + outcome.getPath() + ":" + diffItem.getSliceName())) {
+            profileUtilities.addMessage(vm);
+          }
+        }
         profileUtilities.updateFromDefinition(outcome, diffItem, getProfileName(), isTrimDifferential(), getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffItem), mapHelper, false);
         
-        // do we need to pick up constraints from the type?
+        // do we need to pick up constraints from the type? (for data type profiles, that was done above)
         List<String> profiles = new ArrayList<>();
         for (TypeRefComponent tr : outcome.getTypeList()) {
           for (CanonicalType ct : tr.getProfileList()) {
@@ -1401,7 +1480,7 @@ public class ProfilePathProcessor {
         }
         if (profiles.size() == 1) {
           StructureDefinition sdt = profileUtilities.getContext().fetchResource(StructureDefinition.class, profiles.get(0), VersionResolutionRules.defaultRule());
-          if (sdt != null) {
+          if (sdt != null && !isDataTypeProfile(sdt)) {
             ElementDefinition edt = sdt.getSnapshot().getElementFirstRep();
             if (edt.isMandatory() && !outcome.isMandatory()) {
               outcome.setMin(edt.getMin());

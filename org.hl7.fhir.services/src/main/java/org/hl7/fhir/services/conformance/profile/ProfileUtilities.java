@@ -1200,7 +1200,7 @@ public class ProfileUtilities {
     return binding.hasStrength() ? binding.getStrength().toCode() : "(none)";
   }
 
-  private void addMessage(ValidationMessage msg) {
+  void addMessage(ValidationMessage msg) {
     messages.add(msg);
     if (msg.getLevel() == IssueSeverity.ERROR && wantThrowExceptions) {
       throw new DefinitionException(msg.getMessage());   
@@ -3346,11 +3346,19 @@ public class ProfileUtilities {
   }
 
   private boolean hasBindableType(ElementDefinition ed) {
+    List<String> codes = new ArrayList<>();
     for (TypeRefComponent tr : ed.getTypeList()) {
-      if (Utilities.existsInList(tr.getWorkingCode(), "Coding", "CodeableConcept", "Quantity", "uri", "string", "code", "CodeableReference")) {
+      codes.add(tr.getWorkingCode());
+    }
+    if (codes.isEmpty() && ed.hasPath() && !ed.getPath().contains(".")) {
+      // the root element has no type: it is the type (e.g. the root of a CodeableConcept profile)
+      codes.add(ed.getPath());
+    }
+    for (String code : codes) {
+      if (Utilities.existsInList(code, "Coding", "CodeableConcept", "Quantity", "uri", "string", "code", "CodeableReference")) {
         return true;
       }
-      StructureDefinition sd = context.fetchTypeDefinition(tr.getCode());
+      StructureDefinition sd = context.fetchTypeDefinition(code);
       if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_BINDING_STYLE)) {
         return true;
       }
