@@ -244,6 +244,18 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       context.loadFromPackage(pi, null, true);
       return build(context);
     }
+
+    /**
+     * As for fromPackage(pi), but using the loader provided (e.g. so that it can set web paths).
+     * Unlike fromPackage(pi, loader, genSnapshots), this doesn't finish loading
+     */
+    public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoaderN loader) throws IOException, FHIRException {
+      SimpleWorkerContext context = getSimpleWorkerContextInstance();
+      context.setAllowLoadingDuplicates(allowLoadingDuplicates);
+      context.terminologyClientManager.setFactory(TerminologyClientR6.factory());
+      context.loadFromPackage(pi, loader, true);
+      return build(context);
+    }
     
     private Parameters makeExpProfile() {
       // The cache-id is no longer sent as an expansion parameter; it travels as the
