@@ -143,7 +143,12 @@ public class DataRenderer extends Renderer implements CodeResolver {
           throw new DefinitionException(context.formatPhrase(RenderingI18nContext.DATA_REND_MKDWN_LNK, link) + " ");
         } 
 
-        text = left+"["+link+"]("+url+(path == null ? "" : "#"+path)+")"+right; 
+        if (url == null) {
+          // nothing to link to
+          text = left+link+right;
+        } else {
+          text = left+"["+link+"]("+url+(path == null ? "" : "#"+path)+")"+right; 
+        }
       } 
 
       // 2. markdown 

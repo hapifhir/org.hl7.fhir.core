@@ -103,7 +103,7 @@ public class RequirementsRenderer extends ResourceRenderer {
       } else {
         for (ResourceWrapper t : stmt.children("conformance")) {
           if (first) first = false; else td.tx(", ");
-          if (cs != null) {
+          if (cs != null && cs.hasWebPath()) {
             td.ah(context.prefixLocalHref(cs.getWebPath()+"#conformance-expectation-"+t.primitiveValue())).tx(t.primitiveValue().toUpperCase());          
           } else {
             td.tx(t.primitiveValue().toUpperCase());
@@ -126,9 +126,9 @@ public class RequirementsRenderer extends ResourceRenderer {
           if (reqr != null) {
             RequirementsStatementComponent stmtr = reqr.findStatement(key);
             if (stmtr != null) {
-              li.ah(context.prefixLocalHref(reqr.getWebPath()+"#"+key)).tx(reqr.present() + " # " +(stmt.has("label") ? stmt.primitiveValue("label") : stmt.primitiveValue("key")));
+              li.ah(reqr.hasWebPath() ? context.prefixLocalHref(reqr.getWebPath()+"#"+key) : null).tx(reqr.present() + " # " +(stmt.has("label") ? stmt.primitiveValue("label") : stmt.primitiveValue("key")));
             } else {
-              li.ah(context.prefixLocalHref(reqr.getWebPath()+"#"+key)).tx(reqr.present()+" # "+key);              
+              li.ah(reqr.hasWebPath() ? context.prefixLocalHref(reqr.getWebPath()+"#"+key) : null).tx(reqr.present()+" # "+key);              
             }
           } else {
             li.code(stmt.primitiveValue("derivedFrom"));

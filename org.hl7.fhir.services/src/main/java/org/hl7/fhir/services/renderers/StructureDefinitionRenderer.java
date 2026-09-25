@@ -2294,7 +2294,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), tail(ed.getElement().getPath()), ed.getElement().getPath())); 
         } else { 
           c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE)+" ", null)); 
-          c.getPieces().add(gen.new Piece(ed.getSource().getWebPath()+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getTypeName()+")", ed.getElement().getPath()));
+          c.getPieces().add(gen.new Piece(ed.getSource().hasWebPath() ? ed.getSource().getWebPath()+"#"+ed.getElement().getPath() : null, tail(ed.getElement().getPath())+" ("+ed.getSource().getTypeName()+")", ed.getElement().getPath()));
         } 
       } 
       return c; 
@@ -2492,7 +2492,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   private String pfx(String prefix, String url) { 
-    return Utilities.isAbsoluteUrl(url) ? url : prefix + url; 
+    return url == null || Utilities.isAbsoluteUrl(url) ? url : prefix + url; 
   } 
  
   private void genTargetLink(HierarchicalTableGenerator gen, String profileBaseFileName, String corePath, Cell c, TypeRefComponent t, String u, StructureDefinition src) {
@@ -2556,7 +2556,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
  
   private String checkPrepend(String corePath, String path) { 
-    if (context.getPkp() != null && context.getPkp().prependLinks() && !(path.startsWith("http:") || path.startsWith("https:"))) 
+    if (path != null && context.getPkp() != null && context.getPkp().prependLinks() && !(path.startsWith("http:") || path.startsWith("https:"))) 
       return corePath+path; 
     else  
       return path; 
@@ -3074,7 +3074,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (ed.getSource() == profile) { 
             c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE, ed.getElement().getPath()), null)); 
           } else { 
-            c.getPieces().add(gen.new Piece(ed.getSource().getWebPath()+"#"+ed.getElement().getPath(), context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE, ed.getSource().getTypeName()) +"."+ed.getElement().getPath(), null)); 
+            c.getPieces().add(gen.new Piece(ed.getSource().hasWebPath() ? ed.getSource().getWebPath()+"#"+ed.getElement().getPath() : null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE, ed.getSource().getTypeName()) +"."+ed.getElement().getPath(), null)); 
           }           
         } 
       } 
@@ -5471,8 +5471,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if ("http://unitsofmeasure.org/".equals(coding.getSystem())) 
       return " (" + (context.formatPhrase(RenderingI18nContext.GENERAL_UCUM)) + ": " + coding.getCode() + ")"; 
     CodeSystem cs = context.getContext().fetchCodeSystem(coding.getSystem(), VersionResolutionRules.defaultRule());
-    if (cs == null) 
-      return "<span title=\"" + coding.getSystem() + "\">" + coding.getCode() + "</a>" + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")"); 
+    if (cs == null || !cs.hasWebPath()) 
+      return "<span title=\"" + Utilities.escapeXml(cs == null ? coding.getSystem() : cs.present()) + "\">" + coding.getCode() + "</span>" + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")"); 
     else 
       return "<a title=\"" + cs.present() + "\" href=\"" + Utilities.escapeXml(cs.getWebPath()) + "#" + cs.getId() + "-" + coding.getCode() + "\">" + coding.getCode() + "</a>" + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")"); 
   } 
