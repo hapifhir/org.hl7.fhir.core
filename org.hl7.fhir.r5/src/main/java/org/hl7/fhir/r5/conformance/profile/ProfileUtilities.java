@@ -1741,7 +1741,7 @@ public class ProfileUtilities {
 
   protected BaseTypeSlice chooseMatchingBaseSlice(List<BaseTypeSlice> baseSlices, String type) {
     for (BaseTypeSlice bs : baseSlices) {
-      if (bs.getType().equals(type)) {
+      if (bs.getType() != null && bs.getType().equals(type)) {
         return bs;
       }
     }
