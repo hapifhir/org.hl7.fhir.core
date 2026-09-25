@@ -12,6 +12,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -114,6 +117,7 @@ import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.SchemaValidator;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.MatchetypeMarkers;
 import org.hl7.fhir.validation.instance.MatchetypeValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
@@ -892,13 +896,55 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public OperationOutcome compareMatchetype(byte[] resource, FhirFormat resourceFormat,
       byte[] matchetype, FhirFormat matchetypeFormat) throws FHIRException, IOException {
+    return compareMatchetype(resource, resourceFormat, matchetype, matchetypeFormat, false);
+  }
+
+  /**
+   * Compare a resource with a matchetype. In pattern mode the matchetype is a subset the
+   * resource must contain: elements and array entries the matchetype does not mention are
+   * allowed in the resource. Otherwise the resource must match the matchetype exactly, apart
+   * from the matchetype's own wildcards.
+   */
+  public OperationOutcome compareMatchetype(byte[] resource, FhirFormat resourceFormat,
+      byte[] matchetype, FhirFormat matchetypeFormat, boolean patternMode) throws FHIRException, IOException {
+    return compareMatchetype(resource, resourceFormat, matchetype, matchetypeFormat, patternMode, null, null);
+  }
+
+  /**
+   * As above, with the modes and variables the matchetype's filters are evaluated against:
+   * {@code modes} for {@code $optional$: "mode"} / {@code "!mode"}, and the {@code version}
+   * variable for {@code $only$: "version:N"} and {@code $version$}. Either may be null.
+   * <p>
+   * A matchetype that carries content this validator's FHIR version does not define (an R5
+   * element in an R4 validator, say) is reported as such rather than compared with that
+   * content silently dropped, which would let a response missing it pass.
+   */
+  public OperationOutcome compareMatchetype(byte[] resource, FhirFormat resourceFormat,
+      byte[] matchetype, FhirFormat matchetypeFormat, boolean patternMode,
+      Set<String> modes, Map<String, String> variables) throws FHIRException, IOException {
     InstanceValidator validator = getValidator(resourceFormat);
     Element res = Manager.parseSingle(context, new ByteArrayInputStream(resource), resourceFormat);
-    Element exp = Manager.parseSingle(context, new ByteArrayInputStream(matchetype), matchetypeFormat);
+    // A matchetype is written with $optional$ and $optional-properties$ markers; the comparer
+    // reads extensions. Convert before parsing, or the optionality is silently ignored.
+    byte[] pattern = matchetypeFormat == FhirFormat.JSON ? MatchetypeMarkers.toExtensions(matchetype) : matchetype;
+    List<ValidationMessage> patternErrors = new ArrayList<>();
+    org.hl7.fhir.r5.elementmodel.ParserBase patternParser = Manager.makeParser(context, matchetypeFormat);
+    patternParser.setupValidation(org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy.EVERYTHING);
+    Element exp = patternParser.parseSingle(new ByteArrayInputStream(pattern), patternErrors);
 
-    MatchetypeValidator mv = new MatchetypeValidator(validator.getFHIRPathEngine());
     List<ValidationMessage> messages = new ArrayList<>();
-    mv.compare(messages, res.fhirType(), exp, res);
+    for (ValidationMessage e : patternErrors) {
+      if (e.getType() == ValidationMessage.IssueType.STRUCTURE && e.isError()) {
+        messages.add(new ValidationMessage(ValidationMessage.Source.MatchetypeValidator, ValidationMessage.IssueType.STRUCTURE,
+          e.getLine(), e.getCol(), e.getLocation(), "matchetype: " + e.getMessage() + " (not defined in FHIR " + context.getVersion() + ")",
+          ValidationMessage.IssueSeverity.ERROR));
+      }
+    }
+    if (messages.isEmpty()) {
+      MatchetypeValidator mv = new MatchetypeValidator(validator.getFHIRPathEngine(), modes, null,
+        variables == null ? new HashMap<String, String>() : variables).setPatternMode(patternMode);
+      mv.compare(messages, res.fhirType(), exp, res);
+    }
 
     OperationOutcome oo = new OperationOutcome();
     if (messages.isEmpty()) {
