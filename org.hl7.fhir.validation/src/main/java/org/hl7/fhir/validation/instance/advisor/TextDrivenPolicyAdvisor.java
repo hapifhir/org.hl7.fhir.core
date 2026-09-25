@@ -64,6 +64,15 @@ public class TextDrivenPolicyAdvisor extends RulesDrivenPolicyAdvisor {
       } else {
         addSuppressMessageRule(s);
       }
+    } else if (line.startsWith("=")) {
+      String s = line.substring(1).trim();
+      if (s.contains("@")) {
+        String profileUrl = s.substring(0, s.indexOf("@"));
+        String elementPath = s.substring(s.indexOf("@")+1);
+        addCompliesWithReasonRule(profileUrl, elementPath);
+      } else {
+        addCompliesWithReasonRule(s, null);
+      }
     } else {
       // ignore it for now
     }

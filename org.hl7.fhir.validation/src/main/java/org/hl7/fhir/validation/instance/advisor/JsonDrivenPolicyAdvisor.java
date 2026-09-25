@@ -46,6 +46,16 @@ public class JsonDrivenPolicyAdvisor extends RulesDrivenPolicyAdvisor {
         addSuppressMessageRule(s);
       }
     }
+    for (JsonElement e : json.forceArray("suppress-complies-with").getItems()) {
+      String s = e.asString();
+      if (s.contains("@")) {
+        String profileUrl = s.substring(0, s.indexOf("@"));
+        String elementPath = s.substring(s.indexOf("@")+1);
+        addCompliesWithReasonRule(profileUrl, elementPath);
+      } else {
+        addCompliesWithReasonRule(s, null);
+      }
+    }
   }
 
 }
