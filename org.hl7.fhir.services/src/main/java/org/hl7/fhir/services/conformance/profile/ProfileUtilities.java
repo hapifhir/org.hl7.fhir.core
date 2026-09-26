@@ -2518,7 +2518,7 @@ public class ProfileUtilities {
     }
     for (ElementDefinition ed : obligationProfileElements) {
       for (Extension ext : ed.getExtensionList()) {
-        if (Utilities.existsInList(ext.getUrl(), ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
+        if (Utilities.existsInList(ext.getUrl(), ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) {
           base.getExtensionList().add(ext.copy(Base.COPY_DATA));
         }      
       }
@@ -3138,7 +3138,9 @@ public class ProfileUtilities {
     if (!res.hasValue() && source.hasValue()) {
       res.setValue(source.getValue());
     } else if (res.hasValue() && source.hasValue() && res.getValue().startsWith("...")) {
-      res.setValue(Utilities.appendDerivedTextToBase(source.getValue(), res.getValue()));
+      // labels are short display strings, so the derived text is appended with a space, not the
+      // line break appendDerivedTextToBase uses for markdown
+      res.setValue(source.getValue() + " " + res.getValue().substring(3).trim());
     }
     for (Extension sourceExtension : source.getExtensionList()) {
       Extension matchingExtension = findMatchingExtension(res, sourceExtension);
@@ -3206,8 +3208,8 @@ public class ProfileUtilities {
         dest.addUsage(t);
       }
     }
-    if (source.getAny()) {
-      dest.setAny(true);
+    if (source.hasAny()) {
+      dest.setAny(source.getAny());
     }
     if (source.hasShortDoco()) {
       dest.setShortDoco(source.getShortDoco());

@@ -3683,7 +3683,7 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/citation-artifact-classifier",
     "version" : [{
-      "value" : "1.0.0"
+      "value" : "2.0.0"
     }]
   },
   {
@@ -5292,7 +5292,47 @@
       "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
       "valueCode" : "complete"
     }],
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-affiliate",
+    "version" : [{
+      "value" : "1.0.0"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "complete"
+    }],
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-document-format-codes",
+    "version" : [{
+      "value" : "1.0.0"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "complete"
+    }],
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-jira-spec-work-group-concept-properties",
+    "version" : [{
+      "value" : "1.0.0"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "complete"
+    }],
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-organizational-entity-concept-properties",
+    "version" : [{
+      "value" : "1.0.0"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "complete"
+    }],
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-staff-role",
     "version" : [{
       "value" : "1.0.0"
     }]
@@ -5307,7 +5347,7 @@
       "value" : "4.0.1"
     },
     {
-      "value" : "9.0.0"
+      "value" : "10.0.0"
     }]
   },
   {
@@ -6115,7 +6155,7 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/organization-alias-type",
     "version" : [{
-      "value" : "2.0.0"
+      "value" : "3.0.0"
     }]
   },
   {
@@ -6128,7 +6168,7 @@
       "value" : "4.0.1"
     },
     {
-      "value" : "2.0.1"
+      "value" : "3.0.0"
     }]
   },
   {
@@ -6315,16 +6355,6 @@
     },
     {
       "value" : "2.0.0"
-    }]
-  },
-  {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
-      "valueCode" : "complete"
-    }],
-    "uri" : "http://terminology.hl7.org/CodeSystem/published-in-type",
-    "version" : [{
-      "value" : "1.0.0"
     }]
   },
   {
@@ -6520,7 +6550,7 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/research-study-status",
     "version" : [{
-      "value" : "1.0.0"
+      "value" : "2.0.0"
     }]
   },
   {
@@ -6540,7 +6570,7 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/research-subject-state",
     "version" : [{
-      "value" : "1.0.1"
+      "value" : "2.0.0"
     }]
   },
   {
@@ -14072,7 +14102,7 @@
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
-      "valueCode" : "fragment"
+      "valueCode" : "complete"
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-mediaType",
     "version" : [{

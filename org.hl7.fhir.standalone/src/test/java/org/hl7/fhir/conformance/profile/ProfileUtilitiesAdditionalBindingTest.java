@@ -27,7 +27,7 @@ class ProfileUtilitiesAdditionalBindingTest {
 
   @Test
   void mergedAdditionalBindingTakesAnyFromDifferential() throws Exception {
-    ElementDefinition base = baseElement();
+    ElementDefinition base = baseElement(false);
     ElementDefinition differential = differentialElement(true);
 
     updateFromDefinition(base, differential);
@@ -40,7 +40,7 @@ class ProfileUtilitiesAdditionalBindingTest {
 
   @Test
   void mergedAdditionalBindingLeavesAnyUnsetWhenTheDifferentialDoesNotSetIt() throws Exception {
-    ElementDefinition base = baseElement();
+    ElementDefinition base = baseElement(false);
     ElementDefinition differential = differentialElement(false);
     differential.getBinding().getAdditionalList().get(0)
         .setDocumentation("documentation from the differential");
@@ -51,32 +51,60 @@ class ProfileUtilitiesAdditionalBindingTest {
     assertFalse(base.getBinding().getAdditionalList().get(0).getAny());
   }
 
+  @Test
+  void mergedAdditionalBindingTakesAnyFalseFromDifferential() throws Exception {
+    ElementDefinition base = baseElement(true);
+    ElementDefinition differential = differentialElement(false);
+
+    updateFromDefinition(base, differential);
+
+    assertEquals(1, base.getBinding().getAdditionalList().size());
+    assertFalse(base.getBinding().getAdditionalList().get(0).getAny(),
+        "'any' = false on the differential should override 'any' = true inherited from the base");
+  }
+
+  @Test
+  void mergedAdditionalBindingKeepsBaseAnyWhenTheDifferentialIsSilent() throws Exception {
+    ElementDefinition base = baseElement(true);
+    ElementDefinition differential = differentialElement(null);
+    differential.getBinding().getAdditionalList().get(0).setDocumentation("documentation from the differential");
+
+    updateFromDefinition(base, differential);
+
+    assertEquals(1, base.getBinding().getAdditionalList().size());
+    assertTrue(base.getBinding().getAdditionalList().get(0).getAny(),
+        "a differential that does not mention 'any' should leave the inherited value alone");
+  }
+
   /**
    * The base element carries a bindable type: updateFromDefinition drops the binding
    * altogether from an element that has no type able to carry one.
    */
-  private ElementDefinition baseElement() {
+  private ElementDefinition baseElement(boolean any) {
     ElementDefinition ed = new ElementDefinition();
     ed.setPath(PATH);
     ed.addType().setCode("code");
-    addBinding(ed, false);
+    addBinding(ed, any);
     return ed;
   }
 
-  private ElementDefinition differentialElement(boolean any) {
+  private ElementDefinition differentialElement(Boolean any) {
     ElementDefinition ed = new ElementDefinition();
     ed.setPath(PATH);
     addBinding(ed, any);
     return ed;
   }
 
-  private void addBinding(ElementDefinition ed, boolean any) {
+  /** any == null leaves 'any' absent on the additional binding. */
+  private void addBinding(ElementDefinition ed, Boolean any) {
     ed.getBinding().setStrength(BindingStrength.EXTENSIBLE);
-    ed.getBinding()
+    ElementDefinition.ElementDefinitionBindingAdditionalComponent ab = ed.getBinding()
         .addAdditional()
         .setPurpose(AdditionalBindingPurposeVS.PREFERRED)
-        .setValueSet(VALUE_SET)
-        .setAny(any);
+        .setValueSet(VALUE_SET);
+    if (any != null) {
+      ab.setAny(any);
+    }
   }
 
   /** updateFromDefinition is protected, and this test is in a different package. */

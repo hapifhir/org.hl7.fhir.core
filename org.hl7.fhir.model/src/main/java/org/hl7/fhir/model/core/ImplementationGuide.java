@@ -16109,7 +16109,13 @@ public class ImplementationGuide extends CanonicalResource {
    }
 
   public String getFullPackageId() {
-    String prefix = hasExtension(ExtensionConstants.EXT_PACKAGE_SCOPE) ? "@"+ ExtensionUtilities.readStringExtension(this, ExtensionConstants.EXT_PACKAGE_SCOPE) +"/" : "";
+    String prefix = "";
+    for (Extension e : getExtensionsForRead()) {
+      if (ExtensionConstants.EXT_PACKAGE_SCOPE.equals(e.getUrl())) {
+        prefix = "@"+ ExtensionUtilities.readStringExtension(this, ExtensionConstants.EXT_PACKAGE_SCOPE) +"/";
+        break;
+      }
+    }
     return prefix + getPackageId();
   }
   public ImplementationGuideDefinitionPageComponent getPageByName(String name) {

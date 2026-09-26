@@ -27,7 +27,17 @@ class ProfileUtilitiesLabelMergeTest {
 
     updateFromDefinition(base, differential);
 
-    assertEquals("Base label\r\nand more", base.getLabel());
+    assertEquals("Base label and more", base.getLabel());
+  }
+
+  @Test
+  void spaceAfterTheEllipsisIsNotDoubled() throws Exception {
+    ElementDefinition base = element("Base label");
+    ElementDefinition differential = element("... and more");
+
+    updateFromDefinition(base, differential);
+
+    assertEquals("Base label and more", base.getLabel());
   }
 
   @Test
