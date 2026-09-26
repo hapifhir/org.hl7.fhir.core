@@ -143,6 +143,14 @@ class TypeProfileRootMergerTests {
     t = typeRoot();
     t.addConstraint().setKey("shared").setExpression("coding.exists()");
     Assertions.assertEquals(1, errors(merge(e, t)), "same key, different expression");
+
+    t = typeRoot();
+    t.addConstraint().setKey("shared").setHuman("no expression");
+    Assertions.assertEquals(0, errors(merge(e, t)), "same key, but no expression to compare");
+
+    t = typeRoot();
+    t.addConstraint().setKey("shared").setExpression("  text.exists() ");
+    Assertions.assertEquals(0, errors(merge(e, t)), "same key, same expression apart from whitespace");
   }
 
   @Test

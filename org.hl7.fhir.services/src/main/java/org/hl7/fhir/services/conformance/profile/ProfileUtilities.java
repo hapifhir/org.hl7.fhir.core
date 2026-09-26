@@ -2811,7 +2811,10 @@ public class ProfileUtilities {
       derived.getExampleList().removeAll(toDelD);
 
       if (derived.hasMaxLengthElement()) {
-        if (!Base.compareDeep(derived.getMaxLengthElement(), base.getMaxLengthElement(), false))
+        if (base.hasMaxLength() && derived.getMaxLength() > base.getMaxLength()) {
+          // the tightest bound wins: a profile can't loosen what it inherits
+          addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), context.formatMessage(I18nConstants.SNAPSHOT_DIFF_LOOSENS, derived.getPath(), "maxLength", derived.getMaxLengthElement().primitiveValue(), base.getMaxLengthElement().primitiveValue()), IssueSeverity.WARNING));
+        } else if (!Base.compareDeep(derived.getMaxLengthElement(), base.getMaxLengthElement(), false))
           base.setMaxLengthElement(derived.getMaxLengthElement().copy(Base.COPY_DATA));
         else if (trimDifferential)
           derived.setMaxLengthElement(null);
@@ -2820,7 +2823,11 @@ public class ProfileUtilities {
       }
   
       if (derived.hasMaxValue()) {
-        if (!Base.compareDeep(derived.getMaxValue(), base.getMaxValue(), false))
+        Integer cmax = base.hasMaxValue() ? TypeProfileRootMerger.compareValues(derived.getMaxValue(), base.getMaxValue()) : null;
+        if (cmax != null && cmax > 0) {
+          // the tightest bound wins: a profile can't loosen what it inherits
+          addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), context.formatMessage(I18nConstants.SNAPSHOT_DIFF_LOOSENS, derived.getPath(), "maxValue", derived.getMaxValue().primitiveValue(), base.getMaxValue().primitiveValue()), IssueSeverity.WARNING));
+        } else if (!Base.compareDeep(derived.getMaxValue(), base.getMaxValue(), false))
           base.setMaxValue(derived.getMaxValue().copy(Base.COPY_DATA));
         else if (trimDifferential)
           derived.setMaxValue(null);
@@ -2829,7 +2836,11 @@ public class ProfileUtilities {
       }
   
       if (derived.hasMinValue()) {
-        if (!Base.compareDeep(derived.getMinValue(), base.getMinValue(), false))
+        Integer cmin = base.hasMinValue() ? TypeProfileRootMerger.compareValues(derived.getMinValue(), base.getMinValue()) : null;
+        if (cmin != null && cmin < 0) {
+          // the tightest bound wins: a profile can't loosen what it inherits
+          addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), context.formatMessage(I18nConstants.SNAPSHOT_DIFF_LOOSENS, derived.getPath(), "minValue", derived.getMinValue().primitiveValue(), base.getMinValue().primitiveValue()), IssueSeverity.WARNING));
+        } else if (!Base.compareDeep(derived.getMinValue(), base.getMinValue(), false))
           base.setMinValue(derived.getMinValue().copy(Base.COPY_DATA));
         else if (trimDifferential)
           derived.setMinValue(null);
@@ -3077,6 +3088,13 @@ public class ProfileUtilities {
           if (!base.hasConstraint(s.getKey())) {
             ElementDefinitionConstraintComponent inv = s.copy(Base.COPY_DATA);
             base.getConstraintList().add(inv);
+          } else {
+            // same key: it has to be the same constraint
+            for (ElementDefinitionConstraintComponent bc : base.getConstraintList()) {
+              if (s.getKey().equals(bc.getKey()) && s.hasExpression() && bc.hasExpression() && !s.getExpression().trim().equals(bc.getExpression().trim())) {
+                addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), context.formatMessage(I18nConstants.SNAPSHOT_CONSTRAINT_KEY_CONFLICT, s.getKey(), derived.getPath(), s.getExpression(), bc.getExpression()), IssueSeverity.ERROR));
+              }
+            }
           }
       	}
       }

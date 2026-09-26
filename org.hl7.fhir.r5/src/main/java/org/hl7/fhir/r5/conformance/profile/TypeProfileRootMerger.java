@@ -163,7 +163,7 @@ public class TypeProfileRootMerger {
           ninv.setSource(profileUrl);
         }
         element.getConstraint().add(ninv);
-      } else if (!Objects.equals(existing.getExpression(), inv.getExpression())) {
+      } else if (existing.hasExpression() && inv.hasExpression() && !existing.getExpression().trim().equals(inv.getExpression().trim())) {
         error(issues, path, I18nConstants.SNAPSHOT_TYPE_ROOT_CONSTRAINT_CONFLICT, profileUrl, path, inv.getKey(), inv.getExpression(), existing.getExpression());
       }
     }
