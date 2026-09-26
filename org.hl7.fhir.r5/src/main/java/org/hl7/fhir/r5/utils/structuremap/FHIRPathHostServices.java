@@ -65,7 +65,7 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public boolean log(String argument, List<Base> focus) {
-    throw new Error("Not Implemented Yet");
+    return true;
   }
 
   @Override

@@ -1811,10 +1811,17 @@ public class StructureMapUtilities {
           String srcType = src.fhirType();
           String tgtType = tgt.fhirType();
           ResolvedGroup defGroup = resolveGroupByTypes(map, rule.getName(), group, srcType, tgtType);
-          Variables vdef = new Variables();
-          vdef.add(VariableMode.INPUT, defGroup.getTargetGroup().getInput().get(0).getName(), src);
-          vdef.add(VariableMode.OUTPUT, defGroup.getTargetGroup().getInput().get(1).getName(), tgt);
-          executeGroup(indent + "  ", context, defGroup.getTargetMap(), vdef, defGroup.getTargetGroup(), false);
+          if (defGroup != null){
+            Variables vdef = new Variables();
+            vdef.add(VariableMode.INPUT, defGroup.getTargetGroup().getInput().get(0).getName(), src);
+            vdef.add(VariableMode.OUTPUT, defGroup.getTargetGroup().getInput().get(1).getName(), tgt);
+            executeGroup(indent + "  ", context, defGroup.getTargetMap(), vdef, defGroup.getTargetGroup(), false);
+          }
+          else if (srcType.equals(tgtType))
+          {
+            // There's no group to call, and we didn't throw, so the types are the same, just copy
+            src.assignValues(tgt);
+          }
         }
       }
     }
@@ -1954,6 +1961,11 @@ public class StructureMapUtilities {
         }
       }
     }
+
+    // These are the same type, so we should be able to handle these directly.
+    if (res.getTargetGroup() == null && srcType.equals(tgtType))
+      return null;
+
     if (res.getTargetGroup() == null)
       throw new FHIRException("No matches found for rule for '" + srcType + " to " + tgtType + "' from " + map.getUrl() + ", from rule '" + ruleid + "'");
     source.setUserData(kn, res);

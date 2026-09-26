@@ -814,7 +814,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     // Need to lookup this type in the imported structures/aliases
     for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
-      if (component.getMode() == StructureMap.StructureMapModelMode.TARGET && component.getAlias().equals(gpReturnTypeParameter.getType())) {
+      if (component.getMode() == StructureMap.StructureMapModelMode.TARGET && component.hasAlias() && component.getAlias().equals(gpReturnTypeParameter.getType())) {
         targetTypeUrl = component.getUrl();
         for (StructureDefinition sd : allStructures) {
           if (sd.getUrl().equalsIgnoreCase(targetTypeUrl)) {
