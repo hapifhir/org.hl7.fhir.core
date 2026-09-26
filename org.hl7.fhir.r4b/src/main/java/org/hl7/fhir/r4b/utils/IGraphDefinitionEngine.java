@@ -39,6 +39,7 @@ import org.hl7.fhir.utilities.graphql.EGraphQLException;
 import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices;
 
 
+@Deprecated
 public interface IGraphDefinitionEngine {
 
   void execute() throws EGraphEngine, EGraphQLException, FHIRException;

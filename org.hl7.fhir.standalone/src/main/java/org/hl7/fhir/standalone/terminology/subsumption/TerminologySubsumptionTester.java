@@ -152,7 +152,8 @@ public class TerminologySubsumptionTester extends ValueSetProcessBase {
           I18nConstants.SUBSUMPTION_NO_CODING, path);
     }
     if (!coding.hasSystem()) {
-      throw fail(IssueType.REQUIRED, OpIssueCode.InvalidData, path, TerminologyServiceErrorClass.PROCESSING,
+      // invalid, not required: a Coding with no system is an unusable value, not a missing element
+      throw fail(IssueType.INVALID, OpIssueCode.InvalidData, path, TerminologyServiceErrorClass.PROCESSING,
           I18nConstants.SUBSUMPTION_NO_SYSTEM, path);
     }
     if (!coding.hasCode()) {

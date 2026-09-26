@@ -71,7 +71,7 @@ public class AdditionalBindingsRenderer {
     }
   }
 
-  private static String STYLE_UNCHANGED = "opacity: 0.5;";
+  private static String STYLE_UNCHANGED = "opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY+";";
   private static String STYLE_REMOVED = STYLE_UNCHANGED + "text-decoration: line-through;";
 
   private List<AdditionalBindingDetail> bindings = new ArrayList<>();

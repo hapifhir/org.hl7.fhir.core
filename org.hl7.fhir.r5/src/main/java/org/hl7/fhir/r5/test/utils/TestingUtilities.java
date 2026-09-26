@@ -92,12 +92,12 @@ public class TestingUtilities extends BaseTestingUtilities {
       if (!sharedContext.hasPackage("hl7.terminology.r5", null)) {
         NpmPackage utg = pcm.loadPackage("hl7.terminology.r5");
         log.info("Loading THO: "+utg.name()+"#"+utg.version());
-        sharedContext.loadFromPackage(utg, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "NamingSystem")));
+        sharedContext.loadFromPackage(utg, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "NamingSystem"), utg));
       } 
       if (!sharedContext.hasPackage("hl7.fhir.uv.extensions", null)) {
         NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions", Constants.EXTENSIONS_WORKING_VERSION);
         log.info("Loading Extensions: "+ext.name()+"#"+ext.version());
-        sharedContext.loadFromPackage(ext, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "StructureDefinition")));
+        sharedContext.loadFromPackage(ext, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "StructureDefinition"), ext));
       } 
       return sharedContext;
     } catch (Exception e) {
@@ -120,7 +120,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
     SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
-        .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage);
+        .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage, new TestPackageLoader(SimpleWorkerContext.defaultTypesToLoad(), npmPackage));
     TerminologyCache.setCacheErrors(true);
     return swc;
   }

@@ -376,9 +376,9 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else {
         if (url.contains("|")) {
           if (lang!=null)
-            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang)+ context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion())+")");
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang)+" ("+context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion()).trim()+")");
           else
-            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion())+")");
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+" ("+context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion()).trim()+")");
         } else {
           if (lang!=null)
             x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang));
@@ -906,7 +906,7 @@ public abstract class ResourceRenderer extends DataRenderer {
        if (cd == null) {
          x.tx(code);
        } else {
-         x.ah(context.prefixLocalHref(cs.getWebPath()+"#"+cs.getId()+"-"+cd.getCode())).tx(cd.getDisplay());
+         x.ah(cs.hasWebPath() ? context.prefixLocalHref(cs.getWebPath()+"#"+cs.getId()+"-"+cd.getCode()) : null).tx(cd.getDisplay());
        }
      }
    }
@@ -1386,7 +1386,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (cd == null) {
         x.tx(code);        
       } else {
-        x.ah(cs.getWebPath()+"#"+cs.getId()+"-"+cd.getCode()).tx(cd.getDisplay());
+        x.ah(cs.hasWebPath() ? cs.getWebPath()+"#"+cs.getId()+"-"+cd.getCode() : null).tx(cd.getDisplay());
       }
     }
   }

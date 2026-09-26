@@ -98,12 +98,12 @@ public class TestingUtilities extends BaseTestingUtilities {
       if (!sharedContext.hasPackage("hl7.terminology.r5", null)) {
         NpmPackage utg = pcm.loadPackage("hl7.terminology.r5");
         log.info("Loading THO: "+utg.name()+"#"+utg.version());
-        sharedContext.loadFromPackage(utg, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "NamingSystem"), sharedContext));
+        sharedContext.loadFromPackage(utg, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "NamingSystem"), sharedContext, utg));
       } 
       if (!sharedContext.hasPackage("hl7.fhir.uv.extensions", null)) {
         NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions", ExtensionDefinitions.EXTENSIONS_WORKING_VERSION);
         log.info("Loading Extensions: "+ext.name()+"#"+ext.version());
-        sharedContext.loadFromPackage(ext, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "StructureDefinition"), sharedContext));
+        sharedContext.loadFromPackage(ext, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "StructureDefinition"), sharedContext, ext));
       }
       return sharedContext;
     } catch (Exception e) {
@@ -125,8 +125,9 @@ public class TestingUtilities extends BaseTestingUtilities {
   }
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
-        .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage);
+    ModelContext mc = ModelContext.fullCoreContext();
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(mc).withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
+        .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage, new TestPackageLoader(SimpleWorkerContext.defaultTypesToLoad(), mc, npmPackage));
     TerminologyCache.setCacheErrors(true);
     return swc;
   }

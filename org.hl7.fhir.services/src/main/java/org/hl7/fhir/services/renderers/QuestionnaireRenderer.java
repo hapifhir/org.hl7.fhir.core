@@ -732,7 +732,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       input = p.input(i.primitiveValue("linkId"), "checkbox", typeT, 1); 
       break; 
     case "coding": 
-      input = p.select(i.primitiveValue("linkId")); 
+      input = p.select(i.primitiveValue("linkId"), i.primitiveValue("text"));
       listOptions(q, i, input); 
       break; 
     case "date": 

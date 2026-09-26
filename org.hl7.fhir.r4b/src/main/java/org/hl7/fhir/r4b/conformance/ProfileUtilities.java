@@ -4417,31 +4417,31 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private Piece checkForNoChange(Element source, Piece piece) {
     if (source.hasUserData(DERIVATION_EQUALS)) {
-      piece.addStyle("opacity: 0.5");
+      piece.addStyle("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
     }
     return piece;
   }
 
   private String checkForNoChange(Element source) {
     if (source.hasUserData(DERIVATION_EQUALS)) {
-      return "opacity: 0.5";
+      return "opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY;
     } else {
       return null;
     }
   }
 
   private Piece applyAsUnchanged(Piece piece) {
-    piece.addStyle("opacity: 0.5");
+    piece.addStyle("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
     return piece;
   }
 
   private String applyAsUnchanged() {
-    return "opacity: 0.5";
+    return "opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY;
   }
 
   private Piece checkForNoChange(Element src1, Element src2, Piece piece) {
     if (src1.hasUserData(DERIVATION_EQUALS) && src2.hasUserData(DERIVATION_EQUALS)) {
-      piece.addStyle("opacity: 0.5");
+      piece.addStyle("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
     }
     return piece;
   }
@@ -4645,7 +4645,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         row.setIcon("icon_resource.png", HierarchicalTableGenerator.TEXT_ICON_RESOURCE);
       }
       if (element.hasUserData("render.opaque")) {
-        row.setOpacity("0.5");
+        row.setOpacity(HierarchicalTableGenerator.STANDARD_OPACITY);
       }
       UnusedTracker used = new UnusedTracker();
       String ref = defPath == null ? null : defPath + element.getId();
@@ -5284,7 +5284,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (!c.getPieces().isEmpty()) {
             c.addPiece(gen.new Piece("br"));
           }
-          c.addPiece(gen.new Piece(null, gt(fallback.getShortElement()), null).addStyle("opacity: 0.5"));
+          c.addPiece(gen.new Piece(null, gt(fallback.getShortElement()), null).addStyle("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY));
         }
         if (url != null) {
           if (!c.getPieces().isEmpty())

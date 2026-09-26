@@ -99,8 +99,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 @Slf4j
 public class StructureDefinitionRenderer extends ResourceRenderer {
 
-  public static final String RED_BACKGROUND_COLOR = "#D50000";
-  public static final String TRANSLATABLE_BACKGROUND_COLOR = "#ffd1fb";
 
   public enum MapStructureMode {
     IN_LIST, NOT_IN_LIST, OTHER
@@ -994,7 +992,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         row.setIcon("icon_resource.png", context.formatPhrase(RenderingI18nContext.GENERAL_RESOURCE));
       }
       if (element.hasUserData(UserDataNames.render_opaque)) { 
-        row.setOpacity("0.5"); 
+        row.setOpacity(HierarchicalTableGenerator.STANDARD_OPACITY);
       } 
       UnusedTracker used = new UnusedTracker(); 
       String ref = defPath == null ? null : defPath + element.getId(); 
@@ -1360,18 +1358,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     if (element != null) { 
       if (element.getMustSupport() && element.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
-        checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG_SUPP)), "SO", "white", RED_BACKGROUND_COLOR, null, false));
+        checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG_SUPP)), "SO", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
       } else if (element.getMustSupport()) { 
-          checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_MUST_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false));
+          checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_MUST_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
       } else if (element != null && element.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
-       checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG)), "O", "white", RED_BACKGROUND_COLOR, null, false));
+       checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG)), "O", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
       } 
     } 
     if (element != null && element.getIsSummary()) { 
       checkForNoChange(element.getIsSummaryElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_INCLUDED)), "\u03A3", null, null, null, false)); 
     } 
     if (element != null && ExtensionUtilities.readBoolExtension(element, ExtensionDefinitions.EXT_TRANSLATABLE)) { 
-      gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_TRANSLATABLE)), "T", "black", TRANSLATABLE_BACKGROUND_COLOR, null, true); 
+      gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_TRANSLATABLE)), "T", "black", HierarchicalTableGenerator.TRANSLATABLE_BACKGROUND_COLOR, null, true);
     } 
     if (element != null && element.getMustHaveValue()) { 
       checkForNoChange(element.getMustHaveValueElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE)), "V", "maroon", null, null, true)); 
@@ -2333,7 +2331,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), tail(ed.getElement().getPath()), ed.getElement().getPath())); 
         } else { 
           c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE)+" ", null)); 
-          c.getPieces().add(gen.new Piece(ed.getSource().getWebPath()+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getTypeName()+")", ed.getElement().getPath()));
+          c.getPieces().add(gen.new Piece(ed.getSource().hasWebPath() ? ed.getSource().getWebPath()+"#"+ed.getElement().getPath() : null, tail(ed.getElement().getPath())+" ("+ed.getSource().getTypeName()+")", ed.getElement().getPath()));
         } 
       } 
       return c; 
@@ -2401,8 +2399,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } 
           if (!mustSupportMode && isMustSupportDirect(t) && e.getMustSupport()) { 
             c.addPiece(gen.new Piece(null, " ", null)); 
-            c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
-          } 
+            c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
+          }
           c.getPieces().add(gen.new Piece(null, "(", null)); 
           boolean tfirst = true; 
           for (CanonicalType u : t.getTargetProfile()) { 
@@ -2414,7 +2412,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               genTargetLink(gen, profileBaseFileName, corePath, c, t, u.getValue(), null); 
               if (!mustSupportMode && isMustSupport(u) && e.getMustSupport()) { 
                 c.addPiece(gen.new Piece(null, " ", null)); 
-                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
               } 
             } 
           } 
@@ -2463,7 +2461,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               } 
               if (!mustSupportMode && isMustSupport(p) && e.getMustSupport()) { 
                 c.addPiece(gen.new Piece(null, " ", null)); 
-                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROF_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROF_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
               } 
             } 
           } 
@@ -2505,7 +2503,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           }
           if (!mustSupportMode && isMustSupportDirect(t) && e.getMustSupport()) { 
             c.addPiece(gen.new Piece(null, " ", null)); 
-            c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+            c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
           }
         } 
       } 
@@ -2531,7 +2529,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   private String pfx(String prefix, String url) { 
-    return Utilities.isAbsoluteUrl(url) ? url : prefix + url; 
+    return url == null || Utilities.isAbsoluteUrl(url) ? url : prefix + url; 
   } 
  
   private void genTargetLink(HierarchicalTableGenerator gen, String profileBaseFileName, String corePath, Cell c, TypeRefComponent t, String u, StructureDefinition src) {
@@ -2595,7 +2593,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
  
   private String checkPrepend(String corePath, String path) { 
-    if (context.getPkp() != null && context.getPkp().prependLinks() && !(path.startsWith("http:") || path.startsWith("https:"))) 
+    if (path != null && context.getPkp() != null && context.getPkp().prependLinks() && !(path.startsWith("http:") || path.startsWith("https:"))) 
       return corePath+path; 
     else  
       return path; 
@@ -3113,7 +3111,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (ed.getSource() == profile) { 
             c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE, ed.getElement().getPath()), null)); 
           } else { 
-            c.getPieces().add(gen.new Piece(ed.getSource().getWebPath()+"#"+ed.getElement().getPath(), context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE, ed.getSource().getTypeName()) +"."+ed.getElement().getPath(), null)); 
+            c.getPieces().add(gen.new Piece(ed.getSource().hasWebPath() ? ed.getSource().getWebPath()+"#"+ed.getElement().getPath() : null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE, ed.getSource().getTypeName()) +"."+ed.getElement().getPath(), null)); 
           }           
         } 
       } 
@@ -3406,7 +3404,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.getPieces().add(gen.new Piece(corePath+"references.html#Reference", "Reference", null)); 
             if (!mustSupportMode && isMustSupportDirect(tr) && element.getMustSupport()) { 
               c.addPiece(gen.new Piece(null, " ", null)); 
-              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
             } 
             c.getPieces().add(gen.new Piece(null, "(", null)); 
           } 
@@ -3418,7 +3416,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               genTargetLink(gen, profileBaseFileName, corePath, c, tr, rt.getValue(), src); 
               if (!mustSupportMode && isMustSupport(rt) && element.getMustSupport()) { 
                 c.addPiece(gen.new Piece(null, " ", null)); 
-                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TARG_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TARG_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
               } 
               first = false; 
             } 
@@ -3448,7 +3446,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             choicerow.getCells().add(c); 
             if (!mustSupportMode && isMustSupport(tr) && element.getMustSupport()) { 
               c.addPiece(gen.new Piece(null, " ", null)); 
-              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TARG_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TARG_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
             } 
           } else { 
             used = true; 
@@ -3460,7 +3458,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             choicerow.getCells().add(c); 
             if (!mustSupportMode && isMustSupport(tr) && element.getMustSupport()) { 
               c.addPiece(gen.new Piece(null, " ", null)); 
-              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
             } 
           } 
           if (tr.hasProfile() && used) { 
@@ -3477,7 +3475,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                   typeCell.addPiece(gen.new Piece(psd.getWebPath(), psd.getName(), psd.present())); 
                 if (!mustSupportMode && isMustSupport(pt) && element.getMustSupport()) { 
                   typeCell.addPiece(gen.new Piece(null, " ", null)); 
-                  typeCell.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROF_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+                  typeCell.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROF_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
                 } 
               } 
             } 
@@ -5298,7 +5296,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         span.tx("to "); 
         XhtmlNode ispan = span.spanClss("copy-text-inline"); 
         ispan.code().tx(binding.getValueSet()); 
-        ispan.button("btn-copy", context.formatPhrase(RenderingI18nContext.STRUC_DEF_COPY_URL)).attribute("data-clipboard-text", binding.getValueSet()); 
+        ispan.button("btn-copy", "copy", context.formatPhrase(RenderingI18nContext.STRUC_DEF_COPY_URL)).attribute("data-clipboard-text", binding.getValueSet());
       } 
       span.tx(")"); 
     } 
@@ -5513,8 +5511,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if ("http://unitsofmeasure.org/".equals(coding.getSystem())) 
       return " (" + (context.formatPhrase(RenderingI18nContext.GENERAL_UCUM)) + ": " + coding.getCode() + ")"; 
     CodeSystem cs = context.getContext().fetchCodeSystem(coding.getSystem(), IWorkerContext.VersionResolutionRules.defaultRule());
-    if (cs == null) 
-      return "<span title=\"" + coding.getSystem() + "\">" + coding.getCode() + "</a>" + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")"); 
+    if (cs == null || !cs.hasWebPath()) 
+      return "<span title=\"" + Utilities.escapeXml(cs == null ? coding.getSystem() : cs.present()) + "\">" + coding.getCode() + "</span>" + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")"); 
     else 
       return "<a title=\"" + cs.present() + "\" href=\"" + Utilities.escapeXml(cs.getWebPath()) + "#" + cs.getId() + "-" + coding.getCode() + "\">" + coding.getCode() + "</a>" + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")"); 
   } 

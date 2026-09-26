@@ -34,6 +34,7 @@ package org.hl7.fhir.r4b.openapi;
 import com.google.gson.JsonObject;
 
 
+@Deprecated
 public class ParameterWriter extends BaseWriter {
 
   public enum ParameterLocation {

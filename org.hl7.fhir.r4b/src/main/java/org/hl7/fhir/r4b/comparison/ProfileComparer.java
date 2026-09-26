@@ -46,6 +46,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
 @Slf4j
+@Deprecated
 public class ProfileComparer extends CanonicalResourceComparer {
 
   public class ProfileComparison extends CanonicalResourceComparison<StructureDefinition> {

@@ -310,7 +310,7 @@ public class XhtmlComposer {
   
   private String escapeHtml(String s)  {
     if (s == null || s.equals(""))
-      return null;
+      return "";
     StringBuilder b = new StringBuilder();
     for (char c : s.toCharArray()) {
       if (canonical) {
@@ -367,8 +367,13 @@ public class XhtmlComposer {
 
   private String attributes(XhtmlNode node) {
     StringBuilder s = new StringBuilder();
-    for (String n : node.getAttributes().keySet())
-      s.append(" " + n + "=\"" + escapeHtml(node.getAttributes().get(n)) + "\"");
+    for (String n : node.getAttributes().keySet()) {
+      String v = node.getAttributes().get(n);
+      // a null value means the attribute isn't really there (e.g. title="null" helps nobody); an empty value is meaningful (alt="")
+      if (v != null) {
+        s.append(" " + n + "=\"" + escapeHtml(v) + "\"");
+      }
+    }
     return s.toString();
   }
 

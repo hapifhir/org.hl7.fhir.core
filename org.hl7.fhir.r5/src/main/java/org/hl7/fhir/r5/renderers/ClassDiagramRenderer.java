@@ -960,7 +960,8 @@ public class ClassDiagramRenderer {
         fullPath = ed.getBase().getPath();
       }
     }
-    return (sd == defnSD && defnFile != null ? defnFile : sd.getWebPath())+"#"+fullPath;
+    String base = sd == defnSD && defnFile != null ? defnFile : sd.getWebPath();
+    return base == null ? null : base+"#"+fullPath;
   }
 
   private String getBindingSuffix(ElementDefinitionBindingComponent b) {
@@ -1163,7 +1164,11 @@ public class ClassDiagramRenderer {
         sd = sdt;
       }
     }
-    return sd.getWebPath()+"#";
+    return sd.hasWebPath() ? sd.getWebPath()+"#" : null;
+  }
+
+  private String linkTo(String base, String tail) {
+    return base == null ? null : base+tail;
   }
 
   private String head(String path) {
@@ -1360,15 +1365,15 @@ public class ClassDiagramRenderer {
             if (c.hasContentReference()) {
               String cr = c.getContentReference();
               ClassItem target = classes.get(cr.substring(cr.indexOf("#")+1));
-              links.add(new Link(item, target, LinkType.COMPOSITION, c.getName(), describeCardinality(c), PointKind.unknown, baseUrl(sd, c, path)+path+"."+c.getName(), getEnhancedDefinition(c)));
+              links.add(new Link(item, target, LinkType.COMPOSITION, c.getName(), describeCardinality(c), PointKind.unknown, linkTo(baseUrl(sd, c, path), path+"."+c.getName()), getEnhancedDefinition(c)));
             } else { 
               ClassItem cc = drawClass(svg, sd, c, path+"."+c.getName(), status, null);
-              links.add(new Link(item, cc, LinkType.COMPOSITION, c.getName(), describeCardinality(c), PointKind.unknown, baseUrl(sd, c, path)+path+"."+c.getName(), getEnhancedDefinition(c)));
+              links.add(new Link(item, cc, LinkType.COMPOSITION, c.getName(), describeCardinality(c), PointKind.unknown, linkTo(baseUrl(sd, c, path), path+"."+c.getName()), getEnhancedDefinition(c)));
               if (c.hasSlicing()) {
                 List<ElementDefinition> slices = getSlices(children, c);
                 for (ElementDefinition s : slices) {
                   ClassItem cc1 = drawClass(svg, sd, s, path+"."+c.getName()+":"+s.getSliceName(), status, null);
-                  links.add(new Link(cc, cc1, LinkType.SLICE, "", describeCardinality(s), PointKind.unknown, baseUrl(sd, s, path)+path+"."+c.getName()+":"+s.getSliceName(), getEnhancedDefinition(c)));
+                  links.add(new Link(cc, cc1, LinkType.SLICE, "", describeCardinality(s), PointKind.unknown, linkTo(baseUrl(sd, s, path), path+"."+c.getName()+":"+s.getSliceName()), getEnhancedDefinition(c)));
                 }
               }
             }

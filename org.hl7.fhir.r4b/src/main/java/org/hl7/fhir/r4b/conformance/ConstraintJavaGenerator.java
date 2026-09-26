@@ -44,6 +44,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 
 @Slf4j
+@Deprecated
 public class ConstraintJavaGenerator {
 
   private IWorkerContext context; // for doing expansions

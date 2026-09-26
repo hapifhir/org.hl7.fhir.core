@@ -38,7 +38,7 @@ import org.hl7.fhir.r4b.model.Parameters;
 import org.hl7.fhir.r4b.model.ValueSet;
 
 
-
+@Deprecated
 public interface ValueSetExpander {
   public enum TerminologyServiceErrorClass {
     UNKNOWN, NOSERVICE, SERVER_ERROR, VALUESET_UNSUPPORTED, CODESYSTEM_UNSUPPORTED, BLOCKED_BY_OPTIONS;
