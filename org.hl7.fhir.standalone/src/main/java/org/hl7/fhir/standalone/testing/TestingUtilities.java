@@ -87,12 +87,7 @@ public class TestingUtilities extends BaseTestingUtilities {
     try {
       pcm = new FilesystemPackageCacheManager.Builder().build();
       SimpleWorkerContext sharedContext = null;
-      if (VersionUtilities.isR5Ver(fhirVersion)) {
-        // for purposes of stability, the R5 core package comes from the test case repository
-        sharedContext = getWorkerContext(loadR5CorePackage());
-      } else {
-        sharedContext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(fhirVersion), fhirVersion));
-      }
+      sharedContext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(fhirVersion), fhirVersion));
       sharedContext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
       sharedContext.setExpansionParameters(new Parameters());
       if (!sharedContext.hasPackage("hl7.terminology.r5", null)) {
@@ -110,10 +105,6 @@ public class TestingUtilities extends BaseTestingUtilities {
       e.printStackTrace();
       throw new Error(e);
     }
-  }
-
-  public static NpmPackage loadR5CorePackage() throws IOException {
-    return NpmPackage.fromPackage(loadR5CorePackageSource());
   }
 
   private static InputStream loadR5CorePackageSource() throws IOException {

@@ -13,6 +13,7 @@ import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.CanonicalType;
+import org.hl7.fhir.model.core.CodeType;
 import org.hl7.fhir.model.core.ElementDefinition;
 import org.hl7.fhir.model.core.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionSlicingComponent;
@@ -673,7 +674,7 @@ public class ProfilePathProcessor {
     ElementDefinition res;
     ElementDefinition template = null;
     StructureDefinition templateSD = null;
-    StructureDefinition typeProfileForRoot = null; // a data type profile whose root has to be merged into this element
+    Map<String, String> typeProfileStatus = new HashMap<>(); // how much of each type profile's root has been merged into this element
     if (diffMatches.get(0).hasType() && "Reference".equals(diffMatches.get(0).getTypeList().get(0).getWorkingCode()) && !profileUtilities.isValidType(diffMatches.get(0).getTypeList().get(0), currentBase)) {
       if (!ProfileUtilities.isSuppressIgnorableExceptions()) {
         throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT, getUrl(), diffMatches.get(0).getPath(), diffMatches.get(0).getTypeList().get(0), currentBase.typeSummary()));
@@ -709,10 +710,6 @@ public class ProfilePathProcessor {
         }
       }
       if (firstTypeStructureDefinition != null) {
-        if (isDataTypeProfile(firstTypeStructureDefinition) && diffMatches.get(0).getTypeList().get(0).getProfileList().size() == 1
-            && !firstTypeProfile.hasExtension(ExtensionDefinitions.EXT_PROFILE_ELEMENT) && !baseHasProfile(currentBase, firstTypeProfile.getValue())) {
-          typeProfileForRoot = firstTypeStructureDefinition;
-        }
         if (!firstTypeStructureDefinition.isGeneratingSnapshot()) { // can't do this check while generating
           if (!profileUtilities.isMatchingType(firstTypeStructureDefinition, diffMatches.get(0).getTypeList(), firstTypeProfile.getExtensionString(ExtensionDefinitions.EXT_PROFILE_ELEMENT))) {
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE2, firstTypeStructureDefinition.getUrl(), diffMatches.get(0).getPath(), firstTypeStructureDefinition.getType(), firstTypeProfile.getValue(), diffMatches.get(0).getTypeList().get(0).getWorkingCode()));
@@ -765,6 +762,10 @@ public class ProfilePathProcessor {
         if (Utilities.existsInList(currentBase.typeSummary(), "Extension", "Resource")) {
           template = merge(src, slicerElement).setPath(currentBase.getPath());
           templateSD = srcSD;
+          if (firstTypeStructureDefinition.getKind() == StructureDefinitionKind.RESOURCE) {
+            // the root of a resource profile is used, but not its invariants (see above)
+            typeProfileStatus.put(canonicalWithoutVersion(firstTypeProfile.getValue()), "partial");
+          }
           template.setSliceName(null);
           // temporary work around
           if (!"Extension".equals(diffMatches.get(0).getTypeList().get(0).getCode())) {
@@ -812,14 +813,14 @@ public class ProfilePathProcessor {
       }
     }
     profileUtilities.markExtensions(outcome, false, templateSD);
+    StructureDefinition typeProfileForRoot = getTypeProfileForRootMerge(diffMatches.get(0), currentBase);
     if (typeProfileForRoot != null) {
       // the constraints on the root of the data type profile apply to this element too. This happens before the
       // differential is applied, since the differential overrides both the base and the type profile
-      for (ValidationMessage vm : new TypeProfileRootMerger(profileUtilities.getContext()).merge(outcome, typeProfileForRoot, getProfileName() + "." + outcome.getPath())) {
-        profileUtilities.addMessage(vm);
-      }
+      mergeTypeProfileRoot(outcome, typeProfileForRoot, getProfileName() + "." + outcome.getPath(), typeProfileStatus);
     }
     profileUtilities.updateFromDefinition(outcome, diffMatches.get(0), getProfileName(), isTrimDifferential(), getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffMatches.get(0)), mapHelper, fromSlicer);
+    markTypeProfileConstraints(outcome, currentBase, typeProfileStatus);
 //          if (outcome.getPath().endsWith("[x]") && outcome.getTypeList().size() == 1 && !outcome.getTypeList().get(0).getCode().equals("*") && !diffMatches.get(0).hasSlicing()) // if the base profile allows multiple types, but the profile only allows one, rename it
 //            outcome.setPath(outcome.getPath().substring(0, outcome.getPath().length()-3)+Utilities.capitalize(outcome.getTypeList().get(0).getCode()));
     if (!APPLY_PROPERTIES_FROM_SLICER && slicerElement != null && outcome.getMaxAsInt() > slicerElement.getMaxAsInt()) {
@@ -951,7 +952,7 @@ public class ProfilePathProcessor {
    * return that profile, with a snapshot, so its root can be merged into the element. Otherwise null
    */
   private StructureDefinition getTypeProfileForRootMerge(ElementDefinition diffItem, ElementDefinition base) {
-    if (diffItem.getTypeList().size() != 1 || diffItem.getTypeList().get(0).getProfileList().size() != 1 || "Reference".equals(diffItem.getTypeList().get(0).getWorkingCode())) {
+    if (diffItem.getTypeList().size() != 1 || diffItem.getTypeList().get(0).getProfileList().size() != 1) {
       return null;
     }
     CanonicalType profile = diffItem.getTypeList().get(0).getProfileList().get(0);
@@ -974,6 +975,58 @@ public class ProfilePathProcessor {
       profileUtilities.generateSnapshot(sdb, sd, sd.getUrl(), (sdb.hasWebPath()) ? Utilities.extractBaseUrl(sdb.getWebPath()) : getWebUrl(), sd.getName());
     }
     return sd.getSnapshot().getElementList().isEmpty() ? null : sd;
+  }
+
+  private void mergeTypeProfileRoot(ElementDefinition outcome, StructureDefinition typeProfile, String path, Map<String, String> typeProfileStatus) {
+    List<ValidationMessage> msgs = new TypeProfileRootMerger(profileUtilities.getContext()).merge(outcome, typeProfile, path);
+    for (ValidationMessage vm : msgs) {
+      profileUtilities.addMessage(vm);
+    }
+    // anything reported means something wasn't merged (a conflict, or a value that couldn't be compared)
+    typeProfileStatus.put(canonicalWithoutVersion(typeProfile.getUrl()), msgs.isEmpty() ? "full" : "partial");
+  }
+
+  /**
+   * Record, on each type profile of the element (other than extensions), how much of its root has been merged into
+   * the element (see ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS): what was done here, or else what was done in
+   * the base if the profile came from there, or else nothing ('none')
+   */
+  private void markTypeProfileConstraints(ElementDefinition outcome, ElementDefinition base, Map<String, String> typeProfileStatus) {
+    for (TypeRefComponent tr : outcome.getTypeList()) {
+      if ("Extension".equals(tr.getWorkingCode())) {
+        continue;
+      }
+      for (CanonicalType ct : tr.getProfileList()) {
+        if (!ct.hasExtension(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS)) {
+          String url = canonicalWithoutVersion(ct.getValue());
+          String status;
+          if (typeProfileStatus.containsKey(url)) {
+            status = typeProfileStatus.get(url);
+          } else {
+            CanonicalType bct = findProfile(base, url);
+            // from the base: whatever was recorded there (possibly nothing, e.g. core definitions)
+            status = bct != null ? bct.getExtensionString(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS) : "none";
+          }
+          if (status != null) {
+            ct.addExtension(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS, new CodeType(status));
+          }
+        }
+        ct.setUserData(UserDataNames.SNAPSHOT_TYPE_PROFILE_DECIDED, true);
+      }
+    }
+  }
+
+  private CanonicalType findProfile(ElementDefinition base, String url) {
+    if (base != null) {
+      for (TypeRefComponent tr : base.getTypeList()) {
+        for (CanonicalType ct : tr.getProfileList()) {
+          if (url != null && url.equals(canonicalWithoutVersion(ct.getValue()))) {
+            return ct;
+          }
+        }
+      }
+    }
+    return null;
   }
 
   /**
@@ -1463,11 +1516,10 @@ public class ProfilePathProcessor {
         debugCheck(outcome);
         addToResult(outcome);
         // a data type profile on the new slice: merge the constraints on its root (before the differential, which overrides both)
+        Map<String, String> typeProfileStatus = new HashMap<>();
         StructureDefinition typeProfileForRoot = getTypeProfileForRootMerge(diffItem, template);
         if (typeProfileForRoot != null) {
-          for (ValidationMessage vm : new TypeProfileRootMerger(profileUtilities.getContext()).merge(outcome, typeProfileForRoot, getProfileName() + "." + outcome.getPath() + ":" + diffItem.getSliceName())) {
-            profileUtilities.addMessage(vm);
-          }
+          mergeTypeProfileRoot(outcome, typeProfileForRoot, getProfileName() + "." + outcome.getPath() + ":" + diffItem.getSliceName(), typeProfileStatus);
         }
         profileUtilities.updateFromDefinition(outcome, diffItem, getProfileName(), isTrimDifferential(), getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffItem), mapHelper, false);
         
@@ -1481,6 +1533,9 @@ public class ProfilePathProcessor {
         if (profiles.size() == 1) {
           StructureDefinition sdt = profileUtilities.getContext().fetchResource(StructureDefinition.class, profiles.get(0), VersionResolutionRules.defaultRule());
           if (sdt != null && !isDataTypeProfile(sdt)) {
+            if (sdt.getKind() == StructureDefinitionKind.RESOURCE) {
+              typeProfileStatus.put(canonicalWithoutVersion(profiles.get(0)), "partial"); // only the cardinality
+            }
             ElementDefinition edt = sdt.getSnapshot().getElementFirstRep();
             if (edt.isMandatory() && !outcome.isMandatory()) {
               outcome.setMin(edt.getMin());
@@ -1491,9 +1546,9 @@ public class ProfilePathProcessor {
             // todo: should we consider other constraints?
             // throw new Error("Not handled yet: "+sdt.getVersionedUrl()+" / "+outcome.getPath()+":"+outcome.getSliceName());
           }
-        } else if (profiles.size() > 1) {
-          throw new Error("Not handled: multiple profiles at "+outcome.getPath()+":"+outcome.getSliceName()+": "+ CommaSeparatedStringBuilder.join(",", profiles));          
         }
+        // more than one profile: any of them may apply, so nothing is merged (marked 'none' below)
+        markTypeProfileConstraints(outcome, template, typeProfileStatus);
         cursors.diffCursor = getDifferential().getElementList().indexOf(diffItem) + 1;        
         if ((!outcome.getTypeList().isEmpty()) && (/*outcome.getTypeList().get(0).getCode().equals("Extension") || */getDifferential().getElementList().size() > cursors.diffCursor) && outcome.getPath().contains(".")/* && isDataType(outcome.getTypeList())*/) {  // don't want to do this for the root, since that's base, and we're already processing it
           if (!profileUtilities.baseWalksInto(cursors.base.getElementList(), cursors.baseCursor)) {

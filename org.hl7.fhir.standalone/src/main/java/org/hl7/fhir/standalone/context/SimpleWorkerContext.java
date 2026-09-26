@@ -90,7 +90,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     IContextResourceLoaderN makeLoaderN(IModelContext context, String version);
   }
 
-  public class InternalCanonicalResourceProxy extends CanonicalResourceManager.CanonicalResourceProxy {
+  public class InternalCanonicalResourceProxy extends CanonicalResourceProxy {
 
     public InternalCanonicalResourceProxy(String type, String id, String url, String version) {
       super(type, id, url, version, null, null, null);
@@ -341,6 +341,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
   }
 
+  /**
+   * Known limitation (a bug, not yet fixed): resources loaded here don't go through the package hacks
+   * (PackageHackerRN.fixRegisteredResource and fixLoadedResource), which are only applied on the
+   * registerResourceFromPackage / PackageResourceLoader path. So the work arounds for problems in
+   * published packages - including the SimpleQuantity sqty-1 fix - are not applied to anything loaded here
+   */
   private Resource loadDefinitionItem(String name, InputStream stream, IContextResourceLoaderN loader, ILoadFilter filter, PackageInformation pi) throws IOException, FHIRException {
     if (name.endsWith(".xml"))
       return loadFromFile(stream, name, loader, filter);
@@ -583,7 +589,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
             } else {
               PackageResourceLoader pl = new PackageResourceLoader(pri, loader, pii, this);
               if  (loader != null) {
-               // pl = loader.editInfo(pl); TODO: Sort out compile issues
+                pl = loader.editInfo(pl);
               }
               if (pl != null) {
                 registerResourceFromPackage(pl, pii);
@@ -620,7 +626,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	  return t;
 	}
 
-  private CanonicalResourceManager.CanonicalResourceProxy makeIgResource(NpmPackage pi) {
+  private CanonicalResourceProxy makeIgResource(NpmPackage pi) {
     ImplementationGuide ig = new ImplementationGuide();
     ig.setId(pi.name());
     ig.setVersion(pi.version());

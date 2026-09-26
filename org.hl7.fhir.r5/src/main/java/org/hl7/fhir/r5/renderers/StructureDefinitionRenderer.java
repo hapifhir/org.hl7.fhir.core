@@ -77,7 +77,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.PublicationHacker;
+import org.hl7.fhir.r5.utils.PackageHackerR5;
 
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
@@ -237,6 +237,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private class ResolvedCanonical extends ItemWithStatus { 
     String url; // what we used to resolve 
     CanonicalResource cr; // what we resolved 
+    String typeProfileMark; // see typeProfileMark()
  
     public ResolvedCanonical(String url, CanonicalResource cr) { 
       this.url = url; 
@@ -248,6 +249,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } else { 
         f.code().tx(url);             
       } 
+      renderTypeProfileMark(f, typeProfileMark);
     } 
     protected boolean matches(ItemWithStatus other) { 
       return ((ResolvedCanonical) other).url.equals(url); 
@@ -1998,7 +2000,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
             c.getPieces().add(gen.new Piece("binding", null, ": ", null));
             if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
-              c.addMarkdownNoPara("binding", PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
+              c.addMarkdownNoPara("binding", PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
             } else {
               c.addMarkdownNoPara("binding", context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_DESC));
             }
@@ -2013,7 +2015,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
             if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
               c.getPieces().add(gen.new Piece("binding", null, ": ", null));
-              c.addMarkdownNoPara("binding", PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
+              c.addMarkdownNoPara("binding", PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
             }
           }
           AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, profile, definition.getPath(), rc, null, this);
@@ -2318,6 +2320,80 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
+  // icons shown after a type profile when the constraints on the root of the type profile have not
+  // (all) been merged into the snapshot element - see the extension type-profile-constraints.
+  // In IG publisher mode, these are files in the pubpack; otherwise they are inlined
+  private static final String TP_ICON_PARTIAL = "icon-tp-partial.svg";
+  private static final String TP_ICON_NONE = "icon-tp-none.svg";
+  private static final String TP_SVG_PARTIAL = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"10\" height=\"10\" viewBox=\"0 0 16 16\"><circle cx=\"8\" cy=\"8\" r=\"6.75\" fill=\"white\" stroke=\"#333333\" stroke-width=\"1.5\"/><path d=\"M8 1.25 A6.75 6.75 0 0 0 8 14.75 Z\" fill=\"#333333\"/></svg>";
+  private static final String TP_SVG_NONE = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"10\" height=\"10\" viewBox=\"0 0 16 16\"><circle cx=\"8\" cy=\"8\" r=\"6.75\" fill=\"white\" stroke=\"#333333\" stroke-width=\"1.5\"/></svg>";
+
+  /**
+   * Whether the constraints on the root of the type profile p have been merged into the snapshot element
+   * that has the type t. Returns null if there's nothing to show - they have been merged in full, or it
+   * doesn't apply (differential, extensions). Otherwise partial | none | unmarked (unmarked is treated as none)
+   */
+  private String typeProfileMark(TypeRefComponent t, CanonicalType p, boolean diff) {
+    if (diff || t == null || p == null || t.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS) || "Extension".equals(t.getWorkingCode())) {
+      return null;
+    }
+    String mark = p.getExtensionString(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS);
+    if ("full".equals(mark)) {
+      return null;
+    } else if ("partial".equals(mark) || "none".equals(mark)) {
+      return mark;
+    } else {
+      return "unmarked";
+    }
+  }
+
+  private String typeProfileMarkHint(String mark) {
+    switch (mark) {
+    case "partial": return context.formatPhrase(RenderingI18nContext.STRUC_DEF_TP_PARTIAL);
+    case "none": return context.formatPhrase(RenderingI18nContext.STRUC_DEF_TP_NONE);
+    default: return context.formatPhrase(RenderingI18nContext.STRUC_DEF_TP_UNMARKED);
+    }
+  }
+
+  private String typeProfileMarkSrc(String mark) {
+    boolean partial = "partial".equals(mark);
+    if (context.forPublisher() && !context.isInlineGraphics()) {
+      return partial ? TP_ICON_PARTIAL : TP_ICON_NONE;
+    } else {
+      return "data:image/svg+xml;base64,"+java.util.Base64.getEncoder().encodeToString((partial ? TP_SVG_PARTIAL : TP_SVG_NONE).getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    }
+  }
+
+  private void addTypeProfileMark(HierarchicalTableGenerator gen, Cell c, String mark) {
+    if (mark != null) {
+      String hint = typeProfileMarkHint(mark);
+      c.addPiece(gen.new Piece(null, " ", null));
+      Piece img = gen.new Piece("img");
+      img.attr("src", typeProfileMarkSrc(mark));
+      img.setHint(hint);
+      img.addStyle("vertical-align: baseline");
+      if (context.forPublisher()) {
+        img.attr("alt", hint);
+        img.attr("aria-label", hint);
+      } else {
+        img.attr("alt", "");
+      }
+      c.addPiece(img);
+    }
+  }
+
+  private void renderTypeProfileMark(XhtmlNode x, String mark) {
+    if (mark != null) {
+      String hint = typeProfileMarkHint(mark);
+      x.tx(" ");
+      if (context.forPublisher()) {
+        x.img(typeProfileMarkSrc(mark), hint).attribute("title", hint).attribute("aria-label", hint).style("vertical-align: baseline");
+      } else {
+        x.img(typeProfileMarkSrc(mark), "").attribute("title", hint).style("vertical-align: baseline");
+      }
+    }
+  }
+
   private Cell genTypes(HierarchicalTableGenerator gen, Row r, ElementDefinition e, String profileBaseFileName, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean mustSupportMode, boolean diff) {
     Cell c = gen.new Cell(); 
     r.getCells().add(c); 
@@ -2394,6 +2470,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } else { 
               c.getPieces().add(gen.new Piece(corePath+"references.html", t.getWorkingCode(), null)); 
             } 
+            addTypeProfileMark(gen, c, typeProfileMark(t, t.getProfile().get(0), diff));
           } else { 
             c.getPieces().add(gen.new Piece(corePath+"references.html", t.getWorkingCode(), null)); 
           } 
@@ -2459,6 +2536,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               } else { 
                 c.addPiece(checkForNoChange(t, gen.new Piece((p.getValue().startsWith(corePath)? corePath: "")+ref, t.getWorkingCode(), null))); 
               } 
+              addTypeProfileMark(gen, c, typeProfileMark(t, p, diff));
               if (!mustSupportMode && isMustSupport(p) && e.getMustSupport()) { 
                 c.addPiece(gen.new Piece(null, " ", null)); 
                 c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROF_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
@@ -3158,7 +3236,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } 
             if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
               c.getPieces().add(gen.new Piece(null, ": ", null)); 
-              c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue()); 
+              c.addMarkdownNoPara(PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue()); 
             }
             if (binding.hasExtension(ExtensionDefinitions.EXT_CONCEPT_DOMAIN)) { 
               c.getPieces().add(gen.new Piece(null, ". ", null));  
@@ -3909,7 +3987,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
       if (ved.getBinding().hasDescription() && MarkDownProcessor.isSimpleMarkdown(ved.getBinding().getDescription())) { 
         c.getPieces().add(gen.new Piece(null, ": ", null)); 
-        c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), ved.getBinding().getDescriptionElement()).asStringValue()); 
+        c.addMarkdownNoPara(PackageHackerR5.fixBindingDescriptions(context.getWorker(), ved.getBinding().getDescriptionElement()).asStringValue()); 
       } 
 
       if (ved.getBinding().hasExtension(ExtensionDefinitions.EXT_CONCEPT_DOMAIN)) { 
@@ -5072,6 +5150,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     if ((!mustSupportOnly && (t.hasProfile() || (compare!=null && compare.hasProfile()))) || isMustSupport(t.getProfile())) { 
       StatusList<ResolvedCanonical> profiles = analyseProfiles(t.getProfile(), compare == null ? null : compare.getProfile(), mustSupportOnly, mode);       
+      if (mode != GEN_MODE_DIFF) {
+        for (ResolvedCanonical rc : profiles) {
+          if (rc != null && rc.status != ListItemStatus.Removed) {
+            rc.typeProfileMark = typeProfileMark(t, findCanonical(t.getProfile(), rc.url), false);
+          }
+        }
+      }
       if (profiles.size() > 0) { 
         if (!ts) { 
           getTypeLink(unchanged(x), t, sd); 
@@ -5120,6 +5205,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
+  private CanonicalType findCanonical(List<CanonicalType> list, String url) {
+    for (CanonicalType ct : list) {
+      if (url != null && url.equals(ct.getValue())) {
+        return ct;
+      }
+    }
+    return null;
+  }
+
   private StatusList<ResolvedCanonical> analyseProfiles(List<CanonicalType> newProfiles, List<CanonicalType> oldProfiles, boolean mustSupportOnly, int mode) { 
     StatusList<ResolvedCanonical> profiles = new StatusList<ResolvedCanonical>(); 
     for (CanonicalType pt : newProfiles) { 
@@ -5221,13 +5315,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       ElementDefinitionBindingComponent compBinding = compare == null ? null : compare.getBinding(); 
       XhtmlNode bindingDesc = null; 
       if (binding.hasDescription()) { 
-        MarkdownType newBinding = PublicationHacker.fixBindingDescriptions(context.getContext(), binding.getDescriptionElement()); 
+        MarkdownType newBinding = PackageHackerR5.fixBindingDescriptions(context.getContext(), binding.getDescriptionElement()); 
         if (mode == GEN_MODE_SNAP || mode == GEN_MODE_MS) { 
           bindingDesc = new XhtmlNode(NodeType.Element, "div"); 
           bindingDesc.addChildren(new XhtmlParser().parseMDFragment(hostMd.processMarkdown("Binding.description", newBinding))); 
         } else { 
  
-          StringType oldBinding = compBinding != null && compBinding.hasDescription() ? PublicationHacker.fixBindingDescriptions(context.getContext(), compBinding.getDescriptionElement()) : null; 
+          StringType oldBinding = compBinding != null && compBinding.hasDescription() ? PackageHackerR5.fixBindingDescriptions(context.getContext(), compBinding.getDescriptionElement()) : null; 
           bindingDesc = compareMarkdown("Binding.description", newBinding, oldBinding, mode); 
         } 
       } 

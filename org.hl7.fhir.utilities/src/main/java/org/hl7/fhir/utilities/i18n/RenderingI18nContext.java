@@ -808,6 +808,9 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_TERM_BINDS = "STRUC_DEF_TERM_BINDS";
   public static final String STRUC_DEF_THEN_TYPE = "STRUC_DEF_THEN_TYPE";
   public static final String STRUC_DEF_THIS_REFERS = "STRUC_DEF_THIS_REFERS";
+  public static final String STRUC_DEF_TP_NONE = "STRUC_DEF_TP_NONE";
+  public static final String STRUC_DEF_TP_PARTIAL = "STRUC_DEF_TP_PARTIAL";
+  public static final String STRUC_DEF_TP_UNMARKED = "STRUC_DEF_TP_UNMARKED";
   public static final String STRUC_DEF_TYPE_BOUND = "STRUC_DEF_TYPE_BOUND";
   public static final String STRUC_DEF_TYPE_SET = "STRUC_DEF_TYPE_SET";
   public static final String STRUC_DEF_TYPE_SPEC = "STRUC_DEF_TYPE_SPEC";
