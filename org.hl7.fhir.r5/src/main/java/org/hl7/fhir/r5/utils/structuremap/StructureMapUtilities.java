@@ -94,6 +94,8 @@ import java.util.*;
  * analyse(appInfo, map) - generate profiles and other analysis artifacts for the targets of the transform
  * map generateMapFromMappings(StructureDefinition) - build a mapping from a structure definition with logical mappings
  *
+ * See also: documentation/structuremap-and-fhirpath-constants.md
+ * 
  * @author Grahame Grieve
  */
 
@@ -104,6 +106,7 @@ public class StructureMapUtilities {
   public static final String MAP_WHERE_LOG = "map.where.log";
   public static final String MAP_WHERE_EXPRESSION = "map.where.expression";
   public static final String MAP_SEARCH_EXPRESSION = "map.search.expression";
+  public static final String MAP_DEFAULT_EXPRESSION = "map.default.expression";
   public static final String MAP_EXPRESSION = "map.transform.expression";
   private static final boolean MULTIPLE_TARGETS_ONELINE = true;
   public static final String AUTO_VAR_NAME = "vvv";
@@ -157,6 +160,9 @@ public class StructureMapUtilities {
   public static String render(StructureMap map) {
     StringBuilder b = new StringBuilder();
     b.append("/// url = '"+Utilities.escapeFhirPathString(map.getUrl())+"'\r\n");
+    if (map.hasVersion()) {
+      b.append("/// version = '"+Utilities.escapeFhirPathString(map.getVersion())+"'\r\n");
+    }
     b.append("/// name = '"+Utilities.escapeFhirPathString(map.getName())+"'\r\n");
     if (map.hasTitle()) {
       b.append("/// title = '"+Utilities.escapeFhirPathString(map.getTitle())+"'\r\n");
@@ -950,6 +956,9 @@ public class StructureMapUtilities {
       case "title" : 
         result.setTitle(lexer.readConstant("title"));
         break;
+      case "version" : 
+        result.setVersion(lexer.readConstant("version"));
+        break;
       case "description" : 
         result.setDescription(lexer.readMarkdown("description"));
         break;
@@ -1632,22 +1641,50 @@ public class StructureMapUtilities {
   }
 
 
+  /**
+   * The Target Type is the single type in the first group of the map
+   * but resolved through the imported target types included.
+   * @param map
+   * @return
+   * @throws FHIRException
+   */
   public StructureDefinition getTargetType(StructureMap map) throws FHIRException {
-    boolean found = false;
-    StructureDefinition res = null;
-    for (StructureMapStructureComponent uses : map.getStructure()) {
-      if (uses.getMode() == StructureMapModelMode.TARGET) {
-        if (found)
+    // only have support for a single output parameter to generate
+    StructureMap.StructureMapGroupInputComponent gpReturnTypeParameter = null;
+    for (var gp : map.getGroupFirstRep().getInput()) {
+      if (gp.getMode() == StructureMapInputMode.TARGET) {
+        if (gpReturnTypeParameter != null)
           throw new FHIRException("Multiple targets found in map " + map.getUrl());
-        found = true;
-        res = worker.fetchResource(StructureDefinition.class, uses.getUrl(), ExtensionUtilities.getVersionResolutionRules(uses.getUrlElement()));
-        if (res == null)
-          throw new FHIRException("Unable to find " + uses.getUrl() + " referenced from map " + map.getUrl());
+        gpReturnTypeParameter = gp;
+        if (gp.getType() == null)
+          throw new FHIRException("getTargetType only supported on groups where the output parameter has a declared type");
       }
     }
-    if (res == null)
-      throw new FHIRException("No targets found in map " + map.getUrl());
-    return res;
+
+    if (gpReturnTypeParameter == null)
+      throw new FHIRException("getTargetType requires the first group to have a single typed output parameter");
+
+    var allStructures = worker.fetchResourcesByType(StructureDefinition.class);
+    for (StructureMap.StructureMapStructureComponent uses : map.getStructure()) {
+      if (uses.getMode() == StructureMap.StructureMapModelMode.TARGET) {
+        if (uses.getAlias() == gpReturnTypeParameter.getType()) {
+          var res = worker.fetchResource(StructureDefinition.class, uses.getUrl(), ExtensionUtilities.getVersionResolutionRules(uses.getUrlElement()));
+          if (res == null)
+            throw new FHIRException("Unable to find " + uses.getUrl() + " referenced from map " + map.getUrl());
+          return res;
+        }
+        else {
+          // scan the resources to see if the name of this structure is
+          for (StructureDefinition sd : allStructures) {
+            if (sd.getName().equalsIgnoreCase(gpReturnTypeParameter.getType())) {
+              return sd;
+            }
+          }
+        }
+      }
+    }
+
+    throw new FHIRException("No targets found in map " + map.getUrl());
   }
 
   private void log(String cnt) {
@@ -1678,12 +1715,23 @@ public class StructureMapUtilities {
         result.add(v);
   }
 
+  /**
+   * The main entry point for the transformer. It will transform the source into the target according to the rules in the map.
+   * @param appInfo the application-specific context information (note: this is NOT the same as the objContext used in the fhirpath engine functions/interfaces)
+   * @param source input resource or element to be transformed
+   * @param map the structure map that defines the transformation rules
+   * @param target the target resource or element to be populated by the transformation
+   * @throws FHIRException
+   */
   public void transform(Object appInfo, Base source, StructureMap map, Base target) throws FHIRException {
     TransformContext context = new TransformContext(appInfo);
     log("Start Transform " + map.getUrl());
     StructureMapGroupComponent g = map.getGroup().get(0);
 
     Variables vars = new Variables();
+    if (map.hasConst()) {
+      vars.setConstants(new StructureMapConstantResolver(map, fpe));
+    }
     vars.add(VariableMode.INPUT, getInputName(g, StructureMapInputMode.SOURCE, "source"), source);
     if (target != null)
       vars.add(VariableMode.OUTPUT, getInputName(g, StructureMapInputMode.TARGET, "target"), target);
@@ -1738,7 +1786,7 @@ public class StructureMapUtilities {
     log(indent + "rule : " + rule.getName() + "; vars = " + vars.summary());
     Variables srcVars = vars.copy();
     if (rule.getSource().size() != 1)
-      throw new FHIRException("Rule \"" + rule.getName() + "\": not handled yet");
+      throw new FHIRException("Rule \"" + rule.getName() + "\": multiple sources not supported yet");
     List<Variables> source = processSource(rule.getName(), context, srcVars, rule.getSource().get(0), map.getUrl(), indent);
     if (source != null) {
       for (Variables v : source) {
@@ -1763,10 +1811,17 @@ public class StructureMapUtilities {
           String srcType = src.fhirType();
           String tgtType = tgt.fhirType();
           ResolvedGroup defGroup = resolveGroupByTypes(map, rule.getName(), group, srcType, tgtType);
-          Variables vdef = new Variables();
-          vdef.add(VariableMode.INPUT, defGroup.getTargetGroup().getInput().get(0).getName(), src);
-          vdef.add(VariableMode.OUTPUT, defGroup.getTargetGroup().getInput().get(1).getName(), tgt);
-          executeGroup(indent + "  ", context, defGroup.getTargetMap(), vdef, defGroup.getTargetGroup(), false);
+          if (defGroup != null){
+            Variables vdef = new Variables();
+            vdef.add(VariableMode.INPUT, defGroup.getTargetGroup().getInput().get(0).getName(), src);
+            vdef.add(VariableMode.OUTPUT, defGroup.getTargetGroup().getInput().get(1).getName(), tgt);
+            executeGroup(indent + "  ", context, defGroup.getTargetMap(), vdef, defGroup.getTargetGroup(), false);
+          }
+          else if (srcType.equals(tgtType))
+          {
+            // There's no group to call, and we didn't throw, so the types are the same, just copy
+            src.assignValues(tgt);
+          }
         }
       }
     }
@@ -1906,6 +1961,11 @@ public class StructureMapUtilities {
         }
       }
     }
+
+    // These are the same type, so we should be able to handle these directly.
+    if (res.getTargetGroup() == null && srcType.equals(tgtType))
+      return null;
+
     if (res.getTargetGroup() == null)
       throw new FHIRException("No matches found for rule for '" + srcType + " to " + tgtType + "' from " + map.getUrl() + ", from rule '" + ruleid + "'");
     source.setUserData(kn, res);
@@ -2035,8 +2095,17 @@ public class StructureMapUtilities {
         items.add(b);
       else {
         getChildrenByName(b, src.getElement(), items);
-        if (items.size() == 0 && src.hasDefaultValue())
-          items.add(src.getDefaultValueElement());
+        if (items.size() == 0 && src.hasDefaultValue()) {
+          // the default value property is a fhirpath expression that needs to be evaluated
+          ExpressionNode expr = (ExpressionNode) src.getUserData(MAP_DEFAULT_EXPRESSION);
+          if (expr == null) {
+            expr = fpe.parse(src.getDefaultValue());
+            src.setUserData(MAP_DEFAULT_EXPRESSION, expr);
+          }
+          
+          List<Base> defaultValues = fpe.evaluate(vars, null, expr);
+          items.addAll(defaultValues);
+        }
       }
     }
 
@@ -2102,7 +2171,7 @@ public class StructureMapUtilities {
         b.appendIfNotNull(fpe.evaluateToString(varsForSource, null, null, item, expr));
       }
       if (b.length() > 0)
-        services.log(b.toString());
+        log(b.toString());
     }
     
 
@@ -2326,24 +2395,65 @@ public class StructureMapUtilities {
         case CC:
           // cc(system, code [, display]), or cc(text) for a CodeableConcept with only a text value
           CodeableConcept cc = new CodeableConcept();
+          String display = null;
           if (tgt.getParameter().size() == 1) {
             cc.setText(getParamStringNoNull(vars, tgt.getParameter().get(0), tgt.toString()));
-          } else {
-            Coding ccc = buildCoding(getParamStringNoNull(vars, tgt.getParameter().get(0), tgt.toString()), getParamStringNoNull(vars, tgt.getParameter().get(1), tgt.toString()));
-            if (tgt.getParameter().size() > 2) {
-              // an explicit display wins over whatever buildCoding looked up
-              ccc.setDisplay(getParamStringNoNull(vars, tgt.getParameter().get(2), tgt.toString()));
-            }
-            cc.addCoding(ccc);
+            return cc;
           }
+          if (tgt.getParameter().size() > 2) {
+            display = getParamStringNoNull(vars, tgt.getParameter().get(2), tgt.toString());
+          }
+          cc.addCoding(buildCoding(getParamStringNoNull(vars, tgt.getParameter().get(0), tgt.toString()), getParamStringNoNull(vars, tgt.getParameter().get(1), tgt.toString()), display));
           return cc;
         case C:
-          // c(system, code [, display])
-          Coding c = buildCoding(getParamStringNoNull(vars, tgt.getParameter().get(0), tgt.toString()), getParamStringNoNull(vars, tgt.getParameter().get(1), tgt.toString()));
+          String displayForCoding = null;
           if (tgt.getParameter().size() > 2) {
-            c.setDisplay(getParamStringNoNull(vars, tgt.getParameter().get(2), tgt.toString()));
+            displayForCoding = getParamStringNoNull(vars, tgt.getParameter().get(2), tgt.toString());
           }
+          Coding c = buildCoding(getParamStringNoNull(vars, tgt.getParameter().get(0), tgt.toString()), getParamStringNoNull(vars, tgt.getParameter().get(1), tgt.toString()), displayForCoding);
           return c;
+        case ID:
+          org.hl7.fhir.r5.model.Identifier id = new org.hl7.fhir.r5.model.Identifier();
+          if (tgt.getParameter().size() >= 2) {
+            id.setSystem(((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue());
+            id.setValue(((PrimitiveType<?>) tgt.getParameter().get(1).getValue()).asStringValue());
+          }
+          if (tgt.getParameter().size() == 3) {
+            var typeCode = ((PrimitiveType<?>) tgt.getParameter().get(2).getValue()).asStringValue();
+            id.setType(new CodeableConcept().addCoding(new Coding().setSystem("http://hl7.org/fhir/ValueSet/identifier-type").setCode(typeCode)));
+          }
+          return id;
+        case CP:
+          org.hl7.fhir.r5.model.ContactPoint cp = new org.hl7.fhir.r5.model.ContactPoint();
+          if (tgt.getParameter().size() == 2) {
+            cp.setSystem(ContactPoint.ContactPointSystem.fromCode(((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue()));
+            cp.setValue(((PrimitiveType<?>) tgt.getParameter().get(1).getValue()).asStringValue());
+          }
+          if (tgt.getParameter().size() == 1) {
+            var value = ((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue();
+            cp.setValue(value);
+            // infer the system from the value (if starts with http or https is URL, if it has an @ character in it, that's an email address, otherwise ambiguous)
+            if (value.startsWith("http://") || value.startsWith("https://"))
+              cp.setSystem(ContactPoint.ContactPointSystem.URL);
+            else if (value.contains("@"))
+              cp.setSystem(ContactPoint.ContactPointSystem.EMAIL);
+          }
+          return cp;
+        case QTY:
+          org.hl7.fhir.r5.model.Quantity qty = new org.hl7.fhir.r5.model.Quantity();
+          var qtyValue = new java.math.BigDecimal(((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue());
+          var qtyUnit = ((PrimitiveType<?>) tgt.getParameter().get(1).getValue()).asStringValue();
+          qty.setValue(qtyValue);
+          qty.setUnit(qtyUnit);
+          if (tgt.getParameter().size() >= 3) {
+            var qtySystem = ((PrimitiveType<?>) tgt.getParameter().get(2).getValue()).asStringValue();
+            qty.setSystem(qtySystem);
+          }
+          if (tgt.getParameter().size() >= 4) {
+            var qtyCode = ((PrimitiveType<?>) tgt.getParameter().get(3).getValue()).asStringValue();
+            qty.setCode(qtyCode);
+          }
+          return qty;
         default:
           throw new FHIRException("Rule \"" + rulePath + "\": Transform Unknown: " + tgt.getTransform().toCode());
       }
@@ -2371,7 +2481,7 @@ public class StructureMapUtilities {
   }
 
 
-  private Coding buildCoding(String uri, String code) throws FHIRException {
+  private Coding buildCodingUsingCodeInValueset(String uri, String code) throws FHIRException {
     // if we can get this as a valueSet, we will
     String system = null;
     String display = null;
@@ -2553,6 +2663,8 @@ public class StructureMapUtilities {
         return null;
       if ("code".equals(fieldToReturn))
         return new CodeType(outcome.getCode());
+      else if ("CodeableConcept".equals(fieldToReturn))
+        return new CodeableConcept(outcome);
       else
         return outcome;
     }
@@ -2576,6 +2688,16 @@ public class StructureMapUtilities {
     StructureMapAnalysis result = new StructureMapAnalysis();
     TransformContext context = new TransformContext(appInfo);
     VariablesForProfiling vars = new VariablesForProfiling(this, false, false);
+    if (map.hasConst()) {
+      StructureMapConstantResolver constantResolver = new StructureMapConstantResolver(map, fpe);
+      for (StructureMapConstComponent constant : map.getConst()) {
+        TypeDetails constantTypes = new TypeDetails(CollectionStatus.SINGLETON);
+        for (Base value : constantResolver.resolve(constant.getName())) {
+          constantTypes.addType(value.fhirType());
+        }
+        vars.add(VariableMode.INPUT, constant.getName(), new PropertyWithType(constant.getName(), null, null, constantTypes));
+      }
+    }
     if (map.hasGroup()) {
       StructureMapGroupComponent start = map.getGroup().get(0);
       for (StructureMapGroupInputComponent t : start.getInput()) {
@@ -2631,10 +2753,10 @@ public class StructureMapUtilities {
     XhtmlNode xs = tr.addTag("td");
     XhtmlNode xt = tr.addTag("td");
 
-    VariablesForProfiling srcVars = vars.copy();
-    if (rule.getSource().size() != 1)
-      throw new FHIRException("Rule \"" + rule.getName() + "\": not handled yet");
-    VariablesForProfiling source = analyseSource(rule.getName(), context, srcVars, rule.getSourceFirstRep(), xs);
+    VariablesForProfiling source = vars.copy();
+    for (StructureMapGroupRuleSourceComponent ruleSource : rule.getSource()) {
+      source = analyseSource(rule.getName(), context, source, ruleSource, xs);
+    }
 
     TargetWriter tw = new TargetWriter();
     for (StructureMapGroupRuleTargetComponent t : rule.getTarget()) {
@@ -2664,7 +2786,7 @@ public class StructureMapUtilities {
     }
 
     if (src.hasElement()) {
-      Property element = prop.getBaseProperty().getChild(prop.getTypes().getType(), src.getElement());
+      Property element = prop.getBaseProperty().getChild(src.getElement(), prop.getTypes());
       if (element == null)
         throw new FHIRException("Rule \"" + ruleId + "\": Unknown element name " + src.getElement());
       if (element.getDefinition().getMin() == 0)
@@ -2673,9 +2795,13 @@ public class StructureMapUtilities {
         repeating = true;
       VariablesForProfiling result = vars.copy(optional, repeating);
       TypeDetails type = new TypeDetails(CollectionStatus.SINGLETON);
+      boolean typeFilterMatched = !src.hasType();
       for (TypeRefComponent tr : element.getDefinition().getType()) {
         if (!tr.hasCode())
           throw new FHIRException("Rule \"" + ruleId + "\": Element has no type");
+        if (src.hasType() && !src.getType().equals(tr.getWorkingCode()))
+          continue;
+        typeFilterMatched = true;
         ProfiledType pt = new ProfiledType(tr.getWorkingCode());
         if (tr.hasProfile())
           pt.addProfiles(tr.getProfile());
@@ -2683,6 +2809,8 @@ public class StructureMapUtilities {
           pt.addBinding(element.getDefinition().getBinding());
         type.addType(pt);
       }
+      if (!typeFilterMatched)
+        throw new FHIRException("Rule \"" + ruleId + "\": Type " + src.getType() + " is not valid for element " + src.getElement());
       td.addText(prop.getPath() + "." + src.getElement());
       if (src.hasVariable())
         result.add(VariableMode.INPUT, src.getVariable(), new PropertyWithType(prop.getPath() + "." + src.getElement(), element, null, type));
@@ -2716,7 +2844,7 @@ public class StructureMapUtilities {
       type = new TypeDetails(CollectionStatus.SINGLETON, vp.getType(tgt.getElement()));
     }
 
-    if (tgt.getTransform() == StructureMapTransform.CREATE) {
+    if (tgt.getTransform() == StructureMapTransform.CREATE && tgt.hasParameter()) {
       String s = getParamString(vars, tgt.getParameter().get(0));
       if (worker.getResourceNames().contains(s))
         tw.newResource(tgt.getVariable(), s);
@@ -2772,30 +2900,65 @@ public class StructureMapUtilities {
         // cc(system, code [, display]), or cc(text) for a CodeableConcept with only a text value
         CodeableConcept cc = new CodeableConcept();
         if (tgt.getParameter().size() == 1) {
-          String text = fixedString(tgt.getParameter().get(0).getValue());
-          if (text == null) {
-            return null;
-          }
-          cc.setText(text);
+          cc.setText(((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue());
+        } else if (tgt.getParameter().size() == 2) {
+          cc.addCoding(buildCoding(tgt.getParameter().get(0).getValue(), tgt.getParameter().get(1).getValue(), null));
         } else {
-          cc.addCoding(applyFixedDisplay(buildCoding(tgt.getParameter().get(0).getValue(), tgt.getParameter().get(1).getValue()), tgt));
+          cc.addCoding(buildCoding(tgt.getParameter().get(0).getValue(), tgt.getParameter().get(1).getValue(), tgt.getParameter().get(2).getValue()));
         }
         return cc;
       case C:
-        // c(system, code [, display])
-        return applyFixedDisplay(buildCoding(tgt.getParameter().get(0).getValue(), tgt.getParameter().get(1).getValue()), tgt);
+        if (tgt.getParameter().size() == 2) {
+          return buildCoding(tgt.getParameter().get(0).getValue(), tgt.getParameter().get(1).getValue(), null);
+        }
+        return buildCoding(tgt.getParameter().get(0).getValue(), tgt.getParameter().get(1).getValue(), tgt.getParameter().get(2).getValue());
       case QTY:
         return null;
-      //case ID,
-      //case CP,
+      case ID:
+        org.hl7.fhir.r5.model.Identifier id = new org.hl7.fhir.r5.model.Identifier();
+        if (tgt.getParameter().size() >= 2) {
+          id.setSystem(((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue());
+          id.setValue(((PrimitiveType<?>) tgt.getParameter().get(1).getValue()).asStringValue());
+        }
+        if (tgt.getParameter().size() == 3) {
+          var typeCode = ((PrimitiveType<?>) tgt.getParameter().get(2).getValue()).asStringValue();
+          id.setType(new CodeableConcept().addCoding(new Coding().setSystem("http://hl7.org/fhir/ValueSet/identifier-type").setCode(typeCode)));
+        }
+        return id;
+      case CP:
+        org.hl7.fhir.r5.model.ContactPoint cp = new org.hl7.fhir.r5.model.ContactPoint();
+        if (tgt.getParameter().size() == 2) {
+          cp.setSystem(ContactPoint.ContactPointSystem.fromCode(((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue()));
+          cp.setValue(((PrimitiveType<?>) tgt.getParameter().get(1).getValue()).asStringValue());
+        }
+        if (tgt.getParameter().size() == 1) {
+          var value = ((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue();
+          cp.setValue(value);
+          // infer the system from the value (if starts with http or https is URL, if it has an @ character in it, that's an email address, otherwise ambiguous)
+          if (value.startsWith("http://") || value.startsWith("https://"))
+            cp.setSystem(ContactPoint.ContactPointSystem.URL);
+          else if (value.contains("@"))
+            cp.setSystem(ContactPoint.ContactPointSystem.EMAIL);
+        }
+        return cp;
       default:
         return null;
     }
   }
 
   @SuppressWarnings("rawtypes")
-  private Coding buildCoding(DataType value1, DataType value2) {
-    return new Coding().setSystem(((PrimitiveType) value1).asStringValue()).setCode(((PrimitiveType) value2).asStringValue());
+  private Coding buildCoding(DataType system, DataType code, DataType display) {
+    var coding = new Coding().setSystem(((PrimitiveType) system).asStringValue()).setCode(((PrimitiveType) code).asStringValue());
+    if (display != null)
+      coding.setDisplay(((PrimitiveType) display).asStringValue());
+    return coding;
+  }
+
+  private Coding buildCoding(String system, String code, String display) {
+    var coding = new Coding().setSystem(system).setCode(code);
+    if (display != null)
+      coding.setDisplay(display);
+    return coding;
   }
 
   /**
@@ -2874,7 +3037,7 @@ public class StructureMapUtilities {
       throw new FHIRException("Describe Transform, but the uri is blank");
     if (Utilities.noString(code))
       throw new FHIRException("Describe Transform, but the code is blank");
-    Coding c = buildCoding(uri, code);
+    Coding c = buildCodingUsingCodeInValueset(uri, code);
     return c.getSystem() + "#" + c.getCode() + (c.hasDisplay() ? "(" + c.getDisplay() + ")" : "");
   }
 
@@ -2981,6 +3144,9 @@ public class StructureMapUtilities {
   private boolean isCompatibleType(String t, String code) {
     if (t.equals(code))
       return true;
+    TypeDetails allowedType = new TypeDetails(CollectionStatus.SINGLETON, code);
+    if (allowedType.hasType(worker, t))
+      return true;
     if (t.equals("string")) {
       StructureDefinition sd = worker.fetchTypeDefinition(code);
       return sd != null && sd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/string");
@@ -2992,16 +3158,31 @@ public class StructureMapUtilities {
     var tgtParameters = tgt.getParameter();
     switch (tgt.getTransform()) {
       case CREATE:
-        if (tgtParameters.size() != 1)
-          throw new FHIRException("Transform " + tgt.getTransform().toCode() + " requires exactly 1 parameter");
+        if (tgtParameters.size() > 1)
+          throw new FHIRException("Transform " + tgt.getTransform().toCode() + " requires at most 1 parameter");
+        if (tgtParameters.isEmpty()) {
+          Property targetProperty = var.getProperty().getBaseProperty().getChild(tgt.getElement(), tgt.getElement());
+          if (targetProperty == null)
+            throw new FHIRException("Unknown Property " + tgt.getElement() + " on " + var.getProperty().getPath());
+          return new TypeDetails(CollectionStatus.SINGLETON, targetProperty.getType(tgt.getElement()));
+        }
         String p = getParamString(vars, tgtParameters.get(0));
         return new TypeDetails(CollectionStatus.SINGLETON, p);
+      case CAST:
+        if (tgtParameters.size() == 0 || tgtParameters.size() > 2)
+          throw new FHIRException("Transform " + tgt.getTransform().toCode() + " requires a source parameter, and optionally an output type");
+        String castType = getParamString(vars, tgtParameters.get(1));
+        return new TypeDetails(CollectionStatus.SINGLETON, castType);
       case COPY:
         return getParam(vars, tgtParameters.get(0));
       case EVALUATE:
         ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
         if (expr == null) {
           expr = fpe.parse(getParamString(vars, tgtParameters.get(tgtParameters.size() - 1)));
+        }
+        if (tgtParameters.size() == 2) {
+          TypeDetails expressionContext = getParam(vars, tgtParameters.get(0));
+          return fpe.checkOnTypes(vars, null, null, expressionContext, expr, new ArrayList<>());
         }
         return fpe.check(vars, null, null, expr);
       case TRANSLATE:
@@ -3025,15 +3206,24 @@ public class StructureMapUtilities {
             res.addBinding(td.getBinding());
         }
         return new TypeDetails(CollectionStatus.SINGLETON, res);
+      case ID:
+        return new TypeDetails(CollectionStatus.SINGLETON, "Identifier");
+      case CP:
+        return new TypeDetails(CollectionStatus.SINGLETON, "ContactPoint");
       case C:
         return new TypeDetails(CollectionStatus.SINGLETON, "Coding");
       case QTY:
         return new TypeDetails(CollectionStatus.SINGLETON, "Quantity");
+      case APPEND:
+      case TRUNCATE:
+        return new TypeDetails(CollectionStatus.SINGLETON, "string");
       case REFERENCE:
-        VariableForProfiling vrs = vars.get(VariableMode.OUTPUT, getParamId(vars, tgt.getParameterFirstRep()));
+        VariableForProfiling vrs = vars.get(null, getParamId(vars, tgt.getParameterFirstRep()));
         if (vrs == null)
           throw new FHIRException("Unable to resolve variable \"" + getParamId(vars, tgt.getParameterFirstRep()) + "\"");
-        String profile = vrs.getProperty().getProfileProperty().getStructure().getUrl();
+        String profile = vrs.getProperty().getProfileProperty() == null
+          ? vrs.getProperty().getTypes().getType()
+          : vrs.getProperty().getProfileProperty().getStructure().getUrl();
         TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON);
         td.addType("Reference", profile);
         return td;
@@ -3132,7 +3322,7 @@ public class StructureMapUtilities {
         StructureDefinition sd = worker.fetchResource(StructureDefinition.class, imp.getUrl(), ExtensionUtilities.getVersionResolutionRules(imp.getUrlElement()));
         if (sd == null)
           throw new FHIRException("Import " + imp.getUrl() + " cannot be resolved");
-        if (sd.getId().equals(type)) {
+        if ((imp.hasAlias() && imp.getAlias().equals(type)) || sd.getId().equals(type) || sd.getType().equals(type)) {
           return new PropertyWithType(sd.getType(), new Property(worker, sd.getSnapshot().getElement().get(0), sd), null, new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl()));
         }
       }

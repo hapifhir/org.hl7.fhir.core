@@ -469,7 +469,7 @@ public class Element extends Base implements NamedItem {
     
     if (!value.isPrimitive() && !(value instanceof Element)) {
       if (isDataType(value)) 
-        value = convertToElement(property.getChild(name), value);
+        value = convertToElement(property.getChildSimpleName(name, name), value); // getChild doesn't handle choice elements like Observation.value[x]
       else
         throw new FHIRException("Cannot set property "+name+" on "+this.name+" - value is not a primitive type ("+value.fhirType()+") or an ElementModel type");
     }

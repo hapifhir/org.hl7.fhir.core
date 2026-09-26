@@ -54,6 +54,7 @@ import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.fml.StructureMap;
+import org.hl7.fhir.model.fml.StructureMap.StructureMapInputMode;
 import org.hl7.fhir.model.core.Bundle;
 import org.hl7.fhir.model.core.Bundle.BundleEntryComponent;
 import org.hl7.fhir.model.core.CanonicalResource;
@@ -792,23 +793,55 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   private org.hl7.fhir.services.elementmodel.Element getTargetResourceFromStructureMap(StructureMap map) {
+    // only have support for a single output parameter to generate
+    StructureMap.StructureMapGroupInputComponent gpReturnTypeParameter = null;
+    for (var gp : map.getGroupFirstRep().getInputList()) {
+      if (gp.getMode() == StructureMapInputMode.TARGET) {
+        if (gpReturnTypeParameter != null)
+          throw new FHIRException("Evaluation of StructureMap only supported on groups with a single typed output parameter");
+        gpReturnTypeParameter = gp;
+        if (gp.getType() == null)
+          throw new FHIRException("Evaluation of StructureMap only supported on groups where the output parameter has a declared type");
+      }
+    }
+
+    if (gpReturnTypeParameter == null)
+      throw new FHIRException("Evaluation of StructureMap requires the first group to have a single typed output parameter");
+
+    var allStructures = this.context.fetchResourcesByType(StructureDefinition.class);
     String targetTypeUrl = null;
+    StructureDefinition structureDefinition = null;
+
+    // Need to lookup this type in the imported structures/aliases
     for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
-      if (component.getMode() == StructureMap.StructureMapModelMode.TARGET) {
+      if (component.getMode() == StructureMap.StructureMapModelMode.TARGET && component.hasAlias() && component.getAlias().equals(gpReturnTypeParameter.getType())) {
         targetTypeUrl = component.getUrl();
+        for (StructureDefinition sd : allStructures) {
+          if (sd.getUrl().equalsIgnoreCase(targetTypeUrl)) {
+            structureDefinition = sd;
+            break;
+          }
+        }
         break;
+      }
+    }
+    if (targetTypeUrl == null) {
+      // lets just scan through all the structures to see if this type is named (not an alias)
+      for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
+        if (component.getMode() == StructureMap.StructureMapModelMode.TARGET) {
+          for (StructureDefinition sd : allStructures) {
+            if (sd.getUrl().equalsIgnoreCase(component.getUrl()) && sd.getName() != null && sd.getName().equalsIgnoreCase(gpReturnTypeParameter.getType())) {
+              targetTypeUrl = sd.getUrl();
+              structureDefinition = sd;
+              break;
+            }
+          }
+          break;
+        }
       }
     }
 
     if (targetTypeUrl == null) throw new FHIRException("Unable to determine resource URL for target type");
-
-    StructureDefinition structureDefinition = null;
-    for (StructureDefinition sd : this.context.fetchResourcesByType(StructureDefinition.class)) {
-      if (sd.getUrl().equalsIgnoreCase(targetTypeUrl)) {
-        structureDefinition = sd;
-        break;
-      }
-    }
 
     if (structureDefinition == null) throw new FHIRException("Unable to find StructureDefinition for target type ('" + targetTypeUrl + "')");
 
@@ -816,35 +849,51 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   private StructureDefinition getSourceResourceFromStructureMap(StructureMap map) {
-	StructureMap.StructureMapGroupComponent g = map.getGroupList().get(0);
-	String type = null;
-	for (StructureMap.StructureMapGroupInputComponent inp : g.getInputList()) {
-	  if (inp.getMode() == StructureMap.StructureMapInputMode.SOURCE)
-	    if (type != null)
-	      throw new DefinitionException("This engine does not support multiple source inputs");
-	    else
-	      type = inp.getType();
-	}
+    StructureMap.StructureMapGroupComponent g = map.getGroupList().get(0);
+    String type = null;
+    for (StructureMap.StructureMapGroupInputComponent inp : g.getInputList()) {
+      if (inp.getMode() == StructureMap.StructureMapInputMode.SOURCE)
+        if (type != null)
+          throw new DefinitionException("This engine does not support multiple source inputs");
+        else
+          type = inp.getType();
+    }
 
-	String sourceTypeUrl = null;
-	for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
-	  if (component.getMode() == StructureMap.StructureMapModelMode.SOURCE
-	      && component.getAlias().equalsIgnoreCase(type)) {
-	    sourceTypeUrl = component.getUrl();
-	    break;
-	  }
-	}
+    // Check if the source type is one of the aliased types in the structure map.
+    // (and lookup the StructureDefinition for that type)
+    String sourceTypeUrl = null;
+    for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
+      if (component.getMode() == StructureMap.StructureMapModelMode.SOURCE) {
+        if (component.hasAlias() && component.getAlias().equalsIgnoreCase(type)) {
+          sourceTypeUrl = component.getUrl();
+          break;
+        }
+      }
+    }
 
-	StructureDefinition structureDefinition = null;
-	for (StructureDefinition sd : this.context.fetchResourcesByType(StructureDefinition.class)) {
-	  if (sd.getUrl().equalsIgnoreCase(sourceTypeUrl)) {
-	    structureDefinition = sd;
-	  	break;
-	  }
-	}
+    StructureDefinition structureDefinition = null;
+    for (StructureDefinition sd : this.context.fetchResourcesByType(StructureDefinition.class)) {
+      if (sourceTypeUrl != null) {
+        if (sd.getUrl().equalsIgnoreCase(sourceTypeUrl)) {
+          structureDefinition = sd;
+          break;
+        }
+      } else {
+        // handle any parameter types that weren't "used" with an alias
+        for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
+          if (component.getMode() == StructureMap.StructureMapModelMode.SOURCE) {
+            if (sd.getUrl().equalsIgnoreCase(component.getUrl()) && sd.getName().equalsIgnoreCase(type)) {
+              structureDefinition = sd;
+              break;
+            }
+          }
+        }
+      }
+    }
 
-	if (structureDefinition == null) throw new FHIRException("Unable to find StructureDefinition for source type ('" + sourceTypeUrl + "')");
-	return structureDefinition;
+    if (structureDefinition == null)
+      throw new FHIRException("Unable to find StructureDefinition for source type ('" + sourceTypeUrl + "')");
+    return structureDefinition;
   }
 
 

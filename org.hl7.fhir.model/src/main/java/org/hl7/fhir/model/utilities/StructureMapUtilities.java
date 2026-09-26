@@ -81,6 +81,9 @@ public class StructureMapUtilities {
   public static String render(StructureMap map) {
     StringBuilder b = new StringBuilder();
     b.append("/// url = '"+Utilities.escapeFhirPathString(map.getUrl())+"'\r\n");
+    if (map.hasVersion()) {
+      b.append("/// version = '"+Utilities.escapeFhirPathString(map.getVersion())+"'\r\n");
+    }
     b.append("/// name = '"+Utilities.escapeFhirPathString(map.getName())+"'\r\n");
     if (map.hasTitle()) {
       b.append("/// title = '"+Utilities.escapeFhirPathString(map.getTitle())+"'\r\n");

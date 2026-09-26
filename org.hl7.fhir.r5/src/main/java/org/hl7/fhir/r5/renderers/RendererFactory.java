@@ -132,6 +132,7 @@ public class RendererFactory {
     case "Parameters": return new ParametersRenderer(context);
     case "Questionnaire": return new QuestionnaireRenderer(context);
     case "QuestionnaireResponse": return new QuestionnaireResponseRenderer(context);
+    case "StructureMap": return new StructureMapRenderer(context);
     }
     if (resource.isDirect()) {
       switch (resource.fhirType()) {
@@ -150,7 +151,6 @@ public class RendererFactory {
       case "Requirements": return new RequirementsRenderer(context);
       case "SearchParameter": return new SearchParameterRenderer(context);
       case "StructureDefinition": return new StructureDefinitionRenderer(context);
-      case "StructureMap": return new StructureMapRenderer(context);
       case "SubscriptionTopic": return new SubscriptionTopicRenderer(context);
       case "TestPlan": return new TestPlanRenderer(context);
       case "ValueSet": return new ValueSetRenderer(context);
@@ -165,7 +165,7 @@ public class RendererFactory {
     return registeredRenderers.containsKey(rt) || Utilities.existsInList(rt, 
         "CodeSystem", "ValueSet", "ConceptMap", 
         "CapabilityStatement", "CompartmentDefinition", "ImplementationGuide", "Library", "NamingSystem", "OperationDefinition", 
-        "Questionnaire", "SearchParameter", "StructureDefinition", "ActorDefinition", "Requirements", "TestPlan", "ExampleScenario", "Consent");
+        "Questionnaire", "SearchParameter", "StructureDefinition", "StructureMap", "ActorDefinition", "Requirements", "TestPlan", "ExampleScenario", "Consent");
   }
 
   /**
