@@ -222,9 +222,9 @@ public class ProfileUtilities {
   }
 
   public enum AllowUnknownProfile {
-    NONE, // exception if there's any unknown profiles (the default)
-    NON_EXTENSIONS, // don't raise an exception except on Extension (because more is going on there
-    ALL_TYPES // allow any unknow profile
+    NONE, // exception if there's any unknown profiles
+    NON_EXTENSIONS, // don't raise an exception except on Extension (because more is going on there)
+    ALL_TYPES // allow any unknown profile. This is the default - see allowUnknownProfile below
   }
 
   /**
@@ -1747,7 +1747,7 @@ public class ProfileUtilities {
 
   protected BaseTypeSlice chooseMatchingBaseSlice(List<BaseTypeSlice> baseSlices, String type) {
     for (BaseTypeSlice bs : baseSlices) {
-      if (bs.getType().equals(type)) {
+      if (type != null && type.equals(bs.getType())) { // a base slice with no type matches nothing
         return bs;
       }
     }
@@ -1768,7 +1768,11 @@ public class ProfileUtilities {
       while (i <  list.getElement().size() && list.getElement().get(i).getPath().startsWith(base.getPath()+".")) {
         i++;      
       };
-      res.add(new BaseTypeSlice(list.getElement().get(s), list.getElement().get(s).getTypeFirstRep().getCode(), s, i-1));
+      // getTypeFirstRep() adds an empty type to the element when it has none, which
+      // would modify the base snapshot just by looking at it
+      ElementDefinition slice = list.getElement().get(s);
+      String sliceType = slice.hasType() ? slice.getType().get(0).getCode() : null;
+      res.add(new BaseTypeSlice(slice, sliceType, s, i-1));
     }
     return res;
   }

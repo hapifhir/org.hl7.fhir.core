@@ -12,6 +12,7 @@ public class I18nConstants {
   public static final String ARRAY_CANNOT_BE_EMPTY = "ARRAY_CANNOT_BE_EMPTY";
   public static final String ATTEMPT_TO_A_SLICE_AN_ELEMENT_THAT_DOES_NOT_REPEAT__FROM__IN_ = "Attempt_to_a_slice_an_element_that_does_not_repeat__from__in_";
   public static final String ATTEMPT_TO_CHANGE_SLICING = "ATTEMPT_TO_CHANGE_SLICING";
+  public static final String SLICING_RESTATED_REDUNDANTLY = "SLICING_RESTATED_REDUNDANTLY";
   public static final String ATTEMPT_TO_REPLACE_ELEMENT_NAME_FOR_A_NONCHOICE_TYPE = "Attempt_to_replace_element_name_for_a_nonchoice_type";
   public static final String ATTEMPT_TO_USE_A_SNAPSHOT_ON_PROFILE__AS__BEFORE_IT_IS_GENERATED = "Attempt_to_use_a_snapshot_on_profile__as__before_it_is_generated";
   public static final String ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE = "Attempt_to_use_Terminology_server_when_no_Terminology_server_is_available";

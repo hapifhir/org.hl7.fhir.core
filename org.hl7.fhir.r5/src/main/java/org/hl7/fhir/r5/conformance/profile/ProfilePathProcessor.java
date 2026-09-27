@@ -357,7 +357,7 @@ public class ProfilePathProcessor {
                 ValidationMessage.IssueSeverity.ERROR));
             } else {
               profileUtilities.getMessages().add(new ValidationMessage(Source.InstanceValidator, ValidationMessage.IssueType.BUSINESSRULE, diffMatches.get(0).getPath(),
-                profileUtilities.getContext().formatMessage(I18nConstants.ATTEMPT_TO_CHANGE_SLICING, diffMatches.get(0).getId(), diffMatches.get(i).getId()),
+                profileUtilities.getContext().formatMessage(I18nConstants.SLICING_RESTATED_REDUNDANTLY, diffMatches.get(0).getId(), slicingSummary(diffMatches.get(0).getSlicing()), diffMatches.get(i).getId()),
                 IssueSeverity.INFORMATION));
 
             }
