@@ -3529,7 +3529,7 @@ msgstr "Вложение слишком большое (разрешено = {0}
 # QUESTIONNAIRE_QR_ITEM_BAD_ATTACHMENT_MIMETYPE
 #: QUESTIONNAIRE_QR_ITEM_BAD_ATTACHMENT_MIMETYPE
 msgid "The mime type {0} is not valid for this answer (allowed = {1})"
-msgstr "Значение {0} больше допустимого максимума {1}"
+msgstr "Тип MIME {0} недопустим для этого ответа (разрешено = {1})"
 
 # QUESTIONNAIRE_QR_ITEM_DATE_MAX
 #: QUESTIONNAIRE_QR_ITEM_DATE_MAX
@@ -3869,7 +3869,7 @@ msgstr "Элементы типа {0} не должны иметь ответо�
 # Questionnaire_QR_Item_GroupAnswer
 #: Questionnaire_QR_Item_GroupAnswer
 msgid "Items not of type group should not have items outside answers (use answer.item not .item)"
-msgstr "Элементы группы не должны иметь элементы вне ответов (используйте answer.item не .item)"
+msgstr "Элементы, не относящиеся к типу group, не должны иметь элементы вне ответов (используйте answer.item, а не .item)"
 
 # Questionnaire_QR_Item_IntNoOptions
 #: Questionnaire_QR_Item_IntNoOptions
@@ -4086,7 +4086,7 @@ msgstr "Тип ''{2}'' не является целью для элемента 
 # REFERENCE_RESOLUTION_FAILED
 #: REFERENCE_RESOLUTION_FAILED
 msgid "Fetching ''{0}'' failed. System details: {1}: {2}"
-msgstr "Извлечение ''{0}''. Подробности системы: {1}: {2}"
+msgstr "Не удалось извлечь ''{0}''. Подробности системы: {1}: {2}"
 
 # REGEX_MATCH_TIMED_OUT
 #: REGEX_MATCH_TIMED_OUT
@@ -5359,7 +5359,7 @@ msgstr ""
 # TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING
 #: TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING
 msgid "Base64 encoded values SHOULD not contain any whitespace (per RFC 4648). Note that non-validating readers are encouraged to accept whitespace anyway"
-msgstr "Кодированные значения Base64 не содержат пробелов (за RFC 4648). Обратите внимание, что читателям рекомендуется не утверждать пробелы"
+msgstr "Значения в кодировке Base64 не должны (SHOULD NOT) содержать пробельных символов (согласно RFC 4648). Обратите внимание, что читателям, не выполняющим проверку, всё же рекомендуется допускать пробельные символы"
 
 # TYPE_SPECIFIC_CHECKS_DT_BASE64_TOO_LONG
 #: TYPE_SPECIFIC_CHECKS_DT_BASE64_TOO_LONG
@@ -5944,7 +5944,7 @@ msgstr "Этот контент не может быть разобран (не�
 # This_element_does_not_match_any_known_slice_
 #: This_element_does_not_match_any_known_slice_
 msgid "This element does not match any known slice {0} (this may not be a problem, but you should check that it''s not intended to match a slice)"
-msgstr "Этот элемент не соответствует ни одному известному фрагменту {0} (это не может быть проблемой, но вы должны проверить, что он не предназначен для подбора маски)"
+msgstr "Этот элемент не соответствует ни одному известному срезу {0} (возможно, это не проблема, но следует проверить, что он не должен соответствовать какому-либо срезу)"
 
 # This_property_must_be__not_
 #: This_property_must_be__not_

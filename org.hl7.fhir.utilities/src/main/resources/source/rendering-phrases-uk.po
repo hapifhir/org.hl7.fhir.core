@@ -532,7 +532,7 @@ msgstr "Параметри пошуку"
 # CAPABILITY_SHOULD_SUPP
 #: CAPABILITY_SHOULD_SUPP
 msgid "SHOULD Support the Following Implementation Guides"
-msgstr "ПОВИНЕН підтримувати наступні керівництва з впровадження"
+msgstr "СЛІД підтримувати наступні керівництва з впровадження"
 
 # CAPABILITY_SUMM_RES
 #: CAPABILITY_SUMM_RES
@@ -1925,7 +1925,7 @@ msgstr "Опис не надано"
 # GENERAL_BINDING_NO_VS_1
 #: GENERAL_BINDING_NO_VS_1
 msgid "Binding Description"
-msgstr "Опис палітурки"
+msgstr "Опис прив''язки"
 
 # GENERAL_BINDING_NO_VS_2
 #: GENERAL_BINDING_NO_VS_2
@@ -3998,7 +3998,7 @@ msgstr "Л картка."
 # SD_COMP_HEAD_CARD_L_DESC
 #: SD_COMP_HEAD_CARD_L_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance - Left Structure"
-msgstr "Мінімум і Максимум # разів, коли елемент може з''явитися в екземплярі - Left Structure"
+msgstr "Мінімум і Максимум # разів, коли елемент може з''явитися в екземплярі - Ліва структура"
 
 # SD_COMP_HEAD_CARD_R
 #: SD_COMP_HEAD_CARD_R
@@ -4008,7 +4008,7 @@ msgstr "Картка Р."
 # SD_COMP_HEAD_CARD_R_DESC
 #: SD_COMP_HEAD_CARD_R_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance - Right Structure"
-msgstr "Мінімум і Максимум # разів елемент може з''являтися в екземплярі - Правильна структура"
+msgstr "Мінімум і Максимум # разів елемент може з''являтися в екземплярі - Права структура"
 
 # SD_COMP_HEAD_COMP_DESC
 #: SD_COMP_HEAD_COMP_DESC
@@ -4033,7 +4033,7 @@ msgstr "R Опис та обмеження"
 # SD_COMP_HEAD_DESC_R_DESC
 #: SD_COMP_HEAD_DESC_R_DESC
 msgid "Additional information about the element - Right Structure"
-msgstr "Додаткова інформація про елемент - Правильна структура"
+msgstr "Додаткова інформація про елемент - Права структура"
 
 # SD_COMP_HEAD_FLAGS_L
 #: SD_COMP_HEAD_FLAGS_L
@@ -4043,7 +4043,7 @@ msgstr "Прапори L"
 # SD_COMP_HEAD_FLAGS_L_DESC
 #: SD_COMP_HEAD_FLAGS_L_DESC
 msgid "Information about the use of the element - Left Structure"
-msgstr "Інформація про використання елемента - Left Structure"
+msgstr "Інформація про використання елемента - Ліва структура"
 
 # SD_COMP_HEAD_FLAGS_R
 #: SD_COMP_HEAD_FLAGS_R
@@ -4053,7 +4053,7 @@ msgstr "Прапори R"
 # SD_COMP_HEAD_FLAGS_R_DESC
 #: SD_COMP_HEAD_FLAGS_R_DESC
 msgid "Information about the use of the element - Right Structure"
-msgstr "Інформація про використання елемента - Правильна структура"
+msgstr "Інформація про використання елемента - Права структура"
 
 # SD_COMP_HEAD_TYPE_L
 #: SD_COMP_HEAD_TYPE_L
@@ -4063,7 +4063,7 @@ msgstr "Тип L"
 # SD_COMP_HEAD_TYPE_L_DESC
 #: SD_COMP_HEAD_TYPE_L_DESC
 msgid "Reference to the type of the element - Left Structure"
-msgstr "Посилання на тип елемента - Left Structure"
+msgstr "Посилання на тип елемента - Ліва структура"
 
 # SD_COMP_HEAD_TYPE_R
 #: SD_COMP_HEAD_TYPE_R
@@ -4073,7 +4073,7 @@ msgstr "Тип R"
 # SD_COMP_HEAD_TYPE_R_DESC
 #: SD_COMP_HEAD_TYPE_R_DESC
 msgid "Reference to the type of the element - Right Structure"
-msgstr "Посилання на тип елемента - Правильна структура"
+msgstr "Посилання на тип елемента - Права структура"
 
 # SD_DOCO
 #: SD_DOCO
@@ -4350,7 +4350,7 @@ msgstr "бо"
 # STRUC_DEF_BINDINGS
 #: STRUC_DEF_BINDINGS
 msgid "Binding:"
-msgstr "Обов''язковим:"
+msgstr "Прив''язка:"
 
 # STRUC_DEF_BINDING_STYLE
 #: STRUC_DEF_BINDING_STYLE
@@ -5197,7 +5197,7 @@ msgstr "Короткий"
 # STRUC_DEF_SHOULD_CODE
 #: STRUC_DEF_SHOULD_CODE
 msgid "The codes SHOULD be taken from"
-msgstr "Коди ПОВИННІ бути взяті з"
+msgstr "Коди СЛІД брати з"
 
 # STRUC_DEF_SINGLE_JSON_OBJECTS
 #: STRUC_DEF_SINGLE_JSON_OBJECTS
@@ -5267,7 +5267,7 @@ msgstr "Структур"
 # STRUC_DEF_SUIT_SHALL_CODE
 #: STRUC_DEF_SUIT_SHALL_CODE
 msgid "Unless not suitable, these codes SHALL be taken from"
-msgstr "Якщо вони не підходять, ці коди ПОВИННІ бути взяті з"
+msgstr "За винятком випадків, коли вони не підходять, ці коди ПОВИННІ бути взяті з"
 
 # STRUC_DEF_TARG_SUPP
 #: STRUC_DEF_TARG_SUPP
@@ -6048,7 +6048,7 @@ msgstr ""
 # VALUE_SET_LOINCV
 #: VALUE_SET_LOINCV
 msgid "Loinc v"
-msgstr "Рішення у справі «Лоінк проти Німеччини» (Lo"
+msgstr "Loinc v"
 
 # VALUE_SET_NEEDS_SUPPL
 #: VALUE_SET_NEEDS_SUPPL
