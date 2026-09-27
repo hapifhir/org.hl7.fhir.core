@@ -857,39 +857,6 @@ public abstract class ShExGeneratorBase {
 
     shape_defn.add("constraints", constraintStr);
 
-    // String contextOfUseStr = "";
-    // ArrayList<String> contextOfUse = new ArrayList<String>();
-    // if (!sd.getContext().isEmpty()) {
-    //   for (StructureDefinition.StructureDefinitionContextComponent uc : sd.getContext()) {
-    //     if (!uc.getExpression().isEmpty()) {
-    //       String toStore = uc.getExpression();
-    //       log.debug("CONTEXT-OF-USE FOUND: " + toStore);
-    //       if (toStore.indexOf("http") != -1) {
-    //         log.debug("\t\tWARNING: CONTEXT-OF-USE SKIPPED as it has 'http' in it, might be a URL, instead of '.' delimited string");
-    //         continue;  // some erroneous context of use may use a URL; ignore them
-    //       }
-    //       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //       //single literal character split
-    //       String[] backRefs = StringUtils.splitByWholeSeparator(toStore, ".");
-    //       toStore = "a [fhir:" + getClassName(backRefs[0]) + "]";
-    //       for (int i = 1; i < backRefs.length; i++)
-    //         toStore = "^fhir:" + getClassName(backRefs[i]) + " {" + toStore + "}";
-
-    //       if (!contextOfUse.contains(toStore)) {
-    //         contextOfUse.add(toStore);
-    //       }
-    //     }
-    //   }
-
-    //   if (!contextOfUse.isEmpty()) {
-    //     if (contextOfUse.size() > 1)
-    //       contextOfUseStr = "^fhir:extension { " + StringUtils.join(contextOfUse, "} OR \n      {") + "}\n";
-    //     else
-    //       contextOfUseStr = "^fhir:extension { " + contextOfUse.get(0) + "}\n";
-    //   }
-    // }
-
-    // shape_defn.add("contextOfUse", contextOfUseStr);
 
     return shape_defn.render();
   }
