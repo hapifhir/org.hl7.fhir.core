@@ -223,7 +223,7 @@ public class ProfileUtilities {
 
   public enum AllowUnknownProfile {
     NONE, // exception if there's any unknown profiles (the default)
-    NON_EXTNEIONS, // don't raise an exception except on Extension (because more is going on there
+    NON_EXTENSIONS, // don't raise an exception except on Extension (because more is going on there
     ALL_TYPES // allow any unknow profile
   }
 
@@ -1047,7 +1047,7 @@ public class ProfileUtilities {
             for (UriType u : t.getProfile()) {
               StructureDefinition sd = findProfile(u, derived);
               if (sd == null) {
-                if (makeXVer().matchingUrl(u.getValue()) && xver.status(u.getValue()) == XVerExtensionStatus.Valid) {
+                if (getXver().matchingUrl(u.getValue()) && getXver().status(u.getValue()) == XVerExtensionStatus.Valid) {
                   sd = xver.getDefinition(u.getValue());
                 }
               }
@@ -1184,7 +1184,10 @@ public class ProfileUtilities {
     }
   }
 
-  private XVerExtensionManager makeXVer() {
+  /**
+   * The cross-version extension manager - the one provided with setXver(), or else one created on first use
+   */
+  public XVerExtensionManager getXver() {
     if (xver == null) {
       xver = XVerExtensionManagerFactory.createExtensionManager(context);
     }
@@ -2143,7 +2146,7 @@ public class ProfileUtilities {
     if (type.hasProfile()) {
       sd = findProfile(type.getProfile().get(0), src);
       if (sd == null) {
-        if (makeXVer().matchingUrl(type.getProfile().get(0).getValue()) && xver.status(type.getProfile().get(0).getValue()) == XVerExtensionStatus.Valid) {
+        if (getXver().matchingUrl(type.getProfile().get(0).getValue()) && getXver().status(type.getProfile().get(0).getValue()) == XVerExtensionStatus.Valid) {
           sd = xver.getDefinition(type.getProfile().get(0).getValue());
           generateSnapshot(context.fetchTypeDefinition("Extension"), sd, sd.getUrl(), webUrl, sd.getName());
         }
@@ -2695,7 +2698,7 @@ public class ProfileUtilities {
       String pu = source.getTypeFirstRep().getProfile().get(0).getValue();
       profile = findProfile(source.getTypeFirstRep().getProfile().get(0), derivedSrc);
       if (profile == null) {
-        if (makeXVer().matchingUrl(pu)) {
+        if (getXver().matchingUrl(pu)) {
           switch (xver.status(pu)) {
             case BadVersion:
               throw new FHIRException("Reference to invalid version in extension url " + pu);
@@ -4927,10 +4930,6 @@ public class ProfileUtilities {
     e.setMin(0); 
     e.setMax("*"); 
     return base;
-  }
-
-  public XVerExtensionManager getXver() {
-    return xver;
   }
 
   public ProfileUtilities setXver(XVerExtensionManager xver) {
