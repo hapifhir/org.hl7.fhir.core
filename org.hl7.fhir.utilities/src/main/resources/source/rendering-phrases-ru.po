@@ -1,11 +1,6 @@
 msgid ""
 msgstr ""
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
-"X-Crowdin-Project: orghl7fhircore\n"
-"X-Crowdin-Project-ID: 792848\n"
-"X-Crowdin-Language: ru\n"
-"X-Crowdin-File: rendering-phrases.po\n"
-"X-Crowdin-File-ID: 222\n"
 "Project-Id-Version: orghl7fhircore\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Russian\n"
@@ -36,13 +31,13 @@ msgstr "Тип: {0}"
 #: ACTOR_DERIVED_FROM
 msgctxt "ACTOR_DERIVED_FROM"
 msgid "Derived From"
-msgstr ""
+msgstr "Задуманный от"
 
 # ACTOR_DERIVED_FROM_NONE
 #: ACTOR_DERIVED_FROM_NONE
 msgctxt "ACTOR_DERIVED_FROM_NONE"
 msgid "(none)"
-msgstr ""
+msgstr "(нет)"
 
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
@@ -158,12 +153,12 @@ msgstr "Этот набор значений является компонент
 # BUNDLE_DOCUMENT_CONTENT
 #: BUNDLE_DOCUMENT_CONTENT
 msgid "Document Content"
-msgstr ""
+msgstr "Содержание документа"
 
 # BUNDLE_DOCUMENT_DETAILS
 #: BUNDLE_DOCUMENT_DETAILS
 msgid "Document Details"
-msgstr ""
+msgstr "Сведения о документе"
 
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
@@ -427,6 +422,7 @@ msgstr "Операции"
 
 # CAPABILITY_OPER
 #: CAPABILITY_OPER
+msgctxt "CAPABILITY_OPER"
 msgid "Operation"
 msgstr "Операция"
 
@@ -777,7 +773,7 @@ msgstr "Этот кодовый системный ресурс является
 # CODE_SYS_SUPP_CODE_NOT_HERE
 #: CODE_SYS_SUPP_CODE_NOT_HERE
 msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr ""
+msgstr "Это дополнение не используется здесь; оно может использоваться в других местах (например, спецификации и/или реализации, использующие этот контент)"
 
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
@@ -843,13 +839,13 @@ msgstr "Исходный код"
 #: CONC_MAP_SOURCE_CARD
 msgctxt "CONC_MAP_SOURCE_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Кард."
 
 # CONC_MAP_SOURCE_TYPE
 #: CONC_MAP_SOURCE_TYPE
 msgctxt "CONC_MAP_SOURCE_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
@@ -871,7 +867,7 @@ msgstr "Целевой код"
 #: CONC_MAP_TRGT_CARD
 msgctxt "CONC_MAP_TRGT_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Кард."
 
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
@@ -882,7 +878,7 @@ msgstr "Подробности Целевого Концепции"
 #: CONC_MAP_TRGT_TYPE
 msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 # CONF_MAY
 #: CONF_MAY
@@ -2045,6 +2041,7 @@ msgstr "Определение:"
 
 # GENERAL_DESC
 #: GENERAL_DESC
+msgctxt "GENERAL_DESC"
 msgid "Description"
 msgstr "Описание"
 
@@ -2162,6 +2159,7 @@ msgstr "Параметр"
 
 # GENERAL_PARS
 #: GENERAL_PARS
+msgctxt "GENERAL_PARS"
 msgid "Parameters"
 msgstr "Параметры"
 
@@ -2476,6 +2474,7 @@ msgstr "Предметы"
 
 # LIST_REND_MODE
 #: LIST_REND_MODE
+msgctxt "LIST_REND_MODE"
 msgid "Mode: {0}"
 msgstr "Режим: {0}"
 
@@ -3272,32 +3271,32 @@ msgstr "Набор значений:"
 # R44B_DERIVES_FROM
 #: R44B_DERIVES_FROM
 msgid "derives from"
-msgstr ""
+msgstr "происходит от"
 
 # R44B_HAS_TARGET
 #: R44B_HAS_TARGET
 msgid "has target"
-msgstr ""
+msgstr "имеет цель"
 
 # R44B_HAS_TYPE
 #: R44B_HAS_TYPE
 msgid "has type"
-msgstr ""
+msgstr "имеет тип"
 
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
 msgid "This is an {0} IG that is not compatible with {1}\" because"
-msgstr ""
+msgstr "Это IG {0} несовместимый с {1}потому что"
 
 # R44B_NOT_IN
 #: R44B_NOT_IN
 msgid "The following resources are not in the {0} version"
-msgstr ""
+msgstr "Следующие ресурсы не в версии {0}"
 
 # R44B_ONLY_IN
 #: R44B_ONLY_IN
 msgid "The following resources are only in the {0} version"
-msgstr ""
+msgstr "Эти ресурсы только в версии {0}"
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
@@ -3307,12 +3306,12 @@ msgstr ""
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
 msgid "While checking for {0} compatibility, the following {1} problems were found"
-msgstr ""
+msgstr "При проверке совместимости {0} были найдены следующие проблемы {1}"
 
 # R44B_REFERS_TO
 #: R44B_REFERS_TO
 msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
-msgstr ""
+msgstr "<a href=\"{0}\">{1}}</a> относится к каноническому типу {2}"
 
 # R44B_USE_OK
 #: R44B_USE_OK
@@ -3322,7 +3321,7 @@ msgstr ""
 # R44B_WRONG_MSG
 #: R44B_WRONG_MSG
 msgid "Something went wrong with the cross-version analysis because"
-msgstr ""
+msgstr "Что-то пошло не так с кросс-версионным анализом, потому что"
 
 # REND_ADDED
 #: REND_ADDED
@@ -3606,7 +3605,7 @@ msgstr "Исходя из этого {0}"
 # SDR_DRAFT
 #: SDR_DRAFT
 msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
-msgstr ""
+msgstr "Это определение расширения; комитет ищет обратную связь по осуществлению, и определение или содержание расширения могут измениться в будущих версиях"
 
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
@@ -3631,7 +3630,7 @@ msgstr "Простое расширение с типом {0}: {1}"
 # SDR_EXTENSION_SUMMARY_MODIFIER
 #: SDR_EXTENSION_SUMMARY_MODIFIER
 msgid "Simple <b>Modifier</b> Extension with the type {0}: {1}"
-msgstr ""
+msgstr "Простое расширение <b>модификатора</b> с типом {0}: {1}"
 
 # SDR_EXT_ANY
 #: SDR_EXT_ANY
@@ -3677,7 +3676,7 @@ msgstr "Расширение"
 # SDR_EXT_MOD
 #: SDR_EXT_MOD
 msgid "This extension is a modifier extension."
-msgstr ""
+msgstr "Это расширение является модификатором расширения."
 
 # SDR_EXT_PATH
 #: SDR_EXT_PATH
@@ -3876,7 +3875,7 @@ msgstr "Для версии {0}"
 #: SDR_VER_FROM_PFX
 msgctxt "SDR_VER_FROM_PFX"
 msgid "FHIR versions"
-msgstr "!!\"Версии FHIR"
+msgstr "FHIR версии"
 
 # SDR_VER_FROM_SFX
 #: SDR_VER_FROM_SFX
@@ -4276,7 +4275,7 @@ msgstr "{0}, опубликовано {1}. Это руководство не я
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
 msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
-msgstr "!!{0} - Локальная сборка (v{1}), построенная FHIR (HL7&reg; FHIR&reg; Стандартные инструменты сборки. Смотрите каталог <a href=''{2}/history.html''>опубликованных версий</a>"
+msgstr "{0} - Локальная сборка (v{1}), построенная FHIR (HL7&reg; FHIR&reg;) стандартным инструментам сборки. Смотрите каталог <a href=''{2}/history.html''>опубликованных версий</a>"
 
 # STATUS_MSG_PUBLICATION_HOLDER
 #: STATUS_MSG_PUBLICATION_HOLDER
@@ -4600,6 +4599,11 @@ msgstr "Этот элемент должен быть поддержан"
 #: STRUC_DEF_ELE_READ
 msgid "When this element is read"
 msgstr "Когда этот элемент читается"
+
+# STRUC_DEF_ELE_TRANSLATABLE
+#: STRUC_DEF_ELE_TRANSLATABLE
+msgid "This element is a candidate for being translated"
+msgstr ""
 
 # STRUC_DEF_ERROR
 #: STRUC_DEF_ERROR
@@ -4928,7 +4932,7 @@ msgstr "Модификатор"
 # STRUC_DEF_MODIFIER_EXT
 #: STRUC_DEF_MODIFIER_EXT
 msgid "This is a modifier extension"
-msgstr ""
+msgstr "Это расширение модификатора"
 
 # STRUC_DEF_MUST_SUPPORT
 #: STRUC_DEF_MUST_SUPPORT
@@ -5296,6 +5300,11 @@ msgstr "затем тип"
 msgid "This structure refers to these other structures"
 msgstr "Эта структура относится к этим другим структурам"
 
+# STRUC_DEF_TRANSLATABLE
+#: STRUC_DEF_TRANSLATABLE
+msgid "Translatable"
+msgstr ""
+
 # STRUC_DEF_TYPE_BOUND
 #: STRUC_DEF_TYPE_BOUND
 msgid "This type can be bound to a value set using the {0}"
@@ -5556,6 +5565,85 @@ msgstr "Тестовые зависимости плана:"
 #: TEST_PLAN_DESC
 msgid "Dependency - no description"
 msgstr "Зависимость - нет описания"
+
+# TEST_PLAN_IG_DEPENDENCIES
+#: TEST_PLAN_IG_DEPENDENCIES
+msgid "Dependencies"
+msgstr ""
+
+# TEST_PLAN_IG_DESCRIPTION
+#: TEST_PLAN_IG_DESCRIPTION
+msgctxt "TEST_PLAN_IG_DESCRIPTION"
+msgid "Description"
+msgstr ""
+
+# TEST_PLAN_IG_EXPECTED
+#: TEST_PLAN_IG_EXPECTED
+msgid "Expected"
+msgstr ""
+
+# TEST_PLAN_IG_FILE
+#: TEST_PLAN_IG_FILE
+msgid "File"
+msgstr ""
+
+# TEST_PLAN_IG_INPUT
+#: TEST_PLAN_IG_INPUT
+msgid "Input"
+msgstr ""
+
+# TEST_PLAN_IG_INPUTS
+#: TEST_PLAN_IG_INPUTS
+msgid "Inputs"
+msgstr ""
+
+# TEST_PLAN_IG_MODE
+#: TEST_PLAN_IG_MODE
+msgid "Mode"
+msgstr ""
+
+# TEST_PLAN_IG_MODES
+#: TEST_PLAN_IG_MODES
+msgid "Modes"
+msgstr ""
+
+# TEST_PLAN_IG_MODE_LABEL
+#: TEST_PLAN_IG_MODE_LABEL
+msgctxt "TEST_PLAN_IG_MODE_LABEL"
+msgid "Mode: {0}"
+msgstr ""
+
+# TEST_PLAN_IG_OPERATION
+#: TEST_PLAN_IG_OPERATION
+msgctxt "TEST_PLAN_IG_OPERATION"
+msgid "Operation"
+msgstr ""
+
+# TEST_PLAN_IG_PARAMETERS
+#: TEST_PLAN_IG_PARAMETERS
+msgctxt "TEST_PLAN_IG_PARAMETERS"
+msgid "Parameters"
+msgstr ""
+
+# TEST_PLAN_IG_REFERENCE
+#: TEST_PLAN_IG_REFERENCE
+msgid "Reference"
+msgstr ""
+
+# TEST_PLAN_IG_SCOPES
+#: TEST_PLAN_IG_SCOPES
+msgid "Scopes"
+msgstr ""
+
+# TEST_PLAN_IG_SUITE_LABEL
+#: TEST_PLAN_IG_SUITE_LABEL
+msgid "Suite: {0}"
+msgstr ""
+
+# TEST_PLAN_IG_TESTS
+#: TEST_PLAN_IG_TESTS
+msgid "Tests"
+msgstr ""
 
 # TEST_PLAN_LANG
 #: TEST_PLAN_LANG
@@ -5967,9 +6055,9 @@ msgstr "Loinc v"
 #: VALUE_SET_NEEDS_SUPPL
 msgid "This ValueSet requires the Code system Supplement"
 msgid_plural "This ValueSet requires the Code system Supplements"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Этот набор значений требует дополнения системы кода"
+msgstr[1] "Этот набор значений требует дополнения системы кода"
+msgstr[2] "Этот набор значений требует дополнения системы кода"
 
 # VALUE_SET_NO
 #: VALUE_SET_NO
