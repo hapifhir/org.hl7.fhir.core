@@ -14,6 +14,16 @@
   }
 
 
+  @Override
+  public boolean hasExtension(String theUrl) {
+    for (Extension next : getModifierExtensionsForRead()) {
+      if (theUrl.equals(next.getUrl())) {
+        return true;
+      }
+    }
+    return super.hasExtension(theUrl);
+  }
+
   public boolean hasExtension(String... theUrls) {
     for (Extension next : getModifierExtensionsForRead()) {
       if (Utilities.existsInList(next.getUrl(), theUrls)) {

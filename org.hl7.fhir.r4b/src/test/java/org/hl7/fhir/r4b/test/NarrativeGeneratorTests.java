@@ -112,8 +112,11 @@ public class NarrativeGeneratorTests {
 
   @Test // varies between versions, so multiple possible expected
   public void testDateTimeRendering4() throws FHIRFormatError, DefinitionException, IOException {
+    // The third form is the same rendering as the first, but with U+202F NARROW NO-BREAK SPACE
+    // before the am/pm marker: CLDR 42 (shipped in JDK 20) switched the en-AU short time pattern
+    // from a plain space to U+202F, so the expected value depends on the JDK, not on our code.
     checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER,
-        "19/11/21, 2:13 pm", "19/11/21 2:13 PM");
+        "19/11/21, 2:13 pm", "19/11/21 2:13 PM", "19/11/21, 2:13\u202Fpm");
   }
 
   @Test
