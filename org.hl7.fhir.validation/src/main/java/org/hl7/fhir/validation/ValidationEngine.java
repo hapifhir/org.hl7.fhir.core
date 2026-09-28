@@ -780,7 +780,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     StructureMapTools scu = new StructureMapTools(context, new TransformSupportServices(outputs, mapLog, context));
     StructureMap map = context.fetchResource(StructureMap.class, mapUri);
     if (map == null) throw new Error("Unable to find map " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
-    org.hl7.fhir.services.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
+    org.hl7.fhir.services.elementmodel.Element resource = Manager.build(context, scu.getTargetType(map));
     StructureDefinition sourceSD = getSourceResourceFromStructureMap(map);
     ParserBase parser = Manager.makeParser(context, cntType);
     if (sourceSD.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL) {
@@ -790,62 +790,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     scu.transform(null, src, map, resource);
     resource.populatePaths(null);
     return resource;
-  }
-
-  private org.hl7.fhir.services.elementmodel.Element getTargetResourceFromStructureMap(StructureMap map) {
-    // only have support for a single output parameter to generate
-    StructureMap.StructureMapGroupInputComponent gpReturnTypeParameter = null;
-    for (var gp : map.getGroupFirstRep().getInputList()) {
-      if (gp.getMode() == StructureMapInputMode.TARGET) {
-        if (gpReturnTypeParameter != null)
-          throw new FHIRException("Evaluation of StructureMap only supported on groups with a single typed output parameter");
-        gpReturnTypeParameter = gp;
-        if (gp.getType() == null)
-          throw new FHIRException("Evaluation of StructureMap only supported on groups where the output parameter has a declared type");
-      }
-    }
-
-    if (gpReturnTypeParameter == null)
-      throw new FHIRException("Evaluation of StructureMap requires the first group to have a single typed output parameter");
-
-    var allStructures = this.context.fetchResourcesByType(StructureDefinition.class);
-    String targetTypeUrl = null;
-    StructureDefinition structureDefinition = null;
-
-    // Need to lookup this type in the imported structures/aliases
-    for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
-      if (component.getMode() == StructureMap.StructureMapModelMode.TARGET && component.hasAlias() && component.getAlias().equals(gpReturnTypeParameter.getType())) {
-        targetTypeUrl = component.getUrl();
-        for (StructureDefinition sd : allStructures) {
-          if (sd.getUrl().equalsIgnoreCase(targetTypeUrl)) {
-            structureDefinition = sd;
-            break;
-          }
-        }
-        break;
-      }
-    }
-    if (targetTypeUrl == null) {
-      // lets just scan through all the structures to see if this type is named (not an alias)
-      for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
-        if (component.getMode() == StructureMap.StructureMapModelMode.TARGET) {
-          for (StructureDefinition sd : allStructures) {
-            if (sd.getUrl().equalsIgnoreCase(component.getUrl()) && sd.getName() != null && sd.getName().equalsIgnoreCase(gpReturnTypeParameter.getType())) {
-              targetTypeUrl = sd.getUrl();
-              structureDefinition = sd;
-              break;
-            }
-          }
-          break;
-        }
-      }
-    }
-
-    if (targetTypeUrl == null) throw new FHIRException("Unable to determine resource URL for target type");
-
-    if (structureDefinition == null) throw new FHIRException("Unable to find StructureDefinition for target type ('" + targetTypeUrl + "')");
-
-    return Manager.build(getContext(), structureDefinition);
   }
 
   private StructureDefinition getSourceResourceFromStructureMap(StructureMap map) {
@@ -1341,7 +1285,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     StructureMap map = context.fetchResource(StructureMap.class, url);
     if (map == null)
       throw new Error("Unable to find map " + url + " (Known Maps = " + context.listMapUrls() + ")");
-    org.hl7.fhir.services.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
+    org.hl7.fhir.services.elementmodel.Element resource = Manager.build(context, scu.getTargetType(map));
     scu.transform(null, src, map, resource);
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
     Manager.compose(context, resource, bs, format, OutputStyle.PRETTY, null);

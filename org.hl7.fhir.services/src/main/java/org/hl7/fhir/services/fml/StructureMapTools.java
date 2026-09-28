@@ -969,13 +969,15 @@ public class StructureMapTools {
 
 
   /**
-   * The Target Type is the single type in the first group of the map
-   * but resolved through the imported target types included.
+   * Resolves the first group's single typed target against the map's target structure declarations.
    * @param map
    * @return
    * @throws FHIRException
    */
   public StructureDefinition getTargetType(StructureMap map) throws FHIRException {
+    if (map.getGroupList().isEmpty())
+      throw new FHIRException("getTargetType requires a group in map " + map.getUrl());
+
     // only have support for a single output parameter to generate
     StructureMap.StructureMapGroupInputComponent gpReturnTypeParameter = null;
     for (var gp : map.getGroupFirstRep().getInputList()) {
@@ -991,21 +993,23 @@ public class StructureMapTools {
     if (gpReturnTypeParameter == null)
       throw new FHIRException("getTargetType requires the first group to have a single typed output parameter");
 
+    // Locate the target structure by its alias in the map's structure declarations.
+    for (StructureMap.StructureMapStructureComponent uses : map.getStructureList()) {
+      if (uses.getMode() == StructureMap.StructureMapModelMode.TARGET && uses.hasAlias() && gpReturnTypeParameter.getType().equals(uses.getAlias())) {
+        var res = worker.fetchResource(StructureDefinition.class, uses.getUrl(), ExtensionUtilities.getVersionResolutionRules(uses.getUrlElement()));
+        if (res == null)
+          throw new FHIRException("Unable to find " + uses.getUrl() + " referenced from map " + map.getUrl());
+        return res;
+      }
+    }
+
+    // If we couldn't find the target by alias, try to match by URL and name among all available structures.
     var allStructures = worker.fetchResourcesByType(StructureDefinition.class);
     for (StructureMap.StructureMapStructureComponent uses : map.getStructureList()) {
       if (uses.getMode() == StructureMap.StructureMapModelMode.TARGET) {
-        if (uses.getAlias() == gpReturnTypeParameter.getType()) {
-          var res = worker.fetchResource(StructureDefinition.class, uses.getUrl(), ExtensionUtilities.getVersionResolutionRules(uses.getUrlElement()));
-          if (res == null)
-            throw new FHIRException("Unable to find " + uses.getUrl() + " referenced from map " + map.getUrl());
-          return res;
-        }
-        else {
-          // scan the resources to see if the name of this structure is
-          for (StructureDefinition sd : allStructures) {
-            if (sd.getName().equalsIgnoreCase(gpReturnTypeParameter.getType())) {
-              return sd;
-            }
+        for (StructureDefinition sd : allStructures) {
+          if (uses.getUrl().equalsIgnoreCase(sd.getUrl()) && sd.getName() != null && sd.getName().equalsIgnoreCase(gpReturnTypeParameter.getType())) {
+            return sd;
           }
         }
       }
