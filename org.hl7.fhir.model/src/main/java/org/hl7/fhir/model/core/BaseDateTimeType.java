@@ -32,6 +32,7 @@ package org.hl7.fhir.model.core;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.parser.DataFormatException;
+import com.ibm.icu.number.Precision;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateUtils;
@@ -48,6 +49,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static org.apache.commons.lang3.StringUtils.left;
+import static org.apache.commons.lang3.StringUtils.leftPad;
+
 public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
 
   private static final int SECONDS_PER_MINUTE = 60;
@@ -62,6 +66,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
   private ChronoUnit myPrecision = null;
   private boolean myTimeZoneMissing;
   private boolean myTimeZoneZulu;
+  private String myFractionalSeconds;
 
   @Override
   public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
@@ -77,6 +82,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
     dst.myTimeZoneMissing = this.myTimeZoneMissing;
     dst.myTimeZoneZulu = this.myTimeZoneZulu;
     dst.myPrecision = myPrecision;
+    dst.myFractionalSeconds = myFractionalSeconds;
   }
 
   /**
@@ -454,7 +460,13 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
               leftPadWithZeros(theValue.getSecond(), 2, b);
               if (thePrecision.ordinal() < ChronoUnit.SECONDS.ordinal()) {
                 b.append('.');
-                leftPadWithZeros(theValue.get(ChronoField.MILLI_OF_SECOND), 3, b);
+                if (myFractionalSeconds != null && myFractionalSeconds.length() > 9) {
+                  b.append(myFractionalSeconds);
+                } else if (thePrecision == ChronoUnit.MILLIS) {
+                  leftPadWithZeros(theValue.get(ChronoField.MILLI_OF_SECOND), 3, b);
+                } else {
+                  leftPadWithZeros(theValue.getNano(), 9, b);
+                }
               }
             }
 
@@ -521,7 +533,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    * </p>
    */
   public Integer getMillis() {
-    return getFieldValue(Calendar.MILLISECOND);
+    return getValueNotNull().get(ChronoField.MILLI_OF_SECOND);
   }
 
   /**
@@ -533,9 +545,19 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
 
   /**
    * Returns the month with 0-index, e.g. 0=January
+   *
+   * @deprecated This method returns a different offset from {@link #getDay()}. For clarity it is recommendded to use {@link #getMonthOfYear()}, but <b>be cautious that it uses a different offset!</b>
    */
+  @Deprecated
   public Integer getMonth() {
     return getFieldValue(Calendar.MONTH);
+  }
+
+  /**
+   * Returns the month with 1-index, e.g. 1=January
+   */
+  public Integer getMonthOfYear() {
+    return getValueNotNull().getMonthValue();
   }
 
   public float getSecondsMilli() {
@@ -551,11 +573,11 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    * same value as {@link #getMillis()} but with more precision.
    * </p>
    */
-  public Long getNanos() {
+  public Integer getNanos() {
     if (getPrecision().ordinal() > ChronoUnit.MILLIS.ordinal()) {
       return null;
     }
-    return getValue().getLong(ChronoField.NANO_OF_SECOND);
+    return getValueNotNull().getNano();
   }
 
   private int getOffsetIndex(String theValueString) {
@@ -672,8 +694,9 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
   @Override
   protected ZonedDateTime parse(String theValue) throws DataFormatException {
     String value = theValue;
-    myTimeZoneMissing = false;
+    myTimeZoneMissing = true;
     myTimeZoneZulu = false;
+    myFractionalSeconds = null;
 
     if (value.length() > 0 && (value.charAt(0) == ' ' || value.charAt(value.length() - 1) == ' ')) {
       value = value.trim();
@@ -711,7 +734,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
         day = parseInt(value, value.substring(8, 10), 1, actualMaximum);
         precision = ChronoUnit.DAYS;
         if (length > 10) {
-          validateLengthIsAtLeast(value, 17);
+          validateLengthIsAtLeast(value, 16);
           validateCharAtIndexIs(value, 10, 'T'); // yyyy-mm-ddThh:mm:ss
           int offsetIdx = getOffsetIndex(value);
           String time;
@@ -719,12 +742,12 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
             // If we have a time but no zone, it's not actually valid in FHIR. But we need some
             // zone for our internal representation, so let's use the system default.
             zoneId = ZoneId.systemDefault();
-            myTimeZoneMissing = true;
             time = value.substring(11);
           } else {
             time = value.substring(11, offsetIdx);
             String offsetString = value.substring(offsetIdx);
-            zoneId = getTimeZone(offsetString);
+            zoneId = parseTimeZoneOffsetString(value, offsetString);
+            myTimeZoneMissing = false;
             myTimeZoneZulu = offsetString.equals("Z") || offsetString.equals("z");
           }
           int timeLength = time.length();
@@ -746,20 +769,15 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
                 endIndex = value.length();
               }
 
-              String millisString = value.substring(20, endIndex);
+              myFractionalSeconds = value.substring(20, endIndex);
+              String millisString = left(myFractionalSeconds, 9);
               int parsedMillis = parseInt(value, millisString, 0, NANOS_PER_SECOND);
-              if (millisString.length() == 1) {
-                nanos = parsedMillis * 100 * NANOS_PER_MILLIS;
-                precision = ChronoUnit.MILLIS;
-              } else if (millisString.length() == 2) {
-                nanos = parsedMillis * 10 * NANOS_PER_MILLIS;
-                precision = ChronoUnit.MILLIS;
-              } else if (millisString.length() == 3) {
-                nanos = parsedMillis * NANOS_PER_MILLIS;
+
+              if (millisString.length() <= 3) {
+                nanos = parsedMillis * powerOfTen(3 - millisString.length()) * NANOS_PER_MILLIS;
                 precision = ChronoUnit.MILLIS;
               } else {
-                // FIXME: add tests
-                nanos = parsedMillis;
+                nanos = parsedMillis * powerOfTen(9 - millisString.length());
                 precision = ChronoUnit.NANOS;
               }
             }
@@ -770,7 +788,12 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
 
     myPrecision = precision;
 
-    return ZonedDateTime.of(year, month, day, hour, minute, second, nanos, zoneId);
+    try {
+      return ZonedDateTime.of(year, month, day, hour, minute, second, nanos, zoneId);
+    } catch (DateTimeException e) {
+      throwBadDateFormat(value);
+      return null;
+    }
   }
 
   private int parseInt(String theValue, String theSubstring, int theLowerBound, int theUpperBound) {
@@ -811,8 +834,16 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
       case HOUR_OF_DAY -> currentValue.withHour(theValue);
       case MINUTE_OF_HOUR -> currentValue.withMinute(theValue);
       case SECOND_OF_MINUTE -> currentValue.withSecond(theValue);
-      case MILLI_OF_SECOND -> currentValue.withNano(theValue * NANOS_PER_MILLIS);
-      case NANO_OF_SECOND -> currentValue.withNano(theValue);
+      case MILLI_OF_SECOND -> {
+        myFractionalSeconds = leftPad(Integer.toString(theValue), 3, '0');
+        myPrecision = ChronoUnit.MILLIS;
+        yield currentValue.withNano(theValue * NANOS_PER_MILLIS);
+      }
+      case NANO_OF_SECOND -> {
+        myFractionalSeconds = leftPad(Integer.toString(theValue), 9, '0');
+        myPrecision = ChronoUnit.NANOS;
+        yield currentValue.withNano(theValue);
+      }
       default -> throw new DataFormatException("Unsupported ChronoField: " + theField);
     };
 
@@ -872,7 +903,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
   /**
    * Sets the month with 1-index, e.g. 1=January
    */
-  @Deprecated
   public BaseDateTimeType setMonthOfYear(int theMonth) {
     setFieldValue(ChronoField.MONTH_OF_YEAR, theMonth, 0, 11);
     return this;
@@ -1320,23 +1350,28 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
     return "@"+primitiveValue();
   }
 
-  private ZoneId getTimeZone(String offset) {
+  private ZoneId parseTimeZoneOffsetString(String theValue, String offset) {
     if ("Z".equals(offset) || "z".equals(offset)) {
       return ZoneOffset.UTC; // This constant has an ID of "Z"
     }
     if (offset.length() != 6) {
-      throw new DataFormatException("Invalid timezone offset: " + offset);
+      throwBadDateFormat(theValue, "Invalid timezone offset: " + offset);
     }
     if (offset.charAt(0) != '+' && offset.charAt(0) != '-') {
-      throw new DataFormatException("Invalid timezone offset: " + offset);
+      throwBadDateFormat(theValue, "Invalid timezone offset: " + offset);
     }
     if (!Character.isDigit(offset.charAt(1)) || !Character.isDigit(offset.charAt(2)) || !Character.isDigit(offset.charAt(4)) || !Character.isDigit(offset.charAt(5))) {
-      throw new DataFormatException("Invalid timezone offset: " + offset);
+      throwBadDateFormat(theValue, "Invalid timezone offset: " + offset);
     }
     if (offset.charAt(3) != ':') {
-      throw new DataFormatException("Invalid timezone offset: " + offset);
+      throwBadDateFormat(theValue, "Invalid timezone offset: " + offset);
     }
-    return timezoneCache.computeIfAbsent(offset, ZoneOffset::of);
+    try {
+      return timezoneCache.computeIfAbsent(offset, ZoneOffset::of);
+    } catch (DateTimeException e) {
+      throwBadDateFormat(theValue, e.getMessage());
+      return null;
+    }
   }
 
   @Nullable
@@ -1389,5 +1424,10 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
     };
   }
 
+  static final int[] POWERS_OF_10 = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
+
+  static int powerOfTen(int pow) {
+    return POWERS_OF_10[pow];
+  }
 
 }
