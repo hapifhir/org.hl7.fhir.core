@@ -558,6 +558,8 @@ public class ProfilePathProcessor {
     if (id == null) {
       return null;
     }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] parts = id.split("\\.");
     for (int i = parts.length - 2; i >= 0; i--) {
       if (parts[i].contains(":")) {
