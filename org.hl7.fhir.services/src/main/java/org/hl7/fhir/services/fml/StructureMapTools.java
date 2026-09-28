@@ -2167,7 +2167,7 @@ public class StructureMapTools {
     }
 
     if (src.hasElement()) {
-      Property element = prop.getBaseProperty().getChild(prop.getTypes().getType(), src.getElementName());
+      Property element = prop.getBaseProperty().getChild(src.getElementName(), prop.getTypes());
       if (element == null)
         throw new FHIRException("Rule \"" + ruleId + "\": Unknown element name " + src.getElementName());
       if (element.getDefinition().getMin() == 0)
