@@ -2134,10 +2134,10 @@ public class StructureMapTools {
     XhtmlNode xs = tr.addTag("td");
     XhtmlNode xt = tr.addTag("td");
 
-    VariablesForProfiling srcVars = vars.copy();
-    if (rule.getSourceList().size() != 1)
-      throw new FHIRException("Rule \"" + rule.getName() + "\": multiple sources not handled yet");
-    VariablesForProfiling source = analyseSource(rule.getName(), context, srcVars, rule.getSourceFirstRep(), xs);
+    VariablesForProfiling source = vars.copy();
+    for (StructureMap.StructureMapGroupRuleSourceComponent ruleSource : rule.getSourceList()) {
+      source = analyseSource(rule.getName(), context, source, ruleSource, xs);
+    }
 
     TargetWriter tw = new TargetWriter();
     for (StructureMap.StructureMapGroupRuleTargetComponent t : rule.getTargetList()) {
@@ -2176,9 +2176,13 @@ public class StructureMapTools {
         repeating = true;
       VariablesForProfiling result = vars.copy(optional, repeating);
       TypeDetails type = new TypeDetails(CollectionStatus.SINGLETON);
+      boolean typeFilterMatched = !src.hasType();
       for (ElementDefinition.TypeRefComponent tr : element.getDefinition().getTypeList()) {
         if (!tr.hasCode())
           throw new FHIRException("Rule \"" + ruleId + "\": Element has no type");
+        if (src.hasType() && !src.getType().equals(tr.getWorkingCode()))
+          continue;
+        typeFilterMatched = true;
         ProfiledType pt = new ProfiledType(tr.getWorkingCode());
         if (tr.hasProfile())
           pt.addProfiles(tr.getProfileList());
@@ -2186,6 +2190,8 @@ public class StructureMapTools {
           pt.addBinding(element.getDefinition().getBinding());
         type.addType(pt);
       }
+      if (!typeFilterMatched)
+        throw new FHIRException("Rule \"" + ruleId + "\": Type " + src.getType() + " is not valid for element " + src.getElementName());
       td.addText(prop.getPath() + "." + src.getElementName());
       if (src.hasVariable())
         result.add(VariableMode.INPUT, src.getVariable(), new PropertyWithType(prop.getPath() + "." + src.getElementName(), element, null, type));
