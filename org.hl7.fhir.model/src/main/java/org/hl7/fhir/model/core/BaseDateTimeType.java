@@ -502,7 +502,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    * Returns the month with 1-index, e.g. 1=the first day of the month
    */
   public Integer getDay() {
-    return getFieldValue(Calendar.DAY_OF_MONTH);
+    return getFieldValue(ChronoUnit.DAYS);
   }
 
   /**
@@ -510,19 +510,31 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    */
   protected abstract ChronoUnit getDefaultPrecisionForDatatype();
 
-  private Integer getFieldValue(int theField) {
+  private Integer getFieldValue(ChronoUnit theUnit) {
     if (getValue() == null) {
       return null;
     }
-    Calendar cal = getValueAsCalendar();
-    return cal.get(theField);
+    if (getPrecision().ordinal() > theUnit.ordinal()) {
+      return null;
+    }
+    return switch (theUnit) {
+      case NANOS -> getValueNotNull().getNano();
+      case MILLIS -> getValueNotNull().get(ChronoField.MILLI_OF_SECOND);
+      case SECONDS -> getValueNotNull().getSecond();
+      case MINUTES -> getValueNotNull().getMinute();
+      case HOURS -> getValueNotNull().getHour();
+      case DAYS -> getValueNotNull().getDayOfMonth();
+      case MONTHS -> getValueNotNull().getMonthValue();
+      case YEARS -> getValueNotNull().getYear();
+      default -> throw new IllegalArgumentException("Can't retrieve unit: " + theUnit);
+    };
   }
 
   /**
    * Returns the hour of the day in a 24h clock, e.g. 13=1pm
    */
   public Integer getHour() {
-    return getFieldValue(Calendar.HOUR_OF_DAY);
+    return getFieldValue(ChronoUnit.HOURS);
   }
 
   /**
@@ -540,7 +552,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    * Returns the minute of the hour in the range 0-59
    */
   public Integer getMinute() {
-    return getFieldValue(Calendar.MINUTE);
+    return getFieldValue(ChronoUnit.MINUTES);
   }
 
   /**
@@ -550,19 +562,30 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    */
   @Deprecated
   public Integer getMonth() {
-    return getFieldValue(Calendar.MONTH);
+    Integer fieldValue = getFieldValue(ChronoUnit.MONTHS);
+    if (fieldValue != null) {
+      fieldValue = fieldValue - 1;
+    }
+    return fieldValue;
   }
 
   /**
    * Returns the month with 1-index, e.g. 1=January
    */
   public Integer getMonthOfYear() {
-    return getValueNotNull().getMonthValue();
+    return getFieldValue(ChronoUnit.MONTHS);
   }
 
-  public float getSecondsMilli() {
-    int sec = getSecond();
-    int milli = getMillis();
+  public Float getSecondsMilli() {
+    Integer sec = getSecond();
+    if (sec == null) {
+      return null;
+    }
+
+    Integer milli = getMillis();
+    if (milli == null) {
+      return sec.floatValue();
+    }
     return sec + (milli / 1000.0f);
   }
 
@@ -610,7 +633,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    * Returns the second of the minute in the range 0-59
    */
   public Integer getSecond() {
-    return getFieldValue(Calendar.SECOND);
+    return getFieldValue(ChronoUnit.SECONDS);
   }
 
   /**
@@ -658,7 +681,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    * Returns the year, e.g. 2015
    */
   public Integer getYear() {
-    return getFieldValue(Calendar.YEAR);
+    return getFieldValue(ChronoUnit.YEARS);
   }
 
   /**
