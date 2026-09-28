@@ -1992,11 +1992,21 @@ public class ProfileUtilities {
   }
 
 
+  private boolean hasTypeProfile(ElementDefinition ed) {
+    for (TypeRefComponent tr : ed.getTypeList()) {
+      if (tr.hasProfile()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   protected boolean checkExtensionDoco(ElementDefinition base) {
     // see task 3970. For an extension, there's no point copying across all the underlying definitional stuff
     boolean isExtension = (base.getPath().equals("Extension") || base.getPath().endsWith(".extension") || base.getPath().endsWith(".modifierExtension")) &&
           (!base.hasBase() || !"II.extension".equals(base.getBase().getPath()));
-    if (isExtension) {
+    // but an inherited sub-extension defined inline in a complex extension (a slice without a profile) is documented by its own definition, so keep that
+    if (isExtension && !(base.hasUserData(UserDataNames.SNAPSHOT_INHERITED_INLINE_EXTENSION) && !hasTypeProfile(base))) {
       base.setDefinition("An Extension");
       base.setShort("Extension");
       base.setCommentElement(null);

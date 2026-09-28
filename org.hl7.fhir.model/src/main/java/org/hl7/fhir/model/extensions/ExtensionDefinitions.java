@@ -811,6 +811,7 @@ public class ExtensionDefinitions {
   public static final String EXT_TYPE_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/type-parameter"; // Type Parameter Extension
   public static final String EXT_PROFILE_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/type-profile-style"; // Type Profile Style Extension
   public static final String EXT_TYPE_PROFILE_CONSTRAINTS = "http://hl7.org/fhir/tools/StructureDefinition/type-profile-constraints"; // whether the constraints on the root of a type profile have been merged into the snapshot element: full | partial | none
+  public static final String EXT_IMPLIED_TYPE_SLICE = "http://hl7.org/fhir/tools/StructureDefinition/implied-type-slice"; // a type slice the snapshot generator added so that a closed type slicing still allows the types no other slice covers; it adds no constraints
   public static final String EXT_TYPE_SPEC = "http://hl7.org/fhir/tools/StructureDefinition/type-specifier"; // Type Specifier Extension
   public static final String EXT_VS_EXP_PARAM_OLD = "http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter"; // ValueSet Expansion Parameter
   public static final String EXT_VALUESET_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/valueset-parameter"; // ValueSet Parameter Declaration

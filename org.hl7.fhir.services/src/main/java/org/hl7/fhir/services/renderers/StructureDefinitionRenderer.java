@@ -2128,7 +2128,97 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
     }
 
+    List<String> slicingNotes = definition == null || !definition.hasSlicing() ? new ArrayList<>() : slicingNotes(profile, definition);
+    if (!slicingNotes.isEmpty()) {
+      if (!c.getPieces().isEmpty()) {
+        c.addPiece(gen.new Piece("br"));
+      }
+      c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICING_NOTE) + ": ", null).addStyle("font-weight:bold"));
+      c.getPieces().add(gen.new Piece(null, String.join(" ", slicingNotes), null));
+    }
     return c;
+  }
+
+  /**
+   * the notes about slicing shown in the description (tree view) and in the definition of the slicer
+   */
+  private List<String> slicingNotes(StructureDefinition profile, ElementDefinition slicer) {
+    List<String> notes = new ArrayList<>();
+    if (slicerHasRules(profile, slicer)) {
+      notes.add(context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICER_RULES_APPLY));
+    }
+    if (hasImpliedTypeSlices(profile, slicer)) {
+      notes.add(context.formatPhrase(RenderingI18nContext.STRUC_DEF_IMPLIED_SLICES_NOT_SHOWN));
+    }
+    return notes;
+  }
+
+  /**
+   * whether the slicer has anything more than the slicing set up - rules on the element itself, or constraints on
+   * its children - in this profile or any profile it's derived from. The rules on the slicer apply to all the slices,
+   * but they are not repeated in the slices, so the reader needs to be told
+   */
+  private boolean slicerHasRules(StructureDefinition profile, ElementDefinition slicer) {
+    if (profile == null || !slicer.hasId()) {
+      return false;
+    }
+    Set<String> done = new HashSet<>();
+    StructureDefinition sd = profile;
+    while (sd != null && sd.getDerivation() == TypeDerivationRule.CONSTRAINT && !done.contains(sd.getUrl())) {
+      done.add(sd.getUrl());
+      for (ElementDefinition ed : sd.getDifferential().getElementList()) {
+        if (ed.hasId()) {
+          if (ed.getId().startsWith(slicer.getId() + ".")) {
+            return true; // a constraint on a child of the slicer
+          }
+          if (ed.getId().equals(slicer.getId()) && hasSlicerRules(ed, isTypeSlicing(slicer))) {
+            return true;
+          }
+        }
+      }
+      sd = sd.hasBaseDefinition() ? context.getWorker().fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement())) : null;
+    }
+    return false;
+  }
+
+  private boolean isTypeSlicing(ElementDefinition slicer) {
+    for (ElementDefinitionSlicingDiscriminatorComponent d : slicer.getSlicing().getDiscriminatorList()) {
+      if (d.getType() == DiscriminatorType.TYPE && "$this".equals(d.getPath())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * min and max on the slicer are about all the slices together, not each slice, so they're not rules that
+   * apply to the slices. And for type slicing, the types are part of the slicing set up
+   */
+  private boolean hasSlicerRules(ElementDefinition ed, boolean typeSlicing) {
+    for (Property p : ed.getChildren()) {
+      if (p.hasValues() && !Utilities.existsInList(p.getName(), "id", "extension", "modifierExtension", "path", "sliceName", "sliceIsConstraining",
+          "label", "code", "slicing", "short", "definition", "comment", "requirements", "alias", "mapping", "min", "max") && !(typeSlicing && "type".equals(p.getName()))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * whether the snapshot has slices for this slicer that the snapshot generator added to round out a closed type slicing
+   * (see ExtensionDefinitions.EXT_IMPLIED_TYPE_SLICE). These aren't shown, so the description says so
+   */
+  private boolean hasImpliedTypeSlices(StructureDefinition profile, ElementDefinition slicer) {
+    if (profile == null || !profile.hasSnapshot() || !slicer.hasId()) {
+      return false;
+    }
+    String prefix = slicer.getId() + ":";
+    for (ElementDefinition ed : profile.getSnapshot().getElementList()) {
+      if (ed.hasId() && ed.getId().startsWith(prefix) && !ed.getId().substring(prefix.length()).contains(".") && ed.hasExtension(ExtensionDefinitions.EXT_IMPLIED_TYPE_SLICE)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private Set<String> determineNarrativeStatus(ElementDefinition definition, StructureDefinition profile, boolean snapshot) {
@@ -3311,7 +3401,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     List<ElementDefinition> result = new ArrayList<ElementDefinition>(); 
     int i = all.indexOf(element)+1; 
     while (i < all.size() && all.get(i).getPath().length() > element.getPath().length()) { 
-      if ((all.get(i).getPath().substring(0, element.getPath().length()+1).equals(element.getPath()+".")) && !all.get(i).getPath().substring(element.getPath().length()+1).contains(".")) 
+      if ((all.get(i).getPath().substring(0, element.getPath().length()+1).equals(element.getPath()+".")) && !all.get(i).getPath().substring(element.getPath().length()+1).contains(".") 
+          && !all.get(i).hasExtension(ExtensionDefinitions.EXT_IMPLIED_TYPE_SLICE)) // slices the snapshot generator added to round out a closed type slicing - they say nothing
         result.add(all.get(i)); 
       i++; 
     } 
@@ -4020,7 +4111,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     Stack<ElementDefinition> dstack = new Stack<>(); 
     for (ElementDefinition ec : elements) { 
-      if ((incProfiledOut || !"0".equals(ec.getMax())) && !excluded.contains(ec)) { 
+      if ((incProfiledOut || !"0".equals(ec.getMax())) && !excluded.contains(ec) && !ec.hasExtension(ExtensionDefinitions.EXT_IMPLIED_TYPE_SLICE)) { 
         ElementDefinition compareElement = null; 
         if (mode==GEN_MODE_DIFF) 
           compareElement = getBaseElement(ec, sd.getBaseDefinition(), sd);
@@ -4856,6 +4947,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else { 
       x.tx(context.formatPhrase(RenderingI18nContext.STRUC_DEF_NO_DESCRIM)); 
     } 
+    List<String> slicingNotes = slicingNotes(profile, ed);
+    if (!slicingNotes.isEmpty()) {
+      XhtmlNode p = x.para();
+      p.b().tx(context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICING_NOTE) + ": ");
+      p.tx(String.join(" ", slicingNotes));
+    }
     tableRow(tbl, "Slicing", "profiling.html#slicing", strikethrough, x); 
     tbl.tx("\r\n"); 
   } 

@@ -167,6 +167,7 @@ public class ExtensionDefinitions {
   public static final String EXT_DATE_RULES = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-rules";
   public static final String EXT_PROFILE_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/type-profile-style";
   public static final String EXT_TYPE_PROFILE_CONSTRAINTS = "http://hl7.org/fhir/tools/StructureDefinition/type-profile-constraints"; // whether the constraints on the root of a type profile have been merged into the snapshot element: full | partial | none
+  public static final String EXT_IMPLIED_TYPE_SLICE = "http://hl7.org/fhir/tools/StructureDefinition/implied-type-slice"; // a type slice the snapshot generator added so that a closed type slicing still allows the types no other slice covers; it adds no constraints
   public static final String EXT_RESOURCE_NAME = "http://hl7.org/fhir/StructureDefinition/resource-instance-name";
   public static final String EXT_RESOURCE_DESC = "http://hl7.org/fhir/StructureDefinition/resource-instance-description";
   public static final String EXT_ARTIFACT_NAME = "http://hl7.org/fhir/StructureDefinition/artifact-name";
