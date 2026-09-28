@@ -2556,6 +2556,10 @@ public class StructureMapTools {
         if (expr == null) {
           expr = fpe.parse(getParamString(vars, tgtParameters.get(tgtParameters.size() - 1)));
         }
+        if (tgtParameters.size() == 2) {
+          TypeDetails expressionContext = getParam(vars, tgtParameters.get(0));
+          return fpe.checkOnTypes(vars, null, null, expressionContext, expr, new ArrayList<>());
+        }
         return fpe.check(vars, null, null, expr);
       case TRANSLATE:
         // the return type comes from the 3rd parameter
@@ -2578,6 +2582,7 @@ public class StructureMapTools {
             res.addBinding(td.getBinding());
         }
         return new TypeDetails(CollectionStatus.SINGLETON, res);
+      case APPEND:
       case TRUNCATE:
         return new TypeDetails(CollectionStatus.SINGLETON, "string");
       case C:
@@ -2585,6 +2590,8 @@ public class StructureMapTools {
       case CP:
         return new TypeDetails(CollectionStatus.SINGLETON, "ContactPoint");
       case CAST:
+        if (tgtParameters.size() == 0 || tgtParameters.size() > 2)
+          throw new FHIRException("Transform " + tgt.getTransform().toCode() + " requires a source parameter, and optionally an output type");
         var castType = getParamString(vars, tgtParameters.get(1));
         return new TypeDetails(CollectionStatus.SINGLETON, castType);
       case QTY:
@@ -2694,7 +2701,7 @@ public class StructureMapTools {
         StructureDefinition sd = worker.fetchResource(StructureDefinition.class, imp.getUrl(), ExtensionUtilities.getVersionResolutionRules(imp.getUrlElement()));
         if (sd == null)
           throw new FHIRException("Import " + imp.getUrl() + " cannot be resolved");
-        if (sd.getId().equals(type)) {
+        if ((imp.hasAlias() && imp.getAlias().equals(type)) || sd.getId().equals(type)) {
           return new PropertyWithType(sd.getType(), new Property(worker, sd.getSnapshot().getElementList().get(0), sd), null, new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl()));
         }
       }
