@@ -304,11 +304,11 @@ public class DateTimeType extends BaseDateTimeType {
   }
 
   /**
-   * Returns a new instance of DateTimeType with the current system time and SECOND precision and the system local time
+   * Returns a new instance of DateTimeType with the current system time and {@link ChronoUnit#SECONDS} precision and the system local time
    * zone
    */
   public static DateTimeType now() {
-    return new DateTimeType(ZonedDateTime.now(), ChronoUnit.SECONDS);
+    return new DateTimeType(ZonedDateTime.now(), DEFAULT_PRECISION);
   }
 
   /**
@@ -320,6 +320,9 @@ public class DateTimeType extends BaseDateTimeType {
     return retVal;
   }
 
+  /**
+   * Returns a new instance of DateTimeType with the current system date and {@link ChronoUnit#DAYS} precision.
+   */
   public static DateTimeType today() {
     return new DateTimeType(ZonedDateTime.now(), ChronoUnit.DAYS);
   }
