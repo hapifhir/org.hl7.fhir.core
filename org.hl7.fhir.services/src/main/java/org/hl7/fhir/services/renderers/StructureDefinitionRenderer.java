@@ -64,8 +64,6 @@ import java.util.*;
 @Slf4j
 public class StructureDefinitionRenderer extends ResourceRenderer {
 
-  public static final String RED_BACKGROUND_COLOR = "#B60000";
-
   public enum MapStructureMode {
     IN_LIST, NOT_IN_LIST, OTHER
   }
@@ -1326,11 +1324,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     if (element != null) { 
       if (element.getMustSupport() && element.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
-        checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG_SUPP)), "SO", "white", RED_BACKGROUND_COLOR, null, false));
+        checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG_SUPP)), "SO", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
       } else if (element.getMustSupport()) { 
-          checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_MUST_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false));
+          checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_MUST_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
       } else if (element != null && element.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
-       checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG)), "O", "white", RED_BACKGROUND_COLOR, null, false));
+       checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG)), "O", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
       } 
     } 
     if (element != null && element.getIsSummary()) { 
@@ -2529,7 +2527,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } 
           if (!mustSupportMode && isMustSupportDirect(t) && e.getMustSupport()) { 
             c.addPiece(gen.new Piece(null, " ", null)); 
-            c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+            c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
           } 
           c.getPieces().add(gen.new Piece(null, "(", null)); 
           boolean tfirst = true; 
@@ -2542,7 +2540,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               genTargetLink(gen, profileBaseFileName, corePath, c, t, u.getValue(), null); 
               if (!mustSupportMode && isMustSupport(u) && e.getMustSupport()) { 
                 c.addPiece(gen.new Piece(null, " ", null)); 
-                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
               } 
             } 
           } 
@@ -2592,7 +2590,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               addTypeProfileMark(gen, c, typeProfileMark(t, p, diff));
               if (!mustSupportMode && isMustSupport(p) && e.getMustSupport()) { 
                 c.addPiece(gen.new Piece(null, " ", null)); 
-                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROF_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROF_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
               } 
             } 
           } 
@@ -2634,7 +2632,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           }
           if (!mustSupportMode && isMustSupportDirect(t) && e.getMustSupport()) { 
             c.addPiece(gen.new Piece(null, " ", null)); 
-            c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+            c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
           }
         } 
       } 
@@ -3536,7 +3534,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.getPieces().add(gen.new Piece(corePath+"references.html#Reference", "Reference", null)); 
             if (!mustSupportMode && isMustSupportDirect(tr) && element.getMustSupport()) { 
               c.addPiece(gen.new Piece(null, " ", null)); 
-              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
             } 
             c.getPieces().add(gen.new Piece(null, "(", null)); 
           } 
@@ -3548,7 +3546,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               genTargetLink(gen, profileBaseFileName, corePath, c, tr, rt.getValue(), src); 
               if (!mustSupportMode && isMustSupport(rt) && element.getMustSupport()) { 
                 c.addPiece(gen.new Piece(null, " ", null)); 
-                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TARG_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TARG_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
               } 
               first = false; 
             } 
@@ -3578,7 +3576,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             choicerow.getCells().add(c); 
             if (!mustSupportMode && isMustSupport(tr) && element.getMustSupport()) { 
               c.addPiece(gen.new Piece(null, " ", null)); 
-              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TARG_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TARG_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
             } 
           } else { 
             used = true; 
@@ -3590,7 +3588,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             choicerow.getCells().add(c); 
             if (!mustSupportMode && isMustSupport(tr) && element.getMustSupport()) { 
               c.addPiece(gen.new Piece(null, " ", null)); 
-              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
             } 
           } 
           if (tr.hasProfile() && used) { 
@@ -3607,7 +3605,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                   typeCell.addPiece(gen.new Piece(psd.getWebPath(), psd.getName(), psd.present())); 
                 if (!mustSupportMode && isMustSupport(pt) && element.getMustSupport()) { 
                   typeCell.addPiece(gen.new Piece(null, " ", null)); 
-                  typeCell.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROF_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+                  typeCell.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROF_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
                 } 
               } 
             } 

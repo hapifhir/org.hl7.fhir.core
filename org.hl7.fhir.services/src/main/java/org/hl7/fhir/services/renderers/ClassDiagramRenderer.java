@@ -946,7 +946,7 @@ public class ClassDiagramRenderer {
       }
     }
     String base = sd == defnSD && defnFile != null ? defnFile : sd.getWebPath();
-    return base == null ? null : base+"#"+fullPath;
+    return linkTo(base, "#"+fullPath);
   }
 
   private String getBindingSuffix(ElementDefinitionBindingComponent b) {
