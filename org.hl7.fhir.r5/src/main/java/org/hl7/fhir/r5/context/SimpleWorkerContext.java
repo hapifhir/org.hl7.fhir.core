@@ -250,11 +250,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
 
     public SimpleWorkerContext fromPackage(NpmPackage pi) throws IOException, FHIRException {
-      SimpleWorkerContext context = getSimpleWorkerContextInstance();
-      context.setAllowLoadingDuplicates(allowLoadingDuplicates);
-      context.terminologyClientManager.setFactory(TerminologyClient5R5.factory());
-      context.loadFromPackage(pi, null, true);
-      return build(context);
+      return fromPackage(pi, null);
     }
 
     /**
