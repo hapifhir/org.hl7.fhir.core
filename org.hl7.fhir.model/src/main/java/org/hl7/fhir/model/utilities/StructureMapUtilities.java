@@ -468,6 +468,7 @@ public class StructureMapUtilities {
     }
     b.append(" {\r\n");
     renderRules(b, g.getRuleList(), 2);
+    renderMultilineDoco(b, g.getFormatCommentsPost(), 2);
     b.append("}\r\n\r\n");
   }
 

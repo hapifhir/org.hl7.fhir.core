@@ -404,6 +404,8 @@ public class FmlParser extends ParserBase {
         parseRule(result, group, lexer, false);
       }
     }
+    // Match the resource parser: group post-comments precede the closing delimiter.
+    group.addFormatCommentsPost(lexer.getComments());
     lexer.next();
     if (newFmt && lexer.hasToken(";"))
       lexer.next();
