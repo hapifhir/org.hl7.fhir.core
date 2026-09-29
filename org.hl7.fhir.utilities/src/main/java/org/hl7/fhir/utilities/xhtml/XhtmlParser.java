@@ -717,7 +717,7 @@ public class XhtmlParser {
    * tag as text. (Otherwise a css comment or a data: url in a stylesheet that mentions an element - e.g.
    * "inside a filter <th>" - gets parsed as an element, and the page is reported as not well formed.)
    */
-  private void parseScriptInner(XhtmlNode node) throws FHIRFormatError, IOException {
+  private void parseRawTextNode(XhtmlNode node) throws FHIRFormatError, IOException {
     String end = "</"+node.getName()+">";
     StringBuilder s = new StringBuilder();
     while (peekChar() != END_OF_CHARS && !endsWith(s, end)) {
@@ -771,7 +771,7 @@ public class XhtmlParser {
       readChar();
       node.setEmptyExpanded(false);
     } else if ("script".equalsIgnoreCase(name.getName()) || "style".equalsIgnoreCase(name.getName())) {
-      parseScriptInner(node);
+      parseRawTextNode(node);
     } else {
       node.setEmptyExpanded(true);
       parseElementInner(node, newParents, namespaceMap);
