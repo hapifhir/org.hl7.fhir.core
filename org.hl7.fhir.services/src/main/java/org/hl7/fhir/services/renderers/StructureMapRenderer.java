@@ -12,6 +12,8 @@ import org.hl7.fhir.model.core.Enumeration;
 import org.hl7.fhir.model.core.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.model.fml.StructureMap;
 import org.hl7.fhir.model.fml.StructureMap.*;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.ObjectConverter;
 import org.hl7.fhir.services.renderers.utils.RenderingContext;
 import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.model.utilities.EOperationOutcome;
@@ -32,14 +34,12 @@ public class StructureMapRenderer extends TerminologyRenderer {
  
   @Override
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    if (r.isDirect()) {
-      renderResourceTechDetails(r, x);
-      genSummaryTable(status, x, (StructureMap) r.getBase());
-      renderMap(status, x.pre("fml"), (StructureMap) r.getBase());      
-    } else {
-      // the intention is to change this in the future
-      x.para().tx("StructureMapRenderer only renders native resources directly");
-    }
+    StructureMap map = r.isDirect()
+        ? (StructureMap) r.getBase()
+        : (StructureMap) new ObjectConverter(context.getContext()).convert((Element) r.getBase());
+    renderResourceTechDetails(r, x);
+    genSummaryTable(status, x, map);
+    renderMap(status, x.pre("fml"), map);
   }
   
   
