@@ -228,8 +228,8 @@ public class CompareUtilities extends BaseTestingUtilities {
         if (actualNode == null)
           return "Attributes differ at " + path + ": missing attribute " + expectedNodeName;
         if (!normalise(expectedNode.getTextContent()).equals(normalise(actualNode.getTextContent()))) {
-          byte[] b1 = unBase64(expectedNode.getTextContent());
-          byte[] b2 = unBase64(actualNode.getTextContent());
+          byte[] b1 = unBase64(expectedNode.getTextContent(), true, false);
+          byte[] b2 = unBase64(actualNode.getTextContent(), true, false);
           if (!sameBytes(b1, b2))
             return createNotEqualMessage(id, "Attributes differ at " + path, normalise(expectedNode.getTextContent()).toString(), normalise(actualNode.getTextContent()).toString()) ;
         }
@@ -257,41 +257,6 @@ public class CompareUtilities extends BaseTestingUtilities {
       if (b1[i] != b2[i])
         return false;
     return true;
-  }
-
-  /**
-   * The base64 comparison is a fallback for binary content, and must only be used when the
-   * string really is base64. commons-codec decodes leniently: it skips every character outside
-   * the base64 alphabet and stops at the first '=', so ordinary text "decodes" to the
-   * alphanumeric prefix before its first '=' - and two messages that differ only after that
-   * point would compare as equal. Anything that isn't canonical base64 decodes to nothing
-   * here, which sameBytes() never treats as a match.
-   */
-  private byte[] unBase64(String text) {
-    if (!isBase64(text)) {
-      return new byte[0];
-    }
-    byte[] bytes = Base64.decodeBase64(text);
-    // unused trailing bits are ignored by the decoder, so require the round trip as well
-    return Base64.encodeBase64String(bytes).equals(text) ? bytes : new byte[0];
-  }
-
-  private boolean isBase64(String text) {
-    if (text == null || text.isEmpty() || text.length() % 4 != 0) {
-      return false;
-    }
-    int pad = 0;
-    for (int i = 0; i < text.length(); i++) {
-      char c = text.charAt(i);
-      if (c == '=') {
-        pad++;
-      } else if (pad > 0) {
-        return false;
-      } else if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '+' || c == '/')) {
-        return false;
-      }
-    }
-    return pad <= 2;
   }
 
   private Node skipBlankText(Node node) {
@@ -490,7 +455,7 @@ public class CompareUtilities extends BaseTestingUtilities {
         String expectedJsonString = expectedJsonPrimitive.asString();
         if (!(actualJsonString.contains("<div") && expectedJsonString.contains("<div")))
           if (!matches(actualJsonString, expectedJsonString))
-            if (!sameBytes(unBase64(actualJsonString), unBase64(expectedJsonString)))
+            if (!sameBytes(unBase64(actualJsonString, false, true), unBase64(expectedJsonString, false, true)))
               return createNotEqualMessage(id, "string property values differ at " + path, expectedJsonString, actualJsonString);
       } else if (actualJsonPrimitive.isJsonNumber() && expectedJsonPrimitive.isJsonNumber()) {
         if (!actualJsonPrimitive.asString().equals(expectedJsonPrimitive.asString()))
