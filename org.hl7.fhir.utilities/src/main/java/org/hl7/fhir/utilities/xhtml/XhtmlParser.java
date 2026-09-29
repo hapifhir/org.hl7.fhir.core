@@ -740,7 +740,7 @@ public class XhtmlParser {
       return false;
     }
     for (int i = 0; i < end.length(); i++) {
-      if (Character.toLowerCase(b.charAt(n+i)) != end.charAt(i)) {
+      if (Character.toLowerCase(b.charAt(n+i)) != Character.toLowerCase(end.charAt(i))) {
         return false;
       }
     }
@@ -770,7 +770,7 @@ public class XhtmlParser {
         throw new FHIRFormatError("unexpected non-end of element "+name+" "+descLoc());
       readChar();
       node.setEmptyExpanded(false);
-    } else if ("script".equals(name.getName()) || "style".equals(name.getName())) {
+    } else if ("script".equalsIgnoreCase(name.getName()) || "style".equalsIgnoreCase(name.getName())) {
       parseScriptInner(node);
     } else {
       node.setEmptyExpanded(true);
