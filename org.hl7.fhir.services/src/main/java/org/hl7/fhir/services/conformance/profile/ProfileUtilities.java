@@ -1883,17 +1883,17 @@ public class ProfileUtilities {
    */
   private void markRemainingTypeProfiles(StructureDefinitionDifferentialComponent diff, StructureDefinitionSnapshotComponent baseSnapshot) {
     Map<String, ElementDefinition> baseById = null;
-    for (ElementDefinition de : diff.getElementList()) {
-      ElementDefinition ed = (ElementDefinition) de.getUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT);
-      if (ed == null || !de.hasType()) {
+    for (ElementDefinition diffElementDefinition : diff.getElementList()) {
+      ElementDefinition snapshotGeneratedElementDefinition = (ElementDefinition) diffElementDefinition.getUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT);
+      if (snapshotGeneratedElementDefinition == null || !diffElementDefinition.hasType()) {
         continue;
       }
-      for (TypeRefComponent tr : ed.getTypeList()) {
-        if ("Extension".equals(tr.getWorkingCode())) {
+      for (TypeRefComponent snapshotGeneratedTypeRef : snapshotGeneratedElementDefinition.getTypeList()) {
+        if ("Extension".equals(snapshotGeneratedTypeRef.getWorkingCode())) {
           continue;
         }
-        for (CanonicalType ct : tr.getProfileList()) {
-          if (ct.hasExtension(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS) || ct.hasUserData(UserDataNames.SNAPSHOT_TYPE_PROFILE_DECIDED)) {
+        for (CanonicalType snapshotGeneratedCanonicalType : snapshotGeneratedTypeRef.getProfileList()) {
+          if (snapshotGeneratedCanonicalType.hasExtension(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS) || snapshotGeneratedCanonicalType.hasUserData(UserDataNames.SNAPSHOT_TYPE_PROFILE_DECIDED)) {
             continue;
           }
           if (baseById == null) {
@@ -1904,23 +1904,23 @@ public class ProfileUtilities {
               }
             }
           }
-          String url = noVersion(ct.getValue());
-          CanonicalType bct = null;
-          ElementDefinition bed = ed.hasId() ? baseById.get(ed.getId()) : null;
-          if (bed != null) {
-            for (TypeRefComponent btr : bed.getTypeList()) {
-              for (CanonicalType bc : btr.getProfileList()) {
-                if (url != null && url.equals(noVersion(bc.getValue()))) {
-                  bct = bc;
+          String versionlessSnaphotGeneratedCanonicalType = noVersion(snapshotGeneratedCanonicalType.getValue());
+          CanonicalType baseCanonicalType = null;
+          ElementDefinition baseElementDefinition = snapshotGeneratedElementDefinition.hasId() ? baseById.get(snapshotGeneratedElementDefinition.getId()) : null;
+          if (baseElementDefinition != null) {
+            for (TypeRefComponent baseTypeRefComponent : baseElementDefinition.getTypeList()) {
+              for (CanonicalType profileCanonicalType : baseTypeRefComponent.getProfileList()) {
+                if (versionlessSnaphotGeneratedCanonicalType != null && versionlessSnaphotGeneratedCanonicalType.equals(noVersion(profileCanonicalType.getValue()))) {
+                  baseCanonicalType = profileCanonicalType;
                 }
               }
             }
           }
-          String status = bct != null ? bct.getExtensionString(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS) : "none";
+          String status = baseCanonicalType != null ? baseCanonicalType.getExtensionString(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS) : "none";
           if (status != null) {
-            ct.addExtension(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS, new CodeType(status));
+            snapshotGeneratedCanonicalType.addExtension(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS, new CodeType(status));
           }
-          ct.setUserData(UserDataNames.SNAPSHOT_TYPE_PROFILE_DECIDED, true);
+          snapshotGeneratedCanonicalType.setUserData(UserDataNames.SNAPSHOT_TYPE_PROFILE_DECIDED, true);
         }
       }
     }
@@ -2898,8 +2898,8 @@ public class ProfileUtilities {
       }
   
       if (derived.hasMaxValue()) {
-        Integer cmax = base.hasMaxValue() ? TypeProfileRootMerger.compareValues(derived.getMaxValue(), base.getMaxValue()) : null;
-        if (cmax != null && cmax > 0) {
+        Integer comparedMaxes = base.hasMaxValue() ? TypeProfileRootMerger.compareValues(derived.getMaxValue(), base.getMaxValue()) : null;
+        if (comparedMaxes != null && comparedMaxes > 0) {
           // the tightest bound wins: a profile can't loosen what it inherits
           addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), context.formatMessage(I18nConstants.SNAPSHOT_DIFF_LOOSENS, derived.getPath(), "maxValue", derived.getMaxValue().primitiveValue(), base.getMaxValue().primitiveValue()), IssueSeverity.WARNING));
         } else if (!Base.compareDeep(derived.getMaxValue(), base.getMaxValue(), false))
@@ -2911,8 +2911,8 @@ public class ProfileUtilities {
       }
   
       if (derived.hasMinValue()) {
-        Integer cmin = base.hasMinValue() ? TypeProfileRootMerger.compareValues(derived.getMinValue(), base.getMinValue()) : null;
-        if (cmin != null && cmin < 0) {
+        Integer comparedMins = base.hasMinValue() ? TypeProfileRootMerger.compareValues(derived.getMinValue(), base.getMinValue()) : null;
+        if (comparedMins != null && comparedMins < 0) {
           // the tightest bound wins: a profile can't loosen what it inherits
           addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), context.formatMessage(I18nConstants.SNAPSHOT_DIFF_LOOSENS, derived.getPath(), "minValue", derived.getMinValue().primitiveValue(), base.getMinValue().primitiveValue()), IssueSeverity.WARNING));
         } else if (!Base.compareDeep(derived.getMinValue(), base.getMinValue(), false))
