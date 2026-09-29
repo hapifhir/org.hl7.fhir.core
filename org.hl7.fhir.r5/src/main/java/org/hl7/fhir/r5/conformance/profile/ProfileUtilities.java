@@ -839,9 +839,6 @@ public class ProfileUtilities {
         MappingAssistant mappingDetails = new MappingAssistant(mappingMergeMode, base, derived, context.getVersion(), suppressedMappings);
         
         ProfilePathProcessor.processPaths(this, base, derived, url, webUrl, diff, baseSnapshot, mappingDetails);
-        if (derived.getDerivation() == TypeDerivationRule.CONSTRAINT) {
-          markRemainingTypeProfiles(diff, baseSnapshot);
-        }
 
         checkGroupConstraints(derived);
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
@@ -1902,61 +1899,6 @@ public class ProfileUtilities {
     return path.startsWith(prevPath + ".");
   }
 
-
-  /**
-   * The snapshot generator records, on each type profile it merges (or deliberately doesn't), how much of the profile's
-   * root was merged into the element (ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS). This catches the type
-   * profiles the differential sets on elements that don't go through that code (e.g. the slicer of a type slice):
-   * if the profile came from the base element, it has whatever the base recorded; otherwise nothing was merged
-   */
-  private void markRemainingTypeProfiles(StructureDefinitionDifferentialComponent diff, StructureDefinitionSnapshotComponent baseSnapshot) {
-    Map<String, ElementDefinition> baseById = null;
-    for (ElementDefinition de : diff.getElement()) {
-      ElementDefinition ed = (ElementDefinition) de.getUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT);
-      if (ed == null || !de.hasType()) {
-        continue;
-      }
-      for (TypeRefComponent tr : ed.getType()) {
-        if ("Extension".equals(tr.getWorkingCode())) {
-          continue;
-        }
-        for (CanonicalType ct : tr.getProfile()) {
-          if (ct.hasExtension(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS) || ct.hasUserData(UserDataNames.SNAPSHOT_TYPE_PROFILE_DECIDED)) {
-            continue;
-          }
-          if (baseById == null) {
-            baseById = new HashMap<>();
-            for (ElementDefinition bed : baseSnapshot.getElement()) {
-              if (bed.hasId()) {
-                baseById.put(bed.getId(), bed);
-              }
-            }
-          }
-          String url = noVersion(ct.getValue());
-          CanonicalType bct = null;
-          ElementDefinition bed = ed.hasId() ? baseById.get(ed.getId()) : null;
-          if (bed != null) {
-            for (TypeRefComponent btr : bed.getType()) {
-              for (CanonicalType bc : btr.getProfile()) {
-                if (url != null && url.equals(noVersion(bc.getValue()))) {
-                  bct = bc;
-                }
-              }
-            }
-          }
-          String status = bct != null ? bct.getExtensionString(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS) : "none";
-          if (status != null) {
-            ct.addExtension(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS, new CodeType(status));
-          }
-          ct.setUserData(UserDataNames.SNAPSHOT_TYPE_PROFILE_DECIDED, true);
-        }
-      }
-    }
-  }
-
-  private static String noVersion(String url) {
-    return url == null || !url.contains("|") ? url : url.substring(0, url.indexOf("|"));
-  }
 
   protected  ElementDefinition fillOutFromBase(ElementDefinition profile, ElementDefinition usage) throws FHIRFormatError {
     ElementDefinition res = profile.copy();

@@ -49,7 +49,11 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
  *   <li>valueAlternatives: the intersection, if both have some</li>
  *   <li>mapping: merged by identity + map</li>
  *   <li>binding: the type profile's binding replaces the element's (and the differential can then replace that);
- *       additional bindings are merged by purpose + value set (R5 additional bindings have no key)</li>
+ *       additional bindings are merged by purpose + value set (R5 additional bindings have no key). But if the element
+ *       already has a required binding that is different, the two can't be merged (the implications of the two value
+ *       sets differ, and snapshot generation doesn't try to reason about them). The element keeps its binding, the type
+ *       profile's binding still applies through the type profile, and the type profile is not fully merged
+ *       (see {@link #isComplete()})</li>
  * </ul>
  * Extensions on the root are not migrated.
  * <p>
@@ -58,6 +62,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 public class TypeProfileRootMerger {
 
   private final IWorkerContext context;
+  private boolean complete;
 
   public TypeProfileRootMerger(IWorkerContext context) {
     this.context = context;
@@ -94,6 +99,7 @@ public class TypeProfileRootMerger {
    */
   public List<ValidationMessage> merge(ElementDefinition element, ElementDefinition typeRoot, ElementDefinition coreRoot, String profileUrl, String path) {
     List<ValidationMessage> issues = new ArrayList<>();
+    complete = true;
 
     if (typeRoot.hasSlicing()) {
       error(issues, path, I18nConstants.SNAPSHOT_TYPE_ROOT_SLICING, profileUrl, path);
@@ -199,7 +205,16 @@ public class TypeProfileRootMerger {
 
     // binding
     if (typeRoot.hasBinding() && !Base.compareDeep(typeRoot.getBinding(), coreRoot.getBinding(), false)) {
-      mergeBinding(element, typeRoot.getBinding());
+      if (element.hasBinding() && element.getBinding().getStrength() == org.hl7.fhir.r5.model.Enumerations.BindingStrength.REQUIRED && !sameBinding(element.getBinding(), typeRoot.getBinding())) {
+        complete = false; // the element keeps its required binding, and the type profile's binding applies through the type profile
+      } else if (element.hasBinding() && sameBinding(element.getBinding(), typeRoot.getBinding())) {
+        // the same binding, but one may state the version and the other not: keep the element's value set
+        String vs = element.getBinding().getValueSet();
+        mergeBinding(element, typeRoot.getBinding());
+        element.getBinding().setValueSet(vs);
+      } else {
+        mergeBinding(element, typeRoot.getBinding());
+      }
     }
     return issues;
   }
@@ -227,6 +242,43 @@ public class TypeProfileRootMerger {
         element.setFixed(typeValue.copy());
       }
     }
+  }
+
+  /**
+   * @return false if the last merge left something out without it being an error (e.g. a required binding the element
+   * already had), so the type profile's root is only partly represented in the element
+   */
+  public boolean isComplete() {
+    return complete;
+  }
+
+  private boolean sameBinding(ElementDefinitionBindingComponent b1, ElementDefinitionBindingComponent b2) {
+    return b1.getStrength() == b2.getStrength() && sameValueSet(b1.getValueSet(), b2.getValueSet());
+  }
+
+  /**
+   * The same value set: the same canonical, and the same version. If only one of them states a version, they're the
+   * same if the other resolves to that version
+   */
+  private boolean sameValueSet(String vs1, String vs2) {
+    if (Objects.equals(vs1, vs2)) {
+      return true;
+    }
+    if (vs1 == null || vs2 == null) {
+      return false;
+    }
+    String u1 = vs1.contains("|") ? vs1.substring(0, vs1.indexOf("|")) : vs1;
+    String u2 = vs2.contains("|") ? vs2.substring(0, vs2.indexOf("|")) : vs2;
+    if (!u1.equals(u2)) {
+      return false;
+    }
+    if (vs1.contains("|") && vs2.contains("|")) {
+      return false; // same url, different versions
+    }
+    String version = vs1.contains("|") ? vs1.substring(vs1.indexOf("|") + 1) : vs2.substring(vs2.indexOf("|") + 1);
+    String url = u1;
+    var vs = context.fetchResource(org.hl7.fhir.r5.model.ValueSet.class, url);
+    return vs != null && version.equals(vs.getVersion());
   }
 
   private void mergeBinding(ElementDefinition element, ElementDefinitionBindingComponent typeBinding) {
