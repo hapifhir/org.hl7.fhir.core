@@ -723,29 +723,29 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     switch (type) { 
     case "string": 
       p.tx(" "); 
-      input = p.input(i.primitiveValue("linkId"), i.primitiveValueMNMulti("text", "linkId"), "text", typeT, 60);
+      input = p.input(i.primitiveValue("linkId"), context.forPublisher() ? i.primitiveValueMNMulti("text", "linkid") : null, "text", typeT, 60);
       break; 
     case "attachment": 
       break; 
     case "boolean": 
       p.tx(" "); 
-      input = p.input(i.primitiveValue("linkId"), i.primitiveValueMNMulti("text", "linkId"), "checkbox", typeT, 1);
+      input = p.input(i.primitiveValue("linkId"), context.forPublisher() ? i.primitiveValueMNMulti("text", "linkid") : null, "checkbox", typeT, 1);
       break; 
     case "coding": 
-      input = p.select(i.primitiveValue("linkId"), i.primitiveValueMNMulti("text", "linkId"));
+      input = p.select(i.primitiveValue("linkId"), context.forPublisher() ? i.primitiveValueMNMulti("text", "linkid") : null);
       listOptions(q, i, input); 
       break; 
     case "date": 
       p.tx(" "); 
-      input = p.input(i.primitiveValue("linkId"), i.primitiveValueMNMulti("text", "linkId"), "date", typeT, 10);
+      input = p.input(i.primitiveValue("linkId"), context.forPublisher() ? i.primitiveValueMNMulti("text", "linkid") : null, "date", typeT, 10);
       break; 
     case "dateTime": 
       p.tx(" "); 
-      input = p.input(i.primitiveValue("linkId"), i.primitiveValueMNMulti("text", "linkId"), "datetime-local", typeT, 25);
+      input = p.input(i.primitiveValue("linkId"), context.forPublisher() ? i.primitiveValueMNMulti("text", "linkid") : null, "datetime-local", typeT, 25);
       break; 
     case "decimal": 
       p.tx(" "); 
-      input = p.input(i.primitiveValue("linkId"), i.primitiveValueMNMulti("text", "linkId"), "number", typeT, 15);
+      input = p.input(i.primitiveValue("linkId"), context.forPublisher() ? i.primitiveValueMNMulti("text", "linkid") : null, "number", typeT, 15);
       break; 
     case "display": 
       break; 
@@ -753,13 +753,13 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       break; 
     case "integer": 
       p.tx(" "); 
-      input = p.input(i.primitiveValue("linkId"), i.primitiveValueMNMulti("text", "linkId"), "number", typeT, 10);
+      input = p.input(i.primitiveValue("linkId"), context.forPublisher() ? i.primitiveValueMNMulti("text", "linkid") : null, "number", typeT, 10);
       break; 
     case "qantity": 
       p.tx(" "); 
-      input = p.input(i.primitiveValue("linkId"), i.primitiveValueMNMulti("text", "linkId"), "number", "value", 15);
+      input = p.input(i.primitiveValue("linkId"), context.forPublisher() ? i.primitiveValueMNMulti("text", "linkid") : null, "number", "value", 15);
       p.tx(" "); 
-      input = p.input(i.primitiveValue("linkId"), i.primitiveValueMNMulti("text", "linkId"), "unit", "unit", 10);
+      input = p.input(i.primitiveValue("linkId"), context.forPublisher() ? i.primitiveValueMNMulti("text", "linkid") : null, "unit", "unit", 10);
       break; 
     case "question": 
       break; 
