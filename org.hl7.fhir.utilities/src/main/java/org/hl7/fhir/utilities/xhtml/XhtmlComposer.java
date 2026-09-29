@@ -113,6 +113,7 @@ public class XhtmlComposer {
   private boolean pretty;
   private boolean xml; 
   private boolean autoLinks;
+  private int inLink = 0; // how many <a> elements the text being written is inside - auto links are never made inside a link
   private boolean canonical;
 
   public static final boolean XML = true; 
@@ -261,7 +262,7 @@ public class XhtmlComposer {
           dst.append(";");
           i += Character.charCount(ci);
         } else {
-          if (autoLinks && c == 'h' && Utilities.startsWithInList(src.substring(i), "http://", "https://")) {
+          if (autoLinks && inLink == 0 && c == 'h' && Utilities.startsWithInList(src.substring(i), "http://", "https://")) {
             int j = i;
             while (i < src.length() && isValidUrlChar(src.charAt(i))) {
               i++;
@@ -407,8 +408,20 @@ public class XhtmlComposer {
       if (act && Utilities.existsInList(node.getName(), "script", "style")) {
         dst.append(node.allText());
       } else {
-        for (XhtmlNode c : node.getChildNodes())
-          writeNode(indent + "  ", c, noPrettyOverride || node.isNoPretty());
+        // a url that is already the text of a link (e.g. markdown turned <https://...> into one) must not be
+        // made into a link again - a link inside a link is invalid html, and confuses screen readers
+        boolean isLink = "a".equals(node.getName());
+        if (isLink) {
+          inLink++;
+        }
+        try {
+          for (XhtmlNode c : node.getChildNodes())
+            writeNode(indent + "  ", c, noPrettyOverride || node.isNoPretty());
+        } finally {
+          if (isLink) {
+            inLink--;
+          }
+        }
       }
       if (act)
         dst.append("</" + node.getName() + ">" + (pretty && !noPrettyOverride ? "\r\n" : ""));

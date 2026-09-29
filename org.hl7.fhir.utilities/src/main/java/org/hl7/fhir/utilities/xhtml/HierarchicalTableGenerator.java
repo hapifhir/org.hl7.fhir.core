@@ -1257,7 +1257,9 @@ public class HierarchicalTableGenerator {
           s.setAttribute("title", p.getHint());
           s.addText(p.getText());
           if (p.symbol && !Utilities.noString(p.getHint())) {
-            s.setAttribute("aria-hidden", "true");
+            if (table.active) {
+              s.setAttribute("aria-hidden", "true");
+            }
             itc.span().attribute("class", "sr-only").style(SR_ONLY_STYLE).tx(" "+p.getHint()+(p.getHint().endsWith(".") ? " " : ". "));
           }
         } else if (p.getStyle() != null) {
@@ -1286,13 +1288,23 @@ public class HierarchicalTableGenerator {
       XhtmlNode span = itc.span();
       span.style("font-weight: normal");
       span.tx("Filter: ");
-      XhtmlNode input = span.input("filter", "text", null, 10);
+      XhtmlNode input = span.input("filter",  "filter","text", null, 10);
       input.style("border: 1px #F0F0F0 solid; background-color: rgb(254, 254, 231);");
       input.setAttribute("aria-label", "Filter");
       input.setAttribute("onInput", "filterTree(document.getElementById('"+mid+"'), event.target.value)");
       if (checkboxes != null) {
         span.tx(" ");
-        span.img("tree-filter.png", "Filters").setAttribute("onClick", "showPanel(event.target, document.getElementById('"+mid+"'), document.getElementById('pp"+mid+"'))");
+        // a real button, so the filter panel can be opened from the keyboard (Tab to it, Enter or Space);
+        // styled so it looks exactly like the bare icon it replaces. showPanel is given the button to position
+        // the panel against. No aria-expanded: the template's script doesn't maintain it, and a stale value is worse than none
+        XhtmlNode btn = span.addTag("button");
+        btn.setAttribute("type", "button");
+        btn.setAttribute("aria-label", "Filters");
+        btn.setAttribute("title", "Filters");
+        btn.setAttribute("aria-controls", "pp"+mid);
+        btn.style("background: none; border: 0; padding: 0; margin: 0; cursor: pointer");
+        btn.setAttribute("onClick", "showPanel(this, document.getElementById('"+mid+"'), document.getElementById('pp"+mid+"'))");
+        btn.img("tree-filter.png", ""); // decorative: the button carries the name
         XhtmlNode popupPanel = span.div();
         popupPanel.attribute("id", "pp"+mid);
         popupPanel.style("display: none; position: fixed; opacity : 1.0; background-color: rgb(254, 254, 231); border: 1px solid #ccc; padding: 10px; "+
@@ -1302,7 +1314,7 @@ public class HierarchicalTableGenerator {
           XhtmlNode lbl = popupPanel.addTag("label");
           lbl.tx(s);
           lbl.tx(" ");
-          input = lbl.input(v, "checkbox", null, 1);
+          input = lbl.input(v, v, "checkbox", null, 1);
           input.setAttribute("id", "cb"+mid+"-"+checkboxes.get(s));
           input.setAttribute("checked", "true");
           input.setAttribute("onClick", "filterDesc(document.getElementById('"+mid+"'), '"+v+"',event.target.checked, document.getElementById('pp"+mid+"'))");

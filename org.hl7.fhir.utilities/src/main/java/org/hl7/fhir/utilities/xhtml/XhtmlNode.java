@@ -872,10 +872,13 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
 
-  public XhtmlNode input(String name, String type, String placeholder, int size) {
+  public XhtmlNode input(String name, String label, String type, String placeholder, int size) {
     XhtmlNode p = new XhtmlNode(NodeType.Element, "input");
     if (name != null) {
       p.attribute("name", name);
+    }
+    if (label != null) {
+      p.attribute("aria-label", label);
     }
     p.attribute("type", type);
     if (placeholder != null) {
