@@ -16,6 +16,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.services.conformance.profile.TypeProfileRootMerger;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
@@ -215,6 +216,9 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
         for (Element snapshotE : snapshots) {
           ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("version", false), src.getNamedChildValue("type", false), base, experimental) && ok;
+        }
+        if (!(differentials.isEmpty() && snapshots.isEmpty())) {
+          ok = checkPossibleValues(errors, sd, stack.push(snapshots.isEmpty() ? differentials.get(0) : snapshots.get(0), -1, null, null)) && ok;
         }
 
         // obligation profile support
@@ -882,6 +886,111 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
 
+
+  /**
+   * Check for value ranges and slice cardinalities that no instance can meet. The rules on a slicer apply to all its
+   * slices, but they are not repeated in the slices, so an element in a slice is checked together with the matching
+   * elements on the slicer(s)
+   */
+  private boolean checkPossibleValues(List<ValidationMessage> errors, StructureDefinition sd, NodeStack stack) {
+    boolean ok = true;
+    Map<String, ElementDefinition> byId = new HashMap<>();
+    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
+      if (ed.hasId()) {
+        byId.put(ed.getId(), ed);
+      }
+    }
+    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
+      if (!ed.hasId()) {
+        continue;
+      }
+      // value range: the highest minimum and the lowest maximum across the element and its slicer equivalents
+      List<ElementDefinition> rules = new ArrayList<>();
+      rules.add(ed);
+      for (String id : slicerEquivalents(ed.getId())) {
+        if (byId.containsKey(id)) {
+          rules.add(byId.get(id));
+        }
+      }
+      ElementDefinition lower = null;
+      ElementDefinition upper = null;
+      for (ElementDefinition r : rules) {
+        if (r.hasMinValue() && (lower == null || isGreater(r.getMinValue(), lower.getMinValue()))) {
+          lower = r;
+        }
+        if (r.hasMaxValue() && (upper == null || isGreater(upper.getMaxValue(), r.getMaxValue()))) {
+          upper = r;
+        }
+      }
+      if (lower != null && upper != null) {
+        ok = rule(errors, "2026-09-29", IssueType.BUSINESSRULE, stack, !isGreater(lower.getMinValue(), upper.getMaxValue()), I18nConstants.SD_VALUE_RANGE_EMPTY,
+          ed.getId(), lower.getMinValue().primitiveValue(), lower.getId(), upper.getMaxValue().primitiveValue(), upper.getId()) && ok;
+      }
+      // cardinality: the highest min and the lowest max across the element and its slicer equivalents. The cardinality
+      // of a slice itself is about that slice, and the cardinality of the slicer is about all the slices together (see
+      // below), so for a slice, only its own cardinality counts
+      ElementDefinition minFrom = ed;
+      ElementDefinition maxFrom = ed;
+      if (!tail(ed.getId()).contains(":")) {
+        for (ElementDefinition r : rules) {
+          if (r.hasMin() && r.getMin() > minFrom.getMin()) {
+            minFrom = r;
+          }
+          if (r.hasMax() && !"*".equals(r.getMax()) && ("*".equals(maxFrom.getMax()) || !maxFrom.hasMax() || r.getMaxAsInt() < maxFrom.getMaxAsInt())) {
+            maxFrom = r;
+          }
+        }
+      }
+      if (minFrom.hasMin() && maxFrom.hasMax() && !"*".equals(maxFrom.getMax())) {
+        ok = rule(errors, "2026-09-29", IssueType.BUSINESSRULE, stack, minFrom.getMin() <= maxFrom.getMaxAsInt(), I18nConstants.SD_CARDINALITY_EMPTY,
+          ed.getId(), minFrom.getMin(), minFrom.getId(), maxFrom.getMax(), maxFrom.getId()) && ok;
+      }
+      // slice cardinality: the slices together must fit within the slicer
+      if (ed.hasSlicing() && !"*".equals(ed.getMax()) && ed.hasMax()) {
+        int total = 0;
+        String prefix = ed.getId() + ":";
+        for (ElementDefinition t : sd.getSnapshot().getElementList()) {
+          if (t.hasId() && t.getId().startsWith(prefix) && !t.getId().substring(prefix.length()).contains(".") && !t.getId().substring(prefix.length()).contains("/")) {
+            total = total + t.getMin();
+          }
+        }
+        ok = rule(errors, "2026-09-29", IssueType.BUSINESSRULE, stack, total <= ed.getMaxAsInt(), I18nConstants.SD_SLICE_MIN_EXCEEDS_SLICER_MAX, ed.getId(), total, ed.getMax()) && ok;
+      }
+    }
+    return ok;
+  }
+
+  private String tail(String id) {
+    return id.contains(".") ? id.substring(id.lastIndexOf(".") + 1) : id;
+  }
+
+  private boolean isGreater(DataType v1, DataType v2) {
+    Integer c = TypeProfileRootMerger.compareValues(v1, v2);
+    return c != null && c > 0;
+  }
+
+  /**
+   * the ids of the elements on the slicer(s) that correspond to this element in a slice (e.g. for
+   * Observation.component:a.value[x], Observation.component.value[x])
+   */
+  private Set<String> slicerEquivalents(String id) {
+    Set<String> res = new HashSet<>();
+    if (id.contains(":")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] parts = id.split("\\.");
+      for (int i = 0; i < parts.length; i++) {
+        if (parts[i].contains(":")) {
+          String[] np = parts.clone();
+          np[i] = np[i].substring(0, np[i].indexOf(":"));
+          String nid = String.join(".", np);
+          res.add(nid);
+          res.addAll(slicerEquivalents(nid));
+        }
+      }
+    }
+    return res;
+  }
 
   private boolean prohibited(List<ValidationMessage> errors, NodeStack stack, String mode, Element element, String... names) {
     boolean ok = true;

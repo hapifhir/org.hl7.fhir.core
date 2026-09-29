@@ -28,7 +28,6 @@ public class UserDataNames {
   public static final String SNAPSHOT_SORT_ed_index = "ed.index";
   public static final String SNAPSHOT_diff_source = "diff-source";
   public static final String SNAPSHOT_regeneration_tracker = "hack.regnerated";
-  public static final String SNAPSHOT_TYPE_PROFILE_DECIDED = "profileutilities.snapshot.type-profile-decided"; // on a type profile canonical: whether its root constraints were merged has been decided
   
   public static final String LANGUTILS_ORPHAN = "translations.orphans";
   public static final String LANGUTILS_SOURCE_SUPPLEMENT = "translations.supplemented";
