@@ -980,7 +980,7 @@ public class HierarchicalTableGenerator {
     if (model.isActive()) {      
       table.setAttribute("id", model.getId());
     }
-    if (!Utilities.noString(model.getLabel())) {
+    if (!Utilities.noString(model.getLabel()) && model.isActive()) {
       table.setAttribute("aria-label", model.getLabel());
     }
     if (model.isBorder()) {
@@ -1230,7 +1230,7 @@ public class HierarchicalTableGenerator {
         }
         if (!Utilities.noString(p.getHint())) {
           a.setAttribute("title", p.getHint());
-          if (p.symbol) {
+          if (p.symbol && table.active) {
             a.setAttribute("aria-label", p.getHint());
           }
         }

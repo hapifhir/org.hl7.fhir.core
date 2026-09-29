@@ -141,8 +141,8 @@ public class TestingUtilities extends BaseTestingUtilities {
 	      if (ta == null) 
 	        return "Attributes differ at "+path+": missing attribute "+sn;
 	      if (!normalise(sa.getTextContent()).equals(normalise(ta.getTextContent()))) {
-	        byte[] b1 = unBase64(sa.getTextContent());
-	        byte[] b2 = unBase64(ta.getTextContent());
+	        byte[] b1 = unBase64(sa.getTextContent(), true, false);
+	        byte[] b2 = unBase64(ta.getTextContent(), true, false);
 	        if (!sameBytes(b1, b2))
 	          return "Attributes differ at "+path+": value "+normalise(sa.getTextContent()) +"/"+ normalise(ta.getTextContent());
 	      }
@@ -160,41 +160,6 @@ public class TestingUtilities extends BaseTestingUtilities {
 			if (b1[i] != b2[i])
 				return false;
 		return true;
-	}
-
-	/**
-	 * The base64 comparison is a fallback for binary content, and must only be used when the
-	 * string really is base64. commons-codec decodes leniently: it skips every character outside
-	 * the base64 alphabet and stops at the first '=', so ordinary text "decodes" to the
-	 * alphanumeric prefix before its first '=' - and two messages that differ only after that
-	 * point would compare as equal. Anything that isn't canonical base64 decodes to nothing
-	 * here, which sameBytes() never treats as a match.
-	 */
-	private static byte[] unBase64(String text) {
-		if (!isBase64(text)) {
-			return new byte[0];
-		}
-		byte[] bytes = Base64.decodeBase64(text);
-		// unused trailing bits are ignored by the decoder, so require the round trip as well
-		return Base64.encodeBase64String(bytes).equals(text) ? bytes : new byte[0];
-	}
-
-	private static boolean isBase64(String text) {
-		if (text == null || text.isEmpty() || text.length() % 4 != 0) {
-			return false;
-		}
-		int pad = 0;
-		for (int i = 0; i < text.length(); i++) {
-			char c = text.charAt(i);
-			if (c == '=') {
-				pad++;
-			} else if (pad > 0) {
-				return false;
-			} else if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '+' || c == '/')) {
-				return false;
-			}
-		}
-		return pad <= 2;
 	}
 
 	private static Node skipBlankText(Node node) {
@@ -279,7 +244,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 				String s2 = p2.getAsString();
 				if (!(s1.contains("<div") && s2.contains("<div")))
 					if (!s1.equals(s2))
-						if (!sameBytes(unBase64(s1), unBase64(s2)))
+						if (!sameBytes(unBase64(s1, true, false), unBase64(s2, true, false)))
 							return "string property values differ at "+path+": type "+s1+"/"+s2;
 			} else if (p1.isNumber() && p2.isNumber()) {
 	    if (!p1.getAsString().equals(p2.getAsString()))
