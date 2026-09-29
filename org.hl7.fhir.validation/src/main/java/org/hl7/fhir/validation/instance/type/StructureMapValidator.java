@@ -1006,6 +1006,10 @@ public class StructureMapValidator extends BaseValidator {
       ok = rule(errors, "2023-03-01", IssueType.INVALID, expression.line(), expression.col(), stack.getLiteralPath(), value != null, I18nConstants.SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE, Integer.toString(params.size() - 1), params.size());
       if (ok) {
         try {
+          if (params.size() == 2) {
+            // the first parameter is the context to actually use for the evaluation
+            contextVariable = variables.getVariable(params.get(0).getChildValue("value"));
+          }
           checkEvaluateExpression(variables, expression, value, contextVariable);
         } catch (Exception e) {
           ok = rule(errors, "2023-03-01", IssueType.INVALID, expression.line(), expression.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_EXPRESSION_ERROR, e.getMessage());
