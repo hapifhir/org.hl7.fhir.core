@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Collections;
 import java.util.Set;
 import java.util.Stack;
 
@@ -348,7 +349,7 @@ public class SnapshotGenerationPreProcessor {
     merged.setIsSummaryElement(chooseProp(source.getIsSummaryElement(), base.getIsSummaryElement()));
 
     if (source.hasMin() && base.hasMin()) {
-      merged.setMinElement(source.getMin() < base.getMin() ? source.getMinElement().copy() : base.getMinElement().copy());      
+      merged.setMinElement(source.getMin() > base.getMin() ? source.getMinElement().copy() : base.getMinElement().copy());      
     } else {
       merged.setMinElement(chooseProp(source.getMinElement(), base.getMinElement().copy()));
     }
@@ -377,7 +378,7 @@ public class SnapshotGenerationPreProcessor {
         merged.setFixed(base.getFixed().copy());          
       }
     } else if (source.hasPattern() && base.hasPattern()) {
-      merged.setPattern(checkPatternValues(baseSD.getVersionedUrl(), source.getPath()+".pattern", source.getFixed(), base.getFixed(), true));
+      merged.setPattern(checkPatternValues(baseSD.getVersionedUrl(), source.getPath()+".pattern", source.getPattern(), base.getPattern(), true));
     } else {
       merged.setPattern(chooseProp(source.getPattern(), base.getPattern()));
     }
@@ -393,7 +394,7 @@ public class SnapshotGenerationPreProcessor {
       merged.setMaxValue(chooseProp(source.getMaxValue(), base.getMaxValue()));
     }
     if (source.hasMaxLength() && base.hasMaxLength()) {
-      merged.setMaxLengthElement(base.getMaxLength() < source.getMaxLength() ? source.getMaxLengthElement().copy() : base.getMaxLengthElement().copy());            
+      merged.setMaxLengthElement(source.getMaxLength() < base.getMaxLength() ? source.getMaxLengthElement().copy() : base.getMaxLengthElement().copy());            
     } else {
       merged.setMaxLengthElement(chooseProp(source.getMaxLengthElement(), base.getMaxLengthElement().copy()));
     }
@@ -566,8 +567,8 @@ public class SnapshotGenerationPreProcessor {
       Quantity q1 = (Quantity) v1;
       Quantity q2 = (Quantity) v2;
       if (q1.hasUnit() || q2.hasUnit()) {
-        if (Utilities.stringsEqual(q1.getUnit(), q2.getUnit())) {
-          throw new FHIRException(context.formatMessage(I18nConstants.SD_ADDITIONAL_BASE_INCOMPATIBLE_VALUES, vurl, path+"."+property+".unit", v1.fhirType(), v2.fhirType()));
+        if (!Utilities.stringsEqual(q1.getUnit(), q2.getUnit())) {
+          throw new FHIRException(context.formatMessage(I18nConstants.SD_ADDITIONAL_BASE_INCOMPATIBLE_VALUES, vurl, path+"."+property+".unit", q1.getUnit(), q2.getUnit()));
         }
       }
       return isLower(vurl, path, property+".value", q1.getValueElement(), q2.getValueElement());
@@ -597,21 +598,62 @@ public class SnapshotGenerationPreProcessor {
     for (Property p1 : v1.children()) {
       Property p2 = v2.getChildByName(p1.getName());
       if (p1.hasValues() && p2.hasValues()) {
-        if (p1.getValues().size() > 1 || p1.getValues().size() > 2) {
-          throw new Error("Not supported");          
+        // A repeating child merges as a union: every value in a pattern has to be present
+        // in the instance, so satisfying both bases means satisfying both lists. Only a
+        // single-valued child has to be reconciled value by value.
+        if (p1.getMaxCardinality() == 1) {
+          replaceChild(merged, p1.getName(), Collections.singletonList((Base) checkPatternValues(
+              vurl, path+"."+p1.getName(), (DataType) p1.getValues().get(0), (DataType) p2.getValues().get(0), extras)));
+        } else {
+          List<Base> union = new ArrayList<>();
+          for (Base b : p1.getValues()) {
+            union.add(b);
+          }
+          for (Base b : p2.getValues()) {
+            if (!containsDeep(union, b)) {
+              union.add(b.copy());
+            }
+          }
+          replaceChild(merged, p1.getName(), union);
         }
-        merged.setProperty(p1.getName(), checkPatternValues(vurl, path+"."+p1.getName(), (DataType) p1.getValues().get(0), (DataType) p2.getValues().get(0), extras));
       } else if (p2.hasValues()) {
         if (!extras) {
           throw new FHIRException(context.formatMessage(I18nConstants.SD_ADDITIONAL_BASE_INCOMPATIBLE_VALUES, vurl, path+"."+p1.getName(), "null", v2.primitiveValue()));            
         }
-        if (p2.getValues().size() > 1) {
-          throw new Error("Not supported");
+        List<Base> copies = new ArrayList<>();
+        for (Base b : p2.getValues()) {
+          copies.add(b.copy());
         }
-        merged.setProperty(p1.getName(), p2.getValues().get(0).copy());
+        replaceChild(merged, p1.getName(), copies);
       }
     }
     return merged;
+  }
+
+  private boolean containsDeep(List<Base> list, Base value) {
+    for (Base b : list) {
+      if (b.equalsDeep(value)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * setProperty appends for a repeating child, and merged starts life as a copy of v1, so
+   * setting a merged child straight onto it would leave the copy's own value in place
+   * beside it. Clear what the copy brought over first.
+   */
+  private void replaceChild(Base merged, String name, List<Base> values) {
+    Property existing = merged.getChildByName(name);
+    if (existing != null && existing.hasValues()) {
+      for (Base b : new ArrayList<>(existing.getValues())) {
+        merged.removeChild(name, b);
+      }
+    }
+    for (Base b : values) {
+      merged.setProperty(name, b);
+    }
   }
 
 
