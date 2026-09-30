@@ -22,6 +22,7 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
+@Deprecated
 public class ResourceComparer {
 
   public static class MessageCounts {

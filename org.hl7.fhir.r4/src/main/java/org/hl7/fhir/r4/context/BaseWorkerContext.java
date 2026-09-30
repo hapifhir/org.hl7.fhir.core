@@ -592,7 +592,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private void setTerminologyOptions(ValidationOptions options, Parameters pIn) {
     if (options != null && options.hasLanguages()) {
-      pIn.addParameter("displayLanguage", options.getLanguages().toString());
+      pIn.addParameter("displayLanguage", options.getLanguages().toParameterValue());
     }
   }
 

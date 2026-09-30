@@ -162,8 +162,39 @@ public class TestingUtilities extends BaseTestingUtilities {
 		return true;
 	}
 
+	/**
+	 * The base64 comparison is a fallback for binary content, and must only be used when the
+	 * string really is base64. commons-codec decodes leniently: it skips every character outside
+	 * the base64 alphabet and stops at the first '=', so ordinary text "decodes" to the
+	 * alphanumeric prefix before its first '=' - and two messages that differ only after that
+	 * point would compare as equal. Anything that isn't canonical base64 decodes to nothing
+	 * here, which sameBytes() never treats as a match.
+	 */
 	private static byte[] unBase64(String text) {
-		return Base64.decodeBase64(text);
+		if (!isBase64(text)) {
+			return new byte[0];
+		}
+		byte[] bytes = Base64.decodeBase64(text);
+		// unused trailing bits are ignored by the decoder, so require the round trip as well
+		return Base64.encodeBase64String(bytes).equals(text) ? bytes : new byte[0];
+	}
+
+	private static boolean isBase64(String text) {
+		if (text == null || text.isEmpty() || text.length() % 4 != 0) {
+			return false;
+		}
+		int pad = 0;
+		for (int i = 0; i < text.length(); i++) {
+			char c = text.charAt(i);
+			if (c == '=') {
+				pad++;
+			} else if (pad > 0) {
+				return false;
+			} else if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '+' || c == '/')) {
+				return false;
+			}
+		}
+		return pad <= 2;
 	}
 
 	private static Node skipBlankText(Node node) {

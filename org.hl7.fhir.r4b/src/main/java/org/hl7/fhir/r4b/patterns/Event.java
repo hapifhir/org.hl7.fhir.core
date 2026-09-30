@@ -56,6 +56,7 @@ import org.hl7.fhir.r4b.model.UriType;
  * A pattern to be followed by resources that represent the performance of some
  * activity, possibly in accordance with a request or service definition.
  */
+@Deprecated
 public interface Event extends PatternBase {
 
   public enum EventStatus {

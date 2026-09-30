@@ -1,17 +1,45 @@
 package org.hl7.fhir.r5.utils;
 
 import org.hl7.fhir.r5.context.CanonicalResourceProxy;
+import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.ConstraintSeverity;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 
+/**
+ * Work arounds for problems in published packages that can't (practically) be fixed in the packages themselves.
+ * All the hacks live here, so that there's one place to look:
+ *
+ * - fixRegisteredResource(proxy, packageInfo): when a resource is registered from a package (before it is loaded)
+ * - fixLoadedResource(resource): when a resource is actually loaded from a package
+ * - fixBindingDescriptions(context, md): when a binding description is rendered
+ *
+ * The R6 equivalent is org.hl7.fhir.services.utilities.PackageHackerRN
+ *
+ * Known limitation (a bug, not yet fixed): these fixes are only applied to resources that are
+ * registered and loaded through the package path (registerResourceFromPackage / PackageResourceLoader).
+ * Resources loaded through SimpleWorkerContext.loadDefinitionItem - package entries without an id in
+ * the index, loose files and zips, and the definitions loaded by loadFromPackage for the core spec
+ * source - bypass them, and so do not get fixed.
+ */
 public class PackageHackerR5 {
 
-  public static void fixLoadedResource(CanonicalResourceProxy r, PackageInformation packageInfo) {
+  private static final String SIMPLE_QUANTITY = "http://hl7.org/fhir/StructureDefinition/SimpleQuantity";
+
+  public static void fixRegisteredResource(CanonicalResourceProxy r, PackageInformation packageInfo) {
    if ("http://terminology.hl7.org/CodeSystem/v2-0391|2.6".equals(r.getUrl())) {
      r.hack("http://terminology.hl7.org/CodeSystem/v2-0391-2.6", "2.6");
    }
@@ -131,6 +159,94 @@ public class PackageHackerR5 {
      assert false;
    }
    
+  }
+
+  /**
+   * Fixes content of a resource when it is loaded from a package (formerly R5Hacker)
+   */
+  public static CanonicalResource fixLoadedResource(CanonicalResource cr) {
+    if (cr instanceof StructureDefinition) {
+      StructureDefinition sd = (StructureDefinition) cr;
+      for (ElementDefinition ed : sd.getDifferential().getElement()) {
+        fixLoadedElement(ed);
+      }
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        fixLoadedElement(ed);
+        fixSimpleQuantity(ed);
+      }
+    }
+    return cr;
+  }
+
+  /**
+   * Snapshots generated before the constraints on the root of a datatype profile were merged into the
+   * element that references it (see TypeProfileRootMerger and the type-profile-constraints extension)
+   * are missing those constraints. We can't regenerate old snapshots at load - that's far too expensive -
+   * but the only datatype profile used in the core specifications is SimpleQuantity, and the only thing
+   * its root adds over Quantity is sqty-1. So we fix that case here, cheaply, for every package (IG
+   * snapshots built from the core definitions inherited the same gap), and mark the profile as fully
+   * merged. Anything else stays unmarked, which means the constraints are assumed to be not merged.
+   *
+   * Only elements with a single type, Quantity, with a single profile, SimpleQuantity, are fixed - that
+   * matches what the snapshot generator merges. Choice elements are left alone
+   */
+  private static void fixSimpleQuantity(ElementDefinition ed) {
+    if (ed.getType().size() != 1) {
+      return;
+    }
+    TypeRefComponent t = ed.getType().get(0);
+    if (!"Quantity".equals(t.getCode()) || t.getProfile().size() != 1) {
+      return;
+    }
+    CanonicalType ct = t.getProfile().get(0);
+    String url = ct.getValue();
+    if (url == null || !(url.equals(SIMPLE_QUANTITY) || url.startsWith(SIMPLE_QUANTITY+"|")) || ct.hasExtension(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS)) {
+      return;
+    }
+    boolean found = false;
+    for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+      found = found || "sqty-1".equals(inv.getKey());
+    }
+    if (!found) {
+      ElementDefinitionConstraintComponent inv = ed.addConstraint();
+      inv.setKey("sqty-1");
+      inv.setSeverity(ConstraintSeverity.ERROR);
+      inv.setHuman("The comparator is not used on a SimpleQuantity");
+      inv.setExpression("comparator.empty()");
+      inv.setSource(SIMPLE_QUANTITY);
+    }
+    ct.addExtension(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS, new CodeType("full"));
+  }
+
+  private static void fixLoadedElement(ElementDefinition ed) {
+    if (ed.hasDefinition() && ed.getDefinition() != null) {
+      ed.setDefinition(ed.getDefinition().replace("http://hl7.org/fhir/5.0.0-snapshot3/", "http://hl7.org/fhir/R5/"));
+    }
+    if (ed.hasBinding() && ed.getBinding().hasExtension(ExtensionDefinitions.EXT_BINDING_DEFINITION)) {
+      Extension ext = ed.getBinding().getExtensionByUrl(ExtensionDefinitions.EXT_BINDING_DEFINITION);
+      ext.setValue(new MarkdownType(ext.getValue().primitiveValue()));
+    }
+  }
+
+  /**
+   * Fixes up broken binding descriptions from past FHIR publications when they are rendered (formerly PublicationHacker).
+   * All of them will be or are fixed in a later version, but fixing old versions is procedurally very difficult.
+   */
+  public static MarkdownType fixBindingDescriptions(IWorkerContext context, MarkdownType md) {
+    MarkdownType ret = null;
+
+    // ServiceRequest.code
+    if (md.getValue().contains("LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred]")) {
+      ret = md.copy();
+      ret.setValue(ret.getValue().replace("LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred]", "LOINC is [preferred]("+Utilities.pathURL(VersionUtilities.getSpecUrl(context.getVersion()), "terminologies.html#preferred)")));
+    }
+    if (md.getValue().contains("[here](valueset-diagnostic-requests.html)")) {
+      if (ret == null) {
+        ret = md.copy();
+      }
+      ret.setValue(ret.getValue().replace("[here](valueset-diagnostic-requests.html)", "here"));
+    }
+    return ret == null ? md : ret;
   }
 
 }

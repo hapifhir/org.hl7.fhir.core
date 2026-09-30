@@ -29,6 +29,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
  */
 
 
+@Deprecated
 public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public static abstract class CanonicalResourceProxy {

@@ -191,6 +191,11 @@ public abstract class ResourceWrapper {
     return child == null ? null : child.primitiveValue();
   }
 
+  public String primitiveValueMNMulti(String... names) {
+    ResourceWrapper child = childMNMulti(names);
+    return child == null ? null : child.primitiveValue();
+  }
+
   public String firstPrimitiveValue(String name) {
     ResourceWrapper child = firstChild(name);
     return child == null ? null : child.primitiveValue();
@@ -279,7 +284,7 @@ public abstract class ResourceWrapper {
     return res;
   }
 
-  /** 
+  /**
    * For when an item has been renamed - find by any of the names
    * @param names
    * @return
@@ -301,6 +306,26 @@ public abstract class ResourceWrapper {
       }
     }
     return res;
+  }
+
+  /**
+   * For when an item has been renamed - find by any of the names
+   *
+   * just return the first match
+   * @param names
+   * @return
+   */
+  public ResourceWrapper childMNMulti(String... names) {
+    loadChildren();
+
+    for (ResourceWrapper e : children) {
+      for (String name : names) {
+        if (name.equals(e.name()) || (name+"[x]").equals(e.name())) {
+          return e;
+        }
+      }
+    }
+    return null;
   }
 
   public boolean has(String name) {

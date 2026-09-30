@@ -151,7 +151,7 @@ public class NarrativeGenerationTests {
 
   public static final String WINDOWS = "WINDOWS";
 
-  private static final String HEADER = "<html><head>"+
+  private static final String HEADER = "<html lang=\"en\"><head>"+
      "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/fhir.css\"/>"+
      "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/dist/css/bootstrap.css\"/>"+
      "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/assets/css/bootstrap-fhir.css\"/>"+

@@ -791,6 +791,9 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_SINGLE_JSON_OBJECTS = "STRUC_DEF_SINGLE_JSON_OBJECTS";
   public static final String STRUC_DEF_SLIC = "STRUC_DEF_SLIC";
   public static final String STRUC_DEF_SLICE = "STRUC_DEF_SLICE";
+  public static final String STRUC_DEF_SLICING_NOTE = "STRUC_DEF_SLICING_NOTE";
+  public static final String STRUC_DEF_IMPLIED_SLICES_NOT_SHOWN = "STRUC_DEF_IMPLIED_SLICES_NOT_SHOWN";
+  public static final String STRUC_DEF_SLICER_RULES_APPLY = "STRUC_DEF_SLICER_RULES_APPLY";
   public static final String STRUC_DEF_SLICES = "STRUC_DEF_SLICES";
   public static final String STRUC_DEF_SLICE_FOR = "STRUC_DEF_SLICE_FOR";
   public static final String STRUC_DEF_SLICE_NAME = "STRUC_DEF_SLICE_NAME";
@@ -808,6 +811,9 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_TERM_BINDS = "STRUC_DEF_TERM_BINDS";
   public static final String STRUC_DEF_THEN_TYPE = "STRUC_DEF_THEN_TYPE";
   public static final String STRUC_DEF_THIS_REFERS = "STRUC_DEF_THIS_REFERS";
+  public static final String STRUC_DEF_TP_NONE = "STRUC_DEF_TP_NONE";
+  public static final String STRUC_DEF_TP_PARTIAL = "STRUC_DEF_TP_PARTIAL";
+  public static final String STRUC_DEF_TP_UNMARKED = "STRUC_DEF_TP_UNMARKED";
   public static final String STRUC_DEF_TYPE_BOUND = "STRUC_DEF_TYPE_BOUND";
   public static final String STRUC_DEF_TYPE_SET = "STRUC_DEF_TYPE_SET";
   public static final String STRUC_DEF_TYPE_SPEC = "STRUC_DEF_TYPE_SPEC";

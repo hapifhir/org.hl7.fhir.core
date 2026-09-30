@@ -102,6 +102,7 @@ import org.slf4j.event.Level;
 
 
 @Slf4j
+@Deprecated
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
 
   public static class PackageResourceLoader extends CanonicalResourceProxy {

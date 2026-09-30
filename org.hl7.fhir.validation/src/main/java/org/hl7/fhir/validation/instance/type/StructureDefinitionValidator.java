@@ -16,6 +16,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.services.conformance.profile.TypeProfileRootMerger;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
@@ -216,11 +217,8 @@ public class StructureDefinitionValidator extends BaseValidator {
         for (Element snapshotE : snapshots) {
           ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("version", false), src.getNamedChildValue("type", false), base, experimental) && ok;
         }
-        if (!(differentials.isEmpty()  && snapshots.isEmpty())) {
-          for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
-            NodeStack snStack = stack.push(snapshots.isEmpty() ? differentials.get(0) : snapshots.get(0), -1, null, null);
-            ok = validateSDElement(errors, ed, sd.getSnapshot().getElementList(), snStack) && ok;
-          }
+        if (!(differentials.isEmpty() && snapshots.isEmpty())) {
+          ok = checkPossibleValues(errors, sd, stack.push(snapshots.isEmpty() ? differentials.get(0) : snapshots.get(0), -1, null, null)) && ok;
         }
 
         // obligation profile support
@@ -662,6 +660,9 @@ public class StructureDefinitionValidator extends BaseValidator {
       ok = rule(errors, "2023-01-17", IssueType.INVALID, stack.getLiteralPath(), path.contains(".") || !element.hasChild("slicing", false), I18nConstants.SD_NO_SLICING_ON_ROOT, path) && ok;
     }
     ok = rule(errors, "2023-05-22", IssueType.NOTFOUND, stack.getLiteralPath(), snapshot || !constraint || !element.hasChild("meaningWhenMissing", false) || meaningWhenMissingAllowed(element), I18nConstants.SD_ELEMENT_NOT_IN_CONSTRAINT, "meaningWhenMissing", path) && ok;
+    if (!snapshot && path != null && !path.contains(".")) {
+      ok = validateRootElement(errors, element, stack, path, logical, constraint, "Extension".equals(typeName), base) && ok;
+    }
 
     List<Element> types = element.getChildrenByName("type");
     Set<String> typeCodes = new HashSet<>();
@@ -886,50 +887,109 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
 
-  private boolean validateSDElement(List<ValidationMessage> errors, ElementDefinition element, List<ElementDefinition> elements, NodeStack stack) {
+  /**
+   * Check for value ranges and slice cardinalities that no instance can meet. The rules on a slicer apply to all its
+   * slices, but they are not repeated in the slices, so an element in a slice is checked together with the matching
+   * elements on the slicer(s)
+   */
+  private boolean checkPossibleValues(List<ValidationMessage> errors, StructureDefinition sd, NodeStack stack) {
     boolean ok = true;
-    
-    if (element.hasSlicing()) {
-
-      boolean ms = element.getMustSupport();
-      List<ElementDefinition> slices = getSlices(element, elements);
-      for (ElementDefinition slice : slices) {
-        boolean mss = slice.getMustSupport();
-        warning(errors, "2024-11-06", IssueType.INVALID, stack, !ms || mss, I18nConstants.SD_PATH_SLICE_INCONSISTENT_MS, slice.getSliceName(), element.getPath());
-        for (TypeRefComponent tr : slice.getTypeList()) {
-          if (!hasTypeByCode(tr.getWorkingCode(), element)) {            
-            warning(errors, "2024-11-06", IssueType.INVALID, stack, !ms || mss, I18nConstants.SD_PATH_SLICE_INCONSISTENT_TYPE, slice.getSliceName(), element.getPath(), tr.getWorkingCode(), element.typeSummary());
+    Map<String, ElementDefinition> byId = new HashMap<>();
+    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
+      if (ed.hasId()) {
+        byId.put(ed.getId(), ed);
+      }
+    }
+    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
+      if (!ed.hasId()) {
+        continue;
+      }
+      // value range: the highest minimum and the lowest maximum across the element and its slicer equivalents
+      List<ElementDefinition> rules = new ArrayList<>();
+      rules.add(ed);
+      for (String id : slicerEquivalents(ed.getId())) {
+        if (byId.containsKey(id)) {
+          rules.add(byId.get(id));
+        }
+      }
+      ElementDefinition lower = null;
+      ElementDefinition upper = null;
+      for (ElementDefinition r : rules) {
+        if (r.hasMinValue() && (lower == null || isGreater(r.getMinValue(), lower.getMinValue()))) {
+          lower = r;
+        }
+        if (r.hasMaxValue() && (upper == null || isGreater(upper.getMaxValue(), r.getMaxValue()))) {
+          upper = r;
+        }
+      }
+      if (lower != null && upper != null) {
+        ok = rule(errors, "2026-09-29", IssueType.BUSINESSRULE, stack, !isGreater(lower.getMinValue(), upper.getMaxValue()), I18nConstants.SD_VALUE_RANGE_EMPTY,
+          ed.getId(), lower.getMinValue().primitiveValue(), lower.getId(), upper.getMaxValue().primitiveValue(), upper.getId()) && ok;
+      }
+      // cardinality: the highest min and the lowest max across the element and its slicer equivalents. The cardinality
+      // of a slice itself is about that slice, and the cardinality of the slicer is about all the slices together (see
+      // below), so for a slice, only its own cardinality counts
+      ElementDefinition minFrom = ed;
+      ElementDefinition maxFrom = ed;
+      if (!tail(ed.getId()).contains(":")) {
+        for (ElementDefinition r : rules) {
+          if (r.hasMin() && r.getMin() > minFrom.getMin()) {
+            minFrom = r;
+          }
+          if (r.hasMax() && !"*".equals(r.getMax()) && ("*".equals(maxFrom.getMax()) || !maxFrom.hasMax() || r.getMaxAsInt() < maxFrom.getMaxAsInt())) {
+            maxFrom = r;
           }
         }
-        // todo: other checks such as obligations, bindings
+      }
+      if (minFrom.hasMin() && maxFrom.hasMax() && !"*".equals(maxFrom.getMax())) {
+        ok = rule(errors, "2026-09-29", IssueType.BUSINESSRULE, stack, minFrom.getMin() <= maxFrom.getMaxAsInt(), I18nConstants.SD_CARDINALITY_EMPTY,
+          ed.getId(), minFrom.getMin(), minFrom.getId(), maxFrom.getMax(), maxFrom.getId()) && ok;
+      }
+      // slice cardinality: the slices together must fit within the slicer
+      if (ed.hasSlicing() && !"*".equals(ed.getMax()) && ed.hasMax()) {
+        int total = 0;
+        String prefix = ed.getId() + ":";
+        for (ElementDefinition t : sd.getSnapshot().getElementList()) {
+          if (t.hasId() && t.getId().startsWith(prefix) && !t.getId().substring(prefix.length()).contains(".") && !t.getId().substring(prefix.length()).contains("/")) {
+            total = total + t.getMin();
+          }
+        }
+        ok = rule(errors, "2026-09-29", IssueType.BUSINESSRULE, stack, total <= ed.getMaxAsInt(), I18nConstants.SD_SLICE_MIN_EXCEEDS_SLICER_MAX, ed.getId(), total, ed.getMax()) && ok;
       }
     }
     return ok;
   }
 
-  private boolean hasTypeByCode(String workingCode, ElementDefinition element) {
-    for (TypeRefComponent tr : element.getTypeList()) {
-      if (tr.getWorkingCode().equals(workingCode)) {
-        return true;
-      }
-    }
-    return false;
+  private String tail(String id) {
+    return id.contains(".") ? id.substring(id.lastIndexOf(".") + 1) : id;
   }
 
-  private List<ElementDefinition> getSlices(ElementDefinition element, List<ElementDefinition> elements) {
-    String path = element.getPath();
-    int index = elements.indexOf(element)+1;
-    List<ElementDefinition> result = new ArrayList<>();
-    while (index < elements.size()) {
-      String spath = elements.get(index).getPath();
-      if (spath.length() < path.length()) {
-        break; // end of that element
-      } else if (spath.equals(path)) {
-        result.add(elements.get(index));
+  private boolean isGreater(DataType v1, DataType v2) {
+    Integer c = TypeProfileRootMerger.compareValues(v1, v2);
+    return c != null && c > 0;
+  }
+
+  /**
+   * the ids of the elements on the slicer(s) that correspond to this element in a slice (e.g. for
+   * Observation.component:a.value[x], Observation.component.value[x])
+   */
+  private Set<String> slicerEquivalents(String id) {
+    Set<String> res = new HashSet<>();
+    if (id.contains(":")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] parts = id.split("\\.");
+      for (int i = 0; i < parts.length; i++) {
+        if (parts[i].contains(":")) {
+          String[] np = parts.clone();
+          np[i] = np[i].substring(0, np[i].indexOf(":"));
+          String nid = String.join(".", np);
+          res.add(nid);
+          res.addAll(slicerEquivalents(nid));
+        }
       }
-      index++;
-    } 
-    return result;
+    }
+    return res;
   }
 
   private boolean prohibited(List<ValidationMessage> errors, NodeStack stack, String mode, Element element, String... names) {
@@ -1334,6 +1394,54 @@ public class StructureDefinitionValidator extends BaseValidator {
   private boolean isAbstractType(String t) {
     StructureDefinition sd = context.fetchTypeDefinition(t);
     return sd != null && sd.getAbstract();
+  }
+
+  /**
+   * The root element of a structure describes the type (or the resource), not its use in some context, so
+   * some properties of ElementDefinition make no sense on it. This is checked on the differential, since
+   * that's what authors write (and snapshot generation drops most of these from a profile anyway)
+   */
+  private boolean validateRootElement(List<ValidationMessage> errors, Element element, NodeStack stack, String path, boolean logical, boolean constraint, boolean extension, StructureDefinition base) {
+    boolean ok = true;
+    // never possible: there's nothing before the root for a contentReference to point to, and whether
+    // an element is allowed to appear can't depend on its own content
+    ok = validateRootProhibited(errors, element, stack, path, "contentReference") && ok;
+    ok = validateRootProhibited(errors, element, stack, path, "condition") && ok;
+    if (!logical) {
+      // these are about the meaning of an element in context, which a type doesn't have (except in a logical model).
+      // meaningWhenMissing is allowed on an extension (what it means when the extension is absent), and in
+      // a profile it's already reported by SD_ELEMENT_NOT_IN_CONSTRAINT
+      if (!extension && !constraint) {
+        ok = validateRootProhibited(errors, element, stack, path, "meaningWhenMissing") && ok;
+      }
+      ok = validateRootProhibited(errors, element, stack, path, "orderMeaning") && ok;
+    }
+    // isModifier, isModifierReason and isSummary can only be defined by a specialization; a profile
+    // can't change them from the base. Extensions are the exception: a modifier extension says so on its root
+    if (constraint && !extension && base != null && base.hasSnapshot() && !base.getSnapshot().getElementList().isEmpty()) {
+      ElementDefinition baseRoot = base.getSnapshot().getElementList().get(0);
+      ok = validateRootUnchanged(errors, element, stack, path, "isModifier", baseRoot.hasIsModifierElement() ? baseRoot.getIsModifierElement().primitiveValue() : null, "false") && ok;
+      ok = validateRootUnchanged(errors, element, stack, path, "isModifierReason", baseRoot.hasIsModifierReasonElement() ? baseRoot.getIsModifierReasonElement().primitiveValue() : null, null) && ok;
+      ok = validateRootUnchanged(errors, element, stack, path, "isSummary", baseRoot.hasIsSummaryElement() ? baseRoot.getIsSummaryElement().primitiveValue() : null, "false") && ok;
+    }
+    return ok;
+  }
+
+  private boolean validateRootProhibited(List<ValidationMessage> errors, Element element, NodeStack stack, String path, String name) {
+    return rule(errors, "2026-09-25", IssueType.INVALID, stack.getLiteralPath(), !element.hasChild(name, false), I18nConstants.SD_ROOT_PROHIBITED, name, path);
+  }
+
+  /**
+   * @param baseValue the value on the root of the base structure, or null if it has none
+   * @param defaultValue what no value means (for the booleans, false - so isModifier = false in a profile is not a change)
+   */
+  private boolean validateRootUnchanged(List<ValidationMessage> errors, Element element, NodeStack stack, String path, String name, String baseValue, String defaultValue) {
+    if (!element.hasChild(name, false)) {
+      return true;
+    }
+    String value = element.getNamedChildValue(name, false);
+    String effectiveBase = baseValue != null ? baseValue : defaultValue;
+    return rule(errors, "2026-09-25", IssueType.INVALID, stack.getLiteralPath(), value != null && value.equals(effectiveBase), I18nConstants.SD_ROOT_CHANGED, name, path, value, baseValue != null ? baseValue : "(none)");
   }
 
   private boolean meaningWhenMissingAllowed(Element element) {

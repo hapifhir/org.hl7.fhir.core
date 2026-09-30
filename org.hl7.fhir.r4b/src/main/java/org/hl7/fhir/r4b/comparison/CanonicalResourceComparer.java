@@ -31,6 +31,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
+@Deprecated
 public abstract class CanonicalResourceComparer extends ResourceComparer {
 
   public abstract class CanonicalResourceComparison<T extends CanonicalResource> extends ResourceComparison {

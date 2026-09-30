@@ -40,6 +40,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
 
 @Slf4j
+@Deprecated
 public class ComparisonRenderer implements IHostApplicationServices {
 
   private IWorkerContext contextLeft;
@@ -150,7 +151,7 @@ public class ComparisonRenderer implements IHostApplicationServices {
       comp.getE().printStackTrace(pw);
       cnt = sw.toString();
     }
-    cnt = "<html><body><pre>" + cnt + "</pre></body></html>\r\n";
+    cnt = "<html lang=\"en\"><body><pre>" + cnt + "</pre></body></html>\r\n";
     FileUtilities.stringToFile(cnt, file(comp.getId() + ".html"));
   }
 

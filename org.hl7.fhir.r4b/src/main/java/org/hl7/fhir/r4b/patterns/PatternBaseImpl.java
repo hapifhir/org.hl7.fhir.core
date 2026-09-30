@@ -38,6 +38,7 @@ import org.hl7.fhir.r4b.model.Element;
 import org.hl7.fhir.r4b.model.Extension;
 import org.hl7.fhir.r4b.model.Resource;
 
+@Deprecated
 public class PatternBaseImpl implements PatternBase {
 
   private Base wrapped;
