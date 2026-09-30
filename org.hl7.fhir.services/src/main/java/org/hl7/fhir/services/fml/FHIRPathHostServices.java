@@ -31,12 +31,15 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     Variables vars = (Variables) appContext;
-    Base res = vars.get(VariableMode.INPUT, name);
+    Base res = vars.getLocal(VariableMode.INPUT, name);
     if (res == null)
-      res = vars.get(VariableMode.OUTPUT, name);
+      res = vars.getLocal(VariableMode.OUTPUT, name);
     List<Base> result = new ArrayList<Base>();
-    if (res != null)
+    if (res != null) {
       result.add(res);
+    } else if (vars.getConstants() != null) {
+      result.addAll(vars.getConstants().resolve(name));
+    }
     return result;
   }
 
