@@ -7,7 +7,7 @@ import org.hl7.fhir.r4b.model.StringType;
 import org.hl7.fhir.utilities.Utilities;
 
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class PublicationHacker {
 
   // this routine fixes up broken binding descriptions from past FHIR

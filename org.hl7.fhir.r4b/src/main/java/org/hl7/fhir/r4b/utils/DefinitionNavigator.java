@@ -42,7 +42,7 @@ import org.hl7.fhir.r4b.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class DefinitionNavigator {
 
   private IWorkerContext context;

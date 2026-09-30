@@ -34,7 +34,7 @@ package org.hl7.fhir.r4b.openapi;
 import com.google.gson.JsonObject;
 
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ExternalDocsWriter extends BaseWriter {
 
   public ExternalDocsWriter(JsonObject object) {

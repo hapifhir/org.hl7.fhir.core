@@ -12,7 +12,7 @@ import org.hl7.fhir.r4b.renderers.utils.Resolver.ResourceContext;
  * See R5 rendering framework to render R4B resources
  * 
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class RendererFactory {
 
   public static ResourceRenderer factory(String resourceName, RenderingContext context) {

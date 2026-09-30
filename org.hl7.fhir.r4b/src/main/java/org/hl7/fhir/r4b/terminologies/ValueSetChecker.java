@@ -36,7 +36,7 @@ import org.hl7.fhir.r4b.utils.EOperationOutcome;
 
 
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public interface ValueSetChecker {
 
   Boolean codeInValueSet(String system, String code, List<String> warnings)
