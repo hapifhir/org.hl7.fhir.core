@@ -776,7 +776,7 @@ public class StructureMapUtilities {
       b.append(" as ");
       b.append(rt.getVariable());
     }
-    for (Enumeration<StructureMapTargetListMode> lm : rt.getListMode()) {
+    for (org.hl7.fhir.r5.model.Enumeration<StructureMapTargetListMode> lm : rt.getListMode()) {
       b.append(" ");
       b.append(lm.getValue().toCode());
       if (lm.getValue() == StructureMapTargetListMode.SHARE) {
@@ -2235,7 +2235,19 @@ public class StructureMapUtilities {
       v = runTransform(rulePath, context, map, group, tgt, vars, dest, tgt.getElement(), srcVar, atRoot);
       if (v != null && dest != null) {
         try {
-          v = dest.setProperty(tgt.getElement().hashCode(), tgt.getElement(), v); // reset v because some implementations may have to rewrite v when setting the value
+          String propertyName = tgt.getElement();
+          if (!(dest instanceof Element)) {
+            org.hl7.fhir.r5.model.Property targetProperty = dest.getNamedProperty(propertyName.hashCode(), propertyName, false);
+            if (targetProperty != null && targetProperty.getName().endsWith("[x]")) {
+              String baseName = targetProperty.getName().replace("[x]", "");
+              if (!propertyName.equals(baseName) && !propertyName.equals(targetProperty.getName())
+                  && !propertyName.equals(baseName + Utilities.capitalize(v.fhirType()))) {
+                throw new FHIRException("Cannot assign " + v.fhirType() + " to choice property " + propertyName);
+              }
+              propertyName = baseName;
+            }
+          }
+          v = dest.setProperty(propertyName.hashCode(), propertyName, v); // reset v because some implementations may have to rewrite v when setting the value
         } catch (Exception e) {
           throw new FHIRException("Error setting "+tgt.getElement()+" on "+dest.fhirType()+" for rule "+rulePath+" to value "+v.toString()+": "+e.getMessage(), e);
         }

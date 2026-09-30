@@ -1553,7 +1553,23 @@ public class StructureMapTools {
       v = runTransform(rulePath, context, map, group, tgt, vars, dest, tgt.getElementName(), srcVar, atRoot);
       if (v != null && dest != null) {
         try {
-          v = dest.setProperty(tgt.getElementName(), v); // reset v because some implementations may have to rewrite v when setting the value
+          String propertyName = tgt.getElementName();
+          if (!(dest instanceof Element)) {
+            org.hl7.fhir.model.Property targetProperty = dest.getNamedProperty(propertyName, false);
+            if (targetProperty == null) {
+              targetProperty = dest.getNamedProperty(propertyName + "[x]", false);
+            }
+            if (targetProperty != null && targetProperty.getName().endsWith("[x]")) {
+              String baseName = targetProperty.getName().replace("[x]", "");
+              if (!propertyName.equals(baseName) && !propertyName.equals(targetProperty.getName())
+                  && !propertyName.equals(baseName + Utilities.capitalize(v.fhirType()))) {
+                throw new FHIRException("Cannot assign " + v.fhirType() + " to choice property " + propertyName);
+              }
+              // R6 object-model setters use the definition's [x] name.
+              propertyName = targetProperty.getName();
+            }
+          }
+          v = dest.setProperty(propertyName, v); // reset v because some implementations may have to rewrite v when setting the value
         } catch (Exception e) {
           throw new FHIRException("Error setting "+tgt.getElementName()+" on "+dest.fhirType()+" for rule "+rulePath+" to value "+v.toString()+": "+e.getMessage(), e);
         }

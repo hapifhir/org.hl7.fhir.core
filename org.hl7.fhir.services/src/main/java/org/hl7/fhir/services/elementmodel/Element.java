@@ -467,9 +467,22 @@ public class Element extends Base implements NamedItem {
       return this;
     }
     
+    List<Property> childProperties = property.getChildProperties(this.name, type);
+    Property propertyForValue = null;
+    for (Property p : childProperties) {
+      if (p.getName().equals(name) || p.getName().equals(name + "[x]")
+          || (p.getName().endsWith("[x]") && p.getName().replace("[x]", Utilities.capitalize(value.fhirType())).equals(name))) {
+        propertyForValue = p;
+        break;
+      }
+    }
+    if (propertyForValue == null) {
+      throw new FHIRException("Cannot set property " + name + " on " + this.name + " to a " + value.fhirType());
+    }
+
     if (!value.isPrimitive() && !(value instanceof Element)) {
       if (isDataType(value)) 
-        value = convertToElement(property.getChildSimpleName(name, name), value); // getChild doesn't handle choice elements like Observation.value[x]
+        value = convertToElement(propertyForValue, value);
       else
         throw new FHIRException("Cannot set property "+name+" on "+this.name+" - value is not a primitive type ("+value.fhirType()+") or an ElementModel type");
     }
@@ -496,7 +509,7 @@ public class Element extends Base implements NamedItem {
 
     int i = 0;
     if (childForValue == null) {
-      for (Property p : property.getChildProperties(this.name, type)) {
+      for (Property p : childProperties) {
         int t = -1;
         for (int c =0; c < children.size(); c++) {
           Element e = children.get(c);
@@ -505,13 +518,8 @@ public class Element extends Base implements NamedItem {
         }
         if (t >= i)
           i = t+1;
-        if (p.getName().equals(name) || p.getName().equals(name+"[x]")) {
+        if (p == propertyForValue) {
           Element ne = new Element(name, p).setFormat(format);
-          children.add(i, ne);
-          childForValue = ne;
-          break;
-        } else if (p.getName().endsWith("[x]") && name.startsWith(p.getName().replace("[x]", ""))) {
-          Element ne = new Element(p.getName(), p).setFormat(format);
           children.add(i, ne);
           childForValue = ne;
           break;
@@ -523,7 +531,7 @@ public class Element extends Base implements NamedItem {
       throw new Error("Cannot set property "+name+" on "+this.name);
     else if (value.isPrimitive()) {
       if (childForValue.property.getName().endsWith("[x]"))
-        childForValue.name = childForValue.name.replace("[x]", "")+Utilities.capitalize(value.fhirType());
+        childForValue.name = childForValue.property.getName().replace("[x]", Utilities.capitalize(value.fhirType()));
       if (!childForValue.isXhtml()) {
         childForValue.setValue(value.primitiveValue());
       } else {
@@ -538,7 +546,7 @@ public class Element extends Base implements NamedItem {
       Element ve = (Element) value;
       childForValue.type = ve.getType();
       if (childForValue.property.getName().endsWith("[x]"))
-        childForValue.name = name+Utilities.capitalize(childForValue.type);
+        childForValue.name = childForValue.property.getName().replace("[x]", Utilities.capitalize(childForValue.type));
       else if (value.isResource()) {
         if (childForValue.elementProperty == null)
           childForValue.elementProperty = childForValue.property;
