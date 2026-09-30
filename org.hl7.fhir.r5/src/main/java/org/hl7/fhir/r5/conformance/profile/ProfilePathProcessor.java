@@ -2131,8 +2131,9 @@ public class ProfilePathProcessor {
       missingTypes.removeAll(coveredTypes);
       addImpliedTypeSlices(e, impliedSliceBase, currentBasePath, missingTypes);
     }
-    // ok, done with that - next in the base list
-    cursors.baseCursor = baseSlices.get(baseSlices.size() - 1).getEnd() + 1;
+    // ok, done with that - next in the base list. A base snapshot from an older generator can have a type slicer with
+    // no slices under it (no implied type slices), and then the slicer's own scope is what has been dealt with (#2662)
+    cursors.baseCursor = baseSlices.isEmpty() ? newBaseLimit + 1 : baseSlices.get(baseSlices.size() - 1).getEnd() + 1;
     cursors.diffCursor = newDiffLimit + 1;
     //throw new Error("not done yet - slicing / types @ "+cpath);
   }
