@@ -1589,7 +1589,6 @@ public class StructureMapTools {
     }
     if (tgt.hasVariable() && v != null)
       vars.add(VariableMode.OUTPUT, tgt.getVariable(), v);
-    debuggerPop(vars);
   }
 
   private Base makeTargetProperty(Base dest, String name) {
