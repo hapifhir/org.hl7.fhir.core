@@ -17,7 +17,7 @@ public class ValidationEngineOptionsConvertor {
 
     // FHIR Version
     if (options.fhirVersion != null) {
-      validationEngineParameters.setSv(VersionUtilities.getCurrentPackageVersion(options.fhirVersion));
+      validationEngineParameters.setStatedFHIRVersion(VersionUtilities.getCurrentPackageVersion(options.fhirVersion));
     }
 
     // Boolean flags
@@ -80,10 +80,10 @@ public class ValidationEngineOptionsConvertor {
          if (options.fhirVersion != null && !VersionUtilities.getCurrentPackageVersion(options.fhirVersion).equals(fhirVersionForCorePackage)) {
            throw new IllegalArgumentException("Parameters are inconsistent: version specified by -version is '"+options.fhirVersion+"' but -ig parameter '"+ig+"' implies '"+fhirVersionForCorePackage+"'");
          }
-         if (validationEngineParameters.getSv() != null && !fhirVersionForCorePackage.equals(validationEngineParameters.getSv())) {
-           throw new IllegalArgumentException("Parameters are inconsistent: another IG has set the version to '"+ validationEngineParameters.getSv()+"' but -ig parameter '"+ig+"' implies '"+fhirVersionForCorePackage+"'");
+         if (validationEngineParameters.getStatedFHIRVersion() != null && !fhirVersionForCorePackage.equals(validationEngineParameters.getStatedFHIRVersion())) {
+           throw new IllegalArgumentException("Parameters are inconsistent: another IG has set the version to '"+ validationEngineParameters.getStatedFHIRVersion()+"' but -ig parameter '"+ig+"' implies '"+fhirVersionForCorePackage+"'");
          }
-         validationEngineParameters.setSv(fhirVersionForCorePackage);
+         validationEngineParameters.setStatedFHIRVersion(fhirVersionForCorePackage);
         }
 
       }
