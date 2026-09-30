@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -211,11 +212,18 @@ public class StructureDefinitionValidator extends BaseValidator {
         List<Element> snapshots = src.getChildrenByName("snapshot");
         boolean logical = "logical".equals(src.getNamedChildValue("kind", false));
         boolean constraint = "constraint".equals(src.getNamedChildValue("derivation", false));
+        Map<String, Element> diffById = new HashMap<>();
         for (Element differential : differentials) {
-          ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("version", false), src.getNamedChildValue("type", false), base, experimental) && ok;
+          ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("version", false), src.getNamedChildValue("type", false), base, experimental, null) && ok;
+          for (Element de : differential.getChildrenByName("element")) {
+            String id = de.getNamedChildValue("id", false);
+            if (id != null) {
+              diffById.put(id, de);
+            }
+          }
         }
         for (Element snapshotE : snapshots) {
-          ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("version", false), src.getNamedChildValue("type", false), base, experimental) && ok;
+          ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type", false), src.getNamedChildValue("url", false), src.getNamedChildValue("version", false), src.getNamedChildValue("type", false), base, experimental, diffById) && ok;
         }
         if (!(differentials.isEmpty() && snapshots.isEmpty())) {
           ok = checkPossibleValues(errors, sd, stack.push(snapshots.isEmpty() ? differentials.get(0) : snapshots.get(0), -1, null, null)) && ok;
@@ -639,19 +647,19 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
   private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, String rootPath, 
-      String profileUrl, String profileVersion, String profileType, StructureDefinition base, boolean experimental) {
+      String profileUrl, String profileVersion, String profileType, StructureDefinition base, boolean experimental, Map<String, Element> diffById) {
     Map<String, SourcedInvariant> invariantMap = new HashMap<>();
     boolean ok = true;
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;
     for (Element element : elements) {
-      ok = validateElementDefinition(errors, elements, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint, invariantMap, rootPath, profileUrl, profileVersion, profileType, base, experimental) && ok;
+      ok = validateElementDefinition(errors, elements, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint, invariantMap, rootPath, profileUrl, profileVersion, profileType, base, experimental, diffById) && ok;
       cc++;
     }    
     return ok;
   }
 
-  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, SourcedInvariant> invariantMap, String rootPath, String profileUrl, String profileVersion, String profileType, StructureDefinition base, boolean experimental) {
+  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, SourcedInvariant> invariantMap, String rootPath, String profileUrl, String profileVersion, String profileType, StructureDefinition base, boolean experimental, Map<String, Element> diffById) {
     boolean ok = true;
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path", false);
@@ -668,6 +676,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     Set<String> typeCodes = new HashSet<>();
     Set<String> characteristics = new HashSet<>();
     boolean characteristicsValid = false;
+    Map<String, Set<String>> typeCharacteristics = new LinkedHashMap<>();
     if (!path.contains(".")) {
       typeCodes.add(path); // root is type
       addCharacteristics(characteristics, path);
@@ -779,6 +788,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             addCharacteristics(tcharacteristics, tc);
           }
           characteristics.addAll(tcharacteristics);
+          typeCharacteristics.put(tc, tcharacteristics);
           if (type.hasChildren("targetProfile")) {
             ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), tcharacteristics.contains("has-target") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "targetProfile", tc) && ok;
           }
@@ -796,36 +806,52 @@ public class StructureDefinitionValidator extends BaseValidator {
         hint(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), hasSnapshot || "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_DIFF, path);        
       }
     }
+    // in a type slice, the constraints that only make sense for some types might have been inherited from the unsliced element
+    // (older snapshot generators copied them into every type slice, including the implied ones). They only apply to the types
+    // that can have them, so on a type slice they're only an error when the differential states them on the slice
+    boolean typeSlice = snapshot && diffById != null && element.hasChild("sliceName", false) && path != null && path.endsWith("[x]");
+    Element diffElement = typeSlice ? diffById.get(element.getNamedChildValue("id", false)) : null;
     if (element.hasChild("binding", false)) {
-      if (!typeCodes.isEmpty() && characteristicsValid) {
+      boolean checkBinding = statedOnSlice(typeSlice, diffElement, "binding", false);
+      if (!typeCodes.isEmpty() && characteristicsValid && checkBinding) {
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("can-bind") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Binding", typeCodes) && ok;
       }
       Element binding = element.getNamedChild("binding", false);
-      ok = validateBinding(errors, binding, stack.push(binding, -1, null, null), typeCodes, snapshot, path, experimental, sd) && ok;
+      ok = validateBinding(errors, binding, stack.push(binding, -1, null, null), typeCodes, snapshot, path, experimental, sd, checkBinding) && ok;
     } else {
       // this is a good idea but there's plenty of cases where the rule isn't met; maybe one day it's worth investing the time to exclude these cases and bring this rule back
       //      String bt = boundType(typeCodes);
       //      hint(errors, UNKNOWN_DATE_TIME, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bt == null, I18nConstants.SD_ED_SHOULD_BIND, element.getNamedChildValue("path", false), bt);              
     }
     if (!typeCodes.isEmpty() && characteristicsValid) {
-      if (element.hasChild("maxLength", false)) {
+      if (element.hasChild("maxLength", false) && statedOnSlice(typeSlice, diffElement, "maxLength", false)) {
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-length") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MaxLength", typeCodes) && ok;      
       }
-      if (element.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH)) {
+      if (element.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH) && statedOnSlice(typeSlice, diffElement, ExtensionDefinitions.EXT_MIN_LENGTH, true)) {
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-length") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MinLength Extension", typeCodes) && ok;      
       }
-      if (element.hasChild("minValue", false)) {
+      if (element.hasChild("minValue", false) && statedOnSlice(typeSlice, diffElement, "minValue", false)) {
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-range") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MinValue", typeCodes) && ok;      
       }
-      if (element.hasChild("maxValue", false)) {
+      if (element.hasChild("maxValue", false) && statedOnSlice(typeSlice, diffElement, "maxValue", false)) {
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-range") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MaxValue", typeCodes) && ok;      
       }
-      if (element.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS)) {
+      if (element.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS) && statedOnSlice(typeSlice, diffElement, ExtensionDefinitions.EXT_MAX_DECIMALS, true)) {
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("is-continuous") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Max Decimal Places Extension", typeCodes) && ok;      
       }
-      if (element.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE)) {
+      if (element.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE) && statedOnSlice(typeSlice, diffElement, ExtensionDefinitions.EXT_MAX_SIZE, true)) {
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-size") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Max Size", typeCodes) && ok;      
       }
+    }
+    if (snapshot && element.hasChild("slicing", false) && isTypeSlicing(element.getNamedChild("slicing", false)) && typeCharacteristics.size() > 1) {
+      // the constraints on a type slicer apply to all its slices, but the ones that only make sense for some types don't do anything for the others
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("binding", false), "can-bind", "Binding");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxLength", false), "has-length", "MaxLength");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH), "has-length", "MinLength Extension");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("minValue", false), "has-range", "MinValue");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxValue", false), "has-range", "MaxValue");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS), "is-continuous", "Max Decimal Places Extension");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE), "has-size", "Max Size");
     }
     // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
     if (snapshot && (element.getIdBase() != null) && (element.getIdBase().contains("."))) {
@@ -1452,89 +1478,42 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
   private boolean addCharacteristics(Set<String> set, String tc) {
-    switch (tc) {
-    case "boolean" : return addCharacteristicsForType(set);
-    case "integer" : return addCharacteristicsForType(set, "has-range", "has-length");
-    case "integer64" : return addCharacteristicsForType(set, "has-range", "has-length");
-    case "decimal" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
-    case "base64Binary" : return addCharacteristicsForType(set, "has-size");
-    case "instant" : return addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
-    case "string" : return addCharacteristicsForType(set, "has-length", "do-translations", "can-bind");
-    case "uri" : return addCharacteristicsForType(set, "has-length", "can-bind");
-    case "date" :return  addCharacteristicsForType(set, "has-range", "has-length");
-    case "dateTime" : return addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
-    case "time" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
-    case "canonical" :return  addCharacteristicsForType(set, "has-target", "has-length");
-    case "code" :return  addCharacteristicsForType(set, "has-length", "can-bind");
-    case "id" :return  addCharacteristicsForType(set, "has-length");
-    case "markdown" :return  addCharacteristicsForType(set, "do-translations", "has-length");
-    case "oid" :return  addCharacteristicsForType(set, "has-length", "can-bind");
-    case "positiveInt" :return  addCharacteristicsForType(set, "has-range", "has-length");
-    case "unsignedInt" :return  addCharacteristicsForType(set, "has-range", "has-length");
-    case "url" :return  addCharacteristicsForType(set, "has-length", "can-bind");
-    case "uuid" :return  addCharacteristicsForType(set, "has-length", "can-bind");
-    case "xhtml" :return  addCharacteristicsForType(set);
-    case "Address" :return  addCharacteristicsForType(set, "do-translations");
-    case "Age" : return addCharacteristicsForType(set, "has-range", "is-continuous", "can-bind", "has-units");
-    case "Annotation" :return  addCharacteristicsForType(set);
-    case "Attachment" :return  addCharacteristicsForType(set, "has-size", "do-translations");
-    case "CodeableConcept" :return  addCharacteristicsForType(set, "can-bind", "do-translations");
-    case "CodeableReference" : return addCharacteristicsForType(set, "has-target", "can-bind", "do-translations");
-    case "Coding" : return addCharacteristicsForType(set, "can-bind", "do-translations");
-    case "ContactPoint" :return  addCharacteristicsForType(set);
-    case "Count" :return  addCharacteristicsForType(set, "has-range");
-    case "Distance" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "can-bind", "has-units");
-    case "Duration" : return addCharacteristicsForType(set, "has-range", "is-continuous", "can-bind", "has-units");
-    case "HumanName" :return  addCharacteristicsForType(set);
-    case "Identifier" : return addCharacteristicsForType(set);
-    case "Money" : return addCharacteristicsForType(set, "has-range", "is-continuous");
-    case "Period" : return addCharacteristicsForType(set);
-    case "Quantity" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "can-bind", "has-units");
-    case "Range" :return  addCharacteristicsForType(set, "has-units", "can-bind", "has-units");
-    case "Ratio" :return  addCharacteristicsForType(set, "has-units");
-    case "RatioRange" : return addCharacteristicsForType(set, "has-units");
-    case "Reference" : return addCharacteristicsForType(set, "has-target");
-    case "SampledData" :return  addCharacteristicsForType(set);
-    case "Signature" : return addCharacteristicsForType(set);
-    case "Timing" : return addCharacteristicsForType(set);
-    case "ContactDetail" :return  addCharacteristicsForType(set);
-    case "Contributor" :return  addCharacteristicsForType(set);
-    case "DataRequirement" :return  addCharacteristicsForType(set);
-    case "Expression" : return addCharacteristicsForType(set);
-    case "ParameterDefinition" : return addCharacteristicsForType(set);
-    case "RelatedArtifact" :return  addCharacteristicsForType(set);
-    case "TriggerDefinition" :return  addCharacteristicsForType(set);
-    case "UsageContext" :return  addCharacteristicsForType(set);
-    case "Dosage" : return addCharacteristicsForType(set);
-    case "Meta" :return  addCharacteristicsForType(set);
-    case "Resource" :return  addCharacteristicsForType(set);
-    case "Extension" :return  addCharacteristicsForType(set, "can-bind");
-    case "Narrative" :return  addCharacteristicsForType(set);
-    case "MoneyQuantity" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "can-bind", "has-units");
-    case "SimpleQuantity" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "can-bind", "has-units");
-    case "MarketingStatus" :return  addCharacteristicsForType(set);
-    case "ExtendedContactDetail" :return  addCharacteristicsForType(set);
-    case "VirtualServiceDetail" :return  addCharacteristicsForType(set);
-    case "Availability" :return  addCharacteristicsForType(set);
-    case "MonetaryComponent" :return  addCharacteristicsForType(set);
-    case "ElementDefinition" :return  addCharacteristicsForType(set);
-
-    case "BackboneElement" :return  addCharacteristicsForType(set);
-    case "Element" :return  addCharacteristicsForType(set);
-    case "Base" :return  addCharacteristicsForType(set);
-    default:
-      return addCharacteristicsForType(set);
-    }
-  }
-
-
-  private boolean addCharacteristicsForType(Set<String> set, String... cl) {
-    for (String c : cl) {
-      set.add(c);
-    }
+    ProfileUtilities.addKnownTypeCharacteristics(set, tc);
     return true;
   }
 
+  private boolean statedOnSlice(boolean typeSlice, Element diffElement, String name, boolean extension) {
+    if (!typeSlice) {
+      return true;
+    }
+    if (diffElement == null) {
+      return false; // e.g. an implied type slice
+    }
+    return extension ? diffElement.hasExtension(name) : diffElement.hasChild(name, false);
+  }
+
+  private boolean isTypeSlicing(Element slicing) {
+    for (Element discriminator : slicing.getChildren("discriminator")) {
+      if ("type".equals(discriminator.getNamedChildValue("type", false)) && "$this".equals(discriminator.getNamedChildValue("path", false))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private void checkTypeSlicerConstraint(List<ValidationMessage> errors, NodeStack stack, String path, Map<String, Set<String>> typeCharacteristics, boolean present, String characteristic, String name) {
+    if (present) {
+      List<String> without = new ArrayList<>();
+      for (Map.Entry<String, Set<String>> e : typeCharacteristics.entrySet()) {
+        if (!e.getValue().contains(characteristic)) {
+          without.add(e.getKey());
+        }
+      }
+      if (!without.isEmpty() && without.size() < typeCharacteristics.size()) {
+        warning(errors, "2026-09-30", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.SD_TYPE_SLICER_PARTIAL_CONSTRAINT, name, path, CommaSeparatedStringBuilder.join(", ", without));
+      }
+    }
+  }
 
   private String boundType(Set<String> typeCodes) {
     for (String tc : typeCodes) {
@@ -1552,6 +1531,10 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
     for (String tc : typeCodes) {
       if (Utilities.existsInList(tc, "string", "uri", "CodeableConcept", "Quantity", "CodeableReference")) {
+        return tc;
+      }
+      Set<String> tchars = ProfileUtilities.getTypeCharacteristics(context, tc);
+      if (tchars != null && tchars.contains("can-bind")) {
         return tc;
       }
       StructureDefinition sd = context.fetchTypeDefinition(tc);
@@ -1573,9 +1556,9 @@ public class StructureDefinitionValidator extends BaseValidator {
     return null;
   }
 
-  private boolean validateBinding(List<ValidationMessage> errors, Element binding, NodeStack stack, Set<String> typeCodes, boolean snapshot, String path, boolean experimental, StructureDefinition profile) {
+  private boolean validateBinding(List<ValidationMessage> errors, Element binding, NodeStack stack, Set<String> typeCodes, boolean snapshot, String path, boolean experimental, StructureDefinition profile, boolean checkBindable) {
     boolean ok = true;
-    if (bindableType(typeCodes) == null) {
+    if (checkBindable && bindableType(typeCodes) == null) {
       ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot, I18nConstants.SD_ED_BIND_NO_BINDABLE, path, typeCodes.toString()) && ok;
     } 
     if (!snapshot) {
