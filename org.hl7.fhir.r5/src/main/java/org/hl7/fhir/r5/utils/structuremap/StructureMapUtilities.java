@@ -131,9 +131,14 @@ public class StructureMapUtilities {
     this.worker = worker;
     this.services = services;
     this.pkp = pkp;
-    fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FHIRPathHostServices(this));
-    profileUtilities = new ProfileUtilities(worker, null, null);
+    if (worker != null) {
+      fpe = new FHIRPathEngine(worker);
+      fpe.setHostServices(new FHIRPathHostServices(this));
+      profileUtilities = new ProfileUtilities(worker, null, null);
+    } else {
+      fpe = null;
+      profileUtilities = null;
+    }
   }
 
   public StructureMapUtilities(IWorkerContext worker, ITransformerServices services) {
