@@ -79,11 +79,31 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     return terminologyCache;
   }
 
-  // A fresh temp directory yields a genuinely empty cache. NOTE: new TerminologyCache(lock, null)
-  // does NOT - null resolves to the shared [tmp]/default-tx-cache and loads whatever is on disk,
-  // so any test that asserts on cache size/contents must use an isolated directory like this.
+  // A fresh temp directory yields a genuinely empty cache that is kept on disk. (A null folder is
+  // also empty now, but memory only - it no longer resolves to a shared [tmp]/default-tx-cache.)
   private TerminologyCache createEmptyTerminologyCache() throws IOException {
     return new TerminologyCache(new Object(), createTempCacheDirectory().toString(), TestingUtilities.getSharedWorkerContext());
+  }
+
+  @Test
+  void testNullFolderIsMemoryOnly() throws IOException {
+    TerminologyCache cache = new TerminologyCache(new Object(), null, TestingUtilities.getSharedWorkerContext());
+    assertNull(cache.getFolder());
+    TerminologyCache legacy = new TerminologyCache(new Object(), "n/a", TestingUtilities.getSharedWorkerContext());
+    assertNull(legacy.getFolder());
+  }
+
+  @Test
+  void testDefaultFolderIsPerFhirVersion() throws IOException {
+    assertTrue(TerminologyCache.defaultFolder("1.0.2").endsWith(File.separator+"default-tx-cache"+File.separator+"r2"));
+    assertTrue(TerminologyCache.defaultFolder("3.0.2").endsWith(File.separator+"r3"));
+    assertTrue(TerminologyCache.defaultFolder("4.0.1").endsWith(File.separator+"r4"));
+    assertTrue(TerminologyCache.defaultFolder("4.0").endsWith(File.separator+"r4"));
+    assertTrue(TerminologyCache.defaultFolder("4.3.0").endsWith(File.separator+"r4"));
+    assertTrue(TerminologyCache.defaultFolder("5.0.0").endsWith(File.separator+"r5"));
+    assertTrue(TerminologyCache.defaultFolder("6.0.0-ballot3").endsWith(File.separator+"r6"));
+    assertThrows(org.hl7.fhir.exceptions.FHIRException.class, () -> TerminologyCache.defaultFolder(null));
+    assertThrows(org.hl7.fhir.exceptions.FHIRException.class, () -> TerminologyCache.defaultFolder("banana"));
   }
 
   public Path createTempCacheDirectory() throws IOException {
@@ -968,10 +988,14 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
   class HashJsonSpeedTests {
     private static Stream<Arguments> hashJsonSpeedInputs() {
       return Stream.of(
-        Arguments.of(1_000_000, 1_000),
-        Arguments.of(100_000, 10_000),
-        Arguments.of(10_000, 100_000),
-        Arguments.of(1_000, 1_000_000)
+        // 100M characters a case: about 0.15s on a developer machine, so the timeout leaves
+        // plenty of room for a slow, busy CI agent while still catching a hash that has gone
+        // quadratic or started allocating. (At 1G characters a case, ~1.5s locally, the first
+        // case timed out on the pipeline.)
+        Arguments.of(1_000_000, 100),
+        Arguments.of(100_000, 1_000),
+        Arguments.of(10_000, 10_000),
+        Arguments.of(1_000, 100_000)
       );
     }
 

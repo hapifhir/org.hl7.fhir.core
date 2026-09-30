@@ -40,6 +40,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -74,7 +77,28 @@ import com.google.gson.JsonPrimitive;
  *  - a persistent cache for remembering tx server operations
  *  
  * the cache is a series of pairs: a map, and a list. the map is the loaded cache, the list is the persistent cache, carefully maintained in order for version control consistency
- * 
+ *
+ * <h2>Where the cache lives</h2>
+ *
+ * <p>A cache is either memory only, or kept in a folder, and which it is is decided when it
+ * is created. A null folder (or the legacy "n/a") means memory only: nothing is read from disk,
+ * nothing is written, and whatever the cache learned is gone when it is. <b>There is no
+ * implicit default folder.</b> Up to 2026-09 a null folder quietly meant
+ * {@code [tmp]/default-tx-cache}, so every worker context - including the throwaway one each
+ * context creates before its real cache is set - read and registered that folder, tests
+ * depended on whatever an earlier run had left in it, and one folder was shared by every FHIR
+ * version.
+ *
+ * <p>A caller that wants the old shared location asks for it explicitly with
+ * {@link #defaultFolder(String)}, which is now per FHIR version ({@code [tmp]/default-tx-cache/r4}
+ * etc). The validator CLI does this when it isn't given {@code -txCache}.
+ *
+ * <p>A folder backed cache writes coalesced saves (see {@link #SAVE_DELAY_MS}); entries
+ * waiting out the window are written by {@link #save()}, {@link #unload()}, the next store past
+ * the window, or the shutdown hook - or by a background thread, if the cache was created with
+ * deferred flush (see {@link #deferredFlush}). Otherwise, a cache that is dropped without being
+ * saved loses them.
+ *
  * @author graha
  *
  */
@@ -218,6 +242,33 @@ public class TerminologyCache {
    * How long a JVM shutdown waits for pending cache entries to be written before giving up.
    */
   private static final long SHUTDOWN_SAVE_TIMEOUT_MS = 10000;
+
+  /**
+   * Whether this cache writes out entries left waiting by the {@link #SAVE_DELAY_MS} window by
+   * itself, once the window closes. Decided when the cache is created, and fixed for its life.
+   *
+   * <p>By default it doesn't: entries that miss the window are only written by the next store
+   * past the deadline, an explicit {@link #save()} or {@link #unload()}, or the shutdown hook -
+   * and the shutdown hook only sees caches that are still reachable. A cache that is dropped
+   * without being saved loses whatever it was holding. That is the caller's responsibility.
+   *
+   * <p>With deferred flush, a store that isn't written straight away schedules a write for the
+   * end of the window on a shared background thread. The scheduled write holds the cache until
+   * it runs, so a dropped cache is written out at most {@link #SAVE_DELAY_MS} later (or at JVM
+   * shutdown, whichever comes first) and then released.
+   */
+  private final boolean deferredFlush;
+
+  /**
+   * The save window for this cache: {@link #SAVE_DELAY_MS}, except in tests.
+   */
+  private long saveDelayMs = SAVE_DELAY_MS;
+
+  /**
+   * Runs deferred flushes for every cache that asked for them. One daemon thread, created on
+   * first use, so that caches which don't use deferred flush never start a thread.
+   */
+  private static ScheduledExecutorService deferredFlusher;
 
   /**
    * Every cache that has a folder, so a shutdown can flush them all. Held weakly, so a cache
@@ -371,6 +422,8 @@ public class TerminologyCache {
     private boolean dirty = false;
     /** Wall-clock time of the last on-disk save for this cache (0 = never saved this session). */
     private long lastSaveAt = 0;
+    /** The deferred flush waiting to write this cache out, if there is one (see {@link TerminologyCache#deferredFlush}). */
+    private ScheduledFuture<?> pendingFlush;
     /**
      * The nonce of the copy of this cache we last read or wrote, as recorded in the partner
      * file described by {@link #NONCE_FILE_EXTENSION}. Null when we have never touched the
@@ -430,16 +483,67 @@ public class TerminologyCache {
   @Getter @Setter private static boolean noCaching;
   @Getter @Setter private static boolean cacheErrors;
 
+  /**
+   * The shared, per FHIR version cache folder under the temp directory:
+   * {@code [tmp]/default-tx-cache/rX}, where X is 2, 3, 4, 5 or 6 (R4B shares r4). This is where
+   * the validator keeps its cache when it isn't told where to. Nothing uses it unless it's asked
+   * for - see the class documentation.
+   *
+   * @param fhirVersion any version string for the release (e.g. 4.0.1, 4.0, 5.0.0-ballot)
+   */
+  public static String defaultFolder(String fhirVersion) throws IOException {
+    return Utilities.path("[tmp]", "default-tx-cache", "r"+releaseNumber(fhirVersion));
+  }
+
+  private static String releaseNumber(String fhirVersion) {
+    if (fhirVersion == null) {
+      throw new FHIRException("A FHIR version is required to choose the default terminology cache folder");
+    }
+    if (VersionUtilities.isR2Ver(fhirVersion) || VersionUtilities.isR2BVer(fhirVersion)) {
+      return "2";
+    } else if (VersionUtilities.isR3Ver(fhirVersion)) {
+      return "3";
+    } else if (VersionUtilities.isR4Ver(fhirVersion) || VersionUtilities.isR4BVer(fhirVersion)) {
+      return "4";
+    } else if (VersionUtilities.isR5Ver(fhirVersion)) {
+      return "5";
+    } else if (VersionUtilities.isR6Ver(fhirVersion)) {
+      return "6";
+    } else {
+      throw new FHIRException("Unknown FHIR version '"+fhirVersion+"' choosing the default terminology cache folder");
+    }
+  }
+
+  /**
+   * @param lock the object the cache synchronizes on (normally the worker context's lock)
+   * @param folder where the persistent entries are kept, or null (or the legacy "n/a") for a
+   *   memory only cache. There is no implicit default folder: see the class documentation, and
+   *   {@link #defaultFolder(String)} for the shared per-version one.
+   * @param capabilityCacheExpirationMilliseconds how long server capability statements are kept
+   */
   protected TerminologyCache(Object lock, String folder, Long capabilityCacheExpirationMilliseconds) throws FileNotFoundException, IOException, FHIRException {
+    this(lock, folder, capabilityCacheExpirationMilliseconds, false);
+  }
+
+  /**
+   * @param lock the object the cache synchronizes on (normally the worker context's lock)
+   * @param folder where the persistent entries are kept, or null (or the legacy "n/a") for a
+   *   memory only cache. There is no implicit default folder: see the class documentation, and
+   *   {@link #defaultFolder(String)} for the shared per-version one.
+   * @param capabilityCacheExpirationMilliseconds how long server capability statements are kept
+   * @param deferredFlush whether entries waiting out the save window are written by a
+   *   background thread when it closes, rather than only by the next store, an explicit save,
+   *   or the shutdown hook. See {@link #deferredFlush}.
+   */
+  protected TerminologyCache(Object lock, String folder, Long capabilityCacheExpirationMilliseconds, boolean deferredFlush) throws FileNotFoundException, IOException, FHIRException {
     super();
    this.lock = lock;
+   this.deferredFlush = deferredFlush;
    this.capabilityCacheExpirationMilliseconds = capabilityCacheExpirationMilliseconds;
    capabilityStatementCache = new CommonsTerminologyCapabilitiesCache<>(capabilityCacheExpirationMilliseconds, TimeUnit.MILLISECONDS);
    terminologyCapabilitiesCache = new CommonsTerminologyCapabilitiesCache<>(capabilityCacheExpirationMilliseconds, TimeUnit.MILLISECONDS);
-    if (folder == null) {
-      folder = Utilities.path("[tmp]", "default-tx-cache");
-    } else if ("n/a".equals(folder)) {
-      // this is a weird way to do things but it maintains the legacy interface
+    if ("n/a".equals(folder)) {
+      // the legacy way of asking for a memory only cache; null now means the same thing
       folder = null;
     }
     this.folder = folder;
@@ -462,9 +566,25 @@ public class TerminologyCache {
     }
   }
 
-  // use lock from the context
+  /**
+   * @param lock the object the cache synchronizes on (normally the worker context's lock)
+   * @param folder where the persistent entries are kept, or null (or the legacy "n/a") for a
+   *   memory only cache. There is no implicit default folder: see the class documentation, and
+   *   {@link #defaultFolder(String)} for the shared per-version one.
+   */
   public TerminologyCache(Object lock, String folder) throws IOException, FHIRException {
     this(lock, folder, CAPABILITY_CACHE_EXPIRATION_MILLISECONDS);
+  }
+
+  /**
+   * @param lock the object the cache synchronizes on (normally the worker context's lock)
+   * @param folder where the persistent entries are kept, or null (or the legacy "n/a") for a
+   *   memory only cache. There is no implicit default folder: see the class documentation, and
+   *   {@link #defaultFolder(String)} for the shared per-version one.
+   * @param deferredFlush see {@link #deferredFlush}
+   */
+  public TerminologyCache(Object lock, String folder, boolean deferredFlush) throws IOException, FHIRException {
+    this(lock, folder, CAPABILITY_CACHE_EXPIRATION_MILLISECONDS, deferredFlush);
   }
 
   private void checkVersion() throws IOException {
@@ -575,6 +695,9 @@ public class TerminologyCache {
     // not useable after this is called — flush any pending writes first so we don't lose
     // entries that were waiting out the SAVE_DELAY_MS coalescing window.
     save();
+    for (NamedCache nc : caches.values()) {
+      cancelFlush(nc); // a write that failed in save() stays dirty, but this cache is finished
+    }
     liveCaches.remove(this);
     caches.clear();
     vsCache.clear();
@@ -583,6 +706,9 @@ public class TerminologyCache {
   }
 
   public void clear() throws IOException {
+    for (NamedCache nc : caches.values()) {
+      cancelFlush(nc);
+    }
     if (folder != null) {
       FileUtilities.clearDirectory(folder);
     }
@@ -896,8 +1022,10 @@ public class TerminologyCache {
       // Coalesce frequent writes: only flush if it's been at least SAVE_DELAY_MS since
       // the last save for this NamedCache. Entries that miss the window stay in memory
       // until the next write past the deadline, or until save() is called explicitly.
-      if (now - nc.lastSaveAt >= SAVE_DELAY_MS) {
+      if (now - nc.lastSaveAt >= saveDelayMs) {
         save(nc, now);
+      } else if (deferredFlush) {
+        scheduleFlush(nc, nc.lastSaveAt + saveDelayMs - now);
       }
     }
   }
@@ -1264,6 +1392,58 @@ public class TerminologyCache {
     // SAVE_DELAY_MS window rather than on every single store.
     namedCache.dirty = !saved;
     namedCache.lastSaveAt = lastSaveAt;
+    if (saved) {
+      cancelFlush(namedCache);
+    }
+  }
+
+  /**
+   * Arrange for a NamedCache to be written out once its save window closes. Called with the lock
+   * held. If a flush is already scheduled, it will write this entry too.
+   */
+  private void scheduleFlush(NamedCache namedCache, long delay) {
+    if (namedCache.pendingFlush == null) {
+      namedCache.pendingFlush = deferredFlusher().schedule(() -> deferredFlush(namedCache), Math.max(0, delay), TimeUnit.MILLISECONDS);
+    }
+  }
+
+  private void deferredFlush(NamedCache namedCache) {
+    synchronized (lock) {
+      namedCache.pendingFlush = null;
+      // the cache may have been unloaded or cleared since this was scheduled - in which case
+      // this NamedCache is no longer ours to write
+      if (!unloaded && namedCache.dirty && caches.get(namedCache.name) == namedCache) {
+        save(namedCache, System.currentTimeMillis());
+      }
+    }
+  }
+
+  private static void cancelFlush(NamedCache namedCache) {
+    if (namedCache.pendingFlush != null) {
+      namedCache.pendingFlush.cancel(false);
+      namedCache.pendingFlush = null;
+    }
+  }
+
+  private static synchronized ScheduledExecutorService deferredFlusher() {
+    if (deferredFlusher == null) {
+      ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1, r -> {
+        Thread t = new Thread(r, "terminology-cache-deferred-flush");
+        t.setDaemon(true); // the shutdown hook writes whatever is still pending when the JVM exits
+        return t;
+      });
+      executor.setRemoveOnCancelPolicy(true);
+      deferredFlusher = executor;
+    }
+    return deferredFlusher;
+  }
+
+  /**
+   * For tests: shorten the save window, so deferred flush can be observed without waiting
+   * {@link #SAVE_DELAY_MS}.
+   */
+  void setSaveDelayMs(long saveDelayMs) {
+    this.saveDelayMs = saveDelayMs;
   }
 
   private static void writeCacheEntryToFile(CacheEntry cacheEntry, BufferedWriter writer, JsonParser json) throws IOException {

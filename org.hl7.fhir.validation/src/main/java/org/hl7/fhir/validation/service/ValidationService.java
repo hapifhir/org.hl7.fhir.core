@@ -667,17 +667,13 @@ public class ValidationService {
       .fromSource(definitions);
     FhirPublication ver = FhirPublication.fromCode(validationEngineParameters.getSv());
     log.info("  Loaded FHIR - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
-    final String lineStart = "  Terminology server " + validationEngineParameters.getTxServer();
-    final String txver = validationEngine.setTerminologyServer(validationEngineParameters.getTxServer(), validationEngineParameters.getTxLog(), ver, !validationEngineParameters.getNoEcosystem());
-    log.info(lineStart + " - Version " + txver + " (" + timeTracker.milestone() + ")");
-    validationEngine.setDebug(validationEngineParameters.isDoDebug());
-    validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
-    loadIgsAndExtensions(validationEngine, validationEngineParameters.getIgs(), validationEngineParameters.isRecursive());
-    if (validationEngineParameters.getTxCache() != null) {
-      TerminologyCache cache = new TerminologyCache(new Object(), validationEngineParameters.getTxCache(), validationEngine.getContext());
-      validationEngine.getContext().initTxCache(cache);
-    }
-    if (validationEngine.getContext().getTxCache() == null || validationEngine.getContext().getTxCache().getFolder() == null) {
+    // The cache is set up before connecting to the terminology server, so that what the connection
+    // learns (capability statements, server routing) is kept too. A context's own cache is memory
+    // only, so without -txCache the validator uses the shared per-version default folder
+    // (-txCache n/a for none).
+    String txCacheFolder = validationEngineParameters.getTxCache() != null ? validationEngineParameters.getTxCache() : TerminologyCache.defaultFolder(validationEngineParameters.getSv());
+    validationEngine.getContext().initTxCache(new TerminologyCache(new Object(), txCacheFolder, validationEngine.getContext()));
+    if (validationEngine.getContext().getTxCache().getFolder() == null) {
       log.info("  No Terminology Cache");
     } else {
       log.info("  Terminology Cache at "+validationEngine.getContext().getTxCache().getFolder());
@@ -686,6 +682,12 @@ public class ValidationService {
         validationEngine.getContext().getTxCache().clear();
       }
     }
+    final String lineStart = "  Terminology server " + validationEngineParameters.getTxServer();
+    final String txver = validationEngine.setTerminologyServer(validationEngineParameters.getTxServer(), validationEngineParameters.getTxLog(), ver, !validationEngineParameters.getNoEcosystem());
+    log.info(lineStart + " - Version " + txver + " (" + timeTracker.milestone() + ")");
+    validationEngine.setDebug(validationEngineParameters.isDoDebug());
+    validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
+    loadIgsAndExtensions(validationEngine, validationEngineParameters.getIgs(), validationEngineParameters.isRecursive());
     validationEngine.setDoNative(validationEngineParameters.isDoNative());
     log.info("  Get set... ");
 
