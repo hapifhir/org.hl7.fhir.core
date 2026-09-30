@@ -441,7 +441,9 @@ public class StructureMapRenderer extends TerminologyRenderer {
       return false;
     if (t.hasTransform() && t.getTransform() != StructureMapTransform.CREATE)
       return false;
-    return s.getElement().equals(t.getElement());
+    List<String> sourcePath = StructureMapUtilities.elementPath(s);
+    List<String> targetPath = StructureMapUtilities.elementPath(t);
+    return sourcePath.size() == 1 && targetPath.size() == 1 && sourcePath.equals(targetPath);
   }
 
   private static String identityBatchPrefix(StructureMapGroupRuleComponent r) {
@@ -644,11 +646,11 @@ public class StructureMapRenderer extends TerminologyRenderer {
       return false;
     if (!source.get(0).hasElement())
       return false;
-    String s = source.get(0).getElement();
+    String s = StructureMapUtilities.elementPathString(source.get(0));
     if (n.equals(s) || n.equals("\"" + s + "\""))
       return true;
     if (source.get(0).hasType()) {
-      s = source.get(0).getElement() + Utilities.capitalize(source.get(0).getType());
+      s = StructureMapUtilities.elementPathString(source.get(0)) + Utilities.capitalize(source.get(0).getType());
       return n.equals(s) || n.equals("\"" + s + "\"");
     }
     return false;
@@ -679,7 +681,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.color(COLOR_SYNTAX).tx(")");
     } else if (rs.hasElement()) {
       x.tx(".");
-      x.tx(StructureMapUtilities.renderElementName(rs.getElement()));
+      x.tx(StructureMapUtilities.renderElementPath(StructureMapUtilities.elementPath(rs)));
     }
     if (rs.hasType()) {
       x.color(COLOR_SYNTAX).tx(" : ");
@@ -731,7 +733,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.tx(rt.getContext());
       if (rt.hasElement()) {
         x.tx(".");
-        x.tx(StructureMapUtilities.renderElementName(rt.getElement()));
+        x.tx(StructureMapUtilities.renderElementPath(StructureMapUtilities.elementPath(rt)));
       }
     }
     if (!abbreviate && rt.hasTransform()) {

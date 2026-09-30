@@ -415,7 +415,9 @@ public class StructureMapRenderer extends TerminologyRenderer {
       return false;
     if (t.hasTransform() && t.getTransform() != StructureMapTransform.CREATE)
       return false;
-    return s.getElementList().equals(t.getElementList());
+    if (s.getElementList().size() != 1 || t.getElementList().size() != 1)
+      return false;
+    return StructureMapTools.elementPath(s.getElementList()).equals(StructureMapTools.elementPath(t.getElementList()));
   }
 
   private static String identityBatchPrefix(StructureMapGroupRuleComponent r) {
@@ -618,11 +620,11 @@ public class StructureMapRenderer extends TerminologyRenderer {
       return false;
     if (!source.get(0).hasElement())
       return false;
-    String s = source.get(0).getElementName();
+    String s = StructureMapTools.elementPath(source.get(0).getElementList());
     if (n.equals(s) || n.equals("\"" + s + "\""))
       return true;
     if (source.get(0).hasType()) {
-      s = source.get(0).getElementList() + Utilities.capitalize(source.get(0).getType());
+      s = StructureMapTools.elementPath(source.get(0).getElementList()) + Utilities.capitalize(source.get(0).getType());
       return n.equals(s) || n.equals("\"" + s + "\"");
     }
     return false;
@@ -653,7 +655,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.color(COLOR_SYNTAX).tx(")");
     } else if (rs.hasElement()) {
       x.tx(".");
-      x.tx(StructureMapTools.renderElementName(rs.getElementName()));
+      x.tx(StructureMapTools.renderElementPath(rs.getElementList()));
     }
     if (rs.hasType()) {
       x.color(COLOR_SYNTAX).tx(" : ");
@@ -705,7 +707,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.tx(rt.getContext());
       if (rt.hasElement()) {
         x.tx(".");
-        x.tx(StructureMapTools.renderElementName(rt.getElementName()));
+        x.tx(StructureMapTools.renderElementPath(rt.getElementList()));
       }
     }
     if (!abbreviate && rt.hasTransform()) {

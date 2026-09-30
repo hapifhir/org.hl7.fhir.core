@@ -161,6 +161,14 @@ public class StructureMapTools {
     return StructureMapUtilities.targetToString(rt);
   }
 
+  public static String elementPath(List<StringType> elements) {
+    return StructureMapUtilities.elementPath(elements);
+  }
+
+  public static String renderElementPath(List<StringType> elements) {
+    return StructureMapUtilities.renderElementPath(elements);
+  }
+
   public static String paramToString(StructureMap.StructureMapGroupRuleTargetParameterComponent rtp) {
     return StructureMapUtilities.paramToString(rtp);
   }
@@ -730,9 +738,9 @@ public class StructureMapTools {
             throw lexer.error("Complex rules must have an explicit name");
           // Auto-generate a custom rule name
           if (rule.getSourceFirstRep().hasType())
-            rule.setName(rule.getSourceFirstRep().getElementName() + Utilities.capitalize(rule.getSourceFirstRep().getType()));
+            rule.setName(StructureMapUtilities.elementPath(rule.getSourceFirstRep().getElementList()) + Utilities.capitalize(rule.getSourceFirstRep().getType()));
           else
-            rule.setName(rule.getSourceFirstRep().getElementName());
+            rule.setName(StructureMapUtilities.elementPath(rule.getSourceFirstRep().getElementList()));
         }
         String doco = lexer.tokenWithTrailingComment(";");
         if (doco != null) {
@@ -783,9 +791,11 @@ public class StructureMapTools {
       source.setUserData(MAP_SEARCH_EXPRESSION, node);
       source.addElement(node.toString());
       lexer.token(")");
-    } else if (lexer.hasToken(".")) {
-      lexer.token(".");
-      source.addElement(readAsStringOrProcessedConstant(lexer.take(), lexer));
+    } else {
+      while (lexer.hasToken(".")) {
+        lexer.token(".");
+        source.addElement(readAsStringOrProcessedConstant(lexer.take(), lexer));
+      }
     }
     if (lexer.hasToken(":")) {
       // type and cardinality
@@ -853,8 +863,10 @@ public class StructureMapTools {
     if (lexer.hasToken(".")) {
       target.setContext(start);
       start = null;
-      lexer.token(".");
-      target.addElement(readAsStringOrProcessedConstant(lexer.take(), lexer));
+      while (lexer.hasToken(".")) {
+        lexer.token(".");
+        target.addElement(readAsStringOrProcessedConstant(lexer.take(), lexer));
+      }
     } 
     String name;
     boolean isConstant = false;
