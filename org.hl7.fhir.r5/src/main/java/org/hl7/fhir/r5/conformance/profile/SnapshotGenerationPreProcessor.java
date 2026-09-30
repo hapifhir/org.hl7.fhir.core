@@ -607,10 +607,14 @@ public class SnapshotGenerationPreProcessor {
         } else {
           List<Base> union = new ArrayList<>();
           for (Base b : p1.getValues()) {
-            union.add(b);
+            union.add(b.copy()); // copies: the values belong to the profile they came from
           }
           for (Base b : p2.getValues()) {
             if (!containsDeep(union, b)) {
+              if (!extras) {
+                // v1 is a fixed value: it's exact, so it can't take on values it doesn't already have
+                throw new FHIRException(context.formatMessage(I18nConstants.SD_ADDITIONAL_BASE_INCOMPATIBLE_VALUES, vurl, path+"."+p1.getName(), "(not present)", b.toString()));
+              }
               union.add(b.copy());
             }
           }
