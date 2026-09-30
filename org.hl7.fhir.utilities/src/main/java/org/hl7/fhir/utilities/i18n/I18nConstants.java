@@ -730,6 +730,9 @@ public class I18nConstants {
   public static final String SD_EXTENSION_URL_MISSING = "SD_EXTENSION_URL_MISSING";
   public static final String SD_CARDINALITY_EMPTY = "SD_CARDINALITY_EMPTY";
   public static final String SD_SLICE_MIN_EXCEEDS_SLICER_MAX = "SD_SLICE_MIN_EXCEEDS_SLICER_MAX";
+  public static final String SD_SLICE_MIN_EXCEEDS_SLICER = "SD_SLICE_MIN_EXCEEDS_SLICER";
+  public static final String SD_SLICE_MAX_EXCEEDS_SLICER = "SD_SLICE_MAX_EXCEEDS_SLICER";
+  public static final String SD_SLICE_MIN_EXCEEDS_MAX = "SD_SLICE_MIN_EXCEEDS_MAX";
   public static final String SD_TYPE_SLICER_PARTIAL_CONSTRAINT = "SD_TYPE_SLICER_PARTIAL_CONSTRAINT";
   public static final String SD_VALUE_RANGE_EMPTY = "SD_VALUE_RANGE_EMPTY";
   public static final String SD_ILLEGAL_CHARACTERISTICS = "SD_ILLEGAL_CHARACTERISTICS";
