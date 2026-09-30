@@ -692,17 +692,25 @@ public class TerminologyCache {
   }
 
   public void unload() {
-    // not useable after this is called — flush any pending writes first so we don't lose
-    // entries that were waiting out the SAVE_DELAY_MS coalescing window.
-    save();
-    for (NamedCache nc : caches.values()) {
-      cancelFlush(nc); // a write that failed in save() stays dirty, but this cache is finished
+    // not useable after this is called. All of it happens under the lock: a deferred flush that
+    // has already started can't be cancelled, only kept waiting for the lock, and it must not
+    // get in between the save below and unloaded being set - by the time it gets the lock, it
+    // finds the cache unloaded and does nothing.
+    synchronized (lock) {
+      // No deferred flush is needed once we're done - even a write that fails in save() is
+      // abandoned, since this cache is finished - so cancel them before saving.
+      for (NamedCache nc : caches.values()) {
+        cancelFlush(nc);
+      }
+      // flush any pending writes so we don't lose entries that were waiting out the
+      // SAVE_DELAY_MS coalescing window
+      save();
+      liveCaches.remove(this);
+      caches.clear();
+      vsCache.clear();
+      csCache.clear();
+      unloaded = true;
     }
-    liveCaches.remove(this);
-    caches.clear();
-    vsCache.clear();
-    csCache.clear();
-    unloaded = true;
   }
 
   public void clear() throws IOException {

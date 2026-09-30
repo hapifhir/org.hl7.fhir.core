@@ -1113,13 +1113,21 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     @Test
     void testUnloadedCacheIsNotFlushedAgain() throws IOException, InterruptedException {
       TerminologyCache cache = cache(true);
-      store(cache, 1);
-      store(cache, 2);
-      cache.unload(); // writes entry 2 itself
-      assertTrue(onDisk(2));
-      new TerminologyCache(new Object(), folder.toString()).clear(); // empty the folder behind its back
+      store(cache, 1); // written straight away
+      store(cache, 2); // pending, with a deferred flush scheduled
+      // Swap the cache folder for a plain file of the same name, so the save in unload() fails
+      // and the cache is left dirty. (If that save succeeded, it would leave nothing for a
+      // leftover flush to write, and this test would prove nothing.)
+      org.hl7.fhir.utilities.FileUtilities.clearDirectory(folder.toString());
+      Files.delete(folder);
+      Files.createFile(folder);
+      cache.unload();
+      // put back an empty folder for the pending flush, if there still is one, to write into
+      Files.delete(folder);
+      Files.createDirectory(folder);
       Thread.sleep(WINDOW * 3);
-      assertFalse(onDisk(1), "a flush left over from the unloaded cache must not write it back");
+      assertFalse(onDisk(1), "a flush left over from the unloaded cache must not write it out");
+      assertFalse(onDisk(2), "a flush left over from the unloaded cache must not write it out");
     }
   }
 
