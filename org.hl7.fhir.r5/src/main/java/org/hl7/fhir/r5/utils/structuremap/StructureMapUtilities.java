@@ -2368,8 +2368,10 @@ public class StructureMapUtilities {
           throw new FHIRException("cast to " + t + " not yet supported");
         case APPEND:
           StringBuilder sb = new StringBuilder(getParamString(vars, tgt.getParameter().get(0)));
-          for (int i = 1; i < tgt.getParameter().size(); i++)
-            sb.append(getParamString(vars, tgt.getParameter().get(i)));
+          for (int i = 1; i < tgt.getParameter().size(); i++) {
+            var appValue = getParamString(vars, tgt.getParameter().get(i));
+            sb.append(appValue == null ? "" : appValue);
+          }
           return new StringType(sb.toString());
         case TRANSLATE:
           return translate(context, map, vars, tgt.getParameter());
@@ -2420,22 +2422,23 @@ public class StructureMapUtilities {
         case ID:
           org.hl7.fhir.r5.model.Identifier id = new org.hl7.fhir.r5.model.Identifier();
           if (tgt.getParameter().size() >= 2) {
-            id.setSystem(((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue());
-            id.setValue(((PrimitiveType<?>) tgt.getParameter().get(1).getValue()).asStringValue());
+            id.setSystem(getParamString(vars, tgt.getParameter().get(0)));
+            id.setValue(getParamString(vars, tgt.getParameter().get(1)));
           }
           if (tgt.getParameter().size() == 3) {
-            var typeCode = ((PrimitiveType<?>) tgt.getParameter().get(2).getValue()).asStringValue();
-            id.setType(new CodeableConcept().addCoding(new Coding().setSystem("http://hl7.org/fhir/ValueSet/identifier-type").setCode(typeCode)));
+            // The optional type parameter is a code from the identifier type value set (https://hl7.org/fhir/valueset-identifier-type.html)
+            var typeCode = getParamString(vars, tgt.getParameter().get(2));
+            id.setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203").setCode(typeCode)));
           }
           return id;
         case CP:
           org.hl7.fhir.r5.model.ContactPoint cp = new org.hl7.fhir.r5.model.ContactPoint();
           if (tgt.getParameter().size() == 2) {
-            cp.setSystem(ContactPoint.ContactPointSystem.fromCode(((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue()));
-            cp.setValue(((PrimitiveType<?>) tgt.getParameter().get(1).getValue()).asStringValue());
+            cp.setSystem(ContactPoint.ContactPointSystem.fromCode(getParamString(vars, tgt.getParameter().get(0))));
+            cp.setValue(getParamString(vars, tgt.getParameter().get(1)));
           }
           if (tgt.getParameter().size() == 1) {
-            var value = ((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue();
+            var value = getParamString(vars, tgt.getParameter().get(0));
             cp.setValue(value);
             // infer the system from the value (if starts with http or https is URL, if it has an @ character in it, that's an email address, otherwise ambiguous)
             if (value.startsWith("http://") || value.startsWith("https://"))
@@ -2446,16 +2449,16 @@ public class StructureMapUtilities {
           return cp;
         case QTY:
           org.hl7.fhir.r5.model.Quantity qty = new org.hl7.fhir.r5.model.Quantity();
-          var qtyValue = new java.math.BigDecimal(((PrimitiveType<?>) tgt.getParameter().get(0).getValue()).asStringValue());
-          var qtyUnit = ((PrimitiveType<?>) tgt.getParameter().get(1).getValue()).asStringValue();
+          var qtyValue = new java.math.BigDecimal(getParamString(vars, tgt.getParameter().get(0)));
+          var qtyUnit = getParamString(vars, tgt.getParameter().get(1));
           qty.setValue(qtyValue);
           qty.setUnit(qtyUnit);
           if (tgt.getParameter().size() >= 3) {
-            var qtySystem = ((PrimitiveType<?>) tgt.getParameter().get(2).getValue()).asStringValue();
+            var qtySystem = getParamString(vars, tgt.getParameter().get(2));
             qty.setSystem(qtySystem);
           }
           if (tgt.getParameter().size() >= 4) {
-            var qtyCode = ((PrimitiveType<?>) tgt.getParameter().get(3).getValue()).asStringValue();
+            var qtyCode = getParamString(vars, tgt.getParameter().get(3));
             qty.setCode(qtyCode);
           }
           return qty;
@@ -3327,7 +3330,7 @@ public class StructureMapUtilities {
         StructureDefinition sd = worker.fetchResource(StructureDefinition.class, imp.getUrl(), ExtensionUtilities.getVersionResolutionRules(imp.getUrlElement()));
         if (sd == null)
           throw new FHIRException("Import " + imp.getUrl() + " cannot be resolved");
-        if ((imp.hasAlias() && imp.getAlias().equals(type)) || sd.getId().equals(type) || sd.getType().equals(type)) {
+        if ((imp.hasAlias() && imp.getAlias().equals(type)) || sd.getId().equals(type) || (sd.hasType() && sd.getType().equals(type))) {
           return new PropertyWithType(sd.getType(), new Property(worker, sd.getSnapshot().getElement().get(0), sd), null, new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl()));
         }
       }
