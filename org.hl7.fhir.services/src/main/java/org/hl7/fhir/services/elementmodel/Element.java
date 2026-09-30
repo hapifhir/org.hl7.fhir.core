@@ -493,9 +493,19 @@ public class Element extends Base implements NamedItem {
     
     // look through existing children
     for (Element child : children) {
-      if (child.getName().equals(name)) {
+      if (child.getName().equals(name) || (propertyForValue.getName().endsWith("[x]")
+          && propertyForValue.getName().equals(child.getProperty().getName()))) {
         if (!child.isList()) {
           childForValue = child;
+          if (propertyForValue.getName().endsWith("[x]") && !child.fhirType().equals(value.fhirType())) {
+            childForValue.type = value.fhirType();
+            childForValue.value = null;
+            childForValue.children = null;
+            childForValue.xhtml = null;
+            childForValue.xhtmlSource = null;
+            childForValue.xhtmlOutputHash = 0;
+            childForValue.explicitType = null;
+          }
           break;
         } else {
           Element ne = new Element(child).setFormat(format);
@@ -527,11 +537,16 @@ public class Element extends Base implements NamedItem {
       }
     }
     
+    if (childForValue == value) {
+      return childForValue;
+    }
     if (childForValue == null)
       throw new Error("Cannot set property "+name+" on "+this.name);
     else if (value.isPrimitive()) {
-      if (childForValue.property.getName().endsWith("[x]"))
+      if (childForValue.property.getName().endsWith("[x]")) {
+        childForValue.type = value.fhirType();
         childForValue.name = childForValue.property.getName().replace("[x]", Utilities.capitalize(value.fhirType()));
+      }
       if (!childForValue.isXhtml()) {
         childForValue.setValue(value.primitiveValue());
       } else {
@@ -559,6 +574,8 @@ public class Element extends Base implements NamedItem {
         else 
           childForValue.children.clear();
         childForValue.children.addAll(ve.children);
+      } else if (childForValue.children != null) {
+        childForValue.children.clear();
       }
     }
     return childForValue;
@@ -612,9 +629,9 @@ public class Element extends Base implements NamedItem {
         }
         Element ne = new Element(name, p).setFormat(format);
         ne.setType(type);
-        children.add(ne);
-        ne.index = children.getSizeByName(ne.getListName()) - 1;
-        return ne;
+        Element child = (Element) setProperty(name, ne);
+        child.index = children.getSizeByName(child.getListName()) - 1;
+        return child;
         
       }
     }

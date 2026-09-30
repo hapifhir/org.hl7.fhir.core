@@ -2256,19 +2256,39 @@ public class StructureMapUtilities {
       if (tgt.hasListMode(StructureMapTargetListMode.SHARE)) {
         v = sharedVars.get(VariableMode.SHARED, tgt.getListRuleId());
         if (v == null) {
-          v = dest.makeProperty(tgt.getElement().hashCode(), tgt.getElement());
+          v = makeTargetProperty(dest, tgt.getElement());
           sharedVars.add(VariableMode.SHARED, tgt.getListRuleId(), v);
         }
       } else if (tgt.hasElement()) {
-        v = dest.makeProperty(tgt.getElement().hashCode(), tgt.getElement());
+        v = makeTargetProperty(dest, tgt.getElement());
       } else {
         v = dest;
       }
     }
     if (tgt.hasVariable() && v != null)
       vars.add(VariableMode.OUTPUT, tgt.getVariable(), v);
+    debuggerPop(vars);
   }
-  
+
+  private Base makeTargetProperty(Base dest, String name) {
+    if (!(dest instanceof Element)) {
+      org.hl7.fhir.r5.model.Property p = dest.getNamedProperty(name.hashCode(), name, false);
+      if (p != null && p.getName().endsWith("[x]")
+          && name.equals(p.getName().replace("[x]", Utilities.capitalize(p.getTypeCode())))) {
+        if (!p.isList()) {
+          for (Base value : p.getValues()) {
+            if (value.fhirType().equals(p.getTypeCode())) {
+              return value;
+            }
+          }
+        }
+        String baseName = p.getName().replace("[x]", "");
+        return dest.setProperty(baseName.hashCode(), baseName, typeFactory(p.getTypeCode()));
+      }
+    }
+    return dest.makeProperty(name.hashCode(), name);
+  }
+
   private Base runTransform(String rulePath, TransformContext context, StructureMap map, StructureMapGroupComponent group, StructureMapGroupRuleTargetComponent tgt, Variables vars, Base dest, String element, String srcVar, boolean root) throws FHIRException {
     try {
       switch (tgt.getTransform()) {

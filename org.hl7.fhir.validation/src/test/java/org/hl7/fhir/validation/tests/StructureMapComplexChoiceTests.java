@@ -31,6 +31,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class StructureMapComplexChoiceTests {
 
@@ -76,6 +77,9 @@ class StructureMapComplexChoiceTests {
         }]
       }
     }
+    """;
+  private static final String REPLACEMENT_STRING_JSON = """
+    {"resourceType": "Observation", "valueString": "after"}
     """;
 
   private static org.hl7.fhir.r5.context.SimpleWorkerContext contextR5;
@@ -162,9 +166,123 @@ class StructureMapComplexChoiceTests {
         src -> tgt.valueString = 'before' "first";
         src -> tgt.valueString = 'after' "second";
         """,
+        INPUT_JSON, REPLACEMENT_STRING_JSON),
+      new TransformCase("replace bare value with another Quantity",
+        """
+        src -> tgt.value = qty(42, 'kg') "first";
+        src -> tgt.value = qty(43, 'kg') "second";
+        """,
         INPUT_JSON,
         """
-        {"resourceType": "Observation", "valueString": "after"}
+        {"resourceType": "Observation", "valueQuantity": {"value": 43, "unit": "kg"}}
+        """),
+      new TransformCase("replace bare Quantity value with bare string value",
+        """
+        src -> tgt.value = qty(42, 'kg') "first";
+        src -> tgt.value = 'after' "second";
+        """,
+        INPUT_JSON, REPLACEMENT_STRING_JSON),
+      new TransformCase("valueString overwrites valueQuantity",
+        """
+        src -> tgt.valueQuantity = qty(42, 'kg') "first";
+        src -> tgt.valueString = 'after' "second";
+        """,
+        INPUT_JSON, REPLACEMENT_STRING_JSON),
+      new TransformCase("valueString overwrites bare Quantity value",
+        """
+        src -> tgt.value = qty(42, 'kg') "first";
+        src -> tgt.valueString = 'after' "second";
+        """,
+        INPUT_JSON, REPLACEMENT_STRING_JSON),
+      new TransformCase("bare string value overwrites valueQuantity",
+        """
+        src -> tgt.valueQuantity = qty(42, 'kg') "first";
+        src -> tgt.value = 'after' "second";
+        """,
+        INPUT_JSON, REPLACEMENT_STRING_JSON),
+      new TransformCase("copied valueQuantity overwrites valueString",
+        """
+        src -> tgt.valueString = 'before' "first";
+        src.value as v -> tgt.valueQuantity = copy(v) "second";
+        """,
+        QUANTITY_JSON, QUANTITY_JSON),
+      new TransformCase("create choice parent using valueCodeableConcept shorthand",
+        """
+        src -> tgt.valueCodeableConcept as v then {
+          src -> v.coding = c('http://example.org/cs', 'test', 'Test Coding') "coding";
+        } "parent";
+        """,
+        INPUT_JSON,
+        """
+        {
+          "resourceType": "Observation",
+          "valueCodeableConcept": {
+            "coding": [{
+              "system": "http://example.org/cs",
+              "code": "test",
+              "display": "Test Coding"
+            }]
+          }
+        }
+        """),
+      new TransformCase("copy a choice value onto itself",
+        """
+        src -> tgt.value = qty(42, 'kg', 'http://unitsofmeasure.org', 'kg') as v then {
+          src -> tgt.value = copy(v) "copy";
+        } "quantity";
+        """,
+        INPUT_JSON, QUANTITY_JSON),
+      new TransformCase("replace Quantity without retaining old children",
+        """
+        src -> tgt.valueQuantity = qty(42, 'kg', 'http://unitsofmeasure.org', 'kg') "first";
+        src -> tgt.value = qty(43, 'g') "second";
+        """,
+        INPUT_JSON,
+        """
+        {"resourceType": "Observation", "valueQuantity": {"value": 43, "unit": "g"}}
+        """),
+      new TransformCase("repeating categories still append",
+        """
+        src -> tgt.category = cc('first') "first";
+        src -> tgt.category = cc('second') "second";
+        """,
+        INPUT_JSON,
+        """
+        {"resourceType": "Observation", "category": [{"text": "first"}, {"text": "second"}]}
+        """),
+      new TransformCase("choice shorthand reuses the existing datatype",
+        """
+        src -> tgt.valueCodeableConcept as first then {
+          src -> first.text = 'kept' "text";
+        } "first";
+        src -> tgt.valueCodeableConcept as second then {
+          src -> second.coding = c('http://example.org/cs', 'test', 'Test Coding') "coding";
+        } "second";
+        """,
+        INPUT_JSON,
+        """
+        {
+          "resourceType": "Observation",
+          "valueCodeableConcept": {
+            "text": "kept",
+            "coding": [{
+              "system": "http://example.org/cs",
+              "code": "test",
+              "display": "Test Coding"
+            }]
+          }
+        }
+        """),
+      new TransformCase("choice shorthand replaces a different datatype",
+        """
+        src -> tgt.value = qty(42, 'kg') "first";
+        src -> tgt.valueCodeableConcept as v then {
+          src -> v.text = 'after' "text";
+        } "second";
+        """,
+        INPUT_JSON,
+        """
+        {"resourceType": "Observation", "valueCodeableConcept": {"text": "after"}}
         """)
     ).flatMap(testCase -> Stream.of(Model.values()).flatMap(sourceModel ->
       Stream.of(Model.values()).map(targetModel ->
@@ -205,6 +323,17 @@ class StructureMapComplexChoiceTests {
 
     utils.transform(null, input, map, target);
 
+    var expected = assertInstanceOf(org.hl7.fhir.r5.model.Observation.class,
+      new org.hl7.fhir.r5.formats.JsonParser().parse(expectedJson));
+    org.hl7.fhir.r5.model.Base[] values = target instanceof org.hl7.fhir.r5.elementmodel.Element element
+      ? element.getChildren().stream().filter(child -> "value[x]".equals(child.getProperty().getName()))
+        .toArray(org.hl7.fhir.r5.model.Base[]::new)
+      : target.getProperty("value".hashCode(), "value", true);
+    assertEquals(expected.hasValue() ? 1 : 0, values.length, name + ": Observation.value[x] cardinality");
+    if (expected.hasValue()) {
+      assertEquals(expected.getValue().fhirType(), values[0].fhirType(), name + ": final choice datatype");
+    }
+
     var output = new ByteArrayOutputStream();
     if (target instanceof org.hl7.fhir.r5.elementmodel.Element element) {
       new org.hl7.fhir.r5.elementmodel.JsonParser(contextR5).compose(element, output,
@@ -229,6 +358,17 @@ class StructureMapComplexChoiceTests {
       : new Observation();
 
     utils.transform(null, input, map, target);
+
+    var expected = assertInstanceOf(Observation.class,
+      new org.hl7.fhir.model.core.formats.JsonParser(contextR6.getModelContext()).parse(expectedJson));
+    Base[] values = target instanceof Element element
+      ? element.getChildList().stream().filter(child -> "value[x]".equals(child.getProperty().getName()))
+        .toArray(Base[]::new)
+      : target.getNamedValue("value", true);
+    assertEquals(expected.hasValue() ? 1 : 0, values.length, name + ": Observation.value[x] cardinality");
+    if (expected.hasValue()) {
+      assertEquals(expected.getValue().fhirType(), values[0].fhirType(), name + ": final choice datatype");
+    }
 
     var output = new ByteArrayOutputStream();
     if (target instanceof Element element) {
@@ -335,5 +475,71 @@ class StructureMapComplexChoiceTests {
 
     assertTrue(error.getMessage().contains(name), error.getMessage());
     assertTrue(target.isEmpty(), "An invalid choice assignment must not populate the target");
+  }
+
+  @ParameterizedTest(name = "R5 element choice cardinality: 0..{0}")
+  @ValueSource(strings = {"1", "*"})
+  void testChoiceCardinalityR5(String max) throws Exception {
+    String name = "*".equals(max) ? "RepeatingChoice" : "SingleChoice";
+    var definition = new org.hl7.fhir.r5.model.StructureDefinition();
+    definition.setUrl("http://example.org/StructureDefinition/" + name).setName(name).setType(name);
+    definition.setKind(org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind.LOGICAL);
+    definition.getSnapshot().addElement().setPath(name).setMin(0).setMax("1");
+    var valueDefinition = definition.getSnapshot().addElement().setPath(name + ".value[x]").setMin(0).setMax(max);
+    valueDefinition.addType().setCode("Quantity");
+    valueDefinition.addType().setCode("string");
+    var target = org.hl7.fhir.r5.elementmodel.Manager.build(contextR5, definition);
+
+    target.setProperty("value".hashCode(), "value", new org.hl7.fhir.r5.model.Quantity().setValue(1));
+    target.setProperty("value".hashCode(), "value", new org.hl7.fhir.r5.model.StringType("middle"));
+    target.setProperty("value".hashCode(), "value", new org.hl7.fhir.r5.model.Quantity().setValue(2));
+
+    var values = target.getChildren();
+    assertEquals("*".equals(max) ? 3 : 1, values.size());
+    if ("*".equals(max)) {
+      assertEquals("Quantity", values.get(0).fhirType());
+      assertEquals("1", values.get(0).getNamedChild("value").primitiveValue());
+      assertEquals("valueString", values.get(1).getName());
+      assertEquals("string", values.get(1).fhirType());
+      assertEquals("middle", values.get(1).primitiveValue());
+    }
+    var last = values.get(values.size() - 1);
+    assertEquals("valueQuantity", last.getName());
+    assertEquals("Quantity", last.fhirType());
+    assertNull(last.getValue(), "The replaced primitive value must not remain on the Quantity");
+    assertEquals("2", last.getNamedChild("value").primitiveValue());
+  }
+
+  @ParameterizedTest(name = "R6 element choice cardinality: 0..{0}")
+  @ValueSource(strings = {"1", "*"})
+  void testChoiceCardinalityR6(String max) throws Exception {
+    String name = "*".equals(max) ? "RepeatingChoice" : "SingleChoice";
+    var definition = new StructureDefinition();
+    definition.setUrl("http://example.org/StructureDefinition/" + name).setName(name).setType(name);
+    definition.setKind(StructureDefinition.StructureDefinitionKind.LOGICAL);
+    definition.getSnapshot().addElement().setPath(name).setMin(0).setMax("1");
+    var valueDefinition = definition.getSnapshot().addElement().setPath(name + ".value[x]").setMin(0).setMax(max);
+    valueDefinition.addType().setCode("Quantity");
+    valueDefinition.addType().setCode("string");
+    var target = Manager.build(contextR6, definition);
+
+    target.setProperty("value", new org.hl7.fhir.model.core.Quantity().setValue(1));
+    target.setProperty("value", new org.hl7.fhir.model.core.StringType("middle"));
+    target.setProperty("value", new org.hl7.fhir.model.core.Quantity().setValue(2));
+
+    var values = target.getChildList();
+    assertEquals("*".equals(max) ? 3 : 1, values.size());
+    if ("*".equals(max)) {
+      assertEquals("Quantity", values.get(0).fhirType());
+      assertEquals("1", values.get(0).getNamedChild("value").primitiveValue());
+      assertEquals("valueString", values.get(1).getName());
+      assertEquals("string", values.get(1).fhirType());
+      assertEquals("middle", values.get(1).primitiveValue());
+    }
+    var last = values.get(values.size() - 1);
+    assertEquals("valueQuantity", last.getName());
+    assertEquals("Quantity", last.fhirType());
+    assertNull(last.getValue(), "The replaced primitive value must not remain on the Quantity");
+    assertEquals("2", last.getNamedChild("value").primitiveValue());
   }
 }

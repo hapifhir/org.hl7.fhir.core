@@ -1578,19 +1578,38 @@ public class StructureMapTools {
       if (tgt.hasListMode(StructureMap.StructureMapTargetListMode.SHARE)) {
         v = sharedVars.get(VariableMode.SHARED, tgt.getListRuleId());
         if (v == null) {
-          v = dest.makeProperty(tgt.getElementName());
+          v = makeTargetProperty(dest, tgt.getElementName());
           sharedVars.add(VariableMode.SHARED, tgt.getListRuleId(), v);
         }
       } else if (tgt.hasElement()) {
-        v = dest.makeProperty(tgt.getElementName());
+        v = makeTargetProperty(dest, tgt.getElementName());
       } else {
         v = dest;
       }
     }
     if (tgt.hasVariable() && v != null)
       vars.add(VariableMode.OUTPUT, tgt.getVariable(), v);
+    debuggerPop(vars);
   }
-  
+
+  private Base makeTargetProperty(Base dest, String name) {
+    if (!(dest instanceof Element)) {
+      org.hl7.fhir.model.Property p = dest.getNamedProperty(name, false);
+      if (p != null && p.getName().endsWith("[x]")
+          && name.equals(p.getName().replace("[x]", Utilities.capitalize(p.getTypeCode())))) {
+        if (!p.isList()) {
+          for (Base value : p.getValues()) {
+            if (value.fhirType().equals(p.getTypeCode())) {
+              return value;
+            }
+          }
+        }
+        return dest.setProperty(p.getName(), typeFactory(p.getTypeCode()));
+      }
+    }
+    return dest.makeProperty(name);
+  }
+
   /**
    * Work out the possible types for a child property of dest. In R5 this was 
    * Base.getTypesForProperty (with an element-model aware override on Element); this was 
