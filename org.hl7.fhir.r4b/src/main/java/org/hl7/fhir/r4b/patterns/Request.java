@@ -56,6 +56,7 @@ import org.hl7.fhir.r4b.model.UriType;
  * A pattern to be followed by resources that represent a specific proposal,
  * plan and/or order for some sort of action or service.
  */
+@Deprecated
 public interface Request extends PatternBase {
 
   public enum RequestStatus {

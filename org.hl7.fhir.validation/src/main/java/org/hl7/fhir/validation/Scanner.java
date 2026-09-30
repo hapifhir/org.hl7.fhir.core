@@ -143,7 +143,7 @@ public class Scanner {
     }
 
     StringBuilder sBuilder = new StringBuilder();
-    sBuilder.append("<html>");
+    sBuilder.append("<html lang=\"en\">");
     sBuilder.append("<head>");
     sBuilder.append("<title>Implementation Guide Scan</title>");
     sBuilder.append("<link rel=\"stylesheet\" href=\"fhir.css\"/>\r\n");
@@ -264,7 +264,7 @@ public class Scanner {
     String title = item.getTitle();
 
     StringBuilder sBuilder = new StringBuilder();
-    sBuilder.append("<html>");
+    sBuilder.append("<html lang=\"en\">");
     sBuilder.append("<head>");
     sBuilder.append("<title>" + Utilities.escapeXml(title) + "</title>");
     sBuilder.append("<link rel=\"stylesheet\" href=\"fhir.css\"/>\r\n");

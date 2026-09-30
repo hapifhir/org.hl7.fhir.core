@@ -980,7 +980,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if ("displayLanguage".equals(name)) {
       this.langs = new AcceptLanguageHeader(value.primitiveValue(), true);
       focus.getExpansion().getParameterList().removeIf(p -> p.getName().equals(name));
-      focus.getExpansion().addParameter().setName(name).setValue(new CodeType(value.primitiveValue()));
+      // echo it back in its normal form - "en,*;q=0", not whatever spacing the request used
+      focus.getExpansion().addParameter().setName(name).setValue(new CodeType(this.langs.toParameterValue()));
     }
     if ("designation".equals(name)) {
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")

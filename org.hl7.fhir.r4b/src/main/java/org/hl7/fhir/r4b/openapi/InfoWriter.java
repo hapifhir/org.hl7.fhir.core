@@ -36,6 +36,7 @@ import org.hl7.fhir.utilities.Utilities;
 import com.google.gson.JsonObject;
 
 
+@Deprecated
 public class InfoWriter extends BaseWriter {
 
   public InfoWriter(JsonObject object) {

@@ -29,6 +29,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
+@Deprecated
 public class CodeSystemComparer extends CanonicalResourceComparer {
 
   public class CodeSystemComparison extends CanonicalResourceComparison<CodeSystem> {

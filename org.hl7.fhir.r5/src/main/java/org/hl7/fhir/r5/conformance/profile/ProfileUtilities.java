@@ -223,7 +223,7 @@ public class ProfileUtilities {
 
   public enum AllowUnknownProfile {
     NONE, // exception if there's any unknown profiles
-    NON_EXTNEIONS, // don't raise an exception except on Extension (because more is going on there
+    NON_EXTENSIONS, // don't raise an exception except on Extension (because more is going on there)
     ALL_TYPES // allow any unknown profile. This is the default - see allowUnknownProfile below
   }
 
@@ -1044,7 +1044,7 @@ public class ProfileUtilities {
             for (UriType u : t.getProfile()) {
               StructureDefinition sd = findProfile(u, derived);
               if (sd == null) {
-                if (makeXVer().matchingUrl(u.getValue()) && xver.status(u.getValue()) == XVerExtensionStatus.Valid) {
+                if (getXver().matchingUrl(u.getValue()) && getXver().status(u.getValue()) == XVerExtensionStatus.Valid) {
                   sd = xver.getDefinition(u.getValue());
                 }
               }
@@ -1181,7 +1181,10 @@ public class ProfileUtilities {
     }
   }
 
-  private XVerExtensionManager makeXVer() {
+  /**
+   * The cross-version extension manager - the one provided with setXver(), or else one created on first use
+   */
+  public XVerExtensionManager getXver() {
     if (xver == null) {
       xver = XVerExtensionManagerFactory.createExtensionManager(context);
     }
@@ -1228,7 +1231,7 @@ public class ProfileUtilities {
     return binding.hasStrength() ? binding.getStrength().toCode() : "(none)";
   }
 
-  private void addMessage(ValidationMessage msg) {
+  void addMessage(ValidationMessage msg) {
     messages.add(msg);
     if (msg.getLevel() == IssueSeverity.ERROR && wantThrowExceptions) {
       throw new DefinitionException(msg.getMessage());   
@@ -1741,7 +1744,7 @@ public class ProfileUtilities {
 
   protected BaseTypeSlice chooseMatchingBaseSlice(List<BaseTypeSlice> baseSlices, String type) {
     for (BaseTypeSlice bs : baseSlices) {
-      if (bs.getType().equals(type)) {
+      if (type != null && type.equals(bs.getType())) { // a base slice with no type matches nothing
         return bs;
       }
     }
@@ -1959,11 +1962,21 @@ public class ProfileUtilities {
   }
 
 
+  private boolean hasTypeProfile(ElementDefinition ed) {
+    for (TypeRefComponent tr : ed.getType()) {
+      if (tr.hasProfile()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   protected boolean checkExtensionDoco(ElementDefinition base) {
     // see task 3970. For an extension, there's no point copying across all the underlying definitional stuff
     boolean isExtension = (base.getPath().equals("Extension") || base.getPath().endsWith(".extension") || base.getPath().endsWith(".modifierExtension")) &&
           (!base.hasBase() || !"II.extension".equals(base.getBase().getPath()));
-    if (isExtension) {
+    // but an inherited sub-extension defined inline in a complex extension (a slice without a profile) is documented by its own definition, so keep that
+    if (isExtension && !(base.hasUserData(UserDataNames.SNAPSHOT_INHERITED_INLINE_EXTENSION) && !hasTypeProfile(base))) {
       base.setDefinition("An Extension");
       base.setShort("Extension");
       base.setCommentElement(null);
@@ -2089,7 +2102,7 @@ public class ProfileUtilities {
     if (type.hasProfile()) {
       sd = findProfile(type.getProfile().get(0), src);
       if (sd == null) {
-        if (makeXVer().matchingUrl(type.getProfile().get(0).getValue()) && xver.status(type.getProfile().get(0).getValue()) == XVerExtensionStatus.Valid) {
+        if (getXver().matchingUrl(type.getProfile().get(0).getValue()) && getXver().status(type.getProfile().get(0).getValue()) == XVerExtensionStatus.Valid) {
           sd = xver.getDefinition(type.getProfile().get(0).getValue());
           generateSnapshot(context.fetchTypeDefinition("Extension"), sd, sd.getUrl(), webUrl, sd.getName());
         }
@@ -2641,7 +2654,7 @@ public class ProfileUtilities {
       String pu = source.getTypeFirstRep().getProfile().get(0).getValue();
       profile = findProfile(source.getTypeFirstRep().getProfile().get(0), derivedSrc);
       if (profile == null) {
-        if (makeXVer().matchingUrl(pu)) {
+        if (getXver().matchingUrl(pu)) {
           switch (xver.status(pu)) {
             case BadVersion:
               throw new FHIRException("Reference to invalid version in extension url " + pu);
@@ -2843,7 +2856,10 @@ public class ProfileUtilities {
       derived.getExample().removeAll(toDelD);
 
       if (derived.hasMaxLengthElement()) {
-        if (!Base.compareDeep(derived.getMaxLengthElement(), base.getMaxLengthElement(), false))
+        if (base.hasMaxLength() && derived.getMaxLength() > base.getMaxLength()) {
+          // the tightest bound wins: a profile can't loosen what it inherits
+          addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), context.formatMessage(I18nConstants.SNAPSHOT_DIFF_LOOSENS, derived.getPath(), "maxLength", derived.getMaxLengthElement().primitiveValue(), base.getMaxLengthElement().primitiveValue()), IssueSeverity.WARNING));
+        } else if (!Base.compareDeep(derived.getMaxLengthElement(), base.getMaxLengthElement(), false))
           base.setMaxLengthElement(derived.getMaxLengthElement().copy());
         else if (trimDifferential)
           derived.setMaxLengthElement(null);
@@ -2852,7 +2868,11 @@ public class ProfileUtilities {
       }
   
       if (derived.hasMaxValue()) {
-        if (!Base.compareDeep(derived.getMaxValue(), base.getMaxValue(), false))
+        Integer cmax = base.hasMaxValue() ? TypeProfileRootMerger.compareValues(derived.getMaxValue(), base.getMaxValue()) : null;
+        if (cmax != null && cmax > 0) {
+          // the tightest bound wins: a profile can't loosen what it inherits
+          addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), context.formatMessage(I18nConstants.SNAPSHOT_DIFF_LOOSENS, derived.getPath(), "maxValue", derived.getMaxValue().primitiveValue(), base.getMaxValue().primitiveValue()), IssueSeverity.WARNING));
+        } else if (!Base.compareDeep(derived.getMaxValue(), base.getMaxValue(), false))
           base.setMaxValue(derived.getMaxValue().copy());
         else if (trimDifferential)
           derived.setMaxValue(null);
@@ -2861,7 +2881,11 @@ public class ProfileUtilities {
       }
   
       if (derived.hasMinValue()) {
-        if (!Base.compareDeep(derived.getMinValue(), base.getMinValue(), false))
+        Integer cmin = base.hasMinValue() ? TypeProfileRootMerger.compareValues(derived.getMinValue(), base.getMinValue()) : null;
+        if (cmin != null && cmin < 0) {
+          // the tightest bound wins: a profile can't loosen what it inherits
+          addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), context.formatMessage(I18nConstants.SNAPSHOT_DIFF_LOOSENS, derived.getPath(), "minValue", derived.getMinValue().primitiveValue(), base.getMinValue().primitiveValue()), IssueSeverity.WARNING));
+        } else if (!Base.compareDeep(derived.getMinValue(), base.getMinValue(), false))
           base.setMinValue(derived.getMinValue().copy());
         else if (trimDifferential)
           derived.setMinValue(null);
@@ -3109,6 +3133,13 @@ public class ProfileUtilities {
           if (!base.hasConstraint(s.getKey())) {
             ElementDefinitionConstraintComponent inv = s.copy();
             base.getConstraint().add(inv);
+          } else {
+            // same key: it has to be the same constraint
+            for (ElementDefinitionConstraintComponent bc : base.getConstraint()) {
+              if (s.getKey().equals(bc.getKey()) && s.hasExpression() && bc.hasExpression() && !s.getExpression().trim().equals(bc.getExpression().trim())) {
+                addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), context.formatMessage(I18nConstants.SNAPSHOT_CONSTRAINT_KEY_CONFLICT, s.getKey(), derived.getPath(), s.getExpression(), bc.getExpression()), IssueSeverity.ERROR));
+              }
+            }
           }
       	}
       }
@@ -3378,11 +3409,19 @@ public class ProfileUtilities {
   }
 
   private boolean hasBindableType(ElementDefinition ed) {
+    List<String> codes = new ArrayList<>();
     for (TypeRefComponent tr : ed.getType()) {
-      if (Utilities.existsInList(tr.getWorkingCode(), "Coding", "CodeableConcept", "Quantity", "uri", "string", "code", "CodeableReference")) {
+      codes.add(tr.getWorkingCode());
+    }
+    if (codes.isEmpty() && ed.hasPath() && !ed.getPath().contains(".")) {
+      // the root element has no type: it is the type (e.g. the root of a CodeableConcept profile)
+      codes.add(ed.getPath());
+    }
+    for (String code : codes) {
+      if (Utilities.existsInList(code, "Coding", "CodeableConcept", "Quantity", "uri", "string", "code", "CodeableReference")) {
         return true;
       }
-      StructureDefinition sd = context.fetchTypeDefinition(tr.getCode());
+      StructureDefinition sd = context.fetchTypeDefinition(code);
       if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_BINDING_STYLE)) {
         return true;
       }
@@ -4847,10 +4886,6 @@ public class ProfileUtilities {
     e.setMin(0); 
     e.setMax("*"); 
     return base;
-  }
-
-  public XVerExtensionManager getXver() {
-    return xver;
   }
 
   public ProfileUtilities setXver(XVerExtensionManager xver) {

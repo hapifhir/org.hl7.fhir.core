@@ -5241,7 +5241,7 @@ msgstr "Tuzilmalar"
 # STRUC_DEF_SUIT_SHALL_CODE
 #: STRUC_DEF_SUIT_SHALL_CODE
 msgid "Unless not suitable, these codes SHALL be taken from"
-msgstr "Agar mos kelmasa, ushbu kodlar majburiy ravishda quyidagidan olinadi"
+msgstr "Mos kelmaydigan hollar bundan mustasno, ushbu kodlar majburiy ravishda quyidagidan olinadi"
 
 # STRUC_DEF_TARG_SUPP
 #: STRUC_DEF_TARG_SUPP

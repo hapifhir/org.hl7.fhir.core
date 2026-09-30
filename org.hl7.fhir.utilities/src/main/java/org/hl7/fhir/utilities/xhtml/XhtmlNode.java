@@ -872,10 +872,13 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
 
-  public XhtmlNode input(String name, String type, String placeholder, int size) {
+  public XhtmlNode input(String name, String label, String type, String placeholder, int size) {
     XhtmlNode p = new XhtmlNode(NodeType.Element, "input");
     if (name != null) {
       p.attribute("name", name);
+    }
+    if (label != null) {
+      p.attribute("aria-label", label);
     }
     p.attribute("type", type);
     if (placeholder != null) {
@@ -888,10 +891,13 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return p;
   }
 
-  public XhtmlNode select(String name) {
+  public XhtmlNode select(String name, String label) {
     XhtmlNode p = new XhtmlNode(NodeType.Element, "select");
     p.attribute("name", name);
     p.attribute("size", "1");
+    if (label != null) {
+      p.attribute("aria-label", label);
+    }
     addChildNode(p);
     return p;
   }
@@ -1242,13 +1248,16 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
 
-  public XhtmlNode button(String class_, String title) {
+  public XhtmlNode button(String class_, String alt, String title) {
     XhtmlNode btn = addTag("button");
     if (class_ != null) {
       btn.attribute("class", class_);
     }
     if (title != null) {
       btn.attribute("title", title);
+    }
+    if (alt != null) {
+      btn.attribute("aria-label", alt);
     }
     return btn;
   }

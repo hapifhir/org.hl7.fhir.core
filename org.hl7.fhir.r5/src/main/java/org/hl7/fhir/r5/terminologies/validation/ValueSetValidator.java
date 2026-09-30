@@ -1603,7 +1603,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       for (SystemWithVersion sp : sys) {
         systems.add(sp.system()+(sp.version() == null ? "" : "|"+sp.version()));
       }
-      String slist = CommaSeparatedStringBuilder.join(", ", Utilities.sorted(systems));
+      String slist = CommaSeparatedStringBuilder.join(",", Utilities.sorted(systems));
       problems.add(new StringWithCodes(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES, code, valueset.getVersionedUrl(), slist), I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES));
       return null;
     } else {
