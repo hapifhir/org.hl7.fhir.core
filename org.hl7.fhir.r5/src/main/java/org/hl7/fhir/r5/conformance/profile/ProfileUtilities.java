@@ -218,14 +218,6 @@ public class ProfileUtilities {
     public int getIndex() {
       return index;
     }
-
-    public int getCountMin() {
-      return countMin;
-    }
-
-    public int getCountMax() {
-      return countMax;
-    }
     
   }
 
@@ -1161,7 +1153,8 @@ public class ProfileUtilities {
     if (count > -1 && repeats) {
       if (slice.getFocus().hasUserData(UserDataNames.SNAPSHOT_auto_added_slicing)) {
         slice.getFocus().setMin(count);
-      } else {
+      } else if ("*".equals(slice.getFocus().getMax()) || !slice.getFocus().hasMax() || count <= Integer.parseInt(slice.getFocus().getMax())) {
+        // if the slices need more than the slicer allows, they can't fit at all, and the validator reports that (SD_SLICE_MIN_EXCEEDS_SLICER_MAX)
         String msg = context.formatMessage(I18nConstants.SD_SLICE_MIN_EXCEEDS_SLICER,
             slice.getFocus().getId(), slice.getFocus().getMin(), count);
         addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
@@ -1174,14 +1167,6 @@ public class ProfileUtilities {
           slice.getFocus().getId(), slice.getFocus().getMax(), count);
       addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
           "StructureDefinition.snapshot.element["+slice.getIndex()+"]", msg, ValidationMessage.IssueSeverity.INFORMATION));                                            
-    }
-    if (!slice.checkMinMax()) {
-      // report the sums, which is what checkMinMax compares - the entry's own min and max
-      // are not the numbers that failed
-      String msg = context.formatMessage(I18nConstants.SD_SLICE_MIN_EXCEEDS_MAX,
-          slice.getFocus().getId(), slice.getCountMin(), slice.getCountMax());
-      addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, 
-          "StructureDefinition.snapshot.element["+slice.getIndex()+"]", msg, ValidationMessage.IssueSeverity.WARNING));                                                            
     }
   }
 

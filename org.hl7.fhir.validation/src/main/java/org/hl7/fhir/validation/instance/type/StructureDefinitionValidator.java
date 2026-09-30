@@ -967,7 +967,7 @@ public class StructureDefinitionValidator extends BaseValidator {
           }
         }
       }
-      if (minFrom.hasMin() && maxFrom.hasMax() && !"*".equals(maxFrom.getMax())) {
+      if (minFrom.hasMin() && maxFrom.hasMax() && !"*".equals(maxFrom.getMax()) && !sliceExceedsSlicer(ed, byId)) {
         ok = rule(errors, "2026-09-29", IssueType.BUSINESSRULE, stack, minFrom.getMin() <= maxFrom.getMaxAsInt(), I18nConstants.SD_CARDINALITY_EMPTY,
           ed.getId(), minFrom.getMin(), minFrom.getId(), maxFrom.getMax(), maxFrom.getId()) && ok;
       }
@@ -984,6 +984,21 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  /**
+   * A slice whose minimum is more than its slicer's maximum: the slicer check (SD_SLICE_MIN_EXCEEDS_SLICER_MAX) reports
+   * that, so it isn't reported again for the slice (whose maximum is usually just the slicer's maximum anyway)
+   */
+  private boolean sliceExceedsSlicer(ElementDefinition ed, Map<String, ElementDefinition> byId) {
+    String t = tail(ed.getId());
+    if (!t.contains(":") || !ed.hasMin()) {
+      return false;
+    }
+    String id = ed.getId();
+    String slicerId = t.contains("/") ? id.substring(0, id.lastIndexOf("/")) : id.substring(0, id.lastIndexOf(":"));
+    ElementDefinition slicer = byId.get(slicerId);
+    return slicer != null && slicer.hasSlicing() && slicer.hasMax() && !"*".equals(slicer.getMax()) && ed.getMin() > slicer.getMaxAsInt();
   }
 
   private String tail(String id) {
