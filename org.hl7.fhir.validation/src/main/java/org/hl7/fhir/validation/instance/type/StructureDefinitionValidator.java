@@ -663,12 +663,15 @@ public class StructureDefinitionValidator extends BaseValidator {
     boolean ok = true;
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path", false);
-    ok = rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), typeName == null || path == null || path.equals(typeName) || path.startsWith(typeName+"."), I18nConstants.SD_PATH_TYPE_MISMATCH, typeName, path) && ok;
+    if (path == null) {
+      throw new FHIRException("Unable to process Element: no path provided");
+    }
+    ok = rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), typeName == null || path.equals(typeName) || path.startsWith(typeName+"."), I18nConstants.SD_PATH_TYPE_MISMATCH, typeName, path) && ok;
     if (!snapshot) {
       ok = rule(errors, "2023-01-17", IssueType.INVALID, stack.getLiteralPath(), path.contains(".") || !element.hasChild("slicing", false), I18nConstants.SD_NO_SLICING_ON_ROOT, path) && ok;
     }
     ok = rule(errors, "2023-05-22", IssueType.NOTFOUND, stack.getLiteralPath(), snapshot || !constraint || !element.hasChild("meaningWhenMissing", false) || meaningWhenMissingAllowed(element), I18nConstants.SD_ELEMENT_NOT_IN_CONSTRAINT, "meaningWhenMissing", path) && ok;
-    if (!snapshot && path != null && !path.contains(".")) {
+    if (!snapshot && !path.contains(".")) {
       ok = validateRootElement(errors, element, stack, path, logical, constraint, "Extension".equals(typeName), base) && ok;
     }
 
@@ -809,7 +812,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     // in a type slice, the constraints that only make sense for some types might have been inherited from the unsliced element
     // (older snapshot generators copied them into every type slice, including the implied ones). They only apply to the types
     // that can have them, so on a type slice they're only an error when the differential states them on the slice
-    boolean typeSlice = snapshot && diffById != null && element.hasChild("sliceName", false) && path != null && path.endsWith("[x]");
+    boolean typeSlice = snapshot && diffById != null && element.hasChild("sliceName", false) && path.endsWith("[x]");
     Element diffElement = typeSlice ? diffById.get(element.getNamedChildValue("id", false)) : null;
     if (element.hasChild("binding", false)) {
       boolean checkBinding = statedOnSlice(typeSlice, diffElement, "binding", false);
