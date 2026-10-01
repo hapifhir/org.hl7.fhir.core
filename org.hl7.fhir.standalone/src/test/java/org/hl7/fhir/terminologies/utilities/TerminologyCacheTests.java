@@ -30,8 +30,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -79,11 +81,31 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     return terminologyCache;
   }
 
-  // A fresh temp directory yields a genuinely empty cache. NOTE: new TerminologyCache(lock, null)
-  // does NOT - null resolves to the shared [tmp]/default-tx-cache and loads whatever is on disk,
-  // so any test that asserts on cache size/contents must use an isolated directory like this.
+  // A fresh temp directory yields a genuinely empty cache that is kept on disk. (A null folder is
+  // also empty now, but memory only - it no longer resolves to a shared [tmp]/default-tx-cache.)
   private TerminologyCache createEmptyTerminologyCache() throws IOException {
     return new TerminologyCache(new Object(), createTempCacheDirectory().toString(), TestingUtilities.getSharedWorkerContext());
+  }
+
+  @Test
+  void testNullFolderIsMemoryOnly() throws IOException {
+    TerminologyCache cache = new TerminologyCache(new Object(), null, TestingUtilities.getSharedWorkerContext());
+    assertNull(cache.getFolder());
+    TerminologyCache legacy = new TerminologyCache(new Object(), "n/a", TestingUtilities.getSharedWorkerContext());
+    assertNull(legacy.getFolder());
+  }
+
+  @Test
+  void testDefaultFolderIsPerFhirVersion() throws IOException {
+    assertTrue(TerminologyCache.defaultFolder("1.0.2").endsWith(File.separator+"default-tx-cache"+File.separator+"r2"));
+    assertTrue(TerminologyCache.defaultFolder("3.0.2").endsWith(File.separator+"r3"));
+    assertTrue(TerminologyCache.defaultFolder("4.0.1").endsWith(File.separator+"r4"));
+    assertTrue(TerminologyCache.defaultFolder("4.0").endsWith(File.separator+"r4"));
+    assertTrue(TerminologyCache.defaultFolder("4.3.0").endsWith(File.separator+"r4"));
+    assertTrue(TerminologyCache.defaultFolder("5.0.0").endsWith(File.separator+"r5"));
+    assertTrue(TerminologyCache.defaultFolder("6.0.0-ballot3").endsWith(File.separator+"r6"));
+    assertThrows(org.hl7.fhir.exceptions.FHIRException.class, () -> TerminologyCache.defaultFolder(null));
+    assertThrows(org.hl7.fhir.exceptions.FHIRException.class, () -> TerminologyCache.defaultFolder("banana"));
   }
 
   public Path createTempCacheDirectory() throws IOException {
@@ -968,10 +990,14 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
   class HashJsonSpeedTests {
     private static Stream<Arguments> hashJsonSpeedInputs() {
       return Stream.of(
-        Arguments.of(1_000_000, 1_000),
-        Arguments.of(100_000, 10_000),
-        Arguments.of(10_000, 100_000),
-        Arguments.of(1_000, 1_000_000)
+        // 100M characters a case: about 0.15s on a developer machine, so the timeout leaves
+        // plenty of room for a slow, busy CI agent while still catching a hash that has gone
+        // quadratic or started allocating. (At 1G characters a case, ~1.5s locally, the first
+        // case timed out on the pipeline.)
+        Arguments.of(1_000_000, 100),
+        Arguments.of(100_000, 1_000),
+        Arguments.of(10_000, 10_000),
+        Arguments.of(1_000, 100_000)
       );
     }
 
@@ -996,6 +1022,334 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       for (int i = 0; i < iterations; i++) {
         cache.hashJson(input);
       }
+    }
+  }
+
+  @Nested
+  class DeferredFlushTests {
+
+    private static final long WINDOW = 300;
+
+    private Path folder;
+
+    @BeforeEach
+    void setUp() throws IOException {
+      folder = createTempCacheDirectory();
+    }
+
+    private TerminologyCache cache(boolean deferredFlush) throws IOException {
+      TerminologyCache cache = new TerminologyCache(new Object(), folder.toString(), TestingUtilities.getSharedWorkerContext(), deferredFlush);
+      cache.setSaveDelayMs(WINDOW);
+      return cache;
+    }
+
+    private CacheToken token(TerminologyCache cache, int i) {
+      return cache.generateValidationToken(CacheTestUtils.validationOptions,
+          new Coding().setSystem("http://example.org/sys").setCode("code-" + i), new ValueSet(), new Parameters());
+    }
+
+    private void store(TerminologyCache cache, int i) {
+      cache.cacheValidation(token(cache, i), new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "m" + i, null), true);
+    }
+
+    /** what a fresh cache over the folder finds on disk */
+    private boolean onDisk(int i) throws IOException {
+      TerminologyCache fresh = new TerminologyCache(new Object(), folder.toString(), TestingUtilities.getSharedWorkerContext());
+      return fresh.getValidation(token(fresh, i)) != null;
+    }
+
+    private boolean waitForDisk(int i, long timeoutMs) throws IOException, InterruptedException {
+      long end = System.currentTimeMillis() + timeoutMs;
+      while (System.currentTimeMillis() < end) {
+        if (onDisk(i)) {
+          return true;
+        }
+        Thread.sleep(50);
+      }
+      return onDisk(i);
+    }
+
+    private void storeTwoAndDrop(boolean deferredFlush) throws IOException {
+      TerminologyCache cache = cache(deferredFlush);
+      store(cache, 1); // the first store in a session is written straight away
+      store(cache, 2); // this one waits out the window
+    }
+
+    @Test
+    void testPendingEntryIsNotWrittenBeforeTheWindowCloses() throws IOException {
+      TerminologyCache cache = cache(true);
+      cache.setSaveDelayMs(60000);
+      store(cache, 1);
+      store(cache, 2);
+      assertTrue(onDisk(1));
+      assertFalse(onDisk(2));
+      cache.save();
+      assertTrue(onDisk(2));
+    }
+
+    @Test
+    void testDeferredFlushWritesPendingEntryOfADroppedCache() throws IOException, InterruptedException {
+      storeTwoAndDrop(true);
+      System.gc();
+      assertTrue(waitForDisk(2, 5000), "the pending entry should be written when the window closes");
+      assertTrue(onDisk(1));
+    }
+
+    @Test
+    void testWithoutDeferredFlushPendingEntryOfADroppedCacheIsLost() throws IOException, InterruptedException {
+      storeTwoAndDrop(false);
+      System.gc();
+      Thread.sleep(WINDOW * 3);
+      assertTrue(onDisk(1));
+      assertFalse(onDisk(2), "by default, nothing writes the pending entry of a cache that was dropped");
+    }
+
+    @Test
+    void testUnloadedCacheIsNotFlushedAgain() throws IOException, InterruptedException {
+      TerminologyCache cache = cache(true);
+      store(cache, 1); // written straight away
+      store(cache, 2); // pending, with a deferred flush scheduled
+      // Swap the cache folder for a plain file of the same name, so the save in unload() fails
+      // and the cache is left dirty. (If that save succeeded, it would leave nothing for a
+      // leftover flush to write, and this test would prove nothing.)
+      org.hl7.fhir.utilities.FileUtilities.clearDirectory(folder.toString());
+      Files.delete(folder);
+      Files.createFile(folder);
+      cache.unload();
+      // put back an empty folder for the pending flush, if there still is one, to write into
+      Files.delete(folder);
+      Files.createDirectory(folder);
+      Thread.sleep(WINDOW * 3);
+      assertFalse(onDisk(1), "a flush left over from the unloaded cache must not write it out");
+      assertFalse(onDisk(2), "a flush left over from the unloaded cache must not write it out");
+    }
+  }
+
+  /**
+   * Two TerminologyCache instances over one folder stand in for two processes sharing a
+   * terminology cache - two validator runs, or a validator alongside an IG publisher. Each
+   * saves whenever it feels like it, so a save has to fold in whatever the other one has
+   * written since, rather than overwriting the file with its own view of the world.
+   */
+  @Nested
+  class SharedCacheFolderTests {
+
+    private Path folder;
+
+    @BeforeEach
+    void setUp() throws IOException {
+      folder = createTempCacheDirectory();
+    }
+
+    private TerminologyCache cache() throws IOException {
+      return new TerminologyCache(new Object(), folder.toString(), TestingUtilities.getSharedWorkerContext());
+    }
+
+    private Coding coding(int i) {
+      return new Coding().setSystem("http://example.org/sys").setCode("code-" + i);
+    }
+
+    private void cache(TerminologyCache cache, int i, String message) {
+      CacheToken token = cache.generateValidationToken(CacheTestUtils.validationOptions,
+          coding(i), new ValueSet(), new Parameters());
+      cache.cacheValidation(token, new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, message, null), true);
+    }
+
+    private String read(TerminologyCache cache, int i) {
+      CacheToken token = cache.generateValidationToken(CacheTestUtils.validationOptions,
+          coding(i), new ValueSet(), new Parameters());
+      ValidationResult result = cache.getValidation(token);
+      return result == null ? null : result.getMessage();
+    }
+
+    private int countPresent(TerminologyCache cache, int from, int to) {
+      int found = 0;
+      for (int i = from; i < to; i++) {
+        if (read(cache, i) != null) {
+          found++;
+        }
+      }
+      return found;
+    }
+
+    private Path cacheFile() throws IOException {
+      try (Stream<Path> files = Files.list(folder)) {
+        return files.filter(f -> f.toString().endsWith(".cache")).findFirst().orElseThrow();
+      }
+    }
+
+    private Path nonceFile() throws IOException {
+      try (Stream<Path> files = Files.list(folder)) {
+        return files.filter(f -> f.toString().endsWith(".cache.nonce")).findFirst().orElseThrow();
+      }
+    }
+
+    @Test
+    void testEntriesWrittenByAnotherProcessSurviveOurSave() throws IOException {
+      TerminologyCache a = cache();
+      TerminologyCache b = cache(); // both opened while the folder was still empty
+
+      for (int i = 0; i < 10; i++) {
+        cache(a, i, "a" + i);
+      }
+      a.save();
+      for (int i = 10; i < 20; i++) {
+        cache(b, i, "b" + i);
+      }
+      b.save(); // b has never seen a's entries, and must not drop them
+
+      assertEquals(20, countPresent(cache(), 0, 20));
+    }
+
+    @Test
+    void testAStaleWriterMergesRatherThanRevertingTheFile() throws IOException {
+      TerminologyCache a = cache();
+      TerminologyCache b = cache();
+
+      cache(a, 0, "a0");
+      a.save();
+      cache(b, 1, "b1");
+      b.save(); // file is now ahead of what a knows about
+
+      cache(a, 2, "a2");
+      a.save();
+
+      assertEquals(3, countPresent(cache(), 0, 3));
+    }
+
+    @Test
+    void testOurOwnAnswerWinsWhenBothHoldTheSameRequest() throws IOException {
+      TerminologyCache a = cache();
+      TerminologyCache b = cache();
+
+      cache(a, 0, "from-a");
+      a.save();
+      cache(b, 0, "from-b");
+      b.save(); // b asked the server more recently, so b's answer is the one to keep
+
+      assertEquals("from-b", read(cache(), 0));
+    }
+
+    @Test
+    void testMergeOverflowingTheCapEvictsDiskEntriesNotJustFetchedOnes() throws IOException {
+      int previousLimit = TerminologyCache.getMaxEntriesPerCache();
+      TerminologyCache.setMaxEntriesPerCache(12);
+      try {
+        TerminologyCache a = cache();
+        TerminologyCache b = cache();
+
+        for (int i = 0; i < 10; i++) {
+          cache(a, i, "a" + i);
+        }
+        a.save();
+        for (int i = 10; i < 20; i++) {
+          cache(b, i, "b" + i);
+        }
+        b.save(); // 20 entries merged into a cache that holds 12
+
+        TerminologyCache reloaded = cache();
+        int fresh = countPresent(reloaded, 10, 20);
+        int fromDisk = countPresent(reloaded, 0, 10);
+        assertEquals(10, fresh, "everything the saving process had just fetched should be kept");
+        assertTrue(fromDisk > 0, "older entries should be trimmed, not all discarded");
+        assertTrue(fresh + fromDisk <= 12, "the entry cap should still hold");
+      } finally {
+        TerminologyCache.setMaxEntriesPerCache(previousLimit);
+      }
+    }
+
+    @Test
+    void testTheNonceGoesInAPartnerFileAndNotInTheCache() throws IOException {
+      TerminologyCache a = cache();
+      cache(a, 0, "a0");
+      a.save();
+
+      // the cache file itself must be free of per-save churn: these folders live in version
+      // control (core's own test txCache, IG repos, the auto-builder's cache repo)
+      List<String> lines = Files.readAllLines(cacheFile());
+      assertTrue(lines.get(0).startsWith("-----"), "the entry marker should be the first line");
+      assertTrue(Files.readAllLines(cacheFile()).stream().noneMatch(l -> l.contains("nonce")),
+          "the cache file should carry no nonce at all");
+
+      assertEquals(cacheFile().getFileName().toString() + ".nonce", nonceFile().getFileName().toString());
+      assertTrue(Files.readAllLines(nonceFile()).size() > 1, "the nonce file should say what it is");
+      try (Stream<Path> files = Files.list(folder)) {
+        assertTrue(files.noneMatch(f -> f.toString().endsWith(".tmp")), "no scratch file should be left behind");
+      }
+    }
+
+    @Test
+    void testSavingTheSameEntriesTwiceLeavesTheCacheFileByteIdentical() throws IOException {
+      TerminologyCache a = cache();
+      cache(a, 0, "a0");
+      a.save();
+      byte[] first = Files.readAllBytes(cacheFile());
+
+      cache(a, 0, "a0"); // same request, same answer: nothing has actually changed
+      a.save();
+
+      assertArrayEquals(first, Files.readAllBytes(cacheFile()),
+          "a save that learns nothing new should not produce a diff");
+    }
+
+    @Test
+    void testACacheWithNoNonceFileIsMergedRatherThanClobbered() throws IOException {
+      TerminologyCache stale = cache(); // opened while the folder was empty: it knows no nonce
+
+      TerminologyCache other = cache();
+      cache(other, 0, "from-other");
+      other.save();
+
+      Files.delete(nonceFile()); // as a fresh clone, or a tidied cache folder, has it
+
+      cache(stale, 1, "from-stale");
+      stale.save();
+
+      assertEquals(2, countPresent(cache(), 0, 2));
+    }
+
+    @Test
+    void testACacheRewrittenWithoutItsNonceIsMergedRatherThanClobbered() throws IOException {
+      TerminologyCache a = cache();
+      cache(a, 0, "a0");
+      a.save();
+      byte[] ourNonce = Files.readAllBytes(nonceFile());
+
+      TerminologyCache b = cache();
+      cache(b, 1, "b1");
+      b.save();
+
+      // the cache has moved on but our nonce file has not - what a checkout of a
+      // version-controlled cache folder, a hand edit, or an older build all look like
+      Files.write(nonceFile(), ourNonce);
+
+      cache(a, 2, "a2");
+      a.save();
+
+      assertEquals(3, countPresent(cache(), 0, 3));
+    }
+
+    @Test
+    void testALegacyInFileNonceHeaderIsIgnoredAndDropped() throws IOException {
+      TerminologyCache a = cache();
+      cache(a, 0, "a0");
+      a.save();
+
+      // as a build between #2332 and the move to a partner file left it
+      Files.delete(nonceFile());
+      List<String> lines = new ArrayList<>(Files.readAllLines(cacheFile()));
+      lines.add(0, "# nonce: 8e2b4a1c-legacy");
+      Files.write(cacheFile(), String.join("\r\n", lines).getBytes(StandardCharsets.UTF_8));
+
+      TerminologyCache reader = cache();
+      assertEquals("a0", read(reader, 0), "the header should not stop the file loading");
+
+      cache(reader, 1, "a1");
+      reader.save();
+
+      assertTrue(Files.readAllLines(cacheFile()).get(0).startsWith("-----"),
+          "rewriting the file should drop the legacy header");
+      assertEquals(2, countPresent(cache(), 0, 2));
     }
   }
 }
