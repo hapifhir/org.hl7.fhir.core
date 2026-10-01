@@ -712,20 +712,39 @@ public class XhtmlParser {
   }
 
 
-  private void parseScriptInner(XhtmlNode node) throws FHIRFormatError, IOException {
+  /**
+   * The content of <script> and <style> is raw text, not markup: read everything up to the matching close
+   * tag as text. (Otherwise a css comment or a data: url in a stylesheet that mentions an element - e.g.
+   * "inside a filter <th>" - gets parsed as an element, and the page is reported as not well formed.)
+   */
+  private void parseRawTextNode(XhtmlNode node) throws FHIRFormatError, IOException {
+    String end = "</"+node.getName()+">";
     StringBuilder s = new StringBuilder();
-    while (peekChar() != END_OF_CHARS && !s.toString().endsWith("</script>")) {
+    while (peekChar() != END_OF_CHARS && !endsWith(s, end)) {
       s.append(readChar());
     }      
     String ss = s.toString();
-    if (ss.length() >= 9) {
-      ss = ss.substring(0, ss.length()-9);
+    if (endsWith(s, end)) {
+      ss = ss.substring(0, ss.length()-end.length());
     }
     String t = isTrimWhitespace() ? ss.trim() : ss;
     if (t.length() > 0) {
       lastText = t;
       node.addText(t).setLocation(markLocation());
     }
+  }
+
+  private static boolean endsWith(StringBuilder b, String end) {
+    int n = b.length() - end.length();
+    if (n < 0) {
+      return false;
+    }
+    for (int i = 0; i < end.length(); i++) {
+      if (Character.toLowerCase(b.charAt(n+i)) != Character.toLowerCase(end.charAt(i))) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private void parseElement(XhtmlNode parent, List<XhtmlNode> parents, NamespaceNormalizationMap namespaceMap) throws IOException, FHIRFormatError
@@ -751,8 +770,8 @@ public class XhtmlParser {
         throw new FHIRFormatError("unexpected non-end of element "+name+" "+descLoc());
       readChar();
       node.setEmptyExpanded(false);
-    } else if ("script".equals(name.getName())) {
-      parseScriptInner(node);
+    } else if ("script".equalsIgnoreCase(name.getName()) || "style".equalsIgnoreCase(name.getName())) {
+      parseRawTextNode(node);
     } else {
       node.setEmptyExpanded(true);
       parseElementInner(node, newParents, namespaceMap);

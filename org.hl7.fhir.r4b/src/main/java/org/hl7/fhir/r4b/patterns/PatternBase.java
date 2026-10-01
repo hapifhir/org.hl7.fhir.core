@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.hl7.fhir.r4b.model.Extension;
 
+@Deprecated
 public interface PatternBase {
 
   public String getId();

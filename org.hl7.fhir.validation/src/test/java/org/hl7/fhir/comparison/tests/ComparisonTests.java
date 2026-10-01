@@ -105,7 +105,7 @@ public class ComparisonTests {
   private JsonObject content;
 
   private static final String DEF_TX = FhirSettings.getTxFhirDevelopment();
-  private static final String HEADER = "<html><link href=\"http://hl7.org/fhir/fhir.css\" rel=\"stylesheet\"/><body>";
+  private static final String HEADER = "<html lang=\"en\"><link href=\"http://hl7.org/fhir/fhir.css\" rel=\"stylesheet\"/><body>";
   private static final String BREAK = "<hr/>";
   private static final String FOOTER = "</body></html>";
   private String prefix;

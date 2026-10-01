@@ -3605,7 +3605,7 @@ msgstr "Исходя из этого {0}"
 # SDR_DRAFT
 #: SDR_DRAFT
 msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
-msgstr "Это определение расширения; комитет ищет обратную связь по осуществлению, и определение или содержание расширения могут измениться в будущих версиях"
+msgstr "Это черновое определение расширения; комитет ищет обратную связь по реализации, и определение или содержание расширения могут измениться в будущих версиях"
 
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
@@ -5268,7 +5268,7 @@ msgstr "Структуры"
 # STRUC_DEF_SUIT_SHALL_CODE
 #: STRUC_DEF_SUIT_SHALL_CODE
 msgid "Unless not suitable, these codes SHALL be taken from"
-msgstr "Если они не подходят, эти коды ДОЛЖНЫ быть взяты из"
+msgstr "Кроме случаев, когда они не подходят, эти коды ДОЛЖНЫ быть взяты из"
 
 # STRUC_DEF_TARG_SUPP
 #: STRUC_DEF_TARG_SUPP

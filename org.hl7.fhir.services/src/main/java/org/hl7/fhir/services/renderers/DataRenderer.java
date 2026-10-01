@@ -144,7 +144,12 @@ public class DataRenderer extends Renderer implements CodeResolver {
           throw new DefinitionException(context.formatPhrase(RenderingI18nContext.DATA_REND_MKDWN_LNK, link) + " ");
         } 
 
-        text = left+"["+link+"]("+url+(path == null ? "" : "#"+path)+")"+right; 
+        if (url == null) {
+          // nothing to link to
+          text = left+link+right;
+        } else {
+          text = left+"["+link+"]("+url+(path == null ? "" : "#"+path)+")"+right; 
+        }
       } 
 
       // 2. markdown 
@@ -937,7 +942,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       a.tx(url);
       if (Utilities.isAbsoluteUrl(url)) {
         a.tx(" ");
-        a.img("external.png", "icon").style("vertical-align: baseline");
+        a.img("external.png", "").style("vertical-align: baseline");
       }
     } else if (att.has("data")) {
       x.tx(context.formatMessage(RenderingContext.DATA_REND_ATT_DATA, ct, displayDataType(att.child("data"))));

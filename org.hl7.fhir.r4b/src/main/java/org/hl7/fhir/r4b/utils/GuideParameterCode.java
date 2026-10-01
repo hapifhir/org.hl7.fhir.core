@@ -7,6 +7,7 @@ import org.hl7.fhir.r4b.model.EnumFactory;
 import org.hl7.fhir.r4b.model.Enumeration;
 import org.hl7.fhir.r4b.model.PrimitiveType;
 
+@Deprecated
 public enum GuideParameterCode {
   /**
    * If the value of this string 0..* parameter is one of the metadata fields then

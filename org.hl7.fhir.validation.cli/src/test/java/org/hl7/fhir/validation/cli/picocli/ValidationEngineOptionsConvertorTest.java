@@ -39,8 +39,8 @@ public class ValidationEngineOptionsConvertorTest {
 
   public static Stream<Arguments> validOptions() {
     return Stream.of(
-      Arguments.of("FHIR version 5.0", new ValidationEngineOptions().withFhirVersion("5.0"), new ValidationEngineParameters().setSv("5.0")),
-      Arguments.of("FHIR version 4.0.1 normalized to 4.0", new ValidationEngineOptions().withFhirVersion("4.0.1"), new ValidationEngineParameters().setSv("4.0")),
+      Arguments.of("FHIR version 5.0", new ValidationEngineOptions().withFhirVersion("5.0"), new ValidationEngineParameters().setStatedFHIRVersion("5.0")),
+      Arguments.of("FHIR version 4.0.1 normalized to 4.0", new ValidationEngineOptions().withFhirVersion("4.0.1"), new ValidationEngineParameters().setStatedFHIRVersion("4.0")),
 
       Arguments.of("doNative flag",
         new ValidationEngineOptions().withDoNative(true),
@@ -142,11 +142,11 @@ public class ValidationEngineOptionsConvertorTest {
 
       Arguments.of("single IG infers FHIR version",
         new ValidationEngineOptions().withIgs(List.of("hl7.fhir.r4.core")),
-        new ValidationEngineParameters().setSv("4.0").addIg("hl7.fhir.r4.core")
+        new ValidationEngineParameters().setStatedFHIRVersion("4.0").addIg("hl7.fhir.r4.core")
       ),
       Arguments.of("multiple IGs",
         new ValidationEngineOptions().withIgs(List.of("hl7.fhir.r4.core", "hl7.fhir.us.core")),
-        new ValidationEngineParameters().setSv("4.0").addIg("hl7.fhir.r4.core").addIg("hl7.fhir.us.core")
+        new ValidationEngineParameters().setStatedFHIRVersion("4.0").addIg("hl7.fhir.r4.core").addIg("hl7.fhir.us.core")
       ),
       Arguments.of("single certSource",
         new ValidationEngineOptions().withCertSources(List.of(dummyFileAPath)),
@@ -168,7 +168,7 @@ public class ValidationEngineOptionsConvertorTest {
           .withSnomedCT("us")
           .withIgs(List.of("hl7.fhir.r4.core", "hl7.fhir.us.core")),
         new ValidationEngineParameters()
-          .setSv("4.0")
+          .setStatedFHIRVersion("4.0")
           .setDoNative(true)
           .setSnomedCT("us")
           .addIg("hl7.fhir.r4.core")

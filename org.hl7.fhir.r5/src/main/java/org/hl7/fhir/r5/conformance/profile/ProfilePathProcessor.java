@@ -1,9 +1,13 @@
 package org.hl7.fhir.r5.conformance.profile;
 
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +18,9 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent;
@@ -22,6 +28,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -206,7 +213,7 @@ public class ProfilePathProcessor {
       int dc = cursors.diffCursor;
       // in the simple case, source is not sliced.
       if (!currentBase.hasSlicing() || currentBasePath.equals(getSlicing().getPath())) {
-        ElementDefinition currentRes = processSimplePath(currentBase, currentBasePath, diffMatches, typeList, cursors, mapHelper, first ? slicerElement : null);
+        ElementDefinition currentRes = processSimplePath(currentBase, currentBasePath, diffMatches, typeList, cursors, mapHelper, first ? slicerElement : null, first);
         if (res == null) {
           res = currentRes;
         }
@@ -286,6 +293,15 @@ public class ProfilePathProcessor {
     final List<ElementDefinition> diffMatches,
     final List<TypeSlice> typeList,
     final ProfilePathProcessorState cursors, MappingAssistant mapHelper, ElementDefinition slicerElement) throws FHIRException {
+    return processSimplePath(currentBase, currentBasePath, diffMatches, typeList, cursors, mapHelper, slicerElement, true);
+  }
+
+  public ElementDefinition processSimplePath(
+    final ElementDefinition currentBase,
+    final String currentBasePath,
+    final List<ElementDefinition> diffMatches,
+    final List<TypeSlice> typeList,
+    final ProfilePathProcessorState cursors, MappingAssistant mapHelper, ElementDefinition slicerElement, boolean first) throws FHIRException {
     ElementDefinition res = null;
 
     // the differential doesn't say anything about this item
@@ -293,7 +309,7 @@ public class ProfilePathProcessor {
     if (diffMatches.isEmpty())
       processSimplePathWithEmptyDiffMatches(currentBase, currentBasePath, diffMatches, cursors, mapHelper);
       // one matching element in the differential
-    else if (oneMatchingElementInDifferential(getSlicing().isDone(), currentBasePath, diffMatches))
+    else if (oneMatchingElementInDifferential(getSlicing().isDone() && first, currentBasePath, diffMatches)) // slicing done applies to the slice itself, not its children
       res = processSimplePathWithOneMatchingElementInDifferential(currentBase, currentBasePath, diffMatches, cursors, mapHelper, slicerElement);
     else if (profileUtilities.diffsConstrainTypes(diffMatches, currentBasePath, typeList))
       processSimplePathWhereDiffsConstrainTypes(currentBasePath, diffMatches, typeList, cursors, mapHelper);
@@ -370,7 +386,14 @@ public class ProfilePathProcessor {
 
       // differential - if the first one in the list has a name, we'll process it. Else we'll treat it as the base definition of the slice.
       if (!diffMatches.get(0).hasSliceName()) {
+        // a data type profile on the slicer: merge the constraints on its root (before the differential, which overrides both)
+        Map<String, String> typeProfileStatus = new HashMap<>();
+        StructureDefinition typeProfileForRoot = getTypeProfileForRootMerge(diffMatches.get(0), currentBase);
+        if (typeProfileForRoot != null) {
+          mergeTypeProfileRoot(outcome, typeProfileForRoot, getProfileName() + "." + outcome.getPath(), typeProfileStatus);
+        }
         profileUtilities.updateFromDefinition(outcome, diffMatches.get(0), getProfileName(), isTrimDifferential(), getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffMatches.get(0)), mapHelper, false);
+        markTypeProfileConstraints(outcome, currentBase, typeProfileStatus);
         if (!outcome.hasContentReference() && !outcome.hasType() && outcome.getPath().contains(".")) {
           throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.NOT_DONE_YET));
         }
@@ -412,7 +435,7 @@ public class ProfilePathProcessor {
               path = fixForRedirect(path, currentBase.getPath(), currentBase.getContentReference().substring(currentBase.getContentReference().indexOf("#") + 1));
               outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), path, getRedirector(), getContextPathSource()));
               profileUtilities.updateFromBase(outcome, src, getSourceStructureDefinition().getUrl());
-              profileUtilities.markExtensions(outcome, false, cursors.baseSource);
+              ProfileUtilities.markExtensions(outcome, false, cursors.baseSource);
               debugCheck(outcome);
               addToResult(outcome);
             }
@@ -441,6 +464,9 @@ public class ProfilePathProcessor {
         .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, i))
         .withSlicing(new PathSlicingParams(true, slicerElement, null).withDiffs(diffMatches))
         .processPaths(ncursors, mapHelper, slicerElement);
+      if (profileUtilities.isExtension(currentBase)) {
+        checkNewExtensionSlice(diffMatches.get(i), diffMatches.get(i).getType());
+      }
     }
     // ok, done with that - next in the base list
     cursors.baseCursor = newBaseLimit + 1;
@@ -472,6 +498,93 @@ public class ProfilePathProcessor {
     return -1;
   }
 
+  /**
+   * a new extension slice must identify the extension, either by a profile, or by fixing the url in the
+   * differential. If it doesn't, it's usually because the author has named a slice that is defined on the
+   * slicer, expecting it to be copied into the slice. The rules on a slicer apply to all its slices, but
+   * the slices defined on the slicer are not slices of the slices, so this is an error
+   */
+  private void checkNewExtensionSlice(ElementDefinition slice, List<TypeRefComponent> types) {
+    if (!slice.hasSliceName() || slice.getSliceName().contains("/")) {
+      return; // a reslice is identified by the slice it reslices
+    }
+    for (TypeRefComponent tr : types) {
+      if (tr.hasProfile()) {
+        return;
+      }
+    }
+    int start = differential.getElement().indexOf(slice);
+    int end = profileUtilities.findEndOfElement(differential, start);
+    for (int i = start + 1; i <= end && i < differential.getElement().size(); i++) {
+      ElementDefinition ed = differential.getElement().get(i);
+      if (ed.getPath().equals(slice.getPath() + ".url") && (ed.hasFixed() || ed.hasPattern())) {
+        return;
+      }
+    }
+    CanonicalType extProfile = profiledExtensionFor(slice);
+    if (extProfile != null) {
+      // the sub-extensions are defined by the profile of the extension, and this isn't one of them. If the profile can't be found, that's reported elsewhere
+      StructureDefinition esd = profileUtilities.getContext().fetchResource(StructureDefinition.class, extProfile.getValue(), ExtensionUtilities.getVersionResolutionRules(extProfile));
+      if (esd != null) {
+        profileUtilities.getMessages().add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, diffPath(slice),
+          profileUtilities.getContext().formatMessage(I18nConstants.SNAPSHOT_EXTENSION_SLICE_NOT_IN_EXTENSION, slice.getId(), esd.getVersionedUrl()), IssueSeverity.ERROR));
+      }
+      return;
+    }
+    String slicerSlice = findSlicerSlice(slice.getId());
+    String msg = slicerSlice != null ?
+      profileUtilities.getContext().formatMessage(I18nConstants.SNAPSHOT_EXTENSION_SLICE_ON_SLICER, slice.getId(), slicerSlice) :
+      profileUtilities.getContext().formatMessage(I18nConstants.SNAPSHOT_EXTENSION_SLICE_UNIDENTIFIED, slice.hasId() ? slice.getId() : slice.getPath() + ":" + slice.getSliceName());
+    profileUtilities.getMessages().add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, diffPath(slice), msg, IssueSeverity.ERROR));
+  }
+
+  /**
+   * if the slice is a sub-extension of an extension that has a profile, the profile of that extension
+   */
+  private CanonicalType profiledExtensionFor(ElementDefinition slice) {
+    if (!slice.hasId() || !slice.getId().contains(".")) {
+      return null;
+    }
+    String pid = slice.getId().substring(0, slice.getId().lastIndexOf("."));
+    for (ElementDefinition ed : differential.getElement()) {
+      if (pid.equals(ed.getId())) {
+        for (TypeRefComponent tr : ed.getType()) {
+          if ("Extension".equals(tr.getWorkingCode()) && tr.hasProfile()) {
+            return tr.getProfile().get(0);
+          }
+        }
+        return null;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * given the id of an element inside a slice, look for the element with the same id on the slicer in the
+   * differential (e.g. for Patient.identifier:MRN.extension:validDate, Patient.identifier.extension:validDate)
+   */
+  private String findSlicerSlice(String id) {
+    if (id == null) {
+      return null;
+    }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] parts = id.split("\\.");
+    for (int i = parts.length - 2; i >= 0; i--) {
+      if (parts[i].contains(":")) {
+        String[] np = parts.clone();
+        np[i] = np[i].substring(0, np[i].indexOf(":"));
+        String nid = String.join(".", np);
+        for (ElementDefinition ed : differential.getElement()) {
+          if (nid.equals(ed.getId())) {
+            return nid;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   private String diffPath(ElementDefinition ed) {
     return "StructureDefinition.differential.element[" + differential.getElement().indexOf(ed) + "]";
   }
@@ -491,6 +604,7 @@ public class ProfilePathProcessor {
   }
 
   private void processSimplePathWhereDiffsConstrainTypes(String currentBasePath, List<ElementDefinition> diffMatches, List<TypeSlice> typeList, ProfilePathProcessorState cursors, MappingAssistant mapHelper) {
+    ElementDefinition impliedSliceBase = cursors.base.getElement().get(cursors.baseCursor); // implied type slices are built from this, not from the slicer
     int start = 0;
     int newBaseLimit = profileUtilities.findEndOfElement(cursors.base, cursors.baseCursor);
     int newDiffCursor = getDifferential().getElement().indexOf(diffMatches.get(0));
@@ -662,7 +776,7 @@ public class ProfilePathProcessor {
             }
           }
         } else {
-          elementDefinition.getSlicing().setRules(ElementDefinition.SlicingRules.OPEN);
+          addImpliedTypeSlices(elementDefinition, impliedSliceBase, currentBasePath, allowedTypes);
         }
       }
     }
@@ -676,6 +790,7 @@ public class ProfilePathProcessor {
     ElementDefinition res;
     ElementDefinition template = null;
     StructureDefinition templateSD = null;
+    Map<String, String> typeProfileStatus = new HashMap<>(); // how much of each type profile's root has been merged into this element
     if (diffMatches.get(0).hasType() && "Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode()) && !profileUtilities.isValidType(diffMatches.get(0).getType().get(0), currentBase)) {
       if (!ProfileUtilities.isSuppressIgnorableExceptions()) {
         throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT, getUrl(), diffMatches.get(0).getPath(), diffMatches.get(0).getType().get(0), currentBase.typeSummary()));
@@ -697,8 +812,9 @@ public class ProfilePathProcessor {
       CanonicalType firstTypeProfile = diffMatches.get(0).getType().get(0).getProfile().get(0);
       StructureDefinition firstTypeStructureDefinition = profileUtilities.getContext().fetchResource(StructureDefinition.class, firstTypeProfile.getValue(),
         ExtensionUtilities.getVersionResolutionRules(firstTypeProfile));
-      if (firstTypeStructureDefinition == null && profileUtilities.getXver() != null && profileUtilities.getXver().matchingUrl(firstTypeProfile.getValue())) {
-        switch (profileUtilities.getXver().status(firstTypeProfile.getValue())) {
+      XVerExtensionManager xver = profileUtilities.getXver();
+      if (firstTypeStructureDefinition == null && xver.matchingUrl(firstTypeProfile.getValue())) {
+        switch (xver.status(firstTypeProfile.getValue())) {
           case BadVersion:
             throw new FHIRException("Reference to invalid version in extension url " + firstTypeProfile.getValue());
           case Invalid:
@@ -706,7 +822,7 @@ public class ProfilePathProcessor {
           case Unknown:
             throw new FHIRException("Reference to unknown extension " + firstTypeProfile.getValue());
           case Valid:
-            firstTypeStructureDefinition = profileUtilities.getXver().getDefinition(firstTypeProfile.getValue());
+            firstTypeStructureDefinition = xver.getDefinition(firstTypeProfile.getValue());
             profileUtilities.generateSnapshot(profileUtilities.getContext().fetchTypeDefinition("Extension"), firstTypeStructureDefinition, firstTypeStructureDefinition.getUrl(), getWebUrl(), firstTypeStructureDefinition.getName());
         }
       }
@@ -763,6 +879,10 @@ public class ProfilePathProcessor {
         if (Utilities.existsInList(currentBase.typeSummary(), "Extension", "Resource")) {
           template = merge(src, slicerElement).setPath(currentBase.getPath());
           templateSD = srcSD;
+          if (firstTypeStructureDefinition.getKind() == StructureDefinitionKind.RESOURCE) {
+            // the root of a resource profile is used, but not its invariants (see above)
+            typeProfileStatus.put(canonicalWithoutVersion(firstTypeProfile.getValue()), "partial");
+          }
           template.setSliceName(null);
           // temporary work around
           if (!"Extension".equals(diffMatches.get(0).getType().get(0).getCode())) {
@@ -809,8 +929,19 @@ public class ProfilePathProcessor {
         }
       }
     }
-    profileUtilities.markExtensions(outcome, false, templateSD);
+    ProfileUtilities.markExtensions(outcome, false, templateSD);
+    StructureDefinition typeProfileForRoot = getTypeProfileForRootMerge(diffMatches.get(0), currentBase);
+    if (typeProfileForRoot != null) {
+      // the constraints on the root of the data type profile apply to this element too. This happens before the
+      // differential is applied, since the differential overrides both the base and the type profile
+      mergeTypeProfileRoot(outcome, typeProfileForRoot, getProfileName() + "." + outcome.getPath(), typeProfileStatus);
+    }
+    if (currentBase.hasSliceName() && currentBase.getSliceName().equals(diffMatches.get(0).getSliceName())) {
+      outcome.setUserData(UserDataNames.SNAPSHOT_INHERITED_INLINE_EXTENSION, true); // constraining an existing slice - see checkExtensionDoco
+    }
     profileUtilities.updateFromDefinition(outcome, diffMatches.get(0), getProfileName(), isTrimDifferential(), getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffMatches.get(0)), mapHelper, fromSlicer);
+    outcome.clearUserData(UserDataNames.SNAPSHOT_INHERITED_INLINE_EXTENSION);
+    markTypeProfileConstraints(outcome, currentBase, typeProfileStatus);
 //          if (outcome.getPath().endsWith("[x]") && outcome.getType().size() == 1 && !outcome.getType().get(0).getCode().equals("*") && !diffMatches.get(0).hasSlicing()) // if the base profile allows multiple types, but the profile only allows one, rename it
 //            outcome.setPath(outcome.getPath().substring(0, outcome.getPath().length()-3)+Utilities.capitalize(outcome.getType().get(0).getCode()));
     if (!APPLY_PROPERTIES_FROM_SLICER && slicerElement != null && outcome.getMaxAsInt() > slicerElement.getMaxAsInt()) {
@@ -848,7 +979,7 @@ public class ProfilePathProcessor {
                   if (ed != diffMatches.get(0) && !ed.getPath().endsWith(".extension"))
                     nonExtension = true;
                 if (nonExtension)
-                  throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, diffMatches.get(0).getPath(), getDifferential().getElement().get(cursors.diffCursor).getPath(), profileUtilities.typeCode(outcome.getType()), getProfileName()));
+                  throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, diffMatches.get(0).getPath(), getDifferential().getElement().get(cursors.diffCursor).getPath(), ProfileUtilities.typeCode(outcome.getType()), getProfileName()));
               }
             }
         }
@@ -918,7 +1049,7 @@ public class ProfilePathProcessor {
             }
           }
           if (dt == null)
-            throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__FOR_TYPE__IN_PROFILE__BUT_CANT_FIND_TYPE, diffMatches.isEmpty() ? "??" : diffMatches.get(0).getPath(), getDifferential().getElement().get(cursors.diffCursor).getPath(), profileUtilities.typeCode(outcome.getType()), getProfileName()));
+            throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__FOR_TYPE__IN_PROFILE__BUT_CANT_FIND_TYPE, diffMatches.isEmpty() ? "??" : diffMatches.get(0).getPath(), getDifferential().getElement().get(cursors.diffCursor).getPath(), ProfileUtilities.typeCode(outcome.getType()), getProfileName()));
           cursors.contextName = dt.getUrl();
 
           this
@@ -935,6 +1066,129 @@ public class ProfilePathProcessor {
       }
     }
     return res;
+  }
+
+  /**
+   * If the differential element gives the element a data type profile (and the base doesn't already have it),
+   * return that profile, with a snapshot, so its root can be merged into the element. Otherwise null
+   */
+  private StructureDefinition getTypeProfileForRootMerge(ElementDefinition diffItem, ElementDefinition base) {
+    if (diffItem.getType().size() != 1 || diffItem.getType().get(0).getProfile().size() != 1) {
+      return null;
+    }
+    CanonicalType profile = diffItem.getType().get(0).getProfile().get(0);
+    if (profile.hasExtension(ExtensionDefinitions.EXT_PROFILE_ELEMENT)) {
+      return null;
+    }
+    if (baseHasProfile(base, profile.getValue())) {
+      return null; // already in the base, so already merged
+    }
+    StructureDefinition sd = profileUtilities.getContext().fetchResource(StructureDefinition.class, profile.getValue(), ExtensionUtilities.getVersionResolutionRules(profile));
+    if (sd == null || !isDataTypeProfile(sd)) {
+      return null;
+    }
+    if (!sd.hasSnapshot() && !sd.isGeneratingSnapshot()) {
+      StructureDefinition sdb = profileUtilities.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
+      if (sdb == null) {
+        throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), sd.getUrl()));
+      }
+      profileUtilities.checkNotGenerating(sdb, "a data type profile base");
+      profileUtilities.generateSnapshot(sdb, sd, sd.getUrl(), (sdb.hasWebPath()) ? Utilities.extractBaseUrl(sdb.getWebPath()) : getWebUrl(), sd.getName());
+    }
+    return sd.getSnapshot().getElement().isEmpty() ? null : sd;
+  }
+
+  private void mergeTypeProfileRoot(ElementDefinition outcome, StructureDefinition typeProfile, String path, Map<String, String> typeProfileStatus) {
+    ElementDefinition before = outcome.copy();
+    TypeProfileRootMerger merger = new TypeProfileRootMerger(profileUtilities.getContext());
+    List<ValidationMessage> msgs = merger.merge(outcome, typeProfile, path);
+    for (ValidationMessage vm : msgs) {
+      profileUtilities.addMessage(vm);
+    }
+    // anything reported means something wasn't merged (a conflict, or a value that couldn't be compared), and the
+    // merger may also have left something out (e.g. a different required binding). If it left something out and
+    // nothing at all was merged, then none of the type profile's root is represented in the element
+    String status;
+    if (msgs.isEmpty() && merger.isComplete()) {
+      status = "full";
+    } else if (msgs.isEmpty() && Base.compareDeep(before, outcome, false)) {
+      status = "none";
+    } else {
+      status = "partial";
+    }
+    typeProfileStatus.put(canonicalWithoutVersion(typeProfile.getUrl()), status);
+  }
+
+  /**
+   * Record, on each type profile of the element (other than extensions), how much of its root has been merged into
+   * the element (see ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS): what was done here, or else what was done in
+   * the base if the profile came from there, or else nothing ('none')
+   */
+  private void markTypeProfileConstraints(ElementDefinition outcome, ElementDefinition base, Map<String, String> typeProfileStatus) {
+    for (TypeRefComponent tr : outcome.getType()) {
+      if ("Extension".equals(tr.getWorkingCode())) {
+        continue;
+      }
+      for (CanonicalType ct : tr.getProfile()) {
+        if (!ct.hasExtension(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS)) {
+          String url = canonicalWithoutVersion(ct.getValue());
+          String status;
+          if (typeProfileStatus.containsKey(url)) {
+            status = typeProfileStatus.get(url);
+          } else {
+            CanonicalType bct = findProfile(base, url);
+            // from the base: whatever was recorded there (possibly nothing, e.g. core definitions)
+            status = bct != null ? bct.getExtensionString(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS) : "none";
+          }
+          if (status != null) {
+            ct.addExtension(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS, new CodeType(status));
+          }
+        }
+      }
+    }
+  }
+
+  private CanonicalType findProfile(ElementDefinition base, String url) {
+    if (base != null) {
+      for (TypeRefComponent tr : base.getType()) {
+        for (CanonicalType ct : tr.getProfile()) {
+          if (url != null && url.equals(canonicalWithoutVersion(ct.getValue()))) {
+            return ct;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * true if the base element already has this type profile. The version is ignored: a base loaded from another
+   * version of FHIR carries versioned canonicals (e.g. SimpleQuantity|4.0.1) where the differential usually doesn't
+   */
+  private boolean baseHasProfile(ElementDefinition base, String profile) {
+    String p = canonicalWithoutVersion(profile);
+    for (TypeRefComponent tr : base.getType()) {
+      for (CanonicalType ct : tr.getProfile()) {
+        if (p != null && p.equals(canonicalWithoutVersion(ct.getValue()))) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private String canonicalWithoutVersion(String url) {
+    return url == null || !url.contains("|") ? url : url.substring(0, url.indexOf("|"));
+  }
+
+  /**
+   * true if this is a profile on a data type (not an extension, a resource or a logical model), so the
+   * constraints on its root get merged into the element that uses it
+   */
+  private boolean isDataTypeProfile(StructureDefinition sd) {
+    return (sd.getKind() == StructureDefinitionKind.COMPLEXTYPE || sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE)
+        && sd.getDerivation() == StructureDefinition.TypeDerivationRule.CONSTRAINT
+        && !"Extension".equals(sd.getType());
   }
 
   private ElementDefinition merge(ElementDefinition src, ElementDefinition slicer) {
@@ -1064,7 +1318,7 @@ public class ProfilePathProcessor {
     profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
     profileUtilities.updateConstraintSources(outcome, getSourceStructureDefinition().getUrl());
     profileUtilities.checkExtensions(outcome);
-    profileUtilities.markExtensions(outcome, false, cursors.baseSource);
+    ProfileUtilities.markExtensions(outcome, false, cursors.baseSource);
     profileUtilities.updateFromObligationProfiles(outcome);
     profileUtilities.updateURLs(url, webUrl, outcome, true);
     profileUtilities.markDerived(outcome);
@@ -1113,7 +1367,7 @@ public class ProfilePathProcessor {
         while (getDifferential().getElement().size() > cursors.diffCursor && profileUtilities.pathStartsWith(getDifferential().getElement().get(cursors.diffCursor).getPath(), currentBasePath + "."))
           cursors.diffCursor++;
         if (nonExtension) {
-          throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, currentBasePath, getDifferential().getElement().get(cursors.diffCursor).getPath(), profileUtilities.typeCode(outcome.getType()), getProfileName()));
+          throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, currentBasePath, getDifferential().getElement().get(cursors.diffCursor).getPath(), ProfileUtilities.typeCode(outcome.getType()), getProfileName()));
         }
         if (outcome.hasContentReference()) {
           ProfileUtilities.ElementDefinitionResolution tgt = profileUtilities.getElementById(getSourceStructureDefinition(), cursors.base.getElement(), outcome.getContentReferenceElement());
@@ -1232,18 +1486,25 @@ public class ProfilePathProcessor {
       ElementDefinition.ElementDefinitionSlicingComponent dSlice = diffMatches.get(0).getSlicing();
       ElementDefinition.ElementDefinitionSlicingComponent bSlice = currentBase.getSlicing();
       if (dSlice.hasOrderedElement() && bSlice.hasOrderedElement() && !profileUtilities.orderMatches(dSlice.getOrderedElement(), bSlice.getOrderedElement()))
-        throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___ORDER___, profileUtilities.summarizeSlicing(dSlice), profileUtilities.summarizeSlicing(bSlice), path, cursors.contextName));
+        throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___ORDER___, ProfileUtilities.summarizeSlicing(dSlice), ProfileUtilities.summarizeSlicing(bSlice), path, cursors.contextName));
       if (!profileUtilities.discriminatorMatches(dSlice.getDiscriminator(), bSlice.getDiscriminator()))
-        throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___DISCIMINATOR___, profileUtilities.summarizeSlicing(dSlice), profileUtilities.summarizeSlicing(bSlice), path, url));
+        throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___DISCIMINATOR___, ProfileUtilities.summarizeSlicing(dSlice), ProfileUtilities.summarizeSlicing(bSlice), path, url));
       if (!currentBase.isChoice() && !profileUtilities.ruleMatches(dSlice.getRules(), bSlice.getRules()))
-        throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___RULE___, profileUtilities.summarizeSlicing(dSlice), profileUtilities.summarizeSlicing(bSlice), path, cursors.contextName));
+        throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___RULE___, ProfileUtilities.summarizeSlicing(dSlice), ProfileUtilities.summarizeSlicing(bSlice), path, cursors.contextName));
     }
     ElementDefinition outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), currentBase.copy(), true);
     outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
     profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
     if (diffMatches.get(0).hasSlicing() || !diffMatches.get(0).hasSliceName()) {
       profileUtilities.updateFromSlicing(outcome.getSlicing(), diffMatches.get(0).getSlicing());
+      // a data type profile on the slicer (if it isn't already in the base): merge the constraints on its root (before the differential)
+      Map<String, String> typeProfileStatus = new HashMap<>();
+      StructureDefinition typeProfileForRoot = getTypeProfileForRootMerge(diffMatches.get(0), currentBase);
+      if (typeProfileForRoot != null) {
+        mergeTypeProfileRoot(outcome, typeProfileForRoot, getProfileName() + "." + outcome.getPath(), typeProfileStatus);
+      }
       profileUtilities.updateFromDefinition(outcome, diffMatches.get(0), getProfileName(), closed, getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffMatches.get(0)), mapHelper, false); // if there's no slice, we don't want to update the unsliced description
+      markTypeProfileConstraints(outcome, currentBase, typeProfileStatus);
     } else if (!diffMatches.get(0).hasSliceName()) {
       diffMatches.get(0).setUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT, outcome); // because of updateFromDefinition isn't called
     } else {
@@ -1301,7 +1562,7 @@ public class ProfilePathProcessor {
       for (int i = cursors.baseCursor + 1; i <= newBaseLimit; i++) {
         outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), cursors.base.getElement().get(i).copy(), true);
         outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
-        profileUtilities.markExtensions(outcome, false, sourceStructureDefinition);
+        ProfileUtilities.markExtensions(outcome, false, sourceStructureDefinition);
         debugCheck(outcome);
         addToResult(outcome);
       }
@@ -1315,7 +1576,7 @@ public class ProfilePathProcessor {
       profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
       outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
       outcome.setSlicing(null);
-      profileUtilities.markExtensions(outcome, false, sourceStructureDefinition);
+      ProfileUtilities.markExtensions(outcome, false, sourceStructureDefinition);
       if (!outcome.getPath().startsWith(cursors.resultPathBase))
         throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ADDING_WRONG_PATH));
       if (diffpos < diffMatches.size() && diffMatches.get(diffpos).hasSliceName() && diffMatches.get(diffpos).getSliceName().equals(outcome.getSliceName())) {
@@ -1351,7 +1612,7 @@ public class ProfilePathProcessor {
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ADDING_WRONG_PATH));
           outcome.setUserData(UserDataNames.SNAPSHOT_BASE_PATH, outcome.getPath());
           outcome.setUserData(UserDataNames.SNAPSHOT_BASE_MODEL, getSourceStructureDefinition().getUrl());
-          profileUtilities.markExtensions(outcome, false, sourceStructureDefinition);
+          ProfileUtilities.markExtensions(outcome, false, sourceStructureDefinition);
           debugCheck(outcome);
           addToResult(outcome);
           cursors.baseCursor++;
@@ -1377,12 +1638,24 @@ public class ProfilePathProcessor {
         String id = diffItem.getId();
         String lid = profileUtilities.tail(id);
         ElementDefinition template = currentBase;
+        SliceTemplate sliceTemplate = null;
         if (lid.contains("/")) {
           profileUtilities.generateIds(getResult().getElement(), getUrl(), getSourceStructureDefinition().getType(), getSourceStructureDefinition());
           String baseId = id.substring(0, id.length() - lid.length()) + lid.substring(0, lid.indexOf("/")); // this is wrong if there's more than one reslice (todo: one thing at a time)
           template = profileUtilities.getById(getResult().getElement(), baseId);
+        } else {
+          // the new slice is built from what the other slices were built from, not from the slicer (see findSliceTemplate)
+          sliceTemplate = findSliceTemplate(cursors.baseSource, currentBase);
+          if (sliceTemplate != null) {
+            template = sliceTemplate.ed;
+          }
         }
         outcome = profileUtilities.updateURLs(getUrl(), getWebUrl(), template.copy(), true);
+        if (sliceTemplate != null) {
+          outcome.setPath(currentBase.getPath());
+          outcome.setId(currentBase.getId());
+          outcome.setSliceName(null);
+        }
         //            outcome = updateURLs(url, diffItem.copy());
         outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
         profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
@@ -1393,9 +1666,18 @@ public class ProfilePathProcessor {
         ProfileUtilities.markExtensions(outcome, false, sourceStructureDefinition);
         debugCheck(outcome);
         addToResult(outcome);
+        // a data type profile on the new slice: merge the constraints on its root (before the differential, which overrides both)
+        Map<String, String> typeProfileStatus = new HashMap<>();
+        StructureDefinition typeProfileForRoot = getTypeProfileForRootMerge(diffItem, template);
+        if (typeProfileForRoot != null) {
+          mergeTypeProfileRoot(outcome, typeProfileForRoot, getProfileName() + "." + outcome.getPath() + ":" + diffItem.getSliceName(), typeProfileStatus);
+        }
         profileUtilities.updateFromDefinition(outcome, diffItem, getProfileName(), isTrimDifferential(), getUrl(), getSourceStructureDefinition(), getDerived(), diffPath(diffItem), mapHelper, false);
+        if (profileUtilities.isExtension(currentBase)) {
+          checkNewExtensionSlice(diffItem, outcome.getType());
+        }
         
-        // do we need to pick up constraints from the type?
+        // do we need to pick up constraints from the type? (for data type profiles, that was done above)
         List<String> profiles = new ArrayList<>();
         for (TypeRefComponent tr : outcome.getType()) {
           for (CanonicalType ct : tr.getProfile()) {
@@ -1404,7 +1686,10 @@ public class ProfilePathProcessor {
         }
         if (profiles.size() == 1) {
           StructureDefinition sdt = profileUtilities.getContext().fetchResource(StructureDefinition.class, profiles.get(0), IWorkerContext.VersionResolutionRules.defaultRule());
-          if (sdt != null) {
+          if (sdt != null && !isDataTypeProfile(sdt)) {
+            if (sdt.getKind() == StructureDefinitionKind.RESOURCE) {
+              typeProfileStatus.put(canonicalWithoutVersion(profiles.get(0)), "partial"); // only the cardinality
+            }
             ElementDefinition edt = sdt.getSnapshot().getElementFirstRep();
             if (edt.isMandatory() && !outcome.isMandatory()) {
               outcome.setMin(edt.getMin());
@@ -1415,9 +1700,9 @@ public class ProfilePathProcessor {
             // todo: should we consider other constraints?
             // throw new Error("Not handled yet: "+sdt.getVersionedUrl()+" / "+outcome.getPath()+":"+outcome.getSliceName());
           }
-        } else if (profiles.size() > 1) {
-          throw new Error("Not handled: multiple profiles at "+outcome.getPath()+":"+outcome.getSliceName()+": "+CommaSeparatedStringBuilder.join(",", profiles));          
         }
+        // more than one profile: any of them may apply, so nothing is merged (marked 'none' below)
+        markTypeProfileConstraints(outcome, template, typeProfileStatus);
         cursors.diffCursor = getDifferential().getElement().indexOf(diffItem) + 1;        
         if ((!outcome.getType().isEmpty()) && (/*outcome.getType().get(0).getCode().equals("Extension") || */getDifferential().getElement().size() > cursors.diffCursor) && outcome.getPath().contains(".")/* && isDataType(outcome.getType())*/) {  // don't want to do this for the root, since that's base, and we're already processing it
           if (!profileUtilities.baseWalksInto(cursors.base.getElement(), cursors.baseCursor)) {
@@ -1429,29 +1714,63 @@ public class ProfilePathProcessor {
                 }
               ElementDefinition.TypeRefComponent t = outcome.getType().get(0);
               if (Utilities.existsInList(t.getCode(), "Base", "Element", "BackboneElement")) {
-                int baseStart = cursors.base.getElement().indexOf(currentBase) + 1;
+                // the children come from the same place as the slice itself (see findSliceTemplate), if that's the same structure.
+                // If the template is a content reference, the children are those of the element it refers to
+                StructureDefinition childSource = cursors.baseSource;
+                StructureDefinition.StructureDefinitionSnapshotComponent childBase = cursors.base;
+                ElementDefinition childParent = currentBase;
+                String contextPathSource = cursors.base.getElement().get(0).getPath();
+                String contextPathTarget = contextPathSource;
+                boolean viaContentReference = false;
+                if (sliceTemplate != null && sliceTemplate.ed.getPath().equals(currentBase.getPath())) {
+                  List<ElementDefinition> tl = sliceTemplate.sd.getSnapshot().getElement();
+                  int ti = tl.indexOf(sliceTemplate.ed);
+                  boolean hasChildren = ti + 1 < tl.size() && tl.get(ti + 1).getPath().startsWith(sliceTemplate.ed.getPath() + ".");
+                  if (!hasChildren && sliceTemplate.ed.hasContentReference()) {
+                    ProfileUtilities.ElementDefinitionResolution target = profileUtilities.getElementById(sliceTemplate.sd, tl, sliceTemplate.ed.getContentReferenceElement());
+                    if (target != null) {
+                      childSource = target.getSource();
+                      childBase = target.getSource().getSnapshot();
+                      childParent = target.getElement();
+                      contextPathSource = target.getElement().getPath();
+                      contextPathTarget = currentBase.getPath();
+                      viaContentReference = true;
+                    }
+                  } else {
+                    childSource = sliceTemplate.sd;
+                    childBase = sliceTemplate.sd.getSnapshot();
+                    childParent = sliceTemplate.ed;
+                  }
+                }
+                int baseStart = childBase.getElement().indexOf(childParent) + 1;
                 int baseMax = baseStart + 1;
-                while (baseMax < cursors.base.getElement().size() && cursors.base.getElement().get(baseMax).getPath().startsWith(currentBase.getPath() + "."))
+                while (baseMax < childBase.getElement().size() && childBase.getElement().get(baseMax).getPath().startsWith(childParent.getPath() + "."))
                   baseMax++;
                 int start = cursors.diffCursor;
                 while (getDifferential().getElement().size() > cursors.diffCursor && profileUtilities.pathStartsWith(getDifferential().getElement().get(cursors.diffCursor).getPath(), diffMatches.get(0).getPath() + "."))
                   cursors.diffCursor++;
-                ProfilePathProcessorState nc = new ProfilePathProcessorState(cursors.baseSource, cursors.base, baseStart, start - 1,
+                ProfilePathProcessorState nc = new ProfilePathProcessorState(childSource, childBase, baseStart, start - 1,
                     cursors.contextName, cursors.resultPathBase);
-                  this.incrementDebugIndent().withBaseLimit(baseMax - 1)
+                ProfilePathProcessor childProcessor = this.incrementDebugIndent().withBaseLimit(baseMax - 1)
                     .withDiffLimit(cursors.diffCursor - 1)
                     .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, 0))
-                    .withContextPathSource(cursors.base.getElement().get(0).getPath())
-                    .withContextPathTarget(cursors.base.getElement().get(0).getPath())
-                    .withSlicing(new PathSlicingParams())
-                    .processPaths(nc, mapHelper, null);
+                    .withContextPathSource(contextPathSource)
+                    .withContextPathTarget(contextPathTarget)
+                    .withSlicing(new PathSlicingParams());
+                if (viaContentReference) {
+                  childProcessor = childProcessor.withRedirector(profileUtilities.redirectorStack(getRedirector(), outcome, currentBasePath));
+                }
+                if (childSource != getSourceStructureDefinition()) {
+                  childProcessor = childProcessor.withSourceStructureDefinition(childSource);
+                }
+                childProcessor.processPaths(nc, mapHelper, null);
               } else {
                 StructureDefinition dt = profileUtilities.getProfileForDataType(outcome.getType().get(0), getWebUrl(), getDerived());
                 //                if (t.getCode().equals("Extension") && t.hasProfile() && !t.getProfile().contains(":")) {
                 // lloydfix                  dt =
                 //                }
                 if (dt == null)
-                  throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__FOR_TYPE__IN_PROFILE__BUT_CANT_FIND_TYPE, diffMatches.get(0).getPath(), getDifferential().getElement().get(cursors.diffCursor).getPath(), profileUtilities.typeCode(outcome.getType()), getProfileName()));
+                  throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__FOR_TYPE__IN_PROFILE__BUT_CANT_FIND_TYPE, diffMatches.get(0).getPath(), getDifferential().getElement().get(cursors.diffCursor).getPath(), ProfileUtilities.typeCode(outcome.getType()), getProfileName()));
                 cursors.contextName = dt.getUrl();
                 int start = cursors.diffCursor;
                 while (getDifferential().getElement().size() > cursors.diffCursor && profileUtilities.pathStartsWith(getDifferential().getElement().get(cursors.diffCursor).getPath(), diffMatches.get(0).getPath() + "."))
@@ -1481,6 +1800,135 @@ public class ProfilePathProcessor {
     cursors.baseCursor++;
   }
 
+  /**
+   * The element that the slices of an inherited slicer are built from. The rules on a slicer apply to all its
+   * slices, but they aren't copied into them, so the profile that introduced the slicing built its slices from the
+   * element as it was before the slicing (see processSimplePathDefault). A slice added in a derived profile has to
+   * be built from that same element, not from the slicer, or else it would pick up the slicer's rules when the
+   * other slices don't. It's found by walking back through the base definitions until the element isn't sliced.
+   * Returns null if it can't be found (e.g. a base has no snapshot), and then the slicer is used as it always was
+   */
+  private SliceTemplate findSliceTemplate(StructureDefinition sd, ElementDefinition slicer) {
+    if (sd == null || !sd.hasSnapshot() || !sd.getSnapshot().getElement().contains(slicer) || !slicer.hasId()) {
+      return null;
+    }
+    StructureDefinition csd = sd;
+    ElementDefinition ced = slicer;
+    int depth = 0;
+    while (ced.hasSlicing()) {
+      if (csd.getDerivation() != TypeDerivationRule.CONSTRAINT) {
+        return new SliceTemplate(csd, ced); // the slicing is part of the definition of the type itself
+      }
+      if (!csd.hasBaseDefinition() || depth++ > 50) {
+        return null;
+      }
+      StructureDefinition psd = profileUtilities.getContext().fetchResource(StructureDefinition.class, csd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(csd.getBaseDefinitionElement()));
+      SliceTemplate st = findElementById(psd, ced.getId(), 0);
+      if (st == null) {
+        return null;
+      }
+      csd = st.sd;
+      ced = st.ed;
+    }
+    return new SliceTemplate(csd, ced);
+  }
+
+  /**
+   * Find the element with the given id in the snapshot of sd. If it's not there, the element is inside a slice or a
+   * data type that was introduced by the derived profile, and it was built from the unsliced element, which might
+   * itself be in the snapshot of the data type (or data type profile)
+   */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  private SliceTemplate findElementById(StructureDefinition sd, String id, int depth) {
+    if (sd == null || !sd.hasSnapshot() || depth > 10) {
+      return null;
+    }
+    List<ElementDefinition> list = sd.getSnapshot().getElement();
+    ElementDefinition ed = profileUtilities.getById(list, id);
+    if (ed != null) {
+      return new SliceTemplate(sd, ed);
+    }
+    String uid = unslicedId(id);
+    ed = profileUtilities.getById(list, uid);
+    if (ed != null) {
+      return new SliceTemplate(sd, ed);
+    }
+    String[] parts = uid.split("\\."); //single literal character split
+    for (int i = parts.length - 1; i > 0; i--) {
+      ElementDefinition ped = profileUtilities.getById(list, String.join(".", Arrays.copyOfRange(parts, 0, i)));
+      if (ped != null) {
+        if (ped.getType().size() != 1 || ped.getType().get(0).getProfile().size() > 1 || ped.hasContentReference()) {
+          return null;
+        }
+        TypeRefComponent tr = ped.getType().get(0);
+        StructureDefinition tsd = tr.hasProfile()
+          ? profileUtilities.getContext().fetchResource(StructureDefinition.class, tr.getProfile().get(0).getValue(), ExtensionUtilities.getVersionResolutionRules(tr.getProfile().get(0)))
+          : profileUtilities.getContext().fetchTypeDefinition(tr.getWorkingCode());
+        if (tsd == null) {
+          return null;
+        }
+        return findElementById(tsd, tsd.getType() + "." + String.join(".", Arrays.copyOfRange(parts, i, parts.length)), depth + 1);
+      }
+    }
+    return null;
+  }
+
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  private String unslicedId(String id) {
+    StringBuilder b = new StringBuilder();
+    for (String p : id.split("\\.")) { //single literal character split
+      if (b.length() > 0) {
+        b.append(".");
+      }
+      b.append(p.contains(":") ? p.substring(0, p.indexOf(":")) : p);
+    }
+    return b.toString();
+  }
+
+  private static class SliceTemplate {
+    private final StructureDefinition sd;
+    private final ElementDefinition ed;
+
+    private SliceTemplate(StructureDefinition sd, ElementDefinition ed) {
+      this.sd = sd;
+      this.ed = ed;
+    }
+  }
+
+  /**
+   * Type slicing is always closed. When the slices don't cover every type that the element still allows, an
+   * empty slice is added for each remaining type, so that closing the slicing doesn't exclude them. These
+   * slices add no constraints of their own - each is a copy of the base element (not the slicer - the rules on
+   * the slicer apply to all the slices anyway) restricted to the one type the slicer allows - and they are marked with ExtensionDefinitions.EXT_IMPLIED_TYPE_SLICE so that renderers can leave them out.
+   * They are not inherited as such: when a profile is derived from this one, they're regenerated for
+   * whatever types are still uncovered (see processPathWithSlicedBaseWhereDiffsConstrainTypes)
+   */
+  private void addImpliedTypeSlices(ElementDefinition slicer, ElementDefinition base, String currentBasePath, Set<String> missingTypes) {
+    for (TypeRefComponent tr : slicer.getType()) {
+      if (missingTypes.contains(tr.getCode())) {
+        ElementDefinition slice = profileUtilities.updateURLs(getUrl(), getWebUrl(), base.copy(), true);
+        profileUtilities.updateFromBase(slice, base, getSourceStructureDefinition().getUrl());
+        slice.setPath(slicer.getPath());
+        slice.setSlicing(null);
+        slice.setSliceName(profileUtilities.rootName(currentBasePath) + Utilities.capitalize(tr.getCode()));
+        if (slicer.hasId()) {
+          slice.setId(slicer.getId() + ":" + slice.getSliceName());
+        }
+        slice.setMin(0);
+        slice.getType().clear();
+        slice.getType().add(tr.copy());
+        // the constraints on the base element that don't make sense for this type don't apply to it (e.g. a binding on a boolean)
+        profileUtilities.removeInapplicableTypeConstraints(slice, true);
+        slice.addExtension(ExtensionDefinitions.EXT_IMPLIED_TYPE_SLICE, new BooleanType(true));
+        addToResult(slice);
+      }
+    }
+  }
+
+  public static boolean isImpliedTypeSlice(ElementDefinition ed) {
+    return ed.hasExtension(ExtensionDefinitions.EXT_IMPLIED_TYPE_SLICE);
+  }
+
   private boolean addToResult(ElementDefinition outcome) {    
     return getResult().getElement().add(outcome);
   }
@@ -1492,6 +1940,11 @@ public class ProfilePathProcessor {
   }
 
   private void processPathWithSlicedBaseWhereDiffsConstrainTypes(String currentBasePath, List<ElementDefinition> diffMatches, List<TypeSlice> typeList, ProfilePathProcessorState cursors, MappingAssistant mapHelper) {
+    ElementDefinition impliedSliceBase = cursors.base.getElement().get(cursors.baseCursor); // implied type slices are built from this, not from the slicer
+    SliceTemplate impliedSliceTemplate = findSliceTemplate(cursors.baseSource, impliedSliceBase); // the base element is the inherited slicer - use what its slices were built from
+    if (impliedSliceTemplate != null) {
+      impliedSliceBase = impliedSliceTemplate.ed;
+    }
     int start = 0;
     int newBaseLimit = profileUtilities.findEndOfElement(cursors.base, cursors.baseCursor);
     int newDiffCursor = getDifferential().getElement().indexOf(diffMatches.get(0));
@@ -1589,7 +2042,18 @@ public class ProfilePathProcessor {
     start++;
 
     String fixedType = null;
-    List<BaseTypeSlice> baseSlices = profileUtilities.findBaseSlices(cursors.base, newBaseLimit);
+    List<BaseTypeSlice> baseSlices = profileUtilities.findBaseSlices(cursors.base, cursors.baseCursor);
+    // implied type slices in the base are not inherited as such - they're regenerated below for whatever types are still uncovered
+    List<BaseTypeSlice> realSlices = new ArrayList<>();
+    Set<String> coveredTypes = new HashSet<>();
+    for (BaseTypeSlice bs : baseSlices) {
+      if (!isImpliedTypeSlice(bs.getDefn())) {
+        realSlices.add(bs);
+        if (bs.getType() != null) {
+          coveredTypes.add(bs.getType());
+        }
+      }
+    }
     // now process the siblings, which should each be type constrained - and may also have their own children. they may match existing slices
     // now we process the base scope repeatedly for each instance of the item in the differential list
     for (int i = start; i < diffMatches.size(); i++) {
@@ -1605,20 +2069,34 @@ public class ProfilePathProcessor {
       newDiffLimit = profileUtilities.findEndOfElement(getDifferential(), newDiffCursor);
       int sStart = cursors.baseCursor;
       int sEnd = newBaseLimit;
-      BaseTypeSlice bs = profileUtilities.chooseMatchingBaseSlice(baseSlices, type);
+      if (type != null) {
+        coveredTypes.add(type);
+      }
+      BaseTypeSlice bs = profileUtilities.chooseMatchingBaseSlice(realSlices, type);
       if (bs != null) {
         sStart = bs.getStart();
         sEnd = bs.getEnd();
         bs.setHandled(true);
       }
       ProfilePathProcessorState nc2 = new ProfilePathProcessorState(cursors.baseSource, cursors.base, sStart, newDiffCursor, cursors.contextName, cursors.resultPathBase);
-        this
+      StructureDefinition sliceSource = null;
+      if (bs == null && impliedSliceTemplate != null && impliedSliceTemplate.ed.getPath().equals(cursors.base.getElement().get(cursors.baseCursor).getPath())) {
+        // a new slice: it's built from what the other slices were built from, not from the slicer (see findSliceTemplate)
+        int ti = impliedSliceTemplate.sd.getSnapshot().getElement().indexOf(impliedSliceTemplate.ed);
+        nc2 = new ProfilePathProcessorState(impliedSliceTemplate.sd, impliedSliceTemplate.sd.getSnapshot(), ti, newDiffCursor, cursors.contextName, cursors.resultPathBase);
+        sEnd = profileUtilities.findEndOfElement(impliedSliceTemplate.sd.getSnapshot(), ti);
+        sliceSource = impliedSliceTemplate.sd;
+      }
+      ProfilePathProcessor sliceProcessor = this
           .incrementDebugIndent()
           .withBaseLimit(sEnd)
           .withDiffLimit(newDiffLimit)
           .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, i))
-          .withSlicing(new PathSlicingParams(true, e, currentBasePath))
-          .processPaths(nc2, mapHelper, null);
+          .withSlicing(new PathSlicingParams(true, e, currentBasePath));
+      if (sliceSource != null && sliceSource != getSourceStructureDefinition()) {
+        sliceProcessor = sliceProcessor.withSourceStructureDefinition(sliceSource);
+      }
+      sliceProcessor.processPaths(nc2, mapHelper, null);
     }
     if (elementToRemove != null) {
       getDifferential().getElement().remove(elementToRemove);
@@ -1632,7 +2110,7 @@ public class ProfilePathProcessor {
         }
       }
     }
-    for (BaseTypeSlice bs : baseSlices) {
+    for (BaseTypeSlice bs : realSlices) {
       if (!bs.isHandled()) {
         // ok we gimme up a fake differential that says nothing, and run that against the slice.
         StructureDefinition.StructureDefinitionDifferentialComponent fakeDiff = new StructureDefinition.StructureDefinitionDifferentialComponent();
@@ -1648,8 +2126,14 @@ public class ProfilePathProcessor {
 
       }
     }
-    // ok, done with that - next in the base list
-    cursors.baseCursor = baseSlices.get(baseSlices.size() - 1).getEnd() + 1;
+    if (!"0".equals(e.getMax())) {
+      Set<String> missingTypes = profileUtilities.getListOfTypes(e);
+      missingTypes.removeAll(coveredTypes);
+      addImpliedTypeSlices(e, impliedSliceBase, currentBasePath, missingTypes);
+    }
+    // ok, done with that - next in the base list. A base snapshot from an older generator can have a type slicer with
+    // no slices under it (no implied type slices), and then the slicer's own scope is what has been dealt with (#2662)
+    cursors.baseCursor = baseSlices.isEmpty() ? newBaseLimit + 1 : baseSlices.get(baseSlices.size() - 1).getEnd() + 1;
     cursors.diffCursor = newDiffLimit + 1;
     //throw new Error("not done yet - slicing / types @ "+cpath);
   }
@@ -1711,7 +2195,7 @@ public class ProfilePathProcessor {
         if (!outcome.getPath().startsWith(cursors.resultPathBase))
           throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ADDING_WRONG_PATH_IN_PROFILE___VS_, getProfileName(), outcome.getPath(), cursors.resultPathBase));
         debugCheck(outcome);
-        profileUtilities.markExtensions(outcome, false, sourceStructureDefinition);
+        ProfileUtilities.markExtensions(outcome, false, sourceStructureDefinition);
         addToResult(outcome); // so we just copy it in
         outcome.setUserData(UserDataNames.SNAPSHOT_BASE_MODEL, getSourceStructureDefinition().getUrl());
         outcome.setUserData(UserDataNames.SNAPSHOT_BASE_PATH, cursors.resultPathBase);

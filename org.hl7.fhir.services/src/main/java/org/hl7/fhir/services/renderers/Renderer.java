@@ -100,20 +100,20 @@ public class Renderer  {
     case Added:
       XhtmlNode spanOuter = x.span("border: solid 1px #dddddd; margin: 2px; padding: 2px", null);
       XhtmlNode spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatPhrase(RenderingI18nContext.REND_SINCE_ADDED, context.getChangeVersion())));
-      spanInner.img("icon-change-add.png", "icon");
+      spanInner.img("icon-change-add.png", "");
       spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_ADDED));
       return spanOuter;
     case Changed:
       spanOuter = x.span("border: solid 1px #dddddd; margin: 2px; padding: 2px", null);
       String s = context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED, context.getChangeVersion());
       spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", vca.getOriginal() == null ? s : context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED_WAS, context.getChangeVersion(), vca.getOriginal()));
-      spanInner.img("icon-change-edit.png", "icon");
+      spanInner.img("icon-change-edit.png", "");
       spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_CHANGED));
       return spanOuter;
     case Deleted:
       spanOuter = x.span("border: solid 1px #dddddd; margin: 2px; padding: 2px", null);
       spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatPhrase(RenderingI18nContext.GENERAL_REMOVED_SINCE, context.getChangeVersion())));
-      spanInner.img("icon-change-remove.png", "icon");
+      spanInner.img("icon-change-remove.png", "");
       spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_REMOVED));
       return spanOuter.strikethrough();
     default:
@@ -133,20 +133,20 @@ public class Renderer  {
     case Added:
       XhtmlNode divOuter = x.div("border: solid 1px #dddddd; margin: 2px; padding: 2px");
       XhtmlNode spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatPhrase(RenderingI18nContext.REND_SINCE_ADDED, context.getChangeVersion())));
-      spanInner.img("icon-change-add.png", "icon");
+      spanInner.img("icon-change-add.png", "");
       spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_ADDED));
       return divOuter;
     case Changed:
       divOuter = x.div("border: solid 1px #dddddd; margin: 2px; padding: 2px");
       String s = context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED, context.getChangeVersion());
       spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", vca.getOriginal() == null ? s : context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED_WAS, context.getChangeVersion(),  vca.getOriginal()));
-      spanInner.img("icon-change-edit.png", "icon");
+      spanInner.img("icon-change-edit.png", "");
       spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_CHANGED));
       return divOuter;
     case Deleted:
       divOuter = x.div("border: solid 1px #dddddd; margin: 2px; padding: 2px");
       spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatPhrase(RenderingI18nContext.GENERAL_REMOVED_SINCE, context.getChangeVersion())));
-      spanInner.img("icon-change-remove.png", "icon");
+      spanInner.img("icon-change-remove.png", "");
       spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_REMOVED));
       return divOuter.strikethrough();
     default:
@@ -170,7 +170,7 @@ public class Renderer  {
       }
       XhtmlNode td = tr.td();
       XhtmlNode span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatPhrase(RenderingI18nContext.REND_ROW_SINCE, context.getChangeVersion())));
-      span.img("icon-change-add.png", "icon");
+      span.img("icon-change-add.png", "");
       span.tx(" "+ context.formatPhrase(RenderingI18nContext.REND_ADDED));
       XhtmlNode x = new XhtmlNode(NodeType.Element, "holder");
       x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", context.formatPhrase(RenderingI18nContext.REND_ROW_SINCE, context.getChangeVersion())).tx(" ");
@@ -179,14 +179,14 @@ public class Renderer  {
     case Changed:
       td = tr.td();
       span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", context.formatPhrase(RenderingI18nContext.REND_ROW_CHANGED_SINCE_WAS, context.getChangeVersion(), vca.getOriginal()));
-      span.img("icon-change-edit.png", "icon");
+      span.img("icon-change-edit.png", "");
       span.tx(" "+ context.formatPhrase(RenderingI18nContext.REND_CHANGED));
       return td;
     case Deleted:
       tr.style("text-decoration: line-through");
       td = tr.td();
       span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", context.formatPhrase(RenderingI18nContext.GENERAL_REMOVED_SINCE, context.getChangeVersion()));
-      span.img("icon-change-remove.png", "icon");
+      span.img("icon-change-remove.png", "");
       span.tx(" "+ context.formatPhrase(RenderingI18nContext.REND_REMOVED));
       x = new XhtmlNode(NodeType.Element, "holder");
       x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px; text-decoration: none", context.formatPhrase(RenderingI18nContext.REND_ROW_SINCE, context.getChangeVersion())).tx(" ");
@@ -213,7 +213,7 @@ public class Renderer  {
       switch (self.getType()) {
       case Added:
         XhtmlNode spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", context.formatPhrase(RenderingI18nContext.REND_SINCE_ADDED, version));
-        spanInner.img("icon-change-add.png", "icon");
+        spanInner.img("icon-change-add.png", "");
         spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_ADDED));
         return true;
       case Changed:
@@ -223,13 +223,13 @@ public class Renderer  {
         } else {
           spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px",
               self.getOriginal() != null ? context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED_WAS, version, self.getOriginal()) : context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED, version));
-          spanInner.img("icon-change-edit.png", "icon");
+          spanInner.img("icon-change-edit.png", "");
           spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_CHANGED));
         }
         return true;
       case Deleted:
         spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", context.formatPhrase(RenderingI18nContext.GENERAL_REMOVED_SINCE, version));
-        spanInner.img("icon-change-remove.png", "icon");
+        spanInner.img("icon-change-remove.png", "");
         spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_REMOVED));
         return true;
       default:

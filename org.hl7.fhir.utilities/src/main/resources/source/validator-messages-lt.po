@@ -2033,7 +2033,7 @@ msgstr "Klaida vertinant FHIRPath išraišką: kairysis operandas į {0} yra net
 # FHIRPATH_LOCATION
 #: FHIRPATH_LOCATION
 msgid "(at {0})"
-msgstr "(ne {0})"
+msgstr "(ties {0})"
 
 # FHIRPATH_MUTIPLE_SORT_TYPE_PROBLEM
 #: FHIRPATH_MUTIPLE_SORT_TYPE_PROBLEM
@@ -5977,7 +5977,7 @@ msgstr "Šis elementas neatitinka jokios žinomos dalies {0} (tai gali būti ne 
 # This_property_must_be__not_
 #: This_property_must_be__not_
 msgid "The property {2} must be {0}, not {1} (at {3})"
-msgstr "Nekilnojamasis turtas {2} turi būti {0}ne {1} (ne {3})"
+msgstr "Ypatybė {2} turi būti {0}, o ne {1} (ties {3})"
 
 # This_property_must_be_a_Literal_not_
 #: This_property_must_be_a_Literal_not_
@@ -5992,7 +5992,7 @@ msgstr "Ši ypatybė turi būti URI arba bnode, o ne {0}"
 # This_property_must_be_an_Array_not_
 #: This_property_must_be_an_Array_not_
 msgid "The property {1} must be a JSON Array, not {0} (at {2})"
-msgstr "Nekilnojamasis turtas {1} turi būti JSON masyvas, o ne {0} (ne {2})"
+msgstr "Ypatybė {1} turi būti JSON masyvas, o ne {0} (ties {2})"
 
 # This_property_must_be_an_object_not_
 #: This_property_must_be_an_object_not_
@@ -6012,7 +6012,7 @@ msgstr "Vertė ''{0}'' yra neleistina Base64 reikšmė"
 # Type_Specific_Checks_DT_Boolean_Value
 #: Type_Specific_Checks_DT_Boolean_Value
 msgid "Boolean values must be ''true'' or ''false''"
-msgstr "Bulio logikos reikšmės turi būti ''teisinga'' arba ''klaidinga''"
+msgstr "Loginės reikšmės turi būti ''true'' arba ''false''"
 
 # Type_Specific_Checks_DT_Code_WS
 #: Type_Specific_Checks_DT_Code_WS
@@ -6891,7 +6891,7 @@ msgstr "Operacija ''{0}'' neleidžiama nuosavybei ''{1}'' sistemoje ''{3}''. Lei
 # VALUESET_BAD_FILTER_VALUE_BOOLEAN
 #: VALUESET_BAD_FILTER_VALUE_BOOLEAN
 msgid "The value for a filter based on property ''{0}'' must be either ''true'' or ''false'', not ''{1}''"
-msgstr "Filtro reikšmė pagal ypatybę ''{0}'' turi būti arba ''teisinga'' arba ''klaidinga'', o ne ''{1}''"
+msgstr "Filtro reikšmė pagal ypatybę ''{0}'' turi būti ''true'' arba ''false'', o ne ''{1}''"
 
 # VALUESET_BAD_FILTER_VALUE_CANT_CHECK
 #: VALUESET_BAD_FILTER_VALUE_CANT_CHECK

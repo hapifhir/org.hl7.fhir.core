@@ -22,6 +22,7 @@ import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -68,7 +69,7 @@ public class RenderingContext extends RenderingI18nContext {
 
 
   public String getOpacity() {
-    return wcagConformant ? "font-style: italics" : "opacity: 0.5";
+    return wcagConformant ? "font-style: italic" : "opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY;
   }
 
   public enum DesignationMode {

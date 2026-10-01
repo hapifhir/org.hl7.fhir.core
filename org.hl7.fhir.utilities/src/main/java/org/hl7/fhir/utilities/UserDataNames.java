@@ -16,6 +16,7 @@ public class UserDataNames {
   public static final String SNAPSHOT_DERIVATION_EQUALS = "derivation.equals";
   public static final String SNAPSHOT_DERIVATION_POINTER = "derived.pointer";
   public static final String SNAPSHOT_IS_DERIVED = "derived.fact";
+  public static final String SNAPSHOT_INHERITED_INLINE_EXTENSION = "SNAPSHOT_INHERITED_INLINE_EXTENSION";
   public static final String SNAPSHOT_GENERATED_IN_SNAPSHOT = "profileutilities.snapshot.processed";
   public static final String SNAPSHOT_DERIVATION_DIFF = "profileutilities.snapshot.diffsource";
   public static final String SNAPSHOT_GENERATED_MESSAGES = "profileutils.snapshot.generated.messages";
@@ -139,7 +140,6 @@ public class UserDataNames {
   public static final String archetypeName = "archetype-name";
   public static final String VS_EXPANSION_SOURCE = "VS_EXPANSION_SOURCE";
   public static final String auto_added_parameter = "auto_added_parameter";
-  public static final String SNAPSHOT_PREPROCESS_INJECTED = "SNAPSHOT_PREPROCESS_INJECTED";
   public static final String renderer_title = "renderer_title";
   public static final String matchingParameter = "matchingParameter";
   public static final String SNAPSHOT_SOURCE = "SNAPSHOT_SOURCE";

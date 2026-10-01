@@ -442,13 +442,11 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   }
 
   /**
-   * Builds the relationship-column href. A missing web path deliberately falls through to the
-   * literal "null#..." form rather than degrading to an unlinked cell, to stay byte-compatible
-   * with the anchors the published narrative fixtures expect. Only a wholly unresolvable code
-   * system yields null, because its id is then unknown.
+   * Builds the relationship-column href. Returns null - so the cell is rendered unlinked - when
+   * the code system can't be resolved or has no web path to link to.
    */
   private String codeHref(CodeSystem cs, String code) {
-    if (cs == null) {
+    if (cs == null || !cs.hasWebPath()) {
       return null;
     }
     return context.prefixLocalHref(cs.getWebPath() + "#" + cs.getId() + "-" + Utilities.nmtokenize(code));
@@ -494,7 +492,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         if (edSrc == null) {        
           tr.td().colspan(3).addText(ccl.getCode());
         } else {
-          tr.td().ah(sdSrc.getWebPath()+"#s-"+ccl.getCode()).tx(ccl.getCode());
+          tr.td().ah(sdSrc.hasWebPath() ? sdSrc.getWebPath()+"#s-"+ccl.getCode() : null).tx(ccl.getCode());
           tr.td().tx(""+edSrc.getMin()+".."+edSrc.getMax());
           tr.td().tx("todo");
         }
@@ -526,7 +524,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           if (edTgt == null) {        
             tr.td().colspan(3).addText(ccm.getCode());
           } else {
-            tr.td().ah(sdTgt.getWebPath()+"#s-"+ccm.getCode()).tx(ccm.getCode());
+            tr.td().ah(sdTgt.hasWebPath() ? sdTgt.getWebPath()+"#s-"+ccm.getCode() : null).tx(ccm.getCode());
             tr.td().tx(""+edTgt.getMin()+".."+edTgt.getMax());
             tr.td().tx("todo");
           }

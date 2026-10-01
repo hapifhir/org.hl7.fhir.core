@@ -42,7 +42,6 @@ public class XhtmlValidator extends BaseValidator {
       "area.coords", "area.href", "area.nohref", "area.alt", "table.summary", "table.width", "table.border",
       "table.frame", "table.rules", "table.cellspacing", "table.cellpadding", "pre.space", "td.nowrap"));
   private static final HashSet<String> HTML_BLOCK_LIST = new HashSet<>(Arrays.asList("div",  "blockquote", "table", "ol", "ul", "p"));
-
   
   private List<ValidationMessage> errors;
   private NodeStack stack;

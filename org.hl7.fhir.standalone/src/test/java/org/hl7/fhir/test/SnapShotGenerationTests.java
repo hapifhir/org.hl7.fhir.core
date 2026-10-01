@@ -138,7 +138,7 @@ public class SnapShotGenerationTests {
       if (Utilities.noString(aa)) {
         allow = AllowUnknownProfile.ALL_TYPES;
       } else if ("no-extensions".equals(aa)) {
-        allow = AllowUnknownProfile.NON_EXTNEIONS;
+        allow = AllowUnknownProfile.NON_EXTENSIONS;
       } else if ("none".equals(aa)) {
         allow = AllowUnknownProfile.NONE;
       } else {
