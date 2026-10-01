@@ -37,6 +37,7 @@ package org.hl7.fhir.model.testing;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -4239,14 +4240,14 @@ public class TestReport extends DomainResource {
     /**
      * @return When the TestScript was executed and this TestReport was generated.
      */
-    public Date getIssued() { 
+    public ZonedDateTime getIssued() {
       return this.issued == null ? null : this.issued.getValue();
     }
 
     /**
      * @param value When the TestScript was executed and this TestReport was generated.
      */
-    public TestReport setIssued(Date value) { 
+    public TestReport setIssued(ZonedDateTime value) {
       if (value == null)
         this.issued = null;
       else {

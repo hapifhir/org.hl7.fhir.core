@@ -1,6 +1,7 @@
 package org.hl7.fhir.services.conformance.profile;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -388,8 +389,8 @@ public class TypeProfileRootMerger {
       return null;
     }
     if (v1 instanceof BaseDateTimeType && v2 instanceof BaseDateTimeType && v1.fhirType().equals(v2.fhirType())) {
-      Date d1 = ((BaseDateTimeType) v1).getValue();
-      Date d2 = ((BaseDateTimeType) v2).getValue();
+      ZonedDateTime d1 = ((BaseDateTimeType) v1).getValue();
+      ZonedDateTime d2 = ((BaseDateTimeType) v2).getValue();
       return d1 == null || d2 == null ? null : d1.compareTo(d2);
     }
     if (v1 instanceof TimeType && v2 instanceof TimeType) {

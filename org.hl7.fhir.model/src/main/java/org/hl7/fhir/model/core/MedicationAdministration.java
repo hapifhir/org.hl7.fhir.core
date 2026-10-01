@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1760,14 +1760,14 @@ public class MedicationAdministration extends DomainResource {
     /**
      * @return The date the occurrence of the  MedicationAdministration was first captured in the record - potentially significantly after the occurrence of the event.
      */
-    public Date getRecorded() { 
+    public ZonedDateTime getRecorded() {
       return this.recorded == null ? null : this.recorded.getValue();
     }
 
     /**
      * @param value The date the occurrence of the  MedicationAdministration was first captured in the record - potentially significantly after the occurrence of the event.
      */
-    public MedicationAdministration setRecorded(Date value) { 
+    public MedicationAdministration setRecorded(ZonedDateTime value) { 
       if (value == null)
         this.recorded = null;
       else {

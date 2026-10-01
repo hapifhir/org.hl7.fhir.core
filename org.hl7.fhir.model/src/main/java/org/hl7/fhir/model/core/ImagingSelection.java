@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
@@ -2753,14 +2753,14 @@ public class ImagingSelection extends DomainResource {
     /**
      * @return Date and time the imaging selection was created.
      */
-    public Date getIssued() { 
+    public ZonedDateTime getIssued() {
       return this.issued == null ? null : this.issued.getValue();
     }
 
     /**
      * @param value Date and time the imaging selection was created.
      */
-    public ImagingSelection setIssued(Date value) { 
+    public ImagingSelection setIssued(ZonedDateTime value) {
       if (value == null)
         this.issued = null;
       else {

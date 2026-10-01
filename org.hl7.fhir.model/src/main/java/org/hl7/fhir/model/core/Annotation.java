@@ -36,7 +36,8 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.time.ZonedDateTime;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import java.util.EnumSet;
@@ -196,14 +197,14 @@ public class Annotation extends DataType implements ICompositeType {
     /**
      * @return Indicates when this particular annotation was made.
      */
-    public Date getTime() { 
+    public ZonedDateTime getTime() {
       return this.time == null ? null : this.time.getValue();
     }
 
     /**
      * @param value Indicates when this particular annotation was made.
      */
-    public Annotation setTime(Date value) { 
+    public Annotation setTime(ZonedDateTime value) {
       if (value == null)
         this.time = null;
       else {

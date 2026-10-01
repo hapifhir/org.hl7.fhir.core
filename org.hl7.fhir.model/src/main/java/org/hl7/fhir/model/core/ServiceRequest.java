@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -2201,14 +2201,14 @@ public class ServiceRequest extends DomainResource {
     /**
      * @return When the request transitioned to being actionable.
      */
-    public Date getAuthoredOn() { 
+    public ZonedDateTime getAuthoredOn() {
       return this.authoredOn == null ? null : this.authoredOn.getValue();
     }
 
     /**
      * @param value When the request transitioned to being actionable.
      */
-    public ServiceRequest setAuthoredOn(Date value) { 
+    public ServiceRequest setAuthoredOn(ZonedDateTime value) { 
       if (value == null)
         this.authoredOn = null;
       else {

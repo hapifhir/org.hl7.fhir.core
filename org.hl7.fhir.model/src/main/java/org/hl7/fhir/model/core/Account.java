@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1231,14 +1231,14 @@ public class Account extends DomainResource {
         /**
          * @return Ranking of the diagnosis (for each type).
          */
-        public Date getDateOfDiagnosis() { 
+        public ZonedDateTime getDateOfDiagnosis() {
           return this.dateOfDiagnosis == null ? null : this.dateOfDiagnosis.getValue();
         }
 
         /**
          * @param value Ranking of the diagnosis (for each type).
          */
-        public AccountDiagnosisComponent setDateOfDiagnosis(Date value) { 
+        public AccountDiagnosisComponent setDateOfDiagnosis(ZonedDateTime value) {
           if (value == null)
             this.dateOfDiagnosis = null;
           else {
@@ -1825,14 +1825,14 @@ public class Account extends DomainResource {
         /**
          * @return Date of the procedure when using a coded procedure. If using a reference to a procedure, then the date on the procedure should be used.
          */
-        public Date getDateOfService() { 
+        public ZonedDateTime getDateOfService() {
           return this.dateOfService == null ? null : this.dateOfService.getValue();
         }
 
         /**
          * @param value Date of the procedure when using a coded procedure. If using a reference to a procedure, then the date on the procedure should be used.
          */
-        public AccountProcedureComponent setDateOfService(Date value) { 
+        public AccountProcedureComponent setDateOfService(ZonedDateTime value) {
           if (value == null)
             this.dateOfService = null;
           else {
@@ -3558,14 +3558,14 @@ public class Account extends DomainResource {
     /**
      * @return Time the balance amount was calculated.
      */
-    public Date getCalculatedAt() { 
+    public ZonedDateTime getCalculatedAt() {
       return this.calculatedAt == null ? null : this.calculatedAt.getValue();
     }
 
     /**
      * @param value Time the balance amount was calculated.
      */
-    public Account setCalculatedAt(Date value) { 
+    public Account setCalculatedAt(ZonedDateTime value) {
       if (value == null)
         this.calculatedAt = null;
       else {

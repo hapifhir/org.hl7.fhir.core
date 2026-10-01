@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -426,14 +426,14 @@ public class SubscriptionStatus extends DomainResource {
         /**
          * @return The actual time this event occurred on the server.
          */
-        public Date getTimestamp() { 
+        public ZonedDateTime getTimestamp() {
           return this.timestamp == null ? null : this.timestamp.getValue();
         }
 
         /**
          * @param value The actual time this event occurred on the server.
          */
-        public SubscriptionStatusNotificationEventComponent setTimestamp(Date value) { 
+        public SubscriptionStatusNotificationEventComponent setTimestamp(ZonedDateTime value) {
           if (value == null)
             this.timestamp = null;
           else {

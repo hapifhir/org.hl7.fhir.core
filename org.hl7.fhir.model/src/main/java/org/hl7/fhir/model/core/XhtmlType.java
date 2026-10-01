@@ -35,7 +35,7 @@ import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.Base;
 import java.util.EnumSet;
 
-import java.util.*;
+import java.util.*; import java.time.*;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.Property;

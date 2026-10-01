@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -3013,7 +3013,7 @@ public class AuditEvent extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public AuditEvent(IModelContext modelContext, CodeableConcept type, Date recorded, AuditEventAgentComponent agent, AuditEventSourceComponent source) {
+    public AuditEvent(IModelContext modelContext, CodeableConcept type, ZonedDateTime recorded, AuditEventAgentComponent agent, AuditEventSourceComponent source) {
       super();
       this.modelContext = modelContext;
       this.setType(type);
@@ -3294,14 +3294,14 @@ public class AuditEvent extends DomainResource {
     /**
      * @return The time when the event was recorded.
      */
-    public Date getRecorded() { 
+    public ZonedDateTime getRecorded() {
       return this.recorded == null ? null : this.recorded.getValue();
     }
 
     /**
      * @param value The time when the event was recorded.
      */
-    public AuditEvent setRecorded(Date value) { 
+    public AuditEvent setRecorded(ZonedDateTime value) {
         if (this.recorded == null)
           this.recorded = new InstantType(modelContext);
         this.recorded.setValue(value);

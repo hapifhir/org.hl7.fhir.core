@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
@@ -3369,14 +3369,14 @@ public class ClaimResponse extends DomainResource {
         /**
          * @return The date and time the adjudication decision occured.
          */
-        public Date getDecisionDate() { 
+        public ZonedDateTime getDecisionDate() {
           return this.decisionDate == null ? null : this.decisionDate.getValue();
         }
 
         /**
          * @param value The date and time the adjudication decision occured.
          */
-        public AdjudicationComponent setDecisionDate(Date value) { 
+        public AdjudicationComponent setDecisionDate(ZonedDateTime value) { 
           if (value == null)
             this.decisionDate = null;
           else {
@@ -9721,14 +9721,14 @@ public class ClaimResponse extends DomainResource {
         /**
          * @return Estimated date the payment will be issued or the actual issue date of payment.
          */
-        public Date getDate() { 
+        public ZonedDateTime getDate() {
           return this.date == null ? null : this.date.getValue();
         }
 
         /**
          * @param value Estimated date the payment will be issued or the actual issue date of payment.
          */
-        public PaymentComponent setDate(Date value) { 
+        public PaymentComponent setDate(ZonedDateTime value) { 
           if (value == null)
             this.date = null;
           else {
@@ -11780,7 +11780,7 @@ public class ClaimResponse extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ClaimResponse(IModelContext modelContext, FinancialResourceStatusCodes status, CodeableConcept type, Use use, Reference subject, Date created, ClaimProcessingCodes outcome) {
+    public ClaimResponse(IModelContext modelContext, FinancialResourceStatusCodes status, CodeableConcept type, Use use, Reference subject, ZonedDateTime created, ClaimProcessingCodes outcome) {
       super();
       this.modelContext = modelContext;
       this.setStatus(status);
@@ -12160,14 +12160,14 @@ public class ClaimResponse extends DomainResource {
     /**
      * @return The date this resource was created.
      */
-    public Date getCreated() { 
+    public ZonedDateTime getCreated() {
       return this.created == null ? null : this.created.getValue();
     }
 
     /**
      * @param value The date this resource was created.
      */
-    public ClaimResponse setCreated(Date value) { 
+    public ClaimResponse setCreated(ZonedDateTime value) { 
         if (this.created == null)
           this.created = new DateTimeType(modelContext);
         this.created.setValue(value);

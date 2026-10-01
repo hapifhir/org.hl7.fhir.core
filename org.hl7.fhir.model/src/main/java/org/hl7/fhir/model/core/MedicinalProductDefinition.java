@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -2828,14 +2828,14 @@ public class MedicinalProductDefinition extends DomainResource {
     /**
      * @return The date at which the given status became applicable.
      */
-    public Date getStatusDate() { 
+    public ZonedDateTime getStatusDate() {
       return this.statusDate == null ? null : this.statusDate.getValue();
     }
 
     /**
      * @param value The date at which the given status became applicable.
      */
-    public MedicinalProductDefinition setStatusDate(Date value) { 
+    public MedicinalProductDefinition setStatusDate(ZonedDateTime value) {
       if (value == null)
         this.statusDate = null;
       else {

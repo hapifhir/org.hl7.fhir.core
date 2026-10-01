@@ -41,6 +41,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.format.SignStyle;
+import java.time.temporal.ChronoUnit;
 import java.util.Currency;
 import java.util.List;
 
@@ -733,18 +734,18 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
     if (context.isTechnicalMode()) { 
       switch (type.getPrecision()) { 
-      case YEAR: 
+      case YEARS:
         return new DateTimeFormatterBuilder().appendValue(YEAR, 4, 10, SignStyle.EXCEEDS_PAD).toFormatter(); 
-      case MONTH: 
+      case MONTHS:
         return  new DateTimeFormatterBuilder().appendValue(YEAR, 4, 10, SignStyle.EXCEEDS_PAD).appendLiteral('-').appendValue(MONTH_OF_YEAR, 2).toFormatter(); 
       default: 
         return DateTimeFormatter.ISO_DATE; 
       } 
     } else { 
       switch (type.getPrecision()) { 
-      case YEAR: 
+      case YEARS:
         return DateTimeFormatter.ofPattern("uuuu"); 
-      case MONTH: 
+      case MONTHS:
         return DateTimeFormatter.ofPattern("MMM uuuu"); 
       default: 
         return DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(context.getLocale()); 
@@ -754,17 +755,17 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   private DateTimeFormatter getContextDateFormat(BaseDateTimeType type) { 
     switch (type.getPrecision()) { 
-    case YEAR: 
+    case YEARS:
       return context.getDateYearFormat(); 
-    case MONTH: 
+    case MONTHS:
       return context.getDateYearMonthFormat(); 
     default: 
       return context.getDateFormat(); 
     } 
   }    
 
-  private boolean isOnlyDate(TemporalPrecisionEnum temporalPrecisionEnum) { 
-    return temporalPrecisionEnum == TemporalPrecisionEnum.YEAR || temporalPrecisionEnum == TemporalPrecisionEnum.MONTH || temporalPrecisionEnum == TemporalPrecisionEnum.DAY; 
+  private boolean isOnlyDate(ChronoUnit temporalPrecisionEnum) {
+    return temporalPrecisionEnum == ChronoUnit.YEARS || temporalPrecisionEnum == ChronoUnit.MONTHS || temporalPrecisionEnum == ChronoUnit.DAYS;
   } 
 
 

@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -468,14 +468,14 @@ public class ListResource extends DomainResource {
         /**
          * @return When this item was added to the list.
          */
-        public Date getDate() { 
+        public ZonedDateTime getDate() {
           return this.date == null ? null : this.date.getValue();
         }
 
         /**
          * @param value When this item was added to the list.
          */
-        public ListResourceEntryComponent setDate(Date value) { 
+        public ListResourceEntryComponent setDate(ZonedDateTime value) {
           if (value == null)
             this.date = null;
           else {
@@ -1184,14 +1184,14 @@ public class ListResource extends DomainResource {
     /**
      * @return Date list was last reviewed/revised and determined to be 'current'.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value Date list was last reviewed/revised and determined to be 'current'.
      */
-    public ListResource setDate(Date value) { 
+    public ListResource setDate(ZonedDateTime value) {
       if (value == null)
         this.date = null;
       else {

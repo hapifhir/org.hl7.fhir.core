@@ -15,6 +15,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.PackageHacker;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,7 +105,7 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
     sd.setTitle("Extension Definition for "+e+" for Version "+verSource);
     sd.setStatus(Enumerations.PublicationStatus.ACTIVE);
     sd.setExperimental(false);
-    sd.setDate(new Date());
+    sd.setDate(ZonedDateTime.now());
     sd.setPublisher("FHIR Project");
     sd.setPurpose("Defined so the validator can validate cross version extensions (see http://hl7.org/fhir/versions.html#extensions)");
     sd.setAbstract(false);

@@ -1,8 +1,9 @@
 package org.hl7.fhir.model;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.model.core.DateTimeType;
 import org.junit.jupiter.api.Test;
+
+import java.time.temporal.ChronoUnit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,13 +14,13 @@ public class DateTimeTypeFieldTests {
     final int MONTH = 0; // January
     final int DAY = 23;
     final DateTimeType dateTimeYearFirst = new DateTimeType();
-    dateTimeYearFirst.setPrecision(TemporalPrecisionEnum.DAY);
+    dateTimeYearFirst.setPrecision(ChronoUnit.DAYS);
     dateTimeYearFirst.setYear(YEAR);
     dateTimeYearFirst.setDay(DAY);
     dateTimeYearFirst.setMonth(MONTH);
 
     final DateTimeType dateTimeDayFirst = new DateTimeType();
-    dateTimeDayFirst.setPrecision(TemporalPrecisionEnum.DAY);
+    dateTimeDayFirst.setPrecision(ChronoUnit.DAYS);
     dateTimeDayFirst.setDay(DAY);
     dateTimeDayFirst.setYear(YEAR);
     dateTimeDayFirst.setMonth(MONTH);

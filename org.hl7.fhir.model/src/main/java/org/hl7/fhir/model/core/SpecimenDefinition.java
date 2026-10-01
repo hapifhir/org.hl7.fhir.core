@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -2966,14 +2966,14 @@ public class SpecimenDefinition extends DomainResource {
     /**
      * @return For draft definitions, indicates the date of initial creation. For active definitions, represents the date of activation. For withdrawn definitions, indicates the date of withdrawal.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value For draft definitions, indicates the date of initial creation. For active definitions, represents the date of activation. For withdrawn definitions, indicates the date of withdrawal.
      */
-    public SpecimenDefinition setDate(Date value) { 
+    public SpecimenDefinition setDate(ZonedDateTime value) {
       if (value == null)
         this.date = null;
       else {
@@ -3437,14 +3437,14 @@ public class SpecimenDefinition extends DomainResource {
     /**
      * @return The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    public Date getApprovalDate() { 
+    public ZonedDateTime getApprovalDate() {
       return this.approvalDate == null ? null : this.approvalDate.getValue();
     }
 
     /**
      * @param value The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    public SpecimenDefinition setApprovalDate(Date value) { 
+    public SpecimenDefinition setApprovalDate(ZonedDateTime value) {
       if (value == null)
         this.approvalDate = null;
       else {
@@ -3489,14 +3489,14 @@ public class SpecimenDefinition extends DomainResource {
     /**
      * @return The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.
      */
-    public Date getLastReviewDate() { 
+    public ZonedDateTime getLastReviewDate() {
       return this.lastReviewDate == null ? null : this.lastReviewDate.getValue();
     }
 
     /**
      * @param value The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.
      */
-    public SpecimenDefinition setLastReviewDate(Date value) { 
+    public SpecimenDefinition setLastReviewDate(ZonedDateTime value) {
       if (value == null)
         this.lastReviewDate = null;
       else {

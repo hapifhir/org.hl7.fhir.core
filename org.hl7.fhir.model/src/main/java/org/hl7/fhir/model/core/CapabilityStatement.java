@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1694,14 +1694,14 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         /**
          * @return Date this version of the software was released.
          */
-        public Date getReleaseDate() { 
+        public ZonedDateTime getReleaseDate() {
           return this.releaseDate == null ? null : this.releaseDate.getValue();
         }
 
         /**
          * @param value Date this version of the software was released.
          */
-        public CapabilityStatementSoftwareComponent setReleaseDate(Date value) { 
+        public CapabilityStatementSoftwareComponent setReleaseDate(ZonedDateTime value) {
           if (value == null)
             this.releaseDate = null;
           else {
@@ -8140,7 +8140,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public CapabilityStatement(IModelContext modelContext, PublicationStatus status, Date date, CapabilityStatementKind kind, FHIRVersion fhirVersion, String format) {
+    public CapabilityStatement(IModelContext modelContext, PublicationStatus status, ZonedDateTime date, CapabilityStatementKind kind, FHIRVersion fhirVersion, String format) {
       super();
       this.modelContext = modelContext;
       this.setStatus(status);
@@ -8595,14 +8595,14 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     /**
      * @return The date  (and optionally time) when the capability statement was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the capability statement changes.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The date  (and optionally time) when the capability statement was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the capability statement changes.
      */
-    public CapabilityStatement setDate(Date value) { 
+    public CapabilityStatement setDate(ZonedDateTime value) {
         if (this.date == null)
           this.date = new DateTimeType(modelContext);
         this.date.setValue(value);

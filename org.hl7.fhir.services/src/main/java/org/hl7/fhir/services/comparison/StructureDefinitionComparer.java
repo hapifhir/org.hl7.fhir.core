@@ -32,6 +32,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -119,7 +120,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     sd.setName("Union"+left.getName()+"And"+right.getName());
     sd.setTitle("Union of "+left.getTitle()+" And "+right.getTitle());
     sd.setStatus(left.getStatus());
-    sd.setDate(new Date());
+    sd.setDate(ZonedDateTime.now());
 
     StructureDefinition sd1 = new StructureDefinition();
     res.setIntersection(sd1);
@@ -127,7 +128,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     sd1.setName("Intersection"+left.getName()+"And"+right.getName());
     sd1.setTitle("Intersection of "+left.getTitle()+" And "+right.getTitle());
     sd1.setStatus(left.getStatus());
-    sd1.setDate(new Date());
+    sd1.setDate(ZonedDateTime.now());
 
     List<String> chMetadata = new ArrayList<>();
     boolean ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata, right);

@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -4308,7 +4308,7 @@ public class NutritionOrder extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public NutritionOrder(IModelContext modelContext, RequestStatus status, RequestIntent intent, Reference subject, Date dateTime) {
+    public NutritionOrder(IModelContext modelContext, RequestStatus status, RequestIntent intent, Reference subject, ZonedDateTime dateTime) {
       super();
       this.modelContext = modelContext;
       this.setStatus(status);
@@ -4739,14 +4739,14 @@ public class NutritionOrder extends DomainResource {
     /**
      * @return The date and time that this nutrition order was requested.
      */
-    public Date getDateTime() { 
+    public ZonedDateTime getDateTime() {
       return this.dateTime == null ? null : this.dateTime.getValue();
     }
 
     /**
      * @param value The date and time that this nutrition order was requested.
      */
-    public NutritionOrder setDateTime(Date value) { 
+    public NutritionOrder setDateTime(ZonedDateTime value) {
         if (this.dateTime == null)
           this.dateTime = new DateTimeType(modelContext);
         this.dateTime.setValue(value);

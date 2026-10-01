@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -755,14 +755,14 @@ public class ImagingStudy extends DomainResource {
         /**
          * @return The date and time the series was started.
          */
-        public Date getStarted() { 
+        public ZonedDateTime getStarted() {
           return this.started == null ? null : this.started.getValue();
         }
 
         /**
          * @param value The date and time the series was started.
          */
-        public ImagingStudySeriesComponent setStarted(Date value) { 
+        public ImagingStudySeriesComponent setStarted(ZonedDateTime value) {
           if (value == null)
             this.started = null;
           else {
@@ -2401,14 +2401,14 @@ public class ImagingStudy extends DomainResource {
     /**
      * @return Date and time the study started.
      */
-    public Date getStarted() { 
+    public ZonedDateTime getStarted() {
       return this.started == null ? null : this.started.getValue();
     }
 
     /**
      * @param value Date and time the study started.
      */
-    public ImagingStudy setStarted(Date value) { 
+    public ImagingStudy setStarted(ZonedDateTime value) {
       if (value == null)
         this.started = null;
       else {

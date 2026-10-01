@@ -3,6 +3,8 @@ package org.hl7.fhir.model.core;
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.Base.CopyObjectOptions;
 import org.hl7.fhir.model.Base;
+
+import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 
 import java.util.Calendar;
@@ -64,7 +66,7 @@ public class TimeType extends PrimitiveType<String> {
 	/**
 	 * Constructor
 	 *
-	 * @param context the model context this object belongs to - all objects in a tree must share the same context
+	 * @param modelContext the model context this object belongs to - all objects in a tree must share the same context
 	 */
 	public TimeType(IModelContext modelContext) {
 	  this();
@@ -143,29 +145,29 @@ public class TimeType extends PrimitiveType<String> {
     return Float.parseFloat(v);
   }
 
-  public TemporalPrecisionEnum getPrecision() {
+  public ChronoUnit getPrecision() {
     String v = getValue();
 //    if (v.length() == 2) {
 //      return TemporalPrecisionEnum.HOUR;
 //    }
     if (v.length() == 5) {
-      return TemporalPrecisionEnum.MINUTE;
+      return ChronoUnit.MINUTES;
     }
     if (v.length() == 8) {
-      return TemporalPrecisionEnum.SECOND;
+      return ChronoUnit.SECONDS;
     }
     if (v.length() > 9) {
-      return TemporalPrecisionEnum.MILLI;
+      return ChronoUnit.MILLIS;
     }
    
     return null;
   }
 
-  public void setPrecision(TemporalPrecisionEnum temp) {
-    if (temp == TemporalPrecisionEnum.MINUTE) {
+  public void setPrecision(ChronoUnit temp) {
+    if (temp == ChronoUnit.MINUTES) {
       setValue(getValue().substring(0, 5));
     }
-    if (temp == TemporalPrecisionEnum.SECOND) {
+    if (temp == ChronoUnit.SECONDS) {
       setValue(getValue().substring(0, 8));
     }
   }
@@ -182,7 +184,7 @@ public class TimeType extends PrimitiveType<String> {
     int hours = getHour();
     int minutes = getMinute();
     float seconds = getSecond();
-    boolean hasMillis = getPrecision() == TemporalPrecisionEnum.MILLI;
+    boolean hasMillis = getPrecision() == ChronoUnit.MILLIS;
 
 		switch (theField) {
 		case Calendar.HOUR:

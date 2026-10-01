@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
@@ -564,14 +564,14 @@ public class Attachment extends DataType implements ICompositeType {
     /**
      * @return The date that the attachment was first created.
      */
-    public Date getCreation() { 
+    public ZonedDateTime getCreation() {
       return this.creation == null ? null : this.creation.getValue();
     }
 
     /**
      * @param value The date that the attachment was first created.
      */
-    public Attachment setCreation(Date value) { 
+    public Attachment setCreation(ZonedDateTime value) {
       if (value == null)
         this.creation = null;
       else {

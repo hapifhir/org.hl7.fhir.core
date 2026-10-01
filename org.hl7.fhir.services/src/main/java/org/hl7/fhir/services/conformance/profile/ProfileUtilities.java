@@ -81,6 +81,7 @@ import org.hl7.fhir.services.xver.XVerExtensionManager;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 
@@ -4991,7 +4992,7 @@ public class ProfileUtilities {
     base.setVersion(fhirVersion);
     base.setName("Base"); 
     base.setStatus(PublicationStatus.ACTIVE);
-    base.setDate(new Date());
+    base.setDate(ZonedDateTime.now());
     base.setFhirVersion(FHIRVersion.fromCode(fhirVersion));
     base.setKind(StructureDefinitionKind.COMPLEXTYPE); 
     base.setAbstract(true); 

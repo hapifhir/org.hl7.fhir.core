@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1267,14 +1267,14 @@ public class Appointment extends DomainResource {
         /**
          * @return Recurring appointments will not occur after this date.
          */
-        public Date getLastOccurrenceDate() { 
+        public ZonedDateTime getLastOccurrenceDate() {
           return this.lastOccurrenceDate == null ? null : this.lastOccurrenceDate.getValue();
         }
 
         /**
          * @param value Recurring appointments will not occur after this date.
          */
-        public AppointmentRecurrenceTemplateComponent setLastOccurrenceDate(Date value) { 
+        public AppointmentRecurrenceTemplateComponent setLastOccurrenceDate(ZonedDateTime value) {
           if (value == null)
             this.lastOccurrenceDate = null;
           else {
@@ -1373,7 +1373,7 @@ public class Appointment extends DomainResource {
         /**
          * @param value {@link #occurrenceDate} (The list of specific dates that will have appointments generated.)
          */
-        public AppointmentRecurrenceTemplateComponent addOccurrenceDate(Date value) { //1
+        public AppointmentRecurrenceTemplateComponent addOccurrenceDate(ZonedDateTime value) { //1
           DateType t = new DateType(modelContext);
           t.setValue(value);
           if (this.occurrenceDateList == null)
@@ -1385,7 +1385,7 @@ public class Appointment extends DomainResource {
         /**
          * @param value {@link #occurrenceDate} (The list of specific dates that will have appointments generated.)
          */
-        public boolean hasOccurrenceDate(Date value) { 
+        public boolean hasOccurrenceDate(ZonedDateTime value) {
           if (this.occurrenceDateList == null)
             return false;
           for (DateType v : this.occurrenceDateList)
@@ -1515,7 +1515,7 @@ public class Appointment extends DomainResource {
         /**
          * @param value {@link #excludingDate} (Any dates, such as holidays, that should be excluded from the recurrence.)
          */
-        public AppointmentRecurrenceTemplateComponent addExcludingDate(Date value) { //1
+        public AppointmentRecurrenceTemplateComponent addExcludingDate(ZonedDateTime value) { //1
           DateType t = new DateType(modelContext);
           t.setValue(value);
           if (this.excludingDateList == null)
@@ -1527,7 +1527,7 @@ public class Appointment extends DomainResource {
         /**
          * @param value {@link #excludingDate} (Any dates, such as holidays, that should be excluded from the recurrence.)
          */
-        public boolean hasExcludingDate(Date value) { 
+        public boolean hasExcludingDate(ZonedDateTime value) {
           if (this.excludingDateList == null)
             return false;
           for (DateType v : this.excludingDateList)
@@ -3919,14 +3919,14 @@ public class Appointment extends DomainResource {
     /**
      * @return Date/Time that the appointment is to take place.
      */
-    public Date getStart() { 
+    public ZonedDateTime getStart() {
       return this.start == null ? null : this.start.getValue();
     }
 
     /**
      * @param value Date/Time that the appointment is to take place.
      */
-    public Appointment setStart(Date value) { 
+    public Appointment setStart(ZonedDateTime value) {
       if (value == null)
         this.start = null;
       else {
@@ -3971,14 +3971,14 @@ public class Appointment extends DomainResource {
     /**
      * @return Date/Time that the appointment is to conclude.
      */
-    public Date getEnd() { 
+    public ZonedDateTime getEnd() {
       return this.end == null ? null : this.end.getValue();
     }
 
     /**
      * @param value Date/Time that the appointment is to conclude.
      */
-    public Appointment setEnd(Date value) { 
+    public Appointment setEnd(ZonedDateTime value) {
       if (value == null)
         this.end = null;
       else {
@@ -4230,14 +4230,14 @@ public class Appointment extends DomainResource {
     /**
      * @return The date that this appointment was initially created. This could be different to the meta.lastModified value on the initial entry, as this could have been before the resource was created on the FHIR server, and should remain unchanged over the lifespan of the appointment.
      */
-    public Date getCreated() { 
+    public ZonedDateTime getCreated() {
       return this.created == null ? null : this.created.getValue();
     }
 
     /**
      * @param value The date that this appointment was initially created. This could be different to the meta.lastModified value on the initial entry, as this could have been before the resource was created on the FHIR server, and should remain unchanged over the lifespan of the appointment.
      */
-    public Appointment setCreated(Date value) { 
+    public Appointment setCreated(ZonedDateTime value) {
       if (value == null)
         this.created = null;
       else {
@@ -4282,14 +4282,14 @@ public class Appointment extends DomainResource {
     /**
      * @return The date/time describing when the appointment was cancelled.
      */
-    public Date getCancellationDate() { 
+    public ZonedDateTime getCancellationDate() {
       return this.cancellationDate == null ? null : this.cancellationDate.getValue();
     }
 
     /**
      * @param value The date/time describing when the appointment was cancelled.
      */
-    public Appointment setCancellationDate(Date value) { 
+    public Appointment setCancellationDate(ZonedDateTime value) {
       if (value == null)
         this.cancellationDate = null;
       else {

@@ -36,7 +36,8 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.time.temporal.ChronoUnit;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import java.util.EnumSet;
@@ -125,14 +126,14 @@ public class Period extends DataType implements ICompositeType {
     /**
      * @return The start of the period. The boundary is inclusive.
      */
-    public Date getStart() { 
+    public ZonedDateTime getStart() {
       return this.start == null ? null : this.start.getValue();
     }
 
     /**
      * @param value The start of the period. The boundary is inclusive.
      */
-    public Period setStart(Date value) { 
+    public Period setStart(ZonedDateTime value) { 
       if (value == null)
         this.start = null;
       else {
@@ -177,14 +178,14 @@ public class Period extends DataType implements ICompositeType {
     /**
      * @return The end of the period. If the end of the period is missing, it means no end was known or planned at the time the instance was created. The start may be in the past, and the end date in the future, which means that period is expected/planned to end at that time.
      */
-    public Date getEnd() { 
+    public ZonedDateTime getEnd() {
       return this.end == null ? null : this.end.getValue();
     }
 
     /**
      * @param value The end of the period. If the end of the period is missing, it means no end was known or planned at the time the instance was created. The start may be in the past, and the end date in the future, which means that period is expected/planned to end at that time.
      */
-    public Period setEnd(Date value) { 
+    public Period setEnd(ZonedDateTime value) { 
       if (value == null)
         this.end = null;
       else {
@@ -349,7 +350,7 @@ public class Period extends DataType implements ICompositeType {
      * The start of the period. The boundary is inclusive. 
      * </p>  
    */
-  public Period setStart( Date theDate,  TemporalPrecisionEnum thePrecision) { 
+  public Period setStart( ZonedDateTime theDate,  ChronoUnit thePrecision) {
     start = new DateTimeType(theDate, thePrecision);  
     return this;  
   } 
@@ -362,7 +363,7 @@ public class Period extends DataType implements ICompositeType {
      * The end of the period. The boundary is inclusive. 
      * </p>  
    */
-  public Period setEnd( Date theDate,  TemporalPrecisionEnum thePrecision) { 
+  public Period setEnd( ZonedDateTime theDate,  ChronoUnit thePrecision) {
     end = new DateTimeType(theDate, thePrecision);  
     return this;  
   }

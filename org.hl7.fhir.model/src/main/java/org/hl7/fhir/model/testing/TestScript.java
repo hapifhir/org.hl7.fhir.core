@@ -37,6 +37,7 @@ package org.hl7.fhir.model.testing;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11991,14 +11992,14 @@ public class TestScript extends CanonicalResource {
     /**
      * @return The date (and optionally time) when the test script was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the test script changes.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The date (and optionally time) when the test script was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the test script changes.
      */
-    public TestScript setDate(Date value) { 
+    public TestScript setDate(ZonedDateTime value) {
       if (value == null)
         this.date = null;
       else {

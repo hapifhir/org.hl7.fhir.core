@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -191,7 +191,7 @@ public class PaymentNotice extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public PaymentNotice(IModelContext modelContext, FinancialResourceStatusCodes status, Date created, Reference recipient, Money amount) {
+    public PaymentNotice(IModelContext modelContext, FinancialResourceStatusCodes status, ZonedDateTime created, Reference recipient, Money amount) {
       super();
       this.modelContext = modelContext;
       this.setStatus(status);
@@ -441,14 +441,14 @@ public class PaymentNotice extends DomainResource {
     /**
      * @return The date when this resource was created.
      */
-    public Date getCreated() { 
+    public ZonedDateTime getCreated() {
       return this.created == null ? null : this.created.getValue();
     }
 
     /**
      * @param value The date when this resource was created.
      */
-    public PaymentNotice setCreated(Date value) { 
+    public PaymentNotice setCreated(ZonedDateTime value) { 
         if (this.created == null)
           this.created = new DateTimeType(modelContext);
         this.created.setValue(value);
@@ -543,14 +543,14 @@ public class PaymentNotice extends DomainResource {
     /**
      * @return The date when the above payment action occurred.
      */
-    public Date getPaymentDate() { 
+    public ZonedDateTime getPaymentDate() {
       return this.paymentDate == null ? null : this.paymentDate.getValue();
     }
 
     /**
      * @param value The date when the above payment action occurred.
      */
-    public PaymentNotice setPaymentDate(Date value) { 
+    public PaymentNotice setPaymentDate(ZonedDateTime value) { 
       if (value == null)
         this.paymentDate = null;
       else {

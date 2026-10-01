@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1117,14 +1117,14 @@ public class Communication extends DomainResource {
     /**
      * @return The time when this communication was sent.
      */
-    public Date getSent() { 
+    public ZonedDateTime getSent() {
       return this.sent == null ? null : this.sent.getValue();
     }
 
     /**
      * @param value The time when this communication was sent.
      */
-    public Communication setSent(Date value) { 
+    public Communication setSent(ZonedDateTime value) {
       if (value == null)
         this.sent = null;
       else {
@@ -1169,14 +1169,14 @@ public class Communication extends DomainResource {
     /**
      * @return The time when this communication arrived at the destination.
      */
-    public Date getReceived() { 
+    public ZonedDateTime getReceived() {
       return this.received == null ? null : this.received.getValue();
     }
 
     /**
      * @param value The time when this communication arrived at the destination.
      */
-    public Communication setReceived(Date value) { 
+    public Communication setReceived(ZonedDateTime value) {
       if (value == null)
         this.received = null;
       else {

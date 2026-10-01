@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -560,14 +560,14 @@ public class DocumentReference extends DomainResource {
         /**
          * @return When the document was attested by the party.
          */
-        public Date getTime() { 
+        public ZonedDateTime getTime() {
           return this.time == null ? null : this.time.getValue();
         }
 
         /**
          * @param value When the document was attested by the party.
          */
-        public DocumentReferenceAttesterComponent setTime(Date value) { 
+        public DocumentReferenceAttesterComponent setTime(ZonedDateTime value) { 
           if (value == null)
             this.time = null;
           else {
@@ -2504,14 +2504,14 @@ public class DocumentReference extends DomainResource {
     /**
      * @return When the document reference was created.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value When the document reference was created.
      */
-    public DocumentReference setDate(Date value) { 
+    public DocumentReference setDate(ZonedDateTime value) { 
       if (value == null)
         this.date = null;
       else {

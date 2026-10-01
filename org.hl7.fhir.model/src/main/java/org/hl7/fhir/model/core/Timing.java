@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
@@ -2408,7 +2408,7 @@ public class Timing extends BackboneType implements ICompositeType {
     /**
      * @param value {@link #event} (Identifies specific times when the event occurs.)
      */
-    public Timing addEvent(Date value) { //1
+    public Timing addEvent(ZonedDateTime value) { //1
       DateTimeType t = new DateTimeType(modelContext);
       t.setValue(value);
       if (this.eventList == null)
@@ -2420,7 +2420,7 @@ public class Timing extends BackboneType implements ICompositeType {
     /**
      * @param value {@link #event} (Identifies specific times when the event occurs.)
      */
-    public boolean hasEvent(Date value) { 
+    public boolean hasEvent(ZonedDateTime value) { 
       if (this.eventList == null)
         return false;
       for (DateTimeType v : this.eventList)

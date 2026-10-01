@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import java.util.EnumSet;
@@ -1092,14 +1092,14 @@ public class Condition extends DomainResource {
     /**
      * @return The recordedDate represents when this particular Condition record was created in the system, which is often a system-generated date.
      */
-    public Date getRecordedDate() { 
+    public ZonedDateTime getRecordedDate() {
       return this.recordedDate == null ? null : this.recordedDate.getValue();
     }
 
     /**
      * @param value The recordedDate represents when this particular Condition record was created in the system, which is often a system-generated date.
      */
-    public Condition setRecordedDate(Date value) { 
+    public Condition setRecordedDate(ZonedDateTime value) {
       if (value == null)
         this.recordedDate = null;
       else {
