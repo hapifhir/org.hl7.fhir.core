@@ -194,7 +194,9 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    */
   public void add(long theValue, ChronoUnit theField) {
     ZonedDateTime value = getValueNotNull();
-    // FIXME: ensure that we have the right level of precision
+    if (theField.ordinal() < getPrecision().ordinal()) {
+      throw new IllegalArgumentException("Can not add " + theField + " as this is above current precision " + getPrecision());
+    }
     value = value.plus(theValue, theField);
     setValue(value, getPrecision());
   }
@@ -365,10 +367,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
         throw new IllegalArgumentException("Unsupported UCUM time unit: \"" + theUcumUnit
           + "\". Supported units are: a, mo, wk, d, h, min, s, ms");
     }
-  }
-
-  public void set(long theI, ChronoField theChronoUnit) {
-    // FIXME: implement
   }
 
   public Date toDate() {
@@ -753,7 +751,10 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
       if (length > 7) {
         validateCharAtIndexIs(value, 7, '-');
         validateLengthIsAtLeast(value, 10);
-        int actualMaximum = 31; // FIXME: can we calculate this? Do we have tests about invalid dates?
+        // We'll reject a day-of-month above 31 here because no month can have a higher day,
+        // but we do a validation that considers the actual number of days in the select month
+        // inside of ZonedDateTime.of(...) below
+        int actualMaximum = 31;
         day = parseInt(value, value.substring(8, 10), 1, actualMaximum);
         precision = ChronoUnit.DAYS;
         if (length > 10) {
@@ -978,7 +979,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    * change the string value from <code>2022-01-01T00:00:00Z</code> to
    * <code>2022-01-01T01:00:00+01:00</code>.
    */
-  // FIXME: add test
   public void setZoneIdSameInstant(ZoneId theTimeZone) {
     if (getValue() == null) {
       throw new DataFormatException("Can not set the Zone ID because this datatype has no value");
@@ -1006,7 +1006,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    * <code>2022-01-01T00:00:00+01:00</code> (which is a real-world instant that is one hour
    * different from the previous value).
    */
-  // FIXME: add test
   public void setZoneIdSameLocal(ZoneId theTimeZone) {
     if (getValue() == null) {
       throw new DataFormatException("Can not set the Zone ID because this datatype has no value");

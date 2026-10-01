@@ -1,8 +1,6 @@
 package org.hl7.fhir.model.core;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.parser.DataFormatException;
-import net.sourceforge.plantuml.preproc.Sub;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,11 +11,11 @@ import org.slf4j.LoggerFactory;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -27,9 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BaseDateTimeTypeTest {
   private static final Logger ourLog = LoggerFactory.getLogger(BaseDateTimeTypeTest.class);
 
-  // FIXME: rename
-  private static final DateTimeFormatter myDateInstantParser = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-  public static final ZoneId ZONE_ID_TORONTO = ZoneId.of("America/Toronto");
+  private static final DateTimeFormatter DATE_INSTANT_PARSER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
   /**
    * See https://github.com/hapifhir/hapi-fhir/issues/444
@@ -82,6 +78,22 @@ class BaseDateTimeTypeTest {
     assertTrue(new DateTimeType("2011-01-01T12:12:11Z").before(new DateTimeType("2011-01-01T12:12:12Z")));
     assertFalse(new DateTimeType("2011-01-01T12:12:12Z").before(new DateTimeType("2011-01-01T12:12:12Z")));
   }
+
+  @Test
+  void testAdd() {
+    DateTimeType dt = new DateTimeType("2013-02-03T11:22:33Z");
+    dt.add(1, ChronoUnit.DAYS);
+    assertEquals("2013-02-04T11:22:33Z", dt.getValueAsString());
+  }
+
+  @Test
+  void testAdd_RejectAdditionalPrecision() {
+    DateTimeType dt = new DateTimeType("2013-02-03T11:22:33Z");
+    assertThatThrownBy(() -> dt.add(1, ChronoUnit.MILLIS))
+      .isInstanceOf(IllegalArgumentException.class)
+      .hasMessageContaining("Can not add Millis as this is above current precision Second");
+  }
+
 
   @Disabled
   @Test
@@ -372,6 +384,15 @@ class BaseDateTimeTypeTest {
   }
 
   @Test
+  public void testSetZoneIdSameLocal() {
+    DateTimeType date = new DateTimeType("2026-01-21T10:22:33.444+01:00");
+
+    date.setZoneIdSameLocal(ZoneId.of("America/New_York"));
+    assertEquals("2026-01-21T10:22:33.444-05:00", date.getValueAsString());
+
+  }
+
+  @Test
   public void testNewInstance() throws InterruptedException {
     InstantType now = InstantType.withCurrentTime();
     Thread.sleep(100);
@@ -389,7 +410,7 @@ class BaseDateTimeTypeTest {
     DateTimeType dt = new DateTimeType();
     dt.setValueAsString("2013-02-03");
 
-    assertEquals("2013-02-03", myDateInstantParser.format(dt.getValue()).substring(0, 10));
+    assertEquals("2013-02-03", DATE_INSTANT_PARSER.format(dt.getValue()).substring(0, 10));
     assertEquals("2013-02-03", dt.getValueAsString());
     assertFalse(dt.isTimeZoneZulu());
     assertNull(dt.getTimeZone());
@@ -445,7 +466,7 @@ class BaseDateTimeTypeTest {
   @Test
   public void testParseIgnoresLeadingAndTrailingSpace() {
     DateTimeType dt = new DateTimeType("  2014-10-11T12:11:00Z      ");
-    assertEquals("2014-10-11T12:11:00.000+0000", dt.getValue().format(myDateInstantParser));
+    assertEquals("2014-10-11T12:11:00.000+0000", dt.getValue().format(DATE_INSTANT_PARSER));
     assertEquals("  2014-10-11T12:11:00Z      ", dt.getValueAsString());
   }
 
@@ -480,7 +501,7 @@ class BaseDateTimeTypeTest {
     InstantType dt = new InstantType();
     dt.setValueAsString("2013-02-03T11:22:33.234");
 
-    assertEquals("2013-02-03T11:22:33.234", myDateInstantParser.format(dt.getValue()).substring(0, 23));
+    assertEquals("2013-02-03T11:22:33.234", DATE_INSTANT_PARSER.format(dt.getValue()).substring(0, 23));
     assertEquals("2013-02-03T11:22:33.234", dt.getValueAsString());
     assertEquals(false, dt.isTimeZoneZulu());
     assertNull(dt.getTimeZone());
@@ -492,7 +513,7 @@ class BaseDateTimeTypeTest {
     InstantType dt = new InstantType();
     dt.setValueAsString("2013-02-03T11:22:33.234-02:00");
 
-    assertEquals("2013-02-03T11:22:33.234-0200", dt.getValue().format(myDateInstantParser));
+    assertEquals("2013-02-03T11:22:33.234-0200", dt.getValue().format(DATE_INSTANT_PARSER));
     assertEquals("2013-02-03T11:22:33.234-02:00", dt.getValueAsString());
     assertFalse(dt.isTimeZoneZulu());
     assertEquals(TimeZone.getTimeZone("GMT-02:00"), dt.getTimeZone());
@@ -504,7 +525,7 @@ class BaseDateTimeTypeTest {
     InstantType dt = new InstantType();
     dt.setValueAsString("2013-02-03T11:22:33.234Z");
 
-    assertEquals("2013-02-03T11:22:33.234+0000", dt.getValue().format(myDateInstantParser));
+    assertEquals("2013-02-03T11:22:33.234+0000", dt.getValue().format(DATE_INSTANT_PARSER));
     assertEquals("2013-02-03T11:22:33.234Z", dt.getValueAsString());
     assertTrue(dt.isTimeZoneZulu());
     assertEquals("UTC", dt.getTimeZone().getID());
@@ -522,7 +543,7 @@ class BaseDateTimeTypeTest {
     assertNull(dt.getTimeZone());
     assertEquals(ChronoUnit.MONTHS, dt.getPrecision());
 
-    assertEquals("2013-02", myDateInstantParser.format(dt.getValue()).substring(0, 7));
+    assertEquals("2013-02", DATE_INSTANT_PARSER.format(dt.getValue()).substring(0, 7));
   }
 
   @Test
@@ -561,7 +582,7 @@ class BaseDateTimeTypeTest {
     DateTimeType dt = new DateTimeType();
     dt.setValueAsString("2013-02-03T11:22:33");
 
-    assertEquals("2013-02-03T11:22:33.000+0000", myDateInstantParser.format(dt.getValue().withZoneSameLocal(ZoneOffset.UTC)));
+    assertEquals("2013-02-03T11:22:33.000+0000", DATE_INSTANT_PARSER.format(dt.getValue().withZoneSameLocal(ZoneOffset.UTC)));
     assertEquals("2013-02-03T11:22:33", dt.getValueAsString());
     assertEquals(2013, dt.getYear());
     assertEquals(1, dt.getMonth());
@@ -603,7 +624,7 @@ class BaseDateTimeTypeTest {
     DateTimeType dt = new DateTimeType("2010-01-01T00:00:00-09:00");
 
     assertEquals("2010-01-01T00:00:00-09:00", dt.getValueAsString());
-    assertEquals("2010-01-01T00:00:00.000-0900", myDateInstantParser.format(dt.getValue()));
+    assertEquals("2010-01-01T00:00:00.000-0900", DATE_INSTANT_PARSER.format(dt.getValue()));
     assertEquals("GMT-09:00", dt.getTimeZone().getID());
     assertEquals(-32400000L, dt.getTimeZone().getRawOffset());
     assertEquals("-09:00", dt.getZoneId().getId());
@@ -618,7 +639,7 @@ class BaseDateTimeTypeTest {
     DateTimeType dt = new DateTimeType("2010-01-01T00:00:00.1-09:00");
 
     assertEquals("2010-01-01T00:00:00.1-09:00", dt.getValueAsString());
-    assertEquals("2010-01-01T00:00:00.100-0900", myDateInstantParser.format(dt.getValue()));
+    assertEquals("2010-01-01T00:00:00.100-0900", DATE_INSTANT_PARSER.format(dt.getValue()));
     assertEquals("GMT-09:00", dt.getTimeZone().getID());
     assertEquals(-32400000L, dt.getTimeZone().getRawOffset());
 
@@ -631,7 +652,7 @@ class BaseDateTimeTypeTest {
     DateTimeType dt = new DateTimeType("2010-01-01T00:00:00.12-09:00");
 
     assertEquals("2010-01-01T00:00:00.12-09:00", dt.getValueAsString());
-    assertEquals("2010-01-01T00:00:00.120-0900", myDateInstantParser.format(dt.getValue()));
+    assertEquals("2010-01-01T00:00:00.120-0900", DATE_INSTANT_PARSER.format(dt.getValue()));
     assertEquals("GMT-09:00", dt.getTimeZone().getID());
     assertEquals(-32400000L, dt.getTimeZone().getRawOffset());
 
@@ -644,7 +665,7 @@ class BaseDateTimeTypeTest {
     DateTimeType dt = new DateTimeType("2010-01-01T00:00:00.123-09:00");
 
     assertEquals("2010-01-01T00:00:00.123-09:00", dt.getValueAsString());
-    assertEquals("2010-01-01T00:00:00.123-0900", myDateInstantParser.format(dt.getValue()));
+    assertEquals("2010-01-01T00:00:00.123-0900", DATE_INSTANT_PARSER.format(dt.getValue()));
     assertEquals("GMT-09:00", dt.getTimeZone().getID());
     assertEquals(-32400000L, dt.getTimeZone().getRawOffset());
 
@@ -657,7 +678,7 @@ class BaseDateTimeTypeTest {
     DateTimeType dt = new DateTimeType("2010-01-01T00:00:00.1234-09:00");
 
     assertEquals("2010-01-01T00:00:00.1234-09:00", dt.getValueAsString());
-    assertEquals("2010-01-01T00:00:00.123-0900", myDateInstantParser.format(dt.getValue()));
+    assertEquals("2010-01-01T00:00:00.123-0900", DATE_INSTANT_PARSER.format(dt.getValue()));
     assertEquals("GMT-09:00", dt.getTimeZone().getID());
     assertEquals(-32400000L, dt.getTimeZone().getRawOffset());
 
@@ -670,7 +691,7 @@ class BaseDateTimeTypeTest {
     DateTimeType dt = new DateTimeType("2010-01-01T00:00:00.12345-09:00");
 
     assertEquals("2010-01-01T00:00:00.12345-09:00", dt.getValueAsString());
-    assertEquals("2010-01-01T00:00:00.123-0900", myDateInstantParser.format(dt.getValue()));
+    assertEquals("2010-01-01T00:00:00.123-0900", DATE_INSTANT_PARSER.format(dt.getValue()));
     assertEquals("GMT-09:00", dt.getTimeZone().getID());
     assertEquals(-32400000L, dt.getTimeZone().getRawOffset());
 
@@ -683,7 +704,7 @@ class BaseDateTimeTypeTest {
     DateTimeType dt = new DateTimeType();
     dt.setValueAsString("2013");
 
-    assertEquals("2013", myDateInstantParser.format(dt.getValue()).substring(0, 4));
+    assertEquals("2013", DATE_INSTANT_PARSER.format(dt.getValue()).substring(0, 4));
     assertEquals("2013", dt.getValueAsString());
     assertEquals(2013, dt.getYear());
     assertFalse(dt.isTimeZoneZulu());
@@ -697,7 +718,7 @@ class BaseDateTimeTypeTest {
   @Test
   public void testPrecisionRespectedForSetValue() {
     DateType dateType = new DateType();
-    dateType.setValue(ZonedDateTime.parse("2012-01-02T22:31:02.333-0400", myDateInstantParser));
+    dateType.setValue(ZonedDateTime.parse("2012-01-02T22:31:02.333-0400", DATE_INSTANT_PARSER));
     assertEquals("2012-01-02", dateType.getValueAsString());
   }
 
@@ -708,15 +729,15 @@ class BaseDateTimeTypeTest {
   @Test
   public void testPrecisionRespectedForSetValueWithPrecision() {
     DateType date = new DateType();
-    date.setValue(ZonedDateTime.parse("2012-01-02T22:31:02.333-0400", myDateInstantParser), ChronoUnit.DAYS);
+    date.setValue(ZonedDateTime.parse("2012-01-02T22:31:02.333-0400", DATE_INSTANT_PARSER), ChronoUnit.DAYS);
     assertEquals("2012-01-02", date.getValueAsString());
 
     date = new DateType();
-    date.setValue(ZonedDateTime.parse("2012-01-02T22:31:02.333-0400", myDateInstantParser), ChronoUnit.MONTHS);
+    date.setValue(ZonedDateTime.parse("2012-01-02T22:31:02.333-0400", DATE_INSTANT_PARSER), ChronoUnit.MONTHS);
     assertEquals("2012-01", date.getValueAsString());
 
     date = new DateType();
-    date.setValue(ZonedDateTime.parse("2012-01-02T22:31:02.333-0400", myDateInstantParser), ChronoUnit.YEARS);
+    date.setValue(ZonedDateTime.parse("2012-01-02T22:31:02.333-0400", DATE_INSTANT_PARSER), ChronoUnit.YEARS);
     assertEquals("2012", date.getValueAsString());
   }
 
