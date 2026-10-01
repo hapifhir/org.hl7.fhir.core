@@ -935,7 +935,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
 
 
   private void listOptions(ResourceWrapper q, ResourceWrapper i, XhtmlNode select) { 
-    if (i.has("answerValueSet")) { 
+    if (i.has("answerValueSet") && !Utilities.noString(i.primitiveValue("answerValueSet"))) { 
       ValueSet vs = null; 
       if (!Utilities.noString(i.primitiveValue("answerValueSet")) && i.primitiveValue("answerValueSet").startsWith("#")) { 
         ResourceWrapper contained = q.getContained(i.primitiveValue("answerValueSet").substring(1));
@@ -958,7 +958,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         } 
       } 
     } else if (i.has("answerOption")) { 
-      renderItemOptions(select, i);  
+      renderItemOptions(select, i);
+      return;  
     }  
     select.option("a", "??", false);     
   } 
