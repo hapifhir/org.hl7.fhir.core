@@ -397,6 +397,8 @@ public class I18nConstants {
   public static final String INVALID_SLICING__THERE_IS_MORE_THAN_ONE_TYPE_SLICE_AT__BUT_ONE_OF_THEM__HAS_MIN__1_SO_THE_OTHER_SLICES_CANNOT_EXIST = "Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist";
   public static final String INV_FAILED = "INV_FAILED";
   public static final String INV_FAILED_SOURCE = "INV_FAILED_SOURCE";
+  public static final String INV_FAILED_ID = "INV_FAILED_ID";
+  public static final String INV_FAILED_ID_SOURCE = "INV_FAILED_ID_SOURCE";
   public static final String JSON_COMMA_EXTRA = "JSON_COMMA_EXTRA";
   public static final String JSON_COMMA_MISSING = "JSON_COMMA_MISSING";
   public static final String JSON_COMMENTS_NOT_ALLOWED = "JSON_COMMENTS_NOT_ALLOWED";
