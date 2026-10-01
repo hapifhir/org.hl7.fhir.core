@@ -48,6 +48,12 @@ public class MatchetypeValidator {
 
   private static final String EXT_OPT_MODE = "http://hl7.org/fhir/tools/StructureDefinition/matchetype";
   private static final String EXT_OPT_PROP = "http://hl7.org/fhir/tools/StructureDefinition/matchetype-optional";
+  // An object can be optional AND have optional properties, and the element model returns
+  // the first extension with a given URL, so the list of property names has its own.
+  private static final String EXT_OPT_PROPS = "http://hl7.org/fhir/tools/StructureDefinition/matchetype-optional-properties";
+  // $only$: an item that belongs to exactly one version or mode. Required when its filter
+  // passes; when it doesn't, the item must not be present at all (see isProhibited).
+  private static final String EXT_ONLY = "http://hl7.org/fhir/tools/StructureDefinition/matchetype-only";
   private static final String EXT_OPT_COUNT = "http://hl7.org/fhir/tools/StructureDefinition/matchetype-count";
   private static final String EXT_OPT_SORT = "http://hl7.org/fhir/tools/StructureDefinition/matchetype-sort";
 
@@ -81,6 +87,7 @@ public class MatchetypeValidator {
   public MatchetypeValidator(FHIRPathEngine fpe, Set<String> modes, JsonObject externals, Map<String, String> variables) {
     super();
     this.fpe = fpe;
+    this.modes = modes;
     this.externals = externals;
     this.variables = variables;
   }
@@ -177,7 +184,14 @@ public class MatchetypeValidator {
 
   private List<String> listOptionals(Element expectedElement) {
     List<String> res = new ArrayList<>();
-    if (expectedElement.hasExtension(EXT_OPT_PROP)) {
+    if (expectedElement.hasExtension(EXT_OPT_PROPS)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] optProps = expectedElement.getExtensionString(EXT_OPT_PROPS).split("\\,");
+      for (String s : optProps) {
+        res.add(s);
+      }
+    } else if (expectedElement.hasExtension(EXT_OPT_PROP)) {
       //      res.add("$optional-properties$");
       //      res.add("$count-arrays$");
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
@@ -205,6 +219,13 @@ public class MatchetypeValidator {
 
   private boolean compareProperties(List<ValidationMessage> messages, String path, List<Element> expectedElements, List<Element> actualElements, boolean countOnly, String name, Element parent) {
     boolean ok = true;
+    // Items prohibited in this version or mode ($only$ with a filter that doesn't pass) are not
+    // expected at all: they are taken out of the expected list, so the ordinary count and
+    // leftover checks enforce their absence. Checking first only gives a better message.
+    if (!checkProhibited(messages, path, expectedElements, actualElements)) {
+      ok = false;
+    }
+    expectedElements = withoutProhibited(expectedElements);
     int as = actualElements.size();
     int es = expectedElements.size();
     if (countOnly) {
@@ -213,7 +234,13 @@ public class MatchetypeValidator {
         ok = false;
       }
     } else if (as <=1 && es <= 1) {
-      if (!comparePropertyValue(messages, path, expectedElements.size() == 1 ? expectedElements.get(0) : null, actualElements.size() == 1 ? actualElements.get(0) : null, false, name, parent)) {
+      if (es == 0) {
+        // the only expected value was prohibited; checkProhibited reported it if it matched
+        if (ok) {
+          msg(messages, path, parent, "properties differ at " + path + ": unexpected element " + name + " (not expected in this version or mode)");
+        }
+        ok = false;
+      } else if (!comparePropertyValue(messages, path, expectedElements.get(0), actualElements.size() == 1 ? actualElements.get(0) : null, false, name, parent)) {
         ok = false;
       }
     } else {
@@ -246,6 +273,11 @@ public class MatchetypeValidator {
           notEqualMessage(messages, path, parent, "array item count differs at " + path, Integer.toString(es), Integer.toString(as));
         }
         int c = 0;
+        // whether an optional expected item was passed over for the actual item at c: if so,
+        // and the next required item doesn't match it either, the actual item is the one that
+        // is unexpected, and the property differences against items it never stood for are
+        // noise - the leftover check below reports it.
+        boolean skippedOptional = false;
         for (int i = 0; i < es; i++) {
           if (c >= as) {
             if (i >= es - oc && isOptional(expectedElements.get(i), name, parent)) {
@@ -260,8 +292,13 @@ public class MatchetypeValidator {
             if (bok) {
               // we matched, so check the next
               c++;
-            } else if (isOptional(expectedElements.get(c), name, parent)) {              
+              skippedOptional = false;
+            } else if (isOptional(expectedElements.get(i), name, parent)) {
               // we didn't match, but this is optional, so we'll move past it 
+              skippedOptional = true;
+            } else if (skippedOptional) {
+              // didn't match this either: the actual item is unexpected (reported below)
+              break;
             } else {
               // didn't match, and isn't optional.
               messages.addAll(vm);
@@ -325,6 +362,46 @@ public class MatchetypeValidator {
     return true;
   }
 
+  /**
+   * $only$ marks an item that belongs to exactly one version or mode: it is required when its
+   * filter passes, and must not be present at all when it doesn't. (Contrast $optional$, which
+   * only ever relaxes a requirement, and so can't say that something is wrong to send.)
+   * The filter grammar is the same as $optional$'s - see passesOptionalFilter.
+   *
+   * This returns true for the second case: the filter doesn't pass, so the item is prohibited.
+   */
+  private boolean isProhibited(Element e) {
+    Element ex = (Element) e.getExtensionValue(EXT_ONLY);
+    return ex != null && !passesOptionalFilter(ex.primitiveValue());
+  }
+
+  private List<Element> withoutProhibited(List<Element> elements) {
+    List<Element> res = new ArrayList<>();
+    for (Element e : elements) {
+      if (!isProhibited(e)) {
+        res.add(e);
+      }
+    }
+    return res;
+  }
+
+  /** Report an actual item that matches one the expected says must not be sent in this version or mode. */
+  private boolean checkProhibited(List<ValidationMessage> messages, String path, List<Element> expectedElements, List<Element> actualElements) {
+    boolean ok = true;
+    for (Element e : expectedElements) {
+      if (isProhibited(e)) {
+        for (int i = 0; i < actualElements.size(); i++) {
+          List<ValidationMessage> vm = new ArrayList<ValidationMessage>();
+          if (comparePropertyValue(vm, path + "[" + i + "]", e, actualElements.get(i), false, null, null)) {
+            msg(messages, path, actualElements.get(i), "The item at " + path + "[" + i + "] is not expected in this version or mode");
+            ok = false;
+          }
+        }
+      }
+    }
+    return ok;
+  }
+
   private int optionalCount(List<Element> arr, String name, Element parent) {
     int c = 0;
     for (Element e : arr) {
@@ -336,6 +413,9 @@ public class MatchetypeValidator {
   }
 
   private boolean isOptional(Element e, String name, Element parent) {
+    if (isProhibited(e)) {
+      return true;
+    }
     Element ex = (Element) e.getExtensionValue(EXT_OPT_PROP);
     if (ex != null && ("true".equals(ex.primitiveValue()) || passesOptionalFilter(ex.primitiveValue()))) {
       return true;
@@ -346,6 +426,12 @@ public class MatchetypeValidator {
   private boolean passesOptionalFilter(String token) {
     if (token.startsWith("!")) {
       return modes == null || !modes.contains(token.substring(1));
+    } else if (token.startsWith("warning:")) {
+      // optional; the runner notes a warning when the item is absent, this comparer has none to give
+      return true;
+    } else if (token.startsWith("version:")) {
+      String v = variables.get("version");
+      return v != null && v.startsWith(token.substring(8));
     } else {
       return modes != null && modes.contains(token);
     }
