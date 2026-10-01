@@ -315,7 +315,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         }
       }
     } else if (display != null) {
-      return "->"+display;
+      return "->"+displayDataType(display);
     } else if (id != null) {
       return "id: "+displayIdentifier(id);
     } else {

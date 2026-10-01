@@ -87,10 +87,25 @@ public class ProvenanceRenderer extends ResourceRenderer {
       tr.td().tx(context.formatPhrase(RenderingI18nContext.PROV_REASON));
       renderList(status, tr.td(), prv.children("reason"));
     }
+    if (prv.has("authorization")) {
+      tr = t.tr();
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.PROV_AUTHORIZATION));
+      renderList(status, tr.td(), prv.children("authorization"));
+    }
+    if (prv.has("why")) {
+      tr = t.tr();
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.PROV_WHY));
+      addMarkdown(tr.td(), prv.primitiveValue("why"));
+    }
     if (prv.has("patient")) {
       tr = t.tr();
       tr.td().tx(context.formatPhrase(RenderingI18nContext.GENERAL_SUBJ));
       renderReference(status, tr.td(), prv.child("patient"));
+    }
+    if (prv.has("encounter")) {
+      tr = t.tr();
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.PROV_ENCOUNTER));
+      renderReference(status, tr.td(), prv.child("encounter"));
     }
     if (prv.has("basedOn")) {
       tr = t.tr();
