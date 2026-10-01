@@ -62,6 +62,10 @@ public class FmlParser extends ParserBase {
     throw new Error("Not done yet");
   }
 
+  /**
+   * Requires the mapping-language StructureMap definition with native repeating source/target
+   * elements in the context, even when the source and target data models are from an older release.
+   */
   public Element parse(List<ValidationMessage> errors, String text) throws FHIRException {
     FHIRLexer lexer = new FHIRLexer(text, "source", true, true);
     if (lexer.done())
@@ -98,6 +102,9 @@ public class FmlParser extends ParserBase {
             break;
           case "title":
             result.makeElement("title").markLocation(fidLoc).setValue(lexer.readConstant("title"));
+            break;
+          case "version":
+            result.makeElement("version").markLocation(fidLoc).setValue(lexer.readConstant("version"));
             break;
           case "description":
             result.makeElement("description").markLocation(fidLoc).setValue(lexer.readMarkdown("description"));
@@ -398,6 +405,8 @@ public class FmlParser extends ParserBase {
         parseRule(result, group, lexer, false);
       }
     }
+    // Match the resource parser: group post-comments precede the closing delimiter.
+    group.addFormatCommentsPost(lexer.getComments());
     lexer.next();
     if (newFmt && lexer.hasToken(";"))
       lexer.next();
@@ -476,12 +485,12 @@ public class FmlParser extends ParserBase {
             rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
           }
         } else {
-          if (rule.getChildrenByName("source").size() != 1 || !rule.getChildrenByName("source").get(0).hasChild("element"))
+          if (rule.getChildrenByName("source").size() != 1 || !rule.getChildrenByName("source").get(0).hasChildren("element"))
             throw lexer.error("Complex rules must have an explicit name");
           if (rule.getChildrenByName("source").get(0).hasChild("type"))
-            rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element") + Utilities.capitalize(rule.getChildrenByName("source").get(0).getNamedChildValue("type")));
+            rule.makeElement("name").setValue(elementPath(rule.getChildrenByName("source").get(0)) + Utilities.capitalize(rule.getChildrenByName("source").get(0).getNamedChildValue("type")));
           else
-            rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element"));
+            rule.makeElement("name").setValue(elementPath(rule.getChildrenByName("source").get(0)));
         }
         // Consume the `;` plus any same-line trailing `// foo` comment.
         String trailingComment = lexer.tokenWithTrailingComment(";");
@@ -562,6 +571,14 @@ public class FmlParser extends ParserBase {
     return c.replace("-", "");
   }
 
+  private String elementPath(Element component) {
+    List<String> elements = new ArrayList<>();
+    for (Element element : component.getChildrenByName("element")) {
+      elements.add(element.primitiveValue());
+    }
+    return String.join(".", elements);
+  }
+
   private void parseRuleReference(Element rule, FHIRLexer lexer) throws FHIRLexer.FHIRLexerException {
     Element ref = rule.addElement("dependent").markLocation(lexer.getCurrentLocation());
     ref.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
@@ -587,9 +604,11 @@ public class FmlParser extends ParserBase {
       source.setUserData(StructureMapTools.MAP_SEARCH_EXPRESSION, node);
       source.makeElement("element").markLocation(loc).setValue(node.toString());
       lexer.token(")");
-    } else if (lexer.hasToken(".")) {
-      lexer.token(".");
-      source.makeElement("element").markLocation(lexer.getCurrentLocation()).setValue(readAsStringOrProcessedConstant(lexer.take(), lexer));
+    } else {
+      while (lexer.hasToken(".")) {
+        lexer.token(".");
+        source.addElement("element").markLocation(lexer.getCurrentLocation()).setValue(readAsStringOrProcessedConstant(lexer.take(), lexer));
+      }
     }
     if (lexer.hasToken(":")) {
       // type and cardinality
@@ -661,8 +680,10 @@ public class FmlParser extends ParserBase {
     if (lexer.hasToken(".")) {
       target.makeElement("context").markLocation(loc).setValue(start);
       start = null;
-      lexer.token(".");
-      target.makeElement("element").markLocation(lexer.getCurrentLocation()).setValue(readAsStringOrProcessedConstant(lexer.take(), lexer));
+      while (lexer.hasToken(".")) {
+        lexer.token(".");
+        target.addElement("element").markLocation(lexer.getCurrentLocation()).setValue(readAsStringOrProcessedConstant(lexer.take(), lexer));
+      }
     }
     String name;
     boolean isConstant = false;
@@ -792,8 +813,8 @@ public class FmlParser extends ParserBase {
   
   private boolean isSimpleSyntax(Element rule) {
     return
-      (rule.getChildren("source").size() == 1 && rule.getChildren("source").get(0).hasChild("context") && rule.getChildren("source").get(0).hasChild("element") && !rule.getChildren("source").get(0).hasChild("variable")) &&
-        (rule.getChildren("target").size() == 1 && rule.getChildren("target").get(0).hasChild("context") && rule.getChildren("target").get(0).hasChild("element") && !rule.getChildren("target").get(0).hasChild("variable") && 
+      (rule.getChildren("source").size() == 1 && rule.getChildren("source").get(0).hasChild("context") && rule.getChildren("source").get(0).hasChildren("element") && !rule.getChildren("source").get(0).hasChild("variable")) &&
+        (rule.getChildren("target").size() == 1 && rule.getChildren("target").get(0).hasChild("context") && rule.getChildren("target").get(0).hasChildren("element") && !rule.getChildren("target").get(0).hasChild("variable") &&
            !rule.getChildren("target").get(0).hasChild("parameter")) &&
         (rule.getChildren("dependent").size() == 0 && rule.getChildren("rule").size() == 0);
   }
