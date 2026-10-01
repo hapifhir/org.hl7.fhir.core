@@ -37,7 +37,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class SnomedExpressions {
 
   public class Base {

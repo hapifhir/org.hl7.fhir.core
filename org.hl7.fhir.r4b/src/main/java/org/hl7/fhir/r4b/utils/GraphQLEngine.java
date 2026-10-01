@@ -80,7 +80,7 @@ import org.hl7.fhir.utilities.graphql.Variable;
 import org.hl7.fhir.utilities.graphql.VariableValue;
 
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class GraphQLEngine implements IGraphQLEngine {
 
   public static class SearchEdge extends Base {

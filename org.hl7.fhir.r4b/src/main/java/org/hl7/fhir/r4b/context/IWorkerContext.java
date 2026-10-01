@@ -579,7 +579,7 @@ public interface IWorkerContext {
 
   String formatMessagePlural(Integer pl, String theMessage, Object... theMessageArguments);
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   void setValidationMessageLanguage(Locale locale);
 
   class ValidationResult {
@@ -883,7 +883,7 @@ public interface IWorkerContext {
    * @param types  - which types of resources to load
    * @return the number of resources loaded
    */
-  @Deprecated
+  @Deprecated(forRemoval = true)
   int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String[] types)
       throws FileNotFoundException, IOException, FHIRException;
 
