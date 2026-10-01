@@ -30,9 +30,14 @@ public class OrganizationAffiliationRenderer extends ParticipantRendererBase {
 
   @Override
   public String buildSummary(ResourceWrapper oa) throws UnsupportedEncodingException, IOException {
+    return buildSummary(oa, 0);
+  }
+
+  @Override
+  public String buildSummary(ResourceWrapper oa, int recursionCount) throws UnsupportedEncodingException, IOException {
     StringBuilder b = new StringBuilder();
     if (oa.has("participatingOrganization")) {
-      b.append(referenceText(oa.child("participatingOrganization")));
+      b.append(referenceText(oa.child("participatingOrganization"), recursionCount));
     } else {
       b.append(context.formatPhrase(RenderingI18nContext.OA_NO_ORG));
     }
@@ -47,7 +52,7 @@ public class OrganizationAffiliationRenderer extends ParticipantRendererBase {
     }
     if (oa.has("organization")) {
       b.append(" ");
-      b.append(context.formatPhrase(RenderingI18nContext.OA_FOR, referenceText(oa.child("organization"))));
+      b.append(context.formatPhrase(RenderingI18nContext.OA_FOR, referenceText(oa.child("organization"), recursionCount)));
     }
     appendId(b, oa);
     return b.toString();

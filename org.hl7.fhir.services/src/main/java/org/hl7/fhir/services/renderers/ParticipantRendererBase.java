@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -65,7 +66,7 @@ public abstract class ParticipantRendererBase extends ResourceRenderer {
   }
 
   private boolean isPreferredId(String newUse, String oldUse) {
-    if (newUse == null && oldUse == null || newUse == oldUse) {
+    if (Objects.equals(newUse, oldUse)) {
       return false;
     }
     if (newUse == null) {
@@ -92,7 +93,7 @@ public abstract class ParticipantRendererBase extends ResourceRenderer {
   }
 
   private boolean isPreferredName(String newUse, String oldUse) {
-    if (newUse == null && oldUse == null || newUse == oldUse) {
+    if (Objects.equals(newUse, oldUse)) {
       return false;
     }
     if (newUse == null) {
@@ -131,12 +132,14 @@ public abstract class ParticipantRendererBase extends ResourceRenderer {
 
   /**
    * A reference as plain text for the summary - without the "->" that displayReference puts in front of it 
+   *
+   * @param recursionCount how many summaries deep this is - see buildSummary(ResourceWrapper, int)
    */
-  protected String referenceText(ResourceWrapper ref) {
+  protected String referenceText(ResourceWrapper ref, int recursionCount) {
     if (ref.has("display")) {
       return context.getTranslated(ref.child("display"));
     }
-    String s = displayReference(ref);
+    String s = displayReference(ref, recursionCount);
     return s != null && s.startsWith("->") ? s.substring(2) : s;
   }
 
@@ -269,7 +272,7 @@ public abstract class ParticipantRendererBase extends ResourceRenderer {
         } else {
           for (ResourceWrapper ext : list) {
             XhtmlNode tr = tbl.tr();
-            nameCell(tr, sd.getTitle()+":", sd.getDescription());
+            nameCell(tr, getContext().getTranslated(sd.getTitleElement())+":", sd.getDescription());
             XhtmlNode td = tr.td();
             td.colspan("3");
             if (ext.has("extension")) {
@@ -308,7 +311,7 @@ public abstract class ParticipantRendererBase extends ResourceRenderer {
     }
     if (id != null) {
       ids.remove(id);
-    };
+    }
     if (ids.size() > 0) {
       XhtmlNode tr = tbl.tr();
       nameCell(tr, context.formatMessagePlural(ids.size(), RenderingContext.PAT_OTHER_ID),context.formatMessagePlural(ids.size(), RenderingContext.PAT_OTHER_ID_HINT));
@@ -363,7 +366,7 @@ public abstract class ParticipantRendererBase extends ResourceRenderer {
           XhtmlNode li = ul.li();
           renderDataType(status, xlinkNarrative(li, i), i);
           if (i == prefLang) {
-            li.tx(" "+context.formatPhrase(RenderingI18nContext.PAT_LANG_PREFERRED));;
+            li.tx(" "+context.formatPhrase(RenderingI18nContext.PAT_LANG_PREFERRED));
           }
         }
       }
@@ -381,8 +384,8 @@ public abstract class ParticipantRendererBase extends ResourceRenderer {
     }
     if (name != null) {
       names.remove(name);
-    };
-    if (names.size() == 1) {
+    }
+    if (!names.isEmpty()) {
       XhtmlNode tr = tbl.tr();
       nameCell(tr, context.formatPhrase(RenderingI18nContext.PAT_ALT_NAME), context.formatPhrase(RenderingI18nContext.PAT_ALT_NAME_HINT));
       XhtmlNode td = tr.td();
@@ -631,52 +634,80 @@ public abstract class ParticipantRendererBase extends ResourceRenderer {
     }
   }
 
+  private enum PhotoDisposition { NONE, FILE, INLINE, TOO_BIG }
+
+  /**
+   * How a photo can be shown. It's written to a file if there's somewhere to write it and it's a type 
+   * we know the extension for; otherwise it has to be inlined as a data: url, which is only done if it's 
+   * smaller than MAX_IMAGE_LENGTH. svg is never written to a file: an svg file that is opened directly 
+   * can run script, where an inlined one can't
+   */
+  private PhotoDisposition photoDisposition(ResourceWrapper att, byte[] cnt) {
+    String ct = att.primitiveValue("contentType");
+    if (ct == null || !ct.startsWith("image/") || cnt == null || cnt.length == 0) {
+      return PhotoDisposition.NONE;
+    }
+    if (!context.isInlineGraphics() && !Utilities.noString(context.getDestDir()) && extensionForType(ct) != null) {
+      return PhotoDisposition.FILE;
+    }
+    return cnt.length < MAX_IMAGE_LENGTH ? PhotoDisposition.INLINE : PhotoDisposition.TOO_BIG;
+  }
+
+  private byte[] photoContent(ResourceWrapper att) {
+    return att.has("data") ? Utilities.decodeBase64(att.primitiveValue("data"), true) : null;
+  }
+
+  /**
+   * Show the first photo that can be shown. If the only ones there are too big to inline, say so instead
+   */
   protected void renderPhoto(XhtmlNode td, ResourceWrapper r, String inlineAlt, String fileAlt) throws UnsupportedEncodingException, FHIRException, IOException {
-    if (r.has("photo")) {
-      List<ResourceWrapper> a = r.children("photo");
-      for (ResourceWrapper att : a) {
-        String ct = att.primitiveValue("contentType");
-        byte[] cnt = att.has("data") ? Utilities.decodeBase64(att.primitiveValue("data"), true) : null;
-        if (ct != null && ct.startsWith("image/") &&
-            cnt != null && (!context.isInlineGraphics() || (cnt.length > 0 && cnt.length < MAX_IMAGE_LENGTH))) {
-          String ext = extensionForType(ct);
-          if (context.isInlineGraphics() || Utilities.noString(context.getDestDir()) || ext == null) {
-            td.img("data:"+ct+";base64,"+att.primitiveValue("data"), inlineAlt);
-          } else {
-            String n = context.getRandomName(r.getId())+ext;
-            FileUtilities.bytesToFile(cnt, ManagedFileAccess.file(Utilities.path(context.getDestDir(), n)));
-            context.registerFile(n);
-            td.img(n, fileAlt);
-          }
-          return;
+    ResourceWrapper tooBig = null;
+    int tooBigSize = 0;
+    for (ResourceWrapper att : r.children("photo")) {
+      byte[] cnt = photoContent(att);
+      switch (photoDisposition(att, cnt)) {
+      case FILE: {
+        String n = context.getRandomName(r.getId())+extensionForType(att.primitiveValue("contentType"));
+        FileUtilities.bytesToFile(cnt, ManagedFileAccess.file(Utilities.path(context.getDestDir(), n)));
+        context.registerFile(n);
+        td.img(n, fileAlt);
+        return;
+      }
+      case INLINE:
+        td.img("data:"+att.primitiveValue("contentType")+";base64,"+att.primitiveValue("data"), inlineAlt);
+        return;
+      case TOO_BIG:
+        if (tooBig == null) {
+          tooBig = att;
+          tooBigSize = cnt.length;
         }
+        break;
+      default:
+        break;
       }
     }
-    return;
+    if (tooBig != null) {
+      td.para().i().tx(context.formatPhrase(RenderingI18nContext.IND_PHOTO_TOO_BIG, tooBig.primitiveValue("contentType"), tooBigSize));
+    }
   }
 
   private String extensionForType(String contentType) {
-    if (contentType.equals("image/gif")) {
-      return ".gif";
+    switch (contentType) {
+    case "image/gif": return ".gif";
+    case "image/png": return ".png";
+    case "image/jpeg": return ".jpg";
+    case "image/webp": return ".webp";
+    default: return null; // including image/svg+xml - see photoDisposition
     }
-    if (contentType.equals("image/png")) {
-      return ".png";
-    }
-    if (contentType.equals("image/jpeg")) {
-      return ".jpg";
-    }
-    return null;
   }
 
+  /**
+   * true if renderPhoto() will put something in the cell - a photo, or the note that it's too big
+   */
   protected boolean hasRenderablePhoto(ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
-    if (r.has("photo")) {
-      List<ResourceWrapper> a = r.children("photo");
-      for (ResourceWrapper att : a) {
-        if (att.has("contentType") && att.primitiveValue("contentType").startsWith("image/") &&
-            att.has("data") && (!context.isInlineGraphics() || (att.primitiveValue("data").length() > 0 &&
-                att.primitiveValue("data").length() < MAX_IMAGE_LENGTH))) {
-          return true;
-        }
+    for (ResourceWrapper att : r.children("photo")) {
+      if (photoDisposition(att, photoContent(att)) != PhotoDisposition.NONE) {
+        return true;
       }
     }
     return false;

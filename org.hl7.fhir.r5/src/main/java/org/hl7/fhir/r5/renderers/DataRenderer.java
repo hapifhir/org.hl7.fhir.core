@@ -1854,7 +1854,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
               x.addText(displayContactPoint(contact));
               break;
             case "url":
-              x.ah(context.prefixLocalHref(v)).tx(v);
+              if (Utilities.isAbsoluteUrlLinkable(v)) {
+                x.ah(context.prefixLocalHref(v)).tx(v);
+              } else {
+                x.tx(v);
+              }
               break;
             default:
               break;

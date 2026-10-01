@@ -434,6 +434,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String IND_GENDER_HINT = "IND_GENDER_HINT";
   public static final String IND_PERIOD_HINT = "IND_PERIOD_HINT";
   public static final String IND_PHOTO = "IND_PHOTO";
+  public static final String IND_PHOTO_TOO_BIG = "IND_PHOTO_TOO_BIG";
   public static final String PRAC_CONTACT_HINT = "PRAC_CONTACT_HINT";
   public static final String PRAC_DECEASED_HINT = "PRAC_DECEASED_HINT";
   public static final String PRAC_NO_NAME = "PRAC_NO_NAME";

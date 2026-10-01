@@ -25,7 +25,12 @@ public class ProvenanceRenderer extends ResourceRenderer {
  
   @Override
   public String buildSummary(ResourceWrapper prv) throws UnsupportedEncodingException, IOException {
-    return (context.formatPhrase(RenderingI18nContext.PROV_FOR, displayReference(prv.firstChild("target")))+" ");
+    return buildSummary(prv, 0);
+  }
+
+  @Override
+  public String buildSummary(ResourceWrapper prv, int recursionCount) throws UnsupportedEncodingException, IOException {
+    return (context.formatPhrase(RenderingI18nContext.PROV_FOR, displayReference(prv.firstChild("target"), recursionCount))+" ");
   }
 
   @Override

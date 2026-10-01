@@ -23,10 +23,15 @@ public class ListRenderer extends ResourceRenderer {
  
   @Override
   public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return buildSummary(r, 0);
+  }
+
+  @Override
+  public String buildSummary(ResourceWrapper r, int recursionCount) throws UnsupportedEncodingException, IOException {
     ResourceWrapper c = r.child("code");
     String cd = c == null ? context.formatPhrase(RenderingI18nContext.LIST_UNSPECIFIED_CODE) : displayCodeableConcept(c);
     ResourceWrapper s = r.child("subject");
-    String sd = s == null ? context.formatPhrase(RenderingI18nContext.LIST_UNSPECIFIED_SUBJECT) : displayReference(s);
+    String sd = s == null ? context.formatPhrase(RenderingI18nContext.LIST_UNSPECIFIED_SUBJECT) : displayReference(s, recursionCount);
     return context.formatPhrase(RenderingI18nContext.LIST_SUMMARY, cd, sd);
   }
 

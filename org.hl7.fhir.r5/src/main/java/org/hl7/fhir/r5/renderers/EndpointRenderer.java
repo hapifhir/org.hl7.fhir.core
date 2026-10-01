@@ -77,11 +77,44 @@ public class EndpointRenderer extends ParticipantRendererBase {
     }
     addValuesRow(status, tbl, context.formatPhrase(RenderingI18nContext.EP_MANAGER), context.formatPhrase(RenderingI18nContext.EP_MANAGER_HINT), ep.children("managingOrganization"));
     addValuesRow(status, tbl, context.formatPhrase(RenderingI18nContext.PAT_CONTACT), context.formatPhrase(RenderingI18nContext.EP_CONTACT_HINT), ep.children("contact"));
-    addValuesRow(status, tbl, context.formatPhrase(RenderingI18nContext.EP_HEADER), context.formatPhrase(RenderingI18nContext.EP_HEADER_HINT), ep.children("header"));
+    addHeaders(tbl, ep.children("header"));
     addAvailability(status, tbl, ep, "availability", context.formatPhrase(RenderingI18nContext.ADM_AVAIL), context.formatPhrase(RenderingI18nContext.EP_AVAIL_HINT));
     addIdentifiers(status, tbl, ep);
     addExtensions(status, tbl, ep);
     finishNarrative(status, x, tbl, ep);
+  }
+
+  /**
+   * Endpoint.header is "name: value". The value of an Authorization header is a credential, and it doesn't 
+   * belong in a narrative even if one turns up in an example, so it's X'd out
+   */
+  private void addHeaders(XhtmlNode tbl, List<ResourceWrapper> headers) {
+    if (headers.isEmpty()) {
+      return;
+    }
+    XhtmlNode tr = tbl.tr();
+    nameCell(tr, context.formatPhrase(RenderingI18nContext.EP_HEADER), context.formatPhrase(RenderingI18nContext.EP_HEADER_HINT));
+    XhtmlNode td = tr.td();
+    td.colspan("3");
+    if (headers.size() == 1) {
+      spanIfTracking(td, headers.get(0)).tx(maskHeader(headers.get(0).primitiveValue()));
+    } else {
+      XhtmlNode ul = td.ul();
+      for (ResourceWrapper h : headers) {
+        spanIfTracking(ul.li(), h).tx(maskHeader(h.primitiveValue()));
+      }
+    }
+  }
+
+  private String maskHeader(String header) {
+    if (header == null) {
+      return "";
+    }
+    int i = header.indexOf(':');
+    if (i > 0 && "authorization".equalsIgnoreCase(header.substring(0, i).trim())) {
+      return header.substring(0, i+1)+" XXXXXXXX";
+    }
+    return header;
   }
 
   private void addPayload(RenderingStatus status, XhtmlNode tbl, ResourceWrapper p) throws FHIRFormatError, DefinitionException, IOException {

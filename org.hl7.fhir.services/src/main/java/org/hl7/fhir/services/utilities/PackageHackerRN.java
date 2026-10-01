@@ -196,7 +196,9 @@ public class PackageHackerRN {
       if (url == null) {
         url = new ElementDefinition(sd.getModelContext(), "Extension.extension.url");
         url.setId(urlId);
-        diff.add(slice+1, url); // url comes before value[x] and anything else in the slice
+        // straight after the slice. url comes after the slice's own extension element, but the sub-extensions
+        // of quantity-confidenceInterval don't constrain that, so the next thing in the slice is value[x]
+        diff.add(slice+1, url);
       }
       if (!url.hasFixed()) {
         url.setFixed(new UriType(name));

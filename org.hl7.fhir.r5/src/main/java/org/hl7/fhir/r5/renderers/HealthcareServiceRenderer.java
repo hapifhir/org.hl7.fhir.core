@@ -30,6 +30,11 @@ public class HealthcareServiceRenderer extends ParticipantRendererBase {
 
   @Override
   public String buildSummary(ResourceWrapper hs) throws UnsupportedEncodingException, IOException {
+    return buildSummary(hs, 0);
+  }
+
+  @Override
+  public String buildSummary(ResourceWrapper hs, int recursionCount) throws UnsupportedEncodingException, IOException {
     StringBuilder b = new StringBuilder();
     if (hs.has("name")) {
       b.append(context.getTranslated(hs.child("name")));
@@ -39,7 +44,7 @@ public class HealthcareServiceRenderer extends ParticipantRendererBase {
     appendConcepts(b, hs.children("type"));
     if (hs.has("providedBy")) {
       b.append(" ");
-      b.append(context.formatPhrase(RenderingI18nContext.HS_BY, referenceText(hs.child("providedBy"))));
+      b.append(context.formatPhrase(RenderingI18nContext.HS_BY, referenceText(hs.child("providedBy"), recursionCount)));
     }
     appendId(b, hs);
     return b.toString();

@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /**
@@ -53,8 +54,8 @@ public class GroupRenderer extends ParticipantRendererBase {
       details.add(membership);
     }
     if (grp.has("quantity")) {
-      int q = Integer.parseInt(grp.primitiveValue("quantity"));
-      details.add(context.formatPhrasePlural(q, RenderingI18nContext.GROUP_MEMBER_COUNT, q));
+      String q = grp.primitiveValue("quantity");
+      details.add(context.formatPhrasePlural(Utilities.parseInt(q, 0), RenderingI18nContext.GROUP_MEMBER_COUNT, q));
     } else if (grp.has("member")) {
       int q = grp.children("member").size();
       details.add(context.formatPhrasePlural(q, RenderingI18nContext.GROUP_MEMBER_COUNT, q));
@@ -162,6 +163,9 @@ public class GroupRenderer extends ParticipantRendererBase {
         renderValue(status, td, c.child("code"));
       }
       if (c.has("description")) { // R6
+        if (c.has("code")) {
+          td.tx(" - ");
+        }
         renderDataType(status, td, c.child("description"));
       }
       td = tr.td();

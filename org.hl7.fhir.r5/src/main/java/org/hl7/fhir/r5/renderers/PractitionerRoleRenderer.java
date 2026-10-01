@@ -30,12 +30,17 @@ public class PractitionerRoleRenderer extends ParticipantRendererBase {
 
   @Override
   public String buildSummary(ResourceWrapper pr) throws UnsupportedEncodingException, IOException {
+    return buildSummary(pr, 0);
+  }
+
+  @Override
+  public String buildSummary(ResourceWrapper pr, int recursionCount) throws UnsupportedEncodingException, IOException {
     if (pr.has("display")) {
       return context.getTranslated(pr.child("display"));
     }
     StringBuilder b = new StringBuilder();
     if (pr.has("practitioner")) {
-      b.append(referenceText(pr.child("practitioner")));
+      b.append(referenceText(pr.child("practitioner"), recursionCount));
     } else {
       b.append(context.formatPhrase(RenderingI18nContext.PRR_NO_PRACT));
     }
@@ -50,7 +55,7 @@ public class PractitionerRoleRenderer extends ParticipantRendererBase {
     }
     if (pr.has("organization")) {
       b.append(" ");
-      b.append(context.formatPhrase(RenderingI18nContext.PRR_AT, referenceText(pr.child("organization"))));
+      b.append(context.formatPhrase(RenderingI18nContext.PRR_AT, referenceText(pr.child("organization"), recursionCount)));
     }
     ResourceWrapper id = chooseId(pr);
     if (id != null) {
