@@ -994,6 +994,25 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return baos.toByteArray();
   }
 
+  /**
+   * Parse FHIR Mapping Language (FML) text into a StructureMap, returned in the structure of
+   * the engine's runtime FHIR version: an R4-mode validator gets an R4-shaped StructureMap
+   * (dependent variables as strings), so that it round-trips through /loadResource without
+   * losing fields.
+   *
+   * @param fml          the FML map source text
+   * @param srcName      a name for the source, used in parse error messages; defaults to "map"
+   * @param outputFormat format of the returned bytes (JSON or XML)
+   */
+  public byte[] parseStructureMap(String fml, String srcName, FhirFormat outputFormat) throws FHIRException, IOException {
+    StructureMapTools scu = new StructureMapTools(context);
+    StructureMap map = scu.parse(fml, (srcName == null || srcName.trim().isEmpty()) ? "map" : srcName.trim());
+    String targetVersion = version != null ? version : context.getFHIRVersion();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    handleOutputToStream(map, outputFormat == FhirFormat.XML ? "map.xml" : "map.json", baos, targetVersion);
+    return baos.toByteArray();
+  }
+
   public byte[] generateSnapshot(byte[] resource, FhirFormat format) throws FHIRException, IOException {
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
     Resource res = new ObjectConverter(context).convert(e);
