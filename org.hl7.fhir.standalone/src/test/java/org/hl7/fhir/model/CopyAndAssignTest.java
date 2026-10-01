@@ -421,7 +421,7 @@ public class CopyAndAssignTest {
     ((Base) src).assignValues(dst, OPTIONS);
     assertEquals("2024-03-05T10:11:12.1234567+10:00", dst.getValueAsString());
     assertEquals(src.getNanos(), dst.getNanos());
-    assertEquals(Long.valueOf(123456700L), dst.getNanos());
+    assertEquals(123456700, dst.getNanos());
     assertEquals(src.getNanos(), src.copy(OPTIONS).getNanos());
   }
 

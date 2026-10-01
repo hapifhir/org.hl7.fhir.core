@@ -87,11 +87,14 @@ class BaseDateTimeTypeTest {
   }
 
   @Test
-  void testAdd_RejectAdditionalPrecision() {
+  void testAdd_MorePrecisionThanTypeSupports() {
     DateTimeType dt = new DateTimeType("2013-02-03T11:22:33Z");
-    assertThatThrownBy(() -> dt.add(1, ChronoUnit.MILLIS))
-      .isInstanceOf(IllegalArgumentException.class)
-      .hasMessageContaining("Can not add Millis as this is above current precision Second");
+    dt.add(1, ChronoUnit.MILLIS);
+
+    assertEquals("2013-02-03T11:22:33Z", dt.getValueAsString());
+
+    dt.setPrecision(ChronoUnit.MILLIS);
+    assertEquals("2013-02-03T11:22:33.001Z", dt.getValueAsString());
   }
 
 

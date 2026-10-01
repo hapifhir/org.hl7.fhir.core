@@ -194,9 +194,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<ZonedDateTime> {
    */
   public void add(long theValue, ChronoUnit theField) {
     ZonedDateTime value = getValueNotNull();
-    if (theField.ordinal() < getPrecision().ordinal()) {
-      throw new IllegalArgumentException("Can not add " + theField + " as this is above current precision " + getPrecision());
-    }
     value = value.plus(theValue, theField);
     setValue(value, getPrecision());
   }
