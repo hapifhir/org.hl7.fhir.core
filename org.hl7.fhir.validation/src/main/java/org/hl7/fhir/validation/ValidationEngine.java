@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation;
 
+import org.hl7.fhir.services.utilities.FHIRPathPatch;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -2196,5 +2197,18 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public ValidationEngine setWantInvariantInMessage(boolean wantInvariantInMessage) {
     defaultInstanceValidatorParameters.setWantInvariantsInMessages(wantInvariantInMessage);
     return this;
+  }
+
+  /**
+   * Apply a FHIRPath Patch (a Parameters document of add / insert / delete / replace / move
+   * operations, as accepted on PATCH by a FHIR server) to a resource, and return the patched
+   * resource in the requested format. Nothing is validated; the caller decides whether to.
+   */
+  public byte[] patchResource(byte[] resource, FhirFormat inputFormat, Parameters patch, FhirFormat outputFormat) throws IOException {
+    Element element = Manager.parseSingle(context, new ByteArrayInputStream(resource), inputFormat);
+    new FHIRPathPatch(context).apply(element, patch);
+    ByteArrayOutputStream bs = new ByteArrayOutputStream();
+    Manager.compose(context, element, bs, outputFormat, OutputStyle.PRETTY, null);
+    return bs.toByteArray();
   }
 }
