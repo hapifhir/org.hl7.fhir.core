@@ -1883,6 +1883,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
       }
       if (root) {
+        if (ExtensionUtilities.readBoolExtension(profile, ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE_PREFIX)+" ", null).addStyle("font-weight:bold"));
+          c.addPiece(gen.new Piece(corePath+"resource.html#additional", context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE_LINK), null).addStyle("font-weight:bold"));
+        }
         if (ExtensionUtilities.readBoolExtension(profile, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
           if (!c.getPieces().isEmpty()) {
             c.addPiece(gen.new Piece("br"));
@@ -4492,6 +4499,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private void generateElementInner(RenderingStatus status, XhtmlNode tbl, StructureDefinition sd, ElementDefinition d, int mode, ElementDefinition value, ElementDefinition compare, ElementDefinition compareValue, boolean strikethrough, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceWrapper res) throws FHIRException, IOException {
     boolean root = !d.getPath().contains("."); 
     boolean slicedExtension = d.hasSliceName() && (d.getPath().endsWith(".extension") || d.getPath().endsWith(".modifierExtension")); 
+    if (root && ExtensionUtilities.readBoolExtension(sd, ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
+      XhtmlNode td = tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE), "resource.html#additional", strikethrough);
+      td.tx(context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE_PREFIX)+" ");
+      td.ah(context.prefixLocalHref(corePath+"resource.html#additional")).tx(context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE_LINK));
+    }
 //    int slicedExtensionMode = (mode == GEN_MODE_KEY) && slicedExtension ? GEN_MODE_SNAP : mode; // see ProfileUtilities.checkExtensionDoco / Task 3970 
     if (d.hasSliceName()) { 
       tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICE_NAME), "profiling.html#slicing", strikethrough, compareString(d.getSliceName(), d.getSliceNameElement(), null, (compare != null ? compare.getSliceName() : null), d, null, "sliceName", mode, false, false));    
