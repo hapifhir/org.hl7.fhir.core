@@ -71,7 +71,7 @@ public class ListRenderer extends ResourceRenderer {
     }
     if (list.has("source")) {
       td.tx("Source: ");
-      shortForRef(td, list.get("encounter"));
+      shortForRef(td, list.get("source"));
     }
     if (list.has("orderedBy")) {
       td.tx("Order: " + displayBase(list.get("orderedBy")));
