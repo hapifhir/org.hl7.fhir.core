@@ -44,7 +44,8 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
     private ChangeAnalysisState changedContentInterpretation = ChangeAnalysisState.Unknown;
 
     protected Map<String, StructuralMatch<String>> metadata = new HashMap<>();
-    private List<String> chMetadataFields;                                             
+    private List<String> chMetadataFields;
+    private List<String> chDefinitionItems = new ArrayList<>();                                             
 
     public CanonicalResourceComparison(T left, T right) {
       super(left.getId(), right.getId());
@@ -215,6 +216,34 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       return (bc.length() == 0 ? "" : "Error Checking: "+bc.toString()+"; ")+ "Changed: "+b.toString();     
     }
 
+    /**
+     * record something (an element, a property) whose definition has changed, for reporting
+     */
+    public void addDefinitionItem(String item) {
+      if (item != null && !chDefinitionItems.contains(item)) {
+        chDefinitionItems.add(item);
+      }
+    }
+
+    public List<String> getDefinitionItems() {
+      return chDefinitionItems;
+    }
+
+    public String getDefinitionItemsAsText() {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      for (String s : chDefinitionItems) {
+        b.append(s);
+      }
+      return b.toString();
+    }
+
+    /**
+     * @return true if metadata has changed (or can't be evaluated), and nothing else has
+     */
+    public boolean onlyMetadataChanged() {
+      return changedMetadata.noteable() && !(changedDefinitions.noteable() || changedContent.noteable() || changedContentInterpretation.noteable());
+    }
+
     public String getMetadataFieldsAsText() {
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
       if (chMetadataFields != null) {
@@ -226,7 +255,49 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
     }
 
     public boolean noUpdates() {
-      return !(changedMetadata.noteable() || changedDefinitions.noteable() || !changedContent.noteable() || !changedContentInterpretation.noteable());
+      return !(changedMetadata.noteable() || changedDefinitions.noteable() || changedContent.noteable() || changedContentInterpretation.noteable());
+    }
+
+    /**
+     * @return true if metadata has changed, other than the named fields (or can't be evaluated)
+     */
+    public boolean metadataChangedOtherThan(String[] metadataFields) {
+      if (changedMetadata == ChangeAnalysisState.CannotEvaluate) {
+        return true;
+      }
+      if (changedMetadata != ChangeAnalysisState.Changed) {
+        return false;
+      }
+      if (chMetadataFields == null) {
+        return true;
+      }
+      for (String s : chMetadataFields) {
+        if (!Utilities.existsInList(s, metadataFields)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    /**
+     * A short code for the kinds of change: M = metadata, D = definitions, C = content, I = interpretation.
+     * Metadata changes in the named fields are ignored. Returns an empty string if no particular kind of change is known
+     */
+    public String changeKindCodes(String[] metadataFields) {
+      StringBuilder b = new StringBuilder();
+      if (metadataChangedOtherThan(metadataFields)) {
+        b.append("M");
+      }
+      if (changedDefinitions.noteable()) {
+        b.append("D");
+      }
+      if (changedContent.noteable()) {
+        b.append("C");
+      }
+      if (changedContentInterpretation.noteable()) {
+        b.append("I");
+      }
+      return b.toString();
     }
 
     public boolean noChangeOtherThanMetadata(String[] metadataFields) {
@@ -235,6 +306,9 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       }
       if (!changedMetadata.noteable()) {
         return true;
+      }
+      if (chMetadataFields == null) {
+        return false; // metadata changes could not be evaluated
       }
       for (String s : this.chMetadataFields) {
         if (!Utilities.existsInList(s, metadataFields)) {

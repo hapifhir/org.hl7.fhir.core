@@ -3300,18 +3300,18 @@ msgstr "Er is iets misgegaan met de cross-versie analyse omdat"
 
 # REND_ADDED
 #: REND_ADDED
-msgid "Added:"
-msgstr "Toegevoegd:"
+msgid "Added"
+msgstr "Toegevoegd"
 
 # REND_CHANGED
 #: REND_CHANGED
-msgid "Changed:"
-msgstr "Gewijzigd:"
+msgid "Changed"
+msgstr "Gewijzigd"
 
 # REND_REMOVED
 #: REND_REMOVED
-msgid "Removed:"
-msgstr "Verwijderd:"
+msgid "Removed"
+msgstr "Verwijderd"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS
