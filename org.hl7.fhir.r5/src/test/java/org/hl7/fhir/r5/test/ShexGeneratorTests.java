@@ -361,7 +361,7 @@ public class ShexGeneratorTests {
     compareShex(expectedShexPath, generatedShexPath);
   }
 
-   private void doTestSingleSD(String name, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat) throws FileNotFoundException, IOException, FHIRException, UcumException {
+   private void doTestSingleStructureDefinition(String name, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat) throws FileNotFoundException, IOException, FHIRException, UcumException {
     // ------- Comment following for debugging/testing
 //    StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
 //    if (sd == null) {
@@ -375,7 +375,7 @@ public class ShexGeneratorTests {
     // Test with processing constraints flag
     // ----------------- Uncomment following to testing/Debugging -----
         boolean processConstraints = true;
-        this.doTestSingleSD(name.toLowerCase(), cat, name,
+        this.doTestSingleStructureDefinition(name.toLowerCase(), cat, name,
           false, ShExGenerator.ConstraintTranslationPolicy.ALL,
           true, true, true, processConstraints);
   }
@@ -385,7 +385,7 @@ public class ShexGeneratorTests {
   - processConstraints - toggle flag to include or exclude constaints
   - excludeMetaSDs - toggle including/excluding MetaSDs
   **/
-  private void doTestSingleSD(String shortName, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat,
+  private void doTestSingleStructureDefinition(String shortName, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat,
                               String name, boolean useSelectedExtensions,
                               ShExGenerator.ConstraintTranslationPolicy policy,
                               boolean debugMode, boolean validateShEx,
@@ -715,7 +715,7 @@ public class ShexGeneratorTests {
     }
 
     ShexGeneratorTestUtils shexTestUtils = new ShexGeneratorTestUtils();
-    List<ShexGeneratorTestUtils.resDef> sdDefs = shexTestUtils.getSDs(sds, cat);
+    List<ShexGeneratorTestUtils.resDef> sdDefs = shexTestUtils.getStructureDefinitions(sds, cat);
 
     printList(cat.toString(), sdDefs);
     System.out.println("************************************************************************");
@@ -730,10 +730,10 @@ public class ShexGeneratorTests {
           name = els[els.length - 1];
         }
         System.out.println("******************** " + resDef + " *********************");
-        doTestSingleSD(name, resDef.kind, resDef.url, useSelectedExtensions, policy, true, true, true, processConstraints);
+        doTestSingleStructureDefinition(name, resDef.kind, resDef.url, useSelectedExtensions, policy, true, true, true, processConstraints);
       });
     } else {
-      doTestBatchSD(sds, useSelectedExtensions, policy, true, true, false, processConstraints);
+      doTestBatchStructureDefinition(sds, useSelectedExtensions, policy, true, true, false, processConstraints);
     }
 
     System.out.println("************************ END PROCESSING ******************************");
@@ -793,7 +793,7 @@ public class ShexGeneratorTests {
 
   // Monolothic file ShEx.shex is generated for all resources
   // 
-  private void doTestBatchSD(List<StructureDefinition> sds, boolean useSelectedExtensions,
+  private void doTestBatchStructureDefinition(List<StructureDefinition> sds, boolean useSelectedExtensions,
                              ShExGenerator.ConstraintTranslationPolicy policy, boolean debugMode,
                              boolean validateShEx, boolean excludeMetaSDs, boolean processConstraints) {
     IWorkerContext ctx = TestingUtilities.getSharedWorkerContext();

@@ -46,7 +46,7 @@ public class ShexGeneratorTestUtils {
    * @param cat  Resource category filter criteria (inclusive)
    * @return List of resDef with just Structure Definition's name, url and description.
    */
-  public List<resDef> getSDs(List<StructureDefinition> sds, RESOURCE_CATEGORY cat) {
+  public List<resDef> getStructureDefinitions(List<StructureDefinition> sds, RESOURCE_CATEGORY cat) {
     List<resDef> selSDs = new ArrayList<resDef>();
     sds.forEach((StructureDefinition sd) -> {
       switch(cat) {
