@@ -3897,20 +3897,20 @@ msgstr "حدث خطأ ما في تحليل النسخ المتقاطعة لأن"
 # REND_ADDED
 #: REND_ADDED
 #, fuzzy
-msgid "Added:"
-msgstr "تمت الإضافة:"
+msgid "Added"
+msgstr "تمت الإضافة"
 
 # REND_CHANGED
 #: REND_CHANGED
 #, fuzzy
-msgid "Changed:"
-msgstr "تم التغيير:"
+msgid "Changed"
+msgstr "تم التغيير"
 
 # REND_REMOVED
 #: REND_REMOVED
 #, fuzzy
-msgid "Removed:"
-msgstr "تمت الإزالة:"
+msgid "Removed"
+msgstr "تمت الإزالة"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS
