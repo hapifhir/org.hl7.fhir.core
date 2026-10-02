@@ -13,12 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.model.core.VersionResolutionRules;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.model.core.ImplementationGuide;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.validation.service.model.ScanOutputItem;
@@ -106,7 +107,7 @@ public class ScannerTest implements ResourceLoaderTests {
     copyResourceToFile(igPath, "scanner", "ig-with-js-content.tgz");
     copyResourceToFile(patientPath, "scanner", "patient.json");
 
-    IgLoader igLoader = new IgLoader(context.packageManager(), context, context.getVersion(), false);
+    IgLoader igLoader = new IgLoader(context.packageManager(), context, context.getFHIRVersion(), false);
     igLoader.loadIg(new ArrayList<>(), new HashMap<>(),
         ManagedFileAccess.fromPath(igPath).getAbsolutePath(), false);
 
@@ -139,7 +140,7 @@ public class ScannerTest implements ResourceLoaderTests {
   private List<ScanOutputItem> getFakeResults(List<String> sources, SimpleWorkerContext context) {
     String ref = sources.get(0);
     // The URI of this IG itself is a 'malicious' script element.
-    ImplementationGuide ig = context.fetchResource(ImplementationGuide.class, "http://example.org/fhir/ImplementationGuide/<script>alert(\"package.json.name\")</script>", IWorkerContext.VersionResolutionRules.LATEST);
+    ImplementationGuide ig = context.fetchResource(ImplementationGuide.class, "http://example.org/fhir/ImplementationGuide/<script>alert(\"package.json.name\")</script>", VersionResolutionRules.LATEST);
 
     // The profile
     StructureDefinition profile = context.fetchResource(StructureDefinition.class,

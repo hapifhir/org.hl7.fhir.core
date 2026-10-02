@@ -36,6 +36,7 @@ import org.hl7.fhir.utilities.Utilities;
 import com.google.gson.JsonObject;
 
 
+@Deprecated(forRemoval = true)
 public class ServerWriter extends BaseWriter {
 
   public ServerWriter(JsonObject object) {

@@ -258,6 +258,10 @@ public class ELEMENT extends ITEM implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ELEMENT) dst);
+      }
+
       public void copyValues(ELEMENT dst) {
         super.copyValues(dst);
         dst.null_flavour = null_flavour == null ? null : null_flavour.copy();

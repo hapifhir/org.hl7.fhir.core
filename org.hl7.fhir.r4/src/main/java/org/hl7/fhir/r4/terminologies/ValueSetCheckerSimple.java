@@ -57,7 +57,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
-
+@Deprecated(forRemoval = true)
 @Slf4j
 public class ValueSetCheckerSimple implements ValueSetChecker {
 

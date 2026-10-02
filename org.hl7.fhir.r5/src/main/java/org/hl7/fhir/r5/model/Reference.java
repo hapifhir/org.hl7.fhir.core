@@ -437,6 +437,10 @@ The type is the Canonical URL of Resource Definition that is the type this refer
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Reference) dst);
+      }
+
       public void copyValues(Reference dst) {
         super.copyValues(dst);
         dst.reference = reference == null ? null : reference.copy();

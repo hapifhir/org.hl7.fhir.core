@@ -253,28 +253,6 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		  write("    return \""+escapeJavaString(analysis.getName())+"\";\r\n");
 		  write("   }\r\n");
 		  write("\r\n"); 
-		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(superName)) {
-      write("\r\n"); 
-      write("  @Override\r\n"); 
-      write("  public String getIdBase() {\r\n"); 
-      write("    return getId();\r\n"); 
-      write("  }\r\n"); 
-      write("  \r\n");
-      write("  @Override\r\n");
-      write("  public void setIdBase(String value) {\r\n");
-      write("    setId(value);\r\n");
-      write("  }\r\n");
-		  write("  public abstract String getResourceType();\r\n");
-		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(superName)) {
-      write("  @Override\r\n"); 
-      write("  public String getIdBase() {\r\n"); 
-      write("    return getId();\r\n"); 
-      write("  }\r\n"); 
-      write("  \r\n");
-      write("  @Override\r\n");
-      write("  public void setIdBase(String value) {\r\n");
-      write("    setId(value);\r\n");
-      write("  }\r\n");
 		}		
 
 		// Write resource fields which can be used as constants in client code
@@ -782,8 +760,12 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 	  write(indent+"  protected void listChildren(List<Property> children) {\r\n");
     write(indent+"    super.listChildren(children);\r\n");
 	  for (ElementDefinition e : children) {
-      if (!isInterface && !e.typeSummary().equals("xhtml")) {
-	      write(indent+"    children.add(new Property(\""+escapeJavaString(e.getName())+"\", \""+escapeJavaString(resolvedTypeCode(e))+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+"));\r\n");
+      if (!isInterface) {
+        // an xhtml element has no Base-typed field to hand to the Property. XhtmlType is the wrapper
+        // that presents the XhtmlNode as a Base, and it has to be in this list or the element is
+        // invisible to getChildValues("*"), and so to FHIRPath children() and descendants()
+        String value = e.typeSummary().equals("xhtml") ? "new XhtmlType(modelContext, this)" : getElementName(e.getName(), true)+(e.unbounded() ? "List" : "");
+	      write(indent+"    children.add(new Property(\""+escapeJavaString(e.getName())+"\", \""+escapeJavaString(resolvedTypeCode(e))+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+value+"));\r\n");
       }
 	  }
 	  write(indent+"  }\r\n\r\n");  
@@ -1020,7 +1002,17 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         if (e.unbounded()) {
           write("return this."+getElementName(name, true)+"List == null ? new Base[0] : this."+getElementName(name, true)+"List.toArray(new Base[this."+getElementName(name, true)+"List.size()]); // "+sanitizeComment(tn)+"\r\n");
         } else if (e.typeSummary().equals("xhtml")) {
-          write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {new StringType(modelContext, new org.hl7.fhir.utilities.xhtml.XhtmlComposer(true).composeEx(this."+getElementName(name, true)+"))}; // "+sanitizeComment(tn)+"\r\n");
+          // XhtmlType, not a composed StringType. XhtmlType reports fhirType() "xhtml" and reads
+          // through to the live XhtmlNode; a composed StringType is a detached snapshot that says
+          // it is a "string", and it recomposes the whole narrative on every call. This has to
+          // agree with generateChildrenRegister above, because getChildValues sends "*" to
+          // listChildren and a name to here - so a mismatch means FHIRPath sees Narrative.div as
+          // a string but children()/descendants() see the same element as xhtml
+          //
+          // Note this line has been wrong since the generator's first draft (Dec 2019): the
+          // property getter was written with makeProperty's body. The R5 model, which comes out
+          // of the spec build's own generator rather than this one, has always had XhtmlType here
+          write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {new XhtmlType(modelContext, this)}; // "+sanitizeComment(tn)+"\r\n");
         } else {
           write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {this."+getElementName(name, true)+"}; // "+sanitizeComment(tn)+"\r\n");
         }
@@ -1252,7 +1244,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		  return;
 		}
     if (vse == null) {
-      return;
+      // the analyser has already typed the element(s) as Enumeration<tns>, so skipping the enum
+      // just produces code that doesn't compile. Fail here instead, where the cause is visible
+      throw new Error("No expansion available for "+vs.getVersionedUrl()+", so the enum "+tns+" can't be generated (is it missing from the expansions package?)");
     }
     ValueSetUtilities.checkExpansionIsFlat(vse);
     
@@ -1536,6 +1530,18 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     write("      }\r\n\r\n");  
   }
   
+  /**
+   * copyValues is declared with a different argument type at every level of the hierarchy
+   * (Base -> DataType -> HumanName), so a call made through a Base reference binds statically to
+   * Base.copyValues and never reaches the leaf. assignValues has the same signature all the way down, so
+   * it dispatches virtually, and each override casts to its own type to select the right copyValues
+   */
+  private void generateAssignValues(String tn) throws Exception {
+    write("      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {\r\n");
+    write("        copyValues(("+tn+") dst, options);\r\n");
+    write("      }\r\n\r\n");
+  }
+
 	private void generateCopy(Analysis analysis, TypeInfo ti, boolean owner) throws Exception {
 	  List<ElementDefinition> children = ti.getChildren();
 	  String tn = ti.getName();
@@ -1545,6 +1551,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 	  
 	  if (isAbstract) {
       write("      public abstract "+tn+" copy(EnumSet<CopyObjectOptions> options);\r\n\r\n");
+      generateAssignValues(tn);
       write("      public void copyValues("+tn+" dst, EnumSet<CopyObjectOptions> options) {\r\n");
       write("        super.copyValues(dst, options);\r\n");
 	  } else {
@@ -1553,6 +1560,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       write("        copyValues(dst, options);\r\n");
       write("        return dst;\r\n");
       write("      }\r\n\r\n");
+      generateAssignValues(tn);
       write("      public void copyValues("+tn+" dst, EnumSet<CopyObjectOptions> options) {\r\n");
       write("        super.copyValues(dst, options);\r\n");
 	  }

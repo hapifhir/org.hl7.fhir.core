@@ -1,0 +1,3 @@
+Attributes differ at /root/blah
+Expected:"dummyAtt" for expected.xml
+Actual  :"wrongwrongwrong"

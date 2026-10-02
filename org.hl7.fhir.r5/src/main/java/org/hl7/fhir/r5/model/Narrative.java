@@ -394,6 +394,10 @@ public class Narrative extends BaseNarrative implements INarrative {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Narrative) dst);
+      }
+
       public void copyValues(Narrative dst) {
         super.copyValues(dst);
         dst.status = status == null ? null : status.copy();

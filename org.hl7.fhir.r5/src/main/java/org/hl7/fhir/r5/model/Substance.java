@@ -386,6 +386,10 @@ public class Substance extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SubstanceIngredientComponent) dst);
+      }
+
       public void copyValues(SubstanceIngredientComponent dst) {
         super.copyValues(dst);
         dst.quantity = quantity == null ? null : quantity.copy();
@@ -1119,6 +1123,10 @@ public class Substance extends DomainResource {
         Substance dst = new Substance();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Substance) dst);
       }
 
       public void copyValues(Substance dst) {

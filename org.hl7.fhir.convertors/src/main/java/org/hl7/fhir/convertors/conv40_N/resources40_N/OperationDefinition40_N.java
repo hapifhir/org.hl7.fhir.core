@@ -230,7 +230,7 @@ public class OperationDefinition40_N {
     if (src.hasDocumentation())
       tgt.setDocumentationElement(String40_N.convertStringToMarkdown(src.getDocumentationElement()));
     if (src.hasType()) {
-      tgt.setTypeElement(Uri40_N.convertUriFromCode(src.getTypeElement()));
+      tgt.setTypeElement(Utilities40_N.convertParameterType(src.getTypeElement()));
     }
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getTargetProfile())
       tgt.getTargetProfileList().add(Canonical40_N.convertCanonical(t));
@@ -261,7 +261,7 @@ public class OperationDefinition40_N {
     if (src.hasDocumentation())
       tgt.setDocumentationElement(String40_N.convertString(src.getDocumentationElement()));
     if (src.hasType()) {
-      tgt.setTypeElement(Uri40_N.convertUriToCode(src.getTypeElement()));
+      tgt.setTypeElement(Utilities40_N.convertParameterType(src.getTypeElement()));
     }
     for (org.hl7.fhir.model.core.CanonicalType t : src.getTargetProfileList())
       tgt.getTargetProfile().add(Canonical40_N.convertCanonical(t));

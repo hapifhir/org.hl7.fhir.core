@@ -421,6 +421,10 @@ public class CDSHookOrderDispatchContext extends CDSHookContext implements IComp
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHookOrderDispatchContext) dst, options);
+      }
+
       public void copyValues(CDSHookOrderDispatchContext dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.patientId = patientId == null ? null : patientId.copy(options);

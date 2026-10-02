@@ -2318,6 +2318,10 @@ public class EventDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((EventDefinition) dst);
+      }
+
       public void copyValues(EventDefinition dst) {
         super.copyValues(dst);
         dst.url = url == null ? null : url.copy();

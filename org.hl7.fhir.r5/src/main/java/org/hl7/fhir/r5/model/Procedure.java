@@ -331,6 +331,10 @@ public class Procedure extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ProcedurePerformerComponent) dst);
+      }
+
       public void copyValues(ProcedurePerformerComponent dst) {
         super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
@@ -554,6 +558,10 @@ public class Procedure extends DomainResource {
         ProcedureFocalDeviceComponent dst = new ProcedureFocalDeviceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ProcedureFocalDeviceComponent) dst);
       }
 
       public void copyValues(ProcedureFocalDeviceComponent dst) {
@@ -2671,6 +2679,10 @@ public class Procedure extends DomainResource {
         Procedure dst = new Procedure();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Procedure) dst);
       }
 
       public void copyValues(Procedure dst) {

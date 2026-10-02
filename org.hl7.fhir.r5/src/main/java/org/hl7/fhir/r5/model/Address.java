@@ -1102,6 +1102,10 @@ public class Address extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Address) dst);
+      }
+
       public void copyValues(Address dst) {
         super.copyValues(dst);
         dst.use = use == null ? null : use.copy();

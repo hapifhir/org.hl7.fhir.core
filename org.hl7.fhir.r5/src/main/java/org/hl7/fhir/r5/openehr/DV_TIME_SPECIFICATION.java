@@ -197,6 +197,10 @@ public abstract class DV_TIME_SPECIFICATION extends DATA_VALUE implements ICompo
 
       public abstract DV_TIME_SPECIFICATION copy();
 
+      public void assignValues(Base dst) {
+        copyValues((DV_TIME_SPECIFICATION) dst);
+      }
+
       public void copyValues(DV_TIME_SPECIFICATION dst) {
         super.copyValues(dst);
         dst.DV_PARSABLE = DV_PARSABLE == null ? null : DV_PARSABLE.copy();

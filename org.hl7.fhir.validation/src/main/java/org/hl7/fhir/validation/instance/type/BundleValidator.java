@@ -12,8 +12,11 @@ import java.security.cert.X509Certificate;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,23 +33,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.elementmodel.ParserBase;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.model.Base.ValidationMode;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
-import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.test.utils.CompareUtilities;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MimeType;
-import org.hl7.fhir.utilities.OIDUtilities;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.model.ValidationInformation;
+import org.hl7.fhir.model.core.VersionResolutionRules;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.services.elementmodel.ParserBase;
+import org.hl7.fhir.model.core.Enumerations.FHIRVersion;
+import org.hl7.fhir.services.terminology.ValidationResult;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.services.testing.CompareUtilities;
+import org.hl7.fhir.services.validation.BundleValidationRule;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -122,13 +122,13 @@ public class BundleValidator extends BaseValidator {
     this.serverBase = serverBase;
   }
 
-  public boolean validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidationContext hostContext, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException {
+  public boolean validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidationContext hostContext, ResourcePercentageLogger pct, ValidationInformation.ValidationMode mode) throws FHIRException {
     boolean ok = true;
 
     String type = bundle.getNamedChildValue(TYPE, false);
     type = StringUtils.defaultString(type);
     List<Element> entries = new ArrayList<Element>();
-    bundle.getNamedChildren(ENTRY, entries);    
+    bundle.getNamedChildren(ENTRY, entries);
 
     List<Element> links = new ArrayList<Element>();
     bundle.getNamedChildren(LINK, links);
@@ -174,7 +174,7 @@ public class BundleValidator extends BaseValidator {
     }
 
     int count = 0;
-    Map<String, Integer> counter = new HashMap<>(); 
+    Map<String, Integer> counter = new HashMap<>();
 
     boolean fullUrlOptional = Utilities.existsInList(type, "transaction", "transaction-response", "batch", "batch-response");
 
@@ -192,7 +192,7 @@ public class BundleValidator extends BaseValidator {
           boolean fullUrlMatchesRegex = fullUrl.matches(urlRegex);
           if (rtype != null && fullUrlMatchesRegex) {
             if (rule(errors, "2023-11-13", IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), id != null, I18nConstants.BUNDLE_ENTRY_URL_MATCHES_NO_ID, fullUrl)) {
-              ok = rule(errors, "2023-11-13", IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), fullUrl.endsWith("/"+rtype+"/"+id), I18nConstants.BUNDLE_ENTRY_URL_MATCHES_TYPE_ID, fullUrl, rtype, id) && ok;
+              ok = rule(errors, "2023-11-13", IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), fullUrl.endsWith("/" + rtype + "/" + id), I18nConstants.BUNDLE_ENTRY_URL_MATCHES_TYPE_ID, fullUrl, rtype, id) && ok;
             } else {
               ok = false;
             }
@@ -211,18 +211,18 @@ public class BundleValidator extends BaseValidator {
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), !url.equals(fullUrl) || serverBase == null || (url.equals(Utilities.pathURL(serverBase, entry.getNamedChild(RESOURCE, false).fhirType(), id))), I18nConstants.BUNDLE_BUNDLE_ENTRY_CANONICAL, url, fullUrl) && ok;
       }
 
-      if (!VersionUtilities.isR2Ver(context.getVersion())) {
+      if (!VersionUtilities.isR2Ver(context.getFHIRVersion())) {
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), estack.getLiteralPath(), fullUrlOptional || fullUrl != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED) && ok;
       }
       // check bundle profile requests
       if (rtype != null) {
-        int rcount = counter.containsKey(rtype) ? counter.get(rtype)+1 : 0;
+        int rcount = counter.containsKey(rtype) ? counter.get(rtype) + 1 : 0;
         counter.put(rtype, rcount);
         Element res = entry.getNamedChild(RESOURCE, false);
         NodeStack rstack = estack.push(res, -1, null, null);
         for (BundleValidationRule bvr : validator().getBundleValidationRules()) {
           if (meetsRule(bvr, rtype, rcount, count)) {
-            StructureDefinition defn = context.fetchResource(StructureDefinition.class, bvr.getProfile(), IWorkerContext.VersionResolutionRules.defaultRule());
+            StructureDefinition defn = context.fetchResource(StructureDefinition.class, bvr.getProfile(), VersionResolutionRules.defaultRule());
             if (defn == null) {
               throw new Error(context.formatMessage(I18nConstants.BUNDLE_RULE_PROFILE_UNKNOWN, bvr.getRule(), bvr.getProfile()));
             } else {
@@ -241,11 +241,24 @@ public class BundleValidator extends BaseValidator {
       // todo: check specials
       count++;
     }
+    // this is the R5 signature approach. hasChild is always false in R6+, so we don't need to specifically test for R6
     if (bundle.hasChild("signature")) {
-      ok = validateSignature(errors, bundle, stack) && ok;
+      ok = validateSignature(errors, bundle, null, bundle.getNamedChild("signature"), stack) && ok;
+    }
+    // this is the R6 signature approach
+    // it can be preadopted in R5-, so we don't check the version here
+    List<Element> signatureProvenances = new ArrayList<>();
+    ElementModelUtilities.findSignatures(bundle, signatureProvenances);
+    for (Element resource : signatureProvenances) {
+      for (Element sig : resource.getChildrenByName("signature")) {
+        if (sig.hasChild("data") && ("application/jose".equals(sig.getNamedChildValue("sigFormat")) || "application/pkcs7-signature".equals(sig.getNamedChildValue("sigFormat")))) {
+          ok = validateSignature(errors, bundle, signatureProvenances, sig, stack) && ok;
+        }
+      }
     }
     return ok;
   }
+
 
 
   private boolean validateLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack, String type, List<Element> entries) {
@@ -679,7 +692,7 @@ public class BundleValidator extends BaseValidator {
    * <p></p>
    * Related JIRA ticket is <a href=https://jira.hl7.org/browse/FHIR-26544>FHIR-26544</a>
    *
-   * @param bundle {@link org.hl7.fhir.r5.elementmodel}
+   * @param bundle {@link org.hl7.fhir.services.elementmodel}
    * @param errors {@link List<ValidationMessage>}
    * @param stack {@link NodeStack}
    */
@@ -743,7 +756,7 @@ public class BundleValidator extends BaseValidator {
                   I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE_MSG, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));              
             } else {
               // this was illegal up to R4B, but changed to be legal in R5
-              if (VersionUtilities.isR5Plus(context.getVersion())) {
+              if (VersionUtilities.isR5Plus(context.getFHIRVersion())) {
                 hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, e.getEntry().line(), e.getEntry().col(), 
                     stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), isExpectedToBeReverse(e.getResource().fhirType()), 
                     I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE_R5, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));              
@@ -902,7 +915,7 @@ public class BundleValidator extends BaseValidator {
   }
 
   private void findReferences(Element start, List<StringWithSource> references) {
-    for (Element child : start.getChildren()) {
+    for (Element child : start.getChildList()) {
       if (child.getType().equals("Reference")) {
         String ref = child.getChildValue("reference");
         if (ref != null && !ref.startsWith("#") && !hasReference(ref, references))
@@ -993,9 +1006,8 @@ public class BundleValidator extends BaseValidator {
     return dom;
   }
 
-  private boolean validateSignature(List<ValidationMessage> errors, Element bundle, NodeStack stack) throws FHIRException {
+  private boolean validateSignature(List<ValidationMessage> errors, Element bundle, List<Element> signatureProvenances, Element signature, NodeStack stack) throws FHIRException {
     boolean ok = true;
-    Element signature  = bundle.getNamedChild("signature");
     String sigFormat = signature.getNamedChildValue("sigFormat");
     if (Utilities.noString(sigFormat)) {
       hint(errors, "2025-06-13", IssueType.NOTSUPPORTED, stack, !signature.hasChild("data"), 
@@ -1041,7 +1053,7 @@ public class BundleValidator extends BaseValidator {
           }
           if (d != null) {
             hint(errors, null, IssueType.INFORMATIONAL, stack, false, "Signature Verification is a work in progress. Feedback welcome at https://chat.fhir.org/#narrow/channel/179247-Security-and-Privacy/topic/Signature/with/524324965");                
-            ok = validateSignatureDigSig(errors, bundle, stack, signature, d) && ok;
+            ok = validateSignatureDigSig(errors, bundle, stack, signature, signatureProvenances, d) && ok;
           }
         }
       } else if ("application/jose".equals(sigFormat)) {
@@ -1065,17 +1077,17 @@ public class BundleValidator extends BaseValidator {
           }
           if (d != null) {
             hint(errors, null, IssueType.INFORMATIONAL, stack, false, "Signature Verification is a work in progress. Feedback welcome at https://chat.fhir.org/#narrow/channel/179247-Security-and-Privacy/topic/Signature/with/524324965");                
-            ok = validateSignatureJose(errors, bundle, stack, signature, d) && ok;
+            ok = validateSignatureJose(errors, bundle, stack, signature, signatureProvenances, d) && ok;
           }
         }
       } else {
         hint(errors, "2025-06-13", IssueType.NOTSUPPORTED, stack, false, I18nConstants.BUNDLE_SIGNATURE_NOT_CHECKED_KIND, sigFormat);      
       }
     }
-    return false;
+    return ok;
   }
 
-  private boolean validateSignatureJose(List<ValidationMessage> errors, Element bundle, NodeStack stack, Element signature, String d) {
+  private boolean validateSignatureJose(List<ValidationMessage> errors, Element bundle, NodeStack stack, Element signature, List<Element> excludedElements, String d) {
     boolean ok = true;
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //single literal character split
@@ -1084,6 +1096,7 @@ public class BundleValidator extends BaseValidator {
     String canon = null;
     String kid = null;
     boolean xml = false;
+    boolean jsonXml = false;
     if (header == null) {
       ok = false;
     } else {
@@ -1105,15 +1118,22 @@ public class BundleValidator extends BaseValidator {
         sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(sigT)));
       }
       if (sigT == null && header.has(DigitalSignatureSupport.JWT_HEADER_IAT)) {
-        sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(header.asString(DigitalSignatureSupport.JWT_HEADER_IAT))));
+        String iat = header.asString(DigitalSignatureSupport.JWT_HEADER_IAT);
+        if (Utilities.isInteger(iat)) {
+          sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(iat)));
+        } else {
+          // iat is seconds since the epoch; if it is not, say so rather than throwing out of the validator
+          ok = rule(errors, "2026-09-02", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIG_TIME_INVALID, iat) && ok;
+        }
       }
       if (sigT == null) {
         warning(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_HEADER_NO_SIG_TIME); 
       } 
       if (when == null) {
         rule(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_NO_WHEN);        
-      } else if (sigT != null) { 
-        ok = rule(errors, "2025-06-13", IssueType.BUSINESSRULE, stack, sigT.equals(when.primitiveValue()), I18nConstants.BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH, sigT, when.primitiveValue()) && ok;                            
+      } else if (sigT != null) {
+        Instant sigTime = parseSignatureInstant(errors, stack, sigT, I18nConstants.BUNDLE_SIGNATURE_SIG_TIME_INVALID);
+        ok = sigTime != null && checkTimesAgree(errors, stack, sigTime, sigT, when.primitiveValue(), I18nConstants.BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH) && ok;
       }
 
       // 2. canonicalisation
@@ -1141,7 +1161,7 @@ public class BundleValidator extends BaseValidator {
         if (tcanon != null) {
           warning(errors, "2025-06-13", IssueType.NOTFOUND, stack, canon.equals(tcanon), I18nConstants.BUNDLE_SIGNATURE_CANON_DIFF, canon, tcanon);
         }
-        xml = canon.contains("xml");
+        xml = !canon.contains("json");
       }
       
       // 3. purpose
@@ -1176,8 +1196,7 @@ public class BundleValidator extends BaseValidator {
           break;
         }
       }
-      
-      
+
       // 4. certificate 
       // first, we try to extract the certificate from the signature 
       X509Certificate cert = null;
@@ -1246,9 +1265,9 @@ public class BundleValidator extends BaseValidator {
       if (jwk != null && canon != null) {
         // try and verify
       
-        byte[] toSign = null;
+        byte[] toVerify = null;
         try {
-          toSign = makeSignableBundle(bundle, canon, xml);
+          toVerify = makeSignableBundle(bundle, canon, excludedElements, xml, jsonXml);
         } catch (Exception e) {
           if (settings.isDebug()) {
             e.printStackTrace();
@@ -1264,7 +1283,7 @@ public class BundleValidator extends BaseValidator {
           rule(errors, "2025-06-13", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIG_INVALID, e.getMessage());                            
         }            
         try {
-          String reconstituted = parts[0]+"."+Base64URL.encode(toSign)+"."+parts[2];
+          String reconstituted = parts[0]+"."+Base64URL.encode(toVerify)+"."+parts[2];
           boolean verified = verifyJWT(reconstituted, jwk);
           if (!verified) {
             ok = false;
@@ -1284,12 +1303,12 @@ public class BundleValidator extends BaseValidator {
                 rule(errors, "2025-06-13", IssueType.VALUE, stack, false, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_INVALID, e.getMessage());                            
               }
               if (signed != null) {
-                if (!Arrays.equals(toSign, signed)) {
-                  rule(errors, "2025-06-13", IssueType.VALUE, stack, false, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_MISMATCH, toSign.length, signed.length);
+                if (!Arrays.equals(toVerify, signed)) {
+                  rule(errors, "2025-06-13", IssueType.VALUE, stack, false, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_MISMATCH, toVerify.length, signed.length);
                   String diff;
                   try { 
                     JsonObject signedJ = parseJsonOrError(errors, stack, signed, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON);
-                    JsonObject toSignJ = parseJsonOrError(errors, stack, toSign, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON);
+                    JsonObject toSignJ = parseJsonOrError(errors, stack, toVerify, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON);
                     diff = new CompareUtilities().compareObjects("payload", "$", toSignJ, signedJ);
                     if (diff == null) {
                       hint(errors, "2025-06-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_JSON_MATCHES);                
@@ -1301,7 +1320,7 @@ public class BundleValidator extends BaseValidator {
                     rule(errors, "2025-06-13", IssueType.EXCEPTION, stack, false, I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_INVALID_JSON, e.getMessage());                
                   }
                 } else {
-                  String b64 = Base64URL.encode(toSign).toString();
+                  String b64 = Base64URL.encode(toVerify).toString();
                   ok = rule(errors, "2025-06-13", IssueType.VALUE, stack, parts[1].equals(b64), I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF) && ok;
                 }
               } 
@@ -1343,7 +1362,46 @@ public class BundleValidator extends BaseValidator {
     }
     return ok;
   }
+  /**
+   * How far the time in the signature and Signature.when may differ and still be taken to
+   * describe the same signing event. They are written by different code at (nearly) the same
+   * moment, so they are compared as instants with a small allowance rather than as strings -
+   * both are instants, and the same instant has many valid lexical forms (see #2385).
+   */
+  private static final long SIGNATURE_TIME_TOLERANCE_SECONDS = 2;
 
+  static boolean agreeWithin(Instant a, Instant b, long toleranceSeconds) {
+    return Duration.between(a, b).abs().compareTo(Duration.ofSeconds(toleranceSeconds)) <= 0;
+  }
+
+  /**
+   * Parse one of the signature's times. Neither the time in the signature nor Signature.when is
+   * known to be well formed - that is what is being validated - so a value that cannot be parsed
+   * is reported as a validation message naming the offending value, rather than thrown. Returns
+   * null when the value is not a valid instant.
+   */
+  private Instant parseSignatureInstant(List<ValidationMessage> errors, NodeStack stack, String value, String msgId) {
+    try {
+      return OffsetDateTime.parse(value).toInstant();
+    } catch (DateTimeParseException e) {
+      rule(errors, "2026-09-02", IssueType.INVALID, stack, false, msgId, value);
+      return null;
+    }
+  }
+
+  /**
+   * Cross check the time in the signature against Signature.when. sigTime is the already parsed
+   * signature time; sigT is its lexical form, for the message. If Signature.when cannot be
+   * parsed, that is reported (naming it, so it is clear which of the two times is at fault) and
+   * no comparison is made.
+   */
+  private boolean checkTimesAgree(List<ValidationMessage> errors, NodeStack stack, Instant sigTime, String sigT, String when, String mismatchMsgId) {
+    Instant whenTime = parseSignatureInstant(errors, stack, when, I18nConstants.BUNDLE_SIGNATURE_WHEN_INVALID);
+    if (whenTime == null) {
+      return false;
+    }
+    return rule(errors, "2025-06-13", IssueType.BUSINESSRULE, stack, agreeWithin(sigTime, whenTime, SIGNATURE_TIME_TOLERANCE_SECONDS), mismatchMsgId, sigT, when);
+  }
   public String certificateToPEMSingleLine(X509Certificate cert) throws Exception {
     byte[] encoded = cert.getEncoded();
     String base64 = java.util.Base64.getEncoder().encodeToString(encoded);
@@ -1372,7 +1430,7 @@ public class BundleValidator extends BaseValidator {
     return null;
   }
 
-  private byte[] makeSignableBundle(Element bundle, String canon, boolean xml) throws IOException, InvalidCanonicalizerException, CanonicalizationException, ParserConfigurationException, SAXException {
+  private byte[] makeSignableBundle(Element bundle, String canon, List<Element> excludedElements, boolean xml, boolean jsonXml) throws IOException, InvalidCanonicalizerException, CanonicalizationException, ParserConfigurationException, SAXException {
     byte[] toSign;
     ByteArrayOutputStream ba = new ByteArrayOutputStream();
     // 1. signed with signature data
@@ -1382,6 +1440,13 @@ public class BundleValidator extends BaseValidator {
       p.setCanonicalFilter(root+".id", root+".meta", root+".signature");
     } else {
       p.setCanonicalFilter(root+".signature");
+    }
+    if (excludedElements != null) {
+      p.getElementsToIgnore().clear();
+      p.getElementsToIgnore().addAll(excludedElements);
+    }
+    if (p instanceof org.hl7.fhir.services.elementmodel.JsonParser) {
+      ((org.hl7.fhir.services.elementmodel.JsonParser) p).setCanonicalizeXhtml(jsonXml);
     }
     p.compose(bundle, ba, OutputStyle.CANONICAL, null);
     toSign = ba.toByteArray();
@@ -1432,7 +1497,7 @@ public class BundleValidator extends BaseValidator {
     return signedJWT.verify(verifier);
   }
 
-  private boolean validateSignatureDigSig(List<ValidationMessage> errors, Element bundle, NodeStack stack, Element signature, String d) {
+  private boolean validateSignatureDigSig(List<ValidationMessage> errors, Element bundle, NodeStack stack, Element signature, List<Element> signatureProvenances, String d) {
     boolean ok = true;
     Document dom = null;
     try {
@@ -1465,12 +1530,13 @@ public class BundleValidator extends BaseValidator {
       if (sigT == null) {
         warning(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_DIGSIG_NO_SIG_TIME); 
       } else {
-        instant = Instant.parse(sigT);
+        instant = parseSignatureInstant(errors, stack, sigT, I18nConstants.BUNDLE_SIGNATURE_SIG_TIME_INVALID);
+        ok = instant != null && ok;
       }
       if (when == null) {
         rule(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_NO_WHEN);        
-      } else if (sigT != null) { 
-        ok = rule(errors, "2025-06-13", IssueType.BUSINESSRULE, stack, sigT.equals(when.primitiveValue()), I18nConstants.BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH, sigT, when.primitiveValue()) && ok;                            
+      } else if (instant != null) { 
+        ok = checkTimesAgree(errors, stack, instant, sigT, when.primitiveValue(), I18nConstants.BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH) && ok;                            
       }
 
       // 2. canonicalisation
@@ -1498,7 +1564,7 @@ public class BundleValidator extends BaseValidator {
         if (tcanon != null) {
           warning(errors, "2025-06-13", IssueType.NOTFOUND, stack, canon.equals(tcanon), I18nConstants.BUNDLE_SIGNATURE_CANON_DIFF, canon, tcanon);
         }
-        xml = canon.contains("xml");
+        xml = !canon.contains("json");
       }
 
       // 3. purpose
@@ -1596,7 +1662,7 @@ public class BundleValidator extends BaseValidator {
       
         byte[] toSign = null;
         try {
-          toSign = makeSignableBundle(bundle, canon, xml);
+          toSign = makeSignableBundle(bundle, canon, signatureProvenances, xml, false);
         } catch (Exception e) {
           // nothing - this won't happen
         }

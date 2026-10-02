@@ -69,6 +69,10 @@ public class PERSON extends ACTOR implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((PERSON) dst);
+      }
+
       public void copyValues(PERSON dst) {
         super.copyValues(dst);
       }

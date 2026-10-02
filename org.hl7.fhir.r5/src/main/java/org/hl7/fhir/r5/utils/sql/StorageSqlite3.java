@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.sql.Validator.TrueFalseOrUnknown;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 
@@ -82,29 +83,43 @@ public class StorageSqlite3 implements Storage {
       p.setInt(1, ++nextKey);
       for (int i = 0; i < cells.size(); i++) {
         Cell c = cells.get(i);
+        int index = i+2;
+        // An empty cell is SQL NULL whatever the column's kind (spec: empty binds to null).
+        Value v = c.getValues().isEmpty() ? null : c.getValues().get(0);
         switch (c.getColumn().getKind()) {
         case Null: 
-          p.setNull(i+2, java.sql.Types.NVARCHAR);
+          p.setNull(index, java.sql.Types.NVARCHAR);
+          break;
         case Binary:
-          p.setBytes(i+2, c.getValues().size() == 0 ? null : c.getValues().get(0).getValueBinary());
+          p.setBytes(index, v == null ? null : v.getValueBinary());
           break;
         case Boolean:
-          p.setBoolean(i+2, c.getValues().size() == 0 ? false : c.getValues().get(0).getValueBoolean().booleanValue());
+          if (v == null) {
+            p.setNull(index, java.sql.Types.INTEGER);
+          } else {
+            p.setBoolean(index, v.getValueBoolean().booleanValue());
+          }
           break;
         case DateTime:
-          p.setDate(i+2, c.getValues().size() == 0 ? null : new java.sql.Date(c.getValues().get(0).getValueDate().getTime()));
+          // Text column, FHIR string form: keeps precision, time of day and zone offset, which
+          // java.sql.Date would drop (spec: date and dateTime map to CHARACTER VARYING).
+          p.setString(index, v == null ? null : v.getValueString());
           break;
         case Decimal:
-          p.setString(i+2, c.getValues().size() == 0 ? null : c.getValues().get(0).getValueString());
+          p.setString(index, v == null ? null : v.getValueString());
           break;
         case Integer:
-          p.setInt(i+2, c.getValues().size() == 0 ? 0 : c.getValues().get(0).getValueInt().intValue());
+          if (v == null) {
+            p.setNull(index, java.sql.Types.INTEGER);
+          } else {
+            p.setLong(index, v.getValueInt().longValue());
+          }
           break;
         case String:
-          p.setString(i+2, c.getValues().size() == 0 ? null : c.getValues().get(0).getValueString());
+          p.setString(index, v == null ? null : v.getValueString());
           break;
         case Time:
-          p.setString(i+2, c.getValues().size() == 0 ? null : c.getValues().get(0).getValueString());
+          p.setString(index, v == null ? null : v.getValueString());
           break;    
         case Complex: throw new FHIRException("SQLite runner does not handle complexes");
         }
@@ -138,11 +153,26 @@ public class StorageSqlite3 implements Storage {
 
   @Override
   public String getKeyForSourceResource(Base res) {
-    throw new Error("Key management for resources isn't decided yet");
+    return resolveKey(res);
   }
 
   @Override
   public String getKeyForTargetResource(Base res) {
-    throw new Error("Key management for resources isn't decided yet");
+    return resolveKey(res);
+  }
+
+  /**
+   * Prefer the DBBuilder-supplied SQLite primary key (UserDataNames.db_key)
+   * when present so view-result keys join against the Resources table. Falls
+   * back to type/id for callers that have not pre-stamped a key.
+   */
+  private String resolveKey(Base res) {
+    if (res == null) {
+      return null;
+    }
+    if (res.hasUserData(UserDataNames.db_key)) {
+      return res.getUserString(UserDataNames.db_key);
+    }
+    return res.fhirType() + "/" + res.getIdBase();
   }
 }

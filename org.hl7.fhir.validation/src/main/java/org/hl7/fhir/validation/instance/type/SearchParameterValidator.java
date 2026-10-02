@@ -5,15 +5,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.fhirpath.ExpressionNode;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
-import org.hl7.fhir.r5.fhirpath.ExpressionNode.Operation;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
-import org.hl7.fhir.r5.model.SearchParameter;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
+import org.hl7.fhir.services.fhirpath.ExpressionNode;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.fhirpath.ExpressionNode.Kind;
+import org.hl7.fhir.services.fhirpath.ExpressionNode.Operation;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine.IssueMessage;
+import org.hl7.fhir.model.core.SearchParameter;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -63,7 +63,7 @@ public class SearchParameterValidator extends BaseValidator {
     }
     String master = cs.getNamedChildValue("derivedFrom", false);
     if (!Utilities.noString(master)) {
-      SearchParameter sp = context.fetchResource(SearchParameter.class, master, ExtensionUtilities.getVersionResolutionRules(cs.getNamedChild("derivedFrom")));
+      SearchParameter sp = context.fetchResource(SearchParameter.class, master, ElementModelUtilities.getVersionResolutionRules(cs.getNamedChild("derivedFrom")));
       if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE,stack.getLiteralPath(), sp != null, I18nConstants.SEARCHPARAMETER_NOTFOUND, master)) {
         // base must be in the master list of base
         List<Element> bl = cs.getChildren("base");

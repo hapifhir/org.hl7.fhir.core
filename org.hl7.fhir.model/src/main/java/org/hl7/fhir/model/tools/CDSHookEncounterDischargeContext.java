@@ -352,6 +352,10 @@ public class CDSHookEncounterDischargeContext extends CDSHookContext implements 
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHookEncounterDischargeContext) dst, options);
+      }
+
       public void copyValues(CDSHookEncounterDischargeContext dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.userId = userId == null ? null : userId.copy(options);

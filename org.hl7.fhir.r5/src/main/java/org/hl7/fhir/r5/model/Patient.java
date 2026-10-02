@@ -678,6 +678,10 @@ public class Patient extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ContactComponent) dst);
+      }
+
       public void copyValues(ContactComponent dst) {
         super.copyValues(dst);
         if (relationship != null) {
@@ -935,6 +939,10 @@ public class Patient extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((PatientCommunicationComponent) dst);
+      }
+
       public void copyValues(PatientCommunicationComponent dst) {
         super.copyValues(dst);
         dst.language = language == null ? null : language.copy();
@@ -1178,6 +1186,10 @@ public class Patient extends DomainResource {
         PatientLinkComponent dst = new PatientLinkComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((PatientLinkComponent) dst);
       }
 
       public void copyValues(PatientLinkComponent dst) {
@@ -2471,6 +2483,10 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
         Patient dst = new Patient();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Patient) dst);
       }
 
       public void copyValues(Patient dst) {

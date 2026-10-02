@@ -82,6 +82,7 @@ import com.google.gson.JsonPrimitive;
  */
 
 @Slf4j
+@Deprecated(forRemoval = true)
 public class TerminologyCache {
   public static final boolean TRANSIENT = false;
   public static final boolean PERMANENT = true;

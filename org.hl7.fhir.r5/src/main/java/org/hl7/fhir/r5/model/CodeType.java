@@ -111,6 +111,19 @@ public class CodeType extends StringType implements Comparable<CodeType>, ICodin
   }
 
   @Override
+  public void assignValues(Base dst) {
+    copyValues((CodeType) dst);
+  }
+
+  /**
+   * system is ICoding state on this class, and copy() never carried it across at all
+   */
+  public void copyValues(CodeType dst) {
+    super.copyValues(dst);
+    dst.system = system;
+  }
+
+  @Override
   public String getVersion() {
     return null;
   }

@@ -931,6 +931,10 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((CitationSummaryComponent) dst);
+      }
+
       public void copyValues(CitationSummaryComponent dst) {
         super.copyValues(dst);
         dst.style = style == null ? null : style.copy();
@@ -1171,6 +1175,10 @@ public class Citation extends MetadataResource {
         CitationClassificationComponent dst = new CitationClassificationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CitationClassificationComponent) dst);
       }
 
       public void copyValues(CitationClassificationComponent dst) {
@@ -1464,6 +1472,10 @@ public class Citation extends MetadataResource {
         CitationStatusDateComponent dst = new CitationStatusDateComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CitationStatusDateComponent) dst);
       }
 
       public void copyValues(CitationStatusDateComponent dst) {
@@ -2625,6 +2637,10 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactComponent) dst);
+      }
+
       public void copyValues(CitationCitedArtifactComponent dst) {
         super.copyValues(dst);
         if (identifier != null) {
@@ -2929,6 +2945,10 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactVersionComponent) dst);
+      }
+
       public void copyValues(CitationCitedArtifactVersionComponent dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();
@@ -3216,6 +3236,10 @@ public class Citation extends MetadataResource {
         CitationCitedArtifactStatusDateComponent dst = new CitationCitedArtifactStatusDateComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactStatusDateComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactStatusDateComponent dst) {
@@ -3536,6 +3560,10 @@ public class Citation extends MetadataResource {
         CitationCitedArtifactTitleComponent dst = new CitationCitedArtifactTitleComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactTitleComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactTitleComponent dst) {
@@ -3904,6 +3932,10 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactAbstractComponent) dst);
+      }
+
       public void copyValues(CitationCitedArtifactAbstractComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -4190,6 +4222,10 @@ public class Citation extends MetadataResource {
         CitationCitedArtifactPartComponent dst = new CitationCitedArtifactPartComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactPartComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactPartComponent dst) {
@@ -4844,6 +4880,10 @@ public class Citation extends MetadataResource {
         CitationCitedArtifactRelatesToComponent dst = new CitationCitedArtifactRelatesToComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactRelatesToComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactRelatesToComponent dst) {
@@ -6002,6 +6042,10 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactPublicationFormComponent) dst);
+      }
+
       public void copyValues(CitationCitedArtifactPublicationFormComponent dst) {
         super.copyValues(dst);
         dst.publishedIn = publishedIn == null ? null : publishedIn.copy();
@@ -6462,6 +6506,10 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactPublicationFormPublishedInComponent) dst);
+      }
+
       public void copyValues(CitationCitedArtifactPublicationFormPublishedInComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -6736,6 +6784,10 @@ public class Citation extends MetadataResource {
         CitationCitedArtifactWebLocationComponent dst = new CitationCitedArtifactWebLocationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactWebLocationComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactWebLocationComponent dst) {
@@ -7057,6 +7109,10 @@ public class Citation extends MetadataResource {
         CitationCitedArtifactClassificationComponent dst = new CitationCitedArtifactClassificationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactClassificationComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactClassificationComponent dst) {
@@ -7403,6 +7459,10 @@ public class Citation extends MetadataResource {
         CitationCitedArtifactContributorshipComponent dst = new CitationCitedArtifactContributorshipComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactContributorshipComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactContributorshipComponent dst) {
@@ -8068,6 +8128,10 @@ public class Citation extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactContributorshipEntryComponent) dst);
+      }
+
       public void copyValues(CitationCitedArtifactContributorshipEntryComponent dst) {
         super.copyValues(dst);
         dst.contributor = contributor == null ? null : contributor.copy();
@@ -8336,6 +8400,10 @@ public class Citation extends MetadataResource {
         CitationCitedArtifactContributorshipEntryContributionInstanceComponent dst = new CitationCitedArtifactContributorshipEntryContributionInstanceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CitationCitedArtifactContributorshipEntryContributionInstanceComponent) dst);
       }
 
       public void copyValues(CitationCitedArtifactContributorshipEntryContributionInstanceComponent dst) {
@@ -8673,6 +8741,10 @@ public class Citation extends MetadataResource {
         ContributorshipSummaryComponent dst = new ContributorshipSummaryComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ContributorshipSummaryComponent) dst);
       }
 
       public void copyValues(ContributorshipSummaryComponent dst) {
@@ -11060,6 +11132,10 @@ public class Citation extends MetadataResource {
         Citation dst = new Citation();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Citation) dst);
       }
 
       public void copyValues(Citation dst) {

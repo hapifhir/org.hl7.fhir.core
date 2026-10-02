@@ -577,6 +577,10 @@ public class Permission extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((PermissionJustificationComponent) dst);
+      }
+
       public void copyValues(PermissionJustificationComponent dst) {
         super.copyValues(dst);
         if (basis != null) {
@@ -1004,6 +1008,10 @@ public class Permission extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((RuleComponent) dst);
+      }
+
       public void copyValues(RuleComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1410,6 +1418,10 @@ public class Permission extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((RuleDataComponent) dst);
+      }
+
       public void copyValues(RuleDataComponent dst) {
         super.copyValues(dst);
         if (resource != null) {
@@ -1669,6 +1681,10 @@ public class Permission extends DomainResource {
         RuleDataResourceComponent dst = new RuleDataResourceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((RuleDataResourceComponent) dst);
       }
 
       public void copyValues(RuleDataResourceComponent dst) {
@@ -2014,6 +2030,10 @@ public class Permission extends DomainResource {
         RuleActivityComponent dst = new RuleActivityComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((RuleActivityComponent) dst);
       }
 
       public void copyValues(RuleActivityComponent dst) {
@@ -2599,6 +2619,10 @@ public class Permission extends DomainResource {
         Permission dst = new Permission();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Permission) dst);
       }
 
       public void copyValues(Permission dst) {

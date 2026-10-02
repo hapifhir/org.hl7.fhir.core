@@ -87,7 +87,7 @@ public class MustSupportSlicingFinder implements IPackageVisitorProcessor {
     }
   }
 
-  public static void main(String[] args) throws FHIRException, IOException, ParserConfigurationException, SAXException, EOperationOutcome {
+  public static void main(String[] args) throws FHIRException, IOException, ParserConfigurationException, SAXException {
     new MustSupportSlicingFinder().execute();
   }
 
@@ -103,7 +103,7 @@ public class MustSupportSlicingFinder implements IPackageVisitorProcessor {
   public int count9 = 0;
   
 
-  private void execute() throws FHIRException, IOException, ParserConfigurationException, SAXException, EOperationOutcome {
+  private void execute() throws FHIRException, IOException, ParserConfigurationException, SAXException {
     PackageVisitor pv = new PackageVisitor();
     pv.setCorePackages(false);
     pv.setClientPackageServer(PackageServer.primaryServer());
@@ -126,7 +126,7 @@ public class MustSupportSlicingFinder implements IPackageVisitorProcessor {
   }
 
   @Override
-  public Object startPackage(PackageContext context) throws FHIRException, IOException, EOperationOutcome {
+  public Object startPackage(PackageContext context) throws FHIRException, IOException {
     if (isUS(context.getNpm())) {
       System.out.println(context.getPid()+" is a US Realm package");
       return this;
@@ -144,7 +144,7 @@ public class MustSupportSlicingFinder implements IPackageVisitorProcessor {
 
   @Override
   public void processResource(PackageContext context, Object clientContext, String type, String id, byte[] content)
-      throws FHIRException, IOException, EOperationOutcome {
+      throws FHIRException, IOException {
     if (clientContext != null && "StructureDefinition".equals(type)) {
       JsonObject r = JsonParser.parseObject(content);
       for (JsonObject ed : r.forceObject("snapshot").forceArray("element").asJsonObjects()) {
@@ -172,11 +172,11 @@ public class MustSupportSlicingFinder implements IPackageVisitorProcessor {
 
 
   @Override
-  public void finishPackage(PackageContext context) throws FHIRException, IOException, EOperationOutcome {    
+  public void finishPackage(PackageContext context) throws FHIRException, IOException {    
   }
 
   @Override
-  public void alreadyVisited(String pid) throws FHIRException, IOException, EOperationOutcome {
+  public void alreadyVisited(String pid) throws FHIRException, IOException {
   }
 
 }

@@ -479,6 +479,10 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHookOrderSelectContext) dst, options);
+      }
+
       public void copyValues(CDSHookOrderSelectContext dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.userId = userId == null ? null : userId.copy(options);

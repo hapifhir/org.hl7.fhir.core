@@ -70,6 +70,10 @@ public class Distance extends Quantity implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Distance) dst);
+      }
+
       public void copyValues(Distance dst) {
         super.copyValues(dst);
       }

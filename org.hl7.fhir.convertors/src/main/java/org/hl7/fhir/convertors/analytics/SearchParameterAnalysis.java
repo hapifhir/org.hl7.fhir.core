@@ -15,7 +15,7 @@ import org.hl7.fhir.convertors.analytics.PackageVisitor.IPackageVisitorProcessor
 import org.hl7.fhir.convertors.analytics.PackageVisitor.PackageContext;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.model.utilities.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -111,7 +111,7 @@ public class SearchParameterAnalysis implements IPackageVisitorProcessor {
   }
 
   @Override
-  public void processResource(PackageContext ctxt, Object context, String type, String id, byte[] content) throws FHIRException, IOException, EOperationOutcome {
+  public void processResource(PackageContext ctxt, Object context, String type, String id, byte[] content) throws FHIRException, IOException {
 //    System.out.println("v"+version+" "+type+" from "+pid);  
     String pid = ctxt.getPid();
     String version = ctxt.getVersion();

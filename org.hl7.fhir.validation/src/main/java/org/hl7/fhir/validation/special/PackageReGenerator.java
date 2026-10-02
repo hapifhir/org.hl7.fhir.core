@@ -14,27 +14,30 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.fhirpath.ExpressionNode;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementDocumentComponent;
-import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
-import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
-import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent;
-import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent;
-import org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent;
-import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.Property;
+import org.hl7.fhir.services.context.ContextUtilities;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.services.fhirpath.ExpressionNode;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementDocumentComponent;
+import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestComponent;
+import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestResourceComponent;
+import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestResourceOperationComponent;
+import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent;
+import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
+import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.model.core.OperationDefinition.OperationDefinitionParameterComponent;
+import org.hl7.fhir.model.core.SearchParameter.SearchParameterComponentComponent;
+import org.hl7.fhir.model.core.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.NPMPackageGenerator;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
@@ -236,19 +239,19 @@ public class PackageReGenerator {
       if (modeParams.contains("api")) {
         if (verbose) log.info("Processing CapabilityStatements");
         for (String res : npm.listResources("CapabilityStatement")) {
-          CapabilityStatement cs = (CapabilityStatement) new JsonParser().parse(npm.loadResource(res));
+          CapabilityStatement cs = (CapabilityStatement) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           cs.setSourcePackage(new PackageInformation(npm));
           processResource(cs);
         }
         if (verbose) log.info("Processing OperationDefinitions");
         for (String res : npm.listResources("OperationDefinition")) {
-          OperationDefinition op = (OperationDefinition) new JsonParser().parse(npm.loadResource(res));
+          OperationDefinition op = (OperationDefinition) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           op.setSourcePackage(new PackageInformation(npm));
           processResource(op);
         }
         if (verbose) log.info("Processing SearchParameters");
         for (String res : npm.listResources("SearchParameter")) {
-          SearchParameter sp = (SearchParameter) new JsonParser().parse(npm.loadResource(res));
+          SearchParameter sp = (SearchParameter) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           sp.setSourcePackage(new PackageInformation(npm));
           processResource(sp);
         }
@@ -256,19 +259,19 @@ public class PackageReGenerator {
       if (modeParams.contains("tx")) {
         if (verbose) log.info("Processing CodeSystems");
         for (String res : npm.listResources("CodeSystem")) {
-          CodeSystem cs = (CodeSystem) new JsonParser().parse(npm.loadResource(res));
+          CodeSystem cs = (CodeSystem) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           cs.setSourcePackage(new PackageInformation(npm));
           processResource(cs);
         }
         if (verbose) log.info("Processing ValueSets");
         for (String res : npm.listResources("ValueSet")) {
-          ValueSet vs = (ValueSet) new JsonParser().parse(npm.loadResource(res));
+          ValueSet vs = (ValueSet) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           vs.setSourcePackage(new PackageInformation(npm));
           processResource(vs);
         }
         if (verbose) log.info("Processing NamingSystems");
         for (String res : npm.listResources("NamingSystem")) {
-          NamingSystem ns = (NamingSystem) new JsonParser().parse(npm.loadResource(res));
+          NamingSystem ns = (NamingSystem) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           ns.setSourcePackage(new PackageInformation(npm));
           processResource(ns);
         }
@@ -276,14 +279,14 @@ public class PackageReGenerator {
       if (modeParams.contains("cnt")) {
         if (verbose) log.info("Processing StructureDefinitions");
         for (String res : npm.listResources("StructureDefinition")) {
-          StructureDefinition sd = (StructureDefinition) new JsonParser().parse(npm.loadResource(res));
+          StructureDefinition sd = (StructureDefinition) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
           sd.setSourcePackage(new PackageInformation(npm));
           processResource(sd);
         }
       }
       if (verbose) log.info("Processing Bindings");
       for (String res : npm.listResources("StructureDefinition")) {
-        StructureDefinition sd = (StructureDefinition) new JsonParser().parse(npm.loadResource(res));
+        StructureDefinition sd = (StructureDefinition) new JsonParser(context.getModelContext()).parse(npm.loadResource(res));
         processSD(sd, npm.id());
       }
 
@@ -405,16 +408,16 @@ public class PackageReGenerator {
   }
 
   private void chaseDependenciesVS(ValueSet vs) {
-    for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+    for (ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
       chaseDependenciesVS(inc, vs);
     }
-    for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
+    for (ConceptSetComponent inc : vs.getCompose().getExcludeList()) {
       chaseDependenciesVS(inc, vs);
     }
   }
 
   private void chaseDependenciesVS(ConceptSetComponent inc, ValueSet vs) {
-    for (CanonicalType c : inc.getValueSet()) {
+    for (CanonicalType c : inc.getValueSetList()) {
       processResource(context.fetchResource(ValueSet.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
     }
     processResource(context.fetchSupplementedCodeSystem(inc.getSystem(), ExtensionUtilities.getVersionResolutionRules(inc), inc.getVersion(), null, vs));
@@ -424,26 +427,26 @@ public class PackageReGenerator {
     if (sd.hasBaseDefinition()) {
       processResource(context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement())));
     }
-    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
       if (ed.getBinding().hasValueSet()) {
         processResource(context.fetchResource(ValueSet.class, ed.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(ed.getBinding().getValueSetElement())));
-        for (ElementDefinitionBindingAdditionalComponent adb : ed.getBinding().getAdditional()) {
+        for (ElementDefinitionBindingAdditionalComponent adb : ed.getBinding().getAdditionalList()) {
           processResource(context.fetchResource(ValueSet.class, adb.getValueSet(), ExtensionUtilities.getVersionResolutionRules(adb.getValueSetElement())));
         }
       }
-      for (TypeRefComponent tr : ed.getType()) {
+      for (TypeRefComponent tr : ed.getTypeList()) {
         if (Utilities.isAbsoluteUrl(tr.getCode())) {
           processResource(context.fetchResource(StructureDefinition.class, tr.getCode(), ExtensionUtilities.getVersionResolutionRules(tr.getCodeElement())));
         }
-        for (CanonicalType c : tr.getProfile()) {
+        for (CanonicalType c : tr.getProfileList()) {
           processResource((CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
         }
-        for (CanonicalType c : tr.getTargetProfile()) {
+        for (CanonicalType c : tr.getTargetProfileList()) {
           processResource((CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
         }
       }
       if (includeConformsTo) {
-        for (ElementDefinition.ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+        for (ElementDefinition.ElementDefinitionConstraintComponent inv : ed.getConstraintList()) {
           pathEngine.setAllowUknownFunctions(true);
           if (inv.hasExpression()) {
             try {
@@ -487,46 +490,46 @@ public class PackageReGenerator {
   }
 
   private void chaseDependenciesCS(CapabilityStatement cs) {
-    for (CanonicalType c : cs.getInstantiates()) {
+    for (CanonicalType c : cs.getInstantiatesList()) {
       processResource(context.fetchResource(CapabilityStatement.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
     }
-    for (CanonicalType c : cs.getImports()) {
+    for (CanonicalType c : cs.getImportsList()) {
       processResource(context.fetchResource(CapabilityStatement.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
     }
-    for (CanonicalType c : cs.getImplementationGuide()) {
+    for (CanonicalType c : cs.getImplementationGuideList()) {
       processResource(context.fetchResource(CapabilityStatement.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
     }
-    for (CapabilityStatementRestComponent r : cs.getRest()) {
-      for (CapabilityStatementRestResourceComponent rr : r.getResource()) {
+    for (CapabilityStatementRestComponent r : cs.getRestList()) {
+      for (CapabilityStatementRestResourceComponent rr : r.getResourceList()) {
         if (rr.hasProfile()) {
           processResource(context.fetchResource(StructureDefinition.class, rr.getProfile(), ExtensionUtilities.getVersionResolutionRules(rr.getProfileElement())));
         }
-        for (CanonicalType c : rr.getSupportedProfile()) {
+        for (CanonicalType c : rr.getSupportedProfileList()) {
           processResource(context.fetchResource(StructureDefinition.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
         }
-        for (CapabilityStatementRestResourceSearchParamComponent sp : rr.getSearchParam()) {
+        for (CapabilityStatementRestResourceSearchParamComponent sp : rr.getSearchParamList()) {
           if (sp.hasDefinition()) {
             processResource(context.fetchResource(SearchParameter.class, sp.getDefinition(), ExtensionUtilities.getVersionResolutionRules(sp.getDefinitionElement())));
           }
         }
-        for (CapabilityStatementRestResourceOperationComponent od : rr.getOperation()) {
+        for (CapabilityStatementRestResourceOperationComponent od : rr.getOperationList()) {
           if (od.hasDefinition()) {
             processResource(context.fetchResource(OperationDefinition.class, od.getDefinition(), ExtensionUtilities.getVersionResolutionRules(od.getDefinitionElement())));
           }
         }
       }
-      for (CapabilityStatementRestResourceSearchParamComponent sp : r.getSearchParam()) {
+      for (CapabilityStatementRestResourceSearchParamComponent sp : r.getSearchParamList()) {
         if (sp.hasDefinition()) {
           processResource(context.fetchResource(SearchParameter.class, sp.getDefinition(), ExtensionUtilities.getVersionResolutionRules(sp.getDefinitionElement())));
         }
       }
-      for (CapabilityStatementRestResourceOperationComponent od : r.getOperation()) {
+      for (CapabilityStatementRestResourceOperationComponent od : r.getOperationList()) {
         if (od.hasDefinition()) {
           processResource(context.fetchResource(OperationDefinition.class, od.getDefinition(), ExtensionUtilities.getVersionResolutionRules(od.getDefinitionElement())));
         }
       }
     }
-    for (CapabilityStatementDocumentComponent doc : cs.getDocument()) {
+    for (CapabilityStatementDocumentComponent doc : cs.getDocumentList()) {
       if (doc.hasProfile()) {
         processResource(context.fetchResource(StructureDefinition.class, doc.getProfile(), ExtensionUtilities.getVersionResolutionRules(doc.getProfileElement())));
       }
@@ -543,8 +546,8 @@ public class PackageReGenerator {
     if (od.hasOutputProfile()) {
       processResource(context.fetchResource(StructureDefinition.class, od.getOutputProfile(), ExtensionUtilities.getVersionResolutionRules(od.getOutputProfileElement())));
     }
-    for (OperationDefinitionParameterComponent p : od.getParameter()) {
-      for (CanonicalType c : p.getTargetProfile()) {
+    for (OperationDefinitionParameterComponent p : od.getParameterList()) {
+      for (CanonicalType c : p.getTargetProfileList()) {
         processResource(context.fetchResource(StructureDefinition.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
       }
 
@@ -558,7 +561,7 @@ public class PackageReGenerator {
     if (sp.hasDerivedFrom()) {
       processResource(context.fetchResource(SearchParameter.class, sp.getDerivedFrom(), ExtensionUtilities.getVersionResolutionRules(sp.getDerivedFromElement())));
     }
-    for (SearchParameterComponentComponent c : sp.getComponent()) {
+    for (SearchParameterComponentComponent c : sp.getComponentList()) {
       if (c.hasDefinition()) {
         processResource(context.fetchResource(SearchParameter.class, c.getDefinition(), ExtensionUtilities.getVersionResolutionRules(c.getDefinitionElement())));
       }
@@ -566,7 +569,7 @@ public class PackageReGenerator {
   }
 
   private void processBase(CanonicalResource src, Base b, String path) {
-    for (Property p : b.children()) {
+    for (Property p : b.getChildren()) {
       for (Base v : p.getValues()) {
         processBase(src, v,  path+"."+p.getName());
       }
@@ -615,9 +618,9 @@ public class PackageReGenerator {
     Set<String> names = new HashSet<>();
     names.add("manifest");
     if (json) {
-      zip.addBytes("manifest.json", new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters), false);
+      zip.addBytes("manifest.json", new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters), false);
     } else {
-      zip.addBytes("manifest.xml", new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters), false);
+      zip.addBytes("manifest.xml", new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters), false);
     }
 
     for (CanonicalResource cr : resources) {
@@ -635,20 +638,20 @@ public class PackageReGenerator {
     j.add("version",ver);
     j.add("tools-version", 3);
     j.add("type", "Conformance");
-    j.forceArray("fhirVersions").add(context.getVersion());
+    j.forceArray("fhirVersions").add(context.getFHIRVersion());
     for (String pid : sourcePackages) {
       j.forceArray("sourcePackages").add(pid);
     }
-    j.forceObject("dependencies").add(VersionUtilities.packageForVersion(context.getVersion()), context.getVersion());
+    j.forceObject("dependencies").add(VersionUtilities.packageForVersion(context.getFHIRVersion()), context.getFHIRVersion());
 
     NPMPackageGenerator gen = new NPMPackageGenerator(output, j, new Date(), true);
 
     Set<String> names = new HashSet<>();
     names.add("manifest");
     if (json) {
-      gen.addFile("package", "manifest.json", new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters));
+      gen.addFile("package", "manifest.json", new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters));
     } else {
-      gen.addFile("package", "manifest.xml", new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters));
+      gen.addFile("package", "manifest.xml", new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(expansionParameters));
     }
     for (CanonicalResource cr : resources) {
       gen.addFile("package", resourceFileName(cr), composeResource(cr));
@@ -678,9 +681,9 @@ public class PackageReGenerator {
     Set<String> names = new HashSet<>();
     names.add("manifest");
     if (json) {
-      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(output, "manifest.json")), expansionParameters);
+      new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(output, "manifest.json")), expansionParameters);
     } else {
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(output, "manifest.xml")), expansionParameters);
+      new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(output, "manifest.xml")), expansionParameters);
     }
     for (CanonicalResource cr : resources) {
       FileUtilities.bytesToFile(composeResource(cr), Utilities.path(output, resourceFileName(cr)));
@@ -690,14 +693,14 @@ public class PackageReGenerator {
 
   private byte[] composeResource(CanonicalResource cr) throws IOException {
     if (json) {
-      return new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(cr);
+      return new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(cr);
     } else {
-      return new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(cr);
+      return new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(cr);
     }
   }
 
   private void processSD(StructureDefinition sd, String packageId) {
-    for (ElementDefinition ed : sd.getDifferential().getElement()) {
+    for (ElementDefinition ed : sd.getDifferential().getElementList()) {
       if (ed.hasBinding() && ed.getBinding().hasValueSet()) {
         processValueSet(ed.getBinding().getValueSetElement(), packageId+":"+sd.getVersionedUrl()+"#"+ed.getId());
       }
@@ -725,15 +728,15 @@ public class PackageReGenerator {
         e.valueSet = vs;
         entries.put(vs.getVersionedUrl(), e);
         source = vs.getSourcePackage() != null ? vs.getSourcePackage().getVID()+":"+vs.getVersionedUrl() : null;
-        for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-          for (CanonicalType v : inc.getValueSet()) {
+        for (ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
+          for (CanonicalType v : inc.getValueSetList()) {
             if (v.hasValue()) {
               processValueSet(v, source);
             }
           }
         }
-        for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
-          for (CanonicalType v : inc.getValueSet()) {
+        for (ConceptSetComponent inc : vs.getCompose().getExcludeList()) {
+          for (CanonicalType v : inc.getValueSetList()) {
             if (v.hasValue()) {
               processValueSet(v, source);
             }
@@ -759,10 +762,10 @@ public class PackageReGenerator {
         NpmPackage core = pcm.loadPackage(VersionUtilities.packageForVersion(v));
         NpmPackage tho = pcm.loadPackage("hl7.terminology");
         log.info("Load FHIR from "+core.name()+"#"+core.version());
-        SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(core);
-        TerminologyClientFactory factory = new TerminologyClientFactory(ctxt.getVersion());
+        SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withAllowLoadingDuplicates(true).fromPackage(core);
+        TerminologyClientFactory factory = new TerminologyClientFactory(ctxt.getFHIRVersion());
         ctxt.connectToTSServer(factory, "https://tx.fhir.org", ctxt.getUserAgent(), null, true);
-        var loader = new IgLoader(pcm, ctxt, ctxt.getVersion());
+        var loader = new IgLoader(pcm, ctxt, ctxt.getFHIRVersion());
         loader.loadPackage(tho, true);
         loader.loadPackage(npm, true);
         context = ctxt;
@@ -770,7 +773,7 @@ public class PackageReGenerator {
 
         loader.loadPackage(npm, true);
       } else {
-        var loader = new IgLoader(pcm, (SimpleWorkerContext) context, context.getVersion());
+        var loader = new IgLoader(pcm, (SimpleWorkerContext) context, context.getFHIRVersion());
         loader.loadPackage(npm, true);
       }
       list.add(npm);

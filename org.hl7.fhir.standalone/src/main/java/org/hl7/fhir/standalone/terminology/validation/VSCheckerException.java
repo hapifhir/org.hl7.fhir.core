@@ -2,7 +2,7 @@ package org.hl7.fhir.standalone.terminology.validation;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.services.terminology.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 
 import java.util.List;
 

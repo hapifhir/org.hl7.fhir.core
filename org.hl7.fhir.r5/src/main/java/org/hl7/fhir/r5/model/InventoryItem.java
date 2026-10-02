@@ -460,6 +460,10 @@ public class InventoryItem extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((InventoryItemNameComponent) dst);
+      }
+
       public void copyValues(InventoryItemNameComponent dst) {
         super.copyValues(dst);
         dst.nameType = nameType == null ? null : nameType.copy();
@@ -682,6 +686,10 @@ public class InventoryItem extends DomainResource {
         InventoryItemResponsibleOrganizationComponent dst = new InventoryItemResponsibleOrganizationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((InventoryItemResponsibleOrganizationComponent) dst);
       }
 
       public void copyValues(InventoryItemResponsibleOrganizationComponent dst) {
@@ -946,6 +954,10 @@ public class InventoryItem extends DomainResource {
         InventoryItemDescriptionComponent dst = new InventoryItemDescriptionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((InventoryItemDescriptionComponent) dst);
       }
 
       public void copyValues(InventoryItemDescriptionComponent dst) {
@@ -1217,6 +1229,10 @@ public class InventoryItem extends DomainResource {
         InventoryItemAssociationComponent dst = new InventoryItemAssociationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((InventoryItemAssociationComponent) dst);
       }
 
       public void copyValues(InventoryItemAssociationComponent dst) {
@@ -1698,6 +1714,10 @@ public class InventoryItem extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((InventoryItemCharacteristicComponent) dst);
+      }
+
       public void copyValues(InventoryItemCharacteristicComponent dst) {
         super.copyValues(dst);
         dst.characteristicType = characteristicType == null ? null : characteristicType.copy();
@@ -2127,6 +2147,10 @@ public class InventoryItem extends DomainResource {
         InventoryItemInstanceComponent dst = new InventoryItemInstanceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((InventoryItemInstanceComponent) dst);
       }
 
       public void copyValues(InventoryItemInstanceComponent dst) {
@@ -3172,6 +3196,10 @@ public class InventoryItem extends DomainResource {
         InventoryItem dst = new InventoryItem();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((InventoryItem) dst);
       }
 
       public void copyValues(InventoryItem dst) {

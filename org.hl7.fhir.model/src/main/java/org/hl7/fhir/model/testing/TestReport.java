@@ -940,6 +940,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportParticipantComponent) dst, options);
+      }
+
       public void copyValues(TestReportParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -1203,6 +1207,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportParameterComponent) dst, options);
+      }
+
       public void copyValues(TestReportParameterComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -1395,6 +1403,10 @@ public class TestReport extends DomainResource {
         TestReportSetupComponent dst = new TestReportSetupComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportSetupComponent) dst, options);
       }
 
       public void copyValues(TestReportSetupComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1591,6 +1603,10 @@ public class TestReport extends DomainResource {
         SetupActionComponent dst = new SetupActionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionComponent) dst, options);
       }
 
       public void copyValues(SetupActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1921,6 +1937,10 @@ public class TestReport extends DomainResource {
         SetupActionOperationComponent dst = new SetupActionOperationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionOperationComponent) dst, options);
       }
 
       public void copyValues(SetupActionOperationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2329,6 +2349,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionAssertComponent) dst, options);
+      }
+
       public void copyValues(SetupActionAssertComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.result = result == null ? null : result.copy(options);
@@ -2530,6 +2554,10 @@ public class TestReport extends DomainResource {
         SetupActionAssertRequirementComponent dst = new SetupActionAssertRequirementComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionAssertRequirementComponent) dst, options);
       }
 
       public void copyValues(SetupActionAssertRequirementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3029,6 +3057,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportTestComponent) dst, options);
+      }
+
       public void copyValues(TestReportTestComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -3246,6 +3278,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestActionComponent) dst, options);
+      }
+
       public void copyValues(TestActionComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.operation = operation == null ? null : operation.copy(options);
@@ -3440,6 +3476,10 @@ public class TestReport extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportTeardownComponent) dst, options);
+      }
+
       public void copyValues(TestReportTeardownComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (actionList != null) {
@@ -3609,6 +3649,10 @@ public class TestReport extends DomainResource {
         TeardownActionComponent dst = new TeardownActionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TeardownActionComponent) dst, options);
       }
 
       public void copyValues(TeardownActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4739,6 +4783,10 @@ public class TestReport extends DomainResource {
         TestReport dst = new TestReport(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReport) dst, options);
       }
 
       public void copyValues(TestReport dst, EnumSet<CopyObjectOptions> options) {

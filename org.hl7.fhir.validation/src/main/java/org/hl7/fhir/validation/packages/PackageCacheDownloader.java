@@ -3,7 +3,7 @@ package org.hl7.fhir.validation.packages;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.analytics.PackageVisitor;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.model.utilities.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.PackageServer;
 

@@ -267,6 +267,10 @@ public class TestCases extends Resource implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TestCasesModeComponent) dst);
+      }
+
       public void copyValues(TestCasesModeComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -757,6 +761,10 @@ public class TestCases extends Resource implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TestCasesSuiteComponent) dst);
+      }
+
       public void copyValues(TestCasesSuiteComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -1132,6 +1140,10 @@ public class TestCases extends Resource implements ICompositeType {
         TestCasesSuiteResourceComponent dst = new TestCasesSuiteResourceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TestCasesSuiteResourceComponent) dst);
       }
 
       public void copyValues(TestCasesSuiteResourceComponent dst) {
@@ -1591,6 +1603,10 @@ public class TestCases extends Resource implements ICompositeType {
         TestCasesSuiteParameterComponent dst = new TestCasesSuiteParameterComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TestCasesSuiteParameterComponent) dst);
       }
 
       public void copyValues(TestCasesSuiteParameterComponent dst) {
@@ -2203,6 +2219,10 @@ public class TestCases extends Resource implements ICompositeType {
         TestCasesSuiteTestComponent dst = new TestCasesSuiteTestComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TestCasesSuiteTestComponent) dst);
       }
 
       public void copyValues(TestCasesSuiteTestComponent dst) {
@@ -2830,6 +2850,10 @@ public class TestCases extends Resource implements ICompositeType {
         TestCases dst = new TestCases();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TestCases) dst);
       }
 
       public void copyValues(TestCases dst) {

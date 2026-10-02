@@ -17,28 +17,24 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-
 import lombok.Getter;
-import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContextManager;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
-import org.hl7.fhir.r5.utils.validation.IMessagingServices;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
-import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
-import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
-import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.context.IWorkerContextManager;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.services.validation.IMessagingServices;
+import org.hl7.fhir.services.validation.IResourceValidator;
+import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.services.validation.IValidatorResourceFetcher;
+import org.hl7.fhir.services.validation.constants.BindingKind;
+import org.hl7.fhir.services.validation.constants.ContainedReferenceValidationPolicy;
+import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -52,7 +48,6 @@ import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.instance.utils.CanonicalResourceClient;
-import org.hl7.fhir.validation.service.utils.Common;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 
 
@@ -183,7 +178,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
   
   @Override
-  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, IWorkerContext.VersionResolutionRules rules, String type, boolean canonical, List<CanonicalType> targets) throws IOException, FHIRException {
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, VersionResolutionRules rules, String type, boolean canonical, List<CanonicalType> targets) throws IOException, FHIRException {
     if (!Utilities.isAbsoluteUrl(url)) {
       return false;
     }
@@ -268,7 +263,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       }
       if (pi != null) {
         context.getManager().loadFromPackage(pi, null);
-        return pi.hasCanonical(url) ||  context.fetchResource(Resource.class, url, IWorkerContext.VersionResolutionRules.defaultRule()) != null;
+        return pi.hasCanonical(url) ||  context.fetchResource(Resource.class, url, VersionResolutionRules.defaultRule()) != null;
       }
     }
 
@@ -375,7 +370,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   @Override
-  public void findResource(Object validator, String url, IWorkerContext.VersionResolutionRules rules) {
+  public void findResource(Object validator, String url, VersionResolutionRules rules) {
     try {
       resolveURL((IResourceValidator) validator, null, null, url, rules,null, false, null);
     } catch (Exception e) {
@@ -394,8 +389,8 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
 
   @Override
   public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator, Object appContext,
-      StructureDefinition structure, ElementDefinition element, String containerType, String containerId,
-      SpecialElement containingResourceType, String path, String url) {
+                                                               StructureDefinition structure, ElementDefinition element, String containerType, String containerId,
+                                                               SpecialElement containingResourceType, String path, String url) {
     return policyAdvisor.policyForContained(validator, appContext, structure, element, containerType, containerId, containingResourceType, path, url);
   }
 
@@ -420,8 +415,8 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
 
   @Override
   public List<StructureDefinition> getImpliedProfilesForResource(IResourceValidator validator, Object appContext,
-      String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
-      IMessagingServices msgServices, List<ValidationMessage> messages) {
+                                                                 String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
+                                                                 IMessagingServices msgServices, List<ValidationMessage> messages) {
     return policyAdvisor.getImpliedProfilesForResource(validator, appContext, stackPath, definition, structure, resource, valid, msgServices, messages);
   }
 

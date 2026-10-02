@@ -84,6 +84,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
   public static final String DATE_FORMAT = "yyyy-MM-dd";
   public static final String hostKey = "http.proxyHost";
   public static final String portKey = "http.proxyPort";
+  private static final int MAX_GET_URL_LENGTH = 2000;
 
   private String base;
   private ResourceAddress resourceAddress;
@@ -304,6 +305,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
             ps += Utilities.encodeUriParam(p.getName(), ((PrimitiveType) p.getValue()).asStringValue()) + "&";
       ResourceRequest<T> result;
       URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
+      if (!complex && url.toString().length() > MAX_GET_URL_LENGTH) {
+        // all the parameters are simple, but the URL is too long for a GET, so send them in the body instead
+        complex = true;
+        url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, "");
+      }
       if (complex) {
         byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true);
         result = client.issuePostRequest(url, body, getPreferredResourceFormat(), generateHeaders(true),
@@ -422,11 +428,40 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
     return result == null ? null : (ValueSet) result.getPayload();
   }
 
+  private Parameters asParameters(Map<String, String> params) {
+    Parameters p = new Parameters();
+    for (Map.Entry<String, String> e : params.entrySet()) {
+      p.addParameter().setName(e.getKey()).setValue(new StringType(e.getValue()));
+    }
+    return p;
+  }
+
   public Parameters lookupCode(Map<String, String> params) {
+    URI url = resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params);
+    if (url.toString().length() > MAX_GET_URL_LENGTH) {
+      // too long for a GET, so send the parameters in the body instead
+      return lookupCode(asParameters(params));
+    }
     org.hl7.fhir.r4b.utils.client.network.ResourceRequest<Resource> result = null;
     try {
-      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params),
+      result = client.issueGetResourceRequest(url,
           getPreferredResourceFormat(), generateHeaders(false), "CodeSystem/$lookup", timeoutNormal);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
+          (OperationOutcome) result.getPayload());
+    }
+    return (Parameters) result.getPayload();
+  }
+
+  public Parameters lookupCode(Parameters p) {
+    org.hl7.fhir.r4b.utils.client.network.ResourceRequest<Resource> result = null;
+    try {
+      result = client.issuePostRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup"),
+          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
+          getPreferredResourceFormat(), generateHeaders(true), "CodeSystem/$lookup", timeoutNormal);
     } catch (IOException e) {
       e.printStackTrace();
     }

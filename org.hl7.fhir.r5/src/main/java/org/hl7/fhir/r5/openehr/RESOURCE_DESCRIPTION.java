@@ -619,6 +619,10 @@ public class RESOURCE_DESCRIPTION extends LogicalBase implements ICompositeType 
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((RESOURCE_DESCRIPTION) dst);
+      }
+
       public void copyValues(RESOURCE_DESCRIPTION dst) {
         super.copyValues(dst);
         if (original_authorList != null) {

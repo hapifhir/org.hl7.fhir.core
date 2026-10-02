@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation.codegen;
 
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.model.core.ValueSet;
 
 public class EnumInfo {
 

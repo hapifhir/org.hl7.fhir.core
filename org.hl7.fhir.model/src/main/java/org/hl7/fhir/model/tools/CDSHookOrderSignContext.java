@@ -399,6 +399,10 @@ public class CDSHookOrderSignContext extends CDSHookContext implements IComposit
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHookOrderSignContext) dst, options);
+      }
+
       public void copyValues(CDSHookOrderSignContext dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.userId = userId == null ? null : userId.copy(options);

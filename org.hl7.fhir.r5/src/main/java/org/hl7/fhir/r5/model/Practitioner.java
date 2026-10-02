@@ -359,6 +359,10 @@ public class Practitioner extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((PractitionerQualificationComponent) dst);
+      }
+
       public void copyValues(PractitionerQualificationComponent dst) {
         super.copyValues(dst);
         if (identifier != null) {
@@ -606,6 +610,10 @@ public class Practitioner extends DomainResource {
         PractitionerCommunicationComponent dst = new PractitionerCommunicationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((PractitionerCommunicationComponent) dst);
       }
 
       public void copyValues(PractitionerCommunicationComponent dst) {
@@ -1557,6 +1565,10 @@ The `PractitionerRole.communication` property should be used for publishing the 
         Practitioner dst = new Practitioner();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Practitioner) dst);
       }
 
       public void copyValues(Practitioner dst) {

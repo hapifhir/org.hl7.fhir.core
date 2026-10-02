@@ -481,6 +481,10 @@ public class SupplyRequest extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SupplyRequestParameterComponent) dst);
+      }
+
       public void copyValues(SupplyRequestParameterComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -1639,6 +1643,10 @@ public class SupplyRequest extends DomainResource {
         SupplyRequest dst = new SupplyRequest();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SupplyRequest) dst);
       }
 
       public void copyValues(SupplyRequest dst) {

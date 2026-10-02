@@ -420,6 +420,10 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioActorComponent) dst);
+      }
+
       public void copyValues(ExampleScenarioActorComponent dst) {
         super.copyValues(dst);
         dst.key = key == null ? null : key.copy();
@@ -1156,6 +1160,10 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioInstanceComponent) dst);
+      }
+
       public void copyValues(ExampleScenarioInstanceComponent dst) {
         super.copyValues(dst);
         dst.key = key == null ? null : key.copy();
@@ -1555,6 +1563,10 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioInstanceVersionComponent) dst);
+      }
+
       public void copyValues(ExampleScenarioInstanceVersionComponent dst) {
         super.copyValues(dst);
         dst.key = key == null ? null : key.copy();
@@ -1822,6 +1834,10 @@ public class ExampleScenario extends CanonicalResource {
         ExampleScenarioInstanceContainedInstanceComponent dst = new ExampleScenarioInstanceContainedInstanceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioInstanceContainedInstanceComponent) dst);
       }
 
       public void copyValues(ExampleScenarioInstanceContainedInstanceComponent dst) {
@@ -2306,6 +2322,10 @@ public class ExampleScenario extends CanonicalResource {
         ExampleScenarioProcessComponent dst = new ExampleScenarioProcessComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioProcessComponent) dst);
       }
 
       public void copyValues(ExampleScenarioProcessComponent dst) {
@@ -2812,6 +2832,10 @@ public class ExampleScenario extends CanonicalResource {
         ExampleScenarioProcessStepComponent dst = new ExampleScenarioProcessStepComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioProcessStepComponent) dst);
       }
 
       public void copyValues(ExampleScenarioProcessStepComponent dst) {
@@ -3508,6 +3532,10 @@ public class ExampleScenario extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioProcessStepOperationComponent) dst);
+      }
+
       public void copyValues(ExampleScenarioProcessStepOperationComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -3858,6 +3886,10 @@ public class ExampleScenario extends CanonicalResource {
         ExampleScenarioProcessStepAlternativeComponent dst = new ExampleScenarioProcessStepAlternativeComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenarioProcessStepAlternativeComponent) dst);
       }
 
       public void copyValues(ExampleScenarioProcessStepAlternativeComponent dst) {
@@ -5451,6 +5483,10 @@ public class ExampleScenario extends CanonicalResource {
         ExampleScenario dst = new ExampleScenario();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ExampleScenario) dst);
       }
 
       public void copyValues(ExampleScenario dst) {

@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent;
+import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionContextComponent;
 import org.hl7.fhir.utilities.Utilities;
 
 public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
@@ -82,7 +82,7 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
     src.append("\r\n");
     
     Set<String> contexts = new HashSet<>();
-    for (StructureDefinitionContextComponent c : sd.getContext()) {
+    for (StructureDefinitionContextComponent c : sd.getContextList()) {
       processContext(c, contexts);
     }
     ElementDefinition edRoot = sd.getSnapshot().getElementFirstRep();
@@ -167,7 +167,7 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
           if (genClassList.contains(info.getJavaType()) ) {
             contexts.add(info.getJavaType());
           } else {
-            contexts.add((isR6() ? "org.hl7.fhir.model.core." : "org.hl7.fhir.r5.model.")+info.getClassFile()+"."+info.getJavaType());
+            contexts.add((isR6() ? "org.hl7.fhir.model.core." : "org.hl7.fhir.model.core.")+info.getClassFile()+"."+info.getJavaType());
           }
         }
         // contexts.add(c.getExpression());
@@ -204,7 +204,7 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
 
   private List<TypeTuple> analyseTypes(ElementDefinition edValue) {
     List<TypeTuple> ret = new ArrayList<>();
-    for (TypeRefComponent tr : edValue.getType()) {
+    for (TypeRefComponent tr : edValue.getTypeList()) {
       if (Character.isLowerCase(tr.getWorkingCode().charAt(0))) {
         TypeTuple pt = javaPrimitive(tr.getWorkingCode());
         if (pt != null) {

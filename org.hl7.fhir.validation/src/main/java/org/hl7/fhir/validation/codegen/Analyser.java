@@ -4,20 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
-import org.hl7.fhir.r5.model.SearchParameter;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.model.core.Enumerations.BindingStrength;
+import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.model.core.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.utilities.UserDataNames;
 
 import org.hl7.fhir.utilities.Utilities;
@@ -152,7 +147,7 @@ public class Analyser {
       return false;
     }
     try {
-      Class.forName((config.isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.r5.model")+".Enumerations$"+name);
+      Class.forName((config.isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.model.core")+".Enumerations$"+name);
       return true;
     } catch (ClassNotFoundException e) {
       return false;
@@ -191,7 +186,7 @@ public class Analyser {
             EnumInfo ei = new EnumInfo(en); // note: not registered in analysis.getEnums() - no local enum is generated
             ei.setValueSet(cvs);
             cvs.setUserData("java.core.enum", true);
-            tn = (config.isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.r5.model")+".Enumerations."+en;
+            tn = (config.isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.model.core")+".Enumerations."+en;
             e.setUserData("java.type", "Enumeration<"+tn+">");
             e.setUserData("java.enum", ei);
           }
@@ -219,13 +214,13 @@ public class Analyser {
         "named-elements".equals(e.getExtensionString(ExtensionDefinitions.EXT_EXTENSION_STYLE_NEW, ExtensionDefinitions.EXT_EXTENSION_STYLE_DEPRECATED))) {
         tn = "NamedElementExtension";
         e.setUserData("java.type", tn);
-      } else if (e.getType().size() > 0 && !e.hasContentReference() && pu.getChildList(analysis.getStructure(), e).isEmpty()) { // !isAbstractType(e.getType().get(0).getCode())
+      } else if (e.getTypeList().size() > 0 && !e.hasContentReference() && pu.getChildList(analysis.getStructure(), e).isEmpty()) { // !isAbstractType(e.getType().get(0).getCode())
         tn = getTypeName(e);
         if (e.typeSummary().equals("xml:lang"))
           tn = "CodeType";
         if (e.typeSummary().equals("xhtml")) 
           tn = "XhtmlNode";
-        else if (e.getType().size() > 1)
+        else if (e.getTypeList().size() > 1)
           tn ="DataType";
         else if (definitions.hasPrimitiveType(tn))
           tn = upFirst(tn)+"Type";
@@ -308,7 +303,7 @@ public class Analyser {
         if (vs != null && vs.hasName() && vs.getName().contains("ColorCodesOrRGB")) {
           return false;
         }
-        if (vs != null && vs.hasCompose() && vs.getCompose().getInclude().size() == 1) {
+        if (vs != null && vs.hasCompose() && vs.getCompose().getIncludeList().size() == 1) {
           ConceptSetComponent inc = vs.getCompose().getIncludeFirstRep();
           if (inc.hasSystem() && !inc.hasFilter() && !inc.hasConcept() && !(inc.getSystem().startsWith("http://hl7.org/fhir") || inc.getSystem().startsWith("http://terminology.hl7.org")))
             ok = false;
@@ -340,19 +335,19 @@ public class Analyser {
   }
   
   protected String getTypeName(ElementDefinition e) throws Exception {
-    if (e.getType().size() > 1) {
+    if (e.getTypeList().size() > 1) {
       boolean allPrimitive = true;
-      for (TypeRefComponent tr : e.getType()) {
+      for (TypeRefComponent tr : e.getTypeList()) {
         allPrimitive = allPrimitive && Utilities.existsInList(tr.getWorkingCode(), "string", "boolean", "integer", "decimal");
       }
       if (allPrimitive) {
         e.setUserData(UserDataNames.JGEN_ALL_PRIMITIVE, true);
       }
       return "DataType";
-    } else if (e.getType().size() == 0) {
+    } else if (e.getTypeList().size() == 0) {
       throw new Exception("not supported");
     } else {
-      TypeRefComponent tr = e.getType().get(0);
+      TypeRefComponent tr = e.getTypeList().get(0);
       if (tr.hasExtension(ExtensionDefinitions.EXT_FHIR_TYPE)) {
         return tr.getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE);
       } else {
@@ -402,7 +397,7 @@ public class Analyser {
     if (!path[0].equals(structure.getName()))
       throw new Exception("Element Path '"+pathname+"' is not legal in this context ("+structure.getName()+")");
     ElementDefinition res = null;
-    for (ElementDefinition t : structure.getSnapshot().getElement()) {
+    for (ElementDefinition t : structure.getSnapshot().getElementList()) {
       if (t.getPath().equals(pathname)) {
         res = t;
       }
@@ -421,8 +416,8 @@ public class Analyser {
     if (!Utilities.existsInList(name, "Resource")) {
       for (SearchParameter sp : definitions.getSearchParams().getList()) {
         boolean relevant = false;
-        for (Enumeration<VersionIndependentResourceTypesAll> c : sp.getBase()) {
-          if (c.getCode().equals(name)) {
+        for (UriType c : sp.getBaseList()) {
+          if (c.primitiveValue().equals(name)) {
             relevant = true;
             break;
           }

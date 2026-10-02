@@ -50,11 +50,11 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private StringBuilder pregn = new StringBuilder();
 
   private StringBuilder composer = new StringBuilder();
-  private StringBuilder creg = new StringBuilder();
-  private StringBuilder cregn = new StringBuilder();
-  private StringBuilder cregtn = new StringBuilder();
+  private InstanceOfCases creg = new InstanceOfCases();
+  private InstanceOfCases cregn = new InstanceOfCases();
+  private InstanceOfCases cregtn = new InstanceOfCases();
   private StringBuilder cregtp = new StringBuilder();
-  private StringBuilder cregti = new StringBuilder();
+  private InstanceOfCases cregti = new InstanceOfCases();
 
   public JavaParserJsonGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String jid) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, jid);
@@ -67,14 +67,14 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
       if (analysis.getStructure().getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         pregt.append("    } else if (json.has(prefix+\""+escapeJavaString(analysis.getName())+"\")) {\r\n      return parse"+analysis.getRootType().getName()+"(getJObject(json, prefix+\""+escapeJavaString(analysis.getName())+"\"));\r\n");
         pregt2.append("   } else if (type.equals(\""+escapeJavaString(analysis.getName())+"\")) {\r\n      return parse"+analysis.getName()+"(json);\r\n");
-        cregtn.append("    } else if (type instanceof "+analysis.getName()+") {\r\n       compose"+analysis.getName()+"(prefix+\""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+") type);\r\n");
-        cregti.append("    } else if (type instanceof "+analysis.getName()+") {\r\n       compose"+analysis.getName()+"Properties(("+analysis.getName()+") type);\r\n");
+        cregtn.add(analysis.getStructure(), definitions, "    } else if (type instanceof "+analysis.getName()+") {\r\n       compose"+analysis.getName()+"(prefix+\""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+") type);\r\n");
+        cregti.add(analysis.getStructure(), definitions, "    } else if (type instanceof "+analysis.getName()+") {\r\n       compose"+analysis.getName()+"Properties(("+analysis.getName()+") type);\r\n");
       }
       pregn.append("    if (json.has(prefix+\""+escapeJavaString(analysis.getName())+"\")) {\r\n      return true;\r\n    };\r\n");
       if (analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE) {
         pregf.append("    } else if (t.equals(\""+escapeJavaString(analysis.getName())+"\")) {\r\n      return parse"+analysis.getClassName()+"(json);\r\n");
-        creg.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+")resource);\r\n");
-        cregn.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");
+        creg.add(analysis.getStructure(), definitions, "    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+")resource);\r\n");
+        cregn.add(analysis.getStructure(), definitions, "    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");
       }
     }
   }
@@ -206,7 +206,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           prsr = "parseXhtml(json.get(\""+escapeJavaString(name)+"\").getAsString())";
         } else if (tn.contains("Reference(")) {
           prsr = "parseReference(getJObject(json, \""+escapeJavaString(name)+"\"))";
-          aprsr = "parseReference(array.get(i).getAsJsonObject())";
+          aprsr = "parseReference(getJsonObjectFromArray(array, i, \""+escapeJavaString(name)+"\"))";
           anprsr = "parseReference(null)";
         } else if (tn.contains("canonical(")) {
           prsr = "parseCanonical(json.get(\""+escapeJavaString(name)+"\").getAsString())";
@@ -216,8 +216,15 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           if (tn.endsWith("Type")) {
             tn = tn.substring(0, tn.length()-4);
           }
-          prsr = "parse"+upFirst(tn)+"(json.get(\""+escapeJavaString(name)+"\").getAs"+getAsJsonPrimitive(ed.typeSummary(), true)+"())";
-          aprsr = "parse"+upFirst(tn)+"(array.get(i).getAs"+getAsJsonPrimitive(ed.typeSummary(), true)+"())";
+          if ("decimal".equals(ed.typeSummary())) {
+            // pass the JsonElement, not the BigDecimal, so that parseDecimal can keep the literal
+            // the source used (1.0e0, 1e2) instead of whatever BigDecimal.toString() makes of it
+            prsr = "parse"+upFirst(tn)+"(json.get(\""+escapeJavaString(name)+"\"))";
+            aprsr = "parse"+upFirst(tn)+"(array.get(i))";
+          } else {
+            prsr = "parse"+upFirst(tn)+"(json.get(\""+escapeJavaString(name)+"\").getAs"+getAsJsonPrimitive(ed.typeSummary(), true)+"())";
+            aprsr = "parse"+upFirst(tn)+"(array.get(i).getAs"+getAsJsonPrimitive(ed.typeSummary(), true)+"())";
+          }
           anprsr = "parse"+upFirst(tn)+"(null)";
         } else {
           String pn = tn;
@@ -225,7 +232,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
             pn = analysis.getClassName()+pn;            
           }
           prsr = "parse"+pn+"(getJObject(json, \""+escapeJavaString(name)+"\"))";
-          aprsr = "parse"+pn+"(array.get(i).getAsJsonObject())";
+          aprsr = "parse"+pn+"(getJsonObjectFromArray(array, i, \""+escapeJavaString(name)+"\"))";
           anprsr = "parse"+pn+"(null)";
         }
       }
@@ -278,7 +285,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         if ((isPrimitive(ed.typeSummary()) || ed.typeSummary().startsWith("canonical(")) && !tn.equals("XhtmlNode")) {
           parser.append("      res.set"+upFirst(getElementName(name, false))+"Element("+prsr+");\r\n");
           parser.append("    if (json.has(\"_"+escapeJavaString(name)+"\"))\r\n");
-          parser.append("      parseElementProperties(getJObject(json, \"_"+escapeJavaString(name)+"\"), res.get"+upFirst(getElementName(name, false))+"Element());\r\n");
+          parser.append("      parseElementProperties(getJObject(json, \"_"+escapeJavaString(name)+"\"), res."+primitiveElementGetter(ed, name)+");\r\n");
         } else {
           parser.append("      res.set"+upFirst(getElementName(name, false))+"("+prsr+");\r\n");
         }
@@ -490,8 +497,8 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         composer.append("        }\r\n");
       } else if (!"xhtml".equals(ed.typeSummary()) && (isPrimitive(ed) || ed.typeSummary().startsWith("canonical("))) {
         composer.append("      if (element.has"+upFirst(getElementName(name, false))+"Element()) {\r\n");
-        composer.append("        "+comp+"Core(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), false);\r\n");
-        composer.append("        "+comp+"Extras(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), false);\r\n");
+        composer.append("        "+comp+"Core(\""+escapeJavaString(name)+"\", element."+primitiveElementGetter(ed, name)+", false);\r\n");
+        composer.append("        "+comp+"Extras(\""+escapeJavaString(name)+"\", element."+primitiveElementGetter(ed, name)+", false);\r\n");
         composer.append("      }\r\n");
       } else if (tn.equals("xhtml")) {
         composer.append("      if (element.has"+upFirst(getElementName(name, false))+"()) {\r\n");
@@ -696,4 +703,13 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
 //      return name.replace("[x]", "");
 //  }
 
+
+  /**
+   * the getter for the object that holds a primitive element (value, id, extensions). Reference.reference
+   * is special: BaseReference defines getReferenceElement() as the HAPI IIdType view, which is a new object
+   * each time, so the generated Reference class calls the real one getReferenceElement_()
+   */
+  private String primitiveElementGetter(ElementDefinition ed, String name) {
+    return "get"+upFirst(getElementName(name, false))+"Element"+("Reference.reference".equals(ed.getPath()) ? "_" : "")+"()";
+  }
 }

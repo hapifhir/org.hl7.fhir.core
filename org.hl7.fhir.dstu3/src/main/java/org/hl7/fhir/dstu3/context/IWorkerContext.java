@@ -43,6 +43,7 @@ import org.hl7.fhir.dstu3.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 
@@ -364,14 +365,6 @@ public interface IWorkerContext {
 	public String oid2Uri(String code);
 
   public boolean hasCache();
-
-  public interface ILoggingService {
-    public enum LogCategory {
-      PROGRESS, TX, INIT, CONTEXT, HTML 
-    }
-    public void logMessage(String message); // status messages, always display
-    public void logDebugMessage(LogCategory category, String message); // verbose; only when debugging 
-  }
 
   public void setLogger(ILoggingService logger);
 

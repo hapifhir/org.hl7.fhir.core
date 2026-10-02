@@ -5,7 +5,6 @@ import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.options.*;
 import org.hl7.fhir.validation.service.ValidationService;
@@ -57,7 +56,17 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
       return 1;
     }
     timeTrackerSession.end();
-    Integer result = call(getValidationService(), validationEngine);
+    Integer result;
+    try {
+      result = call(getValidationService(), validationEngine);
+    } finally {
+      // The command is what "an action" means for the CLI, so this is where the terminology
+      // cache gets written: every subcommand that owns an engine comes through here, and the
+      // cache's own timer is only a backstop between such points. In the finally block because
+      // a run that fell over still learned whatever it learned before it did, and there is no
+      // reason to make the next run ask for all of it again.
+      validationEngine.saveTerminologyCache();
+    }
     log.info("Done. " + timeTracker.report()+". Max Memory = "+ Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     return result;
   }
@@ -83,7 +92,7 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
       validationEngineOptions.fhirVersion = getValidationService().determineVersion(validationEngineParameters.getIgs(), sources, validationEngineParameters.isRecursive(), validationEngineParameters.isInferFhirVersion());
     }
 
-    validationEngineParameters.setSv(validationEngineOptions.fhirVersion);
+    validationEngineParameters.setStatedFHIRVersion(validationEngineOptions.fhirVersion);
 
     InstanceValidatorParameters instanceValidatorParameters = getInstanceValidatorParameters();
     if (instanceValidatorParameters != null) {

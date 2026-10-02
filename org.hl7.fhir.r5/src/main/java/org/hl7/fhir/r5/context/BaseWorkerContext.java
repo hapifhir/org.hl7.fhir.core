@@ -62,8 +62,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
+import org.hl7.fhir.utilities.logging.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
@@ -87,9 +86,12 @@ import org.hl7.fhir.r5.terminologies.ImplicitValueSets;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClient5R5;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.subsumption.SubsumptionException;
+import org.hl7.fhir.r5.terminologies.subsumption.SubsumptionOutcome;
+import org.hl7.fhir.r5.terminologies.subsumption.TerminologySubsumptionTester;
 import org.hl7.fhir.r5.terminologies.utilities.*;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
@@ -301,11 +303,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected boolean canRunWithoutTerminology;
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
-  protected org.hl7.fhir.r5.context.ILoggingService logger = new Slf4JLoggingService(log);
-  @Getter protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClientR5.TerminologyClientR5Factory(), logger);
+  protected org.hl7.fhir.utilities.logging.ILoggingService logger = new org.hl7.fhir.utilities.logging.Slf4JLoggingService(log);
+  @Getter protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClient5R5.TerminologyClientR5Factory(), logger);
   protected AtomicReference<Parameters> expansionParameters = new AtomicReference<>(null);
   private Map<String, PackageInformation> packages = new HashMap<>();
 
+  // memory only until initTxCache() is called - a context doesn't touch any folder unless it's asked to
   @Getter
   protected TerminologyCache txCache = new TerminologyCache(this, null);
   protected TimeTracker clock;
@@ -402,6 +405,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       cachingAllowed = other.cachingAllowed;
       suppressedMappings = other.suppressedMappings;
       cutils.setSuppressedMappings(other.suppressedMappings);
+      // the package information is needed to resolve canonicals with the dependencies of the package of the 
+      // referencing resource (see populatePVList), without it the copy falls back to the latest version
+      packages.putAll(other.packages);
     }
   }
 
@@ -411,7 +417,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   public void registerResourceFromPackage(CanonicalResourceProxy r, PackageInformation packageInfo) throws FHIRException {
-    PackageHackerR5.fixLoadedResource(r, packageInfo);
+    PackageHackerR5.fixRegisteredResource(r, packageInfo);
 
     synchronized (lock) {
       definitionsChanged();
@@ -928,8 +934,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       TerminologyServiceErrorClass errorClass = TerminologyServiceErrorClass.UNKNOWN;
       if (e instanceof EFhirClientException) {
         EFhirClientException fhirClientException = (EFhirClientException) e;
-        if (fhirClientException.hasServerError()) {
-          errorClass = OperationOutcomeUtilities.getTerminologyErrorClass(((EFhirClientException) e).getServerError());
+        if (fhirClientException.hasServerErrors()) {
+          errorClass = OperationOutcomeUtilities.getTerminologyErrorClass(((EFhirClientException) e).getServerErrors().get(0));
         }
       }
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), errorClass, true);
@@ -1250,7 +1256,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (!options.isUseServer()) {
           t.setResult(new ValidationResult(IssueSeverity.WARNING, formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, null));
         } else if (unsupportedCodeSystems.contains(codeKey)) {
-          t.setResult(new ValidationResult(IssueSeverity.ERROR, formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, t.getCoding().getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, null));
+          // the same answer, and the same issue, as the one code path gives for this - see the note
+          // there. Without the issue the message lands on the element rather than on the system, and
+          // the two read as two different problems with the one coding
+          String msg = formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, t.getCoding().getSystem());
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.r5.model.OperationOutcome.IssueType.NOTFOUND);
+          iss.getDetails().setText(msg);
+          iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
+          iss.addExpression("Coding.system"); // the path the batch validates its codings at
+          t.setResult(new ValidationResult(IssueSeverity.ERROR, msg, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, new ArrayList<>(Collections.singletonList(iss))));
         } else if (noTerminologyServer) {
           t.setResult(new ValidationResult(IssueSeverity.ERROR, formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES, t.getCoding().getCode(), t.getCoding().getSystem()), TerminologyServiceErrorClass.NOSERVICE, null));
         }
@@ -1473,7 +1487,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       codeSystemsUsed.add(code.getSystem());
     }
 
-    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken()) : null;
+    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken(), path) : null;
     ValidationResult res = null;
     if (cachingAllowed && txCache != null) {
       res = txCache.getValidation(cacheToken);
@@ -1565,7 +1579,20 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     String codeKey = getCodeKey(code);
     if (unsupportedCodeSystems.contains(codeKey)) {
-      return new ValidationResult(IssueSeverity.ERROR, formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, code.getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues);
+      // this is the same answer we already got for this code system, so it is reported the same way:
+      // against the system, which is the part that could not be resolved, and not against the coding.
+      // Without the expression it lands on the element instead, and reads as a second, different problem.
+      // The issue severity has to match the result's, or ValidationResult.messageIsInIssues() will not
+      // see the message in the issues (it compares severity ordinals) and the CodeableConcept walk in
+      // ValueSetValidator adds the message a second time, at the coding. The validator lowers a
+      // not-found error to a warning itself, where the binding calls for that
+      String msg = formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, code.getSystem());
+      OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.r5.model.OperationOutcome.IssueType.NOTFOUND);
+      iss.getDetails().setText(msg);
+      iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
+      iss.addExpression(path+".system");
+      issues.add(iss);
+      return new ValidationResult(IssueSeverity.ERROR, msg, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues);
     }
 
     // if that failed, we try to validate on the server
@@ -1634,14 +1661,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
 
-    if (options.isUseClient() && parent.getSystem().equals(child.getSystem())) {
-      CodeSystem cs = fetchCodeSystem(parent.getSystem(), ExtensionUtilities.getVersionResolutionRules(parent.getSystemElement()));
-      if (cs != null) {
-        Boolean b = CodeSystemUtilities.subsumes(cs, parent.getCode(), child.getCode());
+    if (options.isUseClient()) {
+      try {
+        SubsumptionOutcome outcome = new TerminologySubsumptionTester(this).subsumes(parent, child);
+        Boolean b = outcome == SubsumptionOutcome.EQUIVALENT || outcome == SubsumptionOutcome.SUBSUMES;
         if (txCache != null && cachingAllowed) {
           txCache.cacheSubsumes(cacheToken, b, true);
         }
         return b;
+      } catch (SubsumptionException e) {
+        // we can't determine subsumption locally (unknown code system, not complete, hierarchy
+        // doesn't mean is-a, code not known...) so we ask the server, if there is one
       }
     }
 
@@ -1745,7 +1775,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private void setTerminologyOptions(ValidationOptions options, Parameters pIn) {
     if (options.hasLanguages()) {
-      pIn.addParameter("displayLanguage", options.getLanguages().toString());
+      pIn.addParameter("displayLanguage", options.getLanguages().toParameterValue());
     }
     if (options.isMembershipOnly()) {
       pIn.addParameter("valueset-membership-only", true);
@@ -2025,6 +2055,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private void addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ValueSet vs) {
+    // send the value set's own required supplements too: through its code systems, a supplement to a particular
+    // version is only found when the copy of the code system we resolve is that version
+    for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
+      if (ext.hasValueCanonicalType()) {
+        String url = ext.getValueCanonicalType().asStringValue();
+        CodeSystem supp = fetchResource(CodeSystem.class, url, ExtensionUtilities.getVersionResolutionRules(ext.getValue()));
+        if (supp != null) {
+          if (opCtxt != null) {
+            opCtxt.seeSupplement(supp);
+          }
+          if (!hasCanonicalResource(pin, "tx-resource", supp.getVUrl())) {
+            checkAddToParams(tc, pin, supp);
+          }
+        }
+      }
+    }
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       addDependentResources(opCtxt, tc, pin, inc, vs);
     }
@@ -2039,18 +2085,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (vs != null && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
         checkAddToParams(tc, pin, vs);
         addDependentResources(opCtxt, tc, pin, vs);
-        for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
-          if (ext.hasValueCanonicalType()) {
-            String url = ext.getValueCanonicalType().asStringValue();
-            CodeSystem supp = fetchResource(CodeSystem.class, url, ExtensionUtilities.getVersionResolutionRules(ext.getValue()));
-            if (supp != null) {
-              if (opCtxt != null) {
-                opCtxt.seeSupplement(supp);
-              }
-              checkAddToParams(tc, pin, supp);
-            }
-          }
-        }
       }
     }
     String sys = inc.getSystem();
@@ -2210,7 +2244,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         } else if (p.getName().equals("warning-draft")) {
           String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DRAFT : I18nConstants.MSG_DRAFT_SRC, msg, vs, impliedType(msg)));
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DRAFT : I18nConstants.MSG_DRAFT_SRC, msg, vs, impliedType(msg), vs));
           issues.add(iss);
         } else if (p.getName().equals("cause")) {
           try {
@@ -2307,6 +2341,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return "item";
   }
 
+  /**
+   * Give this context a terminology cache kept in a folder. Until this (or
+   * {@link #initTxCache(TerminologyCache)}) is called, a context has a memory only cache: nothing
+   * it learns from a terminology server outlives it, and it doesn't read or write any folder.
+   * There is no implicit default folder - see {@link TerminologyCache} and
+   * {@link TerminologyCache#defaultFolder(String)}.
+   *
+   * @param cachePath the folder; null leaves the current cache in place
+   */
   public void initTxCache(String cachePath) throws FileNotFoundException, FHIRException, IOException {
     if (cachePath != null) {
       txCache = new TerminologyCache(lock, cachePath);
@@ -2331,7 +2374,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.canRunWithoutTerminology = canRunWithoutTerminology;
   }
 
-  public void setLogger(@Nonnull org.hl7.fhir.r5.context.ILoggingService logger) {
+  public void setLogger(@Nonnull org.hl7.fhir.utilities.logging.ILoggingService logger) {
     this.logger = logger;
     getTxClientManager().setLogger(logger);
   }
@@ -3186,7 +3229,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public org.hl7.fhir.r5.context.ILoggingService getLogger() {
+  public org.hl7.fhir.utilities.logging.ILoggingService getLogger() {
     return logger;
   }
 
@@ -3226,7 +3269,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } catch (Exception e) {
         // not sure what to do in this case?
         log.error("Unable to generate snapshot in @" + breadcrumb + " for " + structureDefinition.getVersionedUrl() + ": " + e.getMessage());
-        logger.logDebugMessage(ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
+        logger.logDebugMessage(org.hl7.fhir.utilities.logging.ILoggingService.LogCategory.GENERATE, ExceptionUtils.getStackTrace(e));
       }
     }
   }
@@ -3631,7 +3674,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (scs != null) {
         String web = ExtensionUtilities.readStringExtension(scs.getCs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
         if (web == null) {
-          web = Utilities.pathURL(scs.getServer(), "ValueSet", scs.getCs().getIdBase());
+          web = Utilities.pathURL(scs.getServer(), "CodeSystem", scs.getCs().getIdBase());
         }
         scs.getCs().setWebPath(web);
         scs.getCs().setUserData(UserDataNames.render_external_link, scs.getServer()); // so we can render it differently

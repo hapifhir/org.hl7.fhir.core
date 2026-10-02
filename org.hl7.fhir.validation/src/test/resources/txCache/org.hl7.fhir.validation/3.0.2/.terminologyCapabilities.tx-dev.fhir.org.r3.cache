@@ -2893,6 +2893,15 @@
     "uri" : "http://hl7.org/fhir/w3c-provenance-activity-type"
   },
   {
+    "uri" : "http://id.who.int/icd/entity"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/icf"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/mms"
+  },
+  {
     "uri" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode"
   },
   {
@@ -3457,7 +3466,19 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/history-absent-reason"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-affiliate"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-document-format-codes"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-jira-spec-work-group-concept-properties"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-organizational-entity-concept-properties"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-staff-role"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group"
@@ -3695,9 +3716,6 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/published-in-type"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/push-type-available"
@@ -5816,10 +5834,19 @@
       "name" : "check-system-version"
     },
     {
+      "name" : "check-valueset-version"
+    },
+    {
       "name" : "count"
     },
     {
       "name" : "default-to-latest-version"
+    },
+    {
+      "name" : "default-valueset-version"
+    },
+    {
+      "name" : "designation"
     },
     {
       "name" : "displayLanguage"
@@ -5834,7 +5861,13 @@
       "name" : "excludePostCoordinated"
     },
     {
+      "name" : "filter"
+    },
+    {
       "name" : "force-system-version"
+    },
+    {
+      "name" : "force-valueset-version"
     },
     {
       "name" : "inactive"
@@ -5850,6 +5883,9 @@
     },
     {
       "name" : "incomplete-ok"
+    },
+    {
+      "name" : "limit"
     },
     {
       "name" : "limitedExpansion"
@@ -5870,10 +5906,25 @@
       "name" : "property"
     },
     {
+      "name" : "sort"
+    },
+    {
       "name" : "system-version"
     },
     {
+      "name" : "url"
+    },
+    {
+      "name" : "useSupplement"
+    },
+    {
+      "name" : "valueSet"
+    },
+    {
       "name" : "valueSetMode"
+    },
+    {
+      "name" : "valueSetVersion"
     }]
   }
 }

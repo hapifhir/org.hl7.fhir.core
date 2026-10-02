@@ -5,8 +5,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.StructureDefinition;
 
 public class SpecialExtensions {
 
@@ -35,16 +36,16 @@ public class SpecialExtensions {
     return KNOWN_EXTENSIONS.contains(url);
   }
 
-  public static StructureDefinition getDefinition(String url) {
+  public static StructureDefinition getDefinition(IModelContext context, String url) {
     try {
     switch (url) {
-    case "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support" : return makeExt(MUST_SUPPORT_SOURCE);
-    case "http://hl7.org/fhir/StructureDefinition/instance-name" : return makeExt(INSTANCE_NAME_SOURCE);
-    case "http://hl7.org/fhir/StructureDefinition/instance-description" : return makeExt(INSTANCE_DESC_SOURCE);
-    case "http://hl7.org/fhir/StructureDefinition/definition" : return makeExt(INSTANCE_DEFN);
-    case "http://hl7.org/fhir/StructureDefinition/codesystem-properties-mode" : return makeExt(CODE_SYSTEM_PROPS_EXT);
-    case "http://hl7.org/fhir/StructureDefinition/structuredefinition-conformance-derivedFrom" : return makeExt(CONFORMANCE_DERIVED);
-    case "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm-support" : return makeExt(FMM_SUPPORT);
+    case "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support" : return makeExt(context, MUST_SUPPORT_SOURCE);
+    case "http://hl7.org/fhir/StructureDefinition/instance-name" : return makeExt(context, INSTANCE_NAME_SOURCE);
+    case "http://hl7.org/fhir/StructureDefinition/instance-description" : return makeExt(context, INSTANCE_DESC_SOURCE);
+    case "http://hl7.org/fhir/StructureDefinition/definition" : return makeExt(context, INSTANCE_DEFN);
+    case "http://hl7.org/fhir/StructureDefinition/codesystem-properties-mode" : return makeExt(context, CODE_SYSTEM_PROPS_EXT);
+    case "http://hl7.org/fhir/StructureDefinition/structuredefinition-conformance-derivedFrom" : return makeExt(context, CONFORMANCE_DERIVED);
+    case "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm-support" : return makeExt(context, FMM_SUPPORT);
     default: return null;
     }
     } catch (Exception e) {
@@ -52,8 +53,8 @@ public class SpecialExtensions {
     }
   }
 
-  private static StructureDefinition makeExt(String src) throws FHIRFormatError, IOException {
-    return (StructureDefinition) new JsonParser().parse(src);
+  private static StructureDefinition makeExt(IModelContext context, String src) throws FHIRFormatError, IOException {
+    return (StructureDefinition) new JsonParser(context).parse(src);
   }
 
 }

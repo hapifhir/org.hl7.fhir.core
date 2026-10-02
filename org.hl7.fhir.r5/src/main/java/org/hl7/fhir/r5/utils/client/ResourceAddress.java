@@ -49,6 +49,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceType;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.regex.RegexConstants;
 
 //Make resources address subclass of URI
 /**
@@ -59,7 +60,6 @@ import org.hl7.fhir.utilities.Utilities;
  */
 public class ResourceAddress {
 	
-	public static final String REGEX_ID_WITH_HISTORY = "(.*)(/)([a-zA-Z0-9]*)(/)([a-z0-9\\-\\.]{1,64})(/_history/)([a-z0-9\\-\\.]{1,64})$";
 	
 	private URI baseServiceUri;
 	
@@ -247,11 +247,11 @@ public class ResourceAddress {
 	public static ResourceAddress.ResourceVersionedIdentifier parseCreateLocation(String locationResponseHeader) {
 		@SuppressWarnings("checkstyle:patternUsage")
 		//anchored segments, safe
-		Pattern pattern = Pattern.compile(REGEX_ID_WITH_HISTORY);
+		Pattern pattern = Pattern.compile(RegexConstants.ID_WITH_HISTORY_REGEX);
 		Matcher matcher = pattern.matcher(locationResponseHeader);
 		ResourceVersionedIdentifier parsedHeader = null;
 		@SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-		//False positive: Matcher.matches() on REGEX_ID_WITH_HISTORY which has been independently reviewed
+		//False positive: Matcher.matches() on ID_WITH_HISTORY_REGEX which has been independently reviewed
 		boolean headerMatches = matcher.matches();
 		if(headerMatches){
 			String serviceRoot = matcher.group(1);

@@ -1169,6 +1169,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsComponent) dst, options);
+      }
+
       public void copyValues(CDSHooksResponseCardsComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.uuid = uuid == null ? null : uuid.copy(options);
@@ -1566,6 +1570,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         CDSHooksResponseCardsSourceComponent dst = new CDSHooksResponseCardsSourceComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsSourceComponent) dst, options);
       }
 
       public void copyValues(CDSHooksResponseCardsSourceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1969,6 +1977,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsSuggestionsComponent) dst, options);
+      }
+
       public void copyValues(CDSHooksResponseCardsSuggestionsComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.label = label == null ? null : label.copy(options);
@@ -2347,6 +2359,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         CDSHooksResponseCardsSuggestionsActionsComponent dst = new CDSHooksResponseCardsSuggestionsActionsComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsSuggestionsActionsComponent) dst, options);
       }
 
       public void copyValues(CDSHooksResponseCardsSuggestionsActionsComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2751,6 +2767,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsLinksComponent) dst, options);
+      }
+
       public void copyValues(CDSHooksResponseCardsLinksComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.label = label == null ? null : label.copy(options);
@@ -3014,6 +3034,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         CDSHooksResponse dst = new CDSHooksResponse(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponse) dst, options);
       }
 
       public void copyValues(CDSHooksResponse dst, EnumSet<CopyObjectOptions> options) {

@@ -1364,6 +1364,10 @@ public class StructureMap extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((StructureMapStructureComponent) dst);
+      }
+
       public void copyValues(StructureMapStructureComponent dst) {
         super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
@@ -1627,6 +1631,10 @@ public class StructureMap extends CanonicalResource {
         StructureMapConstComponent dst = new StructureMapConstComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((StructureMapConstComponent) dst);
       }
 
       public void copyValues(StructureMapConstComponent dst) {
@@ -2190,6 +2198,10 @@ public class StructureMap extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((StructureMapGroupComponent) dst);
+      }
+
       public void copyValues(StructureMapGroupComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -2616,6 +2628,10 @@ public String toString() {
         StructureMapGroupInputComponent dst = new StructureMapGroupInputComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((StructureMapGroupInputComponent) dst);
       }
 
       public void copyValues(StructureMapGroupInputComponent dst) {
@@ -3189,6 +3205,10 @@ public String toString() {
         StructureMapGroupRuleComponent dst = new StructureMapGroupRuleComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((StructureMapGroupRuleComponent) dst);
       }
 
       public void copyValues(StructureMapGroupRuleComponent dst) {
@@ -4122,6 +4142,10 @@ public String toString() {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((StructureMapGroupRuleSourceComponent) dst);
+      }
+
       public void copyValues(StructureMapGroupRuleSourceComponent dst) {
         super.copyValues(dst);
         dst.context = context == null ? null : context.copy();
@@ -4782,6 +4806,10 @@ public String toString() {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((StructureMapGroupRuleTargetComponent) dst);
+      }
+
       public void copyValues(StructureMapGroupRuleTargetComponent dst) {
         super.copyValues(dst);
         dst.context = context == null ? null : context.copy();
@@ -5133,6 +5161,10 @@ public String toString() {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((StructureMapGroupRuleTargetParameterComponent) dst);
+      }
+
       public void copyValues(StructureMapGroupRuleTargetParameterComponent dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();
@@ -5404,6 +5436,10 @@ public String toString() {
         StructureMapGroupRuleDependentComponent dst = new StructureMapGroupRuleDependentComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((StructureMapGroupRuleDependentComponent) dst);
       }
 
       public void copyValues(StructureMapGroupRuleDependentComponent dst) {
@@ -7072,6 +7108,10 @@ public String toString() {
         StructureMap dst = new StructureMap();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((StructureMap) dst);
       }
 
       public void copyValues(StructureMap dst) {

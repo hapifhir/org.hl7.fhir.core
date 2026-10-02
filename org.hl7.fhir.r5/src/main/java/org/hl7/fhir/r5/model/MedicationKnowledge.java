@@ -379,6 +379,10 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeRelatedMedicationKnowledgeComponent) dst);
+      }
+
       public void copyValues(MedicationKnowledgeRelatedMedicationKnowledgeComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -593,6 +597,10 @@ public class MedicationKnowledge extends DomainResource {
         MedicationKnowledgeMonographComponent dst = new MedicationKnowledgeMonographComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeMonographComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeMonographComponent dst) {
@@ -998,6 +1006,10 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeCostComponent) dst);
+      }
+
       public void copyValues(MedicationKnowledgeCostComponent dst) {
         super.copyValues(dst);
         if (effectiveDate != null) {
@@ -1240,6 +1252,10 @@ public class MedicationKnowledge extends DomainResource {
         MedicationKnowledgeMonitoringProgramComponent dst = new MedicationKnowledgeMonitoringProgramComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeMonitoringProgramComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeMonitoringProgramComponent dst) {
@@ -1508,6 +1524,10 @@ public class MedicationKnowledge extends DomainResource {
         MedicationKnowledgeIndicationGuidelineComponent dst = new MedicationKnowledgeIndicationGuidelineComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeIndicationGuidelineComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeIndicationGuidelineComponent dst) {
@@ -1882,6 +1902,10 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent) dst);
+      }
+
       public void copyValues(MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent dst) {
         super.copyValues(dst);
         dst.treatmentIntent = treatmentIntent == null ? null : treatmentIntent.copy();
@@ -2142,6 +2166,10 @@ public class MedicationKnowledge extends DomainResource {
         MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent dst = new MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent dst) {
@@ -2421,6 +2449,10 @@ public class MedicationKnowledge extends DomainResource {
         MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent dst = new MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent dst) {
@@ -2753,6 +2785,10 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeMedicineClassificationComponent) dst);
+      }
+
       public void copyValues(MedicationKnowledgeMedicineClassificationComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -2998,6 +3034,10 @@ public class MedicationKnowledge extends DomainResource {
         MedicationKnowledgePackagingComponent dst = new MedicationKnowledgePackagingComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgePackagingComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgePackagingComponent dst) {
@@ -3391,6 +3431,10 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeStorageGuidelineComponent) dst);
+      }
+
       public void copyValues(MedicationKnowledgeStorageGuidelineComponent dst) {
         super.copyValues(dst);
         dst.reference = reference == null ? null : reference.copy();
@@ -3677,6 +3721,10 @@ public class MedicationKnowledge extends DomainResource {
         MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent dst = new MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent dst) {
@@ -4049,6 +4097,10 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeRegulatoryComponent) dst);
+      }
+
       public void copyValues(MedicationKnowledgeRegulatoryComponent dst) {
         super.copyValues(dst);
         dst.regulatoryAuthority = regulatoryAuthority == null ? null : regulatoryAuthority.copy();
@@ -4302,6 +4354,10 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeRegulatorySubstitutionComponent) dst);
+      }
+
       public void copyValues(MedicationKnowledgeRegulatorySubstitutionComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -4520,6 +4576,10 @@ public class MedicationKnowledge extends DomainResource {
         MedicationKnowledgeRegulatoryMaxDispenseComponent dst = new MedicationKnowledgeRegulatoryMaxDispenseComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeRegulatoryMaxDispenseComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeRegulatoryMaxDispenseComponent dst) {
@@ -4989,6 +5049,10 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeDefinitionalComponent) dst);
+      }
+
       public void copyValues(MedicationKnowledgeDefinitionalComponent dst) {
         super.copyValues(dst);
         if (definition != null) {
@@ -5335,6 +5399,10 @@ public class MedicationKnowledge extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeDefinitionalIngredientComponent) dst);
+      }
+
       public void copyValues(MedicationKnowledgeDefinitionalIngredientComponent dst) {
         super.copyValues(dst);
         dst.item = item == null ? null : item.copy();
@@ -5643,6 +5711,10 @@ public class MedicationKnowledge extends DomainResource {
         MedicationKnowledgeDefinitionalDrugCharacteristicComponent dst = new MedicationKnowledgeDefinitionalDrugCharacteristicComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledgeDefinitionalDrugCharacteristicComponent) dst);
       }
 
       public void copyValues(MedicationKnowledgeDefinitionalDrugCharacteristicComponent dst) {
@@ -7185,6 +7257,10 @@ public class MedicationKnowledge extends DomainResource {
         MedicationKnowledge dst = new MedicationKnowledge();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicationKnowledge) dst);
       }
 
       public void copyValues(MedicationKnowledge dst) {

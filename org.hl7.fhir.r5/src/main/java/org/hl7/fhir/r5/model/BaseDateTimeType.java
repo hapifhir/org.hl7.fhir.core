@@ -63,6 +63,23 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   private TimeZone myTimeZone;
   private boolean myTimeZoneZulu = false;
 
+  @Override
+  public void assignValues(Base dst) {
+    copyValues((BaseDateTimeType) dst);
+  }
+
+  /**
+   * precision and timezone are state on this class rather than part of the Date value - copy()
+   * used to rebuild them by round-tripping the string form through the constructor
+   */
+  public void copyValues(BaseDateTimeType dst) {
+    super.copyValues(dst);
+    dst.myFractionalSeconds = myFractionalSeconds;
+    dst.myPrecision = myPrecision;
+    dst.myTimeZone = myTimeZone;
+    dst.myTimeZoneZulu = myTimeZoneZulu;
+  }
+
   /**
    * Constructor
    */

@@ -59,8 +59,8 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.renderers.RendererFactory;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
+import org.hl7.fhir.services.renderers.RendererFactory;
+import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
 import org.hl7.fhir.validation.cli.picocli.CLI;
 import org.hl7.fhir.validation.service.ValidationService;
 

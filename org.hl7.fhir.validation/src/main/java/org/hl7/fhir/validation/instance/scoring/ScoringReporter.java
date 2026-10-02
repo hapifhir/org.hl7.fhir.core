@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation.instance.scoring;
 
-import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.model.core.Extension;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 
 import java.text.DecimalFormat;

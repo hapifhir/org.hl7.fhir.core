@@ -352,6 +352,10 @@ public class CDSHookPatientViewContext extends CDSHookContext implements ICompos
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHookPatientViewContext) dst, options);
+      }
+
       public void copyValues(CDSHookPatientViewContext dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.userId = userId == null ? null : userId.copy(options);

@@ -65,6 +65,10 @@ public abstract class CONTENT_ITEM extends LOCATABLE implements ICompositeType {
 
       public abstract CONTENT_ITEM copy();
 
+      public void assignValues(Base dst) {
+        copyValues((CONTENT_ITEM) dst);
+      }
+
       public void copyValues(CONTENT_ITEM dst) {
         super.copyValues(dst);
       }

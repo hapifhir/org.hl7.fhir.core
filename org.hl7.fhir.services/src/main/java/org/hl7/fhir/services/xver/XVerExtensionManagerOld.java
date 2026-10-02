@@ -129,7 +129,7 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
       throw new FHIRException("Internal error - attempt to define extension for "+url+" when it is invalid");
     }
     if (path.has("modifier") && path.asBoolean("modifier")) {
-      ElementDefinition baseDef = new ElementDefinition(context,"Extension");
+      ElementDefinition baseDef = new ElementDefinition(context.getModelContext(),"Extension");
       sd.getDifferential().getElementList().add(0, baseDef);
       baseDef.setIsModifier(true);
     }
@@ -155,7 +155,8 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
       sd.getDifferential().addElement().setPath(epath+".url").setFixed(new UriType(s));
       sd.getDifferential().addElement().setPath(epath+".value[x]").setMax("0");
     } else if (elt.has("ref")) {
-      // we do nothing here - this is a problem of context
+      // the content is a problem of context, but the sub-extension still has to be identified
+      sd.getDifferential().addElement().setPath(epath+".url").setFixed(new UriType(s));
     } else {
       throw new FHIRException("Internal error - unknown element "+apath);
     }

@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.core.OperationOutcome;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -51,8 +51,8 @@ public class CompactRenderer extends ValidationOutputRenderer {
       d.println(ExtensionUtilities.readStringExtension(op, ExtensionDefinitions.EXT_OO_FILE)+" "+getRunDate());
     }
     List<String> lines = new ArrayList<>();
-    for (OperationOutcome.OperationOutcomeIssueComponent issue : op.getIssue()) {
-      String path = issue.hasExpression() ? issue.getExpression().get(0).asStringValue() : "n/a";
+    for (OperationOutcome.OperationOutcomeIssueComponent issue : op.getIssueList()) {
+      String path = issue.hasExpression() ? issue.getExpressionList().get(0).asStringValue() : "n/a";
       int line = ExtensionUtilities.readIntegerExtension(issue, ExtensionDefinitions.EXT_ISSUE_LINE, -1);
       int col = ExtensionUtilities.readIntegerExtension(issue, ExtensionDefinitions.EXT_ISSUE_COL, -1);      
       lines.add(Utilities.padLeft(Integer.toString(line), '0', 8) + ":" + Utilities.padLeft(Integer.toString(col), '0', 8)+":"+

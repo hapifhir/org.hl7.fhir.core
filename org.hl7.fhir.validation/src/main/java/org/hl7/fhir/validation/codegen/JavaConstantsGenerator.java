@@ -4,9 +4,9 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.model.core.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 public class JavaConstantsGenerator extends JavaBaseGenerator {

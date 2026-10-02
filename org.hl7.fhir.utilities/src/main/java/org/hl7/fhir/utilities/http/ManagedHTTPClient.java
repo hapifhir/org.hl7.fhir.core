@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.http.okhttpimpl.LoggingInterceptor;
@@ -27,6 +27,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import javax.annotation.Nonnull;
 
 /**
  * An HTTP client supporting simple GET, PUT, POST, DELETE, and OPTIONS operations with no
@@ -222,7 +224,7 @@ public class ManagedHTTPClient {
     return execute("OPTIONS", URI.create(urlString), null, null, acceptHeader, headers);
   }
 
-  private @NonNull HTTPResult execute(String requestMethod, URI originalUri, String contentType, byte[] content, String acceptHeader, Iterable<HTTPHeader> extraHeaders) throws IOException {
+  private @Nonnull HTTPResult execute(String requestMethod, URI originalUri, String contentType, byte[] content, String acceptHeader, Iterable<HTTPHeader> extraHeaders) throws IOException {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }

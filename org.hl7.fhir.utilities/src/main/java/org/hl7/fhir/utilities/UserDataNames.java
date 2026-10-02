@@ -16,6 +16,7 @@ public class UserDataNames {
   public static final String SNAPSHOT_DERIVATION_EQUALS = "derivation.equals";
   public static final String SNAPSHOT_DERIVATION_POINTER = "derived.pointer";
   public static final String SNAPSHOT_IS_DERIVED = "derived.fact";
+  public static final String SNAPSHOT_INHERITED_INLINE_EXTENSION = "SNAPSHOT_INHERITED_INLINE_EXTENSION";
   public static final String SNAPSHOT_GENERATED_IN_SNAPSHOT = "profileutilities.snapshot.processed";
   public static final String SNAPSHOT_DERIVATION_DIFF = "profileutilities.snapshot.diffsource";
   public static final String SNAPSHOT_GENERATED_MESSAGES = "profileutils.snapshot.generated.messages";
@@ -96,6 +97,7 @@ public class UserDataNames {
   public static final String db_column = "column";
   public static final String db_forEach = "forEach";
   public static final String db_forEachOrNull = "forEachOrNull";
+  public static final String db_repeat = "repeat";
   public static final String db_path = "path"; 
   public static final String db_name = "name"; 
   public static final String db_value = "value"; 
@@ -138,7 +140,6 @@ public class UserDataNames {
   public static final String archetypeName = "archetype-name";
   public static final String VS_EXPANSION_SOURCE = "VS_EXPANSION_SOURCE";
   public static final String auto_added_parameter = "auto_added_parameter";
-  public static final String SNAPSHOT_PREPROCESS_INJECTED = "SNAPSHOT_PREPROCESS_INJECTED";
   public static final String renderer_title = "renderer_title";
   public static final String matchingParameter = "matchingParameter";
   public static final String SNAPSHOT_SOURCE = "SNAPSHOT_SOURCE";
@@ -163,4 +164,11 @@ public class UserDataNames {
   public static final String CONTAINED_RESOURCE = "CONTAINED_RESOURCE";
   public static final String CACHED_UUID = "CACHED_UUID";
   public static final String EXPANSION = "expansion";
+
+  public static final String VALIDATION_FLAG_BASE64 = "VALIDATION_FLAG_BASE64";
+  public static final String VALIDATION_ATTACHMENT_CONTENT = "VALIDATION_ATTACHMENT_CONTENT";
+  public static final String VALIDATION_XHTML_OUTCOME = "VALIDATION_XHTML_OUTCOME";
+  public static final String VALIDATION_FRAGMENT_INDEX = "VALIDATION_FRAGMENT_INDEX";
+  public static final String VALIDATION_FRAGMENT_INDEX_ID = "VALIDATION_FRAGMENT_INDEX_ID";
+  public static final String EXPANSION_PURPOSE = "EXPANSION_PURPOSE";
 }

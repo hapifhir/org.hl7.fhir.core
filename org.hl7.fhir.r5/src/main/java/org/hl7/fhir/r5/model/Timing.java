@@ -2019,6 +2019,10 @@ Normal practice is to use the 'mo' code as a calendar month when calculating the
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TimingRepeatComponent) dst);
+      }
+
       public void copyValues(TimingRepeatComponent dst) {
         super.copyValues(dst);
         dst.bounds = bounds == null ? null : bounds.copy();
@@ -2353,6 +2357,10 @@ Normal practice is to use the 'mo' code as a calendar month when calculating the
         Timing dst = new Timing();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Timing) dst);
       }
 
       public void copyValues(Timing dst) {

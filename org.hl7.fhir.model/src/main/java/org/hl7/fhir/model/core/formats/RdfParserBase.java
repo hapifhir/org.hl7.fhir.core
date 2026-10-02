@@ -103,7 +103,11 @@ public abstract class RdfParserBase extends ParserBase implements IParser {
 
 	@Override
 	public void compose(OutputStream stream, DataType type, String rootName) throws IOException {
-		type.assertModelContext(modelContext);
+		// don't dereference a null type here - composeType() below reports it properly
+		// ("type == null"), and that is a better error than an NPE from the assertion
+		if (type != null) {
+		  type.assertModelContext(modelContext);
+		}
 		throw new Error("Not supported in RDF");  
 	}
 

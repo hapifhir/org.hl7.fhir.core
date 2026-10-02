@@ -8,7 +8,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.model.*;
 import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.r5.comparison.CodeSystemComparer;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 

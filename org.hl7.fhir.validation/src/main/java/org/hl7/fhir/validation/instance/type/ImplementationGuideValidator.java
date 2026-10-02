@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.ImplementationGuide;
+
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.core.ImplementationGuide;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -25,6 +25,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+
+import javax.annotation.Nonnull;
 
 public class ImplementationGuideValidator extends BaseValidator {
 
@@ -81,7 +83,7 @@ public class ImplementationGuideValidator extends BaseValidator {
     ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), validPackageId, I18nConstants.IG_DEPENDENCY_INVALID_PACKAGEID, packageId) && ok;
 
     try {
-      ImplementationGuide fetchedIgDependency = context.fetchResource(ImplementationGuide.class, uri, ExtensionUtilities.getVersionResolutionRules(dependency.getNamedChild("uri")));
+      ImplementationGuide fetchedIgDependency = context.fetchResource(ImplementationGuide.class, uri, ElementModelUtilities.getVersionResolutionRules(dependency.getNamedChild("uri")));
       warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), fetchedIgDependency != null, I18nConstants.IG_DEPENDENCY_INVALID_URL, uri);
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       if (uri != null && packageId != null && (fetchedIgDependency == null || !fetchedIgDependency.hasUserData(UserDataNames.IG_FAKE))) {
@@ -140,9 +142,9 @@ public class ImplementationGuideValidator extends BaseValidator {
     return ok;
   }
 
-  private @NonNull String getVersionSuffix() {
+  private @Nonnull String getVersionSuffix() {
     // This is a workaround for the fact that R6 is not fully defined at this time.
-    String version = context.getVersion();
+    String version = context.getFHIRVersion();
     if (version.startsWith("6.")) {
       version = "5.0.0";
     }

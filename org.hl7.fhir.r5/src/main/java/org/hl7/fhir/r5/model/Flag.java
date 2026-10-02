@@ -719,6 +719,10 @@ public class Flag extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Flag) dst);
+      }
+
       public void copyValues(Flag dst) {
         super.copyValues(dst);
         if (identifier != null) {

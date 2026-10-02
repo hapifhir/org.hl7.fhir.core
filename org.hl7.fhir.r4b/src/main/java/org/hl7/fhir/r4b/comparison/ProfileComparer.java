@@ -46,6 +46,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
 @Slf4j
+@Deprecated(forRemoval = true)
 public class ProfileComparer extends CanonicalResourceComparer {
 
   public class ProfileComparison extends CanonicalResourceComparison<StructureDefinition> {
@@ -165,7 +166,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
 
   private void check(StructureDefinition sd, String name) {
     if (sd == null)
-      throw new DefinitionException("No StructureDefinition provided (" + name + ": " + sd.getName() + ")");
+      throw new DefinitionException("No StructureDefinition provided (" + name + ": null)");
 //    if (sd.getType().equals("Extension")) {
 //      throw new DefinitionException("StructureDefinition is for an extension - use ExtensionComparer instead ("+name+": "+sd.getName()+")");
 //    }

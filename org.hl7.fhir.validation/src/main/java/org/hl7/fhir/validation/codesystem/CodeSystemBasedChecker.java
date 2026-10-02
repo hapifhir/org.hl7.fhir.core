@@ -5,14 +5,15 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent;
-import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
-import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
-import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
-import org.hl7.fhir.r5.utils.validation.ValidatorSession;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.model.core.CodeSystem;
+import org.hl7.fhir.model.core.Enumeration;
+import org.hl7.fhir.model.core.CodeSystem.CodeSystemFilterComponent;
+import org.hl7.fhir.model.core.CodeSystem.PropertyComponent;
+import org.hl7.fhir.model.core.Enumerations.FilterOperator;
+import org.hl7.fhir.services.validation.ValidatorSession;
+import org.hl7.fhir.services.xver.XVerExtensionManager;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.ValidatorSettings;
@@ -38,10 +39,10 @@ public class CodeSystemBasedChecker extends CodeSystemChecker {
       knownNames.add("child");
       knownNames.add("partOf");
     }
-    for (CodeSystemFilterComponent f : cs.getFilter()) {
+    for (CodeSystemFilterComponent f : cs.getFilterList()) {
       addName(knownNames, f.getCode());
     }
-    for (PropertyComponent p : cs.getProperty()) {
+    for (PropertyComponent p : cs.getPropertyList()) {
       addName(knownNames, p.getCode());
     }
   }
@@ -49,15 +50,15 @@ public class CodeSystemBasedChecker extends CodeSystemChecker {
   @Override
   public PropertyValidationRules rulesForFilter(String property, EnumSet<PropertyOperation> ops) {
 
-    for (CodeSystemFilterComponent f : cs.getFilter()) {
+    for (CodeSystemFilterComponent f : cs.getFilterList()) {
       if (property.equals(f.getCode())) {
-        for (Enumeration<FilterOperator> op : f.getOperator()) {
+        for (Enumeration<FilterOperator> op : f.getOperatorList()) {
           ops.add(toOp(op));
         }
       }
     }
 
-    for (PropertyComponent p : cs.getProperty()) {
+    for (PropertyComponent p : cs.getPropertyList()) {
       if (property.equals(p.getCode())) {
         if (p.getType() != null) {
           switch (p.getType()) {

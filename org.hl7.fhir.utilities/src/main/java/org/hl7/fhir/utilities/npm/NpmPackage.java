@@ -73,7 +73,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.apache.commons.lang3.Validate;
-import org.checkerframework.checker.nullness.qual.NonNull;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -522,7 +522,10 @@ public class NpmPackage {
   private void loadSubFolders(String rootPath, File dir) throws IOException {
     for (File f : dir.listFiles()) {
       if (f.isDirectory()) {
-        if (!"custom".equals(f.getName()) || loadCustomResources) {
+        // "del" is not a valid package folder. us.nlm.vsac#0.18.0 shipped one by mistake, and without
+        // this every context that loads that package also registers the ~14.8k superseded ValueSets in
+        // it, alongside - and competing with - the real ones
+        if ((!"custom".equals(f.getName()) || loadCustomResources) && !"del".equals(f.getName())) {
           String d = f.getAbsolutePath().substring(rootPath.length()+1);
           if (!d.startsWith("package")) {
             d = Utilities.path("package", d);
@@ -651,7 +654,7 @@ public class NpmPackage {
    * @return a tar input stream
    */
   // Created by claude-sonnet-4-6
-  public static @NonNull TarArchiveInputStream getTarArchiveInputStream(GzipCompressorInputStream gzipIn) {
+  public static @Nonnull TarArchiveInputStream getTarArchiveInputStream(GzipCompressorInputStream gzipIn) {
     return new TarArchiveInputStream(gzipIn, StandardCharsets.ISO_8859_1.name());
   }
 

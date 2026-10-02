@@ -13,6 +13,7 @@ import org.hl7.fhir.model.core.Identifier;
 import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.model.core.VersionResolutionRules;
+import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
@@ -22,10 +23,10 @@ import java.util.List;
 
 public class FHIRPathHostServices implements IHostApplicationServices {
 
-  private final StructureMapUtilities structureMapUtilities;
+  private final StructureMapTools structureMapTools;
 
-  public FHIRPathHostServices(StructureMapUtilities structureMapUtilities) {
-    this.structureMapUtilities = structureMapUtilities;
+  public FHIRPathHostServices(StructureMapTools structureMapTools) {
+    this.structureMapTools = structureMapTools;
   }
 
   public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
@@ -57,30 +58,30 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public FHIRPathUtilityClasses.FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
-    return structureMapUtilities.getServices() == null ? null : structureMapUtilities.getServices().resolveFunction(engine, functionName);
+    return structureMapTools.getServices() == null ? null : structureMapTools.getServices().resolveFunction(engine, functionName);
   }
 
   @Override
   public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
-    if (structureMapUtilities.getServices() == null) {
+    if (structureMapTools.getServices() == null) {
       throw new PathEngineException("Unknown function '" + functionName + "'");
     }
-    return structureMapUtilities.getServices().checkFunction(engine, appContext, functionName, focus, parameters);
+    return structureMapTools.getServices().checkFunction(engine, appContext, functionName, focus, parameters);
   }
 
   @Override
   public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
-    if (structureMapUtilities.getServices() == null) {
+    if (structureMapTools.getServices() == null) {
       throw new Error("Not Implemented Yet");
     }
-    return structureMapUtilities.getServices().executeFunction(engine, appContext, focus, functionName, parameters);
+    return structureMapTools.getServices().executeFunction(engine, appContext, focus, functionName, parameters);
   }
 
   @Override
   public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
-    if (structureMapUtilities.getServices() == null)
+    if (structureMapTools.getServices() == null)
       return null;
-    return structureMapUtilities.getServices().resolveReference(appContext, url);
+    return structureMapTools.getServices().resolveReference(appContext, url);
   }
 
   private boolean noErrorValidationMessages(List<ValidationMessage> valerrors) {
@@ -92,23 +93,22 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
-    throw new NotImplementedException("Not migrated to R6 yet");
-//    IResourceValidator val = structureMapUtilities.getWorker().newValidator();
-//    List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
-//    if (item instanceof Resource) {
-//      val.validate(appContext, valerrors, (Resource) item, url);
-//      return noErrorValidationMessages(valerrors);
-//    }
-//    if (item instanceof Element) {
-//      val.validate(appContext, valerrors, null, (Element) item, url);
-//      return noErrorValidationMessages(valerrors);
-//    }
-//    throw new NotImplementedException("Not done yet (FHIRPathHostServices.conformsToProfile), when item is not element or not resource");
+    IResourceValidator val = engine.getWorker().newValidator();
+    List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
+    if (item instanceof Resource) {
+      val.validate(appContext, valerrors, (Resource) item, url);
+      return noErrorValidationMessages(valerrors);
+    }
+    if (item instanceof Element) {
+      val.validate(appContext, valerrors, null, (Element) item, url);
+      return noErrorValidationMessages(valerrors);
+    }
+    throw new NotImplementedException("Not done yet (FHIRPathHostServices.conformsToProfile), when item is not element or not resource");
   }
 
   @Override
   public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
-	  return structureMapUtilities.getWorker().findTxResource(ValueSet.class, url, VersionResolutionRules.defaultRule());
+	  return structureMapTools.getWorker().findTxResource(ValueSet.class, url, VersionResolutionRules.defaultRule());
   }
 
   @Override

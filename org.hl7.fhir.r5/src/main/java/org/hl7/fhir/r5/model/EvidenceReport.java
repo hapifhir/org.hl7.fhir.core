@@ -478,6 +478,10 @@ public class EvidenceReport extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((EvidenceReportSubjectComponent) dst);
+      }
+
       public void copyValues(EvidenceReportSubjectComponent dst) {
         super.copyValues(dst);
         if (characteristic != null) {
@@ -917,6 +921,10 @@ public class EvidenceReport extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((EvidenceReportSubjectCharacteristicComponent) dst);
+      }
+
       public void copyValues(EvidenceReportSubjectCharacteristicComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -1164,6 +1172,10 @@ public class EvidenceReport extends MetadataResource {
         EvidenceReportRelatesToComponent dst = new EvidenceReportRelatesToComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((EvidenceReportRelatesToComponent) dst);
       }
 
       public void copyValues(EvidenceReportRelatesToComponent dst) {
@@ -1518,6 +1530,10 @@ public class EvidenceReport extends MetadataResource {
         EvidenceReportRelatesToTargetComponent dst = new EvidenceReportRelatesToTargetComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((EvidenceReportRelatesToTargetComponent) dst);
       }
 
       public void copyValues(EvidenceReportRelatesToTargetComponent dst) {
@@ -2400,6 +2416,10 @@ public class EvidenceReport extends MetadataResource {
         SectionComponent dst = new SectionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SectionComponent) dst);
       }
 
       public void copyValues(SectionComponent dst) {
@@ -4386,6 +4406,10 @@ public class EvidenceReport extends MetadataResource {
         EvidenceReport dst = new EvidenceReport();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((EvidenceReport) dst);
       }
 
       public void copyValues(EvidenceReport dst) {

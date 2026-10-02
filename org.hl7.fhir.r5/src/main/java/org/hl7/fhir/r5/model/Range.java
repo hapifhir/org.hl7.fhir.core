@@ -228,6 +228,10 @@ public class Range extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Range) dst);
+      }
+
       public void copyValues(Range dst) {
         super.copyValues(dst);
         dst.low = low == null ? null : low.copy();

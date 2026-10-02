@@ -46,7 +46,7 @@ import javax.annotation.Nonnull;
  * See R5 rendering framework to render R4B resources
  * 
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class QuestionnaireRenderer extends TerminologyRenderer {
   public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-Questionnaire.item.type";
 
@@ -731,30 +731,30 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     switch (i.getType()) {
     case STRING:
       p.tx(" ");
-      input = p.input(i.getLinkId(), "text", i.getType().getDisplay(), 60);
+      input = p.input(i.getLinkId(), i.getLinkId(), "text", i.getType().getDisplay(), 60);
       break;
     case ATTACHMENT:
       break;
     case BOOLEAN:
       p.tx(" ");
-      input = p.input(i.getLinkId(), "checkbox", i.getType().getDisplay(), 1);
+      input = p.input(i.getLinkId(), i.getLinkId(), "checkbox", i.getType().getDisplay(), 1);
       break;
     case CHOICE:
     case OPENCHOICE:
-      input = p.select(i.getLinkId());
+      input = p.select(i.getLinkId(), i.getText());
       listOptions(q, i, input);
       break;
     case DATE:
       p.tx(" ");
-      input = p.input(i.getLinkId(), "date", i.getType().getDisplay(), 10);
+      input = p.input(i.getLinkId(), i.getLinkId(), "date", i.getType().getDisplay(), 10);
       break;
     case DATETIME:
       p.tx(" ");
-      input = p.input(i.getLinkId(), "datetime-local", i.getType().getDisplay(), 25);
+      input = p.input(i.getLinkId(), i.getLinkId(), "datetime-local", i.getType().getDisplay(), 25);
       break;
     case DECIMAL:
       p.tx(" ");
-      input = p.input(i.getLinkId(), "number", i.getType().getDisplay(), 15);
+      input = p.input(i.getLinkId(), i.getLinkId(), "number", i.getType().getDisplay(), 15);
       break;
     case DISPLAY:
       break;
@@ -763,13 +763,13 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       break;
     case INTEGER:
       p.tx(" ");
-      input = p.input(i.getLinkId(), "number", i.getType().getDisplay(), 10);
+      input = p.input(i.getLinkId(), i.getLinkId(), "number", i.getType().getDisplay(), 10);
       break;
     case QUANTITY:
       p.tx(" ");
-      input = p.input(i.getLinkId(), "number", "value", 15);
+      input = p.input(i.getLinkId(), i.getLinkId(), "number", "value", 15);
       p.tx(" ");
-      input = p.input(i.getLinkId(), "unit", "unit", 10);
+      input = p.input(i.getLinkId(), i.getLinkId(), "unit", "unit", 10);
       break;
     case QUESTION:
       break;
@@ -810,14 +810,14 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (ToolingExtensions.readBoolExtension(i, "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden")) {
       hasFlag = true;
       flags.ah(Utilities.pathURL(context.getSpecificationLink(), "extension-questionnaire-hidden.html"),
-          "Is a hidden item").img(getImgPath("icon-qi-hidden.png"), "icon");
+          "Is a hidden item").img(getImgPath("icon-qi-hidden.png"), "");
       d.style("background-color: #eeeeee");
     }
     if (ToolingExtensions.readBoolExtension(i,
         "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-optionalDisplay")) {
       hasFlag = true;
       flags.ah(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-optionalDisplay"),
-          "Is optional to display").img(getImgPath("icon-qi-optional.png"), "icon");
+          "Is optional to display").img(getImgPath("icon-qi-optional.png"), "");
     }
     if (i.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationLinkPeriod")) {
       hasFlag = true;

@@ -1,13 +1,14 @@
 package org.hl7.fhir.validation.http;
 
 import com.sun.net.httpserver.HttpExchange;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
-import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.services.validation.constants.IdStatus;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -18,6 +19,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class BaseHTTPHandler {
+
+  private IModelContext context;
+
+  public BaseHTTPHandler(IModelContext context) {
+    this.context = context;
+  }
 
   protected List<String> parseListParameter(String param) {
     if (param == null || param.trim().isEmpty()) {
@@ -65,17 +72,17 @@ public class BaseHTTPHandler {
     }
   }
 
-  protected  Manager.FhirFormat determineFormat(String contentType) {
+  protected  FhirFormat determineFormat(String contentType) {
     if (contentType == null) {
-      return Manager.FhirFormat.JSON; // Default
+      return FhirFormat.JSON; // Default
     }
     contentType = contentType.toLowerCase();
     if (contentType.contains("xml")) {
-      return Manager.FhirFormat.XML;
+      return FhirFormat.XML;
     } else if (contentType.contains("json")) {
-      return Manager.FhirFormat.JSON;
+      return FhirFormat.JSON;
     } else {
-      return Manager.FhirFormat.JSON; // Default
+      return FhirFormat.JSON; // Default
     }
   }
 
@@ -87,7 +94,7 @@ public class BaseHTTPHandler {
     return "json"; // Default
   }
 
-  protected  IdStatus parseIdStatus(String param) {
+  protected IdStatus parseIdStatus(String param) {
     if (param == null) return IdStatus.OPTIONAL;
     return IdStatus.valueOf(param.toUpperCase());
   }
@@ -97,12 +104,12 @@ public class BaseHTTPHandler {
     return "true".equalsIgnoreCase(param);
   }
 
-  protected  BestPracticeWarningLevel parseBestPracticeWarningLevel(String param) {
+  protected BestPracticeWarningLevel parseBestPracticeWarningLevel(String param) {
     if (param == null) return BestPracticeWarningLevel.Ignore;
     return BestPracticeWarningLevel.valueOf(param);
   }
 
-  protected  CheckDisplayOption parseCheckDisplayOption(String param) {
+  protected CheckDisplayOption parseCheckDisplayOption(String param) {
     if (param == null) return CheckDisplayOption.Ignore;
     return CheckDisplayOption.valueOf(param);
   }
@@ -111,10 +118,10 @@ public class BaseHTTPHandler {
     try {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
       if ("xml".equalsIgnoreCase(format)) {
-        new XmlParser().compose(baos, outcome);
+        new XmlParser(context).compose(baos, outcome);
         sendResponse(exchange, statusCode, baos.toString(StandardCharsets.UTF_8.name()), "application/fhir+xml");
       } else {
-        new JsonParser().compose(baos, outcome);
+        new JsonParser(context).compose(baos, outcome);
         sendResponse(exchange, statusCode, baos.toString(StandardCharsets.UTF_8.name()), "application/fhir+json");
       }
     } catch (Exception e) {
@@ -122,14 +129,14 @@ public class BaseHTTPHandler {
     }
   }
 
-  protected void sendResource(HttpExchange exchange, int statusCode, org.hl7.fhir.r5.model.Resource resource, String format) throws IOException {
+  protected void sendResource(HttpExchange exchange, int statusCode, org.hl7.fhir.model.core.Resource resource, String format) throws IOException {
     try {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
       if ("xml".equalsIgnoreCase(format)) {
-        new XmlParser().compose(baos, resource);
+        new XmlParser(context).compose(baos, resource);
         sendResponse(exchange, statusCode, baos.toString(StandardCharsets.UTF_8.name()), "application/fhir+xml");
       } else {
-        new JsonParser().compose(baos, resource);
+        new JsonParser(context).compose(baos, resource);
         sendResponse(exchange, statusCode, baos.toString(StandardCharsets.UTF_8.name()), "application/fhir+json");
       }
     } catch (Exception e) {

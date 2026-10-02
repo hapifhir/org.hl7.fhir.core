@@ -230,7 +230,7 @@ public class OperationDefinition43_N {
     if (src.hasDocumentation())
       tgt.setDocumentationElement(String43_N.convertStringToMarkdown(src.getDocumentationElement()));
     if (src.hasType()) {
-      tgt.setType(src.getType().toCode());
+      tgt.setTypeElement(Utilities43_N.convertParameterType(src.getTypeElement()));
     }
     for (org.hl7.fhir.r4b.model.CanonicalType t : src.getTargetProfile())
       tgt.getTargetProfileList().add(Canonical43_N.convertCanonical(t));
@@ -261,7 +261,7 @@ public class OperationDefinition43_N {
     if (src.hasDocumentation())
       tgt.setDocumentationElement(String43_N.convertString(src.getDocumentationElement()));
     if (src.hasType()) {
-      tgt.setType(org.hl7.fhir.r4b.model.Enumerations.FHIRAllTypes.fromCode(src.getType()));
+      tgt.setTypeElement(Utilities43_N.convertParameterType(src.getTypeElement()));
     }
     for (org.hl7.fhir.model.core.CanonicalType t : src.getTargetProfileList())
       tgt.getTargetProfile().add(Canonical43_N.convertCanonical(t));

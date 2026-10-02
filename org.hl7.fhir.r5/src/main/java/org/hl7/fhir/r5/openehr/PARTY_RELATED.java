@@ -181,6 +181,10 @@ public class PARTY_RELATED extends PARTY_IDENTIFIED implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((PARTY_RELATED) dst);
+      }
+
       public void copyValues(PARTY_RELATED dst) {
         super.copyValues(dst);
         dst.relationship = relationship == null ? null : relationship.copy();

@@ -473,6 +473,10 @@ public class Annotations extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Annotations) dst);
+      }
+
       public void copyValues(Annotations dst) {
         super.copyValues(dst);
         dst.comment = comment == null ? null : comment.copy();

@@ -409,6 +409,10 @@ public class TRANSLATION_DETAILS extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TRANSLATION_DETAILS) dst);
+      }
+
       public void copyValues(TRANSLATION_DETAILS dst) {
         super.copyValues(dst);
         dst.language = language == null ? null : language.copy();

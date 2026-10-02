@@ -809,6 +809,10 @@ public class PaymentNotice extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((PaymentNotice) dst);
+      }
+
       public void copyValues(PaymentNotice dst) {
         super.copyValues(dst);
         if (identifier != null) {

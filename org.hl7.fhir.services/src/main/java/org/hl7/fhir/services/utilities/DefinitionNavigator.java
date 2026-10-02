@@ -236,7 +236,7 @@ public class DefinitionNavigator {
                 sd = context.fetchTypeDefinition(Utilities.uncapitalize(t));
               }
               if (sd != null) {
-                dn.manualType = new ElementDefinition.TypeRefComponent(context, sd.getType());
+                dn.manualType = new ElementDefinition.TypeRefComponent(context.getModelContext(), sd.getType());
               }
             }
           } else if (dn.current().hasSliceName()) {
@@ -321,7 +321,7 @@ public class DefinitionNavigator {
   }
 
   private ElementDefinition makeExtensionDefinitionElement(String path) {
-    ElementDefinition ed = new ElementDefinition(context, path);
+    ElementDefinition ed = new ElementDefinition(context.getModelContext(), path);
     ed.setUserData(UserDataNames.DN_TRANSIENT, "true");
     ed.getSlicing().setRules(ElementDefinition.SlicingRules.OPEN).setOrdered(false).addDiscriminator().setType(ElementDefinition.DiscriminatorType.VALUE).setPath("url");
     return ed;

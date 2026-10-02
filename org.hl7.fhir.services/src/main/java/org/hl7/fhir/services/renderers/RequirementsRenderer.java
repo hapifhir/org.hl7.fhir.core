@@ -11,6 +11,7 @@ import org.hl7.fhir.services.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.model.utilities.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -40,12 +41,20 @@ public class RequirementsRenderer extends ResourceRenderer {
       if (actors.size() == 1) {
         XhtmlNode p = x.para();
         p.tx(context.formatPhrase(RenderingI18nContext.REQ_ACTOR)+" ");
-        renderCanonical(status, p, ActorDefinition.class, actors.get(0));
+        if (VersionUtilities.isR6Ver(req.fhirVersion())) {
+          renderCanonical(status, p, ActorDefinition.class, actors.get(0).child("reference"));
+        } else {
+          renderCanonical(status, p, ActorDefinition.class, actors.get(0));
+        }
       } else {
         x.para().tx(context.formatPhrase(RenderingI18nContext.REQ_FOLLOWING_ACTOR)+" ");
         XhtmlNode ul = x.ul();
         for (ResourceWrapper a : actors) {
-          renderCanonical(status, ul.li(), ActorDefinition.class, a);
+          if (VersionUtilities.isR6Ver(req.fhirVersion())) {
+            renderCanonical(status, ul.li(), ActorDefinition.class, a.child("reference"));
+          } else {
+            renderCanonical(status, ul.li(), ActorDefinition.class, a);
+          }
         }
       }
     }
@@ -96,7 +105,7 @@ public class RequirementsRenderer extends ResourceRenderer {
       } else {
         for (ResourceWrapper t : stmt.children("conformance")) {
           if (first) first = false; else td.tx(", ");
-          if (cs != null) {
+          if (cs != null && cs.hasWebPath()) {
             td.ah(context.prefixLocalHref(cs.getWebPath()+"#conformance-expectation-"+t.primitiveValue())).tx(t.primitiveValue().toUpperCase());          
           } else {
             td.tx(t.primitiveValue().toUpperCase());
@@ -111,17 +120,26 @@ public class RequirementsRenderer extends ResourceRenderer {
         if (stmt.has("derivedFrom")) {
           XhtmlNode li = ul.li();
           li.tx(context.formatPhrase(RenderingI18nContext.REQ_DERIVED)+" ");
-          String url = stmt.primitiveValue("derivedFrom");
-          String key = url.contains("#") ? url.substring(url.indexOf("#")+1) : "";
-          if (url.contains("#")) { url = url.substring(0, url.indexOf("#")); };
+          String url;
+          String key;
+          if (VersionUtilities.isR6Plus(stmt.fhirVersion())) {
+            url = stmt.primitiveValue("reference");
+            key = stmt.primitiveValue("key");
+          } else {
+            url = stmt.primitiveValue("derivedFrom");
+            key = url != null && url.contains("#") ? url.substring(url.indexOf("#") + 1) : "";
+          }
+          if (url != null && url.contains("#")) {
+            url = url.substring(0, url.indexOf("#"));
+          };
           Requirements reqr = context.getWorker().fetchResource(Requirements.class, url,
             ExtensionUtilities.getVersionResolutionRulesBase(stmt.getBaseForChild("derivedFrom")), null, req.getResourceNative());
           if (reqr != null) {
             RequirementsStatementComponent stmtr = reqr.findStatement(key);
             if (stmtr != null) {
-              li.ah(context.prefixLocalHref(reqr.getWebPath()+"#"+key)).tx(reqr.present() + " # " +(stmt.has("label") ? stmt.primitiveValue("label") : stmt.primitiveValue("key")));
+              li.ah(reqr.hasWebPath() ? context.prefixLocalHref(reqr.getWebPath()+"#"+key) : null).tx(reqr.present() + " # " +(stmtr.hasLabel() ? stmtr.getLabel() : stmtr.getKey()));
             } else {
-              li.ah(context.prefixLocalHref(reqr.getWebPath()+"#"+key)).tx(reqr.present()+" # "+key);              
+              li.ah(reqr.hasWebPath() ? context.prefixLocalHref(reqr.getWebPath()+"#"+key) : null).tx(reqr.present()+" # "+key);              
             }
           } else {
             li.code(stmt.primitiveValue("derivedFrom"));

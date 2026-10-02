@@ -1,0 +1,388 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "us-core-patient",
+  "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient",
+  "name": "USCorePatientProfile",
+  "title": "US Core Patient Profile",
+  "status": "active",
+  "experimental": false,
+  "date": "2025-04-22",
+  "description": "The US Core Patient Profile inherits from the FHIR [Patient](https://hl7.org/fhir/R4/patient.html) resource; refer to it for scope and usage definitions. This profile meets the requirements of the [U.S. Core Data for Interoperability (USCDI)](https://www.healthit.gov/isp/united-states-core-data-interoperability-uscdi) *Patient Demographics/Information* Data Class. It sets minimum expectations for the Patient resource to record, search, and fetch basic demographics and other administrative information about an individual patient. It specifies which core elements, extensions, vocabularies, and value sets **SHALL** be present and constrains how the elements are used. Providing the floor for standards development for specific use cases promotes interoperability and adoption.",
+  "fhirVersion": "4.0.1",
+  "kind": "resource",
+  "abstract": false,
+  "type": "Patient",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "Patient",
+        "path": "Patient",
+        "mustSupport": false
+      },
+      {
+        "id": "Patient.extension:race",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/uscdi-requirement",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Patient.extension",
+        "sliceName": "race",
+        "short": "𝗔𝗗𝗗𝗜𝗧𝗜𝗢𝗡𝗔𝗟 𝗨𝗦𝗖𝗗𝗜: US Core Race Extension. (multiple races are supported in the extension)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race"
+            ]
+          }
+        ],
+        "mustSupport": false
+      },
+      {
+        "id": "Patient.extension:ethnicity",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/uscdi-requirement",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Patient.extension",
+        "sliceName": "ethnicity",
+        "short": "𝗔𝗗𝗗𝗜𝗧𝗜𝗢𝗡𝗔𝗟 𝗨𝗦𝗖𝗗𝗜: US Core ethnicity Extension (multiple ethnicities are supported in the extension)",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity"
+            ]
+          }
+        ],
+        "mustSupport": false
+      },
+      {
+        "id": "Patient.extension:tribalAffiliation",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/uscdi-requirement",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Patient.extension",
+        "sliceName": "tribalAffiliation",
+        "short": "𝗔𝗗𝗗𝗜𝗧𝗜𝗢𝗡𝗔𝗟 𝗨𝗦𝗖𝗗𝗜: Tribal Affiliation Extension",
+        "min": 0,
+        "max": "*",
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://hl7.org/fhir/us/core/StructureDefinition/us-core-tribal-affiliation"
+            ]
+          }
+        ],
+        "mustSupport": false
+      },
+      {
+        "id": "Patient.extension:sex",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/uscdi-requirement",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Patient.extension",
+        "sliceName": "sex",
+        "short": "𝗔𝗗𝗗𝗜𝗧𝗜𝗢𝗡𝗔𝗟 𝗨𝗦𝗖𝗗𝗜: Sex Extension",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://hl7.org/fhir/us/core/StructureDefinition/us-core-individual-sex"
+            ]
+          }
+        ],
+        "mustSupport": false
+      },
+      {
+        "id": "Patient.extension:interpreterRequired",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/uscdi-requirement",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Patient.extension",
+        "sliceName": "interpreterRequired",
+        "short": "𝗔𝗗𝗗𝗜𝗧𝗜𝗢𝗡𝗔𝗟 𝗨𝗦𝗖𝗗𝗜: Whether the patient needs an interpreter",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://hl7.org/fhir/us/core/StructureDefinition/us-core-interpreter-needed"
+            ]
+          }
+        ],
+        "mustSupport": false
+      },
+      {
+        "id": "Patient.identifier",
+        "path": "Patient.identifier",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Patient.identifier.system",
+        "path": "Patient.identifier.system",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Patient.identifier.value",
+        "path": "Patient.identifier.value",
+        "short": "The value that is unique within the system.",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Patient.name",
+        "path": "Patient.name",
+        "min": 1,
+        "constraint": [
+          {
+            "key": "us-core-6",
+            "severity": "error",
+            "human": "At least name.given and/or name.family are present or, if neither is available, the Data Absent Reason Extension is present.",
+            "expression": "(family.exists() or given.exists()) xor extension.where(url='http://hl7.org/fhir/StructureDefinition/data-absent-reason').exists()",
+            "xpath": "(/f:extension/@url='http://hl7.org/fhir/StructureDefinition/data-absent-reason' and not(/f:family or /f:given)) or (not(/f:extension/@url='http://hl7.org/fhir/StructureDefinition/data-absent-reason') and (/f:family or /f:given))"
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Patient.name.use",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/uscdi-requirement",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Patient.name.use",
+        "short": "𝗔𝗗𝗗𝗜𝗧𝗜𝗢𝗡𝗔𝗟 𝗨𝗦𝗖𝗗𝗜: usual | official | temp | nickname | anonymous | old | maiden",
+        "comment": "The [United States Core Data for Interoperability (USCDI)](https://www.healthit.gov/isp/united-states-core-data-interoperability-uscdi) Patient Demographics/Information Data Element, *Name to Use*, is represented by the code \"usual\", and, *Previous Name*, by the code \"old\"."
+      },
+      {
+        "id": "Patient.name.family",
+        "path": "Patient.name.family",
+        "condition": [
+          "us-core-6"
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Patient.name.given",
+        "path": "Patient.name.given",
+        "condition": [
+          "us-core-6"
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Patient.name.suffix",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/uscdi-requirement",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Patient.name.suffix",
+        "short": "𝗔𝗗𝗗𝗜𝗧𝗜𝗢𝗡𝗔𝗟 𝗨𝗦𝗖𝗗𝗜: Parts that come after the name",
+        "mustSupport": false
+      },
+      {
+        "id": "Patient.name.period",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/uscdi-requirement",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Patient.name.period",
+        "short": "𝗔𝗗𝗗𝗜𝗧𝗜𝗢𝗡𝗔𝗟 𝗨𝗦𝗖𝗗𝗜: Time period when name was/is in use",
+        "mustSupport": false
+      },
+      {
+        "id": "Patient.telecom",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/uscdi-requirement",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Patient.telecom",
+        "short": "𝗔𝗗𝗗𝗜𝗧𝗜𝗢𝗡𝗔𝗟 𝗨𝗦𝗖𝗗𝗜: A contact detail for the individual",
+        "mustSupport": false
+      },
+      {
+        "id": "Patient.telecom.system",
+        "path": "Patient.telecom.system",
+        "min": 1,
+        "mustSupport": true,
+        "binding": {
+          "strength": "required",
+          "description": "Telecommunications form for contact point.",
+          "valueSet": "http://hl7.org/fhir/ValueSet/contact-point-system"
+        }
+      },
+      {
+        "id": "Patient.telecom.value",
+        "path": "Patient.telecom.value",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Patient.telecom.use",
+        "path": "Patient.telecom.use",
+        "mustSupport": true,
+        "binding": {
+          "strength": "required",
+          "valueSet": "http://hl7.org/fhir/ValueSet/contact-point-use"
+        }
+      },
+      {
+        "id": "Patient.birthDate",
+        "path": "Patient.birthDate",
+        "mustSupport": true
+      },
+      {
+        "id": "Patient.deceased[x]",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/uscdi-requirement",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Patient.deceased[x]",
+        "short": "𝗔𝗗𝗗𝗜𝗧𝗜𝗢𝗡𝗔𝗟 𝗨𝗦𝗖𝗗𝗜: Indicates if the individual is deceased or not"
+      },
+      {
+        "id": "Patient.address",
+        "path": "Patient.address",
+        "mustSupport": true
+      },
+      {
+        "id": "Patient.address.use",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/uscdi-requirement",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Patient.address.use",
+        "short": "𝗔𝗗𝗗𝗜𝗧𝗜𝗢𝗡𝗔𝗟 𝗨𝗦𝗖𝗗𝗜: home | work | temp | old | billing - purpose of this address"
+      },
+      {
+        "id": "Patient.address.line",
+        "path": "Patient.address.line",
+        "example": [
+          {
+            "label": "US Core",
+            "valueString": "49 MEADOW ST"
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Patient.address.city",
+        "path": "Patient.address.city",
+        "example": [
+          {
+            "label": "US Core",
+            "valueString": "EVERYTOWN"
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Patient.address.state",
+        "path": "Patient.address.state",
+        "example": [
+          {
+            "label": "US Core",
+            "valueString": "OK"
+          }
+        ],
+        "mustSupport": true,
+        "binding": {
+          "strength": "extensible",
+          "description": "Two Letter USPS alphabetic codes.",
+          "valueSet": "http://terminology.hl7.org/ValueSet/USPS-State"
+        }
+      },
+      {
+        "id": "Patient.address.postalCode",
+        "path": "Patient.address.postalCode",
+        "short": "US Zip Codes",
+        "alias": [
+          "Zip Code"
+        ],
+        "example": [
+          {
+            "label": "US Core",
+            "valueString": "74047"
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Patient.address.period",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/uscdi-requirement",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Patient.address.period",
+        "short": "𝗔𝗗𝗗𝗜𝗧𝗜𝗢𝗡𝗔𝗟 𝗨𝗦𝗖𝗗𝗜: Time period when address was/is in use"
+      },
+      {
+        "id": "Patient.communication",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/uscdi-requirement",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Patient.communication",
+        "short": "𝗔𝗗𝗗𝗜𝗧𝗜𝗢𝗡𝗔𝗟 𝗨𝗦𝗖𝗗𝗜: A language which may be used to communicate with the patient about his or her health",
+        "mustSupport": false
+      },
+      {
+        "id": "Patient.communication.language",
+        "path": "Patient.communication.language",
+        "mustSupport": true,
+        "binding": {
+          "strength": "extensible",
+          "valueSet": "http://terminology.hl7.org/ValueSet/Languages"
+        }
+      }
+    ]
+  },
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm",
+      "valueInteger": 5
+    }
+  ]
+}

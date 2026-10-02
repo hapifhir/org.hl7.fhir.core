@@ -2,7 +2,7 @@ package org.hl7.fhir.validation.service.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.validation.special.PackageReGenerator;
 
 import java.util.ArrayList;

@@ -180,6 +180,10 @@ public class IMPORTED_VERSION extends VERSION implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((IMPORTED_VERSION) dst);
+      }
+
       public void copyValues(IMPORTED_VERSION dst) {
         super.copyValues(dst);
         dst.item = item == null ? null : item.copy();

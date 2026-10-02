@@ -606,6 +606,10 @@ public class AuditEvent extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((AuditEventOutcomeComponent) dst);
+      }
+
       public void copyValues(AuditEventOutcomeComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -1282,6 +1286,10 @@ public class AuditEvent extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((AuditEventAgentComponent) dst);
+      }
+
       public void copyValues(AuditEventAgentComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1597,6 +1605,10 @@ public class AuditEvent extends DomainResource {
         AuditEventSourceComponent dst = new AuditEventSourceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AuditEventSourceComponent) dst);
       }
 
       public void copyValues(AuditEventSourceComponent dst) {
@@ -2115,6 +2127,10 @@ public class AuditEvent extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((AuditEventEntityComponent) dst);
+      }
+
       public void copyValues(AuditEventEntityComponent dst) {
         super.copyValues(dst);
         dst.what = what == null ? null : what.copy();
@@ -2569,6 +2585,10 @@ public class AuditEvent extends DomainResource {
         AuditEventEntityDetailComponent dst = new AuditEventEntityDetailComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AuditEventEntityDetailComponent) dst);
       }
 
       public void copyValues(AuditEventEntityDetailComponent dst) {
@@ -3613,6 +3633,10 @@ public class AuditEvent extends DomainResource {
         AuditEvent dst = new AuditEvent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AuditEvent) dst);
       }
 
       public void copyValues(AuditEvent dst) {

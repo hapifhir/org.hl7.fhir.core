@@ -485,6 +485,10 @@ public class FEEDER_AUDIT_DETAILS extends LogicalBase implements ICompositeType 
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((FEEDER_AUDIT_DETAILS) dst);
+      }
+
       public void copyValues(FEEDER_AUDIT_DETAILS dst) {
         super.copyValues(dst);
         dst.system_id = system_id == null ? null : system_id.copy();

@@ -58,6 +58,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
  * @author Grahame
  *
  */
+@Deprecated(forRemoval = true)
 public class ResourceUtilities {
 
   public final static String FHIR_LANGUAGE = "urn:ietf:bcp:47";

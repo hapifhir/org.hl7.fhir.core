@@ -136,14 +136,16 @@ public class CSVWriter extends TextStreamWriter  {
     for (StructureDefinition.StructureDefinitionMappingComponent map : def.getMappingList()) {
       header.addString("Mapping: " + map.getName());
     }
-    xml = new XmlParser(context);
-    json = new JsonParser(context);
+    xml = new XmlParser(context.getModelContext());
+    json = new JsonParser(context.getModelContext());
   }
   
-  public CSVWriter(OutputStream out, boolean asXml) throws UnsupportedEncodingException {
+  public CSVWriter(OutputStream out, IWorkerContext context, boolean asXml) throws UnsupportedEncodingException {
     super(out);
     this.asXml = asXml;
     this.def = null;
+    xml = new XmlParser(context.getModelContext());
+    json = new JsonParser(context.getModelContext());
     CSVLine header = new CSVLine();
     lines.add(header);
     header.addString("Profile");              // 

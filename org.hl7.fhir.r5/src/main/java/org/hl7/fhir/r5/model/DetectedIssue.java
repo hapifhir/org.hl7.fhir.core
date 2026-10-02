@@ -540,6 +540,10 @@ public class DetectedIssue extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DetectedIssueEvidenceComponent) dst);
+      }
+
       public void copyValues(DetectedIssueEvidenceComponent dst) {
         super.copyValues(dst);
         if (code != null) {
@@ -913,6 +917,10 @@ public class DetectedIssue extends DomainResource {
         DetectedIssueMitigationComponent dst = new DetectedIssueMitigationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((DetectedIssueMitigationComponent) dst);
       }
 
       public void copyValues(DetectedIssueMitigationComponent dst) {
@@ -1985,6 +1993,10 @@ public class DetectedIssue extends DomainResource {
         DetectedIssue dst = new DetectedIssue();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((DetectedIssue) dst);
       }
 
       public void copyValues(DetectedIssue dst) {

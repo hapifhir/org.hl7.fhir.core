@@ -352,6 +352,10 @@ public class CDSHookEncounterStartContext extends CDSHookContext implements ICom
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHookEncounterStartContext) dst, options);
+      }
+
       public void copyValues(CDSHookEncounterStartContext dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.userId = userId == null ? null : userId.copy(options);

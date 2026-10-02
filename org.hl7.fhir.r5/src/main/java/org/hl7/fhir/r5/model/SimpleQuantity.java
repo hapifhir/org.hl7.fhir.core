@@ -51,6 +51,10 @@ public class SimpleQuantity extends Quantity {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SimpleQuantity) dst);
+      }
+
       public void copyValues(SimpleQuantity dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

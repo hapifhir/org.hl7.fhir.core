@@ -321,3 +321,8 @@ org.hl7.fhir.support/effective-pom.xml
 .vscode/settings.json
 
 org.hl7.fhir.validation/src/test/java/org/hl7/fhir/terminology/tests/LocalTerminologyServiceTests.java
+
+# terminology cache bookkeeping written beside the .cache files (see TerminologyCache):
+# the nonce is local-only, and the .tmp files are scratch left behind by a hard kill
+*.cache.nonce
+*.cache*.tmp

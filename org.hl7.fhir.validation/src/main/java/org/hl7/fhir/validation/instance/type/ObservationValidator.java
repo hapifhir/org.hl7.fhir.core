@@ -3,8 +3,8 @@ package org.hl7.fhir.validation.instance.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.Base.ValidationMode;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.ValidationInformation.ValidationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;

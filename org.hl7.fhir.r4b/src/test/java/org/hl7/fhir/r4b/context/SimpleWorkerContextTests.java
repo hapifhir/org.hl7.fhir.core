@@ -17,9 +17,9 @@ public class SimpleWorkerContextTests {
   public static Stream<Arguments> zipSlipData() {
 
     return Stream.of(Arguments.of("zip-slip/zip-slip.zip", "Entry with an illegal path: ../evil.txt"),
-        Arguments.of("zip-slip/zip-slip-2.zip", "Entry with an illegal path: child/../../evil.txt"),
-        Arguments.of("zip-slip/zip-slip-peer.zip", "Entry with an illegal path: ../childpeer/evil.txt"),
-        Arguments.of("zip-slip/zip-slip-win.zip", "Entry with an illegal path: ../evil.txt"));
+      Arguments.of("zip-slip/zip-slip-2.zip", "Entry with an illegal path: child/../../evil.txt"),
+      Arguments.of("zip-slip/zip-slip-peer.zip", "Entry with an illegal path: ../childpeer/evil.txt"),
+      Arguments.of("zip-slip/zip-slip-win.zip", "Entry with an illegal path: ../evil.txt"));
   }
 
   @ParameterizedTest(name = "{index}: file {0}")

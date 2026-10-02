@@ -97,7 +97,7 @@ public class Tuple extends Base {
     } else if (properties.containsKey(name)) {
       return properties.get(name).toArray(new Base[0]);
     }
-      return getNamedValue(name, checkValid);
+    return super.getNamedValue(name, checkValid);
   }
 
   @Override

@@ -546,6 +546,10 @@ If not set, the application environment needs to determine the displayable form.
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DV_QUANTITY) dst);
+      }
+
       public void copyValues(DV_QUANTITY dst) {
         super.copyValues(dst);
         dst.magnitude = magnitude == null ? null : magnitude.copy();

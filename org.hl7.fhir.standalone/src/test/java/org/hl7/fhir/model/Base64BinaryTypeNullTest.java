@@ -1,0 +1,45 @@
+package org.hl7.fhir.model;
+
+import org.hl7.fhir.model.core.Base64BinaryType;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+class Base64BinaryTypeNullTest {
+
+  @Test
+  @DisplayName("Test null value toString()")
+  void testToString() {
+    assertDoesNotThrow(() -> {
+      Base64BinaryType nullBase64 = new Base64BinaryType();
+      System.out.println("Value -> " + nullBase64);
+    });
+  }
+
+  @Test
+  @DisplayName("Test null value equalsDeep()")
+  void equalsDeep() {
+    Base64BinaryType nullBase64 = new Base64BinaryType();
+    Base64BinaryType validBase64 = new Base64BinaryType("theValue");
+    Assertions.assertFalse(nullBase64.equalsDeep(validBase64));
+  }
+
+  @Test
+  @DisplayName("Test null value equalsShallow()")
+  void equalsShallow() {
+    Base64BinaryType nullBase64 = new Base64BinaryType();
+    Base64BinaryType validBase64 = new Base64BinaryType("theValue");
+    Assertions.assertFalse(nullBase64.equalsShallow(validBase64));
+  }
+
+  @Test
+  @DisplayName("Test null value copy()")
+  void copy() {
+    Base64BinaryType nullBase64 = new Base64BinaryType();
+    Base64BinaryType copyBase64 = nullBase64.copy(Base.COPY_DATA);
+    Assertions.assertNull(copyBase64.getValue());
+  }
+
+}

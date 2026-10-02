@@ -4,10 +4,10 @@ import java.nio.file.Paths;
 import java.util.Locale;
 
 import org.hl7.fhir.r5.Constants;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.tests.TestConfig;

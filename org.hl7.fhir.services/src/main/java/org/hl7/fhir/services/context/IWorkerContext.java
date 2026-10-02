@@ -1,14 +1,18 @@
 package org.hl7.fhir.services.context;
 
 import org.fhir.ucum.UcumService;
+import org.hl7.fhir.services.profilemodel.PEBuilder;
 import org.hl7.fhir.services.terminology.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -39,9 +43,24 @@ import java.util.Set;
  * @author Grahame
  */
 
-public interface IWorkerContext extends IModelContext {
+public interface IWorkerContext {
 
   //region General Properties
+
+  /**
+   * The model context for this WorkerContext (does not change during the lifetime of the context)
+   *
+   * @return
+   */
+  public IModelContext getModelContext();
+
+  /**
+   * This returns the main/core version that is in use - a draft version of R6 or more recent
+   * @return
+   */
+  @Nonnull
+  public String getFHIRVersion();
+
   /**
    * The context increments this anytime any definitions change. (that is, any
    * resources are made available through the fetch*() methods, or removed
@@ -883,6 +902,21 @@ public interface IWorkerContext extends IModelContext {
 
   //endregion
 
+  /**
+   * Get a validator that can check whether a resource is valid
+   *
+   * this is deprecated because there's lots of properties to set on the validator;
+   * the functions using this need to be changed to use the validator directly
+   *
+   * @return a prepared generator
+   * @throws FHIRException
+   * @
+   */
+  @Deprecated
+  public IResourceValidator newValidator() throws FHIRException;
+
+  ITerminologyClientManager getTerminologyClientManager();
+
   @Deprecated
   public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();
   @Deprecated
@@ -899,5 +933,7 @@ public interface IWorkerContext extends IModelContext {
   @Deprecated
   public void setForPublication(boolean value);
 
+  @Deprecated
+  public PEBuilder getProfiledElementBuilder(PEBuilder.PEElementPropertiesPolicy elementProps, boolean fixedProps);
 
 }

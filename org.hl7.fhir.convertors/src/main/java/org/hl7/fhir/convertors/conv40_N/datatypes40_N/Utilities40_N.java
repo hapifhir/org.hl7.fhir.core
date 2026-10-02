@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_N.datatypes40_N;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
+import org.hl7.fhir.convertors.context.ConversionContext40_N;
 import org.hl7.fhir.model.core.CodeType;
 import org.hl7.fhir.model.core.Enumerations.FHIRTypes;
 import org.hl7.fhir.model.core.Extension;
@@ -49,6 +50,11 @@ public class Utilities40_N {
     } else if (Utilities.existsInList(code, "EffectEvidenceSynthesis", "CatalogEntry", "ResearchDefinition", "ResearchElementDefinition", "RiskEvidenceSynthesis",
         "Contributor", "ProdCharacteristic", "SubstanceAmount")) {
       setType(tgt, code, "Basic");
+
+    } else if (Utilities.existsInList(code, "Any")) {
+      // R5 renamed Any to Resource. setType keeps the original code in the extension, so
+      // converting back restores Any rather than leaving Resource behind
+      setType(tgt, code, "Resource");
     
     } else {
       tgt.setValue(org.hl7.fhir.model.core.Enumerations.FHIRTypes.fromCode(code));
@@ -67,6 +73,34 @@ public class Utilities40_N {
       tgt.setValue(src.asStringValue());
     }
     
+  }
+
+  /**
+   * R4 OperationDefinition.parameter.type is a code from all-types, which includes Any. In R6 the element is
+   * a uri from fhir-types, which has no Any - the same intent is spelled Resource there (hence targetProfile:
+   * "If type is 'Resource', then this constrains the allowed resource types"). Any and Resource are both
+   * valid R4 codes, so the original is kept in an extension: that is the only way the reverse conversion can
+   * tell a converted Any from a Resource that was always a Resource
+   */
+  public static org.hl7.fhir.model.core.UriType convertParameterType(org.hl7.fhir.r4.model.CodeType src) {
+    org.hl7.fhir.model.core.UriType tgt = src.hasValue() ? new org.hl7.fhir.model.core.UriType(src.getValueAsString()) : new org.hl7.fhir.model.core.UriType();
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+    if ("Any".equals(src.getValueAsString())) {
+      tgt.setValue("Resource");
+      tgt.addExtension(new Extension().setUrl(VersionConvertorConstants.EXT_OPDEF_ORIGINAL_TYPE).setValue(new CodeType("Any")));
+    }
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r4.model.CodeType convertParameterType(org.hl7.fhir.model.core.UriType src) {
+    org.hl7.fhir.r4.model.CodeType tgt = new org.hl7.fhir.r4.model.CodeType();
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt, VersionConvertorConstants.EXT_OPDEF_ORIGINAL_TYPE);
+    if (src.hasExtension(VersionConvertorConstants.EXT_OPDEF_ORIGINAL_TYPE)) {
+      tgt.setValueAsString(src.getExtensionString(VersionConvertorConstants.EXT_OPDEF_ORIGINAL_TYPE));
+    } else if (src.hasValue()) {
+      tgt.setValueAsString(src.getValueAsString());
+    }
+    return tgt;
   }
 
 }

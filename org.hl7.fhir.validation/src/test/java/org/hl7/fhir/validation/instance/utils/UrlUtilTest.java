@@ -6,8 +6,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 
 public class UrlUtilTest {
   private IWorkerContext context;

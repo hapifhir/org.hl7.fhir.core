@@ -208,6 +208,10 @@ public abstract class CARE_ENTRY extends ENTRY implements ICompositeType {
 
       public abstract CARE_ENTRY copy();
 
+      public void assignValues(Base dst) {
+        copyValues((CARE_ENTRY) dst);
+      }
+
       public void copyValues(CARE_ENTRY dst) {
         super.copyValues(dst);
         dst.protocol = protocol == null ? null : protocol.copy();

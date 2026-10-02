@@ -496,6 +496,7 @@ msgstr "العمليات"
 # CAPABILITY_OPER
 #: CAPABILITY_OPER
 #, fuzzy
+msgctxt "CAPABILITY_OPER"
 msgid "Operation"
 msgstr "العملية"
 
@@ -2354,6 +2355,7 @@ msgstr "التعريف:"
 # GENERAL_DESC
 #: GENERAL_DESC
 #, fuzzy
+msgctxt "GENERAL_DESC"
 msgid "Description"
 msgstr "الوصف"
 
@@ -2495,6 +2497,7 @@ msgstr "المعلمة"
 # GENERAL_PARS
 #: GENERAL_PARS
 #, fuzzy
+msgctxt "GENERAL_PARS"
 msgid "Parameters"
 msgstr "المعلمات"
 
@@ -2870,6 +2873,7 @@ msgstr "العناصر"
 # LIST_REND_MODE
 #: LIST_REND_MODE
 #, fuzzy
+msgctxt "LIST_REND_MODE"
 msgid "Mode: {0}"
 msgstr "الوضع: {0}"
 
@@ -5410,6 +5414,11 @@ msgstr "يجب دعم هذا العنصر"
 msgid "When this element is read"
 msgstr "عند قراءة هذا العنصر"
 
+# STRUC_DEF_ELE_TRANSLATABLE
+#: STRUC_DEF_ELE_TRANSLATABLE
+msgid "This element is a candidate for being translated"
+msgstr ""
+
 # STRUC_DEF_ERROR
 #: STRUC_DEF_ERROR
 #, fuzzy
@@ -6241,6 +6250,11 @@ msgstr "فإن النوع هو"
 msgid "This structure refers to these other structures"
 msgstr "يشير هذا الهيكل إلى هذه الهياكل الأخرى"
 
+# STRUC_DEF_TRANSLATABLE
+#: STRUC_DEF_TRANSLATABLE
+msgid "Translatable"
+msgstr ""
+
 # STRUC_DEF_TYPE_BOUND
 #: STRUC_DEF_TYPE_BOUND
 #, fuzzy
@@ -6552,6 +6566,85 @@ msgstr "تبعيات خطة الاختبار:"
 #, fuzzy
 msgid "Dependency - no description"
 msgstr "التبعية - لا يوجد وصف"
+
+# TEST_PLAN_IG_DEPENDENCIES
+#: TEST_PLAN_IG_DEPENDENCIES
+msgid "Dependencies"
+msgstr ""
+
+# TEST_PLAN_IG_DESCRIPTION
+#: TEST_PLAN_IG_DESCRIPTION
+msgctxt "TEST_PLAN_IG_DESCRIPTION"
+msgid "Description"
+msgstr ""
+
+# TEST_PLAN_IG_EXPECTED
+#: TEST_PLAN_IG_EXPECTED
+msgid "Expected"
+msgstr ""
+
+# TEST_PLAN_IG_FILE
+#: TEST_PLAN_IG_FILE
+msgid "File"
+msgstr ""
+
+# TEST_PLAN_IG_INPUT
+#: TEST_PLAN_IG_INPUT
+msgid "Input"
+msgstr ""
+
+# TEST_PLAN_IG_INPUTS
+#: TEST_PLAN_IG_INPUTS
+msgid "Inputs"
+msgstr ""
+
+# TEST_PLAN_IG_MODE
+#: TEST_PLAN_IG_MODE
+msgid "Mode"
+msgstr ""
+
+# TEST_PLAN_IG_MODES
+#: TEST_PLAN_IG_MODES
+msgid "Modes"
+msgstr ""
+
+# TEST_PLAN_IG_MODE_LABEL
+#: TEST_PLAN_IG_MODE_LABEL
+msgctxt "TEST_PLAN_IG_MODE_LABEL"
+msgid "Mode: {0}"
+msgstr ""
+
+# TEST_PLAN_IG_OPERATION
+#: TEST_PLAN_IG_OPERATION
+msgctxt "TEST_PLAN_IG_OPERATION"
+msgid "Operation"
+msgstr ""
+
+# TEST_PLAN_IG_PARAMETERS
+#: TEST_PLAN_IG_PARAMETERS
+msgctxt "TEST_PLAN_IG_PARAMETERS"
+msgid "Parameters"
+msgstr ""
+
+# TEST_PLAN_IG_REFERENCE
+#: TEST_PLAN_IG_REFERENCE
+msgid "Reference"
+msgstr ""
+
+# TEST_PLAN_IG_SCOPES
+#: TEST_PLAN_IG_SCOPES
+msgid "Scopes"
+msgstr ""
+
+# TEST_PLAN_IG_SUITE_LABEL
+#: TEST_PLAN_IG_SUITE_LABEL
+msgid "Suite: {0}"
+msgstr ""
+
+# TEST_PLAN_IG_TESTS
+#: TEST_PLAN_IG_TESTS
+msgid "Tests"
+msgstr ""
 
 # TEST_PLAN_LANG
 #: TEST_PLAN_LANG

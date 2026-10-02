@@ -563,13 +563,36 @@ public class FHIRPathEngine {
    */
   public List<Base> evaluate(Object appContext, Base focusResource, Base rootResource, Base base,
       ExpressionNode expressionNode) throws FHIRException {
+    return evaluate(appContext, focusResource, rootResource, base, expressionNode, null);
+  }
+
+  /**
+   * evaluate a path with a set of variables already in scope, and return the matching elements.
+   *
+   * <p>The variables are visible to the expression as %name, exactly as if they had been introduced
+   * by defineVariable(). This is for callers that have their own notion of named variables to make
+   * available - e.g. the Questionnaire 'variable' extension, whose variables are in scope for the
+   * expressions in the Questionnaire that declares them.
+   *
+   * @param base           - the object against which the path is being evaluated
+   * @param expressionNode - the parsed ExpressionNode statement to use
+   * @param variables      - variables to define before evaluation; may be null
+   * @throws FHIRException @
+   */
+  public List<Base> evaluate(Object appContext, Base focusResource, Base rootResource, Base base,
+      ExpressionNode expressionNode, Map<String, List<Base>> variables) throws FHIRException {
     List<Base> list = new ArrayList<Base>();
     if (base != null) {
       list.add(base);
     }
     log = new StringBuilder();
-    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list,
-        expressionNode, true);
+    ExecutionContext context = new ExecutionContext(appContext, focusResource, rootResource, base, base);
+    if (variables != null) {
+      for (Map.Entry<String, List<Base>> e : variables.entrySet()) {
+        context.setDefinedVariable(e.getKey(), e.getValue());
+      }
+    }
+    return execute(context, list, expressionNode, true);
   }
 
   /**
@@ -639,6 +662,18 @@ public class FHIRPathEngine {
   public boolean evaluateToBoolean(Object appInfo, Base focusResource, Base rootResource, Base base,
       ExpressionNode node) throws FHIRException {
     return convertToBoolean(evaluate(appInfo, focusResource, rootResource, base, node));
+  }
+
+  /**
+   * evaluate a path with a set of variables already in scope, and return true or false
+   *
+   * @param base      - the object against which the path is being evaluated
+   * @param variables - variables to define before evaluation; may be null
+   * @throws FHIRException @
+   */
+  public boolean evaluateToBoolean(Object appInfo, Base focusResource, Base rootResource, Base base,
+      ExpressionNode node, Map<String, List<Base>> variables) throws FHIRException {
+    return convertToBoolean(evaluate(appInfo, focusResource, rootResource, base, node, variables));
   }
 
   /**
@@ -3469,7 +3504,7 @@ public class FHIRPathEngine {
     case Split:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes,
           new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
-      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+      return new TypeDetails(CollectionStatus.ORDERED, TypeDetails.FP_String);
     case Join:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes,
           new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
@@ -4317,8 +4352,7 @@ public class FHIRPathEngine {
       if ("hex".equals(param)) {
         result.add(new StringType(new String(hexStringToByteArray(cnt))));
       } else if ("base64".equals(param)) {
-        Base64.Decoder enc = Base64.getDecoder();
-        result.add(new StringType(new String(enc.decode(cnt))));
+        result.add(new StringType(new String(Utilities.decodeBase64(cnt, true))));
       } else if ("urlbase64".equals(param)) {
         Base64.Decoder enc = Base64.getUrlDecoder();
         result.add(new StringType(new String(enc.decode(cnt))));
@@ -4387,6 +4421,10 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcJoin(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    // FHIRPath: "If the input is empty, the result is empty".
+    if (focus.isEmpty()) {
+      return new ArrayList<Base>();
+    }
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
     String param2 = param;

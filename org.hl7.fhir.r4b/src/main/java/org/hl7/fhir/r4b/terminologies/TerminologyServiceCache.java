@@ -32,6 +32,7 @@ package org.hl7.fhir.r4b.terminologies;
  */
 
 
+@Deprecated(forRemoval = true)
 public class TerminologyServiceCache {
 
 }

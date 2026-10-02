@@ -630,6 +630,10 @@ public class SubstanceNucleicAcid extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SubstanceNucleicAcidSubunitComponent) dst);
+      }
+
       public void copyValues(SubstanceNucleicAcidSubunitComponent dst) {
         super.copyValues(dst);
         dst.subunit = subunit == null ? null : subunit.copy();
@@ -1027,6 +1031,10 @@ public class SubstanceNucleicAcid extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SubstanceNucleicAcidSubunitLinkageComponent) dst);
+      }
+
       public void copyValues(SubstanceNucleicAcidSubunitLinkageComponent dst) {
         super.copyValues(dst);
         dst.connectivity = connectivity == null ? null : connectivity.copy();
@@ -1337,6 +1345,10 @@ public class SubstanceNucleicAcid extends DomainResource {
         SubstanceNucleicAcidSubunitSugarComponent dst = new SubstanceNucleicAcidSubunitSugarComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SubstanceNucleicAcidSubunitSugarComponent) dst);
       }
 
       public void copyValues(SubstanceNucleicAcidSubunitSugarComponent dst) {
@@ -1768,6 +1780,10 @@ public class SubstanceNucleicAcid extends DomainResource {
         SubstanceNucleicAcid dst = new SubstanceNucleicAcid();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SubstanceNucleicAcid) dst);
       }
 
       public void copyValues(SubstanceNucleicAcid dst) {

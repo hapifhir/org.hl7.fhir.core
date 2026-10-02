@@ -704,6 +704,10 @@ public class Task extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TaskPerformerComponent) dst);
+      }
+
       public void copyValues(TaskPerformerComponent dst) {
         super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
@@ -1009,6 +1013,10 @@ public class Task extends DomainResource {
         TaskRestrictionComponent dst = new TaskRestrictionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TaskRestrictionComponent) dst);
       }
 
       public void copyValues(TaskRestrictionComponent dst) {
@@ -2314,6 +2322,10 @@ public class Task extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TaskInputComponent) dst);
+      }
+
       public void copyValues(TaskInputComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -3608,6 +3620,10 @@ public class Task extends DomainResource {
         TaskOutputComponent dst = new TaskOutputComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TaskOutputComponent) dst);
       }
 
       public void copyValues(TaskOutputComponent dst) {
@@ -5816,6 +5832,10 @@ public class Task extends DomainResource {
         Task dst = new Task();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Task) dst);
       }
 
       public void copyValues(Task dst) {

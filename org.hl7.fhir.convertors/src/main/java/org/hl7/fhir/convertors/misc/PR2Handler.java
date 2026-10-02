@@ -9,7 +9,7 @@ import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.utilities.FhirPublication;
 
-class PR2Handler extends BaseAdvisor_10_40 {
+public class PR2Handler extends BaseAdvisor_10_40 {
 
   @Override
   public boolean ignoreEntry(@Nonnull Bundle.BundleEntryComponent src, @Nonnull FhirPublication publication) {

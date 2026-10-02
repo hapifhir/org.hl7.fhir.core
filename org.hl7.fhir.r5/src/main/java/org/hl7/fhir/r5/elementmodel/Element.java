@@ -58,6 +58,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeConvertor;
+import org.hl7.fhir.r5.model.XhtmlType;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 
@@ -68,6 +69,7 @@ import org.hl7.fhir.utilities.NamedItemList.NamedItem;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 /**
  * This class represents the underlying reference model of FHIR
@@ -145,6 +147,8 @@ public class Element extends Base implements NamedItem {
 	private List<String> comments;// not relevant for production, but useful in documentation
 	private String name;
 	private String type;
+
+  // as of 2-9-2026, value is not used on the xhtml type
 	private String value;
 	private int index = -1;
 	private NamedItemList<Element> children;
@@ -153,7 +157,11 @@ public class Element extends Base implements NamedItem {
 	private int line;
 	private int col;
 	private SpecialElement special;
+
 	private XhtmlNode xhtml; // if this is populated, then value will also hold the string representation
+  @Getter @Setter private String xhtmlSource; // if provided, the original string (json, ttl. not provided: xml, built directly)
+  private int xhtmlOutputHash; // used to track if the tree has changed
+
 	private String explicitType; // for xsi:type attribute
 	private Element parentForValidator;
 	private boolean hasParentForValidator;
@@ -229,7 +237,7 @@ public class Element extends Base implements NamedItem {
 	}
 
 	public String getValue() {
-	  if (xhtml != null) {
+	  if (isXhtml()) {
 	    throw new Error("Don't use getValue() for xhtml");
 	  }
 		return value;
@@ -260,7 +268,10 @@ public class Element extends Base implements NamedItem {
 	}
 
 	public void setValue(String value) {
-		this.value = value;
+		if (isXhtml()) {
+      throw new Error("Don't use setValue() for xhtml");
+    }
+    this.value = value;
 	}
 
 	public Element setType(String type) {
@@ -278,7 +289,7 @@ public class Element extends Base implements NamedItem {
   }
 
   public boolean hasValue() {
-		return value != null;
+		return isXhtml() ? xhtml != null : value != null;
 	}
 
 	public List<Element> getChildrenByName(String name) {
@@ -348,7 +359,11 @@ public class Element extends Base implements NamedItem {
       if (name.equals(child.getName())) {
         if (!child.isPrimitive())
           throw new Error("Cannot set a value of a non-primitive type ("+name+" on "+this.getName()+")");
-        child.setValue(value);
+        if (child.isXhtml()) {
+          child.setXhtml(null, value);
+        } else {
+          child.setValue(value);
+        }
       }
     }
 
@@ -461,9 +476,8 @@ public class Element extends Base implements NamedItem {
 	
   @Override
   public Base setProperty(int hash, String name, Base value) throws FHIRException {
-    if ("xhtml".equals(getType()) && (hash == "value".hashCode())) {
-      this.xhtml = TypeConvertor.castToXhtml(value);
-      this.value =  TypeConvertor.castToXhtmlString(value);
+    if (isXhtml() && (hash == "value".hashCode())) {
+      this.setXhtml(TypeConvertor.castToXhtml(value), TypeConvertor.castToXhtmlString(value));
       return this;
     }
     if (isPrimitive() && (hash == "value".hashCode())) {
@@ -528,7 +542,16 @@ public class Element extends Base implements NamedItem {
     else if (value.isPrimitive()) {
       if (childForValue.property.getName().endsWith("[x]"))
         childForValue.name = childForValue.name.replace("[x]", "")+Utilities.capitalize(value.fhirType());
-      childForValue.setValue(value.primitiveValue());
+      if (!childForValue.isXhtml()) {
+        childForValue.setValue(value.primitiveValue());
+      } else {
+        if (value instanceof final XhtmlType xhtmlValue) {
+          // Avoid reparsing the XHTML content if we can
+          childForValue.setXhtml(xhtmlValue.getXhtml());
+        } else {
+          childForValue.setXhtml(null, value.primitiveValue());
+        }
+      }
     } else {
       Element ve = (Element) value;
       childForValue.type = ve.getType();
@@ -550,6 +573,7 @@ public class Element extends Base implements NamedItem {
     }
     return childForValue;
   }
+
 
   private Base convertToElement(Property prop, Base v) throws FHIRException {
     return new ObjectConverter(property.getContext()).convert(prop, (DataType) v);
@@ -680,10 +704,10 @@ public class Element extends Base implements NamedItem {
 
 	@Override
 	public String primitiveValue() {
-    if (isPrimitive() || value != null)
+    if (isXhtml()) {
+      return getXhtmlSource(false);
+    } else  if (isPrimitive() || value != null) {
       return value;
-    else if (hasXhtml()) {
-      return new XhtmlComposer(XhtmlComposer.XML, false).setCanonical(false).compose(xhtml);
     } else {
 			if (canHavePrimitiveValue() && children != null) {
 				for (Element c : children) {
@@ -863,16 +887,8 @@ public class Element extends Base implements NamedItem {
     }
   }
 
-  
-	public XhtmlNode getXhtml() {
-		return xhtml;
-	}
 
-	public Element setXhtml(XhtmlNode xhtml) {
-		this.xhtml = xhtml;
-    value = new XhtmlComposer(true, false).compose(xhtml);
-		return this;
- 	}
+
 
 	@Override
 	public boolean isEmpty() {
@@ -882,6 +898,9 @@ public class Element extends Base implements NamedItem {
 		if (value != null) {   
 			return false;
 		}
+    if (xhtml != null) {
+      return false;
+    }
 		for (Element next : getChildren()) {
 			if (!next.isEmpty()) {
 				return false;
@@ -1291,7 +1310,10 @@ public class Element extends Base implements NamedItem {
     property = null;
     elementProperty = null;
     xhtml = null;
+    xhtmlSource = null;
+    xhtmlOutputHash = 0;
     path = null;
+    value = null;
   }
 
   public String getPath() {
@@ -1422,10 +1444,10 @@ public class Element extends Base implements NamedItem {
     String s = indent+name +(index == -1 ? "" : "["+index+"]") +(special != null ? "$"+special.toHuman(): "")+ (type!= null || explicitType != null ? " : "+type+(explicitType != null ? "/'"+explicitType+"'" : "") : "");
     if (isNull) {
       s = s + " = (null)";
-    } else if (value != null) {
-      s = s + " = '"+value+"'";      
     } else if (xhtml != null) {
       s = s + " = (xhtml)";
+    } else if (value != null || xhtmlSource != null) {
+      s = s + " = '"+value+"'";      
     }
     if (property != null) {
       s = s +" {"+property.summary();
@@ -1578,6 +1600,8 @@ public class Element extends Base implements NamedItem {
     dest.line = line;
     dest.col = col;
     dest.xhtml = xhtml;
+    dest.xhtmlSource = xhtmlSource;
+    dest.xhtmlOutputHash = xhtmlOutputHash;
     dest.explicitType = explicitType;
     dest.hasParentForValidator = false;
     dest.path = path;
@@ -1794,10 +1818,6 @@ public class Element extends Base implements NamedItem {
     return null;
   }
 
-  public boolean hasXhtml() {
-    return xhtml != null;
-  }
-
   public boolean isElementForPath(String... paths) {
     for (String s : paths) {
       if (s.equals(property.getDefinition().getBase().getPath())) {
@@ -1805,6 +1825,74 @@ public class Element extends Base implements NamedItem {
       }
     }
     return false;
+  }
+
+
+  //---- xhtml handling -------
+
+  public XhtmlNode getXhtml() {
+    return xhtml;
+  }
+
+  /**
+   * what's going on here is that round-tripping through the XHTML model changes the source
+   * that matters for digital signatures
+   * so we check: if the xhtml tree has changed since we parsed it, then we return the current
+   * but if it hasn't, we return the original source
+   *
+   * note that we do consider the original source as canonical if it's provided
+   *
+   * @return
+   */
+  public String getXhtmlSource(boolean canonical) {
+    if (xhtml == null) {
+      return xhtmlSource;
+    }
+    String currentXhtml = new XhtmlComposer(true, false).compose(xhtml);
+    if (currentXhtml.hashCode() != xhtmlOutputHash || xhtmlSource == null) {
+      if (canonical) {
+        return new XhtmlComposer(true, false).setCanonical(true).compose(xhtml);
+      } else {
+        return currentXhtml;
+      }
+    } else {
+      return xhtmlSource;
+    }
+  }
+
+
+  public boolean isXhtml() {
+    return "xhtml".equals(getType());
+  }
+
+  public Base setXhtml(XhtmlNode node) {
+    setXhtml(node, null);
+    return this;
+  }
+
+  public Element setXhtml(XhtmlNode xhtml, String source) {
+    if (source == null && xhtml == null) {
+      this.xhtml = null;
+      this.xhtmlSource = null;
+      this.xhtmlOutputHash = 0;
+    } else {
+      xhtmlSource = source;
+      if (xhtml == null) {
+        try {
+          this.xhtml = new XhtmlParser().parse(xhtmlSource, "div");
+        } catch (Exception e) {
+          // nothing?
+        }
+      } else {
+        this.xhtml = xhtml;
+      }
+      if (this.xhtml != null) {
+        this.xhtmlOutputHash = new XhtmlComposer(true, false).compose(this.xhtml).hashCode();
+      } else {
+        this.xhtmlOutputHash = 0;
+      }
+    }
+    return this;
   }
 
 }

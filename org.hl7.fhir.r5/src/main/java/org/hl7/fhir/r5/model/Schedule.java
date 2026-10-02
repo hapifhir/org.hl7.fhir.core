@@ -779,6 +779,10 @@ public class Schedule extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Schedule) dst);
+      }
+
       public void copyValues(Schedule dst) {
         super.copyValues(dst);
         if (identifier != null) {

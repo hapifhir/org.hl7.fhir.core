@@ -49,11 +49,29 @@ import org.hl7.fhir.model.core.Measure.MeasureTermComponent;
 
 public class Measure43_N {
 
+  // Measure.scoring, compositeScoring, type, improvementNotation and guidance were removed in R6 -
+  // they are carried in R6 as cross-version extensions
+  public static final String SCORING_EXTENSION_URL = "http://hl7.org/fhir/4.3/StructureDefinition/extension-Measure.scoring";
+  public static final String COMPOSITE_SCORING_EXTENSION_URL = "http://hl7.org/fhir/4.3/StructureDefinition/extension-Measure.compositeScoring";
+  public static final String TYPE_EXTENSION_URL = "http://hl7.org/fhir/4.3/StructureDefinition/extension-Measure.type";
+  public static final String IMPROVEMENT_NOTATION_EXTENSION_URL = "http://hl7.org/fhir/4.3/StructureDefinition/extension-Measure.improvementNotation";
+  public static final String GUIDANCE_EXTENSION_URL = "http://hl7.org/fhir/4.3/StructureDefinition/extension-Measure.guidance";
+
   public static org.hl7.fhir.model.core.Measure convertMeasure(org.hl7.fhir.r4b.model.Measure src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.model.core.Measure tgt = new org.hl7.fhir.model.core.Measure();
     ConversionContext43_N.INSTANCE.getVersionConvertor_43_N().copyDomainResource(src, tgt);
+    if (src.hasScoring())
+      tgt.addExtension(SCORING_EXTENSION_URL, CodeableConcept43_N.convertCodeableConcept(src.getScoring()));
+    if (src.hasCompositeScoring())
+      tgt.addExtension(COMPOSITE_SCORING_EXTENSION_URL, CodeableConcept43_N.convertCodeableConcept(src.getCompositeScoring()));
+    for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getType())
+      tgt.addExtension(TYPE_EXTENSION_URL, CodeableConcept43_N.convertCodeableConcept(t));
+    if (src.hasImprovementNotation())
+      tgt.addExtension(IMPROVEMENT_NOTATION_EXTENSION_URL, CodeableConcept43_N.convertCodeableConcept(src.getImprovementNotation()));
+    if (src.hasGuidance())
+      tgt.addExtension(GUIDANCE_EXTENSION_URL, MarkDown43_N.convertMarkdown(src.getGuidanceElement()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri43_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r4b.model.Identifier t : src.getIdentifier())
@@ -133,7 +151,17 @@ public class Measure43_N {
     if (src == null)
       return null;
     org.hl7.fhir.r4b.model.Measure tgt = new org.hl7.fhir.r4b.model.Measure();
-    ConversionContext43_N.INSTANCE.getVersionConvertor_43_N().copyDomainResource(src, tgt);
+    ConversionContext43_N.INSTANCE.getVersionConvertor_43_N().copyDomainResource(src, tgt, SCORING_EXTENSION_URL, COMPOSITE_SCORING_EXTENSION_URL, TYPE_EXTENSION_URL, IMPROVEMENT_NOTATION_EXTENSION_URL, GUIDANCE_EXTENSION_URL);
+    if (src.hasExtension(SCORING_EXTENSION_URL))
+      tgt.setScoring(CodeableConcept43_N.convertCodeableConcept((org.hl7.fhir.model.core.CodeableConcept) src.getExtensionByUrl(SCORING_EXTENSION_URL).getValue()));
+    if (src.hasExtension(COMPOSITE_SCORING_EXTENSION_URL))
+      tgt.setCompositeScoring(CodeableConcept43_N.convertCodeableConcept((org.hl7.fhir.model.core.CodeableConcept) src.getExtensionByUrl(COMPOSITE_SCORING_EXTENSION_URL).getValue()));
+    for (org.hl7.fhir.model.core.Extension t : src.getExtensionsByUrl(TYPE_EXTENSION_URL))
+      tgt.addType(CodeableConcept43_N.convertCodeableConcept((org.hl7.fhir.model.core.CodeableConcept) t.getValue()));
+    if (src.hasExtension(IMPROVEMENT_NOTATION_EXTENSION_URL))
+      tgt.setImprovementNotation(CodeableConcept43_N.convertCodeableConcept((org.hl7.fhir.model.core.CodeableConcept) src.getExtensionByUrl(IMPROVEMENT_NOTATION_EXTENSION_URL).getValue()));
+    if (src.hasExtension(GUIDANCE_EXTENSION_URL))
+      tgt.setGuidanceElement(MarkDown43_N.convertMarkdown((org.hl7.fhir.model.core.MarkdownType) src.getExtensionByUrl(GUIDANCE_EXTENSION_URL).getValue()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri43_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())

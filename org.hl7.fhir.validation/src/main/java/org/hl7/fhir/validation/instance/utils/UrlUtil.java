@@ -3,7 +3,7 @@ package org.hl7.fhir.validation.instance.utils;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;

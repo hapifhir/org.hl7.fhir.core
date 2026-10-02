@@ -17,7 +17,7 @@ public class ValidationContextUtilities {
     validationContext.setDoNative(validationEngineParameters.isDoNative());
     validationContext.setRecursive(validationEngineParameters.isRecursive());
     validationContext.setSnomedCT(validationEngineParameters.getSnomedCT());
-    validationContext.setSv(validationEngineParameters.getSv());
+    validationContext.setSv(validationEngineParameters.getStatedFHIRVersion());
     for (String ig : validationEngineParameters.getIgs()) {
       validationContext.addIg(ig);
     }
@@ -80,6 +80,8 @@ public class ValidationContextUtilities {
     validationContext.setOutputStyle(instanceValidatorParameters.getOutputStyle());
     validationContext.setR5BundleRelativeReferencePolicy(instanceValidatorParameters.getR5BundleRelativeReferencePolicy());
     validationContext.setExtensions(instanceValidatorParameters.getExtensions());
+    validationContext.setUsages(instanceValidatorParameters.getUsages());
+    validationContext.setLaunchContexts(instanceValidatorParameters.getLaunchContexts());
     validationContext.setWantInvariantsInMessages(instanceValidatorParameters.isWantInvariantsInMessages());
     validationContext.setNoInvariants(instanceValidatorParameters.isNoInvariants());
     validationContext.setQuestionnaireMode(instanceValidatorParameters.getQuestionnaireMode());
@@ -154,7 +156,7 @@ public class ValidationContextUtilities {
     validationEngineParameters.setDoNative(validationContext.isDoNative());
     validationEngineParameters.setRecursive(validationContext.isRecursive());
     validationEngineParameters.setSnomedCT(validationContext.getSnomedCT());
-    validationEngineParameters.setSv(validationContext.getSv());
+    validationEngineParameters.setStatedFHIRVersion(validationContext.getSv());
     for (String ig : validationContext.getIgs()) {
       validationEngineParameters.addIg(ig);
     }
@@ -213,6 +215,8 @@ public class ValidationContextUtilities {
     instanceValidatorParameters.setOutputStyle(validationContext.getOutputStyle());
     instanceValidatorParameters.setR5BundleRelativeReferencePolicy(validationContext.getR5BundleRelativeReferencePolicy());
     instanceValidatorParameters.setExtensions(validationContext.getExtensions());
+    instanceValidatorParameters.setUsages(validationContext.getUsages());
+    instanceValidatorParameters.setLaunchContexts(validationContext.getLaunchContexts());
     instanceValidatorParameters.setWantInvariantsInMessages(validationContext.isWantInvariantsInMessages());
     instanceValidatorParameters.setNoInvariants(validationContext.isNoInvariants());
     instanceValidatorParameters.setQuestionnaireMode(validationContext.getQuestionnaireMode());

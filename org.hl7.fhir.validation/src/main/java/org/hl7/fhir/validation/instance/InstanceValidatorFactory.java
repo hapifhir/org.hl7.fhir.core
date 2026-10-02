@@ -32,15 +32,14 @@ import org.hl7.fhir.exceptions.FHIRException;
  */
 
 
-
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext.IValidatorFactory;
-import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
-import org.hl7.fhir.r5.utils.validation.ValidatorSession;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.validation.IResourceValidator;
+import org.hl7.fhir.services.validation.ValidatorSession;
+import org.hl7.fhir.services.xver.XVerExtensionManager;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.validation.ValidatorSettings;
 
-public class InstanceValidatorFactory implements IValidatorFactory {
+public class InstanceValidatorFactory implements SimpleWorkerContext.IValidatorFactory {
 
   @Override
   public IResourceValidator makeValidator(IWorkerContext ctxt, XVerExtensionManager xverManager, ValidatorSession session) throws FHIRException {

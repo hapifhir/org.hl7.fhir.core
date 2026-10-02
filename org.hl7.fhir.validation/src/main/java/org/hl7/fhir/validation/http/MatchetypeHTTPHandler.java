@@ -2,9 +2,10 @@ package org.hl7.fhir.validation.http;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 
 import java.io.IOException;
@@ -16,7 +17,8 @@ import java.io.IOException;
 class MatchetypeHTTPHandler extends BaseHTTPHandler implements HttpHandler {
   private final FhirValidatorHttpService fhirValidatorHttpService;
 
-  public MatchetypeHTTPHandler(FhirValidatorHttpService fhirValidatorHttpService) {
+  public MatchetypeHTTPHandler(IModelContext context, FhirValidatorHttpService fhirValidatorHttpService) {
+    super(context);
     this.fhirValidatorHttpService = fhirValidatorHttpService;
   }
 

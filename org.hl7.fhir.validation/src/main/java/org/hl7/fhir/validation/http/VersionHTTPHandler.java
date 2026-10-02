@@ -2,8 +2,9 @@ package org.hl7.fhir.validation.http;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,7 +18,8 @@ import java.util.Map;
 class VersionHTTPHandler extends BaseHTTPHandler implements HttpHandler {
   private final FhirValidatorHttpService fhirValidatorHttpService;
 
-  public VersionHTTPHandler(FhirValidatorHttpService fhirValidatorHttpService) {
+  public VersionHTTPHandler(IModelContext context, FhirValidatorHttpService fhirValidatorHttpService) {
+    super(context);
     this.fhirValidatorHttpService = fhirValidatorHttpService;
   }
 

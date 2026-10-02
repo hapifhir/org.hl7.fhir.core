@@ -77,7 +77,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.PublicationHacker;
+import org.hl7.fhir.r5.utils.PackageHackerR5;
 
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
@@ -99,7 +99,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 @Slf4j
 public class StructureDefinitionRenderer extends ResourceRenderer {
 
-  public static final String RED_BACKGROUND_COLOR = "#D50000";
 
   public enum MapStructureMode {
     IN_LIST, NOT_IN_LIST, OTHER
@@ -238,6 +237,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private class ResolvedCanonical extends ItemWithStatus { 
     String url; // what we used to resolve 
     CanonicalResource cr; // what we resolved 
+    String typeProfileMark; // see typeProfileMark()
  
     public ResolvedCanonical(String url, CanonicalResource cr) { 
       this.url = url; 
@@ -249,6 +249,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } else { 
         f.code().tx(url);             
       } 
+      renderTypeProfileMark(f, typeProfileMark);
     } 
     protected boolean matches(ItemWithStatus other) { 
       return ((ResolvedCanonical) other).url.equals(url); 
@@ -993,7 +994,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         row.setIcon("icon_resource.png", context.formatPhrase(RenderingI18nContext.GENERAL_RESOURCE));
       }
       if (element.hasUserData(UserDataNames.render_opaque)) { 
-        row.setOpacity("0.5"); 
+        row.setOpacity(HierarchicalTableGenerator.STANDARD_OPACITY);
       } 
       UnusedTracker used = new UnusedTracker(); 
       String ref = defPath == null ? null : defPath + element.getId(); 
@@ -1359,15 +1360,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     if (element != null) { 
       if (element.getMustSupport() && element.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
-        checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG_SUPP)), "SO", "white", RED_BACKGROUND_COLOR, null, false));
+        checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG_SUPP)), "SO", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
       } else if (element.getMustSupport()) { 
-          checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_MUST_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false));
+          checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_MUST_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
       } else if (element != null && element.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE, ExtensionDefinitions.EXT_OBLIGATION_TOOLS)) { 
-       checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG)), "O", "white", RED_BACKGROUND_COLOR, null, false));
+       checkForNoChange(element.getMustSupportElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG)), "O", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false));
       } 
     } 
     if (element != null && element.getIsSummary()) { 
       checkForNoChange(element.getIsSummaryElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_INCLUDED)), "\u03A3", null, null, null, false)); 
+    } 
+    if (element != null && ExtensionUtilities.readBoolExtension(element, ExtensionDefinitions.EXT_TRANSLATABLE)) { 
+      gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_TRANSLATABLE)), "T", "black", HierarchicalTableGenerator.TRANSLATABLE_BACKGROUND_COLOR, null, true);
     } 
     if (element != null && element.getMustHaveValue()) { 
       checkForNoChange(element.getMustHaveValueElement(), gc.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE)), "V", "maroon", null, null, true)); 
@@ -1996,7 +2000,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
             c.getPieces().add(gen.new Piece("binding", null, ": ", null));
             if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
-              c.addMarkdownNoPara("binding", PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
+              c.addMarkdownNoPara("binding", PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
             } else {
               c.addMarkdownNoPara("binding", context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_DESC));
             }
@@ -2011,7 +2015,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
             if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
               c.getPieces().add(gen.new Piece("binding", null, ": ", null));
-              c.addMarkdownNoPara("binding", PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
+              c.addMarkdownNoPara("binding", PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue(), checkForNoChange(PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement())));
             }
           }
           AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, profile, definition.getPath(), rc, null, this);
@@ -2161,7 +2165,97 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
     }
 
+    List<String> slicingNotes = definition == null || !definition.hasSlicing() ? new ArrayList<>() : slicingNotes(profile, definition);
+    if (!slicingNotes.isEmpty()) {
+      if (!c.getPieces().isEmpty()) {
+        c.addPiece(gen.new Piece("br"));
+      }
+      c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICING_NOTE) + ": ", null).addStyle("font-weight:bold"));
+      c.getPieces().add(gen.new Piece(null, String.join(" ", slicingNotes), null));
+    }
     return c;
+  }
+
+  /**
+   * the notes about slicing shown in the description (tree view) and in the definition of the slicer
+   */
+  private List<String> slicingNotes(StructureDefinition profile, ElementDefinition slicer) {
+    List<String> notes = new ArrayList<>();
+    if (slicerHasRules(profile, slicer)) {
+      notes.add(context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICER_RULES_APPLY));
+    }
+    if (hasImpliedTypeSlices(profile, slicer)) {
+      notes.add(context.formatPhrase(RenderingI18nContext.STRUC_DEF_IMPLIED_SLICES_NOT_SHOWN));
+    }
+    return notes;
+  }
+
+  /**
+   * whether the slicer has anything more than the slicing set up - rules on the element itself, or constraints on
+   * its children - in this profile or any profile it's derived from. The rules on the slicer apply to all the slices,
+   * but they are not repeated in the slices, so the reader needs to be told
+   */
+  private boolean slicerHasRules(StructureDefinition profile, ElementDefinition slicer) {
+    if (profile == null || !slicer.hasId()) {
+      return false;
+    }
+    Set<String> done = new HashSet<>();
+    StructureDefinition sd = profile;
+    while (sd != null && sd.getDerivation() == TypeDerivationRule.CONSTRAINT && !done.contains(sd.getUrl())) {
+      done.add(sd.getUrl());
+      for (ElementDefinition ed : sd.getDifferential().getElement()) {
+        if (ed.hasId()) {
+          if (ed.getId().startsWith(slicer.getId() + ".")) {
+            return true; // a constraint on a child of the slicer
+          }
+          if (ed.getId().equals(slicer.getId()) && hasSlicerRules(ed, isTypeSlicing(slicer))) {
+            return true;
+          }
+        }
+      }
+      sd = sd.hasBaseDefinition() ? context.getWorker().fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement())) : null;
+    }
+    return false;
+  }
+
+  private boolean isTypeSlicing(ElementDefinition slicer) {
+    for (ElementDefinitionSlicingDiscriminatorComponent d : slicer.getSlicing().getDiscriminator()) {
+      if (d.getType() == DiscriminatorType.TYPE && "$this".equals(d.getPath())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * min and max on the slicer are about all the slices together, not each slice, so they're not rules that
+   * apply to the slices. And for type slicing, the types are part of the slicing set up
+   */
+  private boolean hasSlicerRules(ElementDefinition ed, boolean typeSlicing) {
+    for (Property p : ed.children()) {
+      if (p.hasValues() && !Utilities.existsInList(p.getName(), "id", "extension", "modifierExtension", "path", "sliceName", "sliceIsConstraining",
+          "label", "code", "slicing", "short", "definition", "comment", "requirements", "alias", "mapping", "min", "max") && !(typeSlicing && "type".equals(p.getName()))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * whether the snapshot has slices for this slicer that the snapshot generator added to round out a closed type slicing
+   * (see ExtensionDefinitions.EXT_IMPLIED_TYPE_SLICE). These aren't shown, so the description says so
+   */
+  private boolean hasImpliedTypeSlices(StructureDefinition profile, ElementDefinition slicer) {
+    if (profile == null || !profile.hasSnapshot() || !slicer.hasId()) {
+      return false;
+    }
+    String prefix = slicer.getId() + ":";
+    for (ElementDefinition ed : profile.getSnapshot().getElement()) {
+      if (ed.hasId() && ed.getId().startsWith(prefix) && !ed.getId().substring(prefix.length()).contains(".") && ed.hasExtension(ExtensionDefinitions.EXT_IMPLIED_TYPE_SLICE)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private Set<String> determineNarrativeStatus(ElementDefinition definition, StructureDefinition profile, boolean snapshot) {
@@ -2316,6 +2410,80 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
+  // icons shown after a type profile when the constraints on the root of the type profile have not
+  // (all) been merged into the snapshot element - see the extension type-profile-constraints.
+  // In IG publisher mode, these are files in the pubpack; otherwise they are inlined
+  private static final String TP_ICON_PARTIAL = "icon-tp-partial.svg";
+  private static final String TP_ICON_NONE = "icon-tp-none.svg";
+  private static final String TP_SVG_PARTIAL = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"10\" height=\"10\" viewBox=\"0 0 16 16\"><circle cx=\"8\" cy=\"8\" r=\"6.75\" fill=\"white\" stroke=\"#333333\" stroke-width=\"1.5\"/><path d=\"M8 1.25 A6.75 6.75 0 0 0 8 14.75 Z\" fill=\"#333333\"/></svg>";
+  private static final String TP_SVG_NONE = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"10\" height=\"10\" viewBox=\"0 0 16 16\"><circle cx=\"8\" cy=\"8\" r=\"6.75\" fill=\"white\" stroke=\"#333333\" stroke-width=\"1.5\"/></svg>";
+
+  /**
+   * Whether the constraints on the root of the type profile p have been merged into the snapshot element
+   * that has the type t. Returns null if there's nothing to show - they have been merged in full, or it
+   * doesn't apply (differential, extensions). Otherwise partial | none | unmarked (unmarked is treated as none)
+   */
+  private String typeProfileMark(TypeRefComponent t, CanonicalType p, boolean diff) {
+    if (diff || t == null || p == null || t.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS) || "Extension".equals(t.getWorkingCode())) {
+      return null;
+    }
+    String mark = p.getExtensionString(ExtensionDefinitions.EXT_TYPE_PROFILE_CONSTRAINTS);
+    if ("full".equals(mark)) {
+      return null;
+    } else if ("partial".equals(mark) || "none".equals(mark)) {
+      return mark;
+    } else {
+      return "unmarked";
+    }
+  }
+
+  private String typeProfileMarkHint(String mark) {
+    switch (mark) {
+    case "partial": return context.formatPhrase(RenderingI18nContext.STRUC_DEF_TP_PARTIAL);
+    case "none": return context.formatPhrase(RenderingI18nContext.STRUC_DEF_TP_NONE);
+    default: return context.formatPhrase(RenderingI18nContext.STRUC_DEF_TP_UNMARKED);
+    }
+  }
+
+  private String typeProfileMarkSrc(String mark) {
+    boolean partial = "partial".equals(mark);
+    if (context.forPublisher() && !context.isInlineGraphics()) {
+      return partial ? TP_ICON_PARTIAL : TP_ICON_NONE;
+    } else {
+      return "data:image/svg+xml;base64,"+java.util.Base64.getEncoder().encodeToString((partial ? TP_SVG_PARTIAL : TP_SVG_NONE).getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    }
+  }
+
+  private void addTypeProfileMark(HierarchicalTableGenerator gen, Cell c, String mark) {
+    if (mark != null) {
+      String hint = typeProfileMarkHint(mark);
+      c.addPiece(gen.new Piece(null, " ", null));
+      Piece img = gen.new Piece("img");
+      img.attr("src", typeProfileMarkSrc(mark));
+      img.setHint(hint);
+      img.addStyle("vertical-align: baseline");
+      if (context.forPublisher()) {
+        img.attr("alt", hint);
+        img.attr("aria-label", hint);
+      } else {
+        img.attr("alt", "");
+      }
+      c.addPiece(img);
+    }
+  }
+
+  private void renderTypeProfileMark(XhtmlNode x, String mark) {
+    if (mark != null) {
+      String hint = typeProfileMarkHint(mark);
+      x.tx(" ");
+      if (context.forPublisher()) {
+        x.img(typeProfileMarkSrc(mark), hint).attribute("title", hint).attribute("aria-label", hint).style("vertical-align: baseline");
+      } else {
+        x.img(typeProfileMarkSrc(mark), "").attribute("title", hint).style("vertical-align: baseline");
+      }
+    }
+  }
+
   private Cell genTypes(HierarchicalTableGenerator gen, Row r, ElementDefinition e, String profileBaseFileName, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean mustSupportMode, boolean diff) {
     Cell c = gen.new Cell(); 
     r.getCells().add(c); 
@@ -2329,7 +2497,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), tail(ed.getElement().getPath()), ed.getElement().getPath())); 
         } else { 
           c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE)+" ", null)); 
-          c.getPieces().add(gen.new Piece(ed.getSource().getWebPath()+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getTypeName()+")", ed.getElement().getPath()));
+          c.getPieces().add(gen.new Piece(ed.getSource().hasWebPath() ? ed.getSource().getWebPath()+"#"+ed.getElement().getPath() : null, tail(ed.getElement().getPath())+" ("+ed.getSource().getTypeName()+")", ed.getElement().getPath()));
         } 
       } 
       return c; 
@@ -2392,13 +2560,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } else { 
               c.getPieces().add(gen.new Piece(corePath+"references.html", t.getWorkingCode(), null)); 
             } 
+            addTypeProfileMark(gen, c, typeProfileMark(t, t.getProfile().get(0), diff));
           } else { 
             c.getPieces().add(gen.new Piece(corePath+"references.html", t.getWorkingCode(), null)); 
           } 
           if (!mustSupportMode && isMustSupportDirect(t) && e.getMustSupport()) { 
             c.addPiece(gen.new Piece(null, " ", null)); 
-            c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
-          } 
+            c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
+          }
           c.getPieces().add(gen.new Piece(null, "(", null)); 
           boolean tfirst = true; 
           for (CanonicalType u : t.getTargetProfile()) { 
@@ -2410,7 +2579,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               genTargetLink(gen, profileBaseFileName, corePath, c, t, u.getValue(), null); 
               if (!mustSupportMode && isMustSupport(u) && e.getMustSupport()) { 
                 c.addPiece(gen.new Piece(null, " ", null)); 
-                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
               } 
             } 
           } 
@@ -2457,9 +2626,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               } else { 
                 c.addPiece(checkForNoChange(t, gen.new Piece((p.getValue().startsWith(corePath)? corePath: "")+ref, t.getWorkingCode(), null))); 
               } 
+              addTypeProfileMark(gen, c, typeProfileMark(t, p, diff));
               if (!mustSupportMode && isMustSupport(p) && e.getMustSupport()) { 
                 c.addPiece(gen.new Piece(null, " ", null)); 
-                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROF_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROF_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
               } 
             } 
           } 
@@ -2501,7 +2671,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           }
           if (!mustSupportMode && isMustSupportDirect(t) && e.getMustSupport()) { 
             c.addPiece(gen.new Piece(null, " ", null)); 
-            c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+            c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
           }
         } 
       } 
@@ -2527,7 +2697,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   private String pfx(String prefix, String url) { 
-    return Utilities.isAbsoluteUrl(url) ? url : prefix + url; 
+    return url == null || Utilities.isAbsoluteUrl(url) ? url : prefix + url; 
   } 
  
   private void genTargetLink(HierarchicalTableGenerator gen, String profileBaseFileName, String corePath, Cell c, TypeRefComponent t, String u, StructureDefinition src) {
@@ -2591,7 +2761,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
  
   private String checkPrepend(String corePath, String path) { 
-    if (context.getPkp() != null && context.getPkp().prependLinks() && !(path.startsWith("http:") || path.startsWith("https:"))) 
+    if (path != null && context.getPkp() != null && context.getPkp().prependLinks() && !(path.startsWith("http:") || path.startsWith("https:"))) 
       return corePath+path; 
     else  
       return path; 
@@ -3109,7 +3279,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (ed.getSource() == profile) { 
             c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE, ed.getElement().getPath()), null)); 
           } else { 
-            c.getPieces().add(gen.new Piece(ed.getSource().getWebPath()+"#"+ed.getElement().getPath(), context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE, ed.getSource().getTypeName()) +"."+ed.getElement().getPath(), null)); 
+            c.getPieces().add(gen.new Piece(ed.getSource().hasWebPath() ? ed.getSource().getWebPath()+"#"+ed.getElement().getPath() : null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE, ed.getSource().getTypeName()) +"."+ed.getElement().getPath(), null)); 
           }           
         } 
       } 
@@ -3156,7 +3326,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } 
             if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) { 
               c.getPieces().add(gen.new Piece(null, ": ", null)); 
-              c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue()); 
+              c.addMarkdownNoPara(PackageHackerR5.fixBindingDescriptions(context.getWorker(), binding.getDescriptionElement()).asStringValue()); 
             }
             if (binding.hasExtension(ExtensionDefinitions.EXT_CONCEPT_DOMAIN)) { 
               c.getPieces().add(gen.new Piece(null, ". ", null));  
@@ -3268,7 +3438,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     List<ElementDefinition> result = new ArrayList<ElementDefinition>(); 
     int i = all.indexOf(element)+1; 
     while (i < all.size() && all.get(i).getPath().length() > element.getPath().length()) { 
-      if ((all.get(i).getPath().substring(0, element.getPath().length()+1).equals(element.getPath()+".")) && !all.get(i).getPath().substring(element.getPath().length()+1).contains(".")) 
+      if ((all.get(i).getPath().substring(0, element.getPath().length()+1).equals(element.getPath()+".")) && !all.get(i).getPath().substring(element.getPath().length()+1).contains(".") 
+          && !all.get(i).hasExtension(ExtensionDefinitions.EXT_IMPLIED_TYPE_SLICE)) // slices the snapshot generator added to round out a closed type slicing - they say nothing
         result.add(all.get(i)); 
       i++; 
     } 
@@ -3402,7 +3573,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.getPieces().add(gen.new Piece(corePath+"references.html#Reference", "Reference", null)); 
             if (!mustSupportMode && isMustSupportDirect(tr) && element.getMustSupport()) { 
               c.addPiece(gen.new Piece(null, " ", null)); 
-              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
             } 
             c.getPieces().add(gen.new Piece(null, "(", null)); 
           } 
@@ -3414,7 +3585,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               genTargetLink(gen, profileBaseFileName, corePath, c, tr, rt.getValue(), src); 
               if (!mustSupportMode && isMustSupport(rt) && element.getMustSupport()) { 
                 c.addPiece(gen.new Piece(null, " ", null)); 
-                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TARG_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+                c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TARG_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
               } 
               first = false; 
             } 
@@ -3444,7 +3615,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             choicerow.getCells().add(c); 
             if (!mustSupportMode && isMustSupport(tr) && element.getMustSupport()) { 
               c.addPiece(gen.new Piece(null, " ", null)); 
-              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TARG_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TARG_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
             } 
           } else { 
             used = true; 
@@ -3456,7 +3627,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             choicerow.getCells().add(c); 
             if (!mustSupportMode && isMustSupport(tr) && element.getMustSupport()) { 
               c.addPiece(gen.new Piece(null, " ", null)); 
-              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+              c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
             } 
           } 
           if (tr.hasProfile() && used) { 
@@ -3473,7 +3644,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                   typeCell.addPiece(gen.new Piece(psd.getWebPath(), psd.getName(), psd.present())); 
                 if (!mustSupportMode && isMustSupport(pt) && element.getMustSupport()) { 
                   typeCell.addPiece(gen.new Piece(null, " ", null)); 
-                  typeCell.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROF_SUPP)), "S", "white", RED_BACKGROUND_COLOR, null, false);
+                  typeCell.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROF_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
                 } 
               } 
             } 
@@ -3907,7 +4078,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
       if (ved.getBinding().hasDescription() && MarkDownProcessor.isSimpleMarkdown(ved.getBinding().getDescription())) { 
         c.getPieces().add(gen.new Piece(null, ": ", null)); 
-        c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context.getWorker(), ved.getBinding().getDescriptionElement()).asStringValue()); 
+        c.addMarkdownNoPara(PackageHackerR5.fixBindingDescriptions(context.getWorker(), ved.getBinding().getDescriptionElement()).asStringValue()); 
       } 
 
       if (ved.getBinding().hasExtension(ExtensionDefinitions.EXT_CONCEPT_DOMAIN)) { 
@@ -3977,7 +4148,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     Stack<ElementDefinition> dstack = new Stack<>(); 
     for (ElementDefinition ec : elements) { 
-      if ((incProfiledOut || !"0".equals(ec.getMax())) && !excluded.contains(ec)) { 
+      if ((incProfiledOut || !"0".equals(ec.getMax())) && !excluded.contains(ec) && !ec.hasExtension(ExtensionDefinitions.EXT_IMPLIED_TYPE_SLICE)) { 
         ElementDefinition compareElement = null; 
         if (mode==GEN_MODE_DIFF) 
           compareElement = getBaseElement(ec, sd.getBaseDefinition(), sd);
@@ -4520,6 +4691,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (mode != GEN_MODE_DIFF && d.hasIsSummary()) { 
       tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_SUMM), "search.html#summary", strikethrough, Boolean.toString(d.getIsSummary())); 
     } 
+    if (ExtensionUtilities.readBoolExtension(d, ExtensionDefinitions.EXT_TRANSLATABLE)) { 
+      tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_TRANSLATABLE), "languages.html#translatable", strikethrough, "true"); 
+    } 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_REQUIREMENTS), null, strikethrough, compareMarkdown(sd.getName(), d.getRequirementsElement(), (compare==null) || slicedExtension ? null : compare.getRequirementsElement(), mode)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_LABEL), null, strikethrough, compareString(d.getLabel(), d.getLabelElement(), null, "label", d, (compare != null ? compare.getLabel() : null), null, mode, false, false));    
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_ALT_NAME), null, strikethrough, compareSimpleTypeLists(d.getAlias(), ((compare==null) || slicedExtension ? null : compare.getAlias()), mode)); 
@@ -4813,6 +4987,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else { 
       x.tx(context.formatPhrase(RenderingI18nContext.STRUC_DEF_NO_DESCRIM)); 
     } 
+    List<String> slicingNotes = slicingNotes(profile, ed);
+    if (!slicingNotes.isEmpty()) {
+      XhtmlNode p = x.para();
+      p.b().tx(context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICING_NOTE) + ": ");
+      p.tx(String.join(" ", slicingNotes));
+    }
     tableRow(tbl, "Slicing", "profiling.html#slicing", strikethrough, x); 
     tbl.tx("\r\n"); 
   } 
@@ -5067,6 +5247,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     if ((!mustSupportOnly && (t.hasProfile() || (compare!=null && compare.hasProfile()))) || isMustSupport(t.getProfile())) { 
       StatusList<ResolvedCanonical> profiles = analyseProfiles(t.getProfile(), compare == null ? null : compare.getProfile(), mustSupportOnly, mode);       
+      if (mode != GEN_MODE_DIFF) {
+        for (ResolvedCanonical rc : profiles) {
+          if (rc != null && rc.status != ListItemStatus.Removed) {
+            rc.typeProfileMark = typeProfileMark(t, findCanonical(t.getProfile(), rc.url), false);
+          }
+        }
+      }
       if (profiles.size() > 0) { 
         if (!ts) { 
           getTypeLink(unchanged(x), t, sd); 
@@ -5115,6 +5302,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
   } 
  
+  private CanonicalType findCanonical(List<CanonicalType> list, String url) {
+    for (CanonicalType ct : list) {
+      if (url != null && url.equals(ct.getValue())) {
+        return ct;
+      }
+    }
+    return null;
+  }
+
   private StatusList<ResolvedCanonical> analyseProfiles(List<CanonicalType> newProfiles, List<CanonicalType> oldProfiles, boolean mustSupportOnly, int mode) { 
     StatusList<ResolvedCanonical> profiles = new StatusList<ResolvedCanonical>(); 
     for (CanonicalType pt : newProfiles) { 
@@ -5216,13 +5412,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       ElementDefinitionBindingComponent compBinding = compare == null ? null : compare.getBinding(); 
       XhtmlNode bindingDesc = null; 
       if (binding.hasDescription()) { 
-        MarkdownType newBinding = PublicationHacker.fixBindingDescriptions(context.getContext(), binding.getDescriptionElement()); 
+        MarkdownType newBinding = PackageHackerR5.fixBindingDescriptions(context.getContext(), binding.getDescriptionElement()); 
         if (mode == GEN_MODE_SNAP || mode == GEN_MODE_MS) { 
           bindingDesc = new XhtmlNode(NodeType.Element, "div"); 
           bindingDesc.addChildren(new XhtmlParser().parseMDFragment(hostMd.processMarkdown("Binding.description", newBinding))); 
         } else { 
  
-          StringType oldBinding = compBinding != null && compBinding.hasDescription() ? PublicationHacker.fixBindingDescriptions(context.getContext(), compBinding.getDescriptionElement()) : null; 
+          StringType oldBinding = compBinding != null && compBinding.hasDescription() ? PackageHackerR5.fixBindingDescriptions(context.getContext(), compBinding.getDescriptionElement()) : null; 
           bindingDesc = compareMarkdown("Binding.description", newBinding, oldBinding, mode); 
         } 
       } 
@@ -5291,7 +5487,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         span.tx("to "); 
         XhtmlNode ispan = span.spanClss("copy-text-inline"); 
         ispan.code().tx(binding.getValueSet()); 
-        ispan.button("btn-copy", context.formatPhrase(RenderingI18nContext.STRUC_DEF_COPY_URL)).attribute("data-clipboard-text", binding.getValueSet()); 
+        ispan.button("btn-copy", "copy", context.formatPhrase(RenderingI18nContext.STRUC_DEF_COPY_URL)).attribute("data-clipboard-text", binding.getValueSet());
       } 
       span.tx(")"); 
     } 
@@ -5506,8 +5702,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if ("http://unitsofmeasure.org/".equals(coding.getSystem())) 
       return " (" + (context.formatPhrase(RenderingI18nContext.GENERAL_UCUM)) + ": " + coding.getCode() + ")"; 
     CodeSystem cs = context.getContext().fetchCodeSystem(coding.getSystem(), IWorkerContext.VersionResolutionRules.defaultRule());
-    if (cs == null) 
-      return "<span title=\"" + coding.getSystem() + "\">" + coding.getCode() + "</a>" + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")"); 
+    if (cs == null || !cs.hasWebPath()) 
+      return "<span title=\"" + Utilities.escapeXml(cs == null ? coding.getSystem() : cs.present()) + "\">" + coding.getCode() + "</span>" + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")"); 
     else 
       return "<a title=\"" + cs.present() + "\" href=\"" + Utilities.escapeXml(cs.getWebPath()) + "#" + cs.getId() + "-" + coding.getCode() + "\">" + coding.getCode() + "</a>" + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")"); 
   } 

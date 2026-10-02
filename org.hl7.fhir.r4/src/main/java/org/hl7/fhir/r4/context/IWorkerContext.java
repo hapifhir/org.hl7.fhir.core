@@ -58,6 +58,7 @@ import org.hl7.fhir.r4.utils.INarrativeGenerator;
 import org.hl7.fhir.r4.utils.validation.IResourceValidator;
 
 import org.hl7.fhir.utilities.TranslationServices;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
@@ -472,16 +473,6 @@ public interface IWorkerContext {
   public String oid2Uri(String code);
 
   public boolean hasCache();
-
-  public interface ILoggingService {
-    public enum LogCategory {
-      PROGRESS, TX, INIT, CONTEXT, HTML
-    }
-
-    public void logMessage(String message); // status messages, always display
-
-    public void logDebugMessage(LogCategory category, String message); // verbose; only when debugging
-  }
 
   public void setLogger(ILoggingService logger);
 

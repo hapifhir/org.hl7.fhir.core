@@ -168,6 +168,10 @@ public abstract class PARTY_PROXY extends LogicalBase implements ICompositeType 
 
       public abstract PARTY_PROXY copy();
 
+      public void assignValues(Base dst) {
+        copyValues((PARTY_PROXY) dst);
+      }
+
       public void copyValues(PARTY_PROXY dst) {
         super.copyValues(dst);
         dst.external_ref = external_ref == null ? null : external_ref.copy();

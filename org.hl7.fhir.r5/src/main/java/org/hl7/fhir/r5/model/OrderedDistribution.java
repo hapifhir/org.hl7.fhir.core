@@ -282,6 +282,10 @@ public class OrderedDistribution extends BackboneType implements ICompositeType 
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((OrderedDistributionIntervalComponent) dst);
+      }
+
       public void copyValues(OrderedDistributionIntervalComponent dst) {
         super.copyValues(dst);
         dst.rankOrder = rankOrder == null ? null : rankOrder.copy();
@@ -798,6 +802,10 @@ public class OrderedDistribution extends BackboneType implements ICompositeType 
         OrderedDistribution dst = new OrderedDistribution();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((OrderedDistribution) dst);
       }
 
       public void copyValues(OrderedDistribution dst) {

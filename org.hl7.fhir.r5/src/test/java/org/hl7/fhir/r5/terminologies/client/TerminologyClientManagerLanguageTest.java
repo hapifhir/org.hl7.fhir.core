@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hl7.fhir.r5.context.ILoggingService;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
@@ -58,7 +58,7 @@ public class TerminologyClientManagerLanguageTest {
   private static class TestManager extends TerminologyClientManager {
     List<String> requests = new ArrayList<>();
 
-    TestManager(ITerminologyClientFactory factory, ILoggingService logger) {
+    TestManager(ITerminologyClientFactory5 factory, ILoggingService logger) {
       super(factory, logger);
     }
 
@@ -81,9 +81,9 @@ public class TerminologyClientManagerLanguageTest {
     }
   }
 
-  private static ITerminologyClient makeFakeClient(final String address) {
-    return (ITerminologyClient) Proxy.newProxyInstance(TerminologyClientManagerLanguageTest.class.getClassLoader(),
-        new Class<?>[] { ITerminologyClient.class }, (proxy, method, args) -> {
+  private static ITerminologyClient5 makeFakeClient(final String address) {
+    return (ITerminologyClient5) Proxy.newProxyInstance(TerminologyClientManagerLanguageTest.class.getClassLoader(),
+        new Class<?>[] { ITerminologyClient5.class }, (proxy, method, args) -> {
       switch (method.getName()) {
       case "getAddress": return address;
       case "getUserAgent": return "fhir-core-tests";
@@ -103,9 +103,9 @@ public class TerminologyClientManagerLanguageTest {
     });
   }
 
-  private static class TestFactory implements ITerminologyClientFactory {
+  private static class TestFactory implements ITerminologyClientFactory5 {
     @Override
-    public ITerminologyClient makeClient(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException {
+    public ITerminologyClient5 makeClientR5(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException {
       return makeFakeClient(url);
     }
     @Override

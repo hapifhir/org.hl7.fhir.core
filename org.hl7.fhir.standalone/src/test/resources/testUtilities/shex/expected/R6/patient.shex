@@ -1,0 +1,174 @@
+PREFIX fhir: <http://hl7.org/fhir/> 
+PREFIX fhirvs: <http://hl7.org/fhir/ValueSet/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+
+# ShEx Version 2.2
+IMPORT <Code.shex>
+IMPORT <Date.shex>
+IMPORT <Period.shex>
+IMPORT <Address.shex>
+IMPORT <Boolean.shex>
+IMPORT <Integer.shex>
+IMPORT <DateTime.shex>
+IMPORT <HumanName.shex>
+IMPORT <Reference.shex>
+IMPORT <Attachment.shex>
+IMPORT <Identifier.shex>
+IMPORT <ContactPoint.shex>
+IMPORT <Organization.shex>
+IMPORT <Practitioner.shex>
+IMPORT <RelatedPerson.shex>
+IMPORT <DomainResource.shex>
+IMPORT <BackboneElement.shex>
+IMPORT <CodeableConcept.shex>
+IMPORT <PractitionerRole.shex>
+
+
+start=@<Patient> AND {fhir:nodeRole [fhir:treeRoot]}
+
+# Information about an individual or animal receiving health care services
+<Patient> EXTENDS @<DomainResource> CLOSED {   
+
+    a [fhir:Patient]?;
+    fhir:nodeRole [fhir:treeRoot]?;
+
+    fhir:identifier @<OneOrMore_Identifier>?;  # An identifier for this patient
+    fhir:active @<Boolean>?;                # Whether this patient's record is 
+                                            # in active use 
+    fhir:name @<OneOrMore_HumanName>?;      # A name associated with the patient
+    fhir:telecom @<OneOrMore_ContactPoint>?;  # A contact detail for the individual
+    fhir:gender @<Code> AND
+    	{fhir:v @fhirvs:administrative-gender}?;  # male | female | other | unknown
+    fhir:birthDate @<Date>?;                # The date of birth for the 
+                                            # individual 
+    fhir:deceased @<Boolean>  OR 
+    			@<DateTime>  ?;  # Indicates if/when the individual 
+                                            # is deceased 
+    fhir:address @<OneOrMore_Address>?;     # An address for the individual
+    fhir:maritalStatus @<CodeableConcept>?;  # Marital (civil) status of a patient
+    fhir:multipleBirth @<Boolean>  OR 
+    			@<Integer>  ?;  # Whether patient is part of a 
+                                            # multiple birth 
+    fhir:photo @<OneOrMore_Attachment>?;    # Image of the patient
+    fhir:contact @<OneOrMore_Patient.contact>?;  # A contact party (e.g. guardian, 
+                                            # partner, friend) for the patient 
+    fhir:communication @<OneOrMore_Patient.communication>?;  # A language which may be used to 
+                                            # communicate with the patient about 
+                                            # his or her health 
+    fhir:generalPractitioner @<OneOrMore_Reference_Organization_OR_Practitioner_OR_PractitionerRole>?;  # Patient's nominated primary care 
+                                            # provider 
+    fhir:managingOrganization @<Reference> AND {fhir:l 
+    			@<Organization> ? }?;  # Organization that is the custodian 
+                                            # of the patient record 
+    fhir:link @<OneOrMore_Patient.link>?;   # Link to a Patient or RelatedPerson 
+                                            # resource that concerns the same 
+                                            # actual individual 
+}  
+
+# A contact party (e.g. guardian, partner, friend) for the patient
+<Patient.contact> EXTENDS @<BackboneElement> CLOSED {   
+    fhir:relationship @<OneOrMore_CodeableConcept>?;  # The kind of personal relationship
+    fhir:role @<OneOrMore_CodeableConcept>?;  # The kind of functional role
+    fhir:name @<HumanName>?;                # A name associated with the contact 
+                                            # person 
+    fhir:additionalName @<OneOrMore_HumanName>?;  # Additional names for the contact 
+                                            # person 
+    fhir:telecom @<OneOrMore_ContactPoint>?;  # A contact detail for the person
+    fhir:address @<Address>?;               # Address for the contact person
+    fhir:additionalAddress @<OneOrMore_Address>?;  # Additional addresses for the 
+                                            # contact person 
+    fhir:gender @<Code> AND
+    	{fhir:v @fhirvs:administrative-gender}?;  # male | female | other | unknown
+    fhir:organization @<Reference> AND {fhir:l 
+    			@<Organization> ? }?;  # Organization that is associated 
+                                            # with the contact 
+    fhir:period @<Period>?;                 # The period during which this 
+                                            # contact person or organization is 
+                                            # valid to be contacted relating to 
+                                            # this patient 
+}  
+
+# A language which may be used to communicate with the patient about his or her health
+<Patient.communication> EXTENDS @<BackboneElement> CLOSED {   
+    fhir:language @<CodeableConcept>;       # The language which can be used to 
+                                            # communicate with the patient about 
+                                            # his or her health 
+    fhir:preferred @<Boolean>?;             # Language preference indicator
+}  
+
+# Link to a Patient or RelatedPerson resource that concerns the same actual individual
+<Patient.link> EXTENDS @<BackboneElement> CLOSED {   
+    fhir:other @<Reference> AND {fhir:l 
+    			@<Patient> OR 
+    			@<RelatedPerson> ? };  # The other patient or related 
+                                            # person resource that the link 
+                                            # refers to 
+    fhir:type @<Code> AND
+    	{fhir:v @fhirvs:link-type};  # replaced-by | replaces | refer | 
+                                            # seealso 
+}  
+
+#---------------------- Cardinality Types (OneOrMore) -------------------
+
+<OneOrMore_Identifier> CLOSED {
+    rdf:first @<Identifier>  ;
+    rdf:rest [rdf:nil] OR @<OneOrMore_Identifier> 
+}
+
+<OneOrMore_HumanName> CLOSED {
+    rdf:first @<HumanName>  ;
+    rdf:rest [rdf:nil] OR @<OneOrMore_HumanName> 
+}
+
+<OneOrMore_ContactPoint> CLOSED {
+    rdf:first @<ContactPoint>  ;
+    rdf:rest [rdf:nil] OR @<OneOrMore_ContactPoint> 
+}
+
+<OneOrMore_Address> CLOSED {
+    rdf:first @<Address>  ;
+    rdf:rest [rdf:nil] OR @<OneOrMore_Address> 
+}
+
+<OneOrMore_Attachment> CLOSED {
+    rdf:first @<Attachment>  ;
+    rdf:rest [rdf:nil] OR @<OneOrMore_Attachment> 
+}
+
+<OneOrMore_Patient.contact> CLOSED {
+    rdf:first @<Patient.contact>  ;
+    rdf:rest [rdf:nil] OR @<OneOrMore_Patient.contact> 
+}
+
+<OneOrMore_Patient.communication> CLOSED {
+    rdf:first @<Patient.communication>  ;
+    rdf:rest [rdf:nil] OR @<OneOrMore_Patient.communication> 
+}
+
+<OneOrMore_Reference_Organization_OR_Practitioner_OR_PractitionerRole> CLOSED {
+    rdf:first @<Reference> AND {fhir:l 
+			@<Organization> OR 
+			@<Practitioner> OR 
+			@<PractitionerRole> } ;
+    rdf:rest [rdf:nil] OR @<OneOrMore_Reference_Organization_OR_Practitioner_OR_PractitionerRole> 
+}
+
+<OneOrMore_Patient.link> CLOSED {
+    rdf:first @<Patient.link>  ;
+    rdf:rest [rdf:nil] OR @<OneOrMore_Patient.link> 
+}
+
+<OneOrMore_CodeableConcept> CLOSED {
+    rdf:first @<CodeableConcept>  ;
+    rdf:rest [rdf:nil] OR @<OneOrMore_CodeableConcept> 
+}
+
+#---------------------- Value Sets ------------------------
+
+# The gender of a person used for administrative purposes.
+fhirvs:administrative-gender ["male" "female" "other" "unknown"]
+
+# The type of link between this Patient resource and another Patient/RelatedPerson resource.
+fhirvs:link-type ["replaced-by" "replaces" "refer" "seealso"]
+

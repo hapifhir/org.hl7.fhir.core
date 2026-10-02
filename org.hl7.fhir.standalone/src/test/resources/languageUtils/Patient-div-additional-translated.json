@@ -1,0 +1,13 @@
+{
+  "resourceType": "Patient",
+  "id": "div-additional",
+  "language": "fr",
+  "text": {
+    "status": "additional",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\">Narrative is hand-written</div></div>"
+  },
+  "name": [{
+    "family": "Doe",
+    "given": ["John"]
+  }]
+}

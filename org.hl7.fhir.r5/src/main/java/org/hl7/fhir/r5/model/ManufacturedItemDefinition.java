@@ -372,6 +372,10 @@ public class ManufacturedItemDefinition extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ManufacturedItemDefinitionPropertyComponent) dst);
+      }
+
       public void copyValues(ManufacturedItemDefinitionPropertyComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -920,6 +924,10 @@ public class ManufacturedItemDefinition extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ManufacturedItemDefinitionComponentComponent) dst);
+      }
+
       public void copyValues(ManufacturedItemDefinitionComponentComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1363,6 +1371,10 @@ public class ManufacturedItemDefinition extends DomainResource {
         ManufacturedItemDefinitionComponentConstituentComponent dst = new ManufacturedItemDefinitionComponentConstituentComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ManufacturedItemDefinitionComponentConstituentComponent) dst);
       }
 
       public void copyValues(ManufacturedItemDefinitionComponentConstituentComponent dst) {
@@ -2202,6 +2214,10 @@ public class ManufacturedItemDefinition extends DomainResource {
         ManufacturedItemDefinition dst = new ManufacturedItemDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ManufacturedItemDefinition) dst);
       }
 
       public void copyValues(ManufacturedItemDefinition dst) {

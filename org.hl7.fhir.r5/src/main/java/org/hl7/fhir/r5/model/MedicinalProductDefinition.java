@@ -237,6 +237,10 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionContactComponent) dst);
+      }
+
       public void copyValues(MedicinalProductDefinitionContactComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -628,6 +632,10 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionNameComponent) dst);
+      }
+
       public void copyValues(MedicinalProductDefinitionNameComponent dst) {
         super.copyValues(dst);
         dst.productName = productName == null ? null : productName.copy();
@@ -880,6 +888,10 @@ public class MedicinalProductDefinition extends DomainResource {
         MedicinalProductDefinitionNamePartComponent dst = new MedicinalProductDefinitionNamePartComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionNamePartComponent) dst);
       }
 
       public void copyValues(MedicinalProductDefinitionNamePartComponent dst) {
@@ -1153,6 +1165,10 @@ public class MedicinalProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionNameUsageComponent) dst);
+      }
+
       public void copyValues(MedicinalProductDefinitionNameUsageComponent dst) {
         super.copyValues(dst);
         dst.country = country == null ? null : country.copy();
@@ -1375,6 +1391,10 @@ public class MedicinalProductDefinition extends DomainResource {
         MedicinalProductDefinitionCrossReferenceComponent dst = new MedicinalProductDefinitionCrossReferenceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionCrossReferenceComponent) dst);
       }
 
       public void copyValues(MedicinalProductDefinitionCrossReferenceComponent dst) {
@@ -1710,6 +1730,10 @@ public class MedicinalProductDefinition extends DomainResource {
         MedicinalProductDefinitionOperationComponent dst = new MedicinalProductDefinitionOperationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionOperationComponent) dst);
       }
 
       public void copyValues(MedicinalProductDefinitionOperationComponent dst) {
@@ -2074,6 +2098,10 @@ public class MedicinalProductDefinition extends DomainResource {
         MedicinalProductDefinitionCharacteristicComponent dst = new MedicinalProductDefinitionCharacteristicComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinitionCharacteristicComponent) dst);
       }
 
       public void copyValues(MedicinalProductDefinitionCharacteristicComponent dst) {
@@ -4180,6 +4208,10 @@ public class MedicinalProductDefinition extends DomainResource {
         MedicinalProductDefinition dst = new MedicinalProductDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicinalProductDefinition) dst);
       }
 
       public void copyValues(MedicinalProductDefinition dst) {

@@ -79,13 +79,13 @@ public class IGGlobalsFinder implements IPackageVisitorProcessor {
   }
 
   @Override
-  public Object startPackage(PackageContext context) throws FHIRException, IOException, EOperationOutcome {
+  public Object startPackage(PackageContext context) throws FHIRException, IOException {
     return this;
   }
 
   @Override
   public void processResource(PackageContext context, Object clientContext, String type, String id, byte[] content)
-      throws FHIRException, IOException, EOperationOutcome {
+      throws FHIRException, IOException {
     if (clientContext != null && "ImplementationGuide".equals(type)) {
       JsonObject ig = JsonParser.parseObject(content);
       if (ig.has("global")) {
@@ -103,11 +103,11 @@ public class IGGlobalsFinder implements IPackageVisitorProcessor {
   }
 
   @Override
-  public void finishPackage(PackageContext context) throws FHIRException, IOException, EOperationOutcome {
+  public void finishPackage(PackageContext context) throws FHIRException, IOException {
   }
 
   @Override
-  public void alreadyVisited(String pid) throws FHIRException, IOException, EOperationOutcome {
+  public void alreadyVisited(String pid) throws FHIRException, IOException {
   }
 
 }

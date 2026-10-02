@@ -1159,13 +1159,13 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     String countString = Integer.toString(count) + "-" + Integer.toString(resCount);
     panel = x.div().attribute("class", "panel panel-default");
     if (igRenderingMode) {
-      panelHead = panel.div().attribute("class", "panel-heading").attribute("role", "tab").attribute("id","heading" + countString).h(nextLevel,context.prefixAnchor(r.getType() + countString)).attribute("class", "panel-title");
+      panelHead = panel.div().attribute("class", "panel-heading").attribute("id","heading" + countString).h(nextLevel,context.prefixAnchor(r.getType() + countString)).attribute("class", "panel-title");
       panelRef = panelHead.ah("#collapse" + countString).attribute("role","button").attribute("data-toggle", "collapse").attribute("aria-expanded","true").attribute("aria-controls","collapse" + countString);
       //panelRef = panelHead.addTag("button").attribute("href","#collapse" + countString).attribute("role","button").attribute("data-toggle", "collapse").attribute("aria-expanded","false").attribute("aria-controls","collapse" + countString);
       //panelRef.span("float: right;","").attribute("class", "lead").addText("Resource Conformance: " + getResourceExpectation(r));
       panelRef.span("float: right;","").addText("Resource Conformance: " + getResourceExpectation(r));
       panelRef.addText(r.getType());
-      body = panel.div().attribute("class", collapseClass).attribute("id","collapse" + countString).attribute("role","tabpanel").attribute("aria-labelledby","heading" + countString).div().attribute("class", "panel-body").div().attribute("class", "container");
+      body = panel.div().attribute("class", collapseClass).attribute("id","collapse" + countString).attribute("role","region").attribute("aria-labelledby","heading" + countString).div().attribute("class", "panel-body").div().attribute("class", "container");
     }
     else {
       panelHead = panel.div().attribute("class", "panel-heading").h(nextLevel,context.prefixAnchor(r.getType() + countString)).attribute("class", "panel-title");

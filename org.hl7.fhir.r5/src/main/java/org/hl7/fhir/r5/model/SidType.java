@@ -38,4 +38,14 @@ public class SidType extends UriType {
 	public String fhirType() {
 		return "sid";
 	}
+
+  /**
+   * without this, copy() came from UriType and returned a UriType, not a SidType
+   */
+  @Override
+  public SidType copy() {
+    SidType ret = new SidType();
+    copyValues(ret);
+    return ret;
+  }
 }

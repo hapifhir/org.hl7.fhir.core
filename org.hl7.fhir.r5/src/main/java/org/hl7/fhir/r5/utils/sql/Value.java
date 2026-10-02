@@ -17,7 +17,7 @@ public class Value {
   private String valueString;
   private Boolean valueBoolean;
   private Date valueDate;
-  private Integer valueInt;
+  private Long valueInt;
   private BigDecimal valueDecimal;
   private byte[] valueBinary;
   private Base valueComplex;
@@ -46,7 +46,7 @@ public class Value {
     return v;
   }
   
-  public static Value makeInteger(String s, Integer i) {
+  public static Value makeInteger(String s, Long i) {
     Value v = new Value();
     v.valueString = s;
     v.valueInt = i;
@@ -81,7 +81,7 @@ public class Value {
     return valueDate;
   }
 
-  public Integer getValueInt() {
+  public Long getValueInt() {
     return valueInt;
   }
   

@@ -828,6 +828,10 @@ public class HumanName extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((HumanName) dst);
+      }
+
       public void copyValues(HumanName dst) {
         super.copyValues(dst);
         dst.use = use == null ? null : use.copy();

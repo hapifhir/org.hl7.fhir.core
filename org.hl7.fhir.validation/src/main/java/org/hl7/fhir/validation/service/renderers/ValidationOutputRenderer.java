@@ -6,9 +6,9 @@ import java.io.PrintStream;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.model.core.Bundle;
+import org.hl7.fhir.model.core.OperationOutcome;
 
 public abstract class ValidationOutputRenderer {
 

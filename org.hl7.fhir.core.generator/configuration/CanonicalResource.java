@@ -4,6 +4,9 @@
   }
   
   public String present() {
+    if (hasUserData(UserDataNames.render_presentation)) {
+      return getUserString(UserDataNames.render_presentation);
+    }
     if (hasTitle())
       return getTitle();
     if (hasName())
@@ -47,14 +50,14 @@
       return getUserString(UserDataNames.render_presentation);
     }
     if (hasTitleElement()) {
-      for (Entry<String, String> t : ExtensionUtilities.getLanguageTranslations(getTitleElement()).entrySet()) {
+      for (Map.Entry<String, String> t : ExtensionUtilities.getLanguageTranslations(getTitleElement()).entrySet()) {
         if (t.getKey().equals(lang)) {
           return t.getValue();
         }
       }
     }
     if (hasNameElement()) {
-      for (Entry<String, String> t : ExtensionUtilities.getLanguageTranslations(getNameElement()).entrySet()) {
+      for (Map.Entry<String, String> t : ExtensionUtilities.getLanguageTranslations(getNameElement()).entrySet()) {
         if (t.getKey().equals(lang)) {
           return t.getValue();
         }

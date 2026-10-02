@@ -70,6 +70,10 @@ public class Count extends Quantity implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Count) dst);
+      }
+
       public void copyValues(Count dst) {
         super.copyValues(dst);
       }

@@ -3,14 +3,15 @@ package org.hl7.fhir.validation.instance.scoring;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.UcumException;
 import org.fhir.ucum.UcumService;
-import org.hl7.fhir.r5.elementmodel.ObjectConverter;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.fhirpath.ExpressionNode;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.model.ValidationInformation;
+import org.hl7.fhir.services.elementmodel.ObjectConverter;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.services.fhirpath.ExpressionNode;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.regex.RegexTimeout;
@@ -42,15 +43,15 @@ public class ScoringEngine {
   public ScoreOutcome generateScores(StructureDefinition structure, Element element) {
     ScoreOutcome outcome = new ScoreOutcome();
     outcome.setElement(new ScoredElement(element.fhirType(), -1, element.fhirType(), 0, 0, new ArrayList<>(), new ArrayList<>()));
-    for (Element child : element.getChildren()) {
+    for (Element child : element.getChildList()) {
       scoreElement(structure, element.fhirType(), outcome.getRules(), outcome.getElement(), element, element, child);
     }
     return outcome;
   }
 
-  private List<Extension> makeScoreRulesList(List<Base.ValidationInfo> list) {
+  private List<Extension> makeScoreRulesList(List<ValidationInformation> list) {
     List<Extension> rules = new ArrayList<>();
-    for (Base.ValidationInfo info : list) {
+    for (ValidationInformation info : list) {
       for (Extension ext : info.getDefinition().getExtension()) {
         if (Utilities.existsInList(ext.getUrl(), ExtensionDefinitions.EXT_SCORE)) {
           rules.add(ext);
@@ -61,7 +62,7 @@ public class ScoringEngine {
   }
 
   private void scoreElement(StructureDefinition structure, String path, List<RuleScore> ruleList, ScoredElement res, Element root, Element focus, Element element) {
-    List<Base.ValidationInfo> vi = element.getValidationInfoForProfile(structure);
+    List<ValidationInformation> vi = element.getValidationInfoForProfile(structure);
     List<Extension> scoreRules = makeScoreRulesList(vi);
     String n = element.getName();
     if (!vi.isEmpty()) {
@@ -100,7 +101,7 @@ public class ScoringEngine {
     }
     ScoredElement e = new ScoredElement(n, element.getIndex(), element.fhirType(), score, total, reasons, scoreRules);
     res.addChild(e);
-    for (Element child : element.getChildren()) {
+    for (Element child : element.getChildList()) {
       scoreElement(structure, npath, ruleList, e, root, child.isResource() ? child : focus, child);
     }
   }
@@ -172,7 +173,7 @@ public class ScoringEngine {
           return rule.substring(7).equals(element.getNamedChildValue("system"));
         } else if (rule.startsWith("binding:")) {
           Coding c = ObjectConverter.readAsCoding(element);
-          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8), IWorkerContext.VersionResolutionRules.defaultRule());
+          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8), VersionResolutionRules.defaultRule());
           if (vs == null) {
             reasons.add("Unable to find ValueSet: " + rule.substring(8));
             return false;
@@ -213,7 +214,7 @@ public class ScoringEngine {
           return rule.substring(7).equals(element.getNamedChildValue("system"));
         } else if (rule.startsWith("binding:")) {
           Coding c = ObjectConverter.readAsCoding(element);
-          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8), IWorkerContext.VersionResolutionRules.defaultRule());
+          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8), VersionResolutionRules.defaultRule());
           if (vs == null) {
             reasons.add("Unable to find ValueSet: " + rule.substring(8));
             return false;
@@ -239,7 +240,7 @@ public class ScoringEngine {
           return rule.substring(7).equals(element.getNamedChildValue("system"));
         } else if (rule.startsWith("binding:")) {
           CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
-          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8), IWorkerContext.VersionResolutionRules.defaultRule());
+          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8), VersionResolutionRules.defaultRule());
           if (vs == null) {
             reasons.add("Unable to find ValueSet: " + rule.substring(8));
             return false;

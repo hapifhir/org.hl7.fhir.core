@@ -42,8 +42,8 @@ public class JavaParserRdfGenerator extends JavaBaseGenerator {
 
 //  private StringBuilder parser = new StringBuilder();
   private StringBuilder composer = new StringBuilder();
-  private StringBuilder reg = new StringBuilder();
-  private StringBuilder regt = new StringBuilder();
+  private InstanceOfCases reg = new InstanceOfCases();
+  private InstanceOfCases regt = new InstanceOfCases();
 
   public JavaParserRdfGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String jid) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, jid);
@@ -54,10 +54,10 @@ public class JavaParserRdfGenerator extends JavaBaseGenerator {
     generateComposer(analysis);
     if (!analysis.isAbstract()) {
       if (analysis.getStructure().getKind() == StructureDefinitionKind.COMPLEXTYPE) {
-        regt.append("    } else if (value instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(parent, parentType, name, ("+analysis.getClassName()+")value, index);\r\n");
+        regt.add(analysis.getStructure(), definitions, "    } else if (value instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(parent, parentType, name, ("+analysis.getClassName()+")value, index);\r\n");
       }
       if (analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE) {
-        reg.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(parent, null, \""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+")resource, -1);\r\n");
+        reg.add(analysis.getStructure(), definitions, "    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(parent, null, \""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+")resource, -1);\r\n");
       }
     }
   }

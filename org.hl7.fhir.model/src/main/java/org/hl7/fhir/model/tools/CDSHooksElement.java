@@ -181,6 +181,10 @@ public abstract class CDSHooksElement extends LogicalBase implements ICompositeT
 
       public abstract CDSHooksElement copy(EnumSet<CopyObjectOptions> options);
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksElement) dst, options);
+      }
+
       public void copyValues(CDSHooksElement dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.extension = extension == null ? null : extension.copy(options);

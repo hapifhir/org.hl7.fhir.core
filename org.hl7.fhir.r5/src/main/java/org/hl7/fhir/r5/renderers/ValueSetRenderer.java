@@ -63,6 +63,7 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.LoincLinker;
+import org.hl7.fhir.utilities.StandardsStatus;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
@@ -697,7 +698,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (context.forPublisher()) {
       XhtmlNode ispan = x.spanClss("copy-text-inline");
       String copyUrl = v == null ? u : u + "|" + v;
-      ispan.button("btn-copy", context.formatPhrase(RenderingI18nContext.STRUC_DEF_COPY_URL)).attribute("data-clipboard-text", copyUrl).tx(" ");
+      ispan.button("btn-copy", "copy",context.formatPhrase(RenderingI18nContext.STRUC_DEF_COPY_URL)).attribute("data-clipboard-text", copyUrl).tx(" ");
     }
   }
 
@@ -1073,10 +1074,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (context.forPublisher()) {
       XhtmlNode ispan = tr.td().spanClss("copy-text-inline");
       String json = makeJson(c, getVersionForSystem(vs.getExpansion().getParameter(), c.getSystem()));
-      ispan.button("btn-copy", context.formatPhrase(RenderingI18nContext.STRUC_DEF_COPY_CODING)).attribute("data-clipboard-text", json).tx(" ");
+      ispan.button("btn-copy", "copy",context.formatPhrase(RenderingI18nContext.STRUC_DEF_COPY_CODING)).attribute("data-clipboard-text", json).tx(" ");
       ispan = tr.td().spanClss("copy-text-inline");
       String xml = makeXml(c, getVersionForSystem(vs.getExpansion().getParameter(), c.getSystem()));
-      ispan.button("btn-copy", context.formatPhrase(RenderingI18nContext.STRUC_DEF_COPY_CODING)).attribute("data-clipboard-text", xml).tx(" ");
+      ispan.button("btn-copy", "copy", context.formatPhrase(RenderingI18nContext.STRUC_DEF_COPY_CODING)).attribute("data-clipboard-text", xml).tx(" ");
     }
     for (ValueSetExpansionContainsComponent cc : c.getContains()) {
       addExpansionRowToTable(t, vs, cc, i+1, doLevel, doDefinition, doInactive, doVersion, maps, langs, designations, doDesignations, properties, res);
@@ -1116,17 +1117,17 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private String makeXml(ValueSetExpansionContainsComponent c, String version) {
     StringBuilder b = new StringBuilder();
     b.append("<coding>");
-    b.append("<system value=\""+ Utilities.escapeXml(c.getSystem())+"\">");
+    b.append("<system value=\""+ Utilities.escapeXml(c.getSystem())+"\"/>");
     if (c.hasVersion()) {
-      b.append("<version value=\""+ Utilities.escapeXml(c.getVersion())+"\">");
+      b.append("<version value=\""+ Utilities.escapeXml(c.getVersion())+"\"/>");
     } else if (version != null) {
-      b.append("<version value=\""+ Utilities.escapeXml(version)+"\">");
+      b.append("<version value=\""+ Utilities.escapeXml(version)+"\"/>");
     }
     if (c.hasCode()) {
-      b.append("<code value=\""+ Utilities.escapeXml(c.getCode())+"\">");
+      b.append("<code value=\""+ Utilities.escapeXml(c.getCode())+"\"/>");
     }
     if (c.hasDisplay()) {
-      b.append("<display value=\""+ Utilities.escapeXml(c.getDisplay())+"\">");
+      b.append("<display value=\""+ Utilities.escapeXml(c.getDisplay())+"\"/>");
     }
     b.append("</coding>");
     return b.toString();
@@ -1477,20 +1478,22 @@ public class ValueSetRenderer extends TerminologyRenderer {
           XhtmlNode t = li.table("none", false).markGenerated(!context.forValidResource());
           boolean hasComments = false;
           boolean hasDefinition = false;
+          boolean hasStatus = false;
           for (ConceptReferenceComponent c : inc.getConcept()) {
             hasComments = hasComments || ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_VS_COMMENT);
+            hasStatus = hasStatus || ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_STANDARDS_STATUS);
             ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
             hasDefinition = hasDefinition || ((cc != null && cc.hasDefinition()) || ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_DEFINITION));
           }
-          if (hasComments || hasDefinition) {
+          if (hasComments || hasDefinition || hasStatus) {
             status.setExtensions(true);
           }
-          addMapHeaders(addTableHeaderRowStandard(t, false, true, hasDefinition, hasComments, false, false, null, langs, designations, doDesignations), maps);
+          addMapHeaders(addTableHeaderRowStandard(t, false, true, hasDefinition, hasComments, hasStatus, false, false, null, langs, designations, doDesignations), maps);
           for (ConceptReferenceComponent c : inc.getConcept()) {
-            renderConcept(inc, langs, doDesignations, maps, designations, definitions, t, hasComments, hasDefinition, c, inc.getVersion(), vsRes);
+            renderConcept(inc, langs, doDesignations, maps, designations, definitions, t, hasComments, hasDefinition, hasStatus, c, inc.getVersion(), vsRes);
           }
           for (Base b : VersionComparisonAnnotation.getDeleted(inc, "concept" )) {
-            renderConcept(inc, langs, doDesignations, maps, designations, definitions, t, hasComments, hasDefinition, (ConceptReferenceComponent) b, inc.getVersion(), vsRes);
+            renderConcept(inc, langs, doDesignations, maps, designations, definitions, t, hasComments, hasDefinition, hasStatus, (ConceptReferenceComponent) b, inc.getVersion(), vsRes);
           }
         }
         if (inc.getFilter().size() > 0) {
@@ -1595,7 +1598,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private void renderConcept(ConceptSetComponent inc, List<String> langs, boolean doDesignations,
       List<UsedConceptMap> maps, Map<String, String> designations, Map<String, ConceptDefinitionComponent> definitions,
-      XhtmlNode t, boolean hasComments, boolean hasDefinition, ConceptReferenceComponent c, String version, ValueSet vs) {
+      XhtmlNode t, boolean hasComments, boolean hasDefinition, boolean hasStatus, ConceptReferenceComponent c, String version, ValueSet vs) {
     XhtmlNode tr = t.tr();
     XhtmlNode td = renderStatusRow(c, t, tr);
     ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
@@ -1622,6 +1625,24 @@ public class ValueSetRenderer extends TerminologyRenderer {
       td = tr.td();
       if (ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_VS_COMMENT)) {
         td.addTextWithLineBreaks(context.formatPhrase(RenderingI18nContext.VALUE_SET_NOTE, ExtensionUtilities.readStringExtension(c, ExtensionDefinitions.EXT_VS_COMMENT)+" "));
+      }
+    }
+    if (hasStatus) {
+      td = tr.td();
+      if (ExtensionHelper.hasExtension(c, ExtensionDefinitions.EXT_STANDARDS_STATUS)) {
+        String code = ExtensionUtilities.readStringExtension(c, ExtensionDefinitions.EXT_STANDARDS_STATUS);
+        StandardsStatus ss = null;
+        try {
+          ss = StandardsStatus.fromCode(code);
+        } catch (Exception e) {
+          // not a known standards status code - just show it as is
+        }
+        if (ss != null) {
+          td.tx(ss.toDisplay());
+          genStandardsStatus(td, ss);
+        } else if (code != null) {
+          td.tx(code);
+        }
       }
     }
     if (doDesignations) {

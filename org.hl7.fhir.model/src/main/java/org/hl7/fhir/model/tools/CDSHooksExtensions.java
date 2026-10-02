@@ -194,6 +194,10 @@ public class CDSHooksExtensions extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksExtensions) dst, options);
+      }
+
       public void copyValues(CDSHooksExtensions dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         if (extensionList != null) {

@@ -1,0 +1,3 @@
+number property values differ at .expectedNumber
+Expected:"123" for expected.json
+Actual  :"789"

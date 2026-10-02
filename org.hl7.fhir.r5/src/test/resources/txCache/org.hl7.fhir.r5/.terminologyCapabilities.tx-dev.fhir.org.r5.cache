@@ -3318,9 +3318,30 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://id.who.int/icd/entity",
+    "version" : [{
+      "code" : "2026-01"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/icf",
+    "version" : [{
+      "code" : "2026-01"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/mms",
+    "version" : [{
+      "code" : "2026-01"
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
     "version" : [{
-      "code" : "1.5.0"
+      "code" : "1.6.0"
     }],
     "content" : "complete"
   },
@@ -3735,7 +3756,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/citation-artifact-classifier",
     "version" : [{
-      "code" : "1.0.0"
+      "code" : "2.0.0"
     }],
     "content" : "complete"
   },
@@ -4664,7 +4685,35 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-affiliate",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-document-format-codes",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-jira-spec-work-group-concept-properties",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-organizational-entity-concept-properties",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-staff-role",
     "version" : [{
       "code" : "1.0.0"
     }],
@@ -4673,7 +4722,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group",
     "version" : [{
-      "code" : "9.0.0"
+      "code" : "10.0.0"
     }],
     "content" : "complete"
   },
@@ -5111,14 +5160,14 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/organization-alias-type",
     "version" : [{
-      "code" : "2.0.0"
+      "code" : "3.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/organization-type",
     "version" : [{
-      "code" : "2.0.1"
+      "code" : "3.0.0"
     }],
     "content" : "complete"
   },
@@ -5217,13 +5266,6 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
     "version" : [{
       "code" : "2.0.0"
-    }],
-    "content" : "complete"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/published-in-type",
-    "version" : [{
-      "code" : "1.0.0"
     }],
     "content" : "complete"
   },
@@ -5335,7 +5377,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/research-study-status",
     "version" : [{
-      "code" : "1.0.0"
+      "code" : "2.0.0"
     }],
     "content" : "complete"
   },
@@ -5349,7 +5391,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/research-subject-state",
     "version" : [{
-      "code" : "1.0.1"
+      "code" : "2.0.0"
     }],
     "content" : "complete"
   },
@@ -9390,7 +9432,7 @@
     "version" : [{
       "code" : "4.0.0"
     }],
-    "content" : "fragment"
+    "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-MessageCondition",
@@ -10123,10 +10165,19 @@
       "name" : "check-system-version"
     },
     {
+      "name" : "check-valueset-version"
+    },
+    {
       "name" : "count"
     },
     {
       "name" : "default-to-latest-version"
+    },
+    {
+      "name" : "default-valueset-version"
+    },
+    {
+      "name" : "designation"
     },
     {
       "name" : "displayLanguage"
@@ -10141,7 +10192,13 @@
       "name" : "excludePostCoordinated"
     },
     {
+      "name" : "filter"
+    },
+    {
       "name" : "force-system-version"
+    },
+    {
+      "name" : "force-valueset-version"
     },
     {
       "name" : "inactive"
@@ -10157,6 +10214,10 @@
     },
     {
       "name" : "incomplete-ok"
+    },
+    {
+      "name" : "limit",
+      "documentation" : "Upper bound on the size of the expansion; the operation fails as too-costly beyond it"
     },
     {
       "name" : "limitedExpansion"
@@ -10178,11 +10239,27 @@
       "name" : "property"
     },
     {
+      "name" : "sort",
+      "documentation" : "code | display | design | prop:{name}; prefix with - to reverse. Ignored for hierarchical expansions"
+    },
+    {
       "name" : "system-version"
+    },
+    {
+      "name" : "url"
+    },
+    {
+      "name" : "useSupplement"
+    },
+    {
+      "name" : "valueSet"
     },
     {
       "name" : "valueSetMode",
       "documentation" : "= CHECK_MEMBERSHIP_ONLY | NO_MEMBERSHIP_CHECK"
+    },
+    {
+      "name" : "valueSetVersion"
     }]
   },
   "validateCode" : {
@@ -10190,5 +10267,8 @@
   },
   "translation" : {
     "needsMap" : false
+  },
+  "closure" : {
+    "translation" : false
   }
 }

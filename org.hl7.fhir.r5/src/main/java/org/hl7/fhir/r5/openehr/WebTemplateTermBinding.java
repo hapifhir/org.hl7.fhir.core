@@ -248,6 +248,10 @@ public class WebTemplateTermBinding extends LogicalBase implements ICompositeTyp
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((WebTemplateTermBinding) dst);
+      }
+
       public void copyValues(WebTemplateTermBinding dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();

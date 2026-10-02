@@ -12,6 +12,7 @@ public class I18nConstants {
   public static final String ARRAY_CANNOT_BE_EMPTY = "ARRAY_CANNOT_BE_EMPTY";
   public static final String ATTEMPT_TO_A_SLICE_AN_ELEMENT_THAT_DOES_NOT_REPEAT__FROM__IN_ = "Attempt_to_a_slice_an_element_that_does_not_repeat__from__in_";
   public static final String ATTEMPT_TO_CHANGE_SLICING = "ATTEMPT_TO_CHANGE_SLICING";
+  public static final String SLICING_RESTATED_REDUNDANTLY = "SLICING_RESTATED_REDUNDANTLY";
   public static final String ATTEMPT_TO_REPLACE_ELEMENT_NAME_FOR_A_NONCHOICE_TYPE = "Attempt_to_replace_element_name_for_a_nonchoice_type";
   public static final String ATTEMPT_TO_USE_A_SNAPSHOT_ON_PROFILE__AS__BEFORE_IT_IS_GENERATED = "Attempt_to_use_a_snapshot_on_profile__as__before_it_is_generated";
   public static final String ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE = "Attempt_to_use_Terminology_server_when_no_Terminology_server_is_available";
@@ -21,6 +22,7 @@ public class I18nConstants {
   public static final String BINDING_ADDITIONAL_D = "BINDING_ADDITIONAL_D";
   public static final String BINDING_ADDITIONAL_UC = "BINDING_ADDITIONAL_UC";
   public static final String BINDING_ADDITIONAL_USAGE = "BINDING_ADDITIONAL_USAGE";
+  public static final String BINDING_ADDITIONAL_IN_SCOPE = "BINDING_ADDITIONAL_IN_SCOPE";
   public static final String BINDING_MAX = "BINDING_MAX";
   public static final String BUNDLE_BUNDLE_ENTRY_CANONICAL = "Bundle_BUNDLE_Entry_Canonical";
   public static final String BUNDLE_BUNDLE_ENTRY_DOCUMENT = "Bundle_BUNDLE_Entry_Document";
@@ -152,6 +154,7 @@ public class I18nConstants {
   public static final String CODE_CASE_DIFFERENCE = "CODE_CASE_DIFFERENCE";
   public static final String CODE_FOUND_IN_EXPANSION_HOWEVER_ = "Code_found_in_expansion_however_";
   public static final String CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE = "Coding_has_no_system__cannot_validate";
+  public static final String CODING_HAS_NO_SYSTEM_OR_CODE__CANNOT_VALIDATE = "Coding_has_no_system_or_code__cannot_validate";
   public static final String CONCEPTMAP_GROUP_SOURCE_CODE_INVALID = "CONCEPTMAP_GROUP_SOURCE_CODE_INVALID";
   public static final String CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS = "CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS";
   public static final String CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID = "CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID";
@@ -212,6 +215,9 @@ public class I18nConstants {
   public static final String ED_INVARIANT_DIFF_NO_SOURCE = "ED_INVARIANT_DIFF_NO_SOURCE";
   public static final String ED_INVARIANT_EXPRESSION_CONFLICT = "ED_INVARIANT_EXPRESSION_CONFLICT";
   public static final String ED_INVARIANT_EXPRESSION_ERROR = "ED_INVARIANT_EXPRESSION_ERROR";
+  public static final String ED_INVARIANT_IMPOSE_DIFFERENT = "ED_INVARIANT_IMPOSE_DIFFERENT";
+  public static final String ED_INVARIANT_IMPOSE_NOT_DEFINED = "ED_INVARIANT_IMPOSE_NOT_DEFINED";
+  public static final String ED_INVARIANT_IMPOSE_NOT_FOUND = "ED_INVARIANT_IMPOSE_NOT_FOUND";
   public static final String ED_INVARIANT_KEY_ALREADY_USED = "ED_INVARIANT_KEY_ALREADY_USED";
   public static final String ED_INVARIANT_NO_EXPRESSION = "ED_INVARIANT_NO_EXPRESSION";
   public static final String ED_INVARIANT_NO_KEY = "ED_INVARIANT_NO_KEY";
@@ -495,6 +501,7 @@ public class I18nConstants {
   public static final String MSG_DEPRECATED_SRC = "MSG_DEPRECATED_SRC";
   public static final String MSG_DRAFT = "MSG_DRAFT";
   public static final String MSG_DRAFT_SRC = "MSG_DRAFT_SRC";
+  public static final String MSG_DRAFT_SRC_STATUS = "MSG_DRAFT_SRC_STATUS";
   public static final String MSG_EXPERIMENTAL = "MSG_EXPERIMENTAL";
   public static final String MSG_EXPERIMENTAL_SRC = "MSG_EXPERIMENTAL_SRC";
   public static final String MSG_RETIRED = "MSG_RETIRED";
@@ -617,6 +624,10 @@ public class I18nConstants {
   public static final String QUESTIONNAIRE_QR_ITEM_ONLYONEI = "Questionnaire_QR_Item_OnlyOneI";
   public static final String QUESTIONNAIRE_QR_ITEM_ORDER = "Questionnaire_QR_Item_Order";
   public static final String QUESTIONNAIRE_QR_ITEM_STRINGNOOPTIONS = "Questionnaire_QR_Item_StringNoOptions";
+  public static final String QUESTIONNAIRE_QR_ITEM_STRINGNOTALLOWED = "Questionnaire_QR_Item_StringNotAllowed";
+  public static final String QUESTIONNAIRE_QR_ITEM_ENABLEWHEN_UNCHECKABLE = "Questionnaire_QR_Item_EnableWhen_Uncheckable";
+  public static final String QUESTIONNAIRE_QR_LAUNCH_CONTEXT_NOT_LOADED = "Questionnaire_QR_LaunchContext_NotLoaded";
+  public static final String QUESTIONNAIRE_QR_LAUNCH_CONTEXT_WRONG_TYPE = "Questionnaire_QR_LaunchContext_WrongType";
   public static final String QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING = "QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING";
   public static final String QUESTIONNAIRE_QR_ITEM_TEXT = "Questionnaire_QR_Item_Text";
   public static final String QUESTIONNAIRE_QR_ITEM_TIMENOOPTIONS = "Questionnaire_QR_Item_TimeNoOptions";
@@ -659,6 +670,7 @@ public class I18nConstants {
   public static final String REFERENCE_REF_NOTFOUND_BUNDLE = "Reference_REF_NotFound_Bundle";
   public static final String REFERENCE_REF_NOTYPE = "Reference_REF_NoType";
   public static final String REFERENCE_REF_QUERY_INVALID = "REFERENCE_REF_QUERY_INVALID";
+  public static final String REFERENCE_REF_QUERY_NOT_TRANSACTION = "REFERENCE_REF_QUERY_NOT_TRANSACTION";
   public static final String REFERENCE_REF_REL_UNSOLVEABLE = "REFERENCE_REF_REL_UNSOLVEABLE";
   public static final String REFERENCE_REF_RESOURCETYPE = "Reference_REF_ResourceType";
   public static final String REFERENCE_REF_SUSPICIOUS = "REFERENCE_REF_SUSPICIOUS";
@@ -716,6 +728,12 @@ public class I18nConstants {
   public static final String SD_EXTENSION_COMPLIES_WITH_WARNING = "SD_EXTENSION_COMPLIES_WITH_WARNING";
   public static final String SD_EXTENSION_URL_MISMATCH = "SD_EXTENSION_URL_MISMATCH";
   public static final String SD_EXTENSION_URL_MISSING = "SD_EXTENSION_URL_MISSING";
+  public static final String SD_CARDINALITY_EMPTY = "SD_CARDINALITY_EMPTY";
+  public static final String SD_SLICE_MIN_EXCEEDS_SLICER_MAX = "SD_SLICE_MIN_EXCEEDS_SLICER_MAX";
+  public static final String SD_SLICE_MIN_EXCEEDS_SLICER = "SD_SLICE_MIN_EXCEEDS_SLICER";
+  public static final String SD_SLICE_MAX_EXCEEDS_SLICER = "SD_SLICE_MAX_EXCEEDS_SLICER";
+  public static final String SD_TYPE_SLICER_PARTIAL_CONSTRAINT = "SD_TYPE_SLICER_PARTIAL_CONSTRAINT";
+  public static final String SD_VALUE_RANGE_EMPTY = "SD_VALUE_RANGE_EMPTY";
   public static final String SD_ILLEGAL_CHARACTERISTICS = "SD_ILLEGAL_CHARACTERISTICS";
   public static final String SD_MUST_HAVE_DERIVATION = "SD_MUST_HAVE_DERIVATION";
   public static final String SD_NESTED_MUST_SUPPORT_DIFF = "SD_NESTED_MUST_SUPPORT_DIFF";
@@ -741,11 +759,11 @@ public class I18nConstants {
   public static final String SD_PATH_ERROR = "SD_PATH_ERROR";
   public static final String SD_PATH_NOT_VALID = "SD_PATH_NOT_VALID";
   public static final String SD_PATH_NO_SLICING = "SD_PATH_NO_SLICING";
-  public static final String SD_PATH_SLICE_INCONSISTENT_MS = "SD_PATH_SLICE_INCONSISTENT_MS";
-  public static final String SD_PATH_SLICE_INCONSISTENT_TYPE = "SD_PATH_SLICE_INCONSISTENT_TYPE";
   public static final String SD_PATH_SLICING_DEPRECATED = "SD_PATH_SLICING_DEPRECATED";
   public static final String SD_PATH_SLICING_DEPRECATED_R5 = "SD_PATH_SLICING_DEPRECATED_R5";
   public static final String SD_PATH_TYPE_MISMATCH = "SD_PATH_TYPE_MISMATCH";
+  public static final String SD_ROOT_CHANGED = "SD_ROOT_CHANGED";
+  public static final String SD_ROOT_PROHIBITED = "SD_ROOT_PROHIBITED";
   public static final String SD_SPECIALIZED_TYPE_MATCHES = "SD_SPECIALIZED_TYPE_MATCHES";
   public static final String SD_TABLE_PROHIBITED = "SD_TABLE_PROHIBITED";
   public static final String SD_TABLE_REQUIRED = "SD_TABLE_REQUIRED";
@@ -835,10 +853,29 @@ public class I18nConstants {
   public static final String SM_TARGET_TYPE_MULTIPLE_POSSIBLE = "SM_TARGET_TYPE_MULTIPLE_POSSIBLE";
   public static final String SM_TARGET_TYPE_NOT_FOUND = "SM_TARGET_TYPE_NOT_FOUND";
   public static final String SM_TARGET_TYPE_UNKNOWN = "SM_TARGET_TYPE_UNKNOWN";
+  public static final String SNAPSHOT_CONSTRAINT_KEY_CONFLICT = "SNAPSHOT_CONSTRAINT_KEY_CONFLICT";
+  public static final String SNAPSHOT_DIFF_LOOSENS = "SNAPSHOT_DIFF_LOOSENS";
+  public static final String SNAPSHOT_EXTENSION_SLICE_ON_SLICER = "SNAPSHOT_EXTENSION_SLICE_ON_SLICER";
+  public static final String SNAPSHOT_EXTENSION_SLICE_NOT_IN_EXTENSION = "SNAPSHOT_EXTENSION_SLICE_NOT_IN_EXTENSION";
+  public static final String SNAPSHOT_EXTENSION_SLICE_UNIDENTIFIED = "SNAPSHOT_EXTENSION_SLICE_UNIDENTIFIED";
   public static final String SNAPSHOT_EXISTING_PROBLEM = "SNAPSHOT_EXISTING_PROBLEM";
   public static final String SNAPSHOT_IS_EMPTY = "SNAPSHOT_IS_EMPTY";
+  public static final String SNAPSHOT_TYPE_ROOT_CONSTRAINT_CONFLICT = "SNAPSHOT_TYPE_ROOT_CONSTRAINT_CONFLICT";
+  public static final String SNAPSHOT_TYPE_ROOT_DEFAULT_CONFLICT = "SNAPSHOT_TYPE_ROOT_DEFAULT_CONFLICT";
+  public static final String SNAPSHOT_TYPE_ROOT_FIXED_CONFLICT = "SNAPSHOT_TYPE_ROOT_FIXED_CONFLICT";
+  public static final String SNAPSHOT_TYPE_ROOT_SLICING = "SNAPSHOT_TYPE_ROOT_SLICING";
+  public static final String SNAPSHOT_TYPE_ROOT_VALUE_UNCOMPARABLE = "SNAPSHOT_TYPE_ROOT_VALUE_UNCOMPARABLE";
   public static final String STATUS_CODE_WARNING_CODE = "STATUS_CODE_WARNING_CODE";
   public static final String STRUCTUREDEFINITION__AT__ILLEGAL_CONSTRAINED_TYPE__FROM__IN_ = "StructureDefinition__at__illegal_constrained_type__from__in_";
+  public static final String SUBSUMPTION_CS_HIERARCHY_MEANING = "SUBSUMPTION_CS_HIERARCHY_MEANING";
+  public static final String SUBSUMPTION_CS_NOT_COMPLETE = "SUBSUMPTION_CS_NOT_COMPLETE";
+  public static final String SUBSUMPTION_CS_NOT_FOUND = "SUBSUMPTION_CS_NOT_FOUND";
+  public static final String SUBSUMPTION_CS_NOT_FOUND_VERSION = "SUBSUMPTION_CS_NOT_FOUND_VERSION";
+  public static final String SUBSUMPTION_NO_CODE = "SUBSUMPTION_NO_CODE";
+  public static final String SUBSUMPTION_NO_CODING = "SUBSUMPTION_NO_CODING";
+  public static final String SUBSUMPTION_NO_SYSTEM = "SUBSUMPTION_NO_SYSTEM";
+  public static final String SUBSUMPTION_SYSTEM_MISMATCH = "SUBSUMPTION_SYSTEM_MISMATCH";
+  public static final String SUBSUMPTION_VERSION_MISMATCH = "SUBSUMPTION_VERSION_MISMATCH";
   public static final String TERMINOLOGY_PASSTHROUGH_TX_MESSAGE = "Terminology_PassThrough_TX_Message";
   public static final String TERMINOLOGY_TX_BINDING_CANTCHECK = "Terminology_TX_Binding_CantCheck";
   public static final String TERMINOLOGY_TX_BINDING_MISSING = "Terminology_TX_Binding_Missing";
@@ -928,6 +965,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID = "TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG = "TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME = "TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_URL_NOT_A_LINK = "TYPE_SPECIFIC_CHECKS_DT_ATT_URL_NOT_A_LINK";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR = "TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR";
   public static final String TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR = "TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR";
   public static final String TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING = "TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING";
@@ -1007,6 +1045,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_WS = "Type_Specific_Checks_DT_String_WS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_WS_ALL = "Type_Specific_Checks_DT_String_WS_ALL";
   public static final String TYPE_SPECIFIC_CHECKS_DT_TIME_VALID = "Type_Specific_Checks_DT_Time_Valid";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_TIME_VALID_CAUSE = "Type_Specific_Checks_DT_Time_Valid_Cause";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_OID = "Type_Specific_Checks_DT_URI_OID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_UUID = "Type_Specific_Checks_DT_URI_UUID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_WS = "Type_Specific_Checks_DT_URI_WS";
@@ -1082,6 +1121,7 @@ public class I18nConstants {
   public static final String UNICODE_XML_BAD_CHARS = "UNICODE_XML_BAD_CHARS";
   public static final String UNKNOWN_CODESYSTEM = "UNKNOWN_CODESYSTEM";
   public static final String UNKNOWN_CODESYSTEM_VERSION = "UNKNOWN_CODESYSTEM_VERSION";
+  public static final String UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED = "UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED";
   public static final String UNKNOWN_CODESYSTEM_VERSION_UNK = "UNKNOWN_CODESYSTEM_VERSION_UNK";
   public static final String UNKNOWN_CODESYSTEM_VERSION_NONE = "UNKNOWN_CODESYSTEM_VERSION_NONE";
   public static final String UNKNOWN_CODE_IN = "Unknown_Code_in";
@@ -1105,7 +1145,6 @@ public class I18nConstants {
   public static final String UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE = "UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE";
   public static final String UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE = "UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE";
   public static final String UNSUPPORTED_IDENTIFIER_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_ = "Unsupported_Identifier_pattern__extensions_are_not_allowed__for_discriminator_for_slice_";
-  public static final String UNSUPPORTED_SLICING_COMPLEXITY = "UNSUPPORTED_SLICING_COMPLEXITY";
   public static final String UNSUPPORTED_VERSION_R1 = "Unsupported_version_R1";
   public static final String UNSUPPORTED_VERSION_R2 = "Unsupported_version_R2";
   public static final String UNSUPPORTED_VERSION_R2B = "Unsupported_version_R2B";
@@ -1241,6 +1280,7 @@ public class I18nConstants {
   public static final String VIEWDEFINITION_COLLECTION_NOT_NEEDED = "VIEWDEFINITION_COLLECTION_NOT_NEEDED";
   public static final String VIEWDEFINITION_COMPLEX_TYPE = "VIEWDEFINITION_COMPLEX_TYPE";
   public static final String VIEWDEFINITION_DUPL_COL_NAME = "VIEWDEFINITION_DUPL_COL_NAME";
+  public static final String VIEWDEFINITION_ITERATION_CONFLICT = "VIEWDEFINITION_ITERATION_CONFLICT";
   public static final String VIEWDEFINITION_NAME_INVALID = "VIEWDEFINITION_NAME_INVALID";
   public static final String VIEWDEFINITION_NAME_REQUIRED = "VIEWDEFINITION_NAME_REQUIRED";
   public static final String VIEWDEFINITION_NAME_REQUIRED_HINT = "VIEWDEFINITION_NAME_REQUIRED_HINT";
@@ -1250,6 +1290,8 @@ public class I18nConstants {
   public static final String VIEWDEFINITION_SHOULD_HAVE_NAME = "VIEWDEFINITION_SHOULD_HAVE_NAME";
   public static final String VIEWDEFINITION_TYPE_MISMATCH = "VIEWDEFINITION_TYPE_MISMATCH";
   public static final String VIEWDEFINITION_UNABLE_TO_TYPE = "VIEWDEFINITION_UNABLE_TO_TYPE";
+  public static final String VIEWDEFINITION_UNION_MISMATCH = "VIEWDEFINITION_UNION_MISMATCH";
+  public static final String VIEWDEFINITION_UNION_SINGLE = "VIEWDEFINITION_UNION_SINGLE";
   public static final String VIEWDEFINITION_UNKNOWN_RESOURCE = "VIEWDEFINITION_UNKNOWN_RESOURCE";
   public static final String VS_EXP_FILTER_UNK = "VS_EXP_FILTER_UNK";
   public static final String VS_EXP_IMPORT_CS = "VS_EXP_IMPORT_CS";
@@ -1370,7 +1412,7 @@ public class I18nConstants {
   public static final String BUNDLE_SIGNATURE_NOT_CHECKED_KIND = "BUNDLE_SIGNATURE_NOT_CHECKED_KIND";
   public static final String BUNDLE_SIGNATURE_NOT_CHECKED_DATA = "BUNDLE_SIGNATURE_NOT_CHECKED_DATA";
   public static final String BUNDLE_SIGNATURE_HEADER_PARSE = "BUNDLE_SIGNATURE_HEADER_PARSE";
-  public static final String BUNDLE_SIGNATURE_NO_WHEN = "BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH";
+  public static final String BUNDLE_SIGNATURE_NO_WHEN = "BUNDLE_SIGNATURE_NO_WHEN";
   public static final String BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH = "BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH";
   public static final String BUNDLE_SIGNATURE_PAYLOAD_PRESENT = "BUNDLE_SIGNATURE_PAYLOAD_PRESENT";
   public static final String BUNDLE_SIGNATURE_PAYLOAD_INVALID = "BUNDLE_SIGNATURE_PAYLOAD_INVALID";
@@ -1409,6 +1451,8 @@ public class I18nConstants {
   public static final String BUNDLE_SIGNATURE_DIGSIG_INVALID = "BUNDLE_SIGNATURE_DIGSIG_INVALID";
   public static final String BUNDLE_SIGNATURE_DIGSIG_NO_SIG_TIME = "BUNDLE_SIGNATURE_DIGSIG_NO_SIG_TIME";
   public static final String BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH = "BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH";
+  public static final String BUNDLE_SIGNATURE_SIG_TIME_INVALID = "BUNDLE_SIGNATURE_SIG_TIME_INVALID";
+  public static final String BUNDLE_SIGNATURE_WHEN_INVALID = "BUNDLE_SIGNATURE_WHEN_INVALID";
   public static final String BUNDLE_SIGNATURE_DIGSIG_X509_ERROR = "BUNDLE_SIGNATURE_DIGSIG_X509_ERROR";
   public static final String BUNDLE_SIGNATURE_DIGSIG_NO_CERT = "BUNDLE_SIGNATURE_DIGSIG_NO_CERT";
   public static final String BUNDLE_SIGNATURE_DIGSIG_NO_SV = "BUNDLE_SIGNATURE_DIGSIG_NO_SV";
@@ -1434,6 +1478,7 @@ public class I18nConstants {
   public static final String XHTML_XHTML_ILLEGAL_CHILDREN = "XHTML_XHTML_ILLEGAL_CHILDREN";
   public static final String XHTML_XHTML_BAD_ELEMENT_TYPE = "XHTML_XHTML_BAD_ELEMENT_TYPE";
   public static final String XHTML_XHTML_OUT_OF_PLACE = "XHTML_XHTML_OUT_OF_PLACE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_FETCH_ERROR = "TYPE_SPECIFIC_CHECKS_DT_ATT_FETCH_ERROR";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL = "TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH = "TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH";
   public static final String BUNDLE_SIGNATURE_HEADER_SIG_TIME_WRONG_FORMAT = "BUNDLE_SIGNATURE_HEADER_SIG_TIME_WRONG_FORMAT";

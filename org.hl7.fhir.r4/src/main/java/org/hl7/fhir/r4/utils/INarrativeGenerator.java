@@ -31,7 +31,7 @@ package org.hl7.fhir.r4.utils;
   
  */
 
-
+@Deprecated(forRemoval = true)
 public interface INarrativeGenerator {
 
   void setCanonicalUrlsAsLinks(boolean canonicalUrlsAsLinks);

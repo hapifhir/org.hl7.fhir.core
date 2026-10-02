@@ -273,6 +273,10 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TestPlanScopeComponent) dst);
+      }
+
       public void copyValues(TestPlanScopeComponent dst) {
         super.copyValues(dst);
         dst.reference = reference == null ? null : reference.copy();
@@ -528,6 +532,10 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TestPlanDependencyComponent) dst);
+      }
+
       public void copyValues(TestPlanDependencyComponent dst) {
         super.copyValues(dst);
         dst.reference = reference == null ? null : reference.copy();
@@ -781,6 +789,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanModeComponent dst = new TestPlanModeComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TestPlanModeComponent) dst);
       }
 
       public void copyValues(TestPlanModeComponent dst) {
@@ -1255,6 +1267,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanParameterComponent dst = new TestPlanParameterComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TestPlanParameterComponent) dst);
       }
 
       public void copyValues(TestPlanParameterComponent dst) {
@@ -1946,6 +1962,10 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TestPlanSuiteComponent) dst);
+      }
+
       public void copyValues(TestPlanSuiteComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -2333,6 +2353,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanSuiteInputComponent dst = new TestPlanSuiteInputComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TestPlanSuiteInputComponent) dst);
       }
 
       public void copyValues(TestPlanSuiteInputComponent dst) {
@@ -3023,6 +3047,10 @@ public class TestPlan extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TestPlanSuiteTestComponent) dst);
+      }
+
       public void copyValues(TestPlanSuiteTestComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -3481,6 +3509,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanSuiteTestAssertionComponent dst = new TestPlanSuiteTestAssertionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TestPlanSuiteTestAssertionComponent) dst);
       }
 
       public void copyValues(TestPlanSuiteTestAssertionComponent dst) {
@@ -5301,6 +5333,10 @@ public class TestPlan extends CanonicalResource {
         TestPlan dst = new TestPlan();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((TestPlan) dst);
       }
 
       public void copyValues(TestPlan dst) {

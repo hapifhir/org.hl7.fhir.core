@@ -63,7 +63,7 @@ public class MappingAssistant {
               n = m.getIdentity() + i;
             }
             renames.put(m.getIdentity(), n);
-            masterList.add(m.copy(Base.COPY_DATA).setName(n));
+            masterList.add(m.copy(Base.COPY_DATA).setIdentity(n));
           } else {
             masterList.add(m.copy(Base.COPY_DATA));
           }
@@ -92,23 +92,6 @@ public class MappingAssistant {
     return !Utilities.existsInList(m.getUri(), suppressedMappings);
   }
 
-  private boolean notExcluded(ElementDefinitionMappingComponent m) {
-    if (!m.hasIdentity()) {
-      return false;
-    }
-    StructureDefinitionMappingComponent mm = null;
-    for (StructureDefinitionMappingComponent t : base.getMappingList()) {
-      if (m.getIdentity().equals(t.getIdentity())) {
-        mm = t;
-        break;
-      }
-    }
-    if (mm == null) {
-      return false;
-    } else {
-      return notExcluded(mm);
-    }
-  }
   
   private boolean nameExists(String n) {
     for (StructureDefinitionMappingComponent md : masterList) {
@@ -143,7 +126,10 @@ public class MappingAssistant {
     for (ElementDefinition ed : derived.getSnapshot().getElementList()) {
       for (ElementDefinitionMappingComponent m : ed.getMappingList()) {
         StructureDefinitionMappingComponent def = findDefinition(m.getIdentity());
-        if (def != null && notExcluded(m)) {
+        // Check the declaration we have already resolved, not the element's own
+        // identity: a renamed identity is never in the base profile's declarations,
+        // so looking it up there dropped the renamed mapping from the output.
+        if (def != null && notExcluded(def)) {
           usedList.add(def);
         } else {
           // not sure what to do?

@@ -140,10 +140,20 @@ public class JsonParser extends JsonParserBase {
     return res;
   }
 
-  protected DecimalType parseDecimal(java.math.BigDecimal v) throws IOException, FHIRFormatError {
+  protected DecimalType parseDecimal(JsonElement e) throws IOException, FHIRFormatError {
+    if (e == null || e.isJsonNull()) {
+      return new DecimalType(modelContext, (java.math.BigDecimal) null);
+    }
+    java.math.BigDecimal v = e.getAsBigDecimal();
     DecimalType res = new DecimalType(modelContext, v);
-    if (v instanceof PresentedBigDecimal)
+    // keep the literal the source used, so that 1.0e0 does not become 1.0 (nor 1e2 become 1E+2)
+    // on the way out. JsonTrackingParser carries it on the number itself; gson keeps it in
+    // LazilyParsedNumber, where getAsString() returns it verbatim
+    if (v instanceof PresentedBigDecimal) {
       res.setRepresentation(((PresentedBigDecimal) v).getPresentation());
+    } else if (e.isJsonPrimitive()) {
+      res.setRepresentation(e.getAsString());
+    }
     return res;
   }
 
@@ -159,8 +169,19 @@ public class JsonParser extends JsonParserBase {
     String t = json.get("resourceType").getAsString();
     if (Utilities.noString(t)) {
       throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
+    }
+    // a handler registered in the model context as overriding the base specification takes
+    // precedence over the generated dispatch below
+    Resource custom = parseOverridingCustomResource(t, json);
+    if (custom != null) {
+      return custom;
 {{parse-resource}}
     } else {
+      // not a resource this parser knows - the model context may have a handler for it
+      Resource res = parseCustomResource(t, json);
+      if (res != null) {
+        return res;
+      }
       throw new FHIRFormatError("Unknown.Unrecognised resource type '"+t+"' (in property 'resourceType')");
     }
   }
@@ -281,7 +302,7 @@ public class JsonParser extends JsonParserBase {
       return t;
     }
     else if (json.has(prefix+"Decimal") || json.has("_"+prefix+"Decimal")) {
-      DataType t = json.has(prefix+"Decimal") ? parseDecimal(json.get(prefix+"Decimal").getAsBigDecimal()) : new DecimalType();
+      DataType t = json.has(prefix+"Decimal") ? parseDecimal(json.get(prefix+"Decimal")) : new DecimalType();
       if (json.has("_"+prefix+"Decimal"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Decimal"), t);
       return t;
@@ -715,7 +736,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void composeDecimalCore(String name, DecimalType value, boolean inArray) throws IOException {
     if (value != null && value.hasValue()) {
-        prop(name, value.getValue());
+        propDecimal(name, value);
     }    
     else if (inArray) 
       writeNull(name); 
@@ -736,18 +757,22 @@ public class JsonParser extends JsonParserBase {
   @Override
   protected void composeResource(Resource resource) throws IOException {
     if (resource == null) {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      throw new Error("Unhandled resource type: null");
 {{compose-resource}} 
-    } else
+    } else if (!composeCustomResource(resource)) {
+      // the model context may have a handler registered for this resource type
       throw new Error("Unhandled resource type "+resource.getClass().getName());
+    }
   }
 
   protected void composeNamedReference(String name, Resource resource) throws IOException {
     if (resource == null) {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      throw new Error("Unhandled resource type: null");
 {{compose-resource-named}} 
-    } else
+    } else if (!composeCustomResource(name, resource)) {
+      // the model context may have a handler registered for this resource type
       throw new Error("Unhandled resource type "+resource.getClass().getName());
+    }
   }
 
   protected void composeType(String prefix, DataType type) throws IOException {
