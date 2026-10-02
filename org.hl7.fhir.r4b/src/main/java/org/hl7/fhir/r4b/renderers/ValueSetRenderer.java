@@ -55,7 +55,7 @@ import com.google.common.collect.Multimap;
  * See R5 rendering framework to render R4B resources
  * 
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ValueSetRenderer extends TerminologyRenderer {
 
   public ValueSetRenderer(RenderingContext context) {

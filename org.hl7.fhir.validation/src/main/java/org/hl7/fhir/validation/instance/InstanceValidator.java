@@ -8314,10 +8314,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     String elementSupported = ei.getElement().getUserString(UserDataNames.keyview_elementSupported);
     String fixedValue = ei.getElement().getUserString(UserDataNames.keyview_hasFixed);
-    if ((elementSupported == null || !elementSupported.equals("Y")) && ei.getDefinition().getMustSupport()) {
-      if (ei.getDefinition().getMustSupport()) {
-        ei.getElement().setUserData(UserDataNames.keyview_elementSupported, "Y");
-      }
+    // the rules on a slicer (including must-support) apply to all its slices, but they're not repeated in the slices
+    boolean mustSupport = ei.getDefinition().getMustSupport() || (ei.getSlice() != null && ei.getSlice().getMustSupport());
+    if ((elementSupported == null || !elementSupported.equals("Y")) && mustSupport) {
+      ei.getElement().setUserData(UserDataNames.keyview_elementSupported, "Y");
     } else if (elementSupported == null && !usesMustSupport.equals("Y"))
       ei.getElement().setUserData(UserDataNames.keyview_elementSupported, "NA");
     if (fixedValue==null  && (ei.getDefinition().hasFixed() || ei.getDefinition().hasPattern()))

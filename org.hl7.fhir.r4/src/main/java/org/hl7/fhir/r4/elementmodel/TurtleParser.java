@@ -60,7 +60,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 @SuppressFBWarnings("MS_SHOULD_BE_FINAL")
 public class TurtleParser extends ParserBase {
 

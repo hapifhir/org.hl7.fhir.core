@@ -129,6 +129,7 @@ import org.slf4j.event.Level;
 
 
 @Slf4j
+@Deprecated(forRemoval = true)
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   public class ResourceProxy {
@@ -1053,7 +1054,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private void setTerminologyOptions(ValidationOptions options, Parameters pIn) {
     if (options.hasLanguages()) {
-      pIn.addParameter("displayLanguage", options.getLanguages().toString());
+      pIn.addParameter("displayLanguage", options.getLanguages().toParameterValue());
     }
     if (options.isMembershipOnly()) {
       pIn.addParameter("valueset-membership-only", true);
@@ -1297,7 +1298,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.canRunWithoutTerminology = canRunWithoutTerminology;
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   public void setLogger(ILoggingService logger) {
 
   }
@@ -2040,7 +2041,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  @Deprecated
+  @Deprecated(forRemoval = true)
   public ILoggingService getLogger() {
     return null;
   }

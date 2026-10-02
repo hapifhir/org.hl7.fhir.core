@@ -39,7 +39,7 @@ import org.hl7.fhir.r4.model.DomainResource;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 @SuppressWarnings("checkstyle:systemout")
 public class NarrativeRemover {
 

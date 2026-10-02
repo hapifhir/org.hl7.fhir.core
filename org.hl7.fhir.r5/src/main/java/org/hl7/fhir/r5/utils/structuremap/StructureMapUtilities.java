@@ -131,27 +131,41 @@ public class StructureMapUtilities {
     this.worker = worker;
     this.services = services;
     this.pkp = pkp;
-    fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FHIRPathHostServices(this));
-    profileUtilities = new ProfileUtilities(worker, null, null);
+    if (worker != null) {
+      fpe = new FHIRPathEngine(worker);
+      fpe.setHostServices(new FHIRPathHostServices(this));
+      profileUtilities = new ProfileUtilities(worker, null, null);
+    } else {
+      fpe = null;
+      profileUtilities = null;
+    }
   }
 
   public StructureMapUtilities(IWorkerContext worker, ITransformerServices services) {
     super();
     this.worker = worker;
     this.services = services;
-    fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FHIRPathHostServices(this));
-    profileUtilities = new ProfileUtilities(worker, null, null);
+    if (worker != null) {
+      fpe = new FHIRPathEngine(worker);
+      fpe.setHostServices(new FHIRPathHostServices(this));
+      profileUtilities = new ProfileUtilities(worker, null, null);
+    } else {
+      fpe = null;
+      profileUtilities = null;
+    }
   }
 
   public StructureMapUtilities(IWorkerContext worker) {
     super();
     this.worker = worker;
-    fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FHIRPathHostServices(this));
-    profileUtilities = new ProfileUtilities(worker, null, null);
-
+    if (worker != null) {
+      fpe = new FHIRPathEngine(worker);
+      fpe.setHostServices(new FHIRPathHostServices(this));
+      profileUtilities = new ProfileUtilities(worker, null, null);
+    } else {
+      fpe = null;
+      profileUtilities = null;
+    }
   }
 
   public static String render(StructureMap map) {
@@ -1679,6 +1693,9 @@ public class StructureMapUtilities {
   }
 
   public void transform(Object appInfo, Base source, StructureMap map, Base target) throws FHIRException {
+    if (fpe == null) {
+      throw new Error("This method is not supported because no context was provided");
+    }
     TransformContext context = new TransformContext(appInfo);
     log("Start Transform " + map.getUrl());
     StructureMapGroupComponent g = map.getGroup().get(0);
@@ -2572,6 +2589,9 @@ public class StructureMapUtilities {
    * @throws Exception
    */
   public StructureMapAnalysis analyse(Object appInfo, StructureMap map) throws FHIRException {
+    if (fpe == null) {
+      throw new Error("This method is not supported because no context was provided");
+    }
     ids.clear();
     StructureMapAnalysis result = new StructureMapAnalysis();
     TransformContext context = new TransformContext(appInfo);

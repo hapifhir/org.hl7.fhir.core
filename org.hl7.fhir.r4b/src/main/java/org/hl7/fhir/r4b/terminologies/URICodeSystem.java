@@ -6,6 +6,7 @@ import org.hl7.fhir.r4b.model.Coding;
 import org.hl7.fhir.utilities.Utilities;
 
 
+@Deprecated(forRemoval = true)
 public class URICodeSystem extends SpecialCodeSystem {
 
   @Override

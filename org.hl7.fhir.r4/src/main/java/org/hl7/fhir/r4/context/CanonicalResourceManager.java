@@ -24,7 +24,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
  *
  */
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class CanonicalResourceManager<T extends MetadataResource> {
 
   public class MetadataResourceVersionComparator<T extends MetadataResource> implements Comparator<T> {

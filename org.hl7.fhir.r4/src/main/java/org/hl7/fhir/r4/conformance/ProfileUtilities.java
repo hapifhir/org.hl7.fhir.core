@@ -251,7 +251,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean useTableForFixedValues = true;
   @Setter
   @Getter
-  @Deprecated
+  @Deprecated(forRemoval = true)
   private boolean debug;
 
   // note that ProfileUtilities are used re-entrantly internally, so nothing with
@@ -2784,7 +2784,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private Piece checkForNoChange(Element src1, Element src2, Piece piece) {
     if (src1.hasUserData(DERIVATION_EQUALS) && src2.hasUserData(DERIVATION_EQUALS)) {
-      piece.addStyle("opacity: 0.5");
+      piece.addStyle("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
     }
     return piece;
   }

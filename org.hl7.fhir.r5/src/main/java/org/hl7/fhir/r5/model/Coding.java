@@ -566,7 +566,7 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
       base = base+"|"+getVersion();
     base = base + "#"+getCode();
     if (hasDisplay())
-      base = base+": '"+getDisplay()+"'";
+      base = base+" ('"+getDisplay()+"')";
     return base;
   }
 

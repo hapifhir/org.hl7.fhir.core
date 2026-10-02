@@ -87,33 +87,24 @@ public class TestingUtilities extends BaseTestingUtilities {
     try {
       pcm = new FilesystemPackageCacheManager.Builder().build();
       SimpleWorkerContext sharedContext = null;
-      if (VersionUtilities.isR5Ver(fhirVersion)) {
-        // for purposes of stability, the R5 core package comes from the test case repository
-        sharedContext = getWorkerContext(loadR5CorePackage());
-      } else {
-        sharedContext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(fhirVersion), fhirVersion));
-      }
+      sharedContext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(fhirVersion), fhirVersion));
       sharedContext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
       sharedContext.setExpansionParameters(new Parameters());
       if (!sharedContext.hasPackage("hl7.terminology.r5", null)) {
         NpmPackage utg = pcm.loadPackage("hl7.terminology.r5");
         log.info("Loading THO: "+utg.name()+"#"+utg.version());
-        sharedContext.loadFromPackage(utg, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "NamingSystem"), sharedContext));
+        sharedContext.loadFromPackage(utg, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "NamingSystem"), sharedContext, utg));
       } 
       if (!sharedContext.hasPackage("hl7.fhir.uv.extensions", null)) {
         NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions", ExtensionDefinitions.EXTENSIONS_WORKING_VERSION);
         log.info("Loading Extensions: "+ext.name()+"#"+ext.version());
-        sharedContext.loadFromPackage(ext, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "StructureDefinition"), sharedContext));
+        sharedContext.loadFromPackage(ext, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "StructureDefinition"), sharedContext, ext));
       }
       return sharedContext;
     } catch (Exception e) {
       e.printStackTrace();
       throw new Error(e);
     }
-  }
-
-  public static NpmPackage loadR5CorePackage() throws IOException {
-    return NpmPackage.fromPackage(loadR5CorePackageSource());
   }
 
   private static InputStream loadR5CorePackageSource() throws IOException {
@@ -125,8 +116,9 @@ public class TestingUtilities extends BaseTestingUtilities {
   }
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
-        .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage);
+    ModelContext mc = ModelContext.fullCoreContext();
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(mc).withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
+        .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage, new TestPackageLoader(SimpleWorkerContext.defaultTypesToLoad(), mc, npmPackage));
     TerminologyCache.setCacheErrors(true);
     return swc;
   }

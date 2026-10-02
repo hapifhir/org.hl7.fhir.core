@@ -43,8 +43,8 @@ public class TerminologyCacheManagerTests implements ResourceLoaderTests {
   public static Stream<Arguments> zipSlipData() {
 
     return Stream.of(Arguments.of("zip-slip.zip", "../evil.txt"),
-        Arguments.of("zip-slip-2.zip", "child/../../evil.txt"),
-        Arguments.of("zip-slip-peer.zip", "../childpeer/evil.txt"), Arguments.of("zip-slip-win.zip", "../evil.txt"));
+      Arguments.of("zip-slip-2.zip", "child/../../evil.txt"),
+      Arguments.of("zip-slip-peer.zip", "../childpeer/evil.txt"), Arguments.of("zip-slip-win.zip", "../evil.txt"));
   }
 
   @ParameterizedTest(name = "{index}: file {0}")

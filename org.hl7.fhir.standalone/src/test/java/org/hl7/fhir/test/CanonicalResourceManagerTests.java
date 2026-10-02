@@ -2,7 +2,7 @@ package org.hl7.fhir.test;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.standalone.context.CanonicalResourceManager;
-import org.hl7.fhir.standalone.context.CanonicalResourceManager.CanonicalResourceProxy;
+import org.hl7.fhir.services.context.CanonicalResourceProxy;
 import org.hl7.fhir.model.core.CanonicalResource;
 import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.PackageInformation;

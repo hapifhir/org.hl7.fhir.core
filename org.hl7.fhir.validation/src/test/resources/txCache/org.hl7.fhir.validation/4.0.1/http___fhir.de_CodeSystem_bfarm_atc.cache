@@ -15,32 +15,45 @@
   }]
 }}####
 v: {
-  "display" : "Blutgerinnungsfaktoren IX, II, VII und X in Kombination",
   "code" : "B02BD01",
   "system" : "http://fhir.de/CodeSystem/bfarm/atc",
-  "version" : "2022",
-  "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n92ms http://fhir.de/ValueSet/bfarm/atc|1.0.0: Analysing http://fhir.de/ValueSet/bfarm/atc|1.0.0 for validation purposes\n92ms http://fhir.de/ValueSet/bfarm/atc|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n92ms http://fhir.de/ValueSet/bfarm/atc|1.0.0: Prepare include[0]: \"(http://fhir.de/CodeSystem/bfarm/atc)\"\n93ms http://fhir.de/ValueSet/bfarm/atc|1.0.0: CodeSystem found: \"http://fhir.de/CodeSystem/bfarm/atc|2022\"\n93ms http://fhir.de/ValueSet/bfarm/atc|1.0.0: Validate \"[http://fhir.de/CodeSystem/bfarm/atc#B02BD01 (\"Blutgerinnungsfaktoren IX, II, VII und X in Kombination\")]\"\n93ms http://fhir.de/ValueSet/bfarm/atc|1.0.0: Check \"http://fhir.de/CodeSystem/bfarm/atc#B02BD01\"\n94ms http://fhir.de/ValueSet/bfarm/atc|1.0.0: CodeSystem found: http://fhir.de/CodeSystem/bfarm/atc|2022 for http://fhir.de/CodeSystem/bfarm/atc\n94ms http://fhir.de/ValueSet/bfarm/atc|1.0.0: check code in (http://fhir.de/CodeSystem/bfarm/atc) at Coding\n94ms http://fhir.de/ValueSet/bfarm/atc|1.0.0: Code \"B02BD01\" found in http://fhir.de/CodeSystem/bfarm/atc|2022",
+  "severity" : "error",
+  "error" : "Unknown code 'B02BD01' in the CodeSystem 'http://fhir.de/CodeSystem/bfarm/atc' version '2026'; The provided code 'http://fhir.de/CodeSystem/bfarm/atc#B02BD01' was not found in the value set 'http://fhir.de/ValueSet/bfarm/atc|1.0.0'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx.fhir.de/fhir",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "MSG_EXPERIMENTAL"
-    },
-    {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
+      "valueUrl" : "https://tx.fhir.de/fhir"
     }],
-    "severity" : "information",
-    "code" : "business-rule",
+    "severity" : "error",
+    "code" : "code-invalid",
     "details" : {
       "coding" : [{
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "status-check"
+        "code" : "not-in-vs"
       }],
-      "text" : "Reference to experimental CodeSystem http://fhir.de/CodeSystem/bfarm/atc|2022"
-    }
+      "text" : "The provided code 'http://fhir.de/CodeSystem/bfarm/atc#B02BD01' was not found in the value set 'http://fhir.de/ValueSet/bfarm/atc|1.0.0'"
+    },
+    "expression" : ["Coding.code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx.fhir.de/fhir"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'B02BD01' in the CodeSystem 'http://fhir.de/CodeSystem/bfarm/atc' version '2026'"
+    },
+    "expression" : ["Coding.code"]
   }]
 }
 

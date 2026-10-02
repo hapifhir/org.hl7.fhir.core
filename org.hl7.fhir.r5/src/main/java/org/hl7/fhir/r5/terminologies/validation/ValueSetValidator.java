@@ -1603,7 +1603,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       for (SystemWithVersion sp : sys) {
         systems.add(sp.system()+(sp.version() == null ? "" : "|"+sp.version()));
       }
-      String slist = CommaSeparatedStringBuilder.join(", ", Utilities.sorted(systems));
+      String slist = CommaSeparatedStringBuilder.join(",", Utilities.sorted(systems));
       problems.add(new StringWithCodes(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES, code, valueset.getVersionedUrl(), slist), I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES));
       return null;
     } else {
@@ -1635,6 +1635,28 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return true;
   }
 
+  /**
+   * The value set used to check a code against a single include needs a url, and the terminology cache uses that url
+   * in the key for the result. So it has to be the same every time for the same include: a random one means every run
+   * is a cache miss, and adds another entry to the cache. So it's a name based UUID made from the content of the include
+   */
+  private String dummyValueSetUrl(ConceptSetComponent vsi) {
+    String uuid = vsi.getUserString(UserDataNames.CACHED_UUID);
+    if (uuid == null) {
+      ValueSet vs = new ValueSet();
+      vs.getCompose().addInclude(vsi);
+      String src;
+      try {
+        src = new org.hl7.fhir.r5.formats.JsonParser().composeString(vs);
+      } catch (Exception e) {
+        src = null;
+      }
+      uuid = src == null ? UUIDUtilities.makeUuidUrn() : "urn:uuid:" + UUID.nameUUIDFromBytes(src.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+      vsi.setUserData(UserDataNames.CACHED_UUID, uuid);
+    }
+    return uuid;
+  }
+
   private boolean scanForCodeInValueSetInclude(String code, Set<SystemWithVersion> sys, List<StringWithCodes> problems, int i, ConceptSetComponent vsi) {
     if (vsi.hasValueSet()) {
       for (CanonicalType u : vsi.getValueSet()) {
@@ -1649,11 +1671,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (vsi.hasSystem()) {
       if (vsi.hasFilter()) {
         ValueSet vsDummy = new ValueSet();
-        String uuid = vsi.getUserString(UserDataNames.CACHED_UUID);
-        if (uuid == null) {
-          uuid = UUIDUtilities.makeUuidUrn();
-          vsi.setUserData(UserDataNames.CACHED_UUID, uuid);
-        }
+        String uuid = dummyValueSetUrl(vsi);
         vsDummy.setVersion("1");
         vsDummy.setUrl(uuid);
         vsDummy.setStatus(PublicationStatus.ACTIVE);
@@ -1704,11 +1722,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           return true;
         } else {
           ValueSet vsDummy = new ValueSet();
-          String uuid = vsi.getUserString(UserDataNames.CACHED_UUID);
-          if (uuid == null) {
-            uuid = UUIDUtilities.makeUuidUrn();
-            vsi.setUserData(UserDataNames.CACHED_UUID, uuid);
-          }
+          String uuid = dummyValueSetUrl(vsi);
           vsDummy.setVersion("1");
           vsDummy.setUrl(uuid);
           vsDummy.setStatus(PublicationStatus.ACTIVE);

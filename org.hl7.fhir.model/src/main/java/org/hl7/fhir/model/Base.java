@@ -177,7 +177,7 @@ public abstract class Base implements Serializable, IBase, IElement {
    * elements are actually applicable
    */
   public String getFHIRVersion() {
-    return modelContext == null ? null : modelContext.getFHIRVersion();
+    return modelContext == null ? Constants.VERSION : modelContext.getFHIRVersion();
   }
   //endregion
 

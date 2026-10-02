@@ -107,7 +107,7 @@ import com.google.gson.JsonObject;
  * The implemetation of IWorkerContext is deprecated - it is no longer maintained by the core team
  */
 @Slf4j
-@Deprecated
+@Deprecated(forRemoval = true)
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
 
@@ -592,7 +592,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private void setTerminologyOptions(ValidationOptions options, Parameters pIn) {
     if (options != null && options.hasLanguages()) {
-      pIn.addParameter("displayLanguage", options.getLanguages().toString());
+      pIn.addParameter("displayLanguage", options.getLanguages().toParameterValue());
     }
   }
 
@@ -703,7 +703,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.canRunWithoutTerminology = canRunWithoutTerminology;
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   public void setLogger(ILoggingService logger) {
 
   }
@@ -1185,7 +1185,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  @Deprecated
+  @Deprecated(forRemoval = true)
   public ILoggingService getLogger() {
     return null;
   }

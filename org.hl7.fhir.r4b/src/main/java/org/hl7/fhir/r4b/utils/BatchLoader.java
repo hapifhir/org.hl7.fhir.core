@@ -49,7 +49,7 @@ import org.hl7.fhir.r4b.utils.client.FHIRToolingClient;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 @SuppressWarnings("checkstyle:systemout")
 public class BatchLoader {
 

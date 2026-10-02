@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Collections;
 import java.util.Set;
 import java.util.Stack;
 
@@ -52,78 +53,8 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 @Slf4j
 public class SnapshotGenerationPreProcessor {
 
-  public class ElementAnalysis {
-    private StructureDefinition structure;
-    private ElementDefinition element;
-    private String type;
-    public SourcedChildDefinitions children;
-    protected ElementAnalysis(StructureDefinition structure, ElementDefinition element, String type) {
-      super();
-      this.structure = structure;
-      this.element = element;
-      this.type = type;
-    }
-    public StructureDefinition getStructure() {
-      return structure;
-    }
-    public ElementDefinition getElement() {
-      return element;
-    }
-    public SourcedChildDefinitions getChildren() {
-      return children;
-    }
-    public void setChildren(SourcedChildDefinitions children) {
-      this.children = children;
-    }
-    public String getType() {
-      return type;
-    }
-    public String summary() {
-      return element.getName()+":"+type;
-    }
-  }
-
-  public class SliceInfo {
-    SliceInfo parent;
-    String path;
-    boolean closed;
-    ElementDefinition slicer;
-    List<ElementDefinition> sliceStuff;
-    List<ElementDefinition> slices;
-
-    public SliceInfo(SliceInfo parent, ElementDefinition ed) {
-      this.parent = parent;
-      path = ed.getPath();
-      slicer = ed;
-      sliceStuff = new ArrayList<>();
-      if (parent != null) {
-        parent.add(ed);
-      }
-    }
-
-    public void newSlice(ElementDefinition ed) {
-      if (slices == null) {
-        slices = new ArrayList<ElementDefinition>();
-      }
-      slices.add(ed);
-      if (parent != null) {
-        parent.add(ed);
-      }
-    }
-    public void add(ElementDefinition ed) {
-      if (slices == null) {
-        sliceStuff.add(ed);
-      }      
-      if (parent != null) {
-        parent.add(ed);
-      }
-    }
-  }
-
   private IWorkerContext context;
   private ProfileUtilities utils;
-  Set<String> typeNames;
-  private List<SliceInfo> slicings = new ArrayList<>();
 
   public SnapshotGenerationPreProcessor(ProfileUtilities utils) {
     super();
@@ -133,7 +64,7 @@ public class SnapshotGenerationPreProcessor {
 
   public void process(StructureDefinitionDifferentialComponent diff, StructureDefinition srcOriginal) {
     StructureDefinition srcWrapper = shallowClone(srcOriginal, diff); 
-    processSlices(diff, srcWrapper);  
+    markExtensions(diff, srcWrapper);  
     if (srcWrapper.hasExtension(ExtensionDefinitions.EXT_ADDITIONAL_BASE)) {
        insertMissingSparseElements(diff.getElement(), srcWrapper.getTypeName());
        for (Extension ext : srcWrapper.getExtensionsByUrl(ExtensionDefinitions.EXT_ADDITIONAL_BASE)) {
@@ -418,7 +349,7 @@ public class SnapshotGenerationPreProcessor {
     merged.setIsSummaryElement(chooseProp(source.getIsSummaryElement(), base.getIsSummaryElement()));
 
     if (source.hasMin() && base.hasMin()) {
-      merged.setMinElement(source.getMin() < base.getMin() ? source.getMinElement().copy() : base.getMinElement().copy());      
+      merged.setMinElement(source.getMin() > base.getMin() ? source.getMinElement().copy() : base.getMinElement().copy());      
     } else {
       merged.setMinElement(chooseProp(source.getMinElement(), base.getMinElement().copy()));
     }
@@ -447,7 +378,7 @@ public class SnapshotGenerationPreProcessor {
         merged.setFixed(base.getFixed().copy());          
       }
     } else if (source.hasPattern() && base.hasPattern()) {
-      merged.setPattern(checkPatternValues(baseSD.getVersionedUrl(), source.getPath()+".pattern", source.getFixed(), base.getFixed(), true));
+      merged.setPattern(checkPatternValues(baseSD.getVersionedUrl(), source.getPath()+".pattern", source.getPattern(), base.getPattern(), true));
     } else {
       merged.setPattern(chooseProp(source.getPattern(), base.getPattern()));
     }
@@ -463,7 +394,7 @@ public class SnapshotGenerationPreProcessor {
       merged.setMaxValue(chooseProp(source.getMaxValue(), base.getMaxValue()));
     }
     if (source.hasMaxLength() && base.hasMaxLength()) {
-      merged.setMaxLengthElement(base.getMaxLength() < source.getMaxLength() ? source.getMaxLengthElement().copy() : base.getMaxLengthElement().copy());            
+      merged.setMaxLengthElement(source.getMaxLength() < base.getMaxLength() ? source.getMaxLengthElement().copy() : base.getMaxLengthElement().copy());            
     } else {
       merged.setMaxLengthElement(chooseProp(source.getMaxLengthElement(), base.getMaxLengthElement().copy()));
     }
@@ -636,8 +567,8 @@ public class SnapshotGenerationPreProcessor {
       Quantity q1 = (Quantity) v1;
       Quantity q2 = (Quantity) v2;
       if (q1.hasUnit() || q2.hasUnit()) {
-        if (Utilities.stringsEqual(q1.getUnit(), q2.getUnit())) {
-          throw new FHIRException(context.formatMessage(I18nConstants.SD_ADDITIONAL_BASE_INCOMPATIBLE_VALUES, vurl, path+"."+property+".unit", v1.fhirType(), v2.fhirType()));
+        if (!Utilities.stringsEqual(q1.getUnit(), q2.getUnit())) {
+          throw new FHIRException(context.formatMessage(I18nConstants.SD_ADDITIONAL_BASE_INCOMPATIBLE_VALUES, vurl, path+"."+property+".unit", q1.getUnit(), q2.getUnit()));
         }
       }
       return isLower(vurl, path, property+".value", q1.getValueElement(), q2.getValueElement());
@@ -667,436 +598,74 @@ public class SnapshotGenerationPreProcessor {
     for (Property p1 : v1.children()) {
       Property p2 = v2.getChildByName(p1.getName());
       if (p1.hasValues() && p2.hasValues()) {
-        if (p1.getValues().size() > 1 || p1.getValues().size() > 2) {
-          throw new Error("Not supported");          
+        // A repeating child merges as a union: every value in a pattern has to be present
+        // in the instance, so satisfying both bases means satisfying both lists. Only a
+        // single-valued child has to be reconciled value by value.
+        if (p1.getMaxCardinality() == 1) {
+          replaceChild(merged, p1.getName(), Collections.singletonList((Base) checkPatternValues(
+              vurl, path+"."+p1.getName(), (DataType) p1.getValues().get(0), (DataType) p2.getValues().get(0), extras)));
+        } else {
+          List<Base> union = new ArrayList<>();
+          for (Base b : p1.getValues()) {
+            union.add(b.copy()); // copies: the values belong to the profile they came from
+          }
+          for (Base b : p2.getValues()) {
+            if (!containsDeep(union, b)) {
+              if (!extras) {
+                // v1 is a fixed value: it's exact, so it can't take on values it doesn't already have
+                throw new FHIRException(context.formatMessage(I18nConstants.SD_ADDITIONAL_BASE_INCOMPATIBLE_VALUES, vurl, path+"."+p1.getName(), "(not present)", b.toString()));
+              }
+              union.add(b.copy());
+            }
+          }
+          replaceChild(merged, p1.getName(), union);
         }
-        merged.setProperty(p1.getName(), checkPatternValues(vurl, path+"."+p1.getName(), (DataType) p1.getValues().get(0), (DataType) p2.getValues().get(0), extras));
       } else if (p2.hasValues()) {
         if (!extras) {
           throw new FHIRException(context.formatMessage(I18nConstants.SD_ADDITIONAL_BASE_INCOMPATIBLE_VALUES, vurl, path+"."+p1.getName(), "null", v2.primitiveValue()));            
         }
-        if (p2.getValues().size() > 1) {
-          throw new Error("Not supported");
+        List<Base> copies = new ArrayList<>();
+        for (Base b : p2.getValues()) {
+          copies.add(b.copy());
         }
-        merged.setProperty(p1.getName(), p2.getValues().get(0).copy());
+        replaceChild(merged, p1.getName(), copies);
       }
     }
     return merged;
   }
 
-
-  private void processSlices(StructureDefinitionDifferentialComponent diff, StructureDefinition src) {
-    // first pass, divide it up 
-    for (int cursor = 0; cursor < diff.getElement().size(); cursor++) {      
-      ElementDefinition ed = diff.getElement().get(cursor);
-
-      SliceInfo si = getSlicing(ed);
-      if (si == null) {
-        if (ed.hasSlicing() && !isExtensionSlicing(ed)) {
-          si = new SliceInfo(null, ed);
-          slicings.add(si);
-        } else {
-          // ignore this
-        }
-      } else {
-        if (ed.hasSliceName() && ed.getPath().equals(si.path)) {
-          si.newSlice(ed);
-        } else if (ed.hasSlicing() && !isExtensionSlicing(ed)) {
-          si = new SliceInfo(si, ed);
-          slicings.add(si);
-        } else {
-          si.add(ed);
-        }
-      }
-    }       
-
-    for (SliceInfo si : slicings) {
-      if (!si.sliceStuff.isEmpty() && si.slices != null) {
-        for (ElementDefinition ed : si.sliceStuff) {
-          if (ed.hasSlicing() && !isExtensionSlicing(ed)) {
-            String message = context.formatMessage(I18nConstants.UNSUPPORTED_SLICING_COMPLEXITY, si.slicer.getPath(), ed.getPath(), ed.getSlicing().summary());
-            log.warn(message);
-            return;
-          }
-        }
-      }
-    }
-
-    // working backward
-    for (int i = slicings.size() - 1; i >= 0; i--) {
-      SliceInfo si = slicings.get(i);
-      if (!si.sliceStuff.isEmpty() && si.slices != null) {
-        // for each actual slice, we need to merge sliceStuff in
-        for (ElementDefinition slice : si.slices) {
-          mergeElements(diff.getElement(), si.sliceStuff, slice, si.slicer);
-        }
-      } else {
-        // we just ignore these - nothing to do
-      }
-    }
-
-    for (ElementDefinition ed : diff.getElement()) {
-      ProfileUtilities.markExtensions(ed, false, src);
-    }
-  }
-
-  private void mergeElements(List<ElementDefinition> elements, List<ElementDefinition> allSlices, ElementDefinition slice, ElementDefinition slicer) {
-    // we have
-    //   elements - the list of all the elements
-    //   allSlices which is the content defined for all the slices
-    //   slice -the anchor element for the slice
-
-    int sliceIndex = elements.indexOf(slice);
-    int startOfSlice = sliceIndex + 1;
-    int endOfSlice = findEndOfSlice(elements, slice);
-
-    Set<String> missing = new HashSet<>();
-    // the simple case is that all the stuff in allSlices exists between startOfSlice and endOfSlice
-    boolean allFound = true;
-    for (int i = 0; i < allSlices.size(); i++) {
-      boolean found = false;
-      for (int j = startOfSlice; j <= endOfSlice; j++) {
-        if (elementsMatch(elements.get(j), allSlices.get(i))) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) {
-        missing.add(allSlices.get(i).getPath());
-        allFound = false;
-      }
-    }
-
-    if (allFound) {
-      // then we just merge it in
-      for (int j = startOfSlice; j <= endOfSlice; j++) {
-        for (int i = 0; i < allSlices.size(); i++) {
-          if (elementsMatch(elements.get(j), allSlices.get(i))) {
-            merge(elements.get(j), allSlices.get(i));
-          }
-        }
-      }
-    } else {
-      Set<ElementDefinition> handled = new HashSet<>();
-
-      // merge the simple stuff
-      for (int j = startOfSlice; j <= endOfSlice; j++) {
-        for (int i = 0; i < allSlices.size(); i++) {
-          if (elementsMatch(elements.get(j), allSlices.get(i))) {
-            handled.add(allSlices.get(i));
-            merge(elements.get(j), allSlices.get(i));
-          }
-        }
-      }
-
-      // we have a lot of work to do
-      // the challenge is that the things missing from startOfSlice..endOfSlice have to injected in the correct order 
-      // which means that we need to know the definitions
-      // and is extra tricky because we're sparse. so we just use the stated path
-      for (ElementDefinition ed : allSlices) {
-        if (!handled.contains(ed)) {
-          List<ElementAnalysis> edDef = analysePath(ed);
-          String id = ed.getId().replace(slicer.getId(), slice.getId());
-          int index = determineInsertionPoint(elements, startOfSlice, endOfSlice, id, ed.getPath(), edDef);
-          ElementDefinition edc = ed.copy();
-          edc.setUserData(UserDataNames.SNAPSHOT_PREPROCESS_INJECTED, true);
-          edc.setId(id);
-          elements.add(index, edc);
-          endOfSlice++;
-        }
-      }
-    }   
-
-  }
-
-  private boolean elementsMatch(ElementDefinition ed1, ElementDefinition ed2) {
-    if (!pathsMatch(ed1.getPath(), ed2.getPath())) {
-      return false;
-    } else if (ed1.getSliceName() != null && ed2.getSliceName() != null) {
-      return ed1.getSliceName().equals(ed2.getSliceName());
-    } else  if (ed1.getSliceName() != null || ed2.getSliceName() != null) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  private boolean pathsMatch(String path1, String path2) {
-    if (path1.equals(path2)) {
-      return true;
-    }
-    if (path1.endsWith("[x]")) {
-      path1 = path1.substring(0, path1.length()-3);
-      if (path2.startsWith(path1)) {
-        if (!path2.substring(path1.length()).contains(".")) {
-          return true;
-        }
-      }
-    }
-    if (path2.endsWith("[x]")) {
-      path2 = path2.substring(0, path2.length()-3);
-      if (path1.startsWith(path2)) {
-        if (!path1.substring(path2.length()).contains(".")) {
-          return true;
-        }
+  private boolean containsDeep(List<Base> list, Base value) {
+    for (Base b : list) {
+      if (b.equalsDeep(value)) {
+        return true;
       }
     }
     return false;
   }
 
-  private int determineInsertionPoint(List<ElementDefinition> elements, int startOfSlice, int endOfSlice, String id, String path, List<ElementAnalysis> edDef) {
-    // we work backwards through the id, looking for peers (this is the only way we can manage slicing)
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] p = id.split("\\.");
-    for (int i = p.length-1; i >= 1; i--) {
-      String subId = p[0];
-      for (int j = 1; j <= i; j++) {
-        subId += "."+p[j];
-      }
-      List<ElementDefinition> peers = findPeers(elements, startOfSlice, endOfSlice, subId);
-      if (!peers.isEmpty()) {
-        // Once we find some, we figure out the insertion point - before one of them, or after the last? 
-        for (ElementDefinition ed : peers) {
-          if (comesAfterThis(id, path, edDef, ed)) {
-            return elements.indexOf(ed);
-          }
-        }
-        return elements.indexOf(peers.get(peers.size() -1))+1;
+  /**
+   * setProperty appends for a repeating child, and merged starts life as a copy of v1, so
+   * setting a merged child straight onto it would leave the copy's own value in place
+   * beside it. Clear what the copy brought over first.
+   */
+  private void replaceChild(Base merged, String name, List<Base> values) {
+    Property existing = merged.getChildByName(name);
+    if (existing != null && existing.hasValues()) {
+      for (Base b : new ArrayList<>(existing.getValues())) {
+        merged.removeChild(name, b);
       }
     }
-    return endOfSlice+1;
-  }
-
-  private List<ElementDefinition> findPeers(List<ElementDefinition> elements, int startOfSlice, int endOfSlice, String subId) {
-    List<ElementDefinition> peers =  new ArrayList<>();
-    for (int i = startOfSlice; i <= endOfSlice; i++) {
-      ElementDefinition ed = elements.get(i);
-      if (ed.getId().startsWith(subId)) {
-        peers.add(ed);
-      }
-    }
-    return peers;
-  }
-
-  private String summary(List<ElementAnalysis> edDef) {
-    List<String> s = new ArrayList<>();
-    for (ElementAnalysis ed : edDef) {
-      s.add(ed.summary());
-    }
-
-    return CommaSeparatedStringBuilder.join(",", s);
-  }
-
-  private boolean comesAfterThis(String id, String path, List<ElementAnalysis> edDef, ElementDefinition ed) {
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] p1 = id.split("\\.");
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] p2 = ed.getId().split("\\.");
-    for (int i = 0; i < Integer.min(p1.length,  p2.length); i++) {
-      if (!p1[i].equals(p2[i])) {
-        ElementAnalysis sed = edDef.get(i-1);
-        int i1 = indexOfName(sed, p1[i]);
-        int i2 = indexOfName(sed, p2[i]);
-        if (i == Integer.min(p1.length,  p2.length) -1 && i1 == i2) {
-          if (!p1[i].contains(":") && p2[i].contains(":")) {
-            // launched straight into slicing without setting it up, 
-            // and now it's being set up 
-            return true;
-          }
-        }
-        return i1 < i2;
-      } else {
-        // well, we just go on
-      }
-    }
-    return p1.length < p2.length;
-  }
-
-  private int indexOfName(ElementAnalysis sed, String name) {
-    if (name.contains(":")) {
-      name = name.substring(0, name.indexOf(":"));
-    }
-    for (int i = 0; i < sed.getChildren().getList().size(); i++) {
-      if (name.equals(sed.getChildren().getList().get(i).getName())) {
-        return i;
-      }      
-    }
-    return -1;
-  }
-
-  private List<ElementAnalysis> analysePath(ElementDefinition ed) {
-    List<ElementAnalysis> res = new ArrayList<>();
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] pathSegments = ed.getPath().split("\\.");
-    for (String pn : pathSegments) {
-      analysePathSegment(ed, res, pn);
-    }
-    return res;
-  }
-
-  private void analysePathSegment(ElementDefinition ed, List<ElementAnalysis> res, String pn) {
-    if (res.isEmpty()) {
-      StructureDefinition sd = context.fetchTypeDefinition(pn);
-      if (sd == null) {
-        String message = context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, pn, ed.getId());
-        throw new DefinitionException(message);
-      }
-      res.add(new ElementAnalysis(sd, sd.getSnapshot().getElementFirstRep(), null));
-    } else {
-      ElementAnalysis sed = res.get(res.size()-1);
-      sed.setChildren(utils.getChildMap(sed.getStructure(), sed.getElement(), true, sed.getType()));
-      ElementDefinition t = null;
-      String type = null;
-      for (ElementDefinition child : sed.getChildren().getList()) {
-        if (pn.equals(child.getName())) {
-          t = child;
-          break;
-        }
-        if (child.getName().endsWith("[x]")) {
-          String rn = child.getName().substring(0, child.getName().length()-3);
-          if (pn.startsWith(rn)) {
-            t = child;
-            String tn = pn.substring(rn.length());
-            if (TypesUtilities.isPrimitive(Utilities.uncapitalize(tn))) {
-              type = Utilities.uncapitalize(tn);
-            } else {
-              type = tn;
-            }
-            break;
-          }
-        }
-      }
-      if (t == null) {
-        String message = context.formatMessage(I18nConstants.UNKNOWN_PROPERTY, pn, ed.getPath());
-        throw new DefinitionException("Unknown path "+pn+" in path "+ed.getPath()+": "+message);          
-      } else {
-        res.add(new ElementAnalysis(sed.getChildren().getSource(), t, type));
-      }
+    for (Base b : values) {
+      merged.setProperty(name, b);
     }
   }
 
-  private int findEndOfSlice(List<ElementDefinition> elements, ElementDefinition slice) {
-    for (int i = elements.indexOf(slice); i < elements.size(); i++) {
-      ElementDefinition e = elements.get(i);
-      if (!(e.getPath().startsWith(slice.getPath()+".") ||
-          (e.getPath().equals(slice.getPath()) && slice.getSliceName().equals(e.getSliceName())))) {
-        return i-1;
-      }
-    }
-    return elements.size() - 1;
-  }
 
-  private void merge(ElementDefinition focus, ElementDefinition base) {
-    if (base.hasLabel() && !focus.hasLabel()) {
-      focus.setLabelElement(base.getLabelElement());
-    }    
-    if (base.hasCode() && !focus.hasCode()) {
-      focus.getCode().addAll(base.getCode());
+  private void markExtensions(StructureDefinitionDifferentialComponent diff, StructureDefinition src) {
+    // note: the rules on a slicer apply to all its slices, but they are not copied into the slices
+    for (ElementDefinition ed : diff.getElement()) {
+      ProfileUtilities.markExtensions(ed, false, src);
     }
-    if (base.hasShort() && !focus.hasShort()) {
-      focus.setShortElement(base.getShortElement());
-    }    
-    if (base.hasDefinition() && !focus.hasDefinition()) {
-      focus.setDefinitionElement(base.getDefinitionElement());
-    }    
-    if (base.hasComment() && !focus.hasComment()) {
-      focus.setCommentElement(base.getCommentElement());
-    }    
-    if (base.hasRequirements() && !focus.hasRequirements()) {
-      focus.setRequirementsElement(base.getRequirementsElement());
-    }    
-    if (base.hasAlias() && !focus.hasAlias()) {
-      focus.getAlias().addAll(base.getAlias());
-    }
-    if (base.hasMin() && !focus.hasMin()) {
-      focus.setMinElement(base.getMinElement());
-    }    
-    if (base.hasMax() && !focus.hasMax()) {
-      focus.setMaxElement(base.getMaxElement());
-    }    
-    if (base.hasType() && !focus.hasType()) {
-      focus.getType().addAll(base.getType());
-    }
-    if (base.hasDefaultValue() && !focus.hasDefaultValue()) {
-      focus.setDefaultValue(base.getDefaultValue());
-    }
-    if (base.hasMeaningWhenMissing() && !focus.hasMeaningWhenMissing()) {
-      focus.setMeaningWhenMissingElement(base.getMeaningWhenMissingElement());
-    }    
-    if (base.hasOrderMeaning() && !focus.hasOrderMeaning()) {
-      focus.setOrderMeaningElement(base.getOrderMeaningElement());
-    }    
-    if (base.hasFixed() && !focus.hasFixed()) {
-      focus.setFixed(base.getFixed());
-    }
-    if (base.hasPattern() && !focus.hasPattern()) {
-      focus.setPattern(base.getPattern());
-    }
-    if (base.hasExample() && !focus.hasExample()) {
-      focus.getExample().addAll(base.getExample());
-    }
-    if (base.hasMinValue() && !focus.hasMinValue()) {
-      focus.setMinValue(base.getMinValue());
-    }
-    if (base.hasMaxValue() && !focus.hasMaxValue()) {
-      focus.setMaxValue(base.getMaxValue());
-    }
-    if (base.hasMaxLength() && !focus.hasMaxLength()) {
-      focus.setMaxLengthElement(base.getMaxLengthElement());
-    }    
-    if (base.hasConstraint() && !focus.hasConstraint()) {
-      focus.getConstraint().addAll(base.getConstraint());
-    }
-    if (base.hasMustHaveValue() && !focus.hasMustHaveValue()) {
-      focus.setMustHaveValueElement(base.getMustHaveValueElement());
-    }    
-    if (base.hasValueAlternatives() && !focus.hasValueAlternatives()) {
-      focus.getValueAlternatives().addAll(base.getValueAlternatives());
-    }
-    if (base.hasMustSupport() && !focus.hasMustSupport()) {
-      focus.setMustSupportElement(base.getMustSupportElement());
-    }    
-    if (base.hasIsModifier() && !focus.hasIsModifier()) {
-      focus.setIsModifierElement(base.getIsModifierElement());
-    }    
-    if (base.hasIsModifierReason() && !focus.hasIsModifierReason()) {
-      focus.setIsModifierReasonElement(base.getIsModifierReasonElement());
-    }    
-    if (base.hasIsSummary() && !focus.hasIsSummary()) {
-      focus.setIsSummaryElement(base.getIsSummaryElement());
-    }    
-    if (base.hasBinding() && !focus.hasBinding()) {
-      focus.setBinding(base.getBinding());
-    }
-  }
-
-  private boolean isExtensionSlicing(ElementDefinition ed) {
-    if (!Utilities.existsInList(ed.getName(), "extension", "modifierExtension")) {
-      return false;
-    }
-    if (ed.getSlicing().getRules() != SlicingRules.OPEN || (!ed.getSlicing().hasOrdered() || ed.getSlicing().getOrdered()) || ed.getSlicing().getDiscriminator().size() != 1) {
-      return false;
-    }
-    ElementDefinitionSlicingDiscriminatorComponent d = ed.getSlicing().getDiscriminatorFirstRep();
-    return d.getType() == DiscriminatorType.VALUE && "url".equals(d.getPath());
-  }
-
-  private SliceInfo getSlicing(ElementDefinition ed) {
-    for (int i = slicings.size() - 1; i >= 0; i--) {
-      SliceInfo si = slicings.get(i);
-      if (!si.closed) {
-        if (si.path.length() > ed.getPath().length()) {
-          si.closed = true;
-        } else if (ed.getPath().startsWith(si.path)) {
-          return si;
-        }
-      }
-    }
-    return null;
   }
 
   public List<ElementDefinition> supplementMissingDiffElements(StructureDefinition profile) { 

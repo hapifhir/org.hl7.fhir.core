@@ -107,6 +107,7 @@ import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 
 
+@Deprecated(forRemoval = true)
 public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetExpander {
 
   public class PropertyFilter implements IConceptFilter {

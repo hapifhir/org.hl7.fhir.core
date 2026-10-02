@@ -32,7 +32,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
-import org.hl7.fhir.services.elementmodel.Manager;
 import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.services.renderers.RendererFactory;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
@@ -97,13 +96,13 @@ class ValidationServiceTests {
 
     ValidationService myService = Mockito.spy(new ValidationService(new RendererFactory()));
 
-    ValidationEngineParameters baseContext = new ValidationEngineParameters().setBaseEngine("myDummyKey").setSv("4.0.1").setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"));
+    ValidationEngineParameters baseContext = new ValidationEngineParameters().setBaseEngine("myDummyKey").setStatedFHIRVersion("4.0.1").setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"));
     myService.putBaseEngine("myDummyKey", baseContext, null);
     verify(myService, Mockito.times(1)).buildValidationEngine(any(), any(), any(), any());
 
     {
       final List<FileInfo> filesToValidate = getFilesToValidate();
-      final ValidationRequest request = new ValidationRequest().setValidationEngineParameters(new ValidationEngineParameters().setSv("4.0.1")).setFilesToValidate(filesToValidate);
+      final ValidationRequest request = new ValidationRequest().setValidationEngineParameters(new ValidationEngineParameters().setStatedFHIRVersion("4.0.1")).setFilesToValidate(filesToValidate);
       myService.validateSources(request);
 
       verify(myService, Mockito.times(0)).getBaseEngine("myDummyKey");
