@@ -2352,7 +2352,7 @@ public class StructureMapTools {
         }
         if (tgt.getParameterList().size() == 3) {
           var typeCode = ((PrimitiveType<?>) tgt.getParameterList().get(2).getValue()).asStringValue();
-          id.setType(new CodeableConcept().addCoding(new Coding().setSystem("http://hl7.org/fhir/ValueSet/identifier-type").setCode(typeCode)));
+          id.setType(new CodeableConcept().addCoding(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/v2-0203").setCode(typeCode)));
         }
         return id;
       case CP:
