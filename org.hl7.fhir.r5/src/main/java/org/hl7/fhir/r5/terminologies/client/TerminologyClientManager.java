@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.r5.model.*;
@@ -137,6 +137,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   private List<TerminologyClientContext> serverList = new ArrayList<>(); // clients by server address
   private Map<String, TerminologyClientContext> serverMap = new HashMap<>(); // clients by server address
   private Map<String, Boolean> serverSupportMap = new HashMap<>(); // clients by server address
+  private Map<String, TerminologyClientContext> unavailableContexts = new HashMap<>(); // servers that couldn't be reached in this session, and what stands in for them
+  private Map<String, String> failedLookups = new HashMap<>(); // value sets and code systems that couldn't be looked up in this session, and why
   private Map<String, ServerOptionList> resMap = new HashMap<>(); // client resolution list
   private List<InternalLogEvent> internalLog = new ArrayList<>();
   protected Parameters expParameters;
@@ -180,6 +182,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     }
     serverList.addAll(other.serverList);
     serverMap.putAll(other.serverMap);
+    unavailableContexts.putAll(other.unavailableContexts);
+    failedLookups.putAll(other.failedLookups);
     resMap.putAll(other.resMap);
     useEcosystem = other.useEcosystem;
     monitorServiceURL = other.monitorServiceURL;
@@ -446,20 +450,80 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   }
 
   private TerminologyClientContext findClientContext(String server, Set<String> systems, boolean expand) {
-    server = ManagedWebAccess.makeSecureRef(server);
-    TerminologyClientContext client = serverMap.get(server);
+    TerminologyClientContext client = getContext(server, systems);
     if (client == null) {
-      try {
-        client = new TerminologyClientContext(factory.makeClientR5("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
-      } catch (Exception e) {
-        throw new TerminologyServiceException("Error accessing "+server+" for "+CommaSeparatedStringBuilder.join(",", systems)+": "+e.getMessage(), e);
-      }
-      //client.setTxCache(cache);
-      serverList.add(client);
-      serverMap.put(server, client);
+      // the server can't be reached: requests routed to it get a context that answers them
+      // as server errors, which aren't cached beyond the session
+      client = unavailableContexts.get(ManagedWebAccess.makeSecureRef(server));
     }
     client.seeUse(systems, expand ? TerminologyClientContextUseType.expand : TerminologyClientContextUseType.validate);
     return client;
+  }
+
+  /**
+   * The context for a server, connected the first time the server is used. Null if the
+   * server can't be reached. Connecting is tried more than once (see connectRetryDelays()),
+   * since a server that fails once may just be restarting. If it still fails, the server
+   * isn't tried again in this session, so that a server that is down costs one round of
+   * attempts rather than one per request routed to it; requests routed to it get the
+   * context in unavailableContexts
+   */
+  private TerminologyClientContext getContext(String server, Set<String> systems) {
+    server = ManagedWebAccess.makeSecureRef(server);
+    TerminologyClientContext client = serverMap.get(server);
+    if (client != null) {
+      return client;
+    }
+    if (unavailableContexts.containsKey(server)) {
+      return null;
+    }
+    String forSystems = systems == null || systems.isEmpty() ? "" : " for "+CommaSeparatedStringBuilder.join(",", systems);
+    ITerminologyClient5 txClient = null;
+    Exception error = null;
+    long[] delays = connectRetryDelays();
+    for (int attempt = 0; attempt <= delays.length; attempt++) {
+      if (attempt > 0) {
+        pause(delays[attempt - 1]);
+      }
+      try {
+        txClient = factory.makeClientR5("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger());
+      } catch (Exception e) {
+        // not a server that is down - there's no client for the address at all
+        throw new TerminologyServiceException("Error accessing "+server+forSystems+": "+e.getMessage(), e);
+      }
+      try {
+        client = new TerminologyClientContext(txClient, cache, false, logger);
+        //client.setTxCache(cache);
+        serverList.add(client);
+        serverMap.put(server, client);
+        return client;
+      } catch (Exception e) {
+        error = e;
+        logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
+      }
+    }
+    unavailableContexts.put(server, TerminologyClientContext.unavailable(txClient, cache, logger, "The terminology server "+server+" could not be reached ("+error.getMessage()+")"));
+    String msg = "Error accessing "+server+forSystems+": "+error.getMessage()+". "+
+      "Requests routed to it are reported as server errors for the rest of this session";
+    internalLog.add(new InternalLogEvent(msg, server, Utilities.pathURL(server, "metadata")));
+    logger.logMessage(msg);
+    return null;
+  }
+
+  /**
+   * How long to wait between attempts to connect to a server, in milliseconds. There is one
+   * more attempt than there are delays
+   */
+  protected long[] connectRetryDelays() {
+    return new long[] { 2000, 5000 };
+  }
+
+  protected void pause(long millis) {
+    try {
+      Thread.sleep(millis);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
   }
 
   /**
@@ -579,7 +643,13 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       return serverSupportMap.get(key);
     }
     try {
-      var client = findClientContext(server, null, false);
+      // not findClientContext(): for a server that can't be reached, that returns a context
+      // standing in for it, and the question here is what this server actually has
+      var client = getContext(server, null);
+      if (client == null) {
+        serverSupportMap.put(key, false);
+        return false;
+      }
       Bundle bnd = client.getClient().search("CodeSystem",
         canonical.contains("|")
           ? "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|")))+"&version="+Utilities.escapeUrl(canonical.substring(canonical.indexOf("|")+1))
@@ -802,9 +872,17 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     this.usage = usage;
   }
 
+  /**
+   * Null if the server the registry names for the value set doesn't have it. If the server
+   * can't be asked, that isn't known, and a NoTerminologyServiceException says so - the
+   * caller caches null as the value set not existing
+   */
   public SourcedValueSet findValueSetOnServer(String canonical) {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null) {
       return null;
+    }
+    if (failedLookups.containsKey(canonical)) {
+      throw new NoTerminologyServiceException(failedLookups.get(canonical));
     }
     String request = null;
     boolean isImplicit = false;
@@ -872,16 +950,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
           server = getMasterClient().getAddress();
         }
       }
-      TerminologyClientContext client = serverMap.get(server);
+      TerminologyClientContext client = getContext(server, null);
       if (client == null) {
-        try {
-          client = new TerminologyClientContext(factory.makeClientR5("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
-        } catch (URISyntaxException | IOException e) {
-          throw new TerminologyServiceException(e);
-        }
-
-        serverList.add(client);
-        serverMap.put(server, client);
+        throw new TerminologyServiceException(unavailableContexts.get(ManagedWebAccess.makeSecureRef(server)).getUnavailableReason());
       }
       client.seeUse(canonical, TerminologyClientContextUseType.readVS);
       String criteria = canonical.contains("|") ? 
@@ -933,12 +1004,20 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
-      return null;
+      failedLookups.put(canonical, msg);
+      throw new NoTerminologyServiceException(msg, e);
     }
   }
+  /**
+   * As findValueSetOnServer(): null if the server doesn't have the code system, and a
+   * NoTerminologyServiceException if the server can't be asked
+   */
   public SourcedCodeSystem findCodeSystemOnServer(String canonical) {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null || !useEcosystem) {
       return null;
+    }
+    if (failedLookups.containsKey(canonical)) {
+      throw new NoTerminologyServiceException(failedLookups.get(canonical));
     }
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode(canonical));
     if (usage != null) {
@@ -966,15 +1045,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         } catch (MalformedURLException e) {
         }
       }
-      TerminologyClientContext client = serverMap.get(server);
+      TerminologyClientContext client = getContext(server, null);
       if (client == null) {
-        try {
-          client = new TerminologyClientContext(factory.makeClientR5("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
-        } catch (URISyntaxException | IOException e) {
-          throw new TerminologyServiceException("Error accessing "+server+" for "+canonical+": "+e.getMessage(), e);
-        }
-        serverList.add(client);
-        serverMap.put(server, client);
+        throw new TerminologyServiceException(unavailableContexts.get(ManagedWebAccess.makeSecureRef(server)).getUnavailableReason());
       }
       client.seeUse(canonical, TerminologyClientContextUseType.readCS);
       String criteria = canonical.contains("|") ? 
@@ -1013,7 +1086,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
-      return null;
+      failedLookups.put(canonical, msg);
+      throw new NoTerminologyServiceException(msg, e);
     }
   }
 

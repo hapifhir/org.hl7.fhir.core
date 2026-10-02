@@ -8,6 +8,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.IModelContext;
@@ -920,6 +921,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (tc == null) {
       return new ValueSetExpansionOutcome("No server available", TerminologyServiceErrorClass.INTERNAL_ERROR, true);
     }
+    if (tc.isUnavailable()) {
+      return unavailableExpansion(tc);
+    }
     Parameters p = constructParameters(opCtxt, tc, vs, hierarchical);
     for (ConceptSetComponent incl : vs.getCompose().getIncludeList()) {
       codeSystemsUsed.add(incl.getSystem());
@@ -1002,6 +1006,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     List<String> allErrors = new ArrayList<>();
 
     TerminologyClientContext tc = terminologyClientManager.chooseServer(url, true);
+    if (tc != null && tc.isUnavailable()) {
+      return unavailableExpansion(tc);
+    }
     try {
       if (tc == null) {
         throw new FHIRException("Unable to find a server to expand '" + url + "'");
@@ -1158,6 +1165,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // list), which is not the same state as noTerminologyServer - answer it the same way
     if (tc == null) {
       return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, allErrors, false);
+    }
+    if (tc.isUnavailable()) {
+      return unavailableExpansion(tc);
     }
     addDependentResources(null, tc, p, vs);
 
@@ -1317,6 +1327,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (tc == null) {
         for (CodingValidationRequest t : items) {
           t.setResult(new ValidationResult(IssueSeverity.ERROR, formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES, t.getCoding().getCode(), t.getCoding().getSystem()), TerminologyServiceErrorClass.NOSERVICE, null));
+        }
+        return;
+      }
+      if (tc.isUnavailable()) {
+        for (CodingValidationRequest t : items) {
+          t.setResult(unavailableValidation(tc));
         }
         return;
       }
@@ -1716,7 +1732,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     TerminologyClientContext tc = terminologyClientManager.chooseServer(null, systems, false);
     // chooseServer() returns null when no terminology server is configured at all (an empty server
     // list), which is not the same state as noTerminologyServer - answer it the same way
-    if (tc == null) {
+    if (tc == null || tc.isUnavailable()) {
       return null;
     }
 
@@ -2025,6 +2041,19 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  /**
+   * The outcome of a request routed to a server that couldn't be reached (see
+   * TerminologyClientManager.findClientContext()). A server error, as if the request had been
+   * made and failed: that is not cached beyond the session, so the next run asks again
+   */
+  private ValidationResult unavailableValidation(TerminologyClientContext tc) {
+    return new ValidationResult(IssueSeverity.ERROR, tc.getUnavailableReason(), null).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
+  }
+
+  private ValueSetExpansionOutcome unavailableExpansion(TerminologyClientContext tc) {
+    return new ValueSetExpansionOutcome(tc.getUnavailableReason(), TerminologyServiceErrorClass.SERVER_ERROR, false);
+  }
+
   protected ValidationResult validateOnServer(TerminologyClientContext tc, ValueSet vs, Parameters pin, ValidationOptions options) throws FHIRException {
     return validateOnServer2(tc, vs, pin, options, null);
   }
@@ -2041,6 +2070,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    * @throws FHIRException
    */
   public ValidationResult validateOnServer2(TerminologyClientContext tc, ValueSet vs, Parameters pin, ValidationOptions options, Set<String> systems) throws FHIRException {
+    if (tc.isUnavailable()) {
+      return unavailableValidation(tc);
+    }
 
     if (vs != null) {
       for (ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
@@ -3880,8 +3912,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (txCache.hasValueSet(canonical)) {
         svs = txCache.getValueSet(canonical);
       } else {
-        svs = terminologyClientManager.findValueSetOnServer(canonical);
-        txCache.cacheValueSet(canonical, svs);
+        try {
+          svs = terminologyClientManager.findValueSetOnServer(canonical);
+          txCache.cacheValueSet(canonical, svs);
+        } catch (NoTerminologyServiceException e) {
+          // the server couldn't be asked, so whether the value set exists isn't known: nothing
+          // is cached, which would record it as not existing, and the next run asks again
+          svs = null;
+        }
       }
       if (svs != null) {
         String web = ExtensionUtilities.readStringExtension(svs.getVs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
@@ -3902,9 +3940,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (txCache.hasCodeSystem(canonical)) {
         scs = txCache.getCodeSystem(canonical);
       } else {
-
-        scs = terminologyClientManager.findCodeSystemOnServer(canonical);
-        txCache.cacheCodeSystem(canonical, scs);
+        try {
+          scs = terminologyClientManager.findCodeSystemOnServer(canonical);
+          txCache.cacheCodeSystem(canonical, scs);
+        } catch (NoTerminologyServiceException e) {
+          // as for value sets above
+          scs = null;
+        }
       }
       if (scs != null) {
         String web = ExtensionUtilities.readStringExtension(scs.getCs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
@@ -4144,6 +4186,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
       if (tc == null) {
         throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
+      }
+      if (tc.isUnavailable()) {
+        OperationOutcome oo = new OperationOutcome(getModelContext());
+        oo.addIssue().setSeverity(org.hl7.fhir.model.core.OperationOutcome.IssueSeverity.WARNING).setCode(org.hl7.fhir.model.core.OperationOutcome.IssueType.TRANSIENT).getDetails().setText(tc.getUnavailableReason());
+        return oo;
       }
       for (ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
         codeSystemsUsed.add(inc.getSystem());

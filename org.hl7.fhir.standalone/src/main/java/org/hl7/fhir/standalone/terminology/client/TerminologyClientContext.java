@@ -108,6 +108,9 @@ public class TerminologyClientContext {
   // torn down first must not pull the cache out from under the others.
   private int holders = 1;
   private final ILoggingService logger;
+  // Why the server couldn't be reached, for a context that stands in for one (see unavailable()).
+  // null for a context connected to its server
+  private final String unavailableReason;
 
   public TerminologyClientContext(ITerminologyClientN client, TerminologyCache txCache, boolean master, ILoggingService logger) throws IOException {
     super();
@@ -115,6 +118,7 @@ public class TerminologyClientContext {
     this.txCache = txCache;
     this.master = master;
     this.logger = logger;
+    this.unavailableReason = null;
     initialize();
 
     // Engage server-side caching. If this client instance already carries a
@@ -137,6 +141,39 @@ public class TerminologyClientContext {
     if (this.cacheId != null) {
       setTxCaching(true);
     }
+  }
+
+  private TerminologyClientContext(ITerminologyClientN client, TerminologyCache txCache, ILoggingService logger, String unavailableReason) {
+    super();
+    this.client = client;
+    this.txCache = txCache;
+    this.master = false;
+    this.logger = logger;
+    this.unavailableReason = unavailableReason;
+    this.txcaps = new TerminologyCapabilities();
+    this.cacheId = null;
+    this.cacheOwned = false;
+  }
+
+  /**
+   * A context that stands in for a server that couldn't be reached, so that requests routed to
+   * it are answered as server errors rather than failing the run. Nothing is sent to the
+   * server: no capabilities are fetched and no cache is started
+   */
+  static TerminologyClientContext unavailable(ITerminologyClientN client, TerminologyCache txCache, ILoggingService logger, String reason) {
+    return new TerminologyClientContext(client, txCache, logger, reason);
+  }
+
+  /**
+   * True if this context stands in for a server that couldn't be reached. Nothing should be
+   * sent to it; the outcome of a request is a server error with getUnavailableReason()
+   */
+  public boolean isUnavailable() {
+    return unavailableReason != null;
+  }
+
+  public String getUnavailableReason() {
+    return unavailableReason;
   }
 
   public Map<String, TerminologyClientContextUseCount> getUseCounts() {
@@ -450,6 +487,11 @@ public class TerminologyClientContext {
   }
 
   public boolean supportsSystem(String system) throws IOException {
+    if (isUnavailable()) {
+      // the registry routed the system here, and what the server has is unknown. Treated as
+      // supported, so that requests for it are made, and reported as server errors
+      return true;
+    }
 
     for (TerminologyCapabilitiesCodeSystemComponent tccs : txcaps.getCodeSystemList()) {
       if (system.equals(tccs.getUri()) || (tccs.hasVersion() && system.equals(CanonicalType.urlWithVersion(tccs.getUri(), tccs.getVersionFirstRep().getValue())))) {
