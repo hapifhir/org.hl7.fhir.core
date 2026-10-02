@@ -16,7 +16,7 @@ public class ServerDetailsPOJO {
   
     String url;
 
-    // possible values: none, basic, token, apikey
+    // possible values: none, basic, token, apikey, client_credentials
     String authenticationType;
 
   /**
@@ -56,6 +56,13 @@ public class ServerDetailsPOJO {
     Boolean allowPrivateNetwork;
 
     Map<String, String> headers;
+
+    String clientId;
+
+    @lombok.ToString.Exclude
+    String clientSecret;
+
+    String tokenEndpoint;
 
     /**
      * Returns a deep copy, with a new {@link #headers} map, so that mutating the copy cannot affect this instance.

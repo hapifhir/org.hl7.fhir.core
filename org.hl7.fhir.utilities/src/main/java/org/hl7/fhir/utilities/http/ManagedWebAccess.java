@@ -136,6 +136,10 @@ public class ManagedWebAccess {
     return false;
   }
 
+  public static String getUserAgent() {
+    return userAgent;
+  }
+
   public static void setUserAgent(String userAgent) {
     ManagedWebAccess.userAgent = userAgent;
   }
