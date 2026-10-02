@@ -1,6 +1,9 @@
 package org.hl7.fhir.r5.terminologies.client;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -13,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -39,10 +44,13 @@ class TerminologyClientManagerRoutingTest {
   private static final String MAIN = "https://main.example.org/r4";
   private static final String X = "https://x.example.org/r4";
   private static final String Y = "https://y.example.org/r4";
+  private static final String DOWN = "https://down.example.org/r4";
 
   private static final String CS_A = "http://example.org/cs/a";
   private static final String CS_B = "http://example.org/cs/b";
   private static final String CS_C = "http://example.org/cs/c";
+  private static final String CS_D = "http://example.org/cs/d";
+  private static final String VS_D = "http://example.org/vs/d";
   private static final String CS_UNKNOWN = "http://example.org/cs/nobody-has-this";
 
   // A and B: MAIN is authoritative, X and Y are candidates (the THO pattern)
@@ -50,6 +58,8 @@ class TerminologyClientManagerRoutingTest {
       "\"candidates\":[{\"url\":\""+X+"\"},{\"url\":\""+Y+"\"}]}";
   // C: nobody authoritative, X and Y are candidates
   private static final String RESP_CAND = "{\"candidates\":[{\"url\":\""+X+"\"},{\"url\":\""+Y+"\"}]}";
+  // D: only DOWN is authoritative (the NPU pattern: one national server for the code system)
+  private static final String RESP_DOWN = "{\"authoritative\":[{\"url\":\""+DOWN+"\"}]}";
   // the registry knows no server at all
   private static final String RESP_NONE = "{}";
 
@@ -62,6 +72,14 @@ class TerminologyClientManagerRoutingTest {
   private final Map<String, Set<String>> hosted = new HashMap<>();
   /** "server|criteria" for every CodeSystem search made */
   private final List<String> searches = new ArrayList<>();
+  /** server address -> how many more connection attempts fail, as with a server answering 502 */
+  private final Map<String, Integer> failures = new HashMap<>();
+  /** server address -> how often a connection to it was attempted */
+  private final Map<String, Integer> connects = new HashMap<>();
+  /** the pauses between connection attempts, which the tests record rather than wait out */
+  private final List<Long> pauses = new ArrayList<>();
+  /** every request made to the registry */
+  private final List<String> registryRequests = new ArrayList<>();
 
   private class TestManager extends TerminologyClientManager {
     TestManager() {
@@ -69,12 +87,20 @@ class TerminologyClientManagerRoutingTest {
     }
 
     @Override
+    protected void pause(long millis) {
+      pauses.add(millis);
+    }
+
+    @Override
     protected JsonObject fetchRegistryJson(String request) throws IOException, JsonException {
+      registryRequests.add(request);
       String json;
       if (request.contains(enc(CS_A)) || request.contains(enc(CS_B))) {
         json = RESP_AUTH;
       } else if (request.contains(enc(CS_C))) {
         json = RESP_CAND;
+      } else if (request.contains(enc(CS_D)) || request.contains(enc(VS_D))) {
+        json = RESP_DOWN;
       } else {
         json = RESP_NONE;
       }
@@ -93,7 +119,14 @@ class TerminologyClientManagerRoutingTest {
       case "getAddress": return address;
       case "getUserAgent": return "fhir-core-tests";
       case "getCapabilitiesStatement":
-      case "getCapabilitiesStatementQuick": return new CapabilityStatement();
+      case "getCapabilitiesStatementQuick":
+        connects.put(address, connects.getOrDefault(address, 0) + 1);
+        int f = failures.getOrDefault(address, 0);
+        if (f > 0) {
+          failures.put(address, f - 1);
+          throw new FHIRException("Error fetching the server's capability statement: Error from "+address+": 502 Bad Gateway");
+        }
+        return new CapabilityStatement();
       case "getTerminologyCapabilities": return new TerminologyCapabilities();
       case "search": return search(address, (String) args[1]);
       case "toString": return "fake client: " + address;
@@ -215,5 +248,105 @@ class TerminologyClientManagerRoutingTest {
     TerminologyClientContext tc = mgr.chooseServer(null, systems(CS_C), false);
     assertEquals(MAIN, tc.getAddress());
     assertEquals(2, searches.size(), "both candidates should have been checked: "+searches);
+  }
+
+  private void down(String address) {
+    failures.put(address, Integer.MAX_VALUE);
+  }
+
+  @Test
+  void testUnreachableServerIsReportedAsUnavailable() throws IOException {
+    // the registry routes D to a server that is down: rather than failing on the first code
+    // from D, the run gets a context that stands in for the server, and says why
+    down(DOWN);
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseServer(null, systems(CS_D), false);
+    assertEquals(DOWN, tc.getAddress());
+    assertTrue(tc.isUnavailable());
+    assertTrue(tc.getUnavailableReason().contains("502 Bad Gateway"), tc.getUnavailableReason());
+    assertTrue(tc.supportsSystem(CS_D), "the requests should be made, and fail as server errors");
+    assertTrue(logged(mgr, "Error accessing "+DOWN+" for "+CS_D), "expected the failure to be reported: "+messages(mgr));
+    assertFalse(mgr.serverMap().containsKey(DOWN), "an unreachable server must not be registered");
+  }
+
+  @Test
+  void testConnectIsRetriedBeforeGivingUp() throws IOException {
+    down(DOWN);
+    TestManager mgr = makeManager();
+    mgr.chooseServer(null, systems(CS_D), false);
+    assertEquals(3, connects.getOrDefault(DOWN, 0), "expected three attempts: "+connects);
+    assertEquals(List.of(2000L, 5000L), pauses);
+  }
+
+  @Test
+  void testServerThatAnswersOnRetryIsUsed() throws IOException {
+    // a server that fails once - restarting, say - is used once it answers
+    failures.put(DOWN, 1);
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseServer(null, systems(CS_D), false);
+    assertEquals(DOWN, tc.getAddress());
+    assertFalse(tc.isUnavailable());
+    assertEquals(2, connects.getOrDefault(DOWN, 0));
+    assertFalse(logged(mgr, "Error accessing"), "nothing to report: "+messages(mgr));
+  }
+
+  @Test
+  void testUnreachableServerIsNotTriedAgain() throws IOException {
+    // every code from D is routed to DOWN; one round of attempts is enough to know it's down
+    down(DOWN);
+    TestManager mgr = makeManager();
+    mgr.chooseServer(null, systems(CS_D), false);
+    assertTrue(mgr.chooseServer(null, systems(CS_D), true).isUnavailable());
+    assertTrue(mgr.chooseServer(VS_D, false).isUnavailable());
+    assertEquals(3, connects.getOrDefault(DOWN, 0), "DOWN should be tried in one round only: "+connects);
+  }
+
+  @Test
+  void testUnreachableServerFromValueSetResolutionIsReportedAsUnavailable() throws IOException {
+    down(DOWN);
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseServer(VS_D, false);
+    assertEquals(DOWN, tc.getAddress());
+    assertTrue(tc.isUnavailable());
+  }
+
+  @Test
+  void testUnreachableCandidateIsDroppedNotReplacedByPrimary() throws IOException {
+    // the support check asks whether X itself has C. X being down must count as "no", not
+    // be answered by the primary server, which has C too and would then win X's place
+    down(X);
+    hosted.put(MAIN, systems(CS_C));
+    hosted.put(Y, systems(CS_C));
+    TestManager mgr = makeManager();
+    TerminologyClientContext tc = mgr.chooseServer(null, systems(CS_C), false);
+    assertEquals(Y, tc.getAddress());
+    for (String s : searches) {
+      assertFalse(s.startsWith(MAIN+"|"), "the primary server should not have been asked: "+searches);
+    }
+  }
+
+  @Test
+  void testValueSetLookupOnUnreachableServerIsNotReportedAsMissing() throws IOException {
+    // null would tell the caller the value set doesn't exist, and it caches that for good
+    down(DOWN);
+    TestManager mgr = makeManager();
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findValueSetOnServer(VS_D));
+    int asked = registryRequests.size();
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findValueSetOnServer(VS_D));
+    assertEquals(asked, registryRequests.size(), "a failed lookup should not be repeated in the session");
+  }
+
+  @Test
+  void testCodeSystemLookupOnUnreachableServerIsNotReportedAsMissing() throws IOException {
+    down(DOWN);
+    TestManager mgr = makeManager();
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findCodeSystemOnServer(CS_D));
+  }
+
+  @Test
+  void testValueSetNotOnServerIsReportedAsMissing() throws IOException {
+    // the server answers, and doesn't have it: that is worth caching
+    TestManager mgr = makeManager();
+    assertNull(mgr.findValueSetOnServer(VS_D));
   }
 }
