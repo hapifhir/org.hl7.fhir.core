@@ -54,23 +54,27 @@ public class ListRenderer extends ResourceRenderer {
     if (list.has("code")) { 
       tr.td().tx(context.formatPhrase(RenderingI18nContext.LIST_REND_CODE, displayDataType(list.child("code")))+" "); 
     }     
-    tr = t.tr(); 
-    XhtmlNode td = tr.td(); 
-    if (list.has("subject")) { 
-      td.tx(context.formatPhrase(RenderingI18nContext.LIST_REND_SUB)+" "); 
-      renderReference(status, td, list.child("subject")); 
-    } 
-    if (list.has("encounter")) { 
-      td.tx(context.formatPhrase(RenderingI18nContext.LIST_REND_ENC)+" "); 
-      renderReference(status, td, list.child("encounter")); 
-    } 
-    if (list.has("source")) { 
-      td.tx(context.formatPhrase(RenderingI18nContext.GENERAL_SRC)+" "); 
-      renderReference(status, td, list.child("encounter")); 
-    } 
-    if (list.has("orderedBy")) { 
-      td.tx(context.formatPhrase(RenderingI18nContext.LIST_REND_ORD, displayDataType(list.child("orderedBy")))+" "); 
-    } 
+    if (list.hasMN("subject", "encounter", "source", "orderedBy")) {
+      tr = t.tr(); 
+      if (list.has("subject")) { 
+        XhtmlNode td = tr.td(); 
+        td.tx(context.formatPhrase(RenderingI18nContext.LIST_REND_SUB)+" "); 
+        renderReference(status, td, list.child("subject")); 
+      } 
+      if (list.has("encounter")) { 
+        XhtmlNode td = tr.td(); 
+        td.tx(context.formatPhrase(RenderingI18nContext.LIST_REND_ENC)+" "); 
+        renderReference(status, td, list.child("encounter")); 
+      } 
+      if (list.has("source")) { 
+        XhtmlNode td = tr.td(); 
+        td.tx(context.formatPhrase(RenderingI18nContext.GENERAL_SRC)+" "); 
+        renderReference(status, td, list.child("source")); 
+      } 
+      if (list.has("orderedBy")) { 
+        tr.td().tx(context.formatPhrase(RenderingI18nContext.LIST_REND_ORD, displayDataType(list.child("orderedBy")))+" "); 
+      } 
+    }
     for (ResourceWrapper a : list.children("note")) { 
       renderAnnotation(status, x, x.para().tx("note"), a); 
     } 
