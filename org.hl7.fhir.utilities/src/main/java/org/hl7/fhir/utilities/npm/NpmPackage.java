@@ -31,15 +31,7 @@ package org.hl7.fhir.utilities.npm;
 
 
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CodingErrorAction;
@@ -398,6 +390,14 @@ public class NpmPackage {
     }
 
 
+      public InputStream getResource(String type, String id) throws IOException {
+        for (JsonObject res : cachedIndex.getJsonObjects("files")) {
+          if (type.equals(res.asString("resourceType")) && id.equals(res.asString("id"))) {
+            return new FileInputStream(Utilities.path(folder, res.asString("filename")));
+          }
+        }
+        return null;
+      }
   }
 
 

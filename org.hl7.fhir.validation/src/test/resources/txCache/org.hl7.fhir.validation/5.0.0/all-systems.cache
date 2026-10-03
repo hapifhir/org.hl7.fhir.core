@@ -3614,3 +3614,160 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "LA6727-7",
+    "display" : "Good, strong cry; normal rate and effort of breathing    "
+  },
+  {
+    "system" : "http://acme.ped/apgarrespiratoryeffort",
+    "code" : "2"
+  }],
+  "text" : "2. Good, strong cry; normal rate and effort of breathing"
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Good, strong cry; normal rate and effort of breathing",
+  "code" : "LA6727-7",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "severity" : "error",
+  "error" : "A definition for the code system 'http://acme.ped/apgarrespiratoryeffort' could not be found, so this coding was not checked. The CodeableConcept is still valid: another coding is in the value set; Wrong whitespace in Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#LA6727-7 (\"Good, strong cry; normal rate and effort of breathing    \"), http://acme.ped/apgarrespiratoryeffort#2 (\"undefined\")]\"\n7ms http://loinc.org/vs|2.82: Check \"http://loinc.org#LA6727-7\"\n11ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n11ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at CodeableConcept.coding[0]\n11ms http://loinc.org/vs|2.82: Code \"LA6727-7\" found in http://loinc.org|2.82\n13ms http://loinc.org/vs|2.82: Check \"http://acme.ped/apgarrespiratoryeffort#2\"\n13ms http://loinc.org/vs|2.82: Include for http://loinc.org|2.82 not considered for \"http://acme.ped/apgarrespiratoryeffort\"",
+  "unknown-systems" : "http://acme.ped/apgarrespiratoryeffort",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Display_Name_WS_for__should_be_one_of__instead_of"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong whitespace in Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) 'en-US')"
+    },
+    "expression" : ["CodeableConcept.coding[0].display"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "warning",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for the code system 'http://acme.ped/apgarrespiratoryeffort' could not be found, so this coding was not checked. The CodeableConcept is still valid: another coding is in the value set"
+    },
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Observation"
+}, "url": "http://hl7.org/fhir/ValueSet/version-independent-all-resource-types", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Observation",
+  "code" : "Observation",
+  "system" : "http://hl7.org/fhir/fhir-types",
+  "version" : "5.0.0",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Analysing http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0 for validation purposes\n2ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Parameters: disp-lang=en-US, generate-narrative\n3ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Prepare include[0]: \"(^http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0)\"\n3ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: Analysing http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0 for validation purposes\n3ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: Prepare include[0]: \"(http://hl7.org/fhir/fhir-types)(Account,ActivityDefinition,ActorDefinition,AdministrableProductDefinition,AdverseEvent,AllergyIntolerance,Appointment,AppointmentResponse,ArtifactAssessment,AuditEvent,Basic,Binary,BiologicallyDerivedProduct,BiologicallyDerivedProductDispense,BodyStructure,Bundle,CanonicalResource,CapabilityStatement,CarePlan,CareTeam,ChargeItem,ChargeItemDefinition,Citation,Claim,ClaimResponse,ClinicalImpression,ClinicalUseDefinition,CodeSystem,Communication,CommunicationRequest,CompartmentDefinition,Composition,ConceptMap,Condition,ConditionDefinition,Consent,Contract,Coverage,CoverageEligibilityRequest,CoverageEligibilityResponse,DetectedIssue,Device,DeviceAssociation,DeviceDefinition,DeviceDispense,DeviceMetric,DeviceRequest,DeviceUsage,DiagnosticReport,DocumentReference,DomainResource,Encounter,EncounterHistory,Endpoint,EnrollmentRequest,EnrollmentResponse,EpisodeOfCare,EventDefinition,Evidence,EvidenceReport,EvidenceVariable,ExampleScenario,ExplanationOfBenefit,FamilyMemberHistory,Flag,FormularyItem,GenomicStudy,Goal,GraphDefinition,Group,GuidanceResponse,HealthcareService,ImagingSelection,ImagingStudy,Immunization,ImmunizationEvaluation,ImmunizationRecommendation,ImplementationGuide,Ingredient,InsurancePlan,InventoryItem,InventoryReport,Invoice,Library,Linkage,List,Location,ManufacturedItemDefinition,Measure,MeasureReport,Medication,MedicationAdministration,MedicationDispense,MedicationKnowledge,MedicationRequest,MedicationStatement,MedicinalProductDefinition,MessageDefinition,MessageHeader,MetadataResource,MolecularSequence,NamingSystem,NutritionIntake,NutritionOrder,NutritionProduct,Observation,ObservationDefinition,OperationDefinition,OperationOutcome,Organization,OrganizationAffiliation,PackagedProductDefinition,Parameters,Patient,PaymentNotice,PaymentReconciliation,Permission,Person,PlanDefinition,Practitioner,PractitionerRole,Procedure,Provenance,Questionnaire,QuestionnaireResponse,RegulatedAuthorization,RelatedPerson,RequestOrchestration,Requirements,ResearchStudy,ResearchSubject,Resource,RiskAssessment,Schedule,SearchParameter,ServiceRequest,Slot,Specimen,SpecimenDefinition,StructureDefinition,StructureMap,Subscription,SubscriptionStatus,SubscriptionTopic,Substance,SubstanceDefinition,SubstanceNucleicAcid,SubstancePolymer,SubstanceProtein,SubstanceReferenceInformation,SubstanceSourceMaterial,SupplyDelivery,SupplyRequest,Task,TerminologyCapabilities,TestPlan,TestReport,TestScript,Transport,ValueSet,VerificationResult,VisionPrescription)\"\n3ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: CodeSystem found: \"http://hl7.org/fhir/fhir-types|5.0.0\"\n3ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Prepare include[1]: \"(http://hl7.org/fhir/fhir-old-types)\"\n3ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: CodeSystem found: \"http://hl7.org/fhir/fhir-old-types|5.0.0\"\n3ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Validate \"[undefined#Observation (\"undefined\")]\" and infer system\n4ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Check \"undefined#Observation\"\n4ms start working\n4ms compose #1\n4ms compose #2\n4ms import value set http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0\n5ms start working\n5ms compose #1\n5ms compose #2\n5ms iterate concepts\n13ms iterate concepts done\n13ms finish up\n27ms add whole code system\n29ms finish up\n30ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Inferred CodeSystem = \"http://hl7.org/fhir/fhir-types\"\n30ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Check included value set http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0\n30ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: Check \"http://hl7.org/fhir/fhir-types#Observation\"\n31ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: CodeSystem found: http://hl7.org/fhir/fhir-types|5.0.0 for http://hl7.org/fhir/fhir-types|5.0.0\n31ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: check code in (http://hl7.org/fhir/fhir-types)(Account,ActivityDefinition,ActorDefinition,AdministrableProductDefinition,AdverseEvent,AllergyIntolerance,Appointment,AppointmentResponse,ArtifactAssessment,AuditEvent,Basic,Binary,BiologicallyDerivedProduct,BiologicallyDerivedProductDispense,BodyStructure,Bundle,CanonicalResource,CapabilityStatement,CarePlan,CareTeam,ChargeItem,ChargeItemDefinition,Citation,Claim,ClaimResponse,ClinicalImpression,ClinicalUseDefinition,CodeSystem,Communication,CommunicationRequest,CompartmentDefinition,Composition,ConceptMap,Condition,ConditionDefinition,Consent,Contract,Coverage,CoverageEligibilityRequest,CoverageEligibilityResponse,DetectedIssue,Device,DeviceAssociation,DeviceDefinition,DeviceDispense,DeviceMetric,DeviceRequest,DeviceUsage,DiagnosticReport,DocumentReference,DomainResource,Encounter,EncounterHistory,Endpoint,EnrollmentRequest,EnrollmentResponse,EpisodeOfCare,EventDefinition,Evidence,EvidenceReport,EvidenceVariable,ExampleScenario,ExplanationOfBenefit,FamilyMemberHistory,Flag,FormularyItem,GenomicStudy,Goal,GraphDefinition,Group,GuidanceResponse,HealthcareService,ImagingSelection,ImagingStudy,Immunization,ImmunizationEvaluation,ImmunizationRecommendation,ImplementationGuide,Ingredient,InsurancePlan,InventoryItem,InventoryReport,Invoice,Library,Linkage,List,Location,ManufacturedItemDefinition,Measure,MeasureReport,Medication,MedicationAdministration,MedicationDispense,MedicationKnowledge,MedicationRequest,MedicationStatement,MedicinalProductDefinition,MessageDefinition,MessageHeader,MetadataResource,MolecularSequence,NamingSystem,NutritionIntake,NutritionOrder,NutritionProduct,Observation,ObservationDefinition,OperationDefinition,OperationOutcome,Organization,OrganizationAffiliation,PackagedProductDefinition,Parameters,Patient,PaymentNotice,PaymentReconciliation,Permission,Person,PlanDefinition,Practitioner,PractitionerRole,Procedure,Provenance,Questionnaire,QuestionnaireResponse,RegulatedAuthorization,RelatedPerson,RequestOrchestration,Requirements,ResearchStudy,ResearchSubject,Resource,RiskAssessment,Schedule,SearchParameter,ServiceRequest,Slot,Specimen,SpecimenDefinition,StructureDefinition,StructureMap,Subscription,SubscriptionStatus,SubscriptionTopic,Substance,SubstanceDefinition,SubstanceNucleicAcid,SubstancePolymer,SubstanceProtein,SubstanceReferenceInformation,SubstanceSourceMaterial,SupplyDelivery,SupplyRequest,Task,TerminologyCapabilities,TestPlan,TestReport,TestScript,Transport,ValueSet,VerificationResult,VisionPrescription) at \n31ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: Code \"Observation\" found in http://hl7.org/fhir/fhir-types|5.0.0",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "DeviceUseStatement"
+}, "url": "http://hl7.org/fhir/ValueSet/version-independent-all-resource-types", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "DeviceUseStatement",
+  "code" : "DeviceUseStatement",
+  "system" : "http://hl7.org/fhir/fhir-old-types",
+  "version" : "5.0.0",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Analysing http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Prepare include[0]: \"(^http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0)\"\n1ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: Analysing http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: Prepare include[0]: \"(http://hl7.org/fhir/fhir-types)(Account,ActivityDefinition,ActorDefinition,AdministrableProductDefinition,AdverseEvent,AllergyIntolerance,Appointment,AppointmentResponse,ArtifactAssessment,AuditEvent,Basic,Binary,BiologicallyDerivedProduct,BiologicallyDerivedProductDispense,BodyStructure,Bundle,CanonicalResource,CapabilityStatement,CarePlan,CareTeam,ChargeItem,ChargeItemDefinition,Citation,Claim,ClaimResponse,ClinicalImpression,ClinicalUseDefinition,CodeSystem,Communication,CommunicationRequest,CompartmentDefinition,Composition,ConceptMap,Condition,ConditionDefinition,Consent,Contract,Coverage,CoverageEligibilityRequest,CoverageEligibilityResponse,DetectedIssue,Device,DeviceAssociation,DeviceDefinition,DeviceDispense,DeviceMetric,DeviceRequest,DeviceUsage,DiagnosticReport,DocumentReference,DomainResource,Encounter,EncounterHistory,Endpoint,EnrollmentRequest,EnrollmentResponse,EpisodeOfCare,EventDefinition,Evidence,EvidenceReport,EvidenceVariable,ExampleScenario,ExplanationOfBenefit,FamilyMemberHistory,Flag,FormularyItem,GenomicStudy,Goal,GraphDefinition,Group,GuidanceResponse,HealthcareService,ImagingSelection,ImagingStudy,Immunization,ImmunizationEvaluation,ImmunizationRecommendation,ImplementationGuide,Ingredient,InsurancePlan,InventoryItem,InventoryReport,Invoice,Library,Linkage,List,Location,ManufacturedItemDefinition,Measure,MeasureReport,Medication,MedicationAdministration,MedicationDispense,MedicationKnowledge,MedicationRequest,MedicationStatement,MedicinalProductDefinition,MessageDefinition,MessageHeader,MetadataResource,MolecularSequence,NamingSystem,NutritionIntake,NutritionOrder,NutritionProduct,Observation,ObservationDefinition,OperationDefinition,OperationOutcome,Organization,OrganizationAffiliation,PackagedProductDefinition,Parameters,Patient,PaymentNotice,PaymentReconciliation,Permission,Person,PlanDefinition,Practitioner,PractitionerRole,Procedure,Provenance,Questionnaire,QuestionnaireResponse,RegulatedAuthorization,RelatedPerson,RequestOrchestration,Requirements,ResearchStudy,ResearchSubject,Resource,RiskAssessment,Schedule,SearchParameter,ServiceRequest,Slot,Specimen,SpecimenDefinition,StructureDefinition,StructureMap,Subscription,SubscriptionStatus,SubscriptionTopic,Substance,SubstanceDefinition,SubstanceNucleicAcid,SubstancePolymer,SubstanceProtein,SubstanceReferenceInformation,SubstanceSourceMaterial,SupplyDelivery,SupplyRequest,Task,TerminologyCapabilities,TestPlan,TestReport,TestScript,Transport,ValueSet,VerificationResult,VisionPrescription)\"\n1ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: CodeSystem found: \"http://hl7.org/fhir/fhir-types|5.0.0\"\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Prepare include[1]: \"(http://hl7.org/fhir/fhir-old-types)\"\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: CodeSystem found: \"http://hl7.org/fhir/fhir-old-types|5.0.0\"\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Validate \"[undefined#DeviceUseStatement (\"undefined\")]\" and infer system\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Check \"undefined#DeviceUseStatement\"\n1ms start working\n2ms compose #1\n2ms compose #2\n2ms import value set http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0\n2ms start working\n2ms compose #1\n2ms compose #2\n3ms iterate concepts\n7ms iterate concepts done\n7ms finish up\n10ms add whole code system\n12ms finish up\n13ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Inferred CodeSystem = \"http://hl7.org/fhir/fhir-old-types\"\n13ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Check included value set http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0\n13ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: Check \"http://hl7.org/fhir/fhir-old-types#DeviceUseStatement\"\n13ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: Include for http://hl7.org/fhir/fhir-types|5.0.0 not considered for \"http://hl7.org/fhir/fhir-old-types\"\n14ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: CodeSystem found: http://hl7.org/fhir/fhir-old-types|5.0.0 for http://hl7.org/fhir/fhir-old-types|5.0.0\n14ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: check code in (http://hl7.org/fhir/fhir-old-types) at \n14ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Code \"DeviceUseStatement\" found in http://hl7.org/fhir/fhir-old-types|5.0.0",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "DeviceUsage"
+}, "url": "http://hl7.org/fhir/ValueSet/version-independent-all-resource-types", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "DeviceUsage",
+  "code" : "DeviceUsage",
+  "system" : "http://hl7.org/fhir/fhir-types",
+  "version" : "5.0.0",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Analysing http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Prepare include[0]: \"(^http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0)\"\n1ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: Analysing http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: Prepare include[0]: \"(http://hl7.org/fhir/fhir-types)(Account,ActivityDefinition,ActorDefinition,AdministrableProductDefinition,AdverseEvent,AllergyIntolerance,Appointment,AppointmentResponse,ArtifactAssessment,AuditEvent,Basic,Binary,BiologicallyDerivedProduct,BiologicallyDerivedProductDispense,BodyStructure,Bundle,CanonicalResource,CapabilityStatement,CarePlan,CareTeam,ChargeItem,ChargeItemDefinition,Citation,Claim,ClaimResponse,ClinicalImpression,ClinicalUseDefinition,CodeSystem,Communication,CommunicationRequest,CompartmentDefinition,Composition,ConceptMap,Condition,ConditionDefinition,Consent,Contract,Coverage,CoverageEligibilityRequest,CoverageEligibilityResponse,DetectedIssue,Device,DeviceAssociation,DeviceDefinition,DeviceDispense,DeviceMetric,DeviceRequest,DeviceUsage,DiagnosticReport,DocumentReference,DomainResource,Encounter,EncounterHistory,Endpoint,EnrollmentRequest,EnrollmentResponse,EpisodeOfCare,EventDefinition,Evidence,EvidenceReport,EvidenceVariable,ExampleScenario,ExplanationOfBenefit,FamilyMemberHistory,Flag,FormularyItem,GenomicStudy,Goal,GraphDefinition,Group,GuidanceResponse,HealthcareService,ImagingSelection,ImagingStudy,Immunization,ImmunizationEvaluation,ImmunizationRecommendation,ImplementationGuide,Ingredient,InsurancePlan,InventoryItem,InventoryReport,Invoice,Library,Linkage,List,Location,ManufacturedItemDefinition,Measure,MeasureReport,Medication,MedicationAdministration,MedicationDispense,MedicationKnowledge,MedicationRequest,MedicationStatement,MedicinalProductDefinition,MessageDefinition,MessageHeader,MetadataResource,MolecularSequence,NamingSystem,NutritionIntake,NutritionOrder,NutritionProduct,Observation,ObservationDefinition,OperationDefinition,OperationOutcome,Organization,OrganizationAffiliation,PackagedProductDefinition,Parameters,Patient,PaymentNotice,PaymentReconciliation,Permission,Person,PlanDefinition,Practitioner,PractitionerRole,Procedure,Provenance,Questionnaire,QuestionnaireResponse,RegulatedAuthorization,RelatedPerson,RequestOrchestration,Requirements,ResearchStudy,ResearchSubject,Resource,RiskAssessment,Schedule,SearchParameter,ServiceRequest,Slot,Specimen,SpecimenDefinition,StructureDefinition,StructureMap,Subscription,SubscriptionStatus,SubscriptionTopic,Substance,SubstanceDefinition,SubstanceNucleicAcid,SubstancePolymer,SubstanceProtein,SubstanceReferenceInformation,SubstanceSourceMaterial,SupplyDelivery,SupplyRequest,Task,TerminologyCapabilities,TestPlan,TestReport,TestScript,Transport,ValueSet,VerificationResult,VisionPrescription)\"\n1ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: CodeSystem found: \"http://hl7.org/fhir/fhir-types|5.0.0\"\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Prepare include[1]: \"(http://hl7.org/fhir/fhir-old-types)\"\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: CodeSystem found: \"http://hl7.org/fhir/fhir-old-types|5.0.0\"\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Validate \"[undefined#DeviceUsage (\"undefined\")]\" and infer system\n1ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Check \"undefined#DeviceUsage\"\n2ms start working\n2ms compose #1\n2ms compose #2\n2ms import value set http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0\n2ms start working\n2ms compose #1\n3ms compose #2\n3ms iterate concepts\n8ms iterate concepts done\n8ms finish up\n11ms add whole code system\n21ms finish up\n22ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Inferred CodeSystem = \"http://hl7.org/fhir/fhir-types\"\n22ms http://hl7.org/fhir/ValueSet/version-independent-all-resource-types|5.0.0: Check included value set http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0\n23ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: Check \"http://hl7.org/fhir/fhir-types#DeviceUsage\"\n23ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: CodeSystem found: http://hl7.org/fhir/fhir-types|5.0.0 for http://hl7.org/fhir/fhir-types|5.0.0\n23ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: check code in (http://hl7.org/fhir/fhir-types)(Account,ActivityDefinition,ActorDefinition,AdministrableProductDefinition,AdverseEvent,AllergyIntolerance,Appointment,AppointmentResponse,ArtifactAssessment,AuditEvent,Basic,Binary,BiologicallyDerivedProduct,BiologicallyDerivedProductDispense,BodyStructure,Bundle,CanonicalResource,CapabilityStatement,CarePlan,CareTeam,ChargeItem,ChargeItemDefinition,Citation,Claim,ClaimResponse,ClinicalImpression,ClinicalUseDefinition,CodeSystem,Communication,CommunicationRequest,CompartmentDefinition,Composition,ConceptMap,Condition,ConditionDefinition,Consent,Contract,Coverage,CoverageEligibilityRequest,CoverageEligibilityResponse,DetectedIssue,Device,DeviceAssociation,DeviceDefinition,DeviceDispense,DeviceMetric,DeviceRequest,DeviceUsage,DiagnosticReport,DocumentReference,DomainResource,Encounter,EncounterHistory,Endpoint,EnrollmentRequest,EnrollmentResponse,EpisodeOfCare,EventDefinition,Evidence,EvidenceReport,EvidenceVariable,ExampleScenario,ExplanationOfBenefit,FamilyMemberHistory,Flag,FormularyItem,GenomicStudy,Goal,GraphDefinition,Group,GuidanceResponse,HealthcareService,ImagingSelection,ImagingStudy,Immunization,ImmunizationEvaluation,ImmunizationRecommendation,ImplementationGuide,Ingredient,InsurancePlan,InventoryItem,InventoryReport,Invoice,Library,Linkage,List,Location,ManufacturedItemDefinition,Measure,MeasureReport,Medication,MedicationAdministration,MedicationDispense,MedicationKnowledge,MedicationRequest,MedicationStatement,MedicinalProductDefinition,MessageDefinition,MessageHeader,MetadataResource,MolecularSequence,NamingSystem,NutritionIntake,NutritionOrder,NutritionProduct,Observation,ObservationDefinition,OperationDefinition,OperationOutcome,Organization,OrganizationAffiliation,PackagedProductDefinition,Parameters,Patient,PaymentNotice,PaymentReconciliation,Permission,Person,PlanDefinition,Practitioner,PractitionerRole,Procedure,Provenance,Questionnaire,QuestionnaireResponse,RegulatedAuthorization,RelatedPerson,RequestOrchestration,Requirements,ResearchStudy,ResearchSubject,Resource,RiskAssessment,Schedule,SearchParameter,ServiceRequest,Slot,Specimen,SpecimenDefinition,StructureDefinition,StructureMap,Subscription,SubscriptionStatus,SubscriptionTopic,Substance,SubstanceDefinition,SubstanceNucleicAcid,SubstancePolymer,SubstanceProtein,SubstanceReferenceInformation,SubstanceSourceMaterial,SupplyDelivery,SupplyRequest,Task,TerminologyCapabilities,TestPlan,TestReport,TestScript,Transport,ValueSet,VerificationResult,VisionPrescription) at \n23ms http://hl7.org/fhir/ValueSet/all-resource-types|5.0.0: Code \"DeviceUsage\" found in http://hl7.org/fhir/fhir-types|5.0.0",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
