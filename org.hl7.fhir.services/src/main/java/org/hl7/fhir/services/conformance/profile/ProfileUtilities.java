@@ -51,6 +51,7 @@ import org.hl7.fhir.model.core.Parameters;
 import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
 import org.hl7.fhir.services.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.services.fhirpath.ExpressionNode.Operation;
@@ -814,6 +815,7 @@ public class ProfileUtilities {
         ProfilePathProcessor.processPaths(this, base, derived, url, webUrl, diff, baseSnapshot, mappingDetails);
 
         checkGroupConstraints(derived);
+        removeTargetProfilesForOtherVersions(derived);
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
           int i = 0;
           for (ElementDefinition e : diff.getElementList()) {
@@ -1326,6 +1328,43 @@ public class ProfileUtilities {
     return sd != null && type.size() == 1 && sd.getType().equals(type.get(0).getCode()); 
   }
 
+
+  /**
+   * A target profile can carry the version-specific-use extension, when the target only exists in
+   * some versions of FHIR (e.g. Media, R4/R4B only). The differential keeps it (that's how the
+   * definition is authored, and what other versions are converted from), but the snapshot is
+   * for this version of FHIR, and validation against it can't refer to a type this version
+   * doesn't have
+   */
+  private void removeTargetProfilesForOtherVersions(StructureDefinition derived) {
+    String version = context.getFHIRVersion();
+    for (ElementDefinition ed : derived.getSnapshot().getElementList()) {
+      for (TypeRefComponent tr : ed.getTypeList()) {
+        tr.getTargetProfileList().removeIf(tp -> !isApplicableToVersion(tp, version));
+      }
+    }
+  }
+
+  /**
+   * whether an element (a context, a target profile, a search parameter base...) applies to the given
+   * version of FHIR, according to the version-specific-use extension on it: absent means all versions;
+   * start and end are each optional and inclusive, and are compared at major.minor
+   */
+  public static boolean isApplicableToVersion(Element e, String version) {
+    Extension ext = e.getExtensionByUrl(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE);
+    if (ext == null || version == null) {
+      return true;
+    }
+    String start = ExtensionUtilities.readStringExtension(ext, ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START);
+    if (!Utilities.noString(start) && !VersionUtilities.isThisOrLater(start, version, VersionUtilities.VersionPrecision.MINOR)) {
+      return false;
+    }
+    String end = ExtensionUtilities.readStringExtension(ext, ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END);
+    if (!Utilities.noString(end) && !VersionUtilities.isThisOrLater(version, end, VersionUtilities.VersionPrecision.MINOR)) {
+      return false;
+    }
+    return true;
+  }
 
   private void checkGroupConstraints(StructureDefinition derived) {
     List<ElementDefinition> toRemove = new ArrayList<>();

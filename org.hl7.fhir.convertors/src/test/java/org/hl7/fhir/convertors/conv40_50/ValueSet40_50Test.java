@@ -43,5 +43,23 @@ public class ValueSet40_50Test {
     Assertions.assertTrue(pass);
   }
 
-  
+  @Test
+  @DisplayName("Test ValueSet.scope R5 <-> R4 via the valueset-scope extension")
+  public void testScopeConversion40_50() throws IOException {
+    org.hl7.fhir.r5.model.ValueSet r5 = new org.hl7.fhir.r5.model.ValueSet();
+    r5.setUrl("http://example.org/fhir/ValueSet/scope-test");
+    r5.getScope().setInclusionCriteria("all the codes we want");
+    r5.getScope().setExclusionCriteria("none of the ones we don't");
+
+    org.hl7.fhir.r4.model.ValueSet r4 = (org.hl7.fhir.r4.model.ValueSet) VersionConvertorFactory_40_50.convertResource(r5);
+    org.hl7.fhir.r4.model.Extension ext = r4.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/valueset-scope");
+    Assertions.assertNotNull(ext);
+    Assertions.assertEquals("all the codes we want", ext.getExtensionByUrl("inclusionCriteria").getValue().primitiveValue());
+    Assertions.assertEquals("none of the ones we don't", ext.getExtensionByUrl("exclusionCriteria").getValue().primitiveValue());
+
+    org.hl7.fhir.r5.model.ValueSet back = (org.hl7.fhir.r5.model.ValueSet) VersionConvertorFactory_40_50.convertResource(r4);
+    Assertions.assertEquals("all the codes we want", back.getScope().getInclusionCriteria());
+    Assertions.assertEquals("none of the ones we don't", back.getScope().getExclusionCriteria());
+    Assertions.assertFalse(back.hasExtension("http://hl7.org/fhir/StructureDefinition/valueset-scope"));
+  }
 }
