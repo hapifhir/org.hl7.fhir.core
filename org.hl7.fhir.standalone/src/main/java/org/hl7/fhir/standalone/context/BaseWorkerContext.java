@@ -217,6 +217,108 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   }
 
+  /**
+   * The resources of one type, by id. This also keeps track of the urls its entries can have, so that a search
+   * through every loaded resource for a url (when the url isn't one of a known canonical type) can skip the types
+   * that can't have it - most of the urls searched for that way aren't the url of any resource. The tracking stays
+   * with the map, so it holds when a map is shared between contexts (see copy()).
+   *
+   * The url of an entry that is a proxy is the proxy's url when it's added (proxy urls are only changed - by
+   * PackageHacker, or by the loaders' updateInfo() - before the proxy is registered). The url of an entry that holds
+   * the resource itself is the resource's url, which can change after it's added, so those entries are checked
+   * every time
+   */
+  public static class ResourceProxyMap {
+    private final Map<String, ResourceProxy> map = new HashMap<>();
+    // the number of the proxy entries with each url
+    private final Map<String, Integer> proxyUrls = new HashMap<>();
+    // the proxy entries, with the url each was counted under (so it's uncounted under the same one)
+    private final Map<ResourceProxy, IndexedProxy> proxyEntries = new IdentityHashMap<>();
+    // the entries that hold the resource itself, with the number of ids each is under
+    private final Map<ResourceProxy, Integer> resourceEntries = new IdentityHashMap<>();
+
+    public ResourceProxy get(String id) {
+      return map.get(id);
+    }
+
+    public boolean containsKey(String id) {
+      return map.containsKey(id);
+    }
+
+    public Collection<ResourceProxy> values() {
+      return Collections.unmodifiableCollection(map.values());
+    }
+
+    public ResourceProxy put(String id, ResourceProxy value) {
+      ResourceProxy old = map.put(id, value);
+      unindex(old);
+      index(value);
+      return old;
+    }
+
+    public ResourceProxy remove(String id) {
+      ResourceProxy old = map.remove(id);
+      unindex(old);
+      return old;
+    }
+
+    /**
+     * @return all the entries if any of them might have the url, and none if none of them can. Either way, the
+     *   caller still has to check the url of each entry it gets
+     */
+    public Collection<ResourceProxy> candidatesForUrl(String url) {
+      if (proxyUrls.containsKey(url)) {
+        return values();
+      }
+      for (ResourceProxy r : resourceEntries.keySet()) {
+        if (url.equals(r.getUrl())) {
+          return values();
+        }
+      }
+      return Collections.emptyList();
+    }
+
+    private void index(ResourceProxy r) {
+      if (r.getProxy() != null) {
+        String url = r.getProxy().getUrl();
+        if (url != null) {
+          IndexedProxy ip = proxyEntries.computeIfAbsent(r, k -> new IndexedProxy(url));
+          ip.ids++;
+          proxyUrls.merge(ip.url, 1, Integer::sum);
+        }
+      } else {
+        resourceEntries.merge(r, 1, Integer::sum);
+      }
+    }
+
+    private void unindex(ResourceProxy r) {
+      if (r == null) {
+        return;
+      }
+      if (r.getProxy() != null) {
+        IndexedProxy ip = proxyEntries.get(r);
+        if (ip != null) {
+          proxyUrls.computeIfPresent(ip.url, (k, c) -> c == 1 ? null : c - 1);
+          if (--ip.ids == 0) {
+            proxyEntries.remove(r);
+          }
+        }
+      } else {
+        resourceEntries.computeIfPresent(r, (k, c) -> c == 1 ? null : c - 1);
+      }
+    }
+
+    private static class IndexedProxy {
+      private final String url;
+      // the number of ids the entry is under
+      private int ids;
+
+      private IndexedProxy(String url) {
+        this.url = url;
+      }
+    }
+  }
+
   public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
 
     final private List<T> list;
@@ -252,7 +354,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private boolean minimalMemory = false;
 
-  private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
+  private Map<String, ResourceProxyMap> allResourcesById = new HashMap<String, ResourceProxyMap>();
   private Map<String, List<ResourceProxy>> allResourcesByUrl = new HashMap<String, List<ResourceProxy>>();
 
   // all maps are to the full URI
@@ -452,9 +554,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private void registerInAllResourceIndex(CanonicalResourceProxy r, PackageInformation packageInfo) {
     if (r.getId() != null) {
-      Map<String, ResourceProxy> map = allResourcesById.get(r.getType());
+      ResourceProxyMap map = allResourcesById.get(r.getType());
       if (map == null) {
-        map = new HashMap<String, ResourceProxy>();
+        map = new ResourceProxyMap();
         allResourcesById.put(r.getType(), map);
       }
       if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
@@ -525,9 +627,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
 
       if (r.getId() != null) {
-        Map<String, ResourceProxy> map = allResourcesById.get(r.fhirType());
+        ResourceProxyMap map = allResourcesById.get(r.fhirType());
         if (map == null) {
-          map = new HashMap<String, ResourceProxy>();
+          map = new ResourceProxyMap();
           allResourcesById.put(r.fhirType(), map);
         }
         if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
@@ -2705,8 +2807,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           return (T) questionnaires.getByPackage(uri, version, pvlist);
         }
 
-        for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
-          for (ResourceProxy r : rt.values()) {
+        for (ResourceProxyMap rt : allResourcesById.values()) {
+          for (ResourceProxy r : rt.candidatesForUrl(uri)) {
             if (uri.equals(r.getUrl())) {
               Resource resource = r.getResource();
               if (version == null) {
@@ -2941,8 +3043,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version);
         }
-        for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
-          for (ResourceProxy r : rt.values()) {
+        for (ResourceProxyMap rt : allResourcesById.values()) {
+          for (ResourceProxy r : rt.candidatesForUrl(uri)) {
             if (uri.equals(r.getUrl())) {
               return (T) r.getResource();
             }
@@ -3310,8 +3412,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (questionnaires.has(uri)) {
           return questionnaires.exists(uri, version);
         }
-        for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
-          for (ResourceProxy r : rt.values()) {
+        for (ResourceProxyMap rt : allResourcesById.values()) {
+          for (ResourceProxy r : rt.candidatesForUrl(uri)) {
             if (uri.equals(r.getUrl())) {
               return true;
             }
@@ -3402,9 +3504,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public void dropResource(String fhirType, String id) {
     synchronized (lock) {
       definitionsChanged();
-      Map<String, ResourceProxy> map = allResourcesById.get(fhirType);
+      ResourceProxyMap map = allResourcesById.get(fhirType);
       if (map == null) {
-        map = new HashMap<String, ResourceProxy>();
+        map = new ResourceProxyMap();
         allResourcesById.put(fhirType, map);
       }
       if (map.containsKey(id)) {
