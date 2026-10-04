@@ -8,6 +8,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.IModelContext;
@@ -940,6 +941,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // dependent resources are still sent; the cache-id now travels as an HTTP header
     addDependentResources(opCtxt, tc, p, vs);
 
+    boolean persist = true;
     try {
       ValueSet result = tc.getClient().expandValueset(vs, p);
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
@@ -947,6 +949,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
+      persist = serverAnswered(e);
       TerminologyServiceErrorClass errorClass = TerminologyServiceErrorClass.UNKNOWN;
       if (e instanceof EFhirClientException) {
         EFhirClientException fhirClientException = (EFhirClientException) e;
@@ -959,7 +962,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.setTxLink(txLog == null ? null : txLog.getLastId());
       }
     }
-    txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
+    txCache.cacheExpansion(cacheToken, res, persist);
     return res;
   }
 
@@ -1008,6 +1011,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (tc != null && tc.isUnavailable()) {
       return unavailableExpansion(tc);
     }
+    boolean persist = true;
     try {
       if (tc == null) {
         throw new FHIRException("Unable to find a server to expand '" + url + "'");
@@ -1028,9 +1032,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
+      persist = serverAnswered(e);
       res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), TerminologyServiceErrorClass.UNKNOWN, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
     }
-    txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
+    txCache.cacheExpansion(cacheToken, res, persist);
     return res;
   }
 
@@ -1173,6 +1178,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     txLog("$expand on " + txCache.summary(vs) + " on " + tc.getAddress());
 
+    boolean persist = true;
     try {
       ValueSet result = tc.getClient().expandValueset(vs, p);
       if (result != null) {
@@ -1185,6 +1191,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
+      persist = serverAnswered(e);
       if (res != null && !res.isFromServer()) {
         res = new ValueSetExpansionOutcome(res.getError() + " (and " + e.getMessage() + ")", res.getErrorClass(), false);
       } else {
@@ -1194,7 +1201,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (res != null && res.getValueset() != null) {
       res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
     }
-    txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
+    txCache.cacheExpansion(cacheToken, res, persist);
     return res;
   }
 
@@ -1335,7 +1342,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
         return;
       }
-      Parameters resp = processBatch(tc, batch, systems, items.size());
+      Parameters resp;
+      try {
+        resp = processBatch(tc, batch, systems, items.size());
+      } catch (Exception e) {
+        // as for a single code: a failed request is a server error, not an answer
+        for (CodingValidationRequest requestAtIndex : items) {
+          requestAtIndex.setResult(new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage(), null).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR));
+        }
+        return;
+      }
       List<ParametersParameterComponent> validations = resp.getParameters("validation");
       for (int i = 0; i < items.size(); i++) {
         CodingValidationRequest requestAtIndex = items.get(i);
@@ -2046,6 +2062,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    */
   private ValidationResult unavailableValidation(TerminologyClientContext tc) {
     return new ValidationResult(IssueSeverity.ERROR, tc.getUnavailableReason(), null).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
+  }
+
+  /**
+   * True if the exception carries the server's answer (an OperationOutcome), not a failed request
+   */
+  private static boolean serverAnswered(Exception e) {
+    return e instanceof EFhirClientException && ((EFhirClientException) e).hasServerErrors();
   }
 
   private ValueSetExpansionOutcome unavailableExpansion(TerminologyClientContext tc) {
@@ -3910,8 +3933,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (txCache.hasValueSet(canonical)) {
         svs = txCache.getValueSet(canonical);
       } else {
-        svs = terminologyClientManager.findValueSetOnServer(canonical);
-        txCache.cacheValueSet(canonical, svs);
+        try {
+          svs = terminologyClientManager.findValueSetOnServer(canonical);
+          txCache.cacheValueSet(canonical, svs);
+        } catch (NoTerminologyServiceException e) {
+          // not known whether it exists: caching null would record it as not existing
+          svs = null;
+        }
       }
       if (svs != null) {
         String web = ExtensionUtilities.readStringExtension(svs.getVs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
@@ -3932,9 +3960,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (txCache.hasCodeSystem(canonical)) {
         scs = txCache.getCodeSystem(canonical);
       } else {
-
-        scs = terminologyClientManager.findCodeSystemOnServer(canonical);
-        txCache.cacheCodeSystem(canonical, scs);
+        try {
+          scs = terminologyClientManager.findCodeSystemOnServer(canonical);
+          txCache.cacheCodeSystem(canonical, scs);
+        } catch (NoTerminologyServiceException e) {
+          // as for value sets above
+          scs = null;
+        }
       }
       if (scs != null) {
         String web = ExtensionUtilities.readStringExtension(scs.getCs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);

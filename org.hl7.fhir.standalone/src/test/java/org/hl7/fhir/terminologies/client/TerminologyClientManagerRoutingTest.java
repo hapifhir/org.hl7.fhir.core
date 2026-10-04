@@ -2,6 +2,7 @@ package org.hl7.fhir.terminologies.client;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.core.Bundle;
@@ -23,6 +25,10 @@ import org.hl7.fhir.model.core.CapabilityStatement;
 import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.model.core.TerminologyCapabilities;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.Parameters;
+import org.hl7.fhir.services.client.EFhirClientException;
+import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
 import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
 import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
@@ -35,6 +41,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Tests for how chooseServer combines the registry resolutions for several code systems,
@@ -57,6 +64,10 @@ class TerminologyClientManagerRoutingTest {
   private static final String CS_D = "http://example.org/cs/d";
   private static final String VS_D = "http://example.org/vs/d";
   private static final String CS_UNKNOWN = "http://example.org/cs/nobody-has-this";
+  // for these, the registry itself can't be reached
+  private static final String CS_NO_REGISTRY = "http://example.org/cs/no-registry";
+  private static final String VS_NO_REGISTRY = "http://example.org/vs/no-registry";
+  private static final String SCT_IMPLICIT = "http://snomed.info/sct?fhir_vs=isa/404684003";
 
   // A and B: MAIN is authoritative, X and Y are candidates (the THO pattern)
   private static final String RESP_AUTH = "{\"authoritative\":[{\"url\":\""+MAIN+"\"}],"+
@@ -85,10 +96,15 @@ class TerminologyClientManagerRoutingTest {
   private final List<Long> pauses = new ArrayList<>();
   /** whether a pause is interrupted, as when the run is cancelled */
   private boolean interruptOnPause;
+  /** every request made to the registry */
+  private final List<String> registryRequests = new ArrayList<>();
+  /** server address -> what $expand on it throws */
+  private final Map<String, RuntimeException> expandFailures = new HashMap<>();
 
   private class TestManager extends TerminologyClientManager {
     TestManager() {
       super(TestingUtilities.getSharedWorkerContext().getModelContext(), new TestFactory(), quietLogger());
+      expParameters = new Parameters();
     }
 
     @Override
@@ -101,6 +117,10 @@ class TerminologyClientManagerRoutingTest {
 
     @Override
     protected JsonObject fetchRegistryJson(String request) throws IOException, JsonException {
+      registryRequests.add(request);
+      if (request.contains(enc(CS_NO_REGISTRY)) || request.contains(enc(VS_NO_REGISTRY))) {
+        throw new IOException("registry unavailable");
+      }
       String json;
       if (request.contains(enc(CS_A)) || request.contains(enc(CS_B))) {
         json = RESP_AUTH;
@@ -136,6 +156,11 @@ class TerminologyClientManagerRoutingTest {
         return new CapabilityStatement();
       case "getTerminologyCapabilities": return new TerminologyCapabilities();
       case "search": return search(address, (String) args[1]);
+      case "expandValueset":
+        if (expandFailures.containsKey(address)) {
+          throw expandFailures.get(address);
+        }
+        return null;
       case "toString": return "fake client: " + address;
       case "equals": return proxy == args[0];
       case "hashCode": return System.identityHashCode(proxy);
@@ -324,12 +349,58 @@ class TerminologyClientManagerRoutingTest {
     }
   }
 
+  @Test
+  void testValueSetLookupOnUnreachableServerIsNotReportedAsMissing() throws IOException {
+    // null would tell the caller the value set doesn't exist, and it caches that for good
+    down(DOWN);
+    TestManager mgr = makeManager();
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findValueSetOnServer(VS_D));
+    int asked = registryRequests.size();
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findValueSetOnServer(VS_D));
+    assertEquals(asked, registryRequests.size(), "a failed lookup should not be repeated in the session");
+  }
 
 
+  @Test
+  void testValueSetNotOnServerIsReportedAsMissing() throws IOException {
+    // the server answers, and doesn't have it: that is worth caching
+    TestManager mgr = makeManager();
+    assertNull(mgr.findValueSetOnServer(VS_D));
+  }
 
+  @Test
+  void testImplicitValueSetThatFailsToExpandIsNotReportedAsMissing() throws IOException {
+    expandFailures.put(MAIN, new FHIRException("Connection reset"));
+    TestManager mgr = makeManager();
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findValueSetOnServer(SCT_IMPLICIT));
+  }
 
+  @Test
+  void testImplicitValueSetTheServerCantExpandIsReportedAsMissing() throws IOException {
+    OperationOutcome oo = new OperationOutcome();
+    oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.NOTFOUND).getDetails().setText("Unknown concept");
+    expandFailures.put(MAIN, new EFhirClientException(404, "Unknown concept", oo));
+    TestManager mgr = makeManager();
+    assertNull(mgr.findValueSetOnServer(SCT_IMPLICIT));
+  }
 
+  @Test
+  void testValueSetLookupWithoutTheRegistryIsNotReportedAsMissing() throws IOException {
+    // the registry can't say which server has it, so the primary server not having it isn't an answer
+    TestManager mgr = makeManager();
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findValueSetOnServer(VS_NO_REGISTRY));
+  }
 
+  @Test
+  void testRoutingFallbackForUnreachableRegistryIsNotPersisted(@TempDir java.nio.file.Path dir) throws IOException {
+    TestManager mgr = makeManager();
+    mgr.setCache(new TerminologyCache(new Object(), dir.toString(), TestingUtilities.getSharedWorkerContext()));
+    mgr.chooseServer(null, systems(CS_A), false);
+    mgr.chooseServer(null, systems(CS_NO_REGISTRY), false);
+    String map = new String(java.nio.file.Files.readAllBytes(dir.resolve("system-map.json")));
+    assertTrue(map.contains(CS_A), map);
+    assertFalse(map.contains(CS_NO_REGISTRY), "the fallback for an unreachable registry should not outlive the session: "+map);
+  }
 
   @Test
   void testServerThatIsNotApprovedIsReportedNotRetried() throws IOException {
@@ -364,4 +435,15 @@ class TerminologyClientManagerRoutingTest {
     }
   }
 
+  @Test
+  void testFailedCodeSystemLookupDoesNotStopValueSetLookup() throws IOException {
+    // the same canonical is looked up as a code system and then as a value set: a failure
+    // for the one says nothing about the other
+    down(DOWN);
+    TestManager mgr = makeManager();
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findCodeSystemOnServer(CS_D));
+    int asked = registryRequests.size();
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findValueSetOnServer(CS_D));
+    assertTrue(registryRequests.size() > asked, "the value set lookup should have been made");
+  }
 }

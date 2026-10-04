@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.*;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.r5.model.*;
@@ -18,6 +19,7 @@ import org.hl7.fhir.r5.terminologies.ImplicitValueSets;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.TerminologyClientContextUseType;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.utilities.UserDataNames;
@@ -38,6 +40,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     private List<String> authoritative = new ArrayList<String>();
     private List<String> candidates = new ArrayList<String>();
     private String language; // the language this resolution was made for (null = no language; see Language Specific Claims in the tx ecosystem IG)
+    private boolean registryFailed; // the registry couldn't be asked, and this is the fallback - not to be persisted
     
     public ServerOptionList(String url, String address) {
       this.url = url;
@@ -137,6 +140,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   private Map<String, TerminologyClientContext> serverMap = new HashMap<>(); // clients by server address
   private Map<String, Boolean> serverSupportMap = new HashMap<>(); // clients by server address
   private Map<String, TerminologyClientContext> unavailableContexts = new HashMap<>(); // servers that couldn't be reached in this session, and what stands in for them
+  private Map<String, String> failedLookups = new HashMap<>(); // type|canonical of value sets and code systems that couldn't be looked up in this session, and why
   private Map<String, ServerOptionList> resMap = new HashMap<>(); // client resolution list
   private List<InternalLogEvent> internalLog = new ArrayList<>();
   protected Parameters expParameters;
@@ -181,6 +185,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     serverList.addAll(other.serverList);
     serverMap.putAll(other.serverMap);
     unavailableContexts.putAll(other.unavailableContexts);
+    failedLookups.putAll(other.failedLookups);
     resMap.putAll(other.resMap);
     useEcosystem = other.useEcosystem;
     monitorServiceURL = other.monitorServiceURL;
@@ -630,7 +635,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
     }
-    return new ServerOptionList(url, getMasterClient().getAddress());
+    ServerOptionList ret = new ServerOptionList(url, getMasterClient().getAddress());
+    ret.registryFailed = true;
+    return ret;
   }
 
   private boolean checkCSAvailable(String server, String canonical) {
@@ -821,8 +828,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       JsonObject json = new JsonObject();
       for (String s : Utilities.sorted(resMap.keySet())) {
         ServerOptionList sol = resMap.get(s);
-        if (sol.authoritative.isEmpty() && sol.candidates.isEmpty()) {
-          continue; // an empty resolution isn't worth remembering across runs - it may have been transient (registry outage etc), so re-ask next time
+        if (sol.registryFailed || (sol.authoritative.isEmpty() && sol.candidates.isEmpty())) {
+          continue; // an empty resolution, or the fallback for a registry that couldn't be asked, isn't worth remembering across runs - it may have been transient (registry outage etc), so re-ask next time
         }
         JsonObject si = new JsonObject();
         json.forceArray("systems").add(si);
@@ -870,9 +877,16 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     this.usage = usage;
   }
 
+  /**
+   * Null if the server doesn't have the value set. NoTerminologyServiceException if it couldn't
+   * be asked, which the caller doesn't cache
+   */
   public SourcedValueSet findValueSetOnServer(String canonical) {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null) {
       return null;
+    }
+    if (failedLookups.containsKey("ValueSet|"+canonical)) {
+      throw new NoTerminologyServiceException(failedLookups.get("ValueSet|"+canonical));
     }
     String request = null;
     boolean isImplicit = false;
@@ -897,6 +911,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+Utilities.URLEncode(canonical));
     }
     String server = null;
+    // the registry couldn't be asked: the primary server not having it isn't an answer
+    boolean guessedServer = false;
     try {
       if (!useEcosystem) {
         server = getMasterClient().getAddress();
@@ -938,6 +954,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
             useEcosystem = false;
           }
           server = getMasterClient().getAddress();
+          guessedServer = true;
         }
       }
       TerminologyClientContext client = getContext(server, null);
@@ -964,10 +981,13 @@ public class TerminologyClientManager implements ITerminologyClientManager {
               return new SourcedValueSet(server, implicitValueSets.generateImplicitValueSet(canonical, iVersion));
             }
           } catch (Exception e) {
-            return null;
+            if (!serverAnswered(e)) {
+              throw e; // the server didn't say it can't expand it - the request failed (see the catch below)
+            }
+            return notFound(guessedServer, server, canonical);
           }
         } else {
-          return null;
+          return notFound(guessedServer, server, canonical);
         }
       } else if (bnd.getEntry().size() > 1) {
         List<ValueSet> vslist = new ArrayList<>();
@@ -984,7 +1004,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         }
       }
       if (rid == null) {
-        return null;
+        return notFound(guessedServer, server, canonical);
       }
       ValueSet vs = (ValueSet) client.getClient().read("ValueSet", rid);
       return new SourcedValueSet(server, vs);
@@ -994,13 +1014,34 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
-      return null;
+      failedLookups.put("ValueSet|"+canonical, msg);
+      throw new NoTerminologyServiceException(msg, e);
     }
   }
 
+  private SourcedValueSet notFound(boolean guessedServer, String server, String canonical) {
+    if (guessedServer) {
+      throw new TerminologyServiceException("The terminology registry could not be asked which server has "+canonical+", and "+server+" doesn't");
+    }
+    return null;
+  }
+
+  /**
+   * True if the exception carries the server's answer (an OperationOutcome), not a failed request
+   */
+  private static boolean serverAnswered(Exception e) {
+    return e instanceof EFhirClientException && ((EFhirClientException) e).hasServerErrors();
+  }
+
+  /**
+   * As findValueSetOnServer()
+   */
   public SourcedCodeSystem findCodeSystemOnServer(String canonical) {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null || !useEcosystem) {
       return null;
+    }
+    if (failedLookups.containsKey("CodeSystem|"+canonical)) {
+      throw new NoTerminologyServiceException(failedLookups.get("CodeSystem|"+canonical));
     }
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode(canonical));
     if (usage != null) {
@@ -1069,7 +1110,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         internalLog.add(new InternalLogEvent(msg, canonical, request));
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
-      return null;
+      failedLookups.put("CodeSystem|"+canonical, msg);
+      throw new NoTerminologyServiceException(msg, e);
     }
   }
 
