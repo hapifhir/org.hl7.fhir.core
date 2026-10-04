@@ -1060,6 +1060,19 @@ public class StructureMapTools {
    * @throws FHIRException
    */
   protected void getChildrenByName(Base item, String name, List<Base> result) throws FHIRException {
+    if (!(item instanceof Element)) {
+      org.hl7.fhir.model.Property property = item.getNamedProperty(name, false);
+      if (property != null && property.getName().endsWith("[x]")) {
+        String baseName = property.getName().replace("[x]", "");
+        for (Base value : property.getValues()) {
+          if (value != null && (name.equals(baseName) || name.equals(property.getName())
+              || name.equals(baseName + Utilities.capitalize(value.fhirType())))) {
+            result.add(value);
+          }
+        }
+        return;
+      }
+    }
     for (Base v : item.getChildValues(name, true))
       if (v != null)
         result.add(v);
@@ -1231,6 +1244,8 @@ public class StructureMapTools {
         }
       }
     }
+    if (res.getTargetGroup() == null && Utilities.existsInList(type, types))
+      return type;
     if (res.getTargetGroup() == null)
       throw new FHIRException("No matches found for default rule for '" + type + "' from " + map.getUrl());
     String result = getActualType(res.getTargetMap(), res.getTargetGroup().getInputList().get(1).getType()); // should be .getType, but R2...
@@ -1436,7 +1451,14 @@ public class StructureMapTools {
       if (!src.hasElement())
         items.add(b);
       else {
-        getChildrenByName(b, src.getElementName(), items);
+        items.add(b);
+        for (StringType element : src.getElementList()) {
+          List<Base> children = new ArrayList<>();
+          for (Base parent : items) {
+            getChildrenByName(parent, element.getValue(), children);
+          }
+          items = children;
+        }
         if (items.size() == 0 && src.hasDefaultValue()) {
           // the default value property is a fhirpath expression that needs to be evaluated
           ExpressionNode expr = (ExpressionNode) src.getUserData(MAP_DEFAULT_EXPRESSION);
@@ -1560,6 +1582,8 @@ public class StructureMapTools {
   }
 
   private void processTarget(String rulePath, TransformContext context, Variables vars, StructureMap map, StructureMap.StructureMapGroupComponent group, StructureMap.StructureMapGroupRuleTargetComponent tgt, String srcVar, boolean atRoot, Variables sharedVars) throws FHIRException {
+    List<String> elements = StructureMapUtilities.elementNames(tgt.getElementList());
+    String element = elements.isEmpty() ? null : elements.get(elements.size() - 1);
     Base dest = null;
     if (tgt.hasContext()) {
       dest = vars.get(VariableMode.OUTPUT, tgt.getContext());
@@ -1567,12 +1591,21 @@ public class StructureMapTools {
         throw new FHIRException("Rul \"" + rulePath + "\": target context not known: " + tgt.getContext());
       }
     }
-    Base v = null;
+    Base v = !tgt.hasTransform() && tgt.hasListMode(StructureMap.StructureMapTargetListMode.SHARE)
+        ? sharedVars.get(VariableMode.SHARED, tgt.getListRuleId()) : null;
+    if (dest != null && v == null) {
+      for (int i = 0; i < elements.size() - 1; i++) {
+        dest = makeTargetProperty(dest, elements.get(i));
+        if (dest == null || dest.isPrimitive())
+          throw new FHIRException("Rule \"" + rulePath + "\": Cannot create intermediate target "
+              + tgt.getContext() + "." + String.join(".", elements.subList(0, i + 1)));
+      }
+    }
     if (tgt.hasTransform()) {
-      v = runTransform(rulePath, context, map, group, tgt, vars, dest, tgt.getElementName(), srcVar, atRoot);
+      v = runTransform(rulePath, context, map, group, tgt, vars, dest, element, srcVar, atRoot);
       if (v != null && dest != null) {
         try {
-          String propertyName = tgt.getElementName();
+          String propertyName = element;
           if (!(dest instanceof Element)) {
             org.hl7.fhir.model.Property targetProperty = dest.getNamedProperty(propertyName, false);
             if (targetProperty == null) {
@@ -1590,18 +1623,18 @@ public class StructureMapTools {
           }
           v = dest.setProperty(propertyName, v); // reset v because some implementations may have to rewrite v when setting the value
         } catch (Exception e) {
-          throw new FHIRException("Error setting "+tgt.getElementName()+" on "+dest.fhirType()+" for rule "+rulePath+" to value "+v.toString()+": "+e.getMessage(), e);
+          throw new FHIRException("Error setting "+element+" on "+dest.fhirType()+" for rule "+rulePath+" to value "+v.toString()+": "+e.getMessage(), e);
         }
       }
-    } else if (dest != null) {
+    } else if (dest != null && v == null) {
       if (tgt.hasListMode(StructureMap.StructureMapTargetListMode.SHARE)) {
         v = sharedVars.get(VariableMode.SHARED, tgt.getListRuleId());
         if (v == null) {
-          v = makeTargetProperty(dest, tgt.getElementName());
+          v = makeTargetProperty(dest, element);
           sharedVars.add(VariableMode.SHARED, tgt.getListRuleId(), v);
         }
       } else if (tgt.hasElement()) {
-        v = makeTargetProperty(dest, tgt.getElementName());
+        v = makeTargetProperty(dest, element);
       } else {
         v = dest;
       }
@@ -2223,34 +2256,22 @@ public class StructureMapTools {
     }
 
     if (src.hasElement()) {
-      Property element = prop.getBaseProperty().getChild(src.getElementName(), prop.getTypes());
-      if (element == null)
-        throw new FHIRException("Rule \"" + ruleId + "\": Unknown element name " + src.getElementName());
-      if (element.getDefinition().getMin() == 0)
-        optional = true;
-      if (element.getDefinition().getMax().equals("*"))
-        repeating = true;
-      VariablesForProfiling result = vars.copy(optional, repeating);
-      TypeDetails type = new TypeDetails(CollectionStatus.SINGLETON);
-      boolean typeFilterMatched = !src.hasType();
-      for (ElementDefinition.TypeRefComponent tr : element.getDefinition().getTypeList()) {
-        if (!tr.hasCode())
-          throw new FHIRException("Rule \"" + ruleId + "\": Element has no type");
-        if (src.hasType() && !src.getType().equals(tr.getWorkingCode()))
-          continue;
-        typeFilterMatched = true;
-        ProfiledType pt = new ProfiledType(tr.getWorkingCode());
-        if (tr.hasProfile())
-          pt.addProfiles(tr.getProfileList());
-        if (element.getDefinition().hasBinding())
-          pt.addBinding(element.getDefinition().getBinding());
-        type.addType(pt);
+      List<String> elements = StructureMapUtilities.elementNames(src.getElementList());
+      for (int i = 0; i < elements.size(); i++) {
+        String name = elements.get(i);
+        Property element = prop.getBaseProperty().getChild(name, prop.getTypes());
+        String path = String.join(".", elements.subList(0, i + 1));
+        if (element == null)
+          throw new FHIRException("Rule \"" + ruleId + "\": Unknown element name " + path);
+        optional = optional || element.getDefinition().getMin() == 0;
+        repeating = repeating || element.isList();
+        TypeDetails type = analyseSourceTypes(ruleId, element, i == elements.size() - 1 ? src.getType() : null, path);
+        prop = new PropertyWithType(prop.getPath() + "." + name, element, null, type);
       }
-      if (!typeFilterMatched)
-        throw new FHIRException("Rule \"" + ruleId + "\": Type " + src.getType() + " is not valid for element " + src.getElementName());
-      td.addText(prop.getPath() + "." + src.getElementName());
+      VariablesForProfiling result = vars.copy(optional, repeating);
+      td.addText(prop.getPath());
       if (src.hasVariable())
-        result.add(VariableMode.INPUT, src.getVariable(), new PropertyWithType(prop.getPath() + "." + src.getElementName(), element, null, type));
+        result.add(VariableMode.INPUT, src.getVariable(), prop);
       return result;
     } else {
       td.addText(prop.getPath()); // ditto!
@@ -2258,8 +2279,31 @@ public class StructureMapTools {
     }
   }
 
+  private TypeDetails analyseSourceTypes(String ruleId, Property element, String filter, String path) {
+    TypeDetails type = new TypeDetails(CollectionStatus.SINGLETON);
+    boolean typeFilterMatched = filter == null;
+    for (ElementDefinition.TypeRefComponent tr : element.getDefinition().getTypeList()) {
+      if (!tr.hasCode())
+        throw new FHIRException("Rule \"" + ruleId + "\": Element has no type");
+      if (filter != null && !filter.equals(tr.getWorkingCode()))
+        continue;
+      typeFilterMatched = true;
+      ProfiledType pt = new ProfiledType(tr.getWorkingCode());
+      if (tr.hasProfile())
+        pt.addProfiles(tr.getProfileList());
+      if (element.getDefinition().hasBinding())
+        pt.addBinding(element.getDefinition().getBinding());
+      type.addType(pt);
+    }
+    if (!typeFilterMatched)
+      throw new FHIRException("Rule \"" + ruleId + "\": Type " + filter + " is not valid for element " + path);
+    return type;
+  }
+
 
   private void analyseTarget(String ruleId, TransformContext context, VariablesForProfiling vars, StructureMap map, StructureMap.StructureMapGroupRuleTargetComponent tgt, String tv, TargetWriter tw, List<StructureDefinition> profiles, String sliceName) throws FHIRException {
+    List<String> elements = StructureMapUtilities.elementNames(tgt.getElementList());
+    String element = elements.isEmpty() ? null : elements.get(elements.size() - 1);
     VariableForProfiling var = null;
     if (tgt.hasContext()) {
       var = vars.get(VariableMode.OUTPUT, tgt.getContext());
@@ -2267,18 +2311,24 @@ public class StructureMapTools {
         throw new FHIRException("Rule \"" + ruleId + "\": target context not known: " + tgt.getContext());
       if (!tgt.hasElement())
         throw new FHIRException("Rule \"" + ruleId + "\": Not supported yet");
+      for (int i = 0; i < elements.size() - 1; i++) {
+        String name = elements.get(i);
+        TypeDetails intermediateType = analyseTargetType(var, name);
+        PropertyWithType intermediate = updateProfile(var, name, intermediateType, map, profiles, sliceName, null, tgt);
+        var = new VariableForProfiling(VariableMode.OUTPUT, tgt.getContext(), intermediate);
+      }
     }
 
 
     TypeDetails type = null;
-    if (tgt.hasTransform()) {
-      type = analyseTransform(context, map, tgt, var, vars);
+    boolean implicitCopy = tgt.getTransform() == StructureMap.StructureMapTransform.CREATE && !tgt.hasParameter()
+        && AUTO_VAR_NAME.equals(tv) && AUTO_VAR_NAME.equals(tgt.getVariable());
+    if (implicitCopy) {
+      type = vars.get(VariableMode.INPUT, tv).getProperty().getTypes();
+    } else if (tgt.hasTransform()) {
+      type = analyseTransform(context, map, tgt, var, vars, element);
     } else {
-      Property vp = var.getProperty().getBaseProperty().getChild(tgt.getElementName(), tgt.getElementName());
-      if (vp == null)
-        throw new FHIRException("Unknown Property " + tgt.getElementName() + " on " + var.getProperty().getPath());
-
-      type = new TypeDetails(CollectionStatus.SINGLETON, vp.getType(tgt.getElementName()));
+      type = analyseTargetType(var, element);
     }
 
     if (tgt.getTransform() == StructureMap.StructureMapTransform.CREATE && tgt.hasParameter()) {
@@ -2286,7 +2336,7 @@ public class StructureMapTools {
       if (worker.getResourceNames().contains(s))
         tw.newResource(tgt.getVariable(), s);
     } else {
-      boolean mapsSrc = false;
+      boolean mapsSrc = implicitCopy;
       for (StructureMap.StructureMapGroupRuleTargetParameterComponent p : tgt.getParameterList()) {
         DataType pr = p.getValue();
         if (pr instanceof IdType && ((IdType) pr).asStringValue().equals(tv))
@@ -2295,23 +2345,38 @@ public class StructureMapTools {
       if (mapsSrc) {
         if (var == null)
           throw new FHIRException("Rule \"" + ruleId + "\": Attempt to assign with no context");
-        tw.valueAssignment(tgt.getContext(), var.getProperty().getPath() + "." + tgt.getElementName() + getTransformSuffix(tgt.getTransform()));
+        tw.valueAssignment(tgt.getContext(), var.getProperty().getPath() + "." + element
+            + (implicitCopy ? "" : getTransformSuffix(tgt.getTransform())));
       } else if (tgt.hasContext()) {
-        if (isSignificantElement(var.getProperty(), tgt.getElementName())) {
+        if (isSignificantElement(var.getProperty(), element)) {
           String td = describeTransform(tgt);
           if (td != null)
-            tw.keyAssignment(tgt.getContext(), var.getProperty().getPath() + "." + tgt.getElementName() + " = " + td);
+            tw.keyAssignment(tgt.getContext(), var.getProperty().getPath() + "." + element + " = " + td);
         }
       }
     }
     DataType fixed = generateFixedValue(tgt);
 
-    PropertyWithType prop = updateProfile(var, tgt.getElementName(), type, map, profiles, sliceName, fixed, tgt);
+    PropertyWithType prop = updateProfile(var, element, type, map, profiles, sliceName, fixed, tgt);
     if (tgt.hasVariable())
       if (tgt.hasElement())
         vars.add(VariableMode.OUTPUT, tgt.getVariable(), prop);
       else
         vars.add(VariableMode.OUTPUT, tgt.getVariable(), prop);
+  }
+
+  private TypeDetails analyseTargetType(VariableForProfiling var, String element) {
+    if (var == null)
+      throw new FHIRException("Cannot infer a target type without a context");
+    Property property = var.getProperty().getBaseProperty().getChild(element, var.getProperty().getTypes());
+    if (property == null)
+      throw new FHIRException("Unknown Property " + element + " on " + var.getProperty().getPath());
+    if (property.getType() == null && !property.getDefinition().hasContentReference())
+      throw new FHIRException("Cannot infer a single type for " + var.getProperty().getPath() + "." + element);
+    String type = property.getType(element);
+    if (Utilities.noString(type))
+      throw new FHIRException("Cannot infer a single type for " + var.getProperty().getPath() + "." + element);
+    return new TypeDetails(CollectionStatus.SINGLETON, type);
   }
 
   private DataType generateFixedValue(StructureMap.StructureMapGroupRuleTargetComponent tgt) {
@@ -2598,10 +2663,7 @@ public class StructureMapTools {
         if (tgtParameters.size() > 1)
           throw new FHIRException("Transform " + tgt.getTransform().toCode() + " requires at most 1 parameter");
         if (tgtParameters.isEmpty()) {
-          Property targetProperty = var.getProperty().getBaseProperty().getChild(tgt.getElementName(), tgt.getElementName());
-          if (targetProperty == null)
-            throw new FHIRException("Unknown Property " + tgt.getElementName() + " on " + var.getProperty().getPath());
-          return new TypeDetails(CollectionStatus.SINGLETON, targetProperty.getType(tgt.getElementName()));
+          return analyseTargetType(var, element);
         }
         String p = getParamString(vars, tgtParameters.get(0));
         return new TypeDetails(CollectionStatus.SINGLETON, p);
@@ -2648,7 +2710,10 @@ public class StructureMapTools {
       case CAST:
         if (tgtParameters.size() == 0 || tgtParameters.size() > 2)
           throw new FHIRException("Transform " + tgt.getTransform().toCode() + " requires a source parameter, and optionally an output type");
-        var castType = getParamString(vars, tgtParameters.get(1));
+        if (tgtParameters.size() == 1) {
+          return analyseTargetType(var, element);
+        }
+        String castType = getParamString(vars, tgtParameters.get(1));
         return new TypeDetails(CollectionStatus.SINGLETON, castType);
       case QTY:
         return new TypeDetails(CollectionStatus.SINGLETON, "Quantity");

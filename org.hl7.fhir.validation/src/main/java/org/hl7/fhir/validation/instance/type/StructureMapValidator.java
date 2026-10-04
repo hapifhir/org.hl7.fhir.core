@@ -628,7 +628,7 @@ public class StructureMapValidator extends BaseValidator {
 
   private boolean validateRule(List<ValidationMessage> errors, Element src, Element group, Element rule, NodeStack stack, VariableSet variables) {
     String name = rule.getChildValue("name");
-    boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, rule.line(), rule.col(), stack.getLiteralPath(), idIsValid(name), I18nConstants.SM_NAME_INVALID, name);
+    boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, rule.line(), rule.col(), stack.getLiteralPath(), name != null && Utilities.isValidId(name), I18nConstants.SM_NAME_INVALID, name);
     RuleInformation ruleInfo = new RuleInformation();
     // process the sources
     VariableSet lvars = variables.copy();
@@ -676,9 +676,8 @@ public class StructureMapValidator extends BaseValidator {
         // check type
         // check defaultValue
         // check element
-        String element = source.getChildValue("element");
-        if (element != null) {
-          String path = v.getEd().getPath()+"."+element;
+        List<Element> elements = getPathElements(source, true);
+        if (!elements.isEmpty()) {
           String variable = source.getChildValue("variable");
           VariableDefn vn = null;
           if (hint(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), variable != null, I18nConstants.SM_RULE_SOURCE_UNASSIGNED)) {
@@ -692,28 +691,27 @@ public class StructureMapValidator extends BaseValidator {
             }
           }            
           
-          List<ElementDefinitionSource> els = getElementDefinitions(v.getSd(), v.getEd(), v.getType(), element);
+          VariableDefn resolved = resolveElementPath(errors, elements, stack, v, true);
+          if (resolved != null) {
+            String path = resolved.getEd().getPath();
+            String type = source.getChildValue("type");
+            if (type != null) {
+              ok = rule(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), hasType(resolved.getEd(), type), I18nConstants.SM_SOURCE_TYPE_INVALID, type, path, resolved.getEd().typeSummary()) && ok;
+            }
+            String min = source.getChildValue("min");
+            hint(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), min == null || isMoreOrEqual(min, v.getEd().getMin()), I18nConstants.SM_RULE_SOURCE_MIN_REDUNDANT, min, v.getEd().getMin());
 
-          if (rule(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), !els.isEmpty(), I18nConstants.SM_SOURCE_PATH_INVALID, context, element, path)) {
-            if (warning(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), els.size() == 1, I18nConstants.SM_TARGET_PATH_MULTIPLE_MATCHES, context, element, v.getEd().getPath()+"."+element, render(els))) {
-              ElementDefinitionSource el = els.get(0);
-              String type = source.getChildValue("type"); 
-              if (type != null) {
-                ok = rule(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), hasType(el.getEd(), type), I18nConstants.SM_SOURCE_TYPE_INVALID, type, path, el.getEd().typeSummary()) && ok;
-              }
-              String min = source.getChildValue("min");
-              hint(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), min == null || isMoreOrEqual(min, v.getEd().getMin()), I18nConstants.SM_RULE_SOURCE_MIN_REDUNDANT, min, v.getEd().getMin());
+            int existingMax = resolved.getMax();
+            String max = source.getChildValue("max");
+            int iMax = readMax(max, existingMax);
+            warning(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), iMax <= existingMax, I18nConstants.SM_RULE_SOURCE_MAX_REDUNDANT, max, v.getMax());
+            if (Utilities.existsInList(source.getChildValue("listMode"), "first", "last", "only_one")) {
+              iMax = Math.min(iMax, 1);
+            }
+            ruleInfo.seeCardinality(iMax);
 
-              int existingMax = multiplyCardinality(v.getMax(), el.getEd().getMax());
-              String max = source.getChildValue("max");
-              int iMax = readMax(max, existingMax);
-              warning(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), iMax <= existingMax, I18nConstants.SM_RULE_SOURCE_MAX_REDUNDANT, max, v.getMax());
-              ruleInfo.seeCardinality(iMax);
-
-
-              if (vn != null) {
-                vn.setType(iMax, el.getSd(), el.getEd(), type); // may overwrite
-              }
+            if (vn != null) {
+              vn.setType(iMax, resolved.getSd(), resolved.getEd(), type); // may overwrite
             }
           } else {
             ok = false;
@@ -761,6 +759,60 @@ public class StructureMapValidator extends BaseValidator {
       }
     }
     return false;
+  }
+
+  private List<Element> getPathElements(Element component, boolean source) {
+    List<Element> elements = new ArrayList<>(component.getChildrenByName("element"));
+    if (VersionUtilities.isR5Ver(context.getFHIRVersion())) {
+      String url = source
+          ? org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities.SOURCE_ELEMENT_EXTENSION
+          : org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities.TARGET_ELEMENT_EXTENSION;
+      for (Element extension : component.getChildrenByName("extension")) {
+        if (url.equals(extension.getChildValue("url"))) {
+          Element value = extension.getNamedChild("valueString");
+          if (value != null) {
+            elements.add(value);
+          }
+        }
+      }
+    }
+    return elements;
+  }
+
+  private VariableDefn resolveElementPath(List<ValidationMessage> errors, List<Element> elements, NodeStack stack,
+      VariableDefn variable, boolean source) {
+    VariableDefn resolved = variable.copy();
+    String path = variable.getEd().getPath();
+    List<String> names = new ArrayList<>();
+    for (int i = 0; i < elements.size(); i++) {
+      Element segment = elements.get(i);
+      String name = segment.primitiveValue();
+      names.add(name);
+      path += "." + name;
+      NodeStack segmentStack = stack.push(segment, i, null, null);
+      List<ElementDefinitionSource> matches = getElementDefinitions(resolved.getSd(), resolved.getEd(), resolved.getType(), name);
+      if (!rule(errors, "2026-09-30", IssueType.INVALID, segment.line(), segment.col(), segmentStack.getLiteralPath(), !matches.isEmpty(),
+          source ? I18nConstants.SM_SOURCE_PATH_INVALID : I18nConstants.SM_TARGET_PATH_INVALID, variable.getName(), String.join(".", names), path)) {
+        return null;
+      }
+      if (!warning(errors, "2026-09-30", IssueType.INVALID, segment.line(), segment.col(), segmentStack.getLiteralPath(),
+          matches.size() == 1 || (!source && isElementandSlicing(matches)), I18nConstants.SM_TARGET_PATH_MULTIPLE_MATCHES,
+          variable.getName(), String.join(".", names), path, render(matches))) {
+        return null;
+      }
+      ElementDefinitionSource match = matches.get(0);
+      if (!source && i < elements.size() - 1) {
+        if (!rule(errors, "2026-09-30", IssueType.INVALID, segment.line(), segment.col(), segmentStack.getLiteralPath(),
+            match.getEd().getTypeList().size() == 1
+                && !context.isPrimitiveType(match.getEd().getTypeFirstRep().getWorkingCode()),
+            I18nConstants.SM_TARGET_PATH_TYPE_INVALID, path, match.getEd().typeSummary())) {
+          return null;
+        }
+      }
+      int max = source ? multiplyCardinality(resolved.getMax(), match.getEd().getMax()) : resolved.getMax();
+      resolved.setType(max, match.getSd(), match.getEd(), null);
+    }
+    return resolved;
   }
 
   private int readMax(String max, int existingMax) {
@@ -821,21 +873,19 @@ public class StructureMapValidator extends BaseValidator {
           }
         }
 
-        String element = target.getChildValue("element");
-        if (element != null) {
-          List<ElementDefinitionSource> elements = getElementDefinitions(contextVariable.getSd(), contextVariable.getEd(), contextVariable.getType(), element);
-          if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), !elements.isEmpty(), I18nConstants.SM_TARGET_PATH_INVALID, context, element, contextVariable.getEd().getPath()+"."+element)) {
-            if (warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), elements.size() == 1 || isElementandSlicing(elements), I18nConstants.SM_TARGET_PATH_MULTIPLE_MATCHES, context, element, contextVariable.getEd().getPath()+"."+element, render(elements))) {
-              targetElement = elements.get(0);
-              if (transform == null) {
-                transform = "create"; // implied
-                rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 0, I18nConstants.SM_TARGET_NO_TRANSFORM_NO_CHECKED, transform);
-              } 
-              if (targetElement.getEd().getTypeList().size() == 1) {
-                initialType = targetElement.getEd().getTypeFirstRep().getWorkingCode();
-              } else {                  
-                initialType = inferType(ruleInfo, variables, rule, transform, params);
-              }
+        List<Element> elements = getPathElements(target, false);
+        if (!elements.isEmpty()) {
+          VariableDefn resolved = resolveElementPath(errors, elements, stack, contextVariable, false);
+          if (resolved != null) {
+            targetElement = new ElementDefinitionSource(resolved.getSd(), resolved.getEd());
+            if (transform == null) {
+              transform = "create"; // implied
+              rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 0, I18nConstants.SM_TARGET_NO_TRANSFORM_NO_CHECKED, transform);
+            }
+            if (targetElement.getEd().getTypeList().size() == 1) {
+              initialType = targetElement.getEd().getTypeFirstRep().getWorkingCode();
+            } else {
+              initialType = inferType(ruleInfo, variables, rule, transform, params);
             }
           } else {
             ok = false;
@@ -848,6 +898,28 @@ public class StructureMapValidator extends BaseValidator {
     if (context == null || targetElement != null) {
       TransformValidationResult transformResult = validateTargetTransform(errors, src, target, stack, variables, transform, params, contextVariable, targetElement, initialType);
       ok = transformResult.ok && ok;
+      boolean implicitCopy = targetElement != null && "create".equals(transform) && params.isEmpty()
+          && StructureMapUtilities.AUTO_VAR_NAME.equals(variable)
+          && StructureMapUtilities.AUTO_VAR_NAME.equals(ruleInfo.getDefVariable());
+      if (implicitCopy && (initialType == null || targetElement.getEd().getTypeList().size() == 1)) {
+        VariableDefn sourceVariable = variables.getVariable(ruleInfo.getDefVariable(), SOURCE);
+        if (sourceVariable != null && sourceVariable.hasTypeInfo()) {
+          List<String> types = sourceVariable.getType() == null ? listTypes(sourceVariable.getEd().getTypeList())
+              : Collections.singletonList(sourceVariable.getType());
+          for (String type : types) {
+            ok = rule(errors, "2026-09-30", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(),
+                hasType(targetElement.getEd(), type), I18nConstants.SM_TARGET_TYPE_INVALID,
+                type, targetElement.getEd().getPath(), targetElement.getEd().typeSummary()) && ok;
+          }
+          if (types.size() == 1) {
+            transformResult.type = types.get(0);
+          } else if (outputVariable != null) {
+            outputVariable.setType(ruleInfo.getMaxCount(), targetElement.getSd(), targetElement.getEd(), null);
+          }
+        } else {
+          implicitCopy = false;
+        }
+      }
 
       // Stage 3: apply the result type to the output variable.
       if (outputVariable != null && transformResult.type != null) {
@@ -866,7 +938,7 @@ public class StructureMapValidator extends BaseValidator {
         }
       }
       if (targetElement != null && targetElement.getEd().getTypeList().size() > 1) {
-        warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), transformResult.type != null, I18nConstants.SM_TARGET_TYPE_MULTIPLE_POSSIBLE, targetElement.getEd().typeSummary());
+        warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), transformResult.type != null || implicitCopy, I18nConstants.SM_TARGET_TYPE_MULTIPLE_POSSIBLE, targetElement.getEd().typeSummary());
       }
     }
     return ok;
