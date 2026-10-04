@@ -622,6 +622,15 @@ public class BaseWorkerContextTests {
   }
 
   @Test
+  public void testExpandValueSetWithClientThatFailsWithATransientErrorIsNotPersisted() throws IOException {
+    // an OperationOutcome with a 503 is a failed request, not an answer
+    OperationOutcome oo = new OperationOutcome();
+    oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.TRANSIENT).getDetails().setText("Service unavailable");
+    ValueSetExpansionOutcome actualExpansionResult = expandWithFailingClient(new EFhirClientException(503, "Service unavailable", oo));
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, false);
+  }
+
+  @Test
   void testExpandValueSetDeprecated() {
     assertDoesNotThrow(() -> {
 

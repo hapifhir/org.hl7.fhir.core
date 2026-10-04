@@ -888,7 +888,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
    */
   public TerminologyCache.SourcedValueSet findValueSetOnServer(String canonical) {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null) {
-      return null;
+      throw new NoTerminologyServiceException("No terminology server is available to look up "+canonical);
     }
     if (failedLookups.containsKey("ValueSet|"+canonical)) {
       throw new NoTerminologyServiceException(failedLookups.get("ValueSet|"+canonical));
@@ -986,7 +986,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
               return new TerminologyCache.SourcedValueSet(server, implicitValueSets.generateImplicitValueSet(canonical, iVersion));
             }
           } catch (Exception e) {
-            if (!serverAnswered(e)) {
+            if (!isAnswerFromServer(e)) {
               throw e; // the server didn't say it can't expand it - the request failed (see the catch below)
             }
             return notFound(guessedServer, server, canonical);
@@ -1032,10 +1032,25 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   }
 
   /**
-   * True if the exception carries the server's answer (an OperationOutcome), not a failed request
+   * True if the exception carries the server's answer, which may be cached: an OperationOutcome
+   * with a 4xx status. A 408, 429, 5xx or unknown status, or a transient issue, is a failed request
    */
-  private static boolean serverAnswered(Exception e) {
-    return e instanceof EFhirClientException && ((EFhirClientException) e).hasServerErrors();
+  public static boolean isAnswerFromServer(Exception e) {
+    if (!(e instanceof EFhirClientException) || !((EFhirClientException) e).hasServerErrors()) {
+      return false;
+    }
+    int code = ((EFhirClientException) e).getCode();
+    if (code < 400 || code >= 500 || code == 408 || code == 429) {
+      return false;
+    }
+    for (OperationOutcome oo : ((EFhirClientException) e).getServerErrors()) {
+      for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssueList()) {
+        if (issue.hasCode() && Utilities.existsInList(issue.getCode().toCode(), "transient", "lock-error", "no-store", "exception", "timeout", "incomplete", "throttled")) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   /**
@@ -1043,7 +1058,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
    */
   public TerminologyCache.SourcedCodeSystem findCodeSystemOnServer(String canonical) {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null || !useEcosystem) {
-      return null;
+      throw new NoTerminologyServiceException("No terminology server is available to look up "+canonical);
     }
     if (failedLookups.containsKey("CodeSystem|"+canonical)) {
       throw new NoTerminologyServiceException(failedLookups.get("CodeSystem|"+canonical));
@@ -1066,7 +1081,11 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         }
       }
       if (server == null) {
-        return null;
+        // no server has it, as far as the registry knows: not cached across runs, as the
+        // registry's empty resolutions aren't (see save())
+        String msg = "No terminology server is known to have "+canonical;
+        failedLookups.put("CodeSystem|"+canonical, msg);
+        throw new NoTerminologyServiceException(msg);
       }
       if (server.contains("://tx.fhir.org")) {
         try {
@@ -1109,6 +1128,8 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
       CodeSystem vs = (CodeSystem) client.getClient().read("CodeSystem", rid);
       return new TerminologyCache.SourcedCodeSystem(server, vs);
+    } catch (NoTerminologyServiceException e) {
+      throw e;
     } catch (Exception e) {
       String msg = "Error resolving CodeSystem "+canonical+": "+e.getMessage();
       if (!hasMessage(msg)) {

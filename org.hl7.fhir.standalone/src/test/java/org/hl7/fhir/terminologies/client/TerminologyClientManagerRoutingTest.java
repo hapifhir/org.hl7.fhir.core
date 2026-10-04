@@ -446,4 +446,36 @@ class TerminologyClientManagerRoutingTest {
     assertThrows(NoTerminologyServiceException.class, () -> mgr.findValueSetOnServer(CS_D));
     assertTrue(registryRequests.size() > asked, "the value set lookup should have been made");
   }
+
+  private static OperationOutcome transientOutcome() {
+    OperationOutcome oo = new OperationOutcome();
+    oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.TRANSIENT).getDetails().setText("Service unavailable");
+    return oo;
+  }
+
+  @Test
+  void testImplicitValueSetThatFailsWithATransientErrorIsNotReportedAsMissing() throws IOException {
+    // an OperationOutcome doesn't make it an answer: a 503 says nothing about the value set
+    expandFailures.put(MAIN, new EFhirClientException(503, "Service unavailable", transientOutcome()));
+    TestManager mgr = makeManager();
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findValueSetOnServer(SCT_IMPLICIT));
+  }
+
+  @Test
+  void testLookupWithoutAnyServerIsNotReportedAsMissing() throws IOException {
+    TestManager mgr = new TestManager();
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findValueSetOnServer(VS_D));
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findCodeSystemOnServer(CS_D));
+  }
+
+  @Test
+  void testCodeSystemNoServerHasIsNotReportedAsMissing() throws IOException {
+    // the registry knows no server for it: not cached across runs, but not an error either
+    TestManager mgr = makeManager();
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findCodeSystemOnServer(CS_UNKNOWN));
+    int asked = registryRequests.size();
+    assertThrows(NoTerminologyServiceException.class, () -> mgr.findCodeSystemOnServer(CS_UNKNOWN));
+    assertEquals(asked, registryRequests.size(), "not asked again in the session");
+    assertFalse(logged(mgr, "Error resolving CodeSystem"), messages(mgr).toString());
+  }
 }

@@ -949,7 +949,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
-      persist = serverAnswered(e);
+      persist = TerminologyClientManager.isAnswerFromServer(e);
       TerminologyServiceErrorClass errorClass = TerminologyServiceErrorClass.UNKNOWN;
       if (e instanceof EFhirClientException) {
         EFhirClientException fhirClientException = (EFhirClientException) e;
@@ -1032,7 +1032,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
-      persist = serverAnswered(e);
+      persist = TerminologyClientManager.isAnswerFromServer(e);
       res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), TerminologyServiceErrorClass.UNKNOWN, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
     }
     txCache.cacheExpansion(cacheToken, res, persist);
@@ -1191,7 +1191,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog == null ? null : txLog.getLastId());
     } catch (Exception e) {
-      persist = serverAnswered(e);
+      persist = TerminologyClientManager.isAnswerFromServer(e);
       if (res != null && !res.isFromServer()) {
         res = new ValueSetExpansionOutcome(res.getError() + " (and " + e.getMessage() + ")", res.getErrorClass(), false);
       } else {
@@ -2062,13 +2062,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    */
   private ValidationResult unavailableValidation(TerminologyClientContext tc) {
     return new ValidationResult(IssueSeverity.ERROR, tc.getUnavailableReason(), null).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
-  }
-
-  /**
-   * True if the exception carries the server's answer (an OperationOutcome), not a failed request
-   */
-  private static boolean serverAnswered(Exception e) {
-    return e instanceof EFhirClientException && ((EFhirClientException) e).hasServerErrors();
   }
 
   private ValueSetExpansionOutcome unavailableExpansion(TerminologyClientContext tc) {
