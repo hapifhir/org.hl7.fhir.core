@@ -12,6 +12,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupUnmappedMode;
 import org.hl7.fhir.model.core.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.fml.StructureMap;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -771,22 +772,42 @@ public class FmlParser extends ParserBase {
   private void parseParameter(Element ref, FHIRLexer lexer, boolean isTarget) throws FHIRLexer.FHIRLexerException, FHIRFormatError {
     boolean r5 = VersionUtilities.isR5Plus(context.getFHIRVersion());
     String name = r5 || isTarget ? "parameter" : "variable";
+    Element parameter;
     if (ref.hasChildren(name) && !ref.getChildByName(name).isList()) {
       throw lexer.error("variable on target is not a list, so can't add an element");
     } else if (!lexer.isConstant()) {
-      ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueId" : "value").setValue(lexer.take());
+      parameter = ref.addElement(name).markLocation(lexer.getCurrentLocation());
+      parameter.makeElement(r5 ? "valueId" : "value").setValue(lexer.take());
     } else if (lexer.isStringConstant()) {
-      ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueString" : "value").setValue(lexer.readConstant("??"));
+      parameter = ref.addElement(name).markLocation(lexer.getCurrentLocation());
+      String value = lexer.readConstant("??");
+      boolean containedConceptMapReference = isTarget
+          && StructureMap.StructureMapTransform.TRANSLATE.toCode().equals(ref.getChildValue("transform"))
+          && ref.getChildren(name).size() == 2 && value.startsWith("#");
+      parameter.makeElement(r5 || containedConceptMapReference ? "valueString" : "value").setValue(value);
     } else if (r5) {
       // Typed dispatch for bare constants on the r5+ path; mirrors
       // StructureMapUtilities.readConstant so integers/decimals/booleans pick
       // the correct value[x] element instead of being stringified.
-      Element param = ref.addElement(name).markLocation(lexer.getCurrentLocation());
-      setParameterConstantValue(param, lexer.take(), lexer);
+      parameter = ref.addElement(name).markLocation(lexer.getCurrentLocation());
+      setParameterConstantValue(parameter, lexer.take(), lexer);
     } else {
       // Pre-r5: there is no value[x] discrimination; everything goes into
       // `value` as a string after escape processing.
-      ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement("value").setValue(readConstant(lexer.take(), lexer));
+      parameter = ref.addElement(name).markLocation(lexer.getCurrentLocation());
+      parameter.makeElement("value").setValue(readConstant(lexer.take(), lexer));
+    }
+    if (isTarget && StructureMap.StructureMapTransform.TRANSLATE.toCode().equals(ref.getChildValue("transform"))
+        && ref.getChildren(name).size() == 2) {
+      Element mapUri = parameter.getNamedChild("valueString");
+      if (mapUri == null) {
+        mapUri = parameter.getNamedChild("value");
+      }
+      if (mapUri != null && mapUri.primitiveValue().startsWith("#")) {
+        Element extension = mapUri.addElement("extension");
+        extension.makeElement("url").setValue(ExtensionDefinitions.EXT_REFERENCES_CONTAINED);
+        extension.makeElement("valueReference").makeElement("reference").setValue(mapUri.primitiveValue());
+      }
     }
   }
  

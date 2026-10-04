@@ -1695,12 +1695,18 @@ public class StructureMapUtilities {
   }
 
   private void parseParameter(StructureMapGroupRuleTargetComponent target, FHIRLexer lexer) throws FHIRLexerException, FHIRFormatError {
+    DataType value;
     if (!lexer.isConstant()) {
-      target.addParameter().setValue(new IdType(lexer.take()));
+      value = new IdType(lexer.take());
     } else if (lexer.isStringConstant())
-      target.addParameter().setValue(new StringType(lexer.readConstant("??")));
+      value = new StringType(lexer.readConstant("??"));
     else {
-      target.addParameter().setValue(readConstant(lexer.take(), lexer));
+      value = readConstant(lexer.take(), lexer);
+    }
+    target.addParameter().setValue(value);
+    if (target.getTransform() == StructureMapTransform.TRANSLATE && target.getParameter().size() == 2
+        && value instanceof StringType && value.primitiveValue().startsWith("#")) {
+      value.addExtension(ExtensionDefinitions.EXT_REFERENCES_CONTAINED, new Reference(value.primitiveValue()));
     }
   }
 
