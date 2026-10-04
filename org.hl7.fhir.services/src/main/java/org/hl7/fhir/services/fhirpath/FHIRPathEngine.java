@@ -5735,6 +5735,16 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (focus.size() == 1) {
       return makeBoolean(true);
     }
+    if (allStringLikePrimitives(focus)) {
+      // for these, doEquals() is just a comparison of the primitive values, so there's no need to compare every pair
+      Set<String> values = new HashSet<>();
+      for (Base b : focus) {
+        if (!values.add(b.primitiveValue())) {
+          return makeBoolean(false);
+        }
+      }
+      return makeBoolean(true);
+    }
 
     boolean distinct = true;
     for (int i = 0; i < focus.size(); i++) {
@@ -5751,6 +5761,18 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return makeBoolean(distinct);
   }
 
+
+  // primitive types where doEquals() compares the primitive values as strings (not dates, decimals, or quantities)
+  private static final Set<String> STRING_LIKE_TYPES = Set.of("string", "code", "id", "uri", "url", "canonical", "oid", "uuid", "markdown");
+
+  private boolean allStringLikePrimitives(List<Base> focus) {
+    for (Base b : focus) {
+      if (b == null || !b.isPrimitive() || b instanceof DecimalType || !STRING_LIKE_TYPES.contains(b.fhirType())) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   private List<Base> funcSupersetOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> target = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
