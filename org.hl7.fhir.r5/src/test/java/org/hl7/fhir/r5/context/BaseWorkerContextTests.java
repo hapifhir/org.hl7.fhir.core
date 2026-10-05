@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.context;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient5;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
@@ -580,6 +581,53 @@ public class BaseWorkerContextTests {
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult,true);
+  }
+
+  private ValueSetExpansionOutcome expandWithFailingClient(Exception failure) throws IOException {
+    ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent();
+
+    ValueSet vs = new ValueSet();
+    vs.setStatus(Enumerations.PublicationStatus.ACTIVE);
+    vs.setCompose(new ValueSet.ValueSetComposeComponent());
+    vs.getCompose().setInactive(true);
+    vs.getCompose().getInclude().add(inc);
+    ExpansionOptions opt = new ExpansionOptions().withHierarchical(true);
+
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),argThat(new ExpansionOptionsMatcher(opt)));
+
+    TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
+
+    Mockito.doReturn(expParameters).when(context).constructParameters(any(), argThat(new TerminologyClientContextMatcher(terminologyClientContext)),argThat(new ValueSetMatcher(vs)), eq(true));
+
+    Mockito.doThrow(failure).when(terminologyClient).expandValueset(argThat(new ValueSetMatcher(vs)),
+      argThat(new ParametersMatcher(pInWithDependentResources)));
+
+    return context.expandVS(null, inc, true, false);
+  }
+
+  @Test
+  public void testExpandValueSetWithClientThatFailsIsNotPersisted() throws IOException {
+    // a request that failed says nothing about the value set: kept for the session only
+    ValueSetExpansionOutcome actualExpansionResult = expandWithFailingClient(new FHIRException("Connection reset"));
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, false);
+  }
+
+  @Test
+  public void testExpandValueSetWithClientThatAnswersWithAnErrorIsPersisted() throws IOException {
+    // the server's answer is an answer, error or not
+    OperationOutcome oo = new OperationOutcome();
+    oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.NOTSUPPORTED).getDetails().setText("Unable to expand");
+    ValueSetExpansionOutcome actualExpansionResult = expandWithFailingClient(new EFhirClientException(422, "Unable to expand", oo));
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, true);
+  }
+
+  @Test
+  public void testExpandValueSetWithClientThatFailsWithATransientErrorIsNotPersisted() throws IOException {
+    // an OperationOutcome with a 503 is a failed request, not an answer
+    OperationOutcome oo = new OperationOutcome();
+    oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.TRANSIENT).getDetails().setText("Service unavailable");
+    ValueSetExpansionOutcome actualExpansionResult = expandWithFailingClient(new EFhirClientException(503, "Service unavailable", oo));
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, false);
   }
 
   @Test

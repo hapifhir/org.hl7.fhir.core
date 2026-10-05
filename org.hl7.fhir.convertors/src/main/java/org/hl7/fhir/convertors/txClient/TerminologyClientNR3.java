@@ -111,7 +111,16 @@ public class TerminologyClientNR3 implements ITerminologyClientN {
   public ValueSet expandValueset(ValueSet vs, Parameters p) throws FHIRException {
     org.hl7.fhir.dstu3.model.ValueSet vs2 = (org.hl7.fhir.dstu3.model.ValueSet) VersionConvertorFactory_30_N.convertResource(vs);
     org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_N.convertResource(p);
-    vs2 = client.expandValueset(vs2, p2); // todo: second parameter
+    try {
+      vs2 = client.expandValueset(vs2, p2); // todo: second parameter
+    } catch (EFhirClientException e) {
+      // converted as by the R4 client, so that callers can tell the server's answer from a failed request
+      if (e.hasServerErrors()) {
+        throw new org.hl7.fhir.services.client.EFhirClientException(e.getCode(), e.getMessage(), (org.hl7.fhir.model.core.OperationOutcome) VersionConvertorFactory_30_N.convertResource(e.getServerErrors().get(0)));
+      } else {
+        throw new org.hl7.fhir.services.client.EFhirClientException(e.getCode(), e.getMessage());
+      }
+    }
     return (ValueSet) VersionConvertorFactory_30_N.convertResource(vs2);
   }
 
