@@ -5822,9 +5822,6 @@
       "name" : "tx-resource"
     },
     {
-      "name" : "_incomplete"
-    },
-    {
       "name" : "abstract"
     },
     {
@@ -5870,28 +5867,13 @@
       "name" : "force-valueset-version"
     },
     {
-      "name" : "inactive"
-    },
-    {
-      "name" : "includeAlternateCodes"
-    },
-    {
       "name" : "includeDefinition"
     },
     {
       "name" : "includeDesignations"
     },
     {
-      "name" : "incomplete-ok"
-    },
-    {
       "name" : "limit"
-    },
-    {
-      "name" : "limitedExpansion"
-    },
-    {
-      "name" : "mode"
     },
     {
       "name" : "no-cache"
@@ -5919,9 +5901,6 @@
     },
     {
       "name" : "valueSet"
-    },
-    {
-      "name" : "valueSetMode"
     },
     {
       "name" : "valueSetVersion"
