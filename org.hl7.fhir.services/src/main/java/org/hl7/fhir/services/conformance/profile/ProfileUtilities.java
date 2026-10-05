@@ -65,7 +65,6 @@ import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
 import org.hl7.fhir.model.core.StructureDefinition.*;
 import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.model.tools.ExtensionConstants;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -1194,7 +1193,7 @@ public class ProfileUtilities {
   }
 
   private void findInheritedObligationProfiles(StructureDefinition derived) {
-    List<Extension> list = derived.getExtensionsByUrl(ExtensionConstants.EXT_INHERIT_OBLIGATIONS, ExtensionDefinitions.EXT_OBLIGATION_INHERITS_OLD);
+    List<Extension> list = derived.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_INHERITS_NEW, ExtensionDefinitions.EXT_OBLIGATION_INHERITS_OLD);
     for (Extension ext : list) {
       StructureDefinition op = findProfile(ext.getValueCanonicalType(), derived);
       if (op != null && ExtensionUtilities.readBoolExtension(op, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
