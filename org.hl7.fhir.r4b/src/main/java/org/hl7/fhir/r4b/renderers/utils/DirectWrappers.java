@@ -25,7 +25,7 @@ import org.hl7.fhir.r4b.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r4b.renderers.utils.BaseWrappers.WrapperBaseImpl;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class DirectWrappers {
 
   public static class PropertyWrapperDirect extends RendererWrapperImpl implements PropertyWrapper {

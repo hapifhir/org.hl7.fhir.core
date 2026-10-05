@@ -3300,18 +3300,18 @@ msgstr "Une erreur s''est produite lors de l''analyse inter-versions car"
 
 # REND_ADDED
 #: REND_ADDED
-msgid "Added:"
-msgstr "Ajouté :"
+msgid "Added"
+msgstr "Ajouté"
 
 # REND_CHANGED
 #: REND_CHANGED
-msgid "Changed:"
-msgstr "Modifié :"
+msgid "Changed"
+msgstr "Modifié"
 
 # REND_REMOVED
 #: REND_REMOVED
-msgid "Removed:"
-msgstr "Supprimé :"
+msgid "Removed"
+msgstr "Supprimé"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS

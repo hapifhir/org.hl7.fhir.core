@@ -129,7 +129,7 @@ import org.slf4j.event.Level;
 
 
 @Slf4j
-@Deprecated
+@Deprecated(forRemoval = true)
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   public class ResourceProxy {
@@ -1298,7 +1298,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.canRunWithoutTerminology = canRunWithoutTerminology;
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   public void setLogger(ILoggingService logger) {
 
   }
@@ -2041,7 +2041,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  @Deprecated
+  @Deprecated(forRemoval = true)
   public ILoggingService getLogger() {
     return null;
   }

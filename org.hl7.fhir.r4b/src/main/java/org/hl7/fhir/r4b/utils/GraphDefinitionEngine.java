@@ -34,7 +34,7 @@ import org.hl7.fhir.utilities.graphql.StringValue;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class GraphDefinitionEngine {
 
   private static final String TAG_NAME = "Compiled.expression";

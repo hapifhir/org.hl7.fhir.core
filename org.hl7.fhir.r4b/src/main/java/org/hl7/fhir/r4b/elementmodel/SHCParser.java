@@ -50,7 +50,7 @@ import com.google.gson.JsonPrimitive;
  * @author grahame
  *
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class SHCParser extends ParserBase {
 
   private JsonParser jsonParser;

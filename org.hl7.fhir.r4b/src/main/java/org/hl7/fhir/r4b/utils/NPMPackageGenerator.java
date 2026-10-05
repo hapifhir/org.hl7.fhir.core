@@ -78,7 +78,7 @@ import com.google.gson.JsonPrimitive;
 
 
 @Slf4j
-@Deprecated
+@Deprecated(forRemoval = true)
 public class NPMPackageGenerator {
 
   public enum Category {

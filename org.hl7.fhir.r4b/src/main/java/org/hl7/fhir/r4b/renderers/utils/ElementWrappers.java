@@ -31,7 +31,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 @Slf4j
 public class ElementWrappers {
 

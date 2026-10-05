@@ -328,7 +328,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean useTableForFixedValues = true;
 
   @Setter
-  @Deprecated
+  @Deprecated(forRemoval = true)
   private boolean debug;
 
   // note that ProfileUtilities are used re-entrantly internally, so nothing with
