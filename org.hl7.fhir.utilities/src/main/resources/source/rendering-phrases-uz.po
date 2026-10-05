@@ -3300,18 +3300,18 @@ msgstr "Versiyalararo tahlil jarayonida xatolik yuz berdi, chunki"
 
 # REND_ADDED
 #: REND_ADDED
-msgid "Added:"
-msgstr "Qo''shildi:"
+msgid "Added"
+msgstr "Qo''shildi"
 
 # REND_CHANGED
 #: REND_CHANGED
-msgid "Changed:"
-msgstr "Oʻzgartirildi:"
+msgid "Changed"
+msgstr "Oʻzgartirildi"
 
 # REND_REMOVED
 #: REND_REMOVED
-msgid "Removed:"
-msgstr "Olib tashlandi:"
+msgid "Removed"
+msgstr "Olib tashlandi"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS

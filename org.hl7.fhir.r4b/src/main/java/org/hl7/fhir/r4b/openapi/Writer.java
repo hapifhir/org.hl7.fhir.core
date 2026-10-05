@@ -44,7 +44,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class Writer extends BaseWriter {
 
   private OutputStream stream;

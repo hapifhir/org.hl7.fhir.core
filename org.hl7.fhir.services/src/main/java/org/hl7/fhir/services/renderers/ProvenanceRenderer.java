@@ -16,13 +16,20 @@ import java.util.List;
 
 public class ProvenanceRenderer extends ResourceRenderer {
 
+  private static final int MAX_ENTITIES = 10;
+
   public ProvenanceRenderer(RenderingContext context) { 
     super(context); 
   } 
  
   @Override
   public String buildSummary(ResourceWrapper prv) throws UnsupportedEncodingException, IOException {
-    return (context.formatPhrase(RenderingI18nContext.PROV_FOR, displayReference(prv.firstChild("target")))+" ");
+    return buildSummary(prv, 0);
+  }
+
+  @Override
+  public String buildSummary(ResourceWrapper prv, int recursionCount) throws UnsupportedEncodingException, IOException {
+    return (context.formatPhrase(RenderingI18nContext.PROV_FOR, displayReference(prv.firstChild("target"), recursionCount))+" ");
   }
 
   @Override
@@ -80,6 +87,45 @@ public class ProvenanceRenderer extends ResourceRenderer {
       tr.td().tx(context.formatPhrase(RenderingI18nContext.PROV_ACT));
       renderDataType(status, tr.td(), prv.child("activity"));
     }
+    if (prv.has("reason")) {
+      tr = t.tr();
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.PROV_REASON));
+      renderList(status, tr.td(), prv.children("reason"));
+    }
+    if (prv.has("authorization")) {
+      tr = t.tr();
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.PROV_AUTHORIZATION));
+      renderList(status, tr.td(), prv.children("authorization"));
+    }
+    if (prv.has("why")) {
+      tr = t.tr();
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.PROV_WHY));
+      addMarkdown(tr.td(), prv.primitiveValue("why"));
+    }
+    if (prv.has("patient")) {
+      tr = t.tr();
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.GENERAL_SUBJ));
+      renderReference(status, tr.td(), prv.child("patient"));
+    }
+    if (prv.has("encounter")) {
+      tr = t.tr();
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.PROV_ENCOUNTER));
+      renderReference(status, tr.td(), prv.child("encounter"));
+    }
+    if (prv.has("basedOn")) {
+      tr = t.tr();
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.PROV_BASED_ON));
+      XhtmlNode td = tr.td();
+      List<ResourceWrapper> tl = prv.children("basedOn");
+      if (tl.size() == 1) {
+        renderReference(status, td, tl.get(0));
+      } else {
+        XhtmlNode ul = td.ul();
+        for (ResourceWrapper ref : tl) {
+          renderReference(status, ul.li(), ref);
+        }
+      }
+    }
 
     boolean hasType = false;
     boolean hasRole = false;
@@ -112,17 +158,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
         }
       }        
       if (hasRole) {
-        List<ResourceWrapper> tl = prv.children("role");        
-        if (tl.size() == 0) {
-          tr.td();
-        } else if (tl.size() == 1) {
-          renderCodeableConcept(status, tr.td(), tl.get(0));
-        } else {
-          XhtmlNode ul = tr.td().ul();
-          for (ResourceWrapper cc : tl) {
-            renderCodeableConcept(status, ul.li(), cc);
-          }
-        }
+        renderList(status, tr.td(), a.children("role"));
       }
       if (a.has("who")) {
         renderReference(status, tr.td(), a.child("who"));         
@@ -139,6 +175,90 @@ public class ProvenanceRenderer extends ResourceRenderer {
     }
     // agent table
 
+    List<ResourceWrapper> entities = prv.children("entity");
+    if (!entities.isEmpty()) {
+      boolean hasEntRole = false;
+      boolean hasWhat = false;
+      boolean hasEntAgent = false;
+      for (ResourceWrapper e : entities) {
+        hasEntRole = hasEntRole || e.has("role");
+        hasWhat = hasWhat || e.has("what");
+        hasEntAgent = hasEntAgent || e.has("agent");
+      }
+      x.para().b().tx(context.formatPhrase(RenderingI18nContext.PROV_ENT));
+      t = x.table("grid", false).markGenerated(!context.forValidResource());
+      tr = t.tr();
+      if (hasEntRole) {
+        tr.td().b().tx(context.formatPhrase(RenderingI18nContext.PROV_ROLE));
+      }
+      if (hasWhat) {
+        tr.td().b().tx(context.formatPhrase(RenderingI18nContext.PROV_WHAT));
+      }
+      if (hasEntAgent) {
+        tr.td().b().tx(context.formatPhrase(RenderingI18nContext.PROV_AGE));
+      }
+      int limit = Math.min(entities.size(), MAX_ENTITIES);
+      for (int i = 0; i < limit; i++) {
+        ResourceWrapper e = entities.get(i);
+        tr = t.tr();
+        if (hasEntRole) {
+          XhtmlNode td = tr.td();
+          if (e.has("role")) {
+            renderDataType(status, td, e.child("role"));
+          }
+        }
+        if (hasWhat) {
+          XhtmlNode td = tr.td();
+          if (e.has("what")) {
+            renderReference(status, td, e.child("what"));
+          }
+        }
+        if (hasEntAgent) {
+          XhtmlNode td = tr.td();
+          List<ResourceWrapper> al = e.children("agent");
+          if (al.size() == 1) {
+            renderEntityAgent(status, td, al.get(0));
+          } else if (al.size() > 1) {
+            XhtmlNode ul = td.ul();
+            for (ResourceWrapper a : al) {
+              renderEntityAgent(status, ul.li(), a);
+            }
+          }
+        }
+      }
+      if (entities.size() > MAX_ENTITIES) {
+        x.para().i().tx(context.formatPhrase(RenderingI18nContext.PROV_ENT_MORE, MAX_ENTITIES, entities.size()));
+      }
+    }
+  }
+
+  private void renderEntityAgent(RenderingStatus status, XhtmlNode x, ResourceWrapper a) throws FHIRFormatError, DefinitionException, IOException {
+    if (a.has("who")) {
+      renderReference(status, x, a.child("who"));
+    }
+    if (a.has("role")) {
+      x.tx(" (");
+      boolean first = true;
+      for (ResourceWrapper r : a.children("role")) {
+        if (!first) {
+          x.tx(", ");
+        }
+        first = false;
+        renderCodeableConcept(status, x, r);
+      }
+      x.tx(")");
+    }
+  }
+
+  private void renderList(RenderingStatus status, XhtmlNode td, List<ResourceWrapper> list) throws FHIRFormatError, DefinitionException, IOException {
+    if (list.size() == 1) {
+      renderDataType(status, td, list.get(0));
+    } else if (list.size() > 1) {
+      XhtmlNode ul = td.ul();
+      for (ResourceWrapper item : list) {
+        renderDataType(status, ul.li(), item);
+      }
+    }
   }
 
 

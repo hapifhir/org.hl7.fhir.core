@@ -65,7 +65,7 @@ import org.xmlpull.v1.XmlPullParserException;
  */
 
 @SuppressWarnings("checkstyle:systemout")
-@Deprecated
+@Deprecated(forRemoval = true)
 public class LoincToDEConvertor {
 
   public static void main(String[] args)
