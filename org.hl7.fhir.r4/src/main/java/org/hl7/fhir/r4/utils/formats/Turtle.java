@@ -47,7 +47,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.turtle.TurtleIRIUtil;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 @SuppressFBWarnings("EC_UNRELATED_TYPES")
 public class Turtle {
 

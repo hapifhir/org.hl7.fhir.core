@@ -67,7 +67,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 
 @Slf4j
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChecker {
 
   private ValueSet valueset;

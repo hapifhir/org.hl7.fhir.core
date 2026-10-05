@@ -24,7 +24,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * See R5 rendering framework to render R4B resources
  * 
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 @SuppressFBWarnings("EC_UNRELATED_TYPES")
 public class CompartmentDefinitionRenderer extends ResourceRenderer {
 

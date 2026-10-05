@@ -1883,6 +1883,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
       }
       if (root) {
+        if (ExtensionUtilities.readBoolExtension(profile, ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE_PREFIX)+" ", null).addStyle("font-weight:bold"));
+          c.addPiece(gen.new Piece(corePath+"resource.html#additional", context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE_LINK), null).addStyle("font-weight:bold"));
+        }
         if (ExtensionUtilities.readBoolExtension(profile, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
           if (!c.getPieces().isEmpty()) {
             c.addPiece(gen.new Piece("br"));
@@ -2445,6 +2452,27 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
   }
 
+  /**
+   * The value of the contentReferenceProfile extension has the same format as a contentReference:
+   * [canonical]#[element id], where a missing canonical means this profile
+   *
+   * @return {href (null if it can't be resolved), text, hint}
+   */
+  private String[] contentReferenceProfileLink(String uri, StructureDefinition profile) {
+    if (uri == null) {
+      return new String[] {null, "?", null};
+    }
+    String url = uri.contains("#") ? uri.substring(0, uri.indexOf("#")) : uri;
+    String eid = uri.contains("#") ? uri.substring(uri.indexOf("#")+1) : null;
+    StructureDefinition sd = Utilities.noString(url) ? profile : context.getProfileUtilities().findProfileStr(url, profile);
+    if (sd == null) {
+      return new String[] {null, uri, null};
+    }
+    String text = eid == null ? sd.present() : sd == profile ? eid : eid+" ("+sd.present()+")";
+    String href = sd == profile ? (eid == null ? null : "#"+eid) : !sd.hasWebPath() ? null : eid == null ? sd.getWebPath() : sd.getWebPath()+"#"+eid;
+    return new String[] {href, text, uri};
+  }
+
   private Cell genTypes(HierarchicalTableGenerator gen, Row r, ElementDefinition e, String profileBaseFileName, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean mustSupportMode, boolean diff) {
     Cell c = gen.new Cell(); 
     r.getCells().add(c); 
@@ -2461,6 +2489,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.getPieces().add(gen.new Piece(ed.getSource().hasWebPath() ? ed.getSource().getWebPath()+"#"+ed.getElement().getPath() : null, tail(ed.getElement().getPath())+" ("+ed.getSource().getTypeName()+")", ed.getElement().getPath()));
         } 
       } 
+      if (e.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE)) {
+        String[] cp = contentReferenceProfileLink(ExtensionUtilities.readStringExtension(e, ExtensionDefinitions.EXT_CONTENT_PROFILE), profile);
+        c.getPieces().add(gen.new Piece(null, " ("+context.formatPhrase(RenderingI18nContext.STRUC_DEF_CONT_PROFILE)+" ", null));
+        c.getPieces().add(gen.new Piece(cp[0], cp[1], cp[2]));
+        c.getPieces().add(gen.new Piece(null, ")", null));
+      }
       return c; 
     } 
     List<TypeRefComponent> types = e.getTypeList(); 
@@ -2537,7 +2571,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 tfirst = false; 
               else 
                 c.addPiece(gen.new Piece(null, " | ", null)); 
-              genTargetLink(gen, profileBaseFileName, corePath, c, t, u.getValue(), null); 
+              genTargetLink(gen, profileBaseFileName, corePath, c, t, u, null); 
               if (!mustSupportMode && isMustSupport(u) && e.getMustSupport()) { 
                 c.addPiece(gen.new Piece(null, " ", null)); 
                 c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
@@ -2661,6 +2695,42 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return url == null || Utilities.isAbsoluteUrl(url) ? url : prefix + url; 
   } 
  
+  /**
+   * a target profile that carries version-specific-use (e.g. Media, R4/R4B only) may not exist in this
+   * version of FHIR: if it doesn't resolve here, it's linked in the spec for the last version it applies
+   * to, and either way the versions it applies to are shown after it
+   */
+  private void genTargetLink(HierarchicalTableGenerator gen, String profileBaseFileName, String corePath, Cell c, TypeRefComponent t, CanonicalType ct, StructureDefinition src) {
+    String u = ct.getValue();
+    Extension vext = ct.getExtensionByUrl(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE);
+    if (vext == null) {
+      genTargetLink(gen, profileBaseFileName, corePath, c, t, u, src);
+      return;
+    }
+    String start = ExtensionUtilities.readStringExtension(vext, ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START);
+    String end = ExtensionUtilities.readStringExtension(vext, ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END);
+    if (u.startsWith("http://hl7.org/fhir/StructureDefinition/") && context.getProfileUtilities().findProfileStr(u, src) == null && !Utilities.noString(end)) {
+      String rn = u.substring(40);
+      c.addPiece(checkForNoChange(t, gen.new Piece(VersionUtilities.getSpecUrl(end)+"/"+rn.toLowerCase()+".html", rn, null)));
+    } else {
+      genTargetLink(gen, profileBaseFileName, corePath, c, t, u, src);
+    }
+    String range;
+    if (!Utilities.noString(start) && !Utilities.noString(end)) {
+      range = start.equals(end) ? context.formatPhrase(RenderingI18nContext.SDR_VER_FOR, VersionUtilities.getNameForVersion(start))
+          : context.formatPhrase(RenderingI18nContext.SDR_VER_RANGE, VersionUtilities.getNameForVersion(start), VersionUtilities.getNameForVersion(end));
+    } else if (!Utilities.noString(start)) {
+      range = context.formatPhrase(RenderingI18nContext.SDR_VER_ON, VersionUtilities.getNameForVersion(start));
+    } else if (!Utilities.noString(end)) {
+      range = context.formatPhrase(RenderingI18nContext.SDR_VER_BEF, VersionUtilities.getNameForVersion(end));
+    } else {
+      range = null;
+    }
+    if (range != null) {
+      c.addPiece(gen.new Piece(null, " ("+range+")", null));
+    }
+  }
+
   private void genTargetLink(HierarchicalTableGenerator gen, String profileBaseFileName, String corePath, Cell c, TypeRefComponent t, String u, StructureDefinition src) {
     if (u.startsWith("http://hl7.org/fhir/StructureDefinition/")) { 
       StructureDefinition sd = context.getProfileUtilities().findProfileStr(u, src);
@@ -3543,7 +3613,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!mustSupportMode || allProfilesMustSupport(tr.getTargetProfileList()) || isMustSupport(rt)) { 
               if (!first) 
                 c.getPieces().add(gen.new Piece(null, " | ", null)); 
-              genTargetLink(gen, profileBaseFileName, corePath, c, tr, rt.getValue(), src); 
+              genTargetLink(gen, profileBaseFileName, corePath, c, tr, rt, src); 
               if (!mustSupportMode && isMustSupport(rt) && element.getMustSupport()) { 
                 c.addPiece(gen.new Piece(null, " ", null)); 
                 c.addStyledText((context.formatPhrase(RenderingI18nContext.STRUC_DEF_TARG_SUPP)), "S", "white", HierarchicalTableGenerator.RED_BACKGROUND_COLOR, null, false);
@@ -4492,6 +4562,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private void generateElementInner(RenderingStatus status, XhtmlNode tbl, StructureDefinition sd, ElementDefinition d, int mode, ElementDefinition value, ElementDefinition compare, ElementDefinition compareValue, boolean strikethrough, String defPath, String anchorPrefix, List<ElementDefinition> inScopeElements, ResourceWrapper res) throws FHIRException, IOException {
     boolean root = !d.getPath().contains("."); 
     boolean slicedExtension = d.hasSliceName() && (d.getPath().endsWith(".extension") || d.getPath().endsWith(".modifierExtension")); 
+    if (root && ExtensionUtilities.readBoolExtension(sd, ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
+      XhtmlNode td = tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE), "resource.html#additional", strikethrough);
+      td.tx(context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE_PREFIX)+" ");
+      td.ah(context.prefixLocalHref(corePath+"resource.html#additional")).tx(context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE_LINK));
+    }
 //    int slicedExtensionMode = (mode == GEN_MODE_KEY) && slicedExtension ? GEN_MODE_SNAP : mode; // see ProfileUtilities.checkExtensionDoco / Task 3970 
     if (d.hasSliceName()) { 
       tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICE_NAME), "profiling.html#slicing", strikethrough, compareString(d.getSliceName(), d.getSliceNameElement(), null, (compare != null ? compare.getSliceName() : null), d, null, "sliceName", mode, false, false));    
@@ -4505,7 +4580,19 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_CONTROL), "conformance-rules.html#conformance", strikethrough, describeCardinality(d, compare, mode));  
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_BINDING), "terminologies.html", strikethrough, describeBinding(sd, d, d.getPath(), compare, mode)); 
     if (d.hasContentReference()) { 
-      tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_TYPE), null, strikethrough, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE) + d.getContentReference().substring(1)); 
+      if (d.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE)) {
+        String[] cp = contentReferenceProfileLink(ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_CONTENT_PROFILE), sd);
+        XhtmlNode td = tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_TYPE), null, strikethrough);
+        td.tx(context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE) + d.getContentReference().substring(1)+" ("+context.formatPhrase(RenderingI18nContext.STRUC_DEF_CONT_PROFILE)+" ");
+        if (cp[0] != null) {
+          td.ah(context.prefixLocalHref(cp[0]), cp[2]).tx(cp[1]);
+        } else {
+          td.tx(cp[1]);
+        }
+        td.tx(")");
+      } else {
+        tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_TYPE), null, strikethrough, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE) + d.getContentReference().substring(1)); 
+      }
     } else { 
       tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_TYPE), "datatypes.html", strikethrough, describeTypes(d.getTypeList(), false, d, compare, mode, value, compareValue, sd));  
     } 

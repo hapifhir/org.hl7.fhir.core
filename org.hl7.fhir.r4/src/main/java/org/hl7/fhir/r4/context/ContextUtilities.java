@@ -44,7 +44,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
  */
 
 @Slf4j
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ContextUtilities implements ProfileKnowledgeProvider {
 
   private IWorkerContext context;

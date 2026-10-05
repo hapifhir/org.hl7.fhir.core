@@ -3307,18 +3307,18 @@ msgstr "Något gick fel med korsversionsanalysen eftersom"
 
 # REND_ADDED
 #: REND_ADDED
-msgid "Added:"
-msgstr "Tillagt:"
+msgid "Added"
+msgstr "Tillagt"
 
 # REND_CHANGED
 #: REND_CHANGED
-msgid "Changed:"
-msgstr "Ändrat:"
+msgid "Changed"
+msgstr "Ändrat"
 
 # REND_REMOVED
 #: REND_REMOVED
-msgid "Removed:"
-msgstr "Borttaget:"
+msgid "Removed"
+msgstr "Borttaget"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS

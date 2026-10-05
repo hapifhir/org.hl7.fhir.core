@@ -14,7 +14,7 @@ import org.hl7.fhir.r4b.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r4b.renderers.ResourceRenderer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class BaseWrappers {
 
   public interface RendererWrapper {
