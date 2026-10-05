@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.services.context.ContextUtilities;
 import org.hl7.fhir.services.elementmodel.Element;
@@ -398,7 +400,7 @@ public class StructureMapValidator extends BaseValidator {
               v.setType(max, this.context.fetchTypeDefinition(type), null, type);
             }
           }
-        } catch (FHIRLexerException e) {
+        } catch (FHIRLexerException | PathEngineException | DefinitionException e) {
           hint(errors, "2026-09-01", IssueType.VALUE, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_TYPE_UNDETERMINED, name, value);
           ok = false;
         }
