@@ -13,7 +13,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  * See R5 rendering framework to render R4B resources
  * 
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class Renderer {
 
   protected RenderingContext context;

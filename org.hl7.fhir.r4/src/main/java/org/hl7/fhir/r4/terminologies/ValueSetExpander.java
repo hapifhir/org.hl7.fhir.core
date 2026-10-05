@@ -41,7 +41,7 @@ import org.hl7.fhir.r4.model.ValueSet;
  * The implemetation of IWorkerContext is deprecated - it is no longer maintained by the core team
  */
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public interface ValueSetExpander {
   public enum TerminologyServiceErrorClass {
     UNKNOWN, NOSERVICE, SERVER_ERROR, VALUESET_UNSUPPORTED;

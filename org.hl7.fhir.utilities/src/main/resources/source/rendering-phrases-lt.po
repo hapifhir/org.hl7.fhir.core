@@ -3324,18 +3324,18 @@ msgstr "Kažkas nutiko su kryžminių versijų analize, nes"
 
 # REND_ADDED
 #: REND_ADDED
-msgid "Added:"
-msgstr "Pridėta:"
+msgid "Added"
+msgstr "Pridėta"
 
 # REND_CHANGED
 #: REND_CHANGED
-msgid "Changed:"
-msgstr "Pakeistas:"
+msgid "Changed"
+msgstr "Pakeistas"
 
 # REND_REMOVED
 #: REND_REMOVED
-msgid "Removed:"
-msgstr "Pašalintas:"
+msgid "Removed"
+msgstr "Pašalintas"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS

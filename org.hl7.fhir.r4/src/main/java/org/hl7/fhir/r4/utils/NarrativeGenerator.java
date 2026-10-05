@@ -202,7 +202,7 @@ Copyright (c) 2011+, HL7, Inc
 
 */
 
-@Deprecated
+@Deprecated(forRemoval = true)
 @Slf4j
 public class NarrativeGenerator implements INarrativeGenerator {
 

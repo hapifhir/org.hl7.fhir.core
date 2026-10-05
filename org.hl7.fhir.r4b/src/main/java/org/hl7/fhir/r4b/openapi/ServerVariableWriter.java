@@ -38,7 +38,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ServerVariableWriter extends BaseWriter {
 
   public ServerVariableWriter(JsonObject object) {
