@@ -54,7 +54,7 @@ import org.hl7.fhir.r4b.model.Timing;
  * Who What When Where Why - Common pattern for all resources that deals with
  * attribution.
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public interface Fivews extends PatternBase {
 
   public enum CanonicalStatus {

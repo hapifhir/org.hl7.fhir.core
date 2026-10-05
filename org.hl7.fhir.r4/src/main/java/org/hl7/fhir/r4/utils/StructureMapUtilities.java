@@ -119,7 +119,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  *
  */
 
-@Deprecated
+@Deprecated(forRemoval = true)
 @Slf4j
 public class StructureMapUtilities {
 

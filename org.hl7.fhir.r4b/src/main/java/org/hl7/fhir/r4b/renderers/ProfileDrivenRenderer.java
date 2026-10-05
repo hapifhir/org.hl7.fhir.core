@@ -90,7 +90,7 @@ import org.w3c.dom.Element;
  * See R5 rendering framework to render R4B resources
  * 
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 @Slf4j
 public class ProfileDrivenRenderer extends ResourceRenderer {
 

@@ -22,7 +22,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 
 @SuppressWarnings("checkstyle:systemout")
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ResourceFixer {
 
   public static void main(String[] args) throws IOException {

@@ -529,6 +529,23 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
 
+  /**
+   * the worker context for a published version of FHIR (major.minor): this one, or one loaded once per session
+   */
+  private IWorkerContext getContextForVersion(String v) throws IOException {
+    if (v.equals(VersionUtilities.getMajMin(context.getFHIRVersion()))) { // v is major.minor only
+      return context;
+    }
+    if (!session.getOtherVersions().containsKey(v)) {
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
+      NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(v));
+      SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(context.getModelContext()).withAllowLoadingDuplicates(true)
+        .fromPackage(npm, ValidatorUtils.loaderForVersion(context.getModelContext(), v), false);
+      session.getOtherVersions().put(v, swc);
+    }
+    return session.getOtherVersions().get(v);
+  }
+
   private boolean checkElementDefinition(List<ValidationMessage> errors, NodeStack n, Element ec, String path) throws IOException {
     boolean ok = true;
     String startVer;
@@ -553,19 +570,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
     List<String> versionList = VersionUtilities.iterateCorePublishedVersions(startVer, endVer);
     for (String v : versionList) {
-      IWorkerContext ctxt;
-      if (v.equals(VersionUtilities.getMajMin(context.getFHIRVersion()))) { // v is major.minor only
-        ctxt = context;
-      } else {
-        if (!session.getOtherVersions().containsKey(v)) {
-          FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-          NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(v));
-          SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(context.getModelContext()).withAllowLoadingDuplicates(true)
-            .fromPackage(npm, ValidatorUtils.loaderForVersion(context.getModelContext(), v), false);
-          session.getOtherVersions().put(v, swc);
-        }
-        ctxt = session.getOtherVersions().get(v);
-      }
+      IWorkerContext ctxt = getContextForVersion(v);
       try {
         String pp = (path.contains("#") ? path.substring(path.indexOf("#") + 1) : path);
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
@@ -1765,7 +1770,12 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
         profiles = type.getChildrenByName("targetProfile");
         for (Element profile : profiles) {
-          ok = validateTargetProfile(errors, profile, code, stack.push(profile, -1, null, null), path, logical) && ok;
+          if (isForThisVersion(profile)) {
+            ok = validateTargetProfile(errors, profile, code, stack.push(profile, -1, null, null), path, logical) && ok;
+          } else {
+            // e.g. Media, which only exists in R4/R4B: it can't be resolved in this version
+            validateTargetProfileInOtherVersions(errors, profile, stack.push(profile, -1, null, null));
+          }
         }
       }
     }
@@ -1873,6 +1883,40 @@ public class StructureDefinitionValidator extends BaseValidator {
 
   private boolean checkIsModifierExtension(StructureDefinition t) {
     return t.getSnapshot().getElementFirstRep().getIsModifier();
+  }
+
+  /**
+   * a target profile marked with version-specific-use that doesn't apply to this version of FHIR: all
+   * that can be checked is that it exists in (at least one of) the versions it does apply to
+   */
+  private void validateTargetProfileInOtherVersions(List<ValidationMessage> errors, Element profile, NodeStack stack) {
+    String p = profile.primitiveValue();
+    Element ext = profile.getExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE);
+    String endVer = ext.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END) ? ext.getExtensionString(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END) : null;
+    String startVer = ext.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START) ? ext.getExtensionString(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START) : null;
+    if (endVer == null) {
+      endVer = settings.getMaxVersion() != null ? settings.getMaxVersion() : startVer;
+    }
+    if (startVer == null) {
+      startVer = settings.getMinVersion() != null ? settings.getMinVersion() : endVer;
+    }
+    if (startVer == null || endVer == null) {
+      return;
+    }
+    boolean found = false;
+    for (String v : VersionUtilities.iterateCorePublishedVersions(startVer, endVer)) {
+      try {
+        IWorkerContext ctxt = getContextForVersion(v);
+        if (ctxt.fetchResource(StructureDefinition.class, p, ElementModelUtilities.getVersionResolutionRules(profile)) != null) {
+          found = true;
+          break;
+        }
+      } catch (Exception e) {
+        // can't load that version: nothing to check against
+        found = true;
+      }
+    }
+    warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), found, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p);
   }
 
   private boolean validateTargetProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path, boolean logical) {

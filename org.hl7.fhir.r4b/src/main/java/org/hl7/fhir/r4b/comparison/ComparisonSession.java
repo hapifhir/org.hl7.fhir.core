@@ -24,7 +24,7 @@ import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.utilities.Utilities;
 
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ComparisonSession {
 
   private Map<String, ResourceComparison> compares = new HashMap<>();

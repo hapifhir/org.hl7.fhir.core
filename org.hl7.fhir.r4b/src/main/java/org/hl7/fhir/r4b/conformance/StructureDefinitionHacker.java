@@ -14,7 +14,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
  *
  */
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class StructureDefinitionHacker {
 
   private String version;

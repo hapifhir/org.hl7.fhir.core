@@ -3808,20 +3808,20 @@ msgstr ""
 # REND_ADDED
 #: REND_ADDED
 #, fuzzy
-msgid "Added:"
-msgstr "Adicionado:"
+msgid "Added"
+msgstr "Adicionado"
 
 # REND_CHANGED
 #: REND_CHANGED
 #, fuzzy
-msgid "Changed:"
-msgstr "Alterado:"
+msgid "Changed"
+msgstr "Alterado"
 
 # REND_REMOVED
 #: REND_REMOVED
 #, fuzzy
-msgid "Removed:"
-msgstr "Removido:"
+msgid "Removed"
+msgstr "Removido"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS

@@ -27,7 +27,7 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 
 
 @Slf4j
-@Deprecated
+@Deprecated(forRemoval = true)
 public class TerminologyCacheManager {
 
   // if either the CACHE_VERSION of the stated maj/min server versions change, the

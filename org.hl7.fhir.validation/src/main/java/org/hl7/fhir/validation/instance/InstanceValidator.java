@@ -8909,12 +8909,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       String msgId = null;
       String mSrc = settings.isForPublication() ? inv.getHuman() + " ("+inv.getExpression()+")" : inv.getHuman();
+      String id = determineId(path, element);
       if (inv.hasSource()) {
-        msg = context.formatMessage(I18nConstants.INV_FAILED_SOURCE, inv.getKey(), mSrc, inv.getSource())+msg;
+        if (id != null) {
+          msg = context.formatMessage(I18nConstants.INV_FAILED_ID_SOURCE, inv.getKey(), mSrc, id, inv.getSource()) + msg;
+        } else {
+          msg = context.formatMessage(I18nConstants.INV_FAILED_SOURCE, inv.getKey(), mSrc, inv.getSource()) + msg;
+        }
         msgId = inv.getSource()+"#"+inv.getKey();
       } else {
+        if (id != null) {
+          msg = context.formatMessage(I18nConstants.INV_FAILED_ID, inv.getKey(), mSrc, id) + msg;
+        } else {
+          msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey(), mSrc) + msg;
+        }
         msgId = profile.getUrl()+"#"+inv.getKey();
-        msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey(), mSrc)+msg;
       }
       String invId = (inv.hasSource() ? inv.getSource() : profile.getUrl()) + "#"+inv.getKey();
       
@@ -8935,7 +8944,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     return ok;
   }
-  
+
+  private String determineId(String path, Element element) {
+    if (element == null) {
+      return null;
+    }
+    if (path.endsWith("]")) {
+      path = path.substring(0, path.lastIndexOf("["));
+    }
+    switch (path) {
+      case "StructureDefinition.snapshot.element": return element.getNamedChildValue("path");
+      case "StructureDefinition.differential.element": return element.getNamedChildValue("path");
+      case "SearchParameter": return element.getNamedChildValue("code");
+      default:
+        if (path.contains(".")) {
+          return determineId(path.substring(0, path.lastIndexOf(".")), element.getParentForValidator());
+        } else {
+          return null;
+        }
+    }
+  }
+
   private boolean IsExemptInvariant(String path, Element element, ElementDefinitionConstraintComponent inv) {
     if ("eld-24".equals(inv.getKey())) {
       String p = element.getNamedChildValue("path", false);

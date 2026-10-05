@@ -67,7 +67,7 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class JsonParser extends ParserBase {
 
   private JsonCreator json;
