@@ -1910,16 +1910,21 @@ public class StructureMapTools {
           }
           return cp;
         case QTY:
+          int qtyParameterCount = tgt.getParameterList().size();
+          if (qtyParameterCount != 1 && qtyParameterCount != 2 && qtyParameterCount != 4) {
+            throw new FHIRException("Transform qty requires 1, 2, or 4 parameters");
+          }
+          if (qtyParameterCount == 1) {
+            return parseQuantityText(getParamString(vars, tgt.getParameterList().get(0)));
+          }
           org.hl7.fhir.model.core.Quantity qty = new org.hl7.fhir.model.core.Quantity();
           var qtyValue = new java.math.BigDecimal(getParamString(vars, tgt.getParameterList().get(0)));
           var qtyUnit = getParamString(vars, tgt.getParameterList().get(1));
           qty.setValue(qtyValue);
           qty.setUnit(qtyUnit);
-          if (tgt.getParameterList().size() >= 3) {
+          if (qtyParameterCount == 4) {
             var qtySystem = getParamString(vars, tgt.getParameterList().get(2));
             qty.setSystem(qtySystem);
-          }
-          if (tgt.getParameterList().size() >= 4) {
             var qtyCode = getParamString(vars, tgt.getParameterList().get(3));
             qty.setCode(qtyCode);
           }
@@ -1929,6 +1934,45 @@ public class StructureMapTools {
       }
     } catch (Exception e) {
       throw new FHIRException("Exception executing transform " + tgt.toString() + " on Rule \"" + rulePath + "\": " + e.getMessage(), e);
+    }
+  }
+
+  private org.hl7.fhir.model.core.Quantity parseQuantityText(String text) throws FHIRException {
+    String valueAndUnit = text == null ? "" : text.trim();
+    String comparator = null;
+    if (valueAndUnit.startsWith("<=") || valueAndUnit.startsWith(">=") || valueAndUnit.startsWith("ad")) {
+      comparator = valueAndUnit.substring(0, 2);
+      valueAndUnit = valueAndUnit.substring(2).trim();
+    } else if (valueAndUnit.startsWith("<") || valueAndUnit.startsWith(">") || valueAndUnit.startsWith("~")) {
+      comparator = valueAndUnit.substring(0, 1);
+      valueAndUnit = valueAndUnit.substring(1).trim();
+    }
+
+    int unitStart = -1;
+    for (int i = 0; i < valueAndUnit.length(); i++) {
+      if (Character.isWhitespace(valueAndUnit.charAt(i))) {
+        unitStart = i;
+        break;
+      }
+    }
+    String value = unitStart < 0 ? valueAndUnit : valueAndUnit.substring(0, unitStart);
+    String unit = unitStart < 0 ? null : valueAndUnit.substring(unitStart).trim();
+    if (unit != null && unit.length() >= 2 && unit.startsWith("'") && unit.endsWith("'")) {
+      unit = unit.substring(1, unit.length() - 1);
+    }
+
+    try {
+      org.hl7.fhir.model.core.Quantity qty = new org.hl7.fhir.model.core.Quantity();
+      qty.setValue(new java.math.BigDecimal(value));
+      if (comparator != null) {
+        qty.setComparator(Enumerations.QuantityComparator.fromCode(comparator));
+      }
+      if (!Utilities.noString(unit)) {
+        qty.setUnit(unit);
+      }
+      return qty;
+    } catch (NumberFormatException e) {
+      throw new FHIRException("Unable to parse quantity text \"" + text + "\": expected [comparator]value[space]unit", e);
     }
   }
 
@@ -2656,7 +2700,7 @@ public class StructureMapTools {
     return false;
   }
 
-  private TypeDetails analyseTransform(TransformContext context, StructureMap map, StructureMap.StructureMapGroupRuleTargetComponent tgt, VariableForProfiling var, VariablesForProfiling vars) throws FHIRException {
+  private TypeDetails analyseTransform(TransformContext context, StructureMap map, StructureMap.StructureMapGroupRuleTargetComponent tgt, VariableForProfiling var, VariablesForProfiling vars, String element) throws FHIRException {
     var tgtParameters = tgt.getParameterList();
     switch (tgt.getTransform()) {
       case CREATE:

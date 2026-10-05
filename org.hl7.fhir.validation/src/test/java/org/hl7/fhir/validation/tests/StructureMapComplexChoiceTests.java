@@ -28,6 +28,7 @@ import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -67,6 +68,16 @@ class StructureMapComplexChoiceTests {
       }
     }
     """;
+  private static final String TEXT_QUANTITY_JSON = """
+    {
+      "resourceType": "Observation",
+      "valueQuantity": {
+        "value": 42,
+        "comparator": "<=",
+        "unit": "kg"
+      }
+    }
+    """;
   private static final String CODEABLE_CONCEPT_JSON = """
     {
       "resourceType": "Observation",
@@ -97,6 +108,9 @@ class StructureMapComplexChoiceTests {
       new TransformCase("qty into value",
         "src -> tgt.value = qty(42, 'kg', 'http://unitsofmeasure.org', 'kg') \"quantity\";",
         INPUT_JSON, QUANTITY_JSON),
+      new TransformCase("text qty into value",
+        "src -> tgt.value = qty('<=42 kg') \"quantity\";",
+        INPUT_JSON, TEXT_QUANTITY_JSON),
       new TransformCase("cc into value",
         "src -> tgt.value = cc('Non coded text', 'oth') \"codeableConcept\";",
         INPUT_JSON, CODEABLE_CONCEPT_JSON),
@@ -378,6 +392,30 @@ class StructureMapComplexChoiceTests {
         assertInstanceOf(Observation.class, target));
     }
     assertNull(new CompareUtilities().checkJsonSrcIsSame(name, expectedJson, output.toString(StandardCharsets.UTF_8)));
+  }
+
+  @Test
+  void testThreeParameterQtyRejectedR5() throws Exception {
+    var utils = new org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities(contextR5);
+    var map = utils.parse(FML.formatted(
+      "src -> tgt.valueQuantity = qty(42, 'kg', 'http://unitsofmeasure.org') \"quantity\";"), "threeParamQty");
+
+    var error = assertThrows(FHIRException.class,
+      () -> utils.transform(null, new org.hl7.fhir.r5.model.Observation(), map, new org.hl7.fhir.r5.model.Observation()));
+
+    assertTrue(error.getMessage().contains("requires 1, 2, or 4 parameters"), error.getMessage());
+  }
+
+  @Test
+  void testThreeParameterQtyRejectedR6() throws Exception {
+    var utils = new StructureMapTools(contextR6);
+    var map = utils.parse(FML.formatted(
+      "src -> tgt.valueQuantity = qty(42, 'kg', 'http://unitsofmeasure.org') \"quantity\";"), "threeParamQty");
+
+    var error = assertThrows(FHIRException.class,
+      () -> utils.transform(null, new Observation(), map, new Observation()));
+
+    assertTrue(error.getMessage().contains("requires 1, 2, or 4 parameters"), error.getMessage());
   }
 
   @ParameterizedTest(name = "R5 converted choice name and type: {0}")
