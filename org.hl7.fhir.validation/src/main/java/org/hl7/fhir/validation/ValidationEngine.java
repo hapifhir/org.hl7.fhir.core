@@ -794,6 +794,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   private StructureDefinition getSourceResourceFromStructureMap(StructureMap map) {
     StructureMap.StructureMapGroupComponent g = map.getGroupList().get(0);
+    // read the type declared on the input parameter
     String type = null;
     for (StructureMap.StructureMapGroupInputComponent inp : g.getInputList()) {
       if (inp.getMode() == StructureMap.StructureMapInputMode.SOURCE)
@@ -803,41 +804,35 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
           type = inp.getType();
     }
 
-    // Check if the source type is one of the aliased types in the structure map.
-    // (and lookup the StructureDefinition for that type)
-    String sourceTypeUrl = null;
+    if (type == null)
+      throw new DefinitionException("No source type found in the structure map");
+
+    // scan imported types (uses ...)
     for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
       if (component.getMode() == StructureMap.StructureMapModelMode.SOURCE) {
-        if (component.hasAlias() && component.getAlias().equalsIgnoreCase(type)) {
-          sourceTypeUrl = component.getUrl();
-          break;
-        }
-      }
-    }
-
-    StructureDefinition structureDefinition = null;
-    for (StructureDefinition sd : this.context.fetchResourcesByType(StructureDefinition.class)) {
-      if (sourceTypeUrl != null) {
-        if (sd.getUrl().equalsIgnoreCase(sourceTypeUrl)) {
-          structureDefinition = sd;
-          break;
-        }
-      } else {
-        // handle any parameter types that weren't "used" with an alias
-        for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
-          if (component.getMode() == StructureMap.StructureMapModelMode.SOURCE) {
-            if (sd.getUrl().equalsIgnoreCase(component.getUrl()) && sd.getName().equalsIgnoreCase(type)) {
-              structureDefinition = sd;
-              break;
-            }
+        if (component.hasAlias()) {
+          if (component.getAlias().equalsIgnoreCase(type)) {
+            String sourceTypeUrl = component.getUrl();
+            StructureDefinition structureDefinition = this.context.fetchResource(StructureDefinition.class, sourceTypeUrl);
+            if (structureDefinition != null)
+              return structureDefinition;
+            throw new FHIRException("Unable to find StructureDefinition for source type ('" + sourceTypeUrl + "')");
           }
+        } else {
+          var sdImported = this.context.fetchResource(StructureDefinition.class, component.getUrl());
+          if (sdImported != null && sdImported.hasName() && sdImported.getName().equalsIgnoreCase(type))
+            return sdImported;
         }
       }
     }
 
-    if (structureDefinition == null)
-      throw new FHIRException("Unable to find StructureDefinition for source type ('" + sourceTypeUrl + "')");
-    return structureDefinition;
+    // fallback: search all available StructureDefinitions by name
+    for (StructureDefinition sd : this.context.fetchResourcesByType(StructureDefinition.class)) {
+      if (sd.hasName() && sd.getName().equalsIgnoreCase(type))
+        return sd;
+    }
+
+    throw new FHIRException("Unable to find StructureDefinition for source type ('" + type + "')");
   }
 
 

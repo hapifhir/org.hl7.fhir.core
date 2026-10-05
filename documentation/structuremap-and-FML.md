@@ -113,6 +113,8 @@ Use the typed JSON/XML parsers' `compose` or `composeString` APIs to serialize a
 
 [renderers/StructureMapRenderer](../org.hl7.fhir.r5/src/main/java/org/hl7/fhir/r5/renderers/StructureMapRenderer.java) produces human-readable HTML resource narrative. It is a different concern from FML source generation; its tests live in [StructureMapRendererTest](../org.hl7.fhir.r5/src/test/java/org/hl7/fhir/r5/test/rendering/StructureMapRendererTest.java).
 
+Subelement support preserves the existing single-element narrative presentation. In particular, R6 narrative rendering retains displayed type-qualified rule names such as `targetReference` and the legacy identity-batch layout; adding multi-segment source or target paths does not change those single-element rules.
+
 ## Validation
 
 The validation module uses the R5 implementation, not the draft R6 model/services code. [InstanceValidator](../org.hl7.fhir.validation/src/main/java/org/hl7/fhir/validation/instance/InstanceValidator.java) owns resource validation and dispatches StructureMap-specific checks to [StructureMapValidator.validateStructureMap](../org.hl7.fhir.validation/src/main/java/org/hl7/fhir/validation/instance/type/StructureMapValidator.java).
@@ -132,6 +134,14 @@ The normal location-aware workflow is `FmlParser.parse(errors, text)`, followed 
 
 `StructureMapUtilities.analyse(appInfo, map)` is a separate analysis API that produces [StructureMapAnalysis](../org.hl7.fhir.r5/src/main/java/org/hl7/fhir/r5/utils/structuremap/StructureMapAnalysis.java), including target profiles and a summary. It is not the validator entry point and has its own transform-support limits. `generateMapFromMappings(StructureDefinition)` generates maps from logical mappings on a definition; it is not a general version converter.
 
+Source and target subelement paths are analysed segment by segment in both R5 `StructureMapUtilities` and R6 `StructureMapTools`. R6 uses the native ordered `element` list. R5 uses the native first `element` followed by ordered `valueString` extensions at `http://hl7.org/fhir/6.0/StructureDefinition/extension-StructureMap.group.rule.source.element` or `http://hl7.org/fhir/6.0/StructureDefinition/extension-StructureMap.group.rule.target.element`. Dots inside a delimited identifier remain part of that one segment.
+
+Source type filters apply to the final element; its inferred types, profiles, and binding are retained for downstream rules. Target analysis creates differential entries for intermediate elements, applies the transform and fixed value only to the final element, and binds the explicit target variable to that final element. Intermediate bindings are local to the path and do not replace the original context variable. Implicit simple-copy rules carry the source's possible types to the target, including choice elements.
+
+StructureMap validation also resolves every segment, including R5 backport extensions, and checks source type constraints against the final element. Source cardinality includes intermediate repetitions; `first`, `last`, and `only_one` limit the selected result to one. Intermediate targets must have an unambiguous non-primitive type that can be created. Invalid paths identify the failing segment, and implicit copies are checked against the final target's allowed types.
+
+R5 semantic path support does not register the backport extension definitions with the general resource validator. Full R5 resource validation also needs cross-version definitions that recognize those two R6 extension URLs; older cross-version packages report an invalid version `6.0`. Cross-version definition registration is separate from StructureMap path validation.
+
 ## Transformation Execution
 
 ### Execution Flow
@@ -147,6 +157,10 @@ The low-level R5 entry point is `StructureMapUtilities.transform(appInfo, source
 
 `processSource` handles property selection or `@search`, type filtering, `where`, `check`, `log`, and source list modes. `where` removes nonmatching items; a false `check` throws. Source variables are bound for those expressions. Target `share` handling uses a shared-variable scope to reuse an output element.
 
+Subelement execution follows the ordered path segments (native repeating `element` in R6, native first `element` plus backport extensions in R5). Source traversal collects leaf values across repeating intermediate elements in order, then applies defaults, type filters, conditions, checks, logging, and list modes to those leaf values. Missing intermediate elements produce no matches unless a source default supplies a value.
+
+Each target statement creates its intermediate elements before applying the leaf transform or binding the leaf variable; intermediate bindings do not replace the original target context. Repeating intermediates are distinct for separate statements and source matches. Use an explicit outer binding to populate several fields in the same intermediate object, or a shared final binding; reusing a shared binding does not create another unused intermediate parent. For implicit choice-valued copies, declared type-mapping groups retain precedence; without a matching group, the source type is used only if the target allows it.
+
 Named and type-based group resolution first examines the current map, then matching imported maps in the worker context. Wildcard imports enumerate cached maps; declaring an import does not by itself download its dependencies. Missing and ambiguous matches produce exceptions, and successful resolutions are cached on map components.
 
 Constants follow the map that owns the executing group, including dependent calls, inferred type-based calls, and group inheritance. [TransformContext](../org.hl7.fhir.r5/src/main/java/org/hl7/fhir/r5/utils/structuremap/TransformContext.java) retains one resolver per map instance for the duration of a transformation, so repeated calls into the same map share its lazy cache. Imported groups do not inherit the caller's constants, and the caller's resolver is restored when the group returns. `Variables.copy()` preserves the active resolver for nested rule scopes; fresh dependent/inferred group scopes receive the appropriate resolver on group entry without copying the caller's local bindings.
@@ -155,15 +169,16 @@ Important limits visible in the current runtime:
 
 - The first group is the entry point; this overload does not accept an entry-group name. Root input binding supports at most one source and one target input.
 - When the entry group declares a target, supply an instance. Automatic root creation from a null target is explicitly unimplemented.
-- `getTargetType(map)` requires exactly one `uses ... as target` declaration. It is not a general resolver for maps with several target declarations.
+- `getTargetType(map)` requires a single typed target input in the first group, but permits several `uses ... as target` declarations. Both the R5 utility and draft R6 `StructureMapTools` check these in declaration order. A matching alias resolves directly by URL or throws, without retrying against cached definitions; unaliased declarations resolve by URL and must match the input type by name. If none resolves, they scan all available definitions by name, allowing non-imported target types and returning the first match. Alias and name comparisons are case-insensitive, and an unresolved type produces an exception.
 - `executeRule` rejects rules with multiple source components.
 - `evaluate` returns no assignment for an empty result and throws for more than one result.
 - `escape` and `dateOp` throw unsupported-transform exceptions. `cast` requires an explicit type and supports the primitive types enumerated in its switch.
-- The parser stores source `default` as FHIRPath text, but `processSource` currently inserts `getDefaultValueElement()` directly when the property is absent. Do not assume arbitrary default expressions are evaluated by this path.
 
 Execution is not transactional: earlier target mutations and host callbacks can occur before an exception. Use a fresh target for an attempt and decide explicitly how to handle partially created resources. The utility, map caches, and mutable values do not establish a thread-safety contract; do not assume concurrent reuse is safe without an application-level strategy.
 
 For higher-level integration, [ValidationEngine.transform](../org.hl7.fhir.validation/src/main/java/org/hl7/fhir/validation/ValidationEngine.java) fetches the map by URI, determines source/target definitions from its first group, parses the input, builds the target, and invokes the R5 utility. It requires a single typed target parameter. Its `compile(mapUri)` currently fetches a map from the context; it is not a separate bytecode compiler or a validation pass.
+
+`ValidationEngine.getSourceResourceFromStructureMap` follows the same resolution order as the target resolvers above, using source declarations: matching aliases resolve directly or throw, unaliased imports resolve by name, and non-imported source types resolve through a name lookup across all available definitions.
 
 ### FHIRPath Integration
 

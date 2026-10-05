@@ -988,7 +988,7 @@ public class StructureMapTools {
 
 
   /**
-   * Resolves the first group's single typed target against the map's target structure declarations.
+   * Resolves the first group's single typed target using target declarations, then available definitions by name.
    * @param map
    * @return
    * @throws FHIRException
@@ -997,7 +997,7 @@ public class StructureMapTools {
     if (map.getGroupList().isEmpty())
       throw new FHIRException("getTargetType requires a group in map " + map.getUrl());
 
-    // only have support for a single output parameter to generate
+    // read the type declared on the single output parameter
     StructureMap.StructureMapGroupInputComponent gpReturnTypeParameter = null;
     for (var gp : map.getGroupFirstRep().getInputList()) {
       if (gp.getMode() == StructureMapInputMode.TARGET) {
@@ -1012,29 +1012,34 @@ public class StructureMapTools {
     if (gpReturnTypeParameter == null)
       throw new FHIRException("getTargetType requires the first group to have a single typed output parameter");
 
-    // Locate the target structure by its alias in the map's structure declarations.
-    for (StructureMap.StructureMapStructureComponent uses : map.getStructureList()) {
-      if (uses.getMode() == StructureMap.StructureMapModelMode.TARGET && uses.hasAlias() && gpReturnTypeParameter.getType().equals(uses.getAlias())) {
-        var res = worker.fetchResource(StructureDefinition.class, uses.getUrl(), ExtensionUtilities.getVersionResolutionRules(uses.getUrlElement()));
-        if (res == null)
-          throw new FHIRException("Unable to find " + uses.getUrl() + " referenced from map " + map.getUrl());
-        return res;
-      }
-    }
+    String type = gpReturnTypeParameter.getType();
 
-    // If we couldn't find the target by alias, try to match by URL and name among all available structures.
-    var allStructures = worker.fetchResourcesByType(StructureDefinition.class);
+    // scan imported types (uses ...)
     for (StructureMap.StructureMapStructureComponent uses : map.getStructureList()) {
       if (uses.getMode() == StructureMap.StructureMapModelMode.TARGET) {
-        for (StructureDefinition sd : allStructures) {
-          if (uses.getUrl().equalsIgnoreCase(sd.getUrl()) && sd.getName() != null && sd.getName().equalsIgnoreCase(gpReturnTypeParameter.getType())) {
-            return sd;
+        if (uses.hasAlias()) {
+          if (uses.getAlias().equalsIgnoreCase(type)) {
+            String targetTypeUrl = uses.getUrl();
+            var res = worker.fetchResource(StructureDefinition.class, targetTypeUrl, ExtensionUtilities.getVersionResolutionRules(uses.getUrlElement()));
+            if (res != null)
+              return res;
+            throw new FHIRException("Unable to find StructureDefinition for target type ('" + targetTypeUrl + "') referenced from map " + map.getUrl());
           }
+        } else {
+          var res = worker.fetchResource(StructureDefinition.class, uses.getUrl(), ExtensionUtilities.getVersionResolutionRules(uses.getUrlElement()));
+          if (res != null && res.hasName() && res.getName().equalsIgnoreCase(type))
+            return res;
         }
       }
     }
 
-    throw new FHIRException("No targets found in map " + map.getUrl());
+    // fallback: search all available StructureDefinitions by name
+    for (StructureDefinition sd : worker.fetchResourcesByType(StructureDefinition.class)) {
+      if (sd.hasName() && sd.getName().equalsIgnoreCase(type))
+        return sd;
+    }
+
+    throw new FHIRException("Unable to find StructureDefinition for target type ('" + type + "') referenced from map " + map.getUrl());
   }
 
   private void log(String cnt) {
