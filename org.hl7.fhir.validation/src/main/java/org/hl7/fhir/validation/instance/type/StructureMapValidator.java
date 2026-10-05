@@ -383,9 +383,8 @@ public class StructureMapValidator extends BaseValidator {
         try {
           td = fpe.check(constantVars, (String)null, (String)null, null, fpe.parse(value));
           if (td.getTypes().size() == 1) {
-            type = td.getType();
-            if (type != null && type.startsWith(TypeDetails.FP_NS)) {
-              type = type.substring(TypeDetails.FP_NS.length()+7).toLowerCase();
+            type = TypeDetails.FhirTypeName(td.getType());
+            if (type != null && td.getType().startsWith(TypeDetails.FP_NS)) {
               StructureDefinition sdt = this.context.fetchTypeDefinition(type);
               if (sdt != null) {
                 type = sdt.getType();
@@ -1098,9 +1097,8 @@ public class StructureMapValidator extends BaseValidator {
       Element expression = params.get(params.size() - 1);
       TypeDetails details = checkEvaluateExpression(variables, expression, expression.getChildValue("value"), contextVariable);
       if (details.getTypes().size() == 1) {
-        String type = details.getType();
-        if (type != null && type.startsWith(TypeDetails.FP_NS)) {
-          type = type.substring(TypeDetails.FP_NS.length()+7).toLowerCase();
+        String type = TypeDetails.FhirTypeName(details.getType());
+        if (type != null && details.getType().startsWith(TypeDetails.FP_NS)) {
           StructureDefinition typeDefinition = this.context.fetchTypeDefinition(type);
           if (typeDefinition != null) {
             type = typeDefinition.getType();
