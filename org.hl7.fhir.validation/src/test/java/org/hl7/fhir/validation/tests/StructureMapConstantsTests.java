@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
@@ -31,6 +32,9 @@ import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class StructureMapConstantsTests {
 
@@ -92,6 +96,27 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     // assertTrue(errors.stream().noneMatch(this::isTransformRuleMessage), errors.toString());
   }
 
+  static Stream<Arguments> evaluateTypes() {
+    return Stream.of(
+        Arguments.of("@2026-01-01T00:00:00Z", "dateTime"),
+        Arguments.of("1 'mg'", "Quantity"));
+  }
+
+  @ParameterizedTest
+  @MethodSource("evaluateTypes")
+  void testEvaluateResolvesFhirType(String expression, String expectedType) {
+    String fml = SAMPLE_FML.replace("tgt.name as n, n.family = truncate(v, maxLen)",
+        "evaluate(v, " + expression + ") as result");
+    List<ValidationMessage> errors = new ArrayList<>();
+    org.hl7.fhir.services.elementmodel.Element map = fmlParser.parse(errors, fml);
+    assertTrue(errors.isEmpty(), errors.toString());
+
+    validator.validate(null, errors, null, map);
+    RemoveKnownIssuesToIgnore(errors);
+
+    assertTrue(errors.isEmpty(), "Expected evaluate output to resolve as " + expectedType + ": " + errors);
+  }
+
   @Test
   void testFmlConstantValidationForcedErrorName() throws IOException, FHIRException {
     List<ValidationMessage> errors = new ArrayList<>();
@@ -102,6 +127,8 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     RemoveKnownIssuesToIgnore(errors);
 
     assertEquals(1, errors.size(), "Expected validation errors due to missing constant name: " + errors.toString());
+    assertEquals(I18nConstants.SM_CONSTANT_NAME_MISSING, errors.get(0).getMessageId());
+    assertEquals(IssueSeverity.ERROR, errors.get(0).getLevel());
   }
 
   @Test
@@ -114,6 +141,8 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     RemoveKnownIssuesToIgnore(errors);
 
     assertEquals(1, errors.size(), "Expected validation errors due to missing constant value: " + errors.toString());
+    assertEquals(I18nConstants.SM_CONSTANT_VALUE_MISSING, errors.get(0).getMessageId());
+    assertEquals(IssueSeverity.ERROR, errors.get(0).getLevel());
   }
 
   private void RemoveKnownIssuesToIgnore(List<ValidationMessage> errors) {
@@ -136,6 +165,8 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     RemoveKnownIssuesToIgnore(errors);
 
     assertEquals(1, errors.size(), "Expected validation errors due to missing constant value type: " + errors.toString());
+    assertEquals(I18nConstants.SM_CONSTANT_TYPE_UNDETERMINED, errors.get(0).getMessageId());
+    assertEquals(IssueSeverity.ERROR, errors.get(0).getLevel());
   }
 
   private boolean isTransformRuleMessage(ValidationMessage message) {
