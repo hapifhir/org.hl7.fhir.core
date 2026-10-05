@@ -370,14 +370,12 @@ public class StructureMapValidator extends BaseValidator {
 
       // validate the constant properties
       if (name == null || name.isEmpty()) {
-        hint(errors, "2026-09-01", IssueType.INVALID, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_NAME_MISSING);
-        ok = false;
+        ok = rule(errors, "2026-09-01", IssueType.INVALID, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_NAME_MISSING) && ok;
       } else {
         v = constantVars.add(name, "source");
       }
       if (value == null || value.isEmpty()) {
-        hint(errors, "2026-09-01", IssueType.INVALID, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_VALUE_MISSING, name);
-        ok = false;
+        ok = rule(errors, "2026-09-01", IssueType.INVALID, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_VALUE_MISSING, name) && ok;
       } else {
         // Determine the datatype of the constant value using FHIRPath
         try {
@@ -391,8 +389,8 @@ public class StructureMapValidator extends BaseValidator {
               }
             }
             if (type == null) {
+              // An inference limitation does not make an otherwise valid expression invalid.
               hint(errors, "2026-09-01", IssueType.VALUE, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_TYPE_UNDETERMINED, name, value);
-              ok = false;
             }
             if (v != null && type != null) {
               int max = td.getCollectionStatus() == org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus.SINGLETON ? 1 : Integer.MAX_VALUE;
@@ -400,8 +398,7 @@ public class StructureMapValidator extends BaseValidator {
             }
           }
         } catch (FHIRLexerException | PathEngineException | DefinitionException e) {
-          hint(errors, "2026-09-01", IssueType.VALUE, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_TYPE_UNDETERMINED, name, value);
-          ok = false;
+          ok = rule(errors, "2026-09-01", IssueType.VALUE, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_TYPE_UNDETERMINED, name, value) && ok;
         }
       }
     }
@@ -961,7 +958,7 @@ public class StructureMapValidator extends BaseValidator {
     String type = initialType;
     if (transform == null) {
       warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED, transform);
-      return new TransformValidationResult(false, type);
+      return new TransformValidationResult(true, type);
     }
     switch (transform) {
     case "create":
