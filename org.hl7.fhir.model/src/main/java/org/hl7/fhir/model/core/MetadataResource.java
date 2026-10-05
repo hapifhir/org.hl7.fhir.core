@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import java.util.EnumSet;
@@ -124,11 +124,11 @@ public abstract class MetadataResource extends CanonicalResource {
     /**
      * @return The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    public abstract Date getApprovalDate(); 
+    public abstract ZonedDateTime getApprovalDate();
     /**
      * @param value The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    public abstract MetadataResource setApprovalDate(Date value); 
+    public abstract MetadataResource setApprovalDate(ZonedDateTime value); 
     /**
      * How many allowed for this property by the implementation
      */
@@ -150,11 +150,11 @@ public abstract class MetadataResource extends CanonicalResource {
     /**
      * @return The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    public abstract Date getLastReviewDate(); 
+    public abstract ZonedDateTime getLastReviewDate();
     /**
      * @param value The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    public abstract MetadataResource setLastReviewDate(Date value); 
+    public abstract MetadataResource setLastReviewDate(ZonedDateTime value); 
     /**
      * How many allowed for this property by the implementation
      */

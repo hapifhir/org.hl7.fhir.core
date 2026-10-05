@@ -31,7 +31,7 @@ package org.hl7.fhir.model.core;
 
 
 
-import java.util.*;
+import java.util.*; import java.time.*;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;

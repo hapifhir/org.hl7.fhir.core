@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1244,14 +1244,14 @@ public class Provenance extends DomainResource {
     /**
      * @return The date and time at which the provenance information was recorded / updated, whether in the FHIR Provenance resource or in some other form that is later communicated in the FHIR Provenance.
      */
-    public Date getRecorded() { 
+    public ZonedDateTime getRecorded() {
       return this.recorded == null ? null : this.recorded.getValue();
     }
 
     /**
      * @param value The date and time at which the provenance information was recorded / updated, whether in the FHIR Provenance resource or in some other form that is later communicated in the FHIR Provenance.
      */
-    public Provenance setRecorded(Date value) { 
+    public Provenance setRecorded(ZonedDateTime value) { 
       if (value == null)
         this.recorded = null;
       else {

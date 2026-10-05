@@ -32,6 +32,8 @@ package org.hl7.fhir.model.core;
 
 import org.hl7.fhir.model.Base.CopyObjectOptions;
 import org.hl7.fhir.model.Base;
+
+import java.time.ZonedDateTime;
 import java.util.EnumSet;
 
 import ca.uhn.fhir.model.api.IElement;
@@ -134,7 +136,21 @@ public abstract class PrimitiveType<T> extends DataType implements IPrimitiveTyp
 		return myCoercedValue;
 	}
 
-	public String getValueAsString() {
+  /**
+   * @return Returns the value of this type, or throws {@link NullPointerException} if the value is null.
+   *
+   * @throws NullPointerException if the value is null
+   */
+  public T getValueNotNull() throws NullPointerException {
+    T retVal = getValue();
+    if (retVal == null) {
+      throw new NullPointerException("Value cannot be null");
+    }
+    return retVal;
+  }
+
+
+  public String getValueAsString() {
 		return asStringValue();
 	}
 

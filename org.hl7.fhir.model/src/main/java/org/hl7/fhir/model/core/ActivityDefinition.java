@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -2007,14 +2007,14 @@ public class ActivityDefinition extends MetadataResource {
     /**
      * @return The date  (and optionally time) when the activity definition was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the activity definition changes.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The date  (and optionally time) when the activity definition was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the activity definition changes.
      */
-    public ActivityDefinition setDate(Date value) { 
+    public ActivityDefinition setDate(ZonedDateTime value) {
       if (value == null)
         this.date = null;
       else {
@@ -2530,14 +2530,14 @@ public class ActivityDefinition extends MetadataResource {
     /**
      * @return The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    public Date getApprovalDate() { 
+    public ZonedDateTime getApprovalDate() {
       return this.approvalDate == null ? null : this.approvalDate.getValue();
     }
 
     /**
      * @param value The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    public ActivityDefinition setApprovalDate(Date value) { 
+    public ActivityDefinition setApprovalDate(ZonedDateTime value) {
       if (value == null)
         this.approvalDate = null;
       else {
@@ -2582,14 +2582,14 @@ public class ActivityDefinition extends MetadataResource {
     /**
      * @return The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    public Date getLastReviewDate() { 
+    public ZonedDateTime getLastReviewDate() {
       return this.lastReviewDate == null ? null : this.lastReviewDate.getValue();
     }
 
     /**
      * @param value The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    public ActivityDefinition setLastReviewDate(Date value) { 
+    public ActivityDefinition setLastReviewDate(ZonedDateTime value) {
       if (value == null)
         this.lastReviewDate = null;
       else {

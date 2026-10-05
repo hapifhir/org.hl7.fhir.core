@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -2312,7 +2312,7 @@ public class CoverageEligibilityRequest extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public CoverageEligibilityRequest(IModelContext modelContext, FinancialResourceStatusCodes status, EligibilityRequestPurpose purpose, Reference patient, Date created, Reference insurer) {
+    public CoverageEligibilityRequest(IModelContext modelContext, FinancialResourceStatusCodes status, EligibilityRequestPurpose purpose, Reference patient, ZonedDateTime created, Reference insurer) {
       super();
       this.modelContext = modelContext;
       this.setStatus(status);
@@ -2731,14 +2731,14 @@ public class CoverageEligibilityRequest extends DomainResource {
     /**
      * @return The date when this resource was created.
      */
-    public Date getCreated() { 
+    public ZonedDateTime getCreated() {
       return this.created == null ? null : this.created.getValue();
     }
 
     /**
      * @param value The date when this resource was created.
      */
-    public CoverageEligibilityRequest setCreated(Date value) { 
+    public CoverageEligibilityRequest setCreated(ZonedDateTime value) {
         if (this.created == null)
           this.created = new DateTimeType(modelContext);
         this.created.setValue(value);

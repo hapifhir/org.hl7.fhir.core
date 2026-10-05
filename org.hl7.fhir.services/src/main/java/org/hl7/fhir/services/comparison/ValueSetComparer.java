@@ -25,6 +25,7 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -114,7 +115,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     vs.setName("Union"+left.getName()+"And"+right.getName());
     vs.setTitle("Union of "+left.getTitle()+" And "+right.getTitle());
     vs.setStatus(left.getStatus());
-    vs.setDate(new Date());
+    vs.setDate(ZonedDateTime.now());
    
     ValueSet vs1 = new ValueSet();
     res.setIntersection(vs1);
@@ -122,7 +123,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     vs1.setName("Intersection"+left.getName()+"And"+right.getName());
     vs1.setTitle("Intersection of "+left.getTitle()+" And "+right.getTitle());
     vs1.setStatus(left.getStatus());
-    vs1.setDate(new Date());
+    vs1.setDate(ZonedDateTime.now());
    
     List<String> chMetadata = new ArrayList<>();
     var ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata, right);

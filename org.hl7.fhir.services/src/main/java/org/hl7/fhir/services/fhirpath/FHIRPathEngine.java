@@ -47,6 +47,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.Base64;
 import java.util.concurrent.TimeoutException;
@@ -177,19 +178,11 @@ public class FHIRPathEngine {
 
     /**
      * When an expression node is evaluated during execution
-     * 
-     * @param argument
-     * @param focus
-     * @return
      */
     public void traceExpression(ExecutionContext context, List<Base> focus, List<Base> result, ExpressionNode exp);
 
     /**
      * When an Operation expression node is evaluated during execution
-     * 
-     * @param argument
-     * @param focus
-     * @return
      */
     public void traceOperationExpression(ExecutionContext context, List<Base> focus, List<Base> result, ExpressionNode exp);
   }
@@ -522,7 +515,7 @@ public class FHIRPathEngine {
    * 
    * returns a list of the possible types that might be returned by executing the ExpressionNode against a particular context
    * 
-   * @param context - the logical type against which this path is applied
+   * @param appContext - the logical type against which this path is applied
    * @throws DefinitionException
    * @throws PathEngineException 
    * @if the path is not valid
@@ -693,10 +686,10 @@ public class FHIRPathEngine {
       return left.equalsUsingFhirPathRules(right) == Boolean.TRUE ? 0 : 1;
     }
 
-    if (left.getPrecision().ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
+    if (left.getPrecision().ordinal() <= ChronoUnit.HOURS.ordinal()) {
       left.setTimeZoneZulu(true);
     }
-    if (right.getPrecision().ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
+    if (right.getPrecision().ordinal() <= ChronoUnit.HOURS.ordinal()) {
       right.setTimeZoneZulu(true);
     }
     return BaseDateTimeType.compareTimes(left, right, null);
@@ -721,9 +714,9 @@ public class FHIRPathEngine {
       return -1;
     } else if (left.getMinute() > right.getMinute()) {
       return 1;
-    } else if (left.getPrecision() == TemporalPrecisionEnum.MINUTE && right.getPrecision() == TemporalPrecisionEnum.MINUTE) {
+    } else if (left.getPrecision() == ChronoUnit.MINUTES && right.getPrecision() == ChronoUnit.MINUTES) {
       return 0;
-    } else if (left.getPrecision() == TemporalPrecisionEnum.MINUTE || right.getPrecision() == TemporalPrecisionEnum.MINUTE) {
+    } else if (left.getPrecision() == ChronoUnit.MINUTES || right.getPrecision() == ChronoUnit.MINUTES) {
       return null;
     }
 
@@ -1822,7 +1815,7 @@ public class FHIRPathEngine {
     String time = null;
     String tz = null;
 
-    TemporalPrecisionEnum temp = null;
+    ChronoUnit temp = null;
 
     if (value.startsWith("T")) {
       time = value.substring(1);
@@ -1853,14 +1846,14 @@ public class FHIRPathEngine {
 
       if (time.length() == 2) {
         time = time+":00:00";
-        temp = TemporalPrecisionEnum.MINUTE;
+        temp = ChronoUnit.MINUTES;
       } else if (time.length() == 5) {
-        temp = TemporalPrecisionEnum.MINUTE;
+        temp = ChronoUnit.MINUTES;
         time = time+":00";
       } else if (time.contains(".")) {
-        temp = TemporalPrecisionEnum.MILLI;
+        temp = ChronoUnit.MILLIS;
       } else {
-        temp = TemporalPrecisionEnum.SECOND;
+        temp = ChronoUnit.SECONDS;
       }
     }
 

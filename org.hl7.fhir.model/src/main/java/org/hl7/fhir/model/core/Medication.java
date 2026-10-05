@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1043,14 +1043,14 @@ public class Medication extends DomainResource {
         /**
          * @return When this specific instance of product will expire.
          */
-        public Date getExpirationDate() { 
+        public ZonedDateTime getExpirationDate() {
           return this.expirationDate == null ? null : this.expirationDate.getValue();
         }
 
         /**
          * @param value When this specific instance of product will expire.
          */
-        public MedicationInstanceComponent setExpirationDate(Date value) { 
+        public MedicationInstanceComponent setExpirationDate(ZonedDateTime value) {
           if (value == null)
             this.expirationDate = null;
           else {

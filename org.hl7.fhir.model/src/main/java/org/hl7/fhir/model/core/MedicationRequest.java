@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -2280,14 +2280,14 @@ public class MedicationRequest extends DomainResource {
     /**
      * @return The date (and perhaps time) when the status was changed.
      */
-    public Date getStatusChanged() { 
+    public ZonedDateTime getStatusChanged() {
       return this.statusChanged == null ? null : this.statusChanged.getValue();
     }
 
     /**
      * @param value The date (and perhaps time) when the status was changed.
      */
-    public MedicationRequest setStatusChanged(Date value) { 
+    public MedicationRequest setStatusChanged(ZonedDateTime value) { 
       if (value == null)
         this.statusChanged = null;
       else {
@@ -2720,14 +2720,14 @@ public class MedicationRequest extends DomainResource {
     /**
      * @return The date (and perhaps time) when the prescription was initially written or authored on.
      */
-    public Date getAuthoredOn() { 
+    public ZonedDateTime getAuthoredOn() {
       return this.authoredOn == null ? null : this.authoredOn.getValue();
     }
 
     /**
      * @param value The date (and perhaps time) when the prescription was initially written or authored on.
      */
-    public MedicationRequest setAuthoredOn(Date value) { 
+    public MedicationRequest setAuthoredOn(ZonedDateTime value) { 
       if (value == null)
         this.authoredOn = null;
       else {

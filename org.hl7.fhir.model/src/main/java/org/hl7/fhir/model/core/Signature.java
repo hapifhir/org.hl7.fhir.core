@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
@@ -216,14 +216,14 @@ public class Signature extends DataType implements ICompositeType {
     /**
      * @return When the digital signature was signed.
      */
-    public Date getWhen() { 
+    public ZonedDateTime getWhen() {
       return this.when == null ? null : this.when.getValue();
     }
 
     /**
      * @param value When the digital signature was signed.
      */
-    public Signature setWhen(Date value) { 
+    public Signature setWhen(ZonedDateTime value) {
       if (value == null)
         this.when = null;
       else {

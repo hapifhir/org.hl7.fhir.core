@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -462,14 +462,14 @@ public class DeviceMetric extends DomainResource {
         /**
          * @return Describes the time last calibration has been performed.
          */
-        public Date getTime() { 
+        public ZonedDateTime getTime() {
           return this.time == null ? null : this.time.getValue();
         }
 
         /**
          * @param value Describes the time last calibration has been performed.
          */
-        public DeviceMetricCalibrationComponent setTime(Date value) { 
+        public DeviceMetricCalibrationComponent setTime(ZonedDateTime value) {
           if (value == null)
             this.time = null;
           else {

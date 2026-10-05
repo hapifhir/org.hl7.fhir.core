@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1512,14 +1512,14 @@ public class DiagnosticReport extends DomainResource {
     /**
      * @return The date and time that this version of the report was made available to providers, typically after the report was reviewed and verified.
      */
-    public Date getIssued() { 
+    public ZonedDateTime getIssued() {
       return this.issued == null ? null : this.issued.getValue();
     }
 
     /**
      * @param value The date and time that this version of the report was made available to providers, typically after the report was reviewed and verified.
      */
-    public DiagnosticReport setIssued(Date value) { 
+    public DiagnosticReport setIssued(ZonedDateTime value) {
       if (value == null)
         this.issued = null;
       else {

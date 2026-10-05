@@ -3,6 +3,7 @@ package org.hl7.fhir.services.sql;
 import org.hl7.fhir.model.*;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 
@@ -44,7 +45,16 @@ public class Value {
     v.valueDate = d;
     return v;
   }
-  
+
+  public static Value makeDate(String s, ZonedDateTime d) {
+    Value v = new Value();
+    v.valueString = s;
+    if (d != null) {
+      v.valueDate = Date.from(d.toInstant());
+    }
+    return v;
+  }
+
   public static Value makeInteger(String s, Long i) {
     Value v = new Value();
     v.valueString = s;

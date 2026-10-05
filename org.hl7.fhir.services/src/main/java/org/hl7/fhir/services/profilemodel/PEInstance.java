@@ -34,6 +34,7 @@ import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.Resource;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -253,7 +254,7 @@ public class PEInstance {
     return data.primitiveValue();
   }
   
-  public Date getPrimitiveAsDate() {
+  public ZonedDateTime getPrimitiveAsDate() {
     if (data instanceof BaseDateTimeType) {
       return ((DateTimeType) data).getValue();
     }

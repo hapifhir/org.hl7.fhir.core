@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -333,7 +333,7 @@ public class Slot extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Slot(IModelContext modelContext, Reference schedule, SlotStatus status, Date start, Date end) {
+    public Slot(IModelContext modelContext, Reference schedule, SlotStatus status, ZonedDateTime start, ZonedDateTime end) {
       super();
       this.modelContext = modelContext;
       this.setSchedule(schedule);
@@ -716,14 +716,14 @@ public class Slot extends DomainResource {
     /**
      * @return Date/Time that the slot is to begin.
      */
-    public Date getStart() { 
+    public ZonedDateTime getStart() {
       return this.start == null ? null : this.start.getValue();
     }
 
     /**
      * @param value Date/Time that the slot is to begin.
      */
-    public Slot setStart(Date value) { 
+    public Slot setStart(ZonedDateTime value) {
         if (this.start == null)
           this.start = new InstantType(modelContext);
         this.start.setValue(value);
@@ -764,14 +764,14 @@ public class Slot extends DomainResource {
     /**
      * @return Date/Time that the slot is to conclude.
      */
-    public Date getEnd() { 
+    public ZonedDateTime getEnd() {
       return this.end == null ? null : this.end.getValue();
     }
 
     /**
      * @param value Date/Time that the slot is to conclude.
      */
-    public Slot setEnd(Date value) { 
+    public Slot setEnd(ZonedDateTime value) {
         if (this.end == null)
           this.end = new InstantType(modelContext);
         this.end.setValue(value);

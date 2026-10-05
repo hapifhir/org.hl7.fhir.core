@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.special;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -108,7 +109,7 @@ public class DicomPackageBuilder {
     vs.setStatus(PublicationStatus.ACTIVE);
     vs.setExperimental(false);
     vs.setPublisher("FHIR Project on behalf of DICOM");
-    vs.setDate(new Date());
+    vs.setDate(ZonedDateTime.now());
     vs.setDescription("All DICOM Code Definitions (Coding Scheme Designator \"DCM\" Coding Scheme Version "+version);
     vs.setPurpose("This value set is published as part of FHIR in order to make the codes available to FHIR terminology services and so implementers can easily leverage the codes");
     vs.setCopyright("These codes are excerpted from Digital Imaging and Communications in Medicine (DICOM) Standard, Part 16: Content Mapping Resource, Copyright Â© 2011 by the National Electrical Manufacturers Association.");
@@ -155,7 +156,7 @@ public class DicomPackageBuilder {
     cs.setStatus(PublicationStatus.ACTIVE);
     cs.setExperimental(false);
     cs.setPublisher("FHIR Project on behalf of DICOM");
-    cs.setDate(new Date());
+    cs.setDate(ZonedDateTime.now());
     cs.setDescription("DICOM Code Definitions (Coding Scheme Designator \"DCM\" Coding Scheme Version "+version);
     cs.setPurpose("This code system is published as part of FHIR in order to make the codes available to FHIR terminology services and so implementers can easily leverage the codes");
     cs.setCopyright("These codes are excerpted from Digital Imaging and Communications in Medicine (DICOM) Standard, Part 16: Content Mapping Resource, Copyright Â© 2011 by the National Electrical Manufacturers Association.");

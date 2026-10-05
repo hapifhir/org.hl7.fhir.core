@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -2739,14 +2739,14 @@ public class Specimen extends DomainResource {
     /**
      * @return Time when specimen is received by the testing laboratory for processing or testing.
      */
-    public Date getReceivedTime() { 
+    public ZonedDateTime getReceivedTime() {
       return this.receivedTime == null ? null : this.receivedTime.getValue();
     }
 
     /**
      * @param value Time when specimen is received by the testing laboratory for processing or testing.
      */
-    public Specimen setReceivedTime(Date value) { 
+    public Specimen setReceivedTime(ZonedDateTime value) {
       if (value == null)
         this.receivedTime = null;
       else {

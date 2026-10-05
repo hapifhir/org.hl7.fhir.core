@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import java.util.EnumSet;
@@ -264,14 +264,14 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
     /**
      * @return The date when the item is due to be placed back on the market by the owner, manufacturer or distributor, after a suspension.
      */
-    public Date getRestoreDate() { 
+    public ZonedDateTime getRestoreDate() {
       return this.restoreDate == null ? null : this.restoreDate.getValue();
     }
 
     /**
      * @param value The date when the item is due to be placed back on the market by the owner, manufacturer or distributor, after a suspension.
      */
-    public MarketingStatus setRestoreDate(Date value) { 
+    public MarketingStatus setRestoreDate(ZonedDateTime value) {
       if (value == null)
         this.restoreDate = null;
       else {

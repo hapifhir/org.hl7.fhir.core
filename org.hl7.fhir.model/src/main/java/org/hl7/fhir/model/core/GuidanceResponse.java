@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -726,14 +726,14 @@ public class GuidanceResponse extends DomainResource {
     /**
      * @return Indicates when the guidance response was processed.
      */
-    public Date getOccurrenceDateTime() { 
+    public ZonedDateTime getOccurrenceDateTime() {
       return this.occurrenceDateTime == null ? null : this.occurrenceDateTime.getValue();
     }
 
     /**
      * @param value Indicates when the guidance response was processed.
      */
-    public GuidanceResponse setOccurrenceDateTime(Date value) { 
+    public GuidanceResponse setOccurrenceDateTime(ZonedDateTime value) {
       if (value == null)
         this.occurrenceDateTime = null;
       else {

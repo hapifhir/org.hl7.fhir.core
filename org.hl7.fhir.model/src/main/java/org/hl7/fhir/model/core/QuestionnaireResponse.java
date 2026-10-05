@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1746,14 +1746,14 @@ public class QuestionnaireResponse extends DomainResource {
     /**
      * @return The date and/or time that this questionnaire response was last modified by the user - e.g. changing answers or revising status.
      */
-    public Date getAuthored() { 
+    public ZonedDateTime getAuthored() {
       return this.authored == null ? null : this.authored.getValue();
     }
 
     /**
      * @param value The date and/or time that this questionnaire response was last modified by the user - e.g. changing answers or revising status.
      */
-    public QuestionnaireResponse setAuthored(Date value) { 
+    public QuestionnaireResponse setAuthored(ZonedDateTime value) {
       if (value == null)
         this.authored = null;
       else {

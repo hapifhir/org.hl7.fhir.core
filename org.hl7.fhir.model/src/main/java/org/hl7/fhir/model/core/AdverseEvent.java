@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1788,14 +1788,14 @@ public class AdverseEvent extends DomainResource {
     /**
      * @return Estimated or actual date the AdverseEvent began, in the opinion of the reporter.
      */
-    public Date getDetected() { 
+    public ZonedDateTime getDetected() {
       return this.detected == null ? null : this.detected.getValue();
     }
 
     /**
      * @param value Estimated or actual date the AdverseEvent began, in the opinion of the reporter.
      */
-    public AdverseEvent setDetected(Date value) { 
+    public AdverseEvent setDetected(ZonedDateTime value) {
       if (value == null)
         this.detected = null;
       else {
@@ -1840,14 +1840,14 @@ public class AdverseEvent extends DomainResource {
     /**
      * @return The date on which the existence of the AdverseEvent was first recorded.
      */
-    public Date getRecordedDate() { 
+    public ZonedDateTime getRecordedDate() {
       return this.recordedDate == null ? null : this.recordedDate.getValue();
     }
 
     /**
      * @param value The date on which the existence of the AdverseEvent was first recorded.
      */
-    public AdverseEvent setRecordedDate(Date value) { 
+    public AdverseEvent setRecordedDate(ZonedDateTime value) {
       if (value == null)
         this.recordedDate = null;
       else {

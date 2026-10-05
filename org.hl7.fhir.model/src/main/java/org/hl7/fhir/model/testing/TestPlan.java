@@ -37,6 +37,7 @@ package org.hl7.fhir.model.testing;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -4212,14 +4213,14 @@ public class TestPlan extends CanonicalResource {
     /**
      * @return The date (and optionally time) when the test plan was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the test plan changes.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The date (and optionally time) when the test plan was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the test plan changes.
      */
-    public TestPlan setDate(Date value) { 
+    public TestPlan setDate(ZonedDateTime value) {
       if (value == null)
         this.date = null;
       else {

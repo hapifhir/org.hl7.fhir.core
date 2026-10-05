@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -695,14 +695,14 @@ public class MeasureReport extends DomainResource {
         /**
          * @return The date the Measure Report was calculated.
          */
-        public Date getCalculatedDate() { 
+        public ZonedDateTime getCalculatedDate() {
           return this.calculatedDate == null ? null : this.calculatedDate.getValue();
         }
 
         /**
          * @param value The date the Measure Report was calculated.
          */
-        public MeasureReportGroupComponent setCalculatedDate(Date value) { 
+        public MeasureReportGroupComponent setCalculatedDate(ZonedDateTime value) {
           if (value == null)
             this.calculatedDate = null;
           else {
@@ -5327,14 +5327,14 @@ public class MeasureReport extends DomainResource {
     /**
      * @return The date this measure report was generated.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The date this measure report was generated.
      */
-    public MeasureReport setDate(Date value) { 
+    public MeasureReport setDate(ZonedDateTime value) {
       if (value == null)
         this.date = null;
       else {

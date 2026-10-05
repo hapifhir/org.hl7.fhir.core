@@ -1,6 +1,7 @@
 package org.hl7.fhir.services.comparison;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -119,7 +120,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     cs.setName("Union"+left.getName()+"And"+right.getName());
     cs.setTitle("Union of "+left.getTitle()+" And "+right.getTitle());
     cs.setStatus(left.getStatus());
-    cs.setDate(new Date());
+    cs.setDate(ZonedDateTime.now());
     for (PropertyComponent pL : left.getPropertyList()) {
       cs.addProperty(pL.copy(Base.COPY_NOTHING));
     }
@@ -139,7 +140,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     cs1.setName("Intersection"+left.getName()+"And"+right.getName());
     cs1.setTitle("Intersection of "+left.getTitle()+" And "+right.getTitle());
     cs1.setStatus(left.getStatus());
-    cs1.setDate(new Date());
+    cs1.setDate(ZonedDateTime.now());
     cs1.getPropertyList().addAll(cs.getPropertyList());
 
 

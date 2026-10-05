@@ -36,7 +36,8 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.time.ZonedDateTime;
+import java.util.*; import java.time.*;
 
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
@@ -317,11 +318,11 @@ public abstract class CanonicalResource extends DomainResource {
     /**
      * @return The date (and optionally time) when the canonical resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.
      */
-    public abstract Date getDate(); 
+    public abstract ZonedDateTime getDate();
     /**
      * @param value The date (and optionally time) when the canonical resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.
      */
-    public abstract CanonicalResource setDate(Date value); 
+    public abstract CanonicalResource setDate(ZonedDateTime value);
     /**
      * How many allowed for this property by the implementation
      */

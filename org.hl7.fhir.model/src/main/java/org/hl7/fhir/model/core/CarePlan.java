@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1320,14 +1320,14 @@ public class CarePlan extends DomainResource {
     /**
      * @return Represents when this particular CarePlan record was created in the system, which is often a system-generated date.
      */
-    public Date getCreated() { 
+    public ZonedDateTime getCreated() {
       return this.created == null ? null : this.created.getValue();
     }
 
     /**
      * @param value Represents when this particular CarePlan record was created in the system, which is often a system-generated date.
      */
-    public CarePlan setCreated(Date value) { 
+    public CarePlan setCreated(ZonedDateTime value) {
       if (value == null)
         this.created = null;
       else {

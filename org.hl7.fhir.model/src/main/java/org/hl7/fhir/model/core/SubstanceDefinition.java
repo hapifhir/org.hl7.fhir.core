@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -3068,14 +3068,14 @@ public class SubstanceDefinition extends DomainResource {
         /**
          * @return The date at which the code status was changed as part of the terminology maintenance.
          */
-        public Date getStatusDate() { 
+        public ZonedDateTime getStatusDate() {
           return this.statusDate == null ? null : this.statusDate.getValue();
         }
 
         /**
          * @param value The date at which the code status was changed as part of the terminology maintenance.
          */
-        public SubstanceDefinitionCodeComponent setStatusDate(Date value) { 
+        public SubstanceDefinitionCodeComponent setStatusDate(ZonedDateTime value) {
           if (value == null)
             this.statusDate = null;
           else {
@@ -4521,14 +4521,14 @@ public class SubstanceDefinition extends DomainResource {
         /**
          * @return Date of the official name change.
          */
-        public Date getDate() { 
+        public ZonedDateTime getDate() {
           return this.date == null ? null : this.date.getValue();
         }
 
         /**
          * @param value Date of the official name change.
          */
-        public SubstanceDefinitionNameOfficialComponent setDate(Date value) { 
+        public SubstanceDefinitionNameOfficialComponent setDate(ZonedDateTime value) {
           if (value == null)
             this.date = null;
           else {

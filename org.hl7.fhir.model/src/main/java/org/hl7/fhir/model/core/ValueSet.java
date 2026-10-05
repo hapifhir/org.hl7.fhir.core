@@ -36,7 +36,7 @@ package org.hl7.fhir.model.core;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.util.*;
+import java.util.*; import java.time.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -161,14 +161,14 @@ public class ValueSet extends MetadataResource {
         /**
          * @return The Locked Date is  the effective date that is used to determine the version of all referenced Code Systems and Value Set Definitions included in the compose that are not already tied to a specific version.
          */
-        public Date getLockedDate() { 
+        public ZonedDateTime getLockedDate() {
           return this.lockedDate == null ? null : this.lockedDate.getValue();
         }
 
         /**
          * @param value The Locked Date is  the effective date that is used to determine the version of all referenced Code Systems and Value Set Definitions included in the compose that are not already tied to a specific version.
          */
-        public ValueSetComposeComponent setLockedDate(Date value) { 
+        public ValueSetComposeComponent setLockedDate(ZonedDateTime value) {
           if (value == null)
             this.lockedDate = null;
           else {
@@ -2593,7 +2593,7 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ValueSetExpansionComponent(IModelContext modelContext, Date timestamp) {
+      public ValueSetExpansionComponent(IModelContext modelContext, ZonedDateTime timestamp) {
         super();
         this.modelContext = modelContext;
         this.setTimestamp(timestamp);
@@ -2737,14 +2737,14 @@ public class ValueSet extends MetadataResource {
         /**
          * @return The time at which the expansion was produced by the expanding system.
          */
-        public Date getTimestamp() { 
+        public ZonedDateTime getTimestamp() {
           return this.timestamp == null ? null : this.timestamp.getValue();
         }
 
         /**
          * @param value The time at which the expansion was produced by the expanding system.
          */
-        public ValueSetExpansionComponent setTimestamp(Date value) { 
+        public ValueSetExpansionComponent setTimestamp(ZonedDateTime value) {
             if (this.timestamp == null)
               this.timestamp = new DateTimeType(modelContext);
             this.timestamp.setValue(value);
@@ -6426,14 +6426,14 @@ public class ValueSet extends MetadataResource {
     /**
      * @return The date (and optionally time) when the value set metadata or content logical definition (.compose) was created or revised.
      */
-    public Date getDate() { 
+    public ZonedDateTime getDate() {
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
      * @param value The date (and optionally time) when the value set metadata or content logical definition (.compose) was created or revised.
      */
-    public ValueSet setDate(Date value) { 
+    public ValueSet setDate(ZonedDateTime value) {
       if (value == null)
         this.date = null;
       else {
@@ -6945,14 +6945,14 @@ public class ValueSet extends MetadataResource {
     /**
      * @return The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    public Date getApprovalDate() { 
+    public ZonedDateTime getApprovalDate() {
       return this.approvalDate == null ? null : this.approvalDate.getValue();
     }
 
     /**
      * @param value The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    public ValueSet setApprovalDate(Date value) { 
+    public ValueSet setApprovalDate(ZonedDateTime value) {
       if (value == null)
         this.approvalDate = null;
       else {
@@ -6997,14 +6997,14 @@ public class ValueSet extends MetadataResource {
     /**
      * @return The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    public Date getLastReviewDate() { 
+    public ZonedDateTime getLastReviewDate() {
       return this.lastReviewDate == null ? null : this.lastReviewDate.getValue();
     }
 
     /**
      * @param value The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    public ValueSet setLastReviewDate(Date value) { 
+    public ValueSet setLastReviewDate(ZonedDateTime value) {
       if (value == null)
         this.lastReviewDate = null;
       else {
