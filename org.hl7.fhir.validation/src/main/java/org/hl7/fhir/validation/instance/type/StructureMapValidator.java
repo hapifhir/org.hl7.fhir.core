@@ -358,7 +358,7 @@ public class StructureMapValidator extends BaseValidator {
     }
     
     // Evaluate any constant (let) variables defined in the structure map
-    VariableSet constantVars = new VariableSet(); 
+    VariableSet constantVars = new VariableSet();
     List<Element> constants = src.getChildrenByName("const");
     for (Element constant : constants) {
       // Process each constant as needed
@@ -394,7 +394,12 @@ public class StructureMapValidator extends BaseValidator {
             }
             if (v != null && type != null) {
               int max = td.getCollectionStatus() == org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus.SINGLETON ? 1 : Integer.MAX_VALUE;
-              v.setType(max, this.context.fetchTypeDefinition(type), null, type);
+              // a constant can be used as a rule source context, which navigates from its element definition,
+              // so it needs one: the root element of its type, as for any other typed variable
+              StructureDefinition csd = this.context.fetchTypeDefinition(type);
+              if (csd != null) {
+                v.setType(max, csd, csd.getSnapshot().getElementFirstRep(), type);
+              }
             }
           }
         } catch (FHIRLexerException | PathEngineException | DefinitionException e) {
@@ -980,7 +985,7 @@ public class StructureMapValidator extends BaseValidator {
     case "copy":
       ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() < 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, transform, "0", "1", params.size());
       if (params.size() == 1) {
-        type = params.get(0).getChildValue("value");
+        type = copyParamType(getParamValue(params, 0), variables);
         warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), type != null, I18nConstants.SM_TARGET_TRANSFORM_TYPE_UNPROCESSIBLE, transform);
       }
       break;
@@ -1064,6 +1069,30 @@ public class StructureMapValidator extends BaseValidator {
     return new TransformValidationResult(ok, type);
   }
 
+  /**
+   * The type of the value that copy(x) copies: for a variable, the variable's type (if it is
+   * known, and single); for a literal, the literal's type. Null if it can't be determined
+   */
+  private String copyParamType(Element value, VariableSet variables) {
+    if (value == null) {
+      return null;
+    }
+    if (!"id".equals(value.fhirType())) {
+      return value.fhirType();
+    }
+    VariableDefn v = variables.getVariable(value.primitiveValue(), true);
+    if (v == null) {
+      v = variables.getVariable(value.primitiveValue(), false);
+    }
+    if (v == null || !v.hasTypeInfo()) {
+      return null;
+    }
+    if (v.getType() != null) {
+      return v.getType();
+    }
+    return v.getEd() != null && v.getEd().getTypeList().size() == 1 ? v.getEd().getTypeFirstRep().getWorkingCode() : null;
+  }
+
   private Element getParamValue(List<Element> params, int index) {
     return params.size() > index ? params.get(index).getNamedChild("value", false) : null;
   }
@@ -1139,7 +1168,7 @@ public class StructureMapValidator extends BaseValidator {
         conceptMap = (ConceptMap) loadContainedResource(errors, stack.getLiteralPath(), src, reference.substring(1), ConceptMap.class);
         ok = rule(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), conceptMap != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, reference) && ok;
       } else {
-        conceptMap = this.context.fetchResource(ConceptMap.class, reference, ExtensionUtilities.getVersionResolutionRulesBase(map));
+        conceptMap = this.context.fetchResource(ConceptMap.class, reference, ElementModelUtilities.getVersionResolutionRules(map));
         warning(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), conceptMap != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, reference);
       }
       if (conceptMap != null && ((contextVariable != null && contextVariable.hasTypeInfo()) || (sourceVariable != null && sourceVariable.hasTypeInfo()))) {
@@ -1170,8 +1199,8 @@ public class StructureMapValidator extends BaseValidator {
         ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e.isPrimitive(), I18nConstants.SM_TARGET_TRANSFORM_OP_INVALID_TYPE, transform, parameterName, e.fhirType()) && ok;
       }
       return ok;
-    } else { 
-      return false; 
+    } else {
+      return false;
     }
  
   }
@@ -1191,8 +1220,8 @@ public class StructureMapValidator extends BaseValidator {
         ok = rule(errors, "2026-08-31", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e.isPrimitive(), I18nConstants.SM_TARGET_TRANSFORM_OP_INVALID_TYPE, transform, parameterName, e.fhirType()) && ok;
       }
       return ok;
-    } else { 
-      return false; 
+    } else {
+      return false;
     }
   }
 

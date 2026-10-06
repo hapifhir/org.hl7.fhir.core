@@ -46,17 +46,28 @@ public class Variables {
     return Collections.unmodifiableList(list);
   }
 
+  /**
+   * Get a variable. Map-level constants are read-only source values: they are only found as
+   * INPUT, and any variable of the same name (in any mode) takes precedence over them
+   */
   public Base get(VariableMode mode, String name) {
     Base variable = getLocal(mode, name);
     if (variable != null) {
       return variable;
     }
-    if (constants != null) {
+    if (constants != null && mode == VariableMode.INPUT && !hasLocal(name)) {
       var c = constants.resolve(name);
       if (c != null && c.size() > 0)
         return c.get(0);
     }
     return null;
+  }
+
+  private boolean hasLocal(String name) {
+    for (Variable v : list)
+      if (v.getName().equals(name))
+        return true;
+    return false;
   }
 
   Base getLocal(VariableMode mode, String name) {

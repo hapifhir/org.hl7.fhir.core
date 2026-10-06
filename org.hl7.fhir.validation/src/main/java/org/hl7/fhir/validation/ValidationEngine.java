@@ -54,7 +54,6 @@ import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.core.formats.XmlParser;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.fml.StructureMap;
-import org.hl7.fhir.model.fml.StructureMap.StructureMapInputMode;
 import org.hl7.fhir.model.core.Bundle;
 import org.hl7.fhir.model.core.Bundle.BundleEntryComponent;
 import org.hl7.fhir.model.core.CanonicalResource;
@@ -781,7 +780,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     StructureMap map = context.fetchResource(StructureMap.class, mapUri);
     if (map == null) throw new Error("Unable to find map " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
     org.hl7.fhir.services.elementmodel.Element resource = Manager.build(context, scu.getTargetType(map));
-    StructureDefinition sourceSD = getSourceResourceFromStructureMap(map);
+    StructureDefinition sourceSD = getSourceResourceFromStructureMap(scu, map);
     ParserBase parser = Manager.makeParser(context, cntType);
     if (sourceSD.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL) {
       parser.setLogical(sourceSD);
@@ -792,47 +791,16 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return resource;
   }
 
-  private StructureDefinition getSourceResourceFromStructureMap(StructureMap map) {
+  private StructureDefinition getSourceResourceFromStructureMap(StructureMapTools scu, StructureMap map) {
     StructureMap.StructureMapGroupComponent g = map.getGroupList().get(0);
-    // read the type declared on the input parameter
-    String type = null;
+    int count = 0;
     for (StructureMap.StructureMapGroupInputComponent inp : g.getInputList()) {
       if (inp.getMode() == StructureMap.StructureMapInputMode.SOURCE)
-        if (type != null)
-          throw new DefinitionException("This engine does not support multiple source inputs");
-        else
-          type = inp.getType();
+        count++;
     }
-
-    if (type == null)
-      throw new DefinitionException("No source type found in the structure map");
-
-    // scan imported types (uses ...)
-    for (StructureMap.StructureMapStructureComponent component : map.getStructureList()) {
-      if (component.getMode() == StructureMap.StructureMapModelMode.SOURCE) {
-        if (component.hasAlias()) {
-          if (component.getAlias().equalsIgnoreCase(type)) {
-            String sourceTypeUrl = component.getUrl();
-            StructureDefinition structureDefinition = this.context.fetchResource(StructureDefinition.class, sourceTypeUrl);
-            if (structureDefinition != null)
-              return structureDefinition;
-            throw new FHIRException("Unable to find StructureDefinition for source type ('" + sourceTypeUrl + "')");
-          }
-        } else {
-          var sdImported = this.context.fetchResource(StructureDefinition.class, component.getUrl());
-          if (sdImported != null && sdImported.hasName() && sdImported.getName().equalsIgnoreCase(type))
-            return sdImported;
-        }
-      }
-    }
-
-    // fallback: search all available StructureDefinitions by name
-    for (StructureDefinition sd : this.context.fetchResourcesByType(StructureDefinition.class)) {
-      if (sd.hasName() && sd.getName().equalsIgnoreCase(type))
-        return sd;
-    }
-
-    throw new FHIRException("Unable to find StructureDefinition for source type ('" + type + "')");
+    if (count > 1)
+      throw new DefinitionException("This engine does not support multiple source inputs");
+    return scu.getSourceType(map);
   }
 
 

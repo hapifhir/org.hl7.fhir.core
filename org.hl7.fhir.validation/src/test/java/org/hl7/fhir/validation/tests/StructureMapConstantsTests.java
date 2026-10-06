@@ -1,11 +1,14 @@
 package org.hl7.fhir.validation.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -13,6 +16,16 @@ import java.util.stream.Stream;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.services.elementmodel.FmlParser;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.services.renderers.RendererFactory;
+import org.hl7.fhir.services.renderers.ResourceRenderer;
+import org.hl7.fhir.services.renderers.StructureMapRenderer;
+import org.hl7.fhir.services.renderers.utils.RenderingContext;
+import org.hl7.fhir.services.renderers.utils.RenderingContext.GenerationRules;
+import org.hl7.fhir.services.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.model.core.Patient;
 import org.hl7.fhir.model.core.Resource;
@@ -26,7 +39,6 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -90,10 +102,9 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     org.hl7.fhir.services.elementmodel.Element map = fmlParser.parse(errors, SAMPLE_FML);
     validator.validate(null, errors, null, map);
 
-    RemoveKnownIssuesToIgnore(errors);
+    removeKnownIssuesToIgnore(errors);
 
     assertEquals(0, errors.size(), errors.toString());
-    // assertTrue(errors.stream().noneMatch(this::isTransformRuleMessage), errors.toString());
   }
 
   static Stream<Arguments> evaluateTypes() {
@@ -112,7 +123,7 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     assertTrue(errors.isEmpty(), errors.toString());
 
     validator.validate(null, errors, null, map);
-    RemoveKnownIssuesToIgnore(errors);
+    removeKnownIssuesToIgnore(errors);
 
     assertTrue(errors.isEmpty(), "Expected evaluate output to resolve as " + expectedType + ": " + errors);
   }
@@ -124,7 +135,7 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     map.getChildrenByName("const").get(0).removeChild("name");
     validator.validate(null, errors, null, map);
 
-    RemoveKnownIssuesToIgnore(errors);
+    removeKnownIssuesToIgnore(errors);
 
     assertEquals(1, errors.size(), "Expected validation errors due to missing constant name: " + errors.toString());
     assertEquals(I18nConstants.SM_CONSTANT_NAME_MISSING, errors.get(0).getMessageId());
@@ -138,21 +149,19 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     map.getChildrenByName("const").get(0).removeChild("value");
     validator.validate(null, errors, null, map);
 
-    RemoveKnownIssuesToIgnore(errors);
+    removeKnownIssuesToIgnore(errors);
 
     assertEquals(1, errors.size(), "Expected validation errors due to missing constant value: " + errors.toString());
     assertEquals(I18nConstants.SM_CONSTANT_VALUE_MISSING, errors.get(0).getMessageId());
     assertEquals(IssueSeverity.ERROR, errors.get(0).getLevel());
   }
 
-  private void RemoveKnownIssuesToIgnore(List<ValidationMessage> errors) {
+  private void removeKnownIssuesToIgnore(List<ValidationMessage> errors) {
     // filter out the other issues (dom-3)
     errors.removeIf(e -> e.getInvId() != null && e.getInvId().equalsIgnoreCase("http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"));
 
-    // the additional resources message
-    errors.removeIf(e -> e.getLevel() == IssueSeverity.ERROR
-                      && e.getType() == IssueType.INVALID
-                      && e.getMessage().equalsIgnoreCase("This resource is an additional resource, so must have a resourceDefinition of 'http://hl7.org/fhir/StructureDefinition/StructureMap|0.1.0'"));
+    // the additional resources message (StructureMap is an additional resource in R6)
+    errors.removeIf(e -> I18nConstants.VALIDATION_ADDITIONAL_RESOURCE_ABSENT.equals(e.getMessageId()));
   }
 
   @Test
@@ -162,17 +171,11 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
     map.getChildrenByName("const").get(0).setChildValue("value", "'Intentional Error in fhirpath");
     validator.validate(null, errors, null, map);
 
-    RemoveKnownIssuesToIgnore(errors);
+    removeKnownIssuesToIgnore(errors);
 
     assertEquals(1, errors.size(), "Expected validation errors due to missing constant value type: " + errors.toString());
     assertEquals(I18nConstants.SM_CONSTANT_TYPE_UNDETERMINED, errors.get(0).getMessageId());
     assertEquals(IssueSeverity.ERROR, errors.get(0).getLevel());
-  }
-
-  private boolean isTransformRuleMessage(ValidationMessage message) {
-    return Utilities.existsInList(message.getMessageId(), I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE,
-      I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, I18nConstants.SM_TARGET_TRANSFORM_OP_UNKNOWN_SOURCE,
-      I18nConstants.SM_TARGET_TRANSFORM_OP_INVALID_TYPE, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED);
   }
 
   @Test
@@ -204,16 +207,59 @@ group ConstantsGroup(source src : Patient, target tgt : Patient) {
 
   @Test
   void testFmlConstantEvaluateElementModel() throws IOException, FHIRException {
-  //   String originalFml = SAMPLE_FML;
-  //   StructureMap map = utils.parse(originalFml, "constant-evaluate");
-  //   Base input = new org.hl7.fhir.r5.formats.JsonParser().parse(SAMPLE_PATIENT_JSON);
+    StructureMap map = utils.parse(SAMPLE_FML, "constant-evaluate");
+    org.hl7.fhir.services.elementmodel.Element input = Manager.parseSingle(context,
+        new ByteArrayInputStream(SAMPLE_PATIENT_JSON.getBytes(StandardCharsets.UTF_8)), FhirFormat.JSON);
+    org.hl7.fhir.services.elementmodel.Element target = Manager.build(context, utils.getTargetType(map));
 
-  //   var result = utils.transform(null, map, input);
+    utils.transform(null, input, map, target);
 
-  //   // Test that the result is a Patient resource with the expected truncated id `constant-truncation-`
-  //   assertTrue(result instanceof org.hl7.fhir.r5.model.Patient, "Result is not a Patient resource");
-  //   org.hl7.fhir.r5.model.Patient patient = (org.hl7.fhir.r5.model.Patient) result;
-  //   assertTrue(patient.getId().startsWith("constant-truncation-"), "Patient id does not start with 'constant-truncation-'");
+    assertEquals("constant-truncation-", target.getNamedChild("name").getNamedChildValue("family"));
+  }
+
+  @Test
+  void testConstantAsRuleSourceContext() throws IOException, FHIRException {
+    // a constant can be a rule's source context, but has no elements to navigate to
+    String fml = SAMPLE_FML.replace("src.id as v -> tgt.name as n, n.family = truncate(v, maxLen) \"r1\";",
+        "defaultSystem.length as l -> tgt.id = l \"r1\";");
+    List<ValidationMessage> errors = new ArrayList<>();
+    org.hl7.fhir.services.elementmodel.Element map = fmlParser.parse(errors, fml);
+    validator.validate(null, errors, null, map);
+    removeKnownIssuesToIgnore(errors);
+
+    assertTrue(errors.stream().anyMatch(e -> I18nConstants.SM_SOURCE_PATH_INVALID.equals(e.getMessageId())), errors.toString());
+  }
+
+  @Test
+  void testCopyOfVariableWithNoTargetContext() throws IOException, FHIRException {
+    // copy(v) produces a value of v's type - not a type named 'v'
+    String fml = SAMPLE_FML.replace("src.id as v -> tgt.name as n, n.family = truncate(v, maxLen) \"r1\";",
+        "src.id as v -> copy(v) as x \"r1\";");
+    List<ValidationMessage> errors = new ArrayList<>();
+    org.hl7.fhir.services.elementmodel.Element map = fmlParser.parse(errors, fml);
+    validator.validate(null, errors, null, map);
+    removeKnownIssuesToIgnore(errors);
+
+    assertTrue(errors.stream().noneMatch(e -> I18nConstants.SM_TARGET_TYPE_UNKNOWN.equals(e.getMessageId())), errors.toString());
+  }
+
+  @Test
+  void testRenderElementModelMap() throws Exception {
+    org.hl7.fhir.services.elementmodel.Element map = fmlParser.parse(new ArrayList<>(), SAMPLE_FML);
+    RendererFactory rendererFactory = new RendererFactory();
+    RenderingContext rc = new RenderingContext(context, rendererFactory, null, null, "http://hl7.org/fhir", "", null,
+        ResourceRendererMode.TECHNICAL, GenerationRules.VALID_RESOURCE);
+    ResourceWrapper wrapper = ResourceWrapper.forResource(rc.getContextUtilities(), map);
+
+    ResourceRenderer renderer = rendererFactory.factory(wrapper, rc);
+    XhtmlNode narrative = renderer.buildNarrative(wrapper);
+
+    assertInstanceOf(StructureMapRenderer.class, renderer);
+    assertTrue(rendererFactory.hasSpecificRenderer("StructureMap"));
+    String text = narrative.allText();
+    assertTrue(text.contains("http://hl7.org/fhir/uv/mapping-language/StructureMap/Constants"), text);
+    assertTrue(text.contains("/// version = '0.1.0'"), text);
+    assertTrue(text.contains("let maxLen"), text);
   }
 
   @Test

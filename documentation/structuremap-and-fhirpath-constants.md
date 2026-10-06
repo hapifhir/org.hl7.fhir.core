@@ -83,7 +83,9 @@ Both are exposed to embedded FHIRPath expressions through StructureMap's
 ### FML `let` constants
 FML `let` declarations are map-owned constants. Their definitions travel with the `StructureMap`, can contain arbitrary FHIRPath, and are evaluated lazily during map execution.
 They are not a replacement for externally supplied values.
-They cannot access FML rule INPUT/OUTPUT variables. They can reference FHIRPath built-ins, host-application constants, and other `let` constants in the same map.
+They cannot access FML rule INPUT/OUTPUT variables. They can reference FHIRPath built-ins and other `let` constants in the same map (there is no way for the host application to supply constants of its own - see below).
+
+In a rule, a constant can be used with `%name` in any FHIRPath expression, or by its bare name as a transform parameter (`truncate(v, maxLen)`). A bare name only finds the constant when no variable of that name is in scope, gives only the first item of a collection, and a constant can't be a target. Constants belong to the map that declares them: groups called in an imported map see that map's constants, not the caller's.
 
 For example:
 ```fml

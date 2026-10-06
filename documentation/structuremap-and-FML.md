@@ -2,13 +2,11 @@
 
 This document describes where the code implementing HAPI's support for the FHIR Mapping Language (FML) lives and how the main components work together.
 
-The R5 implementation is the detailed reference, with older-version differences and their file paths documented alongside it. The model/services modules are an initial draft R6 work area under active development and are not currently in use outside development and testing. They are described separately to support migration planning, not as an available replacement for the R5 APIs or a declaration of R6 conformance.
-
-Implementation snapshot: September 12, 2026.
+The R5 implementation is the detailed reference, with older-version differences and their file paths documented alongside it. The R6 implementation in the model/services modules follows the same design; it is what the validator (`InstanceValidator`, `StructureMapValidator` and `ValidationEngine`) uses, and it is described separately where it differs. See [r5-r6.md](../r5-r6.md) for how the two stacks relate.
 
 ## Scope and Architecture
 
-This guide is for developers integrating, maintaining, or extending the Java mapping implementation in this repository. R5 provides a concrete baseline for following the complete parsing and execution path. Older engines have their own differences; the draft R6 model/services work is still being brought up to parity and is not part of the current validation or transformation workflows.
+This guide is for developers integrating, maintaining, or extending the Java mapping implementation in this repository. R5 provides a concrete baseline for following the complete parsing and execution path. Older engines have their own differences. The R6 model/services implementation is kept in step with R5, and is the one the validation module uses.
 
 The central R5 typed-model class is [StructureMapUtilities](../org.hl7.fhir.r5/src/main/java/org/hl7/fhir/r5/utils/structuremap/StructureMapUtilities.java). Its `parse(String text, String srcName)` constructs a StructureMap, static `render(StructureMap map)` produces FML, and `transform(Object appInfo, Base source, StructureMap map, Base target)` executes the map into a supplied target. The constructor creates a FHIRPath engine and installs the mapping-specific host services. Parsing and rendering are not the same operation as validation or execution.
 
@@ -34,7 +32,7 @@ flowchart LR
 	Target --> OutputValidation[Separate output validation]
 ```
 
-The separate draft R6 work area contains [StructureMapTools](../org.hl7.fhir.services/src/main/java/org/hl7/fhir/services/fml/StructureMapTools.java) for parsing and transformation using `org.hl7.fhir.model` types. Its rendering methods delegate to [model StructureMapUtilities](../org.hl7.fhir.model/src/main/java/org/hl7/fhir/model/utilities/StructureMapUtilities.java), allowing the model module to render maps without depending on the services module. These classes are being actively developed and are not currently used by application workflows. They are neither aliases for the R5 engine nor a ready-to-use successor; the R6 migration section describes their intended organization and remaining gaps.
+The R6 implementation contains [StructureMapTools](../org.hl7.fhir.services/src/main/java/org/hl7/fhir/services/fml/StructureMapTools.java) for parsing and transformation using `org.hl7.fhir.model` types. Its rendering methods delegate to [model StructureMapUtilities](../org.hl7.fhir.model/src/main/java/org/hl7/fhir/model/utilities/StructureMapUtilities.java), allowing the model module to render maps without depending on the services module. They are a parallel implementation, not aliases for the R5 engine; the R6 section describes where they differ.
 
 ## Formats and Representations
 
@@ -117,7 +115,7 @@ Subelement support preserves the existing single-element narrative presentation.
 
 ## Validation
 
-The validation module uses the R5 implementation, not the draft R6 model/services code. [InstanceValidator](../org.hl7.fhir.validation/src/main/java/org/hl7/fhir/validation/instance/InstanceValidator.java) owns resource validation and dispatches StructureMap-specific checks to [StructureMapValidator.validateStructureMap](../org.hl7.fhir.validation/src/main/java/org/hl7/fhir/validation/instance/type/StructureMapValidator.java).
+The validation module uses the R6 implementation (model/services). [InstanceValidator](../org.hl7.fhir.validation/src/main/java/org/hl7/fhir/validation/instance/InstanceValidator.java) owns resource validation and dispatches StructureMap-specific checks to [StructureMapValidator.validateStructureMap](../org.hl7.fhir.validation/src/main/java/org/hl7/fhir/validation/instance/type/StructureMapValidator.java).
 
 | Stage | What it establishes | What it does not establish |
 | --- | --- | --- |
@@ -130,7 +128,7 @@ The validation module uses the R5 implementation, not the draft R6 model/service
 
 The worker context must contain the relevant StructureDefinitions and maps. Terminology-dependent checks also need suitable terminology resources/services. Missing imports can be warnings, and some limitations are reported as hints or informational messages. Callers should inspect the full `ValidationMessage` list and choose an explicit severity policy, rather than interpret the absence of an exception as success. Transform checking has an explicit not-checked diagnostic for cases it cannot assess.
 
-The normal location-aware workflow is `FmlParser.parse(errors, text)`, followed by `InstanceValidator.validate(null, errors, null, element)`, as used in [StructureMapValidatorTests](../org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/StructureMapValidatorTests.java). Keep parser diagnostics and validation diagnostics together. Transformation does not automatically run this workflow or validate the output.
+The normal location-aware workflow is `FmlParser.parse(errors, text)`, followed by `InstanceValidator.validate(null, errors, null, element)`, as used in [StructureMapConstantsTests](../org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/StructureMapConstantsTests.java). Keep parser diagnostics and validation diagnostics together. Transformation does not automatically run this workflow or validate the output.
 
 `StructureMapUtilities.analyse(appInfo, map)` is a separate analysis API that produces [StructureMapAnalysis](../org.hl7.fhir.r5/src/main/java/org/hl7/fhir/r5/utils/structuremap/StructureMapAnalysis.java), including target profiles and a summary. It is not the validator entry point and has its own transform-support limits. `generateMapFromMappings(StructureDefinition)` generates maps from logical mappings on a definition; it is not a general version converter.
 
@@ -149,7 +147,7 @@ R5 semantic path support does not register the backport extension definitions wi
 The low-level R5 entry point is `StructureMapUtilities.transform(appInfo, source, map, target)`. It returns `void` and mutates the supplied target. The main call sequence is:
 
 1. Create a `TransformContext`, select `map.getGroup().get(0)`, and bind its source and target inputs in a `Variables` instance.
-2. On each `executeGroup` entry, attach the owning map's `StructureMapConstantResolver` from the `TransformContext`, or clear the resolver if that map has no constants.
+2. On each `executeGroup` entry, attach the owning map's `StructureMapConstantResolver` from the `TransformContext` (none if that map has no constants), and restore the caller's when the group returns.
 3. `executeGroup` executes any extended group first, then its own rules in order.
 4. `executeRule` copies the scope, calls `processSource`, and executes the targets for each selected source item.
 5. `processTarget` creates or assigns properties; `runTransform` implements operations such as `create`, `copy`, `evaluate`, `cast`, and `translate`.
@@ -163,22 +161,24 @@ Each target statement creates its intermediate elements before applying the leaf
 
 Named and type-based group resolution first examines the current map, then matching imported maps in the worker context. Wildcard imports enumerate cached maps; declaring an import does not by itself download its dependencies. Missing and ambiguous matches produce exceptions, and successful resolutions are cached on map components.
 
-Constants follow the map that owns the executing group, including dependent calls, inferred type-based calls, and group inheritance. [TransformContext](../org.hl7.fhir.r5/src/main/java/org/hl7/fhir/r5/utils/structuremap/TransformContext.java) retains one resolver per map instance for the duration of a transformation, so repeated calls into the same map share its lazy cache. Imported groups do not inherit the caller's constants, and the caller's resolver is restored when the group returns. `Variables.copy()` preserves the active resolver for nested rule scopes; fresh dependent/inferred group scopes receive the appropriate resolver on group entry without copying the caller's local bindings.
+Constants follow the map that owns the executing group, including dependent calls, inferred type-based calls, and group inheritance. [TransformContext](../org.hl7.fhir.r5/src/main/java/org/hl7/fhir/r5/utils/structuremap/TransformContext.java) retains one resolver per map instance for the duration of a transformation, so repeated calls into the same map share its lazy cache. Groups in an imported map see that map's constants, not the caller's, and the caller's resolver is restored when the group returns. `Variables.copy()` preserves the active resolver for nested rule scopes.
+
+Constants are read-only source values. A bare name used as a transform parameter (`truncate(v, maxLen)`) finds a constant only when no variable of that name is in scope, and a constant is never a target variable. A constant whose value is a collection gives its first item when used this way; use `%name` in FHIRPath to get the whole collection.
 
 Important limits visible in the current runtime:
 
 - The first group is the entry point; this overload does not accept an entry-group name. Root input binding supports at most one source and one target input.
 - When the entry group declares a target, supply an instance. Automatic root creation from a null target is explicitly unimplemented.
-- `getTargetType(map)` requires a single typed target input in the first group, but permits several `uses ... as target` declarations. Both the R5 utility and draft R6 `StructureMapTools` check these in declaration order. A matching alias resolves directly by URL or throws, without retrying against cached definitions; unaliased declarations resolve by URL and must match the input type by name. If none resolves, they scan all available definitions by name, allowing non-imported target types and returning the first match. Alias and name comparisons are case-insensitive, and an unresolved type produces an exception.
+- `getTargetType(map)` and `getSourceType(map)` find the definition for the first group's target or source input (there must be no more than one). If the input declares a type, it is matched, in order, against: a `uses` with that alias (which must resolve); an unaliased `uses` whose definition has that name; a type definition for it (a core type name or a URL); and the one available StructureDefinition with that name (several with the same name is an error). If the input has no type, or nothing matched, the single `uses` declared for that mode is used. Alias and name comparisons are case-sensitive, as they are in FML. Both the R5 utility and R6 `StructureMapTools` behave this way.
 - `executeRule` rejects rules with multiple source components.
 - `evaluate` returns no assignment for an empty result and throws for more than one result.
 - `escape` and `dateOp` throw unsupported-transform exceptions. `cast` requires an explicit type and supports the primitive types enumerated in its switch.
 
 Execution is not transactional: earlier target mutations and host callbacks can occur before an exception. Use a fresh target for an attempt and decide explicitly how to handle partially created resources. The utility, map caches, and mutable values do not establish a thread-safety contract; do not assume concurrent reuse is safe without an application-level strategy.
 
-For higher-level integration, [ValidationEngine.transform](../org.hl7.fhir.validation/src/main/java/org/hl7/fhir/validation/ValidationEngine.java) fetches the map by URI, determines source/target definitions from its first group, parses the input, builds the target, and invokes the R5 utility. It requires a single typed target parameter. Its `compile(mapUri)` currently fetches a map from the context; it is not a separate bytecode compiler or a validation pass.
+For higher-level integration, [ValidationEngine.transform](../org.hl7.fhir.validation/src/main/java/org/hl7/fhir/validation/ValidationEngine.java) fetches the map by URI, determines source/target definitions from its first group, parses the input, builds the target, and invokes the R6 `StructureMapTools`. Its `compile(mapUri)` currently fetches a map from the context; it is not a separate bytecode compiler or a validation pass.
 
-`ValidationEngine.getSourceResourceFromStructureMap` follows the same resolution order as the target resolvers above, using source declarations: matching aliases resolve directly or throw, unaliased imports resolve by name, and non-imported source types resolve through a name lookup across all available definitions.
+`ValidationEngine.getSourceResourceFromStructureMap` rejects maps whose first group has more than one source input, then uses `getSourceType`.
 
 ### FHIRPath Integration
 
@@ -219,29 +219,28 @@ Services are optional for maps that only use built-in capabilities, but not for 
 | Test | Coverage and prerequisites |
 | --- | --- |
 | [R5 StructureMapUtilitiesTest](../org.hl7.fhir.r5/src/test/java/org/hl7/fhir/r5/test/StructureMapUtilitiesTest.java) | Syntax, rendering, escaping, normalization, analysis, and selected transforms; loads R4 core definitions and shared `r5/structure-mapping` fixtures |
-| [R5 ConstantResolverTests](../org.hl7.fhir.r5/src/test/java/org/hl7/fhir/r5/utils/structuremap/ConstantResolverTests.java) | Literal/dependent constants, circular references, variable shadowing, local/imported group calls, inheritance, and per-map/per-transform cache lifetime |
-| [StructureMapValidatorTests](../org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/StructureMapValidatorTests.java) | Inline FML examples and expected mapping-specific diagnostics using R5 definitions |
-| [StructureMapConstantsTests](../org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/StructureMapConstantsTests.java) | Constant validation, typed-model execution, analysis, round trips, and agreement between the two parsers; its element-model execution method is currently empty |
+| [R5 ConstantResolverTests](../org.hl7.fhir.r5/src/test/java/org/hl7/fhir/r5/utils/structuremap/ConstantResolverTests.java) | Literal and dependent constants, caching, circular references, unknown constants, host-service lookup, and variable shadowing |
+| [StructureMapConstantsTests](../org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/StructureMapConstantsTests.java) | R6: constant validation and other mapping-specific diagnostics, typed-model and element-model execution, analysis, rendering, round trips, and agreement between the two parsers. Loads `hl7.fhir.uv.mapping-language#current` |
+| [StructureMapConstantCheckTests](../org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/StructureMapConstantCheckTests.java) | R6: the validator's constant checks and type inference |
+| [StructureMapTransformTests](../org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/StructureMapTransformTests.java) | R6: the `id`, `cp` and `qty` transforms, constants in dependent groups and as read-only values, and source/target type resolution |
+| [StructureMapComplexChoiceTests](../org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/StructureMapComplexChoiceTests.java) | R5 and R6: choice-typed targets, `qty`, `c`, `cc` and `copy`, across element and object models |
 | [StructureMappingTests](../org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/StructureMappingTests.java) | Manifest-driven transformations through `ValidationEngine`, including comparison with expected JSON and logical-model cases |
-| [StructureMapRoundTripTests](../org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/StructureMapRoundTripTests.java) | External FML examples, parser comparison, static validation, analysis, and execution; local prerequisites and side effects described below |
 | [R4B StructureMapUtilitiesTest](../org.hl7.fhir.r4b/src/test/java/org/hl7/fhir/r4b/test/StructureMapUtilitiesTest.java) | Older-engine syntax and transformation checks |
 | [R4 StructureMapUtilitiesFunctionDelegationTest](../org.hl7.fhir.r4/src/test/java/org/hl7/fhir/r4/test/StructureMapUtilitiesFunctionDelegationTest.java) | Custom FHIRPath function delegation in the R4 engine |
-| [Standalone StructureMapToolsTest](../org.hl7.fhir.standalone/src/test/java/org/hl7/fhir/test/StructureMapToolsTest.java) | Development tests for the draft R6 work area, which is not currently used by application workflows; not tests of the R5 utility |
+| [Standalone StructureMapToolsTest](../org.hl7.fhir.standalone/src/test/java/org/hl7/fhir/test/StructureMapToolsTest.java) | R6 `StructureMapTools` tests; disabled by default (see below) |
 
 Run commands from the repository root with Maven and a compatible JDK; the parent [pom.xml](../pom.xml) targets Java 17. Focused examples are:
 
 ```powershell
 mvn test -pl org.hl7.fhir.r5 "-Dtest=StructureMapUtilitiesTest,ConstantResolverTests"
-mvn test -pl org.hl7.fhir.validation "-Dtest=StructureMapValidatorTests,StructureMapConstantsTests,StructureMappingTests"
+mvn test -pl org.hl7.fhir.validation "-Dtest=StructureMap*Tests,StructureMappingTests"
 ```
 
 Module-only builds use sibling artifacts in the local Maven repository. Build/install matching checkout dependencies first when they are missing or stale; see the root [README.md](../README.md). Shared fixtures come from the `org.hl7.fhir.testcases:fhir-test-cases` dependency and its test-resource helpers. Package-backed tests also need their requested FHIR packages in the package cache or access to download them. Do not assume that fixtures are all under this repository's test-resource folders.
 
 The local [CLAUDE.md](../CLAUDE.md) requires `mvn test -pl <module>` after test changes. The focused commands are useful during development, but do not replace that full-module check. CI uses module-level Maven verification as configured in [test-unit-jobs-template.yml](../test-unit-jobs-template.yml).
 
-`StructureMapRoundTripTests` currently hard-codes `C:\git\hl7-incubators\fml-incubator\input\examples`. It also expects neighboring test-input folders and writes rendered maps and execution outputs into that external checkout. Its execution methods write results without asserting expected output. Treat it as a local exploratory suite, not evidence of portable end-to-end regression coverage, and inspect its paths before running it. A full validation-module run includes these tests.
-
-The [standalone pom.xml](../org.hl7.fhir.standalone/pom.xml) sets `skipTests=true` because its draft R6 tests depend on locally patched packages. This command is for work on the draft implementation, not for testing an alternative engine in current use. Only with those prerequisites available, opt in explicitly:
+The [standalone pom.xml](../org.hl7.fhir.standalone/pom.xml) sets `skipTests=true` because its tests depend on locally patched packages. Only with those prerequisites available, opt in explicitly:
 
 ```powershell
 mvn test -pl org.hl7.fhir.standalone -DskipTests=false "-Dtest=StructureMapToolsTest"
@@ -272,7 +271,7 @@ Keep these version dimensions separate:
 | Dimension | Meaning |
 | --- | --- |
 | Java library version | The library's Maven artifact version; not the FHIR release number |
-| Engine/model family | The R4, R4B, or R5 Java types and APIs; draft R6 model/services types remain development-only |
+| Engine/model family | The R4, R4B, or R5 Java types and APIs; R6 model/services types are used by the validator |
 | Map representation | The StructureMap definition and FML feature set used to describe the mapping |
 | Map business version | `StructureMap.version` / `/// version`, identifying a revision of that particular map |
 | Source/target definitions | The releases, profiles, or logical models describing the actual input/output instances |
@@ -288,9 +287,9 @@ For example, the R5 utility tests load R4 definitions into an R5 worker context 
 | R4 | [utils/StructureMapUtilities](../org.hl7.fhir.r4/src/main/java/org/hl7/fhir/r4/utils/StructureMapUtilities.java); parser requires a `map` header, supports literal defaults, and has no `parseConst` path |
 | R4B | [utils/structuremap/StructureMapUtilities](../org.hl7.fhir.r4b/src/main/java/org/hl7/fhir/r4b/utils/structuremap/StructureMapUtilities.java); likewise requires a `map` header and has no `parseConst` path |
 | R5 | [utils/structuremap/StructureMapUtilities](../org.hl7.fhir.r5/src/main/java/org/hl7/fhir/r5/utils/structuremap/StructureMapUtilities.java), the element-model parser, and the validation module described above |
-| Draft R6 work area (not currently in use) | [model.fml.StructureMap](../org.hl7.fhir.model/src/main/java/org/hl7/fhir/model/fml/StructureMap.java), model-level rendering, [services.fml.StructureMapTools](../org.hl7.fhir.services/src/main/java/org/hl7/fhir/services/fml/StructureMapTools.java), and [services.elementmodel.FmlParser](../org.hl7.fhir.services/src/main/java/org/hl7/fhir/services/elementmodel/FmlParser.java); under active development |
+| R6 (model/services; used by the validator) | [model.fml.StructureMap](../org.hl7.fhir.model/src/main/java/org/hl7/fhir/model/fml/StructureMap.java), model-level rendering, [services.fml.StructureMapTools](../org.hl7.fhir.services/src/main/java/org/hl7/fhir/services/fml/StructureMapTools.java), and [services.elementmodel.FmlParser](../org.hl7.fhir.services/src/main/java/org/hl7/fhir/services/elementmodel/FmlParser.java) |
 
-The R5 package name is not a guarantee that all implemented FML features are frozen at the published 5.0.0 specification; FML support continues to evolve. The draft R6 work is not yet at feature parity: R5 has a lazy constant resolver, while `StructureMapTools.transform` currently creates only local variable bindings and its FHIRPath host has no map-constant fallback.
+The R5 package name is not a guarantee that all implemented FML features are frozen at the published 5.0.0 specification; FML support continues to evolve. R5 and R6 have the same constant support: a lazy, per-map constant resolver, with the FHIRPath host falling back to map constants.
 
 ### Converting Between Versions
 
@@ -312,7 +311,7 @@ Presence of a converter is not a claim of lossless conversion or executable equi
 - R4 dependent calls use a string `variable` list; R5 uses typed `parameter` values. Non-ID values can be preserved through `EXT_ORIGINAL_VARIABLE_TYPE` extensions, which an older execution engine does not thereby learn to evaluate.
 - Source defaults cross a datatype boundary: R4 has a typed default, while this R5 model stores a string. The converter casts the converted R4 default to R5 `StringType`; arbitrary typed defaults are not automatically converted into equivalent FHIRPath expressions.
 
-`StructureMap50_N` explicitly copies constants in both directions, but that preserves representation, not the draft R6 engine's runtime constant support. These converters are part of the initial R6 development work, not an indication that the draft engine is in use. Its generated header identifies R6 ballot work; it should not be treated as a final-R6 compatibility promise.
+`StructureMap50_N` explicitly copies constants in both directions, but that preserves representation, not runtime constant behaviour. Its generated header identifies R6 ballot work; it should not be treated as a final-R6 compatibility promise.
 
 Always validate the converted map against the intended definitions, inspect known loss points, and execute representative source/target tests. Java conversion of a StructureMap is distinct from running an FML map that transforms, for example, an R4 resource into an R5 resource.
 
@@ -320,15 +319,15 @@ Always validate the converted map against the intended definitions, inspect know
 
 ### Current State
 
-The model/services modules are the initial draft R6 work area. Active work is underway to bring them up to speed, but they are not currently used outside development and testing and do not replace the R5 implementation. The [model readme](../org.hl7.fhir.model/readme.md) and [services readme](../org.hl7.fhir.services/readme.md) explicitly label them experimental. The following describes work in progress, not an available runtime:
+The model/services modules are the R6 implementation, used by the validation module alongside the maintained R5 implementation. The [model readme](../org.hl7.fhir.model/readme.md) and [services readme](../org.hl7.fhir.services/readme.md) describe their status. Differences from R5:
 
 - The draft StructureMap model lives in `org.hl7.fhir.model.fml`, with generated [FmlJsonParser](../org.hl7.fhir.model/src/main/java/org/hl7/fhir/model/fml/FmlJsonParser.java), [FmlXmlParser](../org.hl7.fhir.model/src/main/java/org/hl7/fhir/model/fml/FmlXmlParser.java), and [FmlRegistration](../org.hl7.fhir.model/src/main/java/org/hl7/fhir/model/fml/FmlRegistration.java).
 - `FmlRegistration.register(modelContext, overridesBase)` registers StructureMap handlers for a particular model context. Its generated header and `packages()` identify `hl7.fhir.uv.mapping-language#current`; the matching definitions must be loaded into the worker context. These JSON/XML handlers are not the FML text parser.
 - Rendering is in the model module; parsing and execution are in services; context-backed tests are in standalone. New collection accessors such as `getGroupList()` differ from R5's `getGroup()`.
 - Choice-property assignment also differs: R5 object-model setters accept bare names such as `value`, while R6 object-model setters require `value[x]`. Both mapping engines resolve bare and type-suffixed FML target names such as `valueQuantity` to their model's setter name. A type suffix must match the assigned value's datatype. Element-model assignment resolves the child definition using the parent's actual name and type, including beneath choice-typed parents, and derives the output name from that definition to avoid repeating the type suffix. The self-contained [complex-choice tests](../org.hl7.fhir.validation/src/test/java/org/hl7/fhir/validation/tests/StructureMapComplexChoiceTests.java) exercise both models and versions, including copies between representations.
 - A non-repeating choice is one logical slot: assigning `valueString` after `valueQuantity` replaces the earlier value, just like repeated assignments to bare `value`. Changing datatype discards the previous datatype's content; repeating properties still append. Type-suffixed target shorthand such as `tgt.valueCodeableConcept as v` creates that datatype if necessary, or reuses the existing value of the same datatype so nested rules can continue populating it.
-- The validation module remains R5-based. The draft R6 [FHIRPathHostServices](../org.hl7.fhir.services/src/main/java/org/hl7/fhir/services/fml/FHIRPathHostServices.java) still throws for `conformsToProfile` and FHIRPath logging, and does not implement R5's map-constant resolution.
-- Draft R6 standalone tests are disabled by default pending suitable package builds. Their existence is not evidence that the draft is in use or that R6 behavior is continuously verified.
+- The validation module uses R6. The R6 [FHIRPathHostServices](../org.hl7.fhir.services/src/main/java/org/hl7/fhir/services/fml/FHIRPathHostServices.java) still throws for `conformsToProfile` when the item is neither an element-model element nor a resource; like R5, it accepts FHIRPath `trace()` without logging it.
+- The R6 standalone tests are disabled by default pending suitable package builds; the R6 StructureMap tests in the validation module run normally.
 
 ### Recommended Work
 
@@ -344,4 +343,4 @@ The model/services modules are the initial draft R6 work area. Active work is un
 
 Open decisions include the supported legacy FML forms, the host contract for external constants, and the lifecycle/thread-safety policy for cached maps and engines. These are proposed decision points, not commitments made by the current code.
 
-Before promoting the draft R6 engine into use, require agreement between the parsers, stable supported round trips, expected static diagnostics, asserted typed-model and element-model transformation outputs, tested host callbacks, explicit conversion-loss behavior, and a passing reproducible CI corpus. Keep R5 behavior available until any intentional differences are documented and tested.
+Before relying on R6 behaviour beyond what the validator exercises, require agreement between the parsers, stable supported round trips, expected static diagnostics, asserted typed-model and element-model transformation outputs, tested host callbacks, explicit conversion-loss behavior, and a passing reproducible CI corpus. Keep R5 behavior available until any intentional differences are documented and tested.

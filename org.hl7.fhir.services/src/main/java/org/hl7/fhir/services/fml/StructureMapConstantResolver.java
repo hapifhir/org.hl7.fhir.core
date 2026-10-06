@@ -30,14 +30,12 @@ class StructureMapConstantResolver {
   private final FHIRPathEngine fpe;
   private final Map<String, List<Base>> cache = new HashMap<>();
   private final Set<String> evaluating = new LinkedHashSet<>();
+  // each nested constant is a nested FHIRPath evaluation, so a long enough chain overflows the stack
+  private static final int MAX_DEPTH = 100;
 
   StructureMapConstantResolver(StructureMap map, FHIRPathEngine fpe) {
     this.map = map;
     this.fpe = fpe;
-  }
-
-  boolean has(String name) {
-    return find(name) != null;
   }
 
   List<Base> resolve(String name) {
@@ -51,6 +49,9 @@ class StructureMapConstantResolver {
     if (evaluating.contains(name)) {
       throw new FHIRException("Circular reference detected while evaluating constant '" + name
         + "' (chain: " + String.join(" -> ", evaluating) + " -> " + name + ")");
+    }
+    if (evaluating.size() >= MAX_DEPTH) {
+      throw new FHIRException("Constants nested too deeply (more than " + MAX_DEPTH + ") while evaluating constant '" + name + "'");
     }
     evaluating.add(name);
     try {

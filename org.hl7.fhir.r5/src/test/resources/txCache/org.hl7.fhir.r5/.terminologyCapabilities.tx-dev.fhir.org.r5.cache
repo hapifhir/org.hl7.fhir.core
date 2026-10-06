@@ -10153,9 +10153,6 @@
       "documentation" : "Additional valuesets needed for evaluation e.g. value sets referred to from the import statement of the value set being expanded"
     },
     {
-      "name" : "_incomplete"
-    },
-    {
       "name" : "abstract"
     },
     {
@@ -10201,30 +10198,14 @@
       "name" : "force-valueset-version"
     },
     {
-      "name" : "inactive"
-    },
-    {
-      "name" : "includeAlternateCodes"
-    },
-    {
       "name" : "includeDefinition"
     },
     {
       "name" : "includeDesignations"
     },
     {
-      "name" : "incomplete-ok"
-    },
-    {
       "name" : "limit",
       "documentation" : "Upper bound on the size of the expansion; the operation fails as too-costly beyond it"
-    },
-    {
-      "name" : "limitedExpansion"
-    },
-    {
-      "name" : "mode",
-      "documentation" : "=lenient-display-validation"
     },
     {
       "name" : "no-cache"
@@ -10253,10 +10234,6 @@
     },
     {
       "name" : "valueSet"
-    },
-    {
-      "name" : "valueSetMode",
-      "documentation" : "= CHECK_MEMBERSHIP_ONLY | NO_MEMBERSHIP_CHECK"
     },
     {
       "name" : "valueSetVersion"
