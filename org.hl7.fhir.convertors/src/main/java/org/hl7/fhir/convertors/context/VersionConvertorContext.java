@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors.context;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -49,11 +48,40 @@ public class VersionConvertorContext<T> {
   private final ThreadLocal<T> threadLocalVersionConverter = new ThreadLocal<>();
 
   /**
-   * We store the current state of the path as a {@link Stack<String>}. Each Fhir type is pushed onto the stack
+   * We store the current state of the path as a {@link PathStack}. Each Fhir type is pushed onto the stack
    * as we progress, and popped off once converted. The conversions are traversed in a depth first manner, which
    * makes this possible.
    */
-  private final ThreadLocal<Stack<String>> threadLocalPath = new ThreadLocal<>();
+  private final ThreadLocal<PathStack> threadLocalPath = new ThreadLocal<>();
+
+  /**
+   * The labels in the current path, and alongside each one the path up to and including it, joined with ".".
+   * getPath() is called for every element converted, so the joined path is worked out once, when a label is
+   * pushed, rather than each time.
+   */
+  private static class PathStack {
+    private final Stack<String> labels = new Stack<>();
+    private final Stack<String> paths = new Stack<>();
+
+    void push(String label) {
+      paths.push(labels.isEmpty() ? label : paths.peek() + "." + label);
+      labels.push(label);
+    }
+
+    String pop() {
+      String label = labels.pop();
+      paths.pop();
+      return label;
+    }
+
+    boolean isEmpty() {
+      return labels.isEmpty();
+    }
+
+    String path() {
+      return labels.isEmpty() ? "" : paths.peek();
+    }
+  }
 
   /**
    * Initializes the conversion context. If a context already exists, this will just add the path to the current tracked
@@ -74,12 +102,12 @@ public class VersionConvertorContext<T> {
       threadLocalVersionConverter.set(versionConvertor);
     }
 
-    Stack<String> stack = threadLocalPath.get();
+    PathStack stack = threadLocalPath.get();
     if (stack == null) {
-      stack = new Stack<>();
+      stack = new PathStack();
     }
     stack.push(path);
-    // logger.debug("Pushing path <" + path + "> onto stack. Current path -> " + String.join(",", stack));
+    // logger.debug("Pushing path <" + path + "> onto stack. Current path -> " + stack.path());
     threadLocalPath.set(stack);
   }
 
@@ -91,12 +119,12 @@ public class VersionConvertorContext<T> {
    * @param path {@link String} label path to add.
    */
   public void close(String path) {
-    Stack<String> stack = threadLocalPath.get();
+    PathStack stack = threadLocalPath.get();
     if (stack == null) {
       throw new FHIRException("Cannot close path <" + path + ">. Reached unstable state, no stack path available.");
     }
     String currentPath = stack.pop();
-//    logger.debug("Popping path <" + currentPath + "> off stack. Current path -> " + String.join(",", stack));
+//    logger.debug("Popping path <" + currentPath + "> off stack. Current path -> " + stack.path());
     if (!path.equals(currentPath)) {
       throw new FHIRException("Reached unstable state, current path doesn't match expected path.");
     }
@@ -112,13 +140,14 @@ public class VersionConvertorContext<T> {
    * Will return the {@link String} corresponding to the current conversion "path".
    * ex: "Bundle.Appointment"
    *
-   * @return {@link ArrayList<String>}
+   * @return the labels in the current path, joined with "."
    */
   public String getPath() throws FHIRException {
-    if (threadLocalPath.get() == null) {
+    PathStack stack = threadLocalPath.get();
+    if (stack == null) {
       throw new FHIRException("No current path is set.");
     }
-    return String.join(".", new ArrayList<>(threadLocalPath.get()));
+    return stack.path();
   }
 
   /**
