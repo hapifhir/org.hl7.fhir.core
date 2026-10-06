@@ -5,11 +5,14 @@ import java.util.Collections;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.services.context.ContextUtilities;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
+import org.hl7.fhir.services.fhirpath.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.services.fhirpath.TypeDetails;
 import org.hl7.fhir.model.core.Coding;
@@ -354,6 +357,52 @@ public class StructureMapValidator extends BaseValidator {
       cc++;
     }
     
+    // Evaluate any constant (let) variables defined in the structure map
+    VariableSet constantVars = new VariableSet(); 
+    List<Element> constants = src.getChildrenByName("const");
+    for (Element constant : constants) {
+      // Process each constant as needed
+      String name = constant.getChildValue("name");
+      String value = constant.getChildValue("value");
+      VariableDefn v = null;
+      TypeDetails td = null;
+      String type = null;
+
+      // validate the constant properties
+      if (name == null || name.isEmpty()) {
+        ok = rule(errors, "2026-09-01", IssueType.INVALID, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_NAME_MISSING) && ok;
+      } else {
+        v = constantVars.add(name, "source");
+      }
+      if (value == null || value.isEmpty()) {
+        ok = rule(errors, "2026-09-01", IssueType.INVALID, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_VALUE_MISSING, name) && ok;
+      } else {
+        // Determine the datatype of the constant value using FHIRPath
+        try {
+          td = fpe.check(constantVars, (String)null, (String)null, null, fpe.parse(value));
+          if (td.getTypes().size() == 1) {
+            type = TypeDetails.FhirTypeName(td.getType());
+            if (type != null && td.getType().startsWith(TypeDetails.FP_NS)) {
+              StructureDefinition sdt = this.context.fetchTypeDefinition(type);
+              if (sdt != null) {
+                type = sdt.getType();
+              }
+            }
+            if (type == null) {
+              // An inference limitation does not make an otherwise valid expression invalid.
+              hint(errors, "2026-09-01", IssueType.VALUE, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_TYPE_UNDETERMINED, name, value);
+            }
+            if (v != null && type != null) {
+              int max = td.getCollectionStatus() == org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus.SINGLETON ? 1 : Integer.MAX_VALUE;
+              v.setType(max, this.context.fetchTypeDefinition(type), null, type);
+            }
+          }
+        } catch (FHIRLexerException | PathEngineException | DefinitionException e) {
+          ok = rule(errors, "2026-09-01", IssueType.VALUE, constant.line(), constant.col(), stack.getLiteralPath(), false, I18nConstants.SM_CONSTANT_TYPE_UNDETERMINED, name, value) && ok;
+        }
+      }
+    }
+
     List<String> grpNames = new ArrayList<>();
     List<Element> groups = src.getChildrenByName("group");
     // we iterate the groups repeatedly, validating them if they have stated types or found types, until nothing happens
@@ -366,7 +415,7 @@ public class StructureMapValidator extends BaseValidator {
           if (hasInputTypes(group) || group.hasUserData(UserDataNames.map_parameters)) {
             group.setUserData(UserDataNames.map_validated, true);
             fired = true;
-            ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
+            ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames, constantVars) && ok;
           }
         }
         cc++;
@@ -377,7 +426,7 @@ public class StructureMapValidator extends BaseValidator {
     for (Element group : groups) {
       if (!group.hasUserData(UserDataNames.map_validated)) {
         hint(errors, "2023-03-01", IssueType.INFORMATIONAL, group.line(), group.col(), stack.push(group, cc, null, null).getLiteralPath(), ok, I18nConstants.SM_ORPHAN_GROUP, group.getChildValue("name"));
-        ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
+        ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames, constantVars) && ok;
       }
       cc++;
     }            
@@ -410,7 +459,7 @@ public class StructureMapValidator extends BaseValidator {
     return true;
   }
 
-  private boolean validateGroup(ValidationContext valContext, List<ValidationMessage> errors, Element src, Element group, NodeStack stack, List<String> grpNames) {
+  private boolean validateGroup(ValidationContext valContext, List<ValidationMessage> errors, Element src, Element group, NodeStack stack, List<String> grpNames, VariableSet constantVars) {
     String name = group.getChildValue("name");
     boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, group.line(), group.col(), stack.getLiteralPath(), idIsValid(name), I18nConstants.SM_NAME_INVALID, name);
     if (!rule(errors, "2023-03-01", IssueType.INVALID, group.line(), group.col(), stack.getLiteralPath(), !grpNames.contains(name), I18nConstants.SM_GROUP_NAME_DUPLICATE, name)) {
@@ -427,7 +476,8 @@ public class StructureMapValidator extends BaseValidator {
       }
     }
     
-    VariableSet variables = new VariableSet(); 
+    // clone the constant variables for the group's source variables, so that any constant variables defined in the group don't affect other groups
+    VariableSet variables = constantVars.copy();
     VariableSet pvars = (VariableSet) group.getUserData(UserDataNames.map_parameters);
 
     // first, load all the inputs
@@ -576,7 +626,7 @@ public class StructureMapValidator extends BaseValidator {
 
   private boolean validateRule(List<ValidationMessage> errors, Element src, Element group, Element rule, NodeStack stack, VariableSet variables) {
     String name = rule.getChildValue("name");
-    boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, rule.line(), rule.col(), stack.getLiteralPath(), idIsValid(name), I18nConstants.SM_NAME_INVALID, name);
+    boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, rule.line(), rule.col(), stack.getLiteralPath(), name != null && Utilities.isValidId(name), I18nConstants.SM_NAME_INVALID, name);
     RuleInformation ruleInfo = new RuleInformation();
     // process the sources
     VariableSet lvars = variables.copy();
@@ -624,9 +674,8 @@ public class StructureMapValidator extends BaseValidator {
         // check type
         // check defaultValue
         // check element
-        String element = source.getChildValue("element");
-        if (element != null) {
-          String path = v.getEd().getPath()+"."+element;
+        List<Element> elements = getPathElements(source, true);
+        if (!elements.isEmpty()) {
           String variable = source.getChildValue("variable");
           VariableDefn vn = null;
           if (hint(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), variable != null, I18nConstants.SM_RULE_SOURCE_UNASSIGNED)) {
@@ -640,28 +689,27 @@ public class StructureMapValidator extends BaseValidator {
             }
           }            
           
-          List<ElementDefinitionSource> els = getElementDefinitions(v.getSd(), v.getEd(), v.getType(), element);
+          VariableDefn resolved = resolveElementPath(errors, elements, stack, v, true);
+          if (resolved != null) {
+            String path = resolved.getEd().getPath();
+            String type = source.getChildValue("type");
+            if (type != null) {
+              ok = rule(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), hasType(resolved.getEd(), type), I18nConstants.SM_SOURCE_TYPE_INVALID, type, path, resolved.getEd().typeSummary()) && ok;
+            }
+            String min = source.getChildValue("min");
+            hint(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), min == null || isMoreOrEqual(min, v.getEd().getMin()), I18nConstants.SM_RULE_SOURCE_MIN_REDUNDANT, min, v.getEd().getMin());
 
-          if (rule(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), !els.isEmpty(), I18nConstants.SM_SOURCE_PATH_INVALID, context, element, path)) {
-            if (warning(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), els.size() == 1, I18nConstants.SM_TARGET_PATH_MULTIPLE_MATCHES, context, element, v.getEd().getPath()+"."+element, render(els))) {
-              ElementDefinitionSource el = els.get(0);
-              String type = source.getChildValue("type"); 
-              if (type != null) {
-                ok = rule(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), hasType(el.getEd(), type), I18nConstants.SM_SOURCE_TYPE_INVALID, type, path, el.getEd().typeSummary()) && ok;
-              }
-              String min = source.getChildValue("min");
-              hint(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), min == null || isMoreOrEqual(min, v.getEd().getMin()), I18nConstants.SM_RULE_SOURCE_MIN_REDUNDANT, min, v.getEd().getMin());
+            int existingMax = resolved.getMax();
+            String max = source.getChildValue("max");
+            int iMax = readMax(max, existingMax);
+            warning(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), iMax <= existingMax, I18nConstants.SM_RULE_SOURCE_MAX_REDUNDANT, max, v.getMax());
+            if (Utilities.existsInList(source.getChildValue("listMode"), "first", "last", "only_one")) {
+              iMax = Math.min(iMax, 1);
+            }
+            ruleInfo.seeCardinality(iMax);
 
-              int existingMax = multiplyCardinality(v.getMax(), el.getEd().getMax());
-              String max = source.getChildValue("max");
-              int iMax = readMax(max, existingMax);
-              warning(errors, "2023-03-01", IssueType.INVALID, source.line(), source.col(), stack.getLiteralPath(), iMax <= existingMax, I18nConstants.SM_RULE_SOURCE_MAX_REDUNDANT, max, v.getMax());
-              ruleInfo.seeCardinality(iMax);
-
-
-              if (vn != null) {
-                vn.setType(iMax, el.getSd(), el.getEd(), type); // may overwrite
-              }
+            if (vn != null) {
+              vn.setType(iMax, resolved.getSd(), resolved.getEd(), type); // may overwrite
             }
           } else {
             ok = false;
@@ -711,6 +759,60 @@ public class StructureMapValidator extends BaseValidator {
     return false;
   }
 
+  private List<Element> getPathElements(Element component, boolean source) {
+    List<Element> elements = new ArrayList<>(component.getChildrenByName("element"));
+    if (VersionUtilities.isR5Ver(context.getFHIRVersion())) {
+      String url = source
+          ? org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities.SOURCE_ELEMENT_EXTENSION
+          : org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities.TARGET_ELEMENT_EXTENSION;
+      for (Element extension : component.getChildrenByName("extension")) {
+        if (url.equals(extension.getChildValue("url"))) {
+          Element value = extension.getNamedChild("valueString");
+          if (value != null) {
+            elements.add(value);
+          }
+        }
+      }
+    }
+    return elements;
+  }
+
+  private VariableDefn resolveElementPath(List<ValidationMessage> errors, List<Element> elements, NodeStack stack,
+      VariableDefn variable, boolean source) {
+    VariableDefn resolved = variable.copy();
+    String path = variable.getEd().getPath();
+    List<String> names = new ArrayList<>();
+    for (int i = 0; i < elements.size(); i++) {
+      Element segment = elements.get(i);
+      String name = segment.primitiveValue();
+      names.add(name);
+      path += "." + name;
+      NodeStack segmentStack = stack.push(segment, i, null, null);
+      List<ElementDefinitionSource> matches = getElementDefinitions(resolved.getSd(), resolved.getEd(), resolved.getType(), name);
+      if (!rule(errors, "2026-09-30", IssueType.INVALID, segment.line(), segment.col(), segmentStack.getLiteralPath(), !matches.isEmpty(),
+          source ? I18nConstants.SM_SOURCE_PATH_INVALID : I18nConstants.SM_TARGET_PATH_INVALID, variable.getName(), String.join(".", names), path)) {
+        return null;
+      }
+      if (!warning(errors, "2026-09-30", IssueType.INVALID, segment.line(), segment.col(), segmentStack.getLiteralPath(),
+          matches.size() == 1 || (!source && isElementandSlicing(matches)), I18nConstants.SM_TARGET_PATH_MULTIPLE_MATCHES,
+          variable.getName(), String.join(".", names), path, render(matches))) {
+        return null;
+      }
+      ElementDefinitionSource match = matches.get(0);
+      if (!source && i < elements.size() - 1) {
+        if (!rule(errors, "2026-09-30", IssueType.INVALID, segment.line(), segment.col(), segmentStack.getLiteralPath(),
+            match.getEd().getTypeList().size() == 1
+                && !context.isPrimitiveType(match.getEd().getTypeFirstRep().getWorkingCode()),
+            I18nConstants.SM_TARGET_PATH_TYPE_INVALID, path, match.getEd().typeSummary())) {
+          return null;
+        }
+      }
+      int max = source ? multiplyCardinality(resolved.getMax(), match.getEd().getMax()) : resolved.getMax();
+      resolved.setType(max, match.getSd(), match.getEd(), null);
+    }
+    return resolved;
+  }
+
   private int readMax(String max, int existingMax) {
     if (max == null || !Utilities.isInteger(max)) {
       return existingMax;
@@ -729,73 +831,31 @@ public class StructureMapValidator extends BaseValidator {
 
   private boolean validateRuleTarget(List<ValidationMessage> errors, Element src, Element group, Element rule, Element target, NodeStack stack, VariableSet variables, RuleInformation ruleInfo) {
     String context = target.getChildValue("context");
+    String variable = target.getChildValue("variable");
+    String transform = target.getChildValue("transform");
+    List<Element> params = target.getChildren("parameter");
+    boolean ok = true;
+    VariableDefn outputVariable = null;
+    VariableDefn contextVariable = null;
+    ElementDefinitionSource targetElement = null;
+    String initialType = null;
+
+    // Stage 1: resolve the target context, path, variable, and initial expected type.
     if (context == null) {
-      // this would be something like 
-      // RNDSEntry -> create('Composition') as IPSComposition
-
-      boolean ok = true;
-
-      VariableDefn vn = null;
-      String variable = target.getChildValue("variable");
       if (variable != null) {
         if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), idIsValid(variable), I18nConstants.SM_NAME_INVALID, variable)) {
-          vn = variables.add(variable, "target"); // may overwrite
+          outputVariable = variables.add(variable, "target"); // may overwrite
         } else {
           ok = false;
         }
       }
-      String transform = target.getChildValue("transform");
-      List<Element> params = target.getChildren("parameter");
-      String type = null;
-      switch (transform) {
-      case "create":
-        if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() < 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, "create", "0", "1", params.size())) {
-          if (params.size() == 1) {
-            type = params.get(0).getChildValue("value");
-            // type can be a url, a native type, or an alias 
-            if (!Utilities.isAbsoluteUrl(type)) {
-              type = resolveType(type, "target", src);
-              if (!Utilities.isAbsoluteUrl(type)) {
-                StructureDefinition sdt = this.context.fetchTypeDefinition(type);
-                if (sdt != null) {
-                  type = sdt.getType();
-                }
-              }
-            }
-            warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(),type != null, I18nConstants.SM_TARGET_TRANSFORM_TYPE_UNPROCESSIBLE, "create");
-          } else {
-            // maybe can guess? maybe not ... type = 
-          }
-        } else {
-          ok = false;
-        }
-        break;
-        
-      case "uuid" :
-        ok = rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 0, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform) && ok;
-        type = "string";
-        break; 
-      default:
-        warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED, transform);
-//        ok = false;
+    } else {
+      ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), idIsValid(context), I18nConstants.SM_NAME_INVALID, context) &&
+          rule(errors, "2023-03-01", IssueType.UNKNOWN, target.line(), target.col(), stack.getLiteralPath(), variables.hasVariable(context, TARGET), I18nConstants.SM_TARGET_CONTEXT_UNKNOWN, context);
+      if (ok) {
+        contextVariable = variables.getVariable(context, TARGET);
       }
-
-      if (vn != null && type != null) {
-        StructureDefinition sdt = this.context.fetchTypeDefinition(type);
-        if (sdt != null) {
-          vn.setType(ruleInfo.getMaxCount(), sdt, sdt.getSnapshot().getElementFirstRep(), null); // may overwrite
-        } else {
-          ok = false;
-          rule(errors, "2023-07-30", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TYPE_UNKNOWN, type);
-        }
-      }
-      return ok;
-    }
-    boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), idIsValid(context), I18nConstants.SM_NAME_INVALID, context) &&
-        rule(errors, "2023-03-01", IssueType.UNKNOWN, target.line(), target.col(), stack.getLiteralPath(), variables.hasVariable(context, TARGET), I18nConstants.SM_TARGET_CONTEXT_UNKNOWN, context);
-    if (ok) {
-      VariableDefn v = variables.getVariable(context, TARGET);
-      if (v.hasTypeInfo()) {
+      if (ok && contextVariable.hasTypeInfo()) {
         String listMode = target.getChildValue("listMode");
         String listRuleId = target.getChildValue("listRuleId");
         warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), listRuleId == null || "share".equals(listMode), I18nConstants.SM_LIST_RULE_ID_ONLY_WHEN_SHARE);
@@ -803,203 +863,337 @@ public class StructureMapValidator extends BaseValidator {
           warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), listMode == null, I18nConstants.SM_NO_LIST_MODE_NEEDED);
           warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), listRuleId == null, I18nConstants.SM_NO_LIST_RULE_ID_NEEDED);
         }
-        VariableDefn vn = null;
-        String variable = target.getChildValue("variable");
         if (variable != null) {
           if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), idIsValid(variable), I18nConstants.SM_NAME_INVALID, variable)) {
-            vn = variables.add(variable, v.getMode()); // may overwrite
+            outputVariable = variables.add(variable, contextVariable.getMode()); // may overwrite
           } else {
             ok = false;
           }
         }
 
-        String element = target.getChildValue("element");
-        if (element != null) {
-          List<ElementDefinitionSource> els = getElementDefinitions(v.getSd(), v.getEd(), v.getType(), element);
-          if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), !els.isEmpty(), I18nConstants.SM_TARGET_PATH_INVALID, context, element, v.getEd().getPath()+"."+element)) {
-            if (warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), els.size() == 1 || isElementandSlicing(els), I18nConstants.SM_TARGET_PATH_MULTIPLE_MATCHES, context, element, v.getEd().getPath()+"."+element, render(els))) {
-              ElementDefinitionSource el = els.get(0);
-              String transform = target.getChildValue("transform");
-              List<Element> params = target.getChildren("parameter");
-              if (transform == null) {
-                transform = "create"; // implied
-                rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 0, I18nConstants.SM_TARGET_NO_TRANSFORM_NO_CHECKED, transform);
-              } 
-              // List<String> types = listTypes(el.getEd().getType());
-              String type = null;
-              if (el.getEd().getTypeList().size() == 1) {
-                type = el.getEd().getTypeFirstRep().getWorkingCode();
-              } else {                  
-                type = inferType(ruleInfo, variables, rule, transform, params);
-              }
-
-              switch (transform) {
-              case "create":
-                if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() < 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, "create", "0", "1", params.size())) {
-                  if (params.size() == 1) {
-                    type = params.get(0).getChildValue("value");
-                    // type can be a url, a native type, or an alias 
-                    if (!Utilities.isAbsoluteUrl(type)) {
-                      type = resolveType(type, "target", src);
-                      if (!Utilities.isAbsoluteUrl(type)) {
-                        StructureDefinition sdt = this.context.fetchTypeDefinition(type);
-                        if (sdt != null) {
-                          type = sdt.getType();
-                        }
-                      }
-                    }
-                    warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(),type != null, I18nConstants.SM_TARGET_TRANSFORM_TYPE_UNPROCESSIBLE, "create");
-                  } else {
-                    // maybe can guess? maybe not ... type = 
-                  }
-                } else {
-                  ok = false;
-                }
-                break;
-              case "copy": // logic is the same as create?
-                if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() < 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, "create", "0", "1", params.size())) {
-                  if (params.size() == 1) {
-                    type = params.get(0).getChildValue("value");
-                    warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(),type != null, I18nConstants.SM_TARGET_TRANSFORM_TYPE_UNPROCESSIBLE, "copy");
-                  } else {
-                    // maybe can guess? maybe not ... type = 
-                  }
-                } else {
-                  ok = false;
-                }
-                break;
-              case "reference":
-                if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 1, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, "reference", "0", "1", params.size())) {
-                  type = "string";
-                } else {
-                  ok = false;
-                }
-                break;
-              case "evaluate":
-                // This is not true, it can have 1 or 2 parameters depending on how it was called. 
-                // The expanded form as parameter 1 being the context, and parameter 2 being the fhirpath expression.
-                // The concise form has no context parameter, and is from the abbreviated form in the FML text parsed
-                if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 1, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_SINGLE, "evaluate", "1", params.size())) {
-                  String exp = params.get(0).getChildValue("value");
-                  if (rule(errors, "2023-03-01", IssueType.INVALID, params.get(0).line(), params.get(0).col(), stack.getLiteralPath(), exp != null, I18nConstants.SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE, "0", params.size())) {
-                    try {
-                      fpe.setLocation(params.get(0).getPath());
-                      TypeDetails td = fpe.check(variables, null, v.getSd().getUrl(), v.getEd().getPath(), fpe.parse(exp));
-                      if (td.getTypes().size() == 1) {
-                        type = td.getType();
-                      }
-                    } catch (Exception e) {
-                      rule(errors, "2023-03-01", IssueType.INVALID, params.get(0).line(), params.get(0).col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_EXPRESSION_ERROR, e.getMessage());
-                    }
-                  } else {
-                    ok = false;
-                  }
-                } else {
-                  ok = false;
-                }
-                break;
-              case "cc" :
-                ok = rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 2 || params.size() == 3, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform) && ok;
-                ok = checkParamExistsOrPrimitive(errors, params.size() > 0 ? params.get(0).getNamedChild("value", false) : null, "cc", "system", target, variables, stack, ok, true);
-                ok = checkParamExistsOrPrimitive(errors, params.size() > 1 ? params.get(1).getNamedChild("value", false) : null, "cc", "code", target, variables, stack, ok, true);
-                ok = checkParamExistsOrPrimitive(errors, params.size() > 2 ? params.get(2).getNamedChild("value", false) : null, "cc", "display", target, variables, stack, ok, false);
-                break;                
-              case "append" :
-                ok = rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() > 0, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform) && ok;
-                for (int i = 0; i  < params.size(); i++) {
-                  ok = checkParamExistsOrPrimitive(errors, params.get(i).getNamedChild("value", false), "cc", "parameter "+i, target, variables, stack, ok, false);
-                }
-                break;                
-              case "uuid" :
-                ok = rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 0, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform) && ok;
-                break;                
-              case "translate":
-                ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 3, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform) && ok;
-                Element srcE = params.size() > 0 ? params.get(0).getNamedChild("value", false) : null;
-                Element mapE = params.size() > 1? params.get(1).getNamedChild("value", false) : null;
-                Element modeE = params.size() > 2 ? params.get(2).getNamedChild("value", false) : null;
-                VariableDefn sv = null;
-                // srcE - if it's an id, the variable must exist
-                if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), srcE != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, "source")) {
-                  if ("id".equals(srcE.fhirType())) {
-                    sv = variables.getVariable(srcE.getValue(), true);
-                    rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), sv != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_UNKNOWN_SOURCE, srcE.getValue());
-                  }
-                } else { 
-                  ok = false; 
-                }
-                // mapE - it must resolve (may be reference to contained)
-                if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), mapE != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, "map_uri")) {
-                  String ref = mapE.getValue();
-                  ConceptMap cm = null;
-                  if (ref.startsWith("#")) {
-                    cm = (ConceptMap) loadContainedResource(errors, stack.getLiteralPath(), src, ref.substring(1), ConceptMap.class);
-                    ok = rule(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), srcE != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, ref) && ok;                          
-                  } else {
-                    // todo: look in Bundle?
-                    cm = this.context.fetchResource(ConceptMap.class, ref, ElementModelUtilities.getVersionResolutionRules(mapE));
-                    warning(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), srcE != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, ref);                          
-                  }
-                  if (cm != null && (v != null && v.hasTypeInfo() || (sv != null && sv.hasTypeInfo()))) {
-                    ok = checkConceptMap(errors, target.line(), target.col(), stack.getLiteralPath(), cm, sv == null ? null : sv.getEd(), el == null ? null : el.getEd()) && ok;
-                  }
-                }
-                if (modeE != null) {
-                  String t = modeE.getValue();
-                  if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), Utilities.existsInList(t, "code", "system", "display", "Coding", "CodeableConcept"), I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_BAD_MODE, t)) {
-                    // cross check the type
-                  } else {
-                    ok = false;
-                  }
-                }
-                break;
-              default:
-                warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED, transform);
-//                ok = false;
-              }
-              if (vn != null) {
-                // it's just a warning: maybe this'll work out at run time?
-                warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), type != null, I18nConstants.SM_TARGET_TYPE_MULTIPLE_POSSIBLE, el.getEd().typeSummary());
-
-                if (ProfileUtilities.isResourceBoundary(el.getEd()) && type != null) {
-                  StructureDefinition sdt = this.context.fetchTypeDefinition(type);
-                  if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), sdt != null, I18nConstants.SM_TARGET_TRANSFORM_TYPE_UNKNOWN, type)) {
-                    vn.setType(ruleInfo.getMaxCount(), sdt, sdt.getSnapshot().getElementFirstRep(), null); // may overwrite
-                  } else {
-                    vn.setType(ruleInfo.getMaxCount(), el.getSd(), el.getEd(), type); // may overwrite
-                  }
-                } else {
-                  vn.setType(ruleInfo.getMaxCount(), el.getSd(), el.getEd(), type); // may overwrite
-                }
-              }
-
+        List<Element> elements = getPathElements(target, false);
+        if (!elements.isEmpty()) {
+          VariableDefn resolved = resolveElementPath(errors, elements, stack, contextVariable, false);
+          if (resolved != null) {
+            targetElement = new ElementDefinitionSource(resolved.getSd(), resolved.getEd());
+            if (transform == null) {
+              transform = "create"; // implied
+              rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 0, I18nConstants.SM_TARGET_NO_TRANSFORM_NO_CHECKED, transform);
+            }
+            if (targetElement.getEd().getTypeList().size() == 1) {
+              initialType = targetElement.getEd().getTypeFirstRep().getWorkingCode();
+            } else {
+              initialType = inferType(ruleInfo, variables, rule, transform, params);
             }
           } else {
             ok = false;
           }
         }
-        //      
+      }
+    }
+
+    // Stage 2: validate the transform and determine its result type.
+    if (context == null || targetElement != null) {
+      TransformValidationResult transformResult = validateTargetTransform(errors, src, target, stack, variables, transform, params, contextVariable, targetElement, initialType);
+      ok = transformResult.ok && ok;
+      boolean implicitCopy = targetElement != null && "create".equals(transform) && params.isEmpty()
+          && StructureMapUtilities.AUTO_VAR_NAME.equals(variable)
+          && StructureMapUtilities.AUTO_VAR_NAME.equals(ruleInfo.getDefVariable());
+      if (implicitCopy && (initialType == null || targetElement.getEd().getTypeList().size() == 1)) {
+        VariableDefn sourceVariable = variables.getVariable(ruleInfo.getDefVariable(), SOURCE);
+        if (sourceVariable != null && sourceVariable.hasTypeInfo()) {
+          List<String> types = sourceVariable.getType() == null ? listTypes(sourceVariable.getEd().getTypeList())
+              : Collections.singletonList(sourceVariable.getType());
+          for (String type : types) {
+            ok = rule(errors, "2026-09-30", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(),
+                hasType(targetElement.getEd(), type), I18nConstants.SM_TARGET_TYPE_INVALID,
+                type, targetElement.getEd().getPath(), targetElement.getEd().typeSummary()) && ok;
+          }
+          if (types.size() == 1) {
+            transformResult.type = types.get(0);
+          } else if (outputVariable != null) {
+            outputVariable.setType(ruleInfo.getMaxCount(), targetElement.getSd(), targetElement.getEd(), null);
+          }
+        } else {
+          implicitCopy = false;
+        }
+      }
+
+      // Stage 3: apply the result type to the output variable.
+      if (outputVariable != null && transformResult.type != null) {
+        if (targetElement == null || ProfileUtilities.isResourceBoundary(targetElement.getEd())) {
+          StructureDefinition typeDefinition = this.context.fetchTypeDefinition(transformResult.type);
+          String messageId = targetElement == null ? I18nConstants.SM_TARGET_TYPE_UNKNOWN : I18nConstants.SM_TARGET_TRANSFORM_TYPE_UNKNOWN;
+          if (rule(errors, "2023-07-30", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), typeDefinition != null, messageId, transformResult.type)) {
+            outputVariable.setType(ruleInfo.getMaxCount(), typeDefinition, typeDefinition.getSnapshot().getElementFirstRep(), null);
+          } else if (targetElement == null) {
+            ok = false;
+          } else {
+            outputVariable.setType(ruleInfo.getMaxCount(), targetElement.getSd(), targetElement.getEd(), transformResult.type);
+          }
+        } else {
+          outputVariable.setType(ruleInfo.getMaxCount(), targetElement.getSd(), targetElement.getEd(), transformResult.type);
+        }
+      }
+      if (targetElement != null && targetElement.getEd().getTypeList().size() > 1) {
+        warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), transformResult.type != null || implicitCopy, I18nConstants.SM_TARGET_TYPE_MULTIPLE_POSSIBLE, targetElement.getEd().typeSummary());
       }
     }
     return ok;
-  
   }
 
-  private boolean checkParamExistsOrPrimitive(List<ValidationMessage> errors, Element e, String string, String string2, Element target, VariableSet variables, NodeStack stack, boolean ok, boolean mandatory) {
+  private static class TransformValidationResult {
+    private boolean ok;
+    private String type;
+
+    private TransformValidationResult(boolean ok, String type) {
+      this.ok = ok;
+      this.type = type;
+    }
+  }
+
+  private TransformValidationResult validateTargetTransform(List<ValidationMessage> errors, Element src, Element target, NodeStack stack, VariableSet variables,
+      String transform, List<Element> params, VariableDefn contextVariable, ElementDefinitionSource targetElement, String initialType) {
+    boolean ok = true;
+    String type = initialType;
+    if (transform == null) {
+      warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED, transform);
+      return new TransformValidationResult(true, type);
+    }
+    switch (transform) {
+    case "create":
+      ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() < 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, transform, "0", "1", params.size());
+      if (params.size() == 1) {
+        type = params.get(0).getChildValue("value");
+        if (!Utilities.isAbsoluteUrl(type)) {
+          type = resolveType(type, "target", src);
+          if (!Utilities.isAbsoluteUrl(type)) {
+            StructureDefinition typeDefinition = this.context.fetchTypeDefinition(type);
+            if (typeDefinition != null) {
+              type = typeDefinition.getType();
+            }
+          }
+        }
+        warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), type != null, I18nConstants.SM_TARGET_TRANSFORM_TYPE_UNPROCESSIBLE, transform);
+      }
+      break;
+    case "copy":
+      ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() < 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, transform, "0", "1", params.size());
+      if (params.size() == 1) {
+        type = params.get(0).getChildValue("value");
+        warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), type != null, I18nConstants.SM_TARGET_TRANSFORM_TYPE_UNPROCESSIBLE, transform);
+      }
+      break;
+    case "reference":
+      ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 1, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, transform, "1", "1", params.size());
+      type = "string";
+      break;
+    case "evaluate":
+      ok = validateEvaluateTransform(errors, target, stack, variables, params, contextVariable);
+      if (ok) {
+        type = inferEvaluateType(variables, params, contextVariable);
+      }
+      break;
+    case "cc":
+      ok = rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() >= 1 && params.size() <= 3, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform);
+      if (params.size() == 1) {
+        ok = checkParamExistsOrPrimitive(errors, getParamValue(params, 0), transform, "text", target, variables, stack, ok, true);
+      } else {
+        ok = checkParamExistsOrPrimitive(errors, getParamValue(params, 0), transform, "system", target, variables, stack, ok, true);
+        ok = checkParamExistsOrPrimitive(errors, getParamValue(params, 1), transform, "code", target, variables, stack, ok, true);
+        ok = checkParamExistsOrPrimitive(errors, getParamValue(params, 2), transform, "display", target, variables, stack, ok, false);
+      }
+      type = "CodeableConcept";
+      break;
+    case "append":
+      ok = rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), !params.isEmpty(), I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform);
+      for (int i = 0; i < params.size(); i++) {
+        ok = checkParamExistsOrPrimitive(errors, getParamValue(params, i), transform, "parameter "+i, target, variables, stack, ok, false);
+      }
+      type = "string";
+      break;
+    case "uuid":
+      ok = rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.isEmpty(), I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform);
+      type = "string";
+      break;
+    case "translate":
+      ok = validateTranslateTransform(errors, src, target, stack, variables, params, contextVariable, targetElement);
+      break;
+    case "truncate":
+      ok = rule(errors, "2026-08-31", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, transform, "2", "2", params.size());
+      ok = checkTransformParam(errors, getParamValue(params, 0), transform, "source", target, variables, stack, ok, true);
+      ok = checkTransformParam(errors, getParamValue(params, 1), transform, "length", target, variables, stack, ok, true);
+      type = "string";
+      break;
+    case "cast":
+      ok = rule(errors, "2026-08-31", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 1 || params.size() == 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, transform, "1", "2", params.size());
+      ok = checkTransformParam(errors, getParamValue(params, 0), transform, "source", target, variables, stack, ok, true);
+      ok = checkTransformParam(errors, getParamValue(params, 1), transform, "type", target, variables, stack, ok, false);
+      break;
+    case "c":
+      ok = rule(errors, "2026-08-31", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 2 || params.size() == 3, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, transform, "2", "3", params.size());
+      ok = checkTransformParam(errors, getParamValue(params, 0), transform, "system", target, variables, stack, ok, true);
+      ok = checkTransformParam(errors, getParamValue(params, 1), transform, "code", target, variables, stack, ok, true);
+      ok = checkTransformParam(errors, getParamValue(params, 2), transform, "display", target, variables, stack, ok, false);
+      type = "Coding";
+      break;
+    case "cp":
+      ok = rule(errors, "2026-08-31", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 1 || params.size() == 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, transform, "1", "2", params.size());
+      for (int i = 0; i < params.size(); i++) {
+        ok = checkTransformParam(errors, getParamValue(params, i), transform, "parameter "+i, target, variables, stack, ok, true);
+      }
+      type = "ContactPoint";
+      break;
+    case "id":
+      ok = rule(errors, "2026-08-31", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 2 || params.size() == 3, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, transform, "2", "3", params.size());
+      ok = checkTransformParam(errors, getParamValue(params, 0), transform, "system", target, variables, stack, ok, true);
+      ok = checkTransformParam(errors, getParamValue(params, 1), transform, "value", target, variables, stack, ok, true);
+      ok = checkTransformParam(errors, getParamValue(params, 2), transform, "type", target, variables, stack, ok, false);
+      type = "Identifier";
+      break;
+    case "qty":
+      ok = rule(errors, "2026-08-31", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 1 || params.size() == 2 || params.size() == 4, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, transform, "1", "2 or 4", params.size());
+      for (int i = 0; i < params.size(); i++) {
+        ok = checkTransformParam(errors, getParamValue(params, i), transform, "parameter "+i, target, variables, stack, ok, true);
+      }
+      type = "Quantity";
+      break;
+    default:
+      warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_NOT_CHECKED, transform);
+    }
+    return new TransformValidationResult(ok, type);
+  }
+
+  private Element getParamValue(List<Element> params, int index) {
+    return params.size() > index ? params.get(index).getNamedChild("value", false) : null;
+  }
+
+  private boolean validateEvaluateTransform(List<ValidationMessage> errors, Element target, NodeStack stack, VariableSet variables, List<Element> params, VariableDefn contextVariable) {
+    boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 1 || params.size() == 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, "evaluate", "1", "2", params.size());
+    if (ok) {
+      Element expression = params.get(params.size() - 1);
+      String value = expression.getChildValue("value");
+      ok = rule(errors, "2023-03-01", IssueType.INVALID, expression.line(), expression.col(), stack.getLiteralPath(), value != null, I18nConstants.SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE, Integer.toString(params.size() - 1), params.size());
+      if (ok) {
+        try {
+          if (params.size() == 2) {
+            // the first parameter is the context to actually use for the evaluation
+            contextVariable = variables.getVariable(params.get(0).getChildValue("value"));
+          }
+          checkEvaluateExpression(variables, expression, value, contextVariable);
+        } catch (Exception e) {
+          ok = rule(errors, "2023-03-01", IssueType.INVALID, expression.line(), expression.col(), stack.getLiteralPath(), false, I18nConstants.SM_TARGET_TRANSFORM_EXPRESSION_ERROR, e.getMessage());
+        }
+      }
+    }
+    return ok;
+  }
+
+  private String inferEvaluateType(VariableSet variables, List<Element> params, VariableDefn contextVariable) {
+    try {
+      Element expression = params.get(params.size() - 1);
+      TypeDetails details = checkEvaluateExpression(variables, expression, expression.getChildValue("value"), contextVariable);
+      if (details.getTypes().size() == 1) {
+        String type = TypeDetails.FhirTypeName(details.getType());
+        if (type != null && details.getType().startsWith(TypeDetails.FP_NS)) {
+          StructureDefinition typeDefinition = this.context.fetchTypeDefinition(type);
+          if (typeDefinition != null) {
+            type = typeDefinition.getType();
+          }
+        }
+        return type;
+      }
+    } catch (Exception e) {
+      // The validation pass has already reported this expression error.
+    }
+    return null;
+  }
+
+  private TypeDetails checkEvaluateExpression(VariableSet variables, Element expression, String value, VariableDefn contextVariable) throws Exception {
+    fpe.setLocation(expression.getPath());
+    if (contextVariable == null) {
+      return fpe.check(variables, (String) null, (String) null, null, fpe.parse(value));
+    }
+    return fpe.check(variables, null, contextVariable.getSd().getUrl(), contextVariable.getEd().getPath(), fpe.parse(value));
+  }
+
+  private boolean validateTranslateTransform(List<ValidationMessage> errors, Element src, Element target, NodeStack stack, VariableSet variables, List<Element> params,
+      VariableDefn contextVariable, ElementDefinitionSource targetElement) {
+    boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 3, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, "translate");
+    Element source = getParamValue(params, 0);
+    Element map = getParamValue(params, 1);
+    Element mode = getParamValue(params, 2);
+    VariableDefn sourceVariable = null;
+    if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), source != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, "source")) {
+      if ("id".equals(source.fhirType())) {
+        sourceVariable = variables.getVariable(source.getValue(), true);
+        ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), sourceVariable != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_UNKNOWN_SOURCE, source.getValue()) && ok;
+      }
+    } else {
+      ok = false;
+    }
+    if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), map != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, "map_uri")) {
+      String reference = map.getValue();
+      ConceptMap conceptMap;
+      if (reference.startsWith("#")) {
+        conceptMap = (ConceptMap) loadContainedResource(errors, stack.getLiteralPath(), src, reference.substring(1), ConceptMap.class);
+        ok = rule(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), conceptMap != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, reference) && ok;
+      } else {
+        conceptMap = this.context.fetchResource(ConceptMap.class, reference, ExtensionUtilities.getVersionResolutionRulesBase(map));
+        warning(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), conceptMap != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, reference);
+      }
+      if (conceptMap != null && ((contextVariable != null && contextVariable.hasTypeInfo()) || (sourceVariable != null && sourceVariable.hasTypeInfo()))) {
+        ok = checkConceptMap(errors, target.line(), target.col(), stack.getLiteralPath(), conceptMap, sourceVariable == null ? null : sourceVariable.getEd(), targetElement == null ? null : targetElement.getEd()) && ok;
+      }
+    } else {
+      ok = false;
+    }
+    if (mode != null) {
+      String modeCode = mode.getValue();
+      ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), Utilities.existsInList(modeCode, "code", "system", "display", "Coding", "CodeableConcept"), I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_BAD_MODE, modeCode) && ok;
+    }
+    return ok;
+  }
+
+  private boolean checkParamExistsOrPrimitive(List<ValidationMessage> errors, Element e, String transform, String parameterName, Element target, VariableSet variables, NodeStack stack, boolean ok, boolean mandatory) {
     if (!mandatory && e == null) {
       return ok;
-    } else if (rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, "system")) {
+    } else if (rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, parameterName)) {
       if ("id".equals(e.fhirType())) {
         VariableDefn sv = variables.getVariable(e.getValue(), true);
-        rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e != null, I18nConstants.SM_TARGET_TRANSFORM_OP_UNKNOWN_SOURCE, "cc", "system", e.getValue());
+        if (sv == null) {
+          // the variable could also be in an output parameter
+          sv = variables.getVariable(e.getValue(), false);
+        }
+        ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), sv != null, I18nConstants.SM_TARGET_TRANSFORM_OP_UNKNOWN_SOURCE, transform, parameterName, e.getValue()) && ok;
       } else {
-        rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e.isPrimitive(), I18nConstants.SM_TARGET_TRANSFORM_OP_INVALID_TYPE, "cc", "system",e.fhirType());
+        ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e.isPrimitive(), I18nConstants.SM_TARGET_TRANSFORM_OP_INVALID_TYPE, transform, parameterName, e.fhirType()) && ok;
       }
       return ok;
     } else { 
       return false; 
     }
  
+  }
+
+  private boolean checkTransformParam(List<ValidationMessage> errors, Element e, String transform, String parameterName, Element target, VariableSet variables, NodeStack stack, boolean ok, boolean mandatory) {
+    if (!mandatory && e == null) {
+      return ok;
+    } else if (rule(errors, "2026-08-31", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, parameterName)) {
+      if ("id".equals(e.fhirType())) {
+        VariableDefn sv = variables.getVariable(e.getValue(), true);
+        if (sv == null) {
+          // the variable could also be in an output parameter
+          sv = variables.getVariable(e.getValue(), false);
+        }
+        ok = rule(errors, "2026-08-31", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), sv != null, I18nConstants.SM_TARGET_TRANSFORM_OP_UNKNOWN_SOURCE, transform, parameterName, e.getValue()) && ok;
+      } else {
+        ok = rule(errors, "2026-08-31", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), e.isPrimitive(), I18nConstants.SM_TARGET_TRANSFORM_OP_INVALID_TYPE, transform, parameterName, e.fhirType()) && ok;
+      }
+      return ok;
+    } else { 
+      return false; 
+    }
   }
 
   private boolean isElementandSlicing(List<ElementDefinitionSource> els) {
@@ -1037,7 +1231,7 @@ public class StructureMapValidator extends BaseValidator {
         }        
       }
     }
-    if (srcED != null) {
+    if (tgtED != null) {
       if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, tgtED.getBinding().hasValueSet() && tgtED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_TARGET)) {
         ValueSet vs = context.findTxResource(ValueSet.class, tgtED.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(tgtED.getBinding().getValueSetElement()));
         if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vs != null, I18nConstants.SM_TARGET_TRANSLATE_BINDING_VS_TARGET, tgtED.getBinding().getValueSet())) {
@@ -1057,7 +1251,7 @@ public class StructureMapValidator extends BaseValidator {
               }
             }
             if (b.count() > 0) {
-              warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, srcED.getBinding().hasValueSet() && srcED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_TARGET_WRONG, b.toString());
+              warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, tgtED.getBinding().hasValueSet() && tgtED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_TARGET_WRONG, b.toString());
             }
           }          
         }        
@@ -1458,7 +1652,7 @@ public class StructureMapValidator extends BaseValidator {
     if (!Utilities.isAbsoluteUrl(t1)) {
       t1 = "http://hl7.org/fhir/StructureDefinition/"+t1;
     }
-    if (!Utilities.isAbsoluteUrl(t1)) {
+    if (!Utilities.isAbsoluteUrl(t2)) {
       t2 = "http://hl7.org/fhir/StructureDefinition/"+t2;
     }
     return t1.equals(t2);

@@ -798,6 +798,9 @@ public class I18nConstants {
   public static final String SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___DISCIMINATOR___ = "Slicing_rules_on_differential__do_not_match_those_on_base___disciminator___";
   public static final String SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___ORDER___ = "Slicing_rules_on_differential__do_not_match_those_on_base___order___";
   public static final String SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___RULE___ = "Slicing_rules_on_differential__do_not_match_those_on_base___rule___";
+  public static final String SM_CONSTANT_NAME_MISSING = "SM_CONSTANT_NAME_MISSING";
+  public static final String SM_CONSTANT_VALUE_MISSING = "SM_CONSTANT_VALUE_MISSING";
+  public static final String SM_CONSTANT_TYPE_UNDETERMINED = "SM_CONSTANT_TYPE_UNDETERMINED"; 
   public static final String SM_DEPENDENT_PARAM_MODE_MISMATCH = "SM_DEPENDENT_PARAM_MODE_MISMATCH";
   public static final String SM_DEPENDENT_PARAM_NOT_FOUND = "SM_DEPENDENT_PARAM_NOT_FOUND";
   public static final String SM_DEPENDENT_PARAM_TYPE_MISMATCH = "SM_DEPENDENT_PARAM_TYPE_MISMATCH";
@@ -855,6 +858,8 @@ public class I18nConstants {
   public static final String SM_TARGET_TYPE_MULTIPLE_POSSIBLE = "SM_TARGET_TYPE_MULTIPLE_POSSIBLE";
   public static final String SM_TARGET_TYPE_NOT_FOUND = "SM_TARGET_TYPE_NOT_FOUND";
   public static final String SM_TARGET_TYPE_UNKNOWN = "SM_TARGET_TYPE_UNKNOWN";
+  public static final String SM_TARGET_TYPE_INVALID = "SM_TARGET_TYPE_INVALID";
+  public static final String SM_TARGET_PATH_TYPE_INVALID = "SM_TARGET_PATH_TYPE_INVALID";
   public static final String SNAPSHOT_CONSTRAINT_KEY_CONFLICT = "SNAPSHOT_CONSTRAINT_KEY_CONFLICT";
   public static final String SNAPSHOT_DIFF_LOOSENS = "SNAPSHOT_DIFF_LOOSENS";
   public static final String SNAPSHOT_EXTENSION_SLICE_ON_SLICER = "SNAPSHOT_EXTENSION_SLICE_ON_SLICER";
