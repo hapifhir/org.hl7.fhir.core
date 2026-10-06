@@ -1,22 +1,55 @@
+## R6 Version
+
+* As of this version, internal processing is moving to be based on R6 not R5
+* Support the new R6 release (6.0.0-snapshot1), and get the R6 tests passing and into the pipeline
+* Deploy new model, services and standalone modules to the repositories
+* Port the supporting libraries from R5 to R6
+* Various fixes for the core spec R6 build, and for R6 incubator IGs
+
 ## Validator Changes
 
-* The OperationOutcome the validator produces now carries a `validator-version` extension (defined in the tooling IG) holding the same version/build line the validator logs at start up, e.g. "FHIR Validation tool Version 6.10.3-SNAPSHOT (Git# 5f774e5d63a1). Built 2026-08-22T00:02:31.157+10:00 (16 days old)". A validation report says nothing today about what produced it, so a report from a build that is a year old reads exactly like one from this morning
-
-* txTests over HTTP (how the server-side runners drive the tests): a test gated on a mode that was not requested came back as the bare string "n/a", which the caller reports as a plain failure with no reason - a whole suite gated on a mode the caller forgot to send arrives as a wall of unexplained failures. It now names the mode that would have run the test and the modes that were actually asked for. It is still not a pass: the test did not run, and saying it passed would be worse
-* txTests over HTTP: `icd-11` added to the default mode set, which had been missed when the mode set was last extended
-* txTests: the caller can name the folder the run writes into, with the new `folder` parameter, instead of it being taken from the server's host name. It is a name and not a path - the output still goes under the temp directory - and it is checked for being usable on every OS the tests run on (no separators, no `..`, no trailing `.`, and none of the names Windows reserves for devices). Without it, a caller that runs one server several ways has every variant writing into the same folder
-* txTests: each test can carry a `label`, which is a subfolder of the run folder that all of that test's output goes into; no label puts it in the root as before. R4 and R5 runs of the same test write the same two filenames, so without a label only the last one survives - and it does not say which one it was
-* txTests: `$versions` was never actually used to determine a server's FHIR version. Two faults, both silent because the fallback to `/metadata` works: the response was written to `actual/$versions.json` before anything had created that directory, so the write threw and the probe was recorded as failed (this only hit `executeTest()` - server mode and the JUnit runners - because a whole run creates the directory first); and the `default` parameter was only read as `valueString`, where servers send `valueCode`. A server that supports `$versions` but not `/metadata` could not be tested at all
-* FHIRPath static analysis typed `split()` as returning a single string, so `first()`, `last()`, `tail()`, `skip()` and `take()` on its result raised a spurious "not a collection" warning - which lands in an IG's QA report. It is now typed as an ordered collection, like `toChars()`, in the R4, R4B, R5 and R6 engines; runtime behaviour is unchanged
-* Terminology: a ValueSet that requires a supplement to a code system only the terminology server has (e.g. `urn:iso:std:iso:3166`, which THO 7 no longer carries a stub for) failed every code with "Required supplement not found". With no local copy of the code system to merge the supplement into, it was never counted as used, and the value set the server checked the code against didn't require it. The server is now asked to apply it. A supplement to a particular version of the code system only applies to that version, and is now sent to the server with the value set even though we don't have that version
+* Terminology: send required code system supplements to the server (including versioned supplements and server-side includes) and count server-applied supplements as used
+* Terminology: fixes for contained resources (including circularities), mixed inactive codes, missing code or system, and resource status checking
+* Terminology: the router no longer queries every server for a code system that doesn't exist; dummy value sets get a consistent URL so they cache
+* Snapshot generation: rework how datatype profile root constraints migrate into the referencing element, stop copying slicer constraints into slices, always close type slicing, and fix type-specific constraints (binding, maxLength) found in US Core
+* Snapshot generation: fix additional-base merges, mapping identity collisions, slice groups that end the snapshot, obligation bindings and extensions, label and additional binding merges, pattern handling, and wrong URLs in R6 snapshot processing
+* FHIRPath: fix =/!= on mismatched types and hasValue()/getValue() on complex types; join() on an empty collection returns empty; split() is typed as an ordered collection in static analysis
+* Allow ElementDefinition.constraint.source to name an imposed profile
+* Match the reference host, not a substring, in policyForReference
+* Fix time validation problem
+* Fix base64Binary whitespace handling
+* Add missing SPDX codes
+* Add support for Questionnaire variables (SDC), including launch context (#2404), and Questionnaire answer constraints (#2549)
+* Add support for AdditionalBinding.usage when validating
+* Improved error messages for failed invariants and constraints
+* OperationOutcomes produced by the validator now carry a `validator-version` extension (#2459)
+* StructureDefinition validation: validate root ElementDefinitions, move the slicing cardinality consistency check from the snapshot generator to the validator, and fix profiles being validated against the wrong version context
+* Missing ELM in a CQL Library is now a warning, not an error
+* Terminology cache rework (#2332): less frequent atomic flushing, nonce moved to a partner file, fixed cache key conflicts, and only load from disk when asked
+* HTTP server: /loadIG accepts a server-local path only when bound to loopback (#2617)
 
 ## Other code changes
 
-* Rendering: new narrative renderers for Organization, OrganizationAffiliation, HealthcareService, Endpoint and Location, in the same banner + table style as Patient, for R4, R5 and R6 content (e.g. R4 telecom/address and availableTime vs R5+ ExtendedContactDetail and Availability; R4 Location.hoursOfOperation; Location position and virtual services; Endpoint payloads). The contact, availability and qualification rendering is now shared in ParticipantRendererBase
-* Rendering: the R6 RelativeTime datatype is now rendered (e.g. "12 months before Study enrolment", "0-30 days after Study protocol (action.timing)") instead of "No display for RelativeTime"; Duration, Distance and Count (and Age, in summaries) render as quantities - they also fell through to "No display for ..."
-* Rendering: new narrative renderer for Group, in the same style as Patient - a banner, the group's properties, then tables of characteristics and members (the first 50). Handles R4 (actual), R5 (membership) and R6, where Group is a canonical resource and gets the usual summary table, plus the new characteristic details and member involvement
-* Rendering fixes: CodeableConcept summaries never used `text` (looked for "Text"); a reference with only a `display` rendered as an internal object dump instead of the display; identifiers rendered "(use: official, )" with a dangling comma; and an identifier whose type has only a code lost its value in summaries ("Medical record number" instead of "Medical record number: 14200")
-* Rendering: new narrative renderers for Practitioner, PractitionerRole and RelatedPerson, laid out like Patient (summary banner, then a table, with the photo alongside where there is one). They work through the resource wrapper, so they handle the R4, R5 and R6 shapes of these resources (e.g. R4 PractitionerRole telecom/availableTime vs R5+ contact/availability). These resources inside a Parameters or Bundle now render with them too, instead of the generic profile-driven layout. The code the four renderers share is in the new ParticipantRendererBase
-* Provenance rendering (R4, R5 and R6): show `patient`, `encounter`, `basedOn`, `reason` (R4), `authorization` (R5/R6) and `why` (R6) in the summary table, fix agent roles never being shown, and add an Entities table listing the first 10 `entity` entries (HL7/fhir-ig-publisher#1225)
-* Fix the copy of a worker context: keep the package information and the master definitions, so that unversioned canonicals resolve to the same version as in the original context (e.g. R4 core CodeSystem instead of the R5 one from hl7.fhir.uv.xver-r5.r4)
-* R5 -> R4 and R5 -> R4B conversion dropped `ValueSet.compose.property` - the element a client uses to say which properties it wants back in an expansion. Neither R4 nor R4B has the element, so it now travels as the cross-version extension `http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.property` and is read back on the way up. Before this, a value set that asked for properties came back without them after a round trip, which looks like a terminology server fault rather than a conversion one
+* Security: Depth limits in the JSON, XML, Turtle, XHTML and SHC parsers
+* txTests: report why a mode-gated test didn't run, add icd-11 to the default modes, add `folder` and `label` parameters, fix the `$versions` probe, and support `$closure`
+* Rendering: new narrative renderers for Organization, OrganizationAffiliation, HealthcareService, Endpoint, Location, Group, Practitioner, PractitionerRole and RelatedPerson; render RelativeTime, Duration, Distance and Count
+* Rendering: Provenance shows patient, encounter, basedOn, reason/authorization/why, agent roles and an Entities table (HL7/fhir-ig-publisher#1225)
+* Rendering: improved rendering of Additional Resources, change tracking in StructureDefinitions, and standards status on ValueSet.compose.include.concept
+* Rendering: WCAG accessibility fixes, and new XHTML utilities to support WCAG
+* Rendering: add a Translatable flag
+* Rendering fixes: CodeableConcept text, display-only references, identifiers, ConceptMap relationship anchors, R6 Requirements, TestReport score, unclosed elements in the copy-XML buttons, illegal html in resources, and no narrative links when there's no web path
+* Fix the copy of a worker context to keep package information and master definitions; remove context copying in R4 and R4B
+* Package loading speed improvements, plus a new load resource by type/id method
+* Work around a problem with an extension definition in old builds of the extensions pack
+* NPM package generator fixes for core dependencies and versionless dependsOn, plus an immutable package dependency planner
+* Conversion: R5 -> R4/R4B carries ValueSet.compose.property as an extension; fix type "Any", FHIR version codes, and the ValueSet scope extension (FHIR-53122)
+* Fix JSON round-tripping of decimal literals (e.g. 1.0e0)
+* Fix setting XHTML properties in the element model, and parsing additional resources as contained resources
+* Add base adaptors for using engines across versions
+* SQL on FHIR: %rowIndex and repeat support, bounded repeat recursion, and runner/validator fixes aligned across R4, R5 and R6
+* Fix a terminology client parameter size limit
+* Mark R4B code (and more R4 code) deprecated for removal
+* Replace the xpp3 and org.everit.json dependencies, and add a Maven license check
+* Import leftover translations (adding Ukrainian) and remove the Crowdin set up
+* StructureMap/FML: many evaluation and validation fixes - constants, cp/qty/id/c/cc transforms, sub-element sources/targets, choice types, type resolution and analysis, and parse/render of version metadata and trailing comments
+
