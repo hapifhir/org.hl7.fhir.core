@@ -22,9 +22,8 @@ public class Element10_50 {
                           String path,
                           String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
-    src.getExtension().stream()
-      .filter(e -> !isExemptExtension(e.getUrl(), extensionUrlsToIgnore))
-      .forEach(e -> {
+    for (org.hl7.fhir.dstu2.model.Extension e : src.getExtension()) {
+      if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
         if (advisor.useAdvisorForExtension(path, e)) {
           org.hl7.fhir.r5.model.Extension convertedExtension = new org.hl7.fhir.r5.model.Extension();
           advisor.handleExtension(path, e, convertedExtension);
@@ -32,7 +31,8 @@ public class Element10_50 {
         } else {
           tgt.addExtension(Extension10_50.convertExtension(e));
         }
-      });
+      }
+    }
   }
 
   public void copyElement(org.hl7.fhir.r5.model.Element src,
@@ -40,9 +40,8 @@ public class Element10_50 {
                           String path,
                           String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
-    src.getExtension().stream()
-      .filter(e -> !isExemptExtension(e.getUrl(), extensionUrlsToIgnore))
-      .forEach(e -> {
+    for (org.hl7.fhir.r5.model.Extension e : src.getExtension()) {
+      if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
         if (advisor.useAdvisorForExtension(path, e)) {
           org.hl7.fhir.dstu2.model.Extension convertedExtension = new org.hl7.fhir.dstu2.model.Extension();
           advisor.handleExtension(path, e, convertedExtension);
@@ -50,7 +49,8 @@ public class Element10_50 {
         } else {
           tgt.addExtension(Extension10_50.convertExtension(e));
         }
-      });
+      }
+    }
   }
 
   public void copyElement(org.hl7.fhir.r5.model.DomainResource src,
@@ -58,9 +58,8 @@ public class Element10_50 {
                           String path,
                           String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
-    src.getExtension().stream()
-      .filter(e -> !isExemptExtension(e.getUrl(), extensionUrlsToIgnore))
-      .forEach(e -> {
+    for (org.hl7.fhir.r5.model.Extension e : src.getExtension()) {
+      if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
         if (advisor.useAdvisorForExtension(path, e)) {
           org.hl7.fhir.dstu2.model.Extension convertedExtension = new org.hl7.fhir.dstu2.model.Extension();
           advisor.handleExtension(path, e, convertedExtension);
@@ -68,6 +67,7 @@ public class Element10_50 {
         } else {
           tgt.addExtension(Extension10_50.convertExtension(e));
         }
-      });
+      }
+    }
   }
 }
