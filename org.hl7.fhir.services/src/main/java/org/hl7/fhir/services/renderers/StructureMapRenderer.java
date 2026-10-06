@@ -63,6 +63,9 @@ public class StructureMapRenderer extends TerminologyRenderer {
     x.tx("\r\n");
     if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion())) {
       renderMetadata(x, "url", map.getUrlElement());
+      if (map.hasVersion()) {
+        renderMetadata(x, "version", map.getVersionElement());
+      }
       renderMetadata(x, "name", map.getNameElement());
       if (map.hasTitle()) {
         renderMetadata(x, "title", map.getTitleElement());
