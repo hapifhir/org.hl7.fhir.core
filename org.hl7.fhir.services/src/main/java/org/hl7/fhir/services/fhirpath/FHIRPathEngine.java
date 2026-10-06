@@ -208,7 +208,7 @@ public class FHIRPathEngine {
     analysis = (FHIRPathAnalysis) worker.retrieveAnalysis(this.getClass());
     if (analysis == null) {
       analysis = new FHIRPathAnalysis();
-      for (StructureDefinition sd : worker.fetchResourcesByType(StructureDefinition.class)) {
+      for (StructureDefinition sd : worker.fetchSpecializations()) {
         if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
           analysis.allTypes.put(sd.getName(), sd);
         }
