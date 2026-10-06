@@ -364,6 +364,9 @@ public class JsonTrackingParser {
   private boolean errorOnDuplicates = true;
   private boolean allowComments = false;
 
+  private static final int MAX_JSON_DEPTH = 500;
+  private int parseDepth = 0;
+
   public static JsonObject parseJson(String source) throws IOException {
     return parse(source, null);
   }
@@ -450,6 +453,13 @@ public class JsonTrackingParser {
   }
 
 	private void readObject(JsonObject obj, boolean root) throws IOException {
+    parseDepth++;
+    try {
+      // guard against unbounded recursion in readObject/readArray (mutually recursive on nested
+      // objects/arrays) on deeply nested JSON, which would otherwise cause a StackOverflowError.
+      if (parseDepth > MAX_JSON_DEPTH) {
+        throw lexer.error("Exceeded maximum JSON nesting depth of " + MAX_JSON_DEPTH);
+      }
 	  if (map != null)
       map.put(obj, lexer.location.copy());
 
@@ -524,9 +534,19 @@ public class JsonTrackingParser {
 			}
 			next();
 		}
+	  } finally {
+	    parseDepth--;
+	  }
 	}
 
 	private boolean readArray(JsonArray arr, boolean root) throws IOException {
+    parseDepth++;
+    try {
+      // guard against unbounded recursion in readObject/readArray (mutually recursive on nested
+      // objects/arrays) on deeply nested JSON, which would otherwise cause a StackOverflowError.
+      if (parseDepth > MAX_JSON_DEPTH) {
+        throw lexer.error("Exceeded maximum JSON nesting depth of " + MAX_JSON_DEPTH);
+      }
 	  boolean res = false;
 	  while (!((itemType == ItemType.End) || (root && (itemType == ItemType.Eof)))) {
 	    res  = true;
@@ -577,6 +597,9 @@ public class JsonTrackingParser {
 	    next();
 	  }
 	  return res;
+	  } finally {
+	    parseDepth--;
+	  }
 	}
 
   private void next() throws IOException {
