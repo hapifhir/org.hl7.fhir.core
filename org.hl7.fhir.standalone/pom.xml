@@ -6,7 +6,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>7.0.0-SNAPSHOT</version>
+        <version>7.0.0</version>
     </parent>
 
     <artifactId>org.hl7.fhir.standalone</artifactId>
@@ -137,7 +137,7 @@
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.convertors</artifactId>
-            <version>7.0.0-SNAPSHOT</version>
+            <version>7.0.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
