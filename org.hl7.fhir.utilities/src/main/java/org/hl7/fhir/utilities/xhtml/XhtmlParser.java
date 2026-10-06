@@ -361,13 +361,16 @@ public class XhtmlParser {
   }
 
   public XhtmlNode parseHtmlNode(Element node, String defaultNS) throws FHIRFormatError  {
-    XhtmlNode res = parseNode(node, defaultNS);
+    XhtmlNode res = parseNode(node, defaultNS, 0);
     if (res.getNsDecl() == null)
       res.getAttributes().put("xmlns", XHTML_NS);
     return res;
   }
 
-  private XhtmlNode parseNode(Element node, String defaultNS) throws FHIRFormatError  {
+  private XhtmlNode parseNode(Element node, String defaultNS, int depth) throws FHIRFormatError  {
+    if (depth > MAX_XHTML_DEPTH) {
+      throw new FHIRFormatError("XHTML nesting depth exceeds maximum of "+MAX_XHTML_DEPTH+descLoc());
+    }
     XhtmlNode res = new XhtmlNode(NodeType.Element);
     res.setName(node.getLocalName());
     defaultNS = checkNS(res, node, defaultNS);
@@ -384,7 +387,7 @@ public class XhtmlParser {
         res.addComment(child.getTextContent());
       } else if (child.getNodeType() == Node.ELEMENT_NODE) {
         if (elementIsOk(child.getLocalName()))
-          res.addChildNode(parseNode((Element) child, defaultNS));
+          res.addChildNode(parseNode((Element) child, defaultNS, depth+1));
       } else
         throw new FHIRFormatError("Unhandled XHTML feature: "+Integer.toString(child.getNodeType())+descLoc());
       child = child.getNextSibling();
@@ -404,13 +407,16 @@ public class XhtmlParser {
   }
 
   public XhtmlNode parseHtmlNode(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError  {
-    XhtmlNode res = parseNode(xpp);
+    XhtmlNode res = parseNode(xpp, 0);
     if (res.getNsDecl() == null)
       res.getAttributes().put("xmlns", XHTML_NS);
     return res;
 
   }
-  private XhtmlNode parseNode(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError  {
+  private XhtmlNode parseNode(XmlPullParser xpp, int depth) throws XmlPullParserException, IOException, FHIRFormatError  {
+    if (depth > MAX_XHTML_DEPTH) {
+      throw new FHIRFormatError("XHTML nesting depth exceeds maximum of "+MAX_XHTML_DEPTH+descLoc());
+    }
     XhtmlNode res = new XhtmlNode(NodeType.Element);
     res.setName(xpp.getName());
 
@@ -431,7 +437,7 @@ public class XhtmlParser {
         xpp.next();
       } else if (eventType == XmlPullParser.START_TAG) {
         if (elementIsOk(xpp.getName()))
-          res.addChildNode(parseNode(xpp));
+          res.addChildNode(parseNode(xpp, depth+1));
       } else
         throw new FHIRFormatError("Unhandled XHTML feature: "+Integer.toString(eventType)+descLoc());
       eventType = xpp.getEventType();
@@ -749,12 +755,7 @@ public class XhtmlParser {
 
   private void parseElement(XhtmlNode parent, List<XhtmlNode> parents, NamespaceNormalizationMap namespaceMap) throws IOException, FHIRFormatError
   {
-    // guard against unbounded recursion (parseElement <-> parseElementInner) on deeply nested
-    // narratives, which would otherwise cause a StackOverflowError. parents grows by one per
-    // nesting level, so it is a faithful proxy for the current depth.
-    if (parents.size() > MAX_XHTML_DEPTH) {
-      throw new FHIRFormatError("XHTML nesting depth exceeds maximum of "+MAX_XHTML_DEPTH+descLoc());
-    }
+    checkRecursionLimit(parents);
     markLocation();
     ElementName name = new ElementName(readName());
     XhtmlNode node = parent.addTag(name.getName());
@@ -775,6 +776,18 @@ public class XhtmlParser {
     } else {
       node.setEmptyExpanded(true);
       parseElementInner(node, newParents, namespaceMap);
+    }
+  }
+
+  /*
+   guard against unbounded recursion (parseElement <-> parseElementInner) on deeply nested
+   narratives, which would otherwise cause a StackOverflowError. parents grows by one per
+   nesting level, so it is a faithful proxy for the current depth.
+   */
+  private void checkRecursionLimit(List<XhtmlNode> parents) {
+
+    if (parents.size() > MAX_XHTML_DEPTH) {
+      throw new FHIRFormatError("XHTML nesting depth exceeds maximum of "+MAX_XHTML_DEPTH+descLoc());
     }
   }
 

@@ -284,11 +284,18 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 		return xpp;
 	}
 
+	private static final int MAX_XML_DEPTH = 500;
+
 	protected int next(XmlPullParser xpp) throws XmlPullParserException, IOException {
+    // guard against unbounded recursion in the generated per-type parse methods (e.g.
+    // Extension.extension, Parameters.parameter.part) on deeply nested resources.
+    if (xpp.getDepth() > MAX_XML_DEPTH) {
+			throw new FHIRFormatError("XML nesting depth exceeds maximum of "+MAX_XML_DEPTH+" @ "+pathForLocation(xpp));
+		}
 		if (handleComments)
 			return xpp.nextToken();
 		else
-			return xpp.next();    
+			return xpp.next();
 	}
 
 	protected List<String> comments = new ArrayList<String>();
@@ -435,7 +442,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 		next(xpp);
 		int eventType = nextNoWhitespace(xpp);
 		if (eventType == XmlPullParser.START_TAG) { 
-			Resource r = (Resource) parseResource(xpp);
+			Resource r = parseResource(xpp);
 			nextNoWhitespace(xpp);
 			next(xpp);
 			return r;

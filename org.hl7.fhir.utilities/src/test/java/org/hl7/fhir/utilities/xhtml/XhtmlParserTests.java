@@ -1,12 +1,18 @@
 package org.hl7.fhir.utilities.xhtml;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.w3c.dom.Element;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 class XhtmlParserTests {
 
@@ -31,6 +37,33 @@ class XhtmlParserTests {
   @Test
   void testModeratelyNestedDivStillParses() throws FHIRFormatError, IOException {
     Assertions.assertNotNull(new XhtmlParser().parse(nestedDiv(100), "div"));
+  }
+
+  // parseNode(XmlPullParser) - reached from the XML formats parsers - has no depth counter at
+  // all, unlike parseElement/parseElementInner above. A deeply nested narrative recurses until
+  // the stack is exhausted instead of failing with a FHIRFormatError.
+  @Test
+  void testDeeplyNestedDivFailsCleanlyFromPullParser() throws Exception {
+    XmlPullParserFactory factory =
+        XmlPullParserFactory.newInstance(System.getProperty(XmlPullParserFactory.PROPERTY_NAME), null);
+    factory.setNamespaceAware(true);
+    factory.setFeature(XmlPullParser.FEATURE_PROCESS_DOCDECL, false);
+    XmlPullParser xpp = factory.newPullParser();
+    xpp.setInput(new ByteArrayInputStream(nestedDiv(20000).getBytes(StandardCharsets.UTF_8)), "UTF-8");
+    while (xpp.next() != XmlPullParser.START_TAG) {
+      // skip to the root element
+    }
+    Assertions.assertThrows(FHIRFormatError.class, () -> new XhtmlParser().parseHtmlNode(xpp));
+  }
+
+  // parseNode(Element, String) - the DOM walker reached from the element-model XML parsers - has
+  // the same gap. 600 is over MAX_XHTML_DEPTH but under the jdk.xml.maxElementDepth of 1000 that
+  // XMLUtil.parseToDom imposes, so the DOM builder hands the tree over rather than rejecting it
+  // first.
+  @Test
+  void testDeeplyNestedDivFailsCleanlyFromDom() throws Exception {
+    Element root = XMLUtil.parseToDom(nestedDiv(600), true).getDocumentElement();
+    Assertions.assertThrows(FHIRFormatError.class, () -> new XhtmlParser().parseHtmlNode(root));
   }
 
   private static final String DIV = "<div xmlns=\"http://www.w3.org/1999/xhtml\">";
