@@ -15,6 +15,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRLexer;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
@@ -70,7 +71,12 @@ public class FmlParser extends ParserBase {
     FHIRLexer lexer = new FHIRLexer(text, "source", true, true);
     if (lexer.done())
       throw lexer.error("Map Input cannot be empty");
-    Element result = Manager.build(context, context.fetchTypeDefinition("StructureMap"));
+    StructureDefinition smsd = context.fetchTypeDefinition("StructureMap");
+    Element result = Manager.build(context, smsd);
+    if (ExtensionUtilities.readBoolExtension(smsd, ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
+      // FML has no syntax for resourceDefinition, but a map is always a StructureMap, so label it with the definition in use
+      result.setResourceDefinition(smsd.getVersionedUrl());
+    }
     try {
       if (lexer.hasToken("map")) {
         lexer.token("map");

@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation.cli.picocli.options;
 
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
+import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
 import picocli.CommandLine;
 
 public class TerminologyClientOptions {

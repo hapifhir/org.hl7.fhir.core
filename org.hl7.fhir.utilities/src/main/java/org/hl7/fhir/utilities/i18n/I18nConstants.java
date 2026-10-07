@@ -766,6 +766,8 @@ public class I18nConstants {
   public static final String SD_PATH_TYPE_MISMATCH = "SD_PATH_TYPE_MISMATCH";
   public static final String SD_ROOT_CHANGED = "SD_ROOT_CHANGED";
   public static final String SD_ROOT_PROHIBITED = "SD_ROOT_PROHIBITED";
+  public static final String SD_CHILD_NOT_IN_TYPE = "SD_CHILD_NOT_IN_TYPE";
+  public static final String SD_CHILD_TYPE_UNCHECKABLE = "SD_CHILD_TYPE_UNCHECKABLE";
   public static final String SD_SPECIALIZED_TYPE_MATCHES = "SD_SPECIALIZED_TYPE_MATCHES";
   public static final String SD_TABLE_PROHIBITED = "SD_TABLE_PROHIBITED";
   public static final String SD_TABLE_REQUIRED = "SD_TABLE_REQUIRED";
