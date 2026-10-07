@@ -90,8 +90,7 @@ public class TerminologyClientR6 implements ITerminologyClientN {
   }
 
   public EnumSet<FhirPublication> supportableVersions() {
-    // todo
-    return EnumSet.range(FhirPublication.STU3, FhirPublication.R5);
+    return EnumSet.range(FhirPublication.STU3, FhirPublication.R6);
   }
   
   public void setAllowedVersions(EnumSet<FhirPublication> versions) {
@@ -103,7 +102,7 @@ public class TerminologyClientR6 implements ITerminologyClientN {
   }
   
   public FhirPublication getActualVersion() {
-    return FhirPublication.R5;
+    return FhirPublication.R6;
   }
   
   
@@ -234,14 +233,14 @@ public class TerminologyClientR6 implements ITerminologyClientN {
     } catch (ClassNotFoundException e) {
       throw new FHIRException("Unable to fetch resources of type " + type + " in R6");
     }
-    Resource r5 = client.read(t, id);
-    if (r5 == null) {
-      throw new FHIRException("Unable to convert resource " + Utilities.pathURL(getAddress(), type, id) + " to R5 (internal representation)");
+    Resource r6 = client.read(t, id);
+    if (r6 == null) {
+      throw new FHIRException("Unable to convert resource " + Utilities.pathURL(getAddress(), type, id) + " to R6 (internal representation)");
     }
-    if (!(r5 instanceof CanonicalResource)) {
-      throw new FHIRException("Unable to convert resource " + Utilities.pathURL(getAddress(), type, id) + " to R5 canonical resource (internal representation)");
+    if (!(r6 instanceof CanonicalResource)) {
+      throw new FHIRException("Unable to convert resource " + Utilities.pathURL(getAddress(), type, id) + " to R6 canonical resource (internal representation)");
     }
-    return (CanonicalResource) r5;
+    return (CanonicalResource) r6;
   }
 
   @Override
