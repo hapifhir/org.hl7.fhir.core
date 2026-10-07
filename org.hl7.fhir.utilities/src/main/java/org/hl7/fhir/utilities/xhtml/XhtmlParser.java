@@ -532,7 +532,7 @@ public class XhtmlParser {
     return parse(entryName);
   }
 
-  public XhtmlDocument parseFile(File file, String entryName) throws FHIRFormatError, IOException  {
+  public XhtmlDocument parse(File file, String entryName) throws FHIRFormatError, IOException  {
     InputStream input = new FileInputStream(file);
     try {
       rdr = new InputStreamReader(input, StandardCharsets.UTF_8);
