@@ -1213,7 +1213,7 @@ public class ProfilePathProcessor {
           break;
         }
       }
-      if (t.getPath().length() < ed.getPath().length()) {
+      if (t.getPath().length() < ed.getPath().length() && !isInsideMatchingPath(t.getPath(), ed.getPath())) {
         break;
       }
       i--;
@@ -1232,6 +1232,18 @@ public class ProfilePathProcessor {
 //        log.error("checkToSeeIfSlicingExists: "+ed.getPath()+":"+ed.getSliceName()+" is not sliced");
       }
     }
+  }
+
+  /**
+   * true if path is a descendant of an element whose path matches target - e.g. Observation.value[x].id when
+   * looking for Observation.valueQuantity. The children of a choice element can have shorter paths than the
+   * renamed choice, so the length alone doesn't tell us that we've gone back past where the slicer would be
+   */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  private boolean isInsideMatchingPath(String path, String target) {
+    String[] p = path.split("\\.");
+    int depth = target.split("\\.").length;
+    return p.length > depth && pathsMatch(String.join(".", Arrays.copyOf(p, depth)), target);
   }
 
   private boolean isJumpingIntoTypeSlicing(ElementDefinition ed, ElementDefinition template) {
