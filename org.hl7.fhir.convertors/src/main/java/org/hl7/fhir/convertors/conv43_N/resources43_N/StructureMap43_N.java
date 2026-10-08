@@ -262,7 +262,7 @@ public class StructureMap43_N {
     if (src.hasTypeMode()) {
       tgt.setTypeModeElement(convertStructureMapGroupTypeMode(src.getTypeModeElement()));
     } else {
-      tgt.setTypeMode(org.hl7.fhir.r4b.model.StructureMap.StructureMapGroupTypeMode.NULL);
+      tgt.setTypeMode(org.hl7.fhir.r4b.model.StructureMap.StructureMapGroupTypeMode.NONE);
     }
     if (src.hasDocumentation())
       tgt.setDocumentationElement(String43_N.convertString(src.getDocumentationElement()));
@@ -301,7 +301,7 @@ public class StructureMap43_N {
   static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.StructureMap.StructureMapGroupTypeMode> convertStructureMapGroupTypeMode(org.hl7.fhir.model.core.Enumeration<org.hl7.fhir.model.fml.StructureMap.StructureMapGroupTypeMode> src) throws FHIRException {
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.StructureMap.StructureMapGroupTypeMode> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.StructureMap.StructureMapGroupTypeModeEnumFactory());
     if (src == null || src.isEmpty()) {
-      tgt.setValue(org.hl7.fhir.r4b.model.StructureMap.StructureMapGroupTypeMode.NULL);
+      tgt.setValue(org.hl7.fhir.r4b.model.StructureMap.StructureMapGroupTypeMode.NONE);
       return tgt;
     }
     ConversionContext43_N.INSTANCE.getVersionConvertor_43_N().copyElement(src, tgt);

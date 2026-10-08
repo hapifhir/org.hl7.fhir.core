@@ -814,7 +814,18 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     for (ConceptDefinitionComponent t : ret.getConceptList()) {
       mergeSupplements(ret, t, supplements);
     }
+    // the copy shares the original's user data, so its cross-links still lead to the original
+    // concepts, which have none of the supplement content - link the copy's own concepts instead
+    clearCrossLinks(ret.getConceptList());
+    crossLinkCodeSystem(ret);
     return ret;
+  }
+
+  private static void clearCrossLinks(List<ConceptDefinitionComponent> concepts) {
+    for (ConceptDefinitionComponent c : concepts) {
+      c.clearUserData(USER_DATA_CROSS_LINK);
+      clearCrossLinks(c.getConceptList());
+    }
   }
 
   private static void mergeSupplements(CodeSystem ret, ConceptDefinitionComponent fdef, List<CodeSystem> supplements) {

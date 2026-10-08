@@ -679,6 +679,10 @@ public class StructureDefinitionValidator extends BaseValidator {
     if (!snapshot && !path.contains(".")) {
       ok = validateRootElement(errors, element, stack, path, logical, constraint, "Extension".equals(typeName), base) && ok;
     }
+    // in a constraint, the snapshot generator checks the differential against the base (including the types)
+    if (path.contains(".") && (snapshot || !constraint)) {
+      ok = checkChildIsDefinedByType(errors, elements, element, stack, path) && ok;
+    }
 
     List<Element> types = element.getChildrenByName("type");
     Set<String> typeCodes = new HashSet<>();
@@ -1431,16 +1435,104 @@ public class StructureDefinitionValidator extends BaseValidator {
     return types;
   }
 
+  /**
+   * true if any element after this one in the list (before the list leaves this element) is a descendant of it.
+   * Slices of the element itself have the same path, so they're skipped over, and their children count
+   */
   private boolean hasChildren(Element element, List<Element> elements) {
-    int i = elements.indexOf(element);
-    String path = element.getNamedChildValue("path", false)+".";
-    while (i < elements.size()) {
-      String p = elements.get(i).getNamedChildValue("path", false)+".";
-      if (p.startsWith(path)) {
+    String path = element.getNamedChildValue("path", false);
+    for (int i = elements.indexOf(element) + 1; i > 0 && i < elements.size(); i++) {
+      String p = elements.get(i).getNamedChildValue("path", false);
+      if (p == null || !(p.equals(path) || p.startsWith(path+"."))) {
+        return false;
+      }
+      if (!p.equals(path)) {
         return true;
       }
     }
     return false;
+  }
+
+  /**
+   * The children of an element are interpreted in light of the element's type. If the type is abstract (BackboneElement,
+   * Element, Base etc), the children define a new anonymous type, so they can be anything. If the type is concrete,
+   * the children are an anonymous profile on that type, so they can only be elements that the type already defines
+   */
+  private boolean checkChildIsDefinedByType(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, String path) {
+    Element parent = getParent(elements, element);
+    String name = tail(path);
+    if (parent == null || !path.equals(parent.getNamedChildValue("path", false)+"."+name)) {
+      return true; // the parent isn't in the list (a gap in a differential), so there's no type to check against here
+    }
+    List<StructureDefinition> types = new ArrayList<>();
+    for (Element type : parent.getChildrenByName("type")) {
+      String tc = type.getChildValue("code");
+      if (type.hasExtension(ExtensionDefinitions.EXT_FHIR_TYPE)) {
+        Base tcv = type.getExtensionValue(ExtensionDefinitions.EXT_FHIR_TYPE);
+        if (tcv != null) {
+          tc = tcv.primitiveValue();
+        }
+      }
+      if (Utilities.noString(tc)) {
+        return true;
+      }
+      StructureDefinition tsd = context.fetchTypeDefinition(tc);
+      if (tsd == null || tsd.getAbstract()) {
+        return true; // unknown types are reported elsewhere; abstract types mean the children are an anonymous type
+      }
+      types.add(tsd);
+    }
+    List<String> missing = new ArrayList<>();
+    for (StructureDefinition tsd : types) {
+      Boolean defined = typeDefinesChild(tsd, name, 0);
+      if (defined == null) {
+        hint(errors, "2026-10-07", IssueType.INFORMATIONAL, stack.getLiteralPath(), false, I18nConstants.SD_CHILD_TYPE_UNCHECKABLE, path, tsd.getVersionedUrl());
+      } else if (!defined) {
+        missing.add(tsd.getTypeName());
+      }
+    }
+    return rule(errors, "2026-10-07", IssueType.INVALID, stack.getLiteralPath(), missing.isEmpty(), I18nConstants.SD_CHILD_NOT_IN_TYPE, path, CommaSeparatedStringBuilder.join(", ", missing), parent.getNamedChildValue("path", false));
+  }
+
+  /**
+   * true if the type defines an element with this name, false if it doesn't, null if that can't be determined
+   */
+  private Boolean typeDefinesChild(StructureDefinition tsd, String name, int depth) {
+    if (depth > 20) {
+      return null; // a circular chain of base definitions
+    }
+    List<ElementDefinition> list = tsd.hasSnapshot() ? tsd.getSnapshot().getElementList() : tsd.getDifferential().getElementList();
+    if (!list.isEmpty()) {
+      String root = list.get(0).getPath();
+      if (root.contains(".")) {
+        root = root.substring(0, root.indexOf("."));
+      }
+      for (ElementDefinition ed : list) {
+        String p = ed.getPath();
+        if (p.startsWith(root+".") && p.indexOf('.', root.length()+1) < 0) {
+          String n = p.substring(root.length()+1);
+          if (n.equals(name)) {
+            return true;
+          }
+          // a type specific name for a choice element e.g. valueQuantity for value[x]
+          if (n.endsWith("[x]")) {
+            String stem = n.substring(0, n.length()-3);
+            if (name.length() > stem.length() && name.startsWith(stem) && Character.isUpperCase(name.charAt(stem.length()))) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    if (tsd.hasSnapshot()) {
+      return false;
+    }
+    // no snapshot: the differential only has what is new or changed, so the element might be inherited from the base
+    if (!tsd.hasBaseDefinition()) {
+      return null;
+    }
+    StructureDefinition bsd = context.fetchResource(StructureDefinition.class, tsd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(tsd.getBaseDefinitionElement()));
+    return bsd == null ? null : typeDefinesChild(bsd, name, depth+1);
   }
 
   private boolean isAbstractType(String t) {

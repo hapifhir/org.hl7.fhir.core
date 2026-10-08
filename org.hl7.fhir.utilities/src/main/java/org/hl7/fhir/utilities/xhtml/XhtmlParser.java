@@ -31,11 +31,7 @@ package org.hl7.fhir.utilities.xhtml;
 
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -536,7 +532,17 @@ public class XhtmlParser {
     return parse(entryName);
   }
 
-  private XhtmlDocument parse(String entryName) throws FHIRFormatError, IOException 
+  public XhtmlDocument parse(File file, String entryName) throws FHIRFormatError, IOException  {
+    InputStream input = new FileInputStream(file);
+    try {
+      rdr = new InputStreamReader(input, StandardCharsets.UTF_8);
+      return parse(entryName);
+    } finally {
+      input.close();
+    }
+  }
+
+  private XhtmlDocument parse(String entryName) throws FHIRFormatError, IOException
   {
     XhtmlDocument result = new XhtmlDocument();
     skipWhiteSpaceAndComments(result);
