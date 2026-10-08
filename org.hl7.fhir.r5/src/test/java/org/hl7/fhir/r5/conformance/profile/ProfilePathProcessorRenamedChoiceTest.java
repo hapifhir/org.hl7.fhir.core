@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.conformance.profile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -27,44 +30,49 @@ import org.junit.jupiter.params.provider.ValueSource;
  */
 class ProfilePathProcessorRenamedChoiceTest {
 
-  private static final String CODE = "8480-6";
+  private static final String SYSTOLIC = "8480-6";
 
   @ParameterizedTest
   @ValueSource(strings = {"Observation", "Observation.component:SystolicBP"})
-  void renamedChoiceAddsOneTypeSlicer(String parentId) throws Exception {
+  void renamedChoiceAddsOneTypeSlicer(String parentId) {
     IWorkerContext context = TestingUtilities.getSharedWorkerContext("5.0.0");
     StructureDefinition observation = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Observation");
-    String path = parentId.equals("Observation") ? "Observation" : "Observation.component";
+    boolean inSlice = !parentId.equals("Observation");
+    String path = inSlice ? "Observation.component" : "Observation";
 
     StructureDefinition base = profile("base", observation.getUrl());
-    if (!parentId.equals("Observation")) {
+    if (inSlice) {
       ElementDefinition component = add(base, "Observation.component", "Observation.component", null);
       component.getSlicing().addDiscriminator().setType(DiscriminatorType.VALUE).setPath("code");
       component.getSlicing().setRules(SlicingRules.OPEN);
       add(base, parentId, path, "SystolicBP");
-      add(base, parentId + ".code", path + ".code", null).setPattern(new CodeableConcept(new Coding("http://loinc.org", CODE, null)));
+      add(base, parentId + ".code", path + ".code", null).setPattern(new CodeableConcept(new Coding("http://loinc.org", SYSTOLIC, null)));
     }
     add(base, parentId + ".value[x]", path + ".value[x]", null).addType().setCode("Quantity");
     add(base, parentId + ".value[x].unit", path + ".value[x].unit", null).setMustSupport(true);
     generateSnapshot(context, observation, base);
 
     StructureDefinition derived = profile("derived", base.getUrl());
-    if (!parentId.equals("Observation")) {
+    if (inSlice) {
       add(derived, parentId, path, "SystolicBP");
     }
     add(derived, parentId + ".valueQuantity", path + ".valueQuantity", null).setMustSupport(true);
-    generateSnapshot(context, base, derived);
+    List<ValidationMessage> messages = generateSnapshot(context, base, derived);
 
-    List<ElementDefinition> slicers = new ArrayList<>();
+    int slicers = 0;
     for (ElementDefinition ed : derived.getSnapshot().getElement()) {
       if (ed.getId().equals(parentId + ".value[x]")) {
-        slicers.add(ed);
+        slicers++;
       }
     }
-    assertEquals(1, slicers.size(), "there should be exactly one " + parentId + ".value[x]");
-    assertTrue(slicers.get(0).hasSlicing());
+    assertEquals(1, slicers, "there should be exactly one " + parentId + ".value[x]");
+    assertTrue(findById(derived, parentId + ".value[x]").hasSlicing());
     ElementDefinition slice = findById(derived, parentId + ".value[x]:valueQuantity");
-    assertTrue(slice != null && slice.getMustSupport(), "the valueQuantity slice should carry the constraint");
+    assertNotNull(slice);
+    assertTrue(slice.getMustSupport(), "the valueQuantity slice should carry the constraint");
+    for (ValidationMessage m : messages) {
+      assertTrue(m.getLevel() != IssueSeverity.ERROR && m.getLevel() != IssueSeverity.FATAL, m.summary());
+    }
   }
 
   private ElementDefinition findById(StructureDefinition sd, String id) {
@@ -76,10 +84,12 @@ class ProfilePathProcessorRenamedChoiceTest {
     return null;
   }
 
-  private void generateSnapshot(IWorkerContext context, StructureDefinition base, StructureDefinition sd) {
-    ProfileUtilities pu = new ProfileUtilities(context, new ArrayList<>(), null);
+  private List<ValidationMessage> generateSnapshot(IWorkerContext context, StructureDefinition base, StructureDefinition sd) {
+    List<ValidationMessage> messages = new ArrayList<>();
+    ProfileUtilities pu = new ProfileUtilities(context, messages, null);
     pu.setNewSlicingProcessing(true);
     pu.generateSnapshot(base, sd, sd.getUrl(), "http://example.org", sd.getName());
+    return messages;
   }
 
   private StructureDefinition profile(String id, String baseUrl) {

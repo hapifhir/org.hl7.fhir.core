@@ -27,27 +27,30 @@ import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * AU Core blood pressure: the base profile (like the R4 bp profile) narrows component:SystolicBP.value[x] to
  * Quantity and constrains its children, and the derived profile constrains component:SystolicBP.valueQuantity.
  * The snapshot used to get a second component:SystolicBP.value[x] slicer, so validating an instance with a
- * systolic component failed with "Slice encountered midway through set".
+ * systolic component failed with "Slice encountered midway through set". The same applies to
+ * Observation.valueQuantity at the root.
  */
-class RenamedChoiceInSliceValidationTests {
+class RenamedChoiceValidationTests {
 
   private static final String BASE_URL = "http://example.org/StructureDefinition/bp-base";
   private static final String DERIVED_URL = "http://example.org/StructureDefinition/bp-derived";
   private static final String SYSTOLIC = "8480-6";
 
-  @Test
-  void instanceValidatesAgainstRenamedChoiceInSlice() throws Exception {
+  @ParameterizedTest
+  @ValueSource(booleans = {false, true})
+  void instanceValidatesAgainstRenamedChoice(boolean inSlice) throws Exception {
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", "n/a", FhirPublication.R5, "5.0.0");
-    ve.getContext().cacheResource(baseProfile());
-    ve.getContext().cacheResource(derivedProfile());
+    ve.getContext().cacheResource(baseProfile(inSlice));
+    ve.getContext().cacheResource(derivedProfile(inSlice));
 
-    byte[] obs = new JsonParser(ModelContext.fullCoreContext()).composeBytes(observation());
+    byte[] obs = new JsonParser(ModelContext.fullCoreContext()).composeBytes(observation(inSlice));
     OperationOutcome op = ve.validate(FhirFormat.JSON, new ByteArrayInputStream(obs), List.of(DERIVED_URL));
 
     List<String> errors = new ArrayList<>();
@@ -59,31 +62,51 @@ class RenamedChoiceInSliceValidationTests {
     assertTrue(errors.isEmpty(), "unexpected errors: " + errors);
   }
 
-  private StructureDefinition baseProfile() {
+  private StructureDefinition baseProfile(boolean inSlice) {
     StructureDefinition sd = profile("bp-base", BASE_URL, "http://hl7.org/fhir/StructureDefinition/Observation");
-    ElementDefinition component = add(sd, "Observation.component", "Observation.component", null);
-    component.getSlicing().addDiscriminator().setType(DiscriminatorType.VALUE).setPath("code");
-    component.getSlicing().setRules(SlicingRules.OPEN);
-    add(sd, "Observation.component:SystolicBP", "Observation.component", "SystolicBP");
-    add(sd, "Observation.component:SystolicBP.code", "Observation.component.code", null).setPattern(systolicCode());
-    add(sd, "Observation.component:SystolicBP.value[x]", "Observation.component.value[x]", null).addType().setCode("Quantity");
-    add(sd, "Observation.component:SystolicBP.value[x].unit", "Observation.component.value[x].unit", null).setMustSupport(true);
+    String id = parentId(inSlice);
+    String path = parentPath(inSlice);
+    if (inSlice) {
+      ElementDefinition component = add(sd, "Observation.component", "Observation.component", null);
+      component.getSlicing().addDiscriminator().setType(DiscriminatorType.VALUE).setPath("code");
+      component.getSlicing().setRules(SlicingRules.OPEN);
+      add(sd, id, path, "SystolicBP");
+      add(sd, id + ".code", path + ".code", null).setPattern(systolicCode());
+    }
+    add(sd, id + ".value[x]", path + ".value[x]", null).addType().setCode("Quantity");
+    add(sd, id + ".value[x].unit", path + ".value[x].unit", null).setMustSupport(true);
     return sd;
   }
 
-  private StructureDefinition derivedProfile() {
+  private StructureDefinition derivedProfile(boolean inSlice) {
     StructureDefinition sd = profile("bp-derived", DERIVED_URL, BASE_URL);
-    add(sd, "Observation.component:SystolicBP", "Observation.component", "SystolicBP");
-    add(sd, "Observation.component:SystolicBP.valueQuantity", "Observation.component.valueQuantity", null).setMustSupport(true);
+    String id = parentId(inSlice);
+    String path = parentPath(inSlice);
+    if (inSlice) {
+      add(sd, id, path, "SystolicBP");
+    }
+    add(sd, id + ".valueQuantity", path + ".valueQuantity", null).setMustSupport(true);
     return sd;
   }
 
-  private Observation observation() {
+  private Observation observation(boolean inSlice) {
     Observation obs = new Observation();
     obs.setStatus(ObservationStatus.FINAL);
     obs.getCode().setText("Blood pressure");
-    obs.addComponent().setCode(systolicCode()).setValue(new Quantity().setValue(120));
+    if (inSlice) {
+      obs.addComponent().setCode(systolicCode()).setValue(new Quantity().setValue(120));
+    } else {
+      obs.setValue(new Quantity().setValue(120));
+    }
     return obs;
+  }
+
+  private String parentId(boolean inSlice) {
+    return inSlice ? "Observation.component:SystolicBP" : "Observation";
+  }
+
+  private String parentPath(boolean inSlice) {
+    return inSlice ? "Observation.component" : "Observation";
   }
 
   private CodeableConcept systolicCode() {
