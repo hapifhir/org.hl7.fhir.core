@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -28,7 +29,7 @@ public class ManagedFhirWebAccessorTests {
 
   @Test
   @DisplayName("Test default headers are added correctly.")
-  void addDefaultBasicHeader() throws MalformedURLException {
+  void addDefaultBasicHeader() throws IOException {
     HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com");
 
     IHTTPAuthenticationProvider authenticationProvider = Mockito.mock(IHTTPAuthenticationProvider.class);
