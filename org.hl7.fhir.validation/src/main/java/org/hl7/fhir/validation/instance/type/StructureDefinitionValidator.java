@@ -857,16 +857,16 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
     if (snapshot && element.hasChild("slicing", false) && isTypeSlicing(element.getNamedChild("slicing", false)) && typeCharacteristics.size() > 1) {
       // the constraints on a type slicer apply to all its slices, but the ones that only make sense for some types don't do anything for the others.
-      // Only report the ones the differential states on the slicer: an inherited one (e.g. a binding on a choice element in the base
-      // resource) is how the base spec works, and the profile can't remove it
-      Element diffSlicer = diffById == null ? null : diffById.get(element.getNamedChildValue("id", false));
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("binding", false) && statedOnSlicer(diffById, diffSlicer, "binding", false), "can-bind", "Binding");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxLength", false) && statedOnSlicer(diffById, diffSlicer, "maxLength", false), "has-length", "MaxLength");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH) && statedOnSlicer(diffById, diffSlicer, ExtensionDefinitions.EXT_MIN_LENGTH, true), "has-length", "MinLength Extension");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("minValue", false) && statedOnSlicer(diffById, diffSlicer, "minValue", false), "has-range", "MinValue");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxValue", false) && statedOnSlicer(diffById, diffSlicer, "maxValue", false), "has-range", "MaxValue");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS) && statedOnSlicer(diffById, diffSlicer, ExtensionDefinitions.EXT_MAX_DECIMALS, true), "is-continuous", "Max Decimal Places Extension");
-      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE) && statedOnSlicer(diffById, diffSlicer, ExtensionDefinitions.EXT_MAX_SIZE, true), "has-size", "Max Size");
+      // A constraint the base resource itself puts on the choice element (e.g. the binding on R5 ActivityDefinition.subject[x]) ends up on the
+      // slicer of every profile that constrains one of its types, and no profile can remove it, so only the ones a profile added or changed are reported
+      ElementDefinition core = coreDefinition(typeName, path);
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("binding", false) && !sameBindingAsCore(core, element.getNamedChild("binding", false)), "can-bind", "Binding");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxLength", false) && !sameAsCore(core != null && core.hasMaxLength() ? Integer.toString(core.getMaxLength()) : null, element.getNamedChildValue("maxLength", false)), "has-length", "MaxLength");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH) && !extensionSameAsCore(core, element, ExtensionDefinitions.EXT_MIN_LENGTH), "has-length", "MinLength Extension");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("minValue", false) && !sameAsCore(core != null && core.hasMinValue() ? core.getMinValue().primitiveValue() : null, element.getNamedChild("minValue", false).primitiveValue()), "has-range", "MinValue");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasChild("maxValue", false) && !sameAsCore(core != null && core.hasMaxValue() ? core.getMaxValue().primitiveValue() : null, element.getNamedChild("maxValue", false).primitiveValue()), "has-range", "MaxValue");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS) && !extensionSameAsCore(core, element, ExtensionDefinitions.EXT_MAX_DECIMALS), "is-continuous", "Max Decimal Places Extension");
+      checkTypeSlicerConstraint(errors, stack, path, typeCharacteristics, element.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE) && !extensionSameAsCore(core, element, ExtensionDefinitions.EXT_MAX_SIZE), "has-size", "Max Size");
     }
     // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
     if (snapshot && (element.getIdBase() != null) && (element.getIdBase().contains("."))) {
@@ -1610,14 +1610,35 @@ public class StructureDefinitionValidator extends BaseValidator {
     return extension ? diffElement.hasExtension(name) : diffElement.hasChild(name, false);
   }
 
-  private boolean statedOnSlicer(Map<String, Element> diffById, Element diffSlicer, String name, boolean extension) {
-    if (diffById == null) {
-      return true;
+  /**
+   * The element at this path in the definition of the type itself (the resource or data type the profile constrains), or null
+   */
+  private ElementDefinition coreDefinition(String typeName, String path) {
+    StructureDefinition core = typeName == null ? null : context.fetchTypeDefinition(typeName);
+    return core == null || !core.hasSnapshot() ? null : core.getSnapshot().getElementByPath(path);
+  }
+
+  private boolean sameBindingAsCore(ElementDefinition core, Element binding) {
+    if (core == null || !core.hasBinding() || binding == null) {
+      return false;
     }
-    if (diffSlicer == null) {
-      return false; // not mentioned in the differential, so everything on it is inherited
-    }
-    return extension ? diffSlicer.hasExtension(name) : diffSlicer.hasChild(name, false);
+    String strength = core.getBinding().hasStrength() ? core.getBinding().getStrength().toCode() : null;
+    return sameAsCore(strength, binding.getNamedChildValue("strength", false))
+        && sameAsCore(unversioned(core.getBinding().getValueSet()), unversioned(binding.getNamedChildValue("valueSet", false)));
+  }
+
+  private boolean extensionSameAsCore(ElementDefinition core, Element element, String url) {
+    Extension ext = core == null ? null : core.getExtensionByUrl(url);
+    Element value = element.getExtension(url).getNamedChild("value", false);
+    return ext != null && ext.hasValue() && value != null && sameAsCore(ext.getValue().primitiveValue(), value.primitiveValue());
+  }
+
+  private boolean sameAsCore(String coreValue, String value) {
+    return coreValue != null && coreValue.equals(value);
+  }
+
+  private String unversioned(String url) {
+    return url == null || !url.contains("|") ? url : url.substring(0, url.indexOf("|"));
   }
 
   private boolean isTypeSlicing(Element slicing) {
