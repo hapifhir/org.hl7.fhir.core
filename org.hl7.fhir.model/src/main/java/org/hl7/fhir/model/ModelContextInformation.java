@@ -257,4 +257,12 @@ public class ModelContextInformation {
     return "ModelContext#" + id + " (" + corePackage + ", " + resourceList.size() + " resources)";
   }
 
+  public boolean hasResource(String resourceName) {
+    for (ModelResourceInformation t : resourceList) {
+      if (resourceName.equals(t.getName())) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

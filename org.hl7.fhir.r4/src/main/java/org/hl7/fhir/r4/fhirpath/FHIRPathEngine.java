@@ -3933,10 +3933,10 @@ public class FHIRPathEngine {
     if (!focus.hasNoTypes()) {
       if (canQty) {
         if (!focus.hasType(primitiveTypes) && !focus.hasType("Quantity")) {
-          throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), "Quantity, "+primitiveTypes.toString());
+          throw makeExceptionPlural(focus.getTypes().size(), expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), "Quantity, "+primitiveTypes.toString());
         }
       } else if (!focus.hasType(primitiveTypes)) {
-        throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), primitiveTypes.toString());
+        throw makeExceptionPlural(focus.getTypes().size(), expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), primitiveTypes.toString());
       }
     }
   }

@@ -4176,10 +4176,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (!focus.hasNoTypes()) {
       if (canQty) {
         if (!focus.hasType(analysis.primitiveTypes) && !focus.hasType("Quantity")) {
-          throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), "Quantity, "+analysis.primitiveTypes.toString());
+          throw makeExceptionPlural(focus.getTypes().size(), expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), "Quantity, "+analysis.primitiveTypes.toString());
         }
       } else if (!focus.hasType(analysis.primitiveTypes)) {
-        throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), analysis.primitiveTypes.toString());
+        throw makeExceptionPlural(focus.getTypes().size(), expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), analysis.primitiveTypes.toString());
       }
     }
   }

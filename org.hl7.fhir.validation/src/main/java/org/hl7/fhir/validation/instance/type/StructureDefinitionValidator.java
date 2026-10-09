@@ -1187,7 +1187,12 @@ public class StructureDefinitionValidator extends BaseValidator {
                 if (settings.isDebug()) {
                   e.printStackTrace();
                 }
-                ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
+                String id = determineId(stack.getLiteralPath(), invariant);
+                if (id == null) {
+                  ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
+                } else {
+                  ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR_WITH_ID, key, expression, e.getMessage(), id) && ok;
+                }
               }         
             }        
           }
@@ -1316,7 +1321,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             e.printStackTrace();
           }
           ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_CONTEXT_INVARIANT_EXPRESSION_ERROR, expression, e.getMessage()) && ok;
-        }         
+        }
     }        
     return ok;
   }
