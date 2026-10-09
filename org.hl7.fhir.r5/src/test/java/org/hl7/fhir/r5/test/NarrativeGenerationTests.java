@@ -303,6 +303,12 @@ public class NarrativeGenerationTests {
     FileUtilities.stringToFile(actual, actualFileName);
     String msg = new CompareUtilities().checkXMLIsSame(id, expectedFileName, actualFileName);
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
+    if (id.startsWith("provenance")) {
+      java.util.regex.Matcher m = java.util.regex.Pattern.compile("href=\"#(hc[^\"]+)\"").matcher(actual);
+      while (m.find()) {
+        Assertions.assertTrue(actual.contains("name=\"" + m.group(1) + "\""), "Link #" + m.group(1) + " has no matching anchor");
+      }
+    }
 
     String disp = new RendererFactory().factory(source, rc).buildSummary(ResourceWrapper.forResource(rc.getContextUtilities(), source));
     expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".txt"));
