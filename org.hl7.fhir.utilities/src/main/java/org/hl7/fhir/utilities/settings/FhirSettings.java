@@ -220,12 +220,11 @@ public class FhirSettings {
   /**
    * Normalizes settings after deserialization to ensure required fields have safe defaults.
    * This prevents NPEs when switch statements expect non-null values.
-   */
-  /**
-   * Fills in defaults and neutralises server entries that cannot be used.
    * <p/>
-   * An unusable entry is logged and demoted to {@code authenticationType: none} rather than
-   * rejected. Throwing here would propagate to {@link #getInstance()}, which substitutes an empty
+   * An unusable {@code oauth_client_credentials} entry is logged here but left as it is, and
+   * fails closed at the point of use: every request to that server fails with an
+   * {@link IOException} naming the problem, rather than going out unauthenticated. Throwing here
+   * instead would propagate to {@link #getInstance()}, which substitutes an empty
    * {@link FhirSettingsPOJO} - so one incomplete server entry would silently discard the whole
    * settings file for the life of the JVM, taking npm paths, api keys, proxy configuration and
    * every other server's credentials with it.
@@ -242,30 +241,23 @@ public class FhirSettings {
       if (server.getAuthenticationType() == null) {
         server.setAuthenticationType("none");
       }
-      if ("client_credentials".equals(server.getAuthenticationType())) {
+      if ("oauth_client_credentials".equals(server.getAuthenticationType())) {
         String problem = findClientCredentialsProblem(server);
         if (problem != null) {
-          log.error("Server entry for {} has authenticationType 'client_credentials' but {}."
-            + " This server will not be authenticated; the rest of the settings are unaffected.",
+          log.error("Server entry for {} has authenticationType 'oauth_client_credentials' but {}."
+            + " Requests to this server will fail; the rest of the settings are unaffected.",
             server.getUrl() != null ? server.getUrl() : "(unknown)", problem);
-          server.setAuthenticationType("none");
         }
       }
     }
   }
 
-  /** Returns a description of the first missing client_credentials field, or null if complete. */
-  private static String findClientCredentialsProblem(ServerDetailsPOJO server) {
-    if (Utilities.noString(server.getClientId())) {
-      return "is missing required field: clientId";
+  /** Returns a description of the first problem with a server's client_credentials, or null if usable. */
+  public static String findClientCredentialsProblem(ServerDetailsPOJO server) {
+    if (server.getOauthClientCredentials() == null) {
+      return "has no oauthClientCredentials";
     }
-    if (Utilities.noString(server.getClientSecret())) {
-      return "is missing required field: clientSecret";
-    }
-    if (Utilities.noString(server.getTokenEndpoint())) {
-      return "is missing required field: tokenEndpoint";
-    }
-    return null;
+    return server.getOauthClientCredentials().findProblem();
   }
 
   protected static String getDefaultSettingsPath() throws IOException {

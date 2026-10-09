@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.utilities.settings.OAuthClientCredentialsPOJO;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -128,6 +129,48 @@ class HTTPAuthenticationProviderChainTest {
   }
 
   @Test
+  void invalidateCachedCredentials_passesOnFalseFromMatchingProvider() throws IOException {
+    URL matchingUrl = new URL("https://fhir.example.org/Patient");
+
+    HTTPAuthenticationProviderChain chain = new HTTPAuthenticationProviderChain(List.of(
+      mockNeverProvider(),
+      mockInvalidatingProvider(matchingUrl, false)
+    ));
+
+    assertThat(chain.invalidateCachedCredentials(matchingUrl)).isFalse();
+  }
+
+  @Test
+  void canRefreshCredentials_asksOnlyTheFirstProviderThatServesTheUrl() throws IOException {
+    URL matchingUrl = new URL("https://fhir.example.org/Patient");
+
+    IHTTPAuthenticationProvider servesButCannotRefresh = mockProviderFor(matchingUrl, Map.of());
+    IHTTPAuthenticationProvider laterProvider = mockInvalidatingProvider(matchingUrl, true);
+    when(laterProvider.canRefreshCredentials(matchingUrl)).thenReturn(true);
+
+    HTTPAuthenticationProviderChain chain = new HTTPAuthenticationProviderChain(List.of(
+      servesButCannotRefresh, laterProvider
+    ));
+
+    assertThat(chain.canRefreshCredentials(matchingUrl)).isFalse();
+    verify(laterProvider, never()).canRefreshCredentials(any());
+  }
+
+  @Test
+  void canRefreshCredentials_delegatesToFirstMatchingProvider() throws IOException {
+    URL matchingUrl = new URL("https://fhir.example.org/Patient");
+
+    IHTTPAuthenticationProvider refreshing = mockInvalidatingProvider(matchingUrl, true);
+    when(refreshing.canRefreshCredentials(matchingUrl)).thenReturn(true);
+
+    HTTPAuthenticationProviderChain chain = new HTTPAuthenticationProviderChain(List.of(
+      mockNeverProvider(), refreshing
+    ));
+
+    assertThat(chain.canRefreshCredentials(matchingUrl)).isTrue();
+  }
+
+  @Test
   void invalidateCachedCredentials_stopsAtFirstProviderThatServesTheUrl() throws IOException {
     URL matchingUrl = new URL("https://fhir.example.org/Patient");
 
@@ -150,11 +193,13 @@ class HTTPAuthenticationProviderChainTest {
 
     ServerDetailsPOJO ccServer = ServerDetailsPOJO.builder()
       .url("https://fhir.example.org/")
-      .authenticationType("client_credentials")
+      .authenticationType("oauth_client_credentials")
       .type("fhir")
-      .clientId("testClient")
-      .clientSecret("testSecret")
-      .tokenEndpoint("https://auth.example.org/token")
+      .oauthClientCredentials(OAuthClientCredentialsPOJO.builder()
+        .clientId("testClient")
+        .clientSecret("testSecret")
+        .tokenEndpoint("https://auth.example.org/token")
+        .build())
       .build();
 
     HTTPAuthenticationProviderChain chain = new HTTPAuthenticationProviderChain(List.of(
@@ -172,11 +217,13 @@ class HTTPAuthenticationProviderChainTest {
 
     ServerDetailsPOJO ccServer = ServerDetailsPOJO.builder()
       .url("https://fhir.example.org/")
-      .authenticationType("client_credentials")
+      .authenticationType("oauth_client_credentials")
       .type("fhir")
-      .clientId("testClient")
-      .clientSecret("testSecret")
-      .tokenEndpoint("https://auth.example.org/token")
+      .oauthClientCredentials(OAuthClientCredentialsPOJO.builder()
+        .clientId("testClient")
+        .clientSecret("testSecret")
+        .tokenEndpoint("https://auth.example.org/token")
+        .build())
       .build();
 
     HTTPAuthenticationProviderChain chain = new HTTPAuthenticationProviderChain(List.of(

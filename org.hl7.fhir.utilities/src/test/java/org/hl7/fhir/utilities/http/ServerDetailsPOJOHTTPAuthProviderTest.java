@@ -1,6 +1,5 @@
 package org.hl7.fhir.utilities.http;
 
-import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import org.junit.jupiter.api.AfterEach;
@@ -13,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hl7.fhir.utilities.http.OAuthTestSupport.tokenResponse;
 
 class ServerDetailsPOJOHTTPAuthProviderTest {
 
@@ -20,8 +21,8 @@ class ServerDetailsPOJOHTTPAuthProviderTest {
 
   @BeforeEach
   void setup() throws IOException {
-    tokenServer = new MockWebServer();
-    tokenServer.start();
+    OAuthTestSupport.trustTestCertificate();
+    tokenServer = OAuthTestSupport.startHttpsServer();
     HTTPTokenManager.clearCache();
   }
 
@@ -29,29 +30,16 @@ class ServerDetailsPOJOHTTPAuthProviderTest {
   void tearDown() throws IOException {
     HTTPTokenManager.clearCache();
     tokenServer.shutdown();
+    OAuthTestSupport.resetTrust();
   }
 
   private ServerDetailsPOJO buildClientCredentialsServer() {
-    // allowHttp/allowPrivateNetwork are needed because the token request now goes through
-    // ManagedWebAccessor, and the mock token endpoint is plain http on a loopback address.
-    return ServerDetailsPOJO.builder()
-      .url("https://fhir.example.org/")
-      .authenticationType("client_credentials")
-      .type("fhir")
-      .clientId("testClient")
-      .clientSecret("testSecret")
-      .tokenEndpoint(tokenServer.url("/token").toString())
-      .allowHttp(true)
-      .allowPrivateNetwork(true)
-      .build();
+    return OAuthTestSupport.clientCredentialsServer("https://fhir.example.org/", tokenServer, "testClient", "testSecret");
   }
 
   @Test
   void testClientCredentialsHeadersContainBearerToken() throws Exception {
-    tokenServer.enqueue(new MockResponse()
-      .setBody("{\"access_token\":\"abc123\",\"expires_in\":3600}")
-      .addHeader("Content-Type", "application/json")
-      .setResponseCode(200));
+    tokenServer.enqueue(tokenResponse("abc123", 3600));
 
     ServerDetailsPOJOHTTPAuthProvider provider =
       new ServerDetailsPOJOHTTPAuthProvider(List.of(buildClientCredentialsServer()));
@@ -62,11 +50,35 @@ class ServerDetailsPOJOHTTPAuthProviderTest {
   }
 
   @Test
+  void testMissingClientCredentialsFailsClosed() throws Exception {
+    ServerDetailsPOJO server = buildClientCredentialsServer().toBuilder().oauthClientCredentials(null).build();
+    ServerDetailsPOJOHTTPAuthProvider provider = new ServerDetailsPOJOHTTPAuthProvider(List.of(server));
+
+    assertThatThrownBy(() -> provider.getHeaders(new URL("https://fhir.example.org/Patient")))
+      .isInstanceOf(IOException.class)
+      .hasMessageContaining("https://fhir.example.org/")
+      .hasMessageContaining("oauthClientCredentials");
+    assertThat(tokenServer.getRequestCount()).isZero();
+  }
+
+  @Test
+  void testCanRefreshCredentialsOnlyForClientCredentials() throws Exception {
+    ServerDetailsPOJO tokenAuthServer = ServerDetailsPOJO.builder()
+      .url("https://static.example.org/")
+      .authenticationType("token")
+      .token("static")
+      .build();
+    ServerDetailsPOJOHTTPAuthProvider provider =
+      new ServerDetailsPOJOHTTPAuthProvider(List.of(buildClientCredentialsServer(), tokenAuthServer));
+
+    assertThat(provider.canRefreshCredentials(new URL("https://fhir.example.org/Patient"))).isTrue();
+    assertThat(provider.canRefreshCredentials(new URL("https://static.example.org/Patient"))).isFalse();
+    assertThat(provider.canRefreshCredentials(new URL("https://other.example.com/Patient"))).isFalse();
+  }
+
+  @Test
   void testInvalidateTokenIfClientCredentialsMatchingUrl() throws Exception {
-    tokenServer.enqueue(new MockResponse()
-      .setBody("{\"access_token\":\"abc123\",\"expires_in\":3600}")
-      .addHeader("Content-Type", "application/json")
-      .setResponseCode(200));
+    tokenServer.enqueue(tokenResponse("abc123", 3600));
 
     ServerDetailsPOJOHTTPAuthProvider provider =
       new ServerDetailsPOJOHTTPAuthProvider(List.of(buildClientCredentialsServer()));

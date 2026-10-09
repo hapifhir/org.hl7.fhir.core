@@ -17,6 +17,8 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   /** Retry count for the underlying client; null leaves {@link ManagedHTTPClient}'s default. */
   private Integer retries;
 
+  private boolean followRedirects = true;
+
   public ManagedWebAccessor(Iterable<String> serverTypes, String userAgent, IHTTPAuthenticationProvider httpAuthHeaderProvider) {
     super(serverTypes, userAgent, httpAuthHeaderProvider);
   }
@@ -25,9 +27,20 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
    * Overrides how many times the underlying client retries an unsuccessful response. Use 0 for a
    * request that must not be repeated - e.g. one carrying credentials, where a retry re-sends them
    * and an error response is usually permanent rather than transient.
+   * Only applies under {@link ManagedWebAccess.WebAccessPolicy#DIRECT}.
    */
   public ManagedWebAccessor withRetries(int retries) {
     this.retries = retries;
+    return this;
+  }
+
+  /**
+   * Returns a 3xx response to the caller rather than following it. Use for a request whose body
+   * carries a credential: following a redirect would re-send the body to the redirect target.
+   * Only applies under {@link ManagedWebAccess.WebAccessPolicy#DIRECT}.
+   */
+  public ManagedWebAccessor withoutRedirects() {
+    this.followRedirects = false;
     return this;
   }
 
@@ -55,6 +68,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
     if (retries != null) {
       builder.retries(retries);
     }
+    builder.followRedirects(followRedirects);
 
     List<HTTPHeader> headers = new ArrayList<>();
 

@@ -1,7 +1,9 @@
 package org.hl7.fhir.utilities.settings;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -118,10 +120,12 @@ class FhirSettingsTests implements ResourceLoaderTests {
     ServerDetailsPOJO server = servers.get(0);
     assertEquals("https://tx.example.org/fhir", server.getUrl());
     assertEquals("fhir", server.getType());
-    assertEquals("client_credentials", server.getAuthenticationType());
-    assertEquals("my-client-id", server.getClientId());
-    assertEquals("my-client-secret", server.getClientSecret());
-    assertEquals("https://auth.example.org/token", server.getTokenEndpoint());
+    assertEquals("oauth_client_credentials", server.getAuthenticationType());
+    assertEquals("my-client-id", server.getOauthClientCredentials().getClientId());
+    assertEquals("my-client-secret", server.getOauthClientCredentials().getClientSecret());
+    assertEquals("https://auth.example.org/token", server.getOauthClientCredentials().getTokenEndpoint());
+    assertNull(FhirSettings.findClientCredentialsProblem(server));
+    assertFalse(server.toString().contains("my-client-secret"), "the client secret must not appear in toString()");
   }
 
   @ParameterizedTest
@@ -129,9 +133,11 @@ class FhirSettingsTests implements ResourceLoaderTests {
     "settings-client-credentials-missing-clientId.json, clientId",
     "settings-client-credentials-missing-clientSecret.json, clientSecret",
     "settings-client-credentials-missing-tokenEndpoint.json, tokenEndpoint",
-    "settings-client-credentials-missing.json, clientSecret"
+    "settings-client-credentials-missing.json, clientSecret",
+    "settings-client-credentials-missing-object.json, oauthClientCredentials",
+    "settings-client-credentials-http-token-endpoint.json, https"
   })
-  public void testClientCredentialsMissingFieldDemotesOnlyThatServer(String resourceFile, String missingField)
+  public void testClientCredentialsProblemIsReportedButEntryKept(String resourceFile, String problem)
       throws IOException {
     Path path = Files.createTempFile("fhir-settings-cc-bad", "json").toAbsolutePath();
     copyResourceToFile(path, "settings", resourceFile);
@@ -142,8 +148,12 @@ class FhirSettingsTests implements ResourceLoaderTests {
 
     assertNotNull(settings, "settings should still load despite the invalid server entry");
     ServerDetailsPOJO server = settings.getServers().get(0);
-    assertEquals("none", server.getAuthenticationType(),
-      "server missing " + missingField + " should be demoted to unauthenticated, not left as client_credentials");
+    // Left as oauth_client_credentials so that it fails closed when used, rather than being
+    // demoted to "none" and sent requests without credentials.
+    assertEquals("oauth_client_credentials", server.getAuthenticationType());
+    String reported = FhirSettings.findClientCredentialsProblem(server);
+    assertNotNull(reported);
+    assertTrue(reported.contains(problem), reported);
   }
 
   @Test
@@ -158,8 +168,8 @@ class FhirSettingsTests implements ResourceLoaderTests {
     assertEquals("an-api-key", settings.getApiKeys().get("example.org"));
     assertEquals(2, settings.getServers().size());
 
-    // Only the incomplete entry is neutralised
-    assertEquals("none", settings.getServers().get(0).getAuthenticationType());
+    // The incomplete entry is kept as configured, to fail closed when used
+    assertEquals("oauth_client_credentials", settings.getServers().get(0).getAuthenticationType());
     assertEquals("token", settings.getServers().get(1).getAuthenticationType());
     assertEquals("a-valid-token", settings.getServers().get(1).getToken());
   }

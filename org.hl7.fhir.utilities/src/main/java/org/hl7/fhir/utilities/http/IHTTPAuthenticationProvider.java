@@ -38,16 +38,31 @@ public interface IHTTPAuthenticationProvider {
   public Map<String, String> getHeaders(URL url) throws IOException;
 
   /**
+   * Whether the credentials this provider supplies for {@code url} have a lifetime, and so can
+   * go stale and be refreshed by {@link #invalidateCachedCredentials}.
+   * <p/>
+   * Static credentials (basic, token, api key) never go stale, so a server rejecting them will
+   * reject them again - the default is false, and only then is a 401 worth retrying at all.
+   *
+   * @param url the url
+   * @return true if this provider can refresh the credentials it supplies for {@code url}
+   */
+  default boolean canRefreshCredentials(URL url) {
+    return false;
+  }
+
+  /**
    * Discards any cached credentials this provider holds for {@code url}, so that the next
    * {@link #getHeaders} call obtains fresh ones.
    * <p/>
-   * Called when a server rejects a request with 401/403: for credentials with a lifetime (an
-   * OAuth access token, say) the rejection may simply mean the cached copy went stale, and
-   * repeating the request with a fresh one will succeed.
+   * Called when a server rejects a request with 401 and {@link #canRefreshCredentials} is true:
+   * an OAuth access token, say, may simply have gone stale, and repeating the request with a
+   * fresh one will succeed.
    *
    * @param url the url whose credentials were rejected
    * @return true if something was actually discarded, i.e. a retry has a reason to succeed.
-   *   The default is false: credentials that never go stale gain nothing from a retry.
+   *   False means the rejected credentials were not cached ones - they were just minted - so a
+   *   retry would only repeat the same failure.
    */
   default boolean invalidateCachedCredentials(URL url) {
     return false;

@@ -112,11 +112,20 @@ public class ManagedWebAccessUtils {
     if (!scheme.equals("https")) {
       throw new IOException("Refusing to fetch from non-https URL: " + url);
     }
+    throwExceptionIfBlockedHost(url);
+  }
+
+  /**
+   * Rejects a URL with no host, or whose host is explicitly blocked (cloud metadata services).
+   * Unlike the scheme check, this applies whatever the authentication provider allows: no
+   * configured server has a legitimate reason to be one of these hosts.
+   */
+  public static void throwExceptionIfBlockedHost(java.net.URI url) throws IOException {
     String host = url.getHost();
     if (host == null || host.isEmpty()) {
       throw new IOException("Refusing to fetch from URL with no host: " + url);
     }
-    if (explicitlyBlockedHosts.contains(host)) {
+    if (explicitlyBlockedHosts.contains(host.toLowerCase(java.util.Locale.ROOT))) {
       throw new IOException("Refusing to fetch from explicitly blocked host: " + url);
     }
   }

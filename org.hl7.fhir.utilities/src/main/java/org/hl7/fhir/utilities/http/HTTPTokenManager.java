@@ -1,9 +1,18 @@
 package org.hl7.fhir.utilities.http;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.function.LongSupplier;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -11,14 +20,14 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonUtilities;
-import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
+import org.hl7.fhir.utilities.settings.OAuthClientCredentialsPOJO;
 
 /**
- * Manages OAuth 2.0 access tokens for the client_credentials grant type.
+ * Manages OAuth 2.0 access tokens for the client_credentials grant type (RFC 6749 §4.4).
  * <p>
- * When a FHIR server (or other endpoint) is configured with authenticationType
- * "client_credentials" in fhir-settings.json, this class handles fetching bearer
- * tokens from the configured token endpoint and caching them until they expire.
+ * When a server is configured with authenticationType "oauth_client_credentials" in
+ * fhir-settings.json, this class handles fetching bearer tokens from the configured token
+ * endpoint and caching them until they expire.
  * <p>
  * Token lifecycle:
  * <ul>
@@ -27,15 +36,16 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
  *       client_credentials POST request.</li>
  *   <li>Tokens are treated as expired {@value #EXPIRY_BUFFER_SECONDS} seconds before their
  *       actual expiry, so an about-to-expire token is re-fetched on the next {@link #getToken}
- *       call (rather than handed out and failing mid-request) — there is no background refresh.</li>
+ *       call (rather than handed out and failing mid-request) — there is no background refresh.
+ *       A token is never cached for longer than {@value #MAX_EXPIRES_IN_SECONDS} seconds,
+ *       whatever {@code expires_in} the token endpoint returns.</li>
  *   <li>{@link #invalidateToken} removes a cached token, forcing the next call to
- *       re-fetch. This is used by the retry logic in
- *       {@link ManagedWebAccessorBase#executeWithClientCredentialsRetry} (invoked via
+ *       re-fetch. {@link ManagedHTTPClient} calls it (via
  *       {@link IHTTPAuthenticationProvider#invalidateCachedCredentials}) when a server
- *       returns 401/403; it applies to any server, not only FHIR.</li>
+ *       returns 401, then retries the request once; it applies to any server, not only FHIR.</li>
  * </ul>
  * <p>
- * Thread safety: concurrent callers requesting a token for the same server will
+ * Thread safety: concurrent callers requesting a token for the same credentials will
  * block on a per-cache-key lock so that only one thread performs the HTTP request.
  */
 @Slf4j
@@ -43,49 +53,62 @@ public class HTTPTokenManager {
 
   private static final int DEFAULT_EXPIRES_IN = 3600;
 
+  /** Upper bound on how long a token is cached, so that a rotated or revoked secret eventually takes effect. */
+  static final int MAX_EXPIRES_IN_SECONDS = 24 * 3600;
+
   /** Tokens are considered expired this many seconds before their actual expiry. */
   private static final int EXPIRY_BUFFER_SECONDS = 30;
 
-  /** Cached tokens keyed by "tokenEndpoint|clientId". */
+  /** Cached tokens keyed by {@link #getCacheKey}. */
   private static final ConcurrentHashMap<String, CachedToken> cache = new ConcurrentHashMap<>();
 
-  /** Per-cache-key lock objects to prevent concurrent token fetches for the same server. */
+  /** Per-cache-key lock objects to prevent concurrent token fetches for the same credentials. */
   private static final ConcurrentHashMap<String, Object> locks = new ConcurrentHashMap<>();
+
+  /**
+   * Monotonic clock for token expiry, so a wall-clock adjustment cannot make an expired token
+   * look valid or a valid one expire early. Replaceable by tests.
+   */
+  static LongSupplier nanoClock = System::nanoTime;
 
   private static final class CachedToken {
     final String accessToken;
-    final long expiresAtMillis;
+    final long expiresAtNanos;
     /**
      * Buffer actually applied to this token. Clamped to half the token's lifetime so that a
      * short-lived token (an IdP issuing {@code expires_in} at or below the buffer) is still
      * usable from cache - otherwise every single call would miss and re-fetch, doubling the
      * request count against both the IdP and the server indefinitely.
      */
-    final long bufferMillis;
+    final long bufferNanos;
 
-    CachedToken(String accessToken, long expiresAtMillis, int expiresInSeconds) {
+    CachedToken(String accessToken, int expiresInSeconds) {
       this.accessToken = accessToken;
-      this.expiresAtMillis = expiresAtMillis;
-      this.bufferMillis = Math.min(EXPIRY_BUFFER_SECONDS, expiresInSeconds / 2) * 1000L;
+      this.expiresAtNanos = nanoClock.getAsLong() + TimeUnit.SECONDS.toNanos(expiresInSeconds);
+      this.bufferNanos = TimeUnit.SECONDS.toNanos(Math.min(EXPIRY_BUFFER_SECONDS, expiresInSeconds / 2));
     }
 
     boolean isExpiringSoon() {
-      return System.currentTimeMillis() >= (expiresAtMillis - bufferMillis);
+      // Compared by difference, as System.nanoTime() values may be negative or wrap.
+      return nanoClock.getAsLong() - (expiresAtNanos - bufferNanos) >= 0;
     }
   }
 
   private HTTPTokenManager() {}
 
   /**
-   * Returns a valid access token for the given server, fetching a new one if
+   * Returns a valid access token for the given credentials, fetching a new one if
    * the cached token is missing or expiring soon.
    *
-   * @param server the server configuration containing clientId, clientSecret, and tokenEndpoint
+   * @param credentials the clientId, clientSecret, and tokenEndpoint to use
+   * @param allowPrivateNetwork whether the token endpoint may be on a private network - the
+   *   {@code allowPrivateNetwork} setting of the server the token is for
    * @return a bearer access token string
-   * @throws IOException if the token endpoint request fails
+   * @throws IOException if the credentials are incomplete or the token endpoint request fails
    */
-  public static String getToken(ServerDetailsPOJO server) throws IOException {
-    String cacheKey = getCacheKey(server);
+  public static String getToken(OAuthClientCredentialsPOJO credentials, boolean allowPrivateNetwork) throws IOException {
+    requireUsable(credentials);
+    String cacheKey = getCacheKey(credentials);
     CachedToken cached = cache.get(cacheKey);
 
     // Fast path: return cached token if still valid
@@ -102,108 +125,127 @@ public class HTTPTokenManager {
         return cached.accessToken;
       }
 
-      CachedToken newToken = requestTokenWithClientCredentials(server);
+      CachedToken newToken = requestTokenWithClientCredentials(credentials, allowPrivateNetwork);
       cache.put(cacheKey, newToken);
       return newToken.accessToken;
     }
   }
 
   /**
-   * Removes the cached token for the given server, forcing the next
+   * Removes the cached token for the given credentials, forcing the next
    * {@link #getToken} call to fetch a fresh token from the endpoint.
    *
-   * @return true if a token was actually cached and has now been removed. False means the 401/403
+   * @return true if a token was actually cached and has now been removed. False means the 401
    *   that prompted this cannot have been caused by a stale cached token, so retrying would just
    *   repeat the same failure - see {@link IHTTPAuthenticationProvider#invalidateCachedCredentials}.
    */
-  public static boolean invalidateToken(ServerDetailsPOJO server) {
-    return cache.remove(getCacheKey(server)) != null;
+  public static boolean invalidateToken(OAuthClientCredentialsPOJO credentials) {
+    if (credentials == null || credentials.findProblem() != null) {
+      return false;
+    }
+    return cache.remove(getCacheKey(credentials)) != null;
   }
 
-  public static void clearCache() {
+  /** Discards every cached token - called whenever settings are (re)loaded. */
+  static void clearCache() {
     cache.clear();
     locks.clear();
   }
 
-  private static String getCacheKey(ServerDetailsPOJO server) {
-    // Assumes (tokenEndpoint, clientId) fully identifies the issued token. If scope/audience are ever added to the token request, they MUST be folded into this key to avoid serving a token minted for a different scope.
-    return server.getTokenEndpoint() + "|" + server.getClientId();
+  /**
+   * Includes a digest of the secret, so that two configurations differing only in their secret
+   * (or a secret rotated without a settings reload) never share a token.
+   * <p>
+   * Assumes (tokenEndpoint, clientId, clientSecret) fully identifies the issued token. If
+   * scope/audience are ever added to the token request, they MUST be folded into this key to
+   * avoid serving a token minted for a different scope.
+   */
+  private static String getCacheKey(OAuthClientCredentialsPOJO credentials) {
+    return credentials.getTokenEndpoint() + "|" + credentials.getClientId() + "|" + sha256(credentials.getClientSecret());
+  }
+
+  private static String sha256(String value) {
+    try {
+      byte[] digest = MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8));
+      return HexFormat.of().formatHex(digest);
+    } catch (NoSuchAlgorithmException e) {
+      // Every Java platform is required to support SHA-256
+      throw new IllegalStateException(e);
+    }
   }
 
   /**
    * Builds and sends an OAuth 2.0 client_credentials token request.
    * The client authenticates via form-encoded client_id and client_secret
-   * (as per RFC 6749 Section 4.4).
+   * (RFC 6749 §2.3.1 and §4.4.2).
    */
-  private static CachedToken requestTokenWithClientCredentials(ServerDetailsPOJO server) throws IOException {
-    requireClientCredentialsFields(server);
+  private static CachedToken requestTokenWithClientCredentials(OAuthClientCredentialsPOJO credentials,
+                                                               boolean allowPrivateNetwork) throws IOException {
     String body = "grant_type=client_credentials"
-      + "&client_id=" + Utilities.URLEncode(server.getClientId())
-      + "&client_secret=" + Utilities.URLEncode(server.getClientSecret());
-    return executeTokenRequest(server, server.getTokenEndpoint(), body);
+      + "&client_id=" + Utilities.URLEncode(credentials.getClientId())
+      + "&client_secret=" + Utilities.URLEncode(credentials.getClientSecret());
+    return executeTokenRequest(credentials.getTokenEndpoint(), allowPrivateNetwork, body);
   }
 
   /**
-   * Validates the fields a client_credentials grant needs, at the point of use.
+   * Validates the credentials at the point of use.
    * <p>
-   * The settings-file loader validates too, but entries also arrive via
+   * The settings-file loader reports problems too, but deliberately does not reject the entry
+   * (see {@code FhirSettings.normalizeSettings}), and entries also arrive via
    * {@link ManagedWebAccess#loadFromSettings(org.hl7.fhir.utilities.settings.FhirSettingsPOJO)} and
    * {@link ManagedWebAccess#loadFromFHIRSettings(org.hl7.fhir.utilities.settings.FhirSettingsPOJO)},
-   * which do not go through it - without this an incomplete entry surfaced as a
-   * {@link NullPointerException} out of {@code URI.create(null)} or {@code URLEncode(null)}.
+   * which do not go through it. Failing here means a misconfigured server is never sent a request
+   * without its credentials.
    */
-  static void requireClientCredentialsFields(ServerDetailsPOJO server) throws IOException {
-    if (isBlank(server.getTokenEndpoint())) {
-      throw new IOException("Server " + server.getUrl() + " uses client_credentials but has no tokenEndpoint");
+  private static void requireUsable(OAuthClientCredentialsPOJO credentials) throws IOException {
+    String problem = credentials == null ? "is missing" : credentials.findProblem();
+    if (problem != null) {
+      throw new IOException("OAuth client credentials configuration " + problem);
     }
-    if (isBlank(server.getClientId())) {
-      throw new IOException("Server " + server.getUrl() + " uses client_credentials but has no clientId");
-    }
-    if (isBlank(server.getClientSecret())) {
-      throw new IOException("Server " + server.getUrl() + " uses client_credentials but has no clientSecret");
-    }
-  }
-
-  private static boolean isBlank(String s) {
-    return s == null || s.isBlank();
   }
 
   /**
-   * Grants the token endpoint exactly the trust configured for the server whose tokens it issues.
+   * The network policy for the token request: exactly the configured token endpoint, over https
+   * only, and on a private network only if the server whose tokens it issues sets
+   * {@code allowPrivateNetwork}.
    * <p>
    * Headers are never supplied: the client_credentials grant authenticates in the request body,
    * and delegating to the real authentication provider could route straight back into this class.
-   * {@link #canProvideHeaders} still returns true so that {@link #isProtocolAllowed} is consulted
-   * instead of the blanket https-only check - a token endpoint may use plain http only when its
-   * server is configured with {@code allowHttp}, and may sit on a private network only when that
-   * server sets {@code allowPrivateNetwork}.
+   * {@link #canProvideHeaders} still returns true for the token endpoint so that
+   * {@link #isProtocolAllowed} and {@link #isPrivateNetworkAllowed} are consulted for it; any
+   * other URL gets the default policy.
    */
   private static final class TokenEndpointPolicy implements IHTTPAuthenticationProvider {
-    private final ServerDetailsPOJO server;
+    private final String tokenEndpoint;
+    private final boolean allowPrivateNetwork;
 
-    TokenEndpointPolicy(ServerDetailsPOJO server) {
-      this.server = server;
+    TokenEndpointPolicy(String tokenEndpoint, boolean allowPrivateNetwork) {
+      this.tokenEndpoint = tokenEndpoint;
+      this.allowPrivateNetwork = allowPrivateNetwork;
+    }
+
+    private boolean isTokenEndpoint(URL url) {
+      return ManagedWebAccessUtils.urlMatchesOrigin(url.toString(), tokenEndpoint);
     }
 
     @Override
-    public boolean isProtocolAllowed(java.net.URL url) {
-      return "https".equals(url.getProtocol())
-        || ("http".equals(url.getProtocol()) && Boolean.TRUE.equals(server.getAllowHttp()));
+    public boolean isProtocolAllowed(URL url) {
+      return "https".equals(url.getProtocol()) && isTokenEndpoint(url);
     }
 
     @Override
-    public boolean canProvideHeaders(java.net.URL url) {
-      return true;
+    public boolean canProvideHeaders(URL url) {
+      return isTokenEndpoint(url);
     }
 
     @Override
-    public java.util.Map<String, String> getHeaders(java.net.URL url) throws IOException {
-      return java.util.Map.of();
+    public Map<String, String> getHeaders(URL url) {
+      return Map.of();
     }
 
     @Override
-    public boolean isPrivateNetworkAllowed(java.net.URL url) {
-      return Boolean.TRUE.equals(server.getAllowPrivateNetwork());
+    public boolean isPrivateNetworkAllowed(URL url) {
+      return allowPrivateNetwork && isTokenEndpoint(url);
     }
   }
 
@@ -211,18 +253,20 @@ public class HTTPTokenManager {
    * POSTs the form body to the token endpoint and parses the JSON response
    * into a CachedToken with an expiry timestamp.
    * <p>
-   * The request goes through {@link ManagedWebAccessor} rather than a raw connection so that the
-   * token endpoint is subject to the same controls as every other outbound request: the
-   * {@link ManagedWebAccess.WebAccessPolicy} (so {@code prohibitNetworkAccess} actually prohibits
-   * it), the allowed-paths policy, protocol allow-listing, and SSRF address-range blocking.
+   * Under {@link ManagedWebAccess.WebAccessPolicy#DIRECT} the request goes through
+   * {@link ManagedHTTPClient}, so it is subject to the same controls as every other outbound
+   * request: the allowed-paths policy, protocol allow-listing, the blocked-host list, and SSRF
+   * address-range blocking. It is sent exactly once and redirects are not followed, as either
+   * would re-send the client secret. Under {@link ManagedWebAccess.WebAccessPolicy#MANAGED} the
+   * request - client secret included - is handed to the host application's
+   * {@link IWebAccessor}, and enforcing any of this is up to that accessor.
    */
-  private static CachedToken executeTokenRequest(ServerDetailsPOJO server, String tokenEndpoint, String formBody)
+  private static CachedToken executeTokenRequest(String tokenEndpoint, boolean allowPrivateNetwork, String formBody)
       throws IOException {
-    // No retries: a retry re-sends the client secret, and token-endpoint errors (invalid_client,
-    // invalid_scope) are permanent - repeating them buys nothing and doubles the exposure.
     ManagedWebAccessor accessor = new ManagedWebAccessor(
-      java.util.List.of("fhir"), ManagedWebAccess.getUserAgent(), new TokenEndpointPolicy(server))
-      .withRetries(0);
+      List.of("fhir"), ManagedWebAccess.getUserAgent(), new TokenEndpointPolicy(tokenEndpoint, allowPrivateNetwork))
+      .withRetries(0)
+      .withoutRedirects();
 
     HTTPResult result = accessor.post(tokenEndpoint,
       formBody.getBytes(StandardCharsets.UTF_8),
@@ -230,6 +274,12 @@ public class HTTPTokenManager {
       "application/json");
 
     int responseCode = result.getCode();
+    if (responseCode >= 300 && responseCode < 400) {
+      // RFC 6749 §4.4.3 answers a token request with a token response or an error response
+      // (§5.1, §5.2) - a redirect is neither, and following one would hand the secret to its target.
+      throw new IOException("Token endpoint " + tokenEndpoint + " returned a redirect (HTTP " + responseCode
+        + "), which is not followed for token requests");
+    }
     if (responseCode < 200 || responseCode >= 300) {
       throw new IOException("Token endpoint " + tokenEndpoint + " returned HTTP " + responseCode
         + ": " + safeOAuthError(result.getContentAsString()));
@@ -241,14 +291,20 @@ public class HTTPTokenManager {
     JsonObject json;
     try {
       json = JsonParser.parseString(responseBody).getAsJsonObject();
-    } catch (Exception e) {
-      throw new IOException("Token endpoint " + tokenEndpoint + " returned a non-JSON response (body suppressed)", e);
+    } catch (RuntimeException e) {
+      // The cause is deliberately not chained: Gson includes the offending content in its
+      // exception messages, which would defeat suppressing the body here.
+      throw new IOException("Token endpoint " + tokenEndpoint + " did not return a JSON object (body suppressed)");
     }
 
-    String accessToken = JsonUtilities.str(json, "access_token");
-    if (accessToken == null) {
+    JsonElement accessTokenElement = json.get("access_token");
+    if (accessTokenElement == null || accessTokenElement.isJsonNull()) {
       throw new IOException("Token endpoint " + tokenEndpoint + " response missing 'access_token' field");
     }
+    if (!accessTokenElement.isJsonPrimitive() || !accessTokenElement.getAsJsonPrimitive().isString()) {
+      throw new IOException("Token endpoint " + tokenEndpoint + " response has a non-string 'access_token' field");
+    }
+    String accessToken = accessTokenElement.getAsString();
 
     int expiresIn;
     if (json.has("expires_in") && !json.get("expires_in").isJsonNull()) {
@@ -267,19 +323,22 @@ public class HTTPTokenManager {
       log.warn("Token endpoint {} returned non-positive expires_in={}, defaulting to {}s", tokenEndpoint, expiresIn, DEFAULT_EXPIRES_IN);
       expiresIn = DEFAULT_EXPIRES_IN;
     }
+    if (expiresIn > MAX_EXPIRES_IN_SECONDS) {
+      log.warn("Token endpoint {} returned expires_in={}, caching for at most {}s", tokenEndpoint, expiresIn, MAX_EXPIRES_IN_SECONDS);
+      expiresIn = MAX_EXPIRES_IN_SECONDS;
+    }
 
-    long expiresAtMillis = System.currentTimeMillis() + (expiresIn * 1000L);
-    return new CachedToken(accessToken, expiresAtMillis, expiresIn);
+    return new CachedToken(accessToken, expiresIn);
   }
 
   /** Extracts OAuth error/error_description if the body is JSON; never includes the raw body (may contain credentials). */
   private static String safeOAuthError(String body) {
     try {
-      com.google.gson.JsonObject o = com.google.gson.JsonParser.parseString(body).getAsJsonObject();
-      String err = org.hl7.fhir.utilities.json.JsonUtilities.str(o, "error");
-      String desc = org.hl7.fhir.utilities.json.JsonUtilities.str(o, "error_description");
+      JsonObject o = JsonParser.parseString(body).getAsJsonObject();
+      String err = JsonUtilities.str(o, "error");
+      String desc = JsonUtilities.str(o, "error_description");
       if (err != null) return err + (desc != null ? ": " + desc : "");
-    } catch (Exception ignore) { /* not JSON */ }
+    } catch (Exception ignore) { /* not JSON, or error/error_description not strings */ }
     return "(response body suppressed)";
   }
 

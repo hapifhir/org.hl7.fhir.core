@@ -5,5 +5,5 @@ public enum HTTPAuthenticationMode {
   BASIC,
   TOKEN,
   APIKEY,
-  CLIENT_CREDENTIALS
+  OAUTH_CLIENT_CREDENTIALS
 }

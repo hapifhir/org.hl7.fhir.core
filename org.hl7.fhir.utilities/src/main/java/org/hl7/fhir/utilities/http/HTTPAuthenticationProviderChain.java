@@ -52,16 +52,27 @@ public class HTTPAuthenticationProviderChain implements IHTTPAuthenticationProvi
     return Map.of();
   }
 
+  // The credential methods below stop at the first provider that can serve the URL - that is the
+  // one getHeaders() used, so it is the only one whose credentials could have caused the 401.
+  // Scanning past it would invalidate a different provider's token and trigger a retry
+  // guaranteed to fail.
+
+  @Override
+  public boolean canRefreshCredentials(URL url) {
+    for (IHTTPAuthenticationProvider p : providers) {
+      if (p.canProvideHeaders(url)) {
+        return p.canRefreshCredentials(url);
+      }
+    }
+    return false;
+  }
+
   @Override
   public boolean invalidateCachedCredentials(URL url) {
     for (IHTTPAuthenticationProvider p : providers) {
-      if (!p.canProvideHeaders(url)) {
-        continue;
+      if (p.canProvideHeaders(url)) {
+        return p.invalidateCachedCredentials(url);
       }
-      // Stop at the first provider that can serve this URL - that is the one getHeaders() used,
-      // so it is the only one whose credentials could have caused the 401/403. Scanning past it
-      // would invalidate a different provider's token and trigger a retry guaranteed to fail.
-      return p.invalidateCachedCredentials(url);
     }
     return false;
   }

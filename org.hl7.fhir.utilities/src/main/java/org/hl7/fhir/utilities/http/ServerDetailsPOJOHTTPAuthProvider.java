@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.http;
 
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 import java.net.URL;
@@ -71,10 +72,16 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
         String providedAPIKey = serverDetails.getApikey();
         headers.put("Api-Key", providedAPIKey);
       }
-      case CLIENT_CREDENTIALS -> {
-        // A token-fetch failure propagates as IOException, so callers that already handle a
-        // failed web request handle this too.
-        headers.put("Authorization", "Bearer " + HTTPTokenManager.getToken(serverDetails));
+      case OAUTH_CLIENT_CREDENTIALS -> {
+        // A token-fetch failure - or incomplete configuration - propagates as IOException, so
+        // callers that already handle a failed web request handle this too, and the request is
+        // never sent without its credentials.
+        String problem = FhirSettings.findClientCredentialsProblem(serverDetails);
+        if (problem != null) {
+          throw new java.io.IOException("Server " + serverDetails.getUrl() + " uses oauth_client_credentials but " + problem);
+        }
+        headers.put("Authorization", "Bearer " + HTTPTokenManager.getToken(serverDetails.getOauthClientCredentials(),
+          Boolean.TRUE.equals(serverDetails.getAllowPrivateNetwork())));
       }
       default -> { /* do nothing */ }
 
@@ -100,7 +107,7 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
       case "basic" -> HTTPAuthenticationMode.BASIC;
       case "token" -> HTTPAuthenticationMode.TOKEN;
       case "apikey" -> HTTPAuthenticationMode.APIKEY;
-      case "client_credentials" -> HTTPAuthenticationMode.CLIENT_CREDENTIALS;
+      case "oauth_client_credentials" -> HTTPAuthenticationMode.OAUTH_CLIENT_CREDENTIALS;
       default -> HTTPAuthenticationMode.NONE;
     };
   }
@@ -118,15 +125,20 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
   }
 
   @Override
-  public boolean invalidateCachedCredentials(URL url) {
+  public boolean canRefreshCredentials(URL url) {
     ServerDetailsPOJO serverDetails = getServerDetails(url);
-    if (serverDetails != null
-        && getHTTPAuthenticationMode(serverDetails) == HTTPAuthenticationMode.CLIENT_CREDENTIALS) {
-      // Only report an invalidation when a token was actually cached. A server that rejects a
-      // freshly-minted token (insufficient scope, client not authorised) would otherwise cost
-      // two round-trips plus a token fetch on every request, forever.
-      return HTTPTokenManager.invalidateToken(serverDetails);
+    return serverDetails != null
+      && getHTTPAuthenticationMode(serverDetails) == HTTPAuthenticationMode.OAUTH_CLIENT_CREDENTIALS;
+  }
+
+  @Override
+  public boolean invalidateCachedCredentials(URL url) {
+    if (!canRefreshCredentials(url)) {
+      return false;
     }
-    return false;
+    // Only report an invalidation when a token was actually cached. A server that rejects a
+    // freshly-minted token would otherwise cost two round-trips plus a token fetch on every
+    // request, forever.
+    return HTTPTokenManager.invalidateToken(getServerDetails(url).getOauthClientCredentials());
   }
 }

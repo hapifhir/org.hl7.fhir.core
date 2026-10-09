@@ -3,7 +3,7 @@ package org.hl7.fhir.utilities.http;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
+import org.hl7.fhir.utilities.settings.OAuthClientCredentialsPOJO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,52 +13,54 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hl7.fhir.utilities.http.OAuthTestSupport.tokenResponse;
 
 class HTTPTokenManagerTest {
 
   private MockWebServer tokenServer;
+  private final AtomicLong clock = new AtomicLong();
 
   @BeforeEach
   void setup() throws IOException {
-    tokenServer = new MockWebServer();
-    tokenServer.start();
+    OAuthTestSupport.trustTestCertificate();
+    tokenServer = OAuthTestSupport.startHttpsServer();
     HTTPTokenManager.clearCache();
+    HTTPTokenManager.nanoClock = clock::get;
   }
 
   @AfterEach
   void tearDown() throws IOException {
     tokenServer.shutdown();
     HTTPTokenManager.clearCache();
+    HTTPTokenManager.nanoClock = System::nanoTime;
+    OAuthTestSupport.resetTrust();
   }
 
-  private ServerDetailsPOJO buildServer(String clientId, String clientSecret) {
-    // The token request now goes through ManagedWebAccessor, so the mock token endpoint - plain
-    // http on a loopback address - needs the same opt-ins any internal endpoint would need.
-    return ServerDetailsPOJO.builder()
-      .url("http://fhir.example.com/fhir")
-      .authenticationType("client_credentials")
-      .type("fhir")
-      .clientId(clientId)
-      .clientSecret(clientSecret)
-      .tokenEndpoint(tokenServer.url("/token").toString())
-      .allowHttp(true)
-      .allowPrivateNetwork(true)
-      .build();
+  private void advanceSeconds(long seconds) {
+    clock.addAndGet(TimeUnit.SECONDS.toNanos(seconds));
+  }
+
+  private OAuthClientCredentialsPOJO credentials(String clientId, String clientSecret) {
+    return OAuthTestSupport.credentials(tokenServer, clientId, clientSecret);
+  }
+
+  /** The mock token endpoint is on a loopback address, so it needs the private-network opt-in. */
+  private String getToken(OAuthClientCredentialsPOJO credentials) throws IOException {
+    return HTTPTokenManager.getToken(credentials, true);
   }
 
   @Test
   void testBasicTokenFetch() throws Exception {
-    ServerDetailsPOJO server = buildServer("myClient", "mySecret");
+    OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
 
-    tokenServer.enqueue(new MockResponse()
-      .setBody("{\"access_token\":\"abc123\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
-      .addHeader("Content-Type", "application/json")
-      .setResponseCode(200));
+    tokenServer.enqueue(tokenResponse("abc123", 3600));
 
-    String token = HTTPTokenManager.getToken(server);
+    String token = getToken(credentials);
     assertThat(token).isEqualTo("abc123");
 
     RecordedRequest request = tokenServer.takeRequest();
@@ -72,14 +74,10 @@ class HTTPTokenManagerTest {
   void testClientCredentialsAreFormUrlEncoded() throws Exception {
     String clientId = "cli ent+id";
     String clientSecret = "s3cr3t/+&=value";
-    ServerDetailsPOJO server = buildServer(clientId, clientSecret);
 
-    tokenServer.enqueue(new MockResponse()
-      .setBody("{\"access_token\":\"abc123\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
-      .addHeader("Content-Type", "application/json")
-      .setResponseCode(200));
+    tokenServer.enqueue(tokenResponse("abc123", 3600));
 
-    HTTPTokenManager.getToken(server);
+    getToken(credentials(clientId, clientSecret));
 
     RecordedRequest request = tokenServer.takeRequest();
     String body = request.getBody().readUtf8();
@@ -100,15 +98,12 @@ class HTTPTokenManagerTest {
 
   @Test
   void testTokenCaching() throws Exception {
-    ServerDetailsPOJO server = buildServer("myClient", "mySecret");
+    OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
 
-    tokenServer.enqueue(new MockResponse()
-      .setBody("{\"access_token\":\"abc123\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
-      .addHeader("Content-Type", "application/json")
-      .setResponseCode(200));
+    tokenServer.enqueue(tokenResponse("abc123", 3600));
 
-    String token1 = HTTPTokenManager.getToken(server);
-    String token2 = HTTPTokenManager.getToken(server);
+    String token1 = getToken(credentials);
+    String token2 = getToken(credentials);
 
     assertThat(token1).isEqualTo("abc123");
     assertThat(token2).isEqualTo("abc123");
@@ -117,37 +112,26 @@ class HTTPTokenManagerTest {
 
   @Test
   void testInvalidateTokenForcesRefetch() throws Exception {
-    ServerDetailsPOJO server = buildServer("myClient", "mySecret");
+    OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
 
-    tokenServer.enqueue(new MockResponse()
-      .setBody("{\"access_token\":\"token1\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
-      .addHeader("Content-Type", "application/json")
-      .setResponseCode(200));
+    tokenServer.enqueue(tokenResponse("token1", 3600));
+    tokenServer.enqueue(tokenResponse("token2", 3600));
 
-    tokenServer.enqueue(new MockResponse()
-      .setBody("{\"access_token\":\"token2\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
-      .addHeader("Content-Type", "application/json")
-      .setResponseCode(200));
+    assertThat(getToken(credentials)).isEqualTo("token1");
 
-    String token1 = HTTPTokenManager.getToken(server);
-    assertThat(token1).isEqualTo("token1");
+    HTTPTokenManager.invalidateToken(credentials);
 
-    HTTPTokenManager.invalidateToken(server);
-
-    String token2 = HTTPTokenManager.getToken(server);
-    assertThat(token2).isEqualTo("token2");
+    assertThat(getToken(credentials)).isEqualTo("token2");
     assertThat(tokenServer.getRequestCount()).isEqualTo(2);
   }
 
   @Test
   void testTokenEndpointErrorThrowsIOException() {
-    ServerDetailsPOJO server = buildServer("myClient", "mySecret");
-
     tokenServer.enqueue(new MockResponse()
       .setBody("{\"error\":\"invalid_client\"}")
       .setResponseCode(401));
 
-    assertThatThrownBy(() -> HTTPTokenManager.getToken(server))
+    assertThatThrownBy(() -> getToken(credentials("myClient", "mySecret")))
       .isInstanceOf(IOException.class)
       .hasMessageContaining("returned HTTP 401")
       .hasMessageContaining("invalid_client")
@@ -156,122 +140,133 @@ class HTTPTokenManagerTest {
 
   @Test
   void testMissingAccessTokenThrowsIOException() {
-    ServerDetailsPOJO server = buildServer("myClient", "mySecret");
-
     tokenServer.enqueue(new MockResponse()
       .setBody("{\"token_type\":\"Bearer\",\"expires_in\":3600}")
       .addHeader("Content-Type", "application/json")
       .setResponseCode(200));
 
-    assertThatThrownBy(() -> HTTPTokenManager.getToken(server))
+    assertThatThrownBy(() -> getToken(credentials("myClient", "mySecret")))
       .isInstanceOf(IOException.class)
       .hasMessageContaining("missing 'access_token'");
   }
 
   @Test
+  void testNonStringAccessTokenThrowsIOException() {
+    tokenServer.enqueue(new MockResponse()
+      .setBody("{\"access_token\":12345,\"expires_in\":3600}")
+      .addHeader("Content-Type", "application/json")
+      .setResponseCode(200));
+
+    assertThatThrownBy(() -> getToken(credentials("myClient", "mySecret")))
+      .isInstanceOf(IOException.class)
+      .hasMessageContaining("non-string 'access_token'");
+  }
+
+  @Test
   void testMissingExpiresInDefaultsTo3600() throws Exception {
-    ServerDetailsPOJO server = buildServer("myClient", "mySecret");
+    OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
 
     tokenServer.enqueue(new MockResponse()
       .setBody("{\"access_token\":\"abc123\",\"token_type\":\"Bearer\"}")
       .addHeader("Content-Type", "application/json")
       .setResponseCode(200));
+    tokenServer.enqueue(tokenResponse("def456", 3600));
 
-    String token = HTTPTokenManager.getToken(server);
-    assertThat(token).isEqualTo("abc123");
+    assertThat(getToken(credentials)).isEqualTo("abc123");
 
-    // Token should be cached (not expired yet with default 3600s)
-    String token2 = HTTPTokenManager.getToken(server);
-    assertThat(token2).isEqualTo("abc123");
-    assertThat(tokenServer.getRequestCount()).isEqualTo(1);
+    // A 3600s token is treated as expired 30s early
+    advanceSeconds(3569);
+    assertThat(getToken(credentials)).isEqualTo("abc123");
+    advanceSeconds(2);
+    assertThat(getToken(credentials)).isEqualTo("def456");
+    assertThat(tokenServer.getRequestCount()).isEqualTo(2);
+  }
+
+  @Test
+  void testExcessiveExpiresInIsClamped() throws Exception {
+    OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
+
+    tokenServer.enqueue(tokenResponse("eternal", Integer.MAX_VALUE));
+    tokenServer.enqueue(tokenResponse("replacement", 3600));
+
+    assertThat(getToken(credentials)).isEqualTo("eternal");
+
+    advanceSeconds(HTTPTokenManager.MAX_EXPIRES_IN_SECONDS);
+    assertThat(getToken(credentials)).isEqualTo("replacement");
+    assertThat(tokenServer.getRequestCount()).isEqualTo(2);
   }
 
   @Test
   void testExpiredTokenTriggersRefetch() throws Exception {
-    ServerDetailsPOJO server = buildServer("myClient", "mySecret");
+    OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
 
-    // First token expires in 1s (within 30s buffer, so immediately "expiring soon")
-    tokenServer.enqueue(new MockResponse()
-      .setBody("{\"access_token\":\"token1\",\"token_type\":\"Bearer\",\"expires_in\":1}")
-      .addHeader("Content-Type", "application/json")
-      .setResponseCode(200));
+    tokenServer.enqueue(tokenResponse("token1", 1));
+    tokenServer.enqueue(tokenResponse("token2", 3600));
 
-    // Second token request after expiry
-    tokenServer.enqueue(new MockResponse()
-      .setBody("{\"access_token\":\"token2\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
-      .addHeader("Content-Type", "application/json")
-      .setResponseCode(200));
-
-    String token1 = HTTPTokenManager.getToken(server);
-    assertThat(token1).isEqualTo("token1");
+    assertThat(getToken(credentials)).isEqualTo("token1");
 
     // The early-expiry buffer is clamped to half the token's lifetime, so a 1s token is usable
-    // for its one second rather than stale on arrival - wait for it to genuinely expire.
-    Thread.sleep(1200);
+    // for its one second rather than stale on arrival.
+    advanceSeconds(1);
 
-    // Second call - token has expired, should re-fetch via client_credentials
-    String token2 = HTTPTokenManager.getToken(server);
-    assertThat(token2).isEqualTo("token2");
+    // Token has expired, should re-fetch via client_credentials
+    assertThat(getToken(credentials)).isEqualTo("token2");
     assertThat(tokenServer.getRequestCount()).isEqualTo(2);
 
     // Both requests should use client_credentials grant
-    RecordedRequest firstRequest = tokenServer.takeRequest();
-    assertThat(firstRequest.getBody().readUtf8()).contains("grant_type=client_credentials");
-
-    RecordedRequest secondRequest = tokenServer.takeRequest();
-    assertThat(secondRequest.getBody().readUtf8()).contains("grant_type=client_credentials");
+    assertThat(tokenServer.takeRequest().getBody().readUtf8()).contains("grant_type=client_credentials");
+    assertThat(tokenServer.takeRequest().getBody().readUtf8()).contains("grant_type=client_credentials");
   }
 
   @Test
   void testNonJsonResponseThrowsIOException() {
-    ServerDetailsPOJO server = buildServer("myClient", "mySecret");
-
     tokenServer.enqueue(new MockResponse()
       .setBody("<html>Bad Gateway</html>")
       .addHeader("Content-Type", "text/html")
       .setResponseCode(200));
 
-    assertThatThrownBy(() -> HTTPTokenManager.getToken(server))
+    assertThatThrownBy(() -> getToken(credentials("myClient", "mySecret")))
       .isInstanceOf(IOException.class)
-      .hasMessageContaining("non-JSON response");
+      .hasMessageContaining("did not return a JSON object")
+      .hasNoCause();
   }
 
   // The token request carries the client secret, so it must be subject to the same network
   // policy as any other outbound request rather than going out on a raw connection.
 
   @Test
-  void testPlainHttpTokenEndpointRejectedWithoutAllowHttp() {
-    ServerDetailsPOJO server = buildServer("myClient", "mySecret").toBuilder()
-      .allowHttp(null)
-      .build();
+  void testPlainHttpTokenEndpointRejected() throws IOException {
+    MockWebServer plainHttpTokenServer = new MockWebServer();
+    plainHttpTokenServer.start();
+    try {
+      OAuthClientCredentialsPOJO credentials = OAuthTestSupport.credentials(plainHttpTokenServer, "myClient", "mySecret");
 
-    assertThatThrownBy(() -> HTTPTokenManager.getToken(server))
-      .isInstanceOf(IOException.class)
-      .hasMessageContaining("permitted protocol");
-    assertThat(tokenServer.getRequestCount()).isEqualTo(0);
+      assertThatThrownBy(() -> getToken(credentials))
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("https");
+      assertThat(plainHttpTokenServer.getRequestCount()).isZero();
+    } finally {
+      plainHttpTokenServer.shutdown();
+    }
   }
 
   @Test
   void testPrivateNetworkTokenEndpointRejectedWithoutOptIn() {
-    ServerDetailsPOJO server = buildServer("myClient", "mySecret").toBuilder()
-      .allowPrivateNetwork(null)
-      .build();
-
-    assertThatThrownBy(() -> HTTPTokenManager.getToken(server))
+    assertThatThrownBy(() -> HTTPTokenManager.getToken(credentials("myClient", "mySecret"), false))
       .isInstanceOf(IOException.class);
-    assertThat(tokenServer.getRequestCount()).isEqualTo(0);
+    assertThat(tokenServer.getRequestCount()).isZero();
   }
 
   @Test
   void testTokenEndpointHonoursProhibitedAccessPolicy() {
-    ServerDetailsPOJO server = buildServer("myClient", "mySecret");
+    OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
     ManagedWebAccess.WebAccessPolicy previous = ManagedWebAccess.getAccessPolicy();
     try {
       ManagedWebAccess.setAccessPolicy(ManagedWebAccess.WebAccessPolicy.PROHIBITED);
-      assertThatThrownBy(() -> HTTPTokenManager.getToken(server))
+      assertThatThrownBy(() -> getToken(credentials))
         .isInstanceOf(IOException.class)
         .hasMessageContaining("not allowed by local security policy");
-      assertThat(tokenServer.getRequestCount()).isEqualTo(0);
+      assertThat(tokenServer.getRequestCount()).isZero();
     } finally {
       ManagedWebAccess.setAccessPolicy(previous);
     }
@@ -282,52 +277,57 @@ class HTTPTokenManagerTest {
 
   @Test
   void testIncompleteClientCredentialsGivesClearError() {
-    ServerDetailsPOJO noTokenEndpoint = buildServer("myClient", "mySecret").toBuilder()
+    OAuthClientCredentialsPOJO noTokenEndpoint = credentials("myClient", "mySecret").toBuilder()
       .tokenEndpoint(null).build();
-    assertThatThrownBy(() -> HTTPTokenManager.getToken(noTokenEndpoint))
+    assertThatThrownBy(() -> getToken(noTokenEndpoint))
       .isInstanceOf(IOException.class)
       .hasMessageContaining("tokenEndpoint");
 
-    ServerDetailsPOJO noClientId = buildServer(null, "mySecret");
-    assertThatThrownBy(() -> HTTPTokenManager.getToken(noClientId))
+    assertThatThrownBy(() -> getToken(credentials(null, "mySecret")))
       .isInstanceOf(IOException.class)
       .hasMessageContaining("clientId");
 
-    ServerDetailsPOJO noSecret = buildServer("myClient", null);
-    assertThatThrownBy(() -> HTTPTokenManager.getToken(noSecret))
+    assertThatThrownBy(() -> getToken(credentials("myClient", " ")))
       .isInstanceOf(IOException.class)
       .hasMessageContaining("clientSecret");
+
+    assertThatThrownBy(() -> getToken(null))
+      .isInstanceOf(IOException.class)
+      .hasMessageContaining("missing");
+
+    assertThat(tokenServer.getRequestCount()).isZero();
   }
 
   @Test
   void testInvalidateTokenReportsWhetherAnythingWasCached() throws Exception {
-    ServerDetailsPOJO server = buildServer("myClient", "mySecret");
+    OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
 
     // Nothing cached yet - a retry would be pointless, so this must say so
-    assertThat(HTTPTokenManager.invalidateToken(server)).isFalse();
+    assertThat(HTTPTokenManager.invalidateToken(credentials)).isFalse();
 
-    tokenServer.enqueue(new MockResponse()
-      .setBody("{\"access_token\":\"abc123\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
-      .addHeader("Content-Type", "application/json")
-      .setResponseCode(200));
-    HTTPTokenManager.getToken(server);
+    tokenServer.enqueue(tokenResponse("abc123", 3600));
+    getToken(credentials);
 
-    assertThat(HTTPTokenManager.invalidateToken(server)).isTrue();
-    assertThat(HTTPTokenManager.invalidateToken(server)).isFalse();
+    assertThat(HTTPTokenManager.invalidateToken(credentials)).isTrue();
+    assertThat(HTTPTokenManager.invalidateToken(credentials)).isFalse();
+  }
+
+  @Test
+  void testInvalidateTokenWithIncompleteCredentialsReportsNothingCached() {
+    assertThat(HTTPTokenManager.invalidateToken(null)).isFalse();
+    assertThat(HTTPTokenManager.invalidateToken(credentials("myClient", null))).isFalse();
   }
 
   @Test
   void testShortLivedTokenIsStillServedFromCache() throws Exception {
-    ServerDetailsPOJO server = buildServer("myClient", "mySecret");
+    OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
 
     // expires_in below the 30s buffer: without clamping, every call would re-fetch
-    tokenServer.enqueue(new MockResponse()
-      .setBody("{\"access_token\":\"short\",\"token_type\":\"Bearer\",\"expires_in\":20}")
-      .addHeader("Content-Type", "application/json")
-      .setResponseCode(200));
+    tokenServer.enqueue(tokenResponse("short", 20));
 
-    assertThat(HTTPTokenManager.getToken(server)).isEqualTo("short");
-    assertThat(HTTPTokenManager.getToken(server)).isEqualTo("short");
+    assertThat(getToken(credentials)).isEqualTo("short");
+    advanceSeconds(9);
+    assertThat(getToken(credentials)).isEqualTo("short");
     assertThat(tokenServer.getRequestCount()).isEqualTo(1);
   }
 }
