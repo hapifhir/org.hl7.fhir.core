@@ -676,6 +676,15 @@
                     ],
                     "default": "false"
                   },
+                  "requiredOnly": {
+                    "type": "string",
+                    "description": "The string `true` restricts generation to the elements the profile makes mandatory at the resource's top level. Compared as a string, like `bundle`, so a JSON boolean `true` does not switch it on.",
+                    "enum": [
+                      "true",
+                      "false"
+                    ],
+                    "default": "false"
+                  },
                   "format": {
                     "type": "string",
                     "description": "Output format for the generated resources.",
