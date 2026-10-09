@@ -2222,3 +2222,52 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "filter" : [{
+        "property" : "parent",
+        "op" : "=",
+        "value" : "LP43571-6"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:9cf4ea8c-15b7-4ef9-b261-c54518201461",
+    "timestamp" : "2026-10-09T00:58:37.865Z",
+    "total" : 0,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.82"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------

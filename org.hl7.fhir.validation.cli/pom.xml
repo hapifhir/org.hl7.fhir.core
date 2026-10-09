@@ -251,7 +251,7 @@
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>ST4</artifactId>
-            <version>4.1</version>
+            <version>4.3.4</version>
             <optional>false</optional>
             <scope>compile</scope>
         </dependency>
