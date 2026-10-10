@@ -189,6 +189,10 @@ public class FHIRPathTests {
       fail = TestResultType.EXECUTION;      
     };
     fp.setAllowPolymorphicNames("lenient/polymorphics".equals(test.getAttribute("mode")));
+    // context: a FHIRPath expression evaluated first, as a preparatory filter; the test expression is evaluated on its (single) result
+    // contextType: the type(s) to use as the focus when checking the expression - overrides context for type checking
+    String context = test.getAttribute("context");
+    String contextType = test.getAttribute("contextType");
     boolean skipStaticCheck = false;
     if ("true".equals(test.getAttribute("skipStaticCheck")))
       skipStaticCheck = true;
@@ -214,9 +218,9 @@ public class FHIRPathTests {
           if ("cda".equals(test.getAttribute("mode"))) {
             res = Manager.makeParser(fp.getWorker(), FhirFormat.XML).parseSingle(TestingUtilities.loadTestResourceStream("r6", input), null);
           } else if (input.endsWith(".json")) {
-            res = new JsonParser(context.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", input));
+            res = new JsonParser(this.context.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", input));
           } else {
-            res = new XmlParser(context.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", input));
+            res = new XmlParser(this.context.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", input));
           }
           resources.put(input, res);
         }        
@@ -224,10 +228,15 @@ public class FHIRPathTests {
       
       if (!skipStaticCheck) {
         try {
-          if (Utilities.noString(input)) {
+          String rt = res == null ? null : res.fhirType();
+          if (!Utilities.noString(contextType)) {
+            fp.checkOnTypes(res, rt, rt, Arrays.asList(contextType.split("\\|")), node, new ArrayList<>());
+          } else if (!Utilities.noString(context)) {
+            fp.check(res, rt, rt, context, node);
+          } else if (res == null) {
             fp.check(null, null, null, node);
           } else {
-            fp.check(res, res.fhirType(), res.fhirType(), res.fhirType(), node);
+            fp.check(res, rt, rt, rt, node);
           }
           Assertions.assertTrue(fail != TestResultType.SEMANTICS, String.format("Expected exception didn't occur checking %s", expression));
         } catch (Exception e) {
@@ -242,9 +251,9 @@ public class FHIRPathTests {
       try {
         if ("element".equals(test.getAttribute("mode"))) {
           List<ValidatedFragment> e = Manager.parse(fp.getWorker(), TestingUtilities.loadTestResourceStream("r6", input), input.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML);
-          outcome = fp.evaluate(e.get(0).getElement(), node);
+          outcome = evaluateInContext(e.get(0).getElement(), context, node);
         } else {
-          outcome = fp.evaluate(res, node);
+          outcome = evaluateInContext(res, context, node);
         }
         Assertions.assertTrue(fail == TestResultType.OK, String.format("Expected exception didn't occur executing %s", expression));
       } catch (Exception e) {
@@ -310,6 +319,21 @@ public class FHIRPathTests {
         }
       }
     }
+  }
+
+  /**
+   * if the test specifies a context, evaluate that first as a preparatory filter, and then evaluate the
+   * expression against the single item it selects (it's an error in the test if it selects zero, or more than one)
+   */
+  private List<Base> evaluateInContext(Base root, String context, ExpressionNode node) {
+    if (Utilities.noString(context)) {
+      return fp.evaluate(root, node);
+    }
+    List<Base> focus = fp.evaluate(root, fp.parse(context));
+    if (focus.size() != 1) {
+      Assertions.fail(String.format("Context '%s' selected %d items, but must select exactly one", context, focus.size()));
+    }
+    return fp.evaluate(null, root, root, focus.get(0), node);
   }
 
   @Test
