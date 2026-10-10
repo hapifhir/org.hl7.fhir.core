@@ -90,7 +90,7 @@ public class ConceptMapMappingProvider extends ModelMappingProvider {
       x.ahOrNot(relationshipHref(tgt.getRelationship().toCode())).tx(rel(tgt.getRelationship()));
     }
     x.tx(" ");
-    x.ah(ref()+"#"+tgt.getCode()).tx(tgt.getCode());
+    x.ah(ref()+"#"+tgt.getCode().replace("[", "_").replace("]", "_")).tx(tgt.getCode());
     if (tgt.hasComment()) {
       XhtmlNode i = x.i();
       i.tx(" (");
