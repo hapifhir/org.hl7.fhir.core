@@ -363,7 +363,7 @@ public class FHIRPathEngine {
       }
       if (ed.fixedType != null) {
         types = new TypeDetails(CollectionStatus.SINGLETON, ed.fixedType);
-      } else if (ed.getDefinition().getType().isEmpty() || isAbstractType(ed.getDefinition().getType())) {
+      } else if (ed.getDefinition().getType().isEmpty() || (ed.getDefinition().getType().size() == 1 && isAbstractType(ed.getDefinition().getType()))) {
         types = new TypeDetails(CollectionStatus.SINGLETON, ctxt + "#" + context);
       } else {
         types = new TypeDetails(CollectionStatus.SINGLETON);
@@ -431,7 +431,7 @@ public class FHIRPathEngine {
       }
       if (ed.fixedType != null) {
         types = new TypeDetails(CollectionStatus.SINGLETON, ed.fixedType);
-      } else if (ed.getDefinition().getType().isEmpty() || isAbstractType(ed.getDefinition().getType())) {
+      } else if (ed.getDefinition().getType().isEmpty() || (ed.getDefinition().getType().size() == 1 && isAbstractType(ed.getDefinition().getType()))) {
         types = new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl() + "#" + context);
       } else {
         types = new TypeDetails(CollectionStatus.SINGLETON);

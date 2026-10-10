@@ -32,8 +32,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  */
 public abstract class ParticipantRendererBase extends ResourceRenderer {
 
-  protected static final int MAX_IMAGE_LENGTH = 2*1024*1024;
-
   /**
    * a label / value pair, for rows that hold two items side by side
    */
@@ -649,7 +647,7 @@ public abstract class ParticipantRendererBase extends ResourceRenderer {
     if (ct == null || !ct.startsWith("image/") || cnt == null || cnt.length == 0) {
       return PhotoDisposition.NONE;
     }
-    if (!context.isInlineGraphics() && context.getRules() != RenderingContext.GenerationRules.VALID_RESOURCE && !Utilities.noString(context.getDestDir()) && extensionForType(ct) != null) {
+    if (!mustInlineImages() && !Utilities.noString(context.getDestDir()) && extensionForType(ct) != null) {
       return PhotoDisposition.FILE;
     }
     return cnt.length < MAX_IMAGE_LENGTH ? PhotoDisposition.INLINE : PhotoDisposition.TOO_BIG;
@@ -676,7 +674,7 @@ public abstract class ParticipantRendererBase extends ResourceRenderer {
         return;
       }
       case INLINE:
-        td.img("data:"+att.primitiveValue("contentType")+";base64,"+att.primitiveValue("data"), inlineAlt);
+        td.img("data:"+att.primitiveValue("contentType")+";base64,"+cleanBase64(att.primitiveValue("data")), inlineAlt);
         return;
       case TOO_BIG:
         if (tooBig == null) {
