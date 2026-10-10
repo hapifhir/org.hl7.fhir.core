@@ -243,6 +243,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   private ContextUtilities cu = null;
 
   /**
+   * The resources of the context that fetch() converted to the element model, by resource instance
+   * (a resource that is replaced in the context is a new instance, and is converted again)
+   */
+  private final Map<Resource, Element> fetchedElements = Collections.synchronizedMap(new WeakHashMap<>());
+
+  /**
    * Creating a validation engine is an expensive operation - takes seconds.
    * Once you have a validation engine created, you can quickly clone it to
    * get one that can load packages without affecting other uses
@@ -1326,11 +1332,32 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     igLoader.loadIg(getIgs(), getBinaries(),id + (ver == null ? "" : "#" + ver), true);
   }
 
+  /**
+   * Converting a resource of the context to the element model (compose to JSON, parse) is expensive, and
+   * invariants such as 'http://.../ConceptMap/x'.resolve() fetch the same resources for every instance that
+   * is validated. So the conversion is kept, and each call gets a copy, which the validator can decorate
+   * (parents, slices, messages).
+   *
+   * The kept element is never handed out, it is only copied, under its lock: the element model isn't
+   * thread-safe (e.g. NamedItemList builds its name map lazily), so concurrent validations must not
+   * navigate a shared element. The copies share no mutable state with it (Element.copyValues copies the
+   * narrative too)
+   */
   @Override
   public Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRException, IOException {
     Resource resource = context.fetchResource(Resource.class, url);
     if (resource != null) {
-      return new ObjectConverter(context).convert(resource);
+      Element element = fetchedElements.get(resource);
+      if (element == null) {
+        element = new ObjectConverter(context).convert(resource);
+        fetchedElements.putIfAbsent(resource, element);
+      }
+      Element copy;
+      synchronized (element) {
+        copy = element.copy(EnumSet.allOf(Base.CopyObjectOptions.class));
+      }
+      copy.numberChildren(); // copy() doesn't copy the indexes
+      return copy;
     }
     if (fetcher != null) {
       return fetcher.fetch(validator, appContext, url);
