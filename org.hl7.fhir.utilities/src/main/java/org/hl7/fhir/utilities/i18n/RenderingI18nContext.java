@@ -346,6 +346,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String LIB_REND_CONT = "LIB_REND_CONT";
   public static final String LIB_REND_ED = "LIB_REND_ED";
   public static final String LIB_REND_END = "LIB_REND_END";
+  public static final String LIB_REND_IMG_TOO_BIG = "LIB_REND_IMG_TOO_BIG";
   public static final String LIB_REND_NOCONT = "LIB_REND_NOCONT";
   public static final String LIB_REND_PAR = "LIB_REND_PAR";
   public static final String LIB_REND_REQ = "LIB_REND_REQ";
