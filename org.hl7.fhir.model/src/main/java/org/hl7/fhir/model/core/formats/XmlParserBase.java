@@ -197,7 +197,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 		// don't dereference a null type here - composeType() below reports it properly
 		// ("type == null"), and that is a better error than an NPE from the assertion
 		if (type != null) {
-		  type.assertModelContext(modelContext);
+		  type.checkModelContext(modelContext);
 		}
 		xml = new XMLWriter(stream, "UTF-8");
 		xml.setPretty(style == OutputStyle.PRETTY);
@@ -212,7 +212,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 		// don't dereference a null type here - composeType() below reports it properly
 		// ("type == null"), and that is a better error than an NPE from the assertion
 		if (type != null) {
-		  type.assertModelContext(modelContext);
+		  type.checkModelContext(modelContext);
 		}
 		xml = new XMLWriter(stream, "UTF-8");
 		xml.setPretty(style == OutputStyle.PRETTY);
@@ -447,7 +447,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	}
 
 	public void compose(IXMLWriter writer, Resource resource, boolean htmlPretty)  throws IOException   {
-		resource.assertModelContext(modelContext);
+		resource.checkModelContext(modelContext);
 		this.htmlPretty = htmlPretty;
 		xml = writer;
 		xml.setDefaultNamespace(FHIR_NS);

@@ -137,9 +137,28 @@ public abstract class Base implements Serializable, IBase, IElement {
     assertModelContext(fhirType(), modelContext);
   }
 
-  /** as assertModelContext(), but also requires that the tree's context IS the given one - used by the serialisers */
+  /** as assertModelContext(), but also requires that the tree's context IS the given one */
   public void assertModelContext(IModelContext expected) throws FHIRException {
     assertModelContext(fhirType(), expected);
+  }
+
+  /**
+   * The check the serialisers make before composing: as assertModelContext(expected), but for this
+   * node only - an instance without a context adopts the expected one (setModelContext cascades it),
+   * an instance with an incompatible context is rejected. The tree below is kept consistent with its
+   * root by the constructors, setters, BaseList and the setModelContext cascades; walking it on every
+   * compose (assertModelContext) costs a listChildren() and a Property for each node, as much as
+   * composing the tree itself
+   */
+  public void checkModelContext(IModelContext expected) throws FHIRException {
+    if (expected == null) {
+      return;
+    }
+    if (this.modelContext == null) {
+      setModelContext(expected);
+    } else if (this.modelContext != expected && !this.modelContext.isCompatibleModelContext(expected)) {
+      throw new FHIRException("Model context mismatch at "+fhirType()+": expected "+describeContext(expected)+" but found "+describeContext(this.modelContext));
+    }
   }
 
   private void assertModelContext(String path, IModelContext expected) {

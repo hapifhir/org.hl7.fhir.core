@@ -5,5 +5,5 @@
 
 ## Other code changes
 
-* no changes
+* Performance: the serialisers (JSON, XML, RDF) check the model context of the resource or type they compose (`Base.checkModelContext`), instead of walking the whole tree on every compose (`assertModelContext`)
 
