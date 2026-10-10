@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Fix links to `[x]` elements in ConceptMap narrative and mappings pages

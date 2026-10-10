@@ -492,7 +492,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         if (edSrc == null) {        
           tr.td().colspan(3).addText(ccl.getCode());
         } else {
-          tr.td().ah(sdSrc.hasWebPath() ? sdSrc.getWebPath()+"#s-"+ccl.getCode() : null).tx(ccl.getCode());
+          tr.td().ah(sdSrc.hasWebPath() ? sdSrc.getWebPath()+"#s-"+ccl.getCode().replace("[", "_").replace("]", "_") : null).tx(ccl.getCode());
           tr.td().tx(""+edSrc.getMin()+".."+edSrc.getMax());
           tr.td().tx("todo");
         }
@@ -524,7 +524,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           if (edTgt == null) {        
             tr.td().colspan(3).addText(ccm.getCode());
           } else {
-            tr.td().ah(sdTgt.hasWebPath() ? sdTgt.getWebPath()+"#s-"+ccm.getCode() : null).tx(ccm.getCode());
+            tr.td().ah(sdTgt.hasWebPath() ? sdTgt.getWebPath()+"#s-"+ccm.getCode().replace("[", "_").replace("]", "_") : null).tx(ccm.getCode());
             tr.td().tx(""+edTgt.getMin()+".."+edTgt.getMax());
             tr.td().tx("todo");
           }
