@@ -886,6 +886,11 @@ public class ProfileUtilities {
           throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_SNAPSHOT_ELEMENT_FOR__IN__FROM_, derived.getSnapshot().getElementFirstRep().getPath(), derived.getUrl(), base.getUrl()));
         mappingDetails.update();
 
+        if ("Extension".equals(derived.getTypeName()) && derived.getContext().isEmpty()) {
+          for (StructureDefinitionContextComponent context : base.getContext()) {
+            derived.getContext().add(context.copy());
+          }
+        }
         setIds(derived, false);
 
           log.debug("Differential: ");
