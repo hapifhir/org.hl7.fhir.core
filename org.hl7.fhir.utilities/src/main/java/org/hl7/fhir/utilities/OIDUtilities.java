@@ -72,17 +72,31 @@ public class OIDUtilities {
   }
 
 
-  private final Map<String, OIDInfo> oidMap = new HashMap<>();
+  /**
+   * The OID registry (oidregistry.csv), loaded once: the validator creates an OIDUtilities for every
+   * InstanceValidator, and parsing the registry takes milliseconds. It is not changed after loading
+   */
+  private static Map<String, OIDInfo> registry;
+
+  private final Map<String, OIDInfo> oidMap;
 
 
   public OIDUtilities() {
-    loadOIDsFromCSV();
+    oidMap = getRegistry();
   }
 
-  private void loadOIDsFromCSV() throws FHIRException {
+  private static synchronized Map<String, OIDInfo> getRegistry() throws FHIRException {
+    if (registry == null) {
+      registry = loadOIDsFromCSV();
+    }
+    return registry;
+  }
+
+  private static Map<String, OIDInfo> loadOIDsFromCSV() throws FHIRException {
+    Map<String, OIDInfo> oidMap = new HashMap<>();
     try {
 
-      try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("oidregistry.csv");
+      try (InputStream inputStream = OIDUtilities.class.getClassLoader().getResourceAsStream("oidregistry.csv");
           BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 
         String line;
@@ -112,6 +126,7 @@ public class OIDUtilities {
     } catch (Exception e) {
       throw new FHIRException(e);
     }
+    return oidMap;
   }
 
   /*
