@@ -436,6 +436,29 @@ public class RiskAssessment extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.outcome != null) {
+            visitor.visit(this, "outcome", -1, this.outcome);
+          }
+          if (this.probability != null) {
+            visitor.visit(this, "probability[x]", -1, this.probability);
+          }
+          if (this.qualitativeRisk != null) {
+            visitor.visit(this, "qualitativeRisk", -1, this.qualitativeRisk);
+          }
+          if (this.relativeRisk != null) {
+            visitor.visit(this, "relativeRisk", -1, this.relativeRisk);
+          }
+          if (this.when != null) {
+            visitor.visit(this, "when[x]", -1, this.when);
+          }
+          if (this.rationale != null) {
+            visitor.visit(this, "rationale", -1, this.rationale);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "outcome":  return new Property("outcome", "CodeableConcept", "One of the potential outcomes for the patient (e.g. remission, death,  a particular condition).", 0, 1, outcome);
@@ -1488,6 +1511,89 @@ public class RiskAssessment extends DomainResource {
         children.add(new Property("prediction", "", "Describes the expected outcome for the subject.", 0, java.lang.Integer.MAX_VALUE, predictionList));
         children.add(new Property("mitigation", "string", "A description of the steps that might be taken to reduce the identified risk(s).", 0, 1, mitigation));
         children.add(new Property("note", "Annotation", "Additional comments about the risk assessment.", 0, java.lang.Integer.MAX_VALUE, noteList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOn != null) {
+          visitor.visit(this, "basedOn", -1, this.basedOn);
+        }
+        if (this.parent != null) {
+          visitor.visit(this, "parent", -1, this.parent);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.method != null) {
+          visitor.visit(this, "method", -1, this.method);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.occurrence != null) {
+          visitor.visit(this, "occurrence[x]", -1, this.occurrence);
+        }
+        if (this.condition != null) {
+          visitor.visit(this, "condition", -1, this.condition);
+        }
+        if (this.performer != null) {
+          visitor.visit(this, "performer", -1, this.performer);
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basisList != null) {
+          int i = 0;
+          for (Base v : this.basisList) {
+            if (v != null) {
+              visitor.visit(this, "basis", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.predictionList != null) {
+          int i = 0;
+          for (Base v : this.predictionList) {
+            if (v != null) {
+              visitor.visit(this, "prediction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.mitigation != null) {
+          visitor.visit(this, "mitigation", -1, this.mitigation);
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

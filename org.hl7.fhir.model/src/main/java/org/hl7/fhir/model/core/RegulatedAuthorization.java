@@ -342,6 +342,38 @@ public class RegulatedAuthorization extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.identifierList != null) {
+            int i = 0;
+            for (Base v : this.identifierList) {
+              if (v != null) {
+                visitor.visit(this, "identifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.status != null) {
+            visitor.visit(this, "status", -1, this.status);
+          }
+          if (this.date != null) {
+            visitor.visit(this, "date[x]", -1, this.date);
+          }
+          if (this.applicationList != null) {
+            int i = 0;
+            for (Base v : this.applicationList) {
+              if (v != null) {
+                visitor.visit(this, "application", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "identifier":  return new Property("identifier", "Identifier", "Identifier by which this case can be referenced.", 0, java.lang.Integer.MAX_VALUE, identifierList);
@@ -1313,6 +1345,92 @@ public class RegulatedAuthorization extends DomainResource {
         children.add(new Property("regulator", "Reference(Organization)", "The regulatory authority or authorizing body granting the authorization. For example, European Medicines Agency (EMA), Food and Drug Administration (FDA), Health Canada (HC), etc.", 0, 1, regulator));
         children.add(new Property("attachedDocument", "Reference(DocumentReference)", "Additional information or supporting documentation about the authorization.", 0, java.lang.Integer.MAX_VALUE, attachedDocumentList));
         children.add(new Property("case", "", "The case or regulatory procedure for granting or amending a regulated authorization. An authorization is granted in response to submissions/applications by those seeking authorization. A case is the administrative process that deals with the application(s) that relate to this and assesses them. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page).", 0, 1, case_));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subjectList != null) {
+          int i = 0;
+          for (Base v : this.subjectList) {
+            if (v != null) {
+              visitor.visit(this, "subject", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.regionList != null) {
+          int i = 0;
+          for (Base v : this.regionList) {
+            if (v != null) {
+              visitor.visit(this, "region", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusDate != null) {
+          visitor.visit(this, "statusDate", -1, this.statusDate);
+        }
+        if (this.validityPeriod != null) {
+          visitor.visit(this, "validityPeriod", -1, this.validityPeriod);
+        }
+        if (this.indicationList != null) {
+          int i = 0;
+          for (Base v : this.indicationList) {
+            if (v != null) {
+              visitor.visit(this, "indication", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.intendedUse != null) {
+          visitor.visit(this, "intendedUse", -1, this.intendedUse);
+        }
+        if (this.basisList != null) {
+          int i = 0;
+          for (Base v : this.basisList) {
+            if (v != null) {
+              visitor.visit(this, "basis", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.holder != null) {
+          visitor.visit(this, "holder", -1, this.holder);
+        }
+        if (this.regulator != null) {
+          visitor.visit(this, "regulator", -1, this.regulator);
+        }
+        if (this.attachedDocumentList != null) {
+          int i = 0;
+          for (Base v : this.attachedDocumentList) {
+            if (v != null) {
+              visitor.visit(this, "attachedDocument", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.case_ != null) {
+          visitor.visit(this, "case", -1, this.case_);
+        }
       }
 
       @Override

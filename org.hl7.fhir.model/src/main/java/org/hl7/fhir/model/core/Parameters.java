@@ -1103,6 +1103,29 @@ public class Parameters extends Resource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.resource != null) {
+            visitor.visit(this, "resource", -1, this.resource);
+          }
+          if (this.partList != null) {
+            int i = 0;
+            for (Base v : this.partList) {
+              if (v != null) {
+                visitor.visit(this, "part", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The name of the parameter (reference to the operation definition).", 0, 1, name);
@@ -1686,6 +1709,20 @@ public String toString() {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("parameter", "", "A parameter passed to or received from the operation.", 0, java.lang.Integer.MAX_VALUE, parameterList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.parameterList != null) {
+          int i = 0;
+          for (Base v : this.parameterList) {
+            if (v != null) {
+              visitor.visit(this, "parameter", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

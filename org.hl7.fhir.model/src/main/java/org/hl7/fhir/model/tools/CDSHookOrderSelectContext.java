@@ -360,6 +360,32 @@ public class CDSHookOrderSelectContext extends CDSHookContext implements ICompos
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.userId != null) {
+          visitor.visit(this, "userId", -1, this.userId);
+        }
+        if (this.patientId != null) {
+          visitor.visit(this, "patientId", -1, this.patientId);
+        }
+        if (this.encounterId != null) {
+          visitor.visit(this, "encounterId", -1, this.encounterId);
+        }
+        if (this.selectionsList != null) {
+          int i = 0;
+          for (Base v : this.selectionsList) {
+            if (v != null) {
+              visitor.visit(this, "selections", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.draftOrders != null) {
+          visitor.visit(this, "draftOrders", -1, this.draftOrders);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "userId":  return new Property("userId", "url", "For this hook, the user is expected to be of type Practitioner, PractitionerRole, Patient, or RelatedPerson. Patient or RelatedPerson are appropriate when a patient or their proxy are viewing the record. For example, Practitioner/abc or Patient/123.", 0, 1, userId);

@@ -377,6 +377,17 @@ public class Evidence extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.target != null) {
+            visitor.visit(this, "target[x]", -1, this.target);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The type of relationship to the related artifact.", 0, 1, type);
@@ -663,6 +674,23 @@ public class Evidence extends MetadataResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "The kind of classifier (e.g. population, intervention, comparator, outcome).", 0, 1, type));
           children.add(new Property("classifier", "CodeableReference(Any)", "The specific classification value.", 0, java.lang.Integer.MAX_VALUE, classifierList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.classifierList != null) {
+            int i = 0;
+            for (Base v : this.classifierList) {
+              if (v != null) {
+                visitor.visit(this, "classifier", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -1220,6 +1248,41 @@ public class Evidence extends MetadataResource {
           children.add(new Property("observed", "Reference(Group|EvidenceVariable)", "Definition of the actual variable related to the statistic(s), i.e., the population being the actual study sample or the measured variable (exposure, outcome, or covariate) being the actual observation that occurred or will occur in the study.", 0, 1, observed));
           children.add(new Property("intended", "Reference(Group|EvidenceVariable)", "Definition of the intended variable related to the Evidence, i.e., the population, exposure, or outcome for which the statistical finding is being interpreted.", 0, 1, intended));
           children.add(new Property("directnessMatch", "CodeableConcept", "Indication of quality of match between intended variable to actual variable.", 0, 1, directnessMatch));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.noteList != null) {
+            int i = 0;
+            for (Base v : this.noteList) {
+              if (v != null) {
+                visitor.visit(this, "note", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.variableRole != null) {
+            visitor.visit(this, "variableRole", -1, this.variableRole);
+          }
+          if (this.roleSubtype != null) {
+            visitor.visit(this, "roleSubtype", -1, this.roleSubtype);
+          }
+          if (this.comparatorCategory != null) {
+            visitor.visit(this, "comparatorCategory", -1, this.comparatorCategory);
+          }
+          if (this.observed != null) {
+            visitor.visit(this, "observed", -1, this.observed);
+          }
+          if (this.intended != null) {
+            visitor.visit(this, "intended", -1, this.intended);
+          }
+          if (this.directnessMatch != null) {
+            visitor.visit(this, "directnessMatch", -1, this.directnessMatch);
+          }
         }
 
         @Override
@@ -2021,6 +2084,59 @@ public class Evidence extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.noteList != null) {
+            int i = 0;
+            for (Base v : this.noteList) {
+              if (v != null) {
+                visitor.visit(this, "note", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.statisticType != null) {
+            visitor.visit(this, "statisticType", -1, this.statisticType);
+          }
+          if (this.category != null) {
+            visitor.visit(this, "category", -1, this.category);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.numberOfEvents != null) {
+            visitor.visit(this, "numberOfEvents", -1, this.numberOfEvents);
+          }
+          if (this.numberAffected != null) {
+            visitor.visit(this, "numberAffected", -1, this.numberAffected);
+          }
+          if (this.sampleSize != null) {
+            visitor.visit(this, "sampleSize", -1, this.sampleSize);
+          }
+          if (this.attributeEstimateList != null) {
+            int i = 0;
+            for (Base v : this.attributeEstimateList) {
+              if (v != null) {
+                visitor.visit(this, "attributeEstimate", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.modelCharacteristicList != null) {
+            int i = 0;
+            for (Base v : this.modelCharacteristicList) {
+              if (v != null) {
+                visitor.visit(this, "modelCharacteristic", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "description":  return new Property("description", "markdown", "A natural language summary of the statistic.", 0, 1, description);
@@ -2709,6 +2825,35 @@ public class Evidence extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.noteList != null) {
+            int i = 0;
+            for (Base v : this.noteList) {
+              if (v != null) {
+                visitor.visit(this, "note", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.numberOfStudies != null) {
+            visitor.visit(this, "numberOfStudies", -1, this.numberOfStudies);
+          }
+          if (this.numberOfParticipants != null) {
+            visitor.visit(this, "numberOfParticipants", -1, this.numberOfParticipants);
+          }
+          if (this.knownDataCount != null) {
+            visitor.visit(this, "knownDataCount", -1, this.knownDataCount);
+          }
+          if (this.numberAnalyzed != null) {
+            visitor.visit(this, "numberAnalyzed", -1, this.numberAnalyzed);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "description":  return new Property("description", "markdown", "Human-readable summary of study sample size. A human-readable string to clarify or explain concepts about the sample size.", 0, 1, description);
@@ -3327,6 +3472,44 @@ public class Evidence extends MetadataResource {
           children.add(new Property("level", "decimal", "Use 0.95 for a 95% confidence interval.", 0, 1, level));
           children.add(new Property("range", "Range", "Lower and upper bound values of the attribute estimate.", 0, 1, range));
           children.add(new Property("attributeEstimate", "@Evidence.statistic.attributeEstimate", "A nested attribute estimate; which is the attribute estimate of an attribute estimate.", 0, java.lang.Integer.MAX_VALUE, attributeEstimateList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.noteList != null) {
+            int i = 0;
+            for (Base v : this.noteList) {
+              if (v != null) {
+                visitor.visit(this, "note", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.level != null) {
+            visitor.visit(this, "level", -1, this.level);
+          }
+          if (this.range != null) {
+            visitor.visit(this, "range", -1, this.range);
+          }
+          if (this.attributeEstimateList != null) {
+            int i = 0;
+            for (Base v : this.attributeEstimateList) {
+              if (v != null) {
+                visitor.visit(this, "attributeEstimate", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -3964,6 +4147,41 @@ public class Evidence extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.intended != null) {
+            visitor.visit(this, "intended", -1, this.intended);
+          }
+          if (this.applied != null) {
+            visitor.visit(this, "applied", -1, this.applied);
+          }
+          if (this.variableList != null) {
+            int i = 0;
+            for (Base v : this.variableList) {
+              if (v != null) {
+                visitor.visit(this, "variable", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.attributeList != null) {
+            int i = 0;
+            for (Base v : this.attributeList) {
+              if (v != null) {
+                visitor.visit(this, "attribute", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "Description of a component of the method to generate the statistic.", 0, 1, code);
@@ -4492,6 +4710,44 @@ public class Evidence extends MetadataResource {
           children.add(new Property("valueCategory", "CodeableConcept", "Qualitative label used for grouping values of a dichotomous, ordinal, or polychotomous variable.", 0, java.lang.Integer.MAX_VALUE, valueCategoryList));
           children.add(new Property("valueQuantity", "Quantity", "Quantitative label used for grouping values of a dichotomous, ordinal, or polychotomous variable.", 0, java.lang.Integer.MAX_VALUE, valueQuantityList));
           children.add(new Property("valueRange", "Range", "Range of quantitative labels used for grouping values of a dichotomous, ordinal, or polychotomous variable.", 0, java.lang.Integer.MAX_VALUE, valueRangeList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.variableDefinition != null) {
+            visitor.visit(this, "variableDefinition", -1, this.variableDefinition);
+          }
+          if (this.handling != null) {
+            visitor.visit(this, "handling", -1, this.handling);
+          }
+          if (this.valueCategoryList != null) {
+            int i = 0;
+            for (Base v : this.valueCategoryList) {
+              if (v != null) {
+                visitor.visit(this, "valueCategory", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.valueQuantityList != null) {
+            int i = 0;
+            for (Base v : this.valueQuantityList) {
+              if (v != null) {
+                visitor.visit(this, "valueQuantity", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.valueRangeList != null) {
+            int i = 0;
+            for (Base v : this.valueRangeList) {
+              if (v != null) {
+                visitor.visit(this, "valueRange", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -5046,6 +5302,47 @@ public class Evidence extends MetadataResource {
           children.add(new Property("rating", "CodeableConcept", "Assessment or judgement of the aspect.", 0, 1, rating));
           children.add(new Property("rater", "string", "Individual or group who did the rating.", 0, java.lang.Integer.MAX_VALUE, raterList));
           children.add(new Property("subcomponent", "@Evidence.certainty", "A domain or subdomain of certainty.", 0, java.lang.Integer.MAX_VALUE, subcomponentList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.noteList != null) {
+            int i = 0;
+            for (Base v : this.noteList) {
+              if (v != null) {
+                visitor.visit(this, "note", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.rating != null) {
+            visitor.visit(this, "rating", -1, this.rating);
+          }
+          if (this.raterList != null) {
+            int i = 0;
+            for (Base v : this.raterList) {
+              if (v != null) {
+                visitor.visit(this, "rater", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.subcomponentList != null) {
+            int i = 0;
+            for (Base v : this.subcomponentList) {
+              if (v != null) {
+                visitor.visit(this, "subcomponent", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -7424,6 +7721,206 @@ public class Evidence extends MetadataResource {
         children.add(new Property("studyDesign", "CodeableConcept", "The design of the study that produced this evidence. The design is described with any number of study design characteristics.", 0, java.lang.Integer.MAX_VALUE, studyDesignList));
         children.add(new Property("statistic", "", "Values and parameters for a single statistic.", 0, java.lang.Integer.MAX_VALUE, statisticList));
         children.add(new Property("certainty", "", "Assessment of certainty, confidence in the estimates, or quality of the evidence.", 0, java.lang.Integer.MAX_VALUE, certaintyList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.citeAs != null) {
+          visitor.visit(this, "citeAs", -1, this.citeAs);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.authorList != null) {
+          int i = 0;
+          for (Base v : this.authorList) {
+            if (v != null) {
+              visitor.visit(this, "author", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.recorderList != null) {
+          int i = 0;
+          for (Base v : this.recorderList) {
+            if (v != null) {
+              visitor.visit(this, "recorder", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.editorList != null) {
+          int i = 0;
+          for (Base v : this.editorList) {
+            if (v != null) {
+              visitor.visit(this, "editor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reviewerList != null) {
+          int i = 0;
+          for (Base v : this.reviewerList) {
+            if (v != null) {
+              visitor.visit(this, "reviewer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.endorserList != null) {
+          int i = 0;
+          for (Base v : this.endorserList) {
+            if (v != null) {
+              visitor.visit(this, "endorser", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.relatesToList != null) {
+          int i = 0;
+          for (Base v : this.relatesToList) {
+            if (v != null) {
+              visitor.visit(this, "relatesTo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.assertion != null) {
+          visitor.visit(this, "assertion", -1, this.assertion);
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.classificationList != null) {
+          int i = 0;
+          for (Base v : this.classificationList) {
+            if (v != null) {
+              visitor.visit(this, "classification", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.variableDefinitionList != null) {
+          int i = 0;
+          for (Base v : this.variableDefinitionList) {
+            if (v != null) {
+              visitor.visit(this, "variableDefinition", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.synthesisTypeList != null) {
+          int i = 0;
+          for (Base v : this.synthesisTypeList) {
+            if (v != null) {
+              visitor.visit(this, "synthesisType", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.studyDesignList != null) {
+          int i = 0;
+          for (Base v : this.studyDesignList) {
+            if (v != null) {
+              visitor.visit(this, "studyDesign", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.statisticList != null) {
+          int i = 0;
+          for (Base v : this.statisticList) {
+            if (v != null) {
+              visitor.visit(this, "statistic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.certaintyList != null) {
+          int i = 0;
+          for (Base v : this.certaintyList) {
+            if (v != null) {
+              visitor.visit(this, "certainty", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

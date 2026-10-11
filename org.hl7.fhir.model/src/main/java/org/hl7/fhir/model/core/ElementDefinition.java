@@ -1392,6 +1392,29 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.discriminatorList != null) {
+            int i = 0;
+            for (Base v : this.discriminatorList) {
+              if (v != null) {
+                visitor.visit(this, "discriminator", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.ordered != null) {
+            visitor.visit(this, "ordered", -1, this.ordered);
+          }
+          if (this.rules != null) {
+            visitor.visit(this, "rules", -1, this.rules);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "discriminator":  return new Property("discriminator", "", "Designates which child elements are used to discriminate between the slices when processing an instance. If one or more discriminators are provided, the values of the child elements in the instance data SHALL completely distinguish which slice the element in the resource matches based on the allowed values for those elements in each of the slices.", 0, java.lang.Integer.MAX_VALUE, discriminatorList);
@@ -1767,6 +1790,17 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.path != null) {
+            visitor.visit(this, "path", -1, this.path);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "code", "How the element value is interpreted when discrimination is evaluated.", 0, 1, type);
@@ -2119,6 +2153,20 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           children.add(new Property("path", "string", "The Path that identifies the base element - this matches the ElementDefinition.path for that element. Across FHIR, there is only one base definition of any element - that is, an element definition on a [StructureDefinition](structuredefinition.html#) without a StructureDefinition.base.", 0, 1, path));
           children.add(new Property("min", "unsignedInt", "Minimum cardinality of the base element identified by the path.", 0, 1, min));
           children.add(new Property("max", "string", "Maximum cardinality of the base element identified by the path.", 0, 1, max));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.path != null) {
+            visitor.visit(this, "path", -1, this.path);
+          }
+          if (this.min != null) {
+            visitor.visit(this, "min", -1, this.min);
+          }
+          if (this.max != null) {
+            visitor.visit(this, "max", -1, this.max);
+          }
         }
 
         @Override
@@ -2645,6 +2693,44 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           children.add(new Property("targetProfile", "canonical(StructureDefinition|ImplementationGuide)", "Used when the type is \"Reference\" or \"canonical\", and identifies a profile structure or implementation Guide that applies to the target of the reference this element refers to. If any profiles are specified, then the content must conform to at least one of them. The URL can be a local reference - to a contained StructureDefinition, or a reference to another StructureDefinition or Implementation Guide by a canonical URL. When an implementation guide is specified, the target resource SHALL conform to at least one profile defined in the implementation guide.", 0, java.lang.Integer.MAX_VALUE, targetProfileList));
           children.add(new Property("aggregation", "code", "If the type is a reference to another resource, how the resource is or can be aggregated - is it a contained resource, or a reference, and if the context is a bundle, is it included in the bundle.", 0, java.lang.Integer.MAX_VALUE, aggregationList));
           children.add(new Property("versioning", "code", "Whether this reference needs to be version specific or version independent, or whether either can be used.", 0, 1, versioning));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.profileList != null) {
+            int i = 0;
+            for (Base v : this.profileList) {
+              if (v != null) {
+                visitor.visit(this, "profile", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.targetProfileList != null) {
+            int i = 0;
+            for (Base v : this.targetProfileList) {
+              if (v != null) {
+                visitor.visit(this, "targetProfile", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.aggregationList != null) {
+            int i = 0;
+            for (Base v : this.aggregationList) {
+              if (v != null) {
+                visitor.visit(this, "aggregation", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.versioning != null) {
+            visitor.visit(this, "versioning", -1, this.versioning);
+          }
         }
 
         @Override
@@ -3891,6 +3977,17 @@ public boolean hasTarget() {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.label != null) {
+            visitor.visit(this, "label", -1, this.label);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "label":  return new Property("label", "string", "Describes the purpose of this example among the set of examples.", 0, 1, label);
@@ -4749,6 +4846,32 @@ public boolean hasTarget() {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
+          if (this.requirements != null) {
+            visitor.visit(this, "requirements", -1, this.requirements);
+          }
+          if (this.severity != null) {
+            visitor.visit(this, "severity", -1, this.severity);
+          }
+          if (this.suppress != null) {
+            visitor.visit(this, "suppress", -1, this.suppress);
+          }
+          if (this.human != null) {
+            visitor.visit(this, "human", -1, this.human);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
+          if (this.source != null) {
+            visitor.visit(this, "source", -1, this.source);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "key":  return new Property("key", "id", "Allows identification of which elements have their cardinalities impacted by the constraint.  Will not be referenced for constraints that do not affect cardinality.", 0, 1, key);
@@ -5272,6 +5395,29 @@ public boolean hasTarget() {
           children.add(new Property("description", "markdown", "Free-text guidance on the codes that are appropriate for this element.", 0, 1, description));
           children.add(new Property("valueSet", "canonical(ValueSet)", "Refers to the value set that identifies the set of codes the binding refers to.", 0, 1, valueSet));
           children.add(new Property("additional", "", "Additional bindings that help applications implementing this element. Additional bindings do not replace the main binding but provide more information and/or context.", 0, java.lang.Integer.MAX_VALUE, additionalList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.strength != null) {
+            visitor.visit(this, "strength", -1, this.strength);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.valueSet != null) {
+            visitor.visit(this, "valueSet", -1, this.valueSet);
+          }
+          if (this.additionalList != null) {
+            int i = 0;
+            for (Base v : this.additionalList) {
+              if (v != null) {
+                visitor.visit(this, "additional", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -5922,6 +6068,38 @@ public boolean hasTarget() {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
+          if (this.purpose != null) {
+            visitor.visit(this, "purpose", -1, this.purpose);
+          }
+          if (this.valueSet != null) {
+            visitor.visit(this, "valueSet", -1, this.valueSet);
+          }
+          if (this.documentation != null) {
+            visitor.visit(this, "documentation", -1, this.documentation);
+          }
+          if (this.shortDoco != null) {
+            visitor.visit(this, "shortDoco", -1, this.shortDoco);
+          }
+          if (this.usageList != null) {
+            int i = 0;
+            for (Base v : this.usageList) {
+              if (v != null) {
+                visitor.visit(this, "usage", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.any != null) {
+            visitor.visit(this, "any", -1, this.any);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "key":  return new Property("key", "id", "A unique identifier for the additional binding within the element that allows additional bindings to be matched across profiles.", 0, 1, key);
@@ -6440,6 +6618,23 @@ public boolean hasTarget() {
           children.add(new Property("language", "code", "Identifies the computable language in which mapping.map is expressed.", 0, 1, language));
           children.add(new Property("map", "string", "Expresses what part of the target specification corresponds to this element.", 0, 1, map));
           children.add(new Property("comment", "markdown", "Comments that provide information about the mapping or its use.", 0, 1, comment));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.identity != null) {
+            visitor.visit(this, "identity", -1, this.identity);
+          }
+          if (this.language != null) {
+            visitor.visit(this, "language", -1, this.language);
+          }
+          if (this.map != null) {
+            visitor.visit(this, "map", -1, this.map);
+          }
+          if (this.comment != null) {
+            visitor.visit(this, "comment", -1, this.comment);
+          }
         }
 
         @Override
@@ -11391,6 +11586,173 @@ public boolean hasTarget() {
         children.add(new Property("isSummary", "boolean", "Whether the element should be included if a client requests a search with the parameter _summary=true.", 0, 1, isSummary));
         children.add(new Property("binding", "", "Binds to a value set if this element is coded (code, Coding, CodeableConcept, Quantity), or the data types (string, uri).", 0, 1, binding));
         children.add(new Property("mapping", "", "Identifies a concept from an external specification that roughly corresponds to this element.", 0, java.lang.Integer.MAX_VALUE, mappingList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.path != null) {
+          visitor.visit(this, "path", -1, this.path);
+        }
+        if (this.representationList != null) {
+          int i = 0;
+          for (Base v : this.representationList) {
+            if (v != null) {
+              visitor.visit(this, "representation", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.sliceName != null) {
+          visitor.visit(this, "sliceName", -1, this.sliceName);
+        }
+        if (this.sliceIsConstraining != null) {
+          visitor.visit(this, "sliceIsConstraining", -1, this.sliceIsConstraining);
+        }
+        if (this.label != null) {
+          visitor.visit(this, "label", -1, this.label);
+        }
+        if (this.codeList != null) {
+          int i = 0;
+          for (Base v : this.codeList) {
+            if (v != null) {
+              visitor.visit(this, "code", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.slicing != null) {
+          visitor.visit(this, "slicing", -1, this.slicing);
+        }
+        if (this.short_ != null) {
+          visitor.visit(this, "short", -1, this.short_);
+        }
+        if (this.definition != null) {
+          visitor.visit(this, "definition", -1, this.definition);
+        }
+        if (this.comment != null) {
+          visitor.visit(this, "comment", -1, this.comment);
+        }
+        if (this.requirements != null) {
+          visitor.visit(this, "requirements", -1, this.requirements);
+        }
+        if (this.aliasList != null) {
+          int i = 0;
+          for (Base v : this.aliasList) {
+            if (v != null) {
+              visitor.visit(this, "alias", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.min != null) {
+          visitor.visit(this, "min", -1, this.min);
+        }
+        if (this.max != null) {
+          visitor.visit(this, "max", -1, this.max);
+        }
+        if (this.base != null) {
+          visitor.visit(this, "base", -1, this.base);
+        }
+        if (this.contentReference != null) {
+          visitor.visit(this, "contentReference", -1, this.contentReference);
+        }
+        if (this.typeList != null) {
+          int i = 0;
+          for (Base v : this.typeList) {
+            if (v != null) {
+              visitor.visit(this, "type", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.defaultValue != null) {
+          visitor.visit(this, "defaultValue[x]", -1, this.defaultValue);
+        }
+        if (this.meaningWhenMissing != null) {
+          visitor.visit(this, "meaningWhenMissing", -1, this.meaningWhenMissing);
+        }
+        if (this.orderMeaning != null) {
+          visitor.visit(this, "orderMeaning", -1, this.orderMeaning);
+        }
+        if (this.fixed != null) {
+          visitor.visit(this, "fixed[x]", -1, this.fixed);
+        }
+        if (this.pattern != null) {
+          visitor.visit(this, "pattern[x]", -1, this.pattern);
+        }
+        if (this.exampleList != null) {
+          int i = 0;
+          for (Base v : this.exampleList) {
+            if (v != null) {
+              visitor.visit(this, "example", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.minValue != null) {
+          visitor.visit(this, "minValue[x]", -1, this.minValue);
+        }
+        if (this.maxValue != null) {
+          visitor.visit(this, "maxValue[x]", -1, this.maxValue);
+        }
+        if (this.maxLength != null) {
+          visitor.visit(this, "maxLength", -1, this.maxLength);
+        }
+        if (this.conditionList != null) {
+          int i = 0;
+          for (Base v : this.conditionList) {
+            if (v != null) {
+              visitor.visit(this, "condition", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.constraintList != null) {
+          int i = 0;
+          for (Base v : this.constraintList) {
+            if (v != null) {
+              visitor.visit(this, "constraint", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.mustHaveValue != null) {
+          visitor.visit(this, "mustHaveValue", -1, this.mustHaveValue);
+        }
+        if (this.valueAlternativesList != null) {
+          int i = 0;
+          for (Base v : this.valueAlternativesList) {
+            if (v != null) {
+              visitor.visit(this, "valueAlternatives", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.mustSupport != null) {
+          visitor.visit(this, "mustSupport", -1, this.mustSupport);
+        }
+        if (this.isModifier != null) {
+          visitor.visit(this, "isModifier", -1, this.isModifier);
+        }
+        if (this.isModifierReason != null) {
+          visitor.visit(this, "isModifierReason", -1, this.isModifierReason);
+        }
+        if (this.isSummary != null) {
+          visitor.visit(this, "isSummary", -1, this.isSummary);
+        }
+        if (this.binding != null) {
+          visitor.visit(this, "binding", -1, this.binding);
+        }
+        if (this.mappingList != null) {
+          int i = 0;
+          for (Base v : this.mappingList) {
+            if (v != null) {
+              visitor.visit(this, "mapping", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

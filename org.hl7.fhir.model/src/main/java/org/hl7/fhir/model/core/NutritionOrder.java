@@ -400,6 +400,47 @@ public class NutritionOrder extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.typeList != null) {
+            int i = 0;
+            for (Base v : this.typeList) {
+              if (v != null) {
+                visitor.visit(this, "type", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.schedule != null) {
+            visitor.visit(this, "schedule", -1, this.schedule);
+          }
+          if (this.nutrientList != null) {
+            int i = 0;
+            for (Base v : this.nutrientList) {
+              if (v != null) {
+                visitor.visit(this, "nutrient", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.textureList != null) {
+            int i = 0;
+            for (Base v : this.textureList) {
+              if (v != null) {
+                visitor.visit(this, "texture", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.instruction != null) {
+            visitor.visit(this, "instruction", -1, this.instruction);
+          }
+          if (this.caloricDensity != null) {
+            visitor.visit(this, "caloricDensity", -1, this.caloricDensity);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The kind of diet or dietary restriction such as fiber restricted diet or diet for diabetes.", 0, java.lang.Integer.MAX_VALUE, typeList);
@@ -805,6 +846,26 @@ public class NutritionOrder extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.timingList != null) {
+            int i = 0;
+            for (Base v : this.timingList) {
+              if (v != null) {
+                visitor.visit(this, "timing", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.asNeeded != null) {
+            visitor.visit(this, "asNeeded", -1, this.asNeeded);
+          }
+          if (this.asNeededFor != null) {
+            visitor.visit(this, "asNeededFor", -1, this.asNeededFor);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "timing":  return new Property("timing", "Timing", "The time period and frequency at which the diet should be given.  The diet should be given for the combination of all schedules if more than one schedule is present.", 0, java.lang.Integer.MAX_VALUE, timingList);
@@ -1065,6 +1126,17 @@ public class NutritionOrder extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.modifier != null) {
+            visitor.visit(this, "modifier", -1, this.modifier);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "modifier":  return new Property("modifier", "CodeableConcept", "The nutrient that is being modified such as carbohydrate or sodium.", 0, 1, modifier);
@@ -1302,6 +1374,17 @@ public class NutritionOrder extends DomainResource {
           super.listChildren(children);
           children.add(new Property("modifier", "CodeableConcept", "Texture modifications in the addition to the oral diet type that should be made, e.g. easy to chew, chopped, ground, and pureed.", 0, 1, modifier));
           children.add(new Property("type", "CodeableConcept", "The food (i.e. solid and/or liquid) type(s) (e.g. meats, all foods)  that the texture modification applies to.", 0, 1, type));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.modifier != null) {
+            visitor.visit(this, "modifier", -1, this.modifier);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
         }
 
         @Override
@@ -1734,6 +1817,29 @@ public class NutritionOrder extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.productName != null) {
+            visitor.visit(this, "productName", -1, this.productName);
+          }
+          if (this.schedule != null) {
+            visitor.visit(this, "schedule", -1, this.schedule);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.instruction != null) {
+            visitor.visit(this, "instruction", -1, this.instruction);
+          }
+          if (this.caloricDensity != null) {
+            visitor.visit(this, "caloricDensity", -1, this.caloricDensity);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableReference(NutritionProduct)", "The kind of nutritional supplement product required such as a high protein or pediatric clear liquid supplement.", 0, 1, type);
@@ -2142,6 +2248,26 @@ public class NutritionOrder extends DomainResource {
           children.add(new Property("timing", "Timing", "The time period and frequency at which the supplement should be given.  The supplement should be given for the combination of all schedules if more than one schedule is present.", 0, java.lang.Integer.MAX_VALUE, timingList));
           children.add(new Property("asNeeded", "boolean", "Indicates whether the supplement is only taken when needed within a specific dosing schedule.", 0, 1, asNeeded));
           children.add(new Property("asNeededFor", "CodeableConcept", "Indicates whether the supplement is only taken based on a precondition for taking the supplement.", 0, 1, asNeededFor));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.timingList != null) {
+            int i = 0;
+            for (Base v : this.timingList) {
+              if (v != null) {
+                visitor.visit(this, "timing", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.asNeeded != null) {
+            visitor.visit(this, "asNeeded", -1, this.asNeeded);
+          }
+          if (this.asNeededFor != null) {
+            visitor.visit(this, "asNeededFor", -1, this.asNeededFor);
+          }
         }
 
         @Override
@@ -2772,6 +2898,53 @@ public class NutritionOrder extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.typeList != null) {
+            int i = 0;
+            for (Base v : this.typeList) {
+              if (v != null) {
+                visitor.visit(this, "type", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.productName != null) {
+            visitor.visit(this, "productName", -1, this.productName);
+          }
+          if (this.deliveryDevice != null) {
+            visitor.visit(this, "deliveryDevice[x]", -1, this.deliveryDevice);
+          }
+          if (this.caloricDensity != null) {
+            visitor.visit(this, "caloricDensity", -1, this.caloricDensity);
+          }
+          if (this.routeOfAdministrationList != null) {
+            int i = 0;
+            for (Base v : this.routeOfAdministrationList) {
+              if (v != null) {
+                visitor.visit(this, "routeOfAdministration", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.administrationList != null) {
+            int i = 0;
+            for (Base v : this.administrationList) {
+              if (v != null) {
+                visitor.visit(this, "administration", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.maxVolumeToAdminister != null) {
+            visitor.visit(this, "maxVolumeToAdminister", -1, this.maxVolumeToAdminister);
+          }
+          if (this.administrationInstruction != null) {
+            visitor.visit(this, "administrationInstruction", -1, this.administrationInstruction);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableReference(NutritionProduct)", "The type of adult or pediatric enteral feeding such as an adult standard formula with fiber or a soy-based infant feeding.", 0, java.lang.Integer.MAX_VALUE, typeList);
@@ -3211,6 +3384,20 @@ public class NutritionOrder extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.schedule != null) {
+            visitor.visit(this, "schedule", -1, this.schedule);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.rate != null) {
+            visitor.visit(this, "rate[x]", -1, this.rate);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "schedule":  return new Property("schedule", "", "Schedule information for an enteral feeding.", 0, 1, schedule);
@@ -3561,6 +3748,26 @@ public class NutritionOrder extends DomainResource {
           children.add(new Property("timing", "Timing", "The time period and frequency at which the enteral feeding should be given.  The enteral feeding should be given for the combination of all schedules if more than one schedule is present.", 0, java.lang.Integer.MAX_VALUE, timingList));
           children.add(new Property("asNeeded", "boolean", "Indicates whether the enteral feeding is only taken when needed within a specific dosing schedule.", 0, 1, asNeeded));
           children.add(new Property("asNeededFor", "CodeableConcept", "Indicates whether the enteral feeding is only taken based on a precondition for taking the enteral feeding.", 0, 1, asNeededFor));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.timingList != null) {
+            int i = 0;
+            for (Base v : this.timingList) {
+              if (v != null) {
+                visitor.visit(this, "timing", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.asNeeded != null) {
+            visitor.visit(this, "asNeeded", -1, this.asNeeded);
+          }
+          if (this.asNeededFor != null) {
+            visitor.visit(this, "asNeededFor", -1, this.asNeededFor);
+          }
         }
 
         @Override
@@ -3943,6 +4150,29 @@ public class NutritionOrder extends DomainResource {
           children.add(new Property("productName", "string", "The product or brand name of the type of modular additive to be added to the oral diet, supplement, and/or enteral feeding.", 0, 1, productName));
           children.add(new Property("quantity", "Quantity", "The amount of additive to be given in addition or to be mixed in with the oral diet, supplement, and/or enteral feeding.", 0, 1, quantity));
           children.add(new Property("routeOfAdministration", "CodeableConcept", "The administration into the patient's gastrointestinal  tract for purposes of providing the additive, e.g. nasogastric tube, oral.", 0, java.lang.Integer.MAX_VALUE, routeOfAdministrationList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.modularType != null) {
+            visitor.visit(this, "modularType", -1, this.modularType);
+          }
+          if (this.productName != null) {
+            visitor.visit(this, "productName", -1, this.productName);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.routeOfAdministrationList != null) {
+            int i = 0;
+            for (Base v : this.routeOfAdministrationList) {
+              if (v != null) {
+                visitor.visit(this, "routeOfAdministration", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -5276,6 +5506,134 @@ public class NutritionOrder extends DomainResource {
         children.add(new Property("enteralFormula", "", "Feeding provided through the gastrointestinal tract via a tube, catheter, or stoma that delivers nutrition distal to the oral cavity.", 0, 1, enteralFormula));
         children.add(new Property("additive", "", "Indicates modular components to be provided in addition or mixed with the oral diet, supplement, and/or enteral feeding.", 0, java.lang.Integer.MAX_VALUE, additiveList));
         children.add(new Property("note", "Annotation", "Comments made about the nutrition order by the requester, performer, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, noteList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.groupIdentifier != null) {
+          visitor.visit(this, "groupIdentifier", -1, this.groupIdentifier);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.intent != null) {
+          visitor.visit(this, "intent", -1, this.intent);
+        }
+        if (this.priority != null) {
+          visitor.visit(this, "priority", -1, this.priority);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.supportingInformationList != null) {
+          int i = 0;
+          for (Base v : this.supportingInformationList) {
+            if (v != null) {
+              visitor.visit(this, "supportingInformation", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.dateTime != null) {
+          visitor.visit(this, "dateTime", -1, this.dateTime);
+        }
+        if (this.requester != null) {
+          visitor.visit(this, "requester", -1, this.requester);
+        }
+        if (this.performerList != null) {
+          int i = 0;
+          for (Base v : this.performerList) {
+            if (v != null) {
+              visitor.visit(this, "performer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.allergyIntoleranceList != null) {
+          int i = 0;
+          for (Base v : this.allergyIntoleranceList) {
+            if (v != null) {
+              visitor.visit(this, "allergyIntolerance", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.foodPreferenceModifierList != null) {
+          int i = 0;
+          for (Base v : this.foodPreferenceModifierList) {
+            if (v != null) {
+              visitor.visit(this, "foodPreferenceModifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.excludeFoodModifierList != null) {
+          int i = 0;
+          for (Base v : this.excludeFoodModifierList) {
+            if (v != null) {
+              visitor.visit(this, "excludeFoodModifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.outsideFoodAllowed != null) {
+          visitor.visit(this, "outsideFoodAllowed", -1, this.outsideFoodAllowed);
+        }
+        if (this.oralDiet != null) {
+          visitor.visit(this, "oralDiet", -1, this.oralDiet);
+        }
+        if (this.supplementList != null) {
+          int i = 0;
+          for (Base v : this.supplementList) {
+            if (v != null) {
+              visitor.visit(this, "supplement", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.enteralFormula != null) {
+          visitor.visit(this, "enteralFormula", -1, this.enteralFormula);
+        }
+        if (this.additiveList != null) {
+          int i = 0;
+          for (Base v : this.additiveList) {
+            if (v != null) {
+              visitor.visit(this, "additive", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override
