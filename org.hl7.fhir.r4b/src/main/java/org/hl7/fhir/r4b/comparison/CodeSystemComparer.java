@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4b.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r4b.model.CodeSystem;
 import org.hl7.fhir.r4b.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r4b.model.CodeSystem.ConceptDefinitionDesignationComponent;
@@ -365,7 +364,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     for (StructuralMatch<ConceptDefinitionComponent> t : comparison.getCombined().getChildren()) {
       addRow(gen, model.getRows(), t, comparison);
     }
-    return gen.generate(model, prefix, 0, null);
+    return gen.generate(model, prefix, false, null);
   }
 
   private void addRow(HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<ConceptDefinitionComponent> t,
@@ -379,9 +378,9 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
           r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null).span(2));
         } else {
           r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null)
-              .setStyle("background-color: " + COLOR_DIFFERENT));
+              .setStyleHTX("background-color: " + COLOR_DIFFERENT));
           r.getCells().add(gen.new Cell(null, null, t.getRight().getDisplay(), null, null)
-              .setStyle("background-color: " + COLOR_DIFFERENT));
+              .setStyleHTX("background-color: " + COLOR_DIFFERENT));
         }
       } else if (t.getLeft().hasDisplay()) {
         r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null));

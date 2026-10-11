@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r4b.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r4b.comparison.ValueSetComparer.ValueSetComparison;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities.UnusedTracker;
@@ -1037,7 +1036,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     TableModel model = gen.initComparisonTable(corePath, id);
     genElementComp(null /* oome back to this later */, gen, model.getRows(), comp.combined, corePath, prefix, null,
         true);
-    return gen.generate(model, prefix, 0, null);
+    return gen.generate(model, prefix, false, null);
   }
 
   private void genElementComp(String defPath, HierarchicalTableGenerator gen, List<Row> rows,
@@ -1130,12 +1129,12 @@ public class ProfileComparer extends CanonicalResourceComparer {
   private void frame(List<Cell> cells, String color) {
     for (Cell cell : cells) {
       if (color != null) {
-        cell.setStyle("background-color: " + color);
+        cell.setStyleHTX("background-color: " + color);
       }
     }
-    cells.get(0).setStyle("border-left: 1px grey solid" + (color == null ? "" : "; background-color: " + color));
+    cells.get(0).setStyleHTX("border-left: 1px grey solid" + (color == null ? "" : "; background-color: " + color));
     cells.get(cells.size() - 1)
-        .setStyle("border-right: 1px grey solid" + (color == null ? "" : "; background-color: " + color));
+        .setStyleHTX("border-right: 1px grey solid" + (color == null ? "" : "; background-color: " + color));
   }
 
   private List<Cell> spacers(Row row, int count, HierarchicalTableGenerator gen) {

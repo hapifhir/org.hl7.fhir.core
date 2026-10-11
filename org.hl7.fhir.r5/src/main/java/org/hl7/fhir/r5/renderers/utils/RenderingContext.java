@@ -73,11 +73,6 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 
 public class RenderingContext extends RenderingI18nContext {
 
-
-  public String getOpacity() {
-    return wcagConformant ? "font-style: italic" : "opacity: "+ HierarchicalTableGenerator.STANDARD_OPACITY;
-  }
-
   public enum DesignationMode {
     ALL,
     LANGUAGES,

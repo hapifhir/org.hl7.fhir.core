@@ -545,7 +545,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     profiles.add(profile); 
     genGridElement(defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, true, profileBaseFileName, null, corePath, imagePath, true, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), diff);
     try { 
-      return gen.generate(model, imagePath, 1, outputTracker); 
+      return gen.generate(model, imagePath, true, outputTracker);
     } catch (org.hl7.fhir.exceptions.FHIRException e) { 
       throw new FHIRException(e.getMessage(), e); 
     } 
@@ -582,7 +582,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
       TableModel model = generateTableInner(status, defFile, profile, diff, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, mustSupport, rc, anchorPrefix, res, idSfx, gen);
       if (model == null) return null;
-      return gen.generate(model, imagePath, 0, outputTracker);
+      return gen.generate(model, imagePath, false, outputTracker);
     } catch (org.hl7.fhir.exceptions.FHIRException e) {
       XhtmlNode xhtml = new XhtmlNode(NodeType.Element, "p");
       xhtml.span("color: maroon").tx(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()));
@@ -601,7 +601,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (model == null) {
         return null;
       }
-      return gen.generateAttributeTable(model, imagePath, 0, outputTracker);
+      return gen.generateAttributeTable(model, imagePath, false, outputTracker);
     } catch (org.hl7.fhir.exceptions.FHIRException e) {
       XhtmlNode xhtml = new XhtmlNode(NodeType.Element, "p");
       xhtml.span("color: maroon").tx(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()));
@@ -994,7 +994,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         row.setIcon("icon_resource.png", context.formatPhrase(RenderingI18nContext.GENERAL_RESOURCE));
       }
       if (element.hasUserData(UserDataNames.render_opaque)) { 
-        row.setOpacity(HierarchicalTableGenerator.STANDARD_OPACITY);
+        row.setTransparent(true);
       } 
       UnusedTracker used = new UnusedTracker(); 
       String ref = defPath == null ? null : defPath + element.getId(); 
@@ -1043,7 +1043,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           slicingRow = row; 
           for (Cell cell : row.getCells()) 
             for (Piece p : cell.getPieces()) { 
-              p.addStyle("font-style: italic"); 
+              p.styleAsItalic();
             } 
         } 
       } else if (element.hasSliceName()) { 
@@ -1055,9 +1055,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         for (Cell cell : row.getCells()) 
           for (Piece p : cell.getPieces()) {
             if (p.isUnderived()) {
-              p.setStyle("font-style: italic");
+              p.styleAsItalic();
             } else {
-              p.setStyle("text-decoration:line-through");
+              p.styleAsStrikeout();
             }
           }
       } else { 
@@ -1379,7 +1379,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (element != null && (hasNonBaseConstraints(element.getConstraint()) || hasNonBaseConditions(element.getCondition()))) { 
       Piece p = gc.addText(CONSTRAINT_CHAR); 
       p.setHint((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_AFFECTED, listConstraintsAndConditions(element), ")"))); 
-      p.addStyle(CONSTRAINT_STYLE); 
+      p.addNamedStyle("xhtConstraintStyle", CONSTRAINT_STYLE);
       p.setReference(Utilities.pathURL(VersionUtilities.getSpecUrl(context.getWorker().getVersion()), "conformance-rules.html#constraints")); 
     } 
     if (element != null && element.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS)) { 
@@ -1550,11 +1550,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
     if (logicalModel && ExtensionUtilities.hasAnyOfExtensions(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
       if (root) {
-        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_NAME)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_NAME)) + ": ", null).styleAsBold());
         c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));
       } else if (!root && ExtensionUtilities.hasAnyOfExtensions(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED) &&
         !ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED).equals(ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED))) {
-        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_NAME)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_NAME)) + ": ", null).styleAsBold());
         c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));
       }
     }
@@ -1583,7 +1583,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
     }
     if (definition.getPath().endsWith("url") && definition.hasFixed()) {
-      c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\"" + buildJson(definition.getFixed()) + "\"", null).addStyle("color: darkgreen")));
+      c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\"" + buildJson(definition.getFixed()) + "\"", null).styleAsDarkGreen()));
     } else {
       if (definition != null && definition.hasShort()) {
         if (!c.getPieces().isEmpty()) {
@@ -1598,7 +1598,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (!c.getPieces().isEmpty()) {
           c.addPiece(gen.new Piece("br"));
         }
-        Piece piece = gen.new Piece(null, gt(fallback.getShortElement()), null).addStyle(context.getOpacity());
+        Piece piece = gen.new Piece(null, gt(fallback.getShortElement()), null).styleAsDeEmphasized();
         if (!definition.getShortElement().hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) {
           piece.setUnderived(true);
         }
@@ -1631,14 +1631,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
         if (fixedUrl == null) {
           if (!Utilities.noString(fullUrl)) {
-            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_URL)) + ": ", null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_URL)) + ": ", null).styleAsBold());
             c.getPieces().add(gen.new Piece(ref, fullUrl, null));
           }
         } else {
           // reference to a profile take on the extension show the base URL
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_URL)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_URL)) + ": ", null).styleAsBold());
           c.getPieces().add(gen.new Piece(ref2, fixedUrl, null));
-          c.getPieces().add(gen.new Piece(null, (" " + context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROFILED) + " ") + " ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, (" " + context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROFILED) + " ") + " ", null).styleAsBold());
           c.getPieces().add(gen.new Piece(ref, fullUrl, null));
 
         }
@@ -1699,14 +1699,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (!c.getPieces().isEmpty()) {
           c.addPiece(gen.new Piece("br"));
         }
-        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICE)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICE)) + ": ", null).styleAsBold());
         c.getPieces().add(gen.new Piece(null, describeSlice(definition.getSlicing()), null));
       }
       if (!definition.getPath().contains(".") && ExtensionUtilities.hasExtension(profile, ExtensionDefinitions.EXT_BINDING_STYLE)) {
         if (!c.getPieces().isEmpty()) {
           c.addPiece(gen.new Piece("br"));
         }
-        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING)) + ": ", null).styleAsBold());
         c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SET) + " "), null));
         c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_BINDING_STYLE), null));
         c.getPieces().add(gen.new Piece(null, " " + context.formatPhrase(RenderingI18nContext.STRUC_DEF_BINDING_STYLE), null));
@@ -1728,7 +1728,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (!c.getPieces().isEmpty()) {
           c.addPiece(gen.new Piece("br"));
         }
-        c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MODIFIER_EXT), null).addStyle("font-weight:bold"));
+        c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MODIFIER_EXT), null).styleAsBold());
 
       }
 
@@ -1759,12 +1759,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         //  restrictions on status
         // direct linkage to data requirements
         if ((statusCodes.isEmpty() || statusCodes.size() == 4) && level == null && langCtrl.isEmpty()) {
-          c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to content, language, or traceability to data elements", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to content, language, or traceability to data elements", null).styleAsBold());
         } else {
           if ((statusCodes.isEmpty() || statusCodes.size() == 4)) {
-            c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative content by fixing the status codes", null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative content by fixing the status codes", null).styleAsBold());
           } else {
-            c.getPieces().add(gen.new Piece(null, "This profile constrains the narrative content by fixing the status codes to " + CommaSeparatedStringBuilder.join2(", ", " and ", statusCodes), null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, "This profile constrains the narrative content by fixing the status codes to " + CommaSeparatedStringBuilder.join2(", ", " and ", statusCodes), null).styleAsBold());
           }
           c.addPiece(gen.new Piece("br"));
           String ltx = null;
@@ -1787,13 +1787,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               }
             }
           }
-          c.getPieces().add(gen.new Piece(null, ltx, null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, ltx, null).styleAsBold());
           c.addPiece(gen.new Piece("br"));
 
           if (level == null) {
-            c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to traceability to data elements", null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to traceability to data elements", null).styleAsBold());
           } else {
-            c.getPieces().add(gen.new Piece(null, "This profile indicates that if there are elements in the narrative without a source-type class, and " + level + " will be emitted", null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, "This profile indicates that if there are elements in the narrative without a source-type class, and " + level + " will be emitted", null).styleAsBold());
           }
         }
       }
@@ -1829,7 +1829,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (!c.getPieces().isEmpty()) {
           c.addPiece(gen.new Piece("br"));
         }
-        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_CHOICE_GRP)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_CHOICE_GRP)) + ": ", null).styleAsBold());
         c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_REPEAT), null));
       }
       if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED)) {
@@ -1837,20 +1837,20 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.addPiece(gen.new Piece("br"));
         }
         if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_XML)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_XML)) + ": ", null).styleAsBold());
           c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED), null));
           c.getPieces().add(gen.new Piece(null, " (", null));
           c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));
           c.getPieces().add(gen.new Piece(null, ")", null));
         } else {
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_ELE)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_ELE)) + ": ", null).styleAsBold());
           c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED), null));
         }
       } else if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
         if (!c.getPieces().isEmpty()) {
           c.addPiece(gen.new Piece("br"));
         }
-        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_NAME)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_NAME)) + ": ", null).styleAsBold());
         c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));
       }
       if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_EMPTY)) {
@@ -1870,10 +1870,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.addPiece(gen.new Piece("br"));
         }
         if (definition.getPath().contains(".")) {
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_JSON_NAME)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_JSON_NAME)) + ": ", null).styleAsBold());
           c.getPieces().add(gen.new Piece(null, jn, null));
         } else {
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_JSON_TYPE)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_JSON_TYPE)) + ": ", null).styleAsBold());
           Piece piece = gen.new Piece("code");
           piece.addHtml(new XhtmlNode(NodeType.Text).setContent(jn));
           c.getPieces().add(piece);
@@ -1926,7 +1926,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!c.getPieces().isEmpty()) {
             c.addPiece(gen.new Piece("br"));
           }
-          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG_ADD), null).addStyle("font-weight:bold"));
+          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG_ADD), null).styleAsBold());
         }
         addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_INHERITS_NEW, ExtensionDefinitions.EXT_OBLIGATION_INHERITS_OLD), "This profile picks up obligations and additional bindings from the profile", true, profile);
         addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE), "This profile also imposes the profile", true, profile);
@@ -1942,12 +1942,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!c.getPieces().isEmpty()) {
               c.addPiece(gen.new Piece("br"));
             }
-            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_CAN_TARGET), null).addStyle("font-weight:bold"));
+            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_CAN_TARGET), null).styleAsBold());
           } else {
             if (!c.getPieces().isEmpty()) {
               c.addPiece(gen.new Piece("br"));
             }
-            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_NOT_MARK), null).addStyle("font-weight:bold"));
+            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_NOT_MARK), null).styleAsBold());
           }
 
           String ps = ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_PROFILE_STYLE);
@@ -1956,9 +1956,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.addPiece(gen.new Piece("br"));
             }
             if ("cda".equals(ps)) {
-              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_TEMPLATEID), null).addStyle("font-weight:bold"));
+              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_TEMPLATEID), null).styleAsBold());
             } else {
-              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_UNKNOWN_APPROACH, ps) + " ", null).addStyle("font-weight:bold"));
+              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_UNKNOWN_APPROACH, ps) + " ", null).styleAsBold());
             }
           }
           Extension lc = ExtensionUtilities.getExtension(profile, ExtensionDefinitions.EXT_LOGICAL_CONTAINER);
@@ -1966,7 +1966,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!c.getPieces().isEmpty()) {
               c.addPiece(gen.new Piece("br"));
             }
-            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_LOGICAL_CONT)) + ": ", context.formatPhrase(RenderingI18nContext.STRUC_DEF_ROOT)).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_LOGICAL_CONT)) + ": ", context.formatPhrase(RenderingI18nContext.STRUC_DEF_ROOT)).styleAsBold());
 
             String uri = lc.getValue().primitiveValue();
             StructureDefinition lct = context.getContext().fetchTypeDefinition(uri);
@@ -1988,14 +1988,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!c.getPieces().isEmpty())
             c.addPiece(gen.new Piece("binding", "br"));
           if (!binding.hasValueSet()) {
-            c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_VS_1)) + ": ", null).addStyle("font-weight:bold")));
+            c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_VS_1)) + ": ", null).styleAsBold()));
             if (binding.hasStrength()) {
               c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, " (", null)));
               c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", corePath + "terminologies.html#" + binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));
               c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, ")", null)));
               if (binding.getStrength().testable()) {
                 c.getPieces().add(gen.new Piece("binding", null, " ", null));
-                c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, "\u26A0", context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_VS_2))).addStyle("font-weight:bold; color: #c97a18"));
+                c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, "\u26A0", context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_VS_2))).styleAsBold().addNamedStyle("xhtBindingNotTestable", "color: #c97a18"));
               }
             }
             c.getPieces().add(gen.new Piece("binding", null, ": ", null));
@@ -2006,7 +2006,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
           } else {
             BindingResolution br = context.getPkp() == null ? makeNullBr(binding) : context.getPkp().resolveBinding(profile, binding, definition.getPath());
-            c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING)) + ": ", null).addStyle("font-weight:bold")));
+            c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING)) + ": ", null).styleAsBold()));
             c.getPieces().add(checkForNoChange(binding.getValueSetElement(), checkAddExternalFlag(br, gen.new Piece("binding", br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath + br.url, br.display, br.uri))));
             if (binding.hasStrength()) {
               c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, " (", null)));
@@ -2044,7 +2044,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
             } else
               c.addPiece(gen.new Piece("constraint", null, ", ", null));
-            c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, inv.getKey(), gt(inv.getHumanElement())).addStyle("font-weight:bold")));
+            c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, inv.getKey(), gt(inv.getHumanElement())).styleAsBold()));
           }
         }
         if ((definition.hasBase() && "*".equals(definition.getBase().getMax())) || (definition.hasMax() && "*".equals(definition.getMax()))) {
@@ -2060,15 +2060,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!c.getPieces().isEmpty()) {
             c.addPiece(gen.new Piece("br"));
           }
-          c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED)) + ": ", null).addStyle("font-weight:bold")));
+          c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED)) + ": ", null).styleAsBold()));
           if (!useTableForFixedValues || !allowSubRows || definition.getFixed().isPrimitive()) {
             String s = buildJson(definition.getFixed());
             String link = null;
             if (Utilities.isAbsoluteUrl(s) && context.getPkp() != null)
               link = context.getPkp().getLinkForUrl(corePath, s);
-            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).addStyle("color: darkgreen")));
+            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).styleAsDarkGreen()));
           } else {
-            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_AS_SHOWN), null).addStyle("color: darkgreen")));
+            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_AS_SHOWN), null).styleAsDarkGreen()));
             genFixedValue(gen, row, definition.getFixed(), snapshot, false, corePath, false, null, null, null);
           }
           if (isCoded(definition.getFixed()) && !hasDescription(definition.getFixed())) {
@@ -2080,18 +2080,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!c.getPieces().isEmpty()) {
             c.addPiece(gen.new Piece("br"));
           }
-          c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_REQ_PATT)) + ": ", null).addStyle("font-weight:bold")));
+          c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_REQ_PATT)) + ": ", null).styleAsBold()));
           if (!useTableForFixedValues || !allowSubRows || definition.getPattern().isPrimitive())
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).addStyle("color: darkgreen")));
+            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).styleAsDarkGreen()));
           else {
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_LEAST_FOLLOW), null).addStyle("color: darkgreen")));
+            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_LEAST_FOLLOW), null).styleAsDarkGreen()));
             genFixedValue(gen, row, definition.getPattern(), snapshot, true, corePath, mustSupportOnly, definition.getPath(), definition.getId(), inScopeElements);
           }
         } else if (hasMergedPatternValues(definition)) {
           if (!c.getPieces().isEmpty()) {
             c.addPiece(gen.new Piece("br"));
           }
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE)) + " ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE)) + " ", null).styleAsBold());
           List<DataType> complexValues = new ArrayList<>();
           boolean first = true;
           for (Base b : getMergedPatternValues(definition)) {
@@ -2100,7 +2100,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
             String s = formatMergedPatternValue(b);
             String link = Utilities.isAbsoluteUrl(s) && context.getPkp() != null ? context.getPkp().getLinkForUrl(corePath, s) : null;
-            c.getPieces().add(gen.new Piece(link, s, null).addStyle("color: darkgreen"));
+            c.getPieces().add(gen.new Piece(link, s, null).styleAsDarkGreen());
             if (b instanceof DataType && !b.isPrimitive()) {
               complexValues.add((DataType) b);
             }
@@ -2116,8 +2116,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!c.getPieces().isEmpty()) {
               c.addPiece(gen.new Piece("br"));
             }
-            c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_EXAMPLE)) + ("".equals("General") ? "" : " " + ex.getLabel()) + ": ", null).addStyle("font-weight:bold")));
-            c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).addStyle("color: darkgreen")));
+            c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_EXAMPLE)) + ("".equals("General") ? "" : " " + ex.getLabel()) + ": ", null).styleAsBold()));
+            c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).styleAsDarkGreen()));
           }
         }
 
@@ -2133,8 +2133,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!c.getPieces().isEmpty()) {
             c.addPiece(gen.new Piece("br"));
           }
-          c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MAX_LENGTH), null).addStyle("font-weight:bold")));
-          c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).addStyle("color: darkgreen")));
+          c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MAX_LENGTH), null).styleAsBold()));
+          c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).styleAsDarkGreen()));
         }
         if (definition.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH)) {
           int min = ExtensionUtilities.readIntegerExtension(definition, ExtensionDefinitions.EXT_MIN_LENGTH, 0);
@@ -2142,8 +2142,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!c.getPieces().isEmpty()) {
               c.addPiece(gen.new Piece("br"));
             }
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MIN_LENGTH), null).addStyle("font-weight:bold"));
-            c.getPieces().add(gen.new Piece(null, Integer.toString(min), null).addStyle("color: darkgreen"));
+            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MIN_LENGTH), null).styleAsBold());
+            c.getPieces().add(gen.new Piece(null, Integer.toString(min), null).styleAsDarkGreen());
           }
         }
         if (profile != null) {
@@ -2170,7 +2170,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (!c.getPieces().isEmpty()) {
         c.addPiece(gen.new Piece("br"));
       }
-      c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICING_NOTE) + ": ", null).addStyle("font-weight:bold"));
+      c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICING_NOTE) + ": ", null).styleAsBold());
       c.getPieces().add(gen.new Piece(null, String.join(" ", slicingNotes), null));
     }
     return c;
@@ -2356,7 +2356,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
       Piece p = gen.new Piece(null, start+(list.size() != 1 ? "s" : "")+" ", null); 
       c.addPiece(p); 
-      if (bold) p.addStyle("font-weight:bold"); 
+      if (bold) p.styleAsBold();
        
       for (int i = 0; i < list.size(); i++) { 
         CanonicalType ct = list.get(i); 
@@ -2373,7 +2373,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           sd = context.findLinkableResource(StructureDefinition.class, iu);
         }
         if (sd == null) { 
-          p = gen.new Piece(null, iu, null).addStyle("font-weight:bold"); 
+          p = gen.new Piece(null, iu, null).styleAsBold();
           c.addPiece(p);                       
         } else { 
           String v = ""; 
@@ -2381,15 +2381,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             v = " ("+sd.getVersion()+")"; 
           } 
           if (sd.hasWebPath()) { 
-            p = gen.new Piece(sd.getWebPath(), sd.present()+v, null).addStyle("font-weight:bold"); 
+            p = gen.new Piece(sd.getWebPath(), sd.present()+v, null).styleAsBold();
             c.addPiece(p);                       
           } else { 
-            p = gen.new Piece(iu, sd.present()+v, null).addStyle("font-weight:bold"); 
+            p = gen.new Piece(iu, sd.present()+v, null).styleAsBold();
             c.addPiece(p);                       
           } 
         } 
         if (bold) {
-          p.addStyle("font-weight:bold"); 
+          p.styleAsBold();
         } 
       } 
     }     
@@ -2397,14 +2397,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private Piece checkForNoChange(Element source, Piece piece) { 
     if (source.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) { 
-      piece.addStyle(context.getOpacity());
+      piece.styleAsDeEmphasized();
     } 
     return piece; 
   } 
  
   private String checkForNoChange(Element source) { 
     if (source.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) { 
-      return context.getOpacity(); 
+      return "opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY;
     } else {  
       return null; 
     } 
@@ -2461,7 +2461,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       Piece img = gen.new Piece("img");
       img.attr("src", typeProfileMarkSrc(mark));
       img.setHint(hint);
-      img.addStyle("vertical-align: baseline");
+      img.styleAsBaseLine();
       if (context.forPublisher()) {
         img.attr("alt", hint);
         img.attr("aria-label", hint);
@@ -2793,7 +2793,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       used.used = true; 
       Cell left = gen.new Cell(); 
       if (element.getType().size() == 1 && element.getType().get(0).isPrimitive()) 
-        left.getPieces().add(gen.new Piece(ref, "\u00A0\u00A0" + s, !hasDef ? null : gt(element.getDefinitionElement())).addStyle("font-weight:bold")); 
+        left.getPieces().add(gen.new Piece(ref, "\u00A0\u00A0" + s, !hasDef ? null : gt(element.getDefinitionElement())).styleAsBold());
       else 
         left.getPieces().add(gen.new Piece(ref, "\u00A0\u00A0" + s, !hasDef ? null : gt(element.getDefinitionElement()))); 
       if (element.hasSliceName()) { 
@@ -3045,21 +3045,21 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 row.getCells().add(c); 
                 c.addPiece(gen.new Piece(null, ed.getShort(), null)); 
                 c.addPiece(gen.new Piece("br")); 
-                c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE)+" ", null).addStyle("font-weight: bold")); 
+                c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE)+" ", null).styleAsBold());
                 String s = b.primitiveValue(); 
                 // ok. let's see if we can find a relevant link for this 
                 String link = null; 
                 if (Utilities.isAbsoluteUrl(s)) { 
                   link = context.getPkp().getLinkForUrl(corePath, s); 
                 } 
-                c.getPieces().add(gen.new Piece(link, s, null).addStyle("color: darkgreen")); 
+                c.getPieces().add(gen.new Piece(link, s, null).styleAsDarkGreen());
               } else { 
                 c = gen.new Cell(); 
                 row.getCells().add(c); 
                 c.addPiece(gen.new Piece(null, ed.getShort(), null)); 
                 c.addPiece(gen.new Piece("br")); 
-                c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE)+" ", null).addStyle("font-weight: bold")); 
-                c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_COMPLEXBRACK), null).addStyle("color: darkgreen")); 
+                c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE)+" ", null).styleAsBold());
+                c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_COMPLEXBRACK), null).styleAsDarkGreen());
                 genFixedValue(gen, row, (DataType) b, snapshot, pattern, corePath, skipnoValue, childPath, childId, inScopeElements); 
               } 
             } 
@@ -3233,13 +3233,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       Coding c = (Coding) fixed; 
       ValidationResult vr = context.getWorker().validateCode(context.getTerminologyServiceOptions(), c.getSystem(), c.getVersion(), c.getCode(), c.getDisplay()); 
       if (vr.getDisplay() != null) 
-        return gen.new Piece(null, " ("+vr.getDisplay()+")", null).addStyle("color: darkgreen"); 
+        return gen.new Piece(null, " ("+vr.getDisplay()+")", null).styleAsDarkGreen();
     } else if (fixed instanceof CodeableConcept) { 
       CodeableConcept cc = (CodeableConcept) fixed; 
       for (Coding c : cc.getCoding()) { 
         ValidationResult vr = context.getWorker().validateCode(context.getTerminologyServiceOptions(), c.getSystem(), c.getVersion(), c.getCode(), c.getDisplay()); 
         if (vr.getDisplay() != null) 
-          return gen.new Piece(null, " ("+vr.getDisplay()+")", null).addStyle("color: darkgreen"); 
+          return gen.new Piece(null, " ("+vr.getDisplay()+")", null).styleAsDarkGreen();
       } 
     } 
     return null; 
@@ -3284,7 +3284,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } 
       } 
       if (definition.getPath().endsWith("url") && definition.hasFixed()) { 
-        c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\""+buildJson(definition.getFixed())+"\"", null).addStyle("color: darkgreen"))); 
+        c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\""+buildJson(definition.getFixed())+"\"", null).styleAsDarkGreen()));
       } else { 
         if (url != null) { 
           if (!c.getPieces().isEmpty())  
@@ -3298,13 +3298,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               ref = p.startsWith("http:") || context.getRules() == GenerationRules.IG_PUBLISHER ? p : Utilities.pathURL(corePath, p); 
             } 
           } 
-          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_URLS), null).addStyle("font-weight:bold")); 
+          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_URLS), null).styleAsBold());
           c.getPieces().add(gen.new Piece(ref, fullUrl, null)); 
         } 
  
         if (definition.hasSlicing()) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICES), null).addStyle("font-weight:bold")); 
+          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICES), null).styleAsBold());
           c.getPieces().add(gen.new Piece(null, describeSlice(definition.getSlicing()), null)); 
         } 
         if (definition != null) { 
@@ -3317,7 +3317,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!c.getPieces().isEmpty())  
               c.addPiece(gen.new Piece("br")); 
             BindingResolution br = context.getPkp().resolveBinding(profile, binding, definition.getPath()); 
-            c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_BINDINGS), null).addStyle("font-weight:bold"))); 
+            c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_BINDINGS), null).styleAsBold()));
             c.getPieces().add(checkForNoChange(binding, checkAddExternalFlag(br, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, br.display, br.uri)))); 
             if (binding.hasStrength()) { 
               c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, " (", null))); 
@@ -3337,7 +3337,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } 
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getKey()+": ", null).addStyle("font-weight:bold"))); 
+            c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getKey()+": ", null).styleAsBold()));
             if (inv.getHumanElement().hasExtension(ExtensionDefinitions.EXT_REND_MD)) { 
               c.addMarkdown(inv.getHumanElement().getExtensionString(ExtensionDefinitions.EXT_REND_MD)); 
             } else { 
@@ -3346,34 +3346,34 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } 
           if (definition.hasFixed()) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE), null).addStyle("font-weight:bold"))); 
+            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE), null).styleAsBold()));
             String s = buildJson(definition.getFixed()); 
             String link = null; 
             if (Utilities.isAbsoluteUrl(s)) 
               link = context.getPkp().getLinkForUrl(corePath, s); 
-            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).addStyle("color: darkgreen"))); 
+            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).styleAsDarkGreen()));
           } else if (definition.hasPattern()) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_REQUIRED_PATT), null).addStyle("font-weight:bold"))); 
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).addStyle("color: darkgreen"))); 
+            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_REQUIRED_PATT), null).styleAsBold()));
+            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).styleAsDarkGreen()));
           } else if (definition.hasExample()) { 
             for (ElementDefinitionExampleComponent ex : definition.getExample()) { 
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-              c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_EXAMPLE) +"'"+("".equals("General")? "": " "+ex.getLabel()+"'")+": ", "").addStyle("font-weight:bold"))); 
-              c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).addStyle("color: darkgreen"))); 
+              c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_EXAMPLE) +"'"+("".equals("General")? "": " "+ex.getLabel()+"'")+": ", "").styleAsBold()));
+              c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).styleAsDarkGreen()));
             } 
           } 
           if (definition.hasMaxLength() && definition.getMaxLength()!=0) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MAX_LENGTH), null).addStyle("font-weight:bold"))); 
-            c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).addStyle("color: darkgreen"))); 
+            c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MAX_LENGTH), null).styleAsBold()));
+            c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).styleAsDarkGreen()));
           } 
           if (definition.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH)) {
             int min = ExtensionUtilities.readIntegerExtension(definition, ExtensionDefinitions.EXT_MIN_LENGTH, 0);
             if (min > 0) {
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-              c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MIN_LENGTH), null).addStyle("font-weight:bold")); 
-              c.getPieces().add(gen.new Piece(null, Integer.toString(min), null).addStyle("color: darkgreen"));
+              c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MIN_LENGTH), null).styleAsBold());
+              c.getPieces().add(gen.new Piece(null, Integer.toString(min), null).styleAsDarkGreen());
             }
           }
           if (profile != null) { 
@@ -3394,14 +3394,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } 
           if (definition.hasDefinition()) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_DEFINITION_COLON), null).addStyle("font-weight:bold")); 
+            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_DEFINITION_COLON), null).styleAsBold());
             c.addPiece(gen.new Piece("br")); 
             c.addMarkdown(definition.getDefinition()); 
             //            c.getPieces().add(checkForNoChange(definition.getCommentElement(), gen.new Piece(null, definition.getComment(), null))); 
           } 
           if (definition.getComment()!=null) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_COMMENT), null).addStyle("font-weight:bold")); 
+            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_COMMENT), null).styleAsBold());
             c.addPiece(gen.new Piece("br")); 
             c.addMarkdown(definition.getComment()); 
             //            c.getPieces().add(checkForNoChange(definition.getCommentElement(), gen.new Piece(null, definition.getComment(), null))); 
@@ -3678,7 +3678,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private Piece checkForNoChange(Element src1, Element src2, Piece piece) { 
     if (src1.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS) && src2.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) { 
-      piece.addStyle(context.getOpacity()); 
+      piece.styleAsDeEmphasized();
     } 
     return piece; 
   } 
@@ -3888,7 +3888,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     SpanEntry span = buildSpanningTable("(focus)", "", profile, processed, onlyConstraints, constraintPrefix); 
  
     genSpanEntry(gen, model.getRows(), span); 
-    return gen.generate(model, "", 0, outputTracker); 
+    return gen.generate(model, "", false, outputTracker);
   } 
  
   private SpanEntry buildSpanningTable(String name, String cardinality, StructureDefinition profile, Set<String> processed, boolean onlyConstraints, String constraintPrefix) throws IOException { 
@@ -4069,7 +4069,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (!full && !(deep || vdeep) && ved != null && ved.hasBinding()) {   
       c.addPiece(gen.new Piece("br")); 
       BindingResolution br = context.getPkp().resolveBinding(ed, ved.getBinding(), ved.getPath()); 
-      c.getPieces().add(checkForNoChange(ved.getBinding(), gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING))+": ", null).addStyle("font-weight:bold"))); 
+      c.getPieces().add(checkForNoChange(ved.getBinding(), gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING))+": ", null).styleAsBold()));
       c.getPieces().add(checkForNoChange(ved.getBinding(), checkAddExternalFlag(br, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, br.display, br.uri)))); 
       if (ved.getBinding().hasStrength()) { 
         c.getPieces().add(checkForNoChange(ved.getBinding(), gen.new Piece(null, " (", null))); 
@@ -4092,7 +4092,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     r.getCells().add(c); 
  
     try { 
-      return gen.generate(model, corePath, 0, outputTracker); 
+      return gen.generate(model, corePath, false, outputTracker);
     } catch (org.hl7.fhir.exceptions.FHIRException e) { 
       throw new FHIRException(e.getMessage(), e); 
     } 
@@ -5731,7 +5731,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       new ElementTable(context, groups, this, ExtensionUtilities.hasExtensionValue(profile, ExtensionDefinitions.EXT_PROFILE_VIEW_HINT, "element-view-replace-cardinality")).build(gen, model);
           
       try { 
-        return gen.generate(model, imagePath, 0, outputTracker); 
+        return gen.generate(model, imagePath, false, outputTracker);
       } catch (org.hl7.fhir.exceptions.FHIRException e) { 
         throw new FHIRException(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()), e); 
       }

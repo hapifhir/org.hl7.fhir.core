@@ -3,8 +3,6 @@ package org.hl7.fhir.r4b.comparison;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r4b.comparison.ResourceComparer.MessageCounts;
-import org.hl7.fhir.r4b.comparison.ResourceComparer.ResourceComparison;
 import org.hl7.fhir.r4b.model.CanonicalResource;
 import org.hl7.fhir.r4b.model.CodeSystem;
 import org.hl7.fhir.r4b.model.StructureDefinition;
@@ -252,7 +250,7 @@ public class ResourceComparer {
   public Cell missingCell(HierarchicalTableGenerator gen, String color) {
     Cell c = gen.new Cell(null, null, "", null, null);
     if (color != null) {
-      c.setStyle("background-color: " + color);
+      c.setStyleHTX("background-color: " + color);
     }
     return c;
   }

@@ -33,6 +33,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -513,7 +514,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             first = false;
           } else {
             tr = tbl.tr();
-            tr.td().colspan(3).style(context.getOpacity()).addText("\"");
+            tr.td().colspan(3).style("opacity: "+ HierarchicalTableGenerator.STANDARD_OPACITY).addText("\"");
           }
           if (!ccm.hasRelationship()) {
             tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
@@ -592,7 +593,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               first = false;
             } else {
               tr = tbl.tr();
-              tr.td().style(context.getOpacity()).tx("\"");
+              tr.td().style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY).tx("\"");
             }
             if (!ccm.hasRelationship())
               tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");

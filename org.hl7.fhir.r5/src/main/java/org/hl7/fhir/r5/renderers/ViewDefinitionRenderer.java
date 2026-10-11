@@ -161,7 +161,7 @@ public class ViewDefinitionRenderer extends ResourceRenderer {
     for (ResourceWrapper select : vd.children("select")) { 
       renderSelect(status, gen, row.getSubRows(), vd, select); 
     } 
-    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null); 
+    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), true, null);
     x.addChildNode(xn); 
   }
 
