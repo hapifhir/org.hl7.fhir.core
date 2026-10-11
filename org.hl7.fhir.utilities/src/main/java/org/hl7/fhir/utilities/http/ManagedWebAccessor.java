@@ -67,6 +67,9 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
 
     if (retries != null) {
       builder.retries(retries);
+      // Zero retries means the request must be sent at most once - so OkHttp must not silently
+      // re-send it after a connection failure either.
+      builder.retryOnConnectionFailure(retries > 0);
     }
     builder.followRedirects(followRedirects);
 

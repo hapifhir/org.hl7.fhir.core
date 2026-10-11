@@ -108,11 +108,13 @@ class HTTPAuthenticationProviderChainTest {
     assertThat(chain.getHeaders(urlB)).containsEntry("Authorization", "Bearer for-b");
   }
 
+  private static final String REJECTED = "Bearer rejected-token";
+
   /** A provider that serves {@code url} and reports whether it discarded cached credentials. */
   private static IHTTPAuthenticationProvider mockInvalidatingProvider(URL url, boolean invalidated) {
     IHTTPAuthenticationProvider provider = mock(IHTTPAuthenticationProvider.class);
     when(provider.canProvideHeaders(url)).thenReturn(true);
-    when(provider.invalidateCachedCredentials(url)).thenReturn(invalidated);
+    when(provider.invalidateCachedCredentials(url, REJECTED)).thenReturn(invalidated);
     return provider;
   }
 
@@ -125,7 +127,7 @@ class HTTPAuthenticationProviderChainTest {
       mockInvalidatingProvider(matchingUrl, true)
     ));
 
-    assertThat(chain.invalidateCachedCredentials(matchingUrl)).isTrue();
+    assertThat(chain.invalidateCachedCredentials(matchingUrl, REJECTED)).isTrue();
   }
 
   @Test
@@ -137,7 +139,7 @@ class HTTPAuthenticationProviderChainTest {
       mockInvalidatingProvider(matchingUrl, false)
     ));
 
-    assertThat(chain.invalidateCachedCredentials(matchingUrl)).isFalse();
+    assertThat(chain.invalidateCachedCredentials(matchingUrl, REJECTED)).isFalse();
   }
 
   @Test
@@ -183,12 +185,12 @@ class HTTPAuthenticationProviderChainTest {
       servesButCannotInvalidate, laterProvider
     ));
 
-    assertThat(chain.invalidateCachedCredentials(matchingUrl)).isFalse();
-    verify(laterProvider, never()).invalidateCachedCredentials(any());
+    assertThat(chain.invalidateCachedCredentials(matchingUrl, REJECTED)).isFalse();
+    verify(laterProvider, never()).invalidateCachedCredentials(any(), any());
   }
 
   @Test
-  void invalidateCachedCredentials_reportsFalseWhenNothingWasCached() throws IOException {
+  void invalidateCachedCredentials_reportsFalseWhenNoBearerTokenWasSent() throws IOException {
     URL matchingUrl = new URL("https://fhir.example.org/Patient");
 
     ServerDetailsPOJO ccServer = ServerDetailsPOJO.builder()
@@ -207,8 +209,9 @@ class HTTPAuthenticationProviderChainTest {
       new ServerDetailsPOJOHTTPAuthProvider(List.of(ccServer))
     ));
 
-    // No token has ever been fetched, so there is nothing to invalidate and no point retrying
-    assertThat(chain.invalidateCachedCredentials(matchingUrl)).isFalse();
+    // Without a rejected bearer token there is nothing to discard, so no point retrying
+    assertThat(chain.invalidateCachedCredentials(matchingUrl, null)).isFalse();
+    assertThat(chain.invalidateCachedCredentials(matchingUrl, "Basic abc")).isFalse();
   }
 
   @Test
@@ -231,6 +234,6 @@ class HTTPAuthenticationProviderChainTest {
       new ServerDetailsPOJOHTTPAuthProvider(List.of(ccServer))
     ));
 
-    assertThat(chain.invalidateCachedCredentials(url)).isFalse();
+    assertThat(chain.invalidateCachedCredentials(url, REJECTED)).isFalse();
   }
 }

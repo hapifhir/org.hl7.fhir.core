@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.http;
 
+import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -230,6 +231,50 @@ class OAuthClientCredentialsIntegrationTest {
   }
 
   // -----------------------------------------------------------------------
+  // Test 4b: concurrent 401s refresh the token once
+  //
+  // Two requests are in flight with the same token when it is revoked. Simulated
+  // deterministically: while the FHIR server is handling this request, "another request"
+  // invalidates the token and fetches a replacement. This request's 401 must then retry with
+  // that replacement - not discard it and fetch a third token, and not give up because the
+  // rejected token is already gone.
+  // -----------------------------------------------------------------------
+  @Test
+  void testConcurrent401RetriesWithTokenRefreshedByAnotherRequest() throws Exception {
+    tokenServer.enqueue(tokenResponse("revoked-token", 3600));
+    tokenServer.enqueue(tokenResponse("replacement-token", 3600));
+
+    ServerDetailsPOJO server = buildServer();
+    fhirServer.setDispatcher(new Dispatcher() {
+      private boolean first = true;
+
+      @Override
+      public MockResponse dispatch(RecordedRequest request) {
+        if (first) {
+          first = false;
+          try {
+            // The other request got its 401 first, and has already refreshed
+            HTTPTokenManager.invalidateToken(server.getOauthClientCredentials(), "revoked-token");
+            getToken(server);
+          } catch (IOException e) {
+            throw new RuntimeException(e);
+          }
+          return new MockResponse().setResponseCode(401);
+        }
+        return new MockResponse().setResponseCode(200).setBody("OK");
+      }
+    });
+
+    HTTPResult result = fhirAccessor(server).httpCall(new HTTPRequest()
+      .withUrl(fhirServer.url("/Patient").toString()).withMethod(HTTPRequest.HttpMethod.GET));
+
+    assertThat(result.getCode()).isEqualTo(200);
+    assertThat(tokenServer.getRequestCount()).isEqualTo(2);
+    assertThat(fhirServer.takeRequest().getHeader("Authorization")).isEqualTo("Bearer revoked-token");
+    assertThat(fhirServer.takeRequest().getHeader("Authorization")).isEqualTo("Bearer replacement-token");
+  }
+
+  // -----------------------------------------------------------------------
   // Test 5: ManagedWebAccessor path
   //
   // Verifies that ManagedWebAccessor also handles client_credentials correctly,
@@ -349,9 +394,11 @@ class OAuthClientCredentialsIntegrationTest {
   }
 
   @Test
-  void tokenEndpointPolicyMustOnlyTrustTheConfiguredEndpoint() throws Exception {
+  void tokenEndpoint307RedirectToPlainHttpMustNotBeFollowed() throws Exception {
     // Same shape as above with a 307, which preserves method and body by definition, to a plain
-    // http host - which only the configured server's allowHttp could have permitted.
+    // http host - which only the configured server's allowHttp could have permitted. (That the
+    // token endpoint policy grants nothing off the configured endpoint, even to a redirect that
+    // were followed, is tested directly in HTTPTokenManagerTest.)
     MockWebServer elsewhere = new MockWebServer();
     elsewhere.start();
     try {

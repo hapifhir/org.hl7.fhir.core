@@ -52,19 +52,24 @@ public interface IHTTPAuthenticationProvider {
   }
 
   /**
-   * Discards any cached credentials this provider holds for {@code url}, so that the next
-   * {@link #getHeaders} call obtains fresh ones.
+   * Discards the credentials a server just rejected, if this provider still holds them for
+   * {@code url}, so that the next {@link #getHeaders} call obtains fresh ones.
    * <p/>
    * Called when a server rejects a request with 401 and {@link #canRefreshCredentials} is true:
    * an OAuth access token, say, may simply have gone stale, and repeating the request with a
    * fresh one will succeed.
+   * <p/>
+   * Implementations must only discard the credentials that were actually rejected. Under
+   * concurrency another request may already have replaced them, and discarding the replacement
+   * would cost an extra refresh for no benefit.
    *
    * @param url the url whose credentials were rejected
-   * @return true if something was actually discarded, i.e. a retry has a reason to succeed.
-   *   False means the rejected credentials were not cached ones - they were just minted - so a
-   *   retry would only repeat the same failure.
+   * @param rejectedAuthorization the {@code Authorization} header value the server rejected, or
+   *   null if none was sent
+   * @return true if a retry has a reason to succeed: the rejected credentials have been
+   *   discarded, here or by a concurrent request, so {@link #getHeaders} will not supply them again
    */
-  default boolean invalidateCachedCredentials(URL url) {
+  default boolean invalidateCachedCredentials(URL url, String rejectedAuthorization) {
     return false;
   }
 

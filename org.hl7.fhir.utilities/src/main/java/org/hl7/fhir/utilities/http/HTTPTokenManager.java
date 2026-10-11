@@ -132,18 +132,27 @@ public class HTTPTokenManager {
   }
 
   /**
-   * Removes the cached token for the given credentials, forcing the next
-   * {@link #getToken} call to fetch a fresh token from the endpoint.
+   * Discards {@code rejectedToken} if it is still the cached token for these credentials, so the
+   * next {@link #getToken} call fetches a fresh one.
+   * <p>
+   * A newer cached token is left alone: when concurrent requests are all rejected with the same
+   * stale token, the first to get here discards it and fetches a replacement, and the rest must
+   * neither discard that replacement nor give up - they retry with it.
    *
-   * @return true if a token was actually cached and has now been removed. False means the 401
-   *   that prompted this cannot have been caused by a stale cached token, so retrying would just
-   *   repeat the same failure - see {@link IHTTPAuthenticationProvider#invalidateCachedCredentials}.
+   * @return true if {@code rejectedToken} is no longer cached - it was discarded here or already
+   *   replaced - so a retry will use a different token; see
+   *   {@link IHTTPAuthenticationProvider#invalidateCachedCredentials}.
    */
-  public static boolean invalidateToken(OAuthClientCredentialsPOJO credentials) {
-    if (credentials == null || credentials.findProblem() != null) {
+  public static boolean invalidateToken(OAuthClientCredentialsPOJO credentials, String rejectedToken) {
+    if (credentials == null || credentials.findProblem() != null || rejectedToken == null) {
       return false;
     }
-    return cache.remove(getCacheKey(credentials)) != null;
+    String cacheKey = getCacheKey(credentials);
+    CachedToken cached = cache.get(cacheKey);
+    if (cached != null && cached.accessToken.equals(rejectedToken)) {
+      cache.remove(cacheKey, cached);
+    }
+    return true;
   }
 
   /** Discards every cached token - called whenever settings are (re)loaded. */
@@ -175,9 +184,12 @@ public class HTTPTokenManager {
   }
 
   /**
-   * Builds and sends an OAuth 2.0 client_credentials token request.
-   * The client authenticates via form-encoded client_id and client_secret
-   * (RFC 6749 §2.3.1 and §4.4.2).
+   * Builds and sends an OAuth 2.0 client_credentials token request (RFC 6749 §4.4.2).
+   * <p>
+   * The client authenticates with client_id and client_secret in the form body
+   * ({@code client_secret_post}). RFC 6749 §2.3.1 allows this but recommends HTTP Basic
+   * ({@code client_secret_basic}), which is not currently supported: a token endpoint that only
+   * accepts Basic will answer {@code invalid_client}.
    */
   private static CachedToken requestTokenWithClientCredentials(OAuthClientCredentialsPOJO credentials,
                                                                boolean allowPrivateNetwork) throws IOException {
@@ -205,9 +217,9 @@ public class HTTPTokenManager {
   }
 
   /**
-   * The network policy for the token request: exactly the configured token endpoint, over https
-   * only, and on a private network only if the server whose tokens it issues sets
-   * {@code allowPrivateNetwork}.
+   * The network policy for the token request: the configured token endpoint (matched by origin
+   * and path prefix, as for configured servers), over https only, and on a private network only
+   * if the server whose tokens it issues sets {@code allowPrivateNetwork}.
    * <p>
    * Headers are never supplied: the client_credentials grant authenticates in the request body,
    * and delegating to the real authentication provider could route straight back into this class.
@@ -215,7 +227,7 @@ public class HTTPTokenManager {
    * {@link #isProtocolAllowed} and {@link #isPrivateNetworkAllowed} are consulted for it; any
    * other URL gets the default policy.
    */
-  private static final class TokenEndpointPolicy implements IHTTPAuthenticationProvider {
+  static final class TokenEndpointPolicy implements IHTTPAuthenticationProvider {
     private final String tokenEndpoint;
     private final boolean allowPrivateNetwork;
 
@@ -306,10 +318,11 @@ public class HTTPTokenManager {
     }
     String accessToken = accessTokenElement.getAsString();
 
-    int expiresIn;
+    long expiresIn;
     if (json.has("expires_in") && !json.get("expires_in").isJsonNull()) {
       try {
-        expiresIn = json.get("expires_in").getAsInt();
+        // As a long: getAsInt() silently wraps values beyond int range, e.g. 4294967297 to 1
+        expiresIn = json.get("expires_in").getAsLong();
       } catch (RuntimeException e) {
         log.warn("Token endpoint {} returned non-integer expires_in, defaulting to {}s", tokenEndpoint, DEFAULT_EXPIRES_IN);
         expiresIn = DEFAULT_EXPIRES_IN;
@@ -328,7 +341,7 @@ public class HTTPTokenManager {
       expiresIn = MAX_EXPIRES_IN_SECONDS;
     }
 
-    return new CachedToken(accessToken, expiresIn);
+    return new CachedToken(accessToken, (int) expiresIn);
   }
 
   /** Extracts OAuth error/error_description if the body is JSON; never includes the raw body (may contain credentials). */

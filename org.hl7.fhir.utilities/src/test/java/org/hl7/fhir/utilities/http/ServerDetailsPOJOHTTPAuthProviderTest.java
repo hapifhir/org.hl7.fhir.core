@@ -79,17 +79,27 @@ class ServerDetailsPOJOHTTPAuthProviderTest {
   @Test
   void testInvalidateTokenIfClientCredentialsMatchingUrl() throws Exception {
     tokenServer.enqueue(tokenResponse("abc123", 3600));
+    tokenServer.enqueue(tokenResponse("def456", 3600));
 
     ServerDetailsPOJOHTTPAuthProvider provider =
       new ServerDetailsPOJOHTTPAuthProvider(List.of(buildClientCredentialsServer()));
     URL url = new URL("https://fhir.example.org/Patient");
 
-    // A token must actually be cached before there is anything to invalidate
-    provider.getHeaders(url);
+    String rejected = provider.getHeaders(url).get("Authorization");
 
-    assertThat(provider.invalidateCachedCredentials(url)).isTrue();
-    // Second call has nothing left to remove, so a retry would be pointless
-    assertThat(provider.invalidateCachedCredentials(url)).isFalse();
+    assertThat(provider.invalidateCachedCredentials(url, rejected)).isTrue();
+    assertThat(provider.getHeaders(url)).containsEntry("Authorization", "Bearer def456");
+    assertThat(tokenServer.getRequestCount()).isEqualTo(2);
+  }
+
+  @Test
+  void testInvalidateTokenRequiresARejectedBearerToken() throws Exception {
+    ServerDetailsPOJOHTTPAuthProvider provider =
+      new ServerDetailsPOJOHTTPAuthProvider(List.of(buildClientCredentialsServer()));
+    URL url = new URL("https://fhir.example.org/Patient");
+
+    assertThat(provider.invalidateCachedCredentials(url, null)).isFalse();
+    assertThat(provider.invalidateCachedCredentials(url, "Basic abc")).isFalse();
   }
 
   @Test
@@ -97,7 +107,7 @@ class ServerDetailsPOJOHTTPAuthProviderTest {
     ServerDetailsPOJOHTTPAuthProvider provider =
       new ServerDetailsPOJOHTTPAuthProvider(List.of(buildClientCredentialsServer()));
 
-    assertThat(provider.invalidateCachedCredentials(new URL("https://other.example.com/Patient")))
+    assertThat(provider.invalidateCachedCredentials(new URL("https://other.example.com/Patient"), "Bearer abc123"))
       .isFalse();
   }
 }

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -119,7 +120,7 @@ class HTTPTokenManagerTest {
 
     assertThat(getToken(credentials)).isEqualTo("token1");
 
-    HTTPTokenManager.invalidateToken(credentials);
+    HTTPTokenManager.invalidateToken(credentials, "token1");
 
     assertThat(getToken(credentials)).isEqualTo("token2");
     assertThat(tokenServer.getRequestCount()).isEqualTo(2);
@@ -197,6 +198,20 @@ class HTTPTokenManagerTest {
   }
 
   @Test
+  void testExpiresInBeyondIntRangeIsClampedNotWrapped() throws Exception {
+    OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
+
+    // 2^32 + 1 would wrap to 1 if read as an int, and the token would be refetched every call
+    tokenServer.enqueue(tokenResponse("big", 3600).setBody(
+      "{\"access_token\":\"big\",\"token_type\":\"Bearer\",\"expires_in\":4294967297}"));
+
+    assertThat(getToken(credentials)).isEqualTo("big");
+    advanceSeconds(3600);
+    assertThat(getToken(credentials)).isEqualTo("big");
+    assertThat(tokenServer.getRequestCount()).isEqualTo(1);
+  }
+
+  @Test
   void testExpiredTokenTriggersRefetch() throws Exception {
     OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
 
@@ -252,9 +267,41 @@ class HTTPTokenManagerTest {
 
   @Test
   void testPrivateNetworkTokenEndpointRejectedWithoutOptIn() {
-    assertThatThrownBy(() -> HTTPTokenManager.getToken(credentials("myClient", "mySecret"), false))
-      .isInstanceOf(IOException.class);
-    assertThat(tokenServer.getRequestCount()).isZero();
+    // Pinned: other test classes reset this global from the developer's own fhir-settings.json
+    boolean previous = ManagedWebAccess.isSsrfProtectionEnabled();
+    try {
+      ManagedWebAccess.setSsrfProtectionEnabled(true);
+      assertThatThrownBy(() -> HTTPTokenManager.getToken(credentials("myClient", "mySecret"), false))
+        .isInstanceOf(IOException.class)
+        .hasMessageContaining("non-public address");
+      assertThat(tokenServer.getRequestCount()).isZero();
+    } finally {
+      ManagedWebAccess.setSsrfProtectionEnabled(previous);
+    }
+  }
+
+  @Test
+  void testTokenEndpointPolicyOnlyTrustsTheConfiguredEndpoint() throws Exception {
+    HTTPTokenManager.TokenEndpointPolicy policy =
+      new HTTPTokenManager.TokenEndpointPolicy("https://auth.example.org/oauth/token", true);
+
+    URL tokenEndpoint = new URL("https://auth.example.org/oauth/token");
+    assertThat(policy.canProvideHeaders(tokenEndpoint)).isTrue();
+    assertThat(policy.isProtocolAllowed(tokenEndpoint)).isTrue();
+    assertThat(policy.isPrivateNetworkAllowed(tokenEndpoint)).isTrue();
+    assertThat(policy.getHeaders(tokenEndpoint)).isEmpty();
+
+    // Anywhere else falls through to the default policy: none of the server's grants apply
+    for (String other : new String[]{
+      "https://elsewhere.example.org/oauth/token",
+      "http://auth.example.org/oauth/token",
+      "https://auth.example.org:8443/oauth/token",
+      "https://auth.example.org/other"}) {
+      URL url = new URL(other);
+      assertThat(policy.canProvideHeaders(url)).as(other).isFalse();
+      assertThat(policy.isProtocolAllowed(url)).as(other).isFalse();
+      assertThat(policy.isPrivateNetworkAllowed(url)).as(other).isFalse();
+    }
   }
 
   @Test
@@ -295,27 +342,50 @@ class HTTPTokenManagerTest {
       .isInstanceOf(IOException.class)
       .hasMessageContaining("missing");
 
+    // A malformed endpoint must be an IOException too, not an IllegalArgumentException
+    // escaping getHeaders() past every IOException handler
+    OAuthClientCredentialsPOJO malformed = credentials("myClient", "mySecret").toBuilder()
+      .tokenEndpoint("https://auth.example.org/oauth token").build();
+    assertThatThrownBy(() -> getToken(malformed))
+      .isInstanceOf(IOException.class)
+      .hasMessageContaining("malformed tokenEndpoint");
+
     assertThat(tokenServer.getRequestCount()).isZero();
   }
 
   @Test
-  void testInvalidateTokenReportsWhetherAnythingWasCached() throws Exception {
+  void testInvalidateTokenLeavesANewerTokenInPlace() throws Exception {
+    // Two concurrent requests are both rejected with token1. The first invalidates it and
+    // fetches token2; the second must then retry with token2 - not discard it and fetch a third,
+    // and not give up because token1 is already gone.
     OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
+    tokenServer.enqueue(tokenResponse("token1", 3600));
+    tokenServer.enqueue(tokenResponse("token2", 3600));
 
-    // Nothing cached yet - a retry would be pointless, so this must say so
-    assertThat(HTTPTokenManager.invalidateToken(credentials)).isFalse();
+    assertThat(getToken(credentials)).isEqualTo("token1");
 
-    tokenServer.enqueue(tokenResponse("abc123", 3600));
-    getToken(credentials);
+    // First request
+    assertThat(HTTPTokenManager.invalidateToken(credentials, "token1")).isTrue();
+    assertThat(getToken(credentials)).isEqualTo("token2");
 
-    assertThat(HTTPTokenManager.invalidateToken(credentials)).isTrue();
-    assertThat(HTTPTokenManager.invalidateToken(credentials)).isFalse();
+    // Second request, rejected with the same stale token
+    assertThat(HTTPTokenManager.invalidateToken(credentials, "token1")).isTrue();
+    assertThat(getToken(credentials)).isEqualTo("token2");
+    assertThat(tokenServer.getRequestCount()).isEqualTo(2);
   }
 
   @Test
-  void testInvalidateTokenWithIncompleteCredentialsReportsNothingCached() {
-    assertThat(HTTPTokenManager.invalidateToken(null)).isFalse();
-    assertThat(HTTPTokenManager.invalidateToken(credentials("myClient", null))).isFalse();
+  void testInvalidateTokenWhenAlreadyDiscardedStillAllowsRetry() {
+    // A concurrent request has discarded the token but not yet fetched a replacement: the
+    // rejected token is no longer cached, so a retry will not reuse it.
+    assertThat(HTTPTokenManager.invalidateToken(credentials("myClient", "mySecret"), "token1")).isTrue();
+  }
+
+  @Test
+  void testInvalidateTokenWithoutARejectedTokenOrCompleteCredentials() {
+    assertThat(HTTPTokenManager.invalidateToken(credentials("myClient", "mySecret"), null)).isFalse();
+    assertThat(HTTPTokenManager.invalidateToken(null, "token1")).isFalse();
+    assertThat(HTTPTokenManager.invalidateToken(credentials("myClient", null), "token1")).isFalse();
   }
 
   @Test

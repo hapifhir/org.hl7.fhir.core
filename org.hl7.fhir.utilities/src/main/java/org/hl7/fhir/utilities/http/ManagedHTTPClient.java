@@ -18,8 +18,8 @@ import org.hl7.fhir.utilities.http.okhttpimpl.RetryInterceptor;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import lombok.Builder;
-import lombok.extern.slf4j.Slf4j;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Dns;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -96,6 +96,14 @@ public class ManagedHTTPClient {
   @Getter
   private final boolean followRedirects;
 
+  /**
+   * Whether OkHttp may transparently re-send a request after a connection failure (a stale
+   * pooled connection, or another route to the same host). This happens below
+   * {@link RetryInterceptor}, so a request that must be sent at most once needs it off too.
+   */
+  @Getter
+  private final boolean retryOnConnectionFailure;
+
   @Getter
   private final ToolingClientLogger logger;
 
@@ -145,6 +153,7 @@ public class ManagedHTTPClient {
                             IHTTPAuthenticationProvider authProvider,
                             Boolean ssrfProtectionEnabled,
                             Boolean followRedirects,
+                            Boolean retryOnConnectionFailure,
                             ToolingClientLogger logger) {
     this.timeout = timeout != null ? timeout : DEFAULT_TIMEOUT;
     this.timeoutUnit = timeoutUnit != null ? timeoutUnit : DEFAULT_TIMEOUT_UNIT;
@@ -154,6 +163,7 @@ public class ManagedHTTPClient {
     // Boxed so an unset builder value (null) defaults to true, rather than the primitive default of false.
     this.ssrfProtectionEnabled = ssrfProtectionEnabled == null || ssrfProtectionEnabled;
     this.followRedirects = followRedirects == null || followRedirects;
+    this.retryOnConnectionFailure = retryOnConnectionFailure == null || retryOnConnectionFailure;
     this.logger = logger;
     this.baseClient = buildBaseClient();
     this.nonPublicAddressRejectingClient = buildNonPublicAddressRejectingClient(this.baseClient);
@@ -179,7 +189,8 @@ public class ManagedHTTPClient {
       .addInterceptor(new RetryInterceptor(retries))
       .connectTimeout(timeout, timeoutUnit)
       .writeTimeout(timeout, timeoutUnit)
-      .readTimeout(timeout, timeoutUnit);
+      .readTimeout(timeout, timeoutUnit)
+      .retryOnConnectionFailure(retryOnConnectionFailure);
     SSLSocketFactory sslSocketFactory = testSslSocketFactory;
     X509TrustManager trustManager = testTrustManager;
     if (sslSocketFactory != null && trustManager != null) {
@@ -324,7 +335,7 @@ public class ManagedHTTPClient {
             // whereas 403 insufficient_scope means the token was valid but not permitted - a
             // fresh token for the same client would be refused the same way (RFC 6750 §3.1).
             if (credentialsRefreshed || !authCanHandle || !authProvider.canRefreshCredentials(url)
-                || !authProvider.invalidateCachedCredentials(url)) {
+                || !authProvider.invalidateCachedCredentials(url, request.header("Authorization"))) {
               return toResult(uri, response);
             }
             // Scheme, host and path only: the query string can carry codes or API keys, and

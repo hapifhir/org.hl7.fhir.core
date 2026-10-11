@@ -1,5 +1,8 @@
 package org.hl7.fhir.utilities.settings;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -48,6 +51,11 @@ public class OAuthClientCredentialsPOJO {
     }
     if (!StringUtils.startsWithIgnoreCase(tokenEndpoint, "https://")) {
       return "has a tokenEndpoint that does not use https";
+    }
+    try {
+      URI.create(tokenEndpoint).toURL();
+    } catch (IllegalArgumentException | MalformedURLException e) {
+      return "has a malformed tokenEndpoint";
     }
     return null;
   }

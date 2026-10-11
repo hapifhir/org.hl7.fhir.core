@@ -52,6 +52,9 @@ public class ManagedWebAccessUtils {
    * take down all authenticated web access rather than just failing to match that entry.
    */
   public static boolean urlMatchesOrigin(String requestUrlString, String serverUrlString) {
+    if (requestUrlString == null || serverUrlString == null) {
+      return false;
+    }
     try {
       URL requestUrl = URI.create(requestUrlString).toURL();
       URL serverUrl = URI.create(serverUrlString).toURL();

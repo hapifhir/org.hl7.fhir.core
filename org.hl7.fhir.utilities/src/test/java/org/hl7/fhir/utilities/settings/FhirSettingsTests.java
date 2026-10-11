@@ -108,7 +108,7 @@ class FhirSettingsTests implements ResourceLoaderTests {
   }
 
   @Test
-  public void testParseClientCredentialsSettings() throws IOException {
+  void testParseClientCredentialsSettings() throws IOException {
     Path path = Files.createTempFile("fhir-settings-cc", "json").toAbsolutePath();
     copyResourceToFile(path, "settings", "settings-client-credentials.json");
 
@@ -137,7 +137,7 @@ class FhirSettingsTests implements ResourceLoaderTests {
     "settings-client-credentials-missing-object.json, oauthClientCredentials",
     "settings-client-credentials-http-token-endpoint.json, https"
   })
-  public void testClientCredentialsProblemIsReportedButEntryKept(String resourceFile, String problem)
+  void testClientCredentialsProblemIsReportedButEntryKept(String resourceFile, String problem)
       throws IOException {
     Path path = Files.createTempFile("fhir-settings-cc-bad", "json").toAbsolutePath();
     copyResourceToFile(path, "settings", resourceFile);
@@ -157,7 +157,7 @@ class FhirSettingsTests implements ResourceLoaderTests {
   }
 
   @Test
-  public void testInvalidClientCredentialsEntryDoesNotDiscardTheRestOfTheSettings() throws IOException {
+  void testInvalidClientCredentialsEntryDoesNotDiscardTheRestOfTheSettings() throws IOException {
     Path path = Files.createTempFile("fhir-settings-cc-mixed", "json").toAbsolutePath();
     copyResourceToFile(path, "settings", "settings-client-credentials-invalid-among-valid.json");
 

@@ -99,7 +99,10 @@ class ManagedWebAccessUtilsTests {
       Arguments.of(List.of(exampleOrg), "https://packages.fhir.org", null),
 
       // Server list combinations - empty list
-      Arguments.of(List.of(), "https://packages.fhir.org", null)
+      Arguments.of(List.of(), "https://packages.fhir.org", null),
+
+      // An entry with no url is skipped rather than failing every lookup
+      Arguments.of(List.of(getServerDetailsPOJO(null), fhirOrg), "https://packages.fhir.org", fhirOrg)
     );
   }
 
