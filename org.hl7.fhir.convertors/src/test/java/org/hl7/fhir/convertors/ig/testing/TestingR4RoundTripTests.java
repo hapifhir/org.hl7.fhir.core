@@ -62,7 +62,7 @@ public class TestingR4RoundTripTests {
     List<Arguments> objects = new ArrayList<>();
     for (String pid : PACKAGES) {
       NpmPackage npm = getPackage(pid);
-      for (String fn : npm.list("example")) {
+      for (String fn : npm.listExamples()) {
         if (fn.endsWith(".json") && fn.contains("-")) {
           String rt = fn.substring(0, fn.indexOf("-"));
           if (Utilities.existsInList(rt, RESOURCE_TYPES)) {
@@ -78,7 +78,7 @@ public class TestingR4RoundTripTests {
   @MethodSource("data")
   public void testRoundTrip(String name, String pid, String filename) throws IOException {
     Assumptions.assumeFalse(SUPPRESSED.containsKey(filename), () -> "suppressed: " + SUPPRESSED.get(filename));
-    byte[] source = FileUtilities.streamToBytes(getPackage(pid).load("example", filename));
+    byte[] source = FileUtilities.streamToBytes(getPackage(pid).loadExample(filename));
 
     Resource r1 = new TestingJsonParser(true, true).parse(source);
     Resource r2 = convertToR4AndBack(r1);
