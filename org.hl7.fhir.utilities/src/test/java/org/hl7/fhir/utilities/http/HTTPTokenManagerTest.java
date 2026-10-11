@@ -7,13 +7,21 @@ import org.hl7.fhir.utilities.settings.OAuthClientCredentialsPOJO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -140,6 +148,22 @@ class HTTPTokenManagerTest {
   }
 
   @Test
+  void testNonJsonErrorBodyIsNotEchoed() {
+    String body = "<html>upstream error for client_secret=mySecret</html>";
+    tokenServer.enqueue(new MockResponse()
+      .setBody(body)
+      .addHeader("Content-Type", "text/html")
+      .setResponseCode(500));
+
+    assertThatThrownBy(() -> getToken(credentials("myClient", "mySecret")))
+      .isInstanceOf(IOException.class)
+      .hasMessageContaining("returned HTTP 500")
+      .hasMessageContaining("(response body suppressed)")
+      .hasMessageNotContaining("mySecret")
+      .hasMessageNotContaining("upstream error");
+  }
+
+  @Test
   void testMissingAccessTokenThrowsIOException() {
     tokenServer.enqueue(new MockResponse()
       .setBody("{\"token_type\":\"Bearer\",\"expires_in\":3600}")
@@ -195,6 +219,52 @@ class HTTPTokenManagerTest {
     advanceSeconds(HTTPTokenManager.MAX_EXPIRES_IN_SECONDS);
     assertThat(getToken(credentials)).isEqualTo("replacement");
     assertThat(tokenServer.getRequestCount()).isEqualTo(2);
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"\"abc\"", "0", "-5", "{}"})
+  void testUnusableExpiresInDefaultsTo3600(String expiresIn) throws Exception {
+    OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
+
+    tokenServer.enqueue(new MockResponse()
+      .setBody("{\"access_token\":\"abc123\",\"token_type\":\"Bearer\",\"expires_in\":" + expiresIn + "}")
+      .addHeader("Content-Type", "application/json")
+      .setResponseCode(200));
+    tokenServer.enqueue(tokenResponse("def456", 3600));
+
+    assertThat(getToken(credentials)).isEqualTo("abc123");
+    advanceSeconds(3569);
+    assertThat(getToken(credentials)).isEqualTo("abc123");
+    advanceSeconds(2);
+    assertThat(getToken(credentials)).isEqualTo("def456");
+  }
+
+  @Test
+  void testConcurrentCallersShareOneTokenFetch() throws Exception {
+    // The response is delayed so that every caller is waiting while the first fetch is in flight
+    tokenServer.enqueue(tokenResponse("shared", 3600).setHeadersDelay(500, TimeUnit.MILLISECONDS));
+    tokenServer.enqueue(tokenResponse("second-fetch", 3600));
+
+    OAuthClientCredentialsPOJO credentials = credentials("myClient", "mySecret");
+    int callers = 4;
+    ExecutorService executor = Executors.newFixedThreadPool(callers);
+    try {
+      CountDownLatch start = new CountDownLatch(1);
+      List<Future<String>> results = new ArrayList<>();
+      for (int i = 0; i < callers; i++) {
+        results.add(executor.submit(() -> {
+          start.await();
+          return getToken(credentials);
+        }));
+      }
+      start.countDown();
+      for (Future<String> result : results) {
+        assertThat(result.get(10, TimeUnit.SECONDS)).isEqualTo("shared");
+      }
+    } finally {
+      executor.shutdownNow();
+    }
+    assertThat(tokenServer.getRequestCount()).isEqualTo(1);
   }
 
   @Test

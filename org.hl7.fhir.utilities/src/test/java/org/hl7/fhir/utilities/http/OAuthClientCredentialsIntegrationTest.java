@@ -13,15 +13,26 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
+import org.mockito.ArgumentCaptor;
+import org.mockito.MockedStatic;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hl7.fhir.utilities.http.OAuthTestSupport.tokenResponse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 /**
  * End-to-end integration tests for the OAuth client_credentials flow.
@@ -357,6 +368,77 @@ class OAuthClientCredentialsIntegrationTest {
     assertThat(fhirServer.getRequestCount())
       .as("a misconfigured server must not be sent an unauthenticated request")
       .isZero();
+  }
+
+  // -----------------------------------------------------------------------
+  // Test 8: MANAGED access policy
+  //
+  // Under MANAGED every request - the token request included, client secret and all - is handed
+  // to the host application's IWebAccessor, which is responsible for enforcing policy on it. The
+  // https requirement on the token endpoint is checked before the hand-off.
+  // -----------------------------------------------------------------------
+  @Test
+  void testManagedPolicyHandsTokenRequestAndBearerTokenToHostAccessor() throws Exception {
+    ServerDetailsPOJO server = buildServer();
+    String tokenEndpoint = server.getOauthClientCredentials().getTokenEndpoint();
+    String resourceUrl = fhirServer.url("/Patient").toString();
+
+    ManagedWebAccess.IWebAccessor hostAccessor = mock(ManagedWebAccess.IWebAccessor.class);
+    when(hostAccessor.post(any(), eq(tokenEndpoint), any(), any(), any(), any()))
+      .thenReturn(new HTTPResult(tokenEndpoint, 200, "OK", "application/json",
+        "{\"access_token\":\"managed-token\",\"expires_in\":3600}".getBytes(StandardCharsets.UTF_8)));
+    when(hostAccessor.get(any(), eq(resourceUrl), any(), any()))
+      .thenReturn(new HTTPResult(resourceUrl, 200, "OK", "text/plain", "OK".getBytes(StandardCharsets.UTF_8)));
+
+    ManagedWebAccess.setAccessPolicy(ManagedWebAccess.WebAccessPolicy.MANAGED);
+    try (MockedStatic<ManagedWebAccess> mocked = mockStatic(ManagedWebAccess.class, CALLS_REAL_METHODS)) {
+      mocked.when(ManagedWebAccess::getAccessor).thenReturn(hostAccessor);
+
+      ManagedWebAccessor accessor = new ManagedWebAccessor(List.of("fhir"), "test-agent",
+        new ServerDetailsPOJOHTTPAuthProvider(List.of(server)));
+      assertThat(accessor.get(resourceUrl, "application/json").getCode()).isEqualTo(200);
+    } finally {
+      ManagedWebAccess.setAccessPolicy(ManagedWebAccess.WebAccessPolicy.DIRECT);
+    }
+
+    ArgumentCaptor<byte[]> tokenBody = ArgumentCaptor.forClass(byte[].class);
+    verify(hostAccessor).post(any(), eq(tokenEndpoint), tokenBody.capture(),
+      eq("application/x-www-form-urlencoded"), eq("application/json"), any());
+    assertThat(new String(tokenBody.getValue(), StandardCharsets.UTF_8))
+      .contains("grant_type=client_credentials")
+      .contains("client_secret=test-secret");
+
+    @SuppressWarnings("unchecked")
+    ArgumentCaptor<Map<String, String>> resourceHeaders = ArgumentCaptor.forClass(Map.class);
+    verify(hostAccessor).get(any(), eq(resourceUrl), eq("application/json"), resourceHeaders.capture());
+    assertThat(resourceHeaders.getValue()).containsEntry("Authorization", "Bearer managed-token");
+
+    // Nothing went out directly
+    assertThat(tokenServer.getRequestCount()).isZero();
+    assertThat(fhirServer.getRequestCount()).isZero();
+  }
+
+  @Test
+  void testManagedPolicyStillRejectsCleartextTokenEndpointBeforeHandOff() throws Exception {
+    MockWebServer plainHttpTokenServer = new MockWebServer();
+    plainHttpTokenServer.start();
+    ManagedWebAccess.IWebAccessor hostAccessor = mock(ManagedWebAccess.IWebAccessor.class);
+    ManagedWebAccess.setAccessPolicy(ManagedWebAccess.WebAccessPolicy.MANAGED);
+    try (MockedStatic<ManagedWebAccess> mocked = mockStatic(ManagedWebAccess.class, CALLS_REAL_METHODS)) {
+      mocked.when(ManagedWebAccess::getAccessor).thenReturn(hostAccessor);
+      ServerDetailsPOJO server = OAuthTestSupport.clientCredentialsServer(
+        fhirServer.url("").toString(), plainHttpTokenServer, "test-client", "test-secret");
+      ManagedWebAccessor accessor = new ManagedWebAccessor(List.of("fhir"), "test-agent",
+        new ServerDetailsPOJOHTTPAuthProvider(List.of(server)));
+
+      IOException ex = assertThrows(IOException.class,
+        () -> accessor.get(fhirServer.url("/Patient").toString(), "application/json"));
+      assertThat(ex.getMessage()).contains("https");
+    } finally {
+      ManagedWebAccess.setAccessPolicy(ManagedWebAccess.WebAccessPolicy.DIRECT);
+      plainHttpTokenServer.shutdown();
+    }
+    verifyNoInteractions(hostAccessor);
   }
 
   // =======================================================================
