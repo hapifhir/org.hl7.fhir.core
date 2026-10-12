@@ -272,6 +272,11 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_MKDWN_LNK = "DATA_REND_MKDWN_LNK";
   public static final String DATA_REND_NOT_STAT = "DATA_REND_NOT_STAT";
   public static final String DATA_REND_NO_DISP = "DATA_REND_NO_DISP";
+  public static final String DATA_REND_NO_VALUE = "DATA_REND_NO_VALUE";
+  public static final String DATA_REND_ABSENT_BECAUSE = "DATA_REND_ABSENT_BECAUSE";
+  public static final String DATA_REND_NULL_BECAUSE = "DATA_REND_NULL_BECAUSE";
+  public static final String DATA_REND_EXT_TEXT = "DATA_REND_EXT_TEXT";
+  public static final String DATA_REND_CALC_BY = "DATA_REND_CALC_BY";
   public static final String DATA_REND_ONCE = "DATA_REND_ONCE";
   public static final String DATA_REND_ONGOING = "DATA_REND_ONGOING";
   public static final String DATA_REND_ORIGIN = "DATA_REND_ORIGIN";
@@ -915,6 +920,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_FII = "STRUC_DEF_FII";
   public static final String STRUC_DEF_FIXED = "STRUC_DEF_FIXED";
   public static final String STRUC_DEF_FIXED_VALUE = "STRUC_DEF_FIXED_VALUE";
+  public static final String STRUC_DEF_FIXED_ABSENT = "STRUC_DEF_FIXED_ABSENT";
   public static final String STRUC_DEF_FOR_CODE = "STRUC_DEF_FOR_CODE";
   public static final String STRUC_DEF_FURTHER_INFO = "STRUC_DEF_FURTHER_INFO";
   public static final String STRUC_DEF_GRADE = "STRUC_DEF_GRADE";
