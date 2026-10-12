@@ -33,9 +33,13 @@ import java.util.Set;
  *  - Version Comparison
  *
  * The class SimpleWorkerContext provides a fully functional implementation
- * that is thread safe and tied to the use of a local filesystem based
- * package management context. The primary reason to not use the SimpleWorkerContext
- * class is to store resources and packages somewhere other than the local filesystem
+ * that is tied to the use of a local filesystem based package management context.
+ * The primary reason to not use the SimpleWorkerContext class is to store resources
+ * and packages somewhere other than the local filesystem
+ *
+ * SimpleWorkerContext (org.hl7.fhir.standalone) is NOT thread safe, and is not meant
+ * to be: it assumes a single thread, and loads and derives things lazily on first use.
+ * See "Thread Safety" in the README for the threading contract of the R6 modules.
  *
  * If you provide your own implementation, you need to handle packages properly in
  * order to get correct version resolution
