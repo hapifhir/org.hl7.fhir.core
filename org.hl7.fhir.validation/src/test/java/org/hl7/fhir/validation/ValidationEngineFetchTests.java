@@ -19,11 +19,14 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.CodeSystem;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.model.core.VersionResolutionRules;
 import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
@@ -31,6 +34,7 @@ import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.Manager;
 import org.hl7.fhir.services.elementmodel.ObjectConverter;
+import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -158,6 +162,100 @@ class ValidationEngineFetchTests {
     return codeSystem.getChildrenByName("concept").stream()
       .map(concept -> concept.getChildrenByName("code").get(0).primitiveValue())
       .toList();
+  }
+
+  /**
+   * Only the last used resources are kept, and none with a size of 0
+   */
+  @Test
+  void testTheCacheIsLimited() throws Exception {
+    ValidationEngine limited = new ValidationEngine(engine);
+    assertEquals(ValidationEngine.DEFAULT_FETCH_CACHE_SIZE, limited.getFetchCacheSize());
+    assertTrue(limited.getFetchCacheUrls().isEmpty(), "a copy of an engine doesn't share the converted resources");
+
+    String third = "http://example.org/fhir/CodeSystem/fetch-test-third";
+    limited.getContext().cacheResource(codeSystem(third, 2));
+    limited.setFetchCacheSize(2);
+    String expected = compose(limited.fetch(null, null, URL));
+    limited.fetch(null, null, TEST_URL);
+    limited.fetch(null, null, URL);
+    assertEquals(List.of(TEST_URL, URL), limited.getFetchCacheUrls());
+    limited.fetch(null, null, third);
+    assertEquals(List.of(URL, third), limited.getFetchCacheUrls());
+
+    limited.setFetchCacheSize(1);
+    assertEquals(List.of(third), limited.getFetchCacheUrls());
+
+    limited.setFetchCacheSize(0);
+    assertTrue(limited.getFetchCacheUrls().isEmpty());
+    assertEquals(expected, compose(limited.fetch(null, null, URL)));
+    assertTrue(limited.getFetchCacheUrls().isEmpty());
+
+    limited.setFetchCacheSize(2);
+    limited.fetch(null, null, URL);
+    limited.clearFetchCache();
+    assertTrue(limited.getFetchCacheUrls().isEmpty());
+  }
+
+  /**
+   * A resource that is replaced in the context is a new instance, and is converted again
+   */
+  @Test
+  void testAReplacedResourceIsConvertedAgain() throws Exception {
+    ValidationEngine replacing = new ValidationEngine(engine);
+    String url = "http://example.org/fhir/CodeSystem/fetch-test-replaced";
+    replacing.getContext().cacheResource(codeSystem(url, 3));
+    assertEquals(3, replacing.fetch(null, null, url).getChildrenByName("concept").size());
+
+    replacing.getContext().cacheResource(codeSystem(url, 5));
+    assertEquals(5, replacing.fetch(null, null, url).getChildrenByName("concept").size());
+  }
+
+  /**
+   * A FHIRPath expression that resolves the same URL several times fetches it once per validation 
+   * (ValidatorHostServices.resolveReference uses the fetch cache of the validation)
+   */
+  @Test
+  void testAValidationFetchesAUrlOnce() throws Exception {
+    AtomicInteger fetches = new AtomicInteger();
+    ValidationEngine counting = new ValidationEngine(engine) {
+      @Override
+      public Element fetch(IResourceValidator validator, Object appContext, String url) throws IOException {
+        if (TEST_URL.equals(url)) {
+          fetches.incrementAndGet();
+        }
+        return super.fetch(validator, appContext, url);
+      }
+    };
+    String resolve = "'" + TEST_URL + "'.resolve()";
+    String profileUrl = "http://example.org/fhir/StructureDefinition/fetch-test-patient";
+    String profile = "{\"resourceType\":\"StructureDefinition\",\"url\":\"" + profileUrl + "\",\"name\":\"FetchTestPatient\","
+      + "\"status\":\"active\",\"fhirVersion\":\"5.0.0\",\"kind\":\"resource\",\"abstract\":false,\"type\":\"Patient\","
+      + "\"baseDefinition\":\"http://hl7.org/fhir/StructureDefinition/Patient\",\"derivation\":\"constraint\","
+      + "\"differential\":{\"element\":[{\"id\":\"Patient\",\"path\":\"Patient\",\"constraint\":["
+      + "{\"key\":\"fct-1\",\"severity\":\"error\",\"human\":\"resolves\",\"expression\":\"" + resolve + ".concept.count() = " + TEST_CONCEPTS
+      + " and " + resolve + ".concept.where(code = 'c3').exists()\"},"
+      + "{\"key\":\"fct-2\",\"severity\":\"error\",\"human\":\"fails\",\"expression\":\"" + resolve + ".concept.count() = 99\"}]}]}}";
+    byte[] snapshot = counting.generateSnapshot(profile.getBytes(StandardCharsets.UTF_8), FhirFormat.JSON);
+    counting.getContext().cacheResource(new JsonParser(counting.getContext().getModelContext()).parse(new ByteArrayInputStream(snapshot)));
+
+    for (int validation = 1; validation <= 2; validation++) {
+      OperationOutcome outcome = counting.validate(FhirFormat.JSON,
+        new ByteArrayInputStream("{\"resourceType\":\"Patient\"}".getBytes(StandardCharsets.UTF_8)), List.of(profileUrl));
+      List<String> errors = outcome.getIssueList().stream()
+        .filter(issue -> issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR)
+        .map(issue -> issue.getDetails().getText())
+        .toList();
+      assertEquals(1, errors.size(), () -> "errors: " + errors);
+      assertTrue(errors.get(0).contains("fct-2"), errors.get(0));
+      assertEquals(validation, fetches.get(), "three resolve() of the same URL, one fetch per validation");
+    }
+  }
+
+  private static Resource codeSystem(String url, int concepts) throws IOException {
+    String json = "{\"resourceType\":\"CodeSystem\",\"url\":\"" + url + "\",\"status\":\"active\",\"content\":\"complete\",\"concept\":["
+      + IntStream.range(0, concepts).mapToObj(i -> "{\"code\":\"c" + i + "\"}").collect(Collectors.joining(",")) + "]}";
+    return new JsonParser(engine.getContext().getModelContext()).parse(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)));
   }
 
   @Test
