@@ -134,12 +134,31 @@ public abstract class Base implements Serializable, IBase, IElement {
    * setModelContext cascades are meant to maintain
    */
   public void assertModelContext() throws FHIRException {
-    assertModelContext(fhirType(), modelContext);
+    assertModelContext(fhirType(), modelContext, true);
   }
 
   /** as assertModelContext(), but also requires that the tree's context IS the given one */
   public void assertModelContext(IModelContext expected) throws FHIRException {
-    assertModelContext(fhirType(), expected);
+    assertModelContext(fhirType(), expected, true);
+  }
+
+  /**
+   * Whether every node in the tree (this one included) carries the given context, or one 
+   * compatible with it. Unlike assertModelContext(), this has no side effects: a node with no 
+   * context is a mismatch, not adopted. Walks the whole tree, see assertModelContext()
+   */
+  public boolean hasConsistentModelContext(IModelContext expected) {
+    return findModelContextMismatch(expected) == null;
+  }
+
+  /** the message for the first node that doesn't carry the given context, or null. No side effects */
+  private String findModelContextMismatch(IModelContext expected) {
+    try {
+      assertModelContext(fhirType(), expected, false);
+      return null;
+    } catch (FHIRException e) {
+      return e.getMessage();
+    }
   }
 
   /**
@@ -148,7 +167,8 @@ public abstract class Base implements Serializable, IBase, IElement {
    * an instance with an incompatible context is rejected. The tree below is kept consistent with its
    * root by the constructors, setters, BaseList and the setModelContext cascades; walking it on every
    * compose (assertModelContext) costs a listChildren() and a Property for each node, as much as
-   * composing the tree itself
+   * composing the tree itself. So that invariant is checked with an assert (hasConsistentModelContext): 
+   * it costs nothing in production, but runs in the test suites
    */
   public void checkModelContext(IModelContext expected) throws FHIRException {
     if (expected == null) {
@@ -159,13 +179,21 @@ public abstract class Base implements Serializable, IBase, IElement {
     } else if (this.modelContext != expected && !this.modelContext.isCompatibleModelContext(expected)) {
       throw new FHIRException("Model context mismatch at "+fhirType()+": expected "+describeContext(expected)+" but found "+describeContext(this.modelContext));
     }
+    assert hasConsistentModelContext(expected) : findModelContextMismatch(expected);
   }
 
-  private void assertModelContext(String path, IModelContext expected) {
+  /**
+   * @param adopt whether a node without a context adopts the expected one (assertModelContext), or is 
+   *   a mismatch (hasConsistentModelContext, which must not have side effects)
+   */
+  private void assertModelContext(String path, IModelContext expected, boolean adopt) {
     if (expected == null) {
       return;
     }
     if (this.modelContext == null) {
+      if (!adopt) {
+        throw new FHIRException("Model context mismatch at "+path+": expected "+describeContext(expected)+" but found "+describeContext(null));
+      }
       this.modelContext = expected;
     } else if (this.modelContext != expected && !this.modelContext.isCompatibleModelContext(expected)) {
       throw new FHIRException("Model context mismatch at "+path+": expected "+describeContext(expected)+" but found "+describeContext(this.modelContext));
@@ -176,7 +204,7 @@ public abstract class Base implements Serializable, IBase, IElement {
       int i = 0;
       for (Base b : c.getValues()) {
         if (b != null) {
-          b.assertModelContext(path+"."+c.getName()+(c.isList() ? "["+i+"]" : ""), expected);
+          b.assertModelContext(path+"."+c.getName()+(c.isList() ? "["+i+"]" : ""), expected, adopt);
         }
         i++;
       }

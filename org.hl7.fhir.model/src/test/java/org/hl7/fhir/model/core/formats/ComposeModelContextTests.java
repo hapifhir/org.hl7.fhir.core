@@ -49,6 +49,36 @@ class ComposeModelContextTests {
     Assertions.assertThrows(FHIRException.class, () -> new XmlParser(ModelContext.minimalContext()).composeString(patient));
   }
 
+  @Test
+  void testHasConsistentModelContextHasNoSideEffects() throws IOException {
+    Resource patient = parse(PATIENT);
+    Assertions.assertTrue(patient.hasConsistentModelContext(ModelContext.minimalContext()));
+    Assertions.assertFalse(patient.hasConsistentModelContext(ModelContext.fullCoreContext()));
+
+    // a subtree that lost its context, e.g. one that was built elsewhere and attached without the cascade
+    ((Patient) patient).getNameFirstRep().changeModelContext(null);
+    Assertions.assertFalse(patient.hasConsistentModelContext(ModelContext.minimalContext()));
+    Assertions.assertNull(((Patient) patient).getNameFirstRep().getModelContext(), "the check must not adopt the context");
+
+    // assertModelContext() does adopt it
+    patient.assertModelContext(ModelContext.minimalContext());
+    Assertions.assertTrue(patient.hasConsistentModelContext(ModelContext.minimalContext()));
+  }
+
+  @Test
+  void testComposeAssertsTheConsistencyOfTheTree() throws IOException {
+    Resource patient = parse(PATIENT);
+    ((Patient) patient).getNameFirstRep().getGivenList().get(0).changeModelContext(null);
+    boolean assertionsEnabled = false;
+    assert assertionsEnabled = true;
+    if (assertionsEnabled) {
+      AssertionError e = Assertions.assertThrows(AssertionError.class, () -> new JsonParser(ModelContext.minimalContext()).composeString(patient));
+      Assertions.assertTrue(e.getMessage().contains("Patient.name[0].given[0]"), e.getMessage());
+    } else {
+      Assertions.assertEquals(PATIENT, new JsonParser(ModelContext.minimalContext()).composeString(patient));
+    }
+  }
+
   private static Resource parse(String json) throws IOException {
     return new JsonParser(ModelContext.minimalContext()).parse(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)));
   }
