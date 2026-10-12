@@ -39,10 +39,13 @@ import org.apache.commons.lang3.StringUtils;
  *   "clientAuthMethod" : "private_key_jwt",
  *   "privateKeyFile" : "/path/to/key.pem",
  *   "keyId" : "...",
+ *   "scope" : "system/*.rs",
  *   "tokenEndpoint" : "https://..."
  * }
  * </pre></li>
  * </ul>
+ * {@code scope}, if set, is sent with the token request (RFC 6749 §4.4.2) with either method. SMART
+ * Backend Services requires it, with {@code system/} scopes such as {@code system/*.rs}.
  * The token endpoint must use https: the client authenticates to it in the request body, and
  * RFC 6749 §2.3.1 and §3.2 require TLS for client authentication at the token endpoint.
  */
@@ -72,6 +75,9 @@ public class OAuthClientCredentialsPOJO {
   String keyId;
 
   String signingAlgorithm;
+
+  /** Space-separated scopes to request; none are requested if not set. */
+  String scope;
 
   String tokenEndpoint;
 

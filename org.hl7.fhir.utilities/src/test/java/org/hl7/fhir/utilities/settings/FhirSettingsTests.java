@@ -141,6 +141,7 @@ class FhirSettingsTests implements ResourceLoaderTests {
     assertEquals("/keys/client.pem", credentials.getPrivateKeyFile());
     assertEquals("my-key", credentials.getKeyId());
     assertEquals("ES384", credentials.getSigningAlgorithm());
+    assertEquals("system/*.rs", credentials.getScope());
     assertEquals("https://auth.example.org/token", credentials.getTokenEndpoint());
     assertNull(credentials.getClientSecret());
     assertNull(FhirSettings.findClientCredentialsProblem(server));

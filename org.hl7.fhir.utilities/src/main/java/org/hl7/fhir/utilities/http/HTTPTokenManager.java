@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.LongSupplier;
@@ -18,6 +19,7 @@ import com.google.gson.JsonParser;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.settings.OAuthClientCredentialsPOJO;
@@ -170,12 +172,13 @@ public class HTTPTokenManager {
    * it includes the key file, key id and algorithm instead: a key replaced in the same file is
    * picked up when the cached token expires.
    * <p>
-   * Assumes these fields fully identify the issued token. If scope/audience are ever added to the
-   * token request, they MUST be folded into this key to avoid serving a token minted for a
-   * different scope.
+   * Includes the requested scope, so that a token is never served for a different scope than it
+   * was minted for. Anything else that is ever added to the token request (an audience or
+   * resource, say) MUST be folded into this key for the same reason.
    */
   private static String getCacheKey(OAuthClientCredentialsPOJO credentials) {
-    String prefix = credentials.getTokenEndpoint() + "|" + credentials.getClientId() + "|";
+    String prefix = credentials.getTokenEndpoint() + "|" + credentials.getClientId() + "|"
+      + Objects.toString(StringUtils.trimToNull(credentials.getScope()), "") + "|";
     if (OAuthClientCredentialsPOJO.PRIVATE_KEY_JWT.equals(credentials.resolvedClientAuthMethod())) {
       return prefix + OAuthClientCredentialsPOJO.PRIVATE_KEY_JWT + "|" + credentials.getPrivateKeyFile()
         + "|" + credentials.getKeyId() + "|" + credentials.getSigningAlgorithm();
@@ -202,17 +205,24 @@ public class HTTPTokenManager {
    * {@code invalid_client}.
    * <p>
    * With {@code private_key_jwt}, it sends a signed JWT as {@code client_assertion} (RFC 7523 §2.2).
-   * The JWT identifies the client, so {@code client_id} is not sent (RFC 7521 §4.2).
+   * {@code client_id} is sent as well: RFC 7521 §4.2 makes it optional, as the JWT identifies the
+   * client, but some authorization servers (Microsoft Entra ID, for one) require it.
+   * <p>
+   * {@code scope} is sent if configured (RFC 6749 §4.4.2); SMART Backend Services requires it.
    */
   private static CachedToken requestToken(OAuthClientCredentialsPOJO credentials,
                                           boolean allowPrivateNetwork) throws IOException {
-    String body = "grant_type=client_credentials";
+    String body = "grant_type=client_credentials"
+      + "&client_id=" + Utilities.URLEncode(credentials.getClientId());
     if (OAuthClientCredentialsPOJO.PRIVATE_KEY_JWT.equals(credentials.resolvedClientAuthMethod())) {
       body += "&client_assertion_type=" + Utilities.URLEncode(PrivateKeyJwtAssertion.CLIENT_ASSERTION_TYPE)
         + "&client_assertion=" + Utilities.URLEncode(PrivateKeyJwtAssertion.create(credentials));
     } else {
-      body += "&client_id=" + Utilities.URLEncode(credentials.getClientId())
-        + "&client_secret=" + Utilities.URLEncode(credentials.getClientSecret());
+      body += "&client_secret=" + Utilities.URLEncode(credentials.getClientSecret());
+    }
+    String scope = StringUtils.trimToNull(credentials.getScope());
+    if (scope != null) {
+      body += "&scope=" + Utilities.URLEncode(scope);
     }
     return executeTokenRequest(credentials.getTokenEndpoint(), allowPrivateNetwork, body);
   }

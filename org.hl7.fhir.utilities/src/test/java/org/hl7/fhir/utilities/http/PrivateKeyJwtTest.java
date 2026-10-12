@@ -20,8 +20,10 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
+import com.nimbusds.jose.Algorithm;
 import com.nimbusds.jose.JOSEObjectType;
 import com.nimbusds.jose.JWEAlgorithm;
 import com.nimbusds.jose.JWSAlgorithm;
@@ -59,6 +61,8 @@ class PrivateKeyJwtTest {
   private static final KeyPair EC_P256 = generateEc("secp256r1");
   private static final KeyPair EC_P384 = generateEc("secp384r1");
   private static final KeyPair EC_P521 = generateEc("secp521r1");
+  /** An RSA key under the RSASSA-PSS OID, as {@code openssl genpkey -algorithm RSA-PSS} produces. */
+  private static final KeyPair RSA_PSS_2048 = generate("RSASSA-PSS", 2048);
 
   @TempDir
   Path keyDir;
@@ -152,7 +156,11 @@ class PrivateKeyJwtTest {
     Map<String, String> form = form(tokenServer.takeRequest());
     assertThat(form).containsEntry("grant_type", "client_credentials")
       .containsEntry("client_assertion_type", "urn:ietf:params:oauth:client-assertion-type:jwt-bearer")
-      .doesNotContainKeys("client_id", "client_secret");
+      .containsEntry("client_id", credentials.getClientId())
+      .doesNotContainKey("client_secret");
+    if (credentials.getScope() == null) {
+      assertThat(form).doesNotContainKey("scope");
+    }
     return SignedJWT.parse(form.get("client_assertion"));
   }
 
@@ -184,6 +192,26 @@ class PrivateKeyJwtTest {
     assertThat(claims.getIssueTime().toInstant()).isBetween(before, after);
     assertThat(claims.getExpirationTime().getTime() - claims.getIssueTime().getTime())
       .isEqualTo(PrivateKeyJwtAssertion.LIFETIME_SECONDS * 1000);
+    assertThat(PrivateKeyJwtAssertion.LIFETIME_SECONDS)
+      .as("SMART Backend Services: exp no more than five minutes in the future, with room for clock skew")
+      .isLessThan(300);
+  }
+
+  @Test
+  void pemKeyWithoutKeyIdSendsNoKid() throws Exception {
+    SignedJWT jwt = fetchAssertion(credentials(writePem(RSA_2048)).build());
+
+    assertThat(jwt.getHeader().getKeyID()).isNull();
+    assertSignedBy(jwt, RSA_2048.getPublic());
+  }
+
+  @Test
+  void scopeIsSentWithTheTokenRequest() throws Exception {
+    tokenServer.enqueue(tokenResponse("the-token", 3600));
+
+    getToken(credentials(writePem(RSA_2048)).scope(" system/*.rs system/Patient.r ").build());
+
+    assertThat(form(tokenServer.takeRequest())).containsEntry("scope", "system/*.rs system/Patient.r");
   }
 
   @Test
@@ -207,8 +235,32 @@ class PrivateKeyJwtTest {
     assertThat(tokenServer.getRequestCount()).isEqualTo(1);
   }
 
+  static Stream<Arguments> cacheKeyVariations() {
+    return Stream.of(
+      Arguments.of("keyId", (UnaryOperator<OAuthClientCredentialsPOJO.OAuthClientCredentialsPOJOBuilder>) b -> b.keyId("other")),
+      Arguments.of("signingAlgorithm", (UnaryOperator<OAuthClientCredentialsPOJO.OAuthClientCredentialsPOJOBuilder>) b -> b.signingAlgorithm("PS256")),
+      Arguments.of("scope", (UnaryOperator<OAuthClientCredentialsPOJO.OAuthClientCredentialsPOJOBuilder>) b -> b.scope("system/*.rs")));
+  }
+
+  /** The same key file, configured differently, must not be served the other configuration's token. */
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("cacheKeyVariations")
+  void configurationsDifferingOnlyInOneFieldDoNotShareACachedToken(
+      String field, UnaryOperator<OAuthClientCredentialsPOJO.OAuthClientCredentialsPOJOBuilder> variation) throws Exception {
+    String file = writePem(RSA_2048);
+    OAuthClientCredentialsPOJO base = credentials(file).build();
+    OAuthClientCredentialsPOJO varied = variation.apply(credentials(file)).build();
+    tokenServer.enqueue(tokenResponse("token-a", 3600));
+    tokenServer.enqueue(tokenResponse("token-b", 3600));
+
+    assertThat(getToken(base)).isEqualTo("token-a");
+    assertThat(getToken(varied)).isEqualTo("token-b");
+    assertThat(getToken(base)).isEqualTo("token-a");
+    assertThat(tokenServer.getRequestCount()).isEqualTo(2);
+  }
+
   @Test
-  void differentKeysDoNotShareACachedToken() throws Exception {
+  void differentKeyFilesDoNotShareACachedToken() throws Exception {
     tokenServer.enqueue(tokenResponse("token-a", 3600));
     tokenServer.enqueue(tokenResponse("token-b", 3600));
 
@@ -260,14 +312,58 @@ class PrivateKeyJwtTest {
   }
 
   @Test
-  void configurationOverridesJwkKidAndAlgorithm() throws Exception {
+  void configuredAlgorithmOverridesJwkAlgorithm() throws Exception {
     RSAKey jwk = new RSAKey.Builder(rsaJwk(RSA_2048, "jwk-kid")).algorithm(JWSAlgorithm.PS256).build();
     String file = writeKey("key.json", jwk.toJSONString());
 
-    SignedJWT jwt = fetchAssertion(credentials(file).keyId("configured-kid").signingAlgorithm("RS512").build());
+    SignedJWT jwt = fetchAssertion(credentials(file).keyId("jwk-kid").signingAlgorithm("RS512").build());
+
+    assertThat(jwt.getHeader().getKeyID()).isEqualTo("jwk-kid");
+    assertThat(jwt.getHeader().getAlgorithm()).isEqualTo(JWSAlgorithm.RS512);
+  }
+
+  @Test
+  void configuredKeyIdNamesAJwkThatHasNoKid() throws Exception {
+    String file = writeKey("key.json", rsaJwk(RSA_2048, null).toJSONString());
+
+    SignedJWT jwt = fetchAssertion(credentials(file).keyId("configured-kid").build());
 
     assertThat(jwt.getHeader().getKeyID()).isEqualTo("configured-kid");
-    assertThat(jwt.getHeader().getAlgorithm()).isEqualTo(JWSAlgorithm.RS512);
+  }
+
+  @Test
+  void rsaPssKeyDefaultsToPs384() throws Exception {
+    SignedJWT jwt = fetchAssertion(credentials(writePem(RSA_PSS_2048)).build());
+
+    assertThat(jwt.getHeader().getAlgorithm()).isEqualTo(JWSAlgorithm.PS384);
+    assertSignedBy(jwt, RSA_PSS_2048.getPublic());
+  }
+
+  @Test
+  void jwkSetIgnoresKeysThatCannotSign() throws Exception {
+    JWKSet set = new JWKSet(List.of(new OctetSequenceKey.Builder(new byte[32]).keyID("oct").build(), rsaJwk(RSA_2048, "rsa")));
+
+    SignedJWT jwt = fetchAssertion(credentials(writeKey("keys.json", set.toString(false))).build());
+
+    assertThat(jwt.getHeader().getKeyID()).isEqualTo("rsa");
+  }
+
+  static Stream<Arguments> loadableFiles() {
+    String pkcs8 = pem("PRIVATE KEY", RSA_2048.getPrivate().getEncoded());
+    return Stream.of(
+      Arguments.of("CRLF line endings", pkcs8.replace("\n", "\r\n")),
+      Arguments.of("leading text from openssl pkcs12", "Bag Attributes\n    localKeyID: 01 02 03\nKey Attributes: <No Attributes>\n" + pkcs8),
+      Arguments.of("stray PKCS#1 marker before the PKCS#8 block", "# was -----BEGIN RSA PRIVATE KEY----- before conversion\n" + pkcs8),
+      Arguments.of("UTF-8 byte order mark, PEM", "\uFEFF" + pkcs8),
+      Arguments.of("UTF-8 byte order mark, JWK", "\uFEFF" + rsaJwk(RSA_2048, "k").toJSONString()));
+  }
+
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("loadableFiles")
+  void keyFileVariantsLoad(String description, String content) throws Exception {
+    SignedJWT jwt = fetchAssertion(credentials(writeKey("key", content)).build());
+
+    assertSignedBy(jwt, RSA_2048.getPublic());
   }
 
   @Test
@@ -324,10 +420,24 @@ class PrivateKeyJwtTest {
       Arguments.of("JWK alg for encryption", new RSAKey.Builder(rsaJwk(RSA_2048, "k"))
         .algorithm(JWEAlgorithm.RSA_OAEP_256).build().toJSONString(), null, null,
         "cannot sign with RSA-OAEP-256"),
+      Arguments.of("JWK alg none", new RSAKey.Builder(rsaJwk(RSA_2048, "k")).algorithm(Algorithm.NONE).build()
+        .toJSONString(), null, null, "cannot sign with none"),
+      Arguments.of("JWK alg HS256", new RSAKey.Builder(rsaJwk(RSA_2048, "k")).algorithm(JWSAlgorithm.HS256).build()
+        .toJSONString(), null, null, "cannot sign with HS256"),
+      Arguments.of("JWK kid differs from keyId", rsaJwk(RSA_2048, "jwk-kid").toJSONString(), "other", null,
+        "holds a key with kid 'jwk-kid', not the configured keyId 'other'"),
+      Arguments.of("RS256 with RSA-PSS key", pem("PRIVATE KEY", RSA_PSS_2048.getPrivate().getEncoded()), null, "RS256",
+        "RSA-PSS key, which cannot sign with RS256"),
       Arguments.of("JWK Set, two keys", new JWKSet(List.of(rsaJwk(RSA_2048, "a"), rsaJwk(RSA_2048, "b")))
-        .toString(false), null, null, "holds 2 private keys; set keyId"),
+        .toString(false), null, null, "holds 2 RSA or EC private keys; set keyId"),
+      Arguments.of("JWK Set, two keys with the configured kid", new JWKSet(List.of(rsaJwk(RSA_2048, "a"),
+        ecJwk(Curve.P_384, EC_P384, "a"))).toString(false), "a", null, "holds 2 RSA or EC private keys with kid 'a'"),
       Arguments.of("JWK Set, unknown kid", new JWKSet(List.of(rsaJwk(RSA_2048, "a"))).toString(false),
-        "z", null, "no private key with kid 'z'")
+        "z", null, "holds no RSA or EC private key with kid 'z'"),
+      Arguments.of("JWK Set, symmetric key only", new JWKSet(List.of(new OctetSequenceKey.Builder(new byte[32]).build()))
+        .toString(false), null, null, "holds no RSA or EC private key"),
+      Arguments.of("JWK Set, unknown key type", "{\"keys\":[{\"kty\":\"FOO\",\"kid\":\"a\"}]}", null, null,
+        "holds no RSA or EC private key")
     );
   }
 
@@ -345,15 +455,26 @@ class PrivateKeyJwtTest {
     assertThat(tokenServer.getRequestCount()).isZero();
   }
 
-  @Test
-  void errorsNeverQuoteTheKeyFile() throws Exception {
-    String brokenJwk = rsaJwk(RSA_2048, "k").toJSONString().replace("\"d\":", "\"d\":[");
-    String file = writeKey("key.json", brokenJwk);
+  /** Well-formed JSON that the JWK parser rejects - its messages may quote the members it read. */
+  static Stream<Arguments> invalidJwks() {
+    String withBadExponent = rsaJwk(RSA_2048, "k").toJSONString().replaceFirst("\"e\":\"[^\"]*\"", "\"e\":5");
+    return Stream.of(
+      Arguments.of("JWK", withBadExponent),
+      Arguments.of("JWK Set", "{\"keys\":[" + withBadExponent + "]}"));
+  }
+
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("invalidJwks")
+  void errorsNeverQuoteTheKeyFile(String description, String content) throws Exception {
+    assertThat(content).as("the test input must be valid JSON that only fails JWK parsing").contains("\"e\":5");
+    String privateExponent = rsaJwk(RSA_2048, "k").getPrivateExponent().toString();
+    String file = writeKey("key.json", content);
 
     assertThatThrownBy(() -> getToken(credentials(file).build()))
       .isInstanceOf(IOException.class)
-      .satisfies(e -> assertThat(e.getMessage()).doesNotContain(rsaJwk(RSA_2048, "k").getPrivateExponent().toString()))
-      .hasNoCause();
+      .hasMessageContaining("is not a valid JWK or JWK Set")
+      .hasNoCause()
+      .satisfies(e -> assertThat(e.getMessage()).doesNotContain(privateExponent));
   }
 
   @Test

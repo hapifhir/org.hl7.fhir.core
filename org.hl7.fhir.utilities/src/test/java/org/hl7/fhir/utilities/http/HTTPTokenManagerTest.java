@@ -80,6 +80,19 @@ class HTTPTokenManagerTest {
   }
 
   @Test
+  void testScopeIsSentOnlyWhenConfigured() throws Exception {
+    tokenServer.enqueue(tokenResponse("unscoped", 3600));
+    tokenServer.enqueue(tokenResponse("scoped", 3600));
+
+    assertThat(getToken(credentials("myClient", "mySecret"))).isEqualTo("unscoped");
+    assertThat(tokenServer.takeRequest().getBody().readUtf8()).doesNotContain("scope=");
+
+    OAuthClientCredentialsPOJO scoped = credentials("myClient", "mySecret").toBuilder().scope("system/*.rs").build();
+    assertThat(getToken(scoped)).as("a token minted without the scope must not be served for it").isEqualTo("scoped");
+    assertThat(tokenServer.takeRequest().getBody().readUtf8()).contains("&scope=system%2F*.rs");
+  }
+
+  @Test
   void testClientCredentialsAreFormUrlEncoded() throws Exception {
     String clientId = "cli ent+id";
     String clientSecret = "s3cr3t/+&=value";

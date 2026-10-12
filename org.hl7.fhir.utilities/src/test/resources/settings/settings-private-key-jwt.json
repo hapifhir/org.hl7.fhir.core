@@ -10,6 +10,7 @@
         "privateKeyFile": "/keys/client.pem",
         "keyId": "my-key",
         "signingAlgorithm": "ES384",
+        "scope": "system/*.rs",
         "tokenEndpoint": "https://auth.example.org/token"
       }
     }

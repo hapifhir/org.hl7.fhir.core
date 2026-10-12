@@ -33,6 +33,14 @@ class OAuthClientCredentialsPOJOTest {
     assertThat(credentials.resolvedClientAuthMethod()).isEqualTo(OAuthClientCredentialsPOJO.CLIENT_SECRET_POST);
     assertThat(credentials.findProblem()).isNull();
     assertThat(secretPost().clientAuthMethod("client_secret_post").build().findProblem()).isNull();
+    assertThat(secretPost().clientAuthMethod(" ").build().resolvedClientAuthMethod())
+      .isEqualTo(OAuthClientCredentialsPOJO.CLIENT_SECRET_POST);
+  }
+
+  @Test
+  void scopeIsAllowedWithEitherMethod() {
+    assertThat(secretPost().scope("system/*.rs").build().findProblem()).isNull();
+    assertThat(privateKeyJwt().scope("system/*.rs").build().findProblem()).isNull();
   }
 
   @ParameterizedTest
@@ -51,6 +59,7 @@ class OAuthClientCredentialsPOJOTest {
       Arguments.of(privateKeyJwt().privateKeyFile(null).build(), "missing required field: privateKeyFile"),
       Arguments.of(privateKeyJwt().privateKeyFile(" ").build(), "missing required field: privateKeyFile"),
       Arguments.of(privateKeyJwt().clientSecret("secret").build(), "sets clientSecret"),
+      Arguments.of(privateKeyJwt().clientSecret("").build(), "sets clientSecret"),
       Arguments.of(privateKeyJwt().signingAlgorithm("HS256").build(), "unsupported signingAlgorithm 'HS256'"),
       Arguments.of(privateKeyJwt().signingAlgorithm("none").build(), "unsupported signingAlgorithm 'none'"),
       Arguments.of(privateKeyJwt().signingAlgorithm("rs384").build(), "unsupported signingAlgorithm 'rs384'"),
