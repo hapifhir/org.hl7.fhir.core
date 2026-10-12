@@ -139,58 +139,60 @@ public class CodeSystemUtilities extends TerminologyUtilities {
 
   public static final String USER_DATA_CROSS_LINK = "cs.utils.cross.link";
 
+  /**
+   * Walks the concepts of a code system for rendering, re-arranging the top level concepts under the
+   * parents that properties say they have (see {@link CodeSystemHierarchy}).
+   * <p>
+   * The navigator keeps track of which concepts it has already returned, so it is for one rendering of
+   * the code system only. The analysis it works from doesn't change, and can be shared and cached.
+   */
   public static class CodeSystemNavigator {
 
-    private CodeSystem cs;
-    private boolean restructure;
-    private Set<String> processed = new HashSet<>();
+    private final CodeSystem cs;
+    private final CodeSystemHierarchy hierarchy;
+    private final Set<String> processed = new HashSet<>();
 
-    public CodeSystemNavigator(CodeSystem cs) {
+    public CodeSystemNavigator(@Nonnull CodeSystem cs) {
+      this(cs, new CodeSystemHierarchy(cs));
+    }
+
+    public CodeSystemNavigator(@Nonnull CodeSystem cs, @Nonnull CodeSystemHierarchy hierarchy) {
+      if (hierarchy.getCodeSystem() != cs) {
+        throw new IllegalArgumentException("The hierarchy was built for a different CodeSystem object");
+      }
       this.cs = cs;
-      restructure = hasExtraRelationships(cs.getConcept());
+      this.hierarchy = hierarchy;
+    }
+
+    public CodeSystemHierarchy getHierarchy() {
+      return hierarchy;
     }
 
     public boolean isRestructure() {
-      return restructure;
+      return hierarchy.isRestructure();
     }
 
-    private boolean hasExtraRelationships(List<ConceptDefinitionComponent> concept) {
-      for (ConceptDefinitionComponent cd : concept) {
-        if (!getSubsumedBy(cd).isEmpty()) {
-          return true;
-        }
-        for (ConceptDefinitionComponent cdc : cd.getConcept()) {
-          if (hasExtraRelationships(cdc.getConcept())) {
-            return true;
-          }
-        }
-      }
-      return false;
-    }
-
-    public List<ConceptDefinitionComponent> getConcepts(@Nonnull ConceptDefinitionComponent context) {
+    public List<ConceptDefinitionComponent> getConcepts(ConceptDefinitionComponent context) {
       if (context == null) {
-        if (restructure) {
+        if (isRestructure()) {
           List<ConceptDefinitionComponent> res = new ArrayList<>();
-          for (ConceptDefinitionComponent cd : cs.getConcept()) {
-            if (getSubsumedBy(cd).isEmpty()) {
-              res.add(cd);
-              processed.add(cd.getCode());
-            }
+          for (ConceptDefinitionComponent cd : hierarchy.getRoots()) {
+            res.add(cd);
+            processed.add(cd.getCode());
           }
           return res;
         } else {
           return cs.getConcept();
         }
       } else {
-        if (restructure) {
+        if (isRestructure()) {
           List<ConceptDefinitionComponent> res = new ArrayList<>();
           for (ConceptDefinitionComponent cd : context.getConcept()) {
             res.add(cd);
             processed.add(cd.getCode());
           }
-          for (ConceptDefinitionComponent cd : cs.getConcept()) {
-            if (getSubsumedBy(cd).contains(context.getCode()) && !processed.contains(cd.getCode())) {
+          for (ConceptDefinitionComponent cd : hierarchy.getStatedChildren(context.getCode())) {
+            if (!processed.contains(cd.getCode())) {
               res.add(cd);
               processed.add(cd.getCode());
             }
@@ -202,20 +204,14 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       }
     }
 
-    private List<String> getSubsumedBy(ConceptDefinitionComponent cd) {
-      List<String> codes = new ArrayList<>();
-      for (ConceptPropertyComponent cp : cd.getProperty()) {
-        if ("subsumedBy".equals(cp.getCode())) {
-          codes.add(cp.getValue().primitiveValue());
-        }
-      }
-      return codes;
-    }
-
+    /**
+     * @return the concepts that are stated to be children of the context, but that have already been
+     * returned somewhere else (because they have more than one parent)
+     */
     public List<ConceptDefinitionComponent> getOtherChildren(@Nonnull ConceptDefinitionComponent context) {
       List<ConceptDefinitionComponent> res = new ArrayList<>();
-      for (ConceptDefinitionComponent cd : cs.getConcept()) {
-        if (getSubsumedBy(cd).contains(context.getCode()) && processed.contains(cd.getCode())) {
+      for (ConceptDefinitionComponent cd : hierarchy.getStatedChildren(context.getCode())) {
+        if (processed.contains(cd.getCode())) {
           res.add(cd);
         }
       }
