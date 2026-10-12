@@ -25,6 +25,9 @@ import org.hl7.fhir.utilities.settings.OAuthClientCredentialsPOJO;
 /**
  * Manages OAuth 2.0 access tokens for the client_credentials grant type (RFC 6749 §4.4).
  * <p>
+ * The client authenticates with a client secret ({@code client_secret_post}) or a signed JWT
+ * ({@code private_key_jwt}, RFC 7523 §2.2); see {@link OAuthClientCredentialsPOJO}.
+ * <p>
  * When a server is configured with authenticationType "oauth_client_credentials" in
  * fhir-settings.json, this class handles fetching bearer tokens from the configured token
  * endpoint and caching them until they expire.
@@ -100,7 +103,7 @@ public class HTTPTokenManager {
    * Returns a valid access token for the given credentials, fetching a new one if
    * the cached token is missing or expiring soon.
    *
-   * @param credentials the clientId, clientSecret, and tokenEndpoint to use
+   * @param credentials the client and token endpoint to use
    * @param allowPrivateNetwork whether the token endpoint may be on a private network - the
    *   {@code allowPrivateNetwork} setting of the server the token is for
    * @return a bearer access token string
@@ -125,7 +128,7 @@ public class HTTPTokenManager {
         return cached.accessToken;
       }
 
-      CachedToken newToken = requestTokenWithClientCredentials(credentials, allowPrivateNetwork);
+      CachedToken newToken = requestToken(credentials, allowPrivateNetwork);
       cache.put(cacheKey, newToken);
       return newToken.accessToken;
     }
@@ -163,14 +166,21 @@ public class HTTPTokenManager {
 
   /**
    * Includes a digest of the secret, so that two configurations differing only in their secret
-   * (or a secret rotated without a settings reload) never share a token.
+   * (or a secret rotated without a settings reload) never share a token. For {@code private_key_jwt}
+   * it includes the key file, key id and algorithm instead: a key replaced in the same file is
+   * picked up when the cached token expires.
    * <p>
-   * Assumes (tokenEndpoint, clientId, clientSecret) fully identifies the issued token. If
-   * scope/audience are ever added to the token request, they MUST be folded into this key to
-   * avoid serving a token minted for a different scope.
+   * Assumes these fields fully identify the issued token. If scope/audience are ever added to the
+   * token request, they MUST be folded into this key to avoid serving a token minted for a
+   * different scope.
    */
   private static String getCacheKey(OAuthClientCredentialsPOJO credentials) {
-    return credentials.getTokenEndpoint() + "|" + credentials.getClientId() + "|" + sha256(credentials.getClientSecret());
+    String prefix = credentials.getTokenEndpoint() + "|" + credentials.getClientId() + "|";
+    if (OAuthClientCredentialsPOJO.PRIVATE_KEY_JWT.equals(credentials.resolvedClientAuthMethod())) {
+      return prefix + OAuthClientCredentialsPOJO.PRIVATE_KEY_JWT + "|" + credentials.getPrivateKeyFile()
+        + "|" + credentials.getKeyId() + "|" + credentials.getSigningAlgorithm();
+    }
+    return prefix + sha256(credentials.getClientSecret());
   }
 
   private static String sha256(String value) {
@@ -186,16 +196,24 @@ public class HTTPTokenManager {
   /**
    * Builds and sends an OAuth 2.0 client_credentials token request (RFC 6749 §4.4.2).
    * <p>
-   * The client authenticates with client_id and client_secret in the form body
-   * ({@code client_secret_post}). RFC 6749 §2.3.1 allows this but recommends HTTP Basic
-   * ({@code client_secret_basic}), which is not currently supported: a token endpoint that only
-   * accepts Basic will answer {@code invalid_client}.
+   * With {@code client_secret_post}, the client authenticates with client_id and client_secret in
+   * the form body. RFC 6749 §2.3.1 allows this but recommends HTTP Basic ({@code client_secret_basic}),
+   * which is not currently supported: a token endpoint that only accepts Basic will answer
+   * {@code invalid_client}.
+   * <p>
+   * With {@code private_key_jwt}, it sends a signed JWT as {@code client_assertion} (RFC 7523 §2.2).
+   * The JWT identifies the client, so {@code client_id} is not sent (RFC 7521 §4.2).
    */
-  private static CachedToken requestTokenWithClientCredentials(OAuthClientCredentialsPOJO credentials,
-                                                               boolean allowPrivateNetwork) throws IOException {
-    String body = "grant_type=client_credentials"
-      + "&client_id=" + Utilities.URLEncode(credentials.getClientId())
-      + "&client_secret=" + Utilities.URLEncode(credentials.getClientSecret());
+  private static CachedToken requestToken(OAuthClientCredentialsPOJO credentials,
+                                          boolean allowPrivateNetwork) throws IOException {
+    String body = "grant_type=client_credentials";
+    if (OAuthClientCredentialsPOJO.PRIVATE_KEY_JWT.equals(credentials.resolvedClientAuthMethod())) {
+      body += "&client_assertion_type=" + Utilities.URLEncode(PrivateKeyJwtAssertion.CLIENT_ASSERTION_TYPE)
+        + "&client_assertion=" + Utilities.URLEncode(PrivateKeyJwtAssertion.create(credentials));
+    } else {
+      body += "&client_id=" + Utilities.URLEncode(credentials.getClientId())
+        + "&client_secret=" + Utilities.URLEncode(credentials.getClientSecret());
+    }
     return executeTokenRequest(credentials.getTokenEndpoint(), allowPrivateNetwork, body);
   }
 
@@ -269,8 +287,8 @@ public class HTTPTokenManager {
    * {@link ManagedHTTPClient}, so it is subject to the same controls as every other outbound
    * request: the allowed-paths policy, protocol allow-listing, the blocked-host list, and SSRF
    * address-range blocking. It is sent exactly once and redirects are not followed, as either
-   * would re-send the client secret. Under {@link ManagedWebAccess.WebAccessPolicy#MANAGED} the
-   * request - client secret included - is handed to the host application's
+   * would re-send the client secret or assertion. Under {@link ManagedWebAccess.WebAccessPolicy#MANAGED}
+   * the request - client secret or assertion included - is handed to the host application's
    * {@link IWebAccessor}, and enforcing any of this is up to that accessor.
    */
   private static CachedToken executeTokenRequest(String tokenEndpoint, boolean allowPrivateNetwork, String formBody)

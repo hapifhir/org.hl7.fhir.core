@@ -128,6 +128,25 @@ class FhirSettingsTests implements ResourceLoaderTests {
     assertFalse(server.toString().contains("my-client-secret"), "the client secret must not appear in toString()");
   }
 
+  @Test
+  void testParsePrivateKeyJwtSettings() throws IOException {
+    Path path = Files.createTempFile("fhir-settings-pkjwt", "json").toAbsolutePath();
+    copyResourceToFile(path, "settings", "settings-private-key-jwt.json");
+
+    ServerDetailsPOJO server = FhirSettings.getFhirSettingsPOJO(path.toString()).getServers().get(0);
+
+    OAuthClientCredentialsPOJO credentials = server.getOauthClientCredentials();
+    assertEquals("my-client-id", credentials.getClientId());
+    assertEquals(OAuthClientCredentialsPOJO.PRIVATE_KEY_JWT, credentials.getClientAuthMethod());
+    assertEquals("/keys/client.pem", credentials.getPrivateKeyFile());
+    assertEquals("my-key", credentials.getKeyId());
+    assertEquals("ES384", credentials.getSigningAlgorithm());
+    assertEquals("https://auth.example.org/token", credentials.getTokenEndpoint());
+    assertNull(credentials.getClientSecret());
+    assertNull(FhirSettings.findClientCredentialsProblem(server));
+    assertEquals(credentials, server.copy().getOauthClientCredentials());
+  }
+
   @ParameterizedTest
   @CsvSource({
     "settings-client-credentials-missing-clientId.json, clientId",

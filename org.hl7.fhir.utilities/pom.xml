@@ -77,6 +77,12 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Signed client assertions for OAuth private_key_jwt -->
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+        </dependency>
+
         <!-- XML Utilities -->
         <dependency>
             <groupId>org.codelibs</groupId>
