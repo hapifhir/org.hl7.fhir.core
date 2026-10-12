@@ -2486,19 +2486,15 @@ public class FHIRPathEngine {
   private String removeTrailingZeros(String s) {
     if (Utilities.noString(s))
       return "";
+    // only zeros after the decimal point can go: 1.50 is 1.5 and 1.0 is 1, but 100 is not 1.
+    // Leave exponent forms alone
+    if (s.indexOf('.') < 0 || s.indexOf('e') >= 0 || s.indexOf('E') >= 0)
+      return s;
     int i = s.length()-1;
-    boolean done = false;
-    boolean dot = false;
-    while (i > 0 && !done) {
-      if (s.charAt(i) == '.') {
-        i--;
-        dot = true;
-      } else if (!dot && s.charAt(i) == '0') {
-        i--;
-      } else {
-        done = true;
-      }
-    }
+    while (i >= 0 && s.charAt(i) == '0')
+      i--;
+    if (i >= 0 && s.charAt(i) == '.')
+      i--;
     return s.substring(0, i+1);
   }
 
