@@ -1295,7 +1295,7 @@ public class HierarchicalTableGenerator {
           styles.add("border-right: 1px grey solid;");
         }
       }
-      styles.add(treelines ? "; background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")" : null);
+      styles.add(treelines ? "background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")" : null);
       if (c.minWidth != null) {
         styles.add("min-width: "+c.minWidth);
       }
