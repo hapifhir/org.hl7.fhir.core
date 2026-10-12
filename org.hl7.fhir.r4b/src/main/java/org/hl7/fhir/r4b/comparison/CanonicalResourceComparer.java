@@ -24,6 +24,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.BackgroundColorCode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -319,9 +320,9 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
         r.getCells().add(gen.new Cell(null, null, t.getLeft(), null, null).span(2));
       } else {
         r.getCells()
-            .add(gen.new Cell(null, null, t.getLeft(), null, null).setStyleHTX("background-color: " + COLOR_DIFFERENT));
+            .add(gen.new Cell(null, null, t.getLeft(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
         r.getCells()
-            .add(gen.new Cell(null, null, t.getRight(), null, null).setStyleHTX("background-color: " + COLOR_DIFFERENT));
+            .add(gen.new Cell(null, null, t.getRight(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
       }
     } else if (t.hasLeft()) {
       r.setColor(COLOR_NO_ROW_RIGHT);
