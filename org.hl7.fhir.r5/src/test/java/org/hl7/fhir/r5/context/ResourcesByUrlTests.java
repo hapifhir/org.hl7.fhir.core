@@ -43,14 +43,14 @@ class ResourcesByUrlTests {
     return ad;
   }
 
-  private static CanonicalResourceProxy csProxy(String id, String url) {
-    return new CanonicalResourceProxy("CodeSystem", id, url, "1.0.0", null, null, null) {
+  private static CanonicalResourceProxy csProxy(String id, String url, String version) {
+    return new CanonicalResourceProxy("CodeSystem", id, url, version, null, null, null) {
       @Override
       public CanonicalResource loadResource() throws FHIRException {
         CodeSystem cs = new CodeSystem();
         cs.setId(id);
         cs.setUrl(url);
-        cs.setVersion("1.0.0");
+        cs.setVersion(version);
         return cs;
       }
     };
@@ -97,11 +97,11 @@ class ResourcesByUrlTests {
     context.cacheResource(a1);
     context.cacheResource(a2);
 
-    assertSame(a1, fetch(context, URL_A));
+    assertSame(a2, fetch(context, URL_A));
     assertSame(a1, fetch(context, URL_A + "|1.0.0"));
     assertSame(a2, fetch(context, URL_A + "|2.0.0"));
     assertNull(fetch(context, URL_A + "|3.0.0"));
-    assertEquals(List.of(a1, a2), versions(context, URL_A));
+    assertEquals(List.of(a2, a1), versions(context, URL_A));
   }
 
   @Test
@@ -121,38 +121,65 @@ class ResourcesByUrlTests {
   }
 
   @Test
-  void replacedResourceIsNotFoundByItsUrl() {
-    ActivityDefinition a = ad("x", URL_A, "1.0.0");
-    ActivityDefinition b = ad("x", URL_B, "1.0.0");
-    context.cacheResource(a);
-    context.cacheResource(b);
+  void droppingAResourceDropsEveryVersionOfIt() {
+    ActivityDefinition x1 = ad("x", URL_A, "1.0.0");
+    ActivityDefinition x2 = ad("x", URL_A, "2.0.0");
+    ActivityDefinition y = ad("y", URL_A, "3.0.0");
+    context.cacheResource(x1);
+    context.cacheResource(x2);
+    context.cacheResource(y);
 
-    assertNull(fetch(context, URL_A));
-    assertFalse(exists(context, URL_A));
-    assertTrue(versions(context, URL_A).isEmpty());
-    assertSame(b, fetch(context, URL_B));
+    context.dropResource("ActivityDefinition", "x");
+
+    assertSame(y, fetch(context, URL_A));
+    assertNull(fetch(context, URL_A + "|1.0.0"));
+    assertNull(fetch(context, URL_A + "|2.0.0"));
+    assertEquals(List.of(y), versions(context, URL_A));
   }
 
   @Test
-  void replacedVersionIsNotFoundByUrl() {
+  void otherVersionWithTheSameIdIsStillFoundByUrl() {
     ActivityDefinition a1 = ad("x", URL_A, "1.0.0");
     ActivityDefinition a2 = ad("x", URL_A, "2.0.0");
     context.cacheResource(a1);
     context.cacheResource(a2);
 
+    assertSame(a2, context.fetchResourceById("ActivityDefinition", "x"));
     assertSame(a2, fetch(context, URL_A));
-    assertNull(fetch(context, URL_A + "|1.0.0"));
-    assertEquals(List.of(a2), versions(context, URL_A));
+    assertSame(a1, fetch(context, URL_A + "|1.0.0"));
+    assertEquals(List.of(a2, a1), versions(context, URL_A));
   }
 
   @Test
-  void replacedProxyIsNotFoundByUrl() {
-    PackageInformation pi = new PackageInformation("example.package", "1.0.0", "4.0.1", null);
-    context.registerResourceFromPackage(csProxy("x", "http://example.org/CodeSystem/a"), pi);
-    context.registerResourceFromPackage(csProxy("x", "http://example.org/CodeSystem/b"), pi);
+  void sameVersionAddedAgainReplacesTheEarlierOne() {
+    ActivityDefinition a = ad("x", URL_A, "1.0.0");
+    ActivityDefinition again = ad("x", URL_A, "1.0.0");
+    context.cacheResource(a);
+    context.cacheResource(again);
 
-    assertTrue(versions(context, "http://example.org/CodeSystem/a").isEmpty());
-    assertEquals(1, versions(context, "http://example.org/CodeSystem/b").size());
+    assertSame(again, fetch(context, URL_A));
+    assertSame(again, fetch(context, URL_A + "|1.0.0"));
+    assertEquals(List.of(again), versions(context, URL_A));
+  }
+
+  @Test
+  void versionsOfAProxyFromTwoPackagesAreBothFoundByUrl() {
+    String url = "http://example.org/CodeSystem/a";
+    context.registerResourceFromPackage(csProxy("x", url, "1.0.0"), new PackageInformation("example.package", "1.0.0", "4.0.1", null));
+    context.registerResourceFromPackage(csProxy("x", url, "2.0.0"), new PackageInformation("example.package", "2.0.0", "4.0.1", null));
+
+    assertEquals(2, context.fetchResourceVersions(CodeSystem.class, url).size());
+    assertEquals(2, versions(context, url).size());
+  }
+
+  @Test
+  void proxyRegisteredAgainReplacesTheEarlierOne() {
+    String url = "http://example.org/CodeSystem/a";
+    context.setAllowLoadingDuplicates(true);
+    context.registerResourceFromPackage(csProxy("x", url, "1.0.0"), new PackageInformation("example.package", "1.0.0", "4.0.1", null));
+    context.registerResourceFromPackage(csProxy("x", url, "1.0.0"), new PackageInformation("other.package", "1.0.0", "4.0.1", null));
+
+    assertEquals(1, versions(context, url).size());
   }
 
   @Test
@@ -176,8 +203,8 @@ class ResourcesByUrlTests {
   void examplesPackageProxyDoesNotReplaceOrAddAnExistingId() {
     PackageInformation pi = new PackageInformation("example.package", "1.0.0", "4.0.1", null);
     PackageInformation examples = new PackageInformation("hl7.fhir.r4.examples", "4.0.1", "4.0.1", null);
-    context.registerResourceFromPackage(csProxy("x", "http://example.org/CodeSystem/a"), pi);
-    context.registerResourceFromPackage(csProxy("x", "http://example.org/CodeSystem/b"), examples);
+    context.registerResourceFromPackage(csProxy("x", "http://example.org/CodeSystem/a", "1.0.0"), pi);
+    context.registerResourceFromPackage(csProxy("x", "http://example.org/CodeSystem/b", "1.0.0"), examples);
 
     assertEquals(1, versions(context, "http://example.org/CodeSystem/a").size());
     assertTrue(versions(context, "http://example.org/CodeSystem/b").isEmpty());

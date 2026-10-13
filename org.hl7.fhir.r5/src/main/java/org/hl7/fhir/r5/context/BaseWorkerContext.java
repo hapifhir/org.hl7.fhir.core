@@ -47,8 +47,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -224,6 +226,24 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
 
+    private String getVersion() {
+      if (resource == null) {
+        return proxy.getVersion();
+      } else if (resource instanceof CanonicalResource) {
+        return ((CanonicalResource) resource).getVersion();
+      } else {
+        return null;
+      }
+    }
+
+    private boolean hasTypeAndId(String type, String id) {
+      if (resource == null) {
+        return type.equals(proxy.getType()) && id.equals(proxy.getId());
+      } else {
+        return type.equals(resource.fhirType()) && id.equals(resource.getId());
+      }
+    }
+
   }
 
   public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
@@ -262,7 +282,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean minimalMemory = false;
 
   private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
-  // the entries of allResourcesById, and the entries without an id, by url (see indexResource())
+  // the entries of allResourcesById, the other versions of them, and the entries without an id, by url (see indexResource())
   private Map<String, List<ResourceProxy>> allResourcesByUrl = new HashMap<String, List<ResourceProxy>>();
 
   // all maps are to the full URI
@@ -356,7 +376,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected void copy(BaseWorkerContext other) {
     synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet 
       // the maps are copied rather than shared, so that resources added to or dropped from one context don't
-      // change the other's maps, and allResourcesByUrl stays in step with allResourcesById in both
+      // change the other's maps
       for (Map.Entry<String, Map<String, ResourceProxy>> e : other.allResourcesById.entrySet()) {
         allResourcesById.put(e.getKey(), new HashMap<>(e.getValue()));
       }
@@ -458,41 +478,46 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    * Adds the entry to allResourcesById, if it has an id, and to allResourcesByUrl, if it has a url. An entry from an
    * examples package doesn't replace an entry with the same type and id, and is not added at all.
    *
-   * allResourcesByUrl holds the same entries as allResourcesById (and the entries without an id), so an entry that is
-   * replaced or dropped is removed from both. This relies on an entry's url not changing after it's added: the urls
-   * that are changed (by PackageHacker) are changed before the resource is registered
+   * allResourcesById only has the latest entry for each type and id, but an earlier entry with another version is
+   * another version of the resource, and stays in allResourcesByUrl, as it does in the canonical resource managers
+   * (fetchResourceVersions() depends on this). An earlier entry with the same url and version is the same resource
+   * registered again, and is replaced in both. dropResource() removes every version with the type and id from both.
+   * This relies on an entry's url not changing after it's added: the urls that are changed (by PackageHacker) are
+   * changed before the resource is registered
    *
    * @return false if the entry was not added
    */
   private boolean indexResource(String type, String id, ResourceProxy r, PackageInformation packageInfo) {
+    String url = r.getUrl();
     if (id != null) {
       Map<String, ResourceProxy> map = allResourcesById.computeIfAbsent(type, k -> new HashMap<>());
       if (packageInfo != null && packageInfo.isExamplesPackage() && map.containsKey(id)) {
         return false;
       }
-      unindexUrl(map.put(id, r));
+      ResourceProxy old = map.put(id, r);
+      if (old != null && url != null && url.equals(old.getUrl()) && Objects.equals(r.getVersion(), old.getVersion())) {
+        unindexUrl(url, e -> e == old);
+      }
     }
-    String url = r.getUrl();
     if (url != null) {
-      allResourcesByUrl.computeIfAbsent(url, k -> new ArrayList<>()).add(r);
+      // the most recently added first, so that's the one found when the version doesn't matter
+      allResourcesByUrl.computeIfAbsent(url, k -> new ArrayList<>()).add(0, r);
     }
     return true;
   }
 
-  private void unindexUrl(ResourceProxy r) {
-    if (r != null && r.getUrl() != null) {
-      List<ResourceProxy> list = allResourcesByUrl.get(r.getUrl());
-      if (list != null) {
-        list.removeIf(e -> e == r);
-        if (list.isEmpty()) {
-          allResourcesByUrl.remove(r.getUrl());
-        }
+  private void unindexUrl(String url, Predicate<ResourceProxy> which) {
+    List<ResourceProxy> list = allResourcesByUrl.get(url);
+    if (list != null) {
+      list.removeIf(which);
+      if (list.isEmpty()) {
+        allResourcesByUrl.remove(url);
       }
     }
   }
 
   /**
-   * @return the entries with the url (of any type), in the order they were added
+   * @return the entries with the url (of any type), the most recently added first
    */
   private List<ResourceProxy> getResourcesForUrl(String url) {
     List<ResourceProxy> list = allResourcesByUrl.get(url);
@@ -3180,7 +3205,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         allResourcesById.put(fhirType, map);
       }
       if (map.containsKey(id)) {
-        unindexUrl(map.remove(id)); // this is a challenge because we might have more than one resource with this id (different versions)
+        ResourceProxy r = map.remove(id); // this is a challenge because we might have more than one resource with this id (different versions)
+        if (r.getUrl() != null) {
+          unindexUrl(r.getUrl(), e -> e.hasTypeAndId(fhirType, id));
+        }
       }
 
       if (fhirType.equals("StructureDefinition")) {
