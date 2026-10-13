@@ -1471,6 +1471,8 @@ public class ProfilePathProcessor {
   }
 
   private void processPathWithSlicedBaseDefault(ElementDefinition currentBase, String currentBasePath, List<ElementDefinition> diffMatches, ProfilePathProcessorState cursors, String path, MappingAssistant mapHelper) {
+    // A new reslice belongs to its inherited parent, rather than the ordering of the parent's siblings.
+    diffMatches = deferNewInheritedReslices(diffMatches, profileUtilities.getSiblings(cursors.base.getElementList(), currentBase));
     // first - check that the slicing is ok
     boolean closed = currentBase.getSlicing().getRules() == ElementDefinition.SlicingRules.CLOSED;
     int diffpos = 0;
@@ -1629,6 +1631,7 @@ public class ProfilePathProcessor {
           if (baseItem.getSliceName().equals(diffItem.getSliceName()))
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.NAMED_ITEMS_ARE_OUT_OF_ORDER_IN_THE_SLICE));
 
+        int resliceStart = getResult().getElementList().size();
         String id = diffItem.getId();
         String lid = profileUtilities.tail(id);
         ElementDefinition template = currentBase;
@@ -1785,6 +1788,9 @@ public class ProfilePathProcessor {
           }
         }
         // ---
+        if (diffItem.hasSliceName() && diffItem.getSliceName().contains("/")) {
+          moveNewResliceAfterParent(resliceStart, outcome.getPath(), diffItem.getSliceName());
+        }
         diffpos++;
       }
       if (outcome.hasContentReference() && outcome.hasType()) {
@@ -1792,6 +1798,66 @@ public class ProfilePathProcessor {
       }
     }
     cursors.baseCursor++;
+  }
+
+  private List<ElementDefinition> deferNewInheritedReslices(List<ElementDefinition> matches, List<ElementDefinition> baseMatches) {
+    Set<String> inheritedNames = new HashSet<>();
+    for (ElementDefinition base : baseMatches) {
+      if (base.hasSliceName()) {
+        inheritedNames.add(base.getSliceName());
+      }
+    }
+    List<ElementDefinition> result = new ArrayList<>();
+    List<ElementDefinition> reslices = new ArrayList<>();
+    for (int index = 0; index < matches.size(); index++) {
+      ElementDefinition match = matches.get(index);
+      String name = match.getSliceName();
+      boolean newInheritedReslice = false;
+      if (name != null && !inheritedNames.contains(name)) {
+        for (int slash = name.lastIndexOf('/'); slash > 0; slash = name.lastIndexOf('/', slash - 1)) {
+          if (inheritedNames.contains(name.substring(0, slash))) {
+            newInheritedReslice = true;
+            // Deferring reslices must not repair a differential that places its explicit parent afterwards.
+            for (int later = index + 1; later < matches.size(); later++) {
+              if (name.substring(0, slash).equals(matches.get(later).getSliceName())) {
+                newInheritedReslice = false;
+                break;
+              }
+            }
+            break;
+          }
+        }
+      }
+      (newInheritedReslice ? reslices : result).add(match);
+    }
+    result.addAll(reslices);
+    return result;
+  }
+
+  private void moveNewResliceAfterParent(int start, String path, String name) {
+    List<ElementDefinition> elements = getResult().getElementList();
+    String parentName = name.substring(0, name.lastIndexOf('/'));
+    for (int parent = 0; parent < start; parent++) {
+      ElementDefinition ed = elements.get(parent);
+      if (path.equals(ed.getPath()) && parentName.equals(ed.getSliceName())) {
+        int insertion = parent + 1;
+        while (insertion < start) {
+          ElementDefinition next = elements.get(insertion);
+          if (next.getPath().startsWith(path + ".")
+              || (path.equals(next.getPath()) && next.hasSliceName() && next.getSliceName().startsWith(parentName + "/"))) {
+            insertion++;
+          } else {
+            break;
+          }
+        }
+        if (insertion < start) {
+          List<ElementDefinition> reslice = new ArrayList<>(elements.subList(start, elements.size()));
+          elements.subList(start, elements.size()).clear();
+          elements.addAll(insertion, reslice);
+        }
+        return;
+      }
+    }
   }
 
   /**
