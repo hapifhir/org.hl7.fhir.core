@@ -2356,7 +2356,7 @@ public class FHIRPathEngine {
       var leftDate = new DateTimeType(left.primitiveValue());
       var rightDate = new DateTimeType(right.primitiveValue());
       return datesEqual(leftDate, rightDate);
-    } else if (left instanceof DecimalType || right instanceof DecimalType) { 
+    } else if (left.hasType("decimal") || right.hasType("decimal")) { 
       return decEqual(left.primitiveValue(), right.primitiveValue());
     } else if (left.isPrimitive() && right.isPrimitive()) {
       return Base.equals(left.primitiveValue(), right.primitiveValue());
@@ -5731,15 +5731,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (focus.size() == 1) {
       return makeBoolean(true);
     }
-    if (allStringLikePrimitives(focus)) {
-      // for these, doEquals() is just a comparison of the primitive values, so there's no need to compare every pair
-      Set<String> values = new HashSet<>();
-      for (Base b : focus) {
-        if (!values.add(b.primitiveValue())) {
-          return makeBoolean(false);
-        }
-      }
-      return makeBoolean(true);
+    List<String> keys = equalityKeys(focus);
+    if (keys != null) {
+      return makeBoolean(new HashSet<>(keys).size() == keys.size());
     }
 
     boolean distinct = true;
@@ -5758,16 +5752,41 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
 
-  // primitive types where doEquals() compares the primitive values as strings (not dates, decimals, or quantities)
-  private static final Set<String> STRING_LIKE_TYPES = Set.of("string", "code", "id", "uri", "url", "canonical", "oid", "uuid", "markdown");
-
-  private boolean allStringLikePrimitives(List<Base> focus) {
+  /**
+   * isDistinct() and distinct() compare every pair of items with doEquals(), which is slow for big collections. When every
+   * item is a primitive with a value that isn't a date or a quantity, doEquals() compares the primitive values as they are,
+   * or, if either is a decimal, after removeTrailingZeros(). Then two items are equal exactly when the keys returned here are
+   * equal, as long as removeTrailingZeros() doesn't change any value that isn't a decimal's in a collection that has decimals.
+   *
+   * @return a key for each item, or null if the items have to be compared pair by pair
+   */
+  private List<String> equalityKeys(List<Base> focus) {
+    List<String> keys = new ArrayList<>(focus.size());
+    boolean hasDecimal = false;
     for (Base b : focus) {
-      if (b == null || !b.isPrimitive() || b instanceof DecimalType || !STRING_LIKE_TYPES.contains(b.fhirType())) {
-        return false;
+      if (b == null || !b.isPrimitive() || makeQuantity(b) != null || b.hasType("date", "dateTime", "instant")) {
+        return null;
+      }
+      String v = b.primitiveValue();
+      if (v == null) {
+        return null;
+      }
+      if (b.hasType("decimal")) {
+        hasDecimal = true;
+        v = removeTrailingZeros(v);
+      }
+      keys.add(v);
+    }
+    if (hasDecimal) {
+      for (int i = 0; i < focus.size(); i++) {
+        String v = keys.get(i);
+        if (!focus.get(i).hasType("decimal") && !removeTrailingZeros(v).equals(v)) {
+          // e.g. the string '1.0', which equals the decimal 1 but not the string '1'
+          return null;
+        }
       }
     }
-    return true;
+    return keys;
   }
 
   private List<Base> funcSupersetOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
@@ -6089,6 +6108,19 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private List<Base> funcDistinct(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     if (focus.size() <= 1) {
       return focus;
+    }
+    List<String> keys = equalityKeys(focus);
+    if (keys != null) {
+      // the loop below keeps the last of a set of equal items, so walk backwards to keep the same ones, in the same order
+      Set<String> seen = new HashSet<>();
+      List<Base> result = new ArrayList<Base>();
+      for (int i = focus.size() - 1; i >= 0; i--) {
+        if (seen.add(keys.get(i))) {
+          result.add(focus.get(i));
+        }
+      }
+      Collections.reverse(result);
+      return result;
     }
 
     List<Base> result = new ArrayList<Base>();
