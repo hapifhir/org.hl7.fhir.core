@@ -23,14 +23,16 @@ public class Element50_N {
                           String path,
                           String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
-    for (org.hl7.fhir.r5.model.Extension e : src.getExtension()) {
-      if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
-        if (advisor.useAdvisorForExtension(path, e)) {
-          org.hl7.fhir.model.core.Extension convertedExtension = new org.hl7.fhir.model.core.Extension();
-          advisor.handleExtension(path, e, convertedExtension);
-          tgt.addExtension(convertedExtension);
-        } else {
-          tgt.addExtension(Extension50_N.convertExtension(e));
+    if (src.hasExtension()) {
+      for (org.hl7.fhir.r5.model.Extension e : src.getExtension()) {
+        if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
+          if (advisor.useAdvisorForExtension(path, e)) {
+            org.hl7.fhir.model.core.Extension convertedExtension = new org.hl7.fhir.model.core.Extension();
+            advisor.handleExtension(path, e, convertedExtension);
+            tgt.addExtension(convertedExtension);
+          } else {
+            tgt.addExtension(Extension50_N.convertExtension(e));
+          }
         }
       }
     }
@@ -41,14 +43,16 @@ public class Element50_N {
                           String path,
                           String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
-    for (org.hl7.fhir.model.core.Extension e : src.getExtension()) {
-      if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
-        if (advisor.useAdvisorForExtension(path, e)) {
-          org.hl7.fhir.r5.model.Extension convertedExtension = new org.hl7.fhir.r5.model.Extension();
-          advisor.handleExtension(path, e, convertedExtension);
-          tgt.addExtension(convertedExtension);
-        } else {
-          tgt.addExtension(Extension50_N.convertExtension(e));
+    if (src.hasExtension()) {
+      for (org.hl7.fhir.model.core.Extension e : src.getExtension()) {
+        if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
+          if (advisor.useAdvisorForExtension(path, e)) {
+            org.hl7.fhir.r5.model.Extension convertedExtension = new org.hl7.fhir.r5.model.Extension();
+            advisor.handleExtension(path, e, convertedExtension);
+            tgt.addExtension(convertedExtension);
+          } else {
+            tgt.addExtension(Extension50_N.convertExtension(e));
+          }
         }
       }
     }
