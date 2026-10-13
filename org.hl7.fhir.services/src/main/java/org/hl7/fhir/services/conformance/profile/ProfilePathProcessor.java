@@ -1780,7 +1780,7 @@ public class ProfilePathProcessor {
                     .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, 0))
                     .withContextPathSource(diffMatches.get(0).getPath()).withContextPathTarget(outcome.getPath())
                     // The content-reference redirection has already been applied to these paths.
-                    .withRedirector(null).withSlicing(new PathSlicingParams())
+                    .withRedirector(new ArrayList<ElementRedirection>()).withSlicing(new PathSlicingParams())
                     .processPaths(nc, mapHelper, null);
               }
             }

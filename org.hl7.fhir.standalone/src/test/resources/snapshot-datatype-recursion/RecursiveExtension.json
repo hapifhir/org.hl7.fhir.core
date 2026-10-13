@@ -1,0 +1,62 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "RecursiveExtension",
+  "url": "http://example.org/fhir/StructureDefinition/RecursiveExtension",
+  "name": "RecursiveExtension",
+  "status": "draft",
+  "kind": "complex-type",
+  "abstract": false,
+  "type": "Extension",
+  "derivation": "constraint",
+  "snapshot": {
+    "element": [
+      {
+        "id": "Extension",
+        "path": "Extension",
+        "min": 0,
+        "max": "*"
+      },
+      {
+        "id": "Extension.id",
+        "path": "Extension.id",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "Extension.extension",
+        "path": "Extension.extension",
+        "min": 0,
+        "max": "*",
+        "contentReference": "#Extension"
+      },
+      {
+        "id": "Extension.url",
+        "path": "Extension.url",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "uri"
+          }
+        ]
+      },
+      {
+        "id": "Extension.value[x]",
+        "path": "Extension.value[x]",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      }
+    ]
+  },
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Extension"
+}

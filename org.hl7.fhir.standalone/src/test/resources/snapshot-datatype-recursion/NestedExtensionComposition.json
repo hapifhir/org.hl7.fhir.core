@@ -1,0 +1,151 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "NestedExtensionComposition",
+  "url": "http://example.org/fhir/StructureDefinition/NestedExtensionComposition",
+  "name": "NestedExtensionComposition",
+  "status": "draft",
+  "kind": "resource",
+  "abstract": false,
+  "type": "Composition",
+  "derivation": "constraint",
+  "baseDefinition": "http://example.org/fhir/StructureDefinition/BaseComposition",
+  "differential": {
+    "element": [
+      {
+        "id": "Composition",
+        "path": "Composition",
+        "min": 0,
+        "max": "*"
+      },
+      {
+        "id": "Composition.section",
+        "path": "Composition.section",
+        "min": 0,
+        "max": "*",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ],
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "title"
+            }
+          ],
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Composition.section:summary",
+        "path": "Composition.section",
+        "min": 0,
+        "max": "1",
+        "sliceName": "summary",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "Composition.section:summary.title",
+        "path": "Composition.section.title",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "fixedString": "Summary"
+      },
+      {
+        "id": "Composition.section:summary.section",
+        "path": "Composition.section.section",
+        "min": 0,
+        "max": "*",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "title"
+            }
+          ],
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Composition.section:summary.section:details",
+        "path": "Composition.section.section",
+        "min": 0,
+        "max": "1",
+        "sliceName": "details"
+      },
+      {
+        "id": "Composition.section:summary.section:details.extension:label",
+        "path": "Composition.section.section.extension",
+        "min": 1,
+        "max": "1",
+        "sliceName": "label",
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://example.org/fhir/StructureDefinition/RecursiveExtension"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Composition.section:summary.section:details.extension:label.extension",
+        "path": "Composition.section.section.extension.extension",
+        "min": 1,
+        "max": "1"
+      },
+      {
+        "id": "Composition.section:summary.section:details.extension:label.extension.extension",
+        "path": "Composition.section.section.extension.extension.extension",
+        "min": 0,
+        "max": "0"
+      },
+      {
+        "id": "Composition.section:summary.section:details.extension:label.extension.url",
+        "path": "Composition.section.section.extension.extension.url",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "uri"
+          }
+        ],
+        "fixedUri": "child"
+      },
+      {
+        "id": "Composition.section:summary.section:details.extension:label.extension.value[x]",
+        "path": "Composition.section.section.extension.extension.value[x]",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "fixedString": "Nested extension value"
+      },
+      {
+        "id": "Composition.section:summary.section:details.title",
+        "path": "Composition.section.section.title",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "fixedString": "Details"
+      }
+    ]
+  }
+}

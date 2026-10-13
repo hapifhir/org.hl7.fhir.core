@@ -67,6 +67,25 @@ class ProfileUtilitiesSlicedDatatypeTest {
     assertTrue(messages.stream().noneMatch(m -> m.getLevel() == IssueSeverity.ERROR || m.getLevel() == IssueSeverity.FATAL), messages.toString());
   }
 
+  @Test
+  void expandsContentReferenceAfterResettingDatatypeRedirectors() throws Exception {
+    SimpleWorkerContext context = context("Extension", "RecursiveExtension", "BaseComposition");
+    StructureDefinition base = resource("BaseComposition");
+    StructureDefinition derived = resource("NestedExtensionComposition");
+
+    List<ValidationMessage> messages = new ArrayList<>();
+    new ProfileUtilities(context, messages, null).generateSnapshot(base, derived, derived.getUrl(), "http://example.org/fhir", derived.getName());
+
+    String childId = "Composition.section:summary.section:details.extension:label.extension";
+    assertEquals(1, snapshotElement(derived, childId).getMin());
+    assertEquals("1", snapshotElement(derived, childId).getMax());
+    assertEquals("0", snapshotElement(derived, childId + ".extension").getMax());
+    assertEquals("child", snapshotElement(derived, childId + ".url").getFixed().primitiveValue());
+    assertEquals("Nested extension value", snapshotElement(derived, childId + ".value[x]").getFixed().primitiveValue());
+    assertEquals("Details", snapshotElement(derived, "Composition.section:summary.section:details.title").getFixed().primitiveValue());
+    assertTrue(messages.stream().noneMatch(m -> m.getLevel() == IssueSeverity.ERROR || m.getLevel() == IssueSeverity.FATAL), messages.toString());
+  }
+
   private SimpleWorkerContext context(String... names) throws Exception {
     SimpleWorkerContext context = new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).fromNothing();
     for (String name : names) {
