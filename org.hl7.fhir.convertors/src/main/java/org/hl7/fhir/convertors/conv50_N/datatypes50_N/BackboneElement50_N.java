@@ -24,17 +24,21 @@ public class BackboneElement50_N {
   
   public static void copyBackboneElement(org.hl7.fhir.model.core.BackboneElement src, org.hl7.fhir.r5.model.BackboneElement tgt, String... extensionUrlsToIgnore) throws FHIRException {
     ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyElement(src, tgt, extensionUrlsToIgnore);
-    for (org.hl7.fhir.model.core.Extension e : src.getModifierExtensionList()) {
-      if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
-        tgt.addModifierExtension(Extension50_N.convertExtension(e));
+    if (src.hasModifierExtension()) {
+      for (org.hl7.fhir.model.core.Extension e : src.getModifierExtensionList()) {
+        if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
+          tgt.addModifierExtension(Extension50_N.convertExtension(e));
+        }
       }
     }
   }
 
   public static void copyBackboneElement(org.hl7.fhir.model.core.BackboneType src, org.hl7.fhir.r5.model.BackboneType tgt, String... var) throws FHIRException {
     ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyElement(src, tgt, var);
-    for (org.hl7.fhir.model.core.Extension e : src.getModifierExtensionList()) {
-      tgt.addModifierExtension(Extension50_N.convertExtension(e));
+    if (src.hasModifierExtension()) {
+      for (org.hl7.fhir.model.core.Extension e : src.getModifierExtensionList()) {
+        tgt.addModifierExtension(Extension50_N.convertExtension(e));
+      }
     }
   }
 
