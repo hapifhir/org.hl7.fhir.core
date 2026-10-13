@@ -5595,9 +5595,12 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private List<Base> funcToString(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
     for (Base item : focus) {
-      String value = convertToString(item);
-      if (value != null)
-        result.add(new StringType(value).noExtensions());
+      // only primitives and Quantity can be converted to a string; anything else is {}
+      if (item.isPrimitive() || "Quantity".equals(item.fhirType())) {
+        String value = convertToString(item);
+        if (value != null)
+          result.add(new StringType(value).noExtensions());
+      }
     }
 
     if (result.size() > 1) {

@@ -2250,6 +2250,12 @@ public class FHIRPathEngine {
 
   private List<Base> funcToString(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
+    for (Base item : focus) {
+      // only primitives can be converted to a string; anything else is {}
+      if (!item.isPrimitive()) {
+        return result;
+      }
+    }
     result.add(new StringType(convertToString(focus)));
     return result;
   }
