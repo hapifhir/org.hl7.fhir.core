@@ -262,6 +262,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean minimalMemory = false;
 
   private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
+  // the entries of allResourcesById, and the entries without an id, by url (see indexResource())
   private Map<String, List<ResourceProxy>> allResourcesByUrl = new HashMap<String, List<ResourceProxy>>();
 
   // all maps are to the full URI
@@ -354,7 +355,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected void copy(BaseWorkerContext other) {
     synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet 
-      allResourcesById.putAll(other.allResourcesById);
+      // the maps are copied rather than shared, so that resources added to or dropped from one context don't
+      // change the other's maps, and allResourcesByUrl stays in step with allResourcesById in both
+      for (Map.Entry<String, Map<String, ResourceProxy>> e : other.allResourcesById.entrySet()) {
+        allResourcesById.put(e.getKey(), new HashMap<>(e.getValue()));
+      }
+      for (Map.Entry<String, List<ResourceProxy>> e : other.allResourcesByUrl.entrySet()) {
+        allResourcesByUrl.put(e.getKey(), new ArrayList<>(e.getValue()));
+      }
       codeSystems.copy(other.codeSystems);
       valueSets.copy(other.valueSets);
       maps.copy(other.maps);
@@ -443,24 +451,52 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private void registerInAllResourceIndex(CanonicalResourceProxy r, PackageInformation packageInfo) {
-    if (r.getId() != null) {
-      Map<String, ResourceProxy> map = allResourcesById.get(r.getType());
-      if (map == null) {
-        map = new HashMap<String, ResourceProxy>();
-        allResourcesById.put(r.getType(), map);
+    indexResource(r.getType(), r.getId(), new ResourceProxy(r), packageInfo);
+  }
+
+  /**
+   * Adds the entry to allResourcesById, if it has an id, and to allResourcesByUrl, if it has a url. An entry from an
+   * examples package doesn't replace an entry with the same type and id, and is not added at all.
+   *
+   * allResourcesByUrl holds the same entries as allResourcesById (and the entries without an id), so an entry that is
+   * replaced or dropped is removed from both. This relies on an entry's url not changing after it's added: the urls
+   * that are changed (by PackageHacker) are changed before the resource is registered
+   *
+   * @return false if the entry was not added
+   */
+  private boolean indexResource(String type, String id, ResourceProxy r, PackageInformation packageInfo) {
+    if (id != null) {
+      Map<String, ResourceProxy> map = allResourcesById.computeIfAbsent(type, k -> new HashMap<>());
+      if (packageInfo != null && packageInfo.isExamplesPackage() && map.containsKey(id)) {
+        return false;
       }
-      if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
-        map.put(r.getId(), new ResourceProxy(r));
-      }
+      unindexUrl(map.put(id, r));
     }
-    if (r.getUrl() != null) {
+    String url = r.getUrl();
+    if (url != null) {
+      allResourcesByUrl.computeIfAbsent(url, k -> new ArrayList<>()).add(r);
+    }
+    return true;
+  }
+
+  private void unindexUrl(ResourceProxy r) {
+    if (r != null && r.getUrl() != null) {
       List<ResourceProxy> list = allResourcesByUrl.get(r.getUrl());
-      if (list == null) {
-        list = new ArrayList<>();
-        allResourcesByUrl.put(r.getUrl(), list);
+      if (list != null) {
+        list.removeIf(e -> e == r);
+        if (list.isEmpty()) {
+          allResourcesByUrl.remove(r.getUrl());
+        }
       }
-      list.add(new ResourceProxy(r));
     }
+  }
+
+  /**
+   * @return the entries with the url (of any type), in the order they were added
+   */
+  private List<ResourceProxy> getResourcesForUrl(String url) {
+    List<ResourceProxy> list = allResourcesByUrl.get(url);
+    return list == null ? Collections.emptyList() : list;
   }
 
   private boolean registerResource(CanonicalResourceProxy r, PackageInformation packageInfo) {
@@ -516,28 +552,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         packages.put(packageInfo.getVID(), packageInfo);
       }
 
-      if (r.getId() != null) {
-        Map<String, ResourceProxy> map = allResourcesById.get(r.fhirType());
-        if (map == null) {
-          map = new HashMap<String, ResourceProxy>();
-          allResourcesById.put(r.fhirType(), map);
-        }
-        if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
-          map.put(r.getId(), new ResourceProxy(r));
-        } else {
-          logger.logDebugMessage(LogCategory.PROGRESS, "Ignore " + r.fhirType() + "/" + r.getId() + " from package " + packageInfo.toString());
-        }
-      }
-      if (r instanceof CanonicalResource) {
-        CanonicalResource cr = (CanonicalResource) r;
-        if (cr.getUrl() != null) {
-          List<ResourceProxy> list = allResourcesByUrl.get(cr.getUrl());
-          if (list == null) {
-            list = new ArrayList<>();
-            allResourcesByUrl.put(cr.getUrl(), list);
-          }
-          list.add(new ResourceProxy(r));
-        }
+      if (!indexResource(r.fhirType(), r.getId(), new ResourceProxy(r), packageInfo)) {
+        logger.logDebugMessage(LogCategory.PROGRESS, "Ignore " + r.fhirType() + "/" + r.getId() + " from package " + packageInfo.toString());
       }
 
       if (r instanceof CodeSystem || r instanceof NamingSystem) {
@@ -2599,20 +2615,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           return (T) questionnaires.getByPackage(uri, version, pvlist);
         }
 
-        for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
-          for (ResourceProxy r : rt.values()) {
-            if (uri.equals(r.getUrl())) {
-              Resource resource = r.getResource();
-              if (version == null) {
-                return (T) resource;
-              }
-              if (resource instanceof CanonicalResource && version.equals(((CanonicalResource) resource).getVersion())) {
-                return (T) resource;
-              }
-              if (version.equals(resource.getMeta().getVersionId())) {
-                return (T) resource;
-              }
-            }
+        for (ResourceProxy r : getResourcesForUrl(uri)) {
+          Resource resource = r.getResource();
+          if (version == null) {
+            return (T) resource;
+          }
+          if (resource instanceof CanonicalResource && version.equals(((CanonicalResource) resource).getVersion())) {
+            return (T) resource;
+          }
+          if (version.equals(resource.getMeta().getVersionId())) {
+            return (T) resource;
           }
         }
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
@@ -2835,12 +2847,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version);
         }
-        for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
-          for (ResourceProxy r : rt.values()) {
-            if (uri.equals(r.getUrl())) {
-              return (T) r.getResource();
-            }
-          }
+        List<ResourceProxy> list = getResourcesForUrl(uri);
+        if (!list.isEmpty()) {
+          return (T) list.get(0).getResource();
         }
       } else if ("ImplementationGuide".equals(cls)) {
         return (T) guides.get(uri, version);
@@ -3171,7 +3180,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         allResourcesById.put(fhirType, map);
       }
       if (map.containsKey(id)) {
-        map.remove(id); // this is a challenge because we might have more than one resource with this id (different versions)
+        unindexUrl(map.remove(id)); // this is a challenge because we might have more than one resource with this id (different versions)
       }
 
       if (fhirType.equals("StructureDefinition")) {
