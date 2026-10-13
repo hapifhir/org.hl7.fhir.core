@@ -78,7 +78,7 @@ class FHIRPathDistinctTests {
     elementValues = null;
   }
 
-  // the values of the extensions in a Basic, parsed into the element model
+  // the values of the extensions in a Basic, parsed into the element model, and two complex nodes given a value
   private static List<Base> parseElementValues() throws IOException {
     String[] values = {
       "\"valueDecimal\": 1", "\"valueDecimal\": 1.0", "\"valueDecimal\": 1.00", "\"valueDecimal\": 100", "\"valueDecimal\": 10.0",
@@ -98,6 +98,13 @@ class FHIRPathDistinctTests {
     Element basic = Manager.parse(context, new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)), FhirFormat.JSON).get(0).getElement();
     List<Base> res = fp.evaluate(basic, "Basic.extension.value");
     Assertions.assertEquals(values.length, res.size());
+    // complex nodes with a value, like a CDA ST: doEquals() compares these with compareDeep(), not by value
+    Element code = basic.getNamedChild("code");
+    code.setValue("a");
+    res.add(code);
+    Element extension = basic.getChildrenByName("extension").get(0);
+    extension.setValue("1.0");
+    res.add(extension);
     return res;
   }
 
