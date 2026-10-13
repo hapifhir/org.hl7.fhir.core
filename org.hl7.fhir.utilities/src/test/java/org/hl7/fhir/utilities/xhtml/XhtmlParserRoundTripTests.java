@@ -77,4 +77,11 @@ class XhtmlParserRoundTripTests {
     Assertions.assertEquals(DIV + "Привет — ü</div>",
       new XhtmlComposer(false).compose(new XhtmlParser().parse(new ByteArrayInputStream(bytes), "div")));
   }
+
+  @Test
+  void utf8FragmentInputStream() throws IOException {
+    byte[] bytes = "<p>Привет — ü</p>".getBytes(StandardCharsets.UTF_8);
+    Assertions.assertEquals("<p>Привет — ü</p>",
+      new XhtmlComposer(false).compose(new XhtmlParser().parseFragment(new ByteArrayInputStream(bytes))));
+  }
 }

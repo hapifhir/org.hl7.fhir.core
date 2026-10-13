@@ -32,7 +32,6 @@ package org.hl7.fhir.utilities.xhtml;
 
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1445,7 +1444,7 @@ public class XhtmlParser {
   }
 
   public XhtmlNode parseFragment(InputStream input) throws IOException, FHIRException  {
-    setSource(new String(input.readAllBytes(), Charset.defaultCharset()));
+    setSource(new String(input.readAllBytes(), StandardCharsets.UTF_8));
     return parseFragment();
   }
 
