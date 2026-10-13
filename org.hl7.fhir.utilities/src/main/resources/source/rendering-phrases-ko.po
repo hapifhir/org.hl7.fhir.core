@@ -3288,17 +3288,17 @@ msgstr ""
 
 # REND_ADDED
 #: REND_ADDED
-msgid "Added:"
+msgid "Added"
 msgstr ""
 
 # REND_CHANGED
 #: REND_CHANGED
-msgid "Changed:"
+msgid "Changed"
 msgstr ""
 
 # REND_REMOVED
 #: REND_REMOVED
-msgid "Removed:"
+msgid "Removed"
 msgstr ""
 
 # REND_ROW_CHANGED_SINCE_WAS

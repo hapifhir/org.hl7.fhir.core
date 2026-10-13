@@ -61,8 +61,6 @@ import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.XhtmlType;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-
-import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
 import org.hl7.fhir.utilities.NamedItemList.NamedItem;
@@ -485,9 +483,22 @@ public class Element extends Base implements NamedItem {
       return this;
     }
     
+    List<Property> childProperties = property.getChildProperties(this.name, type);
+    Property propertyForValue = null;
+    for (Property p : childProperties) {
+      if (p.getName().equals(name) || p.getName().equals(name + "[x]")
+          || (p.getName().endsWith("[x]") && p.getName().replace("[x]", Utilities.capitalize(value.fhirType())).equals(name))) {
+        propertyForValue = p;
+        break;
+      }
+    }
+    if (propertyForValue == null) {
+      throw new FHIRException("Cannot set property " + name + " on " + this.name + " to a " + value.fhirType());
+    }
+
     if (!value.isPrimitive() && !(value instanceof Element)) {
       if (isDataType(value)) 
-        value = convertToElement(property.getChild(name), value);
+        value = convertToElement(propertyForValue, value);
       else
         throw new FHIRException("Cannot set property "+name+" on "+this.name+" - value is not a primitive type ("+value.fhirType()+") or an ElementModel type");
     }
@@ -498,9 +509,19 @@ public class Element extends Base implements NamedItem {
     
     // look through existing children
     for (Element child : children) {
-      if (child.getName().equals(name)) {
+      if (child.getName().equals(name) || (propertyForValue.getName().endsWith("[x]")
+          && propertyForValue.getName().equals(child.getProperty().getName()))) {
         if (!child.isList()) {
           childForValue = child;
+          if (propertyForValue.getName().endsWith("[x]") && !child.fhirType().equals(value.fhirType())) {
+            childForValue.type = value.fhirType();
+            childForValue.value = null;
+            childForValue.children = null;
+            childForValue.xhtml = null;
+            childForValue.xhtmlSource = null;
+            childForValue.xhtmlOutputHash = 0;
+            childForValue.explicitType = null;
+          }
           break;
         } else {
           Element ne = new Element(child).setFormat(format);
@@ -514,7 +535,7 @@ public class Element extends Base implements NamedItem {
 
     int i = 0;
     if (childForValue == null) {
-      for (Property p : property.getChildProperties(this.name, type)) {
+      for (Property p : childProperties) {
         int t = -1;
         for (int c =0; c < children.size(); c++) {
           Element e = children.get(c);
@@ -523,13 +544,8 @@ public class Element extends Base implements NamedItem {
         }
         if (t >= i)
           i = t+1;
-        if (p.getName().equals(name) || p.getName().equals(name+"[x]")) {
+        if (p == propertyForValue) {
           Element ne = new Element(name, p).setFormat(format);
-          children.add(i, ne);
-          childForValue = ne;
-          break;
-        } else if (p.getName().endsWith("[x]") && name.startsWith(p.getName().replace("[x]", ""))) {
-          Element ne = new Element(p.getName(), p).setFormat(format);
           children.add(i, ne);
           childForValue = ne;
           break;
@@ -537,11 +553,16 @@ public class Element extends Base implements NamedItem {
       }
     }
     
+    if (childForValue == value) {
+      return childForValue;
+    }
     if (childForValue == null)
       throw new Error("Cannot set property "+name+" on "+this.name);
     else if (value.isPrimitive()) {
-      if (childForValue.property.getName().endsWith("[x]"))
-        childForValue.name = childForValue.name.replace("[x]", "")+Utilities.capitalize(value.fhirType());
+      if (childForValue.property.getName().endsWith("[x]")) {
+        childForValue.type = value.fhirType();
+        childForValue.name = childForValue.property.getName().replace("[x]", Utilities.capitalize(value.fhirType()));
+      }
       if (!childForValue.isXhtml()) {
         childForValue.setValue(value.primitiveValue());
       } else {
@@ -556,7 +577,7 @@ public class Element extends Base implements NamedItem {
       Element ve = (Element) value;
       childForValue.type = ve.getType();
       if (childForValue.property.getName().endsWith("[x]"))
-        childForValue.name = name+Utilities.capitalize(childForValue.type);
+        childForValue.name = childForValue.property.getName().replace("[x]", Utilities.capitalize(childForValue.type));
       else if (value.isResource()) {
         if (childForValue.elementProperty == null)
           childForValue.elementProperty = childForValue.property;
@@ -569,6 +590,8 @@ public class Element extends Base implements NamedItem {
         else 
           childForValue.children.clear();
         childForValue.children.addAll(ve.children);
+      } else if (childForValue.children != null) {
+        childForValue.children.clear();
       }
     }
     return childForValue;
@@ -623,9 +646,9 @@ public class Element extends Base implements NamedItem {
         }
         Element ne = new Element(name, p).setFormat(format);
         ne.setType(type);
-        children.add(ne);
-        ne.index = children.getSizeByName(ne.getListName()) - 1;
-        return ne;
+        Element child = (Element) setProperty(name.hashCode(), name, ne);
+        child.index = children.getSizeByName(child.getListName()) - 1;
+        return child;
         
       }
     }
@@ -1045,7 +1068,13 @@ public class Element extends Base implements NamedItem {
     if (p != null) {
       Set<String> types = new HashSet<String>();
       for (TypeRefComponent tr : p.getDefinition().getType()) {
-        types.add(tr.getCode());
+        // Check for the fhir type extension first
+        if (tr.hasExtension(ExtensionDefinitions.EXT_FHIR_TYPE)) {
+          var fhirType = tr.getExtensionString(ExtensionDefinitions.EXT_FHIR_TYPE);
+          types.add(fhirType);
+        }
+        else
+          types.add(tr.getCode());
       }
       return types.toArray(new String[]{});
     }

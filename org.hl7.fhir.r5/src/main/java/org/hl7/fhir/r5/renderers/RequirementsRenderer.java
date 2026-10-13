@@ -42,6 +42,11 @@ public class RequirementsRenderer extends ResourceRenderer {
     renderResourceTechDetails(req, x);
     genSummaryTable(status, x, (CanonicalResource) req.getResourceNative());
 
+    if (req.has("purpose")) {
+      x.para().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_PURPOSE));
+      addMarkdown(x, req.primitiveValue("purpose"));
+    }
+
     if (req.has("actor")) {
       List<ResourceWrapper> actors = req.children("actor");
       if (actors.size() == 1) {
@@ -97,7 +102,8 @@ public class RequirementsRenderer extends ResourceRenderer {
       boolean first = true;
       List<ResourceWrapper> confs = stmt.children("conformance");
       if (confs.isEmpty()) {
-        boolean shallNot = stmt.extensionValue("http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot").primitiveValue().equals("true");
+        ResourceWrapper shallNotValue = stmt.extensionValue("http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot");
+        boolean shallNot = shallNotValue != null && "true".equals(shallNotValue.primitiveValue());
         if (shallNot)
           td.tx(context.formatPhrase(RenderingI18nContext.CONF_SHALLNOT));
       } else {
@@ -109,6 +115,13 @@ public class RequirementsRenderer extends ResourceRenderer {
             td.tx(t.primitiveValue().toUpperCase());
           }
         }
+      }
+      if ("true".equals(stmt.primitiveValue("conditionality"))) {
+        td.tx(" ");
+        td.span().attribute("title", context.formatPhrase(RenderingI18nContext.REQ_CONDITIONAL_HINT))
+          .style("display: inline-block").style("background-color: #d9e0e7").style("border: 1px solid #8da1b4")
+          .style("border-radius: 8px").style("padding: 0px 6px").style("font-size: 0.85em").style("white-space: nowrap")
+          .tx(context.formatPhrase(RenderingI18nContext.REQ_CONDITIONAL));
       }
       td = tr.td();
       addMarkdown(td, stmt.primitiveValue("requirement"));

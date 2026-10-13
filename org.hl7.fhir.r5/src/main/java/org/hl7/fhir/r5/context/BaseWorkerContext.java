@@ -2490,19 +2490,29 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return null;
     }
     if (uri.startsWith("#")) {
-      if (sourceForReference != null && sourceForReference instanceof DomainResource) {
-        for (Resource r : ((DomainResource) sourceForReference).getContained()) {
-          if (r.getClass() == class_ && ("#" + r.getIdBase()).equals(uri)) {
-            if (r instanceof CanonicalResource) {
-              CanonicalResource cr = (CanonicalResource) r;
-              if (!cr.hasUrl()) {
-                cr.setUrl(UUIDUtilities.makeUuidUrn());
+      // a #id is resolved against the resource's contained resources. If the reference is itself
+      // inside a contained resource, the id refers to a sibling: contained resources cannot contain
+      // others, so look in the container (see UserDataNames.CONTAINER_RESOURCE)
+      Resource container = sourceForReference;
+      int depth = 0; // the chain is the source and at most its container: bound it, so it can never loop
+      while (container != null && depth++ < 2) {
+        if (container instanceof DomainResource) {
+          for (Resource r : ((DomainResource) container).getContained()) {
+            if (r.getClass() == class_ && ("#" + r.getIdBase()).equals(uri)) {
+              if (r instanceof CanonicalResource) {
+                CanonicalResource cr = (CanonicalResource) r;
+                if (!cr.hasUrl()) {
+                  cr.setUrl(UUIDUtilities.makeUuidUrn());
+                }
               }
+              r.setUserData(UserDataNames.CONTAINED_RESOURCE, true);
+              r.setUserData(UserDataNames.CONTAINER_RESOURCE, container);
+              return (T) r;
             }
-            r.setUserData(UserDataNames.CONTAINED_RESOURCE, true);
-            return (T) r;
           }
         }
+        Object up = container.getUserData(UserDataNames.CONTAINER_RESOURCE);
+        container = up instanceof Resource ? (Resource) up : null;
       }
       return null;
     }

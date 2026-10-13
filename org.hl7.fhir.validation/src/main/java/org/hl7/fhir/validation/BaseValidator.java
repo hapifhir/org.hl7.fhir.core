@@ -1786,6 +1786,32 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     }
   }
 
+  /**
+   * whether an element (a search parameter base, a target profile...) applies to the FHIR version
+   * being validated, according to the version-specific-use extension on it (absent = all versions).
+   * Start and end are each optional and inclusive, and are compared at major.minor
+   */
+  protected boolean isForThisVersion(Element e) {
+    Element ext = e.getExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE);
+    if (ext == null) {
+      return true;
+    }
+    String ver = context.getFHIRVersion();
+    if (ext.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START)) {
+      String start = ext.getExtensionString(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START);
+      if (!Utilities.noString(start) && !VersionUtilities.isThisOrLater(start, ver, VersionUtilities.VersionPrecision.MINOR)) {
+        return false;
+      }
+    }
+    if (ext.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END)) {
+      String end = ext.getExtensionString(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END);
+      if (!Utilities.noString(end) && !VersionUtilities.isThisOrLater(ver, end, VersionUtilities.VersionPrecision.MINOR)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   protected boolean isHL7(Element cr) {
     String url = cr.getChildValue("url");
     return url != null && url.contains("hl7");

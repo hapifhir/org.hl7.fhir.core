@@ -397,6 +397,8 @@ public class I18nConstants {
   public static final String INVALID_SLICING__THERE_IS_MORE_THAN_ONE_TYPE_SLICE_AT__BUT_ONE_OF_THEM__HAS_MIN__1_SO_THE_OTHER_SLICES_CANNOT_EXIST = "Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist";
   public static final String INV_FAILED = "INV_FAILED";
   public static final String INV_FAILED_SOURCE = "INV_FAILED_SOURCE";
+  public static final String INV_FAILED_ID = "INV_FAILED_ID";
+  public static final String INV_FAILED_ID_SOURCE = "INV_FAILED_ID_SOURCE";
   public static final String JSON_COMMA_EXTRA = "JSON_COMMA_EXTRA";
   public static final String JSON_COMMA_MISSING = "JSON_COMMA_MISSING";
   public static final String JSON_COMMENTS_NOT_ALLOWED = "JSON_COMMENTS_NOT_ALLOWED";
@@ -764,6 +766,8 @@ public class I18nConstants {
   public static final String SD_PATH_TYPE_MISMATCH = "SD_PATH_TYPE_MISMATCH";
   public static final String SD_ROOT_CHANGED = "SD_ROOT_CHANGED";
   public static final String SD_ROOT_PROHIBITED = "SD_ROOT_PROHIBITED";
+  public static final String SD_CHILD_NOT_IN_TYPE = "SD_CHILD_NOT_IN_TYPE";
+  public static final String SD_CHILD_TYPE_UNCHECKABLE = "SD_CHILD_TYPE_UNCHECKABLE";
   public static final String SD_SPECIALIZED_TYPE_MATCHES = "SD_SPECIALIZED_TYPE_MATCHES";
   public static final String SD_TABLE_PROHIBITED = "SD_TABLE_PROHIBITED";
   public static final String SD_TABLE_REQUIRED = "SD_TABLE_REQUIRED";
@@ -796,6 +800,9 @@ public class I18nConstants {
   public static final String SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___DISCIMINATOR___ = "Slicing_rules_on_differential__do_not_match_those_on_base___disciminator___";
   public static final String SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___ORDER___ = "Slicing_rules_on_differential__do_not_match_those_on_base___order___";
   public static final String SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___RULE___ = "Slicing_rules_on_differential__do_not_match_those_on_base___rule___";
+  public static final String SM_CONSTANT_NAME_MISSING = "SM_CONSTANT_NAME_MISSING";
+  public static final String SM_CONSTANT_VALUE_MISSING = "SM_CONSTANT_VALUE_MISSING";
+  public static final String SM_CONSTANT_TYPE_UNDETERMINED = "SM_CONSTANT_TYPE_UNDETERMINED";
   public static final String SM_DEPENDENT_PARAM_MODE_MISMATCH = "SM_DEPENDENT_PARAM_MODE_MISMATCH";
   public static final String SM_DEPENDENT_PARAM_NOT_FOUND = "SM_DEPENDENT_PARAM_NOT_FOUND";
   public static final String SM_DEPENDENT_PARAM_TYPE_MISMATCH = "SM_DEPENDENT_PARAM_TYPE_MISMATCH";
@@ -853,6 +860,8 @@ public class I18nConstants {
   public static final String SM_TARGET_TYPE_MULTIPLE_POSSIBLE = "SM_TARGET_TYPE_MULTIPLE_POSSIBLE";
   public static final String SM_TARGET_TYPE_NOT_FOUND = "SM_TARGET_TYPE_NOT_FOUND";
   public static final String SM_TARGET_TYPE_UNKNOWN = "SM_TARGET_TYPE_UNKNOWN";
+  public static final String SM_TARGET_TYPE_INVALID = "SM_TARGET_TYPE_INVALID";
+  public static final String SM_TARGET_PATH_TYPE_INVALID = "SM_TARGET_PATH_TYPE_INVALID";
   public static final String SNAPSHOT_CONSTRAINT_KEY_CONFLICT = "SNAPSHOT_CONSTRAINT_KEY_CONFLICT";
   public static final String SNAPSHOT_DIFF_LOOSENS = "SNAPSHOT_DIFF_LOOSENS";
   public static final String SNAPSHOT_EXTENSION_SLICE_ON_SLICER = "SNAPSHOT_EXTENSION_SLICE_ON_SLICER";

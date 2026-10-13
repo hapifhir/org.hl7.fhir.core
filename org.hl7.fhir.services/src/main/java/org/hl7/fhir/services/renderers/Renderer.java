@@ -217,7 +217,7 @@ public class Renderer  {
         spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_ADDED));
         return true;
       case Changed:
-        if (self.getComp().noChangeOtherThanMetadata(metadataFields)) {
+        if (self.getComp() != null && self.getComp().noChangeOtherThanMetadata(metadataFields)) {
           x.span("color: #eeeeee").tx("n/c");
           return false;
         } else {
@@ -225,6 +225,11 @@ public class Renderer  {
               self.getOriginal() != null ? context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED_WAS, version, self.getOriginal()) : context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED, version));
           spanInner.img("icon-change-edit.png", "");
           spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_CHANGED));
+          String kinds = self.getComp() == null ? null : self.getComp().changeKindCodes(metadataFields);
+          if (!Utilities.noString(kinds)) {
+            spanInner.tx(" ");
+            spanInner.span(null, context.formatPhrase(RenderingI18nContext.REND_CHANGE_KINDS)).tx("("+kinds+")");
+          }
         }
         return true;
       case Deleted:

@@ -156,7 +156,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     opContext.note("analyse");
     if (valueset != null) {
       opContext.note("vs = "+valueset.getVersionedUrl());
-      opContext.seeContext(valueset.getVersionedUrl());
+      opContext.seeContext(contextName(valueset));
       for (Extension s : valueset.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
         requiredSupplements.add(s.getValue().primitiveValue());
       }
@@ -246,6 +246,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
     List<ValidationResult> resList = new ArrayList<>();
     Map<Integer, List<OperationOutcomeIssueComponent>> unresolvedSystemIssues = new HashMap<>();
     Set<Integer> matchedCodings = new HashSet<>();
+    // each coding's own result, by index, so that the status (inactive) of the coding that is
+    // returned can be reported - and only that coding's: an inactive coding that is not the
+    // one returned gets its warning, but does not make the returned code inactive
+    Map<Integer, ValidationResult> codingResults = new HashMap<>();
+    int foundIndex = -1;
     
     if (!options.isMembershipOnly()) {
       int i = 0;
@@ -335,6 +340,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           info.getIssues().addAll(res.getIssues());
           if (res != null) {
             resList.add(res);
+            codingResults.put(i, res);
             if (!res.isOk() && !res.messageIsInIssues()) {
               // no message ids here
               if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
@@ -376,6 +382,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           // every valid coding below; only foundCoding is locked to the first.
           if (foundCoding == null) {
             foundCoding = c.copy(Base.COPY_NOTHING);
+            foundIndex = i;
             foundCoding.setVersion(info.getFoundVersion());
           }
           if (!options.isMembershipOnly()) {
@@ -468,7 +475,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       res.setUnknownSystems(unknownSystems);
       res.addCodeableConcept(vcc);
-      return res;
+      return setFoundStatus(res, codingResults, foundIndex);
     } else if (result == null) {
       return new ValidationResult(IssueSeverity.WARNING, null, info.getIssues());
     } else if (foundCoding == null && valueset != null) {
@@ -484,7 +491,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         String disp = lookupDisplay(foundCoding);
         ConceptDefinitionComponent cd = new ConceptDefinitionComponent(null, foundCoding.getCode());
         cd.setDisplay(disp);
-        return new ValidationResult(IssueSeverity.WARNING, info.summaryList(), foundCoding.getSystem(), getVersion(foundCoding), cd, disp, info.getIssues()).addCodeableConcept(vcc);
+        return setFoundStatus(new ValidationResult(IssueSeverity.WARNING, info.summaryList(), foundCoding.getSystem(), getVersion(foundCoding), cd, disp, info.getIssues()).addCodeableConcept(vcc), codingResults, foundIndex);
       }
     } else if (!result) {
       if (valueset != null) {
@@ -497,10 +504,23 @@ public class ValueSetValidator extends ValueSetProcessBase {
     } else if (foundCoding != null) {
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(null, foundCoding.getCode());
       cd.setDisplay(lookupDisplay(foundCoding));
-      return new ValidationResult(foundCoding.getSystem(), getVersion(foundCoding), cd, getPreferredDisplay(cd, null)).addCodeableConcept(vcc);
+      return setFoundStatus(new ValidationResult(foundCoding.getSystem(), getVersion(foundCoding), cd, getPreferredDisplay(cd, null)).addCodeableConcept(vcc), codingResults, foundIndex);
     } else {
       throw new Error("This should never happen - ther response from the server could not be understood");
     }
+  }
+
+  /**
+   * The inactive / status output parameters describe the code being returned, so on a
+   * CodeableConcept they come from the result of the coding that was returned (the first that
+   * validated), not from whichever coding happened to be inactive
+   */
+  private ValidationResult setFoundStatus(ValidationResult res, Map<Integer, ValidationResult> codingResults, int foundIndex) {
+    ValidationResult fr = codingResults.get(foundIndex);
+    if (fr != null && fr.isInactive()) {
+      res.setStatus(true, fr.getStatus());
+    }
+    return res;
   }
 
   /**

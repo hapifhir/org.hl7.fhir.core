@@ -124,6 +124,9 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     private CodeSystem cs;
     private boolean restructure;
     private Set<String> processed = new HashSet<>();
+    // top level concepts by the codes they are subsumedBy, in concept order. Built on first use; without it every
+    // row rendered scanned the whole code system, which is quadratic for large flat code systems
+    private Map<String, List<ConceptDefinitionComponent>> subsumedByIndex;
 
     public CodeSystemNavigator(CodeSystem cs) {
       this.cs = cs;
@@ -169,8 +172,8 @@ public class CodeSystemUtilities extends TerminologyUtilities {
             res.add(cd);
             processed.add(cd.getCode());
           }
-          for (ConceptDefinitionComponent cd : cs.getConceptList()) {
-            if (getSubsumedBy(cd).contains(context.getCode()) && !processed.contains(cd.getCode())) {
+          for (ConceptDefinitionComponent cd : getSubsumedConcepts(context.getCode())) {
+            if (!processed.contains(cd.getCode())) {
               res.add(cd);
               processed.add(cd.getCode());
             }
@@ -192,10 +195,23 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       return codes;
     }
 
+    private List<ConceptDefinitionComponent> getSubsumedConcepts(String code) {
+      if (subsumedByIndex == null) {
+        subsumedByIndex = new HashMap<>();
+        for (ConceptDefinitionComponent cd : cs.getConceptList()) {
+          // a concept is listed once per code, even if it says it is subsumedBy the same code more than once
+          for (String parent : new LinkedHashSet<>(getSubsumedBy(cd))) {
+            subsumedByIndex.computeIfAbsent(parent, k -> new ArrayList<>()).add(cd);
+          }
+        }
+      }
+      return subsumedByIndex.getOrDefault(code, Collections.emptyList());
+    }
+
     public List<ConceptDefinitionComponent> getOtherChildren(@Nonnull ConceptDefinitionComponent context) {
       List<ConceptDefinitionComponent> res = new ArrayList<>();
-      for (ConceptDefinitionComponent cd : cs.getConceptList()) {
-        if (getSubsumedBy(cd).contains(context.getCode()) && processed.contains(cd.getCode())) {
+      for (ConceptDefinitionComponent cd : getSubsumedConcepts(context.getCode())) {
+        if (processed.contains(cd.getCode())) {
           res.add(cd);
         }
       }
@@ -811,15 +827,44 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     }
     ret.setUserData(UserDataNames.tx_known_supplements, b.toString());
 
-    for (ConceptDefinitionComponent t : ret.getConceptList()) {
-      mergeSupplements(ret, t, supplements);
+    // index each supplement by code, rather than searching it for every concept in the code system
+    List<Map<String, ConceptDefinitionComponent>> supplementIndexes = new ArrayList<>();
+    for (CodeSystem sup : supplements) {
+      Map<String, ConceptDefinitionComponent> index = new HashMap<>();
+      indexCodes(index, sup.getConceptList());
+      supplementIndexes.add(index);
     }
+    for (ConceptDefinitionComponent t : ret.getConceptList()) {
+      mergeSupplements(ret, t, supplements, supplementIndexes);
+    }
+    // the copy shares the original's user data, so its cross-links still lead to the original
+    // concepts, which have none of the supplement content - link the copy's own concepts instead
+    clearCrossLinks(ret.getConceptList());
+    crossLinkCodeSystem(ret);
     return ret;
   }
 
-  private static void mergeSupplements(CodeSystem ret, ConceptDefinitionComponent fdef, List<CodeSystem> supplements) {
-    for (CodeSystem cs : supplements) {
-      ConceptDefinitionComponent def = CodeSystemUtilities.findCode(cs.getConceptList(), fdef.getCode());
+  private static void clearCrossLinks(List<ConceptDefinitionComponent> concepts) {
+    for (ConceptDefinitionComponent c : concepts) {
+      c.clearUserData(USER_DATA_CROSS_LINK);
+      clearCrossLinks(c.getConceptList());
+    }
+  }
+
+  // the first concept with the code wins, in the same order that findCode() searches
+  private static void indexCodes(Map<String, ConceptDefinitionComponent> index, List<ConceptDefinitionComponent> list) {
+    for (ConceptDefinitionComponent c : list) {
+      if (c.hasCode()) {
+        index.putIfAbsent(c.getCode(), c);
+      }
+      indexCodes(index, c.getConceptList());
+    }
+  }
+
+  private static void mergeSupplements(CodeSystem ret, ConceptDefinitionComponent fdef, List<CodeSystem> supplements, List<Map<String, ConceptDefinitionComponent>> supplementIndexes) {
+    for (int i = 0; i < supplements.size(); i++) {
+      CodeSystem cs = supplements.get(i);
+      ConceptDefinitionComponent def = supplementIndexes.get(i).get(fdef.getCode());
       if (def != null) {
         for (Extension ext : def.getExtension()) {
           fdef.addExtension(ext.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA)));
@@ -839,7 +884,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
         }
       }
       for (ConceptDefinitionComponent t : fdef.getConceptList()) {
-        mergeSupplements(ret, t, supplements);
+        mergeSupplements(ret, t, supplements, supplementIndexes);
       }      
     }
   }

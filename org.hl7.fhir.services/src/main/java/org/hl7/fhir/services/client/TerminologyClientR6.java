@@ -230,9 +230,9 @@ public class TerminologyClientR6 implements ITerminologyClientN {
   public CanonicalResource read(String type, String id) {
     Class<Resource> t;
     try {
-      t = (Class<Resource>) Class.forName("org.hl7.fhir.r5.model." + type);// todo: do we have to deal with any resource renaming? Use cases are limited...
+      t = (Class<Resource>) Class.forName("org.hl7.fhir.model.core." + type);// todo: do we have to deal with any resource renaming? Use cases are limited...
     } catch (ClassNotFoundException e) {
-      throw new FHIRException("Unable to fetch resources of type " + type + " in R5");
+      throw new FHIRException("Unable to fetch resources of type " + type + " in R6");
     }
     Resource r5 = client.read(t, id);
     if (r5 == null) {

@@ -83,7 +83,11 @@ public class ObjectConverter  {
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tn, null), VersionResolutionRules.defaultRule());
     if (sd == null)
       throw new FHIRException("Unable to find definition for type "+tn);
-    Element res = new Element(property.getName(), property);
+    Element res;
+    if (property.isChoice())
+      res = new Element(property.getName().replace("[x]", org.hl7.fhir.utilities.Utilities.capitalize(tn)), property);
+    else
+      res = new Element(property.getName(), property);
     if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) 
       res.setValue(((PrimitiveType) base).asStringValue());
 

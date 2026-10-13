@@ -31,15 +31,7 @@ package org.hl7.fhir.utilities.npm;
 
 
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CodingErrorAction;
@@ -398,6 +390,23 @@ public class NpmPackage {
     }
 
 
+      /**
+       * The resource with the given type and id, or null if it's not in this folder. Also null if there's 
+       * no index in memory (in minimal memory mode, or if the folder's index couldn't be read)
+       */
+      public InputStream getResource(String type, String id) throws IOException {
+        if (cachedIndex == null) {
+          return null;
+        }
+        for (JsonObject res : cachedIndex.getJsonObjects("files")) {
+          if (type.equals(res.asString("resourceType")) && id.equals(res.asString("id"))) {
+            // fetchFile goes through ManagedFileAccess, and also works for packages loaded into memory from a tgz (no folder)
+            byte[] cnt = fetchFile(res.asString("filename"));
+            return cnt == null ? null : new ByteArrayInputStream(cnt);
+          }
+        }
+        return null;
+      }
   }
 
 

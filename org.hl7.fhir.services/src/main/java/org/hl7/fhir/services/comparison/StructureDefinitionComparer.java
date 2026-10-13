@@ -143,9 +143,14 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       ch = true;
       chMetadata.add("abstract");
     }
-    res.updatedMetadataState(ch, chMetadata);
+    // for a StructureDefinition, the description is (part of) the definition of the structure, not metadata
+    boolean descriptionChanged = chMetadata.remove("description");
+    res.updatedMetadataState(!chMetadata.isEmpty(), chMetadata);
+    if (descriptionChanged) {
+      res.addDefinitionItem("description");
+    }
     
-    ch = false;
+    ch = descriptionChanged;
     ch = comparePrimitives("type", left.getTypeElement(), right.getTypeElement(), res.getMetadata(), IssueSeverity.ERROR, res) || ch;
     ch = comparePrimitives("baseDefinition", left.getBaseDefinitionElement(), right.getBaseDefinitionElement(), res.getMetadata(), IssueSeverity.ERROR, res) || ch;
     if (left.getType().equals(right.getType())) {
@@ -426,10 +431,10 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       ch = compareDataTypesWithTracking("pattern", edl.getPattern(), edr.getPattern(), null, IssueSeverity.ERROR, null, edr) || ch;
       ch = compareDataTypesWithTracking("minValue", edl.getMinValue(), edr.getMinValue(), null, IssueSeverity.ERROR, null, edr) || ch;
       ch = compareDataTypesWithTracking("maxValue", edl.getMaxValue(), edr.getMaxValue(), null, IssueSeverity.ERROR, null, edr) || ch;
-      ch = comparePrimitivesWithTracking("maxLength", edl.getMaxLengthElement(), edr.getMaxLengthElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
-      ch = comparePrimitivesWithTracking("mustHaveValue", edl.getMustHaveValueElement(), edr.getMustHaveValueElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      ch = comparePrimitivesWithTracking("maxLength", edl.getMaxLengthElement(), edr.getMaxLengthElement(), null, IssueSeverity.INFORMATION, null, edr) || ch;
+      ch = comparePrimitivesWithTracking("mustHaveValue", edl.getMustHaveValueElement(), edr.getMustHaveValueElement(), null, IssueSeverity.INFORMATION, null, edr) || ch;
       ch = comparePrimitivesWithTracking("valueAlternatives", edl.getValueAlternativesList(), edr.getValueAlternativesList(), null, IssueSeverity.INFORMATION, null, edr) || ch;
-      ch = comparePrimitivesWithTracking("isModifier", edl.getIsModifierElement(), edr.getIsModifierElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      ch = comparePrimitivesWithTracking("isModifier", edl.getIsModifierElement(), edr.getIsModifierElement(), null, IssueSeverity.INFORMATION, null, edr) || ch;
       
       def = compareTypes(path, sliceName, edl, edr, res) || def;
       
@@ -454,6 +459,9 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       // main todos:
       //  invariants, slicing
       // mappings 
+    }
+    if (def && edr != null) {
+      res.addDefinitionItem(edr.getIdOrPath());
     }
     // add the children
     if (ch) {

@@ -237,7 +237,7 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
     }
 
     public boolean noUpdates() {
-      return !(changedMetadata.noteable() || changedDefinitions.noteable() || !changedContent.noteable() || !changedContentInterpretation.noteable());
+      return !(changedMetadata.noteable() || changedDefinitions.noteable() || changedContent.noteable() || changedContentInterpretation.noteable());
     }
 
     public boolean noChangeOtherThanMetadata(String[] metadataFields) {

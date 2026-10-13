@@ -2120,6 +2120,10 @@ public class FHIRPathEngine {
   private Boolean doEquals(Base left, Base right) {
     if (left instanceof Quantity && right instanceof Quantity) {
       return qtyEqual((Quantity) left, (Quantity) right);
+    } else if ((left.isPrimitive() || left.hasPrimitiveValue()) != (right.isPrimitive() || right.hasPrimitiveValue())) {
+      // a primitive and a complex value are different types, so they are not equal: = is false and
+      // != is true. A logical model type with a value (e.g. CDA ST) counts as primitive here
+      return false;
     } else if (left.isDateTime() && right.isDateTime()) {
       return datesEqual(left.dateTimeValue(), right.dateTimeValue());
     } else if (left instanceof DecimalType || right instanceof DecimalType) {
@@ -5626,7 +5630,11 @@ public class FHIRPathEngine {
   private List<Base> funcHasValue(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1) {
-      String s = convertToString(focus.get(0));
+      // only something with a primitive value has a value. For a complex type convertToString() gives
+      // toString(), which is never blank, so every complex item claimed to have one; but a logical
+      // model type (e.g. CDA ST) can carry a value without being a FHIR primitive
+      Base b = focus.get(0);
+      String s = b.isPrimitive() ? convertToString(b) : b.hasPrimitiveValue() ? b.primitiveValue() : null;
       result.add(new BooleanType(!Utilities.noString(s)).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());

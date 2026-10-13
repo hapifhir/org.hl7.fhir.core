@@ -3324,18 +3324,18 @@ msgstr "Щось пішло не так з крос-версійним анал�
 
 # REND_ADDED
 #: REND_ADDED
-msgid "Added:"
-msgstr "Додано:"
+msgid "Added"
+msgstr "Додано"
 
 # REND_CHANGED
 #: REND_CHANGED
-msgid "Changed:"
-msgstr "Змінений:"
+msgid "Changed"
+msgstr "Змінений"
 
 # REND_REMOVED
 #: REND_REMOVED
-msgid "Removed:"
-msgstr "Видалені:"
+msgid "Removed"
+msgstr "Видалені"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS

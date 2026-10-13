@@ -13,6 +13,7 @@ public class ExtensionDefinitions {
   public static final String EXT_XML_NAME_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";
   public static final String EXT_XML_NAME = "http://hl7.org/fhir/tools/StructureDefinition/xml-name";
   public static final String EXT_EXPLICIT_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-explicit-type-name";
+  public static final String EXT_REFERENCES_CONTAINED = "http://hl7.org/fhir/StructureDefinition/referencesContained";
 
   public static final String EXT_IGP_RESOURCES = "http://hl7.org/fhir/StructureDefinition/igpublisher-folder-resource";
   public static final String EXT_IGP_PAGES = "http://hl7.org/fhir/StructureDefinition/igpublisher-folder-pages";
