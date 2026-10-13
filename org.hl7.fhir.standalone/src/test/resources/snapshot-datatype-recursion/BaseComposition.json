@@ -1,0 +1,81 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "BaseComposition",
+  "url": "http://example.org/fhir/StructureDefinition/BaseComposition",
+  "name": "BaseComposition",
+  "status": "draft",
+  "kind": "resource",
+  "abstract": false,
+  "type": "Composition",
+  "derivation": "specialization",
+  "snapshot": {
+    "element": [
+      {
+        "id": "Composition",
+        "path": "Composition",
+        "min": 0,
+        "max": "*"
+      },
+      {
+        "id": "Composition.section",
+        "path": "Composition.section",
+        "min": 0,
+        "max": "*",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "Composition.section.id",
+        "path": "Composition.section.id",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "Composition.section.extension",
+        "path": "Composition.section.extension",
+        "min": 0,
+        "max": "*",
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "url"
+            }
+          ],
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Composition.section.title",
+        "path": "Composition.section.title",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "string"
+          }
+        ]
+      },
+      {
+        "id": "Composition.section.section",
+        "path": "Composition.section.section",
+        "min": 0,
+        "max": "*",
+        "contentReference": "#Composition.section"
+      }
+    ]
+  }
+}
