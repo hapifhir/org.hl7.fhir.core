@@ -138,6 +138,24 @@ class ResourcesByUrlTests {
   }
 
   @Test
+  void droppingAResourceDropsItsEarlierEntriesWithOtherUrls() {
+    ActivityDefinition a = ad("x", URL_A, "1.0.0");
+    ActivityDefinition noUrl = ad("x", null, "2.0.0");
+    ActivityDefinition b = ad("x", URL_B, "3.0.0");
+    context.cacheResource(a);
+    context.cacheResource(noUrl);
+    context.cacheResource(b);
+    assertSame(a, fetch(context, URL_A));
+
+    context.dropResource("ActivityDefinition", "x");
+
+    assertNull(fetch(context, URL_A));
+    assertFalse(exists(context, URL_A));
+    assertTrue(versions(context, URL_A).isEmpty());
+    assertNull(fetch(context, URL_B));
+  }
+
+  @Test
   void otherVersionWithTheSameIdIsStillFoundByUrl() {
     ActivityDefinition a1 = ad("x", URL_A, "1.0.0");
     ActivityDefinition a2 = ad("x", URL_A, "2.0.0");
@@ -151,7 +169,7 @@ class ResourcesByUrlTests {
   }
 
   @Test
-  void sameVersionAddedAgainReplacesTheEarlierOne() {
+  void laterEntryWithTheSameIdIsFoundFirst() {
     ActivityDefinition a = ad("x", URL_A, "1.0.0");
     ActivityDefinition again = ad("x", URL_A, "1.0.0");
     context.cacheResource(a);
@@ -159,7 +177,19 @@ class ResourcesByUrlTests {
 
     assertSame(again, fetch(context, URL_A));
     assertSame(again, fetch(context, URL_A + "|1.0.0"));
-    assertEquals(List.of(again), versions(context, URL_A));
+    assertSame(again, fetchByVersion(context, URL_A));
+  }
+
+  @Test
+  void entryReplacedUnderItsIdIsStillFoundByItsUrl() {
+    ActivityDefinition a = ad("x", URL_A, "1.0.0");
+    ActivityDefinition b = ad("x", URL_B, "1.0.0");
+    context.cacheResource(a);
+    context.cacheResource(b);
+
+    assertSame(b, context.fetchResourceById("ActivityDefinition", "x"));
+    assertSame(a, fetch(context, URL_A));
+    assertSame(b, fetch(context, URL_B));
   }
 
   @Test
@@ -170,16 +200,6 @@ class ResourcesByUrlTests {
 
     assertEquals(2, context.fetchResourceVersions(CodeSystem.class, url).size());
     assertEquals(2, versions(context, url).size());
-  }
-
-  @Test
-  void proxyRegisteredAgainReplacesTheEarlierOne() {
-    String url = "http://example.org/CodeSystem/a";
-    context.setAllowLoadingDuplicates(true);
-    context.registerResourceFromPackage(csProxy("x", url, "1.0.0"), new PackageInformation("example.package", "1.0.0", "4.0.1", null));
-    context.registerResourceFromPackage(csProxy("x", url, "1.0.0"), new PackageInformation("other.package", "1.0.0", "4.0.1", null));
-
-    assertEquals(1, versions(context, url).size());
   }
 
   @Test

@@ -47,10 +47,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Predicate;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -197,6 +195,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public static class ResourceProxy {
     private Resource resource;
     private CanonicalResourceProxy proxy;
+    private ResourceProxy replaced; // the latest entry with a url that this one replaced in allResourcesById, if any
 
     public ResourceProxy(Resource resource) {
       super();
@@ -221,16 +220,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return proxy.getUrl();
       } else if (resource instanceof CanonicalResource) {
         return ((CanonicalResource) resource).getUrl();
-      } else {
-        return null;
-      }
-    }
-
-    private String getVersion() {
-      if (resource == null) {
-        return proxy.getVersion();
-      } else if (resource instanceof CanonicalResource) {
-        return ((CanonicalResource) resource).getVersion();
       } else {
         return null;
       }
@@ -282,7 +271,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean minimalMemory = false;
 
   private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
-  // the entries of allResourcesById, the other versions of them, and the entries without an id, by url (see indexResource())
+  // the entries of allResourcesById, the earlier entries they replaced, and the entries without an id, by url (see indexResource())
   private Map<String, List<ResourceProxy>> allResourcesByUrl = new HashMap<String, List<ResourceProxy>>();
 
   // all maps are to the full URI
@@ -478,10 +467,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    * Adds the entry to allResourcesById, if it has an id, and to allResourcesByUrl, if it has a url. An entry from an
    * examples package doesn't replace an entry with the same type and id, and is not added at all.
    *
-   * allResourcesById only has the latest entry for each type and id, but an earlier entry with another version is
-   * another version of the resource, and stays in allResourcesByUrl, as it does in the canonical resource managers
-   * (fetchResourceVersions() depends on this). An earlier entry with the same url and version is the same resource
-   * registered again, and is replaced in both. dropResource() removes every version with the type and id from both.
+   * allResourcesById only has the latest entry for each type and id, but allResourcesByUrl keeps the earlier ones,
+   * because they are usually other versions of the resource that are still loaded (the canonical resource managers
+   * keep them too, and fetchResourceVersions() lists them). It has the most recently added entry first, so an earlier
+   * entry never hides a later one. dropResource() removes every entry with the type and id from both: each entry
+   * links to the one it replaced, so that the urls of the earlier entries can be found.
    * This relies on an entry's url not changing after it's added: the urls that are changed (by PackageHacker) are
    * changed before the resource is registered
    *
@@ -494,22 +484,21 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (packageInfo != null && packageInfo.isExamplesPackage() && map.containsKey(id)) {
         return false;
       }
-      ResourceProxy old = map.put(id, r);
-      if (old != null && url != null && url.equals(old.getUrl()) && Objects.equals(r.getVersion(), old.getVersion())) {
-        unindexUrl(url, e -> e == old);
+      ResourceProxy previous = map.put(id, r);
+      if (previous != null) {
+        r.replaced = previous.getUrl() != null ? previous : previous.replaced;
       }
     }
     if (url != null) {
-      // the most recently added first, so that's the one found when the version doesn't matter
       allResourcesByUrl.computeIfAbsent(url, k -> new ArrayList<>()).add(0, r);
     }
     return true;
   }
 
-  private void unindexUrl(String url, Predicate<ResourceProxy> which) {
+  private void unindexUrl(String url, String type, String id) {
     List<ResourceProxy> list = allResourcesByUrl.get(url);
     if (list != null) {
-      list.removeIf(which);
+      list.removeIf(e -> e.hasTypeAndId(type, id));
       if (list.isEmpty()) {
         allResourcesByUrl.remove(url);
       }
@@ -3205,9 +3194,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         allResourcesById.put(fhirType, map);
       }
       if (map.containsKey(id)) {
-        ResourceProxy r = map.remove(id); // this is a challenge because we might have more than one resource with this id (different versions)
-        if (r.getUrl() != null) {
-          unindexUrl(r.getUrl(), e -> e.hasTypeAndId(fhirType, id));
+        // this is a challenge because we might have more than one resource with this id (different versions).
+        // The earlier entries with this id can have other urls, so the urls of all of them are unindexed
+        for (ResourceProxy r = map.remove(id); r != null; r = r.replaced) {
+          if (r.getUrl() != null) {
+            unindexUrl(r.getUrl(), fhirType, id);
+          }
         }
       }
 
