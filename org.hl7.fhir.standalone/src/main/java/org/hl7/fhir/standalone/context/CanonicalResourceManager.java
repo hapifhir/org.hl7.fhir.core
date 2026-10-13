@@ -119,9 +119,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       }
     }
 
-    // synchronized like getResource(), which sets resource and then clears proxy: fetchSpecializations()
-    // asks for the derivation of resources that another thread may be loading
-    public synchronized Object getDerivation() {
+    public Object getDerivation() {
       if (resource == null) {
         return proxy.getDerivation();
       } else {
