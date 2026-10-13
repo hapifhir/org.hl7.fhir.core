@@ -1,0 +1,111 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "BasePatient",
+  "url": "http://example.org/fhir/StructureDefinition/BasePatient",
+  "name": "BasePatient",
+  "status": "draft",
+  "kind": "resource",
+  "abstract": false,
+  "type": "Patient",
+  "derivation": "constraint",
+  "snapshot": {
+    "element": [
+      {
+        "id": "Patient",
+        "path": "Patient",
+        "min": 0,
+        "max": "*"
+      },
+      {
+        "id": "Patient.telecom",
+        "path": "Patient.telecom",
+        "min": 0,
+        "max": "*",
+        "type": [
+          {
+            "code": "ContactPoint"
+          }
+        ],
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "system"
+            }
+          ],
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Patient.telecom:phone",
+        "path": "Patient.telecom",
+        "min": 0,
+        "max": "*",
+        "sliceName": "phone",
+        "type": [
+          {
+            "code": "ContactPoint"
+          }
+        ]
+      },
+      {
+        "id": "Patient.telecom:phone.system",
+        "path": "Patient.telecom.system",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "fixedCode": "phone"
+      },
+      {
+        "id": "Patient.telecom:phone.use",
+        "path": "Patient.telecom.use",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      },
+      {
+        "id": "Patient.telecom:email",
+        "path": "Patient.telecom",
+        "min": 0,
+        "max": "*",
+        "sliceName": "email",
+        "type": [
+          {
+            "code": "ContactPoint"
+          }
+        ]
+      },
+      {
+        "id": "Patient.telecom:email.system",
+        "path": "Patient.telecom.system",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "fixedCode": "email"
+      },
+      {
+        "id": "Patient.telecom:email.use",
+        "path": "Patient.telecom.use",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "code"
+          }
+        ]
+      }
+    ]
+  }
+}
