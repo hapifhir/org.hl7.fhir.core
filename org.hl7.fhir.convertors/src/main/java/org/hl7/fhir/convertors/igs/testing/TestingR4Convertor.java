@@ -635,7 +635,7 @@ public class TestingR4Convertor extends VersionConvertorIGBase {
     org.hl7.fhir.r5.igs.testing.TestScript tgt = new org.hl7.fhir.r5.igs.testing.TestScript();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt, EXT_TS_TESTSYSTEM, VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE);
     for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE)) {
-      // the advisor will get this ignored.
+      // copyDomainResource was told to leave this extension out
       TestScriptScopeComponent scope = tgt.addScope();
       scope.setArtifact(ext.getExtensionString("artifact"));
       org.hl7.fhir.r4.model.Extension se = ext.getExtensionByUrl("conformance");
