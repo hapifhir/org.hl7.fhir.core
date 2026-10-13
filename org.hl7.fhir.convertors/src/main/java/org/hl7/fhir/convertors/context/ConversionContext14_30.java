@@ -36,16 +36,12 @@ public enum ConversionContext14_30 {
 
   private final VersionConvertorContext<VersionConvertor_14_30> context = new VersionConvertorContext<>();
 
-  public void init(VersionConvertor_14_30 versionConvertor_14_30, String path) {
-    context.init(versionConvertor_14_30, path);
+  public void init(VersionConvertor_14_30 versionConvertor_14_30) {
+    context.init(versionConvertor_14_30);
   }
 
-  public void close(String path) {
-    context.close(path);
-  }
-
-  public String path() {
-    return context.getPath();
+  public void close() {
+    context.close();
   }
 
   public VersionConvertor_14_30 getVersionConvertor_14_30() {

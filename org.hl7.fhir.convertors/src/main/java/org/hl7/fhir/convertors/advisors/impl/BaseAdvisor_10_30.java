@@ -13,8 +13,7 @@ public class BaseAdvisor_10_30 extends BaseAdvisor30<org.hl7.fhir.dstu2.model.Ex
     this.failFast = failFast;
   }
 
-  public boolean ignoreExtension(@Nonnull String path,
-                                 @Nonnull String url) {
+  public boolean ignoreExtension(@Nonnull String url) {
     // no globally ignored extensions here.
     return false;
   }

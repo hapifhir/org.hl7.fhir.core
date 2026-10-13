@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors.context;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -11,56 +10,57 @@ import org.junit.jupiter.api.Test;
 class VersionConvertorContextTest {
 
   @Test
-  void pathFollowsInitAndClose() {
+  void outermostConvertorIsKeptUntilItCloses() {
     VersionConvertorContext<Object> context = new VersionConvertorContext<>();
     Object convertor = new Object();
-    assertThrows(FHIRException.class, context::getPath);
+    assertNull(context.getVersionConvertor());
 
-    context.init(convertor, "Bundle");
-    assertEquals("Bundle", context.getPath());
-    context.init(new Object(), "Patient");
-    assertEquals("Bundle.Patient", context.getPath());
-    context.init(convertor, "Extension.value");
-    assertEquals("Bundle.Patient.Extension.value", context.getPath());
+    context.init(convertor);
+    context.init(new Object());
+    context.init(convertor);
     assertSame(convertor, context.getVersionConvertor());
 
-    context.close("Extension.value");
-    assertEquals("Bundle.Patient", context.getPath());
-    context.close("Patient");
-    assertEquals("Bundle", context.getPath());
-    context.close("Bundle");
-    assertThrows(FHIRException.class, context::getPath);
+    context.close();
+    context.close();
+    assertSame(convertor, context.getVersionConvertor());
+    context.close();
     assertNull(context.getVersionConvertor());
-  }
-
-  @Test
-  void closingTheWrongPathStillPopsIt() {
-    VersionConvertorContext<Object> context = new VersionConvertorContext<>();
-    context.init(new Object(), "Bundle");
-    context.init(new Object(), "Patient");
-    assertThrows(FHIRException.class, () -> context.close("Observation"));
-    assertEquals("Bundle", context.getPath());
   }
 
   @Test
   void closingWithNothingOpen() {
     VersionConvertorContext<Object> context = new VersionConvertorContext<>();
-    assertThrows(FHIRException.class, () -> context.close("Bundle"));
+    assertThrows(FHIRException.class, context::close);
+    context.init(new Object());
+    context.close();
+    assertThrows(FHIRException.class, context::close);
   }
 
   @Test
-  void eachThreadHasItsOwnPath() throws InterruptedException {
+  void nullConvertorIsRejected() {
     VersionConvertorContext<Object> context = new VersionConvertorContext<>();
-    context.init(new Object(), "Bundle");
-    String[] other = new String[1];
+    assertThrows(FHIRException.class, () -> context.init(null));
+    assertNull(context.getVersionConvertor());
+  }
+
+  @Test
+  void eachThreadHasItsOwnConvertor() throws InterruptedException {
+    VersionConvertorContext<Object> context = new VersionConvertorContext<>();
+    Object convertor = new Object();
+    Object otherConvertor = new Object();
+    context.init(convertor);
+    Object[] seen = new Object[2];
     Thread t = new Thread(() -> {
-      context.init(new Object(), "Patient");
-      other[0] = context.getPath();
-      context.close("Patient");
+      seen[0] = context.getVersionConvertor();
+      context.init(otherConvertor);
+      seen[1] = context.getVersionConvertor();
+      context.close();
     });
     t.start();
     t.join();
-    assertEquals("Patient", other[0]);
-    assertEquals("Bundle", context.getPath());
+    assertNull(seen[0]);
+    assertSame(otherConvertor, seen[1]);
+    assertSame(convertor, context.getVersionConvertor());
+    context.close();
   }
 }
