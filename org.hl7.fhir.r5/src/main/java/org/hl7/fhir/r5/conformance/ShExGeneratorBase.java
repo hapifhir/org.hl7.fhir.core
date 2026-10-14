@@ -286,6 +286,11 @@ public abstract class ShExGeneratorBase {
 
   private List<String> oneOrMoreTypes;
 
+  // For multi-valued (list) elements whose members carry a value-set / fixed-value restriction:
+  // maps the generated OneOrMore_* shape name to {bareElementType, restrictionClause}. The
+  // restriction must constrain each list member (rdf:first), not the list node.
+  private Map<String, String[]> oneOrMoreRestrictions;
+
   private List<String> constraintsList;
 
   private List<String> unMappedFunctions;
@@ -316,6 +321,7 @@ public abstract class ShExGeneratorBase {
     innerTypes = new LinkedHashSet<Pair<StructureDefinition, ElementDefinition>>();
     innerTypeNames = new ArrayList<String>();
     oneOrMoreTypes = new ArrayList<String>();
+    oneOrMoreRestrictions = new HashMap<String, String[]>();
     constraintsList = new ArrayList<String>();
     unMappedFunctions = new ArrayList<String>();
     emittedInnerTypes = new LinkedHashSet<Pair<StructureDefinition, ElementDefinition>>();
@@ -387,6 +393,7 @@ public abstract class ShExGeneratorBase {
     innerTypes.clear();
     innerTypeNames.clear();
     oneOrMoreTypes.clear();
+    oneOrMoreRestrictions.clear();
     constraintsList.clear();
     unMappedFunctions.clear();
     emittedInnerTypes.clear();
@@ -1523,9 +1530,44 @@ public abstract class ShExGeneratorBase {
     if (card.startsWith("*") || card.startsWith("+")) {
       card = card.replace("+", "");
       card = card.replace("*", "?");
+
+      // A multi-valued element is an RDF list. Any value-set / fixed-value restriction that was
+      // built for the element itself (" AND {fhir:v @fhirvs:...}") must constrain each list member
+      // (rdf:first), not the list node, so split it off and carry it into the OneOrMore_* shape.
+      String elementRestriction = "";
+      if (refChoices.isEmpty() && !id.endsWith("[x]")) {
+        int andPos = defn.indexOf(" AND");
+        if (andPos >= 0) {
+          elementRestriction = defn.substring(andPos + 1).replaceAll("\\s+", " ").trim();
+          defn = defn.substring(0, andPos).trim();
+        }
+      }
+
       defn = defn.replace("<", "<" + ONE_OR_MORE_PREFIX);
 
-      if (refChoices.isEmpty()) {
+      if (!refChoices.isEmpty()) {
+        String defnToStore = defn.replace(">", ONE_OR_MORE_CHOICES + refChoices + ">");
+        defn = defn.replace(">", "_" + refChoices + ">");
+        defnToStore = StringUtils.substringBetween(defnToStore, "<", ">");
+        if (!oneOrMoreTypes.contains(defnToStore))
+          oneOrMoreTypes.add(defnToStore);
+      } else if (!elementRestriction.isEmpty()) {
+        // Give each distinct (type, value-set) pair its own list shape, e.g.
+        // OneOrMore_code_version-independent-all-resource-types, so the restriction lands on
+        // rdf:first (each member) instead of on the list node.
+        String oomPrefixed = StringUtils.substringBetween(defn, "<", ">"); // e.g. OneOrMore_code
+        String bareType = oomPrefixed.replaceFirst(ONE_OR_MORE_PREFIX, ""); // e.g. code
+        String vsn = StringUtils.substringBetween(elementRestriction, "fhirvs:", "}");
+        String token = (vsn != null) ? vsn.trim()
+                                     : elementRestriction.replaceAll("[^A-Za-z0-9]+", "");
+        if (token.isEmpty())
+          token = "bound";
+        String oomName = oomPrefixed + "_" + token;
+        defn = defn.replace("<" + oomPrefixed + ">", "<" + oomName + ">");
+        if (!oneOrMoreTypes.contains(oomName))
+          oneOrMoreTypes.add(oomName);
+        oneOrMoreRestrictions.put(oomName, new String[] { bareType, elementRestriction });
+      } else {
         String[] alltags = StringUtils.splitByWholeSeparator(defn, "<");
         for (String st : alltags) {
           if (!st.startsWith(ONE_OR_MORE_PREFIX))
@@ -1535,17 +1577,10 @@ public abstract class ShExGeneratorBase {
           if (!oneOrMoreTypes.contains(origTypeDef))
             oneOrMoreTypes.add(origTypeDef);
         }
+        String defnToStore = StringUtils.substringBetween(defn, "<", ">");
+        if (!oneOrMoreTypes.contains(defnToStore))
+          oneOrMoreTypes.add(defnToStore);
       }
-
-      String defnToStore = defn;
-      if (!refChoices.isEmpty()) {
-        defnToStore = defn.replace(">", ONE_OR_MORE_CHOICES + refChoices + ">");
-        defn = defn.replace(">", "_" + refChoices + ">");
-      }
-
-      defnToStore = StringUtils.substringBetween(defnToStore, "<", ">");
-      if (!oneOrMoreTypes.contains(defnToStore))
-        oneOrMoreTypes.add(defnToStore);
     } else {
       if (!refChoices.isEmpty()) {
         defn += " AND {" + getLinkPredicate() + " \n\t\t\t" +
@@ -1915,6 +1950,22 @@ public abstract class ShExGeneratorBase {
   private String getOneOrMoreType(String oneOrMoreType) {
     if ((oneOrMoreType == null)||(oneOrMoreTypes.isEmpty()))
       return "";
+
+    // List shapes whose members carry a value-set / fixed-value restriction: the restriction is
+    // applied to rdf:first (each member), not the list node (see the cardinality block above).
+    if (oneOrMoreRestrictions.containsKey(oneOrMoreType)) {
+      String[] rr = oneOrMoreRestrictions.get(oneOrMoreType);
+      ST restricted = tmplt(ONE_OR_MORE_TEMPLATE);
+      restricted.add("oomType", getClassName(oneOrMoreType));
+      restricted.add("origType", getClassName(rr[0]));
+      restricted.add("restriction", rr[1]);
+      restricted.add("comment", "");
+      addImport(rr[0]);
+      String rendered = restricted.render();
+      if (rendered.trim().isEmpty())
+        throw new RuntimeException("genOneOrMoreType(" + oneOrMoreType + ") got empty string");
+      return rendered;
+    }
 
     ST one_or_more_type = tmplt(ONE_OR_MORE_TEMPLATE);
     String oomType = oneOrMoreType;
