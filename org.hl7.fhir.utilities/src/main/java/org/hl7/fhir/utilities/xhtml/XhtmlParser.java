@@ -512,8 +512,12 @@ public class XhtmlParser {
     }
   }
 
-  private Reader rdr;
-  private String cache = "";
+  // the whole source is read up front: pulling it a char at a time through a Reader (with a ready() check
+  // before every read) dominated the cost of parsing large pages
+  private String src = "";
+  private int srcPos = 0;
+  // chars handed back by pushChar(); the top of the stack (the next char to read) is at the end
+  private final StringBuilder pushback = new StringBuilder();
   private XhtmlNode unwindPoint;
   private String lastText = "";
   private int line = 1;
@@ -523,26 +527,27 @@ public class XhtmlParser {
   private boolean xmlMode;
 
   public XhtmlDocument parse(String source, String entryName) throws FHIRFormatError, IOException  {
-    rdr = new StringReader(source);
+    setSource(source);
     return parse(entryName);
   }
 
   public XhtmlDocument parse(InputStream input, String entryName) throws FHIRFormatError, IOException  {
-    rdr = new InputStreamReader(input, StandardCharsets.UTF_8);
+    setSource(new String(input.readAllBytes(), StandardCharsets.UTF_8));
     return parse(entryName);
   }
 
   public XhtmlDocument parse(File file, String entryName) throws FHIRFormatError, IOException  {
-    InputStream input = new FileInputStream(file);
-    try {
-      rdr = new InputStreamReader(input, StandardCharsets.UTF_8);
-      return parse(entryName);
-    } finally {
-      input.close();
+    try (InputStream input = new FileInputStream(file)) {
+      return parse(input, entryName);
     }
   }
 
-  private XhtmlDocument parse(String entryName) throws FHIRFormatError, IOException
+  private void setSource(String source) {
+    src = source == null ? "" : source;
+    srcPos = 0;
+  }
+
+  private XhtmlDocument parse(String entryName) throws FHIRFormatError, IOException 
   {
     XhtmlDocument result = new XhtmlDocument();
     skipWhiteSpaceAndComments(result);
@@ -646,7 +651,9 @@ public class XhtmlParser {
   private void parseElementInner(XhtmlNode node, List<XhtmlNode> parents, NamespaceNormalizationMap nsm) throws FHIRFormatError, IOException
   {
     StringBuilder s = new StringBuilder();
-    while (peekChar() != END_OF_CHARS && !parents.contains(unwindPoint) && !(node == unwindPoint))
+    // unwindPoint is only set while recovering from a mis-matched end tag, and parents never holds null, so only
+    // look through parents (which this checks before every char) when it's set
+    while (peekChar() != END_OF_CHARS && !(unwindPoint != null && parents.contains(unwindPoint)) && !(node == unwindPoint))
     {
       if (peekChar() == '<')
       {
@@ -835,9 +842,10 @@ public class XhtmlParser {
   private String parseAttributeValue(char term) throws IOException, FHIRFormatError 
   {
     StringBuilder b = new StringBuilder();
-    while (peekChar() != END_OF_CHARS && peekChar() != '>' && (term != END_OF_CHARS || peekChar() != '/') && peekChar() != term)
+    char ch;
+    while ((ch = peekChar()) != END_OF_CHARS && ch != '>' && (term != END_OF_CHARS || ch != '/') && ch != term)
     {
-      if (peekChar() == '&')
+      if (ch == '&')
       {
         parseLiteral(b);
       }
@@ -891,40 +899,33 @@ public class XhtmlParser {
   }
 
   private void pushChar(char ch) {
-    cache = Character.toString(ch)+cache;    
+    pushback.append(ch);
   }
 
   private char peekChar() throws IOException
   {
-    if (cache.length() > 0)
-      return cache.charAt(0);
-    else if (!rdr.ready())
-      return END_OF_CHARS;
+    int pl = pushback.length();
+    if (pl > 0)
+      return pushback.charAt(pl - 1);
+    else if (srcPos < src.length())
+      return src.charAt(srcPos);
     else
-    {
-      int i = rdr.read();
-      if (i == -1)       {
-        cache = "";
-        return END_OF_CHARS;
-      }
-      char c = (char) i;
-      cache =  Character.toString(c);
-      return c;
-    }
+      return END_OF_CHARS;
   }
 
   private char readChar() throws IOException
   {
     char c;
-    if (cache.length() > 0)
+    int pl = pushback.length();
+    if (pl > 0)
     {
-      c = cache.charAt(0);
-      cache = cache.length() == 1 ? "" : cache.substring(1);
+      c = pushback.charAt(pl - 1);
+      pushback.setLength(pl - 1);
     }
-    else if (!rdr.ready())
-      c = END_OF_CHARS;
+    else if (srcPos < src.length())
+      c = src.charAt(srcPos++);
     else
-      c = (char)rdr.read();
+      c = END_OF_CHARS;
     if (c == '\r' || c == '\n') {
       if (c == '\r' || lastChar != '\r') {
         line++;
@@ -1431,7 +1432,7 @@ public class XhtmlParser {
   }
   
   public XhtmlNode parseFragment(String source) throws IOException, FHIRException  {
-    rdr = new StringReader(source);
+    setSource(source);
     try {
       return parseFragment();
     } catch (Exception e) {
@@ -1443,7 +1444,7 @@ public class XhtmlParser {
   }
 
   public XhtmlNode parseFragment(InputStream input) throws IOException, FHIRException  {
-    rdr = new InputStreamReader(input);
+    setSource(new String(input.readAllBytes(), StandardCharsets.UTF_8));
     return parseFragment();
   }
 

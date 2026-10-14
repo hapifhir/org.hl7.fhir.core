@@ -29169,6 +29169,9 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected DataType parseType(String prefix, JsonObject json) throws IOException, FHIRFormatError {
+    if (!hasPropertyWithPrefix(json, prefix)) {
+      return null;
+    }
     if (json.has(prefix+"Date") || json.has("_"+prefix+"Date")) {
       DataType t = json.has(prefix+"Date") ? parseDate(json.get(prefix+"Date").getAsString()) : new DateType();
       if (json.has("_"+prefix+"Date"))
@@ -29488,6 +29491,9 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected boolean hasTypeName(JsonObject json, String prefix) {
+    if (!hasPropertyWithPrefix(json, prefix)) {
+      return false;
+    }
     if (json.has(prefix+"RatioRange")) {
       return true;
     };
