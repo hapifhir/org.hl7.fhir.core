@@ -3,7 +3,6 @@ package org.hl7.fhir.convertors.conv50_N.resources50_N;
 import java.util.Arrays;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_50_N;
-import org.hl7.fhir.convertors.context.ConversionContext50_N;
 import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Code50_N;
 import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Id50_N;
 import org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Uri50_N;
@@ -459,16 +458,16 @@ public class Resource50_N {
       .map(this::convertResource)
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension(ConversionContext50_N.INSTANCE.path(), extension)) {
+      if (advisor.useAdvisorForExtension(extension)) {
         org.hl7.fhir.model.core.Extension convertExtension = new org.hl7.fhir.model.core.Extension();
-        advisor.handleExtension(ConversionContext50_N.INSTANCE.path(), extension, convertExtension);
+        advisor.handleExtension(extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext50_N.INSTANCE.path(), extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
+      } else if (!advisor.ignoreExtension(extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
         tgt.addExtension(Extension50_N.convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension(ConversionContext50_N.INSTANCE.path(), extension))
+      .filter(extension -> !advisor.ignoreExtension(extension))
       .map(Extension50_N::convertExtension)
       .forEach(tgt::addModifierExtension);
   }
@@ -480,16 +479,16 @@ public class Resource50_N {
       .map(this::convertResource)
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension(ConversionContext50_N.INSTANCE.path(), extension)) {
+      if (advisor.useAdvisorForExtension(extension)) {
         org.hl7.fhir.r5.model.Extension convertExtension = new org.hl7.fhir.r5.model.Extension();
-        advisor.handleExtension(ConversionContext50_N.INSTANCE.path(), extension, convertExtension);
+        advisor.handleExtension(extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext50_N.INSTANCE.path(), extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
+      } else if (!advisor.ignoreExtension(extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
         tgt.addExtension(Extension50_N.convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension(ConversionContext50_N.INSTANCE.path(), extension))
+      .filter(extension -> !advisor.ignoreExtension(extension))
       .map(Extension50_N::convertExtension)
       .forEach(tgt::addModifierExtension);
   }

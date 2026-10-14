@@ -97,7 +97,7 @@ public class TestingR4RoundTripTests {
     // thread-local ConversionContext40_50, so it has to be initialised around the direct calls
     // (VersionConvertorFactory_40_50 does this itself, but it doesn't know the igs.testing types)
     VersionConvertor_40_50 vc = new VersionConvertor_40_50(new BaseAdvisor_40_50());
-    ConversionContext40_50.INSTANCE.init(vc, r1.fhirType());
+    ConversionContext40_50.INSTANCE.init(vc);
     try {
       if (r1 instanceof org.hl7.fhir.r5.igs.testing.TestScript) {
         org.hl7.fhir.r4.model.TestScript r4 = TestingR4Convertor.convertTestScript((org.hl7.fhir.r5.igs.testing.TestScript) r1);
@@ -112,7 +112,7 @@ public class TestingR4RoundTripTests {
         throw new IllegalStateException("Unexpected resource type: " + r1.fhirType());
       }
     } finally {
-      ConversionContext40_50.INSTANCE.close(r1.fhirType());
+      ConversionContext40_50.INSTANCE.close();
     }
   }
 

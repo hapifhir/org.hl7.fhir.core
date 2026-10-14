@@ -220,7 +220,7 @@ public class FHIRPathEngine {
     analysis = (FHIRPathAnalysis) worker.retrieveAnalysis(this.getClass());
     if (analysis == null) {
       analysis = new FHIRPathAnalysis();
-      for (StructureDefinition sd : worker.fetchResourcesByType(StructureDefinition.class)) {
+      for (StructureDefinition sd : worker.fetchSpecializations()) {
         if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
           analysis.allTypes.put(sd.getName(), sd);
         }
@@ -2332,19 +2332,15 @@ public class FHIRPathEngine {
   private String removeTrailingZeros(String s) {
     if (Utilities.noString(s))
       return "";
+    // only zeros after the decimal point can go: 1.50 is 1.5 and 1.0 is 1, but 100 is not 1.
+    // Leave exponent forms alone
+    if (s.indexOf('.') < 0 || s.indexOf('e') >= 0 || s.indexOf('E') >= 0)
+      return s;
     int i = s.length()-1;
-    boolean done = false;
-    boolean dot = false;
-    while (i > 0 && !done) {
-      if (s.charAt(i) == '.') {
-        i--;
-        dot = true;
-      } else if (!dot && s.charAt(i) == '0') {
-        i--;
-      } else {
-        done = true;
-      }
-    }
+    while (i >= 0 && s.charAt(i) == '0')
+      i--;
+    if (i >= 0 && s.charAt(i) == '.')
+      i--;
     return s.substring(0, i+1);
   }
 
@@ -2371,7 +2367,7 @@ public class FHIRPathEngine {
       var leftDate = new DateTimeType(left.primitiveValue());
       var rightDate = new DateTimeType(right.primitiveValue());
       return datesEqual(leftDate, rightDate);
-    } else if (left instanceof DecimalType || right instanceof DecimalType) { 
+    } else if (left.hasType("decimal") || right.hasType("decimal")) { 
       return decEqual(left.primitiveValue(), right.primitiveValue());
     } else if (left.isPrimitive() && right.isPrimitive()) {
       return Base.equals(left.primitiveValue(), right.primitiveValue());
@@ -5746,6 +5742,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (focus.size() == 1) {
       return makeBoolean(true);
     }
+    List<String> keys = equalityKeys(focus);
+    if (keys != null) {
+      return makeBoolean(new HashSet<>(keys).size() == keys.size());
+    }
 
     boolean distinct = true;
     for (int i = 0; i < focus.size(); i++) {
@@ -5762,6 +5762,43 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return makeBoolean(distinct);
   }
 
+
+  /**
+   * isDistinct() and distinct() compare every pair of items with doEquals(), which is slow for big collections. When every
+   * item is a primitive with a value that isn't a date or a quantity, doEquals() compares the primitive values as they are,
+   * or, if either is a decimal, after removeTrailingZeros(). Then two items are equal exactly when the keys returned here are
+   * equal, as long as removeTrailingZeros() doesn't change any value that isn't a decimal's in a collection that has decimals.
+   *
+   * @return a key for each item, or null if the items have to be compared pair by pair
+   */
+  private List<String> equalityKeys(List<Base> focus) {
+    List<String> keys = new ArrayList<>(focus.size());
+    boolean hasDecimal = false;
+    for (Base b : focus) {
+      if (b == null || !b.isPrimitive() || makeQuantity(b) != null || b.hasType("date", "dateTime", "instant")) {
+        return null;
+      }
+      String v = b.primitiveValue();
+      if (v == null) {
+        return null;
+      }
+      if (b.hasType("decimal")) {
+        hasDecimal = true;
+        v = removeTrailingZeros(v);
+      }
+      keys.add(v);
+    }
+    if (hasDecimal) {
+      for (int i = 0; i < focus.size(); i++) {
+        String v = keys.get(i);
+        if (!focus.get(i).hasType("decimal") && !removeTrailingZeros(v).equals(v)) {
+          // e.g. the string '1.0', which equals the decimal 1 but not the string '1'
+          return null;
+        }
+      }
+    }
+    return keys;
+  }
 
   private List<Base> funcSupersetOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> target = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
@@ -6082,6 +6119,19 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private List<Base> funcDistinct(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     if (focus.size() <= 1) {
       return focus;
+    }
+    List<String> keys = equalityKeys(focus);
+    if (keys != null) {
+      // the loop below keeps the last of a set of equal items, so walk backwards to keep the same ones, in the same order
+      Set<String> seen = new HashSet<>();
+      List<Base> result = new ArrayList<Base>();
+      for (int i = focus.size() - 1; i >= 0; i--) {
+        if (seen.add(keys.get(i))) {
+          result.add(focus.get(i));
+        }
+      }
+      Collections.reverse(result);
+      return result;
     }
 
     List<Base> result = new ArrayList<Base>();

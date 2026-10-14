@@ -19,7 +19,7 @@ public class Patient30_40Test {
 
   @BeforeAll
   public static void setUp() {
-    ConversionContext30_40.INSTANCE.init(new VersionConvertor_30_40(new BaseAdvisor_30_40()), "");
+    ConversionContext30_40.INSTANCE.init(new VersionConvertor_30_40(new BaseAdvisor_30_40()));
   }
 
   @Test

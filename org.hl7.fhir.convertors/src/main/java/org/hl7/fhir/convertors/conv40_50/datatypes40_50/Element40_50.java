@@ -20,15 +20,14 @@ public class Element40_50 {
 
   public void copyElement(org.hl7.fhir.r4.model.Element src,
                           org.hl7.fhir.r5.model.Element tgt,
-                          String path,
                           String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
     if (src.hasExtension()) {
       for (org.hl7.fhir.r4.model.Extension e : src.getExtension()) {
         if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
-          if (advisor.useAdvisorForExtension(path, e)) {
+          if (advisor.useAdvisorForExtension(e)) {
             org.hl7.fhir.r5.model.Extension convertedExtension = new org.hl7.fhir.r5.model.Extension();
-            advisor.handleExtension(path, e, convertedExtension);
+            advisor.handleExtension(e, convertedExtension);
             tgt.addExtension(convertedExtension);
           } else {
             tgt.addExtension(Extension40_50.convertExtension(e));
@@ -40,15 +39,14 @@ public class Element40_50 {
 
   public void copyElement(org.hl7.fhir.r5.model.Element src,
                           org.hl7.fhir.r4.model.Element tgt,
-                          String path,
                           String... extensionUrlsToIgnore) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
     if (src.hasExtension()) {
       for (org.hl7.fhir.r5.model.Extension e : src.getExtension()) {
         if (!isExemptExtension(e.getUrl(), extensionUrlsToIgnore)) {
-          if (advisor.useAdvisorForExtension(path, e)) {
+          if (advisor.useAdvisorForExtension(e)) {
             org.hl7.fhir.r4.model.Extension convertedExtension = new org.hl7.fhir.r4.model.Extension();
-            advisor.handleExtension(path, e, convertedExtension);
+            advisor.handleExtension(e, convertedExtension);
             tgt.addExtension(convertedExtension);
           } else {
             tgt.addExtension(Extension40_50.convertExtension(e));
