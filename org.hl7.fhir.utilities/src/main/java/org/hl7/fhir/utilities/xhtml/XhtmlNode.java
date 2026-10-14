@@ -388,6 +388,19 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }
     
     StringBuilder b = new StringBuilder();
+    appendAllText(b);
+    return b.toString();
+  }
+
+  // appends what allText() returns to b. The whole subtree is written into the one builder: building a string for each
+  // child and then appending it made allText() cost O(size x depth), and some callers ask for it at every level
+  private void appendAllText(StringBuilder b) {
+    if (!hasChildren()) {
+      if (getContent() != null) {
+        b.append(getContent());
+      }
+      return;
+    }
     for (XhtmlNode n : childNodes) {
       if (n.getNodeType() == NodeType.Element && Utilities.existsInList(n.getName(), "li")) {
         b.append("* ");
@@ -399,7 +412,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       } 
       if (n.getNodeType() == NodeType.Element) {
         if (!Utilities.existsInList(n.getName(), "img")) {
-          b.append(n.allText());          
+          n.appendAllText(b);
         } else if (n.hasAttribute("alt")) {
           b.append(n.getAttribute("alt"));
         } else {
@@ -412,7 +425,6 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
         }
       }
     }
-    return b.toString();
   }
 
   public String toLiteralText() {

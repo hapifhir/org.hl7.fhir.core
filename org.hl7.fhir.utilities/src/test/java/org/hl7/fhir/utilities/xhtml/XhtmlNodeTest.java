@@ -298,4 +298,13 @@ public class XhtmlNodeTest {
     Assertions.assertEquals("span", x.firstNamedDescendent("span").allText());
   }
 
+  @Test
+  public void testAllTextNested() throws IOException {
+    XhtmlNode x = new XhtmlParser().parse("<div><p>a<b>b</b></p><ul><li>one</li><li>two<img alt='pic'/></li></ul><table><tr><td>x</td><td><img src='y'/></td></tr></table><span/>end</div>", "div");
+    // the document holds the div, which ends with a line break
+    Assertions.assertEquals("ab\r\n* one\r\n* twopic\r\n\r\nx [image] \r\nend\r\n", x.allText());
+    Assertions.assertEquals("* one\r\n* twopic\r\n", x.firstNamedDescendent("ul").allText());
+    Assertions.assertEquals("", x.firstNamedDescendent("span").allText());
+  }
+
 }
