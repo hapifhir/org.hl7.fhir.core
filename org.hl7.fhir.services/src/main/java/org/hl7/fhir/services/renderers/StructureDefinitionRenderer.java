@@ -3607,7 +3607,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     // the parser names the root [prefix][Type]; it's renamed to the element name afterwards
     String xml = parser.composeString(value, "x");
     StringBuilder b = new StringBuilder();
-    for (String s : xml.split("\\r?\\n")) {
+    for (String s : Utilities.splitLines(xml)) {
       if (!Utilities.noString(s) && !s.startsWith("<?")) {
         b.append(s.replace(" xmlns=\"http://hl7.org/fhir\"", ""));
         b.append("\n");
