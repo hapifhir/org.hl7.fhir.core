@@ -369,13 +369,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private final boolean ADD_REFERENCE_TO_TABLE = true; 
  
-  private boolean useTableForFixedValues = true; 
   private String corePath;
   private JsonObject resourceGroupings; 
   private MapStructureMode mappingsMode;
   private List<StructureDefinition> mappingTargets = new ArrayList<>();
-  // Render-local store for pattern values merged into existing in-scope rows.
-  private final Map<ElementDefinition, List<Base>> mergedPatternValues = new IdentityHashMap<>();
   private FHIRPathEngine fpe;
  
   public static class UnusedTracker { 
@@ -574,7 +571,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   private TableModel generateTableInner(RenderingStatus status, String defFile, StructureDefinition profile, boolean diff, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, boolean logicalModel, boolean allInvariants, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res, String idSfx, HierarchicalTableGenerator gen) throws IOException {
-    mergedPatternValues.clear();
     List<ElementDefinition> list;
     if (diff) {
       list = new SnapshotGenerationPreProcessor(context.getProfileUtilities()).supplementMissingDiffElements(profile);
@@ -2024,61 +2020,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             // don't show this, this it's important: c.getPieces().add(gen.new Piece(null, "This repeating element has no defined order", null));
           }
         }
-        if (definition.hasFixed()) {
-          if (!c.getPieces().isEmpty()) {
-            c.addPiece(gen.new Piece("br"));
-          }
-          c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED)) + ": ", null).styleAsBold()));
-          if (!useTableForFixedValues || !allowSubRows || definition.getFixed().isPrimitive()) {
-            String s = buildJson(definition.getFixed());
-            String link = null;
-            if (Utilities.isAbsoluteUrl(s) && context.getPkp() != null)
-              link = context.getPkp().getLinkForUrl(corePath, s);
-            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).styleAsDarkGreen()));
-          } else {
-            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_AS_SHOWN), null).styleAsDarkGreen()));
-            genFixedValue(gen, row, definition.getFixed(), snapshot, false, corePath, false, null, null, null);
-          }
-          if (isCoded(definition.getFixed()) && !hasDescription(definition.getFixed())) {
-            Piece p = describeCoded(gen, definition.getFixed());
-            if (p != null)
-              c.getPieces().add(p);
-          }
-        } else if (definition.hasPattern()) {
-          if (!c.getPieces().isEmpty()) {
-            c.addPiece(gen.new Piece("br"));
-          }
-          c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_REQ_PATT)) + ": ", null).styleAsBold()));
-          if (!useTableForFixedValues || !allowSubRows || definition.getPattern().isPrimitive())
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).styleAsDarkGreen()));
-          else {
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_LEAST_FOLLOW), null).styleAsDarkGreen()));
-            genFixedValue(gen, row, definition.getPattern(), snapshot, true, corePath, mustSupportOnly, definition.getPath(), definition.getId(), inScopeElements);
-          }
-        } else if (hasMergedPatternValues(definition)) {
-          if (!c.getPieces().isEmpty()) {
-            c.addPiece(gen.new Piece("br"));
-          }
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE)) + " ", null).styleAsBold());
-          List<DataType> complexValues = new ArrayList<>();
-          boolean first = true;
-          for (Base b : getMergedPatternValues(definition)) {
-            if (!first) {
-              c.addPiece(gen.new Piece(null, ", ", null));
-            }
-            String s = formatMergedPatternValue(b);
-            String link = Utilities.isAbsoluteUrl(s) && context.getPkp() != null ? context.getPkp().getLinkForUrl(corePath, s) : null;
-            c.getPieces().add(gen.new Piece(link, s, null).styleAsDarkGreen());
-            if (b instanceof DataType && !b.isPrimitive()) {
-              complexValues.add((DataType) b);
-            }
-            first = false;
-          }
-          if (useTableForFixedValues && allowSubRows && !complexValues.isEmpty()) {
-            for (DataType b : complexValues) {
-              genFixedValue(gen, row, b, snapshot, true, corePath, mustSupportOnly, definition.getPath(), definition.getId(), inScopeElements);
-            }
-          }
+        if (definition.hasMinValue()) {
+          addRangeValue(gen, c, definition.getMinValue(), RenderingI18nContext.STRUC_DEF_MIN_VALUE);
+        }
+        if (definition.hasMaxValue()) {
+          addRangeValue(gen, c, definition.getMaxValue(), RenderingI18nContext.STRUC_DEF_MAX_VALUE);
+        }
+        if (definition.hasFixed() || definition.hasPattern()) {
+          addFixedOrPattern(gen, c, definition, corePath);
         } else if (definition.hasExample()) {
           for (ElementDefinitionExampleComponent ex : definition.getExampleList()) {
             if (!c.getPieces().isEmpty()) {
@@ -2957,277 +2906,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return b; 
   } 
  
-  private void genFixedValue(HierarchicalTableGenerator gen, Row erow, DataType value, boolean snapshot, boolean pattern, String corePath, boolean skipnoValue, String path, String id, List<ElementDefinition> inScopeElements) { 
-    String ref = context.getPkp().getLinkFor(corePath, value.fhirType()); 
-    if (ref != null && ref.contains(".html")) { 
-      ref = ref.substring(0, ref.indexOf(".html"))+"-definitions.html#"; 
-    } else { 
-      ref = "?gen-fv?"; 
-    } 
-    StructureDefinition sd = context.getWorker().fetchTypeDefinition(value.fhirType()); 
-    for (org.hl7.fhir.model.Property t : value.getChildren()) {
-      ElementDefinition ed = findElementDefinitionOrNull(sd, t.getName()); 
-      if (ed != null) { // might be null because of added properties across versions 
-        String childPath = path == null ? null : path+"."+t.getName();
-        String childId = id == null ? null : id+"."+t.getName();
-        if (pattern && childPath != null && inScopeElements != null) {
-          if (hasPathInScope(childPath, childId, inScopeElements)) {
-            mergePatternValuesIntoScope(childPath, childId, t.getValues(), inScopeElements);
-            continue;
-          } else if (hasDescendantPathInScope(childPath, childId, inScopeElements)) {
-            for (Base mergedValue : t.getValues()) {
-              if (mergedValue instanceof DataType && !mergedValue.isPrimitive()) {
-                genFixedValue(gen, erow, (DataType) mergedValue, snapshot, true, corePath, skipnoValue, childPath, childId, inScopeElements);
-              }
-            }
-            continue;
-          }
-        }
-        if (t.getValues().size() > 0 || snapshot) { 
-          if (t.getValues().size() == 0 || (t.getValues().size() == 1 && t.getValues().get(0).isEmpty())) { 
-            if (!skipnoValue) { 
-              Row row = gen.new Row(); 
-              row.setId(context.prefixAnchor(ed.getPath())); 
-              erow.getSubRows().add(row); 
-              Cell c = gen.new Cell(); 
-              row.getCells().add(c); 
-              c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : corePath+(VersionUtilities.isR5Plus(context.getWorker().getFHIRVersion()) ? "types-definitions.html#"+ed.getBase().getPath() : "element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
-              c = gen.new Cell(); 
-              row.getCells().add(c); 
-              c.addPiece(gen.new Piece(null, null, null)); 
-              c = gen.new Cell(); 
-              row.getCells().add(c); 
-              if (!pattern) { 
-                c.addPiece(gen.new Piece(null, "0..0", null)); 
-                row.setIcon("icon_fixed.gif", context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE) /*context.formatPhrase(RenderingI18nContext.TEXT_ICON_FIXED*/); 
-              } else if (context.getContext().isPrimitiveType(t.getTypeCode())) { 
-                row.setIcon("icon_primitive.png", context.formatPhrase(RenderingI18nContext.TEXT_ICON_PRIMITIVE)); 
-                c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null)); 
-              } else if (isReference(t.getTypeCode())) {  
-                row.setIcon("icon_reference.png", context.formatPhrase(RenderingI18nContext.TEXT_ICON_REFERENCE)); 
-                c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null)); 
-              } else {  
-                row.setIcon("icon_datatype.gif", context.formatPhrase(RenderingI18nContext.TEXT_ICON_DATATYPE)); 
-                c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null)); 
-              } 
-              c = gen.new Cell(); 
-              row.getCells().add(c); 
-              if (t.getTypeCode().contains("(")) { 
-                String tc = t.getTypeCode(); 
-                String tn = tc.substring(0, tc.indexOf("(")); 
-                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null)); 
-                c.addPiece(gen.new Piece(null, "(", null)); 
-                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-                //single literal character split
-                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
-                for (String s : p) { 
-                  c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null)); 
-                } 
-                c.addPiece(gen.new Piece(null, ")", null));             
-              } else { 
-                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, t.getTypeCode()), t.getTypeCode(), null)); 
-              } 
-              c = gen.new Cell(); 
-              c.addPiece(gen.new Piece(null, ed.getShort(), null)); 
-              row.getCells().add(c); 
-            } 
-          } else { 
-            for (Base b : t.getValues()) { 
-              Row row = gen.new Row(); 
-              row.setId(context.prefixAnchor(ed.getPath())); 
-              erow.getSubRows().add(row); 
-              row.setIcon("icon_fixed.gif", context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED) /*context.formatPhrase(RenderingI18nContext.TEXT_ICON_FIXED*/); 
- 
-              Cell c = gen.new Cell(); 
-              row.getCells().add(c); 
-              c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : (VersionUtilities.isR5Ver(context.getWorker().getFHIRVersion()) ? corePath+"types-definitions.html#"+ed.getBase().getPath() : corePath+"element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
- 
-              c = gen.new Cell(); 
-              row.getCells().add(c); 
-              c.addPiece(gen.new Piece(null, null, null)); 
- 
-              c = gen.new Cell(); 
-              row.getCells().add(c); 
-              if (pattern) 
-                c.addPiece(gen.new Piece(null, "1.."+(t.getMaxCardinality() == 2147483647 ? "*" : Integer.toString(t.getMaxCardinality())), null)); 
-              else 
-                c.addPiece(gen.new Piece(null, "1..1", null)); 
- 
-              c = gen.new Cell(); 
-              row.getCells().add(c); 
-              if (b.fhirType().contains("(")) { 
-                String tc = b.fhirType(); 
-                String tn = tc.substring(0, tc.indexOf("(")); 
-                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null)); 
-                c.addPiece(gen.new Piece(null, "(", null)); 
-                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-                //single literal character split
-                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
-                for (String s : p) { 
-                  c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null)); 
-                } 
-                c.addPiece(gen.new Piece(null, ")", null));             
-              } else { 
-                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, b.fhirType()), b.fhirType(), null)); 
-              } 
- 
-              if (b.isPrimitive()) { 
-                c = gen.new Cell(); 
-                row.getCells().add(c); 
-                c.addPiece(gen.new Piece(null, ed.getShort(), null)); 
-                c.addPiece(gen.new Piece("br")); 
-                c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE)+" ", null).styleAsBold());
-                String s = b.primitiveValue(); 
-                // ok. let's see if we can find a relevant link for this 
-                String link = null; 
-                if (Utilities.isAbsoluteUrl(s)) { 
-                  link = context.getPkp().getLinkForUrl(corePath, s); 
-                } 
-                c.getPieces().add(gen.new Piece(link, s, null).styleAsDarkGreen());
-              } else { 
-                c = gen.new Cell(); 
-                row.getCells().add(c); 
-                c.addPiece(gen.new Piece(null, ed.getShort(), null)); 
-                c.addPiece(gen.new Piece("br")); 
-                c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE)+" ", null).styleAsBold());
-                c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_COMPLEXBRACK), null).styleAsDarkGreen());
-                genFixedValue(gen, row, (DataType) b, snapshot, pattern, corePath, skipnoValue, childPath, childId, inScopeElements); 
-              } 
-            } 
-          } 
-        } 
-      } 
-    } 
-  } 
-
-  private boolean hasMergedPatternValues(ElementDefinition definition) {
-    // mergePatternValuesIntoScope only adds renderable values, so non-empty == has renderable values.
-    List<Base> values = mergedPatternValues.get(definition);
-    return values != null && !values.isEmpty();
-  }
-
-  private List<Base> getMergedPatternValues(ElementDefinition definition) {
-    return mergedPatternValues.getOrDefault(definition, Collections.emptyList());
-  }
-
-  private String formatMergedPatternValue(Base b) {
-    if (b == null) {
-      return "";
-    }
-    if (b.isPrimitive()) {
-      return b.primitiveValue();
-    }
-    // All FHIR R5 property values are either PrimitiveType or DataType subclasses.
-    if (b instanceof DataType) {
-      return context.formatPhrase(RenderingI18nContext.STRUC_DEF_COMPLEXBRACK);
-    }
-    throw new IllegalStateException("Unexpected Base type in merged pattern value: " + b.getClass().getName());
-  }
-
-  private void mergePatternValuesIntoScope(String childPath, String childId, List<Base> values, List<ElementDefinition> inScopeElements) {
-    if (Utilities.noString(childPath) || values == null || values.isEmpty() || inScopeElements == null) {
-      return;
-    }
-    for (ElementDefinition ed : inScopeElements) {
-      if (!matchesInScopeElement(childPath, childId, ed)) {
-        continue;
-      }
-      List<Base> merged = mergedPatternValues.computeIfAbsent(ed, k -> new ArrayList<>());
-      for (Base value : values) {
-        if (isRenderableMergedPatternValue(value) && !containsMergedValue(merged, value)) {
-          merged.add(value.copy(Base.COPY_NOTHING));
-        }
-      }
-    }
-  }
-
-  private boolean isRenderableMergedPatternValue(Base value) {
-    if (value == null) {
-      return false;
-    }
-    if (value.isPrimitive()) {
-      return !Utilities.noString(value.primitiveValue());
-    }
-    return !value.isEmpty();
-  }
-
-  private boolean containsMergedValue(List<Base> merged, Base value) {
-    for (Base b : merged) {
-      if (b != null && b.equalsDeep(value)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean hasPathInScope(String path, String id, List<ElementDefinition> inScopeElements) {
-    if (path == null || inScopeElements == null) {
-      return false;
-    }
-    for (ElementDefinition ed : inScopeElements) {
-      if (matchesInScopeElement(path, id, ed)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean hasDescendantPathInScope(String path, String id, List<ElementDefinition> inScopeElements) {
-    if (path == null || inScopeElements == null) {
-      return false;
-    }
-    for (ElementDefinition ed : inScopeElements) {
-      if (ed == null || !ed.hasPath()) {
-        continue;
-      }
-      if (isPathDescendant(path, ed.getPath())) {
-        if (Utilities.noString(id) || !id.contains(":")) {
-          return true;
-        }
-        if (ed.hasId() && ed.getId().startsWith(id + ".")) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  private boolean isPathDescendant(String basePath, String candidatePath) {
-    if (candidatePath == null || candidatePath.equals(basePath)) {
-      return false;
-    }
-    if (candidatePath.startsWith(basePath + ".")) {
-      return true;
-    }
-    if (basePath.endsWith("[x]")) {
-      String prefix = basePath.substring(0, basePath.length() - 3);
-      int dot = candidatePath.indexOf('.', prefix.length());
-      return candidatePath.startsWith(prefix) && dot > -1;
-    }
-    return false;
-  }
-
-  private boolean matchesInScopeElement(String path, String id, ElementDefinition candidate) {
-    if (candidate == null || !candidate.hasPath() || !matchesInScopePath(path, candidate.getPath())) {
-      return false;
-    }
-    if (Utilities.noString(id) || !id.contains(":")) {
-      return true;
-    }
-    if (!candidate.hasId()) {
-      return false;
-    }
-    return matchesInScopePath(id, candidate.getId());
-  }
-
-  private boolean matchesInScopePath(String path, String candidate) {
-    if (path.equals(candidate)) {
-      return true;
-    }
-    return candidate.endsWith("[x]") && path.startsWith(candidate.substring(0, candidate.length()-3));
-  }
-
-
   private ElementDefinition findElementDefinition(StructureDefinition sd, String name) { 
     String path = sd.getTypeName()+"."+name; 
     for (ElementDefinition ed : sd.getSnapshot().getElementList()) { 
@@ -3375,18 +3053,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getHuman(), null))); 
             } 
           } 
-          if (definition.hasFixed()) { 
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE), null).styleAsBold()));
-            String s = buildJson(definition.getFixed()); 
-            String link = null; 
-            if (Utilities.isAbsoluteUrl(s)) 
-              link = context.getPkp().getLinkForUrl(corePath, s); 
-            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).styleAsDarkGreen()));
-          } else if (definition.hasPattern()) { 
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_REQUIRED_PATT), null).styleAsBold()));
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).styleAsDarkGreen()));
+          if (definition.hasFixed() || definition.hasPattern()) { 
+            addFixedOrPattern(gen, c, definition, corePath);
           } else if (definition.hasExample()) { 
             for (ElementDefinitionExampleComponent ex : definition.getExampleList()) { 
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
@@ -3715,6 +3383,253 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
  
+  /**
+   * Fixed and pattern values are shown as they are, and not as rows in the table: a simple primitive as
+   * its value, anything else as JSON. They are not merged with the profile's own rows for the same
+   * elements - the profile and the value are separate constraints, and both apply
+   */
+  private void addFixedOrPattern(HierarchicalTableGenerator gen, Cell c, ElementDefinition definition, String corePath) throws IOException {
+    boolean isFixed = definition.hasFixed();
+    DataType value = isFixed ? definition.getFixed() : definition.getPattern();
+    if (!c.getPieces().isEmpty()) {
+      c.addPiece(gen.new Piece("br"));
+    }
+    c.getPieces().add(checkForNoChange(value, gen.new Piece(null, context.formatPhrase(isFixed ? RenderingI18nContext.STRUC_DEF_FIXED : RenderingI18nContext.STRUC_DEF_REQ_PATT) + ": ", null).styleAsBold()));
+    if (isSimplePrimitive(value)) {
+      String s = value.primitiveValue();
+      String link = Utilities.isAbsoluteUrl(s) && context.getPkp() != null ? context.getPkp().getLinkForUrl(corePath, s) : null;
+      c.getPieces().add(checkForNoChange(value, gen.new Piece(link, s, null).styleAsDarkGreen()));
+      c.getPieces().add(checkForNoChange(value, gen.new Piece(null, context.formatPhrase(isFixed ? RenderingI18nContext.STRUC_DEF_NO_EXT_ALLOWED : RenderingI18nContext.STRUC_DEF_EXT_ALLOWED), null)));
+    } else {
+      // the pre is wrapped in a div that is not pretty printed, so that the pretty printer doesn't add whitespace inside the pre
+      XhtmlNode div = new XhtmlNode(NodeType.Element, "div").notPretty();
+      String opacity = checkForNoChange(value);
+      if (opacity != null) {
+        div.style(opacity);
+      }
+      div.pre("json").addChildNode(renderValueAsJson(value, valueElementName(definition, value, null)));
+      Piece p = gen.new Piece(null, null, null);
+      p.addHtml(div);
+      c.getPieces().add(p);
+    }
+  }
+
+  private void addRangeValue(HierarchicalTableGenerator gen, Cell c, DataType value, String label) {
+    if (!c.getPieces().isEmpty()) {
+      c.addPiece(gen.new Piece("br"));
+    }
+    c.getPieces().add(checkForNoChange(value, gen.new Piece(null, context.formatPhrase(label) + ": ", null).styleAsBold()));
+    c.getPieces().add(checkForNoChange(value, gen.new Piece(null, summariseRangeValue(value), null).styleAsDarkGreen()));
+  }
+
+  /**
+   * minValue and maxValue in the tree: primitives as is, and Quantity as "value unit (code)"
+   */
+  private String summariseRangeValue(DataType value) {
+    if (!(value instanceof Quantity)) {
+      return value.primitiveValue();
+    }
+    Quantity q = (Quantity) value;
+    StringBuilder b = new StringBuilder();
+    if (q.hasComparator()) {
+      b.append(q.getComparator().toCode());
+    }
+    b.append(q.getValueElement().asStringValue());
+    boolean ucum = !q.hasSystem() || "http://unitsofmeasure.org".equals(q.getSystem());
+    String code = q.hasCode() ? (ucum ? q.getCode() : q.getSystem() + "|" + q.getCode()) : null;
+    if (q.hasUnit()) {
+      b.append(" ");
+      b.append(q.getUnit());
+      if (code != null && !(ucum && q.getCode().equals(q.getUnit()))) {
+        b.append(" (");
+        b.append(code);
+        b.append(")");
+      }
+    } else if (code != null) {
+      b.append(" ");
+      b.append(code);
+    }
+    return b.toString();
+  }
+
+  private boolean isSimplePrimitive(DataType value) {
+    return value.isPrimitive() && !value.hasId() && !value.hasExtension();
+  }
+
+  /**
+   * the name the value has in an instance: the element name, with [x] replaced by the type
+   */
+  private String valueElementName(ElementDefinition definition, DataType value, String defaultName) {
+    String name = definition.getPath().contains(".") ? definition.getPath().substring(definition.getPath().lastIndexOf(".") + 1) : defaultName;
+    if (name == null) {
+      name = defaultName == null ? "value" : defaultName;
+    }
+    if (name.endsWith("[x]") && value != null) {
+      name = name.substring(0, name.length() - 3) + Utilities.capitalize(value.fhirType());
+    }
+    return name;
+  }
+
+  /**
+   * The detailed view: a simple primitive as its value, anything else as JSON then XML. fixed is null for min/maxValue
+   */
+  private XhtmlNode renderValueDetail(DataType value, DataType compare, int mode, String elementName, Boolean fixed) throws IOException {
+    boolean hasNew = value != null && !value.isEmpty();
+    boolean hasOld = compare != null && !compare.isEmpty();
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    if (mode != GEN_MODE_KEY || !hasOld) {
+      if (!hasNew) {
+        return null;
+      }
+      addValueDetail(renderStatus(value, x), value, elementName, fixed);
+    } else if (!hasNew) {
+      addValueDetail(x.div().style(removedStyle()), compare, elementName, fixed);
+    } else if (value.equalsDeep(compare)) {
+      addValueDetail(x.div().style(unchangedStyle()), value, elementName, fixed);
+    } else {
+      addValueDetail(renderStatus(value, x), value, elementName, fixed);
+      addValueDetail(x.div().style(removedStyle()), compare, elementName, fixed);
+    }
+    return x;
+  }
+
+  private void addValueDetail(XhtmlNode x, DataType value, String elementName, Boolean fixed) throws IOException {
+    if (isSimplePrimitive(value)) {
+      x.tx(value.primitiveValue());
+      if (fixed != null) {
+        x.tx(context.formatPhrase(fixed ? RenderingI18nContext.STRUC_DEF_NO_EXT_ALLOWED : RenderingI18nContext.STRUC_DEF_EXT_ALLOWED));
+      }
+    } else {
+      // not pretty printed, so that the pretty printer doesn't add whitespace inside the pre
+      XhtmlNode div = x.div().notPretty();
+      div.pre("json").addChildNode(renderValueAsJson(value, elementName));
+      div.pre("xml").addChildNode(renderValueAsXml(value, elementName));
+    }
+  }
+
+  private final Map<String, String> codeDisplays = new HashMap<>();
+
+  /**
+   * JSON for a fixed or pattern value: the bare object. A primitive (which only gets here when it has an id or extensions)
+   * is shown the way it appears in an instance, split across [name] and _[name].
+   *
+   * Where a code is shown without a display, the display (if known) is a flyover on the code. The JSON has no hyperlinks.
+   */
+  private XhtmlNode renderValueAsJson(DataType value, String elementName) throws IOException {
+    org.hl7.fhir.utilities.json.model.JsonElement json;
+    if (value.isPrimitive()) {
+      org.hl7.fhir.utilities.json.model.JsonObject obj = new org.hl7.fhir.utilities.json.model.JsonObject();
+      if (value.hasPrimitiveValue()) {
+        String v = value.primitiveValue();
+        if (value instanceof BooleanType || value instanceof IntegerType || value instanceof DecimalType || value instanceof UnsignedIntType || value instanceof PositiveIntType) {
+          obj.add(elementName, org.hl7.fhir.utilities.json.parser.JsonParser.parse(v));
+        } else {
+          obj.add(elementName, v);
+        }
+      }
+      org.hl7.fhir.utilities.json.model.JsonObject ext = new org.hl7.fhir.utilities.json.model.JsonObject();
+      if (value.hasId()) {
+        ext.add("id", value.getId());
+      }
+      if (value.hasExtension()) {
+        org.hl7.fhir.utilities.json.model.JsonArray arr = new org.hl7.fhir.utilities.json.model.JsonArray();
+        for (Extension e : value.getExtensionList()) {
+          arr.add(org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(buildJson(e)));
+        }
+        ext.add("extension", arr);
+      }
+      obj.add("_" + elementName, ext);
+      json = obj;
+    } else {
+      json = org.hl7.fhir.utilities.json.parser.JsonParser.parse(buildJson(value));
+    }
+    XhtmlNode code = new XhtmlNode(NodeType.Element, "code");
+    renderJson(code, json, "", null, null);
+    return code;
+  }
+
+  private void renderJson(XhtmlNode x, org.hl7.fhir.utilities.json.model.JsonElement e, String indent, org.hl7.fhir.utilities.json.model.JsonObject parent, String name) {
+    if (e instanceof org.hl7.fhir.utilities.json.model.JsonObject) {
+      org.hl7.fhir.utilities.json.model.JsonObject o = (org.hl7.fhir.utilities.json.model.JsonObject) e;
+      x.tx("{");
+      boolean first = true;
+      for (org.hl7.fhir.utilities.json.model.JsonProperty p : o.getProperties()) {
+        x.tx((first ? "\n" : ",\n") + indent + "  \"" + p.getName() + "\" : ");
+        renderJson(x, p.getValue(), indent + "  ", o, p.getName());
+        first = false;
+      }
+      x.tx(first ? "}" : "\n" + indent + "}");
+    } else if (e instanceof org.hl7.fhir.utilities.json.model.JsonArray) {
+      org.hl7.fhir.utilities.json.model.JsonArray a = (org.hl7.fhir.utilities.json.model.JsonArray) e;
+      x.tx("[");
+      boolean first = true;
+      for (org.hl7.fhir.utilities.json.model.JsonElement i : a.getItems()) {
+        x.tx((first ? "\n" : ",\n") + indent + "  ");
+        renderJson(x, i, indent + "  ", parent, name);
+        first = false;
+      }
+      x.tx(first ? "]" : "\n" + indent + "]");
+    } else if (e instanceof org.hl7.fhir.utilities.json.model.JsonString) {
+      String s = "\"" + Utilities.escapeJson(((org.hl7.fhir.utilities.json.model.JsonString) e).getValue()) + "\"";
+      String display = "code".equals(name) && parent != null && !parent.has("display") ? lookupDisplay(parent) : null;
+      if (display != null) {
+        x.span().attribute("title", display).tx(s);
+      } else {
+        x.tx(s);
+      }
+    } else {
+      x.tx(e.toString());
+    }
+  }
+
+  private String lookupDisplay(org.hl7.fhir.utilities.json.model.JsonObject coding) {
+    if (!coding.has("system") || !coding.has("code") || coding.has("value") || coding.has("unit")) {
+      // not a coding (e.g. a Quantity)
+      return null;
+    }
+    String system = coding.asString("system");
+    String version = coding.has("version") ? coding.asString("version") : null;
+    String code = coding.asString("code");
+    String key = system + "|" + version + "|" + code;
+    if (codeDisplays.containsKey(key)) {
+      return codeDisplays.get(key);
+    }
+    String display = null;
+    try {
+      ValidationResult vr = context.getWorker().validateCode(context.getTerminologyServiceOptions(), system, version, code, null);
+      display = vr == null ? null : vr.getDisplay();
+    } catch (Exception ex) {
+      // no display, then
+    }
+    codeDisplays.put(key, display);
+    return display;
+  }
+
+  private XhtmlNode renderValueAsXml(DataType value, String elementName) throws IOException {
+    XmlParser parser = new XmlParser(context.getContext().getModelContext());
+    parser.setOutputStyle(OutputStyle.PRETTY);
+    // the parser names the root [prefix][Type]; it's renamed to the element name afterwards
+    String xml = parser.composeString(value, "x");
+    StringBuilder b = new StringBuilder();
+    for (String s : xml.split("\\r?\\n")) {
+      if (!Utilities.noString(s) && !s.startsWith("<?")) {
+        b.append(s.replace(" xmlns=\"http://hl7.org/fhir\"", ""));
+        b.append("\n");
+      }
+    }
+    String s = b.toString().trim();
+    String root = "x" + Utilities.capitalize(value.fhirType());
+    if (s.startsWith("<" + root)) {
+      s = "<" + elementName + s.substring(root.length() + 1);
+      if (s.endsWith("</" + root + ">")) {
+        s = s.substring(0, s.length() - root.length() - 3) + "</" + elementName + ">";
+      }
+    }
+    XhtmlNode code = new XhtmlNode(NodeType.Element, "code");
+    code.tx(s);
+    return code;
+  }
+
   private String buildJson(DataType value) throws IOException { 
     if (value instanceof PrimitiveType) 
       return ((PrimitiveType<?>) value).asStringValue(); 
@@ -4743,16 +4658,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_LABEL), null, strikethrough, compareString(d.getLabel(), d.getLabelElement(), null, "label", d, (compare != null ? compare.getLabel() : null), null, mode, false, false));    
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_ALT_NAME), null, strikethrough, compareSimpleTypeLists(d.getAliasList(), ((compare==null) || slicedExtension ? null : compare.getAliasList()), mode)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_DEF_CODES), null, strikethrough, compareDataTypeLists(d.getCodeList(), ((compare==null) || slicedExtension ? null : compare.getCodeList()), mode)); 
-    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MIN_VALUE), null, strikethrough, compareString(d.hasMinValue() ? encodeValue(d.getMinValue(), null) : null, d.getMinValue(), null, "minValue", d, compare!= null && compare.hasMinValue() ? encodeValue(compare.getMinValue(), null) : null, null, mode, false, false)); 
-    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MAX_VALUE), null, strikethrough, compareString(d.hasMaxValue() ? encodeValue(d.getMaxValue(), null) : null, d.getMaxValue(), null, "maxValue", d, compare!= null && compare.hasMaxValue() ? encodeValue(compare.getMaxValue(), null) : null, null, mode, false, false)); 
+    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MIN_VALUE), null, strikethrough, renderValueDetail(d.getMinValue(), compare == null ? null : compare.getMinValue(), mode, valueElementName(d, d.getMinValue(), "minValue"), null)); 
+    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MAX_VALUE), null, strikethrough, renderValueDetail(d.getMaxValue(), compare == null ? null : compare.getMaxValue(), mode, valueElementName(d, d.getMaxValue(), "maxValue"), null)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_MAX_LENGTH), null, strikethrough, compareString(d.hasMaxLength() ? toStr(d.getMaxLength()) : null, d.getMaxLengthElement(), null, "maxLength", d, compare!= null && compare.hasMaxLengthElement() ? toStr(compare.getMaxLength()) : null, null, mode, false, false)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_MIN_LENGTH), null, strikethrough, ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_MIN_LENGTH)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_VALUE_REQ), null, strikethrough, compareString(encodeValue(d.getMustHaveValueElement(), null), d.getMustHaveValueElement(), null, (compare != null ? encodeValue(compare.getMustHaveValueElement(), null) : null), d, null, "mustHaveValueElement", mode, false, false));    
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_VALUE_ALT), null, strikethrough, compareSimpleTypeLists(d.getValueAlternativesList(), ((compare==null) || slicedExtension ? null : compare.getValueAlternativesList()), mode)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_DEFAULT_VALUE), null, strikethrough, encodeValue(d.getDefaultValue(), "defaultValue", d, compare==null ? null : compare.getDefaultValue(), mode, d.getName())); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MEAN_MISS), null, strikethrough, d.getMeaningWhenMissing()); 
-    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED), null, strikethrough, encodeValue(d.getFixed(), "fixed", d, compare==null ? null : compare.getFixed(), mode, d.getName())); 
-    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_PATT_VALUE), null, strikethrough, encodeValue(d.getPattern(), "pattern", d, compare==null ? null : compare.getPattern(), mode, d.getName())); 
+    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED), null, strikethrough, renderValueDetail(d.getFixed(), compare == null ? null : compare.getFixed(), mode, valueElementName(d, d.getFixed(), null), true)); 
+    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_PATT_VALUE), null, strikethrough, renderValueDetail(d.getPattern(), compare == null ? null : compare.getPattern(), mode, valueElementName(d, d.getPattern(), null), false)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_EXAMPLE), null, strikethrough, encodeValues(d.getExampleList()));
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_INVAR), null, strikethrough, invariants(d.getConstraintList(), compare==null ? null : compare.getConstraintList(), d, mode));
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_LOINC), null, strikethrough, getMapping(sd, d, LOINC_MAPPING, compare, mode)); 
