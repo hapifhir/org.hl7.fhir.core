@@ -37,50 +37,41 @@ public abstract class BaseAdvisor30<T extends IBaseExtension> extends BaseAdviso
     return null;
   }
 
-  public boolean ignoreExtension(@Nonnull String path,
-                                 @Nonnull Extension ext) throws FHIRException {
-    return ((ext.getUrl() != null) && (this.ignoreExtension(path, ext.getUrl()))
-      || (this.ignoreType(path, ext.getValue())));
+  public boolean ignoreExtension(@Nonnull Extension ext) throws FHIRException {
+    return ((ext.getUrl() != null) && (this.ignoreExtension(ext.getUrl()))
+      || (this.ignoreType(ext.getValue())));
   }
 
-  public boolean ignoreExtension(@Nonnull String path,
-                                 @Nonnull T ext) throws FHIRException {
-    return ((ext.getUrl() != null) && this.ignoreExtension(path, ext.getUrl()))
-      || (this.ignoreType(path, ext.getValue()));
+  public boolean ignoreExtension(@Nonnull T ext) throws FHIRException {
+    return ((ext.getUrl() != null) && this.ignoreExtension(ext.getUrl()))
+      || (this.ignoreType(ext.getValue()));
   }
 
-  public boolean ignoreExtension(@Nonnull String path,
-                                 @Nonnull String url) throws FHIRException {
+  public boolean ignoreExtension(@Nonnull String url) throws FHIRException {
     return false;
   }
 
-  public boolean ignoreType(@Nonnull String path,
-                            @Nonnull Type type) throws FHIRException {
+  public boolean ignoreType(@Nonnull Type type) throws FHIRException {
     return false;
   }
 
-  public boolean ignoreType(@Nonnull String path,
-                            @Nonnull Object type) throws FHIRException {
+  public boolean ignoreType(@Nonnull Object type) throws FHIRException {
     return false;
   }
 
-  public boolean useAdvisorForExtension(@Nonnull String path,
-                                        @Nonnull Extension ext) throws FHIRException {
+  public boolean useAdvisorForExtension(@Nonnull Extension ext) throws FHIRException {
     return false;
   }
 
-  public boolean useAdvisorForExtension(@Nonnull String path,
-                                        @Nonnull T ext) throws FHIRException {
+  public boolean useAdvisorForExtension(@Nonnull T ext) throws FHIRException {
     return false;
   }
 
-  public void handleExtension(@Nonnull String path,
-                              @Nonnull Extension src,
+  public void handleExtension(@Nonnull Extension src,
                               @Nonnull T tgt) throws FHIRException {
   }
 
-  public void handleExtension(@Nonnull String path,
-                              @Nonnull T src,
+  public void handleExtension(@Nonnull T src,
                               @Nonnull Extension tgt) throws FHIRException {
   }
 }
