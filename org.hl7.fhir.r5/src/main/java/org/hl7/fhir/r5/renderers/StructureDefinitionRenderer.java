@@ -3463,24 +3463,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   private void addValueDetail(XhtmlNode x, DataType value, String elementName, Boolean fixed) throws IOException {
-    if (isSimplePrimitive(value)) {
-      x.tx(value.primitiveValue());
-      if (fixed != null) {
-        x.tx(context.formatPhrase(fixed ? RenderingI18nContext.STRUC_DEF_NO_EXT_ALLOWED : RenderingI18nContext.STRUC_DEF_EXT_ALLOWED));
-      }
-    } else {
-      // not pretty printed, so that the pretty printer doesn't add whitespace inside the pre
-      XhtmlNode div = x.div().notPretty();
-      div.pre("json").addChildNode(renderValueAsJson(value, elementName));
-      div.pre("xml").addChildNode(renderValueAsXml(value, elementName));
-    }
+    // the detailed view always shows JSON then XML, primitives included (unlike the tree view)
+    // not pretty printed, so that the pretty printer doesn't add whitespace inside the pre
+    XhtmlNode div = x.div().notPretty();
+    div.pre("json").addChildNode(renderValueAsJson(value, elementName));
+    div.pre("xml").addChildNode(renderValueAsXml(value, elementName));
   }
 
   private final Map<String, String> codeDisplays = new HashMap<>();
 
   /**
-   * JSON for a fixed or pattern value: the bare object. A primitive (which only gets here when it has an id or extensions)
-   * is shown the way it appears in an instance, split across [name] and _[name].
+   * JSON for a fixed or pattern value: the bare object. A primitive is shown the way it appears in an instance,
+   * as [name], plus _[name] if it has an id or extensions.
    *
    * Where a code is shown without a display, the display (if known) is a flyover on the code. The JSON has no hyperlinks.
    */
@@ -3507,7 +3501,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
         ext.add("extension", arr);
       }
-      obj.add("_" + elementName, ext);
+      if (value.hasId() || value.hasExtension()) {
+        obj.add("_" + elementName, ext);
+      }
       json = obj;
     } else {
       json = org.hl7.fhir.utilities.json.parser.JsonParser.parse(buildJson(value));
