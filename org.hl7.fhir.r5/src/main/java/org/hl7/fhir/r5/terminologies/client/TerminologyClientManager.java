@@ -937,12 +937,19 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     }
   }
   public SourcedCodeSystem findCodeSystemOnServer(String canonical) {
+    return findCodeSystemOnServer(canonical, null);
+  }
+
+  public SourcedCodeSystem findCodeSystemOnServer(String canonical, String language) {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null || !useEcosystem) {
       return null;
     }
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode(canonical));
     if (usage != null) {
       request = request + "&usage="+usage;
+    }
+    if (language != null && !language.isBlank()) {
+      request += "&language=" + Utilities.URLEncode(language.trim());
     }
     String server = null;
     try {
