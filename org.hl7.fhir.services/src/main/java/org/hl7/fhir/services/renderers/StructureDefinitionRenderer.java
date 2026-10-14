@@ -3399,7 +3399,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       String s = value.primitiveValue();
       String link = Utilities.isAbsoluteUrl(s) && context.getPkp() != null ? context.getPkp().getLinkForUrl(corePath, s) : null;
       c.getPieces().add(checkForNoChange(value, gen.new Piece(link, s, null).styleAsDarkGreen()));
-      c.getPieces().add(checkForNoChange(value, gen.new Piece(null, context.formatPhrase(isFixed ? RenderingI18nContext.STRUC_DEF_NO_EXT_ALLOWED : RenderingI18nContext.STRUC_DEF_EXT_ALLOWED), null)));
+      c.getPieces().add(checkForNoChange(value, gen.new Piece(null, " "+context.formatPhrase(isFixed ? RenderingI18nContext.STRUC_DEF_NO_EXT_ALLOWED : RenderingI18nContext.STRUC_DEF_EXT_ALLOWED), null)));
     } else {
       // the pre is wrapped in a div that is not pretty printed, so that the pretty printer doesn't add whitespace inside the pre
       XhtmlNode div = new XhtmlNode(NodeType.Element, "div").notPretty();
