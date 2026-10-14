@@ -279,7 +279,7 @@ public class NarrativeGenerationTests {
       }
     }
     RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
-    rc.setDestDir(Utilities.path("[tmp]", "narrative"));
+    rc.setDestDir(Utilities.path("[tmp]", "narrative6"));
     rc.setShowSummaryTable(test.isHeader());
     rc.setTrackNarrativeSource(test.isTrack());
     rc.setDefinitionsTarget("test.html");
@@ -315,8 +315,8 @@ public class NarrativeGenerationTests {
     XhtmlNode x = new RendererFactory().factory(source, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), source));
     String expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r6", "narrative", "output", test.getId() + ".html"));
     String actual = HEADER+new XhtmlComposer(true, test.pretty).compose(x)+FOOTER;
-    String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.html");
-    String actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".html");
+    String expectedFileName = CompareUtilities.tempFile("narrative6", test.getId() + ".expected.html");
+    String actualFileName = CompareUtilities.tempFile("narrative6", test.getId() + ".html");
     FileUtilities.stringToFile(expected, expectedFileName);
     FileUtilities.stringToFile(actual, actualFileName);
     String msg = new CompareUtilities().checkXMLIsSame(id, expectedFileName, actualFileName);
@@ -325,8 +325,8 @@ public class NarrativeGenerationTests {
     String disp = new RendererFactory().factory(source, rc).buildSummary(ResourceWrapper.forResource(rc.getContextUtilities(), source));
     expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r6", "narrative", "output", test.getId() + ".txt"));
     actual = disp;
-    expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.txt");
-    actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".txt");
+    expectedFileName = CompareUtilities.tempFile("narrative6", test.getId() + ".expected.txt");
+    actualFileName = CompareUtilities.tempFile("narrative6", test.getId() + ".txt");
     FileUtilities.stringToFile(expected, expectedFileName);
     FileUtilities.stringToFile(actual, actualFileName);
     msg = new CompareUtilities().checkTextIsSame(id, expected, actual);
@@ -343,7 +343,7 @@ public class NarrativeGenerationTests {
 //
 //      expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r6", "narrative", "output", test.getId() + "-meta.html"));
 //      actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
-//      actualFileName = CompareUtilities.tempFile("narrative", test.getId() + "-meta.actual.html");
+//      actualFileName = CompareUtilities.tempFile("narrative6", test.getId() + "-meta.actual.html");
 //      FileUtilities.stringToFile(actual, actualFileName);
 //      msg = CompareUtilities.checkXMLIsSame(id, expectedFileName, actualFileName);
 //      Assertions.assertTrue(msg == null, "Meta output does not match expected: "+msg);
@@ -381,8 +381,8 @@ public class NarrativeGenerationTests {
     }
     String expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r6", "narrative", "output", test.getId() + "-" + view + ".html"));
     String actual = HEADER+new XhtmlComposer(true, test.pretty).compose(x)+FOOTER;
-    String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + "-" + view + ".expected.html");
-    String actualFileName = CompareUtilities.tempFile("narrative", test.getId() + "-" + view + ".html");
+    String expectedFileName = CompareUtilities.tempFile("narrative6", test.getId() + "-" + view + ".expected.html");
+    String actualFileName = CompareUtilities.tempFile("narrative6", test.getId() + "-" + view + ".html");
     FileUtilities.stringToFile(expected, expectedFileName);
     FileUtilities.stringToFile(actual, actualFileName);
     String msg = new CompareUtilities().checkXMLIsSame(id, expectedFileName, actualFileName);

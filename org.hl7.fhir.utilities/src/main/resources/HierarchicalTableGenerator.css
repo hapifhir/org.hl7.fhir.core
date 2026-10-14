@@ -1,4 +1,25 @@
 
+.xhtTableBorder0 {
+    border: 0px #F0F0F0 solid;
+    font-size: 11px;
+    font-family: verdana;
+    vertical-align: top;
+}
+
+.xhtTableBorder1 {
+    border: 1px #F0F0F0 solid;
+    font-size: 11px;
+    font-family: verdana;
+    vertical-align: top;
+}
+
+.xhtTableBorder2 {
+    border: 2px black solid;
+    font-size: 11px;
+    font-family: verdana;
+    vertical-align: top;
+}
+
 .xhtRowEven {
     background-color: white;
 }
@@ -65,7 +86,6 @@
     text-align : var(--ig-left,left);
     border: 0px #F0F0F0 solid;
     padding:0px 4px 0px 4px;
-    white-space: nowrap
 }
 
 .xhtCellBorder1 {
@@ -73,7 +93,11 @@
     text-align : var(--ig-left,left);
     border: 1px #F0F0F0 solid;
     padding:0px 4px 0px 4px;
-    white-space: nowrap
+}
+
+/* only the hierarchy column: the other columns wrap */
+.xhtCellNoWrap {
+    white-space: nowrap;
 }
 
 .xhtCellLeftLine {
@@ -102,7 +126,7 @@
 
 .xhtPiecePre {
     white-space: pre;
-    font-family: courier";
+    font-family: courier;
 }
 
 .xhtPieceDeEmphasized {

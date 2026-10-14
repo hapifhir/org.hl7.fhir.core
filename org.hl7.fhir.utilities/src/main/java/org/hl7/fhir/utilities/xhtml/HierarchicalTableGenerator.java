@@ -1116,7 +1116,7 @@ public class HierarchicalTableGenerator {
         tr.setAttribute("data-fhir", "generated-heirarchy");
       }
       if (!noUseCssClasses) {
-        table.clss("xhtRowBorder" + (border ? "1" : "0"));
+        tr.clss("xhtRowBorder" + (border ? "2" : "1"));
       } else {
         tr.style("border: " + Integer.toString(1 + (border ? 1 : 0)) + "px #F0F0F0 solid; font-size: 11px; font-family: verdana; vertical-align: top");
       }
@@ -1189,9 +1189,11 @@ public class HierarchicalTableGenerator {
     
     String color = "white";
     String colorClass = "xhtRowEven";
-    if (r.getColor() != null)
+    boolean useColor = false;
+    if (r.getColor() != null) {
       color = r.getColor();
-    else if (model.isAlternating()  && counter.isOdd()) {
+      useColor = true;
+    } else if (model.isAlternating()  && counter.isOdd()) {
       color = BACKGROUND_ALT_COLOR;
       colorClass = "xhtRowOdd";
     }
@@ -1200,6 +1202,9 @@ public class HierarchicalTableGenerator {
 
     if (!noUseCssClasses) {
       tr.clssList((border ? "xhtRowBorder1" : "xhtRowBorder0"), colorClass, r.isTopLineSilver() ? "xhtRowTopSilver " : null, r.isTransparent() ? "xhtRowGreyedOut" : null);
+      if (useColor) {
+        tr.style("background-color: " + color);
+      }
     } else {
       tr.style("border: " + (border ? "1" : "0") + "px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: " + color + (r.isTransparent() ? "; opacity: " + STANDARD_OPACITY : "") + lineStyle);
     }
@@ -1260,7 +1265,7 @@ public class HierarchicalTableGenerator {
     if (c.getId() != null) {
       tc.setAttribute("id", c.getId());
     }    
-    String lineStyle = row != null && row.isTopLineSilver() ? "; padding-top: 3px; padding-bottom: 3px" : null;
+    String lineStyle = row != null && row.isTopLineSilver() ? "padding-top: 3px; padding-bottom: 3px" : null;
     String lineClass = row != null && row.isTopLineSilver() ? "xhtRowTopSilver" : null;
 
     XhtmlNode itc = tc;
@@ -1273,33 +1278,38 @@ public class HierarchicalTableGenerator {
     if (indents != null) {
       itc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_spacer.png")).style("background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", "");
       Set<String> styles = new HashSet<>();
+      // the hierarchy column doesn't wrap (the tree lines are a background image); the other columns do
       if (!noUseCssClasses) {
         tc.clssList(border ? "xhtCellBorder1" : "xhtCellBorder0",
+          "xhtCellNoWrap",
           lineClass,
           c.backgroundColor == null ? null : c.backgroundColor.toCode(),
           c.leftLine ? "xhtCellLeftLine" : null,
           c.rightLine ? "xhtCellRightLine" : null);
       } else {
         styles.add("vertical-align: top");
-        styles.add(lineStyle);
+        styles.add("border: "+(border ? "1" : "0")+"px #F0F0F0 solid");
+        // one padding declaration: styles are sorted, so a separate padding-top would land before the shorthand and be lost
+        styles.add(lineStyle != null ? "padding: 3px 4px 3px 4px" : "padding: 0px 4px 0px 4px");
         styles.add("text-align : var(--ig-left,left)");
+        styles.add("white-space: nowrap");
         if (c.backgroundColor != null) {
           styles.add("background-color: "+c.backgroundColor.toColor());
         } else {
           styles.add("background-color: "+color);
         }
         if (c.leftLine) {
-          styles.add("border-left: 1px grey solid;");
+          styles.add("border-left: 1px grey solid");
         }
         if (c.rightLine) {
-          styles.add("border-right: 1px grey solid;");
+          styles.add("border-right: 1px grey solid");
         }
       }
       styles.add(treelines ? "background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")" : null);
       if (c.minWidth != null) {
         styles.add("min-width: "+c.minWidth);
       }
-      tc.style(CommaSeparatedStringBuilder.join("; ", styles));
+      tc.style(joinStyles(styles));
       for (int i = 0; i < indents.size()-1; i++) {
         switch (indents.get(i)) {
           case NEW_REGULAR:
@@ -1361,7 +1371,9 @@ public class HierarchicalTableGenerator {
           c.rightLine ? "xhtCellRightLine" : null);
       } else {
         styles.add("vertical-align: top");
-        styles.add(lineStyle);
+        styles.add("border: "+(border ? "1" : "0")+"px #F0F0F0 solid");
+        // one padding declaration: styles are sorted, so a separate padding-top would land before the shorthand and be lost
+        styles.add(lineStyle != null ? "padding: 3px 4px 3px 4px" : "padding: 0px 4px 0px 4px");
         styles.add("text-align : var(--ig-left,left)");
         if (c.backgroundColor != null) {
           styles.add("background-color: "+c.backgroundColor.toColor());
@@ -1369,16 +1381,16 @@ public class HierarchicalTableGenerator {
           styles.add("background-color: "+color);
         }
         if (c.leftLine) {
-          styles.add("border-left: 1px grey solid;");
+          styles.add("border-left: 1px grey solid");
         }
         if (c.rightLine) {
-          styles.add("border-right: 1px grey solid;");
+          styles.add("border-right: 1px grey solid");
         }
       }
       if (c.minWidth != null) {
         styles.add("min-width: "+c.minWidth);
       }
-      tc.style(CommaSeparatedStringBuilder.join("; ", styles));
+      tc.style(joinStyles(styles));
     }
     if (c.innerTable) {
       itc = itr.td();
@@ -1498,6 +1510,10 @@ public class HierarchicalTableGenerator {
     return tc;
   }
 
+  private static String joinStyles(Set<String> styles) {
+    return CommaSeparatedStringBuilder.join("; ", Utilities.sorted(styles));
+  }
+
 
   /**
    * this is used to generate a simplified form while reusing all the massive amount of code that goes into the generation of the table
@@ -1523,18 +1539,22 @@ public class HierarchicalTableGenerator {
     XhtmlNode tr = table.addTag("tr");
     String color = "white";
     String colorClass = "xhtRowEven";
-    if (r.getColor() != null)
+    boolean useColor = false;
+    if (r.getColor() != null) {
       color = r.getColor();
-    else if (model.isAlternating()  && counter.isOdd()) {
+      useColor= true;
+    } else if (model.isAlternating()  && counter.isOdd()) {
       color = BACKGROUND_ALT_COLOR;
       colorClass = "xhtRowOdd";
     }
 
-    String lineStyle = r.isTopLineSilver() ? "; border-top: 1px solid silver" : "";
-
     if (!noUseCssClasses) {
       tr.clssList((border ? "xhtRowBorder1" : "xhtRowBorder0"), colorClass, r.isTopLineSilver() ? "xhtRowTopSilver " : null, r.isTransparent() ? "xhtRowGreyedOut" : null);
+      if (useColor) {
+        tr.style("background-color: " + color);
+      }
     } else {
+      String lineStyle = r.isTopLineSilver() ? "; border-top: 1px solid silver" : "";
       tr.style("border: " + (border ? "1" : "0") + "px #F0F0F0 solid; padding:0px; vertical-align: top; background-color: " + color + (r.isTransparent() ? "; opacity: " + STANDARD_OPACITY : "") + lineStyle);
     }
     boolean first = true;

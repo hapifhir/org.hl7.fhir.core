@@ -706,7 +706,7 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       StructuralMatch<String> t = comparison.getMetadata().get(n);
       addRow(gen, model.getRows(), n, t);
     }
-    return gen.generate(model, prefix, true, null);
+    return gen.generate(model, prefix, false, null);
   }
 
   private void addRow(HierarchicalTableGenerator gen, List<Row> rows, String name, StructuralMatch<String> t) {

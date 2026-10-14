@@ -2321,7 +2321,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private String checkForNoChange(Element source) { 
     if (source.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) { 
-      return context.getOpacity(); 
+      return "opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY; 
     } else {  
       return null; 
     } 
