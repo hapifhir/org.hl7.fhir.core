@@ -74,7 +74,7 @@ public class TestingR4Convertor extends VersionConvertorIGBase {
   @Override
   public org.hl7.fhir.r4.model.Resource convertRNToR4(Resource source) {
     VersionConvertor_40_N vc = new VersionConvertor_40_N(new BaseAdvisor_40_N());
-    ConversionContext40_N.INSTANCE.init(vc, source.fhirType());
+    ConversionContext40_N.INSTANCE.init(vc);
     try {
       switch (source.fhirType() ) {
         case "TestReport":
@@ -87,7 +87,7 @@ public class TestingR4Convertor extends VersionConvertorIGBase {
           return null;
       }
     } finally {
-      ConversionContext40_N.INSTANCE.close(source.fhirType());
+      ConversionContext40_N.INSTANCE.close();
     }
   }
 
@@ -628,9 +628,9 @@ public class TestingR4Convertor extends VersionConvertorIGBase {
     if (src == null)
       return null;
     TestScript tgt = new TestScript();
-    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, EXT_TS_TESTSYSTEM);
+    // the scope extension is turned into TestScript.scope below, so it isn't copied across as an extension
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyDomainResource(src, tgt, EXT_TS_TESTSYSTEM, VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE);
     for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(VersionConvertorConstants.EXT_TESTSCRIPT_SCOPE)) {
-      // the advisor will get this ignored.
       TestScriptScopeComponent scope = tgt.addScope();
       scope.setArtifact(ext.getExtensionString("artifact"));
       org.hl7.fhir.r4.model.Extension se = ext.getExtensionByUrl("conformance");

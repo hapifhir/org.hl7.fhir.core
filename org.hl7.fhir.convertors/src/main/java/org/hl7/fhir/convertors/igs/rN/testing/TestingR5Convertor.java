@@ -61,7 +61,7 @@ public class TestingR5Convertor extends VersionConvertorIGBase {
     // the field converters get the version convertor from ConversionContext50_N, which is only
     // set up inside VersionConvertor_50_N.convertResource - so set it up here too
     org.hl7.fhir.convertors.conv50_N.VersionConvertor_50_N vc = new org.hl7.fhir.convertors.conv50_N.VersionConvertor_50_N(new org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_50_N());
-    ConversionContext50_N.INSTANCE.init(vc, source.fhirType());
+    ConversionContext50_N.INSTANCE.init(vc);
     try {
       switch (source.fhirType() ) {
         case "TestReport":
@@ -74,7 +74,7 @@ public class TestingR5Convertor extends VersionConvertorIGBase {
           return null;
       }
     } finally {
-      ConversionContext50_N.INSTANCE.close(source.fhirType());
+      ConversionContext50_N.INSTANCE.close();
     }
   }
 

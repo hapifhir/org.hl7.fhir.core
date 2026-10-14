@@ -10,7 +10,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_N;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_N;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_50_N;
-import org.hl7.fhir.convertors.igs.testing.TestingR4Convertor;
+import org.hl7.fhir.convertors.igs.r5.testing.TestingR4Convertor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

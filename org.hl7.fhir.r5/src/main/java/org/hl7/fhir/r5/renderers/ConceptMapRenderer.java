@@ -454,15 +454,38 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   }
 
   /**
-   * Builds the href of an element in the page of a StructureDefinition. The anchors in the
-   * structure tables replace '[' and ']' with '_', so value[x] is found at #s-...value_x_.
-   * Returns null - so the cell is rendered unlinked - when the StructureDefinition has no web path.
+   * Builds the href of an element in the page of a StructureDefinition, or null - so the cell is
+   * rendered unlinked - when the StructureDefinition has no web path. The anchor depends on what
+   * made the page:
+   * <ul>
+   * <li>a web path that already has a fragment (core spec datatypes: datatypes.html#Quantity) - the
+   *   page section, since there's no element anchor to add to it</li>
+   * <li>core spec resources and datatypes - the definitions page, #Observation.value_x_ (the same in
+   *   STU3 through R5)</li>
+   * <li>core spec profiles - the definitions page, #vitalsigns.Observation.value[x] (the profile id
+   *   prefixes the element id, and [x] is not replaced)</li>
+   * <li>anything else is taken to be an IG publisher page - the snapshot structure table,
+   *   #s-Observation.value_x_. IGs published before mid 2024 have no 's-' prefix, so the link
+   *   lands at the top of the page</li>
+   * </ul>
    */
   private String elementHref(StructureDefinition sd, String id) {
     if (!sd.hasWebPath()) {
       return null;
     }
-    return sd.getWebPath() + "#s-" + id.replace("[", "_").replace("]", "_");
+    String path = sd.getWebPath();
+    if (path.contains("#")) {
+      return path;
+    }
+    if (sd.hasSourcePackage() && sd.getSourcePackage().isCore() && path.endsWith(".html")) {
+      String defns = path.substring(0, path.length() - 5) + "-definitions.html";
+      if (sd.getDerivation() == StructureDefinition.TypeDerivationRule.CONSTRAINT) {
+        return defns + "#" + sd.getId() + "." + id;
+      } else {
+        return defns + "#" + id.replace("[", "_").replace("]", "_");
+      }
+    }
+    return path + "#s-" + id.replace("[", "_").replace("]", "_");
   }
 
   private void renderRelationshipCell(XhtmlNode td, TargetElementComponent ccm, RelationshipCodeSystems eqcs) {

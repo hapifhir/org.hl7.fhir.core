@@ -101,7 +101,7 @@ class TestingR5RoundTripTests {
   private Resource convertToR5AndBack(Resource r1) {
     org.hl7.fhir.r5.model.Resource r5 = new TestingR5Convertor().convertRNToR5(r1);
     VersionConvertor_50_N vc = new VersionConvertor_50_N(new BaseAdvisor_50_N());
-    ConversionContext50_N.INSTANCE.init(vc, r5.fhirType());
+    ConversionContext50_N.INSTANCE.init(vc);
     try {
       if (r5 instanceof org.hl7.fhir.r5.model.TestScript) {
         return TestingR5Convertor.convertTestScript((org.hl7.fhir.r5.model.TestScript) r5);
@@ -113,7 +113,7 @@ class TestingR5RoundTripTests {
         throw new IllegalStateException("Unexpected resource type: " + r5.fhirType());
       }
     } finally {
-      ConversionContext50_N.INSTANCE.close(r5.fhirType());
+      ConversionContext50_N.INSTANCE.close();
     }
   }
 
