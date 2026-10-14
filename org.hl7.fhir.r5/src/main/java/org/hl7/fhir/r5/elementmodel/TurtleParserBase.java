@@ -538,7 +538,7 @@ public abstract class TurtleParserBase extends ParserBase {
     if (type.equals("boolean"))
       quote = false;
     else if (type.equals("integer"))
-      quote = false;
+      xst = "^^xsd:int";  // FHIR integer is a 32-bit int (datatypes.html#integer); a bare Turtle integer is xsd:integer
     else if (type.equals("integer64"))
       xst = "^^xsd:long";	  
     else if (type.equals("unsignedInt"))
