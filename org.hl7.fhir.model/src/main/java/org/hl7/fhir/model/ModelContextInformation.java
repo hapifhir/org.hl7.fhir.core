@@ -258,6 +258,9 @@ public class ModelContextInformation {
   }
 
   public boolean hasResource(String resourceName) {
+    if (resourceName == null) {
+      return false;
+    }
     for (ModelResourceInformation t : resourceList) {
       if (resourceName.equals(t.getName())) {
         return true;
