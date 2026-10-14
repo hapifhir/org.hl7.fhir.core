@@ -35,8 +35,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
@@ -842,15 +844,33 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     }
     ret.setUserData(UserDataNames.tx_known_supplements, b.toString());
 
+    // index each supplement by code, rather than searching it for every concept in the code system
+    List<Map<String, ConceptDefinitionComponent>> supplementIndexes = new ArrayList<>();
+    for (CodeSystem sup : supplements) {
+      Map<String, ConceptDefinitionComponent> index = new HashMap<>();
+      indexCodes(index, sup.getConcept());
+      supplementIndexes.add(index);
+    }
     for (ConceptDefinitionComponent t : ret.getConcept()) {
-      mergeSupplements(ret, t, supplements);
+      mergeSupplements(ret, t, supplements, supplementIndexes);
     }
     return ret;
   }
 
-  private static void mergeSupplements(CodeSystem ret, ConceptDefinitionComponent fdef, List<CodeSystem> supplements) {
-    for (CodeSystem cs : supplements) {
-      ConceptDefinitionComponent def = CodeSystemUtilities.findCode(cs.getConcept(), fdef.getCode());
+  // the first concept with the code wins, in the same order that findCode() searches
+  private static void indexCodes(Map<String, ConceptDefinitionComponent> index, List<ConceptDefinitionComponent> list) {
+    for (ConceptDefinitionComponent c : list) {
+      if (c.hasCode()) {
+        index.putIfAbsent(c.getCode(), c);
+      }
+      indexCodes(index, c.getConcept());
+    }
+  }
+
+  private static void mergeSupplements(CodeSystem ret, ConceptDefinitionComponent fdef, List<CodeSystem> supplements, List<Map<String, ConceptDefinitionComponent>> supplementIndexes) {
+    for (int i = 0; i < supplements.size(); i++) {
+      CodeSystem cs = supplements.get(i);
+      ConceptDefinitionComponent def = supplementIndexes.get(i).get(fdef.getCode());
       if (def != null) {
         for (Extension ext : def.getExtension()) {
           fdef.addExtension(ext.copy());
@@ -870,7 +890,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
         }
       }
       for (ConceptDefinitionComponent t : fdef.getConcept()) {
-        mergeSupplements(ret, t, supplements);
+        mergeSupplements(ret, t, supplements, supplementIndexes);
       }      
     }
   }
