@@ -236,7 +236,7 @@ public class Resource50_N {
       return TestScript50_N.convertTestScript((org.hl7.fhir.r5.model.TestScript) src);
 
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R4 to R5");
+      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R5 to RN");
     } else {
       return null;
     }
@@ -446,7 +446,7 @@ public class Resource50_N {
       return TestScript50_N.convertTestScript((org.hl7.fhir.model.testing.TestScript) src);
 
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R5 to R4");
+      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from RN to R5");
     } else {
       return null;
     }
