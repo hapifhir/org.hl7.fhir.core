@@ -631,6 +631,7 @@ public class ConceptMapValidator extends BaseValidator {
     private String version;
     private String parent;
     private String child;
+    private boolean local;
     private NodeStack stack;
     private String msgId;
     private Object[] params;
@@ -729,7 +730,9 @@ public class ConceptMapValidator extends BaseValidator {
     checkScopeCoverage(errors, options, sourceScope);
     String url = cm.getNamedChildValue("url", false);
     for (GroupInfo gi : groupInfos) {
-      checkReverseMap(errors, gi, url, sourceScope, targetScope);
+      if (checkDirection(errors, gi, sourceScope, targetScope)) {
+        checkReverseMap(errors, gi, url, sourceScope, targetScope);
+      }
     }
   }
 
@@ -806,11 +809,14 @@ public class ConceptMapValidator extends BaseValidator {
     Map<String, Boolean> results = new HashMap<>();
     for (SubsumptionCheck check : checks) {
       String key = check.system + "|" + check.version + "#" + check.parent + ">" + check.child;
+      // if we have the code system, the internal subsumption tester is authoritative: if it can't
+      // tell, the server won't be able to either (and we don't want a server call for each check)
+      ValidationOptions opts = check.local ? options.withNoServer() : options;
       Boolean subsumes;
       if (results.containsKey(key)) {
         subsumes = results.get(key);
       } else {
-        subsumes = context.subsumes(options, new Coding(check.system, check.version, check.parent, null), new Coding(check.system, check.version, check.child, null));
+        subsumes = context.subsumes(opts, new Coding(check.system, check.version, check.parent, null), new Coding(check.system, check.version, check.child, null));
         results.put(key, subsumes);
       }
       // null = can't tell; only report when we know it doesn't
@@ -824,6 +830,7 @@ public class ConceptMapValidator extends BaseValidator {
     SubsumptionCheck check = new SubsumptionCheck();
     check.system = system.url;
     check.version = system.version;
+    check.local = localCodeSystem(system) != null;
     check.parent = parent;
     check.child = child;
     check.stack = stack;
@@ -844,11 +851,24 @@ public class ConceptMapValidator extends BaseValidator {
     if (system.url == null) {
       return false;
     }
-    CodeSystem cs = system.cs != null ? system.cs : context.fetchCodeSystem(system.url, VersionResolutionRules.defaultRule(), system.version, null);
+    CodeSystem cs = localCodeSystem(system);
     if (cs == null) {
       return true;
     }
     return !cs.hasHierarchyMeaning() || cs.getHierarchyMeaning() == CodeSystem.CodeSystemHierarchyMeaning.ISA;
+  }
+
+  /**
+   * The code system, if we have a resource that carries its content (so not the stubs for SNOMED CT,
+   * LOINC etc). A fragment counts - subsumption can't be determined from it, but nor can it be
+   * determined by sending the fragment to the server
+   */
+  private CodeSystem localCodeSystem(CSReference system) {
+    CodeSystem cs = system.cs != null ? system.cs : context.fetchCodeSystem(system.url, VersionResolutionRules.defaultRule(), system.version, null);
+    if (cs == null || isServerSideOnly(cs) || cs.getContent() == CodeSystemContentMode.NOTPRESENT) {
+      return null;
+    }
+    return cs;
   }
 
   private void checkScopeCoverage(List<ValidationMessage> errors, ValidationOptions options, VSReference sourceScope) {
@@ -908,7 +928,7 @@ public class ConceptMapValidator extends BaseValidator {
     if (gi.ctxt.source == null || gi.ctxt.target == null || gi.ctxt.source.url == null || gi.ctxt.target.url == null) {
       return;
     }
-    List<ConceptMap> candidates = findReverseMaps(gi.ctxt.source.url, gi.ctxt.target.url, url, sourceScope, targetScope);
+    List<ConceptMap> candidates = findReverseMaps(gi, url, sourceScope, targetScope);
     if (candidates.isEmpty()) {
       return;
     }
@@ -928,7 +948,7 @@ public class ConceptMapValidator extends BaseValidator {
     Map<String, List<String[]>> bySource = new HashMap<>();
     Set<String> noMaps = new HashSet<>();
     for (ConceptMapGroupComponent g : reverse.getGroupList()) {
-      if (!systemMatches(gi.ctxt.target.url, g.getSource()) || !systemMatches(gi.ctxt.source.url, g.getTarget())) {
+      if (!isReverseGroup(gi, g)) {
         continue;
       }
       for (SourceElementComponent e : g.getElementList()) {
@@ -985,10 +1005,30 @@ public class ConceptMapValidator extends BaseValidator {
   }
 
   /**
+   * A map from a code system to itself has to say which way it goes - by version, or by scope - or it's
+   * not usable, and there's no way to tell a reverse map from another map going the same way
+   *
+   * @return true if the group has a direction, so reverse checking can proceed
+   */
+  private boolean checkDirection(List<ValidationMessage> errors, GroupInfo gi, VSReference sourceScope, VSReference targetScope) {
+    if (gi.ctxt.source == null || gi.ctxt.target == null || gi.ctxt.source.url == null || !gi.ctxt.source.url.equals(gi.ctxt.target.url)) {
+      return true;
+    }
+    boolean ok = versionsDiffer(gi) || (sourceScope != null && targetScope != null && sourceScope.url != null && targetScope.url != null
+        && !(sourceScope.url + "|" + sourceScope.version).equals(targetScope.url + "|" + targetScope.version));
+    warning(errors, "2026-10-15", IssueType.BUSINESSRULE, gi.stack, ok, I18nConstants.CONCEPTMAP_QUALITY_SAME_SYSTEM_UNDIRECTED, gi.ctxt.source.url);
+    return ok;
+  }
+
+  private boolean versionsDiffer(GroupInfo gi) {
+    return gi.ctxt.source.version != null && gi.ctxt.target.version != null && !gi.ctxt.source.version.equals(gi.ctxt.target.version);
+  }
+
+  /**
    * A reverse map is one whose group goes from our target system to our source system, and whose scopes
    * (if either map has them) are our scopes, reversed
    */
-  private List<ConceptMap> findReverseMaps(String source, String target, String url, VSReference sourceScope, VSReference targetScope) {
+  private List<ConceptMap> findReverseMaps(GroupInfo gi, String url, VSReference sourceScope, VSReference targetScope) {
     List<ConceptMap> res = new ArrayList<>();
     for (ConceptMap cm : context.fetchResourcesByType(ConceptMap.class)) {
       if (url != null && url.equals(cm.getUrl())) {
@@ -996,7 +1036,7 @@ public class ConceptMapValidator extends BaseValidator {
       }
       boolean groupMatches = false;
       for (ConceptMapGroupComponent g : cm.getGroupList()) {
-        if (systemMatches(target, g.getSource()) && systemMatches(source, g.getTarget())) {
+        if (isReverseGroup(gi, g)) {
           groupMatches = true;
           break;
         }
@@ -1008,11 +1048,29 @@ public class ConceptMapValidator extends BaseValidator {
     return res;
   }
 
-  private boolean systemMatches(String url, String canonical) {
+  /**
+   * Versions have to match where both sides state them. For a map from a code system to itself that
+   * is directed by version, the other group has to state them too (or it could be going either way)
+   */
+  private boolean isReverseGroup(GroupInfo gi, ConceptMapGroupComponent g) {
+    boolean strict = gi.ctxt.source.url.equals(gi.ctxt.target.url) && versionsDiffer(gi);
+    return systemMatches(gi.ctxt.target.url, gi.ctxt.target.version, g.getSource(), strict)
+        && systemMatches(gi.ctxt.source.url, gi.ctxt.source.version, g.getTarget(), strict);
+  }
+
+  private boolean systemMatches(String url, String version, String canonical, boolean strict) {
     if (url == null || canonical == null) {
       return false;
     }
-    return url.equals(canonical.contains("|") ? canonical.substring(0, canonical.indexOf("|")) : canonical);
+    String curl = canonical.contains("|") ? canonical.substring(0, canonical.indexOf("|")) : canonical;
+    String cver = canonical.contains("|") ? canonical.substring(canonical.indexOf("|") + 1) : null;
+    if (!url.equals(curl)) {
+      return false;
+    }
+    if (version == null || cver == null) {
+      return !strict;
+    }
+    return version.equals(cver);
   }
 
   private boolean scopeMatches(VSReference scope, DataType other) {
