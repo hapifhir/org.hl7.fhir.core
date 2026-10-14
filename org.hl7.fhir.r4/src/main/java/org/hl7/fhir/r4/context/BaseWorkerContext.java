@@ -60,12 +60,13 @@ import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.r4.model.DomainResource;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nBase;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -101,8 +102,12 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonObject;
 
-@MarkedToMoveToAdjunctPackage
+
+/**
+ * The implemetation of IWorkerContext is deprecated - it is no longer maintained by the core team
+ */
 @Slf4j
+@Deprecated(forRemoval = true)
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
 
@@ -162,39 +167,45 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     txCache = new TerminologyCache(lock, null);
   }
 
-  protected void copy(BaseWorkerContext other) {
-    synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet
-      allResourcesById.putAll(other.allResourcesById);
-      translator = other.translator;
-      codeSystems.putAll(other.codeSystems);
-      txcaps = other.txcaps;
-      valueSets.putAll(other.valueSets);
-      maps.putAll(other.maps);
-      transforms.putAll(other.transforms);
-      structures.putAll(other.structures);
-      searchParameters.putAll(other.searchParameters);
-      plans.putAll(other.plans);
-      questionnaires.putAll(other.questionnaires);
-      operations.putAll(other.operations);
-      systems.addAll(other.systems);
-      guides.putAll(other.guides);
-      capstmts.putAll(other.capstmts);
+  // Copying a worker context has been withdrawn in this version. A copy is not properly isolated
+  // from the context it was copied from: it shares the terminology client, the translator, the
+  // validator factory and the resources themselves (the registries are copied, the resources in them
+  // are not), so changes made through one can show up in the other. This code base is only
+  // maintained for FHIRPath, so rather than fix it, the copy support is commented out. If you need
+  // it, raise an issue at https://github.com/hapifhir/org.hl7.fhir.core/issues
+//  protected void copy(BaseWorkerContext other) {
+//    synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet
+//      allResourcesById.putAll(other.allResourcesById);
+//      translator = other.translator;
+//      codeSystems.putAll(other.codeSystems);
+//      txcaps = other.txcaps;
+//      valueSets.putAll(other.valueSets);
+//      maps.putAll(other.maps);
+//      transforms.putAll(other.transforms);
+//      structures.putAll(other.structures);
+//      searchParameters.putAll(other.searchParameters);
+//      plans.putAll(other.plans);
+//      questionnaires.putAll(other.questionnaires);
+//      operations.putAll(other.operations);
+//      systems.addAll(other.systems);
+//      guides.putAll(other.guides);
+//      capstmts.putAll(other.capstmts);
 
-      allowLoadingDuplicates = other.allowLoadingDuplicates;
-      tsServer = other.tsServer;
-      name = other.name;
-      txClient = other.txClient;
-      txLog = other.txLog;
-      txcaps = other.txcaps;
-      canRunWithoutTerminology = other.canRunWithoutTerminology;
-      noTerminologyServer = other.noTerminologyServer;
-      if (other.txCache != null)
-        txCache = other.txCache.copy();
-      expandCodesLimit = other.expandCodesLimit;
+//      allowLoadingDuplicates = other.allowLoadingDuplicates;
+//      tsServer = other.tsServer;
+//      name = other.name;
+//      txClient = other.txClient;
+//      txLog = other.txLog;
+//      txcaps = other.txcaps;
+//      canRunWithoutTerminology = other.canRunWithoutTerminology;
+//      noTerminologyServer = other.noTerminologyServer;
+//      if (other.txCache != null)
+//        txCache = other.txCache.copy();
+//      expandCodesLimit = other.expandCodesLimit;
 
-      expParameters = other.expParameters;
-    }
-  }
+//      expParameters = other.expParameters;
+//    }
+//  }
 
   public void cacheResource(Resource r) throws FHIRException {
     synchronized (lock) {
@@ -270,12 +281,18 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    * Returns true if both strings include the delimiter and have the same number
    * of occurrences of it
    */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //Regexes sourced from known call sites in laterVersion; reviewed
   private boolean hasDelimiter(String s1, String s2, String delimiter) {
     return s1.contains(delimiter) && s2.contains(delimiter) && s1.split(delimiter).length == s2.split(delimiter).length;
   }
 
   private boolean laterDelimitedVersion(String newVersion, String oldVersion, String delimiter) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //Regexes sourced from known call sites in laterVersion; reviewed
     String[] newParts = newVersion.split(delimiter);
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //Regexes sourced from known call sites in laterVersion; reviewed
     String[] oldParts = oldVersion.split(delimiter);
     for (int i = 0; i < newParts.length; i++) {
       if (!newParts[i].equals(oldParts[i]))
@@ -575,7 +592,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private void setTerminologyOptions(ValidationOptions options, Parameters pIn) {
     if (options != null && options.hasLanguages()) {
-      pIn.addParameter("displayLanguage", options.getLanguages().toString());
+      pIn.addParameter("displayLanguage", options.getLanguages().toParameterValue());
     }
   }
 
@@ -686,7 +703,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.canRunWithoutTerminology = canRunWithoutTerminology;
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   public void setLogger(ILoggingService logger) {
 
   }
@@ -818,7 +835,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (class_ == Questionnaire.class)
         return (T) questionnaires.get(uri);
       if (class_ == null) {
-        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet"))
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //anchored FHIR resource URI; safe
+        boolean isUri = uri.matches(Constants.URI_REGEX);
+        if (isUri && !uri.contains("ValueSet"))
           return null;
 
         // it might be a special URL.
@@ -867,6 +887,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public Resource fetchResourceById(String type, String uri) {
     synchronized (lock) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = uri.split("\\/");
       if (!Utilities.noString(type) && parts.length == 1) {
         if (allResourcesById.containsKey(type))
@@ -1163,7 +1185,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  @Deprecated
+  @Deprecated(forRemoval = true)
   public ILoggingService getLogger() {
     return null;
   }

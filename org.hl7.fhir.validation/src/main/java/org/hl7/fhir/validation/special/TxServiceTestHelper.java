@@ -2,15 +2,15 @@ package org.hl7.fhir.validation.special;
 
 import com.google.gson.JsonSyntaxException;
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.formats.IParser;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
-import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.test.utils.CompareUtilities;
+import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.terminology.ValidationResult;
+import org.hl7.fhir.services.testing.CompareUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -29,19 +29,20 @@ import java.util.Set;
 @Slf4j
 public class TxServiceTestHelper {
   public static String getDiffForValidation(String id, IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String expectedResponse2, String lang, String fp, JsonObject externals, boolean isCodeSystem, Set<String> modes) throws JsonSyntaxException, FileNotFoundException, IOException {
-    org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) requestParameters;
+    org.hl7.fhir.model.core.Parameters p = (org.hl7.fhir.model.core.Parameters) requestParameters;
+    OperationOutcome operationOutcome = checkRequest(p, isCodeSystem);
     ValueSet valueSet = null;
     String valueSetUrl = null;
-    if (!isCodeSystem) {
+    if (operationOutcome == null && !isCodeSystem) {
       if (p.hasParameter("valueSet")) {
         valueSet = (ValueSet) p.getParameter("valueSet").getResource();
         valueSetUrl = valueSet.getVUrl();
       } else if (p.hasParameter("valueSetVersion")) {
         valueSetUrl = p.getParameterValue("url").primitiveValue()+"|"+p.getParameterValue("valueSetVersion").primitiveValue();
-        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule(), p.getParameterValue("valueSetVersion").primitiveValue(), null);
+        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), VersionResolutionRules.defaultRule(), p.getParameterValue("valueSetVersion").primitiveValue(), null);
       } else {
         valueSetUrl = p.getParameterValue("url").primitiveValue();
-        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule());
+        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), VersionResolutionRules.defaultRule());
       }
     }
     ValidationResult validationResult = null;
@@ -50,10 +51,11 @@ public class TxServiceTestHelper {
     String version = null;
     String display = null;
     CodeableConcept codeableConcept = null;
-    org.hl7.fhir.r5.model.Parameters parameters = null;
-    OperationOutcome operationOutcome = null;
+    org.hl7.fhir.model.core.Parameters parameters = null;
 
-    if (valueSet == null && valueSetUrl != null) {
+    if (operationOutcome != null) {
+      // the request never added up to something to validate - checkRequest has said so already
+    } else if (valueSet == null && valueSetUrl != null) {
       String msg = context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, valueSetUrl);
       operationOutcome = new OperationOutcome();
       OperationOutcome.OperationOutcomeIssueComponent issue = operationOutcome.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.NOTFOUND);
@@ -63,6 +65,7 @@ public class TxServiceTestHelper {
       codeableConceptWhenNullValueSet.setText(msg);
     } else {
       ValidationOptions options = new ValidationOptions(FhirPublication.R5);
+      boolean inferSystem = valueSet != null;
       if (p.hasParameter("displayLanguage")) {
         options = options.withLanguage(p.getParameterString("displayLanguage"));
       } else if (lang != null ) {
@@ -81,19 +84,18 @@ public class TxServiceTestHelper {
         options = options.setNoAbstract(true);
       }
       Parameters newParameters = context.getExpansionParameters();
-      for (ParametersParameterComponent pp : p.getParameter()) {
+      for (Parameters.ParametersParameterComponent pp : p.getParameterList()) {
         if (Utilities.existsInList(pp.getName(), "default-valueset-version", "system-version", "force-system-version", "default-system-version")) {
-          //FIXME this is changing a reference to a copied object so breaks.
-          newParameters.getParameter().add(pp);
+          newParameters.getParameterList().add(pp);
         }
       }
       newParameters.clearParameters("includeAlternateCodes");
-      for (Parameters.ParametersParameterComponent pp : p.getParameter()) {
+      for (Parameters.ParametersParameterComponent pp : p.getParameterList()) {
         if ("includeAlternateCodes".equals(pp.getName())) {
-          newParameters.addParameter(pp.copy());
+          newParameters.addParameter(pp.copy(Base.COPY_NOTHING));
         }
         if ("useSupplement".equals(pp.getName())) {
-          newParameters.addParameter(pp.copy());
+          newParameters.addParameter(pp.copy(Base.COPY_NOTHING));
         }
       }
       context.getManager().setExpansionParameters(newParameters);
@@ -102,7 +104,7 @@ public class TxServiceTestHelper {
         system = p.getParameterString(isCodeSystem ? "url" : "system");
         version = p.getParameterString(isCodeSystem ? "version" : "systemVersion");
         display = p.getParameterString("display");
-        validationResult = context.validateCode(options.withGuessSystem(),
+        validationResult = context.validateCode(inferSystem ? options.withGuessSystem() : options,
           p.getParameterString(isCodeSystem ? "url" : "system"), p.getParameterString(isCodeSystem ? "version" : "systemVersion"),
           p.getParameterString("code"), p.getParameterString("display"), valueSet);
       } else if (p.hasParameter("coding")) {
@@ -121,13 +123,13 @@ public class TxServiceTestHelper {
     }
     if (operationOutcome == null && validationResult != null && validationResult.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.FATAL) {
       operationOutcome = new OperationOutcome();
-      operationOutcome.getIssue().addAll(validationResult.getIssues());
+      operationOutcome.getIssueList().addAll(validationResult.getIssues());
     }
     if (operationOutcome != null) {
       TxTesterSorters.sortOperationOutcome(operationOutcome);
       TxTesterScrubbers.scrubOperationOutcome(operationOutcome, false);
 
-      String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(operationOutcome);
+      String actualResponse = new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(operationOutcome);
 
 
       boolean option2 = false;
@@ -149,7 +151,7 @@ public class TxServiceTestHelper {
       return diff;
     } else {
       if (parameters == null) {
-        parameters = new org.hl7.fhir.r5.model.Parameters();
+        parameters = new org.hl7.fhir.model.core.Parameters();
         if (validationResult.getSystem() != null) {
           parameters.addParameter("system", new UriType(validationResult.getSystem()));
         } else if (system != null) {
@@ -165,11 +167,7 @@ public class TxServiceTestHelper {
         } else if (code != null) {
           parameters.addParameter("code", new CodeType(code));
         }
-        if (validationResult.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
-          parameters.addParameter("result", false);
-        } else {
-          parameters.addParameter("result", true);
-        }
+        parameters.addParameter("result", isValidated(validationResult));
         if (validationResult.getMessage() != null) {
           parameters.addParameter("message", validationResult.getMessage());
         }
@@ -195,7 +193,7 @@ public class TxServiceTestHelper {
         }
         if (validationResult.getIssues().size() > 0) { 
           operationOutcome = new OperationOutcome();
-          operationOutcome.getIssue().addAll(validationResult.getIssues());
+          operationOutcome.getIssueList().addAll(validationResult.getIssues());
           parameters.addParameter().setName("issues").setResource(operationOutcome);
         }
       }
@@ -203,7 +201,7 @@ public class TxServiceTestHelper {
       TxTesterSorters.sortParameters(parameters);
       TxTesterScrubbers.scrubParameters(parameters, false);
 
-      String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(parameters);
+      String actualResponse = new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(parameters);
 
       boolean option2 = false;
       String diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
@@ -225,6 +223,57 @@ public class TxServiceTestHelper {
     }
   }
 
+
+  /**
+   * result = true means the server validated the code, not merely that it found nothing wrong.
+   * An invalid-data issue (no code, no system) says the server could not validate what it was
+   * given, and that is a negative result even though the issue is only a warning. Where a code was
+   * established anyway - a CodeableConcept with one bad coding and one good one - the result stands.
+   */
+  private static boolean isValidated(ValidationResult validationResult) {
+    if (validationResult.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
+      return false;
+    }
+    if (validationResult.getCode() == null) {
+      for (OperationOutcome.OperationOutcomeIssueComponent iss : validationResult.getIssues()) {
+        if (iss.hasDetails()) {
+          for (Coding c : iss.getDetails().getCodingList()) {
+            if ("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type".equals(c.getSystem()) && "invalid-data".equals(c.getCode())) {
+              return false;
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  /**
+   * The operation parameters have to add up to something to validate before any of this is worth
+   * doing: a request with no code, coding or codeableConcept asks nothing, and a code with no
+   * system (and no inferSystem) names nothing. A server reports these from its operation layer,
+   * as a 4xx with an OperationOutcome, before its terminology engine ever sees them. There is no
+   * HTTP layer here and no API to report it through, so the tester answers them itself rather
+   * than making the terminology engine invent a way to say "your request was malformed"
+   */
+  private static OperationOutcome checkRequest(org.hl7.fhir.model.core.Parameters p, boolean isCodeSystem) {
+    String msg;
+    if (p.hasParameter("coding") || p.hasParameter("codeableConcept")) {
+      return null;
+    } else if (!p.hasParameter("code")) {
+      msg = "No code to validate: the request has no code, coding or codeableConcept parameter";
+    } else if (!p.hasParameter(isCodeSystem ? "url" : "system") && !p.getParameterBool("inferSystem")) {
+      msg = "No system for the code to validate: the request has a code, but no "+(isCodeSystem ? "url" : "system")+" parameter, and did not ask for the system to be inferred";
+    } else {
+      return null;
+    }
+    OperationOutcome operationOutcome = new OperationOutcome();
+    OperationOutcome.OperationOutcomeIssueComponent issue = operationOutcome.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.INVALID);
+    CodeableConcept details = issue.getDetails();
+    details.addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-data", null);
+    details.setText(msg);
+    return operationOutcome;
+  }
 
   public static void writeDiffToFileSystem(String testName, String expected, String actual) throws IOException {
     String rootDirectory = System.getenv("TX_SERVICE_TEST_DIFF_TARGET");

@@ -1,12 +1,10 @@
-package org.hl7.fhir.{{jid}}.formats;
-
-// generated
+{{startMark}}
+package org.hl7.fhir.{{jid}}.core.formats;
 
 {{license}}
 
-{{startMark}}
-
-import org.hl7.fhir.{{jid}}.model.*;
+import org.hl7.fhir.model.*;
+import org.hl7.fhir.{{jid}}.core.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -17,19 +15,20 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import java.io.IOException;
 
+{{generated}}
 public class JsonParser extends JsonParserBase {
 
-  public JsonParser() {
-    super();
+  public JsonParser(IModelContext modelContext) {
+    super(modelContext);
   }
 
-  public JsonParser(boolean allowUnknownContent) {
-    super();
+  public JsonParser(IModelContext modelContext, boolean allowUnknownContent) {
+    super(modelContext);
     setAllowUnknownContent(allowUnknownContent);
   }
 
-  public JsonParser(boolean allowUnknownContent, boolean allowComments) {
-    super();
+  public JsonParser(IModelContext modelContext, boolean allowUnknownContent, boolean allowComments) {
+    super(modelContext);
     setAllowUnknownContent(allowUnknownContent);
     setAllowComments(allowComments);
   }
@@ -40,111 +39,121 @@ public class JsonParser extends JsonParserBase {
 
   @SuppressWarnings("unchecked")
   protected <E extends Enum<E>> Enumeration<E> parseEnumeration(String s, E item, EnumFactory e) throws IOException, FHIRFormatError {
-    Enumeration<E> res = new Enumeration<E>(e);
+    Enumeration<E> res = new Enumeration<E>(modelContext, e);
     if (s != null)
       res.setValue((E) e.fromCode(s));
     return res;
   }
 
   protected DateType parseDate(String v) throws IOException, FHIRFormatError {
-    DateType res = new DateType(v);
+    DateType res = new DateType(modelContext, v);
     return res;
   }
 
   protected DateTimeType parseDateTime(String v) throws IOException, FHIRFormatError {
-    DateTimeType res = new DateTimeType(v);
+    DateTimeType res = new DateTimeType(modelContext, v);
     return res;
   }
 
   protected CodeType parseCode(String v) throws IOException, FHIRFormatError {
-    CodeType res = new CodeType(v);
+    CodeType res = new CodeType(modelContext, v);
     return res;
   }
 
   protected StringType parseString(String v) throws IOException, FHIRFormatError {
-    StringType res = new StringType(v);
+    StringType res = new StringType(modelContext, v);
     return res;
   }
 
   protected IntegerType parseInteger(java.lang.Long v) throws IOException, FHIRFormatError {
-    IntegerType res = new IntegerType(v);
+    IntegerType res = new IntegerType(modelContext, v);
     return res;
   }
 
   protected Integer64Type parseInteger64(java.lang.Long v) throws IOException, FHIRFormatError {
-    Integer64Type res = new Integer64Type(v);
+    Integer64Type res = new Integer64Type(modelContext, v);
     return res;
   }
 
   protected OidType parseOid(String v) throws IOException, FHIRFormatError {
-    OidType res = new OidType(v);
+    OidType res = new OidType(modelContext, v);
     return res;
   }
 
   protected CanonicalType parseCanonical(String v) throws IOException, FHIRFormatError {
-    CanonicalType res = new CanonicalType(v);
+    CanonicalType res = new CanonicalType(modelContext, v);
     return res;
   }
 
   protected UriType parseUri(String v) throws IOException, FHIRFormatError {
-    UriType res = new UriType(v);
+    UriType res = new UriType(modelContext, v);
     return res;
   }
 
   protected UuidType parseUuid(String v) throws IOException, FHIRFormatError {
-    UuidType res = new UuidType(v);
+    UuidType res = new UuidType(modelContext, v);
     return res;
   }
 
   protected UrlType parseUrl(String v) throws IOException, FHIRFormatError {
-    UrlType res = new UrlType(v);
+    UrlType res = new UrlType(modelContext, v);
     return res;
   }
 
   protected InstantType parseInstant(String v) throws IOException, FHIRFormatError {
-    InstantType res = new InstantType(v);
+    InstantType res = new InstantType(modelContext, v);
     return res;
   }
 
   protected BooleanType parseBoolean(java.lang.Boolean v) throws IOException, FHIRFormatError {
-    BooleanType res = new BooleanType(v);
+    BooleanType res = new BooleanType(modelContext, v);
     return res;
   }
 
   protected Base64BinaryType parseBase64Binary(String v) throws IOException, FHIRFormatError {
-    Base64BinaryType res = new Base64BinaryType(v);
+    Base64BinaryType res = new Base64BinaryType(modelContext, v);
     return res;
   }
 
   protected UnsignedIntType parseUnsignedInt(String v) throws IOException, FHIRFormatError {
-    UnsignedIntType res = new UnsignedIntType(v);
+    UnsignedIntType res = new UnsignedIntType(modelContext, v);
     return res;
   }
 
   protected MarkdownType parseMarkdown(String v) throws IOException, FHIRFormatError {
-    MarkdownType res = new MarkdownType(v);
+    MarkdownType res = new MarkdownType(modelContext, v);
     return res;
   }
 
   protected TimeType parseTime(String v) throws IOException, FHIRFormatError {
-    TimeType res = new TimeType(v);
+    TimeType res = new TimeType(modelContext, v);
     return res;
   }
 
   protected IdType parseId(String v) throws IOException, FHIRFormatError {
-    IdType res = new IdType(v);
+    IdType res = new IdType(modelContext, v);
     return res;
   }
 
   protected PositiveIntType parsePositiveInt(String v) throws IOException, FHIRFormatError {
-    PositiveIntType res = new PositiveIntType(v);
+    PositiveIntType res = new PositiveIntType(modelContext, v);
     return res;
   }
 
-  protected DecimalType parseDecimal(java.math.BigDecimal v) throws IOException, FHIRFormatError {
-    DecimalType res = new DecimalType(v);
-    if (v instanceof PresentedBigDecimal)
+  protected DecimalType parseDecimal(JsonElement e) throws IOException, FHIRFormatError {
+    if (e == null || e.isJsonNull()) {
+      return new DecimalType(modelContext, (java.math.BigDecimal) null);
+    }
+    java.math.BigDecimal v = e.getAsBigDecimal();
+    DecimalType res = new DecimalType(modelContext, v);
+    // keep the literal the source used, so that 1.0e0 does not become 1.0 (nor 1e2 become 1E+2)
+    // on the way out. JsonTrackingParser carries it on the number itself; gson keeps it in
+    // LazilyParsedNumber, where getAsString() returns it verbatim
+    if (v instanceof PresentedBigDecimal) {
       res.setRepresentation(((PresentedBigDecimal) v).getPresentation());
+    } else if (e.isJsonPrimitive()) {
+      res.setRepresentation(e.getAsString());
+    }
     return res;
   }
 
@@ -160,13 +169,27 @@ public class JsonParser extends JsonParserBase {
     String t = json.get("resourceType").getAsString();
     if (Utilities.noString(t)) {
       throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
+    }
+    // a handler registered in the model context as overriding the base specification takes
+    // precedence over the generated dispatch below
+    Resource custom = parseOverridingCustomResource(t, json);
+    if (custom != null) {
+      return custom;
 {{parse-resource}}
     } else {
+      // not a resource this parser knows - the model context may have a handler for it
+      Resource res = parseCustomResource(t, json);
+      if (res != null) {
+        return res;
+      }
       throw new FHIRFormatError("Unknown.Unrecognised resource type '"+t+"' (in property 'resourceType')");
     }
   }
 
   protected DataType parseType(String prefix, JsonObject json) throws IOException, FHIRFormatError {
+    if (!hasPropertyWithPrefix(json, prefix)) {
+      return null;
+    }
     if (json.has(prefix+"Date") || json.has("_"+prefix+"Date")) {
       DataType t = json.has(prefix+"Date") ? parseDate(json.get(prefix+"Date").getAsString()) : new DateType();
       if (json.has("_"+prefix+"Date"))
@@ -282,7 +305,7 @@ public class JsonParser extends JsonParserBase {
       return t;
     }
     else if (json.has(prefix+"Decimal") || json.has("_"+prefix+"Decimal")) {
-      DataType t = json.has(prefix+"Decimal") ? parseDecimal(json.get(prefix+"Decimal").getAsBigDecimal()) : new DecimalType();
+      DataType t = json.has(prefix+"Decimal") ? parseDecimal(json.get(prefix+"Decimal")) : new DecimalType();
       if (json.has("_"+prefix+"Decimal"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Decimal"), t);
       return t;
@@ -306,6 +329,9 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected boolean hasTypeName(JsonObject json, String prefix) {
+    if (!hasPropertyWithPrefix(json, prefix)) {
+      return false;
+    }
 {{parse-has-type}}
     if (json.has(prefix+"Date") || json.has("_"+prefix+"Date"))
       return true;
@@ -716,7 +742,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void composeDecimalCore(String name, DecimalType value, boolean inArray) throws IOException {
     if (value != null && value.hasValue()) {
-        prop(name, value.getValue());
+        propDecimal(name, value);
     }    
     else if (inArray) 
       writeNull(name); 
@@ -737,18 +763,22 @@ public class JsonParser extends JsonParserBase {
   @Override
   protected void composeResource(Resource resource) throws IOException {
     if (resource == null) {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      throw new Error("Unhandled resource type: null");
 {{compose-resource}} 
-    } else
+    } else if (!composeCustomResource(resource)) {
+      // the model context may have a handler registered for this resource type
       throw new Error("Unhandled resource type "+resource.getClass().getName());
+    }
   }
 
   protected void composeNamedReference(String name, Resource resource) throws IOException {
     if (resource == null) {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      throw new Error("Unhandled resource type: null");
 {{compose-resource-named}} 
-    } else
+    } else if (!composeCustomResource(name, resource)) {
+      // the model context may have a handler registered for this resource type
       throw new Error("Unhandled resource type "+resource.getClass().getName());
+    }
   }
 
   protected void composeType(String prefix, DataType type) throws IOException {

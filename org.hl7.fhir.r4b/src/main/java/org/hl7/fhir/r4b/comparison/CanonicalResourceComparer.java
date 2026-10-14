@@ -18,7 +18,7 @@ import org.hl7.fhir.r4b.model.CodeableConcept;
 import org.hl7.fhir.r4b.model.Coding;
 import org.hl7.fhir.r4b.model.PrimitiveType;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -30,7 +30,8 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
+@Deprecated(forRemoval = true)
 public abstract class CanonicalResourceComparer extends ResourceComparer {
 
   public abstract class CanonicalResourceComparison<T extends CanonicalResource> extends ResourceComparison {
@@ -156,6 +157,8 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
     comp.put(name, combined);
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: not using String.matches
   private CodeableConcept findCodeableConceptInList(List<CodeableConcept> list, CodeableConcept item) {
     for (CodeableConcept t : list) {
       if (t.matches(item)) {

@@ -1,5 +1,5 @@
 public PropertyComponent getProperty(String code) {
-    for (PropertyComponent pd : getProperty()) {
+    for (PropertyComponent pd : getPropertyList()) {
       if (pd.getCode().equalsIgnoreCase(code))
         return pd;
     }
@@ -7,7 +7,7 @@ public PropertyComponent getProperty(String code) {
   }
 
   public ConceptDefinitionComponent getDefinitionByCode(String code) {
-    return getDefinitionByCode(getConcept(), code);
+    return getDefinitionByCode(getConceptList(), code);
   }
 
   private ConceptDefinitionComponent getDefinitionByCode(List<ConceptDefinitionComponent> list, String code) {
@@ -15,7 +15,7 @@ public PropertyComponent getProperty(String code) {
       if (code.equals(t.getCode())) {
         return t;
       }
-      ConceptDefinitionComponent cc = getDefinitionByCode(t.getConcept(), code);
+      ConceptDefinitionComponent cc = getDefinitionByCode(t.getConceptList(), code);
       if (cc != null) {
         return cc;
       }

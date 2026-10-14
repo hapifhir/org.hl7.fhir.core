@@ -1,0 +1,3 @@
+boolean property values differ at .expectedBoolean
+Expected:"true" for expected.json
+Actual  :"false"

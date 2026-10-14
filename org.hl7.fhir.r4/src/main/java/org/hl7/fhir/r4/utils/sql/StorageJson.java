@@ -10,7 +10,7 @@ import org.hl7.fhir.r4.utils.sql.Column;
 import org.hl7.fhir.r4.utils.sql.Storage;
 import org.hl7.fhir.r4.utils.sql.Store;
 import org.hl7.fhir.r4.utils.sql.Value;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonBoolean;
 import org.hl7.fhir.utilities.json.model.JsonElement;
@@ -19,7 +19,7 @@ import org.hl7.fhir.utilities.json.model.JsonNumber;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonString;
 
-@MarkedToMoveToAdjunctPackage
+
 public class StorageJson implements Storage {
 
   private String name; 
@@ -60,13 +60,18 @@ public class StorageJson implements Storage {
     if (value == null) {
       return new JsonNull();
     } else if (value.getValueInt() != null) {
-      return new JsonNumber(value.getValueInt().intValue());
+      return new JsonNumber(value.getValueInt().longValue());
     }
     if (value.getValueBoolean() != null) {
       return new JsonBoolean(value.getValueBoolean().booleanValue());
     }
     if (value.getValueDecimal() != null) {
-      return new JsonNumber(value.getValueDecimal().toPlainString());
+      // stripTrailingZeros: a JSON number has no precision, so the scale the BigDecimal happens to
+      // carry is not information, it's noise - and it is noise that makes the output depend on how
+      // the value was produced. highBoundary()/lowBoundary() with no argument pad the result out to
+      // the maximum precision (8 decimal places), so Observation.value.highBoundary() on 1.0 arrives
+      // here as 1.05000000 rather than 1.05, and comparisons that read the number as text then fail
+      return new JsonNumber(value.getValueDecimal().stripTrailingZeros().toPlainString());
     }
     return new JsonString(value.getValueString());
   }

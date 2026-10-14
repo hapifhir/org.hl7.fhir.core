@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.Map.Entry;
@@ -19,38 +20,36 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.fhirpath.TypeDetails;
-import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
-import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
-import org.hl7.fhir.r5.elementmodel.ObjectConverter;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.r5.utils.validation.IMessagingServices;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
-import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
-import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
-import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
-import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
+import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.services.context.ContextUtilities;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.validation.*;
+import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.services.validation.constants.BindingKind;
+import org.hl7.fhir.services.validation.constants.ContainedReferenceValidationPolicy;
+import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.standalone.terminology.client.TerminologyClientContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.fhirpath.TypeDetails;
+import org.hl7.fhir.services.fhirpath.IHostApplicationServices;
+import org.hl7.fhir.services.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
+import org.hl7.fhir.services.elementmodel.ObjectConverter;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.model.utilities.SnomedUtilities;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
+import org.hl7.fhir.services.xver.XVerExtensionManager;
+import org.hl7.fhir.services.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -62,10 +61,11 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonUtilities;
-import org.hl7.fhir.utilities.json.model.JsonString;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
+import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -76,6 +76,7 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.scoring.*;
+import org.hl7.fhir.validation.instance.utils.CanonicalResourceClient;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -89,7 +90,6 @@ import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -104,7 +104,7 @@ import org.junit.BeforeClass;
 @RunWith(Parameterized.class)
 public class ValidationTests implements IHostApplicationServices, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices, IDirectPackageProvider {
 
-  public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
+  public static final boolean PRINT_OUTPUT_TO_CONSOLE = true;
   private static final boolean CLONE = true;
   private static final boolean BUILD_NEW = false;
   private static final boolean REVISING_TEST_CASES = false;
@@ -124,7 +124,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       if (version == null) {
         version = "5.0.0";
       }
-      examples.put(VersionUtilities.getNameForVersion(version) + "." + name, o);
+      String id = VersionUtilities.getNameForVersion(version) + "." + name;
+      if (examples.containsKey(id)) {
+        throw new FHIRException("Duplicate test case name in the validator manifest: " + id);
+      }
+      examples.put(id, o);
     }
 
     List<String> names = new ArrayList<String>(examples.size());
@@ -141,9 +145,9 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       JsonArray jsonTags = example.getAsJsonArray("tags");
       List<String> tags = jsonTags == null ? List.of() : jsonTags.asList().stream().map(JsonElement::getAsString).toList();
       if (testFilter.shouldRunBasedOnTags(tags)) {
-        objects.add(new Object[]{id, examples.get(id)});
+          objects.add(new Object[]{id, examples.get(id)});
+        }
       }
-    }
     return objects;
   }
 
@@ -152,6 +156,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   private String version;
   private String name;
   private Map<String, String> packageMap = new HashMap<String, String>();
+  private boolean fetchesCanonicals;
 
 
   private static ValidationEngine currentEngine;
@@ -171,15 +176,51 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
 
   @BeforeClass
   public static void beforeClass() {
-    ManagedWebAccess.loadFromFHIRSettings();
+    ManagedWebAccess.loadFromFHIRSettings(
+      FhirSettingsPOJO.builder()
+        .servers(
+          List.of(
+            ServerDetailsPOJO.builder()
+              .url("http://local.fhir.org:960")
+              .authenticationType("none")
+              .type("web")
+              .allowHttp(true)
+              .allowPrivateNetwork(true)
+              .headers(Collections.emptyMap())
+              .build()
+          )).build()
+    );
+    // Exercise the server-side terminology caching protocol across the validation
+    // suite. Against a server that doesn't advertise $cache-control this degrades
+    // to inlining (no-op); against one that does, the whole suite runs through the
+    // cache, which is a good real-world test of the protocol.
+    TerminologyClientContext.setCanUseCacheId(true);
   }
 
-  @AfterAll
-  public void cleanup() {
+  /**
+   * The terminology cache only writes to disk once per SAVE_DELAY_MS window, so whatever an
+   * engine learned since its last write is still in memory. Once the engine is dropped, nothing
+   * will ever write that out, and the next run asks the server again (and adds it to the cache
+   * files again) - so flush before letting an engine go.
+   */
+  private static void saveTerminologyCache() {
+    if (currentEngine != null) {
+      currentEngine.saveTerminologyCache();
+    }
+  }
+
+  @AfterClass
+  public static void cleanup() throws IOException {
+    String content = new GsonBuilder().setPrettyPrinting().create().toJson(manifest);
+    FileUtilities.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
+
+    saveTerminologyCache();
+
     currentEngine = null;
-    vCurr = null;
     igLoader = null;
     manifest = null;
+    TerminologyClientContext.setCanUseCacheId(false); // don't leak the static into other suites
+    ManagedWebAccess.loadFromFHIRSettings();
     System.gc();
   }
 
@@ -208,6 +249,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
 
     version = VersionUtilities.getMajMin(version);
     if (!version.equals(currentVersion)) {
+      saveTerminologyCache();
       currentEngine = buildVersionEngine(version, txLog);
       currentVersion = version;
     }
@@ -247,7 +289,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     val.getContext().setClientRetryCount(4);
     val.setBestPracticeWarningLevel(BestPracticeWarningLevel.Ignore);
     val.getSettings().setDebug(false);
-    if (!VersionUtilities.isR5Plus(val.getContext().getVersion())) {
+    if (!VersionUtilities.isR5Plus(val.getContext().getFHIRVersion())) {
       val.getSettings().setUseValueSetDisplays(true);
     }
     if (content.has("language")) {
@@ -285,6 +327,8 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       }
     }
 
+    this.fetchesCanonicals = content.has("fetch-canonicals") && content.get("fetch-canonicals").getAsBoolean();
+
     if (content.has("wrong-displays"))
       val.getSettings().setDisplayWarningMode("warning".equals(content.get("wrong-displays").getAsString()));
     if (content.has("allowed-extension-domain"))
@@ -292,6 +336,28 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     if (content.has("allowed-extension-domains"))
       for (JsonElement a : content.getAsJsonArray("allowed-extension-domains"))
         val.getExtensionDomains().add(a.getAsString());
+    if (content.has("usage")) {
+      // use contexts that the caller says apply - what -usage supplies on the command line. These
+      // decide whether an additional binding scoped to a use context is in force
+      JsonElement usage = content.get("usage");
+      if (usage.isJsonArray()) {
+        for (JsonElement e : usage.getAsJsonArray()) {
+          val.getSettings().getUsageContexts().add(parseUsageContext(e));
+        }
+      } else {
+        val.getSettings().getUsageContexts().add(parseUsageContext(usage));
+      }
+    }
+    if (content.has("launch-context")) {
+      // launch contexts the caller supplies - what -launch-context provides on the command line.
+      // The settings carry the reference as given, so extract the test resource to a real file and
+      // name that, which leaves the validator doing the same loading it would do for a real run.
+      // A reference with no matching test resource is passed through untouched, which is how the
+      // cases that check what happens to an unresolvable reference are written
+      for (Map.Entry<String, JsonElement> e : content.getAsJsonObject("launch-context").entrySet()) {
+        val.getSettings().getLaunchContexts().put(e.getKey(), resolveLaunchContext(e.getValue().getAsString()));
+      }
+    }
     val.setForPublication(content.has("for-publication") && "true".equals(content.get("for-publication").getAsString()));
     if (content.has("default-version")) {
       val.getSettings().setVersionFlexible(content.get("default-version").getAsBoolean());
@@ -373,19 +439,19 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     StructureDefinition sd = null;
     if (content.has("ips")) {
       val.setCheckIPSCodes(true);
-      val.getContext().getManager().loadFromPackage(loadPackage("hl7.fhir.uv.ips#1.1.0"), ValidatorUtils.loaderForVersion("4.0.1"));
+      val.getContext().getManager().loadFromPackage(loadPackage("hl7.fhir.uv.ips#1.1.0"), ValidatorUtils.loaderForVersion(currentEngine.getContext().getModelContext(), "4.0.1"));
       if (content.get("ips").getAsString().equals("uv")) {
-        sd = val.getContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips", IWorkerContext.VersionResolutionRules.defaultRule());
+        sd = val.getContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips", VersionResolutionRules.defaultRule());
         val.getBundleValidationRules().add(new BundleValidationRule().setRule("Composition:0").setProfile("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"));
       } else if (content.get("ips").getAsString().equals("au")) {
-        val.getContext().getManager().loadFromPackage(loadPackage("hl7.fhir.au.base#current"), ValidatorUtils.loaderForVersion("4.0.1"));
-        val.getContext().getManager().loadFromPackage(loadPackage("hl7.fhir.au.core#current"), ValidatorUtils.loaderForVersion("4.0.1"));
-        val.getContext().getManager().loadFromPackage(loadPackage("hl7.fhir.au.ips#current"), ValidatorUtils.loaderForVersion("4.0.1"));
-        sd = val.getContext().fetchResource(StructureDefinition.class, "http://hl7.org.au/fhir/ips/StructureDefinition/Bundle-au-ips", IWorkerContext.VersionResolutionRules.defaultRule());
+        val.getContext().getManager().loadFromPackage(loadPackage("hl7.fhir.au.base#current"), ValidatorUtils.loaderForVersion(currentEngine.getContext().getModelContext(), "4.0.1"));
+        val.getContext().getManager().loadFromPackage(loadPackage("hl7.fhir.au.core#current"), ValidatorUtils.loaderForVersion(currentEngine.getContext().getModelContext(), "4.0.1"));
+        val.getContext().getManager().loadFromPackage(loadPackage("hl7.fhir.au.ips#current"), ValidatorUtils.loaderForVersion(currentEngine.getContext().getModelContext(), "4.0.1"));
+        sd = val.getContext().fetchResource(StructureDefinition.class, "http://hl7.org.au/fhir/ips/StructureDefinition/Bundle-au-ips", VersionResolutionRules.defaultRule());
         val.getBundleValidationRules().add(new BundleValidationRule().setRule("Composition:0").setProfile("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"));
       } else if (content.get("ips").getAsString().equals("nz")) {
-        val.getContext().getManager().loadFromPackage(loadPackage("tewhatuora.fhir.nzps#current"), ValidatorUtils.loaderForVersion("4.0.1"));
-        sd = val.getContext().fetchResource(StructureDefinition.class, "https://standards.digital.health.nz/fhir/StructureDefinition/nzps-bundle", IWorkerContext.VersionResolutionRules.defaultRule());
+        val.getContext().getManager().loadFromPackage(loadPackage("tewhatuora.fhir.nzps#current"), ValidatorUtils.loaderForVersion(currentEngine.getContext().getModelContext(), "4.0.1"));
+        sd = val.getContext().fetchResource(StructureDefinition.class, "https://standards.digital.health.nz/fhir/StructureDefinition/nzps-bundle", VersionResolutionRules.defaultRule());
         val.getBundleValidationRules().add(new BundleValidationRule().setRule("Composition:0").setProfile("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"));
       } else {
         throw new Error("Unknown IPS " + content.get("ips").getAsString());
@@ -466,7 +532,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       }
       if (content.has("scoring")) {
         JsonObject scoring = content.getAsJsonObject("scoring");
-        StructureDefinition profile = val.getContext().fetchResource(StructureDefinition.class, scoring.get("profile").getAsString(), IWorkerContext.VersionResolutionRules.defaultRule());
+        StructureDefinition profile = val.getContext().fetchResource(StructureDefinition.class, scoring.get("profile").getAsString(), VersionResolutionRules.defaultRule());
         List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
         Element scoringRes = val.validate(null, errorsProfile, new ByteArrayInputStream(testCaseContent), fmt, asSdList(profile));
         ScoringEngine engine = new ScoringEngine(val.getContext(), val.getFHIRPathEngine());
@@ -513,7 +579,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       }
       String filename = profile.get("source").getAsString();
       if (Utilities.isAbsoluteUrl(filename)) {
-        sd = val.getContext().fetchResource(StructureDefinition.class, filename, IWorkerContext.VersionResolutionRules.defaultRule());
+        sd = val.getContext().fetchResource(StructureDefinition.class, filename, VersionResolutionRules.defaultRule());
       } else {
         String contents = TestingUtilities.loadTestResource("validator", filename);
         logOutput("Name: " + name + " - profile : " + profile.get("source").getAsString());
@@ -553,7 +619,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       }
       List<StructureDefinition> profiles = new ArrayList<>();
       if (logical.has("format")) {
-        sd = val.getContext().fetchResource(StructureDefinition.class, JsonUtilities.str(logical, "format"), IWorkerContext.VersionResolutionRules.defaultRule());
+        sd = val.getContext().fetchResource(StructureDefinition.class, JsonUtilities.str(logical, "format"), VersionResolutionRules.defaultRule());
         if (sd != null) {
           profiles.add(sd);
         } else {
@@ -641,7 +707,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     ProfileUtilities pu = new ProfileUtilities(context, messages, null);
     pu.setDebug(debug);
     if (!sd.hasSnapshot()) {
-      StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), IWorkerContext.VersionResolutionRules.defaultRule());
+      StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), VersionResolutionRules.defaultRule());
       pu.generateSnapshot(base, sd, sd.getUrl(), null, sd.getTitle());
 // (debugging)      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", sd.getId()+".xml")), sd);
     }
@@ -649,7 +715,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       if (r instanceof StructureDefinition) {
         StructureDefinition childSd = (StructureDefinition) r;
         if (!childSd.hasSnapshot()) {
-          StructureDefinition base = context.fetchResource(StructureDefinition.class, childSd.getBaseDefinition(), IWorkerContext.VersionResolutionRules.defaultRule());
+          StructureDefinition base = context.fetchResource(StructureDefinition.class, childSd.getBaseDefinition(), VersionResolutionRules.defaultRule());
           pu.generateSnapshot(base, childSd, childSd.getUrl(), null, childSd.getTitle());
         }
       }
@@ -664,69 +730,116 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   public Resource loadResource(String filename, String contents, String version) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
     try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
       if (filename.contains(".json")) {
-        if (Constants.VERSION.equals(version) || "5.0".equals(version))
-          return new JsonParser().parse(inputStream);
+        if (Constants.VERSION.equals(version) || "6.0".equals(version))
+          return new JsonParser(currentEngine.getContext().getModelContext()).parse(inputStream);
         else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
-          return VersionConvertorFactory_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream));
+          return VersionConvertorFactory_30_N.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))
-          return VersionConvertorFactory_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(inputStream));
+          return VersionConvertorFactory_14_N.convertResource(new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(version) || "1.0".equals(version))
-          return VersionConvertorFactory_10_50.convertResource(new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream));
+          return VersionConvertorFactory_10_N.convertResource(new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream));
         else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(version) || "4.0".equals(version))
-          return VersionConvertorFactory_40_50.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(inputStream));
+          return VersionConvertorFactory_40_N.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(inputStream));
         else if (org.hl7.fhir.r4b.model.Constants.VERSION.equals(version) || "4.3".equals(version))
-          return VersionConvertorFactory_43_50.convertResource(new org.hl7.fhir.r4b.formats.JsonParser().parse(inputStream));
+          return VersionConvertorFactory_43_N.convertResource(new org.hl7.fhir.r4b.formats.JsonParser().parse(inputStream));
+        else if (org.hl7.fhir.r5.model.Constants.VERSION.equals(version) || "5.0".equals(version))
+          return VersionConvertorFactory_50_N.convertResource(new org.hl7.fhir.r5.formats.JsonParser().parse(inputStream));
         else
           throw new FHIRException("unknown version " + version);
       } else {
-        if (Constants.VERSION.equals(version) || "5.0".equals(version))
-          return new XmlParser().parse(inputStream);
+        if (Constants.VERSION.equals(version) || "6.0".equals(version))
+          return new XmlParser(currentEngine.getContext().getModelContext()).parse(inputStream);
         else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
-          return VersionConvertorFactory_30_50.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(inputStream));
+          return VersionConvertorFactory_30_N.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))
-          return VersionConvertorFactory_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(inputStream));
+          return VersionConvertorFactory_14_N.convertResource(new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(inputStream));
         else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(version) || "1.0".equals(version))
-          return VersionConvertorFactory_10_50.convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(inputStream));
+          return VersionConvertorFactory_10_N.convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(inputStream));
         else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(version) || "4.0".equals(version))
-          return VersionConvertorFactory_40_50.convertResource(new org.hl7.fhir.r4.formats.XmlParser().parse(inputStream));
+          return VersionConvertorFactory_40_N.convertResource(new org.hl7.fhir.r4.formats.XmlParser().parse(inputStream));
         else if (org.hl7.fhir.r4b.model.Constants.VERSION.equals(version) || "4.3".equals(version))
-          return VersionConvertorFactory_43_50.convertResource(new org.hl7.fhir.r4b.formats.XmlParser().parse(inputStream));
+          return VersionConvertorFactory_43_N.convertResource(new org.hl7.fhir.r4b.formats.XmlParser().parse(inputStream));
+        else if (org.hl7.fhir.r5.model.Constants.VERSION.equals(version) || "5.0".equals(version))
+          return VersionConvertorFactory_50_N.convertResource(new org.hl7.fhir.r5.formats.XmlParser().parse(inputStream));
         else
           throw new FHIRException("unknown version " + version);
       }
     }
   }
 
+  /**
+   * Some messages quote the name of a file that the test harness itself wrote into the output
+   * folder - the launch context resources, in particular. The output folder is different on every
+   * machine, so cut it back to the bare file name before the outcome is compared (and before it is
+   * written out for copying into outcomes/java), or the expected outcomes would only ever match on
+   * the machine they were recorded on
+   */
+  private void stripOutputFolder(OperationOutcome oo) {
+    String prefix = outputFolder + File.separator;
+    for (OperationOutcomeIssueComponent iss : oo.getIssueList()) {
+      if (iss.hasDetails() && iss.getDetails().hasText()) {
+        iss.getDetails().setText(iss.getDetails().getText().replace(prefix, ""));
+      }
+    }
+  }
+
+  private String resolveLaunchContext(String ref) throws IOException {
+    if (!TestingUtilities.findTestResource("validator", ref)) {
+      return ref;
+    }
+    File f = ManagedFileAccess.file(Utilities.path(outputFolder, "launch-context-" + ref.replace("/", "-")));
+    FileUtilities.bytesToFile(TestingUtilities.loadTestResourceBytes("validator", ref), f);
+    return f.getAbsolutePath();
+  }
+
+  private UsageContext parseUsageContext(JsonElement json) {
+    try {
+      return (UsageContext) new JsonParser(currentEngine.getContext().getModelContext()).parseType(json.toString(), "UsageContext");
+    } catch (Exception e) {
+      throw new Error("Unable to parse the usage context " + json.toString() + ": " + e.getMessage(), e);
+    }
+  }
+
   private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String mode, String profile, String name, List<String> suppress) throws IOException {
     errors.removeIf(vm -> vm.containsText(suppress));
 
+    String expectedFileName = name.replace("/", "-") + "-" + mode + ".json";
+    String expectedJavaRef = "java/" + expectedFileName;
+
     if (REVISING_TEST_CASES) {
-      String fnSrc = Utilities.path("/Users/grahamegrieve/work/test-cases/validator/outcomes/java", name.replace("/", "-") + "-" + mode + ".json");
+      String fnSrc = Utilities.path("/Users/grahamegrieve/work/test-cases/validator/outcomes/java", expectedFileName);
       if (!new File(fnSrc).exists()) {
         JsonObject java = focus.getAsJsonObject("java");
-        OperationOutcome goal = java.has("outcome") ? (OperationOutcome) new JsonParser().parse(java.getAsJsonObject("outcome")) : new OperationOutcome();
-        String jsonGoal = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(goal);
+        OperationOutcome goal = java.has("outcome") ? (OperationOutcome) new JsonParser(currentEngine.getContext().getModelContext()).parse(java.getAsJsonObject("outcome")) : new OperationOutcome();
+        String jsonGoal = new JsonParser(currentEngine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(goal);
         FileUtilities.stringToFile(jsonGoal, fnSrc);
       }
       focus.remove("java");
-      focus.addProperty("java", "java/" + name.replace("/", "-") + "-" + mode + ".json");
+      focus.addProperty("java", expectedJavaRef);
     }
 
-    byte[] testResourceBytes = TestingUtilities.findTestResource("validator", "outcomes", "java", name.replace("/", "-") + "-" + mode + ".json") ?
-      TestingUtilities.loadTestResourceBytes("validator", "outcomes", "java", name.replace("/", "-") + "-" + mode + ".json") :
-      " { \"resourceType\" : \"OperationOutcome\" }".getBytes();
-    OperationOutcome expected = (OperationOutcome) new JsonParser().parse(testResourceBytes);
+    JsonElement javaRef = focus.get("java");
+    if (javaRef == null || !javaRef.isJsonPrimitive() || !expectedJavaRef.equals(javaRef.getAsString())) {
+      Assertions.fail("Manifest problem for test " + name + " (mode '" + mode + "'): the 'java' property is " +
+          (javaRef == null ? "missing" : javaRef.toString()) + " but should be \"" + expectedJavaRef + "\"");
+    }
+    if (!TestingUtilities.findTestResource("validator", "outcomes", "java", expectedFileName)) {
+      Assertions.fail("Manifest problem for test " + name + " (mode '" + mode + "'): the expected outcome file " + expectedJavaRef + " does not exist in the test cases");
+    }
+    byte[] testResourceBytes = TestingUtilities.loadTestResourceBytes("validator", "outcomes", "java", expectedFileName);
+    OperationOutcome expected = (OperationOutcome) new JsonParser(currentEngine.getContext().getModelContext()).parse(testResourceBytes);
     OperationOutcome actual = content.has("ids-in-errors") ? OperationOutcomeUtilities.createOutcomeSimpleWithIds(errors) : OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
-    actual.getIssue().forEach(iss -> iss.removeExtension(ExtensionDefinitions.EXT_ISSUE_SLICE_INFO));
+    actual.getIssueList().forEach(iss -> iss.removeExtension(ExtensionDefinitions.EXT_ISSUE_SLICE_INFO));
+    stripOutputFolder(actual);
 
-    String json = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(actual);
-    FileUtilities.stringToFile(json, Utilities.path(outputFolder, name.replace("/", "-") + "-" + mode + ".json"));
+    String json = new JsonParser(currentEngine.getContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(actual);
+    FileUtilities.stringToFile(json, Utilities.path(outputFolder, expectedFileName));
 
     List<String> fails = new ArrayList<>();
 
     Map<OperationOutcomeIssueComponent, OperationOutcomeIssueComponent> map = new HashMap<>();
-    for (OperationOutcomeIssueComponent issGoal : expected.getIssue()) {
+    for (OperationOutcomeIssueComponent issGoal : expected.getIssueList()) {
       OperationOutcomeIssueComponent issActual = findMatchingIssue(actual, issGoal);
       if (issActual == null) {
         fails.add("Expected Issue missing: " + issGoal.toString());
@@ -734,7 +847,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         map.put(issActual, issGoal);
       }
     }
-    for (OperationOutcomeIssueComponent issActual : actual.getIssue()) {
+    for (OperationOutcomeIssueComponent issActual : actual.getIssueList()) {
       if (PRINT_OUTPUT_TO_CONSOLE) {
         logOutput(issActual.toString());
         for (Extension ext : issActual.getExtensionsByUrl(ExtensionDefinitions.EXT_ISSUE_INNER_MESSAGE)) {
@@ -746,7 +859,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         fails.add("Unexpected Issue found: " + issActual.toString());
       }
     }
-    if (expected.getIssue().size() != actual.getIssue().size() && fails.isEmpty()) {
+    if (expected.getIssueList().size() != actual.getIssueList().size() && fails.isEmpty()) {
       fails.add("Issue count mismatch (check for duplicate error messages)");
     }
 
@@ -827,9 +940,9 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   }
 
   private OperationOutcomeIssueComponent findMatchingIssue(OperationOutcome oo, OperationOutcomeIssueComponent iss) {
-    for (OperationOutcomeIssueComponent t : oo.getIssue()) {
+    for (OperationOutcomeIssueComponent t : oo.getIssueList()) {
       if (
-        (t.hasExpression() && iss.hasExpression() && t.getExpression().get(0).getValue().equals(iss.getExpression().get(0).getValue())
+        (t.hasExpression() && iss.hasExpression() && t.getExpressionList().get(0).getValue().equals(iss.getExpressionList().get(0).getValue())
           || (!t.hasExpression() && !iss.hasExpression())) &&
           t.getCode() == iss.getCode() && t.getSeverity() == iss.getSeverity() &&
           (t.hasDiagnostics() ? t.getDiagnostics().equals(iss.getDiagnostics()) : !iss.hasDiagnostics()) &&
@@ -963,7 +1076,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   }
 
   @Override
-  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, IWorkerContext.VersionResolutionRules rules, String type, boolean canonical, List<CanonicalType> targets) throws IOException, FHIRException {
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, VersionResolutionRules rules, String type, boolean canonical, List<CanonicalType> targets) throws IOException, FHIRException {
     return !url.contains("example.org") && !url.startsWith("http://hl7.org/fhir/invalid");
   }
 
@@ -992,13 +1105,6 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     return vCurr.getContext().fetchResource(ValueSet.class, url);
   }
 
-  @AfterClass
-  public static void saveWhenDone() throws IOException {
-    String content = new GsonBuilder().setPrettyPrinting().create().toJson(manifest);
-    FileUtilities.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
-
-  }
-
   @Override
   public byte[] fetchRaw(IResourceValidator validator, String source) throws MalformedURLException, IOException {
     HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source);
@@ -1007,13 +1113,18 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   }
 
   @Override
-  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, Object appContext, String url) {
-    return null;
+  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, Object appContext, String url) throws URISyntaxException {
+    if (!this.fetchesCanonicals) {
+      return null;
+    } else {
+      return new CanonicalResourceClient(this.vCurr.getContext()).fetch(url);
+    }
   }
+
 
   @Override
   public boolean fetchesCanonicalResource(IResourceValidator validator, String url) {
-    return false;
+    return this.fetchesCanonicals;
   }
 
   @Override

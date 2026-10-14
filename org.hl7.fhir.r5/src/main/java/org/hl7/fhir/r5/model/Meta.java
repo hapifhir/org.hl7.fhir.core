@@ -584,6 +584,10 @@ public class Meta extends DataType implements IBaseMetaType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Meta) dst);
+      }
+
       public void copyValues(Meta dst) {
         super.copyValues(dst);
         dst.versionId = versionId == null ? null : versionId.copy();

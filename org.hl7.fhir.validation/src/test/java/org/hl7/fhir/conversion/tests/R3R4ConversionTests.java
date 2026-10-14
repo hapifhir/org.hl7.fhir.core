@@ -63,6 +63,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 @Disabled
+@Deprecated(forRemoval = true)
 public class R3R4ConversionTests implements ITransformerServices, IValidatorResourceFetcher, IValidationPolicyAdvisor {
 
   private static final boolean SAVING = true;

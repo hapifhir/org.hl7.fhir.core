@@ -314,6 +314,10 @@ public class UsageContext extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((UsageContext) dst);
+      }
+
       public void copyValues(UsageContext dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();

@@ -73,7 +73,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.Termi
 import org.hl7.fhir.r5.utils.CodingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.*;
@@ -82,13 +82,12 @@ import org.hl7.fhir.utilities.i18n.subtag.LanguageSubtagRegistry;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.i18n.LanguageTag;
 import org.hl7.fhir.utilities.regex.RegexTimeout;
-import org.hl7.fhir.utilities.regex.RegexUtils;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import javax.annotation.Nonnull;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class ValueSetValidator extends ValueSetProcessBase {
 
@@ -129,6 +128,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
   @Setter
   @Getter
   private boolean throwToServer;
+  // required supplements to code systems we have no full copy of, which the server applies when it checks their codes
+  private Set<String> serverAppliedSupplements = new HashSet<>();
   private LanguageSubtagRegistry registry;
   private Set<String> checkedVersionCombinations = new HashSet<>();
 
@@ -164,7 +165,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     opContext.note("analyse");
     if (valueset != null) {
       opContext.note("vs = "+valueset.getVersionedUrl());
-      opContext.seeContext(valueset.getVersionedUrl());
+      opContext.seeContext(contextName(valueset));
       for (Extension s : valueset.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
         requiredSupplements.add(s.getValue().primitiveValue());
       }
@@ -206,6 +207,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
     ElementHolder vssrc = new ElementHolder();
     String version = determineVersion(c.getSystem(), c.getVersionElement(), va, vssrc);
     CodeSystem cs = resolveCodeSystem(c.getSystem(), version, vssrc.getElement(), valueset);
+    if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
+      serverAppliedSupplements.addAll(supplementsFor(c.getSystem(), version));
+    }
     if (cs == null) {
       // well, it doesn't really matter at this point. Mainly we're triggering the supplement analysis to happen 
       opContext.note("Unable to resolve "+c.getSystem()+"#"+version);
@@ -249,14 +253,24 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
     CodeableConcept vcc = new CodeableConcept();
     List<ValidationResult> resList = new ArrayList<>();
+    Map<Integer, List<OperationOutcomeIssueComponent>> unresolvedSystemIssues = new HashMap<>();
+    Set<Integer> matchedCodings = new HashSet<>();
+    // each coding's own result, by index, so that the status (inactive) of the coding that is
+    // returned can be reported - and only that coding's: an inactive coding that is not the
+    // one returned gets its warning, but does not make the returned code inactive
+    Map<Integer, ValidationResult> codingResults = new HashMap<>();
+    int foundIndex = -1;
     
     if (!options.isMembershipOnly()) {
       int i = 0;
       for (Coding c : code.getCoding()) {
         if (!c.hasSystem() && !c.hasUserData(UserDataNames.tx_val_sys_error)) {
           c.setUserData(UserDataNames.tx_val_sys_error, true);
+          // see the note in validateCode(String, Coding): no system and no code is one problem
+          String noneMsgId = c.hasCode() ? I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE : I18nConstants.CODING_HAS_NO_SYSTEM_OR_CODE__CANNOT_VALIDATE;
+          String invalidDataMsg = context.formatMessage(noneMsgId);
           info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".coding["+i+"]",
-            context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE), OpIssueCode.InvalidData, null, I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE));
+            invalidDataMsg, OpIssueCode.InvalidData, null, noneMsgId));
         } else {
           checkExpansion(c);
           checkInclude(c);
@@ -277,7 +291,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
                 String msg = getUnknownCodeSystemMessage(c.getSystem(), c.getVersion());
                 res = new ValidationResult(IssueSeverity.ERROR, msg,
                   makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg, OpIssueCode.NotFound, null, getUnknownCodeSystemMessageId(c.getSystem(), c.getVersion()))).setUnknownSystems(unknownSystems);
-              } else if (version == null){
+              } else if (version == null) {
                 String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, c.getSystem(), c.getVersion());
                 unknownSystems.add(c.getSystem());
                 res = new ValidationResult(IssueSeverity.ERROR, msg,
@@ -294,6 +308,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
                 res = new ValidationResult(IssueSeverity.ERROR, msg,
                   makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_VERSION)).setUnknownSystems(unknownSystems);
 
+              }
+              if (cs == null) {
+                // only a code system that could not be found at all - not one that is present but
+                // whose content cannot answer the question (not-present, example, supplement)
+                unresolvedSystemIssues.put(i, res.getIssues());
               }
             } else {
               res = context.validateCode(options.withNoClient(), c, null);
@@ -330,6 +349,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           info.getIssues().addAll(res.getIssues());
           if (res != null) {
             resList.add(res);
+            codingResults.put(i, res);
             if (!res.isOk() && !res.messageIsInIssues()) {
               // no message ids here
               if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
@@ -352,17 +372,28 @@ public class ValueSetValidator extends ValueSetProcessBase {
       
       int i = 0;
       for (Coding c : code.getCoding()) {
-        String cs = "'"+c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "")+"#"+c.getCode()+(c.hasDisplay() ? " ('"+c.getDisplay()+"')" : "")+"'";
+        String cs = (c.getSystem() == null ? "" : "'"+c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : ""))+"#"+c.getCode()+(c.hasDisplay() ? " ('"+c.getDisplay()+"')" : "")+"'";
         String cs2 = c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "");
         cpath.add(path+".coding["+i+"]");
         b.append(cs2);
-        Boolean ok = codeInValueSet(path+".coding["+i+"]", c.getSystem(), c.getVersion(), c.getVersion(), c.getCode(), c.getDisplay(), info);
+        // a coding with no code has nothing to look up, so the value set has nothing to say
+        // about it. The missing code is already reported against the coding, and "not in the
+        // value set" on top of that is a second complaint about the same absence
+        Boolean ok = c.hasCode() ? codeInValueSet(path+".coding["+i+"]", c.getSystem(), c.getVersion(), c.getVersion(), c.getCode(), c.getDisplay(), info) : Boolean.FALSE;
         if (ok == null && result != null && result == false) {
           result = null;
         } else if (ok != null && ok) {
           result = true;
-          foundCoding = c.copy();
-          foundCoding.setVersion(info.getFoundVersion());
+          matchedCodings.add(i);
+          // Report the FIRST matching coding, not the last: when a CodeableConcept
+          // has several valid codings, the code/system/version/display echoed back
+          // are those of the earliest coding that validated. vcc still accumulates
+          // every valid coding below; only foundCoding is locked to the first.
+          if (foundCoding == null) {
+            foundCoding = c.copy();
+            foundIndex = i;
+            foundCoding.setVersion(info.getFoundVersion());
+          }
           if (!options.isMembershipOnly()) {
             vcc.addCoding().setSystem(c.getSystem()).setVersion(info.getFoundVersion()).setCode(c.getCode());
           }
@@ -373,7 +404,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         if ((ok == null || !ok) && !info.isFragment()) {
           vcc.removeCoding(c.getSystem(), c.getVersion(), c.getCode());          
         }
-        if (ok != null && !ok && !info.isFragment()) {
+        if (ok != null && !ok && c.hasCode() && !info.isFragment()) {
           msg = context.formatMessage(I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ONE, null, valueset.getVersionedUrl(), cs);
           info.getIssues().addAll(makeIssue(IssueSeverity.INFORMATION, IssueType.CODEINVALID, path+".coding["+i+"].code", msg, OpIssueCode.ThisNotInVS, null, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ONE));
         }
@@ -407,10 +438,35 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (vcc.hasCoding() && code.hasText()) {
       vcc.setText(code.getText());
     }
+    // A required binding on a CodeableConcept is satisfied when ANY coding is in the value
+    // set, so a coding whose code system could not be resolved must not veto a membership
+    // that another coding has confirmed. It is still reported, as a warning (see #2272).
+    // This is only about combining the codings: asked about that coding on its own, the
+    // answer is still an error, which is what the terminology servers return.
+    for (Integer idx : unresolvedSystemIssues.keySet()) {
+      // ... but only for a coding OTHER than the one that matched: an unresolvable system or
+      // version on the coding that satisfied membership is still that coding's own error.
+      if (!matchedCodings.isEmpty() && !matchedCodings.contains(idx)) {
+        Coding uc = code.getCoding().get(idx);
+        // and it gets its own message: the one used when nothing could be validated says "the code
+        // cannot be validated", which reads here as though the whole CodeableConcept had failed.
+        String msg1 = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED,
+            uc.getSystem()+(uc.hasVersion() ? "|"+uc.getVersion() : ""));
+        for (OperationOutcomeIssueComponent iss : unresolvedSystemIssues.get(idx)) {
+          if (iss.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR) {
+            iss.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING);
+            iss.getDetails().setText(msg1);
+            iss.removeExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID);
+            iss.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType(I18nConstants.UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED));
+          }
+        }
+      }
+    }
+
     if (!checkRequiredSupplements(info)) {
       return new ValidationResult(IssueSeverity.ERROR, info.getIssues().get(info.getIssues().size()-1).getDetails().getText(), info.getIssues());
     } else if (info.hasErrors()) {
-      ValidationResult res = new ValidationResult(IssueSeverity.ERROR, null, info.getIssues());
+      ValidationResult res = new ValidationResult(IssueSeverity.ERROR, invalidDataMessage(info.getIssues()), info.getIssues());
       if (foundCoding != null) {
         ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
         cd.setDisplay(lookupDisplay(foundCoding));
@@ -428,7 +484,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       res.setUnknownSystems(unknownSystems);
       res.addCodeableConcept(vcc);
-      return res;
+      return setFoundStatus(res, codingResults, foundIndex);
     } else if (result == null) {
       return new ValidationResult(IssueSeverity.WARNING, null, info.getIssues());
     } else if (foundCoding == null && valueset != null) {
@@ -444,7 +500,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         String disp = lookupDisplay(foundCoding);
         ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
         cd.setDisplay(disp);
-        return new ValidationResult(IssueSeverity.WARNING, info.summaryList(), foundCoding.getSystem(), getVersion(foundCoding), cd, disp, info.getIssues()).addCodeableConcept(vcc);
+        return setFoundStatus(new ValidationResult(IssueSeverity.WARNING, info.summaryList(), foundCoding.getSystem(), getVersion(foundCoding), cd, disp, info.getIssues()).addCodeableConcept(vcc), codingResults, foundIndex);
       }
     } else if (!result) {
       if (valueset != null) {
@@ -457,10 +513,40 @@ public class ValueSetValidator extends ValueSetProcessBase {
     } else if (foundCoding != null) {
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(lookupDisplay(foundCoding));
-      return new ValidationResult(foundCoding.getSystem(), getVersion(foundCoding), cd, getPreferredDisplay(cd, null)).addCodeableConcept(vcc);
+      return setFoundStatus(new ValidationResult(foundCoding.getSystem(), getVersion(foundCoding), cd, getPreferredDisplay(cd, null)).addCodeableConcept(vcc), codingResults, foundIndex);
     } else {
       throw new Error("This should never happen - ther response from the server could not be understood");
     }
+  }
+
+  /**
+   * The inactive / status output parameters describe the code being returned, so on a
+   * CodeableConcept they come from the result of the coding that was returned (the first that
+   * validated), not from whichever coding happened to be inactive
+   */
+  private ValidationResult setFoundStatus(ValidationResult res, Map<Integer, ValidationResult> codingResults, int foundIndex) {
+    ValidationResult fr = codingResults.get(foundIndex);
+    if (fr != null && fr.isInactive()) {
+      res.setStatus(true, fr.getStatus());
+    }
+    return res;
+  }
+
+  /**
+   * The messages for the codings that could not even be looked at - no system, no code. They are
+   * warnings, and ValidationResult's issue mining drops warnings as soon as there is an error to
+   * report, but they are the reason the CodeableConcept did not validate, so they belong in the
+   * message either way
+   */
+  private String invalidDataMessage(List<OperationOutcomeIssueComponent> issues) {
+    List<String> msgs = new ArrayList<>();
+    for (OperationOutcomeIssueComponent iss : issues) {
+      if (iss.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING && iss.hasDetails()
+          && iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", OpIssueCode.InvalidData.toCode())) {
+        msgs.add(iss.getDetails().getText());
+      }
+    }
+    return msgs.isEmpty() ? null : CommaSeparatedStringBuilder.join("; ", msgs);
   }
 
   private String getUnknownCodeSystemMessage(String system, String version) {
@@ -529,6 +615,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private boolean checkRequiredSupplements(ValidationProcessInfo info) {
+    if (throwToServer) {
+      // these count as used even if no code from their code system has been checked yet, as local ones do
+      for (String s : serverAppliedSupplements) {
+        seeUsedSupplement(s);
+      }
+    }
     List<String> missingSupplements = checkForMissingSupplements();
     if (!missingSupplements.isEmpty()) {
       String msg = context.formatMessagePlural(missingSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(missingSupplements));
@@ -580,20 +672,28 @@ public class ValueSetValidator extends ValueSetProcessBase {
       cs = findSpecialCodeSystem(system, version);
     }
     if (cs == null) {
-      cs = context.findTxResource(CodeSystem.class, system, rules, version, source);
+      // fetchResource, not findTxResource: CodeSystem content is never pulled from servers
+      // to compute answers locally - see the limitations of use on IWorkerContext.findTxResource
+      cs = context.fetchResource(CodeSystem.class, system, rules, version, source);
     }
     if (cs != null) {
       if (cs.hasUserData("supplements.installed")) {
-        for (String s : cs.getUserString("supplements.installed").split("\\,")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] installedSupplements = cs.getUserString("supplements.installed").split("\\,");
+        for (String s : installedSupplements) {
           seeUsedSupplement(s);
         }
       }
     }
 
-    if (!requiredSupplements.isEmpty()) {
+    // cs can be null (none of the three lookups above resolved the system); there is nothing to
+    // merge supplements into in that case. ValueSetExpander's copy of this loop only runs when
+    // cs != null for the same reason.
+    if (cs != null && !requiredSupplements.isEmpty()) {
       List<CodeSystem> additionalSupplements = new ArrayList<>();
       for (String s : requiredSupplements) {
-        CodeSystem scs = context.findTxResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
+        CodeSystem scs = context.fetchResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
         if (scs != null && cs.getUrl().equals(scs.getSupplements())) {
           additionalSupplements.add(scs);
         }
@@ -603,6 +703,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     }
     return cs;
+  }
+
+  // an unversioned supplement applies to every version, a versioned one only to that version - the same rule
+  // as CanonicalResourceManager.getSupplements(url, version)
+  private List<String> supplementsFor(String system, String version) {
+    List<String> res = new ArrayList<>();
+    for (String s : requiredSupplements) {
+      CodeSystem scs = context.fetchResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
+      if (scs != null && Utilities.existsInList(scs.getSupplements(), system, CanonicalType.urlWithVersion(system, version))) {
+        res.add(s);
+      }
+    }
+    return res;
   }
 
   public Set<String> resolveCodeSystemVersions(String system) {
@@ -642,12 +755,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (!options.isMembershipOnly()) {
       if (system == null && !code.hasDisplay() && options.isGuessSystem()) { // dealing with just a plain code (enum)
         List<StringWithCodes> problems = new ArrayList<>();
-        system = systemForCodeInValueSet(code.getCode(), problems);
-        if (system == null) {
+        SystemWithVersion systemAndVersion = systemForCodeInValueSet(code.getCode(), problems);
+        if (systemAndVersion == null) {
           if (problems.size() == 0) {
             throw new Error("Unable to resolve systems but no reason why"); // this is an error in the java code
           } else if (problems.size() == 1) {
-            String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), "'"+code.toString()+"'");
+            String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), "'" + code.toString() + "'");
             issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, "code", msg, OpIssueCode.NotInVS, null, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ONE));
             issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, "code", problems.get(0).getMessage(), problems.get(0).getCode(), null, problems.get(0).getMessageId()));
             return new ValidationResult(IssueSeverity.ERROR, problems.get(0).getMessage(), msg, issues);
@@ -655,7 +768,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
             CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("; ");
             for (StringWithCodes s : problems) {
               b.append(s.getMessage());
-            }            
+            }
             ValidationResult vr = new ValidationResult(IssueSeverity.ERROR, b.toString(), null);
             for (StringWithCodes s : problems) {
               vr.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.UNKNOWN, path, s.getMessage(), s.getCode(), vr.getServer(), s.getMessageId()));
@@ -663,18 +776,25 @@ public class ValueSetValidator extends ValueSetProcessBase {
             return vr;
           }
         }
-      }
-      if (!code.hasSystem()) {
-        if (options.isGuessSystem() && system == null && Utilities.isAbsoluteUrl(code.getCode())) {
-          system = "urn:ietf:rfc:3986"; // this arises when using URIs bound to value sets
+        if (!code.hasSystem()) {
+          if (systemAndVersion != null) {
+            system = systemAndVersion.system();
+            code.setSystem(systemAndVersion.system());
+            code.setVersion(systemAndVersion.version());
+          } else if (options.isGuessSystem() && system == null && Utilities.isAbsoluteUrl(code.getCode())) {
+            system = "urn:ietf:rfc:3986"; // this arises when using URIs bound to value sets
+          }
         }
-        code.setSystem(system);
       }
       if (!code.hasSystem()) {
-        res = new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE), null);
+        // a coding with no system and no code at all (a display on its own, say) gets one message
+        // about the pair of them, not one about the system and another about the code: there is
+        // nothing there to validate, and saying so twice does not make it clearer
+        String noneMsgId = code.hasCode() ? I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE : I18nConstants.CODING_HAS_NO_SYSTEM_OR_CODE__CANNOT_VALIDATE;
+        res = new ValidationResult(IssueSeverity.WARNING, context.formatMessage(noneMsgId), null);
         if (!code.hasUserData(UserDataNames.tx_val_sys_error)) {
           code.setUserData(UserDataNames.tx_val_sys_error, true);
-          res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path, context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE), OpIssueCode.InvalidData, null, I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE));res.mineIssues(res.getIssues());
+          res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path, context.formatMessage(noneMsgId), OpIssueCode.InvalidData, null, noneMsgId));res.mineIssues(res.getIssues());
           res.mineIssues(res.getIssues());
         }
       } else {
@@ -688,7 +808,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
         CodeSystem csa = context.fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule()); // get the latest
         VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
         String wv = determineVersion(path, system, null, workingVersion, code.getVersion(), issues, va);
-        CodeSystem cs = resolveCodeSystem(system, wv, null, null);
+        // the code system has to be resolved against the package of the value set that referenced it,
+        // not against the master definitions: a value set from (say) hl7.fhir.uv.extensions.r3 means that
+        // package's code system, and resolving the two from different packages produces spurious status
+        // issues in checkCanonical below (e.g. a draft R3 core code system under a non-draft value set)
+        CodeSystem cs = resolveCodeSystem(system, wv, null, valueset);
         if (cs == null) {
           if (!VersionUtilities.isR6Plus(context.getVersion()) && "urn:ietf:bcp:13".equals(system) && Utilities.existsInList(code.getCode(), "xml", "json", "ttl") && "http://hl7.org/fhir/ValueSet/mimetypes".equals(valueset.getUrl())) {
             return new ValidationResult(system, null, new ConceptDefinitionComponent(code.getCode()), "application/fhir+"+code.getCode());        
@@ -824,8 +948,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
 
     
-    // then, if we have a value set, we check it's in the value set
-    if (valueset != null) {
+    // then, if we have a value set, we check it's in the value set - but only if there is a code
+    // to check. With no code there is nothing to look for, and the missing code has been reported
+    if (valueset != null && code.hasCode()) {
       if ((res==null || res.isOk())) {
         Boolean ok = codeInValueSet(path, system, wv, code.getVersion(), code.getCode(), code.getDisplay(), info);
         if (ok == null || !ok) {
@@ -1141,7 +1266,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (code.getCode() == null) {
       String msgid = cs.getVersion() == null ? I18nConstants.NO_CODE_PROVIDED : I18nConstants.NO_CODE_PROVIDED_VERSION;
       String msg = context.formatMessage(msgid, cs.getUrl(), cs.getVersion());
-      return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.VALUE, path + ".code", msg, OpIssueCode.InvalidData, null, msgid));
+      return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path, msg, OpIssueCode.InvalidData, null, msgid));
     }
     ConceptDefinitionComponent cc = cs.hasUserData(UserDataNames.tx_cs_special) ? ((SpecialCodeSystem) cs.getUserData(UserDataNames.tx_cs_special)).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode(), cs.getCaseSensitive(), allAltCodes);
     if (cc == null) {
@@ -1154,8 +1279,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
         issues.get(0).setUserData(UserDataNames.IGNORE_ISSUE_MESSAGE, true);
         return new ValidationResult(IssueSeverity.WARNING, null, issues).setVersion(cs.getVersion());
       } else {
-        String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE_IN_VERSION, code.getCode(), cs.getUrl(), cs.getVersion());
-        return new ValidationResult(IssueSeverity.ERROR, null, makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path + ".code", msg, OpIssueCode.InvalidCode, null, I18nConstants.UNKNOWN_CODE_IN_VERSION));
+        // not every code system states a version, and UNKNOWN_CODE_IN_VERSION renders a missing
+        // one as the literal text version 'null'
+        String msgId = cs.hasVersion() ? I18nConstants.UNKNOWN_CODE_IN_VERSION : I18nConstants.UNKNOWN_CODE_IN;
+        String msg = cs.hasVersion() ? context.formatMessage(msgId, code.getCode(), cs.getUrl(), cs.getVersion()) : context.formatMessage(msgId, code.getCode(), cs.getUrl());
+        return new ValidationResult(IssueSeverity.ERROR, null, makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path + ".code", msg, OpIssueCode.InvalidCode, null, msgId));
       }
     } else {
       if (!cc.getCode().equals(code.getCode())) {
@@ -1179,13 +1307,16 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     String statusMessage = null;
     if (inactive) {
-      statusMessage = context.formatMessage(I18nConstants.INACTIVE_CONCEPT_FOUND, "inactive", cc.getCode());
-      info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, statusMessage, OpIssueCode.CodeComment, null, I18nConstants.INACTIVE_CONCEPT_FOUND));
+      String messageId = I18nConstants.INACTIVE_CONCEPT_FOUND;
+      String statusId1 = "inactive";
+      String statusId2 = "";
       if ("retired".equals(status)) {
-        String sMsg2 = context.formatMessage(I18nConstants.INACTIVE_CONCEPT_FOUND, status, cc.getCode());
-        info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, sMsg2, OpIssueCode.CodeComment, null, I18nConstants.INACTIVE_CONCEPT_FOUND));
-        statusMessage = sMsg2+"; "+statusMessage;
+        messageId = I18nConstants.INACTIVE_CONCEPT_FOUND_ADD;
+        statusId1 = status;
+        statusId2 = "inactive";
       }
+      statusMessage = context.formatMessage(messageId, statusId1, cc.getCode(), statusId2);
+      info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, statusMessage, OpIssueCode.CodeComment, null, I18nConstants.INACTIVE_CONCEPT_FOUND));
     } else if (status != null && "deprecated".equals(status.toLowerCase())) {
       statusMessage = context.formatMessage(I18nConstants.DEPRECATED_CONCEPT_FOUND, status == null ? "inactive" : status, cc.getCode());
       info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, statusMessage, OpIssueCode.CodeComment, null, I18nConstants.DEPRECATED_CONCEPT_FOUND));
@@ -1213,6 +1344,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
     
     for (ConceptDefinitionDesignationComponent ds : cc.getDesignation()) {
       opContext.deadCheck("validateCode1 "+ds.toString());
+      if (!isOkLanguage(ds.getLanguage()) && (!ds.hasLanguage() || ds.getLanguage().equals(cs.getLanguage()))
+          && code.getDisplay().equalsIgnoreCase(ds.getValue())) {
+        // the display matches a designation in the code system's default language; that's
+        // acceptable if there are no displays in the requested language(s) (b.count() == 0)
+        // (see tests validation-simple-*-good-language-none)
+        isDefaultLang = true;
+      }
       if (isOkLanguage(ds.getLanguage())) {
         b.append("'"+ds.getValue()+"' ("+ds.getLanguage()+")");
         if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
@@ -1227,7 +1365,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
             }
             Collections.sort(ok);
             String msg = context.formatMessagePlural(ok.size(), I18nConstants.INACTIVE_DISPLAY_FOUND, code.getDisplay(), cc.getCode(), CommaSeparatedStringBuilder.join(", ", ok), dstatus);
-            info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg, OpIssueCode.DisplayComment, null, I18nConstants.INACTIVE_DISPLAY_FOUND));
+            // The display is a real designation, but no longer a current one. Whether that is an
+            // error or merely a warning is the same question as for a display that is not found at
+            // all, so it follows lenient-display-validation in the same way - see dispWarning() /
+            // dispWarningStatus(). Hardcoding WARNING here ignored the caller's choice, and the
+            // plain success result below meant the code validated even in strict mode.
+            return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs),
+                makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg, OpIssueCode.DisplayComment, null, I18nConstants.INACTIVE_DISPLAY_FOUND)).setStatus(inactive, status);
           }
           return new ValidationResult(code.getSystem(),cs.getVersion(),  cc, getPreferredDisplay(cc, cs)).setStatus(inactive, status);
         }
@@ -1454,9 +1598,20 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return codes;
   }
 
+  public record SystemWithVersion(String system, String version) implements Comparable<SystemWithVersion>{
+
+    @Override
+    public int compareTo(SystemWithVersion o) {
+      int res = this.system.compareTo(o.system);
+      if (res == 0 && version != null) {
+        res = this.version.compareTo(o.version);
+      }
+      return res;
+    }
+  }
   
-  private String systemForCodeInValueSet(String code, List<StringWithCodes> problems) {
-    Set<String> sys = new HashSet<>();
+  private SystemWithVersion systemForCodeInValueSet(String code, List<StringWithCodes> problems) {
+    Set<SystemWithVersion> sys = new HashSet<>();
     if (!scanForCodeInValueSet(code, sys, problems)) {
       return null;
     }
@@ -1464,14 +1619,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
       problems.add(new StringWithCodes(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_INFER_CODESYSTEM, code, valueset.getVersionedUrl()), I18nConstants.UNABLE_TO_INFER_CODESYSTEM));
       return null;
     } else if (sys.size() > 1) {
-      problems.add(new StringWithCodes(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES, code, valueset.getVersionedUrl(), sys.toString()), I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES));
+      Set<String> systems = new HashSet<>();
+      for (SystemWithVersion sp : sys) {
+        systems.add(sp.system()+(sp.version() == null ? "" : "|"+sp.version()));
+      }
+      String slist = CommaSeparatedStringBuilder.join(",", Utilities.sorted(systems));
+      problems.add(new StringWithCodes(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES, code, valueset.getVersionedUrl(), slist), I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES));
       return null;
     } else {
       return sys.iterator().next();
     }
   }
   
-  private boolean scanForCodeInValueSet(String code, Set<String> sys, List<StringWithCodes> problems) {
+  private boolean scanForCodeInValueSet(String code, Set<SystemWithVersion> sys, List<StringWithCodes> problems) {
     if (valueset.hasCompose()) {
       //  ignore excludes - they can't make any difference
       if (!valueset.getCompose().hasInclude() && !valueset.getExpansion().hasContains()) {
@@ -1495,7 +1655,29 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return true;
   }
 
-  private boolean scanForCodeInValueSetInclude(String code, Set<String> sys, List<StringWithCodes> problems, int i, ConceptSetComponent vsi) {
+  /**
+   * The value set used to check a code against a single include needs a url, and the terminology cache uses that url
+   * in the key for the result. So it has to be the same every time for the same include: a random one means every run
+   * is a cache miss, and adds another entry to the cache. So it's a name based UUID made from the content of the include
+   */
+  private String dummyValueSetUrl(ConceptSetComponent vsi) {
+    String uuid = vsi.getUserString(UserDataNames.CACHED_UUID);
+    if (uuid == null) {
+      ValueSet vs = new ValueSet();
+      vs.getCompose().addInclude(vsi);
+      String src;
+      try {
+        src = new org.hl7.fhir.r5.formats.JsonParser().composeString(vs);
+      } catch (Exception e) {
+        src = null;
+      }
+      uuid = src == null ? UUIDUtilities.makeUuidUrn() : "urn:uuid:" + UUID.nameUUIDFromBytes(src.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+      vsi.setUserData(UserDataNames.CACHED_UUID, uuid);
+    }
+    return uuid;
+  }
+
+  private boolean scanForCodeInValueSetInclude(String code, Set<SystemWithVersion> sys, List<StringWithCodes> problems, int i, ConceptSetComponent vsi) {
     if (vsi.hasValueSet()) {
       for (CanonicalType u : vsi.getValueSet()) {
         if (!checkForCodeInValueSet(code, getCu().pinValueSet(u.getValue(), expansionParameters), u, sys, problems)) {
@@ -1509,13 +1691,15 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (vsi.hasSystem()) {
       if (vsi.hasFilter()) {
         ValueSet vsDummy = new ValueSet();
-        vsDummy.setUrl(UUIDUtilities.makeUuidUrn());
+        String uuid = dummyValueSetUrl(vsi);
+        vsDummy.setVersion("1");
+        vsDummy.setUrl(uuid);
         vsDummy.setStatus(PublicationStatus.ACTIVE);
         vsDummy.getCompose().addInclude(vsi);
         Coding c = new Coding().setCode(code).setSystem(vsi.getSystem());
         ValidationResult vr = context.validateCode(options.withGuessSystem(false), c, vsDummy);
         if (vr.isOk()) {
-          sys.add(vsi.getSystem());
+          sys.add(new SystemWithVersion(vsi.getSystem(), vsi.getVersion()));
         } else {
           // problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_FILTER, code, valueset.getVersionedUrl(), i, vsi.getSystem(), filterSummary(vsi))));
           return false;
@@ -1526,9 +1710,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
         Boolean ok = csp.checkCode(code);
         if (ok == null) {
           problems.add(new StringWithCodes(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE, code, valueset.getVersionedUrl(), vsi.getSystem()), I18nConstants.UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE));
-          sys.add(vsi.getSystem());
+          sys.add(new SystemWithVersion(vsi.getSystem(), vsi.getVersion()));
         } else if (ok) {
-          sys.add(vsi.getSystem());
+          sys.add(new SystemWithVersion(vsi.getSystem(), vsi.getVersion()));
         }
       } else {
         CodeSystem cs = resolveCodeSystem(vsi.getSystem(), vsi.getVersion(), vsi, valueset);
@@ -1537,33 +1721,35 @@ public class ValueSetValidator extends ValueSetProcessBase {
             for (ConceptReferenceComponent cc : vsi.getConcept()) {
               boolean match = cs.getCaseSensitive() ? cc.getCode().equals(code) : cc.getCode().equalsIgnoreCase(code);
               if (match) {
-                sys.add(vsi.getSystem());
+                sys.add(new SystemWithVersion(vsi.getSystem(), vsi.getVersion()));
               }
             }
           } else {
             ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), code, cs.getCaseSensitive(), allAltCodes);
             if (cc != null) {
-              sys.add(vsi.getSystem());
+              sys.add(new SystemWithVersion(vsi.getSystem(), vsi.getVersion()));
             }
           }
         } else if (vsi.hasConcept()) {
           for (ConceptReferenceComponent cc : vsi.getConcept()) {
             boolean match = cc.getCode().equals(code);
             if (match) {
-              sys.add(vsi.getSystem());
+              sys.add(new SystemWithVersion(vsi.getSystem(), vsi.getVersion()));
             }
           }
         } else if (!VersionUtilities.isR6Plus(context.getVersion()) && Utilities.existsInList(code, "xml", "json", "ttl") && "urn:ietf:bcp:13".equals(vsi.getSystem())) {
-          sys.add(vsi.getSystem());
+          sys.add(new SystemWithVersion(vsi.getSystem(), vsi.getVersion()));
           return true;
         } else {
           ValueSet vsDummy = new ValueSet();
-          vsDummy.setUrl(UUIDUtilities.makeUuidUrn());
+          String uuid = dummyValueSetUrl(vsi);
+          vsDummy.setVersion("1");
+          vsDummy.setUrl(uuid);
           vsDummy.setStatus(PublicationStatus.ACTIVE);
           vsDummy.getCompose().addInclude(vsi);
           ValidationResult vr = context.validateCode(options.withNoClient(), code, vsDummy);
           if (vr.isOk()) {
-            sys.add(vsi.getSystem());
+            sys.add(new SystemWithVersion(vsi.getSystem(), vsi.getVersion()));
           } else if (vr.isNoService()) {
             throw new TerminologyServiceException(TerminologyServiceException.NO_SERVICE_CODE);
           } else if (EXPAND_AFTER_VALIDATION_WHEN_INFERRING) {
@@ -1595,7 +1781,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return b.toString();
   }
 
-  private boolean checkForCodeInValueSet(String code, String uri, Element ctxt, Set<String> sys, List<StringWithCodes> problems) {
+  private boolean checkForCodeInValueSet(String code, String uri, Element ctxt, Set<SystemWithVersion> sys, List<StringWithCodes> problems) {
     ValueSetValidator vs = getVs(uri, ctxt, null);
     return vs.scanForCodeInValueSet(code, sys, problems);
   }
@@ -1604,11 +1790,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
    * Recursively go through all codes in the expansion and for any coding that matches the specified code, add the system for that coding
    * to the passed list. 
    */
-  private boolean checkSystems(List<ValueSetExpansionContainsComponent> contains, String code, Set<String> systems, List<StringWithCodes> problems) {
+  private boolean checkSystems(List<ValueSetExpansionContainsComponent> contains, String code, Set<SystemWithVersion> systems, List<StringWithCodes> problems) {
     for (ValueSetExpansionContainsComponent c: contains) {
       opContext.deadCheck("checkSystems "+code.toString());
       if (c.getCode().equals(code)) {
-        systems.add(c.getSystem());
+        systems.add(new SystemWithVersion(c.getSystem(), c.getVersion()));
       }
       if (c.hasContains())
         checkSystems(c.getContains(), code, systems, problems);
@@ -1652,7 +1838,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       int i = 0;
       int c = 0;
       for (ConceptSetComponent vsi : valueset.getCompose().getInclude()) {
-        if ((determinedVersion == null || determinedVersion.equals(vsi.getVersion())) && shouldUseThisVersion(vsi, version)) {
+        if ((determinedVersion == null || determinedVersion.equals(vsi.getVersion())) && shouldUseThisVersion(vsi, vsi.getSystem(), version)) {
           Boolean ok = inComponent(path, vsi, i, system, version, instanceVersion, code, display,valueset.getCompose().getInclude().size() == 1, info, vspath + ".include[" + c + "]", info.getIssues(), false);
           i++;
           c++;
@@ -1663,7 +1849,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
             break;
           }
         }
-      }
+       }
       i = valueset.getCompose().getInclude().size();
       c = 0;
       for (ConceptSetComponent vsi : valueset.getCompose().getExclude()) {
@@ -1683,16 +1869,16 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return result;
   }
 
-  private boolean shouldUseThisVersion(ConceptSetComponent vsi, String version) {
+  private boolean shouldUseThisVersion(ConceptSetComponent vsi, String system, String version) {
     if (version == null || version.equals(vsi.getVersion())) {
       return true;
     }
-    return !hasMatchForVersion(valueset.getCompose().getInclude(), version);
+    return !hasMatchForVersion(valueset.getCompose().getInclude(), system, version);
   }
 
-  private boolean hasMatchForVersion(List<ConceptSetComponent> includes, String version) {
+  private boolean hasMatchForVersion(List<ConceptSetComponent> includes, String system, String version) {
     for (ConceptSetComponent inc : includes) {
-      if (version.equals(inc.getVersion())) {
+      if (system.equals(inc.getSystem()) && version.equals(inc.getVersion())) {
         return true;
       }
     }
@@ -1724,8 +1910,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
         if (cs != null && !(versionCoding.equals(cs.getVersion()) || versionIsMoreDetailed(va, versionCoding, cs.getVersion()))) {
           if (result == null) {
-            issues.addAll(makeIssue(cs.getVersionNeeded() ? IssueSeverity.ERROR : IssueSeverity.WARNING, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
-              context.formatMessage(I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT, system, cs.getVersion(), notNull(versionVS), notNull(versionCoding)), OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT));
+            if (cs.getVersion() != null || cs.getVersionNeeded()) { // if thre's no version in the codesystem. we don't make an issue about this
+              issues.addAll(makeIssue(cs.getVersionNeeded() ? IssueSeverity.ERROR : IssueSeverity.WARNING, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
+                context.formatMessage(I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT, system, cs.getVersion(), notNull(versionVS), notNull(versionCoding)), OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT));
+            }
           } else if (!result.equals(versionVS)) {
             issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
               context.formatMessage(I18nConstants.VALUESET_VALUE_MISMATCH_CHANGED, system, result, notNull(versionVS), notNull(versionCoding)), OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_VALUE_MISMATCH_CHANGED));
@@ -1767,6 +1955,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private boolean versionIsMoreDetailed(VersionAlgorithm va, String criteria, String candidate) {
+    if (candidate == null) {
+      return false;
+    }
+    if (criteria == null) {
+      return false; // cannot be more detailed than nothing.
+    }
     if (va == VersionAlgorithm.Unknown) {
       va = VersionAlgorithm.guessFormat(candidate);
     }
@@ -1939,6 +2133,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
         vs.setUrl(valueset.getUrl()+"--"+vsiIndex);
         vs.setVersion(valueset.getVersion());
         vs.getCompose().addInclude(vsi);
+        // the server does this check, so the value set it gets has to require the supplements - there's no local
+        // code system (or only a stub) to merge them into
+        for (String s : supplementsFor(system, actualVersion)) {
+          vs.addExtension(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED, new CanonicalType(s));
+          seeUsedSupplement(s);
+        }
         opContext.deadCheck("hit server "+vs.getVersionedUrl());
         ValidationResult res = context.validateCode(options.withNoClient(), new Coding(system, code, null), vs);
         if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
@@ -2099,6 +2299,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (f.getValue() == null) {
         return false;
       }
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] values = f.getValue().split("\\,");
       d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
       if (d != null) {
@@ -2114,7 +2316,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (f.getValue() == null) {
         return true;
       }
-      values = f.getValue().split("\\,");
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] splitValues = f.getValue().split("\\,");
+      values = splitValues;
       d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
       if (d != null) {
         String v = d.primitiveValue();
@@ -2159,7 +2364,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
   private boolean regexMatchSafe(String value, String regex) {
     try {
-      return RegexTimeout.matches(value, regex);
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+      boolean matched = RegexTimeout.matches(value, regex);
+      return matched;
     } catch (TimeoutException e) {
       throw new FHIRException(context.formatMessage(I18nConstants.REGEX_MATCH_TIMED_OUT, regex));
     }
@@ -2176,6 +2384,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return d != null && f.getValue().equals(d.primitiveValue());
     case ISNOTA: return !codeInConceptIsAFilter(cs, f, code, false);
     case DESCENDENTOF: return codeInConceptIsAFilter(cs, f, code, true); 
+    case CHILDOF: return codeInConceptChildOfFilter(cs, f, code);
     default:
       log.error("todo: handle concept filters with op = "+f.getOp());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__CONCEPT_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
@@ -2188,6 +2397,42 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       DataType d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
       return d != null && f.getValue().equals(d.primitiveValue());
+  }
+
+  /**
+   * child-of: the direct children of the filter value, and only those - not the value itself, and
+   * not its grandchildren (which is what makes it different from descendent-of). The expansion
+   * does the same thing by passing a depth limit of 0 to addCodeAndDescendents.
+   */
+  private boolean codeInConceptChildOfFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) {
+    ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), f.getValue(), cs.getCaseSensitive(), altCodeParams);
+    if (cc == null) {
+      return false;
+    }
+    for (ConceptDefinitionComponent child : childrenOf(cc)) {
+      if (codeMatches(cs, child, code)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * The direct children of a concept, from both sources the hierarchy can come from: nested
+   * concepts, and the cross-links built from the #parent property by crossLinkCodeSystem().
+   */
+  @SuppressWarnings("unchecked")
+  private List<ConceptDefinitionComponent> childrenOf(ConceptDefinitionComponent cc) {
+    List<ConceptDefinitionComponent> res = new ArrayList<>(cc.getConcept());
+    if (cc.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
+      res.addAll((List<ConceptDefinitionComponent>) cc.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK));
+    }
+    return res;
+  }
+
+  private boolean codeMatches(CodeSystem cs, ConceptDefinitionComponent cd, String code) {
+    return code.equals(cd.getCode()) || (!cs.getCaseSensitive() && code.equalsIgnoreCase(cd.getCode()))
+        || Utilities.existsInList(code, alternateCodes(cd, altCodeParams));
   }
 
   private boolean codeInConceptIsAFilter(CodeSystem cs, ConceptSetFilterComponent f, String code, boolean excludeRoot) {

@@ -13,11 +13,11 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
-@MarkedToMoveToAdjunctPackage
+
 public class CompartmentDefinitionRenderer extends ResourceRenderer {
 
   public CompartmentDefinitionRenderer(RenderingContext context) { 
@@ -48,7 +48,7 @@ public class CompartmentDefinitionRenderer extends ResourceRenderer {
       CommaSeparatedStringBuilder rules = new CommaSeparatedStringBuilder();
       if (!cc.hasParam()) {
         out.append(" <li><a href=\"").append(cc.getCode().toLowerCase()).append(".html\">").append(cc.getCode()).append("</a></li>\r\n");
-      } else if (!rules.equals("{def}")) {
+      } else if (!rules.toString().equals("{def}")) {
         for (StringType p : cc.getParam())
           rules.append(p.asStringValue());
         in.append(" <tr><td><a href=\"").append(cc.getCode().toLowerCase()).append(".html\">").append(cc.getCode()).append("</a></td><td>").append(rules.toString()).append("</td></tr>\r\n");

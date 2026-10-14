@@ -14,12 +14,12 @@
       }
       
       public String toString() {
-        String base = getSystem();
+        String base = hasSystem() ? getSystem() : "";
         if (hasVersion())
           base = base+"|"+getVersion();
         base = base + "#"+getCode();
         if (hasDisplay())
-          base = base+": "+getDisplay();
+          base = base+": '"+getDisplay()+"'";
         return base;
         
       } 
@@ -80,9 +80,54 @@
         return res;
       } 
             
-      public Coding(String theSystem, String theVersion, String theCode, String theDisplay) {
+      public Coding(IModelContext modelContext, String theSystem, String theVersion, String theCode, String theDisplay) {
+        this.modelContext = modelContext;
         setSystem(theSystem);
         setVersion(theVersion);
         setCode(theCode);
         setDisplay(theDisplay);
-      }      
+      }
+    public Coding(String theSystem, String theVersion, String theCode, String theDisplay) {
+      setSystem(theSystem);
+      setVersion(theVersion);
+      setCode(theCode);
+      setDisplay(theDisplay);
+    }
+    public Coding(String theSystem, String theCode, String theDisplay) {
+      setSystem(theSystem);
+      setCode(theCode);
+      setDisplay(theDisplay);
+    }
+
+
+  public static Coding fromLiteral(String value) {
+    String sv = value.contains("#") ? value.substring(0, value.indexOf("#")) : value;
+    String cp = value.contains("#") ? value.substring(value.indexOf("#")+1) : null;
+
+    String system = sv.contains("|") ? sv.substring(0, sv.indexOf("|")) : sv;
+    String version = sv.contains("|") ? sv.substring(sv.indexOf("|")+1) : null;
+
+    String code = cp != null && cp.contains("'") ? cp.substring(0, cp.indexOf("'")) : cp;
+    String display = cp != null && cp.contains("'") ? cp.substring(cp.indexOf("'")+1) : null;
+    if (display != null) {
+      display = display.trim();
+      display = display.substring(0, display.length() -1);
+    }
+    if ((system == null || !Utilities.isAbsoluteUrl(system)) && code == null) {
+      return null;
+    } else {
+      return new Coding(system, version, code, display);
+    }
+  }
+
+  public String getVersionedSystem() {
+    return hasVersion() ? getSystem()+"|"+getVersion() : getSystem();
+  }
+
+  public String toToken() {
+    String base = hasSystem() ? getSystem() : "";
+    if (hasVersion())
+      base = base+"|"+getVersion();
+    base = base + "#"+getCode();
+    return base;
+  }

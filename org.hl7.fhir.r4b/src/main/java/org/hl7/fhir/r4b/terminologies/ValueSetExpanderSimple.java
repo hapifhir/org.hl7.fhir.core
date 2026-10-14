@@ -103,10 +103,11 @@ import org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 
-@MarkedToMoveToAdjunctPackage
+
+@Deprecated(forRemoval = true)
 public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetExpander {
 
   public class PropertyFilter implements IConceptFilter {

@@ -10,12 +10,11 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.google.gson.annotations.SerializedName;
-
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
-import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.model.utilities.JurisdictionUtilities;
+import org.hl7.fhir.model.utilities.SnomedUtilities;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.validation.BundleValidationRule;
+import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
@@ -201,6 +200,14 @@ public class ValidationContext {
   @SerializedName("extensions")
   private
   List<String> extensions = new ArrayList<String>();
+  @JsonProperty("usages")
+  @SerializedName("usages")
+  private
+  List<String> usages = new ArrayList<String>();
+  @JsonProperty("launchContexts")
+  @SerializedName("launchContexts")
+  private
+  List<String> launchContexts = new ArrayList<String>();
   @JsonProperty("certSources")
   @SerializedName("certSources")
   private
@@ -434,6 +441,8 @@ public class ValidationContext {
     this.packageName = other.packageName;
     this.noEcosystem = other.noEcosystem;
     this.extensions = new ArrayList<>(other.extensions);
+    this.usages = new ArrayList<>(other.usages);
+    this.launchContexts = new ArrayList<>(other.launchContexts);
     this.certSources = new ArrayList<>(other.certSources);
     this.matchetypes = new ArrayList<>(other.matchetypes);
     this.igs = new ArrayList<>(other.igs);
@@ -660,6 +669,42 @@ public class ValidationContext {
 
   public ValidationContext addExtension(String extension) {
     this.extensions.add(extension);
+    return this;
+  }
+
+  @SerializedName("usages")
+  @JsonProperty("usages")
+  public List<String> getUsages() {
+    return usages;
+  }
+
+  @SerializedName("usages")
+  @JsonProperty("usages")
+  public ValidationContext setUsages(List<String> usages) {
+    this.usages = usages;
+    return this;
+  }
+
+  public ValidationContext addUsage(String usage) {
+    this.usages.add(usage);
+    return this;
+  }
+
+  @SerializedName("launchContexts")
+  @JsonProperty("launchContexts")
+  public List<String> getLaunchContexts() {
+    return launchContexts;
+  }
+
+  @SerializedName("launchContexts")
+  @JsonProperty("launchContexts")
+  public ValidationContext setLaunchContexts(List<String> launchContexts) {
+    this.launchContexts = launchContexts;
+    return this;
+  }
+
+  public ValidationContext addLaunchContext(String launchContext) {
+    this.launchContexts.add(launchContext);
     return this;
   }
 
@@ -1399,6 +1444,8 @@ public class ValidationContext {
       showTerminologyRouting == that.showTerminologyRouting &&
       clearTxCache == that.clearTxCache &&
       Objects.equals(extensions, that.extensions) &&
+      Objects.equals(usages, that.usages) &&
+      Objects.equals(launchContexts, that.launchContexts) &&
       Objects.equals(certSources, that.certSources) &&
       Objects.equals(matchetypes, that.matchetypes) &&
       Objects.equals(langTransform, that.langTransform) &&
@@ -1458,7 +1505,7 @@ public class ValidationContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(baseEngine, doNative, extensions, certSources, matchetypes, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, checkReferences,canDoNative, noInternalCaching, resolutionContext, aiService,
+    return Objects.hash(baseEngine, doNative, extensions, usages, launchContexts, certSources, matchetypes, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, checkReferences,canDoNative, noInternalCaching, resolutionContext, aiService,
       noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
       targetVer, packageName, igs, questionnaireMode, level, profiles, options, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
       watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, advisorFile, expansionParameters, format, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
@@ -1470,6 +1517,8 @@ public class ValidationContext {
       "baseEngine=" + baseEngine +
       ", doNative=" + doNative +
       ", extensions=" + extensions +
+      ", usages=" + usages +
+      ", launchContexts=" + launchContexts +
       ", certSources=" + certSources +
       ", matchetypes=" + matchetypes +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +

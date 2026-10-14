@@ -1260,6 +1260,10 @@ public class ObservationDefinition extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ObservationDefinitionQualifiedValueComponent) dst);
+      }
+
       public void copyValues(ObservationDefinitionQualifiedValueComponent dst) {
         super.copyValues(dst);
         dst.context = context == null ? null : context.copy();
@@ -1693,6 +1697,10 @@ public class ObservationDefinition extends DomainResource {
         ObservationDefinitionComponentComponent dst = new ObservationDefinitionComponentComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ObservationDefinitionComponentComponent) dst);
       }
 
       public void copyValues(ObservationDefinitionComponentComponent dst) {
@@ -4417,6 +4425,10 @@ public class ObservationDefinition extends DomainResource {
         ObservationDefinition dst = new ObservationDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ObservationDefinition) dst);
       }
 
       public void copyValues(ObservationDefinition dst) {

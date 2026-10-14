@@ -2,9 +2,12 @@ package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_N;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_50_N;
 import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.PackageInformation;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.core.CanonicalResource;
+import org.hl7.fhir.model.core.PackageInformation;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageClient;
@@ -240,13 +243,19 @@ public class RePackageCommand extends ValidationEngineCommand implements Callabl
     }
 
     // Validate scope if provided
-    if (scope != null && !scope.matches("ig|igs|core")) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored, non-overlapping alternation, safe
+    boolean scopeIsInvalid = scope != null && !scope.matches("ig|igs|core");
+    if (scopeIsInvalid) {
       log.error("Invalid scope: {}. Must be one of: ig, igs, core", scope);
       System.exit(1);
     }
 
     // Validate format if provided
-    if (format != null && !format.matches("(?i)xml|json")) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored, non-overlapping alternation, safe
+    boolean formatIsInvalid = format != null && !format.matches("(?i)xml|json");
+    if (formatIsInvalid) {
       log.error("Invalid format: {}. Must be xml or json", format);
       System.exit(1);
     }
@@ -333,9 +342,12 @@ public class RePackageCommand extends ValidationEngineCommand implements Callabl
     CanonicalResource canonicalResource;
     if ("4.0.1".equals(npmPackage.fhirVersion())) {
       IBaseResource r4resource = new org.hl7.fhir.r4.formats.JsonParser().parse(stream);
-      canonicalResource = (CanonicalResource) VersionConvertorFactory_40_50.convertResource((org.hl7.fhir.r4.model.Resource) r4resource);
+      canonicalResource = (CanonicalResource) VersionConvertorFactory_40_N.convertResource((org.hl7.fhir.r4.model.Resource) r4resource);
     } else if ("5.0.0".equals(npmPackage.fhirVersion())) {
-      canonicalResource = (CanonicalResource) new org.hl7.fhir.r5.formats.JsonParser().parse(stream);
+      IBaseResource r4resource = new org.hl7.fhir.r5.formats.JsonParser().parse(stream);
+      canonicalResource = (CanonicalResource) VersionConvertorFactory_50_N.convertResource((org.hl7.fhir.r5.model.Resource) r4resource);
+    } else if ("6.0.0".equals(npmPackage.fhirVersion())) {
+      canonicalResource = (CanonicalResource) new org.hl7.fhir.model.core.formats.JsonParser(ModelContext.fullCoreContext()).parse(stream);
     } else {
       log.warn("Unsupported FHIR version {} for package {}", npmPackage.fhirVersion(), npmPackage.name());
       return null;

@@ -66,6 +66,8 @@ public class SIDUtilities {
     return ID_SYSTEMS;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //anchored, fixed-width, safe
   private static boolean isPassPortSID(String url) {
     // TODO: verify ISO countrycode part vs country code list
     return url.matches("^http:\\/\\/hl7.org\\/fhir\\/sid\\/passport-[a-zA-Z]{3}$");
@@ -91,6 +93,8 @@ public class SIDUtilities {
     return ALL_SYSTEMS;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //fixed-width, safe
   public static boolean isInvalidVersion(String u, String v) {
     if (v == null) {
       return false;

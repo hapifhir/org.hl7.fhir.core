@@ -57,7 +57,7 @@ import org.hl7.fhir.r4.terminologies.ValueSetExpander.TerminologyServiceErrorCla
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -76,12 +76,15 @@ import com.google.gson.JsonPrimitive;
  * the cache is a series of pairs: a map, and a list. the map is the loaded
  * cache, the list is the persiistent cache, carefully maintained in order for
  * version control consistency
- * 
- * @author graha
+ *
+ * The implemetation of IWorkerContext is deprecated - it is no longer maintained by the core team
+ *
+ * @author grahame
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
+@Deprecated(forRemoval = true)
 public class TerminologyCache {
   public static final boolean TRANSIENT = false;
   public static final boolean PERMANENT = true;

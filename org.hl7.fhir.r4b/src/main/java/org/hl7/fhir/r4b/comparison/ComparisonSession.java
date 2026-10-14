@@ -20,10 +20,11 @@ import org.hl7.fhir.r4b.model.CodeSystem;
 import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.ValueSet;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 
-@MarkedToMoveToAdjunctPackage
+
+@Deprecated(forRemoval = true)
 public class ComparisonSession {
 
   private Map<String, ResourceComparison> compares = new HashMap<>();

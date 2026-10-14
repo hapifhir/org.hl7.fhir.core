@@ -8,7 +8,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 
 /**
  * Some value sets are just too big to expand. Instead of an expanded value set, 
@@ -16,7 +16,7 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
  * 
  * @author Grahame
  */
-@MarkedToMoveToAdjunctPackage
+
 public class ValueSetExpansionOutcome {
   private String msgId;
   private ValueSetProcessBase.OpIssueCode code;

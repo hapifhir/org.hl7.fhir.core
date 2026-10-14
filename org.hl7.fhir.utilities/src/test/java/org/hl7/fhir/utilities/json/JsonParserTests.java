@@ -14,6 +14,8 @@ import org.hl7.fhir.utilities.json.model.JsonString;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class JsonParserTests {
 
@@ -618,5 +620,41 @@ public class JsonParserTests {
     Assertions.assertEquals(2, o.getProperties().size());
     Assertions.assertEquals(true, o.isExtraComma());
   }
-  
+
+  // A resource nested far beyond MAX_JSON_DEPTH must fail with a normal parse error (IOException),
+  // never a StackOverflowError. assertThrows checks the exact type, so a regression that let the
+  // recursion run unbounded would surface here as StackOverflowError and fail the assertion.
+  @ParameterizedTest
+  @ValueSource(ints = {600, 5000, 20000})
+  void testDeeplyNestedArraysFailCleanly(int depth) {
+    StringBuilder b = new StringBuilder("{\"x\":");
+    b.append("[".repeat(Math.max(0, depth)));
+    b.append('0');
+    b.append("]".repeat(Math.max(0, depth)));
+    b.append('}');
+    Assertions.assertThrows(IOException.class, () -> JsonParser.parseObject(b.toString()));
+  }
+
+  @ParameterizedTest
+  @ValueSource(ints = {600, 5000, 20000})
+  void testDeeplyNestedObjectsFailCleanly(int depth) {
+    StringBuilder b = new StringBuilder();
+    b.append("{\"x\":".repeat(Math.max(0, depth)));
+    b.append('0');
+    b.append("}".repeat(Math.max(0, depth)));
+    Assertions.assertThrows(IOException.class, () -> JsonParser.parseObject(b.toString()));
+  }
+
+  // Nesting comfortably below the limit must still parse, guarding against the cap being too tight.
+  @Test
+  void testModerateNestingStillParses() throws IOException, JsonException {
+    int depth = 100;
+    StringBuilder b = new StringBuilder("{\"x\":");
+    b.append("[".repeat(depth));
+    b.append('0');
+    b.append("]".repeat(depth));
+    b.append('}');
+    Assertions.assertNotNull(JsonParser.parseObject(b.toString()));
+  }
+
 }

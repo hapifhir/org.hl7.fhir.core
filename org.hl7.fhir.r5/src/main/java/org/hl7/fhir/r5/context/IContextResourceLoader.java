@@ -6,18 +6,17 @@ import java.util.List;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory5;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 
 import com.google.gson.JsonSyntaxException;
 
-@MarkedToMoveToAdjunctPackage
+
 public interface IContextResourceLoader {
   /** 
    * @return List of the resource types that should be loaded
@@ -97,7 +96,7 @@ public interface IContextResourceLoader {
   /**
    * @return the terminology client factory
    */
-  ITerminologyClientFactory txFactory();
+  ITerminologyClientFactory5 txFactory();
   
   /**
    * Called during the loading process - the loader can decide which resources to load. 

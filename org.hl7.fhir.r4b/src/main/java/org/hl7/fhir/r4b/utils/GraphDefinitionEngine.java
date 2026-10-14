@@ -22,7 +22,7 @@ import org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetComponent
 import org.hl7.fhir.r4b.model.Reference;
 import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.model.StringType;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.Argument;
 import org.hl7.fhir.utilities.graphql.EGraphEngine;
@@ -33,7 +33,8 @@ import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices.ReferenceResolutio
 import org.hl7.fhir.utilities.graphql.StringValue;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 
-@MarkedToMoveToAdjunctPackage
+
+@Deprecated(forRemoval = true)
 public class GraphDefinitionEngine {
 
   private static final String TAG_NAME = "Compiled.expression";
@@ -267,6 +268,8 @@ public class GraphDefinitionEngine {
 
   public Map<String, List<String>> splitQuery(String string) {
     final Map<String, List<String>> query_pairs = new LinkedHashMap<String, List<String>>();
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     final String[] pairs = string.split("&");
     for (String pair : pairs) {
       final int idx = pair.indexOf("=");

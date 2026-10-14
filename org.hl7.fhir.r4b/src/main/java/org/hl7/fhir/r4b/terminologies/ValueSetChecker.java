@@ -33,9 +33,10 @@ import java.util.List;
 
 import org.hl7.fhir.r4b.terminologies.ValueSetExpander.ETooCostly;
 import org.hl7.fhir.r4b.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@MarkedToMoveToAdjunctPackage
+
+
+@Deprecated(forRemoval = true)
 public interface ValueSetChecker {
 
   Boolean codeInValueSet(String system, String code, List<String> warnings)

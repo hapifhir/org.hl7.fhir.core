@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
-import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
+import org.hl7.fhir.services.validation.BundleValidationRule;
+import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
+import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
@@ -29,6 +31,8 @@ public class InstanceValidatorParameters {
     this.outputStyle = instanceValidatorParameters.outputStyle;
     this.r5BundleRelativeReferencePolicy = instanceValidatorParameters.r5BundleRelativeReferencePolicy;
     this.extensions = new ArrayList<>(instanceValidatorParameters.extensions);
+    this.usages = new ArrayList<>(instanceValidatorParameters.usages);
+    this.launchContexts = new ArrayList<>(instanceValidatorParameters.launchContexts);
     this.wantInvariantsInMessages = instanceValidatorParameters.wantInvariantsInMessages;
     this.noInvariants = instanceValidatorParameters.noInvariants;
     this.questionnaireMode = instanceValidatorParameters.questionnaireMode;
@@ -56,6 +60,7 @@ public class InstanceValidatorParameters {
     this.checkDisplay = instanceValidatorParameters.checkDisplay;
     this.resourceIdRule = instanceValidatorParameters.resourceIdRule;
     this.maxValidationMessages = instanceValidatorParameters.getMaxValidationMessages();
+    this.codeSystemValidationSizeLimit = instanceValidatorParameters.codeSystemValidationSizeLimit;
   }
 
   @JsonProperty("assumeValidRestReferences")
@@ -160,6 +165,61 @@ public class InstanceValidatorParameters {
 
   public InstanceValidatorParameters addExtension(String extension) {
     this.extensions.add(extension);
+    return this;
+  }
+
+  /**
+   * Use contexts that apply to this validation, each as a code=value pair - see
+   * {@link org.hl7.fhir.validation.service.utils.UsageContextUtilities}. Held as written rather than
+   * as UsageContext so that this object stays JSON round-trippable.
+   */
+  @JsonProperty("usages")
+  @SerializedName("usages")
+  private List<String> usages = new ArrayList<String>();
+
+  @SerializedName("usages")
+  @JsonProperty("usages")
+  public List<String> getUsages() {
+    return usages;
+  }
+
+  @SerializedName("usages")
+  @JsonProperty("usages")
+  public InstanceValidatorParameters setUsages(List<String> usages) {
+    this.usages = usages;
+    return this;
+  }
+
+  public InstanceValidatorParameters addUsage(String usage) {
+    this.usages.add(usage);
+    return this;
+  }
+
+  /**
+   * Launch contexts to make available to Questionnaire processing, each as a name:reference pair -
+   * see {@link org.hl7.fhir.validation.service.utils.LaunchContextUtilities}. Held as written, both
+   * so that this object stays JSON round-trippable and because whether a reference resolves is
+   * settled where it is used, not here.
+   */
+  @JsonProperty("launchContexts")
+  @SerializedName("launchContexts")
+  private List<String> launchContexts = new ArrayList<String>();
+
+  @SerializedName("launchContexts")
+  @JsonProperty("launchContexts")
+  public List<String> getLaunchContexts() {
+    return launchContexts;
+  }
+
+  @SerializedName("launchContexts")
+  @JsonProperty("launchContexts")
+  public InstanceValidatorParameters setLaunchContexts(List<String> launchContexts) {
+    this.launchContexts = launchContexts;
+    return this;
+  }
+
+  public InstanceValidatorParameters addLaunchContext(String launchContext) {
+    this.launchContexts.add(launchContext);
     return this;
   }
 
@@ -518,22 +578,22 @@ public class InstanceValidatorParameters {
   @JsonProperty("bundleValidationRules")
   @SerializedName("bundleValidationRules")
   private
-  List<org.hl7.fhir.r5.utils.validation.BundleValidationRule> bundleValidationRules = new ArrayList<>();
+  List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
 
   @SerializedName("bundleValidationRules")
   @JsonProperty("bundleValidationRules")
-  public List<org.hl7.fhir.r5.utils.validation.BundleValidationRule> getBundleValidationRules() {
+  public List<BundleValidationRule> getBundleValidationRules() {
     return bundleValidationRules;
   }
 
   @SerializedName("bundleValidationRules")
   @JsonProperty("bundleValidationRules")
-  public InstanceValidatorParameters setBundleValidationRules(List<org.hl7.fhir.r5.utils.validation.BundleValidationRule> bundleValidationRules) {
+  public InstanceValidatorParameters setBundleValidationRules(List<BundleValidationRule> bundleValidationRules) {
     this.bundleValidationRules = bundleValidationRules;
     return this;
   }
 
-  public InstanceValidatorParameters addBundleValidationRule(org.hl7.fhir.r5.utils.validation.BundleValidationRule bundleValidationRule) {
+  public InstanceValidatorParameters addBundleValidationRule(BundleValidationRule bundleValidationRule) {
     this.bundleValidationRules.add(bundleValidationRule);
     return this;
   }
@@ -571,6 +631,23 @@ public class InstanceValidatorParameters {
   @JsonProperty("maxValidationMessages")
   public InstanceValidatorParameters setMaxValidationMessages(ValidatorMaxMessages maxValidationMessages) {
     this.maxValidationMessages = maxValidationMessages;
+    return this;
+  }
+
+  @JsonProperty("codeSystemValidationSizeLimit")
+  @SerializedName("codeSystemValidationSizeLimit")
+  private int codeSystemValidationSizeLimit = ValidatorSettings.DEFAULT_CODESYSTEM_VALIDATION_SIZE_LIMIT;
+
+  @SerializedName("codeSystemValidationSizeLimit")
+  @JsonProperty("codeSystemValidationSizeLimit")
+  public int getCodeSystemValidationSizeLimit() {
+    return codeSystemValidationSizeLimit;
+  }
+
+  @SerializedName("codeSystemValidationSizeLimit")
+  @JsonProperty("codeSystemValidationSizeLimit")
+  public InstanceValidatorParameters setCodeSystemValidationSizeLimit(int codeSystemValidationSizeLimit) {
+    this.codeSystemValidationSizeLimit = codeSystemValidationSizeLimit;
     return this;
   }
 
@@ -646,6 +723,8 @@ public class InstanceValidatorParameters {
       && Objects.equals(outputStyle, that.outputStyle)
       && Objects.equals(r5BundleRelativeReferencePolicy, that.r5BundleRelativeReferencePolicy)
       && Objects.equals(extensions, that.extensions)
+      && Objects.equals(usages, that.usages)
+      && Objects.equals(launchContexts, that.launchContexts)
       && Objects.equals(questionnaireMode, that.questionnaireMode)
       && Objects.equals(level, that.level)
       && Objects.equals(bestPracticeLevel, that.bestPracticeLevel)
@@ -657,12 +736,13 @@ public class InstanceValidatorParameters {
       && timeout == that.timeout
       && Objects.equals(checkDisplay, that.checkDisplay)
       && Objects.equals(resourceIdRule, that.resourceIdRule)
-      && Objects.equals(maxValidationMessages, that.maxValidationMessages);
+      && Objects.equals(maxValidationMessages, that.maxValidationMessages)
+      && codeSystemValidationSizeLimit == that.codeSystemValidationSizeLimit;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, timeout, checkDisplay, resourceIdRule,maxValidationMessages);
+    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, usages, launchContexts, timeout, checkDisplay, resourceIdRule,maxValidationMessages, codeSystemValidationSizeLimit);
   }
 
   @Override
@@ -674,6 +754,8 @@ public class InstanceValidatorParameters {
       ", outputStyle='" + outputStyle + '\'' +
       ", r5BundleRelativeReferencePolicy=" + r5BundleRelativeReferencePolicy +
       ", extensions=" + extensions +
+      ", usages=" + usages +
+      ", launchContexts=" + launchContexts +
       ", wantInvariantsInMessages=" + wantInvariantsInMessages +
       ", noInvariants=" + noInvariants +
       ", questionnaireMode=" + questionnaireMode +
@@ -701,6 +783,7 @@ public class InstanceValidatorParameters {
       ", checkDisplay=" + checkDisplay +
       ", resourceIdRule=" + resourceIdRule +
       ", maxValidationMessages=" + maxValidationMessages +
+      ", codeSystemValidationSizeLimit=" + codeSystemValidationSizeLimit +
       '}';
   }
 }

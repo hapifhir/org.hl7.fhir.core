@@ -14,13 +14,13 @@ import org.hl7.fhir.r5.model.Provenance;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public class BundleRenderer extends ResourceRenderer {
 
 
@@ -30,7 +30,7 @@ public class BundleRenderer extends ResourceRenderer {
  
   @Override
   public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    return context.formatPhrase(RenderingContext.BUNDLE_SUMMARY, getTranslatedCode(r.child("type")), r.children("entry").size());
+    return context.formatPhrase(RenderingI18nContext.BUNDLE_SUMMARY, getTranslatedCode(r.child("type")), r.children("entry").size());
   }
 
   public BundleRenderer setMultiLangMode(boolean multiLangMode) {
@@ -51,7 +51,7 @@ public class BundleRenderer extends ResourceRenderer {
       List<ResourceWrapper> filter = new ArrayList<>();
       if ("document".equals(b.primitiveValue("type"))) {
         if (entries.isEmpty() || (entries.get(0).has("resource") && !"Composition".equals(entries.get(0).child("resource").fhirType())))
-          throw new FHIRException(context.formatPhrase(RenderingContext.BUND_REND_INVALID_DOC, b.getId(), entries.get(0).child("resource").fhirType()+"')"));
+          throw new FHIRException(context.formatPhrase(RenderingI18nContext.BUND_REND_INVALID_DOC, b.getId(), entries.get(0).child("resource").fhirType()+"')"));
         renderDocument(status, root, b, entries, filter);
         if (!context.isTechnicalMode()) {
           return;
@@ -126,11 +126,11 @@ public class BundleRenderer extends ResourceRenderer {
             XhtmlNode xn = r.getNarrative();
             if (xn == null || xn.isEmpty()) {
               xn = new XhtmlNode(NodeType.Element, "div");
-              ResourceRenderer rr = RendererFactory.factory(r, context);
+              ResourceRenderer rr = context.getRendererFactory().factory(r, context);
               try {
                 rr.buildNarrative(new RenderingStatus(), xn, r);
               } catch (Exception e) {
-                xn.para().b().tx(context.formatPhrase(RenderingContext.BUNDLE_REV_EXCP, e.getMessage()) + " ");
+                xn.para().b().tx(context.formatPhrase(RenderingI18nContext.BUNDLE_REV_EXCP, e.getMessage()) + " ");
               }
             } else {
               xn.stripAnchorsByName(context.getAnchors());
@@ -190,7 +190,7 @@ public class BundleRenderer extends ResourceRenderer {
         if (subject.hasNarrative()) {
           sec.addChildren(subject.getNarrative());        
         } else {
-          RendererFactory.factory(subject, context).buildNarrative(status, sec, subject);
+          context.getRendererFactory().factory(subject, context).buildNarrative(status, sec, subject);
         }
       } else {
         sec.para().b().tx("Unable to resolve subject '"+displayReference(subjects.get(i))+"'");
@@ -393,7 +393,7 @@ public class BundleRenderer extends ResourceRenderer {
   public boolean canRender(Bundle b) {
     for (BundleEntryComponent be : b.getEntry()) {
       if (be.hasResource()) {          
-        ResourceRenderer rr = RendererFactory.factory(be.getResource(), context);
+        ResourceRenderer rr = context.getRendererFactory().factory(be.getResource(), context);
         if (!rr.canRender(be.getResource())) {
           return false;
         }

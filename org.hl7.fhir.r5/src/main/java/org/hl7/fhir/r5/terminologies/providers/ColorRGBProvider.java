@@ -9,9 +9,9 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@MarkedToMoveToAdjunctPackage
+
+
 public class ColorRGBProvider extends CodeSystemProvider {
 
   @Override
@@ -23,7 +23,10 @@ public class ColorRGBProvider extends CodeSystemProvider {
 
   @Override
   public Boolean checkCode(String code) {
-    return code.matches("^\\#[0-9a-fA-F]{6}$");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored, fixed-width hex color, safe
+    boolean matches = code.matches("^\\#[0-9a-fA-F]{6}$");
+    return matches;
   }
 
 }

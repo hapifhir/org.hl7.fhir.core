@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@MarkedToMoveToAdjunctPackage
+
+
 public class TerminologyServerDetails {
   public enum ServerAuthorizationMethod {
     OPEN,
@@ -20,6 +20,8 @@ public class TerminologyServerDetails {
   private Map<FHIRVersion, String> endpoints = new HashMap<>();
   private List<String> codeSystems = new ArrayList<>();
   
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //Regex sourced from codeSystems list; user-supplied at runtime
   public boolean handlesSystem(String uri, String version) {
     for (String s : codeSystems) {
       if (s.contains("|")) {

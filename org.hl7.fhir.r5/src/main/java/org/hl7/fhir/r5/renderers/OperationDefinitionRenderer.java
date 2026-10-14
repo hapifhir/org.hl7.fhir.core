@@ -25,12 +25,13 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  
-@MarkedToMoveToAdjunctPackage
+
 public class OperationDefinitionRenderer extends TerminologyRenderer { 
  
 
@@ -59,35 +60,35 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (context.isShowSummaryTable()) { 
       x.h2().addText(opd.getName()); 
       x.para().addText(Utilities.capitalize(opd.getKind().toString())+": "+opd.getName());     
-      x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_OFFIC)+" "); 
+      x.para().tx(context.formatPhrase(RenderingI18nContext.OP_DEF_OFFIC)+" "); 
       x.pre().tx(opd.getUrl()); 
       addMarkdown(x, opd.getDescription());} 
  
     if (opd.getKind() == OperationKind.QUERY) {
       if (opd.getSystem()) {
-        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, "?_query="+opd.getCode()+"&..."));
+        x.para().tx(context.formatPhrase(RenderingI18nContext.OP_DEF_URL, "?_query="+opd.getCode()+"&..."));
       }
       for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) { 
         if (opd.getType()) 
-          x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"?_query="+opd.getCode()+"&...")); 
+          x.para().tx(context.formatPhrase(RenderingI18nContext.OP_DEF_URL, c.getCode()+"?_query="+opd.getCode()+"&...")); 
         if (opd.getInstance()) 
-          x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/[id]?_query="+opd.getCode()+"&...")); 
+          x.para().tx(context.formatPhrase(RenderingI18nContext.OP_DEF_URL, c.getCode()+"/[id]?_query="+opd.getCode()+"&...")); 
       } 
     } else {
       if (opd.getSystem()) {
-        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, "$"+opd.getCode()));
+        x.para().tx(context.formatPhrase(RenderingI18nContext.OP_DEF_URL, "$"+opd.getCode()));
       }
       for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) { 
         if (opd.getType()) 
-          x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/$"+opd.getCode())); 
+          x.para().tx(context.formatPhrase(RenderingI18nContext.OP_DEF_URL, c.getCode()+"/$"+opd.getCode())); 
         if (opd.getInstance()) 
-          x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/[id]/$"+opd.getCode())); 
+          x.para().tx(context.formatPhrase(RenderingI18nContext.OP_DEF_URL, c.getCode()+"/[id]/$"+opd.getCode())); 
       } 
     }
 
     if (opd.hasInputProfile()) { 
       XhtmlNode p = x.para(); 
-      p.tx(context.formatPhrase(RenderingContext.OP_DEF_INPAR)); 
+      p.tx(context.formatPhrase(RenderingI18nContext.OP_DEF_INPAR)); 
       StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile(),
         ExtensionUtilities.getVersionResolutionRules(opd.getInputProfileElement()), null, opd);
       if (sd == null) { 
@@ -98,7 +99,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     } 
     if (opd.hasOutputProfile()) { 
       XhtmlNode p = x.para(); 
-      p.tx(context.formatPhrase(RenderingContext.OP_DEF_OUTPAR)); 
+      p.tx(context.formatPhrase(RenderingI18nContext.OP_DEF_OUTPAR)); 
       StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile(),
         ExtensionUtilities.getVersionResolutionRules(opd.getOutputProfileElement()), null, opd);
       if (sd == null) { 
@@ -108,17 +109,17 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       }       
     }
 
-    x.h3().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
-    //x.para().tx(context.formatPhrase(RenderingContext.GENERAL_PARS)); 
+    x.h3().tx(context.formatPhrase(RenderingI18nContext.GENERAL_PARS));
+    //x.para().tx(context.formatPhrase(RenderingI18nContext.GENERAL_PARS)); 
     XhtmlNode tbl = x.table( "grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = tbl.tr(); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_USE)); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_NAME)); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_SCO)); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CARDINALITY)); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_TYPE)); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_BINDING)); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION)); 
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.OP_DEF_USE)); 
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_NAME)); 
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.OP_DEF_SCO)); 
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_CARDINALITY)); 
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_TYPE)); 
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_BINDING)); 
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_DOCUMENTATION)); 
     for (OperationDefinitionParameterComponent p : opd.getParameter()) { 
       genOpParam(tbl, "", p, opd); 
     } 

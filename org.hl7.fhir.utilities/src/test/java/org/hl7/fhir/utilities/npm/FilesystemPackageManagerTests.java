@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.*;
@@ -221,7 +221,10 @@ public class FilesystemPackageManagerTests {
   }
 
   private File createDummyTemp(File cacheDirectory, String lowerCase) throws IOException {
-    return createDummyPackage(cacheDirectory, lowerCase);
+    File dir = createDummyPackage(cacheDirectory, lowerCase);
+    // old enough to be abandoned - deleteOldTempDirectories leaves recent ones alone
+    dir.setLastModified(System.currentTimeMillis() - 2L * 60L * 60L * 1000L);
+    return dir;
   }
 
   private File createDummyPackage(File cacheDirectory, String packageName, String packageVersion) throws IOException {
@@ -275,6 +278,22 @@ public class FilesystemPackageManagerTests {
   }
 
 
+
+  @Test
+  void testLeavesRecentTempDirectoryAlone() throws IOException {
+    // another process may be extracting a package into it right now
+    File cacheDirectory = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest"));
+    String recentTemp = UUID.randomUUID().toString().toLowerCase();
+    createDummyPackage(cacheDirectory, recentTemp);
+    String oldTemp = UUID.randomUUID().toString().toLowerCase();
+    createDummyTemp(cacheDirectory, oldTemp);
+
+    new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).build();
+    new FilesystemPackageCacheManager.Builder().withCacheFolder(cacheDirectory.getAbsolutePath()).build();
+
+    assertThatDummyTempExists(cacheDirectory, recentTemp);
+    assertThat(ManagedFileAccess.file(cacheDirectory.getAbsolutePath(), oldTemp)).doesNotExist();
+  }
 
   @Test
   void testClearsCacheIfVersionIsWrong() throws IOException {
@@ -349,9 +368,6 @@ public class FilesystemPackageManagerTests {
     Assertions.assertTrue(pcm.listPackages().isEmpty());
 
     NpmPackage npmPackage = pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package-no-index.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
-    /*FIXME this is not correct. If this is switched to assertThat(...).isTrue, the assert works correctly, but proves
-      that isIndexed is in fact broken.
-    */
     Assertions.assertTrue(npmPackage.isIndexed());
   }
 
@@ -404,7 +420,7 @@ public class FilesystemPackageManagerTests {
     }
     }
 
-    private @NonNull String getRunnableName() {
+    private @Nonnull String getRunnableName() {
       return "Test " + originatingTest + " Thread #" + index + " " + getOperationName();
     }
 

@@ -200,6 +200,10 @@ public class DV_BOOLEAN extends DATA_VALUE implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DV_BOOLEAN) dst);
+      }
+
       public void copyValues(DV_BOOLEAN dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

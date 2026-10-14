@@ -2,8 +2,7 @@ package org.hl7.fhir.r5.context;
 
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
+import org.hl7.fhir.utilities.UserDataNames;
 
 import java.util.List;
 

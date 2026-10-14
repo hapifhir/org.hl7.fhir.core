@@ -36,13 +36,13 @@ import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class ComparisonRenderer implements IHostApplicationServices {
 
@@ -171,7 +171,7 @@ public class ComparisonRenderer implements IHostApplicationServices {
       comp.getE().printStackTrace(pw);
       cnt = sw.toString();
     }    
-    cnt = "<html><body><pre>"+cnt+"</pre></body></html>\r\n";
+    cnt = "<html lang=\"en\"><body><pre>"+cnt+"</pre></body></html>\r\n";
     FileUtilities.stringToFile(cnt, file(comp.getId()+".html"));
   }
 

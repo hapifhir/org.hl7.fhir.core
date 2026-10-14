@@ -30,6 +30,8 @@ package org.hl7.fhir.r5.elementmodel;
  */
 
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -43,7 +45,7 @@ import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
@@ -55,11 +57,12 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@MarkedToMoveToAdjunctPackage
+
 public abstract class ParserBase {
 
   public enum IdRenderingPolicy {
@@ -97,6 +100,7 @@ public abstract class ParserBase {
   private ProfileUtilities profileUtilities;
   private ContextUtilities contextUtilities;
   protected Set<String> canonicalFilter = new HashSet<>();
+  @Getter @Setter protected Set<Element> elementsToIgnore = new HashSet<>();
 
 	public ParserBase(IWorkerContext context, ProfileUtilities utilities) {
 		super();
@@ -190,13 +194,22 @@ public abstract class ParserBase {
         logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
         return null;
     	}
+  	  // master-aware fast path: when a resource name resolves to the FHIR canonical URL, prefer the
+  	  // master (overriding) definition an incubator IG may have loaded, rather than whichever of the
+  	  // base and the override the iteration below reaches first (see additional-resources-r5.md)
+  	  if (ns.equals(FormatUtilities.FHIR_NS)) {
+  	    StructureDefinition baseSd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+name);
+  	    if (baseSd != null && baseSd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !ExtensionUtilities.hasAnyOfExtensions(baseSd, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
+  	      return baseSd;
+  	    }
+  	  }
   	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
   	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
   	      String type = urlTail(sd.getType());
-          if(name.equals(type) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ExtensionUtilities.hasAnyOfExtensions(sd, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED))
+          if(name.equals(type) && (ns.equals(FormatUtilities.FHIR_NS)) && !ExtensionUtilities.hasAnyOfExtensions(sd, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED))
   	        return sd;
   	      String sns = ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED);
-  	      if ((name.equals(type) || name.equals(sd.getName())) && ns != null && ns.equals(sns))
+  	      if ((name.equals(type) || name.equals(sd.getName())) && ns.equals(sns))
   	        return sd;
   	    }
   	  }
@@ -230,12 +243,15 @@ public abstract class ParserBase {
       logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
       return null;
   	}
-    // first pass: only look at base definitions
-	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
-	    if (sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/"+name)) {
-	      contextUtilities.generateSnapshot(sd); 
-	      return sd;
-	    }
+    // first pass: the base definition by its canonical URL. Use a master-aware lookup so that when
+    // an incubator IG (loaded as a master package) overrides a base resource of the same name, the
+    // overriding definition wins - the same preference version-less canonical resolution uses
+    // elsewhere. Iterating fetchResourcesByType() here would instead return whichever of the base
+    // and the override comes first, which is non-deterministic (see additional-resources-r5.md).
+	  StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+name);
+	  if (base != null) {
+	    contextUtilities.generateSnapshot(base); 
+	    return base;
 	  }
     for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
       if (name.equals(sd.getTypeName()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
@@ -283,7 +299,33 @@ public abstract class ParserBase {
     this.idPolicy = idPolicy;
   }
 
+  /**
+   * true if this element is in the set of elements that the caller has asked not to be serialised
+   */
+  protected boolean isIgnored(Element e) {
+    return !elementsToIgnore.isEmpty() && elementsToIgnore.contains(e);
+  }
+
+  /**
+   * the members of list that aren't in setElementsToIgnore (the list itself, if there's nothing to ignore)
+   */
+  protected List<Element> removeIgnored(List<Element> list) {
+    if (elementsToIgnore.isEmpty()) {
+      return list;
+    }
+    List<Element> res = new ArrayList<>();
+    for (Element e : list) {
+      if (!elementsToIgnore.contains(e)) {
+        res.add(e);
+      }
+    }
+    return res;
+  }
+
   protected boolean wantCompose(String path, Element e) {
+    if (isIgnored(e)) {
+      return false;
+    }
     if (!"id".equals(e.getName())) {
       return true;
     }

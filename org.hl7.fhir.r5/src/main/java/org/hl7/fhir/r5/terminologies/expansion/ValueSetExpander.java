@@ -106,7 +106,7 @@ import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
@@ -116,7 +116,7 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 import javax.annotation.Nonnull;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ValueSetExpander extends ValueSetProcessBase {
 
   private static final int REGEX_TIMEOUT_LIMIT = 5; // regex filters only get given 5 seconds. Is that enough? to be decided
@@ -200,7 +200,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     if (inactive) {
       n.setInactive(true);
-      ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status", vstatus);
+      // A server that knows a concept is inactive says why. If the code system is more
+      // specific (retired, deprecated, ...) that status is used; otherwise the concept is
+      // simply inactive, and saying so is not optional - previously a concept marked only
+      // with the 'inactive' property got contains.inactive but no status property at all.
+      ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status",
+          Utilities.noString(vstatus) ? "inactive" : vstatus);
     } else if (!Utilities.noString(vstatus) && !Utilities.existsInList(vstatus.toLowerCase(), "active")) {
       ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status", vstatus);
     } else if (deprecated) {
@@ -246,14 +251,21 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } else {
       if (designations == null) {
         designations = new ArrayList<>();
+      } else {
+        designations = new ArrayList<>(designations); // copy, so we don't mutate the source code system
       }
-      designations.add(new ConceptDefinitionDesignationComponent().setLanguage(dispLang).setValue(display).setUse(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra").setCode("preferredForLanguage")));
+      // the demoted display goes first in the list, so that it takes precedence over any other designations
+      // in the same language (and other servers behave that way - see test language-xform-en-multi-de-hard)
+      designations.add(0, new ConceptDefinitionDesignationComponent().setLanguage(dispLang).setValue(display).setUse(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra").setCode("preferredForLanguage")));
       pref = findMatchingDesignation(designations);
       if (pref != null) {
         n.setDisplay(pref.getValue());
       }
     }
-    if (!n.hasDisplay() && display != null && langs != null && (langs.matches(dispLang) || Utilities.existsInList(langs.getSource(), "en", "en-US"))) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: not using String.matches
+    boolean langMatches = langs != null && langs.matches(dispLang);
+    if (!n.hasDisplay() && display != null && langs != null && (langMatches || Utilities.existsInList(langs.getSource(), "en", "en-US"))) {
       n.setDisplay(display);      
     }
 
@@ -281,9 +293,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     for (ParametersParameterComponent p : expParams.getParameter()) {
       if ("property".equals(p.getName())) {
+        // '*' means every property the server knows about for this concept - see the definition
+        // of ValueSet.compose.property, and of the 'property' expansion parameter
+        boolean allProperties = p.hasValue() && "*".equals(p.getValue().primitiveValue());
         if (csProps != null && p.hasValue()) {
           for (ConceptPropertyComponent cp : csProps) {
-            if (p.getValue().primitiveValue().equals(cp.getCode())) {
+            if (allProperties || p.getValue().primitiveValue().equals(cp.getCode())) {
               PropertyComponent pd = cs.getProperty(cp.getCode());
               String url = pd == null ? null : pd.getUri();
               if (url == null) {
@@ -293,13 +308,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
                   // ??
                 }
               }
-              ValueSetUtilities.addProperty(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
+              ValueSetUtilities.addPropertyValue(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
             }
           }
         }
         if (expProps != null && p.hasValue()) {
           for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent cp : expProps) {
-            if (p.getValue().primitiveValue().equals(cp.getCode())) {
+            if (allProperties || p.getValue().primitiveValue().equals(cp.getCode())) {
               String url = null;
               for (ValueSetExpansionPropertyComponent t : vsProp) {
                 if (t.hasCode() && t.getCode().equals(cp.getCode())) {
@@ -313,7 +328,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
                   // TODO: try looking it up from the code system
                 }
               }
-              ValueSetUtilities.addProperty(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
+              ValueSetUtilities.addPropertyValue(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
             }
           }
         }        
@@ -372,11 +387,17 @@ public class ValueSetExpander extends ValueSetProcessBase {
       return true;
     }
     for (Token t : designations) {
-      if ((d.hasUse() && t.matches(d.getUse())) || t.matchesLang(d.getLanguage())) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean tokenMatchesUse = d.hasUse() && t.matches(d.getUse());
+      if (tokenMatchesUse || t.matchesLang(d.getLanguage())) {
         return true;
       }
       for (Coding c : d.getAdditionalUse()) {
-        if (t.matches(c)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean tokenMatchesCoding = t.matches(c);
+        if (tokenMatchesCoding) {
           return true;
         }
       }
@@ -612,7 +633,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if ((includeAbstract || !abs)  && filterFunc.includeConcept(cs, def) && passesOtherFilters(otherFilters, cs, def.getCode())) {
       for (String code : getCodesForConcept(def, expParams)) {
         if (!(filters != null && !filters.isEmpty() && !filterContainsCode(filters, system, version, code, exp)))
-          excludeCode(wc, system, version, code);
+          excludeCode(wc, system, cs.getVersion(), code);
       }
     }
     if (depth > 0) {
@@ -690,7 +711,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       checkCanonical(exp, base, focus);
       imports.remove(0);
       base.checkNoModifiers("Imported ValueSet", "expanding");
-      excludeImport(wc, base.getExpansion().getContains(), imports, exp, null);
+      excludeImport(wc, base.getExpansion(), base.getExpansion().getContains(), imports, exp, null);
       return;
     }
     String sv = exc.getSystem() + (exc.hasVersion() ? "#" + exc.getVersion() : "");
@@ -699,14 +720,20 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
 
     CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem(), ExtensionUtilities.getVersionResolutionRules(exc), exc.getVersion(), new ArrayList<>(), vs);
-    if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.getTxSupportInfo(exc.getSystem(), exc.getVersion()).isSupported()) {
+    boolean canExpandLocally = cs != null
+        && !ValueSetUtilities.isServerSide(exc.getSystem())
+        && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT);
+    if (!canExpandLocally) {
+      if (cs == null && noTerminologyServer) {
+        throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_EXP, exc.getSystem());
+      }
       ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), exc, false, false);
       ValueSet valueset = vse.getValueset();
+      if (valueset == null)
+        throw createTerminologyServiceException("Error Expanding ValueSet: " + vse.getError());
       if (valueset.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
         sources.add(valueset.getUserString(UserDataNames.VS_EXPANSION_SOURCE));
       }
-      if (valueset == null)
-        throw createTerminologyServiceException("Error Expanding ValueSet: " + vse.getError());
       excludeCodes(wc, valueset.getExpansion());
       return;
     }
@@ -723,7 +750,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       checkCanonical(exp, base, focus);
       imports.remove(0);
       base.checkNoModifiers("Imported ValueSet", "expanding");
-      excludeImport(wc, base.getExpansion().getContains(), imports, exp, null);
+      excludeImport(wc, base.getExpansion(), base.getExpansion().getContains(), imports, exp, null);
     }
     for (ConceptReferenceComponent c : exc.getConcept()) {
       if (imports.isEmpty() || filterContainsCode(imports, exc.getSystem(), exc.getVersion(), c.getCode(), exp)) {
@@ -747,21 +774,48 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
-  private void excludeImport(WorkingContext wc, List<ValueSetExpansionContainsComponent> list, List<ValueSet> imports, ValueSetExpansionComponent exp, String system) {
+  private void excludeImport(WorkingContext wc, ValueSetExpansionComponent src, List<ValueSetExpansionContainsComponent> list, List<ValueSet> imports, ValueSetExpansionComponent exp, String system) {
     opContext.deadCheck("excludeImport");
 
     for (ValueSetExpansionContainsComponent c : list) {
       c.checkNoModifiers("Imported Expansion in Code System", "expanding");
       if ((imports.isEmpty() || !filterContainsCode(imports, c.getSystem(), c.getVersion(), c.getCode(), exp)) && (system == null || system.equals(c.getSystem()))) {
-        excludeCode(wc, c.getSystem(), c.getVersion(), c.getCode());
+        excludeImportedCode(wc, src, c);
       }
-      excludeImport(wc, c.getContains(), imports, exp, system);
+      excludeImport(wc, src, c.getContains(), imports, exp, system);
     }
   }
 
   private void excludeCodes(WorkingContext wc, ValueSetExpansionComponent expand) {
     opContext.deadCheck("excludeCodes");
     for (ValueSetExpansionContainsComponent c : expand.getContains()) {
+      excludeImportedCode(wc, expand, c);
+    }
+  }
+
+  /**
+   * Exclude a code taken from another expansion. The exclusion key includes the code system
+   * version, but an expansion only reports versions in contains when they differ, so the code
+   * usually arrives without one - and would then never match the (versioned) codes being
+   * included. In that case the version is taken from the expansion's used-codesystem
+   * parameter(s); if it used several versions of the system, the code is excluded in each
+   */
+  private void excludeImportedCode(WorkingContext wc, ValueSetExpansionComponent src, ValueSetExpansionContainsComponent c) {
+    if (c.hasVersion() || src == null) {
+      excludeCode(wc, c.getSystem(), c.getVersion(), c.getCode());
+      return;
+    }
+    boolean done = false;
+    for (ValueSetExpansionParameterComponent p : src.getParameter()) {
+      if ("used-codesystem".equals(p.getName()) && p.hasValue()) {
+        String v = p.getValue().primitiveValue();
+        if (v != null && c.getSystem() != null && v.startsWith(c.getSystem() + "|")) {
+          excludeCode(wc, c.getSystem(), v.substring(c.getSystem().length() + 1), c.getCode());
+          done = true;
+        }
+      }
+    }
+    if (!done) {
       excludeCode(wc, c.getSystem(), c.getVersion(), c.getCode());
     }
   }
@@ -778,7 +832,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   public ValueSetExpansionOutcome expand(ValueSet source, Parameters expParams) {
     allErrors.clear();
     try {
-      opContext.seeContext(source.getVersionedUrl());
+      opContext.seeContext(contextName(source));
       
       return expandInternal(source, expParams);
     } catch (NoTerminologyServiceException e) {
@@ -796,7 +850,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
         throw e;
       }
     } catch (OperationIsTooCostly e) {
-      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false);
+      // the tx-issue-type is what a client keys on; the error class only reaches the
+      // OperationOutcome as the FHIR issue type, which does not say this was a limit
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false,
+          I18nConstants.VALUESET_TOO_COSTLY, ValueSetProcessBase.OpIssueCode.TooCostly);
     } catch (UnknownValueSetException e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.VALUESET_UNKNOWN, allErrors, false);
     } catch (VSCheckerException e) {
@@ -833,6 +890,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ParametersParameterComponent p : expParams.getParameter()) {
       processParameter(p.getName(), p.getValue());
     }
+    expParams = checkComposeProperties(source, expParams);
     for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
       requiredSupplements.add(s.getValue().primitiveValue());
     }
@@ -842,7 +900,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
     try {
       if (source.hasCompose()) {
-        //        ExtensionsUtils.stripExtensions(focus.getCompose()); - disabled 23/05/2023 GDG - why was this ever thought to be a good idea?
+        //        ExtensionUtilities.stripExtensions(focus.getCompose()); - disabled 23/05/2023 GDG - why was this ever thought to be a good idea?
         handleCompose(source.getCompose(), focus.getExpansion(), expParams, source.getUrl(), focus.getExpansion().getExtension(), source);
       }
     } catch (EFinished e) {
@@ -916,6 +974,18 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return new ValueSetExpansionOutcome(focus);
   }
 
+  private static Parameters checkComposeProperties(ValueSet source, Parameters expParams) {
+    // ValueSet.compose.property names the properties to return "if the client doesn't ask for any
+    // particular properties", so it is only consulted when the request named none
+    if (source.hasCompose() && !source.getCompose().getProperty().isEmpty() && !expParams.hasParameter("property")) {
+      expParams = expParams.copy();
+      for (StringType t : source.getCompose().getProperty()) {
+        expParams.addParameter("property", new StringType(t.getValue()));
+      }
+    }
+    return expParams;
+  }
+
   private void processParameter(String name, DataType value) {
     if (Utilities.existsInList(name, "default-valueset-version")) {
       boolean found = false;
@@ -947,9 +1017,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if ("displayLanguage".equals(name)) {
       this.langs = new AcceptLanguageHeader(value.primitiveValue(), true);
       focus.getExpansion().getParameter().removeIf(p -> p.getName().equals(name));
-      focus.getExpansion().addParameter().setName(name).setValue(new CodeType(value.primitiveValue()));
+      // echo it back in its normal form - "en,*;q=0", not whatever spacing the request used
+      focus.getExpansion().addParameter().setName(name).setValue(new CodeType(this.langs.toParameterValue()));
     }
     if ("designation".equals(name)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] v = value.primitiveValue().split("\\|");
       if (v.length != 2 || !Utilities.isAbsoluteUrl(v[0]) || Utilities.noString(v[1])) {
         throw new NoTerminologyServiceException("Unable to understand designation parameter "+value.primitiveValue());
@@ -998,6 +1071,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ParametersParameterComponent p : expParams.getParameter()) {
       processParameter(p.getName(), p.getValue());
     }
+    expParams = checkComposeProperties(source, expParams);
     for (Extension s : focus.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
       requiredSupplements.add(s.getValue().primitiveValue());
     }
@@ -1007,7 +1081,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
     try {
       if (source.hasCompose()) {
-//        ExtensionsUtils.stripExtensions(focus.getCompose()); - disabled 23/05/2023 GDG - why was this ever thought to be a good idea?
+//        ExtensionUtilities.stripExtensions(focus.getCompose()); - disabled 23/05/2023 GDG - why was this ever thought to be a good idea?
         handleCompose(source.getCompose(), focus.getExpansion(), expParams, source.getUrl(), focus.getExpansion().getExtension(), source);
       }
     } catch (EFinished e) {
@@ -1267,7 +1341,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       throw fail(I18nConstants.VS_EXP_IMPORT_FAIL_X, vs.getUrl());
     }
     
-    if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
+    // a contained value set has a made-up url: it is not reported as used, as for an include
+    if (!vs.hasUserData(UserDataNames.CONTAINED_RESOURCE) && (vs.hasVersion() || REPORT_VERSION_ANYWAY)) {
       UriType u = new UriType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
       if (!existsInParams(exp.getParameter(), "used-valueset", u))
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-valueset").setValue(u));
@@ -1421,14 +1496,17 @@ public class ValueSetExpander extends ValueSetProcessBase {
         doServerIncludeCodes(inc, heirarchical, exp, imports, expParams, extensions, noInactive, valueSet.getExpansion().getProperty());
       } else {
         if (cs.hasUserData(UserDataNames.tx_known_supplements)) {
-          for (String s : cs.getUserString(UserDataNames.tx_known_supplements).split("\\,")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
+          String[] supplements = cs.getUserString(UserDataNames.tx_known_supplements).split("\\,");
+          for (String s : supplements) {
             seeSupplement(s);
           }
         }
         if (!requiredSupplements.isEmpty()) {
           List<CodeSystem> additionalSupplements = new ArrayList<>();
           for (String s : requiredSupplements) {
-            CodeSystem scs = context.findTxResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
+            CodeSystem scs = context.fetchResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
             if (scs != null && cs.getUrl().equals(scs.getSupplements())) {
               additionalSupplements.add(scs);
             }
@@ -1611,7 +1689,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (!existsInParams(exp.getParameter(), "used-codesystem", u))
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-codesystem").setValue(u));
       if (cs.hasUserData(UserDataNames.tx_known_supplements)) {
-        for (String s : cs.getUserString(UserDataNames.tx_known_supplements).split("\\,")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] supplements = cs.getUserString(UserDataNames.tx_known_supplements).split("\\,");
+        for (String s : supplements) {
           u = new UriType(s);
           if (!existsInParams(exp.getParameter(), "used-supplement", u)) {
             exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-supplement").setValue(u));

@@ -5,6 +5,8 @@ import org.hl7.fhir.utilities.VersionUtilities;
 public class FHIRPathExpressionFixer {
 
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: .matches() occurs in FHIRPath expression string literals, not Java calls
   public static String fixExpr(String expr, String key, String version) {
     // this is a hack work around for past publication of wrong FHIRPath expressions
 

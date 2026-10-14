@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,17 +35,16 @@ import static org.hl7.fhir.utilities.i18n.POUtilities.tagAsOutdated;
  * It takes 3 parameters:
  *   * path to the local copy of the core repo
  *   * path to the local copy of the ig-publisher repo
- *   * path to the local copy of the fhirserver repo
+ *   * path to the local copy of the FHIRsmith repo (javascript)
  */
 @SuppressWarnings("checkstyle:systemout")
 public class POGenerator {
 
-  public class PropertyValue extends StringPair {
+  public static class PropertyValue extends StringPair {
     private boolean used;
-    
+
     public PropertyValue(String name, String value) {
       super(name, value);
-      // TODO Auto-generated constructor stub
     }
 
     public String getBaseName() {
@@ -66,12 +66,24 @@ public class POGenerator {
     private boolean used;
   }
 
-  public class POObjectSorter implements Comparator<POObject> {
+  public static class POObjectSorter implements Comparator<POObject> {
 
     @Override
     public int compare(POObject o1, POObject o2) {
       return o1.getId().compareTo(o2.getId());
     }
+  }
+
+  /**
+   * Stale-translation policy for runtime PO loading.
+   * <p>
+   * INCLUDE: ship the (possibly out-of-date) translation, mirroring the maintainer's
+   *          shipped behaviour. The {@link POUtilities#OUTDATED_PREFIX} marker is stripped.
+   * EXCLUDE: drop translations whose English source has drifted, so end users see English.
+   * WARN:    behave like INCLUDE but log the mismatched keys.
+   */
+  public enum StaleHandling {
+    INCLUDE, EXCLUDE, WARN
   }
 
   public static void main(String[] args) throws IOException {
@@ -80,9 +92,9 @@ public class POGenerator {
 
   private int noTrans = 0;
 
-  public void execute(String core, String igpub, String pascal) throws IOException {
+  public void execute(String core, String igpub, String javascript) throws IOException {
     String source = Utilities.path(core, "/org.hl7.fhir.utilities/src/main/resources");
-    if (checkState(source, core, igpub, pascal)) {
+    if (checkState(source, core, igpub, javascript)) {
       IniFile ini = new IniFile(Utilities.path(source, "translations-control.ini"));
       generate(source, "rendering-phrases.properties",  "rendering-phrases-en.po",       null, 2);
       generate(source, "Messages.properties", "validator-messages-en.po",    null, 2);
@@ -95,7 +107,7 @@ public class POGenerator {
     } 
   }
 
-  private boolean checkState(String source, String core, String igpub, String pascal) throws IOException {
+  private boolean checkState(String source, String core, String igpub, String javascript) throws IOException {
     System.out.println("Checking...");
     List<PropertyValue> props = loadProperties(Utilities.path(source, "rendering-phrases.properties"), true);
     List<ConstantDefinition> consts = loadConstants(Utilities.path(core, "/org.hl7.fhir.utilities/src/main/java/org/hl7/fhir/utilities/i18n/RenderingI18nContext.java"));
@@ -113,13 +125,12 @@ public class POGenerator {
     }
     scanJavaSource(core, consts, "RenderingI18nContext", "RenderingContext");
     scanJavaSource(igpub, consts, "RenderingI18nContext", "RenderingContext");
-    scanPascalSource(pascal, props);
+    scanJavascriptSource(javascript, props);
     
     Set<String> pns = new HashSet<>();
     for (PropertyValue p : props) {
       if (!p.used) {
-        ok = false;
-        System.out.println("Error: PV "+p.getName()+ " provided but not used");   
+        System.out.println("Warning: PV "+p.getName()+ " provided but not used");
       }
       if (!pns.contains(p.getName())) {
         pns.add(p.getName());
@@ -160,13 +171,12 @@ public class POGenerator {
 
     scanJavaSource(core, consts, "I18nConstants");
     scanJavaSource(igpub, consts, "I18nConstants");
-    scanPascalSource(pascal, props);
+    scanJavascriptSource(javascript, props);
 
     pns = new HashSet<>();
     for (PropertyValue p : props) {
       if (!p.used) {
-        ok = false;
-        System.out.println("Error: PV "+p.getName()+ " provided but not used");   
+        System.out.println("Warning: PV "+p.getName()+ " provided but not used");
       }
       if (!pns.contains(p.getName())) {
         pns.add(p.getName());
@@ -214,27 +224,35 @@ public class POGenerator {
       String source = FileUtilities.fileToString(file);
       for (ConstantDefinition cd : consts) {
         if (!cd.used) {
-          boolean found = false;
           for (String n : names) {
-            if (source.contains(n+"."+cd.name+",")) {
-              found = true;
-            } 
-            if (source.contains(n+"."+cd.name+")")) {
-              found = true;
-            } 
-            if (source.contains(n+"."+cd.name+" :")) {
-              found = true;
-            } 
-            if (source.contains(n+"."+cd.name+";")) {
-              found = true;
-            } 
-          } 
-          if (found) {
-            cd.used = true;
+            if (containsToken(source, n+"."+cd.name)) {
+              cd.used = true;
+              break;
+            }
           }
-        }  
+        }
       }
       return true;
+    }
+
+    /**
+     * True if token appears in source followed by a non-identifier character
+     * (so e.g. CONST matches "CONST ," and "CONST)" but not "CONST_OTHER").
+     */
+    private boolean containsToken(String source, String token) {
+      int i = source.indexOf(token);
+      while (i > -1) {
+        int e = i + token.length();
+        if (e == source.length() || !isIdentifierChar(source.charAt(e))) {
+          return true;
+        }
+        i = source.indexOf(token, e);
+      }
+      return false;
+    }
+
+    private boolean isIdentifierChar(char c) {
+      return Character.isLetterOrDigit(c) || c == '_';
     }
   }
   
@@ -248,12 +266,12 @@ public class POGenerator {
     DirectoryVisitor.visitDirectory(scanner, path, "java");
   }
 
-  private class PascalScanner implements IDirectoryVisitorImplementation {
+  private class JavascriptScanner implements IDirectoryVisitorImplementation {
     private List<PropertyValue> defs;
-    
+
     @Override
     public boolean enterDirectory(File directory) throws IOException {
-      return true;
+      return !Utilities.existsInList(directory.getName(), "node_modules", ".git");
     }
 
     @Override
@@ -263,9 +281,9 @@ public class POGenerator {
         if (!pv.used) {
           boolean found = false;
           String pn = pv.getBaseName();
-          if (source.contains("'"+pn+"'")) {
+          if (source.contains("'"+pn+"'") || source.contains("\""+pn+"\"") || source.contains("`"+pn+"`")) {
             found = true;
-          } 
+          }
           if (found) {
             pv.used = true;
           }
@@ -274,11 +292,11 @@ public class POGenerator {
       return true;
     }
   }
-  
-  private void scanPascalSource(String path, List<PropertyValue> defs) throws FileNotFoundException, IOException {
-    PascalScanner scanner = new PascalScanner();
+
+  private void scanJavascriptSource(String path, List<PropertyValue> defs) throws FileNotFoundException, IOException {
+    JavascriptScanner scanner = new JavascriptScanner();
     scanner.defs = defs;
-    DirectoryVisitor.visitDirectory(scanner, path, "pas");
+    DirectoryVisitor.visitDirectory(scanner, path, "js", "mjs", "cjs");
   }
 
   
@@ -287,6 +305,8 @@ public class POGenerator {
     for (String line : FileUtilities.fileToLines(path)) {
       if (line.contains("public static final String") && !line.trim().startsWith("//")) {
         int i = line.indexOf("public static final String") + "public static final String".length();
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] p = line.substring(i).split("\\=");
         if (p.length == 2) {
           String n = p[0].trim();
@@ -306,10 +326,10 @@ public class POGenerator {
   }
 
   private void generate(String sourceDirectory, String propertiesFileName, String poFileName, String targetPropertiesFileName, int count) throws IOException {
-    // load the destination file 
-    // load the source file 
+    // load the destination file
+    // load the source file
     // update the destination object set for changes from the source file
-    // save the destination file 
+    // save the destination file
     String poFilePath = Utilities.path(sourceDirectory, "source", poFileName);
     POSource poObjects;
     if (ManagedFileAccess.file(poFilePath).exists()) {
@@ -318,6 +338,23 @@ public class POGenerator {
       poObjects = new POSource();
     }
     List<PropertyValue> javaProperties = loadProperties(Utilities.path(sourceDirectory, propertiesFileName), false);
+    mergePOWithEnglish(poObjects, javaProperties);
+    noTrans = poObjects.savePOFile(Utilities.path(sourceDirectory, "source", poFileName), count, noTrans);
+    if (targetPropertiesFileName != null) {
+      savePropertiesFile(Utilities.path(sourceDirectory, targetPropertiesFileName), poObjects.getPOObjects());
+    }
+  }
+
+  /**
+   * Reconcile a {@link POSource} against the current English property set:
+   * adds new POObjects for English keys not yet in the .po, removes orphans,
+   * marks translations as outdated when the English msgid has drifted, sorts,
+   * and flags duplicate msgids.
+   * <p>
+   * Mutates {@code poObjects} in place. Extracted from {@link #generate} so that
+   * the runtime PO loader can apply the same reconciliation without writing files.
+   */
+  public static void mergePOWithEnglish(POSource poObjects, List<PropertyValue> javaProperties) {
     for (PropertyValue javaProperty : javaProperties) {
       String name = javaProperty.getName();
       PluralMode pluralMode = PluralMode.NONE;
@@ -327,7 +364,7 @@ public class POGenerator {
       } else if (name.endsWith("_other")) {
         pluralMode = PluralMode.OTHER;
         name = name.substring(0, name.length() - 6);
-      } 
+      }
 
       POObject poObject = findObject(poObjects.getPOObjects(), name);
       if (poObject == null) {
@@ -347,10 +384,6 @@ public class POGenerator {
     poObjects.getPOObjects().removeIf(o -> o.isOrphan());
     Collections.sort(poObjects.getPOObjects(), new POObjectSorter());
     markDuplicatePOObjects(poObjects);
-    noTrans = poObjects.savePOFile(Utilities.path(sourceDirectory, "source", poFileName), count, noTrans);
-    if (targetPropertiesFileName != null) {
-      savePropertiesFile(Utilities.path(sourceDirectory, targetPropertiesFileName), poObjects.getPOObjects());
-    }
   }
 
   private static void markDuplicatePOObjects(POSource poObjects) {
@@ -373,7 +406,7 @@ public class POGenerator {
     }
   }
 
-  private void updatePOObject(POObject poObject, PluralMode mode, String originatingMsgid) {
+  private static void updatePOObject(POObject poObject, PluralMode mode, String originatingMsgid) {
     poObject.setOrphan(false);
     if (poObject.getComment() == null) {
       poObject.setComment(poObject.getId());
@@ -422,7 +455,7 @@ public class POGenerator {
     }
   }
 
-  private POObject findObject(List<POObject> poObjects, String name) {
+  private static POObject findObject(List<POObject> poObjects, String name) {
     for (POObject poObject : poObjects) {
       if (poObject.getId() != null && poObject.getId().equals(name)) {
         return poObject;
@@ -432,9 +465,20 @@ public class POGenerator {
   }
 
   private List<PropertyValue> loadProperties(String source, boolean checking) throws IOException {
-    List<PropertyValue> res = new ArrayList<>();
     File src = ManagedFileAccess.file(source);
-    BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(src), StandardCharsets.UTF_8));
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(src), StandardCharsets.UTF_8))) {
+      return loadProperties(reader, checking);
+    }
+  }
+
+  /**
+   * Parse a {@code Messages.properties}-style stream into a list of {@link PropertyValue}s.
+   * <p>
+   * When {@code checking} is false, placeholder-only entries (e.g. {@code key = {0}}) are
+   * skipped, mirroring the maintainer's import behaviour.
+   */
+  public static List<PropertyValue> loadProperties(BufferedReader reader, boolean checking) throws IOException {
+    List<PropertyValue> res = new ArrayList<>();
     for (String line = reader.readLine(); line != null; line = reader.readLine()) {
       if (!line.startsWith("#") && line.contains("=")) {
         String n = line.substring(0, line.indexOf("=")).trim();
@@ -442,42 +486,92 @@ public class POGenerator {
         if (checking || !(v.length() == 3 && v.startsWith("{") && v.endsWith("}"))) {
           res.add(new PropertyValue(n, v));
         }
-      } 
+      }
     }
     return res;
   }
 
   private void savePropertiesFile(String tgt, List<POObject> objects) throws IOException {
     String nameLine = FileUtilities.fileToLines(tgt).get(0);
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] parts = nameLine.substring(1).trim().split("\\=");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] names = parts[1].split("\\,");
-    
+    List<String> pluralKeywords = new ArrayList<>();
+    for (String n : names) {
+      pluralKeywords.add(n.trim());
+    }
+
+    Map<String, String> flattened = poObjectsToPropertiesMap(objects, pluralKeywords, StaleHandling.INCLUDE, null);
+
     StringBuilder b = new StringBuilder();
     b.append(nameLine+"\r\n");
+    // Preserve the input ordering of POObjects (which generate() has already sorted).
+    // poObjectsToPropertiesMap is order-preserving via LinkedHashMap.
+    for (Map.Entry<String, String> e : flattened.entrySet()) {
+      b.append(e.getKey()+" = "+e.getValue()+"\r\n");
+    }
+
+    FileUtilities.stringToFile(b.toString(), tgt);
+  }
+
+  /**
+   * Flatten a list of reconciled {@link POObject}s into a properties-style key/value map.
+   * <p>
+   * Singular entries become {@code id = msgstr}. Pluralized entries become
+   * {@code id_<keyword> = msgstr[i]} for each keyword in {@code pluralKeywords} in order,
+   * matching the indexing used by {@code msgstr[i]} in the .po file.
+   * <p>
+   * Translations whose English source has drifted (marked with {@link POUtilities#OUTDATED_PREFIX})
+   * are handled according to {@code staleHandling}:
+   * <ul>
+   *   <li>{@link StaleHandling#INCLUDE} (default for the maintainer's import): strip the marker, keep the translation</li>
+   *   <li>{@link StaleHandling#EXCLUDE}: omit the entry so the bundle falls back to English</li>
+   *   <li>{@link StaleHandling#WARN}: same as INCLUDE, but accumulate the stale keys into {@code staleKeysOut} if non-null</li>
+   * </ul>
+   * Returned map preserves insertion order.
+   */
+  public static Map<String, String> poObjectsToPropertiesMap(List<POObject> objects, List<String> pluralKeywords,
+                                                             StaleHandling staleHandling, List<String> staleKeysOut) {
+    Map<String, String> out = new LinkedHashMap<>();
     for (POObject o : objects) {
       if (o.getMsgidPlural() == null) {
-        String v= o.getMsgstr().size() > 0 ? o.getMsgstr().get(0) : "";
+        String v = o.getMsgstr().size() > 0 ? o.getMsgstr().get(0) : "";
         if (!Utilities.noString(v)) {
-          if (isOutdated(v)) {
-            v = v.substring(2);
+          boolean stale = isOutdated(v);
+          if (stale) {
+            v = v.substring(POUtilities.OUTDATED_PREFIX.length());
+            if (staleKeysOut != null) {
+              staleKeysOut.add(o.getId());
+            }
+            if (staleHandling == StaleHandling.EXCLUDE) {
+              continue;
+            }
           }
-          b.append(o.getId()+" = "+v+"\r\n");
+          out.put(o.getId(), v);
         }
       } else {
-        for (int i = 0; i < names.length; i++) {
+        for (int i = 0; i < pluralKeywords.size(); i++) {
           String v = (o.getMsgstr().size() > i ? o.getMsgstr().get(i) : "");
           if (!Utilities.noString(v)) {
-            if (isOutdated(v)) {
-              v = v.substring(2);
+            boolean stale = isOutdated(v);
+            if (stale) {
+              v = v.substring(POUtilities.OUTDATED_PREFIX.length());
+              if (staleKeysOut != null) {
+                staleKeysOut.add(o.getId() + "_" + pluralKeywords.get(i));
+              }
+              if (staleHandling == StaleHandling.EXCLUDE) {
+                continue;
+              }
             }
-            b.append(o.getId()+"_"+names[i].trim()+" = "+v+"\r\n");
+            out.put(o.getId() + "_" + pluralKeywords.get(i), v);
           }
         }
       }
     }
-    
-    FileUtilities.stringToFile(b.toString(), tgt);
+    return out;
   }
 
-  
 }

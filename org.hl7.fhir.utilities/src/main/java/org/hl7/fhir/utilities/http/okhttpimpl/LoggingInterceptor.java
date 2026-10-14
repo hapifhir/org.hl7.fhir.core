@@ -28,8 +28,12 @@ public class LoggingInterceptor implements Interceptor{
       // Log Request
       Request request = chain.request();
       List<String> hdrs = new ArrayList<>();
-      for (String s : request.headers().toString().split("\\n")) {
-        hdrs.add(s.trim());
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] headerLines = request.headers().toString().split("\\n");
+
+      for (String headerLine : headerLines) {
+        hdrs.add(headerLine.trim());
       }
       byte[] cnt = null;
       if (request.body() != null) {

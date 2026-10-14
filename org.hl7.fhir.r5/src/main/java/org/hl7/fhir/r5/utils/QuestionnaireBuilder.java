@@ -54,7 +54,8 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 
 
@@ -105,7 +106,7 @@ import org.hl7.fhir.utilities.Utilities;
  * @author Grahame
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 public class QuestionnaireBuilder {
 
   private static final int MaxListboxCodings = 20;
@@ -376,7 +377,7 @@ public class QuestionnaireBuilder {
       group.setRequired(element.getMin() > 0);
 	    if (element.getMin() > 0)
 	    	ExtensionUtilities.addMin(group, element.getMin());
-      group.setRepeats(!element.getMax().equals('1'));
+      group.setRepeats(!element.getMax().equals("1"));
 	    if (!element.getMax().equals("*"))
 	    	ExtensionUtilities.addMax(group, Integer.parseInt(element.getMax()));
 

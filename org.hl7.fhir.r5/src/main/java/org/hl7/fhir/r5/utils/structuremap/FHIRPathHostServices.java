@@ -5,7 +5,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
@@ -15,14 +14,22 @@ import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@MarkedToMoveToAdjunctPackage
+/**
+ * Host services for FHIRPath evaluation within the context of StructureMap processing.
+ * The `Object appContext` passed to the various functions is of type `Variables` and is provided by the
+ * StructureMap engine when it is calling the FHIRPath engine's evaluate methods.
+ * It contains the current variable bindings and the constant resolver for the current StructureMap.
+ * Note: The Transform engine registers this class with its internal FHIRPath engine instance,
+ * it is only used to provide host services for FHIRPath evaluation during StructureMap processing,
+ * and is not a general-purpose FHIRPath host services implementation.
+ */
 public class FHIRPathHostServices implements IHostApplicationServices {
 
   private final StructureMapUtilities structureMapUtilities;
@@ -33,12 +40,15 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     Variables vars = (Variables) appContext;
-    Base res = vars.get(VariableMode.INPUT, name);
+    Base res = vars.getLocal(VariableMode.INPUT, name);
     if (res == null)
-      res = vars.get(VariableMode.OUTPUT, name);
+      res = vars.getLocal(VariableMode.OUTPUT, name);
     List<Base> result = new ArrayList<Base>();
-    if (res != null)
+    if (res != null) {
       result.add(res);
+    } else if (vars.getConstants() != null) {
+      result.addAll(vars.getConstants().resolve(name));
+    }
     return result;
   }
 
@@ -55,22 +65,28 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public boolean log(String argument, List<Base> focus) {
-    throw new Error("Not Implemented Yet");
+    return true;
   }
 
   @Override
   public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
-    return null; // throw new Error("Not Implemented Yet");
+    return structureMapUtilities.getServices() == null ? null : structureMapUtilities.getServices().resolveFunction(engine, functionName);
   }
 
   @Override
   public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
-    throw new Error("Not Implemented Yet");
+    if (structureMapUtilities.getServices() == null) {
+      throw new PathEngineException("Unknown function '" + functionName + "'");
+    }
+    return structureMapUtilities.getServices().checkFunction(engine, appContext, functionName, focus, parameters);
   }
 
   @Override
   public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
-    throw new Error("Not Implemented Yet");
+    if (structureMapUtilities.getServices() == null) {
+      throw new Error("Not Implemented Yet");
+    }
+    return structureMapUtilities.getServices().executeFunction(engine, appContext, focus, functionName, parameters);
   }
 
   @Override

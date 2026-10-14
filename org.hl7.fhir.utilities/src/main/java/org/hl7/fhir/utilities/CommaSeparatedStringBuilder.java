@@ -189,14 +189,18 @@ public class CommaSeparatedStringBuilder {
     return self.toString();
   }
   
-  public static Set<String> toSet(String source) {
-    if (source == null) {
+  public static Set<String> toSet(String sourcesString) {
+    if (sourcesString == null) {
       return null;
     }
     Set<String> res = new HashSet<>();
-    if (!Utilities.noString(source)) {
-      for (String s : source.split("\\,")) {
-        res.add(s.trim());
+    if (!Utilities.noString(sourcesString)) {
+
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] sources = sourcesString.split("\\,");
+      for (String source : sources) {
+        res.add(source.trim());
       }
     }
     return res;

@@ -62,6 +62,16 @@ public class JsonParser extends JsonParserBase {
     setAllowComments(allowComments);
   }
 
+  public JsonParser(CustomResourceRegistry customResourceRegistry) {
+    super(customResourceRegistry);
+  }
+
+  public JsonParser(boolean allowUnknownContent, boolean allowComments, CustomResourceRegistry customResourceRegistry) {
+    super(customResourceRegistry);
+    setAllowUnknownContent(allowUnknownContent);
+    setAllowComments(allowComments);
+  }
+
   protected void parseBaseProperties(JsonObject json, Base res) throws IOException, FHIRFormatError {
     // nothing
   }
@@ -70,7 +80,7 @@ public class JsonParser extends JsonParserBase {
   protected <E extends Enum<E>> Enumeration<E> parseEnumeration(String s, E item, EnumFactory e) throws IOException, FHIRFormatError {
     Enumeration<E> res = new Enumeration<E>(e);
     if (s != null)
-      res.setValue((E) e.fromCode(s));
+      res.setValueAsString(s); // string based, so that (when Configuration.isAllowCustomResourceTypes() is set) a code mapped to a CUSTOM value keeps the actual code
     return res;
   }
 
@@ -169,10 +179,20 @@ public class JsonParser extends JsonParserBase {
     return res;
   }
 
-  protected DecimalType parseDecimal(java.math.BigDecimal v) throws IOException, FHIRFormatError {
+  protected DecimalType parseDecimal(JsonElement e) throws IOException, FHIRFormatError {
+    if (e == null || e.isJsonNull()) {
+      return new DecimalType((java.math.BigDecimal) null);
+    }
+    java.math.BigDecimal v = e.getAsBigDecimal();
     DecimalType res = new DecimalType(v);
-    if (v instanceof PresentedBigDecimal)
+    // keep the literal the source used, so that 1.0e0 does not become 1.0 (nor 1e2 become 1E+2)
+    // on the way out. JsonTrackingParser carries it on the number itself; gson keeps it in
+    // LazilyParsedNumber, where getAsString() returns it verbatim
+    if (v instanceof PresentedBigDecimal) {
       res.setRepresentation(((PresentedBigDecimal) v).getPresentation());
+    } else if (e.isJsonPrimitive()) {
+      res.setRepresentation(e.getAsString());
+    }
     return res;
   }
 
@@ -362,7 +382,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("_frames"))
       parseElementProperties(getJObject(json, "_frames"), res.getFramesElement());
     if (json.has("duration"))
-      res.setDurationElement(parseDecimal(json.get("duration").getAsBigDecimal()));
+      res.setDurationElement(parseDecimal(json.get("duration")));
     if (json.has("_duration"))
       parseElementProperties(getJObject(json, "_duration"), res.getDurationElement());
     if (json.has("pages"))
@@ -1648,7 +1668,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("code"))
       res.setCode(parseCodeableConcept(getJObject(json, "code")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("amount"))
@@ -1664,7 +1684,7 @@ public class JsonParser extends JsonParserBase {
   protected void parseMoneyProperties(JsonObject json, Money res) throws IOException, FHIRFormatError {
     parseDataTypeProperties(json, res);
     if (json.has("value"))
-      res.setValueElement(parseDecimal(json.get("value").getAsBigDecimal()));
+      res.setValueElement(parseDecimal(json.get("value")));
     if (json.has("_value"))
       parseElementProperties(getJObject(json, "_value"), res.getValueElement());
     if (json.has("currency"))
@@ -1775,7 +1795,7 @@ public class JsonParser extends JsonParserBase {
   protected void parseQuantityProperties(JsonObject json, Quantity res) throws IOException, FHIRFormatError {
     parseDataTypeProperties(json, res);
     if (json.has("value"))
-      res.setValueElement(parseDecimal(json.get("value").getAsBigDecimal()));
+      res.setValueElement(parseDecimal(json.get("value")));
     if (json.has("_value"))
       parseElementProperties(getJObject(json, "_value"), res.getValueElement());
     if (json.has("comparator"))
@@ -1923,7 +1943,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("origin"))
       res.setOrigin(parseQuantity(getJObject(json, "origin")));
     if (json.has("interval"))
-      res.setIntervalElement(parseDecimal(json.get("interval").getAsBigDecimal()));
+      res.setIntervalElement(parseDecimal(json.get("interval")));
     if (json.has("_interval"))
       parseElementProperties(getJObject(json, "_interval"), res.getIntervalElement());
     if (json.has("intervalUnit"))
@@ -1931,15 +1951,15 @@ public class JsonParser extends JsonParserBase {
     if (json.has("_intervalUnit"))
       parseElementProperties(getJObject(json, "_intervalUnit"), res.getIntervalUnitElement());
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("lowerLimit"))
-      res.setLowerLimitElement(parseDecimal(json.get("lowerLimit").getAsBigDecimal()));
+      res.setLowerLimitElement(parseDecimal(json.get("lowerLimit")));
     if (json.has("_lowerLimit"))
       parseElementProperties(getJObject(json, "_lowerLimit"), res.getLowerLimitElement());
     if (json.has("upperLimit"))
-      res.setUpperLimitElement(parseDecimal(json.get("upperLimit").getAsBigDecimal()));
+      res.setUpperLimitElement(parseDecimal(json.get("upperLimit")));
     if (json.has("_upperLimit"))
       parseElementProperties(getJObject(json, "_upperLimit"), res.getUpperLimitElement());
     if (json.has("dimensions"))
@@ -2049,11 +2069,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("_countMax"))
       parseElementProperties(getJObject(json, "_countMax"), res.getCountMaxElement());
     if (json.has("duration"))
-      res.setDurationElement(parseDecimal(json.get("duration").getAsBigDecimal()));
+      res.setDurationElement(parseDecimal(json.get("duration")));
     if (json.has("_duration"))
       parseElementProperties(getJObject(json, "_duration"), res.getDurationElement());
     if (json.has("durationMax"))
-      res.setDurationMaxElement(parseDecimal(json.get("durationMax").getAsBigDecimal()));
+      res.setDurationMaxElement(parseDecimal(json.get("durationMax")));
     if (json.has("_durationMax"))
       parseElementProperties(getJObject(json, "_durationMax"), res.getDurationMaxElement());
     if (json.has("durationUnit"))
@@ -2069,11 +2089,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("_frequencyMax"))
       parseElementProperties(getJObject(json, "_frequencyMax"), res.getFrequencyMaxElement());
     if (json.has("period"))
-      res.setPeriodElement(parseDecimal(json.get("period").getAsBigDecimal()));
+      res.setPeriodElement(parseDecimal(json.get("period")));
     if (json.has("_period"))
       parseElementProperties(getJObject(json, "_period"), res.getPeriodElement());
     if (json.has("periodMax"))
-      res.setPeriodMaxElement(parseDecimal(json.get("periodMax").getAsBigDecimal()));
+      res.setPeriodMaxElement(parseDecimal(json.get("periodMax")));
     if (json.has("_periodMax"))
       parseElementProperties(getJObject(json, "_periodMax"), res.getPeriodMaxElement());
     if (json.has("periodUnit"))
@@ -4647,7 +4667,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("_mode"))
       parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
     if (json.has("score"))
-      res.setScoreElement(parseDecimal(json.get("score").getAsBigDecimal()));
+      res.setScoreElement(parseDecimal(json.get("score")));
     if (json.has("_score"))
       parseElementProperties(getJObject(json, "_score"), res.getScoreElement());
   }
@@ -7161,7 +7181,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("unitPrice"))
       res.setUnitPrice(parseMoney(getJObject(json, "unitPrice")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("tax"))
@@ -7261,7 +7281,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("unitPrice"))
       res.setUnitPrice(parseMoney(getJObject(json, "unitPrice")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("tax"))
@@ -7327,7 +7347,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("unitPrice"))
       res.setUnitPrice(parseMoney(getJObject(json, "unitPrice")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("tax"))
@@ -7798,7 +7818,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("unitPrice"))
       res.setUnitPrice(parseMoney(getJObject(json, "unitPrice")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("tax"))
@@ -7899,7 +7919,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("unitPrice"))
       res.setUnitPrice(parseMoney(getJObject(json, "unitPrice")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("tax"))
@@ -7972,7 +7992,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("unitPrice"))
       res.setUnitPrice(parseMoney(getJObject(json, "unitPrice")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("tax"))
@@ -10933,11 +10953,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("unitPrice"))
       res.setUnitPrice(parseMoney(getJObject(json, "unitPrice")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("points"))
-      res.setPointsElement(parseDecimal(json.get("points").getAsBigDecimal()));
+      res.setPointsElement(parseDecimal(json.get("points")));
     if (json.has("_points"))
       parseElementProperties(getJObject(json, "_points"), res.getPointsElement());
     if (json.has("net"))
@@ -14619,7 +14639,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("quantity"))
       res.setQuantity(parseQuantity(getJObject(json, "quantity")));
     if (json.has("level"))
-      res.setLevelElement(parseDecimal(json.get("level").getAsBigDecimal()));
+      res.setLevelElement(parseDecimal(json.get("level")));
     if (json.has("_level"))
       parseElementProperties(getJObject(json, "_level"), res.getLevelElement());
     if (json.has("range"))
@@ -16155,7 +16175,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("unitPrice"))
       res.setUnitPrice(parseMoney(getJObject(json, "unitPrice")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("tax"))
@@ -16324,7 +16344,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("unitPrice"))
       res.setUnitPrice(parseMoney(getJObject(json, "unitPrice")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("tax"))
@@ -16417,7 +16437,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("unitPrice"))
       res.setUnitPrice(parseMoney(getJObject(json, "unitPrice")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("tax"))
@@ -16573,7 +16593,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("unitPrice"))
       res.setUnitPrice(parseMoney(getJObject(json, "unitPrice")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("tax"))
@@ -16676,7 +16696,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("unitPrice"))
       res.setUnitPrice(parseMoney(getJObject(json, "unitPrice")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("tax"))
@@ -16751,7 +16771,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("unitPrice"))
       res.setUnitPrice(parseMoney(getJObject(json, "unitPrice")));
     if (json.has("factor"))
-      res.setFactorElement(parseDecimal(json.get("factor").getAsBigDecimal()));
+      res.setFactorElement(parseDecimal(json.get("factor")));
     if (json.has("_factor"))
       parseElementProperties(getJObject(json, "_factor"), res.getFactorElement());
     if (json.has("tax"))
@@ -18156,7 +18176,7 @@ public class JsonParser extends JsonParserBase {
         if (array.get(i).isJsonNull()) {
           res.getCoordinate().add(new DecimalType());
         } else {;
-          res.getCoordinate().add(parseDecimal(array.get(i).getAsBigDecimal()));
+          res.getCoordinate().add(parseDecimal(array.get(i)));
         }
       }
     };
@@ -18189,7 +18209,7 @@ public class JsonParser extends JsonParserBase {
         if (array.get(i).isJsonNull()) {
           res.getCoordinate().add(new DecimalType());
         } else {;
-          res.getCoordinate().add(parseDecimal(array.get(i).getAsBigDecimal()));
+          res.getCoordinate().add(parseDecimal(array.get(i)));
         }
       }
     };
@@ -20462,15 +20482,15 @@ public class JsonParser extends JsonParserBase {
   protected void parseLocationPositionComponentProperties(JsonObject json, Location.LocationPositionComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
     if (json.has("longitude"))
-      res.setLongitudeElement(parseDecimal(json.get("longitude").getAsBigDecimal()));
+      res.setLongitudeElement(parseDecimal(json.get("longitude")));
     if (json.has("_longitude"))
       parseElementProperties(getJObject(json, "_longitude"), res.getLongitudeElement());
     if (json.has("latitude"))
-      res.setLatitudeElement(parseDecimal(json.get("latitude").getAsBigDecimal()));
+      res.setLatitudeElement(parseDecimal(json.get("latitude")));
     if (json.has("_latitude"))
       parseElementProperties(getJObject(json, "_latitude"), res.getLatitudeElement());
     if (json.has("altitude"))
-      res.setAltitudeElement(parseDecimal(json.get("altitude").getAsBigDecimal()));
+      res.setAltitudeElement(parseDecimal(json.get("altitude")));
     if (json.has("_altitude"))
       parseElementProperties(getJObject(json, "_altitude"), res.getAltitudeElement());
   }
@@ -28756,7 +28776,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("qualitativeRisk"))
       res.setQualitativeRisk(parseCodeableConcept(getJObject(json, "qualitativeRisk")));
     if (json.has("relativeRisk"))
-      res.setRelativeRiskElement(parseDecimal(json.get("relativeRisk").getAsBigDecimal()));
+      res.setRelativeRiskElement(parseDecimal(json.get("relativeRisk")));
     if (json.has("_relativeRisk"))
       parseElementProperties(getJObject(json, "_relativeRisk"), res.getRelativeRiskElement());
     DataType when = parseType("when", json);
@@ -33180,7 +33200,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("_result"))
       parseElementProperties(getJObject(json, "_result"), res.getResultElement());
     if (json.has("score"))
-      res.setScoreElement(parseDecimal(json.get("score").getAsBigDecimal()));
+      res.setScoreElement(parseDecimal(json.get("score")));
     if (json.has("_score"))
       parseElementProperties(getJObject(json, "_score"), res.getScoreElement());
     if (json.has("tester"))
@@ -34991,11 +35011,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("_eye"))
       parseElementProperties(getJObject(json, "_eye"), res.getEyeElement());
     if (json.has("sphere"))
-      res.setSphereElement(parseDecimal(json.get("sphere").getAsBigDecimal()));
+      res.setSphereElement(parseDecimal(json.get("sphere")));
     if (json.has("_sphere"))
       parseElementProperties(getJObject(json, "_sphere"), res.getSphereElement());
     if (json.has("cylinder"))
-      res.setCylinderElement(parseDecimal(json.get("cylinder").getAsBigDecimal()));
+      res.setCylinderElement(parseDecimal(json.get("cylinder")));
     if (json.has("_cylinder"))
       parseElementProperties(getJObject(json, "_cylinder"), res.getCylinderElement());
     if (json.has("axis"))
@@ -35009,19 +35029,19 @@ public class JsonParser extends JsonParserBase {
       }
     };
     if (json.has("add"))
-      res.setAddElement(parseDecimal(json.get("add").getAsBigDecimal()));
+      res.setAddElement(parseDecimal(json.get("add")));
     if (json.has("_add"))
       parseElementProperties(getJObject(json, "_add"), res.getAddElement());
     if (json.has("power"))
-      res.setPowerElement(parseDecimal(json.get("power").getAsBigDecimal()));
+      res.setPowerElement(parseDecimal(json.get("power")));
     if (json.has("_power"))
       parseElementProperties(getJObject(json, "_power"), res.getPowerElement());
     if (json.has("backCurve"))
-      res.setBackCurveElement(parseDecimal(json.get("backCurve").getAsBigDecimal()));
+      res.setBackCurveElement(parseDecimal(json.get("backCurve")));
     if (json.has("_backCurve"))
       parseElementProperties(getJObject(json, "_backCurve"), res.getBackCurveElement());
     if (json.has("diameter"))
-      res.setDiameterElement(parseDecimal(json.get("diameter").getAsBigDecimal()));
+      res.setDiameterElement(parseDecimal(json.get("diameter")));
     if (json.has("_diameter"))
       parseElementProperties(getJObject(json, "_diameter"), res.getDiameterElement());
     if (json.has("duration"))
@@ -35051,7 +35071,7 @@ public class JsonParser extends JsonParserBase {
   protected void parseVisionPrescriptionPrismComponentProperties(JsonObject json, VisionPrescription.PrismComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
     if (json.has("amount"))
-      res.setAmountElement(parseDecimal(json.get("amount").getAsBigDecimal()));
+      res.setAmountElement(parseDecimal(json.get("amount")));
     if (json.has("_amount"))
       parseElementProperties(getJObject(json, "_amount"), res.getAmountElement());
     if (json.has("base"))
@@ -35070,7 +35090,12 @@ public class JsonParser extends JsonParserBase {
     String t = json.get("resourceType").getAsString();
     if (Utilities.noString(t)) {
       throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
-    } else if (t.equals("Account")) {
+    }
+    Resource custom = parseOverridingCustomResource(t, json);
+    if (custom != null) {
+      return custom;
+    }
+    if (t.equals("Account")) {
       return parseAccount(json);
     } else if (t.equals("ActivityDefinition")) {
       return parseActivityDefinition(json);
@@ -35397,6 +35422,9 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected DataType parseType(String prefix, JsonObject json) throws IOException, FHIRFormatError {
+    if (!hasPropertyWithPrefix(json, prefix)) {
+      return null;
+    }
     if (json.has(prefix+"Date") || json.has("_"+prefix+"Date")) {
       DataType t = json.has(prefix+"Date") ? parseDate(json.get(prefix+"Date").getAsString()) : new DateType();
       if (json.has("_"+prefix+"Date"))
@@ -35512,7 +35540,7 @@ public class JsonParser extends JsonParserBase {
       return t;
     }
     else if (json.has(prefix+"Decimal") || json.has("_"+prefix+"Decimal")) {
-      DataType t = json.has(prefix+"Decimal") ? parseDecimal(json.get(prefix+"Decimal").getAsBigDecimal()) : new DecimalType();
+      DataType t = json.has(prefix+"Decimal") ? parseDecimal(json.get(prefix+"Decimal")) : new DecimalType();
       if (json.has("_"+prefix+"Decimal"))
         parseElementProperties(json.getAsJsonObject("_"+prefix+"Decimal"), t);
       return t;
@@ -35704,6 +35732,9 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected boolean hasTypeName(JsonObject json, String prefix) {
+    if (!hasPropertyWithPrefix(json, prefix)) {
+      return false;
+    }
     if (json.has(prefix+"Address")) {
       return true;
     };
@@ -36356,7 +36387,7 @@ public class JsonParser extends JsonParserBase {
 
   protected <E extends Enum<E>> void composeEnumerationCore(String name, Enumeration<E> value, EnumFactory e, boolean inArray) throws IOException {
     if (value != null && value.getValue() != null) {
-      prop(name, e.toCode(value.getValue()));
+      prop(name, value.asStringValue()); // string based, so that a CUSTOM value round-trips the actual code
     } else if (inArray)   
       writeNull(name);
   }    
@@ -36714,7 +36745,7 @@ public class JsonParser extends JsonParserBase {
 
   protected void composeDecimalCore(String name, DecimalType value, boolean inArray) throws IOException {
     if (value != null && value.hasValue()) {
-        prop(name, value.getValue());
+        propDecimal(name, value);
     }    
     else if (inArray) 
       writeNull(name); 
@@ -74126,7 +74157,7 @@ public class JsonParser extends JsonParserBase {
       composeVerificationResult("VerificationResult", (VerificationResult)resource);
     } else if (resource instanceof VisionPrescription) {
       composeVisionPrescription("VisionPrescription", (VisionPrescription)resource);
-    } else if (!customCompose(resource)) {
+    } else if (!composeCustomResource(resource)) {
       throw new Error("Unhandled resource type: "+resource.getClass().getName());
     }
   }
@@ -74450,7 +74481,7 @@ public class JsonParser extends JsonParserBase {
       composeVerificationResult(name, (VerificationResult)resource);
     } else if (resource instanceof VisionPrescription) {
       composeVisionPrescription(name, (VisionPrescription)resource);
-    } else if (!customCompose(name, resource)) {
+    } else if (!composeCustomResource(name, resource)) {
        throw new Error("Unhandled resource type : "+resource.getClass().getName());
     }
   }

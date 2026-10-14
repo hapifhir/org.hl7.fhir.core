@@ -25,8 +25,46 @@ public abstract class I18nBase {
   private ResourceBundle messages = null;
   private PluralRules pluralRules = null;
   private boolean warnAboutMissingMessages = true;
+  private long bundleGeneration = 0;
   private static Set<String> warnedLocales;
   private static boolean useMessageIdsDirectly;
+
+  /**
+   * Optional override for resource-bundle lookup. When non-null, every bundle this
+   * class loads goes through this Control. Used by {@code RuntimePOLoader} to inject
+   * editor-supplied .po translations at runtime without rebuilding the jar. The Control
+   * is responsible for falling back to default loading for bundles it doesn't override.
+   * Its {@link ResourceBundle.Control#getFallbackLocale} is effectively ignored: a bundle
+   * that isn't one of the requested locale's candidates (such as the JVM default locale's)
+   * is replaced by the root bundle (see {@link #loadBundle(Locale)}).
+   */
+  private static volatile ResourceBundle.Control overlayControl;
+
+  /**
+   * Incremented every time {@link #setOverlayControl(ResourceBundle.Control)} is called.
+   * Existing {@link I18nBase} instances compare their cached {@code bundleGeneration}
+   * against this on the next lookup and reload if it has changed — so the overlay
+   * is picked up even by instances created before it was registered.
+   */
+  private static volatile long overlayGeneration = 0;
+
+  private static final ResourceBundle.Control DEFAULT_CONTROL =
+      ResourceBundle.Control.getControl(ResourceBundle.Control.FORMAT_DEFAULT);
+
+  /**
+   * Install (or clear, by passing null) a resource-bundle overlay. Clears the
+   * JDK's ResourceBundle cache and bumps the generation counter so existing
+   * I18nBase instances re-resolve their bundles on the next lookup.
+   */
+  public static void setOverlayControl(ResourceBundle.Control control) {
+    overlayControl = control;
+    overlayGeneration++;
+    ResourceBundle.clearCache();
+  }
+
+  public static ResourceBundle.Control getOverlayControl() {
+    return overlayControl;
+  }
 
 
   public Locale getLocale() {
@@ -49,15 +87,23 @@ public abstract class I18nBase {
    * Verifies if a {@link ResourceBundle} has been loaded for the current {@link Locale}. If not, it triggers a load.
    */
   private void checkResourceBundleIsLoaded() {
-    if (messages == null) {
+    if (messages == null || bundleGeneration != overlayGeneration) {
       Locale locale = getLocale();
-      messages = ResourceBundle.getBundle(getMessagesSourceFileName(), locale);
+      loadMessages(locale);
       warnIfUnknownLocale(locale);
     }
   }
 
+  private void loadMessages(Locale locale) {
+    // Read the generation first so an overlay installed during the load triggers another reload
+    long generation = overlayGeneration;
+    messages = loadBundle(locale);
+    bundleGeneration = generation;
+    pluralRules = null;
+  }
+
   private void warnIfUnknownLocale(@Nonnull Locale locale) {
-    if (Locale.ROOT == messages.getLocale()) {
+    if (Locale.ROOT.equals(messages.getLocale())) {
       if (!locale.getLanguage().equals("en")) {
         if (warnedLocales == null) {
           warnedLocales = new HashSet<>();
@@ -76,19 +122,19 @@ public abstract class I18nBase {
     return messages;
   }
 
-  private void checkPluralRulesAreLoaded() {
-    if (pluralRules == null) {
-      setPluralRules(getMessages().getLocale());
-    }
-  }
-
   protected PluralRules getPluralRules() {
-    checkPluralRulesAreLoaded();
-    return pluralRules;
+    checkResourceBundleIsLoaded();
+    PluralRules rules = pluralRules;
+    if (rules == null) {
+      Locale bundleLocale = getMessages().getLocale();
+      rules = PluralRules.forLocale(Locale.ROOT.equals(bundleLocale) ? Locale.US : bundleLocale);
+      pluralRules = rules;
+    }
+    return rules;
   }
   /**
    * Checks the loaded {@link ResourceBundle} to see if the passed in message exists with the current loaded {@link Locale}.
-   * If no {@link Locale} is currently loaded, it will load the {@link Locale} (default {@link Locale#US} is none is
+   * If no {@link Locale} is currently loaded, it will load the {@link Locale} (the JVM default {@link Locale} if none is
    * specified), and search.
    * @param message The {@link String} message to search for within the current {@link Locale}
    * @return {@link Boolean#TRUE} if the message exists within the loaded {@link Locale}.
@@ -134,11 +180,11 @@ public abstract class I18nBase {
   }
 
   protected String getPluralKey(Integer number, String baseKey) {
-    return baseKey + KEY_DELIMITER + pluralRules.select(number);
+    return baseKey + KEY_DELIMITER + getPluralRules().select(number);
   }
 
   protected Set<String> getPluralKeys(String baseKey) {
-    return pluralRules
+    return getPluralRules()
       .getKeywords().stream()
       .map(entry -> baseKey + KEY_DELIMITER + entry).collect(Collectors.toSet());
   }
@@ -149,8 +195,7 @@ public abstract class I18nBase {
   }
   
   protected String getRootKeyFromPlural(@Nonnull String pluralKey) {
-    checkPluralRulesAreLoaded();
-    for (String keyword : pluralRules
+    for (String keyword : getPluralRules()
       .getKeywords()) {
         final String suffix = KEY_DELIMITER + keyword;
         if (pluralKey.endsWith(suffix)) {
@@ -197,31 +242,52 @@ public abstract class I18nBase {
     for (int i = 0; i < theMessageArguments.length; i++) {
       args[i+1] = theMessageArguments[i];
     }
-    checkPluralRulesAreLoaded();
     String pluralKey = getPluralKey(plural, theMessage);
     return formatMessageForLocale(pluralKey, args);
   }
 
   /**
-   * Loads the corresponding {@link ResourceBundle} for the passed in {@link Locale}.
+   * Loads the corresponding {@link ResourceBundle} for the passed in {@link Locale}, which
+   * {@link #getLocale()} then returns. Unlike {@link #setLocale(Locale)}, subclass overrides of
+   * that method (e.g. ones that also change the terminology display language) are not invoked.
    * @param locale {@link Locale} to load resources for.
    */
   @Deprecated
   public void setValidationMessageLanguage(Locale locale) {
-    messages = ResourceBundle.getBundle(getMessagesSourceFileName(), locale);
-    this.pluralRules = null;
+    loadMessages(locale);
+    this.locale = locale;
+  }
+
+  /**
+   * {@link ResourceBundle#getBundle} falls back to {@link Locale#getDefault()} before the root
+   * bundle, so a locale without its own bundle (including "en", whose text lives in the root
+   * bundle) would get the JVM default locale's translations instead of English. Detect that and
+   * load the root bundle instead.
+   * <p>
+   * This doesn't use {@link ResourceBundle.Control#getNoFallbackControl} because
+   * {@code getBundle(..., Control)} throws when called from a named module, including the
+   * automatic module this jar becomes on the module path. (Installing an overlay Control
+   * still requires that overload.)
+   */
+  private ResourceBundle loadBundle(Locale locale) {
+    String baseName = getMessagesSourceFileName();
+    ResourceBundle.Control control = overlayControl;
+    ResourceBundle bundle = getBundle(baseName, locale, control);
+    List<Locale> candidates = (control != null ? control : DEFAULT_CONTROL).getCandidateLocales(baseName, locale);
+    if (!candidates.contains(bundle.getLocale())) {
+      bundle = getBundle(baseName, Locale.ROOT, control);
+    }
+    return bundle;
+  }
+
+  private static ResourceBundle getBundle(String baseName, Locale locale, ResourceBundle.Control control) {
+    return control != null
+        ? ResourceBundle.getBundle(baseName, locale, control)
+        : ResourceBundle.getBundle(baseName, locale);
   }
 
   protected String getMessagesSourceFileName() {
     return "Messages";
-  }
-
-  private void setPluralRules(Locale locale) {
-    if (Locale.ROOT == locale) {
-      pluralRules = PluralRules.forLocale(Locale.US);
-    } else {
-      pluralRules = PluralRules.forLocale(locale);
-    }
   }
 
   public boolean isWarnAboutMissingMessages() {

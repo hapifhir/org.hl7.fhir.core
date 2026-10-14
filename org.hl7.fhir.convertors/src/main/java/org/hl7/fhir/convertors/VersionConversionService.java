@@ -47,7 +47,7 @@ public class VersionConversionService {
    * not thread safe
    *
    * @param system   - true if the software is running in system context, not in a user context
-   * @param txServer - Address of the terminology server to use (null = use http://tx.fhir.org
+   * @param txServer - Address of the terminology server to use (null = use https://tx.fhir.org
    */
   public VersionConversionService(boolean system, String txServer) throws FHIRException {
 

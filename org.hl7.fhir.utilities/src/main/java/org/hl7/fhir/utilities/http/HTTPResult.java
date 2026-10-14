@@ -34,7 +34,7 @@ public class HTTPResult {
     this.code = code;
     this.contentType = contentType;
     this.content = content;
-    this.message = message;
+    this.message = Utilities.noString(message) ? getMessagefromCode() : message;
     this.headers = headers;
   }
 
@@ -44,7 +44,7 @@ public class HTTPResult {
         HTTPResultException exception = new HTTPResultException(code, message, source, null);
         throw new IOException(exception.message, exception);
       } else {
-        String filename = Utilities.path("[tmp]", "http-log", "fhir-http-"+(SimpleHTTPClient.nextCounter())+".log");
+        String filename = Utilities.path("[tmp]", "http-log", "fhir-http-"+(ManagedHTTPClient.nextCounter())+".log");
         FileUtilities.createDirectory(Utilities.path("[tmp]", "http-log"));
         FileUtilities.bytesToFile(content, filename);
         HTTPResultException exception = new HTTPResultException(code, message, source, filename);

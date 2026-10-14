@@ -24,7 +24,7 @@ import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.profilemodel.PEDefinition;
 import org.hl7.fhir.r5.profilemodel.PEType;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -832,7 +832,10 @@ public class PECodeGenerator {
     if (!Utilities.noString(doco)) {
       String pfx = Utilities.padLeft("", ' ', indent);
       w(b, pfx+"/*"+(jdoc ? "*" : ""));
-      for (String line : doco.split("\\R")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //simple character class split; safe
+      String[] docoLines = doco.split("\\R");
+      for (String line : docoLines) {
         for (String nl : naturalLines(line))
           w(b, pfx+" * "+nl);
         w(b, pfx+" *");

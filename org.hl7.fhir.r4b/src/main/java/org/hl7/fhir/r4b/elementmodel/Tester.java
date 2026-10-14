@@ -48,7 +48,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 @SuppressWarnings("checkstyle:systemout")
 public class Tester {
 

@@ -11,7 +11,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonElement;
@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@MarkedToMoveToAdjunctPackage
+
 public class XVerExtensionManagerOld extends XVerExtensionManager {
 
   private Map<String, JsonObject> lists = new HashMap<>();
@@ -74,6 +74,17 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
     String r = e.contains(".") ? e.substring(0, e.indexOf(".")) : e;
+    if (!lists.containsKey(verSource)) {
+      if (context.hasBinaryKey("xver-paths-"+verSource+".json")) {
+        try {
+          lists.put(verSource, JsonParser.parseObject(context.getBinaryForKey("xver-paths-"+verSource+".json")));
+        } catch (IOException e1) {
+          throw new FHIRException(e);
+        }
+      } else {
+        return null;
+      }
+    }
     JsonObject root = lists.get(verSource);
     JsonObject path = root.getJsonObject(e);
     if (path == null) {
@@ -149,7 +160,8 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
       sd.getDifferential().addElement().setPath(epath+".url").setFixed(new UriType(s));
       sd.getDifferential().addElement().setPath(epath+".value[x]").setMax("0");
     } else if (elt.has("ref")) {
-      // we do nothing here - this is a problem of context
+      // the content is a problem of context, but the sub-extension still has to be identified
+      sd.getDifferential().addElement().setPath(epath+".url").setFixed(new UriType(s));
     } else {
       throw new FHIRException("Internal error - unknown element "+apath);
     }
@@ -164,11 +176,17 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
           TypeRefComponent tr = val.addType().setCode(translateDataType(verTarget, t));
           if (hasTargets(tr.getCode()) ) {
             s = s.substring(t.length()+1);
-            for (String p : s.substring(0, s.length()-1).split("\\|")) {
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //single literal character split
+            String[] pipeTokens = s.substring(0, s.length()-1).split("\\|");
+            for (String p : pipeTokens) {
               if ("Any".equals(p)) {
                 tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource");
               } else if (p.contains(",")) {
-                for (String pp : p.split("\\,")) {
+                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+                //single literal character split
+                String[] commaTokens = p.split("\\,");
+                for (String pp : commaTokens) {
                   if (isResource(pp)) {
                     tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+pp);
                   }

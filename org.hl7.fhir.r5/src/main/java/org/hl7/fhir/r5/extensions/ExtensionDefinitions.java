@@ -7,11 +7,13 @@ public class ExtensionDefinitions {
   public static final String EXT_ISSUE_LINE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line";
   public static final String EXT_ISSUE_COL = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col";
   public static final String EXT_OO_FILE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-file";
+  public static final String EXT_VALIDATOR_VERSION = "http://hl7.org/fhir/tools/StructureDefinition/validator-version";
   public static final String EXT_RESOURCE_IMPLEMENTS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-implements";
   public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type"; // r2 - r3
   public static final String EXT_XML_NAME_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";
   public static final String EXT_XML_NAME = "http://hl7.org/fhir/tools/StructureDefinition/xml-name";
   public static final String EXT_EXPLICIT_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-explicit-type-name";
+  public static final String EXT_REFERENCES_CONTAINED = "http://hl7.org/fhir/StructureDefinition/referencesContained";
 
   public static final String EXT_IGP_RESOURCES = "http://hl7.org/fhir/StructureDefinition/igpublisher-folder-resource";
   public static final String EXT_IGP_PAGES = "http://hl7.org/fhir/StructureDefinition/igpublisher-folder-pages";
@@ -74,6 +76,7 @@ public class ExtensionDefinitions {
   public static final String EXT_HIERARCHY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-hierarchy";
   public static final String EXT_ISSUE_SOURCE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source";
   public static final String EXT_MAXOCCURS = "http://hl7.org/fhir/StructureDefinition/questionnaire-maxOccurs";
+  public static final String EXT_VARIABLE = "http://hl7.org/fhir/StructureDefinition/variable";
   public static final String EXT_MAX_DECIMALS = "http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces";
   public static final String EXT_MAX_SIZE = "http://hl7.org/fhir/StructureDefinition/maxSize";
   public static final String EXT_MAX_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet";
@@ -125,6 +128,7 @@ public class ExtensionDefinitions {
   public static final String EXT_TYPE_SPEC = "http://hl7.org/fhir/tools/StructureDefinition/type-specifier";
   public static final String EXT_TYPE_CHARACTERISTICS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics";
 
+  public static final String EXT_XHTML_RENDERING = "http://hl7.org/fhir/StructureDefinition/rendering-xhtml";
   // in the tooling IG
   public static final String EXT_PRIVATE_BASE = "http://hl7.org/fhir/tools/";
   public static final String EXT_BINDING_ADDITIONAL = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding";
@@ -155,6 +159,7 @@ public class ExtensionDefinitions {
   public static final String WEB_EXTENSION_STYLE = "http://build.fhir.org/ig/FHIR/fhir-tools-ig/format-extensions.html#extension-related-extensions";
   public static final String WEB_BINDING_STYLE = "http://build.fhir.org/ig/FHIR/fhir-tools-ig/StructureDefinition-binding-style.html";
   public static final String EXT_IGDEP_COMMENT = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment";
+  public static final String EXT_IGDEP_NO_SAVE = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-no-save"; // this is never persisted - it works around a circulatiry problem with THO
   public static final String EXT_XPATH_CONSTRAINT = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ElementDefinition.constraint.xpath";
   public static final String EXT_OBLIGATION_TOOLS = "http://hl7.org/fhir/tools/StructureDefinition/obligation";
   public static final String EXT_OBLIGATION_CORE = "http://hl7.org/fhir/StructureDefinition/obligation";
@@ -162,6 +167,8 @@ public class ExtensionDefinitions {
   public static final String EXT_ID_CHOICE_GROUP = "http://hl7.org/fhir/tools/StructureDefinition/xml-choice-group";
   public static final String EXT_DATE_RULES = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-rules";
   public static final String EXT_PROFILE_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/type-profile-style";
+  public static final String EXT_TYPE_PROFILE_CONSTRAINTS = "http://hl7.org/fhir/tools/StructureDefinition/type-profile-constraints"; // whether the constraints on the root of a type profile have been merged into the snapshot element: full | partial | none
+  public static final String EXT_IMPLIED_TYPE_SLICE = "http://hl7.org/fhir/tools/StructureDefinition/implied-type-slice"; // a type slice the snapshot generator added so that a closed type slicing still allows the types no other slice covers; it adds no constraints
   public static final String EXT_RESOURCE_NAME = "http://hl7.org/fhir/StructureDefinition/resource-instance-name";
   public static final String EXT_RESOURCE_DESC = "http://hl7.org/fhir/StructureDefinition/resource-instance-description";
   public static final String EXT_ARTIFACT_NAME = "http://hl7.org/fhir/StructureDefinition/artifact-name";
@@ -224,4 +231,5 @@ public class ExtensionDefinitions {
   public static final String EXT_SUPPL_TYPE = "http://hl7.org/fhir/StructureDefinition/codesystem-supplement-type";
   public static final String CANONICAL_RESOLUTION_METHOD = "http://hl7.org/fhir/StructureDefinition/version-resolution-method";
   public static final String EXT_VALUESET_RULES_TEXT = "http://hl7.org/fhir/StructureDefinition/valueset-rules-text";
+  public static final String EXT_CONTENT_PROFILE = "http://hl7.org/fhir/StructureDefinition/contentReferenceProfile";
 }

@@ -69,24 +69,34 @@ public class ExpansionProfile30_40 {
     if (src.hasParameterValue("profile-status"))
       tgt.setStatus(PublicationStatus.fromCode(src.getParameterValue("profile-status").primitiveValue()));
     for (Type t : src.getParameterValues("system-version")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] v = t.primitiveValue().split("\\|");
       tgt.addFixedVersion().setSystem(v[0]).setVersion(v[1]).setMode(SystemVersionProcessingMode.DEFAULT);
     }
     for (Type t : src.getParameterValues("force-system-version")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] v = t.primitiveValue().split("\\|");
       tgt.addFixedVersion().setSystem(v[0]).setVersion(v[1]).setMode(SystemVersionProcessingMode.OVERRIDE);
     }
     for (Type t : src.getParameterValues("check-system-version")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] v = t.primitiveValue().split("\\|");
       tgt.addFixedVersion().setSystem(v[0]).setVersion(v[1]).setMode(SystemVersionProcessingMode.CHECK);
     }
     for (Type t : src.getParameterValues("exclude-system")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] v = t.primitiveValue().split("\\|");
       tgt.getExcludedSystem().setSystem(v[0]).setVersion(v[1]);
     }
     if (src.hasParameterValue("includeDesignations"))
       tgt.setIncludeDesignations(src.getParameterBool(""));
     for (Type t : src.getParameterValues("designation")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] v = t.primitiveValue().split("\\|");
       if ("urn:ietf:bcp:47".equals(v[0]))
         tgt.getDesignation().getInclude().addDesignation().setLanguage(v[1]);

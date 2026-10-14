@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.utilities.Utilities;
 
 public class NodeStack {
@@ -91,7 +91,7 @@ public class NodeStack {
     return b.toString();
   }
 
-  private ElementDefinition getDefinition() {
+  public ElementDefinition getDefinition() {
     return definition;
   }
 
@@ -176,7 +176,7 @@ public class NodeStack {
       if (definition.hasContentReference()) {
         res.logicalPaths.add(definition.getContentReference().substring(definition.getContentReference().indexOf("#")+1));        
       } else {
-        res.logicalPaths.addAll(definition.typeList());
+        res.logicalPaths.addAll(definition.typeNameList());
       }
     } else {
       res.logicalPaths.addAll(getLogicalPaths());

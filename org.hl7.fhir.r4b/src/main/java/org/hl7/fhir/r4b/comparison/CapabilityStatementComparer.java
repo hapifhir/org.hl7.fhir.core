@@ -33,7 +33,7 @@ import org.hl7.fhir.r4b.model.Extension;
 import org.hl7.fhir.r4b.model.PrimitiveType;
 import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.model.StructureDefinition;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -46,7 +46,8 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
+@Deprecated(forRemoval = true)
 public class CapabilityStatementComparer extends CanonicalResourceComparer {
 
   public class CapabilityStatementComparison extends CanonicalResourceComparison<CapabilityStatement> {
@@ -245,6 +246,8 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     }
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: not using String.matches
   private void compare(StructuralMatch<Element> sm, CodeableConcept l, CodeableConcept r, String path,
       CapabilityStatementComparison res) {
     compareStrings(path, sm.getMessages(), l.getText(), r.getText(), "text", IssueSeverity.INFORMATION, res);
@@ -268,6 +271,8 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     }
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: not using String.matches
   private CodeableConcept findInList(List<CodeableConcept> list, CodeableConcept item) {
     for (CodeableConcept t : list) {
       if (t.matches(item)) {
@@ -382,6 +387,8 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     return cd;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: not using String.matches
   private void mergeCodeableConcepts(List<CodeableConcept> tgt, List<CodeableConcept> src) {
     for (CodeableConcept cd : src) {
       boolean add = true;
@@ -416,6 +423,8 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     return cd;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: not using String.matches
   private void intersectCodeableConcepts(List<CodeableConcept> tgt, List<CodeableConcept> src) {
     List<CodeableConcept> toRemove = new ArrayList<CodeableConcept>();
     for (CodeableConcept cd : src) {

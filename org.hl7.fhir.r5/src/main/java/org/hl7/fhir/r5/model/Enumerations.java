@@ -12119,6 +12119,8 @@ The primary difference between a medicationstatement and a medicationadministrat
         _6_0_0_BALLOT2,
         _6_0_0_BALLOT3,
         _6_0_0_BALLOT4,
+        _6_0_0_BALLOT5,
+        _6_0_0_SNAPSHOT1,
       /**
          * added to help the parsers
          */
@@ -12252,6 +12254,10 @@ The primary difference between a medicationstatement and a medicationadministrat
           return _6_0_0_BALLOT3;
           if ("6.0.0-ballot4".equals(codeString))
             return _6_0_0_BALLOT4;
+          if ("6.0.0-ballot5".equals(codeString))
+            return _6_0_0_BALLOT5;
+          if ("6.0.0-snapshot1".equals(codeString))
+            return _6_0_0_SNAPSHOT1;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public static boolean isValidCode(String codeString) {
@@ -12324,6 +12330,8 @@ The primary difference between a medicationstatement and a medicationadministrat
             case _6_0_0_BALLOT2: return "6.0.0-ballot2";
             case _6_0_0_BALLOT3: return "6.0.0-ballot3";
             case _6_0_0_BALLOT4: return "6.0.0-ballot4";
+            case _6_0_0_BALLOT5: return "6.0.0-ballot5";
+            case _6_0_0_SNAPSHOT1: return "6.0.0-snapshot1";
             case NULL: return null;
             default: return "?";
           }
@@ -12390,6 +12398,11 @@ The primary difference between a medicationstatement and a medicationadministrat
             case _6_0_0CIBUILD: return "http://hl7.org/fhir/FHIR-version";
             case _6_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _6_0_0_BALLOT1: return "http://hl7.org/fhir/FHIR-version";
+            case _6_0_0_BALLOT2: return "http://hl7.org/fhir/FHIR-version";
+            case _6_0_0_BALLOT3: return "http://hl7.org/fhir/FHIR-version";
+            case _6_0_0_BALLOT4: return "http://hl7.org/fhir/FHIR-version";
+            case _6_0_0_BALLOT5: return "http://hl7.org/fhir/FHIR-version";
+            case _6_0_0_SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
             case NULL: return null;
             default: return "?";
           }
@@ -12456,6 +12469,11 @@ The primary difference between a medicationstatement and a medicationadministrat
             case _6_0_0CIBUILD: return "R6 Rolling ci-build.";
             case _6_0_0: return "R6 Final Version.";
             case _6_0_0_BALLOT1: return "R6 Ballot #1.";
+            case _6_0_0_BALLOT2: return "R6 2nd Draft Ballot.";
+            case _6_0_0_BALLOT3: return "R6 3rd Draft Ballot.";
+            case _6_0_0_BALLOT4: return "R6 1st Normative Ballot.";
+            case _6_0_0_BALLOT5: return "R6 2nd Normative Ballot.";
+            case _6_0_0_SNAPSHOT1: return "R6 Stable Version.";
             case NULL: return null;
             default: return "?";
           }
@@ -12525,6 +12543,8 @@ The primary difference between a medicationstatement and a medicationadministrat
             case _6_0_0_BALLOT2: return "6.0.0-ballot2";
             case _6_0_0_BALLOT3: return "6.0.0-ballot3";
             case _6_0_0_BALLOT4: return "6.0.0-ballot4";
+            case _6_0_0_BALLOT5: return "6.0.0-ballot5";
+            case _6_0_0_SNAPSHOT1: return "6.0.0-snapshot1";
             case NULL: return null;
             default: return "?";
           }
@@ -12679,6 +12699,10 @@ The primary difference between a medicationstatement and a medicationadministrat
           return FHIRVersion._6_0_0_BALLOT3;
       if ("6.0.0-ballot4".equals(codeString))
         return FHIRVersion._6_0_0_BALLOT4;
+      if ("6.0.0-ballot5".equals(codeString))
+        return FHIRVersion._6_0_0_BALLOT5;
+      if ("6.0.0-snapshot1".equals(codeString))
+        return FHIRVersion._6_0_0_SNAPSHOT1;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
 
@@ -12816,6 +12840,10 @@ The primary difference between a medicationstatement and a medicationadministrat
           return new Enumeration<FHIRVersion>(this, FHIRVersion._6_0_0_BALLOT3, code);
         if ("6.0.0-ballot4".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._6_0_0_BALLOT4, code);
+        if ("6.0.0-ballot5".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._6_0_0_BALLOT5, code);
+        if ("6.0.0-snapshot1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._6_0_0_SNAPSHOT1, code);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");        
         }
     public String toCode(FHIRVersion code) {
@@ -12950,6 +12978,12 @@ The primary difference between a medicationstatement and a medicationadministrat
       }
       if (code == FHIRVersion._6_0_0_BALLOT4) {
         return "6.0.0-ballot4";
+      }
+      if (code == FHIRVersion._6_0_0_BALLOT5) {
+        return "6.0.0-ballot5";
+      }
+      if (code == FHIRVersion._6_0_0_SNAPSHOT1) {
+        return "6.0.0-snapshot1";
       }
       return "?";
    }
@@ -19178,6 +19212,10 @@ The primary difference between a medicationstatement and a medicationadministrat
        * Added in R6
        */
       PERSONALRELATIONSHIP,
+      /**
+       * A resource type that isn't defined in any version of FHIR - only returned when Configuration.isAllowCustomResourceTypes() is set. The actual type name is carried in the string value of the Enumeration that holds this constant, and is not recoverable from the constant itself
+       */
+      CUSTOM,
         /**
            * added to help the parsers
          */
@@ -19601,7 +19639,22 @@ The primary difference between a medicationstatement and a medicationadministrat
             return INSURANCEPRODUCT;
           if ("PersonalRelationship".equals(codeString))
             return PERSONALRELATIONSHIP;
+        if (Configuration.isAllowCustomResourceTypes() && isPlausibleCustomResourceType(codeString))
+          return CUSTOM;
         throw new FHIRException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
+        }
+        /**
+         * Checks whether a code that isn't defined in any version of FHIR is at least shaped like a
+         * resource type name (leading upper case letter, then letters and digits only), for use when
+         * Configuration.isAllowCustomResourceTypes() is set
+         */
+        public static boolean isPlausibleCustomResourceType(String codeString) {
+            if (codeString == null || codeString.length() == 0 || !Character.isUpperCase(codeString.charAt(0)))
+                return false;
+            for (char c : codeString.toCharArray())
+                if (!Character.isLetterOrDigit(c))
+                    return false;
+            return true;
         }
         public static boolean isValidCode(String codeString) {
             if (codeString == null || "".equals(codeString))
@@ -19839,6 +19892,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case DEVICEALERT: return "DeviceAlert";
             case INSURANCEPRODUCT: return "InsuranceProduct";
             case PERSONALRELATIONSHIP: return "PersonalRelationship";
+            case CUSTOM: return null;
             case NULL: return null;
             default: return "?";
           }
@@ -20053,6 +20107,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case DEVICEALERT: return "http://hl7.org/fhir/fhir-types";
             case INSURANCEPRODUCT: return "http://hl7.org/fhir/fhir-types";
             case PERSONALRELATIONSHIP: return "http://hl7.org/fhir/fhir-types";
+            case CUSTOM: return null;
             case NULL: return null;
             default: return "?";
           }
@@ -20267,6 +20322,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case DEVICEALERT: return "";
             case INSURANCEPRODUCT: return "";
             case PERSONALRELATIONSHIP: return "";
+            case CUSTOM: return "A resource type that is not defined in any published version of FHIR";
             case NULL: return null;
             default: return "?";
           }
@@ -20481,6 +20537,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case INSURANCEPRODUCT: return "InsuranceProduct";
             case DEVICEALERT: return "DeviceAlert";
             case PERSONALRELATIONSHIP: return "PersonalRelationship";
+            case CUSTOM: return null;
             case NULL: return null;
             default: return "?";
           }
@@ -20908,6 +20965,8 @@ The primary difference between a medicationstatement and a medicationadministrat
         return VersionIndependentResourceTypesAll.INSURANCEPRODUCT;
       if ("PersonalRelationship".equals(codeString))
         return VersionIndependentResourceTypesAll.PERSONALRELATIONSHIP;
+      if (Configuration.isAllowCustomResourceTypes() && VersionIndependentResourceTypesAll.isPlausibleCustomResourceType(codeString))
+        return VersionIndependentResourceTypesAll.CUSTOM;
       throw new IllegalArgumentException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
     }
 
@@ -21335,6 +21394,11 @@ The primary difference between a medicationstatement and a medicationadministrat
             return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.INSURANCEPRODUCT, code);
           if ("PersonalRelationship".equals(codeString))
             return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.PERSONALRELATIONSHIP, code);
+          if (Configuration.isAllowCustomResourceTypes() && VersionIndependentResourceTypesAll.isPlausibleCustomResourceType(codeString)) {
+            Enumeration<VersionIndependentResourceTypesAll> res = new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.CUSTOM, code);
+            res.setValueAsString(codeString);
+            return res;
+          }
         throw new FHIRException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
         }
     public String toCode(VersionIndependentResourceTypesAll code) {

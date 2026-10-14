@@ -5,20 +5,20 @@ import java.util.Date;
 
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.utils.sql.Value;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 
 
 /**
  * String value is always provided, and a more specific value may also be provided
  */
 
-@MarkedToMoveToAdjunctPackage
+
 public class Value {
 
   private String valueString;
   private Boolean valueBoolean;
   private Date valueDate;
-  private Integer valueInt;
+  private Long valueInt;
   private BigDecimal valueDecimal;
   private byte[] valueBinary;
   private Base valueComplex;
@@ -47,7 +47,7 @@ public class Value {
     return v;
   }
   
-  public static Value makeInteger(String s, Integer i) {
+  public static Value makeInteger(String s, Long i) {
     Value v = new Value();
     v.valueString = s;
     v.valueInt = i;
@@ -82,7 +82,7 @@ public class Value {
     return valueDate;
   }
 
-  public Integer getValueInt() {
+  public Long getValueInt() {
     return valueInt;
   }
   

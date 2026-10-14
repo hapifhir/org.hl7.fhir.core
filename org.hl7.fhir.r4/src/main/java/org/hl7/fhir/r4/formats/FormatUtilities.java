@@ -72,10 +72,12 @@ import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.regex.RegexConstants;
 
+import javax.xml.XMLConstants;
+
 public abstract class FormatUtilities {
   public static final String FHIR_NS = "http://hl7.org/fhir";
   public static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
-  public static final String NS_XSI = "http://www.w3.org/2001/XMLSchema-instance";
+  public static final String NS_XSI = XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI;
   private static final int MAX_SCAN_LENGTH = 1000; // how many characters to scan into content when autodetermining
                                                    // format
 
@@ -104,6 +106,8 @@ public abstract class FormatUtilities {
     return new String(encodeBase64);
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //anchored, bounded, safe
   public static boolean isValidId(String tail) {
     return tail.matches(RegexConstants.ID_REGEX);
   }

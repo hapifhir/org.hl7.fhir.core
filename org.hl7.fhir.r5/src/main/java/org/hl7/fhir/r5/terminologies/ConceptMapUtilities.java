@@ -734,7 +734,10 @@ public class ConceptMapUtilities {
   public static List<MappingTriple> getBySource(ConceptMap map, Coding c) {
     List<MappingTriple> list = new ArrayList<>();
     for (ConceptMapGroupComponent g : map.getGroup()) {
-      if (CanonicalType.matches(g.getSource(), c.getSystem(), c.getVersion())) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean sourceMatches = CanonicalType.matches(g.getSource(), c.getSystem(), c.getVersion());
+      if (sourceMatches) {
         for (SourceElementComponent e : g.getElement()) {
           if (e.getCode().equals(c.getCode())) {
             if (e.getNoMap()) {
@@ -754,7 +757,10 @@ public class ConceptMapUtilities {
   public static List<MappingTriple> getByTarget(ConceptMap map, Coding c) {
     List<MappingTriple> list = new ArrayList<>();
     for (ConceptMapGroupComponent g : map.getGroup()) {
-      if (CanonicalType.matches(g.getTarget(), c.getSystem(), c.getVersion())) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean targetMatches = CanonicalType.matches(g.getTarget(), c.getSystem(), c.getVersion());
+      if (targetMatches) {
         for (SourceElementComponent e : g.getElement()) {
           for (TargetElementComponent t : e.getTarget()) {
             if (t.getCode().equals(c.getCode())) {

@@ -1,0 +1,22 @@
+{ 
+  "code": {
+    "system": "dummySystem",
+    "version": "dummyVersion",
+    "code": "dummyCode"
+  },
+  "valueSet": {
+    "resourceType": "ValueSet"
+  },
+  "langs": "",
+  "useServer": "true",
+  "useClient": "true",
+  "guessSystem": "true",
+  "noAbstract":"false",
+  "activeOnly": "false",
+  "membershipOnly": "false",
+  "displayWarningMode":"false",
+  "versionFlexible": "false",
+  "profile":{
+    "resourceType":"Parameters"
+  }
+}

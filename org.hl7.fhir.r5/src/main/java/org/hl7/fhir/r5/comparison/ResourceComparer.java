@@ -7,7 +7,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -19,7 +19,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ResourceComparer {
 
   static int counter = 0;
@@ -59,7 +59,7 @@ public class ResourceComparer {
       super();
       this.leftId = leftId;
       this.rightId = rightId;
-      id = abbreviation()+"+"+(++counter)+"-"+leftId + "-" + rightId;
+      id = abbreviation()+"-"+(++counter)+"-"+leftId + "-" + rightId; // no '+' - production web servers don't serve files with '+' in the name
     }
 
     protected String refCell(CanonicalResource cr) {

@@ -487,6 +487,10 @@ public class Contributor extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Contributor) dst);
+      }
+
       public void copyValues(Contributor dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();

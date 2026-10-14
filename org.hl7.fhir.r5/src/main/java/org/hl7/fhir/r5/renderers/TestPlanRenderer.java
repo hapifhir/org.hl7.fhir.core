@@ -11,11 +11,12 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public class TestPlanRenderer extends ResourceRenderer {
 
 
@@ -35,7 +36,7 @@ public class TestPlanRenderer extends ResourceRenderer {
     XhtmlNode p = null;
     if (tp.has("contact")) {
       p = x.para();
-      p.b().tx(context.formatPhrase(RenderingContext.GENERAL_CONTACT));
+      p.b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_CONTACT));
       p.tx(" (");
       boolean firsti = true;
       for (ResourceWrapper ci : tp.children("contact")) {
@@ -59,7 +60,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 
     if (tp.has("category")) {
       p = x.para();
-      p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_CATEGORY)+" ");
+      p.b().tx(context.formatPhrase(RenderingI18nContext.TEST_PLAN_CATEGORY)+" ");
       boolean first = true;
       for (ResourceWrapper cc : tp.children("category")) {
         if (first)
@@ -74,10 +75,10 @@ public class TestPlanRenderer extends ResourceRenderer {
       List<ResourceWrapper> scopes = tp.children("scope");
       if (scopes.size() == 1) {
         p = x.para();
-        p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPE)+" ");
+        p.b().tx(context.formatPhrase(RenderingI18nContext.TEST_PLAN_SCOPE)+" ");
         renderReference(status, p, scopes.get(0));
       } else {
-        x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPES));
+        x.para().b().tx(context.formatPhrase(RenderingI18nContext.TEST_PLAN_SCOPES));
         XhtmlNode ul = x.ul();
         for (ResourceWrapper ref : scopes) {
           renderReference(status, ul.li(), ref);
@@ -90,7 +91,7 @@ public class TestPlanRenderer extends ResourceRenderer {
       if (deps.size() == 1) {
         ResourceWrapper dep = deps.get(0);
         p = x.para();
-        p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_DEP)+" ");
+        p.b().tx(context.formatPhrase(RenderingI18nContext.TEST_PLAN_DEP)+" ");
         XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
         XhtmlNode tr = t.tr();
         if (!Utilities.noString(dep.primitiveValue("description"))) {
@@ -99,7 +100,7 @@ public class TestPlanRenderer extends ResourceRenderer {
         tr = t.tr();
         renderReference(status, tr.td(), dep.child("predecessor"));
       } else {
-        x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_DEPEN));
+        x.para().b().tx(context.formatPhrase(RenderingI18nContext.TEST_PLAN_DEPEN));
         XhtmlNode ul = x.ul();
         XhtmlNode li = null;
         for (ResourceWrapper d : deps) {
@@ -108,7 +109,7 @@ public class TestPlanRenderer extends ResourceRenderer {
             addMarkdown(li, d.primitiveValue("description"));
           }
           else {
-            li.addText(context.formatPhrase(RenderingContext.TEST_PLAN_DESC));
+            li.addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_DESC));
           }
           if (d.has("predecessor")) {
             XhtmlNode liul = li.ul();
@@ -130,10 +131,10 @@ public class TestPlanRenderer extends ResourceRenderer {
         List<ResourceWrapper> scopes = tc.children("scope");
         if (scopes.size() == 1) {
           p = x.para();
-          p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPE)+" ");
+          p.b().tx(context.formatPhrase(RenderingI18nContext.TEST_PLAN_SCOPE)+" ");
           renderReference(status, p, scopes.get(0));
         } else {
-          x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_SCOPES));
+          x.para().b().tx(context.formatPhrase(RenderingI18nContext.TEST_PLAN_SCOPES));
           XhtmlNode ul = x.ul();
           for (ResourceWrapper ref : scopes) {
             renderReference(status, ul.li(), ref);
@@ -145,7 +146,7 @@ public class TestPlanRenderer extends ResourceRenderer {
         List<ResourceWrapper> deps = tc.children("dependency");
         if (deps.size() == 1) {
           ResourceWrapper dep = deps.get(0);
-          x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_DEP));
+          x.h3().addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_DEP));
           XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
           XhtmlNode tr = t.tr();
           if (!Utilities.noString(dep.primitiveValue("description"))) {
@@ -155,7 +156,7 @@ public class TestPlanRenderer extends ResourceRenderer {
           renderReference(status, tr.td(), dep.child("predecessor"));
               
         } else {
-          x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_DEPEN));
+          x.h3().addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_DEPEN));
           XhtmlNode ul = x.ul();
           XhtmlNode li = null;
           for (ResourceWrapper d : deps) {
@@ -164,7 +165,7 @@ public class TestPlanRenderer extends ResourceRenderer {
               addMarkdown(li, d.primitiveValue("description"));
             }
             else {
-              li.addText(context.formatPhrase(RenderingContext.TEST_PLAN_DESC));
+              li.addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_DESC));
             }
             if (d.has("predecessor")) {
               XhtmlNode liul = li.ul();
@@ -178,14 +179,14 @@ public class TestPlanRenderer extends ResourceRenderer {
       if (tc.has("testRun")) {
         List<ResourceWrapper> runs = tc.children("testRun");
         if (runs.size() == 1) {
-          x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_RUN));
+          x.h3().addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_RUN));
           renderTestRun(status, x, tp, runs.get(0));
         }
         else {
           int count = 0;
           for (ResourceWrapper trun : runs) {
             count++;
-            x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_TEST_RUN, count)+" ");
+            x.h3().addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_TEST_RUN, count)+" ");
             renderTestRun(status, x, tp, trun);
           }
         }
@@ -194,14 +195,14 @@ public class TestPlanRenderer extends ResourceRenderer {
       if (tc.has("testData")) {
         List<ResourceWrapper> dl = tc.children("testData");
         if (dl.size() == 1) {
-          x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_DATA));
+          x.h3().addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_DATA));
           renderTestData(status, x, tp, dl.get(0));
         }
         else {
           int count = 0;
           for (ResourceWrapper tdata : dl) {
             count++;
-            x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_TEST_DATA, count)+" ");
+            x.h3().addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_TEST_DATA, count)+" ");
             renderTestData(status, x, tp, tdata);
           }
         }
@@ -210,14 +211,14 @@ public class TestPlanRenderer extends ResourceRenderer {
       if (tc.has("assertion")) {
         List<ResourceWrapper> al = tc.children("assertion");
         if (al.size() == 1) {
-          x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_ASS));
+          x.h3().addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_ASS));
           renderAssertion(status, x, tp, al.get(0));
         }
         else {
           int count = 0;
           for (ResourceWrapper as : al) {
             count++;
-            x.h3().addText(context.formatPhrase(RenderingContext.TEST_PLAN_ASSERTION, count)+" ");
+            x.h3().addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_ASSERTION, count)+" ");
             renderAssertion(status, x, tp, as);
           }
         }
@@ -234,8 +235,8 @@ public class TestPlanRenderer extends ResourceRenderer {
       ResourceWrapper script = trun.child("script");
       XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t.tr();
-      tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_LANG));
-      tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_SOURCE));
+      tr.td().b().addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_LANG));
+      tr.td().b().addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_SOURCE));
       tr = t.tr();
       if (script.has("language")) {
         renderCodeableConcept(status, tr.td(), script.child("language"));
@@ -253,9 +254,9 @@ public class TestPlanRenderer extends ResourceRenderer {
   private void renderTestData(RenderingStatus status, XhtmlNode x, ResourceWrapper tp, ResourceWrapper tdata) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = t.tr();
-    tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
-    tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_CONTENT));
-    tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_SOURCE));
+    tr.td().b().addText(context.formatPhrase(RenderingI18nContext.GENERAL_TYPE));
+    tr.td().b().addText(context.formatPhrase(RenderingI18nContext.GENERAL_CONTENT));
+    tr.td().b().addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_SOURCE));
     tr = t.tr();
     if (tdata.has("type")) {
       renderCoding(status, tr.td(), tdata.child("type"));
@@ -279,9 +280,9 @@ public class TestPlanRenderer extends ResourceRenderer {
   private void renderAssertion(RenderingStatus status, XhtmlNode x, ResourceWrapper tp, ResourceWrapper as) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = t.tr();
-    tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
-    tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_CONTENT));
-    tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_RESULT));
+    tr.td().b().addText(context.formatPhrase(RenderingI18nContext.GENERAL_TYPE));
+    tr.td().b().addText(context.formatPhrase(RenderingI18nContext.GENERAL_CONTENT));
+    tr.td().b().addText(context.formatPhrase(RenderingI18nContext.TEST_PLAN_RESULT));
     tr = t.tr();
     if (as.has("type")) {
       XhtmlNode td = tr.td();

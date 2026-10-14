@@ -36,7 +36,10 @@ public class ConceptTranslationEngine {
     Parameters p = new Parameters();
     boolean matched = false;
     for (ConceptMap.ConceptMapGroupComponent grp : cm.getGroup()) {
-      if (grp.getSourceElement().matches(coding.getSystem(), coding.getVersion())) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean sourceMatches = grp.getSourceElement().matches(coding.getSystem(), coding.getVersion());
+      if (sourceMatches) {
         for (ConceptMap.SourceElementComponent src : grp.getElement()) {
           if (src.getCode().equals(coding.getCode())) {
             for (ConceptMap.TargetElementComponent tgt : src.getTarget()) {

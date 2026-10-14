@@ -54,7 +54,7 @@ import org.hl7.fhir.r4.model.Property;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.Argument;
 import org.hl7.fhir.utilities.graphql.Argument.ArgumentListStatus;
@@ -79,7 +79,7 @@ import org.hl7.fhir.utilities.graphql.Value;
 import org.hl7.fhir.utilities.graphql.Variable;
 import org.hl7.fhir.utilities.graphql.VariableValue;
 
-@MarkedToMoveToAdjunctPackage
+@Deprecated(forRemoval = true)
 public class GraphQLEngine implements IGraphQLEngine {
 
   private IWorkerContext context;
@@ -675,6 +675,8 @@ public class GraphQLEngine implements IGraphQLEngine {
     if ((carg != null)) {
       params.clear();
       ;
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = getSingleValue(carg).split(":");
       params.add(new Argument("search-id", new StringValue(parts[0])));
       params.add(new Argument("search-offset", new StringValue(parts[1])));
@@ -889,6 +891,8 @@ public class GraphQLEngine implements IGraphQLEngine {
     private Map<String, String> parseURL(String url) throws FHIRException {
       try {
         Map<String, String> map = new HashMap<String, String>();
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] pairs = url.split("&");
         for (String pair : pairs) {
           int idx = pair.indexOf("=");

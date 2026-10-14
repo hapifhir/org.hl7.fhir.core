@@ -118,7 +118,7 @@ public class ToolsHelper {
 		}
 	}
 
-	private void generateSnapshots(String[] args) throws IOException, FHIRException {
+	private void generateSnapshots(String[] args) throws FHIRException {
 		if (args.length == 1) {
 			System.out.println("tools.jar snapshot-maker [source] -defn [definitions]");
 			System.out.println("");
@@ -130,23 +130,7 @@ public class ToolsHelper {
 		String address = args[1];
 		String definitions = args[3];
 
-//		SimpleWorkerContext context = SimpleWorkerContext.fromDefinitions(getDefinitions(definitions));
-
-		//    if (address.startsWith("http:") || address.startsWith("http:")) {
-		//    	// this is on a restful interface
-		//    	String[] parts = address.split("\\/Profile\\/");
-		//    	if (parts.length != 2)
-		//    		throw new FHIRException("Unable to understand address of profile");
-		//    	StructureDefinition profile = context.fetchResource(StructureDefinition.class, parts[1]);
-		//    	ProfileUtilities utils = new ProfileUtilities(context);
-		//    	StructureDefinition base = utils.getProfile(profile, profile.getBase());
-		//    	if (base == null)
-		//    		throw new FHIRException("Unable to resolve profile "+profile.getBase());
-		//    	utils.generateSnapshot(base, profile, address, profile.getName(), null, null);
-		//    	// client.update(StructureDefinition.class, profile, parts[1]);
-		//    } else {
 		throw new NotImplementedException("generating snapshots not done yet (address = "+address+")");
-		//    }
 	}
 
 	protected XmlPullParser loadXml(InputStream stream) throws XmlPullParserException, IOException {

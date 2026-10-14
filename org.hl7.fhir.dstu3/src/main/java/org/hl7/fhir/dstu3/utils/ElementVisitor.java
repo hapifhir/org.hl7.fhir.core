@@ -4,7 +4,7 @@ import org.hl7.fhir.dstu3.model.Base;
 import org.hl7.fhir.dstu3.model.Element;
 import org.hl7.fhir.dstu3.model.Property;
 import org.hl7.fhir.dstu3.model.Resource;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 
 public class ElementVisitor {
 

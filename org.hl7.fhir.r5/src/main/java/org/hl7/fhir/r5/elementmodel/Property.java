@@ -52,13 +52,13 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 
 import org.hl7.fhir.r5.utils.TypesUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class Property {
 
@@ -68,6 +68,28 @@ public class Property {
   private ProfileUtilities profileUtilities;
   private ContextUtilities utils;
   private TypeRefComponent type;
+
+  // Derived metadata, cached on first use. These are pure functions of definition (and, for
+  // the namespace, structure), neither of which changes for the life of a Property, and
+  // Property instances are themselves cached per structure/path in ProfileUtilities. Deriving
+  // them is not cheap - each one tests for an extension on the ElementDefinition and most then
+  // take a substring of the path - and the parsers ask for them once per child per element.
+  // Races between threads are benign: two threads compute the same value and store the same
+  // result. The byte fields are tri-state: 0 = not yet computed, 1 = false, 2 = true.
+  private String cachedName;
+  private String cachedJsonName;
+  private String cachedUnderscoreJsonName;
+  private String cachedXmlName;
+  private String cachedXmlNamespace;
+  private byte cachedHasJsonName;
+  private byte cachedIsList;
+  private byte cachedIsJsonList;
+  // getType(elementName) result. Only one branch of getType depends on elementName - the choice
+  // where the declared types differ - so cacheability is decided from the definition alone,
+  // before elementName is looked at. null is a legitimate result, hence the separate flag, and
+  // nothing is stored on the paths that throw.
+  private String cachedTypeName;
+  private boolean cachedTypeNameSet;
 
   public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities, ContextUtilities utils) {
 		this.context = context;
@@ -96,22 +118,52 @@ public class Property {
 	}
 
 	public String getName() {
-    if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED)) {
-      return ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED);
-    } else {
-      return definition.getPath().substring(definition.getPath().lastIndexOf(".")+1);
+    String name = cachedName;
+    if (name == null) {
+      if (hasJsonName()) {
+        name = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED);
+      } else {
+        name = definition.getPath().substring(definition.getPath().lastIndexOf(".")+1);
+      }
+      cachedName = name;
     }
+    return name;
 	}
 
   public String getJsonName() {
-    if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED)) {
-      return ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED);
-    } else {
-      return getName();
+    String name = cachedJsonName;
+    if (name == null) {
+      if (hasJsonName()) {
+        name = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED);
+      } else {
+        name = getName();
+      }
+      cachedJsonName = name;
     }
+    return name;
+  }
+
+  /**
+   * The json name prefixed with '_', which is where the extensions and id of a primitive live.
+   * The parser looks for this for every primitive property, so it is worth not rebuilding.
+   */
+  public String getUnderscoreJsonName() {
+    String name = cachedUnderscoreJsonName;
+    if (name == null) {
+      cachedUnderscoreJsonName = name = "_" + getJsonName();
+    }
+    return name;
   }
 
   public String getXmlName() {
+    String name = cachedXmlName;
+    if (name == null) {
+      cachedXmlName = name = determineXmlName();
+    }
+    return name;
+  }
+
+  private String determineXmlName() {
     if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAME)) {
       return ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAME);
     } else if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAME_DEPRECATED)) {
@@ -122,6 +174,14 @@ public class Property {
   }
 
   public String getXmlNamespace() {
+    String ns = cachedXmlNamespace;
+    if (ns == null) {
+      cachedXmlNamespace = ns = determineXmlNamespace();
+    }
+    return ns;
+  }
+
+  private String determineXmlNamespace() {
     if (ExtensionUtilities.hasAnyOfExtensions(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
       return ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED);
     } else if (ExtensionUtilities.hasAnyOfExtensions(structure, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
@@ -152,6 +212,43 @@ public class Property {
 	}
 
 	public String getType(String elementName) {
+	  if (cachedTypeNameSet) {
+	    return cachedTypeName;
+	  }
+	  String result = determineType(elementName);
+	  if (typeIsIndependentOfElementName()) {
+	    cachedTypeName = result;
+	    cachedTypeNameSet = true;
+	  }
+	  return result;
+	}
+
+	/**
+	 * Whether getType's answer is the same whatever elementName it is given. The only branch that
+	 * reads elementName is the '[x]' choice below, reached when the resolved definition declares
+	 * more than one distinct type code. Content references resolve to another definition, so those
+	 * are left uncached rather than resolved twice here.
+	 */
+	private boolean typeIsIndependentOfElementName() {
+	  if (type != null || !definition.getPath().contains(".")) {
+	    return true;
+	  }
+	  if (definition.hasContentReference()) {
+	    return false;
+	  }
+	  if (definition.getType().size() <= 1) {
+	    return true;
+	  }
+	  String t = definition.getType().get(0).getCode();
+	  for (TypeRefComponent tr : definition.getType()) {
+	    if (!t.equals(tr.getCode())) {
+	      return false;
+	    }
+	  }
+	  return true;
+	}
+
+	private String determineType(String elementName) {
 	  if (type != null) {
       return type.getWorkingCode();
     } 
@@ -310,7 +407,11 @@ public class Property {
 	}
 
   public boolean isList() {
-    return !"1".equals(definition.getBase().hasMax() ? definition.getBase().getMax() : definition.getMax());
+    byte v = cachedIsList;
+    if (v == 0) {
+      cachedIsList = v = !"1".equals(definition.getBase().hasMax() ? definition.getBase().getMax() : definition.getMax()) ? (byte) 2 : (byte) 1;
+    }
+    return v == 2;
   }
 
   /**
@@ -319,11 +420,17 @@ public class Property {
    * @return
    */
   public boolean isJsonList() {
-    if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED)) {
-      return !"1".equals(definition.getMax());
-    } else {
-      return !"1".equals(definition.getBase().hasMax() ? definition.getBase().getMax() : definition.getMax());
+    byte v = cachedIsJsonList;
+    if (v == 0) {
+      boolean list;
+      if (hasJsonName()) {
+        list = !"1".equals(definition.getMax());
+      } else {
+        list = !"1".equals(definition.getBase().hasMax() ? definition.getBase().getMax() : definition.getMax());
+      }
+      cachedIsJsonList = v = list ? (byte) 2 : (byte) 1;
     }
+    return v == 2;
   }
 
   public boolean isBaseList() {
@@ -688,7 +795,11 @@ public class Property {
 
 
   public boolean hasJsonName() {
-    return definition.hasExtension(ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED);
+    byte v = cachedHasJsonName;
+    if (v == 0) {
+      cachedHasJsonName = v = definition.hasExtension(ExtensionDefinitions.EXT_JSON_NAME, ExtensionDefinitions.EXT_JSON_NAME_DEPRECATED) ? (byte) 2 : (byte) 1;
+    }
+    return v == 2;
   }
 
 

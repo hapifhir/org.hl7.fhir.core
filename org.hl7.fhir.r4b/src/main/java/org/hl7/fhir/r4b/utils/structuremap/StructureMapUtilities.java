@@ -76,7 +76,7 @@ import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -100,7 +100,7 @@ import java.util.*;
  *
  * @author Grahame Grieve
  */
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class StructureMapUtilities {
 
@@ -709,6 +709,8 @@ public class StructureMapUtilities {
   private static void renderMultilineDoco(StringBuilder b, String doco, int indent) {
     if (Utilities.noString(doco))
       return;
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] lines = doco.split("\\r?\\n");
     for (String line : lines) {
       for (int i = 0; i < indent; i++)
@@ -1832,7 +1834,8 @@ public class StructureMapUtilities {
           res.setUserData("profile", tgt.getUserData("profile"));
         return res;
       case COPY:
-        return getParam(vars, tgt.getParameter().get(0));
+        Base val = getParam(vars, tgt.getParameter().get(0));
+        return val != null ? val.copy() : val;
       case EVALUATE:
         ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
         if (expr == null) {
@@ -2059,6 +2062,8 @@ public class StructureMapUtilities {
           throw new FHIRException("Unable to translate - cannot find map " + conceptMapUrl);
       } else {
         if (conceptMapUrl.contains("#")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] p = conceptMapUrl.split("\\#");
           StructureMap mapU = worker.fetchResource(StructureMap.class, p[0]);
           for (Resource r : mapU.getContained()) {

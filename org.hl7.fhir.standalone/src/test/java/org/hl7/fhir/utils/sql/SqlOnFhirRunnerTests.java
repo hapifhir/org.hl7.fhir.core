@@ -1,0 +1,328 @@
+package org.hl7.fhir.utils.sql;
+
+import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.sql.Runner;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonElement;
+import org.hl7.fhir.utilities.json.model.JsonNull;
+import org.hl7.fhir.utilities.json.model.JsonNumber;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
+/**
+ * Tests for SQL on FHIR Runner implementation based on the official test suite.
+ * The suite is the copy of https://github.com/FHIR/sql-on-fhir.js/tree/main/tests held in
+ * fhir-test-cases under sql-on-fhir/, whose manifest.json lists the files to run.
+ *
+ * @author John Grimes
+ */
+@Slf4j
+public class SqlOnFhirRunnerTests {
+
+  private static IWorkerContext context;
+  private static TestReportGenerator reportGenerator;
+  private static Map<String, JsonObject> testFiles = new LinkedHashMap<>();
+
+  @BeforeAll
+  static void setUp() throws Exception {
+    context = TestingUtilities.getSharedWorkerContext();
+    reportGenerator = new TestReportGenerator();
+    loadTestFiles();
+  }
+
+  @AfterAll
+  static void tearDown() {
+    reportGenerator.writeReport("target/sof-test-report.json");
+  }
+
+  private static void loadTestFiles() throws IOException {
+    JsonArray manifest = (JsonArray) org.hl7.fhir.utilities.json.parser.JsonParser.parse(
+        TestingUtilities.loadTestResource("sql-on-fhir", "manifest.json"));
+    for (String fileName : manifest.asStrings()) {
+      JsonObject testFile = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(
+          TestingUtilities.loadTestResource("sql-on-fhir", fileName));
+      testFiles.put(fileName, testFile);
+    }
+  }
+
+  public static Stream<Arguments> testCases() {
+    List<Arguments> arguments = new ArrayList<>();
+
+    for (Map.Entry<String, JsonObject> entry : testFiles.entrySet()) {
+      String fileName = entry.getKey();
+      JsonObject testFile = entry.getValue();
+
+      if (testFile.has("tests")) {
+        JsonArray tests = testFile.getJsonArray("tests");
+        for (JsonElement element : tests) {
+          if (element instanceof JsonObject) {
+            JsonObject test = (JsonObject) element;
+            String testName = test.asString("title");
+            arguments.add(Arguments.of(fileName, testName, testFile, test));
+          }
+        }
+      }
+    }
+
+    return arguments.stream();
+  }
+
+  @ParameterizedTest(name = "{0}: {1}")
+  @MethodSource("testCases")
+  @DisplayName("SQL on FHIR Runner Test")
+  void testRunner(String fileName, String testName, JsonObject testFile, JsonObject test) throws Exception {
+    log.info("Running test: {} - {}", fileName, testName);
+
+    TestResult result = new TestResult();
+    result.name = testName;
+
+    try {
+      // Extract view definition.
+      JsonObject view = test.getJsonObject("view");
+      if (view == null) {
+        throw new IllegalArgumentException("Test missing 'view' definition");
+      }
+
+      // Create test provider with resources.
+      TestProvider provider = new TestProvider();
+      if (testFile.has("resources")) {
+        JsonElement resources = testFile.get("resources");
+        if (resources instanceof JsonArray) {
+          loadResources((JsonArray) resources, provider);
+        }
+      }
+
+      // Create test storage.
+      TestStorage storage = new TestStorage();
+
+      // Create and configure runner.
+      Runner runner = new Runner();
+      runner.setContext(context);
+      runner.setProvider(provider);
+      runner.setStorage(storage);
+
+      // Check for expectError.
+      boolean expectError = test.has("expectError");
+
+      try {
+        // Execute the view.
+        runner.execute(view);
+
+        if (expectError) {
+          fail("Expected error but none was thrown");
+        }
+
+        // Get actual results.
+        JsonArray actualResults = storage.getResults();
+
+        // The test passes unless one of the checks below records a failure. This has to be set
+        // before them, not after: compareResults and checkColumnOrder report by setting
+        // result.passed = false, so assigning true afterwards silently discarded everything they
+        // found, and the only thing that could fail this class was a thrown exception
+        result.passed = true;
+
+        // Compare with expected results.
+        if (test.has("expect")) {
+          JsonArray expectedResults = test.getJsonArray("expect");
+          compareResults(expectedResults, actualResults, result);
+        }
+
+        // Check column ordering if specified.
+        if (test.has("expectColumns")) {
+          JsonArray expectedColumns = test.getJsonArray("expectColumns");
+          checkColumnOrder(expectedColumns, actualResults, result);
+        }
+
+      } catch (Exception e) {
+        if (expectError) {
+          // Check if error matches expected error pattern.
+          if (test.has("expectErrorPattern")) {
+            String pattern = test.asString("expectErrorPattern");
+            if (!e.getMessage().contains(pattern)) {
+              result.passed = false;
+              result.error = "Error message did not match expected pattern: " + e.getMessage();
+            } else {
+              result.passed = true;
+            }
+          } else {
+            result.passed = true;
+          }
+        } else {
+          throw e;
+        }
+      }
+
+    } catch (Exception e) {
+      result.passed = false;
+      result.error = e.getClass().getSimpleName() + ": " + e.getMessage();
+      if (test.has("expectError")) {
+        // If we expected an error and got one, it's still a pass.
+        result.passed = true;
+      }
+    }
+
+    // Add result to report.
+    reportGenerator.addResult(fileName, result);
+
+    // Assert test passed.
+    if (!result.passed) {
+      fail("SQL on FHIR test failed: " + fileName + " - " + testName +
+           (result.error != null ? " - " + result.error : ""));
+    }
+  }
+
+  private void loadResources(JsonArray resources, TestProvider provider) throws IOException {
+    org.hl7.fhir.model.core.formats.JsonParser fhirParser = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext());
+
+    for (JsonElement element : resources) {
+      if (element instanceof JsonObject) {
+        JsonObject resourceJson = (JsonObject) element;
+        String json = org.hl7.fhir.utilities.json.parser.JsonParser.compose(resourceJson, true);
+        try (InputStream inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8))) {
+          Resource resource = fhirParser.parse(inputStream);
+          provider.addResource(resource);
+        }
+      }
+    }
+  }
+
+  private void compareResults(JsonArray expected, JsonArray actual, TestResult result) {
+    if (expected.size() != actual.size()) {
+      result.passed = false;
+      result.error = String.format("Result count mismatch: expected %d, got %d",
+                                   expected.size(), actual.size());
+      return;
+    }
+
+    // Multiset comparison: row order is not significant in SQL on FHIR,
+    // but duplicate rows must still match in count. For each expected row,
+    // find an unconsumed actual row that matches; mark it consumed so the
+    // same actual row cannot satisfy two expected rows.
+    boolean[] consumed = new boolean[actual.size()];
+    for (int i = 0; i < expected.size(); i++) {
+      JsonElement expectedRow = expected.get(i);
+      boolean found = false;
+      for (int j = 0; j < actual.size(); j++) {
+        if (!consumed[j] && compareJsonElements(expectedRow, actual.get(j))) {
+          consumed[j] = true;
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        result.passed = false;
+        result.error = String.format("No matching actual row for expected row %d: %s",
+                                     i, expectedRow);
+        return;
+      }
+    }
+  }
+
+  private boolean compareJsonElements(JsonElement expected, JsonElement actual) {
+    if (expected instanceof JsonNull && actual instanceof JsonNull) {
+      return true;
+    }
+    if (expected instanceof JsonNull || actual instanceof JsonNull) {
+      return false;
+    }
+    if (expected.getClass() != actual.getClass()) {
+      return false;
+    }
+
+    if (expected instanceof JsonObject) {
+      JsonObject expectedObj = (JsonObject) expected;
+      JsonObject actualObj = (JsonObject) actual;
+
+      if (expectedObj.getNames().size() != actualObj.getNames().size()) {
+        return false;
+      }
+
+      for (String key : expectedObj.getNames()) {
+        if (!actualObj.has(key)) {
+          return false;
+        }
+        if (!compareJsonElements(expectedObj.get(key), actualObj.get(key))) {
+          return false;
+        }
+      }
+      return true;
+    } else if (expected instanceof JsonArray) {
+      JsonArray expectedArr = (JsonArray) expected;
+      JsonArray actualArr = (JsonArray) actual;
+
+      if (expectedArr.size() != actualArr.size()) {
+        return false;
+      }
+
+      for (int i = 0; i < expectedArr.size(); i++) {
+        if (!compareJsonElements(expectedArr.get(i), actualArr.get(i))) {
+          return false;
+        }
+      }
+      return true;
+    } else if (expected instanceof JsonNumber) {
+      // Numbers compare by value, not by rendering: an engine is free to return
+      // 0.95000000 where the test suite writes 0.95.
+      return new BigDecimal(((JsonNumber) expected).getValue())
+          .compareTo(new BigDecimal(((JsonNumber) actual).getValue())) == 0;
+    } else {
+      // Primitive comparison.
+      return expected.toString().equals(actual.toString());
+    }
+  }
+
+  private void checkColumnOrder(JsonArray expectedColumns, JsonArray results, TestResult result) {
+    if (results.size() == 0) {
+      return;
+    }
+
+    JsonElement firstRow = results.get(0);
+    if (firstRow instanceof JsonObject) {
+      JsonObject row = (JsonObject) firstRow;
+      List<String> actualColumns = new ArrayList<>(row.getNames());
+
+      List<String> expected = new ArrayList<>();
+      for (JsonElement col : expectedColumns) {
+        expected.add(col.toString().replace("\"", ""));
+      }
+
+      if (!actualColumns.equals(expected)) {
+        result.passed = false;
+        result.error = String.format("Column order mismatch: expected %s, got %s",
+                                     expected, actualColumns);
+      }
+    }
+  }
+
+  /**
+   * Simple test result class.
+   */
+  static class TestResult {
+    String name;
+    boolean passed;
+    String error;
+  }
+}

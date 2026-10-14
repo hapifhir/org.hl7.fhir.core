@@ -90,7 +90,7 @@ import org.w3c.dom.Element;
  * See R5 rendering framework to render R4B resources
  * 
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 @Slf4j
 public class ProfileDrivenRenderer extends ResourceRenderer {
 
@@ -997,8 +997,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (defn != null) {
       String displayHint = ToolingExtensions.getDisplayHint(defn);
       if (!Utilities.noString(displayHint)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] list = displayHint.split(";");
         for (String item : list) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] parts = item.split(":");
           if (parts.length == 1) {
             hints.put("value", parts[0].trim());

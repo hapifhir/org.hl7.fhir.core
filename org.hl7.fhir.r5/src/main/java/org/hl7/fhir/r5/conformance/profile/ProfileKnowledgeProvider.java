@@ -4,10 +4,10 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.r5.model.StructureDefinition;
 
-@MarkedToMoveToAdjunctPackage
+
 public interface ProfileKnowledgeProvider {
   boolean isDatatype(String typeSimple);
   boolean isPrimitiveType(String typeSimple);

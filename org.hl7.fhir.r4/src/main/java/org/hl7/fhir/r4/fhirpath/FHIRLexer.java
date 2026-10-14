@@ -251,13 +251,13 @@ public class FHIRLexer {
         current = source.substring(currentStart, cursor);
         if (ech == '\'')
           current = "\'"+current.substring(1, current.length() - 1)+"\'";
-      } else if (ch == '`') {
+      } else if (ch == '`') { // FIXME SpotBugs issue: UC_USELESS_CONDITION ch == '`' is always false in this branch
         cursor++;
         boolean escape = false;
         while (cursor < source.length() && (escape || source.charAt(cursor) != '`')) {
           if (escape)
             escape = false;
-          else 
+          else
             escape = (source.charAt(cursor) == '\\');
           cursor++;
         }

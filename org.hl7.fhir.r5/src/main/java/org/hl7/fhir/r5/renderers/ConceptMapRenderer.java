@@ -29,14 +29,48 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ConceptMapRenderer extends TerminologyRenderer {
 
+  private static final String CS_CONCEPT_MAP_RELATIONSHIP = "http://hl7.org/fhir/concept-map-relationship";
+  private static final String CS_CONCEPT_MAP_EQUIVALENCE = "http://hl7.org/fhir/concept-map-equivalence";
+
+  /**
+   * Holds the code systems that own the codes rendered in a relationship column. The primary code
+   * system is resolved eagerly and follows the context version gate: relationship for R5 and later,
+   * equivalence for earlier versions. The equivalence one is resolved lazily, only when a legacy
+   * equivalence extension row is actually encountered, and then memoized so a context without it is
+   * probed at most once.
+   */
+  private class RelationshipCodeSystems {
+    private final boolean r5Plus;
+    private final CodeSystem primary;
+    private boolean equivalenceResolved;
+    private CodeSystem equivalence;
+
+    private RelationshipCodeSystems() {
+      r5Plus = VersionUtilities.isR5Plus(context.getContext().getVersion());
+      primary = getContext().getWorker().fetchCodeSystem(r5Plus ? CS_CONCEPT_MAP_RELATIONSHIP : CS_CONCEPT_MAP_EQUIVALENCE, IWorkerContext.VersionResolutionRules.defaultRule());
+    }
+
+    private CodeSystem equivalence() {
+      if (!r5Plus) {
+        return primary;
+      }
+      if (!equivalenceResolved) {
+        equivalence = getContext().getWorker().fetchCodeSystem(CS_CONCEPT_MAP_EQUIVALENCE, IWorkerContext.VersionResolutionRules.defaultRule());
+        equivalenceResolved = true;
+      }
+      return equivalence;
+    }
+  }
 
   public ConceptMapRenderer(RenderingContext context) { 
     super(context); 
@@ -333,24 +367,25 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     }
 
     XhtmlNode p = x.para();
-    p.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
-    if (cm.hasSourceScope())
-      AddVsRef(cm.getSourceScope().primitiveValue(), cm.getSourceScope(), p, cm);
-    else
-      p.tx(context.formatPhrase(RenderingContext.CONC_MAP_NOT_SPEC));
-    p.tx(" "+ (context.formatPhrase(RenderingContext.CONC_MAP_TO) + " "));
-    if (cm.hasTargetScope())
-      AddVsRef(cm.getTargetScope().primitiveValue(), cm.getTargetScope(), p, cm);
-    else 
-      p.tx(context.formatPhrase(RenderingContext.CONC_MAP_NOT_SPEC));
+    if (cm.hasSourceScope() || cm.hasTargetScope()) {
+      p.tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_FROM) + " ");
+      if (cm.hasSourceScope())
+        AddVsRef(cm.getSourceScope().primitiveValue(), cm.getSourceScope(), p, cm);
+      else
+        p.tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_NOT_SPEC));
+      p.tx(" " + (context.formatPhrase(RenderingI18nContext.CONC_MAP_TO) + " "));
+      if (cm.hasTargetScope())
+        AddVsRef(cm.getTargetScope().primitiveValue(), cm.getTargetScope(), p, cm);
+      else
+        p.tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_NOT_SPEC));
+    } else {
+      p.tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_NO_SPEC));
+    }
 
     x.br();
     int gc = 0;
 
-    CodeSystem cs = getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship", IWorkerContext.VersionResolutionRules.defaultRule());
-    if (cs == null)
-      cs = getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence", IWorkerContext.VersionResolutionRules.defaultRule());
-    String eqpath = cs == null ? null : cs.getWebPath();
+    RelationshipCodeSystems eqcs = new RelationshipCodeSystems();
 
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
       boolean hasComment = false;
@@ -391,9 +426,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       StructureDefinition sdSrc = findSourceStructure(grp.getSource(), grp.getSourceElement());
       StructureDefinition sdTgt = findSourceStructure(grp.getTarget(), grp.getTargetElement());
       if (sdSrc != null && sdTgt != null) {
-        renderModelMap(sdSrc, sdTgt, status, res, x, gc, eqpath, grp, hasComment, isSimple, props, sources, targets);
+        renderModelMap(sdSrc, sdTgt, status, res, x, gc, eqcs, grp, hasComment, isSimple, props, sources, targets, cm.getGroup().size() > 1);
       } else {
-        renderCodeSystemMap(status, res, x, gc, eqpath, grp, hasComment, isSimple, props, sources, targets);
+        renderCodeSystemMap(status, res, x, gc, eqcs, grp, hasComment, isSimple, props, sources, targets, cm.getGroup().size() > 1);
       }
     }
   }
@@ -406,37 +441,72 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     return sd;
   }
 
-  private void renderModelMap(StructureDefinition sdSrc, StructureDefinition sdTgt, RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, String eqpath,
+  /**
+   * Builds the relationship-column href. Returns null - so the cell is rendered unlinked - when
+   * the code system can't be resolved or has no web path to link to.
+   */
+  private String codeHref(CodeSystem cs, String code) {
+    if (cs == null || !cs.hasWebPath()) {
+      return null;
+    }
+    return context.prefixLocalHref(cs.getWebPath() + "#" + cs.getId() + "-" + Utilities.nmtokenize(code));
+  }
+
+  /**
+   * Builds the href of an element in the page of a StructureDefinition. The anchors in the
+   * structure tables replace '[' and ']' with '_', so value[x] is found at #s-...value_x_.
+   * Returns null - so the cell is rendered unlinked - when the StructureDefinition has no web path.
+   */
+  private String elementHref(StructureDefinition sd, String id) {
+    if (!sd.hasWebPath()) {
+      return null;
+    }
+    return sd.getWebPath() + "#s-" + id.replace("[", "_").replace("]", "_");
+  }
+
+  private void renderRelationshipCell(XhtmlNode td, TargetElementComponent ccm, RelationshipCodeSystems eqcs) {
+    if (ccm.hasExtension(ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+      String code = ExtensionUtilities.readStringExtension(ccm, ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+      td.ahOrNot(codeHref(eqcs.equivalence(), code), code).tx(presentEquivalenceCode(code));
+    } else {
+      String code = ccm.getRelationship().toCode();
+      td.ahOrNot(codeHref(eqcs.primary, code), code).tx(presentRelationshipCode(code));
+    }
+  }
+
+  private void renderModelMap(StructureDefinition sdSrc, StructureDefinition sdTgt, RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, RelationshipCodeSystems eqcs,
       ConceptMapGroupComponent grp, boolean hasComment, boolean ok,
-      Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets)
+      Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets, boolean hasMultipleGroups)
       throws UnsupportedEncodingException, IOException {
     XhtmlNode pp = x.para();
-    pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
-    pp.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
+    if (hasMultipleGroups) {
+      pp.b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_GRP, gc) + " ");
+    }
+    pp.tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_FROM) + " ");
     pp.ah(sdSrc.getWebPath()).tx(sdSrc.present(context.getLocale().toLanguageTag()));
     pp.tx(" to ");
     pp.ah(sdTgt.getWebPath()).tx(sdTgt.present(context.getLocale().toLanguageTag()));
     
     XhtmlNode tbl = x.table( "grid", false);
     XhtmlNode tr = tbl.tr();
-    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SOURCE));
-    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SOURCE_CARD));
-    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SOURCE_TYPE));
-    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
-    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT));
-    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT_CARD));
-    tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT_TYPE));
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_SOURCE));
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_SOURCE_CARD));
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_SOURCE_TYPE));
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_REL));
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_TRGT));
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_TRGT_CARD));
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_TRGT_TYPE));
     if (hasComment)
-      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_COMMENT));
     for (SourceElementComponent ccl : grp.getElement()) {
         tr = tbl.tr();
         ElementDefinition edSrc = sdSrc.getSnapshot().getElementById(ccl.getCode());
         if (edSrc == null) {        
           tr.td().colspan(3).addText(ccl.getCode());
         } else {
-          tr.td().ah(sdSrc.getWebPath()+"#"+ccl.getCode()).tx(ccl.getCode());
+          tr.td().ah(elementHref(sdSrc, ccl.getCode())).tx(ccl.getCode());
           tr.td().tx(""+edSrc.getMin()+".."+edSrc.getMax());
-          tr.td().tx("todo");
+          tr.td().tx(edSrc.typeSummary());
         }
 
       if (ccl.getNoMap()) {
@@ -460,20 +530,15 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           if (!ccm.hasRelationship()) {
             tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
           } else {
-            if (ccm.hasExtension(ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-              String code = ExtensionUtilities.readStringExtension(ccm, ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-              tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
-            } else {
-              tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
-            }
+            renderRelationshipCell(tr.td(), ccm, eqcs);
           }
           ElementDefinition edTgt = sdTgt.getSnapshot().getElementById(ccm.getCode());
           if (edTgt == null) {        
             tr.td().colspan(3).addText(ccm.getCode());
           } else {
-            tr.td().ah(sdTgt.getWebPath()+"#"+ccm.getCode()).tx(ccm.getCode());
+            tr.td().ah(elementHref(sdTgt, ccm.getCode())).tx(ccm.getCode());
             tr.td().tx(""+edTgt.getMin()+".."+edTgt.getMax());
-            tr.td().tx("todo");
+            tr.td().tx(edTgt.typeSummary());
           }
   
           if (hasComment)
@@ -483,24 +548,26 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     }
   }
   
-  private void renderCodeSystemMap(RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, String eqpath,
+  private void renderCodeSystemMap(RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, RelationshipCodeSystems eqcs,
       ConceptMapGroupComponent grp, boolean hasComment, boolean isSimple,
-      Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets)
+      Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets, boolean hasMultipleGroups)
       throws UnsupportedEncodingException, IOException {
 
     XhtmlNode pp = x.para();
-    pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
-    pp.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
+    if (hasMultipleGroups) {
+      pp.b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_GRP, gc) + " ");
+    }
+    pp.tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_FROM) + " ");
     if (grp.hasSource()) {
       renderCanonical(status, res, pp, CodeSystem.class, grp.getSourceElement());
     } else {
-      pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
+      pp.code(context.formatPhrase(RenderingI18nContext.CONC_MAP_CODE_SYS_UNSPEC));
     }
     pp.tx(" to ");
     if (grp.hasTarget()) {
       renderCanonical(status, res, pp, CodeSystem.class, grp.getTargetElement());
     } else {
-      pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
+      pp.code(context.formatPhrase(RenderingI18nContext.CONC_MAP_CODE_SYS_UNSPEC));
     }
 
     String display;
@@ -508,11 +575,11 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       // simple
       XhtmlNode tbl = x.table( "grid", false);
       XhtmlNode tr = tbl.tr();
-      tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SOURCE));
-      tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
-      tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT));
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_SOURCE));
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_REL));
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_TRGT));
       if (hasComment)
-        tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
+        tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_COMMENT));
       renderPropHeaders(props, tr);
       for (SourceElementComponent ccl : grp.getElement()) {
         tr = tbl.tr();
@@ -542,12 +609,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             if (!ccm.hasRelationship())
               tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
             else {
-              if (ccm.hasExtension(ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-                String code = ExtensionUtilities.readStringExtension(ccm, ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
-              } else {
-                tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
-              }
+              renderRelationshipCell(tr.td(), ccm, eqcs);
             }
             td = tr.td();
             td.addText(ccm.getCode());
@@ -576,23 +638,23 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       XhtmlNode tbl = x.table("grid", false);
       XhtmlNode tr = tbl.tr();
       XhtmlNode td;
-      tr.td().colspan(Integer.toString(1+sources.size())).b().tx(context.formatPhrase(RenderingContext.CONC_MAP_SRC_DET));
+      tr.td().colspan(Integer.toString(1+sources.size())).b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_SRC_DET));
       if (hasRelationships) {
-        tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_REL));
+        tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_REL));
       }
-      tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT_DET));
+      tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_TRGT_DET));
       if (hasComment) {
-        tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
+        tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_COMMENT));
       }
       if (!props.isEmpty()) {
-        tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.GENERAL_PROPS));
+        tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_PROPS));
       }
       tr = tbl.tr();
       if (sources.get("code").size() == 1) {
         String url = sources.get("code").iterator().next();
         renderCSDetailsLink(tr, url, true);           
       } else
-        tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
+        tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_CODE));
       for (String s : sources.keySet()) {
         if (s != null && !s.equals("code")) {
           if (sources.get(s).size() == 1) {
@@ -609,7 +671,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         String url = targets.get("code").iterator().next();
         renderCSDetailsLink(tr, url, true);           
       } else
-        tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
+        tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_CODE));
       for (String s : targets.keySet()) {
         if (s != null && !s.equals("code")) {
           if (targets.get(s).size() == 1) {
@@ -692,12 +754,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               if (!ccm.hasRelationship())
                 tr.td();
               else {
-                if (ccm.hasExtension(ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-                  String code = ExtensionUtilities.readStringExtension(ccm, ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                  tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
-                } else {
-                  tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
-                }
+                renderRelationshipCell(tr.td(), ccm, eqcs);
               }
             }
             td = tr.td().style("border-right-width: 0px");
@@ -795,7 +852,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       return "maps to wider concept";
     } else if ("subsumes".equals(code)) {
       return "is subsumed by";
-    } else if ("source-is-broader-than-target".equals(code)) {
+    } else if ("narrower".equals(code)) {
       return "maps to narrower concept";
     } else if ("specializes".equals(code)) {
       return "has specialization";
@@ -818,8 +875,8 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     if (span2) {
       td.colspan("2");
     }
-    td.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_CODES));
-    td.tx(" " + (context.formatPhrase(RenderingContext.CONC_MAP_FRM) + " "));
+    td.b().tx(context.formatPhrase(RenderingI18nContext.CONC_MAP_CODES));
+    td.tx(" " + (context.formatPhrase(RenderingI18nContext.CONC_MAP_FRM) + " "));
     if (cs == null)
       td.tx(url);
     else
@@ -1124,7 +1181,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   private static MultipleMappingRow findExistingRowByTarget(List<MultipleMappingRow> rows, String system, String code, int i) {
     for (MultipleMappingRow row : rows) {
       for (MultipleMappingRowItem cells : row.rowSets) {
-        if (cells.cells.size() > i + 1 && cells.cells.get(i+1).matches(system, code)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean cellMatches = cells.cells.size() > i + 1 && cells.cells.get(i+1).matches(system, code);
+        if (cellMatches) {
           return row;
         }
       }
@@ -1135,7 +1195,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   private static MultipleMappingRow findExistingRowBySource(List<MultipleMappingRow> rows, String system, String code, int i) {
     for (MultipleMappingRow row : rows) {
       for (MultipleMappingRowItem cells : row.rowSets) {
-        if (cells.cells.size() > i && cells.cells.get(i).matches(system, code)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean cellMatchesSource = cells.cells.size() > i && cells.cells.get(i).matches(system, code);
+        if (cellMatchesSource) {
           return row;
         }
       }

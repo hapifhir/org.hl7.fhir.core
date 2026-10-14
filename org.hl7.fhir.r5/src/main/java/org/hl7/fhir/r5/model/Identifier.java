@@ -640,6 +640,10 @@ public class Identifier extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Identifier) dst);
+      }
+
       public void copyValues(Identifier dst) {
         super.copyValues(dst);
         dst.use = use == null ? null : use.copy();
@@ -683,7 +687,10 @@ public class Identifier extends DataType implements ICompositeType {
       }
 
       public boolean matches(Identifier other) {
-        return hasSystem() && hasValue() && getSystem().matches(other.getSystem()) && getValue().matches(other.getValue());
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //system and value are identifiers/URLs; safe
+        boolean result = hasSystem() && hasValue() && getSystem().matches(other.getSystem()) && getValue().matches(other.getValue());
+        return result;
       }
 
 

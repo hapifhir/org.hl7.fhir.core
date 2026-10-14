@@ -167,6 +167,10 @@ public class EHR_ACCESS extends LOCATABLE implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((EHR_ACCESS) dst);
+      }
+
       public void copyValues(EHR_ACCESS dst) {
         super.copyValues(dst);
         dst.settings = settings == null ? null : settings.copy();

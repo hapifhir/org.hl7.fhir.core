@@ -698,6 +698,10 @@ public class SubscriptionTopic extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SubscriptionTopicResourceTriggerComponent) dst);
+      }
+
       public void copyValues(SubscriptionTopicResourceTriggerComponent dst) {
         super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
@@ -1187,6 +1191,10 @@ public class SubscriptionTopic extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SubscriptionTopicResourceTriggerQueryCriteriaComponent) dst);
+      }
+
       public void copyValues(SubscriptionTopicResourceTriggerQueryCriteriaComponent dst) {
         super.copyValues(dst);
         dst.previous = previous == null ? null : previous.copy();
@@ -1507,6 +1515,10 @@ public class SubscriptionTopic extends CanonicalResource {
         SubscriptionTopicEventTriggerComponent dst = new SubscriptionTopicEventTriggerComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SubscriptionTopicEventTriggerComponent) dst);
       }
 
       public void copyValues(SubscriptionTopicEventTriggerComponent dst) {
@@ -2094,6 +2106,10 @@ public class SubscriptionTopic extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SubscriptionTopicCanFilterByComponent) dst);
+      }
+
       public void copyValues(SubscriptionTopicCanFilterByComponent dst) {
         super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
@@ -2469,6 +2485,10 @@ public class SubscriptionTopic extends CanonicalResource {
         SubscriptionTopicNotificationShapeComponent dst = new SubscriptionTopicNotificationShapeComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SubscriptionTopicNotificationShapeComponent) dst);
       }
 
       public void copyValues(SubscriptionTopicNotificationShapeComponent dst) {
@@ -4411,6 +4431,10 @@ public class SubscriptionTopic extends CanonicalResource {
         SubscriptionTopic dst = new SubscriptionTopic();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SubscriptionTopic) dst);
       }
 
       public void copyValues(SubscriptionTopic dst) {

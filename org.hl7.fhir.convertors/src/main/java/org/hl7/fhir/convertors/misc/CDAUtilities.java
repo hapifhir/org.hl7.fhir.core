@@ -144,6 +144,8 @@ public class CDAUtilities {
   }
 
   public Element getDescendent(Element element, String path) throws Exception {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = path.split("\\/");
     return getDescendent(element, p);
   }

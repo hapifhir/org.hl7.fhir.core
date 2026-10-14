@@ -2422,7 +2422,10 @@ public class FHIRPathEngine {
 
     if (focus.size() == 1 && !Utilities.noString(sw)) {
       try {
-        result.add(new BooleanType(RegexTimeout.matches(convertToString(focus.get(0)), sw, regexTimeoutMillis)));
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+        boolean matched = RegexTimeout.matches(convertToString(focus.get(0)), sw, regexTimeoutMillis);
+        result.add(new BooleanType(matched));
       } catch (TimeoutException e) {
         throw new FHIRException("Timeout evaluating regex: " + sw, e);
       }

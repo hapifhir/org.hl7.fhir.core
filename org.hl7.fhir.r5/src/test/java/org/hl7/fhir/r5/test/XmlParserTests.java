@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,12 @@ public class XmlParserTests {
 
   private static SimpleWorkerContext context;
   private static FHIRPathEngine fp;
+
+  @AfterAll
+  public static void tearDown() {
+    context = null;
+    fp = null;
+  }
 
   @BeforeAll
   public static void setUp() throws Exception {

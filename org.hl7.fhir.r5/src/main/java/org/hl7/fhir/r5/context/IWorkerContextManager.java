@@ -4,39 +4,39 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageLoadController;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
-@MarkedToMoveToAdjunctPackage
+
 public interface IWorkerContextManager {
 
   interface IPackageLoadingTracker {
-    public void packageLoaded(String pid, String version);
+    void packageLoaded(String pid, String version);
   }
 
   interface ICanonicalResourceLocator {
     void findResource(Object caller, String url, IWorkerContext.VersionResolutionRules rules); // if it can be found, put it in the context
   }
 
-  public IPackageCacheManager packageManager();
+  IPackageCacheManager packageManager();
 
-  public void setPackageManager(IPackageCacheManager manager);
+  void setPackageManager(IPackageCacheManager manager);
 
-  public PackageLoadController getPackageLoadController();
+  PackageLoadController getPackageLoadController();
 
   /**
    * Get the expansion parameters passed through the terminology server when txServer calls are made
    *
    * Note that the Validation Options override these when they are specified on validateCode
    */
-  public void setExpansionParameters(Parameters expParameters);
+  void setExpansionParameters(Parameters expParameters);
 
   /**
    * Sets the locale for this worker context.
@@ -48,14 +48,11 @@ public interface IWorkerContextManager {
   @Deprecated
   void setLocale(Locale locale);
 
-//  @Deprecated
-//  void setValidationMessageLanguage(Locale locale);
-
   /**
    * cache a resource for later retrieval using fetchResource.
    *
    * Note that various context implementations will have their own ways of loading
-   * rseources, and not all need implement cacheResource.
+   * resources, and not all need implement cacheResource.
    *
    * If the resource is loaded out of a package, call cacheResourceFromPackage instead
    * @param res
@@ -65,13 +62,24 @@ public interface IWorkerContextManager {
 
 
   /**
+   * Determines whether the implementation can load packages into the context.
+   *
+   * This method is typically used to check if the context supports loading resources
+   * from FHIR packages, which may involve managing dependencies, resource types, and
+   * lazy loading mechanisms.
+   *
+   * @return true if the implementation supports package loading; false otherwise.
+   */
+  public boolean canLoadPackages();
+
+  /**
    * cache a resource for later retrieval using fetchResource.
    *
    * The package information is used to help manage the cache internally, and to
-   * help with reference resolution. Packages should be define using cachePackage (but don't have to be)
+   * help with reference resolution. Packages should be defined using cachePackage (but don't have to be)
    *
    * Note that various context implementations will have their own ways of loading
-   * rseources, and not all need implement cacheResource
+   * resources, and not all need implement cacheResource
    *
    * @param res
    * @throws FHIRException
@@ -93,11 +101,15 @@ public interface IWorkerContextManager {
    *
    * note that the package system may use lazy loading; the loader will be called later when the classes that use the context need the relevant resource
    *
-   * @param pi - the package to load
+   * @param npmPackage - the package to load
    * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
+   * @param isMaster - marks that the package being loaded is the very first package loaded, the master definitions
    * @return the number of resources loaded
    */
-  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException;
+  int loadFromPackage(NpmPackage npmPackage, IContextResourceLoader loader, boolean isMaster) throws  IOException, FHIRException;
+  default int loadFromPackage(NpmPackage npmPackage, IContextResourceLoader loader) throws IOException, FHIRException {
+    return loadFromPackage(npmPackage, loader, false);
+  }
 
   /**
    * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
@@ -105,9 +117,13 @@ public interface IWorkerContextManager {
    * note that the package system may use lazy loading; the loader will be called later when the classes that use the context need the relevant resource
    *
    * @param pi - the package to load
+   * @param isMaster - marks that the package being loaded is the very first package loaded, the master definitions
    * @return the number of resources loaded
    */
-  int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException;
+  int loadPackage(NpmPackage pi, boolean isMaster) throws IOException, FHIRException;
+  default int loadPackage(NpmPackage npmPackage) throws IOException, FHIRException {
+    return loadPackage(npmPackage, false);
+  }
 
   /**
    * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
@@ -115,9 +131,13 @@ public interface IWorkerContextManager {
    * note that the package system may use lazy loading; the loader will be called later when the classes that use the context need the relevant resource
    *
    * @param idAndVer - the package to load
+   * @param isMaster - marks that the package being loaded is the very first package loaded, the master definitions
    * @return the number of resources loaded
    */
-  int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException;
+  int loadPackage(String idAndVer, boolean isMaster) throws IOException, FHIRException;
+  default int loadPackage(String idAndVer) throws IOException, FHIRException {
+    return loadPackage(idAndVer, false);
+  }
 
 
   /**
@@ -127,11 +147,13 @@ public interface IWorkerContextManager {
    *
    * This method also loads all the packages that the package depends on (recursively)
    *
-   * @param pi - the package to load
+   * @param npmPackage - the package to load
    * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
    * @param pcm - used to find and load additional dependencies
    * @return the number of resources loaded
    */
-  int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
+  int loadFromPackageAndDependencies(NpmPackage npmPackage, IContextResourceLoader loader, BasePackageCacheManager pcm) throws IOException, FHIRException;
+
+  List<String> getLoadedPackages();
 
 }

@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation.instance;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.validation.BaseValidator;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

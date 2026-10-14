@@ -2,10 +2,11 @@ package org.hl7.fhir.r4b.terminologies;
 
 import org.hl7.fhir.r4b.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r4b.model.Coding;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 
-@MarkedToMoveToAdjunctPackage
+
+@Deprecated(forRemoval = true)
 public class URICodeSystem extends SpecialCodeSystem {
 
   @Override

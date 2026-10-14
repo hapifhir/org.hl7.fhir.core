@@ -8,8 +8,8 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 
@@ -27,6 +27,8 @@ public class TextDrivenPolicyAdvisor extends RulesDrivenPolicyAdvisor {
 
   public TextDrivenPolicyAdvisor(IValidationPolicyAdvisor base, String filename, String source) throws JsonException, IOException {
     super(base);
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] lines= source.split("\\R");
     for (String line : lines) {
       processLine(line);  

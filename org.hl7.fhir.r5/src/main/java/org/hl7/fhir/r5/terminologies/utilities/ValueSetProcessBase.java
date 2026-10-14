@@ -32,8 +32,8 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.terminologies.expansion.OperationIsTooCostly;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
-import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.UserDataNames;
+
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -42,7 +42,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 import javax.annotation.Nonnull;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ValueSetProcessBase {
 
   public class UnknownValueSetException extends FHIRException {
@@ -80,10 +80,12 @@ public class ValueSetProcessBase {
   }
   
   public enum OpIssueCode {
-    NotInVS, ThisNotInVS, InvalidCode, Display, DisplayComment, NotFound, CodeRule, VSProcessing, InferFailed, StatusCheck, InvalidData, CodeComment, VersionError;
-    
+    NotInVS, ThisNotInVS, InvalidCode, Display, DisplayComment, NotFound, CodeRule, VSProcessing, InferFailed,
+    StatusCheck, InvalidData, CodeComment, VersionError, CacheIdUnknown, TooCostly, NotSupported, BusinessRule;
+
     public String toCode() {
       switch (this) {
+      case CacheIdUnknown: return "cache-id-unknown";
       case CodeRule: return "code-rule";
       case Display: return "invalid-display";
       case DisplayComment: return "display-comment";
@@ -97,6 +99,9 @@ public class ValueSetProcessBase {
       case VSProcessing: return "vs-invalid";
       case CodeComment: return "code-comment";
       case VersionError: return "version-error";
+      case TooCostly: return "too-costly";
+      case NotSupported: return "not-supported";
+      case BusinessRule: return "business-rule";
       default:
         return "??";      
       }
@@ -410,4 +415,17 @@ public class ValueSetProcessBase {
     return list;
   }
 
+
+  /**
+   * The name a value set is known by in the circularity check, and so in its error message. A
+   * contained value set is given a made-up urn:uuid: url when it is resolved, which means nothing
+   * to the user, so it is named after its container instead: [container url]#[id]
+   */
+  protected String contextName(CanonicalResource vs) {
+    Object container = vs.getUserData(UserDataNames.CONTAINER_RESOURCE);
+    if (container instanceof CanonicalResource && ((CanonicalResource) container).hasUrl() && vs.hasId()) {
+      return ((CanonicalResource) container).getUrl() + "#" + vs.getIdBase();
+    }
+    return vs.getVersionedUrl();
+  }
 }

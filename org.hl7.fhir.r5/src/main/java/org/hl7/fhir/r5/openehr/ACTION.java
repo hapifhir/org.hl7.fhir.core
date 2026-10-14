@@ -312,6 +312,10 @@ public class ACTION extends CARE_ENTRY implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ACTION) dst);
+      }
+
       public void copyValues(ACTION dst) {
         super.copyValues(dst);
         dst.time = time == null ? null : time.copy();

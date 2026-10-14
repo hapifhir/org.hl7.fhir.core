@@ -17,11 +17,12 @@ import org.hl7.fhir.r4b.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r4b.model.CodeSystem.CodeSystemHierarchyMeaning;
 import org.hl7.fhir.r4b.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r4b.model.Resource;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
-@MarkedToMoveToAdjunctPackage
+
 @SuppressWarnings("checkstyle:systemout")
+@Deprecated(forRemoval = true)
 public class ResourceFixer {
 
   public static void main(String[] args) throws IOException {

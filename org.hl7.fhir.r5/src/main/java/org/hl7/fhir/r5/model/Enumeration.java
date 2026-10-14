@@ -119,13 +119,21 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
 	}
 	
   /**
+   * the enum factories map a code with no value (only an id and/or extensions) to their NULL
+   * constant, but the enumeration should have no value, like the code it came from
+   */
+  private static boolean hasValue(Element source) {
+    return source instanceof PrimitiveType && ((PrimitiveType<?>) source).hasValue();
+  }
+
+  /**
    * Constructor
    */
   public Enumeration(EnumFactory<T> theEnumFactory, T theValue, Element source) {
     if (theEnumFactory == null)
       throw new IllegalArgumentException("An enumeration factory must be provided");
     myEnumFactory = theEnumFactory;
-    setValue(theValue);
+    setValue(!hasValue(source) ? null : theValue);
     setId(source.getId());
     getExtension().addAll(source.getExtension());
   }
@@ -137,20 +145,33 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
     if (theEnumFactory == null)
       throw new IllegalArgumentException("An enumeration factory must be provided");
     myEnumFactory = theEnumFactory;
-    setValue(myEnumFactory.fromCode(source.getCode()));
+    setValueAsString(source.getCode()); // string based, not value based, so a CUSTOM value keeps the real code
     setId(source.getId());
     getExtension().addAll(source.getExtension());
   }
 
+  @SuppressWarnings("unchecked")
+  @Override
+  public void assignValues(Base dst) {
+    copyValues((Enumeration<T>) dst);
+  }
+
+  /**
+   * the factory is state on this class. The value comes across as both the coerced value and the
+   * string, so a CUSTOM code - which only exists in the string - survives the copy
+   */
+  public void copyValues(Enumeration<T> dst) {
+    super.copyValues(dst);
+    dst.myEnumFactory = myEnumFactory;
+  }
+
   @Override
   public Enumeration<T> copy() {
-    Enumeration dst= new Enumeration(this.myEnumFactory, (Enum)this.getValue());
-    //Copy the Extension
-    if (extension != null) {
-      dst.extension = new ArrayList<>();
-      for (Extension i : extension)
-        dst.extension.add(i.copy());
-    };
+    // copyValues carries the string form as well as the coerced value, so a CUSTOM value (where the
+    // real code only exists in the string) survives the copy, and so does the id, which this didn't
+    // used to copy at all
+    Enumeration<T> dst = new Enumeration<T>(this.myEnumFactory);
+    copyValues(dst);
     return dst;
   }
 

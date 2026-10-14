@@ -31,11 +31,7 @@ package org.hl7.fhir.utilities.xhtml;
 
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,6 +58,9 @@ public class XhtmlParser {
   public static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
   private static final char END_OF_CHARS = (char) -1;
   private static final boolean DEBUG = false;
+  // maximum XHTML element nesting depth; well above any legitimate FHIR narrative, but low
+  // enough to fail cleanly with a FHIRFormatError rather than a StackOverflowError.
+  private static final int MAX_XHTML_DEPTH = 500;
 
   public class NamespaceNormalizationMap {
 
@@ -358,13 +357,16 @@ public class XhtmlParser {
   }
 
   public XhtmlNode parseHtmlNode(Element node, String defaultNS) throws FHIRFormatError  {
-    XhtmlNode res = parseNode(node, defaultNS);
+    XhtmlNode res = parseNode(node, defaultNS, 0);
     if (res.getNsDecl() == null)
       res.getAttributes().put("xmlns", XHTML_NS);
     return res;
   }
 
-  private XhtmlNode parseNode(Element node, String defaultNS) throws FHIRFormatError  {
+  private XhtmlNode parseNode(Element node, String defaultNS, int depth) throws FHIRFormatError  {
+    if (depth > MAX_XHTML_DEPTH) {
+      throw new FHIRFormatError("XHTML nesting depth exceeds maximum of "+MAX_XHTML_DEPTH+descLoc());
+    }
     XhtmlNode res = new XhtmlNode(NodeType.Element);
     res.setName(node.getLocalName());
     defaultNS = checkNS(res, node, defaultNS);
@@ -381,7 +383,7 @@ public class XhtmlParser {
         res.addComment(child.getTextContent());
       } else if (child.getNodeType() == Node.ELEMENT_NODE) {
         if (elementIsOk(child.getLocalName()))
-          res.addChildNode(parseNode((Element) child, defaultNS));
+          res.addChildNode(parseNode((Element) child, defaultNS, depth+1));
       } else
         throw new FHIRFormatError("Unhandled XHTML feature: "+Integer.toString(child.getNodeType())+descLoc());
       child = child.getNextSibling();
@@ -401,13 +403,16 @@ public class XhtmlParser {
   }
 
   public XhtmlNode parseHtmlNode(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError  {
-    XhtmlNode res = parseNode(xpp);
+    XhtmlNode res = parseNode(xpp, 0);
     if (res.getNsDecl() == null)
       res.getAttributes().put("xmlns", XHTML_NS);
     return res;
 
   }
-  private XhtmlNode parseNode(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError  {
+  private XhtmlNode parseNode(XmlPullParser xpp, int depth) throws XmlPullParserException, IOException, FHIRFormatError  {
+    if (depth > MAX_XHTML_DEPTH) {
+      throw new FHIRFormatError("XHTML nesting depth exceeds maximum of "+MAX_XHTML_DEPTH+descLoc());
+    }
     XhtmlNode res = new XhtmlNode(NodeType.Element);
     res.setName(xpp.getName());
 
@@ -428,7 +433,7 @@ public class XhtmlParser {
         xpp.next();
       } else if (eventType == XmlPullParser.START_TAG) {
         if (elementIsOk(xpp.getName()))
-          res.addChildNode(parseNode(xpp));
+          res.addChildNode(parseNode(xpp, depth+1));
       } else
         throw new FHIRFormatError("Unhandled XHTML feature: "+Integer.toString(eventType)+descLoc());
       eventType = xpp.getEventType();
@@ -478,8 +483,41 @@ public class XhtmlParser {
     return " at line "+Integer.toString(line)+" column "+Integer.toString(col);
   }
 
-  private Reader rdr;
-  private String cache = "";
+  /**
+   * The name of the user data that carries a recovery note on the element it happened in.
+   * The value is the same String that appears in {@link #getRecoveryNotes()}.
+   * <p>
+   * User data deliberately, not an attribute: XhtmlComposer writes attributes back out, and callers
+   * such as the IG publisher's HTMLInspector re-save the pages they parse, so an attribute here
+   * would be published into the output HTML.
+   */
+  public static final String RECOVERY_NOTE = "xhtml.recovery-note";
+
+  private List<String> recoveryNotes = new ArrayList<>();
+
+  /**
+   * What the parser had to fix up to keep going, when it is not in well formed mode.
+   * <p>
+   * Empty for content that parsed cleanly, so a caller can keep the lenient parse - and everything
+   * it can then check - while still reporting that the source was not valid, and where.
+   */
+  public List<String> getRecoveryNotes() {
+    return recoveryNotes;
+  }
+
+  private void noteRecovery(XhtmlNode node, String err) {
+    recoveryNotes.add(err);
+    if (node != null && !node.hasUserData(RECOVERY_NOTE)) {
+      node.setUserData(RECOVERY_NOTE, err);
+    }
+  }
+
+  // the whole source is read up front: pulling it a char at a time through a Reader (with a ready() check
+  // before every read) dominated the cost of parsing large pages
+  private String src = "";
+  private int srcPos = 0;
+  // chars handed back by pushChar(); the top of the stack (the next char to read) is at the end
+  private final StringBuilder pushback = new StringBuilder();
   private XhtmlNode unwindPoint;
   private String lastText = "";
   private int line = 1;
@@ -489,13 +527,24 @@ public class XhtmlParser {
   private boolean xmlMode;
 
   public XhtmlDocument parse(String source, String entryName) throws FHIRFormatError, IOException  {
-    rdr = new StringReader(source);
+    setSource(source);
     return parse(entryName);
   }
 
   public XhtmlDocument parse(InputStream input, String entryName) throws FHIRFormatError, IOException  {
-    rdr = new InputStreamReader(input, StandardCharsets.UTF_8);
+    setSource(new String(input.readAllBytes(), StandardCharsets.UTF_8));
     return parse(entryName);
+  }
+
+  public XhtmlDocument parse(File file, String entryName) throws FHIRFormatError, IOException  {
+    try (InputStream input = new FileInputStream(file)) {
+      return parse(input, entryName);
+    }
+  }
+
+  private void setSource(String source) {
+    src = source == null ? "" : source;
+    srcPos = 0;
   }
 
   private XhtmlDocument parse(String entryName) throws FHIRFormatError, IOException 
@@ -602,7 +651,9 @@ public class XhtmlParser {
   private void parseElementInner(XhtmlNode node, List<XhtmlNode> parents, NamespaceNormalizationMap nsm) throws FHIRFormatError, IOException
   {
     StringBuilder s = new StringBuilder();
-    while (peekChar() != END_OF_CHARS && !parents.contains(unwindPoint) && !(node == unwindPoint))
+    // unwindPoint is only set while recovering from a mis-matched end tag, and parents never holds null, so only
+    // look through parents (which this checks before every char) when it's set
+    while (peekChar() != END_OF_CHARS && !(unwindPoint != null && parents.contains(unwindPoint)) && !(node == unwindPoint))
     {
       if (peekChar() == '<')
       {
@@ -628,12 +679,18 @@ public class XhtmlParser {
             return;
           else
           {
+            String err = "Found \"</"+n.getName()+">\" expecting \"</"+node.getName()+">\""+descLoc();
             if (mustBeWellFormed) {
-              throw new FHIRFormatError("Malformed XHTML: Found \"</"+n.getName()+">\" expecting \"</"+node.getName()+">\""+descLoc());
+              throw new FHIRFormatError("Malformed XHTML: "+err);
             }
+            // Not well formed, but we are parsing leniently, so recover below. Record what we had
+            // to do, on the element it happened in and in a list for the caller: the content is
+            // still wrong, and a caller that keeps the tree (rather than failing the parse) has no
+            // other way to know. See getRecoveryNotes().
+            noteRecovery(node, err);
             for (int i = parents.size() - 1; i >= 0; i--)
             {
-              if (parents.get(i).getName().equals(n))
+              if (parents.get(i).getName().equals(n.getName()))
                 unwindPoint = parents.get(i);
             }
             if (unwindPoint != null)
@@ -674,14 +731,20 @@ public class XhtmlParser {
   }
 
 
-  private void parseScriptInner(XhtmlNode node) throws FHIRFormatError, IOException {
+  /**
+   * The content of <script> and <style> is raw text, not markup: read everything up to the matching close
+   * tag as text. (Otherwise a css comment or a data: url in a stylesheet that mentions an element - e.g.
+   * "inside a filter <th>" - gets parsed as an element, and the page is reported as not well formed.)
+   */
+  private void parseRawTextNode(XhtmlNode node) throws FHIRFormatError, IOException {
+    String end = "</"+node.getName()+">";
     StringBuilder s = new StringBuilder();
-    while (peekChar() != END_OF_CHARS && !s.toString().endsWith("</script>")) {
+    while (peekChar() != END_OF_CHARS && !endsWith(s, end)) {
       s.append(readChar());
     }      
     String ss = s.toString();
-    if (ss.length() >= 9) {
-      ss = ss.substring(0, ss.length()-9);
+    if (endsWith(s, end)) {
+      ss = ss.substring(0, ss.length()-end.length());
     }
     String t = isTrimWhitespace() ? ss.trim() : ss;
     if (t.length() > 0) {
@@ -690,8 +753,22 @@ public class XhtmlParser {
     }
   }
 
+  private static boolean endsWith(StringBuilder b, String end) {
+    int n = b.length() - end.length();
+    if (n < 0) {
+      return false;
+    }
+    for (int i = 0; i < end.length(); i++) {
+      if (Character.toLowerCase(b.charAt(n+i)) != Character.toLowerCase(end.charAt(i))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   private void parseElement(XhtmlNode parent, List<XhtmlNode> parents, NamespaceNormalizationMap namespaceMap) throws IOException, FHIRFormatError
   {
+    checkRecursionLimit(parents);
     markLocation();
     ElementName name = new ElementName(readName());
     XhtmlNode node = parent.addTag(name.getName());
@@ -707,11 +784,23 @@ public class XhtmlParser {
         throw new FHIRFormatError("unexpected non-end of element "+name+" "+descLoc());
       readChar();
       node.setEmptyExpanded(false);
-    } else if ("script".equals(name.getName())) {
-      parseScriptInner(node);
+    } else if ("script".equalsIgnoreCase(name.getName()) || "style".equalsIgnoreCase(name.getName())) {
+      parseRawTextNode(node);
     } else {
       node.setEmptyExpanded(true);
       parseElementInner(node, newParents, namespaceMap);
+    }
+  }
+
+  /*
+   guard against unbounded recursion (parseElement <-> parseElementInner) on deeply nested
+   narratives, which would otherwise cause a StackOverflowError. parents grows by one per
+   nesting level, so it is a faithful proxy for the current depth.
+   */
+  private void checkRecursionLimit(List<XhtmlNode> parents) {
+
+    if (parents.size() > MAX_XHTML_DEPTH) {
+      throw new FHIRFormatError("XHTML nesting depth exceeds maximum of "+MAX_XHTML_DEPTH+descLoc());
     }
   }
 
@@ -753,9 +842,10 @@ public class XhtmlParser {
   private String parseAttributeValue(char term) throws IOException, FHIRFormatError 
   {
     StringBuilder b = new StringBuilder();
-    while (peekChar() != END_OF_CHARS && peekChar() != '>' && (term != END_OF_CHARS || peekChar() != '/') && peekChar() != term)
+    char ch;
+    while ((ch = peekChar()) != END_OF_CHARS && ch != '>' && (term != END_OF_CHARS || ch != '/') && ch != term)
     {
-      if (peekChar() == '&')
+      if (ch == '&')
       {
         parseLiteral(b);
       }
@@ -809,40 +899,33 @@ public class XhtmlParser {
   }
 
   private void pushChar(char ch) {
-    cache = Character.toString(ch)+cache;    
+    pushback.append(ch);
   }
 
   private char peekChar() throws IOException
   {
-    if (cache.length() > 0)
-      return cache.charAt(0);
-    else if (!rdr.ready())
-      return END_OF_CHARS;
+    int pl = pushback.length();
+    if (pl > 0)
+      return pushback.charAt(pl - 1);
+    else if (srcPos < src.length())
+      return src.charAt(srcPos);
     else
-    {
-      int i = rdr.read();
-      if (i == -1)       {
-        cache = "";
-        return END_OF_CHARS;
-      }
-      char c = (char) i;
-      cache =  Character.toString(c);
-      return c;
-    }
+      return END_OF_CHARS;
   }
 
   private char readChar() throws IOException
   {
     char c;
-    if (cache.length() > 0)
+    int pl = pushback.length();
+    if (pl > 0)
     {
-      c = cache.charAt(0);
-      cache = cache.length() == 1 ? "" : cache.substring(1);
+      c = pushback.charAt(pl - 1);
+      pushback.setLength(pl - 1);
     }
-    else if (!rdr.ready())
-      c = END_OF_CHARS;
+    else if (srcPos < src.length())
+      c = src.charAt(srcPos++);
     else
-      c = (char)rdr.read();
+      c = END_OF_CHARS;
     if (c == '\r' || c == '\n') {
       if (c == '\r' || lastChar != '\r') {
         line++;
@@ -995,7 +1078,7 @@ public class XhtmlParser {
   private String readUntil(char ch) throws IOException
   {
     StringBuilder s = new StringBuilder();
-    while (peekChar() != 0 && peekChar() != ch)
+    while (peekChar() != END_OF_CHARS && peekChar() != ch)
       s.append(readChar());
     readChar();
     return s.toString();
@@ -1005,7 +1088,7 @@ public class XhtmlParser {
   private String readUntil(String sc) throws IOException
   {
     StringBuilder s = new StringBuilder();
-    while (peekChar() != 0 && sc.indexOf(peekChar()) == -1)
+    while (peekChar() != END_OF_CHARS && sc.indexOf(peekChar()) == -1)
       s.append(readChar());
     readChar();
     return s.toString();
@@ -1349,7 +1432,7 @@ public class XhtmlParser {
   }
   
   public XhtmlNode parseFragment(String source) throws IOException, FHIRException  {
-    rdr = new StringReader(source);
+    setSource(source);
     try {
       return parseFragment();
     } catch (Exception e) {
@@ -1361,7 +1444,7 @@ public class XhtmlParser {
   }
 
   public XhtmlNode parseFragment(InputStream input) throws IOException, FHIRException  {
-    rdr = new InputStreamReader(input);
+    setSource(new String(input.readAllBytes(), StandardCharsets.UTF_8));
     return parseFragment();
   }
 

@@ -1,9 +1,7 @@
 package org.hl7.fhir.r5.renderers;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -20,7 +16,6 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.SnapshotGenerationPreProcessor;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -31,7 +26,6 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
@@ -39,10 +33,9 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
-import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -340,6 +333,8 @@ public class ClassDiagramRenderer {
         if (p.hasAttribute("transform")) {
           String s = p.getAttribute("transform");
           if (s.startsWith("translate(")) {
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //single literal character split
             String[] sp = s.substring(10, s.length()-1).split("\\,");
             double tx = Double.valueOf(sp[0]);
             double ty = sp.length > 1 ? Double.valueOf(sp[1]) : 0;
@@ -608,6 +603,8 @@ public class ClassDiagramRenderer {
       if (!path.contains(".")) {
         n = sd.getName();
       } else if (!constraintMode && !children.isEmpty()) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] p = path.split("\\.");
         StringBuilder b =  new StringBuilder();
         for (String s : p) {
@@ -963,7 +960,8 @@ public class ClassDiagramRenderer {
         fullPath = ed.getBase().getPath();
       }
     }
-    return (sd == defnSD && defnFile != null ? defnFile : sd.getWebPath())+"#"+fullPath;
+    String base = sd == defnSD && defnFile != null ? defnFile : sd.getWebPath();
+    return linkTo(base, "#"+fullPath);
   }
 
   private String getBindingSuffix(ElementDefinitionBindingComponent b) {
@@ -1166,7 +1164,11 @@ public class ClassDiagramRenderer {
         sd = sdt;
       }
     }
-    return sd.getWebPath()+"#";
+    return sd.hasWebPath() ? sd.getWebPath()+"#" : null;
+  }
+
+  private String linkTo(String base, String tail) {
+    return base == null ? null : base+tail;
   }
 
   private String head(String path) {
@@ -1363,15 +1365,15 @@ public class ClassDiagramRenderer {
             if (c.hasContentReference()) {
               String cr = c.getContentReference();
               ClassItem target = classes.get(cr.substring(cr.indexOf("#")+1));
-              links.add(new Link(item, target, LinkType.COMPOSITION, c.getName(), describeCardinality(c), PointKind.unknown, baseUrl(sd, c, path)+path+"."+c.getName(), getEnhancedDefinition(c)));
+              links.add(new Link(item, target, LinkType.COMPOSITION, c.getName(), describeCardinality(c), PointKind.unknown, linkTo(baseUrl(sd, c, path), path+"."+c.getName()), getEnhancedDefinition(c)));
             } else { 
               ClassItem cc = drawClass(svg, sd, c, path+"."+c.getName(), status, null);
-              links.add(new Link(item, cc, LinkType.COMPOSITION, c.getName(), describeCardinality(c), PointKind.unknown, baseUrl(sd, c, path)+path+"."+c.getName(), getEnhancedDefinition(c)));
+              links.add(new Link(item, cc, LinkType.COMPOSITION, c.getName(), describeCardinality(c), PointKind.unknown, linkTo(baseUrl(sd, c, path), path+"."+c.getName()), getEnhancedDefinition(c)));
               if (c.hasSlicing()) {
                 List<ElementDefinition> slices = getSlices(children, c);
                 for (ElementDefinition s : slices) {
                   ClassItem cc1 = drawClass(svg, sd, s, path+"."+c.getName()+":"+s.getSliceName(), status, null);
-                  links.add(new Link(cc, cc1, LinkType.SLICE, "", describeCardinality(s), PointKind.unknown, baseUrl(sd, s, path)+path+"."+c.getName()+":"+s.getSliceName(), getEnhancedDefinition(c)));
+                  links.add(new Link(cc, cc1, LinkType.SLICE, "", describeCardinality(s), PointKind.unknown, linkTo(baseUrl(sd, s, path), path+"."+c.getName()+":"+s.getSliceName()), getEnhancedDefinition(c)));
                 }
               }
             }

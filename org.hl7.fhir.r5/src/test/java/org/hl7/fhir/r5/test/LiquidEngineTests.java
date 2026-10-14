@@ -16,6 +16,7 @@ import org.hl7.fhir.r5.liquid.LiquidEngine.ILiquidEngineIncludeResolver;
 import org.hl7.fhir.r5.liquid.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,8 +36,14 @@ public class LiquidEngineTests implements ILiquidEngineIncludeResolver {
   private JsonObject test;
   private LiquidEngine engine;
 
+  @AfterAll
+  static void tearDown() {
+    resources = null;
+    testdoc = null;
+  }
+
   @BeforeEach
-  public void setUp() throws Exception {
+  void setUp() throws Exception {
     engine = new LiquidEngine(TestingUtilities.getSharedWorkerContext(), null);
     engine.setIncludeResolver(this);
   }
@@ -55,9 +62,27 @@ public class LiquidEngineTests implements ILiquidEngineIncludeResolver {
   @MethodSource("data")
   public void test(JsonObject test) throws Exception {
     this.test = test;
-    LiquidDocument doc = engine.parse(test.get("template").getAsString(), "test-script");
+    String source = test.get("template").getAsString();
+
+    boolean expectError = test.has("error") && test.get("error").getAsBoolean();
+    if (expectError) {
+      Assertions.assertThrows(Exception.class, () -> {
+        LiquidDocument doc = engine.parse(source, "test-script");
+        engine.evaluate(doc, loadResource(), null);
+      });
+      return;
+    }
+    LiquidDocument doc = engine.parse(source, "test-script");
     String output = engine.evaluate(doc, loadResource(), null);
-    Assertions.assertEquals(test.get("output").getAsString(), output);
+    if (test.has("outputRegex")) {
+      String regex = test.get("outputRegex").getAsString();
+      Assertions.assertTrue(
+        output.matches(regex),
+        "Output did not match regex. Output=[" + output + "], regex=[" + regex + "]"
+      );
+    } else {
+      Assertions.assertEquals(test.get("output").getAsString(), output);
+    }
   }
 
   @Override

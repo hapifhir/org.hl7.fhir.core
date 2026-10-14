@@ -17,7 +17,7 @@ import org.hl7.fhir.r4b.renderers.IMarkdownProcessor;
 import org.hl7.fhir.r4b.renderers.utils.RenderingContext;
 import org.hl7.fhir.r4b.utils.PublicationHacker;
 import org.hl7.fhir.r4b.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
@@ -26,7 +26,8 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
+@Deprecated(forRemoval = true)
 public class AdditionalBindingsRenderer {
   public class AdditionalBindingDetail {
     private String purpose;
@@ -134,7 +135,7 @@ public class AdditionalBindingsRenderer {
     for (AdditionalBindingDetail binding : bindings) {
       tr = new XhtmlNode(NodeType.Element, "tr");
       if (binding.unchanged) {
-        tr.style("opacity: 0.5");
+        tr.style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
       }
       children.add(tr);
       BindingResolution br = pkp == null ? makeNullBr(binding) : pkp.resolveBinding(profile, binding.valueSet, path);

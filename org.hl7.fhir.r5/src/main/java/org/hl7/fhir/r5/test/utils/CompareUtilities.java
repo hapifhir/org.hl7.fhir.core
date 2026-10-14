@@ -104,6 +104,8 @@ public class CompareUtilities extends BaseTestingUtilities {
         List<String> fragments = readChoices(expected.substring(11, expected.length()-1));
         return "Contains all of "+fragments.toString();
       } else if (expected.startsWith("$external:")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] cmd = expected.substring(1, expected.length() - 1).split(":");
         if (externals != null) {
           String s = externals.asString(cmd[1]);
@@ -226,8 +228,8 @@ public class CompareUtilities extends BaseTestingUtilities {
         if (actualNode == null)
           return "Attributes differ at " + path + ": missing attribute " + expectedNodeName;
         if (!normalise(expectedNode.getTextContent()).equals(normalise(actualNode.getTextContent()))) {
-          byte[] b1 = unBase64(expectedNode.getTextContent());
-          byte[] b2 = unBase64(actualNode.getTextContent());
+          byte[] b1 = unBase64(expectedNode.getTextContent(), true, false);
+          byte[] b2 = unBase64(actualNode.getTextContent(), true, false);
           if (!sameBytes(b1, b2))
             return createNotEqualMessage(id, "Attributes differ at " + path, normalise(expectedNode.getTextContent()).toString(), normalise(actualNode.getTextContent()).toString()) ;
         }
@@ -255,10 +257,6 @@ public class CompareUtilities extends BaseTestingUtilities {
       if (b1[i] != b2[i])
         return false;
     return true;
-  }
-
-  private byte[] unBase64(String text) {
-    return Base64.decodeBase64(text);
   }
 
   private Node skipBlankText(Node node) {
@@ -357,6 +355,9 @@ public class CompareUtilities extends BaseTestingUtilities {
       String n = en.getName();
       if (!n.equals("fhir_comments")) {
         if (expectedJsonObject.has(n)) {
+          if (isProhibited(expectedJsonObject.get(n))) {
+            return "properties differ at " + path + ": prohibited property " + n + " (only allowed when '" + expectedJsonObject.get(n).asJsonObject().asString("$only$") + "')";
+          }
           String s = compareNodes(id, path + '.' + n, expectedJsonObject.get(n), en.getValue(), countOnlys.contains(n), n, actualJsonObject);
           if (!Utilities.noString(s))
             return s;
@@ -367,7 +368,7 @@ public class CompareUtilities extends BaseTestingUtilities {
     }
     for (JsonProperty en : expectedJsonObject.getProperties()) {
       String n = en.getName();
-      if (!n.equals("fhir_comments") && !isOptional(n, optionals)) {
+      if (!n.equals("fhir_comments") && !isOptional(n, optionals) && !isProhibited(en.getValue())) {
         if (!actualJsonObject.has(n) && !allOptional(en.getValue()))
           return "properties differ at " + path + ": missing property " + n;
       }
@@ -376,7 +377,24 @@ public class CompareUtilities extends BaseTestingUtilities {
   }
 
   private boolean isOptional(String n, List<String> optionals) {
-    return n.equals("$optional$") || optionals.contains("*")  || optionals.contains(n);
+    return n.equals("$optional$") || n.equals("$only$") || optionals.contains("*")  || optionals.contains(n);
+  }
+
+  /**
+   * $only$ marks an item that belongs to exactly one version or mode: it is required when its 
+   * filter passes, and must not be present at all when it doesn't. (Contrast $optional$, which 
+   * only ever relaxes a requirement, and so can't say that something is wrong to send.)
+   * The filter grammar is the same as $optional$'s - see passesOptionalFilter.
+   * 
+   * This returns true for the second case: the filter doesn't pass, so the item is prohibited.
+   */
+  private boolean isProhibited(JsonElement e) {
+    if (e != null && e.isJsonObject()) {
+      JsonObject j = e.asJsonObject();
+      return j.isJsonString("$only$") && !passesOptionalFilter(j.asString("$only$"));
+    } else {
+      return false;
+    }
   }
 
   private boolean allOptional(JsonElement value) {
@@ -385,7 +403,7 @@ public class CompareUtilities extends BaseTestingUtilities {
       for (JsonElement e : a) {
         if (e.isJsonObject()) {
           JsonObject o = e.asJsonObject();
-          if (!o.has("$optional$")) {
+          if (!o.has("$optional$") && !isProhibited(o)) {
             return false;
           }
         } else {
@@ -437,7 +455,7 @@ public class CompareUtilities extends BaseTestingUtilities {
         String expectedJsonString = expectedJsonPrimitive.asString();
         if (!(actualJsonString.contains("<div") && expectedJsonString.contains("<div")))
           if (!matches(actualJsonString, expectedJsonString))
-            if (!sameBytes(unBase64(actualJsonString), unBase64(expectedJsonString)))
+            if (!sameBytes(unBase64(actualJsonString, false, true), unBase64(expectedJsonString, false, true)))
               return createNotEqualMessage(id, "string property values differ at " + path, expectedJsonString, actualJsonString);
       } else if (actualJsonPrimitive.isJsonNumber() && expectedJsonPrimitive.isJsonNumber()) {
         if (!actualJsonPrimitive.asString().equals(expectedJsonPrimitive.asString()))
@@ -454,6 +472,14 @@ public class CompareUtilities extends BaseTestingUtilities {
     } else if (actualJsonElement instanceof JsonArray) {
       JsonArray actualArray = (JsonArray) actualJsonElement;
       JsonArray expectedArray = (JsonArray) expectedJsonElement;
+
+      String prohibited = checkProhibited(id, path, expectedArray, actualArray);
+      if (prohibited != null) {
+        return prohibited;
+      }
+      // items that are prohibited in this version/mode aren't expected at all, so the ordinary 
+      // count and leftover checks below do the enforcing from here on
+      expectedArray = removeProhibited(expectedArray);
 
       int as = actualArray.size();
       int es = expectedArray.size();
@@ -518,15 +544,71 @@ public class CompareUtilities extends BaseTestingUtilities {
     return null;
   }
 
+  /**
+   * Look for an item the server should not have sent at all in this version or mode. Removing the 
+   * prohibited items from the expected array (see removeProhibited) already makes such a response 
+   * fail, on the array count or on a leftover node - this only runs first so that it fails with a 
+   * message that says what actually went wrong.
+   */
+  private String checkProhibited(String id, String path, JsonArray expectedArray, JsonArray actualArray) {
+    for (JsonElement e : expectedArray) {
+      if (isProhibited(e)) {
+        for (int i = 0; i < actualArray.size(); i++) {
+          int wc = warnings.size();
+          String s = compareNodes(id, path + "[" + Integer.toString(i) + "]", e, actualArray.get(i), false, null, null);
+          while (warnings.size() > wc) {
+            warnings.remove(warnings.size() - 1); // this was only a probe; don't leave its warnings behind
+          }
+          if (Utilities.noString(s)) {
+            return "prohibited item found at " + path + "[" + Integer.toString(i) + "]" + describeItem(e) + ": this is only allowed when '" + e.asJsonObject().asString("$only$") + "'";
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * A hint at which expected item this is, for error messages - the array index alone says
+   * where it was found in the response, not which expectation it collided with.
+   */
+  private String describeItem(JsonElement e) {
+    if (e.isJsonObject() && e.asJsonObject().isJsonString("name")) {
+      return " (name = " + e.asJsonObject().asString("name") + ")";
+    } else if (e.isJsonObject() && e.asJsonObject().isJsonString("code")) {
+      return " (code = " + e.asJsonObject().asString("code") + ")";
+    } else {
+      return "";
+    }
+  }
+
+  private JsonArray removeProhibited(JsonArray expectedArray) {
+    boolean any = false;
+    for (JsonElement e : expectedArray) {
+      any = any || isProhibited(e);
+    }
+    if (!any) {
+      return expectedArray;
+    }
+    JsonArray res = new JsonArray();
+    for (JsonElement e : expectedArray) {
+      if (!isProhibited(e)) {
+        res.add(e);
+      }
+    }
+    return res;
+  }
+
   private int optionalCount(JsonArray arr, String name, JsonObject parent) {
     int c = 0;
     for (JsonElement e : arr) {
       if (e.isJsonObject()) {
         JsonObject j = e.asJsonObject();
-        if (j.isJsonString("$optional$") && passesOptionalFilter(j.asString("$optional$"))) {
+        if (isProhibited(j)) {
           c++;
-        }
-        if (j.isJsonBoolean("$optional$") && j.asBoolean("$optional$")) {
+        } else if (j.isJsonString("$optional$") && passesOptionalFilter(j.asString("$optional$"))) {
+          c++;
+        } else if (j.isJsonBoolean("$optional$") && j.asBoolean("$optional$")) {
           c++;
         }
       }
@@ -537,7 +619,9 @@ public class CompareUtilities extends BaseTestingUtilities {
   private boolean isOptional(JsonElement e, String name, JsonObject parent) {
     if (e.isJsonObject()) {
       JsonObject j = e.asJsonObject();
-      if (j.isJsonString("$optional$") && passesOptionalFilter(j.asString("$optional$"))) {
+      if (isProhibited(j)) {
+        return true;
+      } else if (j.isJsonString("$optional$") && passesOptionalFilter(j.asString("$optional$"))) {
         return true;
       } else if (j.isJsonBoolean("$optional$") && j.asBoolean("$optional$")) {
         return true;
@@ -600,6 +684,8 @@ public class CompareUtilities extends BaseTestingUtilities {
         }
         return true;
       } else if (expectedJsonString.startsWith("$external:")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] cmd = expectedJsonString.substring(1, expectedJsonString.length() - 1).split("\\:");
         if (externals != null) {
           String s = externals.asString(cmd[1]);
@@ -618,13 +704,19 @@ public class CompareUtilities extends BaseTestingUtilities {
       } else {
         switch (expectedJsonString) {
         case "$$" : return true;
-        case "$instant$": return actualJsonString.matches(RegexConstants.INSTANT_REGEX);
-        case "$date$": return actualJsonString.matches(RegexConstants.DATE_REGEX);
-        case "$uuid$": return actualJsonString.matches(RegexConstants.URN_UUID_REGEX);
+        case "$instant$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.INSTANT_REGEX); return r; }
+        case "$date$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.DATE_REGEX); return r; }
+        case "$uuid$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.URN_UUID_REGEX); return r; }
         case "$string$": return actualJsonString.equals(actualJsonString.trim());
-        case "$id$": return actualJsonString.matches(RegexConstants.ID_REGEX);
-        case "$url$": return actualJsonString.matches(RegexConstants.URL_REGEX);
-        case "$token$": return actualJsonString.matches(RegexConstants.TOKEN_REGEX);
+        case "$id$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.ID_REGEX); return r; }
+        case "$url$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.URL_REGEX); return r; }
+        case "$token$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.TOKEN_REGEX); return r; }
         case "$semver$": return VersionUtilities.isSemVer(actualJsonString, false);
         case "$version$": return matchesVariable(actualJsonString, "version");
         default: 
@@ -649,7 +741,10 @@ public class CompareUtilities extends BaseTestingUtilities {
 
   private List<String> readChoices(String s) {
     List<String> list = new ArrayList<>();
-    for (String p : s.split("\\|")) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] sParts = s.split("\\|");
+    for (String p : sParts) {
       list.add(p);
     }
     return list;

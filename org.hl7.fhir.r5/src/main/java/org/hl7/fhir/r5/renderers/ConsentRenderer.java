@@ -9,9 +9,10 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -19,7 +20,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ConsentRenderer extends ResourceRenderer {
 
 
@@ -45,18 +46,18 @@ public class ConsentRenderer extends ResourceRenderer {
     XhtmlNode tr;
     if (cr.has("status")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_STATUS)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_STATUS)+":");
       xlinkNarrative(tr.td(), cr.child("status")).tx(context.getTranslated(cr.child("status")));
     }
 
     if (cr.has("date")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CONSENT_DATE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CONSENT_DATE)+":");
       renderDataType(status, xlinkNarrative(tr.td(), cr.child("date")), cr.child("date"));
     }
     if (cr.has("period")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CONSENT_PERIOD)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CONSENT_PERIOD)+":");
       renderDataType(status, xlinkNarrative(tr.td(), cr.child("period")), cr.child("period"));
     }
     if (cr.has("category")) {
@@ -95,8 +96,8 @@ public class ConsentRenderer extends ResourceRenderer {
     x.h2().tx("Participants");
     XhtmlNode tbl = x.table("grid", false);
     XhtmlNode trHeader = tbl.tr();
-    trHeader.td().b().tx(context.formatPhrase(RenderingContext.CONSENT_PART_TBL_ROLE));
-    trHeader.td().b().tx(context.formatPhrase(RenderingContext.CONSENT_PART_TBL_DETAILS));
+    trHeader.td().b().tx(context.formatPhrase(RenderingI18nContext.CONSENT_PART_TBL_ROLE));
+    trHeader.td().b().tx(context.formatPhrase(RenderingI18nContext.CONSENT_PART_TBL_DETAILS));
     renderParticipants(status, tbl, consent, RenderingContext.CONSENT_PART_TBL_PATIENT, RenderingContext.CONSENT_PART_TBL_PATIENT_DESC, "patient", "subject");
     renderParticipants(status, tbl, consent, RenderingContext.CONSENT_PART_TBL_PARTY, RenderingContext.CONSENT_PART_TBL_PARTY_DESC, "performer", "consentingParty");
     renderParticipants(status, tbl, consent, RenderingContext.CONSENT_PART_TBL_GRANTOR, RenderingContext.CONSENT_PART_TBL_GRANTOR_DESC, "grantor");
@@ -107,8 +108,8 @@ public class ConsentRenderer extends ResourceRenderer {
 //    if (consent.has("verification")) {
 //      tbl = x.table("grid", false);
 //      trHeader = tbl.tr();
-//      trHeader.td().b().tx(context.formatPhrase(RenderingContext.CONSENT_VERF_TBL_STATUS));
-//      trHeader.td().b().tx(context.formatPhrase(RenderingContext.CONSENT_VERF_TBL_DETAILS));
+//      trHeader.td().b().tx(context.formatPhrase(RenderingI18nContext.CONSENT_VERF_TBL_STATUS));
+//      trHeader.td().b().tx(context.formatPhrase(RenderingI18nContext.CONSENT_VERF_TBL_DETAILS));
 //      renderParticipants(status, x, consent, RenderingContext.CONSENT_PART_TBL_PATIENT, "patient", "subject");
 //      renderParticipants(status, x, consent, RenderingContext.CONSENT_PART_TBL_PARTY, "performer", "consentingParty");
 //      renderParticipants(status, x, consent, RenderingContext.CONSENT_PART_TBL_GRANTOR, "grantor");
@@ -132,12 +133,12 @@ public class ConsentRenderer extends ResourceRenderer {
           }
         }
         if (consent.hasMN("policy", "policyBasis")) {
-          p.txWithWhitespace(context.formatPhrase(RenderingContext.CONSENT_BASIS_REGULATION_SUFFIX_MORE));
+          p.txWithWhitespace(context.formatPhrase(RenderingI18nContext.CONSENT_BASIS_REGULATION_SUFFIX_MORE));
         } else {
-          p.txWithWhitespace(context.formatPhrase(RenderingContext.CONSENT_BASIS_REGULATION_SUFFIX));
+          p.txWithWhitespace(context.formatPhrase(RenderingI18nContext.CONSENT_BASIS_REGULATION_SUFFIX));
         }
       } else {
-        p.tx(context.formatPhrase(RenderingContext.CONSENT_BASIS_REGULATION_NONE));
+        p.tx(context.formatPhrase(RenderingI18nContext.CONSENT_BASIS_REGULATION_NONE));
       }
       if (consent.hasMN("policy", "policyBasis")) {
         p.txWithWhitespace(context.formatPhrasePlural(consent.childrenMN("policy", "policyBasis").size(), RenderingContext.CONSENT_BASIS_POLICY_PREFIX));
@@ -154,7 +155,7 @@ public class ConsentRenderer extends ResourceRenderer {
             }
           }
         }
-        p.txWithWhitespace(context.formatPhrase(RenderingContext.CONSENT_BASIS_POLICY_SUFFIX));
+        p.txWithWhitespace(context.formatPhrase(RenderingI18nContext.CONSENT_BASIS_POLICY_SUFFIX));
       }
     }
 
@@ -173,18 +174,18 @@ public class ConsentRenderer extends ResourceRenderer {
         model.setDocoImg(Utilities.pathURL(context.getLink(RenderingContext.KnownLinkType.SPEC, true), "help16.png"));
       }
       model.setDocoRef(context.getLink(RenderingContext.KnownLinkType.SPEC, true) + "formats.html#table");
-      model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.CONSENT_HTABLE_RULE)), (context.formatPhrase(RenderingContext.CONSENT_HTABLE_RULE_DESC)), null, 0));
+      model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_RULE)), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_RULE_DESC)), null, 0));
       if (hasWhen) {
-        model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.CONSENT_HTABLE_WHEN)), (context.formatPhrase(RenderingContext.CONSENT_HTABLE_WHEN_DESC)), null, 0));
+        model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_WHEN)), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_WHEN_DESC)), null, 0));
       }
       if (hasWho) {
-        model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.CONSENT_HTABLE_WHO)), (context.formatPhrase(RenderingContext.CONSENT_HTABLE_WHO_DESC)), null, 0));
+        model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_WHO)), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_WHO_DESC)), null, 0));
       }
       if (hasWhat) {
-        model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.CONSENT_HTABLE_WHAT)), (context.formatPhrase(RenderingContext.CONSENT_HTABLE_WHAT_DESC)), null, 0));
+        model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_WHAT)), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_WHAT_DESC)), null, 0));
       }
       if (hasRules) {
-        model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.CONSENT_HTABLE_RULES)), (context.formatPhrase(RenderingContext.CONSENT_HTABLE_RULES_DESC)), null, 0));
+        model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_RULES)), (context.formatPhrase(RenderingI18nContext.CONSENT_HTABLE_RULES_DESC)), null, 0));
       }
 
       // first we add a root for the consent itself
@@ -220,7 +221,7 @@ public class ConsentRenderer extends ResourceRenderer {
   private HierarchicalTableGenerator.Row addConsentRoot(HierarchicalTableGenerator gen, List<HierarchicalTableGenerator.Row> rows, ResourceWrapper consent, boolean permit, boolean hasWhen, boolean hasWho, boolean hasWhat, boolean hasRules) throws IOException {
     HierarchicalTableGenerator.Row r = gen.new Row();
     rows.add(r);
-    r.setIcon(permit ? "icon_extension.png" : "icon-qi-hidden.png", context.formatPhrase(RenderingContext.CONSENT_PROVISION));
+    r.setIcon(permit ? "icon_extension.png" : "icon-qi-hidden.png", context.formatPhrase(RenderingI18nContext.CONSENT_PROVISION));
     r.getCells().add(gen.new Cell(null, null, context.formatPhrase(permit ? RenderingContext.CONSENT_PERMIT :  RenderingContext.CONSENT_DENY), null, null));
     if (hasWhen) {
       r.getCells().add(gen.new Cell(null, null, "", null, null));
@@ -241,7 +242,7 @@ public class ConsentRenderer extends ResourceRenderer {
     HierarchicalTableGenerator.Row r = gen.new Row();
     subRows.add(r);
     boolean itemPermit = determineItemPermit(consent, i , permit);
-    r.setIcon(itemPermit ? "icon_extension.png" : "icon-qi-hidden.png", context.formatPhrase(RenderingContext.CONSENT_PROVISION));
+    r.setIcon(itemPermit ? "icon_extension.png" : "icon-qi-hidden.png", context.formatPhrase(RenderingI18nContext.CONSENT_PROVISION));
     r.getCells().add(gen.new Cell(null, null, context.formatPhrase(itemPermit ? RenderingContext.CONSENT_PERMIT :  RenderingContext.CONSENT_DENY), null, null));
     if (hasWhen) {
       HierarchicalTableGenerator.Cell c = gen.new Cell(null, null,  "", null, null);
@@ -329,7 +330,7 @@ public class ConsentRenderer extends ResourceRenderer {
     if (reference != null) {
       renderDataType(status, x, reference);
     } else {
-      x.tx(context.formatPhrase(RenderingContext._NA));
+      x.tx(context.formatPhrase(RenderingI18nContext._NA));
     }
   }
 

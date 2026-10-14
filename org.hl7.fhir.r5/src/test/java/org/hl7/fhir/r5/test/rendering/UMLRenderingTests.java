@@ -17,6 +17,7 @@ import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.ClassDiagramRenderer;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
@@ -34,6 +35,7 @@ import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -44,7 +46,7 @@ import org.xml.sax.SAXException;
 public class UMLRenderingTests {
 
   public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
-    ToolsRegistration.register();
+    ToolsRegistration.register(false);
     TestCases tests = (TestCases) new JsonParser().parse(TestingUtilities.loadTestResource("r5", "uml", "manifest.json"));
     List<Arguments> objects = new ArrayList<>();
     for (TestCasesSuiteComponent suite : tests.getSuiteList()) {
@@ -61,11 +63,19 @@ public class UMLRenderingTests {
   private static RenderingContext rc;
 
 
+  @AfterAll
+  public static void tearDown() {
+    context = null;
+    rc = null;
+    source = null;
+    dest = null;
+  }
+
   @BeforeAll
   public static void setUp() throws IOException {
     context = TestingUtilities.getSharedWorkerContext("5.0.0");
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-    rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]", "narrative"));
     rc.setShowSummaryTable(true);
     rc.setDefinitionsTarget("test.html");

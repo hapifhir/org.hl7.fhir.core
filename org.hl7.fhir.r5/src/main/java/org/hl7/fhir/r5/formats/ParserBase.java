@@ -54,7 +54,41 @@ import org.hl7.fhir.utilities.xml.IXMLWriter;
 
 public abstract class ParserBase extends FormatUtilities implements IParser {
 
-  protected static Map<String, IParserFactory> customResourceHandlers = new HashMap<>();
+  /**
+   * the registry of custom resource parsers/composers this parser consults. Defaults to the 
+   * process-wide CustomResourceRegistry.GLOBAL; a caller can scope a parser to a different set 
+   * of custom resources by passing a registry to the constructor, or via 
+   * setCustomResourceRegistry / withCustomResourceRegistry
+   */
+  protected CustomResourceRegistry customResourceRegistry;
+
+  protected ParserBase() {
+    this.customResourceRegistry = CustomResourceRegistry.GLOBAL;
+  }
+
+  protected ParserBase(CustomResourceRegistry customResourceRegistry) {
+    this.customResourceRegistry = customResourceRegistry == null ? CustomResourceRegistry.GLOBAL : customResourceRegistry;
+  }
+
+  /**
+   * Set the registry of custom resources this parser consults (null resets it to the global 
+   * registry). This is instance-level state, so it does not affect any other parser
+   */
+  public void setCustomResourceRegistry(CustomResourceRegistry customResourceRegistry) {
+    this.customResourceRegistry = customResourceRegistry == null ? CustomResourceRegistry.GLOBAL : customResourceRegistry;
+  }
+
+  /**
+   * fluent variant of setCustomResourceRegistry
+   */
+  public ParserBase withCustomResourceRegistry(CustomResourceRegistry customResourceRegistry) {
+    setCustomResourceRegistry(customResourceRegistry);
+    return this;
+  }
+
+  public CustomResourceRegistry getCustomResourceRegistry() {
+    return customResourceRegistry;
+  }
 
   public interface IParserFactory {
     public JsonParserBase composerJson(JsonCreator json);
@@ -62,6 +96,31 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     public XmlParserBase composerXml(IXMLWriter xml);
     public XmlParserBase parserXml(boolean allowUnknownContent);
   }
+
+  public static class CustomResourceHandler {
+    private final IParserFactory factory;
+    private final boolean overridesBase;
+
+    public CustomResourceHandler(IParserFactory factory, boolean overridesBase) {
+      super();
+      this.factory = factory;
+      this.overridesBase = overridesBase;
+    }
+
+    public IParserFactory getFactory() {
+      return factory;
+    }
+
+    /**
+     * if true, this handler takes precedence over any resource with the same name defined 
+     * in the base specification. If false, the handler is only used for resource names that 
+     * the base specification doesn't define
+     */
+    public boolean isOverridesBase() {
+      return overridesBase;
+    }
+  }
+
   // -- implementation of variant type methods from the interface --------------------------------
   
   public Resource parse(String input) throws FHIRFormatError, IOException {
@@ -253,10 +312,6 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     } finally {
       input.close();
     }
-  }
-
-  public static Map<String, IParserFactory> getCustomResourceHandlers() {
-    return customResourceHandlers;
   }
 
 }

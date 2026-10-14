@@ -29,7 +29,10 @@ public class POUtilities {
       Replace non escaped quotes with \"
       Be mindful that multiple \ characters are needed to escape the escapes in Java
     */
-    return s.replaceAll(WRAP_REGEX, "\\\\\"");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //bounded lookbehind, safe
+    String escaped = s.replaceAll(WRAP_REGEX, "\\\\\"");
+    return escaped;
   }
 
   public static boolean isOutdated(String text) {

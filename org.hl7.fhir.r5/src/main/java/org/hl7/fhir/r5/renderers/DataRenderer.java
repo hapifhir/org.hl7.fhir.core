@@ -52,11 +52,12 @@ import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -65,7 +66,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum; 
 
-@MarkedToMoveToAdjunctPackage
+
 public class DataRenderer extends Renderer implements CodeResolver { 
 
   // -- 1. context -------------------------------------------------------------- 
@@ -74,8 +75,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
     super(context); 
   } 
 
-  public DataRenderer(IWorkerContext worker) { 
-    super(worker); 
+  public DataRenderer(IWorkerContext worker, RendererFactory renderer) {
+    super(worker, renderer);
   } 
 
   // -- 2. Markdown support ------------------------------------------------------- 
@@ -119,7 +120,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     addMarkdown(x, processRelativeUrls(text, path)); 
   } 
 
-  protected void addMarkdown(XhtmlNode x, String text) throws FHIRFormatError, IOException, DefinitionException { 
+  public void addMarkdown(XhtmlNode x, String text) throws FHIRFormatError, IOException, DefinitionException { 
     if (text != null) { 
       // 1. custom FHIR extensions 
       while (text.contains("[[[")) { 
@@ -128,7 +129,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
         String right = text.substring(text.indexOf("]]]")+3); 
         String path = null; 
         String url = link; 
-        String[] parts = link.split("\\#"); 
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] parts = link.split("\\#");
         if (parts[0].contains(".")) { 
           path = parts[0]; 
           parts[0] = parts[0].substring(0, parts[0].indexOf(".")); 
@@ -156,10 +159,15 @@ public class DataRenderer extends Renderer implements CodeResolver {
             url = p.getUserString(UserDataNames.render_filename); 
           } 
         } else { 
-          throw new DefinitionException(context.formatPhrase(RenderingContext.DATA_REND_MKDWN_LNK, link) + " "); 
+          throw new DefinitionException(context.formatPhrase(RenderingI18nContext.DATA_REND_MKDWN_LNK, link) + " ");
         } 
 
-        text = left+"["+link+"]("+url+(path == null ? "" : "#"+path)+")"+right; 
+        if (url == null) {
+          // nothing to link to
+          text = left+link+right;
+        } else {
+          text = left+"["+link+"]("+url+(path == null ? "" : "#"+path)+")"+right; 
+        }
       } 
 
       // 2. markdown 
@@ -197,7 +205,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   public static String describeVersion(String version) { 
     if (version.startsWith("http://snomed.info/sct")) { 
-      String[] p = version.split("\\/"); 
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] p = version.split("\\/");
       String ed = null; 
       String dt = ""; 
 
@@ -250,21 +260,21 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   public String displaySystem(String system) { 
     if (system == null) 
-      return (context.formatPhrase(RenderingContext.DATA_REND_NOT_STAT)); 
+      return (context.formatPhrase(RenderingI18nContext.DATA_REND_NOT_STAT));
     if (system.equals("http://loinc.org")) 
-      return (context.formatPhrase(RenderingContext.DATA_REND_LOINC)); 
+      return (context.formatPhrase(RenderingI18nContext.DATA_REND_LOINC));
     if (system.startsWith("http://snomed.info")) 
-      return (context.formatPhrase(RenderingContext.DATA_REND_SNOMED)); 
+      return (context.formatPhrase(RenderingI18nContext.DATA_REND_SNOMED));
     if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm")) 
-      return (context.formatPhrase(RenderingContext.DATA_REND_RXNORM)); 
+      return (context.formatPhrase(RenderingI18nContext.DATA_REND_RXNORM));
     if (system.equals("http://hl7.org/fhir/sid/icd-9")) 
-      return (context.formatPhrase(RenderingContext.DATA_REND_ICD)); 
+      return (context.formatPhrase(RenderingI18nContext.DATA_REND_ICD));
     if (system.equals("http://dicom.nema.org/resources/ontology/DCM")) 
-      return (context.formatPhrase(RenderingContext.DATA_REND_DICOM)); 
+      return (context.formatPhrase(RenderingI18nContext.DATA_REND_DICOM));
     if (system.equals("http://unitsofmeasure.org")) 
-      return (context.formatPhrase(RenderingContext.GENERAL_UCUM)); 
+      return (context.formatPhrase(RenderingI18nContext.GENERAL_UCUM));
     if (system.equals("http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl")) 
-      return (context.formatPhrase(RenderingContext.GENERAL_NCI_THES)); 
+      return (context.formatPhrase(RenderingI18nContext.GENERAL_NCI_THES));
     
 
     CodeSystem cs = context.getContext().fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule());
@@ -289,7 +299,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (system.contains("/")) { 
       return system.substring(system.lastIndexOf("/")+1); 
     } else { 
-      return (context.formatPhrase(RenderingContext.DATA_REND_UNKNWN)); 
+      return (context.formatPhrase(RenderingI18nContext.DATA_REND_UNKNWN));
     } 
   } 
 
@@ -357,11 +367,19 @@ public class DataRenderer extends Renderer implements CodeResolver {
         for (ConceptReferenceDesignationComponent cd : l.getDesignation()) { 
           if (cd.getLanguage().equals(lang)) 
             nativelang = cd.getValue(); 
-        } 
-        if (nativelang == null) 
-          return en+" ("+lang+")"; 
-        else 
-          return nativelang+" ("+en+", "+lang+")"; 
+        }
+        if (lang != null) {
+          if (nativelang == null)
+            return en + " (" + lang + ")";
+          else
+            return nativelang + " (" + en + ", " + lang + ")";
+        } else {
+          if (nativelang == null)
+            return en;
+          else
+            return nativelang + " (" + en +")";
+
+        }
       } 
     } 
     return lang; 
@@ -490,7 +508,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   //      } else { 
   //        // somehow have to do better than this  
   //        XhtmlNode li = ul.li(); 
-  //        li.b().tx(context.formatPhrase(RenderingContext.DATA_REND_UNRD_EX)); 
+  //        li.b().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_UNRD_EX));
   //      } 
   //    } 
   //    for (Extension ext : element.getExtension()) { 
@@ -561,7 +579,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   //        render(div, ext.getValue()); 
   //      } else { 
   //        // somehow have to do better than this  
-  //        div.b().tx(context.formatPhrase(RenderingContext.DATA_REND_UNRD_EX)); 
+  //        div.b().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_UNRD_EX));
   //      } 
   //    } 
   //    for (Extension ext : element.getExtension()) { 
@@ -585,14 +603,14 @@ public class DataRenderer extends Renderer implements CodeResolver {
   // -- 6. Data type Rendering ----------------------------------------------  
 
   public static String display(IWorkerContext context, DataType type) { 
-    return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", context.getLocale(), ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE)).displayDataType(type);
+    return new DataRenderer(new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir/R4", "", context.getLocale(), ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE)).displayDataType(type);
   } 
 
   public String displayBase(Base b) { 
     if (b instanceof DataType) { 
       return displayDataType((DataType) b); 
     } else { 
-      return (context.formatPhrase(RenderingContext.DATA_REND_NO_DISP, b.fhirType()) + " ");       
+      return (context.formatPhrase(RenderingI18nContext.DATA_REND_NO_DISP, b.fhirType()) + " ");
     } 
   } 
 
@@ -616,7 +634,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
     case "HumanName": return displayHumanName(type); 
     case "Address": return displayAddress(type); 
     case "ContactPoint": return displayContactPoint(type); 
-    case "Quantity": return displayQuantity(type); 
+    case "Quantity": 
+    case "Age": 
+    case "Duration": 
+    case "Distance": 
+    case "Count": 
+      return displayQuantity(type); 
+    case "RelativeTime": return displayRelativeTime(type); 
     case "Range": return displayRange(type); 
     case "Period": return displayPeriod(type); 
     case "Timing": return displayTiming(type); 
@@ -626,27 +650,39 @@ public class DataRenderer extends Renderer implements CodeResolver {
     case "Ratio":  return displayRatio(type);
     case "Reference" : return displayReference(type);
     case "Money" : return displayMoney(type);
+    case "base64Binary" : return displayBase64(type);
     case "dateTime":
-    case "date" : 
+    case "date" :
     case "instant" :
       return displayDateTime(type);
     default:
-      if (type.isPrimitive()) { 
-        return context.getTranslated(type); 
-      } else if (Utilities.existsInList(type.fhirType(),  "Meta", "Dosage", "Signature", "UsageContext", "RelatedArtifact", "ElementDefinition", "Base64BinaryType", "Attachment")) {
+      if (type.isPrimitive()) {
+        return context.getTranslated(type);
+      } else if (Utilities.existsInList(type.fhirType(),  "Meta", "Dosage", "Signature", "UsageContext", "RelatedArtifact", "ElementDefinition", "Attachment")) {
         return "";
       } else if ("Extension".equals(type.fhirType())) {
         return displayDataType(type.child("value"));
       } else {
-        return (context.formatPhrase(RenderingContext.DATA_REND_NO_DISP, type.fhirType()) + " "); 
+        return (context.formatPhrase(RenderingI18nContext.DATA_REND_NO_DISP, type.fhirType()) + " ");
       }
     }
   } 
 
+  private String displayBase64(ResourceWrapper type) {
+    String b64 = type.primitiveValue();
+    if (b64 == null) {
+      return "";
+    } else if (b64.length() <= 32) {
+      return b64;
+    } else {
+      return b64.substring(0, 32)+"...";
+    }
+  }
+
   private String displayMoney(ResourceWrapper type) {
     String currency = type.primitiveValue("currency");
     String value = type.primitiveValue("value");
-    return context.formatPhrase(RenderingContext.DATA_REND_CURRENCY, currency, value);
+    return context.formatPhrase(RenderingI18nContext.DATA_REND_CURRENCY, currency, value);
   }
 
   private String displayAnnotation(ResourceWrapper type) {
@@ -762,13 +798,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
   ////    try { 
   ////      base = type.getBase(); 
   ////    } catch (FHIRException | IOException e) { 
-  ////      x.tx(context.formatPhrase(RenderingContext.DATA_REND_ERROR, e.getMessage()) + " "); // this shouldn't happen - it's an error in the library itself 
+  ////      x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_ERROR, e.getMessage()) + " "); // this shouldn't happen - it's an error in the library itself
   ////      return; 
   ////    } 
   ////    if (base instanceof DataType) { 
   ////      render(x, (DataType) base); 
   ////    } else { 
-  ////      x.tx(context.formatPhrase(RenderingContext.DATA_REND_TO_DO, base.fhirType())); 
+  ////      x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_TO_DO, base.fhirType()));
   ////    } 
   //  } 
 
@@ -776,13 +812,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (b instanceof DataType) { 
       renderDataType(status, x, wrapNC((DataType) b)); 
     } else { 
-      x.tx(context.formatPhrase(RenderingContext.DATA_REND_NO_DISP, b.fhirType()) + " ");       
+      x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_NO_DISP, b.fhirType()) + " ");
     } 
   } 
   
   public boolean canRenderDataType(String type) {
     return context.getContextUtilities().isPrimitiveType(type) ||  Utilities.existsInList(type, "Annotation", "Coding", "CodeableConcept",  "Identifier", "HumanName", "Address", "Dosage",
-          "Expression",  "Money", "ContactPoint",  "Quantity",  "Range",  "Period", "Timing", "SampledData",  "Reference", "UsageContext",  "ContactDetail",  "Ratio",  "Attachment",  "CodeableReference");
+          "Expression",  "Money", "ContactPoint",  "Quantity", "Age", "Duration", "Distance", "Count", "RelativeTime", "Range",  "Period", "Timing", "SampledData",  "Reference", "UsageContext",  "ContactDetail",  "Ratio",  "Attachment",  "CodeableReference");
   }
 
   public boolean renderDataType(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException {
@@ -835,7 +871,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
       break;
     case "Quantity": 
     case "Age":
+    case "Duration":
+    case "Distance":
+    case "Count":
       renderQuantity(status, x, type); 
+      break;
+    case "RelativeTime":
+      renderRelativeTime(status, x, type);
       break;
     case "Range": 
       renderRange(status, x, type); 
@@ -880,7 +922,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
     case "base64Binary":
       int length = type.primitiveValue().length();
       if (length >= context.getBase64Limit()) {
-        x.tx(context.formatPhrase(RenderingContext.DATA_REND_BASE64, length));
+        x.code(displayBase64(type));
+        x.tx(" "+context.formatPhrase(RenderingI18nContext.DATA_REND_BASE64, length));
       } else {
         x.code(type.primitiveValue());
       }
@@ -891,7 +934,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
           x.tx(context.getTranslated(type));
         }
       } else { 
-        x.tx(context.formatPhrase(RenderingContext.DATA_REND_NO_DISP, type.fhirType()) + " "); 
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_NO_DISP, type.fhirType()) + " ");
         return false;
       }
     } 
@@ -904,19 +947,36 @@ public class DataRenderer extends Renderer implements CodeResolver {
   }
 
   private void renderRatio(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException {
-    renderQuantity(status, x, type.child("numerator"));
+    if (type.has("numerator")) {
+      renderQuantity(status, x, type.child("numerator"));
+    } else {
+      x.tx("?");
+    }
     x.tx("/");
-    renderQuantity(status, x, type.child("denominator"));      
+    if (type.has("denominator")) {
+      renderQuantity(status, x, type.child("denominator"));
+    } else {
+      x.tx("?");
+    }
     checkRenderExtensions(status, x, type);
   }
 
   private void renderAttachment(RenderingStatus status, XhtmlNode x, ResourceWrapper att) {
     String ct = att.primitiveValue("contentType");
     if (att.has("url")) {
-      x.tx(context.formatMessage(RenderingContext.DATA_REND_ATT_URL, ct, att.primitiveValue("url")));
+      String url = att.primitiveValue("url");
+      if (ct != null) {
+        x.tx(ct+" @ ");
+      }
+      XhtmlNode a = x.ah(url);
+      a.tx(url);
+      if (Utilities.isAbsoluteUrl(url)) {
+        a.tx(" ");
+        a.img("external.png", "icon").style("vertical-align: baseline");
+      }
     } else if (att.has("data")) {
-      x.tx(context.formatMessage(RenderingContext.DATA_REND_ATT_DATA, ct, displayDataType(att.child("data"))));      
-    }    
+      x.tx(context.formatMessage(RenderingContext.DATA_REND_ATT_DATA, ct, displayDataType(att.child("data"))));
+    }
   }
 
   private void renderContactDetail(RenderingStatus status, XhtmlNode x, ResourceWrapper cd) throws IOException {
@@ -1096,7 +1156,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
 
     if (a.has("author")) { 
-      x.tx(context.formatPhrase(RenderingContext.DATA_REND_BY) + " "); 
+      x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_BY) + " "); 
       ResourceWrapper auth = a.child("author");
       if (auth.fhirType().equals("Reference")) { 
         x.tx(auth.primitiveValue("reference")); 
@@ -1312,7 +1372,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     }
     link = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"), c.getResourceNative());
 
-    hint = systemName+": "+display+(c.has("version") ? " "+ context.formatPhrase(RenderingContext.DATA_REND_VERSION, c.primitiveValue("version"), ")") : ""); 
+    hint = systemName+": "+display+(c.has("version") ? " "+ context.formatPhrase(RenderingI18nContext.DATA_REND_VERSION, c.primitiveValue("version"), ")") : ""); 
     return new CodeResolution(systemName, systemLink, link, display, hint); 
   } 
 
@@ -1348,7 +1408,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       x.tx(")");
     }
     if (c.has("version")) { 
-      x.tx(" "+context.formatPhrase(RenderingContext.DATA_REND_VERSION, c.primitiveValue("version"), ")")); 
+      x.tx(" "+context.formatPhrase(RenderingI18nContext.DATA_REND_VERSION, c.primitiveValue("version"), ")")); 
     } 
     checkRenderExtensions(status, x, c);
   } 
@@ -1367,17 +1427,27 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (Utilities.noString(s)) 
       s = c.primitiveValue("code"); 
 
+    CodeSystem cs = context.getContext().findTxResource(CodeSystem.class, c.primitiveValue("system"), IWorkerContext.VersionResolutionRules.PACKAGE,
+      c.primitiveValue("version"), null);
+    String url = cs == null ? null : cs.getWebPath();
+    if (url == null) {
+      url = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"), null);
+    }
     if (context.isTechnicalMode() && details) {
       String d = c.primitiveValue("display") == null ? lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")): c.primitiveValue("display");
-      d = context.formatPhrase(d == null || d.equals(c.primitiveValue("code")) ? RenderingContext.DATA_REND_DETAILS_STATED_ND :  RenderingContext.DATA_REND_DETAILS_STATED, displaySystem(c.primitiveValue("system")), c.primitiveValue("code"), d); 
-      x.addText(s+" "+d);
-    } else { 
+      d = context.formatPhrase(d == null || d.equals(c.primitiveValue("code")) ? RenderingContext.DATA_REND_DETAILS_STATED_ND :  RenderingContext.DATA_REND_DETAILS_STATED, displaySystem(c.primitiveValue("system")), c.primitiveValue("code"), d);
+      if (url != null) {
+        x.ah(url).addText(s + " " + d);
+      }
+    } else if (url != null) {
+      x.ah(url, "{"+c.primitiveValue("system")+" "+c.primitiveValue("code")+"}").addText(s);
+    } else {
       x.span(null, "{"+c.primitiveValue("system")+" "+c.primitiveValue("code")+"}").addText(s);
     }
   } 
 
   public String displayCodeableConcept(ResourceWrapper cc) { 
-    String s = context.getTranslated(cc.child("Text")); 
+    String s = context.getTranslated(cc.child("text")); 
     if (Utilities.noString(s)) { 
       for (ResourceWrapper c : cc.children("coding")) { 
         if (c.has("display")) { 
@@ -1488,7 +1558,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         } 
       } 
 
-      x.span(null, context.formatPhrase(RenderingContext.DATA_REND_CODES) +b.toString()).addTextWithLineBreaks(s); 
+      x.span(null, context.formatPhrase(RenderingI18nContext.DATA_REND_CODES) +b.toString()).addTextWithLineBreaks(s); 
     }       
     checkRenderExtensions(status, x, cc);
   } 
@@ -1510,8 +1580,10 @@ public class DataRenderer extends Renderer implements CodeResolver {
           s = context.getTranslated(type.child("text"))+":\u00A0"+s; 
         else if (type.has("coding") && type.children("coding").get(0).has("display")) 
           s = context.getTranslated(type.children("coding").get(0).child("display"))+": "+s; 
-        else if (type.has("coding") && type.children("coding").get(0).has("code")) 
-          s = lookupCode(type.children("coding").get(0).primitiveValue("system"), type.children("coding").get(0).primitiveValue("version"), type.children("coding").get(0).primitiveValue("code")); 
+        else if (type.has("coding") && type.children("coding").get(0).has("code")) { 
+          String t = lookupCode(type.children("coding").get(0).primitiveValue("system"), type.children("coding").get(0).primitiveValue("version"), type.children("coding").get(0).primitiveValue("code")); 
+          s = (Utilities.noString(t) ? type.children("coding").get(0).primitiveValue("code") : t)+": "+s; 
+        } 
       } else if (ii.has("system")) { 
         s = ii.primitiveValue("system")+"#"+s; 
       } 
@@ -1522,7 +1594,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       if (ii.has("use")) { 
         s = s + "use:\u00A0"+ii.primitiveValue("use"); 
       } 
-      if (ii.has("use") || ii.has("period")) { 
+      if (ii.has("use") && ii.has("period")) { 
         s = s + ",\u00A0"; 
       } 
       if (ii.has("period")) { 
@@ -1555,7 +1627,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       } else { 
         switch (ii.primitiveValue("system")) { 
         case "urn:oid:2.51.1.3": 
-          x.ah("https://www.gs1.org/standards/id-keys/gln", context.formatPhrase(RenderingContext.DATA_REND_GLN)).tx("GLN"); 
+          x.ah("https://www.gs1.org/standards/id-keys/gln", context.formatPhrase(RenderingI18nContext.DATA_REND_GLN)).tx("GLN"); 
           break; 
         default: 
           x.code(ii.primitiveValue("system"));       
@@ -1569,16 +1641,16 @@ public class DataRenderer extends Renderer implements CodeResolver {
       x.nbsp(); 
       x.tx("("); 
       if (ii.has("use")) { 
-        x.tx(context.formatPhrase(RenderingContext.DATA_REND_USE)); 
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_USE)); 
         x.nbsp(); 
         x.tx(ii.primitiveValue("use")); 
       } 
-      if (ii.has("use") || ii.has("period")) { 
+      if (ii.has("use") && ii.has("period")) { 
         x.tx(","); 
         x.nbsp(); 
       } 
       if (ii.has("period")) { 
-        x.tx(context.formatPhrase(RenderingContext.DATA_REND_PERIOD)); 
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_PERIOD)); 
         x.nbsp(); 
         x.tx(displayPeriod(ii.child("period"))); 
       } 
@@ -1731,7 +1803,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       } 
       c.code().tx(expr.primitiveValue("expression")); 
     } else if (expr.has("reference")) { 
-      p.ah(context.prefixLocalHref(expr.primitiveValue("reference"))).tx(context.formatPhrase(RenderingContext.DATA_REND_SOURCE)); 
+      p.ah(context.prefixLocalHref(expr.primitiveValue("reference"))).tx(context.formatPhrase(RenderingI18nContext.DATA_REND_SOURCE)); 
     } 
     if (expr.has("name") || expr.has("description")) { 
       p.tx("("); 
@@ -1782,7 +1854,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
               x.addText(displayContactPoint(contact));
               break;
             case "url":
-              x.ah(context.prefixLocalHref(v)).tx(v);
+              if (Utilities.isAbsoluteUrlLinkable(v)) {
+                x.ah(context.prefixLocalHref(v)).tx(v);
+              } else {
+                x.tx(v);
+              }
               break;
             default:
               break;
@@ -1795,9 +1871,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
   protected void displayContactPoint(XhtmlNode p, ContactPoint c) { 
     if (c != null) { 
       if (c.getSystem() == ContactPointSystem.PHONE) { 
-        p.tx(context.formatPhrase(RenderingContext.DATA_REND_PHONE, c.getValue()) + " "); 
+        p.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_PHONE, c.getValue()) + " "); 
       } else if (c.getSystem() == ContactPointSystem.FAX) { 
-        p.tx(context.formatPhrase(RenderingContext.DATA_REND_FAX, c.getValue()) + " "); 
+        p.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_FAX, c.getValue()) + " "); 
       } else if (c.getSystem() == ContactPointSystem.EMAIL) { 
         p.tx(c.getValue()); 
       } else if (c.getSystem() == ContactPointSystem.URL) { 
@@ -1814,9 +1890,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
     String sys = c.primitiveValue("system");
     String value = c.primitiveValue("value");
     if (sys.equals("phone")) { 
-      p.tx(context.formatPhrase(RenderingContext.DATA_REND_PHONE, value) + " "); 
+      p.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_PHONE, value) + " "); 
     } else if (sys.equals("fax")) { 
-      p.tx(context.formatPhrase(RenderingContext.DATA_REND_FAX, value) + " "); 
+      p.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_FAX, value) + " "); 
     } else if (sys.equals("email")) { 
       p.ah("mailto:"+value).addText(value); 
     } else if (sys.equals("url")) { 
@@ -1868,7 +1944,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         x.tx("(unit "+q.primitiveValue("code")+" from "+q.primitiveValue("system")+")"); 
     } 
     if (context.isTechnicalMode() && q.has("code")) { 
-      x.span("background: LightGoldenRodYellow", null).tx(" "+ (context.formatPhrase(RenderingContext.DATA_REND_DETAILS, displaySystem(q.primitiveValue("system")))) +q.primitiveValue("code")+" = '"+lookupCode(q.primitiveValue("system"), null, q.primitiveValue("code"))+"')"); 
+      x.span("background: LightGoldenRodYellow", null).tx(" "+ (context.formatPhrase(RenderingI18nContext.DATA_REND_DETAILS, displaySystem(q.primitiveValue("system")))) +q.primitiveValue("code")+" = '"+lookupCode(q.primitiveValue("system"), null, q.primitiveValue("code"))+"')"); 
     }       
     checkRenderExtensions(status, x, q);
   } 
@@ -1890,8 +1966,10 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
     ResourceWrapper lowC = q.child("low");
     ResourceWrapper highC = q.child("high");
-    boolean sameUnits = (lowC != null && highC != null) && ((lowC.has("unit") && highC.has("unit") && lowC.child("unit").matches(highC.child("unit")))  
-        || (lowC.has("code") && highC.has("code") && lowC.child("code").matches(highC.child("code")))); 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: not using String.matches
+    boolean sameUnits = (lowC != null && highC != null) && ((lowC.has("unit") && highC.has("unit") && lowC.child("unit").matches(highC.child("unit")))
+        || (lowC.has("code") && highC.has("code") && lowC.child("code").matches(highC.child("code"))));
     String low = "?"; 
     if (q.has("low") && lowC.has("value")) 
       low = sameUnits ? lowC.primitiveValue("value").toString() : displayQuantity(lowC); 
@@ -1916,16 +1994,152 @@ public class DataRenderer extends Renderer implements CodeResolver {
       x.tx(" "+q.child("low").primitiveValue("unit")); 
   } 
 
+  // ---- RelativeTime (R6) ---------------------------------------------------------------------
+
+  /**
+   * The offset of a RelativeTime, ready to show: the magnitude (without a sign), and which way it goes 
+   */
+  private class RelativeOffset {
+    private String magnitude; // null if there's no offset
+    private String direction; // phrase: before, after, at, relative to
+  }
+
+  private RelativeOffset relativeOffset(ResourceWrapper rt) {
+    RelativeOffset res = new RelativeOffset();
+    ResourceWrapper o = rt.child("offset");
+    if (o == null) {
+      res.direction = RenderingI18nContext.DATA_REND_REL_AT;
+    } else if (o.fhirType().equals("Range")) {
+      BigDecimal low = decimalValue(o.child("low"));
+      BigDecimal high = decimalValue(o.child("high"));
+      if (low != null && high != null && low.signum() <= 0 && high.signum() <= 0 && !(low.signum() == 0 && high.signum() == 0)) {
+        res.magnitude = high.abs().toPlainString()+"-"+low.abs().toPlainString()+unitOf(o.child("low"), o.child("high"));
+        res.direction = RenderingI18nContext.DATA_REND_REL_BEFORE;
+      } else if (low != null && high != null && low.signum() >= 0 && high.signum() >= 0) {
+        res.magnitude = low.toPlainString()+"-"+high.toPlainString()+unitOf(o.child("low"), o.child("high"));
+        res.direction = RenderingI18nContext.DATA_REND_REL_AFTER;
+      } else {
+        res.magnitude = displayRange(o);
+        res.direction = RenderingI18nContext.DATA_REND_REL_RELATIVE;
+      }
+    } else {
+      BigDecimal v = decimalValue(o);
+      if (v == null) {
+        res.magnitude = displayQuantity(o);
+        res.direction = RenderingI18nContext.DATA_REND_REL_RELATIVE;
+      } else if (v.signum() == 0) {
+        res.direction = RenderingI18nContext.DATA_REND_REL_AT;
+      } else {
+        res.magnitude = v.abs().toPlainString()+unitOf(o, null);
+        res.direction = v.signum() < 0 ? RenderingI18nContext.DATA_REND_REL_BEFORE : RenderingI18nContext.DATA_REND_REL_AFTER;
+      }
+    }
+    return res;
+  }
+
+  private BigDecimal decimalValue(ResourceWrapper q) {
+    if (q == null || !q.has("value")) {
+      return null;
+    }
+    try {
+      return new BigDecimal(q.primitiveValue("value"));
+    } catch (NumberFormatException e) {
+      return null;
+    }
+  }
+
+  private String unitOf(ResourceWrapper q1, ResourceWrapper q2) {
+    for (ResourceWrapper q : new ResourceWrapper[] { q1, q2 }) {
+      if (q != null && q.has("unit")) {
+        return " "+context.getTranslated(q.child("unit"));
+      } else if (q != null && q.has("code")) {
+        return " "+q.primitiveValue("code");
+      }
+    }
+    return "";
+  }
+
+  private boolean hasRelativeTimeStructure(ResourceWrapper rt) {
+    return rt.hasMN("offset", "contextCode", "contextReference", "contextDefinition", "contextPath");
+  }
+
+  public String displayRelativeTime(ResourceWrapper rt) {
+    if (!hasRelativeTimeStructure(rt)) {
+      return rt.has("text") ? context.getTranslated(rt.child("text")) : "";
+    }
+    StringBuilder b = new StringBuilder();
+    RelativeOffset ro = relativeOffset(rt);
+    if (ro.magnitude != null) {
+      b.append(ro.magnitude);
+      b.append(" ");
+    }
+    b.append(context.formatPhrase(ro.direction));
+    b.append(" ");
+    if (rt.has("contextCode")) {
+      b.append(displayCodeableConcept(rt.child("contextCode")));
+    } else if (rt.has("contextReference")) {
+      String s = displayReference(rt.child("contextReference"));
+      b.append(s.startsWith("->") ? s.substring(2) : s);
+    } else if (rt.has("contextDefinition")) {
+      b.append(rt.primitiveValue("contextDefinition"));
+    } else {
+      b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_REL_EVENT));
+    }
+    if (rt.has("contextPath")) {
+      b.append(" (");
+      b.append(rt.primitiveValue("contextPath"));
+      b.append(")");
+    }
+    if (rt.has("text")) {
+      b.append(" (");
+      b.append(context.getTranslated(rt.child("text")));
+      b.append(")");
+    }
+    return b.toString();
+  }
+
+  public void renderRelativeTime(RenderingStatus status, XhtmlNode x, ResourceWrapper rt) throws FHIRFormatError, DefinitionException, IOException {
+    if (!hasRelativeTimeStructure(rt)) {
+      if (rt.has("text")) {
+        x.tx(context.getTranslated(rt.child("text")));
+      }
+    } else {
+      RelativeOffset ro = relativeOffset(rt);
+      if (ro.magnitude != null) {
+        x.tx(ro.magnitude+" ");
+      }
+      x.tx(context.formatPhrase(ro.direction)+" ");
+      if (rt.has("contextCode")) {
+        renderCodeableConcept(status, x, rt.child("contextCode"));
+      } else if (rt.has("contextReference")) {
+        renderReference(status, x, rt.child("contextReference"));
+      } else if (rt.has("contextDefinition")) {
+        renderCanonical(status, x, rt.child("contextDefinition"));
+      } else {
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_REL_EVENT));
+      }
+      if (rt.has("contextPath")) {
+        x.tx(" (");
+        x.code().tx(rt.primitiveValue("contextPath"));
+        x.tx(")");
+      }
+      if (rt.has("text")) {
+        x.tx(" ("+context.getTranslated(rt.child("text"))+")");
+      }
+    }
+    checkRenderExtensions(status, x, rt);
+  }
+
   public String displayPeriod(ResourceWrapper p) { 
     String s = !p.has("start") ? "(?)" : displayDateTime(p.child("start")); 
     s = s + " --> "; 
-    return s + (!p.has("end") ? context.formatPhrase(RenderingContext.DATA_REND_ONGOING) : displayDateTime(p.child("end"))); 
+    return s + (!p.has("end") ? context.formatPhrase(RenderingI18nContext.DATA_REND_ONGOING) : displayDateTime(p.child("end"))); 
   } 
 
   public void renderPeriod(RenderingStatus status, XhtmlNode x, ResourceWrapper p) { 
     x.addText(!p.has("start") ? "??" : displayDateTime(p.child("start"))); 
     x.tx(" --> "); 
-    x.addText(!p.has("end") ? context.formatPhrase(RenderingContext.DATA_REND_ONGOING) : displayDateTime(p.child("end"))); 
+    x.addText(!p.has("end") ? context.formatPhrase(RenderingI18nContext.DATA_REND_ONGOING) : displayDateTime(p.child("end"))); 
   } 
 
   public void renderUsageContext(RenderingStatus status, XhtmlNode x, ResourceWrapper u) throws FHIRFormatError, DefinitionException, IOException { 
@@ -1937,31 +2151,31 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   public void renderTriggerDefinition(RenderingStatus status, XhtmlNode x, ResourceWrapper td) throws FHIRFormatError, DefinitionException, IOException { 
     if (x.isPara()) { 
-      x.b().tx(context.formatPhrase(RenderingContext.GENERAL_TYPE)); 
+      x.b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_TYPE)); 
       x.tx(": "); 
       x.tx(td.child("type").primitiveValue("display")); 
 
       if (td.has("name")) {     
         x.tx(", "); 
-        x.b().tx(context.formatPhrase(RenderingContext.GENERAL_NAME)); 
+        x.b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_NAME)); 
         x.tx(": "); 
         x.tx(context.getTranslated(td.child("name"))); 
       } 
       if (td.has("code")) {     
         x.tx(", "); 
-        x.b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE)); 
+        x.b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_CODE)); 
         x.tx(": "); 
         renderCodeableConcept(status, x, td.child("code")); 
       } 
       if (td.has("timing")) {     
         x.tx(", "); 
-        x.b().tx(context.formatPhrase(RenderingContext.DATA_REND_TIMING)); 
+        x.b().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_TIMING)); 
         x.tx(": "); 
         renderDataType(status, x, td.child("timing")); 
       } 
       if (td.has("condition")) {     
         x.tx(", "); 
-        x.b().tx(context.formatPhrase(RenderingContext.DATA_REND_COND)); 
+        x.b().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_COND)); 
         x.tx(": "); 
         renderExpression(status, x, td.child("condition")); 
       }     
@@ -1969,27 +2183,27 @@ public class DataRenderer extends Renderer implements CodeResolver {
       XhtmlNode tbl = x.table("grid", false); 
 
       XhtmlNode tr = tbl.tr();   
-      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_TYPE)); 
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_TYPE)); 
       tr.td().tx(td.child("type").primitiveValue("display")); 
 
       if (td.has("name")) {     
         tr = tbl.tr();   
-        tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_NAME)); 
+        tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_NAME)); 
         tr.td().tx(context.getTranslated(td.child("name"))); 
       } 
       if (td.has("code")) {     
         tr = tbl.tr();   
-        tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE)); 
+        tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_CODE)); 
         renderCodeableConcept(status, tr.td(), td.child("code")); 
       } 
       if (td.has("timing")) {     
         tr = tbl.tr();   
-        tr.td().b().tx(context.formatPhrase(RenderingContext.DATA_REND_TIMING)); 
+        tr.td().b().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_TIMING)); 
         renderDataType(status, tr.td(), td.child("timing")); 
       } 
       if (td.has("condition")) {      
         tr = tbl.tr();   
-        tr.td().b().tx(context.formatPhrase(RenderingContext.DATA_REND_COND)); 
+        tr.td().b().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_COND)); 
         renderExpression(status, tr.td(), td.child("condition")); 
       }     
     } 
@@ -1999,7 +2213,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     XhtmlNode tbl = x.table("grid", false); 
     XhtmlNode tr = tbl.tr();     
     XhtmlNode td = tr.td().colspan("2"); 
-    td.b().tx(context.formatPhrase(RenderingContext.GENERAL_TYPE)); 
+    td.b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_TYPE)); 
     td.tx(": "); 
     StructureDefinition sd = context.getWorker().fetchTypeDefinition(dr.primitiveValue("type")); 
     if (sd != null && sd.hasWebPath()) { 
@@ -2024,7 +2238,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (dr.has("subject")) { 
       tr = tbl.tr();     
       td = tr.td().colspan("2"); 
-      td.b().tx(context.formatPhrase(RenderingContext.GENERAL_SUBJ)); 
+      td.b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_SUBJ)); 
       ResourceWrapper subj = dr.child("subject");
       if (subj.fhirType().equals("reference")) { 
         renderReference(status, td, subj); 
@@ -2034,24 +2248,24 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } 
     if (dr.has("codeFilter") || dr.has("dateFilter")) { 
       tr = tbl.tr().backgroundColor("#efefef");     
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_FILTER)); 
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VALUE)); 
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.GENERAL_FILTER)); 
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.GENERAL_VALUE)); 
     } 
     for (ResourceWrapper cf : dr.children("codeFilter")) { 
       tr = tbl.tr();     
       if (cf.has("path")) { 
         tr.td().tx(cf.primitiveValue("path")); 
       } else { 
-        tr.td().tx(context.formatPhrase(RenderingContext.DATA_REND_SEARCH, cf.primitiveValue("searchParam")) + " "); 
+        tr.td().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_SEARCH, cf.primitiveValue("searchParam")) + " "); 
       } 
       if (cf.has("valueSet")) { 
         td = tr.td(); 
-        td.tx(context.formatPhrase(RenderingContext.DATA_REND_VALUESET) + " "); 
+        td.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_VALUESET) + " "); 
         renderDataType(status, td, cf.child("valueSet")); 
       } else { 
         boolean first = true; 
         td = tr.td(); 
-        td.tx(context.formatPhrase(RenderingContext.DATA_REND_THESE_CODES) + " "); 
+        td.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_THESE_CODES) + " "); 
         for (ResourceWrapper c : cf.children("code")) { 
           if (first) first = false; else td.tx(", "); 
           renderDataType(status, td, c); 
@@ -2063,7 +2277,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       if (cf.has("path")) { 
         tr.td().tx(cf.primitiveValue("path")); 
       } else { 
-        tr.td().tx(context.formatPhrase(RenderingContext.DATA_REND_SEARCH, cf.primitiveValue("searchParam")) + " "); 
+        tr.td().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_SEARCH, cf.primitiveValue("searchParam")) + " "); 
       } 
       renderDataType(status, tr.td(), cf.child("value")); 
     } 
@@ -2071,7 +2285,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       tr = tbl.tr();     
       td = tr.td().colspan("2"); 
       if (dr.has("limit")) { 
-        td.b().tx(context.formatPhrase(RenderingContext.DATA_REND_LIMIT)); 
+        td.b().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_LIMIT)); 
         td.tx(": "); 
         td.tx(dr.primitiveValue("limit")); 
         if (dr.has("sort")) { 
@@ -2079,7 +2293,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         } 
       } 
       if (dr.has("sort")) { 
-        td.b().tx(context.formatPhrase(RenderingContext.DATA_REND_SORT)); 
+        td.b().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_SORT)); 
         td.tx(": "); 
         boolean first = true; 
         for (ResourceWrapper p : dr.children("sort")) { 
@@ -2095,7 +2309,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   private String displayTiming(ResourceWrapper s) throws FHIRException { 
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(); 
     if (s.has("code")) {
-      b.append(context.formatPhrase(RenderingContext.GENERAL_CODE, displayCodeableConcept(s.child("code"))) + " "); 
+      b.append(context.formatPhrase(RenderingI18nContext.GENERAL_CODE, displayCodeableConcept(s.child("code"))) + " "); 
     }
 
     if (s.has("event")) { 
@@ -2107,17 +2321,17 @@ public class DataRenderer extends Renderer implements CodeResolver {
           c.append("??"); 
         }         
       } 
-      b.append(context.formatPhrase(RenderingContext.DATA_REND_EVENTS, c.toString()) + " "); 
+      b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_EVENTS, c.toString()) + " "); 
     } 
 
     if (s.has("repeat")) { 
       ResourceWrapper rep = s.child("repeat"); 
       if (rep.has("boundsPeriod") && rep.child("boundsPeriod").has("start")) 
-        b.append(context.formatPhrase(RenderingContext.DATA_REND_STARTING, displayDateTime(rep.child("boundsPeriod").child("start"))) + " "); 
+        b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_STARTING, displayDateTime(rep.child("boundsPeriod").child("start"))) + " "); 
       if (rep.has("count")) 
-        b.append(context.formatPhrase(RenderingContext.DATA_REND_COUNT, rep.primitiveValue("count")) + " " + " times"); 
+        b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_COUNT, rep.primitiveValue("count")) + " " + " times"); 
       if (rep.has("duration")) 
-        b.append(context.formatPhrase(RenderingContext.DATA_REND_DURATION, rep.primitiveValue("duration")+displayTimeUnits(rep.primitiveValue("periodUnit"), "1".equals(rep.primitiveValue("duration")))) + " "); 
+        b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_DURATION, rep.primitiveValue("duration")+displayTimeUnits(rep.primitiveValue("periodUnit"), "1".equals(rep.primitiveValue("duration")))) + " "); 
 
       String st = ""; 
       if (rep.has("offset")) { 
@@ -2131,14 +2345,14 @@ public class DataRenderer extends Renderer implements CodeResolver {
       }
       st = ""; 
       if (!rep.has("frequency") || (!rep.has("frequencyMax") && rep.primitiveValue("frequency").equals("1"))) { 
-        st = context.formatPhrase(RenderingContext.DATA_REND_ONCE); 
+        st = context.formatPhrase(RenderingI18nContext.DATA_REND_ONCE); 
       } else { 
         st = rep.primitiveValue("frequency"); 
         if (rep.has("frequencyMax")) 
           st = st + "-"+rep.primitiveValue("frequencyMax"); 
       } 
       if (rep.has("period")) { 
-        st = st + " "+ (context.formatPhrase(RenderingContext.DATA_REND_PER))+" "+rep.primitiveValue("period"); 
+        st = st + " "+ (context.formatPhrase(RenderingI18nContext.DATA_REND_PER))+" "+rep.primitiveValue("period"); 
         if (rep.has("periodMax")) {
           st = st + "-"+rep.primitiveValue("periodMax");
         }
@@ -2148,7 +2362,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         b.append(st);
       }
       if (rep.has("boundsPeriod") && rep.child("boundsPeriod").has("end")) { 
-        b.append(context.formatPhrase(RenderingContext.DATA_REND_UNTIL, displayDateTime(rep.child("boundsPeriod").child("end"))) + " ");
+        b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_UNTIL, displayDateTime(rep.child("boundsPeriod").child("end"))) + " ");
       }
     } 
     return b.toString(); 
@@ -2167,33 +2381,33 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (when == null) 
       return "??"; 
     switch (when.toLowerCase()) { 
-    case "c": return (context.formatPhrase(RenderingContext.DATA_REND_MEALS)); 
-    case "cd": return (context.formatPhrase(RenderingContext.DATA_REND_ATLUNCH)); 
-    case "cm": return (context.formatPhrase(RenderingContext.DATA_REND_ATBKFST)); 
-    case "cv": return (context.formatPhrase(RenderingContext.DATA_REND_ATDINR)); 
-    case "ac": return (context.formatPhrase(RenderingContext.DATA_REND_BFMEALS)); 
-    case "acd": return (context.formatPhrase(RenderingContext.DATA_REND_BFLUNCH)); 
-    case "acm": return (context.formatPhrase(RenderingContext.DATA_REND_BFBKFST)); 
-    case "acv": return (context.formatPhrase(RenderingContext.DATA_REND_BFDINR)); 
-    case "hs": return (context.formatPhrase(RenderingContext.DATA_REND_BFSLEEP)); 
-    case "pc": return (context.formatPhrase(RenderingContext.DATA_REND_AFTRMEALS)); 
-    case "pcd": return (context.formatPhrase(RenderingContext.DATA_REND_AFTRLUNCH)); 
-    case "pcm": return (context.formatPhrase(RenderingContext.DATA_REND_AFTRBKFST)); 
-    case "pcv": return (context.formatPhrase(RenderingContext.DATA_REND_AFTRDINR)); 
-    case "wake": return (context.formatPhrase(RenderingContext.DATA_REND_AFTRWKNG)); 
-    case "morn": return (context.formatPhrase(RenderingContext.DATA_REND_MORNING));  
-    case "morn.early": return (context.formatPhrase(RenderingContext.DATA_REND_MORNING_EARLY)); 
-    case "morn.late": return (context.formatPhrase(RenderingContext.DATA_REND_MORNING_LATE)); 
-    case "noon": return (context.formatPhrase(RenderingContext.DATA_REND_NOON));   
-    case "aft": return (context.formatPhrase(RenderingContext.DATA_REND_AFTERNOON));  
-    case "aft.early": return (context.formatPhrase(RenderingContext.DATA_REND_AFTERNOON_EARLY));  
-    case "aft.late": return (context.formatPhrase(RenderingContext.DATA_REND_AFTERNOON_LATE));  
-    case "eve": return (context.formatPhrase(RenderingContext.DATA_REND_EVENING));   
-    case "eve.early": return (context.formatPhrase(RenderingContext.DATA_REND_EVENING_EARLY)); 
-    case "eve.late": return (context.formatPhrase(RenderingContext.DATA_REND_EVENING_LATE));  
-    case "night": return (context.formatPhrase(RenderingContext.DATA_REND_NIGHT));   
-    case "phs": return (context.formatPhrase(RenderingContext.DATA_REND_AFTER_SLEEP)); 
-    case "imd": return (context.formatPhrase(RenderingContext.DATA_REND_IMMEDIATE));  
+    case "c": return (context.formatPhrase(RenderingI18nContext.DATA_REND_MEALS)); 
+    case "cd": return (context.formatPhrase(RenderingI18nContext.DATA_REND_ATLUNCH)); 
+    case "cm": return (context.formatPhrase(RenderingI18nContext.DATA_REND_ATBKFST)); 
+    case "cv": return (context.formatPhrase(RenderingI18nContext.DATA_REND_ATDINR)); 
+    case "ac": return (context.formatPhrase(RenderingI18nContext.DATA_REND_BFMEALS)); 
+    case "acd": return (context.formatPhrase(RenderingI18nContext.DATA_REND_BFLUNCH)); 
+    case "acm": return (context.formatPhrase(RenderingI18nContext.DATA_REND_BFBKFST)); 
+    case "acv": return (context.formatPhrase(RenderingI18nContext.DATA_REND_BFDINR)); 
+    case "hs": return (context.formatPhrase(RenderingI18nContext.DATA_REND_BFSLEEP)); 
+    case "pc": return (context.formatPhrase(RenderingI18nContext.DATA_REND_AFTRMEALS)); 
+    case "pcd": return (context.formatPhrase(RenderingI18nContext.DATA_REND_AFTRLUNCH)); 
+    case "pcm": return (context.formatPhrase(RenderingI18nContext.DATA_REND_AFTRBKFST)); 
+    case "pcv": return (context.formatPhrase(RenderingI18nContext.DATA_REND_AFTRDINR)); 
+    case "wake": return (context.formatPhrase(RenderingI18nContext.DATA_REND_AFTRWKNG)); 
+    case "morn": return (context.formatPhrase(RenderingI18nContext.DATA_REND_MORNING));  
+    case "morn.early": return (context.formatPhrase(RenderingI18nContext.DATA_REND_MORNING_EARLY)); 
+    case "morn.late": return (context.formatPhrase(RenderingI18nContext.DATA_REND_MORNING_LATE)); 
+    case "noon": return (context.formatPhrase(RenderingI18nContext.DATA_REND_NOON));   
+    case "aft": return (context.formatPhrase(RenderingI18nContext.DATA_REND_AFTERNOON));  
+    case "aft.early": return (context.formatPhrase(RenderingI18nContext.DATA_REND_AFTERNOON_EARLY));  
+    case "aft.late": return (context.formatPhrase(RenderingI18nContext.DATA_REND_AFTERNOON_LATE));  
+    case "eve": return (context.formatPhrase(RenderingI18nContext.DATA_REND_EVENING));   
+    case "eve.early": return (context.formatPhrase(RenderingI18nContext.DATA_REND_EVENING_EARLY)); 
+    case "eve.late": return (context.formatPhrase(RenderingI18nContext.DATA_REND_EVENING_LATE));  
+    case "night": return (context.formatPhrase(RenderingI18nContext.DATA_REND_NIGHT));   
+    case "phs": return (context.formatPhrase(RenderingI18nContext.DATA_REND_AFTER_SLEEP)); 
+    case "imd": return (context.formatPhrase(RenderingI18nContext.DATA_REND_IMMEDIATE));  
     
     default: return "?"+when+"?"; 
     } 
@@ -2222,29 +2436,29 @@ public class DataRenderer extends Renderer implements CodeResolver {
   private String displaySampledData(ResourceWrapper s) { 
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(); 
     if (s.has("origin")) 
-      b.append(context.formatPhrase(RenderingContext.DATA_REND_ORIGIN, displayQuantity(s.child("origin"))) + " "); 
+      b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_ORIGIN, displayQuantity(s.child("origin"))) + " "); 
 
     if (s.has("interval")) { 
-      b.append(context.formatPhrase(RenderingContext.DATA_REND_INT, s.primitiveValue("interval")) + " "); 
+      b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_INT, s.primitiveValue("interval")) + " "); 
 
       if (s.has("intervalUnit")) 
         b.append(s.primitiveValue("intervalUnit")); 
     } 
 
     if (s.has("factor")) 
-      b.append(context.formatPhrase(RenderingContext.DATA_REND_FACT, s.primitiveValue("factor")) + " "); 
+      b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_FACT, s.primitiveValue("factor")) + " "); 
 
     if (s.has("lowerLimit")) 
-      b.append(context.formatPhrase(RenderingContext.DATA_REND_LOWER, s.primitiveValue("lowerLimit")) + " "); 
+      b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_LOWER, s.primitiveValue("lowerLimit")) + " "); 
 
     if (s.has("upperLimit")) 
-      b.append(context.formatPhrase(RenderingContext.DATA_REND_UP, s.primitiveValue("upperLimit")) + " "); 
+      b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_UP, s.primitiveValue("upperLimit")) + " "); 
 
     if (s.has("dimensions")) 
-      b.append(context.formatPhrase(RenderingContext.DATA_REND_DIM, s.primitiveValue("dimensions")) + " "); 
+      b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_DIM, s.primitiveValue("dimensions")) + " "); 
 
     if (s.has("data")) 
-      b.append(context.formatPhrase(RenderingContext.DATA_REND_DATA, s.primitiveValue("data")) + " "); 
+      b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_DATA, s.primitiveValue("data")) + " "); 
 
     return b.toString(); 
   } 
@@ -2262,7 +2476,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     XhtmlNode xn; 
     xn = new XhtmlNode(NodeType.Element, "div"); 
     XhtmlNode p = xn.para(); 
-    p.b().tx((context.formatPhrase(RenderingContext.DATA_REND_EXCEPTION)) +function+": "+e.getMessage()); 
+    p.b().tx((context.formatPhrase(RenderingI18nContext.DATA_REND_EXCEPTION)) +function+": "+e.getMessage()); 
     p.addComment(getStackTrace(e)); 
     return xn; 
   } 

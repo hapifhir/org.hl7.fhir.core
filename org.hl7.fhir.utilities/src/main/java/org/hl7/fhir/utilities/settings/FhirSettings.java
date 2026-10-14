@@ -38,9 +38,13 @@ public class FhirSettings {
     return instance.filePath;
   }
 
+  public static FhirSettingsPOJO getFhirSettingsPOJO() {
+    getInstance();
+    return instance.fhirSettingsPOJO.copy();
+  }
+
   final String filePath;
   private FhirSettings(FhirSettingsPOJO fhirSettingsPOJO, String filePath) {
-
     this.fhirSettingsPOJO = fhirSettingsPOJO;
     this.filePath = filePath;
   }
@@ -179,16 +183,23 @@ public class FhirSettings {
   }
 
   protected static String getSettingsFilePath(String explicitFilePath) {
-    final String filePath;
-    String pathFromSystemProperties;
-    try {
-      pathFromSystemProperties = getDefaultSettingsPath();
-    } catch (IOException e) {
-      pathFromSystemProperties = null;
+    if (explicitFilePath != null) {
+      log.debug("getting fhir-settings.json from explicit path: {}", explicitFilePath);
+      return explicitFilePath;
     }
-    filePath = explicitFilePath != null ? explicitFilePath :
-      System.getProperty(FHIR_SETTINGS_PATH, pathFromSystemProperties);
-    return filePath;
+
+    final String systemProperty = System.getProperty(FHIR_SETTINGS_PATH);
+    if (systemProperty != null) {
+      log.debug("getting fhir-settings.json from fhir.settings.path system property: {}", systemProperty);
+      return systemProperty;
+    }
+    try {
+      log.debug("getting fhir-settings.json from default location in user.home");
+      return getDefaultSettingsPath();
+    } catch (IOException e) {
+      log.error("Unable to construct default settings path from user.home", e);
+      return null;
+    }
   }
 
   static FhirSettingsPOJO getFhirSettingsPOJO(String filePath) throws IOException {
@@ -227,6 +238,14 @@ public class FhirSettings {
 
   protected static String getDefaultSettingsPath() throws IOException {
     return Utilities.path(System.getProperty("user.home"), ".fhir", "fhir-settings.json");
+  }
+
+  public static boolean isSSRFProtectionEnabled() {
+    getInstance();
+    if (instance.fhirSettingsPOJO.getSsrfProtectionEnabled() != null) {
+      return instance.fhirSettingsPOJO.getSsrfProtectionEnabled();
+    }
+    return true;
   }
 
   public static boolean isIgnoreDefaultPackageServers() {

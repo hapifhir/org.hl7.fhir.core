@@ -1,25 +1,20 @@
 package org.hl7.fhir.r5.renderers.spreadsheets;
 
-import java.io.OutputStream;
-
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.ContactDetail;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
-import org.hl7.fhir.r5.renderers.DataRenderer;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 
-@MarkedToMoveToAdjunctPackage
+
+
 public class CanonicalSpreadsheetGenerator extends SpreadsheetGenerator {
 
-  public CanonicalSpreadsheetGenerator(IWorkerContext context) {
-    super(context);
+  public CanonicalSpreadsheetGenerator(IWorkerContext context, RendererFactory renderer) {
+    super(context, renderer);
   }
 
   protected Sheet renderCanonicalResource(CanonicalResource cr, boolean forMultiple) {

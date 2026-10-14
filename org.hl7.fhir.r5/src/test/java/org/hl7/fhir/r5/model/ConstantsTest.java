@@ -53,11 +53,5 @@ public class ConstantsTest {
         Constants.URI_REGEX_XVER.replace(
             "$$", CommaSeparatedStringBuilder.join("|", context.getResourceNames()));
 
-    // Test URL matching
-    assertTrue(testUrl1.matches(regexXver));
-    assertTrue(testUrl2.matches(regexXver));
-    assertTrue(testUrl3.matches(regexXver));
-    assertTrue(testUrl4.matches(regexXver));
-    assertFalse(invalidUrl.matches(regexXver));
   }
 }

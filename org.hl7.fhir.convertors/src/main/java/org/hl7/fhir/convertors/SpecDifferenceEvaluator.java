@@ -12,33 +12,27 @@ import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.StructureDefinition40_50;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.ValueSet40_50;
+import org.hl7.fhir.convertors.conv40_N.resources40_N.StructureDefinition40_N;
+import org.hl7.fhir.convertors.conv40_N.resources40_N.ValueSet40_N;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.PrimitiveType;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.core.Bundle.BundleEntryComponent;
+import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.model.core.Enumerations.BindingStrength;
+import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -48,6 +42,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -155,15 +150,15 @@ public class SpecDifferenceEvaluator {
     for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       if (be.getResource() instanceof org.hl7.fhir.r4.model.StructureDefinition) {
         org.hl7.fhir.r4.model.StructureDefinition sd = (org.hl7.fhir.r4.model.StructureDefinition) be.getResource();
-        map.put(sd.getName(), StructureDefinition40_50.convertStructureDefinition(sd));
+        map.put(sd.getName(), StructureDefinition40_N.convertStructureDefinition(sd));
       }
     }
 
   }
 
   private static void loadSD(Map<String, StructureDefinition> map, String fn) throws FHIRFormatError, IOException {
-    Bundle bundle = (Bundle) new XmlParser().parse(ManagedFileAccess.inStream(fn));
-    for (BundleEntryComponent be : bundle.getEntry()) {
+    Bundle bundle = (Bundle) new XmlParser(ModelContext.fullCoreContext()).parse(ManagedFileAccess.inStream(fn));
+    for (BundleEntryComponent be : bundle.getEntryList()) {
       if (be.getResource() instanceof StructureDefinition) {
         StructureDefinition sd = (StructureDefinition) be.getResource();
         map.put(sd.getName(), sd);
@@ -176,14 +171,14 @@ public class SpecDifferenceEvaluator {
     for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       if (be.getResource() instanceof org.hl7.fhir.r4.model.ValueSet) {
         org.hl7.fhir.r4.model.ValueSet sd = (org.hl7.fhir.r4.model.ValueSet) be.getResource();
-        map.put(sd.getName(), ValueSet40_50.convertValueSet(sd));
+        map.put(sd.getName(), ValueSet40_N.convertValueSet(sd));
       }
     }
   }
 
   private static void loadVS(Map<String, ValueSet> map, String fn) throws FHIRFormatError, IOException {
-    Bundle bundle = (Bundle) new XmlParser().parse(ManagedFileAccess.inStream(fn));
-    for (BundleEntryComponent be : bundle.getEntry()) {
+    Bundle bundle = (Bundle) new XmlParser(ModelContext.fullCoreContext()).parse(ManagedFileAccess.inStream(fn));
+    for (BundleEntryComponent be : bundle.getEntryList()) {
       if (be.getResource() instanceof ValueSet) {
         ValueSet sd = (ValueSet) be.getResource();
         map.put(sd.getName(), sd);
@@ -562,7 +557,7 @@ public class SpecDifferenceEvaluator {
       left.addTag("a").setAttribute("href", link).addText(name);
     else
       left.addText(name);
-    right.span("opacity: 0.5", null).addText("(No Changes)");
+    right.span("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY, null).addText("(No Changes)");
   }
 
   private void markChanged(String name, String change, boolean item) {
@@ -647,15 +642,15 @@ public class SpecDifferenceEvaluator {
       changed = true;
       right.ul().li().addText("Name Changed from " + orig.getName() + " to " + rev.getName());
     }
-    for (ElementDefinition ed : rev.getDifferential().getElement()) {
-      ElementDefinition oed = getMatchingElement(verMapPrefix, rev.getName(), orig.getDifferential().getElement(), ed);
+    for (ElementDefinition ed : rev.getDifferential().getElementList()) {
+      ElementDefinition oed = getMatchingElement(verMapPrefix, rev.getName(), orig.getDifferential().getElementList(), ed);
       if (oed != null) {
         ed.setUserData(UserDataNames.comparison_match, oed);
         oed.setUserData(UserDataNames.comparison_match, ed);
       }
     }
 
-    for (ElementDefinition ed : rev.getDifferential().getElement()) {
+    for (ElementDefinition ed : rev.getDifferential().getElementList()) {
       ElementDefinition oed = (ElementDefinition) ed.getUserData("match");
       if (oed == null) {
         changed = true;
@@ -666,7 +661,7 @@ public class SpecDifferenceEvaluator {
 
     List<String> dels = new ArrayList<String>();
 
-    for (ElementDefinition ed : orig.getDifferential().getElement()) {
+    for (ElementDefinition ed : orig.getDifferential().getElementList()) {
       if (ed.getUserData("match") == null) {
         changed = true;
         boolean marked = false;
@@ -683,9 +678,9 @@ public class SpecDifferenceEvaluator {
     if (!changed)
       right.ul().li().addText("No Changes");
 
-    for (ElementDefinition ed : rev.getDifferential().getElement())
+    for (ElementDefinition ed : rev.getDifferential().getElementList())
       ed.clearUserData(UserDataNames.comparison_match);
-    for (ElementDefinition ed : orig.getDifferential().getElement())
+    for (ElementDefinition ed : orig.getDifferential().getElementList())
       ed.clearUserData(UserDataNames.comparison_match);
 
   }
@@ -874,20 +869,8 @@ public class SpecDifferenceEvaluator {
       int cAdd = 0;
       int cDel = 0;
       if (vrev != null && vorig != null) {
-        for (ValueSetExpansionContainsComponent cc : vorig.getExpansion().getContains()) {
-          if (!hasCode(vrev, cc, systemMatters)) {
-            liDel.sep(", ");
-            liDel.code().tx(cc.getCode());
-            cDel++;
-          }
-        }
-        for (ValueSetExpansionContainsComponent cc : vrev.getExpansion().getContains()) {
-          if (!hasCode(vorig, cc, systemMatters)) {
-            liAdd.sep(", ");
-            liAdd.code().tx(cc.getCode());
-            cAdd++;
-          }
-        }
+        cDel = addChangedCodes(vorig.getExpansion().getContainsList(), vrev, systemMatters, liDel);
+        cAdd = addChangedCodes(vrev.getExpansion().getContainsList(), vorig, systemMatters, liAdd);
       }
       if (cDel > 0) {
         XhtmlNode li = ul.li();
@@ -903,8 +886,8 @@ public class SpecDifferenceEvaluator {
     if (rev.getStrength() == BindingStrength.EXTENSIBLE && orig.getStrength() == BindingStrength.EXTENSIBLE) {
       ValueSet vrev = getValueSet(rev.getValueSet(), revision.getValuesets());
       ValueSet vorig = getValueSet(orig.getValueSet(), getPackage(version).getValuesets());
-      if (vrev != null && vrev.hasCompose() && vrev.getCompose().getInclude().size() == 1 && vrev.getCompose().getIncludeFirstRep().hasSystem() &&
-        vorig != null && vorig.hasCompose() && vorig.getCompose().getInclude().size() == 1 && vorig.getCompose().getIncludeFirstRep().hasSystem()) {
+      if (vrev != null && vrev.hasCompose() && vrev.getCompose().getIncludeList().size() == 1 && vrev.getCompose().getIncludeFirstRep().hasSystem() &&
+        vorig != null && vorig.hasCompose() && vorig.getCompose().getIncludeList().size() == 1 && vorig.getCompose().getIncludeFirstRep().hasSystem()) {
         if (!vorig.getCompose().getIncludeFirstRep().getSystem().equals(vrev.getCompose().getIncludeFirstRep().getSystem())) {
           ul.li().tx("Change code system for extensibly bound codes from \"" + vorig.getCompose().getIncludeFirstRep().getSystem() + "\" to \"" + vrev.getCompose().getIncludeFirstRep().getSystem() + "\"");
         }
@@ -941,7 +924,7 @@ public class SpecDifferenceEvaluator {
     if (ref == null) {
       li.code().tx("none");
     } else {
-      ValueSet vs = context.fetchResource(ValueSet.class, ref, IWorkerContext.VersionResolutionRules.defaultRule());
+      ValueSet vs = context.fetchResource(ValueSet.class, ref, VersionResolutionRules.defaultRule());
       if (vs == null || !vs.hasWebPath()) {
         li.code().tx(ref);
       } else {
@@ -989,7 +972,7 @@ public class SpecDifferenceEvaluator {
       binding.setAttribute("max", getMaxValueSet(orig.getBinding()));
   }
 
-  private void describeReference(XhtmlNode li, String ref, org.hl7.fhir.r5.model.Element ctxt) {
+  private void describeReference(XhtmlNode li, String ref, org.hl7.fhir.model.core.Element ctxt) {
     Resource res = context.fetchResource(Resource.class, ref, ExtensionUtilities.getVersionResolutionRules(ctxt));
     if (res != null && res.hasWebPath()) {
       if (res instanceof CanonicalResource) {
@@ -1023,10 +1006,10 @@ public class SpecDifferenceEvaluator {
   }
 
   private String listCodes(ValueSet vs) {
-    if (vs.getExpansion().getContains().size() > 15)
+    if (vs.getExpansion().getContainsList().size() > 15)
       return ">15 codes";
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(" | ");
-    for (ValueSetExpansionContainsComponent ce : vs.getExpansion().getContains()) {
+    for (ValueSetExpansionContainsComponent ce : vs.getExpansion().getContainsList()) {
       if (ce.hasCode())
         b.append(ce.getCode());
     }
@@ -1048,33 +1031,33 @@ public class SpecDifferenceEvaluator {
   }
 
   private void analyseTypes(XhtmlNode ul, ElementDefinition rev, ElementDefinition orig) {
-    if (rev.getType().size() == 1 && orig.getType().size() == 1) {
-      String r = describeType(rev.getType().get(0));
+    if (rev.getTypeList().size() == 1 && orig.getTypeList().size() == 1) {
+      String r = describeType(rev.getTypeList().get(0));
       if (Utilities.noString(r) && Utilities.existsInList(rev.getId(), "Element.id"))
         r = "string";
       if (Utilities.noString(r) && Utilities.existsInList(rev.getId(), "Extension.url"))
         r = "uri";
-      String o = describeType(orig.getType().get(0));
+      String o = describeType(orig.getTypeList().get(0));
       if (r == null && o == null)
         log.info("null @ " + rev.getPath());
       if (r.contains("(") && o.contains("(") && r.startsWith(o.substring(0, o.indexOf("(") + 1))) {
-        compareParameters(ul, rev.getType().get(0), orig.getType().get(0));
+        compareParameters(ul, rev.getTypeList().get(0), orig.getTypeList().get(0));
       } else if (!r.equals(o))
         ul.li().tx("Type changed from " + o + " to " + r);
     } else {
       CommaSeparatedStringBuilder removed = new CommaSeparatedStringBuilder();
       CommaSeparatedStringBuilder added = new CommaSeparatedStringBuilder();
       CommaSeparatedStringBuilder retargetted = new CommaSeparatedStringBuilder();
-      for (TypeRefComponent tr : orig.getType()) {
-        if (!hasType(rev.getType(), tr))
+      for (TypeRefComponent tr : orig.getTypeList()) {
+        if (!hasType(rev.getTypeList(), tr))
           removed.append(describeType(tr));
       }
-      for (TypeRefComponent tr : rev.getType()) {
-        if (!hasType(orig.getType(), tr) && !isAbstractType(tr.getWorkingCode()))
+      for (TypeRefComponent tr : rev.getTypeList()) {
+        if (!hasType(orig.getTypeList(), tr) && !isAbstractType(tr.getWorkingCode()))
           added.append(describeType(tr));
       }
-      for (TypeRefComponent tr : rev.getType()) {
-        TypeRefComponent tm = getType(rev.getType(), tr);
+      for (TypeRefComponent tr : rev.getTypeList()) {
+        TypeRefComponent tm = getType(rev.getTypeList(), tr);
         if (tm != null) {
           compareParameters(ul, tr, tm);
         }
@@ -1092,13 +1075,13 @@ public class SpecDifferenceEvaluator {
     List<String> added = new ArrayList<>();
     List<String> removed = new ArrayList<>();
 
-    for (CanonicalType p : tr.getTargetProfile()) {
+    for (CanonicalType p : tr.getTargetProfileList()) {
       if (!hasParam(tm, p.asStringValue())) {
         added.add(trimNS(p.asStringValue()));
       }
     }
 
-    for (CanonicalType p : tm.getTargetProfile()) {
+    for (CanonicalType p : tm.getTargetProfileList()) {
       if (!hasParam(tr, p.asStringValue())) {
         removed.add(trimNS(p.asStringValue()));
       }
@@ -1124,7 +1107,7 @@ public class SpecDifferenceEvaluator {
   }
 
   private boolean hasParam(TypeRefComponent tm, String s) {
-    for (CanonicalType t : tm.getTargetProfile())
+    for (CanonicalType t : tm.getTargetProfileList())
       if (s.equals(t.asStringValue()))
         return true;
     return false;
@@ -1141,9 +1124,9 @@ public class SpecDifferenceEvaluator {
           return true;
         }
         boolean found = true;
-        for (CanonicalType t1 : tr.getProfile()) {
+        for (CanonicalType t1 : tr.getProfileList()) {
           boolean ok = false;
-          for (CanonicalType t2 : t.getProfile()) {
+          for (CanonicalType t2 : t.getProfileList()) {
             ok = ok || t2.getValue().equals(t1.getValue());
           }
           found = found && ok;
@@ -1170,7 +1153,7 @@ public class SpecDifferenceEvaluator {
       StringBuilder b = new StringBuilder(tr.getWorkingCode());
       b.append("(");
       boolean first = true;
-      for (UriType u : tr.getTargetProfile()) {
+      for (UriType u : tr.getTargetProfileList()) {
         if (first)
           first = false;
         else
@@ -1184,10 +1167,10 @@ public class SpecDifferenceEvaluator {
       return b.toString();
     } else {
       StringBuilder b = new StringBuilder(tr.getWorkingCode());
-      if (tr.getProfile().size() > 0) {
+      if (tr.getProfileList().size() > 0) {
         b.append("(");
         boolean first = true;
-        for (UriType u : tr.getProfile()) {
+        for (UriType u : tr.getProfileList()) {
           if (first)
             first = false;
           else
@@ -1219,9 +1202,9 @@ public class SpecDifferenceEvaluator {
   private void saveResource(ZipGenerator zip, Resource t, FhirFormat fmt) throws IOException {
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
     if (fmt == FhirFormat.JSON)
-      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(bs, t);
+      new JsonParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(bs, t);
     else
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(bs, t);
+      new XmlParser(context.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(bs, t);
     zip.addBytes(t.fhirType() + "-" + t.getId() + "." + fmt.getExtension(), bs.toByteArray(), true);
   }
 
@@ -1234,15 +1217,15 @@ public class SpecDifferenceEvaluator {
       type.addProperty("old-name", orig.getName());
     }
     var verMapPrefix = getRuleVersionMapPrefix(rev, version);
-    for (ElementDefinition ed : rev.getDifferential().getElement()) {
-      ElementDefinition oed = getMatchingElement(verMapPrefix, rev.getName(), orig.getDifferential().getElement(), ed);
+    for (ElementDefinition ed : rev.getDifferential().getElementList()) {
+      ElementDefinition oed = getMatchingElement(verMapPrefix, rev.getName(), orig.getDifferential().getElementList(), ed);
       if (oed != null) {
         ed.setUserData(UserDataNames.comparison_match, oed);
         oed.setUserData(UserDataNames.comparison_match, ed);
       }
     }
 
-    for (ElementDefinition ed : rev.getDifferential().getElement()) {
+    for (ElementDefinition ed : rev.getDifferential().getElementList()) {
       ElementDefinition oed = (ElementDefinition) ed.getUserData("match");
       if (oed == null) {
         changed = true;
@@ -1255,7 +1238,7 @@ public class SpecDifferenceEvaluator {
 
     List<String> dels = new ArrayList<String>();
 
-    for (ElementDefinition ed : orig.getDifferential().getElement()) {
+    for (ElementDefinition ed : orig.getDifferential().getElementList()) {
       if (ed.getUserData("match") == null) {
         changed = true;
         boolean marked = false;
@@ -1279,9 +1262,9 @@ public class SpecDifferenceEvaluator {
     else
       type.addProperty("status", "no-change");
 
-    for (ElementDefinition ed : rev.getDifferential().getElement())
+    for (ElementDefinition ed : rev.getDifferential().getElementList())
       ed.clearUserData(UserDataNames.comparison_match);
-    for (ElementDefinition ed : orig.getDifferential().getElement())
+    for (ElementDefinition ed : orig.getDifferential().getElementList())
       ed.clearUserData(UserDataNames.comparison_match);
 
   }
@@ -1294,15 +1277,15 @@ public class SpecDifferenceEvaluator {
       type.setAttribute("old-name", orig.getName());
     }
     var verMapPrefix = getRuleVersionMapPrefix(rev, version);
-    for (ElementDefinition ed : rev.getDifferential().getElement()) {
-      ElementDefinition oed = getMatchingElement(verMapPrefix, rev.getName(), orig.getDifferential().getElement(), ed);
+    for (ElementDefinition ed : rev.getDifferential().getElementList()) {
+      ElementDefinition oed = getMatchingElement(verMapPrefix, rev.getName(), orig.getDifferential().getElementList(), ed);
       if (oed != null) {
         ed.setUserData(UserDataNames.comparison_match, oed);
         oed.setUserData(UserDataNames.comparison_match, ed);
       }
     }
 
-    for (ElementDefinition ed : rev.getDifferential().getElement()) {
+    for (ElementDefinition ed : rev.getDifferential().getElementList()) {
       ElementDefinition oed = (ElementDefinition) ed.getUserData("match");
       if (oed == null) {
         changed = true;
@@ -1316,7 +1299,7 @@ public class SpecDifferenceEvaluator {
 
     List<String> dels = new ArrayList<String>();
 
-    for (ElementDefinition ed : orig.getDifferential().getElement()) {
+    for (ElementDefinition ed : orig.getDifferential().getElementList()) {
       if (ed.getUserData("match") == null) {
         changed = true;
         boolean marked = false;
@@ -1338,9 +1321,9 @@ public class SpecDifferenceEvaluator {
     else
       type.setAttribute("status", "no-change");
 
-    for (ElementDefinition ed : rev.getDifferential().getElement())
+    for (ElementDefinition ed : rev.getDifferential().getElementList())
       ed.clearUserData(UserDataNames.comparison_match);
-    for (ElementDefinition ed : orig.getDifferential().getElement())
+    for (ElementDefinition ed : orig.getDifferential().getElementList())
       ed.clearUserData(UserDataNames.comparison_match);
 
   }
@@ -1474,11 +1457,11 @@ public class SpecDifferenceEvaluator {
     JsonArray oa = new JsonArray();
     JsonArray ra = new JsonArray();
 
-    if (rev.getType().size() == 1 && orig.getType().size() == 1) {
-      String r = describeType(rev.getType().get(0));
+    if (rev.getTypeList().size() == 1 && orig.getTypeList().size() == 1) {
+      String r = describeType(rev.getTypeList().get(0));
       if (Utilities.noString(r) && Utilities.existsInList(rev.getId(), "Element.id", "Extension.url"))
         r = "string";
-      String o = describeType(orig.getType().get(0));
+      String o = describeType(orig.getTypeList().get(0));
       if (Utilities.noString(o) && Utilities.existsInList(orig.getId(), "Element.id", "Extension.url"))
         o = "string";
       if (!o.equals(r)) {
@@ -1486,16 +1469,16 @@ public class SpecDifferenceEvaluator {
         ra.add(new JsonPrimitive(r));
       }
     } else {
-      for (TypeRefComponent tr : orig.getType()) {
-        if (!hasType(rev.getType(), tr))
+      for (TypeRefComponent tr : orig.getTypeList()) {
+        if (!hasType(rev.getTypeList(), tr))
           oa.add(new JsonPrimitive(describeType(tr)));
       }
-      for (TypeRefComponent tr : rev.getType()) {
-        if (!hasType(orig.getType(), tr) && !isAbstractType(tr.getWorkingCode()))
+      for (TypeRefComponent tr : rev.getTypeList()) {
+        if (!hasType(orig.getTypeList(), tr) && !isAbstractType(tr.getWorkingCode()))
           ra.add(new JsonPrimitive(describeType(tr)));
       }
-      for (TypeRefComponent tr : rev.getType()) {
-        TypeRefComponent tm = getType(rev.getType(), tr);
+      for (TypeRefComponent tr : rev.getTypeList()) {
+        TypeRefComponent tm = getType(rev.getTypeList(), tr);
         if (tm != null) {
           compareParameters(element, tr, tm);
         }
@@ -1512,13 +1495,13 @@ public class SpecDifferenceEvaluator {
     JsonArray added = new JsonArray();
     JsonArray removed = new JsonArray();
 
-    for (CanonicalType p : tr.getTargetProfile()) {
+    for (CanonicalType p : tr.getTargetProfileList()) {
       if (!hasParam(tm, p.asStringValue())) {
         added.add(new JsonPrimitive(p.asStringValue()));
       }
     }
 
-    for (CanonicalType p : tm.getTargetProfile()) {
+    for (CanonicalType p : tm.getTargetProfileList()) {
       if (!hasParam(tr, p.asStringValue())) {
         removed.add(new JsonPrimitive(p.asStringValue()));
       }
@@ -1531,11 +1514,11 @@ public class SpecDifferenceEvaluator {
   }
 
   private void analyseTypes(Document doc, Element element, ElementDefinition rev, ElementDefinition orig) {
-    if (rev.getType().size() == 1 && orig.getType().size() == 1) {
-      String r = describeType(rev.getType().get(0));
+    if (rev.getTypeList().size() == 1 && orig.getTypeList().size() == 1) {
+      String r = describeType(rev.getTypeList().get(0));
       if (Utilities.noString(r) && Utilities.existsInList(rev.getId(), "Element.id", "Extension.url"))
         r = "string";
-      String o = describeType(orig.getType().get(0));
+      String o = describeType(orig.getTypeList().get(0));
       if (Utilities.noString(o) && Utilities.existsInList(orig.getId(), "Element.id", "Extension.url"))
         o = "string";
       if (!o.equals(r)) {
@@ -1543,16 +1526,16 @@ public class SpecDifferenceEvaluator {
         element.appendChild(makeElementWithAttribute(doc, "added-type", "name", r));
       }
     } else {
-      for (TypeRefComponent tr : orig.getType()) {
-        if (!hasType(rev.getType(), tr))
+      for (TypeRefComponent tr : orig.getTypeList()) {
+        if (!hasType(rev.getTypeList(), tr))
           element.appendChild(makeElementWithAttribute(doc, "removed-type", "name", describeType(tr)));
       }
-      for (TypeRefComponent tr : rev.getType()) {
-        if (!hasType(orig.getType(), tr) && !isAbstractType(tr.getWorkingCode()))
+      for (TypeRefComponent tr : rev.getTypeList()) {
+        if (!hasType(orig.getTypeList(), tr) && !isAbstractType(tr.getWorkingCode()))
           element.appendChild(makeElementWithAttribute(doc, "added-type", "name", describeType(tr)));
       }
-      for (TypeRefComponent tr : rev.getType()) {
-        TypeRefComponent tm = getType(rev.getType(), tr);
+      for (TypeRefComponent tr : rev.getTypeList()) {
+        TypeRefComponent tm = getType(rev.getTypeList(), tr);
         if (tm != null) {
           compareParameters(doc, element, tr, tm);
         }
@@ -1562,13 +1545,13 @@ public class SpecDifferenceEvaluator {
 
   private void compareParameters(Document doc, Element element, TypeRefComponent tr, TypeRefComponent tm) {
 
-    for (CanonicalType p : tr.getTargetProfile()) {
+    for (CanonicalType p : tr.getTargetProfileList()) {
       if (!hasParam(tm, p.asStringValue())) {
         element.appendChild(makeElementWithAttribute(doc, tr.getWorkingCode() + "-target-added", "name", p.asStringValue()));
       }
     }
 
-    for (CanonicalType p : tm.getTargetProfile()) {
+    for (CanonicalType p : tm.getTargetProfileList()) {
       if (!hasParam(tr, p.asStringValue())) {
         element.appendChild(makeElementWithAttribute(doc, tr.getWorkingCode() + "-target-removed", "name", p.asStringValue()));
       }
@@ -1616,11 +1599,11 @@ public class SpecDifferenceEvaluator {
       ValueSet vrev = getValueSet(rev.getValueSet(), revision.getExpansions());
       ValueSet vorig = getValueSet(rev.getValueSet(), getPackage(version).getExpansions());
       if (vrev != null && vorig != null) {
-        for (ValueSetExpansionContainsComponent cc : vorig.getExpansion().getContains()) {
+        for (ValueSetExpansionContainsComponent cc : vorig.getExpansion().getContainsList()) {
           if (!hasCode(vrev, cc, systemMatters))
             oa.add(new JsonPrimitive(cc.getCode()));
         }
-        for (ValueSetExpansionContainsComponent cc : vrev.getExpansion().getContains()) {
+        for (ValueSetExpansionContainsComponent cc : vrev.getExpansion().getContainsList()) {
           if (!hasCode(vorig, cc, systemMatters))
             ra.add(new JsonPrimitive(cc.getCode()));
         }
@@ -1638,11 +1621,46 @@ public class SpecDifferenceEvaluator {
   }
 
   private boolean hasCode(ValueSet vs, ValueSetExpansionContainsComponent cc, boolean systemMatters) {
-    for (ValueSetExpansionContainsComponent ct : vs.getExpansion().getContains()) {
-      if ((!systemMatters || ct.getSystem().equals(cc.getSystem())) && ct.getCode().equals(cc.getCode()))
+    return hasCode(vs.getExpansion().getContainsList(), cc, systemMatters);
+  }
+
+  private boolean hasCode(List<ValueSetExpansionContainsComponent> list, ValueSetExpansionContainsComponent cc, boolean systemMatters) {
+    for (ValueSetExpansionContainsComponent ct : list) {
+      if ((!systemMatters || ct.getSystem().equals(cc.getSystem())) && ct.hasCode() && ct.getCode().equals(cc.getCode()))
+        return true;
+      if (ct.hasContains() && hasCode(ct.getContainsList(), cc, systemMatters))
         return true;
     }
     return false;
+  }
+
+  private int addChangedCodes(List<ValueSetExpansionContainsComponent> source, ValueSet target, boolean systemMatters, XhtmlNode li) {
+    int count = 0;
+    for (ValueSetExpansionContainsComponent cc : source) {
+      if (cc.hasCode() && !hasCode(target, cc, systemMatters)) {
+        li.sep(", ");
+        li.code().tx(cc.getCode());
+        count++;
+      }
+      if (cc.hasContains()) {
+        count += addChangedCodes(cc.getContainsList(), target, systemMatters, li);
+      }
+    }
+    return count;
+  }
+
+  private boolean addChangedCodes(Document doc, Element element, String elementName, List<ValueSetExpansionContainsComponent> source, ValueSet target, boolean systemMatters) {
+    boolean changed = false;
+    for (ValueSetExpansionContainsComponent cc : source) {
+      if (cc.hasCode() && !hasCode(target, cc, systemMatters)) {
+        element.appendChild(makeElementWithAttribute(doc, elementName, "code", cc.getCode()));
+        changed = true;
+      }
+      if (cc.hasContains()) {
+        changed = addChangedCodes(doc, element, elementName, cc.getContainsList(), target, systemMatters) || changed;
+      }
+    }
+    return changed;
   }
 
   private void compareBindings(Document doc, Element element, ElementDefinition rev, ElementDefinition orig, CompareFhirVersion version) {
@@ -1678,18 +1696,8 @@ public class SpecDifferenceEvaluator {
       ValueSet vorig = getValueSet(rev.getValueSet(), getPackage(version).getExpansions());
       boolean changed = false;
       if (vrev != null && vorig != null) {
-        for (ValueSetExpansionContainsComponent cc : vorig.getExpansion().getContains()) {
-          if (!hasCode(vrev, cc, systemMatters)) {
-            element.appendChild(makeElementWithAttribute(doc, "removed-code", "code", cc.getCode()));
-            changed = true;
-          }
-        }
-        for (ValueSetExpansionContainsComponent cc : vrev.getExpansion().getContains()) {
-          if (!hasCode(vorig, cc, systemMatters)) {
-            element.appendChild(makeElementWithAttribute(doc, "added-code", "code", cc.getCode()));
-            changed = true;
-          }
-        }
+        changed = addChangedCodes(doc, element, "removed-code", vorig.getExpansion().getContainsList(), vrev, systemMatters) || changed;
+        changed = addChangedCodes(doc, element, "added-code", vrev.getExpansion().getContainsList(), vorig, systemMatters) || changed;
       }
       if (changed) {
         element.setAttribute("binding-codes-changed", "true");

@@ -33,7 +33,7 @@ import org.hl7.fhir.r4b.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.utils.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -44,8 +44,9 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
+@Deprecated(forRemoval = true)
 public class ProfileComparer extends CanonicalResourceComparer {
 
   public class ProfileComparison extends CanonicalResourceComparison<StructureDefinition> {
@@ -165,7 +166,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
 
   private void check(StructureDefinition sd, String name) {
     if (sd == null)
-      throw new DefinitionException("No StructureDefinition provided (" + name + ": " + sd.getName() + ")");
+      throw new DefinitionException("No StructureDefinition provided (" + name + ": null)");
 //    if (sd.getType().equals("Extension")) {
 //      throw new DefinitionException("StructureDefinition is for an extension - use ExtensionComparer instead ("+name+": "+sd.getName()+")");
 //    }

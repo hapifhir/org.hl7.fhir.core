@@ -37,7 +37,10 @@ public class JsonLexer {
   
   private String source;
   private int cursor;
-  private String peek;
+  // pending pushed-back characters, top of stack at peekCount-1 (consumed next).
+  // this used to be a String, which meant an allocation for every push and every read.
+  private char[] peek = new char[8];
+  private int peekCount;
   private String value;
   private TokenType type;
   private Stack<State> states = new Stack<State>();
@@ -63,40 +66,34 @@ public class JsonLexer {
   }
 
   private boolean more() {
-    return peek != null || cursor < source.length(); 
+    return peekCount > 0 || cursor < source.length(); 
   }
 
   private String getNext(int length) throws IOException {
-    String result = "";
-    if (peek != null) {
-      if (peek.length() > length) {
-        result = peek.substring(0, length);
-        peek = peek.substring(length);
-      } else {
-        result = peek;
-        peek = null;
-      }
+    StringBuilder result = new StringBuilder(length);
+    while (result.length() < length && peekCount > 0) {
+      result.append(peek[--peekCount]);
     }
     if (result.length() < length) {
       int len = length - result.length(); 
       if (cursor > source.length() - len) 
         throw error("Attempt to read past end of source");
-      result = result + source.substring(cursor+1, cursor+len+1);
+      result.append(source, cursor+1, cursor+len+1);
       cursor = cursor + len;
     }
-    for (char ch : result.toCharArray())
-      if (ch == '\n')
+    for (int i = 0; i < result.length(); i++) {
+      if (result.charAt(i) == '\n')
         location.newLine();
       else
         location.incCol();
-    return result;
+    }
+    return result.toString();
   }
 
   private char getNextChar() throws IOException {
     char ch;
-    if (peek != null) {
-      ch = peek.charAt(0);
-      peek = peek.length() == 1 ? null : peek.substring(1);
+    if (peekCount > 0) {
+      ch = peek[--peekCount];
     } else {
       cursor++;
       if (cursor >= source.length()) {
@@ -114,7 +111,10 @@ public class JsonLexer {
   }
 
   private void push(char ch){
-    peek = peek == null ? String.valueOf(ch) : String.valueOf(ch)+peek;
+    if (peekCount == peek.length) {
+      peek = java.util.Arrays.copyOf(peek, peekCount * 2);
+    }
+    peek[peekCount++] = ch;
     location.back();
   }
 
@@ -165,6 +165,42 @@ public class JsonLexer {
   }
 
 
+  /**
+   * Fast path for the overwhelmingly common case: a quoted string containing no escape
+   * sequences. The general path below appends every character to a StringBuilder one at a
+   * time; here the value is a single substring of the source.
+   * <p>
+   * The opening quote has already been consumed. Returns false without consuming anything
+   * if the fast path does not apply, in which case the caller falls through to the general
+   * path, which is still responsible for reporting an unclosed string.
+   */
+  private boolean parseUnescapedString() {
+    if (peekCount > 0) {
+      return false;
+    }
+    int start = cursor + 1;
+    int len = source.length();
+    for (int i = start; i < len; i++) {
+      char ch = source.charAt(i);
+      if (ch == '\\') {
+        return false;
+      }
+      if (ch == '"') {
+        value = source.substring(start, i);
+        for (int j = start; j <= i; j++) {
+          if (source.charAt(j) == '\n') {
+            location.newLine();
+          } else {
+            location.incCol();
+          }
+        }
+        cursor = i;
+        return true;
+      }
+    }
+    return false;
+  }
+
   public void next() throws IOException {
     lastLocationBWS = location.copy();
     char ch;
@@ -211,6 +247,9 @@ public class JsonLexer {
         break;
       case '"' :
         type = TokenType.String;
+        if (parseUnescapedString()) {
+          break;
+        }
         b.setLength(0);
         do {
           ch = getNextChar();
@@ -270,7 +309,7 @@ public class JsonLexer {
           type = TokenType.String;
           isUnquoted = true;
           b.setLength(0);
-          while (more() && (Utilities.isAlphabetic(ch) || Utilities.isDigit(ch) || Utilities.existsInList(ch, '_', '.', '-'))) {
+          while (more() && (Utilities.isAlphabetic(ch) || Utilities.isDigit(ch) || ch == '_' || ch == '.' || ch == '-')) {
             b.append(ch);
             ch = getNextChar();
           }
@@ -321,7 +360,7 @@ public class JsonLexer {
 
   @Override
   public String toString() {
-    return "JsonLexer [cursor=" + cursor + ", peek=" + peek + ", type=" + type + ", location=" + location.toString() + "]";
+    return "JsonLexer [cursor=" + cursor + ", peek=" + new String(peek, 0, peekCount) + ", type=" + type + ", location=" + location.toString() + "]";
   }
 
   public String getSourceName() {

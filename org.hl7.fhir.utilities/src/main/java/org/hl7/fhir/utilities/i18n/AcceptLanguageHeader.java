@@ -7,10 +7,6 @@ import java.util.Comparator;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
-import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguageSorter;
-
-import net.sf.saxon.functions.Lang;
 
 public class AcceptLanguageHeader {
 
@@ -61,7 +57,24 @@ public class AcceptLanguageHeader {
       if (value == 1) {
         return lang;
       } else {
-        return lang+"; q="+(String.format("%.6f", value).replaceAll("(\\.\\d+?)0*$", "$1")); //Double.toString(value);
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //anchored, safe
+        String formattedValue = String.format("%.6f", value).replaceAll("(\\.\\d+?)0*$", "$1");
+        return lang+"; q="+formattedValue; //Double.toString(value);
+      }
+    }
+
+    /**
+     * this preference as it is written in a header or a displayLanguage parameter: "it;q=0.8", no space
+     */
+    public String toHeaderValue() {
+      if (value == 1) {
+        return lang;
+      } else {
+        // q has at most 3 decimal places (RFC 9110), and is written without trailing zeros: q=0, q=0.8.
+        // The quality was parsed as a float, so round before trimming; and always '.', whatever the locale
+        String q = new java.math.BigDecimal(String.format(java.util.Locale.ROOT, "%.3f", value)).stripTrailingZeros().toPlainString();
+        return lang+";q="+q;
       }
     }
     public boolean matches(String dispLang) {
@@ -93,6 +106,8 @@ public class AcceptLanguageHeader {
     boolean wildcard = false;
     int offset = langs.size();
     if (!Utilities.noString(src)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = src.split("\\,");
       for (int i = 0; i < parts.length; i++) {
         String lang = parts[i].trim();
@@ -175,6 +190,23 @@ public class AcceptLanguageHeader {
     return b.toString();
   }
 
+  /**
+   * The languages in the form a displayLanguage parameter (or an Accept-Language header) takes:
+   * "en,it;q=0.8,*" - no spaces. toString() is the readable form, with spaces, and is also
+   * used for source and copy(), so it is left as it is.
+   */
+  public String toParameterValue() {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(",");
+    for (LanguagePreference lang : langs) {
+      if (!lang.isAuto()) {
+        b.append(lang.toHeaderValue());
+      }
+    }
+    return b.toString();
+  }
+
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: not using String.matches
   public boolean matches(String dispLang) {
     for (LanguagePreference lp : langs) {
       if (lp.matches(dispLang)) {

@@ -28,13 +28,13 @@ import org.hl7.fhir.r4.model.Medication;
 import org.hl7.fhir.r4.model.MedicationStatement;
 import org.hl7.fhir.r4.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+@Deprecated(forRemoval = true)
 public class IPSBuilder {
 
   public static class TypeAndId {
@@ -314,6 +314,8 @@ public class IPSBuilder {
     if (url.startsWith(baseUrl+"/")) {
       url = url.substring(baseUrl.length()+1);
     }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = url.split("\\/");
     if (p.length > 1) {
       if ("_history".equals(p[p.length-2]) && p.length > 3) {

@@ -10,9 +10,9 @@ import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@MarkedToMoveToAdjunctPackage
+
+
 public class ValidationProcessInfo {
   private TerminologyServiceErrorClass err;
   private List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
@@ -49,10 +49,23 @@ public class ValidationProcessInfo {
     return false;
   }
 
+  /**
+   * The messages that explain the outcome: the errors and the warnings, not the information level
+   * notes about an individual coding. "This code is not in the value set", said about one coding
+   * of a CodeableConcept that validated on another, did not cause anything, and putting it in the
+   * summary message reads as though it had. If information is all there is, it is all we can say
+   */
   public List<String> summaryList() {
     List<String> msgs = new ArrayList<>();
     for (OperationOutcomeIssueComponent issue : issues) {
-      msgs.add(issue.getDetails().getText());
+      if (issue.getSeverity() == IssueSeverity.FATAL || issue.getSeverity() == IssueSeverity.ERROR || issue.getSeverity() == IssueSeverity.WARNING) {
+        msgs.add(issue.getDetails().getText());
+      }
+    }
+    if (msgs.isEmpty()) {
+      for (OperationOutcomeIssueComponent issue : issues) {
+        msgs.add(issue.getDetails().getText());
+      }
     }
     Collections.sort(msgs);
     return msgs;

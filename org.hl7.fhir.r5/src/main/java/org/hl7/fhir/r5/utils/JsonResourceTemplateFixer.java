@@ -8,7 +8,7 @@ import java.util.List;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonElement;
@@ -16,7 +16,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
-@MarkedToMoveToAdjunctPackage
+
 @SuppressWarnings("checkstyle:systemout")
 public class JsonResourceTemplateFixer {
 
@@ -167,6 +167,8 @@ public class JsonResourceTemplateFixer {
         break;
       default:
         if (value.startsWith("$choice:")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] list = value.substring(8).replace("$", "").split("\\|");
           for (String n : list) {
             addNamedExtension(parent, name, "value-choice", "string", n);

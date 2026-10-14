@@ -1,44 +1,51 @@
 /** 
   /** 
-   * Returns all repetitions of {@link #getGiven() given name} as a space separated string 
+   * Returns all repetitions of {@link #getGivenList() given name} as a space separated string 
    *  
    * @see DatatypeUtil#joinStringsSpaceSeparated(List) 
    */ 
   public String getGivenAsSingleString() { 
-    return joinStringsSpaceSeparated(getGiven()); 
+    return joinStringsSpaceSeparated(getGivenList()); 
   } 
 
   /** 
-   * Returns all repetitions of {@link #getPrefix() prefix name} as a space separated string 
+   * Returns all repetitions of {@link #getPrefixList() prefix name} as a space separated string 
    *  
    * @see DatatypeUtil#joinStringsSpaceSeparated(List) 
    */ 
   public String getPrefixAsSingleString() { 
-    return joinStringsSpaceSeparated(getPrefix()); 
+    return joinStringsSpaceSeparated(getPrefixList()); 
   } 
 
   /** 
-   * Returns all repetitions of {@link #getSuffix() suffix} as a space separated string 
+   * Returns all repetitions of {@link #getSuffixList() suffix} as a space separated string 
    *  
    * @see DatatypeUtil#joinStringsSpaceSeparated(List) 
    */ 
   public String getSuffixAsSingleString() { 
-    return joinStringsSpaceSeparated(getSuffix()); 
+    return joinStringsSpaceSeparated(getSuffixList()); 
   } 
 
   /** 
-   * Returns all of the components of the name (prefix, given, family, suffix) as a single string with a single spaced 
-   * string separating each part. 
+   * Returns the name as a single string. 
    * <p> 
-   * If none of the parts are populated, returns the {@link #getTextElement() text} element value instead. 
+   * If {@link #getTextElement() text} is populated it is returned as-is - text is the name as it should be 
+   * presented, and takes precedence over the parts. Otherwise the components that are present (prefix, given, 
+   * family, suffix) are joined with a single space between each part. 
    * </p> 
    */ 
   public String getNameAsSingleString() { 
+    if (hasText()) { 
+      return getText(); 
+    } 
+
     List<StringType> nameParts = new ArrayList<StringType>(); 
-    nameParts.addAll(getPrefix()); 
-    nameParts.addAll(getGiven()); 
-    nameParts.add(getFamilyElement()); 
-    nameParts.addAll(getSuffix()); 
+    nameParts.addAll(getPrefixList()); 
+    nameParts.addAll(getGivenList()); 
+    if (hasFamilyElement()) { 
+      nameParts.add(getFamilyElement()); 
+    } 
+    nameParts.addAll(getSuffixList()); 
     if (nameParts.size() > 0) { 
       return joinStringsSpaceSeparated(nameParts); 
     } else { 

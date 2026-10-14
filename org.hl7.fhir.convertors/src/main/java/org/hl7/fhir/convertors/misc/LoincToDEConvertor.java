@@ -41,14 +41,15 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.Bundle.BundleType;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.InstantType;
-import org.hl7.fhir.r5.model.Meta;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.core.Bundle;
+import org.hl7.fhir.model.core.Bundle.BundleType;
+import org.hl7.fhir.model.core.CodeableConcept;
+import org.hl7.fhir.model.core.Coding;
+import org.hl7.fhir.model.core.DateTimeType;
+import org.hl7.fhir.model.core.InstantType;
+import org.hl7.fhir.model.core.Meta;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -157,7 +158,7 @@ public class LoincToDEConvertor {
 	}
 
 	private void saveBundle() throws FHIRFormatError, IOException, XmlPullParserException {
-		XmlParser xml = new XmlParser();
+		XmlParser xml = new XmlParser(ModelContext.fullCoreContext());
 		FileOutputStream s = ManagedFileAccess.outStream(dest);
     xml.compose(s, bundle, true);
     s.close();
@@ -189,81 +190,7 @@ public class LoincToDEConvertor {
 			if (i % 1000 == 0)
         log.debug("Processed {} LOINC codes", i);
 				System.out.print(".");
-				String code = col(row, "LOINC_NUM");
-				String comp = col(row, "COMPONENT");
-//				DataElement de = new DataElement();
-//				de.setId("loinc-"+code);
-//		    de.setMeta(new Meta().setLastUpdatedElement(InstantType.now()));
-//				bundle.getEntry().add(new BundleEntryComponent().setResource(de));
-//				Identifier id = new Identifier();
-//				id.setSystem("http://hl7.org/fhir/commondataelement/loinc");
-//				id.setValue(code);
-//				de.addIdentifier(id);
-//				de.setPublisher("Regenstrief + FHIR Project Team");
-//				if (!col(row, "STATUS").equals("ACTIVE"))
-//	 				de.setStatus(PublicationStatus.DRAFT); // till we get good at this
-//				else
-//					de.setStatus(PublicationStatus.RETIRED);
-//				de.setDateElement(DateTimeType.now());
-//				de.setName(comp);
-//				ElementDefinition dee = de.addElement();
-//
-//				// PROPERTY	ignore
-//				// TIME_ASPCT	
-//				// SYSTEM	
-//				// SCALE_TYP	
-//				// METHOD_TYP	
-//				// dee.getCategory().add(new CodeableConcept().setText(col(row, "CLASS")));
-//				// SOURCE	
-//				// DATE_LAST_CHANGED - should be in ?	
-//				// CHNG_TYPE	
-//				dee.setComment(col(row , "COMMENTS"));
-//				if (hasCol(row, "CONSUMER_NAME"))
-//					dee.addAlias(col(row, "CONSUMER_NAME"));	
-//				// MOLAR_MASS	
-//				// CLASSTYPE	
-//				// FORMULA	
-//				// SPECIES	
-//				// EXMPL_ANSWERS	
-//				// ACSSYM	
-//				// BASE_NAME - ? this is a relationship	
-//				// NAACCR_ID	
-//				// ---------- CODE_TABLE todo	
-//				// SURVEY_QUEST_TEXT	
-//				// SURVEY_QUEST_SRC	
-//				if (hasCol(row, "RELATEDNAMES2")) {
-//	        String n = col(row, "RELATEDNAMES2");
-//	        for (String s : n.split("\\;")) {
-//						if (!Utilities.noString(s))
-//							dee.addAlias(s);	
-//	        }
-//				}
-//				dee.addAlias(col(row, "SHORTNAME"));	
-//				// ORDER_OBS	
-//				// CDISC Code	
-//				// HL7_FIELD_SUBFIELD_ID	
-//				//  ------------------ EXTERNAL_COPYRIGHT_NOTICE todo	
-//				dee.setDefinition(col(row, "LONG_COMMON_NAME"));	
-//				// HL7_V2_DATATYPE	
-//				String cc = makeType(col(row, "HL7_V3_DATATYPE"), code);
-//				if (cc != null)
-//				  dee.addType().setCode(cc);	
-//				// todo... CURATED_RANGE_AND_UNITS	
-//				// todo: DOCUMENT_SECTION	
-//				// STATUS_REASON	
-//				// STATUS_TEXT	
-//				// CHANGE_REASON_PUBLIC	
-//				// COMMON_TEST_RANK	
-//				// COMMON_ORDER_RANK	
-//				// COMMON_SI_TEST_RANK	
-//				// HL7_ATTACHMENT_STRUCTURE
-//
-//				// units:
-//				// UNITSREQUIRED	
-//				// SUBMITTED_UNITS
-//				ExtensionUtilities.setAllowableUnits(dee, makeUnits(col(row, "EXAMPLE_UNITS"), col(row, "EXAMPLE_UCUM_UNITS")));
-//				// EXAMPLE_SI_UCUM_UNITS	
-			
+
 			row = XMLUtil.getNextSibling(row);
 		}
 		System.out.println("done");
@@ -314,7 +241,7 @@ public class LoincToDEConvertor {
 			return null;
 		CodeableConcept cc = new CodeableConcept();
 		cc.setText(text);
-		cc.getCoding().add(new Coding().setCode(ucum).setSystem("http://unitsofmeasure.org"));
+		cc.getCodingList().add(new Coding().setCode(ucum).setSystem("http://unitsofmeasure.org"));
 		return cc;
 	}
   public Bundle getBundle() {

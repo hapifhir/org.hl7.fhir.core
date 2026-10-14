@@ -64,6 +64,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
+import java.util.regex.Pattern;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,7 @@ import com.google.gson.*;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IIdType;
+import org.hl7.fhir.r5.model.DecimalType;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DomainResource;
@@ -101,6 +103,14 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   static {
 //    LoggerFactory.getLogger("org.hl7.fhir.r5.formats.JsonParserBase").debug("JSON Parser is being loaded");
     ClassesLoadedFlags.ourJsonParserBaseLoaded = true;
+  }
+
+  protected JsonParserBase() {
+    super();
+  }
+
+  protected JsonParserBase(CustomResourceRegistry customResourceRegistry) {
+    super(customResourceRegistry);
   }
 
   @Override
@@ -157,6 +167,20 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   public DataType parseAnyType(InputStream input, String type) throws IOException, FHIRFormatError {
     JsonObject json = loadJson(input);
     return parseAnyType(json, type);
+  }
+
+  /**
+   * Whether the object has a property whose name starts with {@code prefix} or {@code "_" + prefix}.
+   * {@code parseType(prefix, json)} and {@code hasTypeName(json, prefix)} only look for properties
+   * like that, so when there are none they can stop without trying every type name in turn.
+   */
+  protected boolean hasPropertyWithPrefix(JsonObject json, String prefix) {
+    for (String name : json.keySet()) {
+      if (name.startsWith(prefix) || (name.startsWith("_") && name.startsWith(prefix, 1))) {
+        return true;
+      }
+    }
+    return false;
   }
 
   protected JsonObject getJObject(JsonObject parent, String name) throws IOException {
@@ -216,17 +240,19 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     osw.flush();
   }
 
-  protected boolean customCompose(Resource resource) throws IOException {
-    if (customResourceHandlers.containsKey(resource.fhirType())) {
-      customResourceHandlers.get(resource.fhirType()).composerJson(json).composeResource(resource);
+  protected boolean composeCustomResource(Resource resource) throws IOException {
+    if (customResourceRegistry.has(resource.fhirType())) {
+      JsonParserBase composer = customResourceRegistry.get(resource.fhirType()).getFactory().composerJson(json);
+      composer.setCustomResourceRegistry(customResourceRegistry);
+      composer.composeResource(resource);
       return true;
     } else {
       return false;
     }
   }
 
-  protected boolean customCompose(String name, Resource resource) {
-    if (customResourceHandlers.containsKey(resource.fhirType())) {
+  protected boolean composeCustomResource(String name, Resource resource) {
+    if (customResourceRegistry.has(resource.fhirType())) {
       throw new Error("Not sorted yet");
       // customResourceHandlers.get(resource.fhirType()).parser().composeResource(name, resource);
       // return true;
@@ -236,8 +262,25 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   }
 
   protected Resource parseCustomResource(String t, JsonObject json) throws FHIRFormatError, IOException {
-    if (customResourceHandlers.containsKey(t)) {
-      return customResourceHandlers.get(t).parserJson(allowComments, allowUnknownContent).parse(json);
+    if (customResourceRegistry.has(t)) {
+      JsonParserBase parser = customResourceRegistry.get(t).getFactory().parserJson(allowUnknownContent, allowComments);
+      parser.setCustomResourceRegistry(customResourceRegistry);
+      return parser.parse(json);
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * called at the start of resource dispatch: parse using a custom resource handler that is 
+   * registered as overriding the base specification (returns null if there's no such handler)
+   */
+  protected Resource parseOverridingCustomResource(String t, JsonObject json) throws FHIRFormatError, IOException {
+    CustomResourceHandler handler = customResourceRegistry.get(t);
+    if (handler != null && handler.isOverridesBase()) {
+      JsonParserBase parser = handler.getFactory().parserJson(allowUnknownContent, allowComments);
+      parser.setCustomResourceRegistry(customResourceRegistry);
+      return parser.parse(json);
     } else {
       return null;
     }
@@ -335,6 +378,29 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     if (name != null)
       json.name(name);
     json.valueNum(value);
+  }
+
+  @SuppressWarnings("checkstyle:patternUsage")
+  //the FHIR decimal grammar; a fixed literal, never user input
+  private static final Pattern JSON_NUMBER = Pattern.compile("-?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?");
+
+  /**
+   * Write a decimal using the literal the parser saw, so that the presented form survives a round
+   * trip - 1.0e0 is not silently rewritten as 1.0, nor 1e2 as 1E+2. asStringValue() is the presented
+   * form when the parser captured one (see DecimalType.setRepresentation) and BigDecimal.toString()
+   * otherwise. Guarded because BigDecimal accepts forms JSON does not (a leading + or .), and those
+   * fall back to writing the numeric value. Canonical JSON is unaffected: JsonCreatorCanonical runs
+   * both routes through JsonNumberCanonicalizer.
+   */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: Matcher.matches() on pattern which has been independently reviewed
+  protected void propDecimal(String name, DecimalType value) throws IOException {
+    String s = value.asStringValue();
+    if (s != null && JSON_NUMBER.matcher(s).matches()) {
+      propNum(name, s);
+    } else {
+      prop(name, value.getValue());
+    }
   }
 
   protected void prop(String name, java.lang.Integer value) throws IOException {

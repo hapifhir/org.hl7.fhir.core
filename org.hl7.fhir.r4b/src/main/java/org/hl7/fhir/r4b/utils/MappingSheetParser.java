@@ -35,11 +35,12 @@ import org.hl7.fhir.r4b.model.UrlType;
 import org.hl7.fhir.r4b.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
-@MarkedToMoveToAdjunctPackage
+
+@Deprecated(forRemoval = true)
 public class MappingSheetParser {
 
   public class MappingRow {
@@ -79,11 +80,17 @@ public class MappingSheetParser {
     }
 
     public int getCardinalityMin() {
-      return Integer.parseInt(cardinality.split("\\.")[0]);
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] cardinalityParts = cardinality.split("\\.");
+      return Integer.parseInt(cardinalityParts[0]);
     }
 
     public String getCardinalityMax() {
-      return cardinality.split("\\.")[2];
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] cardinalityParts = cardinality.split("\\.");
+      return cardinalityParts[2];
     }
 
     public String getCondition() {
@@ -180,6 +187,8 @@ public class MappingSheetParser {
     mr.vocabMapping = csv.value(11);
     mr.derived = csv.value(12);
     if (!Utilities.noString(mr.derived)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] s = mr.derived.split("\\=");
       mr.derived = s[0].trim();
       mr.derivedMapping = s[1].trim();
@@ -433,7 +442,7 @@ public class MappingSheetParser {
     return null;
   }
 
-  private static final String PFX = "<html><link rel=\"stylesheet\" href=\"file:c:\\work\\org.hl7.fhir\\build\\publish\\fhir.css\"/></head><body>\r\n";
+  private static final String PFX = "<html lang=\"en\"><link rel=\"stylesheet\" href=\"file:c:\\work\\org.hl7.fhir\\build\\publish\\fhir.css\"/></head><body>\r\n";
   private static final String SFX = "<body></html>";
 
   public static void main(String[] args) throws FileNotFoundException, IOException, FHIRException {

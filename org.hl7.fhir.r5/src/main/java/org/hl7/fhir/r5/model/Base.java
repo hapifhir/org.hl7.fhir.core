@@ -29,10 +29,7 @@ package org.hl7.fhir.r5.model;
   */
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBase;
@@ -168,8 +165,15 @@ public abstract class Base implements Serializable, IBase, IElement {
     if (userData != null)
       userData.remove(name);
   }
- 
-  
+
+  /**
+   * Clear all user Data
+   */
+  public void clearUserData() {
+    userData  = null;
+  }
+
+
   public void setUserDataINN(String name, Object value) {
     if (value == null)
       return;
@@ -208,7 +212,15 @@ public abstract class Base implements Serializable, IBase, IElement {
       }
       userData.putAll(other.userData);
     }
-  }      
+  }
+
+  public Set<String> getUserDataNames() {
+    if (userData == null) {
+      return new HashSet<>();
+    } else {
+      return userData.keySet();
+    }
+  }
 
   public boolean hasFormatComment() {
     return hasFormatCommentPre() || hasFormatCommentPost();
@@ -328,6 +340,8 @@ public abstract class Base implements Serializable, IBase, IElement {
 		  if (n.equalsIgnoreCase(t))
 		  	return true;
 		  if (n.contains(".")) {
+		    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+		    //single literal character split
 		    String[] p = n.split("\\.");
 		    if (p.length == 2 && Utilities.existsInList(p[0], "FHIR", "CDA") && p[1].equalsIgnoreCase(t))
 	        return true;
@@ -553,6 +567,17 @@ public abstract class Base implements Serializable, IBase, IElement {
 
   public abstract Base copy();
   
+  /**
+   * Copy this object's content onto dst, the same as copyValues, but with one signature all the
+   * way down the hierarchy so that a call made through a Base reference reaches the leaf type.
+   * copyValues takes a different argument type at every level, so a call bound through Base
+   * would stop at Base.copyValues; each override of this casts dst to its own type to pick the
+   * right one
+   */
+  public void assignValues(Base dst) {
+    copyValues((Base) dst);
+  }
+
   public void copyValues(Base dst) {  
     if (isCopyUserData() && userData != null) {
       dst.userData = new HashMap<>();

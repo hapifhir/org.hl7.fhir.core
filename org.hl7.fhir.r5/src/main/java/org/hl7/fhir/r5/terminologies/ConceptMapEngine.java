@@ -41,9 +41,9 @@ import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.utilities.CanonicalPair;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@MarkedToMoveToAdjunctPackage
+
+
 public class ConceptMapEngine {
 
   private SimpleWorkerContext context;
@@ -68,7 +68,7 @@ public class ConceptMapEngine {
     for (ConceptMapGroupComponent g : cm.getGroup()) {
       for (SourceElementComponent e : g.getElement()) {
         if (code.equals(e.getCode())) {
-          if (e != null)
+          if (ct != null)
             throw new FHIRException("Unable to process translate "+code+" because multiple candidate matches were found in concept map "+cm.getUrl());
           ct = e;
           cg = g;

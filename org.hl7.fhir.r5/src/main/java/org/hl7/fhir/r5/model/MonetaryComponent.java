@@ -560,6 +560,10 @@ public class MonetaryComponent extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MonetaryComponent) dst);
+      }
+
       public void copyValues(MonetaryComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();

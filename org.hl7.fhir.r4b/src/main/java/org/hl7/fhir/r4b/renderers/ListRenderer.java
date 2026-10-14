@@ -25,7 +25,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * See R5 rendering framework to render R4B resources
  * 
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ListRenderer extends ResourceRenderer {
 
   public ListRenderer(RenderingContext context) {
@@ -71,7 +71,7 @@ public class ListRenderer extends ResourceRenderer {
     }
     if (list.has("source")) {
       td.tx("Source: ");
-      shortForRef(td, list.get("encounter"));
+      shortForRef(td, list.get("source"));
     }
     if (list.has("orderedBy")) {
       td.tx("Order: " + displayBase(list.get("orderedBy")));

@@ -48,6 +48,7 @@ import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.regex.RegexConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -562,13 +563,36 @@ public class FHIRPathEngine {
    */
   public List<Base> evaluate(Object appContext, Base focusResource, Base rootResource, Base base,
       ExpressionNode expressionNode) throws FHIRException {
+    return evaluate(appContext, focusResource, rootResource, base, expressionNode, null);
+  }
+
+  /**
+   * evaluate a path with a set of variables already in scope, and return the matching elements.
+   *
+   * <p>The variables are visible to the expression as %name, exactly as if they had been introduced
+   * by defineVariable(). This is for callers that have their own notion of named variables to make
+   * available - e.g. the Questionnaire 'variable' extension, whose variables are in scope for the
+   * expressions in the Questionnaire that declares them.
+   *
+   * @param base           - the object against which the path is being evaluated
+   * @param expressionNode - the parsed ExpressionNode statement to use
+   * @param variables      - variables to define before evaluation; may be null
+   * @throws FHIRException @
+   */
+  public List<Base> evaluate(Object appContext, Base focusResource, Base rootResource, Base base,
+      ExpressionNode expressionNode, Map<String, List<Base>> variables) throws FHIRException {
     List<Base> list = new ArrayList<Base>();
     if (base != null) {
       list.add(base);
     }
     log = new StringBuilder();
-    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list,
-        expressionNode, true);
+    ExecutionContext context = new ExecutionContext(appContext, focusResource, rootResource, base, base);
+    if (variables != null) {
+      for (Map.Entry<String, List<Base>> e : variables.entrySet()) {
+        context.setDefinedVariable(e.getKey(), e.getValue());
+      }
+    }
+    return execute(context, list, expressionNode, true);
   }
 
   /**
@@ -638,6 +662,18 @@ public class FHIRPathEngine {
   public boolean evaluateToBoolean(Object appInfo, Base focusResource, Base rootResource, Base base,
       ExpressionNode node) throws FHIRException {
     return convertToBoolean(evaluate(appInfo, focusResource, rootResource, base, node));
+  }
+
+  /**
+   * evaluate a path with a set of variables already in scope, and return true or false
+   *
+   * @param base      - the object against which the path is being evaluated
+   * @param variables - variables to define before evaluation; may be null
+   * @throws FHIRException @
+   */
+  public boolean evaluateToBoolean(Object appInfo, Base focusResource, Base rootResource, Base base,
+      ExpressionNode node, Map<String, List<Base>> variables) throws FHIRException {
+    return convertToBoolean(evaluate(appInfo, focusResource, rootResource, base, node, variables));
   }
 
   /**
@@ -1578,6 +1614,8 @@ public class FHIRPathEngine {
     } else if (!value.contains("T")) {
       date = value;
     } else {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = value.split("T");
       date = p[0];
       if (p.length > 1) {
@@ -1835,6 +1873,8 @@ public class FHIRPathEngine {
         return false;
       }
     }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] t = tn.split("\\.");
     if (t.length != 2) {
       return false;
@@ -2051,20 +2091,16 @@ public class FHIRPathEngine {
   private String removeTrailingZeros(String s) {
     if (Utilities.noString(s))
       return "";
-    int i = s.length() - 1;
-    boolean done = false;
-    boolean dot = false;
-    while (i > 0 && !done) {
-      if (s.charAt(i) == '.') {
-        i--;
-        dot = true;
-      } else if (!dot && s.charAt(i) == '0') {
-        i--;
-      } else {
-        done = true;
-      }
-    }
-    return s.substring(0, i + 1);
+    // only zeros after the decimal point can go: 1.50 is 1.5 and 1.0 is 1, but 100 is not 1.
+    // Leave exponent forms alone
+    if (s.indexOf('.') < 0 || s.indexOf('e') >= 0 || s.indexOf('E') >= 0)
+      return s;
+    int i = s.length()-1;
+    while (i >= 0 && s.charAt(i) == '0')
+      i--;
+    if (i >= 0 && s.charAt(i) == '.')
+      i--;
+    return s.substring(0, i+1);
   }
 
   private boolean decEqual(String left, String right) {
@@ -2080,6 +2116,10 @@ public class FHIRPathEngine {
   private Boolean doEquals(Base left, Base right) {
     if (left instanceof Quantity && right instanceof Quantity) {
       return qtyEqual((Quantity) left, (Quantity) right);
+    } else if ((left.isPrimitive() || left.hasPrimitiveValue()) != (right.isPrimitive() || right.hasPrimitiveValue())) {
+      // a primitive and a complex value are different types, so they are not equal: = is false and
+      // != is true. A logical model type with a value (e.g. CDA ST) counts as primitive here
+      return false;
     } else if (left.isDateTime() && right.isDateTime()) {
       return datesEqual(left.dateTimeValue(), right.dateTimeValue());
     } else if (left instanceof DecimalType || right instanceof DecimalType) {
@@ -3464,7 +3504,7 @@ public class FHIRPathEngine {
     case Split:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes,
           new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
-      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+      return new TypeDetails(CollectionStatus.ORDERED, TypeDetails.FP_String);
     case Join:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes,
           new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
@@ -4312,8 +4352,7 @@ public class FHIRPathEngine {
       if ("hex".equals(param)) {
         result.add(new StringType(new String(hexStringToByteArray(cnt))));
       } else if ("base64".equals(param)) {
-        Base64.Decoder enc = Base64.getDecoder();
-        result.add(new StringType(new String(enc.decode(cnt))));
+        result.add(new StringType(new String(Utilities.decodeBase64(cnt, true))));
       } else if ("urlbase64".equals(param)) {
         Base64.Decoder enc = Base64.getUrlDecoder();
         result.add(new StringType(new String(enc.decode(cnt))));
@@ -4382,6 +4421,10 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcJoin(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    // FHIRPath: "If the input is empty, the result is empty".
+    if (focus.isEmpty()) {
+      return new ArrayList<Base>();
+    }
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
     String param2 = param;
@@ -4688,10 +4731,17 @@ public class FHIRPathEngine {
     String repl = convertToString(replB);
 
     if (focus.size() == 0 || regexB.size() == 0 || replB.size() == 0) {
-      //
+      // no-op
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-        result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
+        try {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+          String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl);
+          result.add(new StringType(replaced).noExtensions());
+        } catch (TimeoutException te) {
+          throw new FHIRException("Timeout evaluating regex: " + regex, te);
+        }
       }
     } else {
       result.add(new StringType(convertToString(focus.get(0))).noExtensions());
@@ -5508,6 +5558,8 @@ public class FHIRPathEngine {
     return result;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: Matcher.matches() on p; regex is user-supplied at runtime
   private List<Base> funcMatchesFull(ExecutionContext context, List<Base> focus, ExpressionNode exp)
       throws FHIRException {
     List<Base> result = new ArrayList<Base>();
@@ -5574,7 +5626,11 @@ public class FHIRPathEngine {
   private List<Base> funcHasValue(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1) {
-      String s = convertToString(focus.get(0));
+      // only something with a primitive value has a value. For a complex type convertToString() gives
+      // toString(), which is never blank, so every complex item claimed to have one; but a logical
+      // model type (e.g. CDA ST) can carry a value without being a FHIR primitive
+      Base b = focus.get(0);
+      String s = b.isPrimitive() ? convertToString(b) : b.hasPrimitiveValue() ? b.primitiveValue() : null;
       result.add(new BooleanType(!Utilities.noString(s)).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
@@ -5750,9 +5806,11 @@ public class FHIRPathEngine {
     } else if (focus.get(0) instanceof DateTimeType || focus.get(0) instanceof DateType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches(
-          "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?")))
-              .noExtensions());
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //non-overlapping alternation with bounded optional groups, safe
+      boolean isMatch = convertToString(focus.get(0)).matches(
+          RegexConstants.DATE_TIME_REGEX );
+      result.add(new BooleanType(isMatch).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
     }
@@ -5766,9 +5824,11 @@ public class FHIRPathEngine {
     } else if (focus.get(0) instanceof DateTimeType || focus.get(0) instanceof DateType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches(
-          "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?")))
-              .noExtensions());
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //non-overlapping alternation with bounded optional groups, safe
+      boolean isMatch = convertToString(focus.get(0)).matches(
+          RegexConstants.DATE_TIME_REGEX ); // FIXME Why is this regex not DATE_REGEX? Tests fail if the 'correct' regex is used.
+      result.add(new BooleanType(isMatch).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
     }
@@ -5797,9 +5857,11 @@ public class FHIRPathEngine {
     } else if (focus.get(0) instanceof TimeType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches(
-          "(T)?([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?")))
-              .noExtensions());
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //non-overlapping alternation with bounded optional groups, safe
+      boolean isMatch = convertToString(focus.get(0)).matches(
+          "(T)?([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?");
+      result.add(new BooleanType(isMatch).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
     }

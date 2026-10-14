@@ -237,6 +237,10 @@ public class EncounterHistory extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((EncounterHistoryLocationComponent) dst);
+      }
+
       public void copyValues(EncounterHistoryLocationComponent dst) {
         super.copyValues(dst);
         dst.location = location == null ? null : location.copy();
@@ -1164,6 +1168,10 @@ public class EncounterHistory extends DomainResource {
         EncounterHistory dst = new EncounterHistory();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((EncounterHistory) dst);
       }
 
       public void copyValues(EncounterHistory dst) {

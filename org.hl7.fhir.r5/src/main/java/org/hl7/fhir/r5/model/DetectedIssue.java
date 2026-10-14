@@ -84,6 +84,17 @@ public class DetectedIssue extends DomainResource {
         else
           throw new FHIRException("Unknown DetectedIssueSeverity code '"+codeString+"'");
         }
+      public static boolean isValidCode(String codeString) {
+        if (codeString == null || "".equals(codeString))
+          return false;
+        if ("high".equals(codeString))
+          return true;
+        if ("moderate".equals(codeString))
+          return true;
+        if ("low".equals(codeString))
+          return true;
+        return false;
+      }
         public String toCode() {
           switch (this) {
             case HIGH: return "high";
@@ -529,6 +540,10 @@ public class DetectedIssue extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DetectedIssueEvidenceComponent) dst);
+      }
+
       public void copyValues(DetectedIssueEvidenceComponent dst) {
         super.copyValues(dst);
         if (code != null) {
@@ -902,6 +917,10 @@ public class DetectedIssue extends DomainResource {
         DetectedIssueMitigationComponent dst = new DetectedIssueMitigationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((DetectedIssueMitigationComponent) dst);
       }
 
       public void copyValues(DetectedIssueMitigationComponent dst) {
@@ -1974,6 +1993,10 @@ public class DetectedIssue extends DomainResource {
         DetectedIssue dst = new DetectedIssue();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((DetectedIssue) dst);
       }
 
       public void copyValues(DetectedIssue dst) {

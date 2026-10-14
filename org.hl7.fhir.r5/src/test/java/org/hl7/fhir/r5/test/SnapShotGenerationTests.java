@@ -57,6 +57,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -142,7 +143,7 @@ public class SnapShotGenerationTests {
       if (Utilities.noString(aa)) {
         allow = AllowUnknownProfile.ALL_TYPES;
       } else if ("no-extensions".equals(aa)) {
-        allow = AllowUnknownProfile.NON_EXTNEIONS;
+        allow = AllowUnknownProfile.NON_EXTENSIONS;
       } else if ("none".equals(aa)) {
         allow = AllowUnknownProfile.NONE;
       } else {
@@ -472,8 +473,14 @@ public class SnapShotGenerationTests {
   private List<ValidationMessage> messages;
   private static IWorkerContext testContext;
 
+  @AfterAll
+  public static void tearDown()  {
+    fp = null;
+    testContext = null;
+  }
+
   @BeforeAll
-  public static void setUp() throws FHIRException, IOException {
+  static void setUp() throws FHIRException, IOException {
     testContext = new SimpleWorkerContext(TestingUtilities.getSharedWorkerContext());
     fp = new FHIRPathEngine(testContext);
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
@@ -481,7 +488,7 @@ public class SnapShotGenerationTests {
     System.out.println("loading SDC "+npm.version());
     testContext.getManager().loadFromPackage(npm, null);
   }
-
+  
   public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
     SnapShotGenerationTestsContext context = new SnapShotGenerationTestsContext(testContext);
     Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "snapshot-generation", "manifest.xml"));
@@ -628,10 +635,10 @@ public class SnapShotGenerationTests {
       throw e;
     }
     if (output.getDifferential().hasElement()) {
-      RenderingContext rc = new RenderingContext(testContext, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+      RenderingContext rc = new RenderingContext(testContext, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
       rc.setDestDir(Utilities.path("[tmp]", "snapshot"));
       rc.setProfileUtilities(new ProfileUtilities(testContext, null, new TestPKP()));
-      RendererFactory.factory(output, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), output));
+      new RendererFactory().factory(output, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), output));
     }
     // we just generated it - but we don't care what it is here, just that there's no exceptions (though we need it for the rules)
     Narrative txt = output.getText();

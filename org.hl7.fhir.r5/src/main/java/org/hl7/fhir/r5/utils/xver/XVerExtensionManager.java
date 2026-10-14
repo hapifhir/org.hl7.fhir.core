@@ -3,12 +3,12 @@ package org.hl7.fhir.r5.utils.xver;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 
-@MarkedToMoveToAdjunctPackage
+
 public abstract class XVerExtensionManager {
 
   protected IWorkerContext context;

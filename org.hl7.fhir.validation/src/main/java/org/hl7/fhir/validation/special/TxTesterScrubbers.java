@@ -1,18 +1,16 @@
 package org.hl7.fhir.validation.special;
 
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Element;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.ElementVisitor;
-import org.hl7.fhir.r5.utils.ElementVisitor.ElementVisitorInstruction;
-import org.hl7.fhir.r5.utils.ElementVisitor.IElementVisitor;
+import org.hl7.fhir.model.core.CapabilityStatement;
+import org.hl7.fhir.model.core.DomainResource;
+import org.hl7.fhir.model.core.Element;
+import org.hl7.fhir.model.core.Extension;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.model.core.Parameters;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.TerminologyCapabilities;
+import org.hl7.fhir.model.core.ValueSet;
+import org.hl7.fhir.model.utilities.ElementVisitor;
 import org.hl7.fhir.utilities.Utilities;
 
 /**
@@ -26,7 +24,7 @@ import org.hl7.fhir.utilities.Utilities;
 public class TxTesterScrubbers {
 
 
-  public static class TxTesterScrubberVisitor implements IElementVisitor {
+  public static class TxTesterScrubberVisitor implements ElementVisitor.IElementVisitor {
 
     private boolean tight;
     
@@ -69,21 +67,21 @@ public class TxTesterScrubbers {
     }
     
     @Override
-    public ElementVisitorInstruction visit(Object context, Resource resource) {
+    public ElementVisitor.ElementVisitorInstruction visit(Object context, Resource resource) {
       if (resource instanceof DomainResource) {
         DomainResource dr = (DomainResource) resource;
         dr.getExtension().removeIf(ext -> !isManagedExtension(ext));
       } 
-      return ElementVisitorInstruction.VISIT_CHILDREN;
+      return ElementVisitor.ElementVisitorInstruction.VISIT_CHILDREN;
     }
 
     @Override
-    public ElementVisitorInstruction visit(Object context, Element element) {
+    public ElementVisitor.ElementVisitorInstruction visit(Object context, Element element) {
       element.getExtension().removeIf(ext -> !isManagedExtension(ext));
       if (element.fhirType().equals("ValueSet.compose")) {
-        return ElementVisitorInstruction.NO_VISIT_CHILDREN;
+        return ElementVisitor.ElementVisitorInstruction.NO_VISIT_CHILDREN;
       } else {
-        return ElementVisitorInstruction.VISIT_CHILDREN;
+        return ElementVisitor.ElementVisitorInstruction.VISIT_CHILDREN;
       }
     }
   }
@@ -102,8 +100,8 @@ public class TxTesterScrubbers {
 
   public static void scrubParameters(Parameters po, boolean tight) {
     po.setMeta(null);
-    po.getParameter().removeIf(p -> p.getName().equals("diagnostics"));
-    for (var pp : po.getParameter()) {
+    po.getParameterList().removeIf(p -> p.getName().equals("diagnostics"));
+    for (var pp : po.getParameterList()) {
       if (pp.getResource() != null) {
         if (pp.getResource() instanceof ValueSet) {
           scrubValueSet((ValueSet) pp.getResource(), tight);
@@ -118,14 +116,25 @@ public class TxTesterScrubbers {
     }
   }
 
+  /**
+   * OperationOutcome.issue.diagnostics is server specific detail -- an internal message, a
+   * stack location, a request id -- and is never part of what a test asserts. It is
+   * stripped outright here so that no expectation can depend on it, and so that servers are
+   * free to put whatever they find useful in it. Everything a test needs to see about an
+   * issue belongs in details.text (and the tx-issue-type coding in details.coding).
+   *
+   * An issue that carried nothing but diagnostics would say nothing at all once it is
+   * stripped, so those are dropped -- but only while at least one issue survives, since an
+   * OperationOutcome with no issues is not valid.
+   */
   public static void scrubOperationOutcome(OperationOutcome po, boolean tight) {
     if (po != null) {
       scrubDomainResource(po, tight);
-      po.getIssue().removeIf(i -> i.hasDiagnostics() && !i.hasDetails());
-      for (OperationOutcomeIssueComponent iss : po.getIssue()) {
-        if (iss.hasDiagnostics() && !iss.getDiagnostics().toLowerCase().contains("x-request-id")) {
-          iss.setDiagnostics(null);
-        }
+      if (po.getIssueList().size() > 1) {
+        po.getIssueList().removeIf(i -> i.hasDiagnostics() && !i.hasDetails());
+      }
+      for (OperationOutcomeIssueComponent iss : po.getIssueList()) {
+        iss.setDiagnostics(null);
       }
     }
   }

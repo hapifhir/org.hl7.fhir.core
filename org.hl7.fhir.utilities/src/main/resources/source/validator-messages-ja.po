@@ -2,7 +2,7 @@
 # ABSTRACT_CODE_NOT_ALLOWED
 #: ABSTRACT_CODE_NOT_ALLOWED
 msgid "Code ''{0}#{1}'' is abstract, and not allowed in this context"
-msgstr ""
+msgstr "コード ''{0}#{1}'' は抽象的であり、このコンテキストでは許可されていません"
 
 # ALL_OK
 #: ALL_OK
@@ -72,32 +72,37 @@ msgstr "プロファイル ''{0}'' のsnapshotを生成する前に {1} とし�
 # BINDING_ADDITIONAL_D
 #: BINDING_ADDITIONAL_D
 msgid "{0} specified in an additional binding"
+msgstr "{0}が追加バインディングで指定されています"
+
+# BINDING_ADDITIONAL_IN_SCOPE
+#: BINDING_ADDITIONAL_IN_SCOPE
+msgid "The additional binding to {0} applies to this element, because {1}"
 msgstr ""
 
 # BINDING_ADDITIONAL_UC
 #: BINDING_ADDITIONAL_UC
 msgid "{0} specified in an additional binding which applies because {1}"
-msgstr ""
+msgstr "{1}のため適用される追加バインディングで{0}が指定されています"
 
 # BINDING_ADDITIONAL_USAGE
 #: BINDING_ADDITIONAL_USAGE
 msgid "{0} = {1}"
-msgstr ""
+msgstr "{0} = {1}"
 
 # BINDING_MAX
 #: BINDING_MAX
 msgid "{0} specified in the max binding"
-msgstr ""
+msgstr "{0} が最大バインディングで指定されています"
 
 # BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE
 #: BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE
 msgid "Found {0} matches for ''{1}'' in the bundle ({2})"
-msgstr ""
+msgstr "バンドル（{2}）内で ''{1}'' に対して {0} 件の一致が見つかりました"
 
 # BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT
 #: BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT
 msgid "Found {0} matches for fragment {2} in resource ''{1}'' in the bundle ({3})"
-msgstr ""
+msgstr "バンドル ( {3} ) 内のリソース '' {1} 内のフラグメント{2}に対して{0}件の 一致が見つかりました"
 
 # BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED
 #: BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED
@@ -107,12 +112,12 @@ msgstr "トランザクションとバッチを除き、Bundleの各エントリ
 # BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_MULTIPLE_MATCHES
 #: BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_MULTIPLE_MATCHES
 msgid "The {1} resource matched more than one of the allowed profiles ({3})"
-msgstr ""
+msgstr "{1} リソースが許可されたプロファイル ({3}) の複数にマッチしました"
 
 # BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH
 #: BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH
 msgid "The {1} resource did not match any of the allowed profiles (Type {2}: {3})"
-msgstr ""
+msgstr "{1}リソースは許可されたプロファイルのいずれにも一致しませんでした（タイプ{2}: {3}）"
 
 # BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
 #: BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON
@@ -136,7 +141,7 @@ msgstr[0] ""
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 msgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
-msgstr ""
+msgstr "バンドル”{1}”で({0})が見つかりません"
 
 # BUNDLE_BUNDLE_ENTRY_REVERSE_MSG
 #: BUNDLE_BUNDLE_ENTRY_REVERSE_MSG
@@ -166,17 +171,17 @@ msgstr "!!エントリ{0}はタイプとIDでreference {1}と一致しますが�
 # BUNDLE_ENTRY_URL_ABSOLUTE
 #: BUNDLE_ENTRY_URL_ABSOLUTE
 msgid "The fullUrl must be an absolute URL (not ''{0}'')"
-msgstr ""
+msgstr "fullUrlは絶対URL（''{0}''ではない）である必要があります"
 
 # BUNDLE_ENTRY_URL_MATCHES_NO_ID
 #: BUNDLE_ENTRY_URL_MATCHES_NO_ID
 msgid "The fullUrl ''{0}'' looks like a RESTful server URL, but the resource has no id"
-msgstr ""
+msgstr "fullUrl ''{0}'' は RESTful サーバー URL のように見えますが、リソースに ID がありません"
 
 # BUNDLE_ENTRY_URL_MATCHES_TYPE_ID
 #: BUNDLE_ENTRY_URL_MATCHES_TYPE_ID
 msgid "The fullUrl ''{0}'' looks like a RESTful server URL, so it must end with the correct type and id (/{1}/{2})"
-msgstr ""
+msgstr "fullUrl ''{0}'' はRESTfulサーバーのURLのようですが、正しいタイプとid (/{1}/{2}) で終わる必要があります"
 
 # BUNDLE_LINK_SEARCH_NO_DUPLICATES
 #: BUNDLE_LINK_SEARCH_NO_DUPLICATES
@@ -456,6 +461,11 @@ msgstr ""
 msgid "There is no value for sigFormat. In the absence of a stated signature format, the signature cannot be interpreted reliably (or validated)"
 msgstr ""
 
+# BUNDLE_SIGNATURE_NO_WHEN
+#: BUNDLE_SIGNATURE_NO_WHEN
+msgid "There is no stated time in the signature"
+msgstr ""
+
 # BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF
 #: BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF
 msgid "The signed bytes are identical, but the base64 representations differ"
@@ -572,6 +582,16 @@ msgstr ""
 msgid "The signature verified OK"
 msgstr ""
 
+# BUNDLE_SIGNATURE_SIG_TIME_INVALID
+#: BUNDLE_SIGNATURE_SIG_TIME_INVALID
+msgid "The time in the signature ''{0}'' is not a valid instant, so it cannot be compared with Signature.when"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHEN_INVALID
+#: BUNDLE_SIGNATURE_WHEN_INVALID
+msgid "Signature.when ''{0}'' is not a valid instant, so it cannot be compared with the time in the signature"
+msgstr ""
+
 # BUNDLE_SIGNATURE_WHO_MISMATCH
 #: BUNDLE_SIGNATURE_WHO_MISMATCH
 msgid "The  Signature.who.identifier ''{0}'' does not match a subject value from the certificate (one of {1})"
@@ -661,7 +681,7 @@ msgstr "タイプ''{1}''の{0}リソースに対するプロファイルが見�
 #: Bundle_BUNDLE_Entry_NotFound
 msgctxt "Bundle_BUNDLE_Entry_NotFound"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
-msgstr ""
+msgstr "バンドル\"{1}\"で({0})が見つかりません"
 
 # Bundle_BUNDLE_Entry_Orphan_DOCUMENT
 #: Bundle_BUNDLE_Entry_Orphan_DOCUMENT
@@ -725,10 +745,30 @@ msgstr "[(type = ''document'') は (meta.lastUpdated.hasValue()) を意味しま
 msgid "Expected {0} but found {1} event elements"
 msgstr "{0} が期待されましたが、{1} のイベント要素が見つかりました"
 
+# CACHE_ID_CLEARED
+#: CACHE_ID_CLEARED
+msgid "The cache ''{0}'' was dropped {1} ago, when this server cleared all of its caches"
+msgstr ""
+
+# CACHE_ID_CLOSED
+#: CACHE_ID_CLOSED
+msgid "The cache ''{0}'' was closed {1} ago by the client, using $cache-control?mode=end (it had been open for {2}). It did not expire and it was not idle: something in the client released this cache while this request was still using it"
+msgstr ""
+
+# CACHE_ID_EXPIRED
+#: CACHE_ID_EXPIRED
+msgid "The cache ''{0}'' expired: it went {1} without being used, and this server closes caches that have been idle for more than {2} (this one was dropped {3} ago). Every request that uses a cache resets its idle clock, so a client that keeps using a cache will not see this"
+msgstr ""
+
+# CACHE_ID_UNKNOWN
+#: CACHE_ID_UNKNOWN
+msgid "The cache ''{0}'' was never issued by this server, and this server has no record of it ever existing. Caches are created with $cache-control?mode=start, and a cache-id is only valid on the server instance and endpoint that issued it - either it was issued somewhere else, or this server has restarted since it was issued"
+msgstr ""
+
 # CANONICAL_MULTIPLE_VERSIONS_KNOWN
 #: CANONICAL_MULTIPLE_VERSIONS_KNOWN
 msgid "The version {2} for the {0} {1} is not known. These versions are known: {3}"
-msgstr ""
+msgstr "{0} {1}のバージョン{2}は不明です。既知のバージョン: {3}"
 
 # CDATA_is_not_allowed
 #: CDATA_is_not_allowed
@@ -738,27 +778,27 @@ msgstr "CDATAは許可されていません"
 # CDA_UNKNOWN_TEMPLATE
 #: CDA_UNKNOWN_TEMPLATE
 msgid "The CDA Template {0} is not known"
-msgstr ""
+msgstr "CDAテンプレート{0}は不明です"
 
 # CDA_UNKNOWN_TEMPLATE_EXT
 #: CDA_UNKNOWN_TEMPLATE_EXT
 msgid "The CDA Template {0} / {1} is not known"
-msgstr ""
+msgstr "CDAテンプレート {0} / {1} は不明です"
 
 # CODESYSTEM_CONCEPT_NO_DEFINITION
 #: CODESYSTEM_CONCEPT_NO_DEFINITION
 msgid "HL7 Defined CodeSystems should ensure that every concept has a definition"
-msgstr ""
+msgstr "HL7定義コードシステムでは、すべてのコンセプトにdefinitionが含まれていることを確認する必要があります"
 
 # CODESYSTEM_CONCEPT_NO_DISPLAY
 #: CODESYSTEM_CONCEPT_NO_DISPLAY
 msgid "HL7 Defined CodeSystems should ensure that every concept has a display"
-msgstr ""
+msgstr "HL7定義のCodeSystemでは、すべてのコンセプトにdisplayが含まれていることを確認する必要があります"
 
 # CODESYSTEM_CS_COMPLETE_AND_EMPTY
 #: CODESYSTEM_CS_COMPLETE_AND_EMPTY
 msgid "When a CodeSystem has content = ''complete'', it doesn't make sense for there to be no concepts defined"
-msgstr ""
+msgstr "CodeSystemでcontent = ''complete''の場合、定義されたコンセプトが存在しないことは意味がありません"
 
 # CODESYSTEM_CS_COUNT_COMPLETE_WRONG
 #: CODESYSTEM_CS_COUNT_COMPLETE_WRONG
@@ -853,6 +893,11 @@ msgstr "基本のCodeSystem {0}にはcode ''{1}''が宣言されていないた�
 # CODESYSTEM_CS_SUPP_NO_SUPP
 #: CODESYSTEM_CS_SUPP_NO_SUPP
 msgid "The code system is marked as a supplement, but it does not define what code system it supplements"
+msgstr ""
+
+# CODESYSTEM_CS_SUPP_TOO_MANY_CODES
+#: CODESYSTEM_CS_SUPP_TOO_MANY_CODES
+msgid "The supplement has too many concepts to validate ({0}, more than the limit of {1}), so they have not been checked against the base CodeSystem"
 msgstr ""
 
 # CODESYSTEM_CS_UNK_EXPANSION
@@ -1035,6 +1080,11 @@ msgstr ""
 msgid "The code ''{0}'' differs from the correct code ''{1}'' by case. Although the code system ''{2}'' is case insensitive, implementers are strongly encouraged to use the correct case anyway"
 msgstr ""
 
+# CONCEPTMAP_GROUP_SOURCE_CODE_CANT_CHECK
+#: CONCEPTMAP_GROUP_SOURCE_CODE_CANT_CHECK
+msgid "The source code ''{0}'' in the code system {1} cannot be checked due to special rules around the code system"
+msgstr ""
+
 # CONCEPTMAP_GROUP_SOURCE_CODE_INVALID
 #: CONCEPTMAP_GROUP_SOURCE_CODE_INVALID
 msgid "The source code ''{0}'' is not valid in the code system {1}"
@@ -1069,6 +1119,11 @@ msgstr ""
 #: CONCEPTMAP_GROUP_SOURCE_UNKNOWN
 msgid "The Source Code System {0} is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed"
 msgstr "Source Code System {0}は完全に定義されておらずデータが不足しています。また、sourceScopeも指定されていないため、source codeのチェックは実行されません。"
+
+# CONCEPTMAP_GROUP_TARGET_CODE_CANT_CHECK
+#: CONCEPTMAP_GROUP_TARGET_CODE_CANT_CHECK
+msgid "The target code ''{0}'' in the code system {1} cannot be checked due to special rules around the code system"
+msgstr ""
 
 # CONCEPTMAP_GROUP_TARGET_CODE_INVALID
 #: CONCEPTMAP_GROUP_TARGET_CODE_INVALID
@@ -1187,8 +1242,8 @@ msgstr ""
 
 # CONCEPTMAP_VS_TOO_MANY_CODES
 #: CONCEPTMAP_VS_TOO_MANY_CODES
-msgid "The concept map has too many codes to validate ({0})"
-msgstr "concept mapに大量のcodeが含まれるため、バリデーションできません: {0}"
+msgid "The concept map has too many codes to validate ({0}, more than the limit of {1})"
+msgstr "!!concept mapに大量のcodeが含まれるため、バリデーションできません: {0}"
 
 # CONCEPT_DEPRECATED_IN_VALUESET
 #: CONCEPT_DEPRECATED_IN_VALUESET
@@ -1362,6 +1417,12 @@ msgstr "discriminator ({0}) は要素の存在に基づいていますが、ス�
 msgid "Discriminator ({0}) is based on type, but slice {1} in {2} has no types"
 msgstr "discriminator ({0}) はタイプに基づいていますが、{2} のスライス {1} にはタイプがありません"
 
+# Display_Name_Not_Fixed_use_Supplement
+#: Display_Name_Not_Fixed_use_Supplement
+msgid "The display name ''{4}'' is not a known display name for {1}#{2}. Known display is {3} (for the language(s) ''{5}''). Use a supplement to define displays for user assigned codes"
+msgid_plural "The display name ''{4}'' is not a known display name for {1}#{2}. Known displays are {3} (for the language(s) ''{5}''). Use a supplement to define displays for user assigned codes"
+msgstr[0] ""
+
 # Display_Name_WS_for__should_be_one_of__instead_of
 #: Display_Name_WS_for__should_be_one_of__instead_of
 msgid "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is {3} (for the language(s) ''{5}'')"
@@ -1393,7 +1454,7 @@ msgstr ""
 
 # ED_INVARIANT_DIFF_NO_SOURCE
 #: ED_INVARIANT_DIFF_NO_SOURCE
-msgid "The invariant {0} defined in the differential must have no source, or the source must be the same as the profile ({1} vs {2})"
+msgid "The invariant {0} defined in the differential must have no source, or the source must be this profile, or a profile that this profile imposes ({1} vs {2})"
 msgstr "!!differantialで定義された不変 {0} はソースを持たないか、ソースはプロファイルと同じでなければなりません"
 
 # ED_INVARIANT_EXPRESSION_CONFLICT
@@ -1405,6 +1466,21 @@ msgstr "制約 ''{0}'' は式 ''{1}'' を持ち、それは以前に提供され
 #: ED_INVARIANT_EXPRESSION_ERROR
 msgid "Error in constraint ''{0}'' with expression ''{1}'': {2}"
 msgstr "制約 ''{0}'' の式 ''{1}'' でエラーが発生しました: {2}"
+
+# ED_INVARIANT_IMPOSE_DIFFERENT
+#: ED_INVARIANT_IMPOSE_DIFFERENT
+msgid "The invariant {0} has the source ''{1}'', which this profile imposes, but the invariant {0} in that profile has a different expression (''{2}'' vs ''{3}'')"
+msgstr ""
+
+# ED_INVARIANT_IMPOSE_NOT_DEFINED
+#: ED_INVARIANT_IMPOSE_NOT_DEFINED
+msgid "The invariant {0} has the source ''{1}'', which this profile imposes, but that profile does not define an invariant with the key ''{0}''"
+msgstr ""
+
+# ED_INVARIANT_IMPOSE_NOT_FOUND
+#: ED_INVARIANT_IMPOSE_NOT_FOUND
+msgid "The invariant {0} has the source ''{1}'', which this profile imposes, but that profile could not be found, so the invariant could not be checked"
+msgstr ""
 
 # ED_INVARIANT_KEY_ALREADY_USED
 #: ED_INVARIANT_KEY_ALREADY_USED
@@ -2091,9 +2167,14 @@ msgstr "FHIRPath式の評価エラー: タイプ ''{0}'' は {1}で未知また�
 msgid "Error evaluating FHIRPath expression: The parameter type {2} is not legal for {0} parameter {1}. expecting {3}"
 msgstr "FHIRPath式の評価エラー: パラメータタイプ {2} は {0} パラメータ {1} に対して合法ではありません。{3}を期待します"
 
+# FHIR_RESOURCE_ID_CANT_BE_EXTENDED
+#: FHIR_RESOURCE_ID_CANT_BE_EXTENDED
+msgid "Extensions are not allowed on Resource.id (''{0}'')"
+msgstr ""
+
 # FILTER_NOT_UNDERSTOOD
 #: FILTER_NOT_UNDERSTOOD
-msgid "The filter \"{0} {1} {2}\" from the value set {3} was not understood in the context of {4}"
+msgid "The filter \"{0} {1} {2}\" is not understood or supported"
 msgstr ""
 
 # Fixed_Type_Checks_DT_Address_Line
@@ -2261,6 +2342,11 @@ msgstr ""
 msgid "The concept ''{1}'' has a status of {0} and its use should be reviewed"
 msgstr ""
 
+# INACTIVE_CONCEPT_FOUND_ADD
+#: INACTIVE_CONCEPT_FOUND_ADD
+msgid "The concept ''{1}'' has a status of {0} and {2} and its use should be reviewed"
+msgstr ""
+
 # INACTIVE_DISPLAY_FOUND
 #: INACTIVE_DISPLAY_FOUND
 msgid "''{1}'' is no longer considered a correct display for code ''{2}'' (status = {4}). The correct display is ''{3}''"
@@ -2270,6 +2356,16 @@ msgstr[0] ""
 # INVALID_DISPLAY_NAME
 #: INVALID_DISPLAY_NAME
 msgid "Invalid displayLanguage: ''{0}''"
+msgstr ""
+
+# INVALID_ECL
+#: INVALID_ECL
+msgid "Invalid ECL expression: ''{0}'': ({1})"
+msgstr ""
+
+# INVALID_REGEX
+#: INVALID_REGEX
+msgid "The regex ''{0}'' is not valid: {1}"
 msgstr ""
 
 # INV_FAILED
@@ -2342,6 +2438,11 @@ msgstr "JSONにカンマが足りません"
 msgid "Comments are not allowed in JSON"
 msgstr "JSONではコメントは許可されていません"
 
+# JSON_PROPERTY_INVALID_ARRAY
+#: JSON_PROPERTY_INVALID_ARRAY
+msgid "The JSON array for ''{0}'' is invalid at index {1} - must have at least one valid value"
+msgstr ""
+
 # JSON_PROPERTY_NO_QUOTES
 #: JSON_PROPERTY_NO_QUOTES
 msgid "The JSON property ''{0}'' has no quotes around the name of the property"
@@ -2351,6 +2452,36 @@ msgstr "JSONプロパティ ''{0}'' のプロパティ名の周りに引用符�
 #: JSON_PROPERTY_VALUE_NO_QUOTES
 msgid "The JSON property ''{0}'' has no quotes around the value of the property ''{1}''"
 msgstr "JSONプロパティ ''{0}'' のプロパティ値 ''{1}'' の周りに引用符がありません"
+
+# LIQUID_BAD_DATE_FORMAT
+#: LIQUID_BAD_DATE_FORMAT
+msgid "The date format ''{0}'' is not a valid format for the ''date'' Liquid filter"
+msgstr ""
+
+# LIQUID_FILTER_NOT_SUPPORTED
+#: LIQUID_FILTER_NOT_SUPPORTED
+msgid "The specified liquid filter ''{0}'' is not supported in FHIR Liquid"
+msgstr ""
+
+# LIQUID_INCLUDE_NOT_RESOLVED
+#: LIQUID_INCLUDE_NOT_RESOLVED
+msgid "The Liquid include ''{0}'' could not be resolved"
+msgstr ""
+
+# LIQUID_INCLUDE_NOT_SUPPORTED
+#: LIQUID_INCLUDE_NOT_SUPPORTED
+msgid "Liquid include statements are not supported in this context (no include resolver provided)"
+msgstr ""
+
+# LIQUID_NO_SOURCE_TO_PARSE
+#: LIQUID_NO_SOURCE_TO_PARSE
+msgid "No source provided to the Liquid parser"
+msgstr ""
+
+# LIQUID_STATEMENT_ERROR
+#: LIQUID_STATEMENT_ERROR
+msgid "Error processing statement ''{0}'' - {1}"
+msgstr ""
 
 # LIQUID_SYNTAX_COLON
 #: LIQUID_SYNTAX_COLON
@@ -2392,6 +2523,11 @@ msgstr "{0}の評価例外: {1}で予期しない内容があります"
 msgid "Script {0}: Found unterminated string parsing cycle"
 msgstr "スクリプト {0}: 解析サイクルで終了していない文字列を見つけました"
 
+# LIQUID_UNABLE_TO_PARSE_DATETIME
+#: LIQUID_UNABLE_TO_PARSE_DATETIME
+msgid "The input to the 'date' Liquid filter must be a valid date - found ''{0}''"
+msgstr ""
+
 # LIQUID_UNKNOWN_FILTER
 #: LIQUID_UNKNOWN_FILTER
 msgid "Unknown Liquid filter ''{0}''"
@@ -2411,11 +2547,6 @@ msgstr "スクリプト {0}: {1}を探しているときにスクリプトの終
 #: LIQUID_UNKNOWN_SYNTAX
 msgid "Unexpected syntax parsing liquid statement"
 msgstr "Liquidステートメントの解析中に予期しない構文がありました"
-
-# LIQUID_VARIABLE_ALREADY_ASSIGNED
-#: LIQUID_VARIABLE_ALREADY_ASSIGNED
-msgid "Liquid Exception: The variable ''{0}'' already has an assigned value"
-msgstr "Liquid例外: 変数 ''{0}'' はすでに値が割り当てられています"
 
 # LIQUID_VARIABLE_ILLEGAL
 #: LIQUID_VARIABLE_ILLEGAL
@@ -2464,7 +2595,7 @@ msgstr ""
 
 # MEASURE_MR_GRP_DUPL_CODE
 #: MEASURE_MR_GRP_DUPL_CODE
-msgid "The code for this group is duplicated with another group"
+msgid "The linkId or code for this group is duplicated with another group"
 msgstr ""
 
 # MEASURE_MR_GRP_MISSING_BY_CODE
@@ -2539,7 +2670,7 @@ msgstr ""
 
 # MEASURE_MR_GRP_POP_DUPL_CODE
 #: MEASURE_MR_GRP_POP_DUPL_CODE
-msgid "The code for this group population is duplicated with another group"
+msgid "The linkId or code for this group population is duplicated with another population"
 msgstr ""
 
 # MEASURE_MR_GRP_POP_MISSING_BY_CODE
@@ -2639,7 +2770,7 @@ msgstr ""
 
 # MEASURE_MR_SCORE_PROHIBITED_MS
 #: MEASURE_MR_SCORE_PROHIBITED_MS
-msgid "No measureScore when the scoring of the message is ''cohort''"
+msgid "No measureScore when the scoring of the measure is ''cohort''"
 msgstr ""
 
 # MEASURE_MR_SCORE_PROHIBITED_RT
@@ -2665,6 +2796,11 @@ msgstr ""
 # MEASURE_MR_SCORE_VALUE_INVALID_01
 #: MEASURE_MR_SCORE_VALUE_INVALID_01
 msgid "The value is invalid - it must be between 0 and 1"
+msgstr ""
+
+# MEASURE_MR_SCORE_VALUE_INVALID_02
+#: MEASURE_MR_SCORE_VALUE_INVALID_02
+msgid "The value is invalid - it must be greater than or equal to 0"
 msgstr ""
 
 # MEASURE_MR_SCORE_VALUE_REQUIRED
@@ -2699,7 +2835,7 @@ msgstr ""
 
 # MEASURE_M_CRITERIA_CQL_NO_ELM
 #: MEASURE_M_CRITERIA_CQL_NO_ELM
-msgid "Error in {0}: No compiled version of CQL found"
+msgid "Warning in {0}: No compiled version of CQL found"
 msgstr ""
 
 # MEASURE_M_CRITERIA_CQL_NO_LIB
@@ -2943,7 +3079,7 @@ msgstr ""
 
 # NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK
 #: NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK
-msgid "There are no valid display names found for the code {1}#{2} for language(s) ''{3}''. The display is ''{4}'' which is the default language display"
+msgid "There are no valid display names found for the code {1}#{2} for language(s) ''{3}''. The display is ''{4}'' which is a valid display for the default language"
 msgstr ""
 
 # Named_items_are_out_of_order_in_the_slice
@@ -3137,6 +3273,34 @@ msgstr "オブジェクトには何らかのコンテンツが必要です"
 #: PACKAGE_VERSION_MISMATCH
 msgid "FHIR Version mismatch in package {0}: version is {2} but must be {1} (path: {3})"
 msgstr "パッケージ {0} でのFHIRバージョンの不一致: バージョンは {2} ですが {1} でなければなりません (パス: {3})"
+
+# PARAMETERS_STD_NO_RESOURCE
+#: PARAMETERS_STD_NO_RESOURCE
+msgid "The parameter ''{0}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, the parameter must have a resource, but this parameter instead has a value of type {1}. Check that this is correct"
+msgstr ""
+
+# PARAMETERS_STD_NO_VALUE
+#: PARAMETERS_STD_NO_VALUE
+msgid "The parameter ''{0}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, the parameter must have a value, but this parameter does not. Check that this is correct"
+msgstr ""
+
+# PARAMETERS_STD_RES_WRONG_TYPE
+#: PARAMETERS_STD_RES_WRONG_TYPE
+msgid "The parameter ''{1}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, the parameter has the resource type or {3}, but this parameter instead has a resource of type {2}. Check that this is correct"
+msgid_plural "The parameter ''{1}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, the parameter has the resource types {3}, but this parameter instead has a resource of type {2}. Check that this is correct"
+msgstr[0] ""
+
+# PARAMETERS_STD_RES_WRONG_TYPE_MIXED
+#: PARAMETERS_STD_RES_WRONG_TYPE_MIXED
+msgid "The parameter ''{1}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, then the type or resource type should be {3}, but found {2}. Check that this is correct"
+msgid_plural "The parameter ''{1}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, then the type or resource type should be one of {3}, but found {2}. Check that this is correct"
+msgstr[0] ""
+
+# PARAMETERS_STD_WRONG_TYPE
+#: PARAMETERS_STD_WRONG_TYPE
+msgid "The parameter ''{1}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, the parameter has a type of {3}, but this parameter instead has a value of type {2}. Check that this is correct"
+msgid_plural "The parameter ''{1}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, the parameter has the types {3}, but this parameter instead has a value of type {2}. Check that this is correct"
+msgstr[0] ""
 
 # PATTERN_CHECK_STRING
 #: PATTERN_CHECK_STRING
@@ -3660,6 +3824,11 @@ msgstr "オプションリストが提供されていないため、日付の回
 msgid "Items not of type DISPLAY should not have items - linkId {0}"
 msgstr "DISPLAYタイプ以外のアイテムは、アイテムを持つべきではありません - linkId {0}"
 
+# Questionnaire_QR_Item_EnableWhen_Uncheckable
+#: Questionnaire_QR_Item_EnableWhen_Uncheckable
+msgid "The enableWhen expression for the item {0} could not be evaluated ({1}), so the item is treated as enabled, and its answers have not been checked against it"
+msgstr ""
+
 # Questionnaire_QR_Item_Group
 #: Questionnaire_QR_Item_Group
 msgid "Items of type {0} should not have answers"
@@ -3783,6 +3952,11 @@ msgstr "構造的エラー：アイテムの順序が不適切です"
 msgid "Cannot validate string answer option because no option list is provided"
 msgstr "オプションリストが提供されていないため、string型の回答オプションを検証することはできません"
 
+# Questionnaire_QR_Item_StringNotAllowed
+#: Questionnaire_QR_Item_StringNotAllowed
+msgid "The answer to the item {0} is a string, but answerConstraint is ''{1}'', so the answer has to be one of the options the questionnaire specifies"
+msgstr ""
+
 # Questionnaire_QR_Item_Text
 #: Questionnaire_QR_Item_Text
 msgid "If text exists, it must match the questionnaire definition for linkId {0}"
@@ -3799,6 +3973,16 @@ msgid "Answer value must be of the type {1} not {2}"
 msgid_plural "Answer value must be one of the {0} types {1} not {2}"
 msgstr[0] "回答値は {1}型でなければなりません"
 msgstr[1] "回答値は {0} 型のいずれかでなければなりません ({1})"
+
+# Questionnaire_QR_LaunchContext_NotLoaded
+#: Questionnaire_QR_LaunchContext_NotLoaded
+msgid "The launch context ''{0}'' could not be loaded from ''{1}'': {2}. Expressions that use it cannot be evaluated"
+msgstr ""
+
+# Questionnaire_QR_LaunchContext_WrongType
+#: Questionnaire_QR_LaunchContext_WrongType
+msgid "The launch context ''{0}'' loaded from ''{1}'' is a {2}, but the questionnaire declares it as a {3}, so it has not been used"
+msgstr ""
 
 # Questionnaire_QR_Q_None
 #: Questionnaire_QR_Q_None
@@ -3845,6 +4029,11 @@ msgstr ""
 msgid "The query part of the conditional reference is not a valid query string ({0})"
 msgstr "条件付き参照のクエリ部分は有効なクエリ文字列ではありません ({0})"
 
+# REFERENCE_REF_QUERY_NOT_TRANSACTION
+#: REFERENCE_REF_QUERY_NOT_TRANSACTION
+msgid "The reference ''{0}'' is a conditional reference, and conditional references are only valid inside a transaction Bundle"
+msgstr ""
+
 # REFERENCE_REF_REL_UNSOLVEABLE
 #: REFERENCE_REF_REL_UNSOLVEABLE
 msgid "The URL ''{0}'' cannot be resolved unless the fullURL is a RESTFul base URL, or a baseURL has been provided and the Bundle is a batch or transaction"
@@ -3863,6 +4052,11 @@ msgstr "タイプ ''{2}'' は要素 {0} の有効なターゲットではあり�
 # REFERENCE_RESOLUTION_FAILED
 #: REFERENCE_RESOLUTION_FAILED
 msgid "Fetching ''{0}'' failed. System details: {1}: {2}"
+msgstr ""
+
+# REGEX_MATCH_TIMED_OUT
+#: REGEX_MATCH_TIMED_OUT
+msgid "The regex ''{0}'' could not be executed"
 msgstr ""
 
 # REQUEST_TOO_COSTLY_TIME
@@ -4234,7 +4428,7 @@ msgstr ""
 
 # SD_EXTENSION_COMPLIES_WITH_ERROR
 #: SD_EXTENSION_COMPLIES_WITH_ERROR
-msgid "This profile does not comply with claimed profile ''{0}''"
+msgid "This profile does not comply with claimed profile ''{0}'' because: {1}"
 msgstr ""
 
 # SD_EXTENSION_COMPLIES_WITH_UNKNOWN
@@ -4244,7 +4438,7 @@ msgstr ""
 
 # SD_EXTENSION_COMPLIES_WITH_WARNING
 #: SD_EXTENSION_COMPLIES_WITH_WARNING
-msgid "The validator cannot confirm that this profile complies with the claimed profile ''{0}''"
+msgid "The validator cannot confirm that this profile complies with the claimed profile ''{0}'' because: {1}"
 msgstr ""
 
 # SD_EXTENSION_URL_MISMATCH
@@ -4420,6 +4614,11 @@ msgstr ""
 # SD_TABLE_REQUIRED
 #: SD_TABLE_REQUIRED
 msgid "The element {0} is required on the element {1} in the context of a {2}"
+msgstr ""
+
+# SD_TYPE_ADDITIONAL_UNCHECKABLE
+#: SD_TYPE_ADDITIONAL_UNCHECKABLE
+msgid "Unable to read the list of approved additional resources from {0}, so unable to check whether unknown resource types are approved additional resources - some of the type errors reported may be incorrect"
 msgstr ""
 
 # SD_TYPE_MISSING
@@ -4842,6 +5041,51 @@ msgstr "!!プロファイル''{0}''のsnapshotが空です（これは起こる�
 msgid "The concept ''{1}'' is valid but is {0}"
 msgstr "!!The code ''{1}'' is valid but is {0}"
 
+# SUBSUMPTION_CS_HIERARCHY_MEANING
+#: SUBSUMPTION_CS_HIERARCHY_MEANING
+msgid "The CodeSystem ''{0}'' has hierarchyMeaning = {1}, so its hierarchy does not describe subsumption, and subsumption cannot be tested"
+msgstr ""
+
+# SUBSUMPTION_CS_NOT_COMPLETE
+#: SUBSUMPTION_CS_NOT_COMPLETE
+msgid "The CodeSystem ''{0}'' has content = {1}, so subsumption cannot be tested (subsumption can only be tested against a code system with content = complete)"
+msgstr ""
+
+# SUBSUMPTION_CS_NOT_FOUND
+#: SUBSUMPTION_CS_NOT_FOUND
+msgid "A definition for the CodeSystem ''{0}'' could not be found, so subsumption cannot be tested"
+msgstr ""
+
+# SUBSUMPTION_CS_NOT_FOUND_VERSION
+#: SUBSUMPTION_CS_NOT_FOUND_VERSION
+msgid "A definition for the CodeSystem ''{0}'' version ''{1}'' could not be found, so subsumption cannot be tested"
+msgstr ""
+
+# SUBSUMPTION_NO_CODE
+#: SUBSUMPTION_NO_CODE
+msgid "No code is provided for {0}, so subsumption cannot be tested"
+msgstr ""
+
+# SUBSUMPTION_NO_CODING
+#: SUBSUMPTION_NO_CODING
+msgid "No value is provided for {0}, so subsumption cannot be tested"
+msgstr ""
+
+# SUBSUMPTION_NO_SYSTEM
+#: SUBSUMPTION_NO_SYSTEM
+msgid "No code system is provided for {0}, so subsumption cannot be tested"
+msgstr ""
+
+# SUBSUMPTION_SYSTEM_MISMATCH
+#: SUBSUMPTION_SYSTEM_MISMATCH
+msgid "Subsumption can only be tested between two codes in the same code system, but the code systems are ''{0}'' and ''{1}''"
+msgstr ""
+
+# SUBSUMPTION_VERSION_MISMATCH
+#: SUBSUMPTION_VERSION_MISMATCH
+msgid "Subsumption can only be tested between two codes in the same version of ''{0}'', but the versions are ''{1}'' and ''{2}''"
+msgstr ""
+
 # SYSTEM_VERSION_MULTIPLE_DEFAULT
 #: SYSTEM_VERSION_MULTIPLE_DEFAULT
 msgid "Multiple default versions found for system {0}: ''{1}'', ''{2}'');"
@@ -4914,13 +5158,18 @@ msgstr "システムURL ''{0}''が誤ってhttps：で始まっています。ht
 
 # TERMINOLOGY_TX_SYSTEM_NOT_USABLE
 #: TERMINOLOGY_TX_SYSTEM_NOT_USABLE
-msgid "The definition for the Code System with URI ''{0}'' doesn''t provide any codes so the code cannot be validated"
+msgid "The definition for the Code System with URI ''{0}'' from ''{1}'' doesn''t provide any codes so the code cannot be validated"
 msgstr "!!URIが''{0}''のCodeSystemの定義にはcodeが提供されていないため、codeを検証できません"
 
 # TERMINOLOGY_TX_SYSTEM_NO_CODE
 #: TERMINOLOGY_TX_SYSTEM_NO_CODE
 msgid "A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
 msgstr "!!systemが提供されていないコードは定義された意味がありません。systemを提供する必要があります"
+
+# TERMINOLOGY_TX_SYSTEM_OTHER_RESOURCE
+#: TERMINOLOGY_TX_SYSTEM_OTHER_RESOURCE
+msgid "The Coding references a {1}, not a code system (''{0}'')"
+msgstr ""
 
 # TERMINOLOGY_TX_SYSTEM_UNSUPPORTED
 #: TERMINOLOGY_TX_SYSTEM_UNSUPPORTED
@@ -4977,25 +5226,20 @@ msgstr ""
 msgid "No valid coding was found for the value set ''{0}''"
 msgstr ""
 
-# TX_SERVER_NOT_READY
-#: TX_SERVER_NOT_READY
-msgid "The full data set is only {0}% loaded ({1} of {2}) for searching - repeat this query in a few minutes (max ~15min);"
+# TX_SERVER_BATCH_RESPONSE_MISMATCH
+#: TX_SERVER_BATCH_RESPONSE_MISMATCH
+msgid "The terminology server {0} returned a batch validation result for ''{2}'' at position {1}, but the code at that position was ''{3}'', so the results cannot be matched to the codes"
+msgstr ""
+
+# TX_SERVER_BATCH_RESPONSE_SIZE
+#: TX_SERVER_BATCH_RESPONSE_SIZE
+msgid "The terminology server {0} returned {1} results for a batch validation request that contained {2} codes, so the results cannot be matched to the codes"
 msgstr ""
 
 # TX_SERVER_NO_BATCH_RESPONSE
 #: TX_SERVER_NO_BATCH_RESPONSE
 msgid "The server return null from a batch validation request"
 msgstr "サーバーはバッチ検証リクエストからnullを返しました"
-
-# TYPE_CHECKS_FIXED_CC
-#: TYPE_CHECKS_FIXED_CC
-msgid "The fixed value [system {0}, code {1}, and display ''{2}''] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!プロファイル{3}で定義されたパターン[system {0}、code {1}、およびdisplay ''{2}'']が見つかりません。問題: {4}"
-
-# TYPE_CHECKS_FIXED_CC_US
-#: TYPE_CHECKS_FIXED_CC_US
-msgid "The fixed value [system {0}, code {1}, display ''{2}'' and userSelected {5}] defined in the profile {3} not found. Issues: {4}"
-msgstr "!!プロファイル{3}で定義されたパターン[system {0}、code {1}、display ''{2}''およびuserSelected {5}]が見つかりません。問題: {4}"
 
 # TYPE_CHECKS_PATTERN_CC
 #: TYPE_CHECKS_PATTERN_CC
@@ -5022,6 +5266,11 @@ msgstr "含まれるリソースのCanonical URLは、存在する場合は絶�
 msgid "The base64 content in the {0} element is not valid base64: {1}"
 msgstr ""
 
+# TYPE_SPECIFIC_CHECKS_DT_ATT_FETCH_ERROR
+#: TYPE_SPECIFIC_CHECKS_DT_ATT_FETCH_ERROR
+msgid "Error fetching the content: {0}"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
 msgid "The hash of the data did not match the data (stated: ''{0}'', actual: ''{1}'')"
@@ -5034,8 +5283,8 @@ msgstr "添付ファイルにはデータおよび/またはURLがあり、ま�
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER
-msgid "Attachment size cannot be checked because the validator has not been set up to access the network (url = {0})"
-msgstr "バリデーターがネットワークにアクセスするように設定されていないため、添付ファイルのサイズを確認できません（url = {0}）"
+msgid "Attachment content cannot be checked because the validator has not been set up to access the network (url = {0})"
+msgstr "!!バリデーターがネットワークにアクセスするように設定されていないため、添付ファイルのサイズを確認できません（url = {0}）"
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT
@@ -5054,18 +5303,23 @@ msgstr "添付ファイルのサイズは{0}バイトで、指定された制限
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME
-msgid "Attachment size cannot be checked because the validator doesn''t understand how to access {0}"
-msgstr "バリデーターが{0}にアクセスする方法を理解していないため、添付ファイルのサイズを確認できません"
+msgid "Attachment content cannot be checked because the validator doesn''t understand how to access {0}"
+msgstr "!!バリデーターが{0}にアクセスする方法を理解していないため、添付ファイルのサイズを確認できません"
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR
-msgid "Attachment size cannot be checked because there was an error accesssing {0}: {1}"
-msgstr "{0}にアクセスする際にエラーが発生したため、添付ファイルのサイズを確認できません: {1}"
+msgid "Attachment content cannot be checked because there was an error accesssing {0}: {1}"
+msgstr "!!{0}にアクセスする際にエラーが発生したため、添付ファイルのサイズを確認できません: {1}"
+
+# TYPE_SPECIFIC_CHECKS_DT_ATT_URL_NOT_A_LINK
+#: TYPE_SPECIFIC_CHECKS_DT_ATT_URL_NOT_A_LINK
+msgid "Attachment content was not checked: {0} is not a directly accessible link"
+msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR
 #: TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR
-msgid "Base64 encoded values are not allowed to contain any whitespace (per RFC 4648). Note that non-validating readers are encouraged to accept whitespace anyway"
-msgstr "Base64エンコードされた値には、空白を含めることはできません（RFC 4648による）。ただし、非検証リーダーは、空白を受け入れることが推奨されています"
+msgid "Base64 encoded content does not include any whitespace or line feeds (per the FHIR specification and RFC 4648). Readers should ignore whitespace, but it should not be present"
+msgstr "!!Base64エンコードされた値には、空白を含めることはできません（RFC 4648による）。ただし、非検証リーダーは、空白を受け入れることが推奨されています"
 
 # TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING
 #: TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING
@@ -5102,6 +5356,16 @@ msgstr "Canonical URL ''{0}'' は誤ったタイプのリソースを参照し�
 msgid "Found {0} decimal places which exceeds the stated limit of {1} digits"
 msgstr "{0} の小数点以下の桁数が見つかりました。これは、{1} 桁の上限を超えています"
 
+# TYPE_SPECIFIC_CHECKS_DT_DT_GT
+#: TYPE_SPECIFIC_CHECKS_DT_DT_GT
+msgid "date/time value is greater than permitted maximum value of {0}"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_DT_LT
+#: TYPE_SPECIFIC_CHECKS_DT_DT_LT
+msgid "date/time value is less than permitted minimum value of {0}"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE
 #: TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE
 msgid "if identifier.system is ''urn:ietf:rfc:3986'', then the identifier.value must be a full URI (e.g. start with a scheme), not ''{0}''"
@@ -5135,6 +5399,21 @@ msgstr "タイプ {1} に対する正規表現 ''{0}'' を評価中に例外が�
 # TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE_ALT
 #: TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE_ALT
 msgid "Neither the element value ''{0}'' or the formatted value ''{1}'' meet {2} regex ''{3}''"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_QTY_COMP
+#: TYPE_SPECIFIC_CHECKS_DT_QTY_COMP
+msgid "Comparators are not supported for min/maxValue when restricting date/time values with a Duration (''{0}'')"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX
+#: TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX
+msgid "The date/time value ''{0}'' is not legal: maxValue is {1} after now (which is {2})"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN
+#: TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN
+msgid "The date/time value ''{0}'' is not legal: minValue is {1} before now (which is {2})"
 msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_CODE_MISMATCH
@@ -5277,6 +5556,11 @@ msgstr ""
 msgid "UCUM Codes that contain human readable annotations like {0} can be misleading (e.g. they are ignored when comparing units). Best Practice is not to depend on annotations in the UCUM code, so this usage should be checked, and the Quantity.unit SHOULD contain the annotation"
 msgstr ""
 
+# TYPE_SPECIFIC_CHECKS_DT_QTY_VALUE
+#: TYPE_SPECIFIC_CHECKS_DT_QTY_VALUE
+msgid "The quantity value ''{0}'' is not supported for min/maxValue when restricting date/time values with a Duration"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT
 #: TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT
 msgid "The URL {0} is not a correct URL to use (in spite of being in the standard, and/or accepted in the past)"
@@ -5396,6 +5680,11 @@ msgstr "コードが提供されておらず、ValueSet{0}からコードを提�
 #: Terminology_TX_Code_ValueSet_MISSING
 msgid "No code provided, and a code is required from the value set"
 msgstr "コードが提供されていません。ValueSetのコードが必須です"
+
+# Terminology_TX_Code_ValueSet_XVER_SOURCE
+#: Terminology_TX_Code_ValueSet_XVER_SOURCE
+msgid "Though a code is required, no code has been provided; instead, an alternative code ''{0}'' is provided in the cross-version extension ''{1}''. Many systems will not support this extension, or may not understand or support the alternative code"
+msgstr ""
 
 # Terminology_TX_Coding_Count
 #: Terminology_TX_Coding_Count
@@ -5814,8 +6103,13 @@ msgstr "値はすべて空白であってはなりません ''{0}''"
 
 # Type_Specific_Checks_DT_Time_Valid
 #: Type_Specific_Checks_DT_Time_Valid
-msgid "Not a valid time ({0})"
-msgstr "有効な時間ではありません ({0})"
+msgid "The time ''{0}'' is not a valid time"
+msgstr "!!有効な時間ではありません ({0})"
+
+# Type_Specific_Checks_DT_Time_Valid_Cause
+#: Type_Specific_Checks_DT_Time_Valid_Cause
+msgid "The time ''{0}'' is not a valid time: {1}"
+msgstr ""
 
 # Type_Specific_Checks_DT_URI_OID
 #: Type_Specific_Checks_DT_URI_OID
@@ -5924,6 +6218,11 @@ msgstr[1] "この内容には文字{1}（16進数値）が含まれています�
 msgid "A definition for CodeSystem ''{0}'' could not be found, so the code cannot be validated"
 msgstr "!!CodeSystem {0}は未知です"
 
+# UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED
+#: UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED
+msgid "A definition for the code system ''{0}'' could not be found, so this coding was not checked. The CodeableConcept is still valid: another coding is in the value set"
+msgstr ""
+
 # UNKNOWN_CODESYSTEM_EXP
 #: UNKNOWN_CODESYSTEM_EXP
 msgid "A definition for CodeSystem ''{0}'' could not be found, so the value set cannot be expanded"
@@ -5949,6 +6248,11 @@ msgstr ""
 msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. No versions of this code system are known"
 msgstr ""
 
+# UNKNOWN_CODESYSTEM_VERSION_UNK
+#: UNKNOWN_CODESYSTEM_VERSION_UNK
+msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated"
+msgstr ""
+
 # UNKNOWN_CODE_IN_FRAGMENT
 #: UNKNOWN_CODE_IN_FRAGMENT
 msgid "Unknown Code ''{0}'' in the CodeSystem ''{1}'' version ''{2}'' - note that the code system is labeled as a fragment, so the code may be valid in some other fragment"
@@ -5968,6 +6272,11 @@ msgstr "要素{1}の無効なJSON型{0}；有効な型 = {2}"
 #: UNRECOGNISED_PROPERTY_TYPE_WRONG
 msgid "Invalid type {2} for the element {1}; valid types = {3}, JSON type = {0}"
 msgstr "要素{1}の無効な型{2}；有効な型 = {3}、JSON型 = {0}"
+
+# UNSUPPORTED_ECL
+#: UNSUPPORTED_ECL
+msgid "The ECL expression is not supported: ''{0}'': ({1})"
+msgstr ""
 
 # UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE
 #: UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE
@@ -6349,9 +6658,19 @@ msgstr ""
 msgid "The nominated WG ''{0}'' means that the contact url should be ''{1}'' but it was not found"
 msgstr ""
 
+# VALIDATION_MAX_MESSAGES_EXCEEDED
+#: VALIDATION_MAX_MESSAGES_EXCEEDED
+msgid "Validation process produced more than maximum of {0} messages, set by {1}. Returned validation messages may be incomplete or inaccurate."
+msgstr ""
+
 # VALIDATION_NO_EXPERIMENTAL_CONTENT
 #: VALIDATION_NO_EXPERIMENTAL_CONTENT
 msgid "Experimental content is not allowed in this context"
+msgstr ""
+
+# VALIDATION_TIMEOUT_EXCEEDED
+#: VALIDATION_TIMEOUT_EXCEEDED
+msgid "Validation process exceeded maximum allowed time of {0}ms, set by {1}. Returned validation messages may be incomplete or inaccurate."
 msgstr ""
 
 # VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN
@@ -6621,6 +6940,48 @@ msgstr "例システム''{0}''が指定されました、これは違法です�
 msgid "Example System ''{0}'' specified, so Concepts and Filters can''t be checked"
 msgstr "例システム''{0}''が指定されたので、conceptとfilterは確認できません"
 
+# VALUESET_EXPANSION_EXTRA
+#: VALUESET_EXPANSION_EXTRA
+msgid "The expansion provided has an extra code {1} that is not in the expansion using default expansion parameters"
+msgid_plural "The expansion provided is has {0} extra codes ({1}) that are not in the expansion using default expansion parameters"
+msgstr[0] ""
+
+# VALUESET_EXPANSION_MISSING
+#: VALUESET_EXPANSION_MISSING
+msgid "The expansion provided is missing the code {1} that is in the expansion using default expansion parameters"
+msgid_plural "The expansion provided is missing {0} codes ({1}) that are in the expansion using default expansion parameters"
+msgstr[0] ""
+
+# VALUESET_EXPANSION_NO_IDENTIFIER
+#: VALUESET_EXPANSION_NO_IDENTIFIER
+msgid "This expansion has no identifier. Identifiers are recommended to help with audit and traceability"
+msgstr ""
+
+# VALUESET_EXPANSION_PARAMETER_COUNT_WRONG
+#: VALUESET_EXPANSION_PARAMETER_COUNT_WRONG
+msgid "The expansion offset ({2}) + the count of items ({1}) is greater than the stated total ({0})"
+msgstr ""
+
+# VALUESET_EXPANSION_PARAMETER_NOT_FOUND
+#: VALUESET_EXPANSION_PARAMETER_NOT_FOUND
+msgid "This expansion has no parameters; in the absence of the parameters that controlled the expansion, systems may not be able to determine whether it is safe to use this expansion"
+msgstr ""
+
+# VALUESET_EXPANSION_PARAMETER_SYSTEM_MULTIPLE
+#: VALUESET_EXPANSION_PARAMETER_SYSTEM_MULTIPLE
+msgid "The expansion uses system ''{0}'' without a version, but then provides multiple ''used-codesystem'' parameters so the version cannot be determined"
+msgstr ""
+
+# VALUESET_EXPANSION_PARAMETER_SYSTEM_NEEDED
+#: VALUESET_EXPANSION_PARAMETER_SYSTEM_NEEDED
+msgid "Because the expansion uses system ''{0}'' without a version, it should list the system using the expansion parameter ''used-codesystem''"
+msgstr ""
+
+# VALUESET_EXPANSION_PROPERTY_NO_DEFN
+#: VALUESET_EXPANSION_PROPERTY_NO_DEFN
+msgid "Found a (sub)property ''{0}'' but it has no definition in ValueSet.expansion.property"
+msgstr ""
+
 # VALUESET_IMPORT_UNION_INTERSECTION
 #: VALUESET_IMPORT_UNION_INTERSECTION
 msgid "This value set has a single include with multiple imported value sets. Per issue https://jira.hl7.org/browse/FHIR-25179, there has been confusion in the past whether these value sets are unioned or intersectioned. If this value set is contained in a package published prior to March 31 2022, it will be treated as a union, otherwise it will be treated as an intersection. If want a union, split the value set imports across multiple includes"
@@ -6718,12 +7079,7 @@ msgstr ""
 
 # VALUESET_INC_CS_NO_SUPPORT
 #: VALUESET_INC_CS_NO_SUPPORT
-msgid "The concepts in the value set include have not been validated because the code system is not known, and no terminology service supports it"
-msgstr ""
-
-# VALUESET_INC_NOT_VALIDATING
-#: VALUESET_INC_NOT_VALIDATING
-msgid "The concepts in the value set include have not been validated because the validator is configured not to check them"
+msgid "The concepts in the value set include have not been validated because the code system ''{1}'' is not known, and no terminology service supports it"
 msgstr ""
 
 # VALUESET_INC_NO_BATCH_ON_SERVER
@@ -6738,7 +7094,7 @@ msgstr ""
 
 # VALUESET_INC_TOO_MANY_CODES
 #: VALUESET_INC_TOO_MANY_CODES
-msgid "The value set include has too many concepts to validate ({0}), so each individual code has not been checked"
+msgid "The value set include has too many concepts to validate ({0}, more than the limit of {1}), so each individual code has not been checked"
 msgstr "!!value setに大量のcodeが含まれるため、バリデーションできません: {0}"
 
 # VALUESET_NO_SYSTEM_WARNING
@@ -6832,12 +7188,12 @@ msgstr[1] "必要なsupplementが見つかりません: {1}"
 
 # VALUESET_TOO_COSTLY
 #: VALUESET_TOO_COSTLY
-msgid "The value set ''{0}'' expansion has too many codes to display ({1})"
+msgid "The value set ''{0}'' expansion has too many codes to produce ({1})"
 msgstr "!!ValueSet {0}には多すぎるコードがあり、表示できません({1})"
 
 # VALUESET_TOO_COSTLY_COUNT
 #: VALUESET_TOO_COSTLY_COUNT
-msgid "The value set ''{0}'' expansion has {2} codes, which is too many to display ({1})"
+msgid "The value set ''{0}'' expansion has {2} codes, which is too many to produce ({1})"
 msgstr ""
 
 # VALUESET_TOO_COSTLY_TIME
@@ -6920,6 +7276,11 @@ msgstr ""
 msgid "Duplicate Column Name ''{0}''"
 msgstr ""
 
+# VIEWDEFINITION_ITERATION_CONFLICT
+#: VIEWDEFINITION_ITERATION_CONFLICT
+msgid "Only one of forEach, forEachOrNull, or repeat may be specified on a select"
+msgstr ""
+
 # VIEWDEFINITION_NAME_INVALID
 #: VIEWDEFINITION_NAME_INVALID
 msgid "The {0} name ''{1}'' is not valid"
@@ -6963,6 +7324,16 @@ msgstr ""
 # VIEWDEFINITION_UNABLE_TO_TYPE
 #: VIEWDEFINITION_UNABLE_TO_TYPE
 msgid "Unable to determine a type (found ''{0}''){1}"
+msgstr ""
+
+# VIEWDEFINITION_UNION_MISMATCH
+#: VIEWDEFINITION_UNION_MISMATCH
+msgid "unionAll column definitions do not match: {0}"
+msgstr ""
+
+# VIEWDEFINITION_UNION_SINGLE
+#: VIEWDEFINITION_UNION_SINGLE
+msgid "unionAll should have more than one item"
 msgstr ""
 
 # VIEWDEFINITION_UNKNOWN_RESOURCE
@@ -7188,6 +7559,11 @@ msgstr "間違ったネームスペース - ''{0}''が必要です"
 #: Wrong_type_for_resource
 msgid "Wrong type for resource"
 msgstr "リソースの型が間違っています"
+
+# Wrong_type_for_resource_expected
+#: Wrong_type_for_resource_expected
+msgid "Wrong type for resource. Expected {0} but found {1}"
+msgstr ""
 
 # XHTML_CONTROL_LANGS_NONE
 #: XHTML_CONTROL_LANGS_NONE

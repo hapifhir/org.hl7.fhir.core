@@ -1,11 +1,6 @@
 msgid ""
 msgstr ""
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
-"X-Crowdin-Project: orghl7fhircore\n"
-"X-Crowdin-Project-ID: 792848\n"
-"X-Crowdin-Language: ru\n"
-"X-Crowdin-File: rendering-phrases.po\n"
-"X-Crowdin-File-ID: 222\n"
 "Project-Id-Version: orghl7fhircore\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Russian\n"
@@ -36,13 +31,13 @@ msgstr "Тип: {0}"
 #: ACTOR_DERIVED_FROM
 msgctxt "ACTOR_DERIVED_FROM"
 msgid "Derived From"
-msgstr ""
+msgstr "Задуманный от"
 
 # ACTOR_DERIVED_FROM_NONE
 #: ACTOR_DERIVED_FROM_NONE
 msgctxt "ACTOR_DERIVED_FROM_NONE"
 msgid "(none)"
-msgstr ""
+msgstr "(нет)"
 
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
@@ -158,12 +153,12 @@ msgstr "Этот набор значений является компонент
 # BUNDLE_DOCUMENT_CONTENT
 #: BUNDLE_DOCUMENT_CONTENT
 msgid "Document Content"
-msgstr ""
+msgstr "Содержание документа"
 
 # BUNDLE_DOCUMENT_DETAILS
 #: BUNDLE_DOCUMENT_DETAILS
 msgid "Document Details"
-msgstr ""
+msgstr "Сведения о документе"
 
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
@@ -427,6 +422,7 @@ msgstr "Операции"
 
 # CAPABILITY_OPER
 #: CAPABILITY_OPER
+msgctxt "CAPABILITY_OPER"
 msgid "Operation"
 msgstr "Операция"
 
@@ -512,6 +508,7 @@ msgstr "Способности по ресурсам/профилю"
 
 # CAPABILITY_RES_TYP
 #: CAPABILITY_RES_TYP
+msgctxt "CAPABILITY_RES_TYP"
 msgid "Resource Type"
 msgstr "Тип ресурса"
 
@@ -667,8 +664,15 @@ msgstr "!!Эта кодовая система дополняет <param name=\"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
+msgctxt "CODESYSTEM_DEPRECATED"
 msgid "Deprecated"
 msgstr "Устаревший"
+
+# CODESYSTEM_DEPRECATED_TRUE
+#: CODESYSTEM_DEPRECATED_TRUE
+msgctxt "CODESYSTEM_DEPRECATED_TRUE"
+msgid "Deprecated"
+msgstr ""
 
 # CODESYSTEM_FILTERS
 #: CODESYSTEM_FILTERS
@@ -680,10 +684,21 @@ msgstr "Фильтры"
 msgid "Op"
 msgstr "Op"
 
+# CODESYSTEM_LVL
+#: CODESYSTEM_LVL
+msgctxt "CODESYSTEM_LVL"
+msgid "Level"
+msgstr ""
+
 # CODESYSTEM_PROPS_DESC
 #: CODESYSTEM_PROPS_DESC
 msgid "This code system defines the following properties for its concepts"
 msgstr "Эта кодовая система определяет следующие свойства для ее концепций"
+
+# CODESYSTEM_REPLACED_BY
+#: CODESYSTEM_REPLACED_BY
+msgid "Replaced by"
+msgstr ""
 
 # CODE_SYS_CODE_NOT_HERE
 #: CODE_SYS_CODE_NOT_HERE
@@ -758,7 +773,7 @@ msgstr "Этот кодовый системный ресурс является
 # CODE_SYS_SUPP_CODE_NOT_HERE
 #: CODE_SYS_SUPP_CODE_NOT_HERE
 msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr ""
+msgstr "Это дополнение не используется здесь; оно может использоваться в других местах (например, спецификации и/или реализации, использующие этот контент)"
 
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
@@ -805,6 +820,11 @@ msgstr "Группа {0}"
 msgid "(not specified)"
 msgstr "(не указано)"
 
+# CONC_MAP_NO_SPEC
+#: CONC_MAP_NO_SPEC
+msgid "This mapping does not specify any particular context of use."
+msgstr ""
+
 # CONC_MAP_REL
 #: CONC_MAP_REL
 msgid "Relationship"
@@ -819,13 +839,13 @@ msgstr "Исходный код"
 #: CONC_MAP_SOURCE_CARD
 msgctxt "CONC_MAP_SOURCE_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Кард."
 
 # CONC_MAP_SOURCE_TYPE
 #: CONC_MAP_SOURCE_TYPE
 msgctxt "CONC_MAP_SOURCE_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
@@ -847,7 +867,7 @@ msgstr "Целевой код"
 #: CONC_MAP_TRGT_CARD
 msgctxt "CONC_MAP_TRGT_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Кард."
 
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
@@ -858,7 +878,7 @@ msgstr "Подробности Целевого Концепции"
 #: CONC_MAP_TRGT_TYPE
 msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 # CONF_MAY
 #: CONF_MAY
@@ -920,6 +940,45 @@ msgctxt "CONF_SHOULD_PLURAL"
 msgid "SHOULD"
 msgstr ""
 
+# CONSENT_BASIS_POLICY_PREFIX
+#: CONSENT_BASIS_POLICY_PREFIX
+msgid "the policy"
+msgid_plural "the policies"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+# CONSENT_BASIS_POLICY_SUFFIX
+#: CONSENT_BASIS_POLICY_SUFFIX
+msgctxt "CONSENT_BASIS_POLICY_SUFFIX"
+msgid "."
+msgstr ""
+
+# CONSENT_BASIS_REGULATION_NONE
+#: CONSENT_BASIS_REGULATION_NONE
+msgid "This consent is made under"
+msgstr ""
+
+# CONSENT_BASIS_REGULATION_PREFIX
+#: CONSENT_BASIS_REGULATION_PREFIX
+msgid "This consent is made under the regulation"
+msgid_plural "This consent is made under the regulations"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+# CONSENT_BASIS_REGULATION_SUFFIX
+#: CONSENT_BASIS_REGULATION_SUFFIX
+msgctxt "CONSENT_BASIS_REGULATION_SUFFIX"
+msgid "."
+msgstr ""
+
+# CONSENT_BASIS_REGULATION_SUFFIX_MORE
+#: CONSENT_BASIS_REGULATION_SUFFIX_MORE
+msgctxt "CONSENT_BASIS_REGULATION_SUFFIX_MORE"
+msgid "and"
+msgstr ""
+
 # CONSENT_CATEGORY
 #: CONSENT_CATEGORY
 msgid "Category"
@@ -933,9 +992,125 @@ msgstr[2] ""
 msgid "Agreement Date"
 msgstr ""
 
+# CONSENT_DENY
+#: CONSENT_DENY
+msgid "deny"
+msgstr ""
+
+# CONSENT_DENY_DESC
+#: CONSENT_DENY_DESC
+msgid "The subject has NOT given their consent."
+msgstr ""
+
+# CONSENT_HTABLE_RULE
+#: CONSENT_HTABLE_RULE
+msgctxt "CONSENT_HTABLE_RULE"
+msgid "Rule"
+msgstr ""
+
+# CONSENT_HTABLE_RULES
+#: CONSENT_HTABLE_RULES
+msgid "Rules"
+msgstr ""
+
+# CONSENT_HTABLE_RULES_DESC
+#: CONSENT_HTABLE_RULES_DESC
+msgid "Other Applicable Rules"
+msgstr ""
+
+# CONSENT_HTABLE_RULE_DESC
+#: CONSENT_HTABLE_RULE_DESC
+msgid "Applicable Rule"
+msgstr ""
+
+# CONSENT_HTABLE_WHAT
+#: CONSENT_HTABLE_WHAT
+msgid "What"
+msgstr ""
+
+# CONSENT_HTABLE_WHAT_DESC
+#: CONSENT_HTABLE_WHAT_DESC
+msgid "Applicable Data"
+msgstr ""
+
+# CONSENT_HTABLE_WHEN
+#: CONSENT_HTABLE_WHEN
+msgid "Time Period"
+msgstr ""
+
+# CONSENT_HTABLE_WHEN_DESC
+#: CONSENT_HTABLE_WHEN_DESC
+msgctxt "CONSENT_HTABLE_WHEN_DESC"
+msgid "Applicable Period"
+msgstr ""
+
+# CONSENT_HTABLE_WHO
+#: CONSENT_HTABLE_WHO
+msgid "Who"
+msgstr ""
+
+# CONSENT_HTABLE_WHO_DESC
+#: CONSENT_HTABLE_WHO_DESC
+msgid "Applicable Parties"
+msgstr ""
+
+# CONSENT_HT_ACTION
+#: CONSENT_HT_ACTION
+msgid "For action"
+msgstr ""
+
+# CONSENT_HT_CLASS
+#: CONSENT_HT_CLASS
+msgid "Class"
+msgstr ""
+
+# CONSENT_HT_CODE
+#: CONSENT_HT_CODE
+msgctxt "CONSENT_HT_CODE"
+msgid "Code"
+msgstr ""
+
+# CONSENT_HT_DATA_PERIOD
+#: CONSENT_HT_DATA_PERIOD
+msgid "Data from Period"
+msgstr ""
+
+# CONSENT_HT_DOC_TYPE
+#: CONSENT_HT_DOC_TYPE
+msgid "Document Type"
+msgstr ""
+
+# CONSENT_HT_PERIOD
+#: CONSENT_HT_PERIOD
+msgctxt "CONSENT_HT_PERIOD"
+msgid "Period"
+msgstr ""
+
+# CONSENT_HT_PURPOSE
+#: CONSENT_HT_PURPOSE
+msgctxt "CONSENT_HT_PURPOSE"
+msgid "Purpose"
+msgstr ""
+
+# CONSENT_HT_RESOURCE_TYPE
+#: CONSENT_HT_RESOURCE_TYPE
+msgctxt "CONSENT_HT_RESOURCE_TYPE"
+msgid "Resource Type"
+msgstr ""
+
+# CONSENT_HT_SEC_LABEL
+#: CONSENT_HT_SEC_LABEL
+msgid "Labled as"
+msgstr ""
+
 # CONSENT_PART_TBL_CONTROLLER
 #: CONSENT_PART_TBL_CONTROLLER
 msgid "Controller"
+msgstr ""
+
+# CONSENT_PART_TBL_CONTROLLER_DESC
+#: CONSENT_PART_TBL_CONTROLLER_DESC
+msgid "Who controls/enforces the access according to the consent."
 msgstr ""
 
 # CONSENT_PART_TBL_DETAILS
@@ -949,9 +1124,20 @@ msgstr ""
 msgid "Grantee"
 msgstr ""
 
+# CONSENT_PART_TBL_GRANTEE_DESC
+#: CONSENT_PART_TBL_GRANTEE_DESC
+msgctxt "CONSENT_PART_TBL_GRANTEE_DESC"
+msgid "Who is agreeing to the policy and rules"
+msgstr ""
+
 # CONSENT_PART_TBL_GRANTOR
 #: CONSENT_PART_TBL_GRANTOR
 msgid "Grantor"
+msgstr ""
+
+# CONSENT_PART_TBL_GRANTOR_DESC
+#: CONSENT_PART_TBL_GRANTOR_DESC
+msgid "Who is granting rights according to the policy and rules"
 msgstr ""
 
 # CONSENT_PART_TBL_MANAGER
@@ -959,14 +1145,30 @@ msgstr ""
 msgid "Manager"
 msgstr ""
 
+# CONSENT_PART_TBL_MANAGER_DESC
+#: CONSENT_PART_TBL_MANAGER_DESC
+msgid "Who manages the consent through its lifecycle."
+msgstr ""
+
 # CONSENT_PART_TBL_PARTY
 #: CONSENT_PART_TBL_PARTY
 msgid "Party"
 msgstr ""
 
+# CONSENT_PART_TBL_PARTY_DESC
+#: CONSENT_PART_TBL_PARTY_DESC
+msgctxt "CONSENT_PART_TBL_PARTY_DESC"
+msgid "Who is agreeing to the policy and rules"
+msgstr ""
+
 # CONSENT_PART_TBL_PATIENT
 #: CONSENT_PART_TBL_PATIENT
 msgid "Patient"
+msgstr ""
+
+# CONSENT_PART_TBL_PATIENT_DESC
+#: CONSENT_PART_TBL_PATIENT_DESC
+msgid "Who the consent applies to"
 msgstr ""
 
 # CONSENT_PART_TBL_ROLE
@@ -977,7 +1179,23 @@ msgstr ""
 
 # CONSENT_PERIOD
 #: CONSENT_PERIOD
+msgctxt "CONSENT_PERIOD"
 msgid "Applicable Period"
+msgstr ""
+
+# CONSENT_PERMIT
+#: CONSENT_PERMIT
+msgid "permit"
+msgstr ""
+
+# CONSENT_PERMIT_DESC
+#: CONSENT_PERMIT_DESC
+msgid "The subject has given their consent."
+msgstr ""
+
+# CONSENT_PROVISION
+#: CONSENT_PROVISION
+msgid "Consent Provision"
 msgstr ""
 
 # CONSENT_SCOPE
@@ -1054,6 +1272,7 @@ msgstr ""
 
 # CSTABLE_HEAD_RULE
 #: CSTABLE_HEAD_RULE
+msgctxt "CSTABLE_HEAD_RULE"
 msgid "Rule"
 msgstr ""
 
@@ -1162,11 +1381,6 @@ msgstr "на обед"
 msgctxt "DATA_REND_ATT_DATA"
 msgid "{0}: {1}"
 msgstr "{0}: {1}"
-
-# DATA_REND_ATT_URL
-#: DATA_REND_ATT_URL
-msgid "{0} @ {1}"
-msgstr "{0} @ {1}"
 
 # DATA_REND_BASE64
 #: DATA_REND_BASE64
@@ -1508,6 +1722,11 @@ msgstr "Ошибка:"
 msgid "for"
 msgstr "для"
 
+# DIAG_REP_REND_FORM
+#: DIAG_REP_REND_FORM
+msgid "Presented Form"
+msgstr ""
+
 # DIAG_REP_REND_IDENTIFIER
 #: DIAG_REP_REND_IDENTIFIER
 msgctxt "DIAG_REP_REND_IDENTIFIER"
@@ -1551,8 +1770,8 @@ msgstr "Не удалось получить детали пациента"
 
 # DIAG_REP_REND_WHEN
 #: DIAG_REP_REND_WHEN
-msgid "When For"
-msgstr "Когда для"
+msgid "Relevant Time"
+msgstr "!!Когда для"
 
 # DIAG_REP_SUMMARY
 #: DIAG_REP_SUMMARY
@@ -1579,6 +1798,11 @@ msgstr "!!<param name=\"status\"/> Document at <param name=\"date\"/> by <param 
 #: EXAMPLE_SCEN_STEP_SCEN
 msgid "Step {0}  - See scenario {1}"
 msgstr "Шаг {0}  - Посмотреть сценарий {1}"
+
+# EXT_STANDARDS_STATUS
+#: EXT_STANDARDS_STATUS
+msgid "Standards Status"
+msgstr ""
 
 # EX_SCEN_ALT
 #: EX_SCEN_ALT
@@ -1665,6 +1889,11 @@ msgstr "Неизвестный режим рендерера ExampleScenario {0}
 msgid "Unable to find referenced actor {0}"
 msgstr "Не удалось найти ссылающегося актера {0}"
 
+# FEATURE
+#: FEATURE
+msgid "Feature"
+msgstr ""
+
 # FMM_TABLE
 #: FMM_TABLE
 msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
@@ -1723,6 +1952,7 @@ msgstr "Кардинальность"
 
 # GENERAL_CODE
 #: GENERAL_CODE
+msgctxt "GENERAL_CODE"
 msgid "Code"
 msgstr "Код"
 
@@ -1772,6 +2002,11 @@ msgstr "Контакт:"
 msgid "Content"
 msgstr "Содержание"
 
+# GENERAL_COPY
+#: GENERAL_COPY
+msgid "Click to Copy"
+msgstr ""
+
 # GENERAL_COPYRIGHT
 #: GENERAL_COPYRIGHT
 msgid "Copyright"
@@ -1806,6 +2041,7 @@ msgstr "Определение:"
 
 # GENERAL_DESC
 #: GENERAL_DESC
+msgctxt "GENERAL_DESC"
 msgid "Description"
 msgstr "Описание"
 
@@ -1842,7 +2078,6 @@ msgstr "Фильтр"
 
 # GENERAL_FIXED_VALUE
 #: GENERAL_FIXED_VALUE
-msgctxt "GENERAL_FIXED_VALUE"
 msgid "Fixed Value: {0}"
 msgstr "Фиксированное значение: {0}"
 
@@ -1924,12 +2159,12 @@ msgstr "Параметр"
 
 # GENERAL_PARS
 #: GENERAL_PARS
+msgctxt "GENERAL_PARS"
 msgid "Parameters"
 msgstr "Параметры"
 
 # GENERAL_PATTERN_VALUE
 #: GENERAL_PATTERN_VALUE
-msgctxt "GENERAL_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
 msgstr "Значение: {0}"
 
@@ -1952,6 +2187,7 @@ msgstr "Свойства"
 
 # GENERAL_PURPOSE
 #: GENERAL_PURPOSE
+msgctxt "GENERAL_PURPOSE"
 msgid "Purpose"
 msgstr "Цель"
 
@@ -2097,6 +2333,7 @@ msgstr "Значение должно быть больше или равно {0
 
 # GENERAL_VER
 #: GENERAL_VER
+msgctxt "GENERAL_VER"
 msgid "Version"
 msgstr "Версия"
 
@@ -2237,6 +2474,7 @@ msgstr "Предметы"
 
 # LIST_REND_MODE
 #: LIST_REND_MODE
+msgctxt "LIST_REND_MODE"
 msgid "Mode: {0}"
 msgstr "Режим: {0}"
 
@@ -2304,6 +2542,7 @@ msgstr "Идентификаторы"
 
 # NAME_SYS_PER
 #: NAME_SYS_PER
+msgctxt "NAME_SYS_PER"
 msgid "Period"
 msgstr "Период"
 
@@ -3032,32 +3271,32 @@ msgstr "Набор значений:"
 # R44B_DERIVES_FROM
 #: R44B_DERIVES_FROM
 msgid "derives from"
-msgstr ""
+msgstr "происходит от"
 
 # R44B_HAS_TARGET
 #: R44B_HAS_TARGET
 msgid "has target"
-msgstr ""
+msgstr "имеет цель"
 
 # R44B_HAS_TYPE
 #: R44B_HAS_TYPE
 msgid "has type"
-msgstr ""
+msgstr "имеет тип"
 
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
 msgid "This is an {0} IG that is not compatible with {1}\" because"
-msgstr ""
+msgstr "Это IG {0} несовместимый с {1}потому что"
 
 # R44B_NOT_IN
 #: R44B_NOT_IN
 msgid "The following resources are not in the {0} version"
-msgstr ""
+msgstr "Следующие ресурсы не в версии {0}"
 
 # R44B_ONLY_IN
 #: R44B_ONLY_IN
 msgid "The following resources are only in the {0} version"
-msgstr ""
+msgstr "Эти ресурсы только в версии {0}"
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
@@ -3067,12 +3306,12 @@ msgstr ""
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
 msgid "While checking for {0} compatibility, the following {1} problems were found"
-msgstr ""
+msgstr "При проверке совместимости {0} были найдены следующие проблемы {1}"
 
 # R44B_REFERS_TO
 #: R44B_REFERS_TO
 msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
-msgstr ""
+msgstr "<a href=\"{0}\">{1}}</a> относится к каноническому типу {2}"
 
 # R44B_USE_OK
 #: R44B_USE_OK
@@ -3082,22 +3321,22 @@ msgstr ""
 # R44B_WRONG_MSG
 #: R44B_WRONG_MSG
 msgid "Something went wrong with the cross-version analysis because"
-msgstr ""
+msgstr "Что-то пошло не так с кросс-версионным анализом, потому что"
 
 # REND_ADDED
 #: REND_ADDED
-msgid "Added:"
-msgstr "Добавлено:"
+msgid "Added"
+msgstr "Добавлено"
 
 # REND_CHANGED
 #: REND_CHANGED
-msgid "Changed:"
-msgstr "Изменено:"
+msgid "Changed"
+msgstr "Изменено"
 
 # REND_REMOVED
 #: REND_REMOVED
-msgid "Removed:"
-msgstr "Убрано:"
+msgid "Removed"
+msgstr "Убрано"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS
@@ -3200,6 +3439,11 @@ msgstr "Ошибка визуализации: {0}"
 msgid "Information Source: <param name=\"source\"/>"
 msgstr "!!Источник информации: <param name=\"source\"/>"
 
+# RES_REND_INFO_SOURCE_NAME
+#: RES_REND_INFO_SOURCE_NAME
+msgid "Information Source"
+msgstr ""
+
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
 msgid "Language: {0}"
@@ -3240,10 +3484,21 @@ msgstr "Неизвестен"
 msgid "Last updated: {0}"
 msgstr "Последнее обновление: {0}"
 
+# RES_REND_UPDATED_NAME
+#: RES_REND_UPDATED_NAME
+msgid "Last updated"
+msgstr ""
+
 # RES_REND_VER
 #: RES_REND_VER
 msgid "version: {0}"
 msgstr "версия: {0}"
+
+# RES_REND_VER_NAME
+#: RES_REND_VER_NAME
+msgctxt "RES_REND_VER_NAME"
+msgid "Version"
+msgstr ""
 
 # SDR_ALL_ELEM
 #: SDR_ALL_ELEM
@@ -3350,7 +3605,7 @@ msgstr "Исходя из этого {0}"
 # SDR_DRAFT
 #: SDR_DRAFT
 msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
-msgstr ""
+msgstr "Это черновое определение расширения; комитет ищет обратную связь по реализации, и определение или содержание расширения могут измениться в будущих версиях"
 
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
@@ -3364,7 +3619,7 @@ msgstr "Примеры для {0}"
 
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
-msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
+msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for production use."
 msgstr "!!Это экспериментальное определение расширения; комитет ожидает комментариев по реализации, и определение или содержание расширения может измениться в будущих версиях"
 
 # SDR_EXTENSION_SUMMARY
@@ -3375,7 +3630,7 @@ msgstr "Простое расширение с типом {0}: {1}"
 # SDR_EXTENSION_SUMMARY_MODIFIER
 #: SDR_EXTENSION_SUMMARY_MODIFIER
 msgid "Simple <b>Modifier</b> Extension with the type {0}: {1}"
-msgstr ""
+msgstr "Простое расширение <b>модификатора</b> с типом {0}: {1}"
 
 # SDR_EXT_ANY
 #: SDR_EXT_ANY
@@ -3421,7 +3676,7 @@ msgstr "Расширение"
 # SDR_EXT_MOD
 #: SDR_EXT_MOD
 msgid "This extension is a modifier extension."
-msgstr ""
+msgstr "Это расширение является модификатором расширения."
 
 # SDR_EXT_PATH
 #: SDR_EXT_PATH
@@ -3441,14 +3696,9 @@ msgstr "Данное расширение разрешено для исполь
 
 # SDR_EXT_VER_SFX
 #: SDR_EXT_VER_SFX
+msgctxt "SDR_EXT_VER_SFX"
 msgid "."
 msgstr "."
-
-# SDR_FIXED_VALUE
-#: SDR_FIXED_VALUE
-msgctxt "SDR_FIXED_VALUE"
-msgid "Fixed Value: {0}"
-msgstr "Фиксированное значение: {0}"
 
 # SDR_FROM
 #: SDR_FROM
@@ -3538,8 +3788,8 @@ msgstr "Еще не поддерживается: комплексное рас�
 
 # SDR_NOT_USED
 #: SDR_NOT_USED
-msgid "This {0} is not used by any profiles in this Implementation Guide"
-msgstr "Это {0} не используется ни в одном профиле в этом руководстве по реализации"
+msgid "This {0} is not used by any profiles in this Specification"
+msgstr "!!Это {0} не используется ни в одном профиле в этом руководстве по реализации"
 
 # SDR_OFF_URL
 #: SDR_OFF_URL
@@ -3555,12 +3805,6 @@ msgstr "Один из таких {0}"
 #: SDR_ONLY_ONE
 msgid "Only One!"
 msgstr "Только один!"
-
-# SDR_PATTERN_VALUE
-#: SDR_PATTERN_VALUE
-msgctxt "SDR_PATTERN_VALUE"
-msgid "Pattern Value: {0}"
-msgstr "Значение: {0}"
 
 # SDR_PRIM_VALUE
 #: SDR_PRIM_VALUE
@@ -3631,7 +3875,7 @@ msgstr "Для версии {0}"
 #: SDR_VER_FROM_PFX
 msgctxt "SDR_VER_FROM_PFX"
 msgid "FHIR versions"
-msgstr "!!\"Версии FHIR"
+msgstr "FHIR версии"
 
 # SDR_VER_FROM_SFX
 #: SDR_VER_FROM_SFX
@@ -3949,7 +4193,7 @@ msgstr "Существует разрез без дискриминатора в
 
 # SD_XIG_LINK
 #: SD_XIG_LINK
-msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">usages in the FHIR IG Statistics</a></p>"
+msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/resource/{0}|current/StructureDefinition/StructureDefinition-{1}.json\">usages in the FHIR IG Statistics</a></p>"
 msgstr ""
 
 # SEARCH_PAR_ALLOWED
@@ -4031,12 +4275,17 @@ msgstr "{0}, опубликовано {1}. Это руководство не я
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
 msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
-msgstr "!!{0} - Локальная сборка (v{1}), построенная FHIR (HL7&reg; FHIR&reg; Стандартные инструменты сборки. Смотрите каталог <a href=''{2}/history.html''>опубликованных версий</a>"
+msgstr "{0} - Локальная сборка (v{1}), построенная FHIR (HL7&reg; FHIR&reg;) стандартным инструментам сборки. Смотрите каталог <a href=''{2}/history.html''>опубликованных версий</a>"
 
 # STATUS_MSG_PUBLICATION_HOLDER
 #: STATUS_MSG_PUBLICATION_HOLDER
 msgid "Publication Build: This will be filled in by the publication tooling"
 msgstr "Публикация: это будет заполнено инструментами для публикации"
+
+# STRUCTURAL_REQUIREMENTS
+#: STRUCTURAL_REQUIREMENTS
+msgid "Structural Requirements"
+msgstr ""
 
 # STRUC_DEF_ABSTRACT
 #: STRUC_DEF_ABSTRACT
@@ -4136,8 +4385,8 @@ msgstr "Этот набор значений является кандидато
 
 # STRUC_DEF_CANNOT_TARGET
 #: STRUC_DEF_CANNOT_TARGET
-msgid "Instances of this logical model cannot be the target of a Reference"
-msgstr "Экземпляры этой логической модели не могут быть целью ссылки"
+msgid "Instances of this type cannot be the target of a Reference"
+msgstr "!!Экземпляры этой логической модели не могут быть целью ссылки"
 
 # STRUC_DEF_CANT_FIND
 #: STRUC_DEF_CANT_FIND
@@ -4146,8 +4395,8 @@ msgstr "getElementByName: не может найти {0} в {1} от {2}"
 
 # STRUC_DEF_CAN_TARGET
 #: STRUC_DEF_CAN_TARGET
-msgid "Instances of this logical model can be the target of a Reference"
-msgstr "Экземпляры этой логической модели могут быть целью ссылки"
+msgid "Instances of this type can be the target of a Reference"
+msgstr "!!Экземпляры этой логической модели могут быть целью ссылки"
 
 # STRUC_DEF_CAP
 #: STRUC_DEF_CAP
@@ -4350,6 +4599,11 @@ msgstr "Этот элемент должен быть поддержан"
 #: STRUC_DEF_ELE_READ
 msgid "When this element is read"
 msgstr "Когда этот элемент читается"
+
+# STRUC_DEF_ELE_TRANSLATABLE
+#: STRUC_DEF_ELE_TRANSLATABLE
+msgid "This element is a candidate for being translated"
+msgstr ""
 
 # STRUC_DEF_ERROR
 #: STRUC_DEF_ERROR
@@ -4678,7 +4932,7 @@ msgstr "Модификатор"
 # STRUC_DEF_MODIFIER_EXT
 #: STRUC_DEF_MODIFIER_EXT
 msgid "This is a modifier extension"
-msgstr ""
+msgstr "Это расширение модификатора"
 
 # STRUC_DEF_MUST_SUPPORT
 #: STRUC_DEF_MUST_SUPPORT
@@ -5014,7 +5268,7 @@ msgstr "Структуры"
 # STRUC_DEF_SUIT_SHALL_CODE
 #: STRUC_DEF_SUIT_SHALL_CODE
 msgid "Unless not suitable, these codes SHALL be taken from"
-msgstr "Если они не подходят, эти коды ДОЛЖНЫ быть взяты из"
+msgstr "Кроме случаев, когда они не подходят, эти коды ДОЛЖНЫ быть взяты из"
 
 # STRUC_DEF_TARG_SUPP
 #: STRUC_DEF_TARG_SUPP
@@ -5046,10 +5300,20 @@ msgstr "затем тип"
 msgid "This structure refers to these other structures"
 msgstr "Эта структура относится к этим другим структурам"
 
+# STRUC_DEF_TRANSLATABLE
+#: STRUC_DEF_TRANSLATABLE
+msgid "Translatable"
+msgstr ""
+
 # STRUC_DEF_TYPE_BOUND
 #: STRUC_DEF_TYPE_BOUND
 msgid "This type can be bound to a value set using the {0}"
 msgstr "Этот тип может быть связан с набором значений с помощью {0}"
+
+# STRUC_DEF_TYPE_CHARACTERISTICS
+#: STRUC_DEF_TYPE_CHARACTERISTICS
+msgid "Type Characteristics"
+msgstr ""
 
 # STRUC_DEF_TYPE_PARAMETER
 #: STRUC_DEF_TYPE_PARAMETER
@@ -5301,6 +5565,85 @@ msgstr "Тестовые зависимости плана:"
 #: TEST_PLAN_DESC
 msgid "Dependency - no description"
 msgstr "Зависимость - нет описания"
+
+# TEST_PLAN_IG_DEPENDENCIES
+#: TEST_PLAN_IG_DEPENDENCIES
+msgid "Dependencies"
+msgstr ""
+
+# TEST_PLAN_IG_DESCRIPTION
+#: TEST_PLAN_IG_DESCRIPTION
+msgctxt "TEST_PLAN_IG_DESCRIPTION"
+msgid "Description"
+msgstr ""
+
+# TEST_PLAN_IG_EXPECTED
+#: TEST_PLAN_IG_EXPECTED
+msgid "Expected"
+msgstr ""
+
+# TEST_PLAN_IG_FILE
+#: TEST_PLAN_IG_FILE
+msgid "File"
+msgstr ""
+
+# TEST_PLAN_IG_INPUT
+#: TEST_PLAN_IG_INPUT
+msgid "Input"
+msgstr ""
+
+# TEST_PLAN_IG_INPUTS
+#: TEST_PLAN_IG_INPUTS
+msgid "Inputs"
+msgstr ""
+
+# TEST_PLAN_IG_MODE
+#: TEST_PLAN_IG_MODE
+msgid "Mode"
+msgstr ""
+
+# TEST_PLAN_IG_MODES
+#: TEST_PLAN_IG_MODES
+msgid "Modes"
+msgstr ""
+
+# TEST_PLAN_IG_MODE_LABEL
+#: TEST_PLAN_IG_MODE_LABEL
+msgctxt "TEST_PLAN_IG_MODE_LABEL"
+msgid "Mode: {0}"
+msgstr ""
+
+# TEST_PLAN_IG_OPERATION
+#: TEST_PLAN_IG_OPERATION
+msgctxt "TEST_PLAN_IG_OPERATION"
+msgid "Operation"
+msgstr ""
+
+# TEST_PLAN_IG_PARAMETERS
+#: TEST_PLAN_IG_PARAMETERS
+msgctxt "TEST_PLAN_IG_PARAMETERS"
+msgid "Parameters"
+msgstr ""
+
+# TEST_PLAN_IG_REFERENCE
+#: TEST_PLAN_IG_REFERENCE
+msgid "Reference"
+msgstr ""
+
+# TEST_PLAN_IG_SCOPES
+#: TEST_PLAN_IG_SCOPES
+msgid "Scopes"
+msgstr ""
+
+# TEST_PLAN_IG_SUITE_LABEL
+#: TEST_PLAN_IG_SUITE_LABEL
+msgid "Suite: {0}"
+msgstr ""
+
+# TEST_PLAN_IG_TESTS
+#: TEST_PLAN_IG_TESTS
+msgid "Tests"
+msgstr ""
 
 # TEST_PLAN_LANG
 #: TEST_PLAN_LANG
@@ -5699,6 +6042,7 @@ msgstr "Республика Корея издание (Южная Корея)"
 
 # VALUE_SET_LEVEL
 #: VALUE_SET_LEVEL
+msgctxt "VALUE_SET_LEVEL"
 msgid "Level"
 msgstr "Уровень"
 
@@ -5711,9 +6055,9 @@ msgstr "Loinc v"
 #: VALUE_SET_NEEDS_SUPPL
 msgid "This ValueSet requires the Code system Supplement"
 msgid_plural "This ValueSet requires the Code system Supplements"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Этот набор значений требует дополнения системы кода"
+msgstr[1] "Этот набор значений требует дополнения системы кода"
+msgstr[2] "Этот набор значений требует дополнения системы кода"
 
 # VALUE_SET_NO
 #: VALUE_SET_NO
@@ -5890,6 +6234,11 @@ msgstr "Логическое определение (CLD)"
 msgid "No formal definition provided for this value set"
 msgstr "Для этого набора значений не предусмотрено формального определения"
 
+# VSR_RULES_TEXT
+#: VSR_RULES_TEXT
+msgid "This ValueSet does not have a formal definition; instead, the value set must be prepared by hand using these instructions."
+msgstr ""
+
 # VSR_TRIGGER
 #: VSR_TRIGGER
 msgid "Used as a trigger criteria in"
@@ -5908,6 +6257,11 @@ msgstr ""
 # VS_VERSION_FOUND
 #: VS_VERSION_FOUND
 msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
+msgstr ""
+
+# VS_VERSION_LATEST
+#: VS_VERSION_LATEST
+msgid "Version is always the latest available, which is {0} at this time"
 msgstr ""
 
 # VS_VERSION_NONE
@@ -5943,6 +6297,11 @@ msgstr ""
 # VS_VERSION_WILDCARD_BY_PACKAGE
 #: VS_VERSION_WILDCARD_BY_PACKAGE
 msgid "Version is stated to be {0}, which means it is fixed to {1}, the version found through the package references"
+msgstr ""
+
+# WEB_SOURCE
+#: WEB_SOURCE
+msgid "Web Source"
 msgstr ""
 
 # _NA

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,33 +23,36 @@ import javax.annotation.Nonnull;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.context.Slf4JLoggingService;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.elementmodel.LanguageUtils;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.elementmodel.ValidatedFragment;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.formats.IParser;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.liquid.BaseTableWrapper;
-import org.hl7.fhir.r5.liquid.GlobalObject.GlobalObjectRandomFunction;
-import org.hl7.fhir.r5.liquid.LiquidEngine;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator;
-import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
-import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
-import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
-import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
-import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.InternalLogEvent;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
-import org.hl7.fhir.r5.testfactory.TestDataFactory;
-import org.hl7.fhir.r5.testfactory.TestDataHostServices;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.fml.StructureMap;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.services.context.ContextUtilities;
+
+import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.LanguageUtils;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.services.elementmodel.ValidatedFragment;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.liquid.BaseTableWrapper;
+import org.hl7.fhir.services.liquid.GlobalObject.GlobalObjectRandomFunction;
+import org.hl7.fhir.services.liquid.LiquidEngine;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.services.profilemodel.gen.PECodeGenerator;
+import org.hl7.fhir.services.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
+import org.hl7.fhir.services.renderers.RendererFactory;
+import org.hl7.fhir.services.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
+import org.hl7.fhir.services.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
+import org.hl7.fhir.services.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
+import org.hl7.fhir.services.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
+import org.hl7.fhir.standalone.terminology.client.TerminologyClientManager.InternalLogEvent;
+import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
+import org.hl7.fhir.services.testfactory.TestDataFactory;
+import org.hl7.fhir.services.testfactory.TestDataHostServices;
 import org.hl7.fhir.r5.Constants;
-import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -64,6 +68,7 @@ import org.hl7.fhir.utilities.i18n.PoGetTextProducer;
 import org.hl7.fhir.utilities.i18n.XLIFFProducer;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.logging.Slf4JLoggingService;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -91,6 +96,7 @@ public class ValidationService {
   private String runDate;
 
   private final Map<String, ValidationEngine> baseEngines = new ConcurrentHashMap<>();
+  private RendererFactory rendererFactory;
 
   @Deprecated(since="2025-11-07")
   public void putBaseEngine(String key, ValidationContext validationContext) throws IOException, URISyntaxException {
@@ -100,10 +106,10 @@ public class ValidationService {
   }
   public void putBaseEngine(String key, ValidationEngineParameters validationEngineParameters, InstanceValidatorParameters defaultInstanceValidatorParameters) throws IOException, URISyntaxException {
 
-    if (validationEngineParameters.getSv() == null) {
+    if (validationEngineParameters.getStatedFHIRVersion() == null) {
       throw new IllegalArgumentException("Cannot create a base engine without an explicit version");
     }
-    String definitions = VersionUtilities.packageForVersion(validationEngineParameters.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationEngineParameters.getSv());
+    String definitions = VersionUtilities.packageForVersion(validationEngineParameters.getStatedFHIRVersion()) + "#" + VersionUtilities.getCurrentVersion(validationEngineParameters.getStatedFHIRVersion());
 
     ValidationEngine baseEngine = buildValidationEngine(validationEngineParameters, defaultInstanceValidatorParameters, definitions, new TimeTracker());
     baseEngines.put(key, baseEngine);
@@ -117,9 +123,10 @@ public class ValidationService {
 
   public boolean hasBaseEngineForKey(String key) { return baseEngines.containsKey(key); }
 
-  public ValidationService() {
+  public ValidationService(RendererFactory rendererFactory) {
     sessionCache = new PassiveExpiringSessionCache();
     runDate = new SimpleDateFormat("hh:mm:ss", new Locale("en", "US")).format(new Date());
+    this.rendererFactory = rendererFactory;
   }
 
 
@@ -166,6 +173,28 @@ public class ValidationService {
      */
     validationEngine.setLanguage(validationEngineParameters.getLang());
     validationEngine.setLocale(validationEngineParameters.getLocale());
+
+    /* This must happen before any file is validated: getValidator() applies the locale to the worker context, which
+       augments whatever expansion parameters are in place with a display language. Applying these afterwards would
+       discard that.
+    */
+    /*
+       TODO: This engine is cached and reused. Subsequent requests that reuse the same sessionId without setting this
+       field retain the expansion parameters applied previously. Clients may be able to validate sources more efficiently
+       by excluding expansion parameters in requests to cached sessions.
+     */
+    if (request.getExpansionParameters() != null) {
+
+      final FileInfo expansionParameters = request.getExpansionParameters();
+      if (expansionParameters.getFileContent() == null) {
+        throw new FHIRException("Expansion parameters were supplied without any fileContent.");
+      }
+      validationEngine.loadExpansionParameters(
+        expansionParameters.getFileContent().getBytes(StandardCharsets.UTF_8),
+        expansionParameters.getFileName(),
+        expansionParameters.getFileType());
+    }
+
     if (instanceValidatorParameters.getProfiles().isEmpty()) {
       log.info("  .. validate " + request.listSourceFiles());
     } else {
@@ -176,7 +205,7 @@ public class ValidationService {
 
     for (FileInfo fileToValidate : request.getFilesToValidate()) {
       if (fileToValidate.getFileType() == null) {
-        Manager.FhirFormat format = ResourceChecker.checkIsResource(validationEngine.getContext(),
+        FhirFormat format = ResourceChecker.checkIsResource(validationEngine.getContext(),
           fileToValidate.getFileContent().getBytes(),
           fileToValidate.getFileName(),
           false);
@@ -192,7 +221,7 @@ public class ValidationService {
             new FileInfo(fileToValidate.getFileName(), fileToValidate.getFileContent(), null));
           response.addOutcome(outcome);
       } else {
-        ValidatedFragments validatedFragments = validationEngine.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
+        ValidatedFragments validatedFragments = validationEngine.validateAsFragments(fileToValidate.getFileContent().getBytes(), FhirFormat.getFhirFormat(fileToValidate.getFileType()),
           instanceValidatorParameters, messages);
 
         List<ValidationOutcome> validationOutcomes = getValidationOutcomesFromValidatedFragments(fileToValidate, validatedFragments);
@@ -260,7 +289,7 @@ public class ValidationService {
    VersionSourceInformation versions = new VersionSourceInformation();
     IgLoader igLoader = new IgLoader(
       new FilesystemPackageCacheManager.Builder().build(),
-      new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing(),
+      new SimpleWorkerContext.SimpleWorkerContextBuilder(ModelContext.fullCoreContext()).fromNothing(),
       null);
 
     for (String src : igs) {
@@ -398,7 +427,7 @@ public class ValidationService {
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
     List<String> sources = validationContext.getSources();
-    generateSnapshot(validationEngine, new GenerateSnapshotParameters(validationEngineParameters.getSv(), sources, outputParameters.getOutput(), outputParameters.getOutputSuffix()));
+    generateSnapshot(validationEngine, new GenerateSnapshotParameters(validationEngineParameters.getStatedFHIRVersion(), sources, outputParameters.getOutput(), outputParameters.getOutputSuffix()));
   }
 
     public void generateSnapshot(ValidationEngine validationEngine, GenerateSnapshotParameters generateSnapshotParameters) throws Exception {
@@ -429,7 +458,7 @@ public class ValidationService {
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
     List<String> sources = validationContext.getSources();
-    generateNarrative(validationEngine, validationEngineParameters.getSv(), sources, outputParameters.getOutput());
+    generateNarrative(validationEngine, validationEngineParameters.getStatedFHIRVersion(), sources, outputParameters.getOutput());
   }
 
 
@@ -467,14 +496,14 @@ public class ValidationService {
         }
       }
       validationEngine.setMapLog(transformParameters.mapLog());
-      org.hl7.fhir.r5.elementmodel.Element r = validationEngine.transform(transformParameters.sources().get(0), transformParameters.map());
+      org.hl7.fhir.services.elementmodel.Element r = validationEngine.transform(transformParameters.sources().get(0), transformParameters.map());
       log.info(" ...success");
       if (transformParameters.output() != null) {
         FileOutputStream s = ManagedFileAccess.outStream(transformParameters.output());
         if (transformParameters.output() != null && transformParameters.output().endsWith(".json"))
-          new org.hl7.fhir.r5.elementmodel.JsonParser(validationEngine.getContext()).compose(r, s, IParser.OutputStyle.PRETTY, null);
+          new org.hl7.fhir.services.elementmodel.JsonParser(validationEngine.getContext()).compose(r, s, OutputStyle.PRETTY, null);
         else
-          new org.hl7.fhir.r5.elementmodel.XmlParser(validationEngine.getContext()).compose(r, s, IParser.OutputStyle.PRETTY, null);
+          new org.hl7.fhir.services.elementmodel.XmlParser(validationEngine.getContext()).compose(r, s, OutputStyle.PRETTY, null);
         s.close();
       }
     } catch (Exception e) {
@@ -542,7 +571,7 @@ public class ValidationService {
       if (transformVersionParameters.mapLog() != null) {
         validationEngine.setMapLog(transformVersionParameters.mapLog());
       }
-      byte[] r = validationEngine.transformVersion(transformVersionParameters.sources().get(0), transformVersionParameters.targetVer(), transformVersionParameters.output().endsWith(".json") ? Manager.FhirFormat.JSON : Manager.FhirFormat.XML, transformVersionParameters.canDoNative());
+      byte[] r = validationEngine.transformVersion(transformVersionParameters.sources().get(0), transformVersionParameters.targetVer(), transformVersionParameters.output().endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML, transformVersionParameters.canDoNative());
       log.info(" ...success");
       FileUtilities.bytesToFile(r, transformVersionParameters.output());
     } catch (Exception e) {
@@ -589,11 +618,11 @@ public class ValidationService {
       }
       sessionCache.cleanUp();
 
-      if (validationEngineParameters.getSv() == null) {
+      if (validationEngineParameters.getStatedFHIRVersion() == null) {
         String sv = determineVersion(validationEngineParameters.getIgs(), sources, validationEngineParameters.isRecursive(), validationEngineParameters.isInferFhirVersion());
-        validationEngineParameters.setSv(sv);
+        validationEngineParameters.setStatedFHIRVersion(sv);
       }
-      final String engineDefinitions = definitions != null ? definitions : VersionUtilities.packageForVersion(validationEngineParameters.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationEngineParameters.getSv());
+      final String engineDefinitions = definitions != null ? definitions : VersionUtilities.packageForVersion(validationEngineParameters.getStatedFHIRVersion()) + "#" + VersionUtilities.getCurrentVersion(validationEngineParameters.getStatedFHIRVersion());
 
       ValidationEngine validationEngine = getValidationEngineFromParameters(validationEngineParameters, defaultInstanceValidatorParameters, engineDefinitions, tt);
       sessionId = sessionCache.cacheSession(validationEngine);
@@ -625,28 +654,29 @@ public class ValidationService {
   //Called
   @Nonnull
   protected ValidationEngine buildValidationEngine(ValidationEngineParameters validationEngineParameters, InstanceValidatorParameters defaultInstanceValidatorParameters, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
-    log.info("  Loading FHIR v" + validationEngineParameters.getSv() + " from " + definitions);
+    log.info("  Loading FHIR v" + validationEngineParameters.getStatedFHIRVersion() + " from " + definitions);
     final InstanceValidatorParameters instanceValidatorParameters = defaultInstanceValidatorParameters == null ? new InstanceValidatorParameters(): defaultInstanceValidatorParameters;
     ValidationEngine validationEngine = getValidationEngineBuilder()
       .withDefaultInstanceValidatorParameters(new InstanceValidatorParameters(instanceValidatorParameters))
-      .withVersion(validationEngineParameters.getSv())
+      .withVersion(validationEngineParameters.getStatedFHIRVersion())
       .withTimeTracker(timeTracker)
       .withUserAgent(Common.getValidatorUserAgent())
       .withThoVersion(Constants.THO_WORKING_VERSION)
       .withExtensionsVersion(Constants.EXTENSIONS_WORKING_VERSION)
       .fromSource(definitions);
-    FhirPublication ver = FhirPublication.fromCode(validationEngineParameters.getSv());
+    FhirPublication ver = FhirPublication.fromCode(validationEngineParameters.getStatedFHIRVersion());
     log.info("  Loaded FHIR - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
-    final String lineStart = "  Terminology server " + validationEngineParameters.getTxServer();
-    final String txver = validationEngine.setTerminologyServer(validationEngineParameters.getTxServer(), validationEngineParameters.getTxLog(), ver, !validationEngineParameters.getNoEcosystem());
-    log.info(lineStart + " - Version " + txver + " (" + timeTracker.milestone() + ")");
-    validationEngine.setDebug(validationEngineParameters.isDoDebug());
-    validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
-    loadIgsAndExtensions(validationEngine, validationEngineParameters.getIgs(), validationEngineParameters.isRecursive());
-    if (validationEngineParameters.getTxCache() != null) {
-      TerminologyCache cache = new TerminologyCache(new Object(), validationEngineParameters.getTxCache());
-      validationEngine.getContext().initTxCache(cache);
+    // The cache is set up before connecting to the terminology server, so that what the connection
+    // learns (capability statements, server routing) is kept too. A context's own cache is memory
+    // only, so without -txCache the validator uses the shared per-version default folder
+    // (-txCache n/a for none). The default folder depends on the FHIR version; if that isn't known
+    // (not stated, and the definitions don't say), there's no default folder, and the cache is memory only.
+    String txCacheFolder = validationEngineParameters.getTxCache();
+    if (txCacheFolder == null) {
+      String sv = validationEngineParameters.getStatedFHIRVersion() != null ? validationEngineParameters.getStatedFHIRVersion() : validationEngine.getContext().getFHIRVersion();
+      txCacheFolder = sv == null ? null : TerminologyCache.defaultFolder(sv);
     }
+    validationEngine.getContext().initTxCache(new TerminologyCache(new Object(), txCacheFolder, validationEngine.getContext()));
     if (validationEngine.getContext().getTxCache() == null || validationEngine.getContext().getTxCache().getFolder() == null) {
       log.info("  No Terminology Cache");
     } else {
@@ -656,6 +686,12 @@ public class ValidationService {
         validationEngine.getContext().getTxCache().clear();
       }
     }
+    final String lineStart = "  Terminology server " + validationEngineParameters.getTxServer();
+    final String txver = validationEngine.setTerminologyServer(validationEngineParameters.getTxServer(), validationEngineParameters.getTxLog(), ver, !validationEngineParameters.getNoEcosystem());
+    log.info(lineStart + " - Version " + txver + " (" + timeTracker.milestone() + ")");
+    validationEngine.setDebug(validationEngineParameters.isDoDebug());
+    validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
+    loadIgsAndExtensions(validationEngine, validationEngineParameters.getIgs(), validationEngineParameters.isRecursive());
     validationEngine.setDoNative(validationEngineParameters.isDoNative());
     log.info("  Get set... ");
 
@@ -708,7 +744,7 @@ public class ValidationService {
   protected void loadIgsAndExtensions(ValidationEngine validationEngine, List<String> igs, boolean isRecursive) throws IOException, URISyntaxException {
     IgLoader igLoader = new IgLoader(validationEngine.getPcm(), validationEngine.getContext(), validationEngine.getVersion(), validationEngine.isDebug());
     igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.terminology", false);
-    if (!VersionUtilities.isR5Ver(validationEngine.getContext().getVersion())) {
+    if (!VersionUtilities.isR5Ver(validationEngine.getContext().getFHIRVersion())) {
       igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.fhir.uv.extensions", false);
     }
 
@@ -750,20 +786,20 @@ public class ValidationService {
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
     List<String> sources = validationContext.getSources();
-    generateSpreadsheet(validator, validationEngineParameters.getSv(), sources, outputParameters.getOutput());
+    generateSpreadsheet(validator, validationEngineParameters.getStatedFHIRVersion(), sources, outputParameters.getOutput());
   }
 
     public void generateSpreadsheet(ValidationEngine validationEngine, String version, List<String> sources, String output) throws Exception {
     CanonicalResource cr = validationEngine.loadCanonicalResource(sources.get(0), version);
     boolean ok = true;
     if (cr instanceof StructureDefinition) {
-      new StructureDefinitionSpreadsheetGenerator(validationEngine.getContext(), false, false).renderStructureDefinition((StructureDefinition) cr, false).finish(ManagedFileAccess.outStream(output));
+      new StructureDefinitionSpreadsheetGenerator(validationEngine.getContext(), false, false, rendererFactory).renderStructureDefinition((StructureDefinition) cr, false).finish(ManagedFileAccess.outStream(output));
     } else if (cr instanceof CodeSystem) {
-      new CodeSystemSpreadsheetGenerator(validationEngine.getContext()).renderCodeSystem((CodeSystem) cr).finish(ManagedFileAccess.outStream(output));
+      new CodeSystemSpreadsheetGenerator(validationEngine.getContext(), rendererFactory).renderCodeSystem((CodeSystem) cr).finish(ManagedFileAccess.outStream(output));
     } else if (cr instanceof ValueSet) {
-      new ValueSetSpreadsheetGenerator(validationEngine.getContext()).renderValueSet((ValueSet) cr).finish(ManagedFileAccess.outStream(output));
+      new ValueSetSpreadsheetGenerator(validationEngine.getContext(), rendererFactory).renderValueSet((ValueSet) cr).finish(ManagedFileAccess.outStream(output));
     } else if (cr instanceof ConceptMap) {
-      new ConceptMapSpreadsheetGenerator(validationEngine.getContext()).renderConceptMap((ConceptMap) cr).finish(ManagedFileAccess.outStream(output));
+      new ConceptMapSpreadsheetGenerator(validationEngine.getContext(), rendererFactory).renderConceptMap((ConceptMap) cr).finish(ManagedFileAccess.outStream(output));
     } else {
       ok = false;
       log.info(" ...Unable to generate spreadsheet for "+ sources.get(0)+": no way to generate a spreadsheet for a "+cr.fhirType());
@@ -941,7 +977,7 @@ public class ValidationService {
     PackageNameParameters packageNameParameters = ValidationContextUtilities.getPackageNameParameters(validationContext);
     org.hl7.fhir.validation.service.model.CodeGenParameters codeGenParameters = ValidationContextUtilities.getCodeGenParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
-    codeGen(validationEngine, new CodeGenParameters(validationEngineParameters.getSv(), instanceValidatorParameters.getProfiles(), codeGenParameters.getOptions(), packageNameParameters.getPackageName(), outputParameters.getOutput()));
+    codeGen(validationEngine, new CodeGenParameters(validationEngineParameters.getStatedFHIRVersion(), instanceValidatorParameters.getProfiles(), codeGenParameters.getOptions(), packageNameParameters.getPackageName(), outputParameters.getOutput()));
     }
 
   public void codeGen(ValidationEngine validationEngine, CodeGenParameters codeGenParameters) throws IOException {
@@ -1028,7 +1064,7 @@ public class ValidationService {
       TestDataHostServices hs = new TestDataHostServices(validationEngine.getContext(),
         new DateTimeType(new Date()),
         new DateType(new Date()),
-        new StringType(VersionUtilities.getSpecUrl(validationEngine.getContext().getVersion())));
+        new StringType(VersionUtilities.getSpecUrl(validationEngine.getContext().getFHIRVersion())));
       hs.registerFunction(new GlobalObjectRandomFunction());
       hs.registerFunction(new BaseTableWrapper.TableColumnFunction());
       hs.registerFunction(new BaseTableWrapper.TableDateColumnFunction());

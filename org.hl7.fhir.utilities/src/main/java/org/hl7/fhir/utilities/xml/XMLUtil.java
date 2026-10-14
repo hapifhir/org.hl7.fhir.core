@@ -73,6 +73,10 @@ public class XMLUtil {
 	public static final String SPACE_CHAR = "\u00A0";
   public static final String SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES = "http://xml.org/sax/features/external-general-entities";
   public static final String APACHE_XML_FEATURES_DISALLOW_DOCTYPE_DECL = "http://apache.org/xml/features/disallow-doctype-decl";
+  // JAXP limit (JDK 8+) that bounds element nesting depth so a deeply nested document fails with a
+  // SAXParseException during parsing rather than a StackOverflowError inside the parser itself.
+  public static final String JDK_XML_MAX_ELEMENT_DEPTH = "jdk.xml.maxElementDepth";
+  public static final int MAX_ELEMENT_DEPTH = 1000;
 
   public static boolean isNMToken(String name) {
 		if (name == null)
@@ -539,8 +543,17 @@ public class XMLUtil {
   @SuppressWarnings("checkstyle:documentBuilderFactoryNewInstance")
   public static DocumentBuilderFactory newXXEProtectedDocumentBuilderFactory() throws ParserConfigurationException {
     final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
     documentBuilderFactory.setFeature(APACHE_XML_FEATURES_DISALLOW_DOCTYPE_DECL, true);
     documentBuilderFactory.setXIncludeAware(false);
+    // Bound element nesting depth. Secure processing enables entity-expansion limits but leaves
+    // maxElementDepth unlimited (0) by default, so set it explicitly. Guarded because not every
+    // parser implementation recognises the attribute; XXE protection above still applies regardless.
+    try {
+      documentBuilderFactory.setAttribute(JDK_XML_MAX_ELEMENT_DEPTH, Integer.toString(MAX_ELEMENT_DEPTH));
+    } catch (IllegalArgumentException e) {
+      // attribute not supported by this parser implementation; ignore
+    }
     return documentBuilderFactory;
   }
 
@@ -561,7 +574,6 @@ public class XMLUtil {
     final SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setFeature(SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES, false);
     spf.setFeature(APACHE_XML_FEATURES_DISALLOW_DOCTYPE_DECL, true);
-
     return spf;
   }
 
@@ -602,7 +614,7 @@ public class XMLUtil {
   }
 
   public static String getXsiType(org.w3c.dom.Element element) {
-    Attr a = element.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "type");
+    Attr a = element.getAttributeNodeNS(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     return (a == null ? null : a.getTextContent());
     
   }
@@ -688,14 +700,12 @@ public class XMLUtil {
     Transformer transformer = XMLUtil.newXXEProtectedTransformerFactory().newTransformer();
     Result output = new StreamResult(stream);
     Source input = new DOMSource(root);
-
     transformer.transform(input, output);
   }
 
   public static void spacer(Document doc, Element element, int indent) {
     Node node = doc.createTextNode("\n"+Utilities.padLeft("", ' ', indent));
     element.appendChild(node);
-   
   }
 
   public static String getNamedChildText(Element element, String name) {

@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -42,6 +44,23 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
 
     // StructureMap/ActivityDefinition3to4: StructureMap.group[3].rule[2].name error id value '"expression"' is not valid
     Assertions.assertEquals("expression", structureMap.getGroup().get(2).getRule().get(1).getName());
+  }
+
+  @Test
+  public void testAnalyseInfersImplicitCreateType() throws Exception {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap structureMap = scu.parse("""
+      map "http://example.org/StructureMap/Identity" = "Identity"
+
+      uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as source
+      uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as target
+
+      group Identity(source src : Patient, target tgt : Patient) {
+        src.id -> tgt.id;
+      }
+      """, "Identity");
+
+    Assertions.assertDoesNotThrow(() -> scu.analyse(null, structureMap));
   }
   
   @Test
@@ -89,19 +108,51 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
       assertEquals("true", fp.evaluateToString(target, "rest.resource.interaction.where(code='create').exists()"));
   }
 
+  @Test
+  void testCopyXhtmlAndPrimitive() throws IOException, FHIRException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    String fileMap = """
+      map "http://github.com/FHIR/testCopyXhtml" = "testCopyXhtml"
+      uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as source
+      uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as target
+      group Patient(source src : Patient, target tgt : Patient) {
+        src.gender as g -> tgt.gender = g;
+        src.text as st -> tgt.text as tt then {
+          st.status as s -> tt.status = s;
+          st.div as d -> tt.div = d;
+        };
+      }""";
+    String patient = "{\"resourceType\":\"Patient\",\"gender\":\"female\",\"text\":{\"status\":\"generated\","
+      + "\"div\":\"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><p>Hello <b>world</b></p></div>\"}}";
+
+    StructureMap structureMap = scu.parse(fileMap, "testCopyXhtml");
+    Element source = Manager.parseSingle(context, new ByteArrayInputStream(patient.getBytes(StandardCharsets.UTF_8)), FhirFormat.JSON);
+    Element target = Manager.build(context, scu.getTargetType(structureMap));
+    scu.transform(null, source, structureMap, target);
+
+    FHIRPathEngine fp = new FHIRPathEngine(context);
+    assertEquals("female", fp.evaluateToString(target, "gender"));
+    assertEquals("generated", fp.evaluateToString(target, "text.status"));
+    Element div = target.getNamedChild("text").getNamedChild("div");
+    Assertions.assertTrue(div.isXhtml());
+    Assertions.assertNotNull(div.getXhtml());
+    assertEquals("Hello world", div.getXhtml().allText().trim());
+    assertEquals(source.getNamedChild("text").getNamedChild("div").getXhtmlSource(false), div.getXhtmlSource(false));
+  }
+
   private void assertSerializeDeserialize(StructureMap structureMap) {
     Assertions.assertEquals("syntax", structureMap.getName());
     Assertions.assertEquals("description", structureMap.getDescription());
     Assertions.assertEquals("http://github.com/FHIR/fhir-test-cases/r5/fml/syntax", structureMap.getUrl());
     Assertions.assertEquals("Patient", structureMap.getStructure().get(0).getAlias());
     Assertions.assertEquals("http://hl7.org/fhir/StructureDefinition/Patient", structureMap.getStructure().get(0).getUrl());
-    Assertions.assertEquals("Source Documentation", structureMap.getStructure().get(0).getDocumentation());
+    Assertions.assertEquals("Source Documentation", structureMap.getStructure().get(0).getFormatCommentsPost().get(0));
     Assertions.assertEquals("http://hl7.org/fhir/StructureDefinition/Patient", structureMap.getStructure().get(0).getUrl());
     Assertions.assertEquals("http://hl7.org/fhir/StructureDefinition/Basic", structureMap.getStructure().get(1).getUrl());
-    Assertions.assertEquals("Target Documentation", structureMap.getStructure().get(1).getDocumentation());
+    Assertions.assertEquals("Target Documentation", structureMap.getStructure().get(1).getFormatCommentsPost().get(0));
     Assertions.assertEquals("Groups\r\nrule for patient group", structureMap.getGroup().get(0).getDocumentation());
-    Assertions.assertEquals("Comment to rule", structureMap.getGroup().get(0).getRule().get(0).getFormatCommentsPre().get(0));
-    Assertions.assertEquals("Copy identifier short syntax", structureMap.getGroup().get(0).getRule().get(1).getFormatCommentsPre().get(0));
+    Assertions.assertEquals("Comment to rule", structureMap.getGroup().get(0).getRule().get(0).getDocumentation());
+    Assertions.assertEquals("Copy identifier short syntax", structureMap.getGroup().get(0).getRule().get(1).getDocumentation());
 
     StructureMapGroupRuleTargetComponent target = structureMap.getGroup().get(0).getRule().get(2).getTarget().get(1);
     Assertions.assertEquals("'urn:uuid:' + r.lower()", target.getParameter().get(0).toString());
@@ -138,7 +189,216 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     Assertions.assertEquals("-quote", structureMap.getGroup().get(0).getRule().get(1).getSourceFirstRep().getElement());
     Assertions.assertEquals("-backtick", structureMap.getGroup().get(0).getRule().get(2).getSourceFirstRep().getElement());
   }
+
+  @Test
+  void testTripleQuotedDescription() throws FHIRException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    String fileMap = "/// url = \"http://example.com/StructureMap/triple\"\r\n"
+      + "/// name = \"TripleQuotedDescription\"\r\n"
+      + "/// description = \"\"\"\r\n"
+      + "You should use my *awesome* map.\r\n"
+      + "It does really cool things.\r\n"
+      + "\"\"\"\r\n"
+      + "/// status = \"draft\"\r\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as source\r\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Basic\" alias Basic as target\r\n"
+      + "group Patient(source src : Patient, target tgt : Basic) {\r\n"
+      + "  src.identifier -> tgt.identifier;\r\n"
+      + "}";
+
+    StructureMap structureMap = scu.parse(fileMap, "TripleQuotedDescription");
+    Assertions.assertEquals("\r\nYou should use my *awesome* map.\r\nIt does really cool things.\r\n", structureMap.getDescription());
+  }
+
+  @Test
+  void testSingleQuotedDescriptionStillWorks() throws FHIRException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    String fileMap = "/// url = \"http://example.com/StructureMap/single\"\r\n"
+      + "/// name = \"SingleQuotedDescription\"\r\n"
+      + "/// description = \"A simple single line description\"\r\n"
+      + "/// status = \"draft\"\r\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as source\r\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Basic\" alias Basic as target\r\n"
+      + "group Patient(source src : Patient, target tgt : Basic) {\r\n"
+      + "  src.identifier -> tgt.identifier;\r\n"
+      + "}";
+
+    StructureMap structureMap = scu.parse(fileMap, "SingleQuotedDescription");
+    Assertions.assertEquals("A simple single line description", structureMap.getDescription());
+  }
+
+  @Test
+  void testEmptyQuotedDescriptionStillWorks() throws FHIRException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    String fileMap = "/// url = \"http://example.com/StructureMap/empty\"\r\n"
+      + "/// name = \"EmptyQuotedDescription\"\r\n"
+      + "/// description = \"\"\r\n"
+      + "/// status = \"draft\"\r\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as source\r\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Basic\" alias Basic as target\r\n"
+      + "group Patient(source src : Patient, target tgt : Basic) {\r\n"
+      + "  src.identifier -> tgt.identifier;\r\n"
+      + "}";
+
+    StructureMap structureMap = scu.parse(fileMap, "EmptyQuotedDescription");
+    // empty description falls back to title; title is unset, so getDescription should be empty / null
+    Assertions.assertTrue(structureMap.getDescription() == null || structureMap.getDescription().isEmpty());
+  }
+
+  @Test
+  void testRenderMultiLineDescriptionUsesTripleQuotes() throws FHIRException {
+    StructureMap map = new StructureMap();
+    map.setUrl("http://example.com/StructureMap/render-multi");
+    map.setName("RenderMulti");
+    map.setStatus(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.DRAFT);
+    map.setDescription("You should use my *awesome* map.\r\nIt does really cool things.");
+
+    String rendered = StructureMapUtilities.render(map);
+    Assertions.assertTrue(rendered.contains("/// description = \"\"\""), "Expected triple-quoted description in:\r\n" + rendered);
+    Assertions.assertTrue(rendered.contains("You should use my *awesome* map."), "Expected verbatim markdown content in:\r\n" + rendered);
+    Assertions.assertTrue(rendered.contains("It does really cool things.\"\"\""), "Expected triple-quoted close in:\r\n" + rendered);
+
+    // round-trip: re-parse the rendered output and confirm description is preserved
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap reparsed = scu.parse(rendered, "RenderMulti");
+    Assertions.assertEquals("You should use my *awesome* map.\r\nIt does really cool things.", reparsed.getDescription());
+  }
+
+  @Test
+  void testRenderSingleLineDescriptionUsesSingleQuotes() throws FHIRException {
+    StructureMap map = new StructureMap();
+    map.setUrl("http://example.com/StructureMap/render-single");
+    map.setName("RenderSingle");
+    map.setStatus(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.DRAFT);
+    map.setDescription("A simple one-line description with a \"quote\" in it.");
+
+    String rendered = StructureMapUtilities.render(map);
+    Assertions.assertTrue(rendered.contains("/// description = 'A simple one-line description with a \"quote\" in it.'"),
+      "Expected escaped single-quoted description in:\r\n" + rendered);
+    Assertions.assertFalse(rendered.contains("\"\"\""), "Did not expect triple quotes for a single-line description in:\r\n" + rendered);
+  }
+
+  @Test
+  void testRenderSingleLineDescriptionUsesSingleQuotesAndEscapedQuote() throws FHIRException {
+    StructureMap map = new StructureMap();
+    map.setUrl("http://example.com/StructureMap/render-single-escaped");
+    map.setName("RenderSingleEscaped");
+    map.setStatus(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.DRAFT);
+    map.setDescription("A simple one-line description with a 'quote' in it.");
+
+    String rendered = StructureMapUtilities.render(map);
+    Assertions.assertTrue(rendered.contains("/// description = 'A simple one-line description with a \\'quote\\' in it.'"),
+      "Expected escaped single-quoted description in:\r\n" + rendered);
+    Assertions.assertFalse(rendered.contains("\"\"\""), "Did not expect triple quotes for a single-line description in:\r\n" + rendered);
+  }
+
+  @Test
+  void testRenderDescriptionContainingTripleQuoteFallsBack() throws FHIRException {
+    StructureMap map = new StructureMap();
+    map.setUrl("http://example.com/StructureMap/render-fallback");
+    map.setName("RenderFallback");
+    map.setStatus(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.DRAFT);
+    // multi-line content but also contains """ which cannot live inside a verbatim block
+    map.setDescription("Line one\r\nLine \"\"\" two\r\nLine three");
+
+    String rendered = StructureMapUtilities.render(map);
+    Assertions.assertFalse(rendered.contains("/// description = \"\"\""),
+      "Expected fallback to single-line escaped form when description contains triple quotes, got:\r\n" + rendered);
+
+    // round-trip still works
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap reParsed = scu.parse(rendered, "RenderFallback");
+    Assertions.assertEquals("Line one\r\nLine \"\"\" two\r\nLine three", reParsed.getDescription());
+  }
+
+  @Test
+  void testRenderDescriptionEndingWithQuoteFallsBack() throws FHIRException {
+    StructureMap map = new StructureMap();
+    map.setUrl("http://example.com/StructureMap/render-trailing-quote");
+    map.setName("RenderTrailingQuote");
+    map.setStatus(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.DRAFT);
+    // multi-line content ending with " — would be greedily merged into the closing """
+    map.setDescription("Line one\r\nLine two ends with \"");
+
+    String rendered = StructureMapUtilities.render(map);
+    Assertions.assertFalse(rendered.contains("/// description = \"\"\""),
+      "Expected fallback to single-line escaped form when description ends with a quote, got:\r\n" + rendered);
+
+    // round-trip still works
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap reParsed = scu.parse(rendered, "RenderTrailingQuote");
+    Assertions.assertEquals("Line one\r\nLine two ends with \"", reParsed.getDescription());
+  }
   
+  // --- Simple Form: Identity Transform round-trip --------------------------------------
+  private static final String IDENTITY_BATCH_MAP_HEADER =
+      "/// url = 'http://example.com/StructureMap/identity-batch'\r\n"
+    + "/// name = 'IdentityBatch'\r\n"
+    + "/// status = 'draft'\r\n"
+    + "\r\n"
+    + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as source\r\n"
+    + "uses \"http://hl7.org/fhir/StructureDefinition/Basic\" alias Basic as target\r\n"
+    + "\r\n";
+
+  @Test
+  void testIdentityBatchAnonymousRoundTrip() throws FHIRException {
+    String fileMap = IDENTITY_BATCH_MAP_HEADER
+      + "group Patient(source src : Patient, target tgt : Basic) {\r\n"
+      + "  src -> tgt: id, active, gender;\r\n"
+      + "}\r\n\r\n";
+
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap sm = scu.parse(fileMap, "IdentityBatch");
+
+    // Three sibling rules whose names are makeId(BATCH_IDENTITY_UNNAMED_NAME + element).
+    // The sentinel prefix lets the renderer distinguish a batch from a run of
+    // singly-written `src.x -> tgt.x;` rules; it is stripped on output.
+    Assertions.assertEquals(3, sm.getGroup().get(0).getRule().size());
+    Assertions.assertEquals(StructureMapUtilities.BATCH_IDENTITY_UNNAMED_NAME + "id", sm.getGroup().get(0).getRule().get(0).getName());
+    Assertions.assertEquals(StructureMapUtilities.BATCH_IDENTITY_UNNAMED_NAME + "active", sm.getGroup().get(0).getRule().get(1).getName());
+    Assertions.assertEquals(StructureMapUtilities.BATCH_IDENTITY_UNNAMED_NAME + "gender", sm.getGroup().get(0).getRule().get(2).getName());
+
+    String rendered = StructureMapUtilities.render(sm);
+    Assertions.assertEquals(fileMap, rendered);
+  }
+
+  @Test
+  void testIdentityBatchNamedRoundTrip() throws FHIRException {
+    String fileMap = IDENTITY_BATCH_MAP_HEADER
+      + "group Patient(source src : Patient, target tgt : Basic) {\r\n"
+      + "  src -> tgt: maritalStatus, birthDate \"Others\";\r\n"
+      + "}\r\n\r\n";
+
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap sm = scu.parse(fileMap, "IdentityBatch");
+
+    // Names are makeId(ruleName + element)
+    Assertions.assertEquals(2, sm.getGroup().get(0).getRule().size());
+    Assertions.assertEquals("OthersmaritalStatus", sm.getGroup().get(0).getRule().get(0).getName());
+    Assertions.assertEquals("OthersbirthDate", sm.getGroup().get(0).getRule().get(1).getName());
+
+    String rendered = StructureMapUtilities.render(sm);
+    Assertions.assertEquals(fileMap, rendered);
+  }
+
+  @Test
+  void testTwoIdentityBatchesAdjacentRoundTrip() throws FHIRException {
+    // Two distinct batches one after the other; the second has a different prefix
+    // so the render side should emit two separate batch lines.
+    String fileMap = IDENTITY_BATCH_MAP_HEADER
+      + "group Patient(source src : Patient, target tgt : Basic) {\r\n"
+      + "  src -> tgt: id, active, gender;\r\n"
+      + "  src -> tgt: maritalStatus, birthDate \"Others\";\r\n"
+      + "}\r\n\r\n";
+
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap sm = scu.parse(fileMap, "IdentityBatch");
+
+    Assertions.assertEquals(5, sm.getGroup().get(0).getRule().size());
+    String rendered = StructureMapUtilities.render(sm);
+    Assertions.assertEquals(fileMap, rendered);
+  }
+
   // assert indices are equal to Element.numberChildren()
   private void checkNumberChildren(Element e, String indent) {
     System.out.println(indent + e + ", index: " + e.getIndex());

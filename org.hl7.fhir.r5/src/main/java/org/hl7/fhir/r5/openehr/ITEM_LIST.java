@@ -200,6 +200,10 @@ public class ITEM_LIST extends ITEM_STRUCTURE implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ITEM_LIST) dst);
+      }
+
       public void copyValues(ITEM_LIST dst) {
         super.copyValues(dst);
         if (itemsList != null) {

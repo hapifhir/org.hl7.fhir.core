@@ -108,7 +108,7 @@ import org.hl7.fhir.r4b.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.r4b.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -118,6 +118,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -126,8 +127,9 @@ import com.google.gson.JsonObject;
 import org.slf4j.MarkerFactory;
 import org.slf4j.event.Level;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
+@Deprecated(forRemoval = true)
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   public class ResourceProxy {
@@ -271,40 +273,46 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     clock = new TimeTracker();
   }
 
-  protected void copy(BaseWorkerContext other) {
-    synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet
-      allResourcesById.putAll(other.allResourcesById);
-      translator = other.translator;
-      codeSystems.copy(other.codeSystems);
-      txcaps = other.txcaps;
-      valueSets.copy(other.valueSets);
-      maps.copy(other.maps);
-      transforms.copy(other.transforms);
-      structures.copy(other.structures);
-      searchParameters.copy(other.searchParameters);
-      plans.copy(other.plans);
-      questionnaires.copy(other.questionnaires);
-      operations.copy(other.operations);
-      systems.copy(other.systems);
-      guides.copy(other.guides);
-      capstmts.copy(other.capstmts);
-      measures.copy(other.measures);
-      libraries.copy(other.libraries);
+  // Copying a worker context has been withdrawn in this version. A copy is not properly isolated
+  // from the context it was copied from: it shares the terminology client, the translator, the
+  // validator factory and the resources themselves (the registries are copied, the resources in them
+  // are not), so changes made through one can show up in the other. This code base is only
+  // maintained for FHIRPath, so rather than fix it, the copy support is commented out. If you need
+  // it, raise an issue at https://github.com/hapifhir/org.hl7.fhir.core/issues
+//  protected void copy(BaseWorkerContext other) {
+//    synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet
+//      allResourcesById.putAll(other.allResourcesById);
+//      translator = other.translator;
+//      codeSystems.copy(other.codeSystems);
+//      txcaps = other.txcaps;
+//      valueSets.copy(other.valueSets);
+//      maps.copy(other.maps);
+//      transforms.copy(other.transforms);
+//      structures.copy(other.structures);
+//      searchParameters.copy(other.searchParameters);
+//      plans.copy(other.plans);
+//      questionnaires.copy(other.questionnaires);
+//      operations.copy(other.operations);
+//      systems.copy(other.systems);
+//      guides.copy(other.guides);
+//      capstmts.copy(other.capstmts);
+//      measures.copy(other.measures);
+//      libraries.copy(other.libraries);
 
-      allowLoadingDuplicates = other.allowLoadingDuplicates;
-      tsServer = other.tsServer;
-      name = other.name;
-      txClient = other.txClient;
-      txLog = other.txLog;
-      txcaps = other.txcaps;
-      canRunWithoutTerminology = other.canRunWithoutTerminology;
-      noTerminologyServer = other.noTerminologyServer;
-      if (other.txCache != null)
-        txCache = other.txCache.copy();
-      expandCodesLimit = other.expandCodesLimit;
-      expParameters = other.expParameters;
-    }
-  }
+//      allowLoadingDuplicates = other.allowLoadingDuplicates;
+//      tsServer = other.tsServer;
+//      name = other.name;
+//      txClient = other.txClient;
+//      txLog = other.txLog;
+//      txcaps = other.txcaps;
+//      canRunWithoutTerminology = other.canRunWithoutTerminology;
+//      noTerminologyServer = other.noTerminologyServer;
+//      if (other.txCache != null)
+//        txCache = other.txCache.copy();
+//      expandCodesLimit = other.expandCodesLimit;
+//      expParameters = other.expParameters;
+//    }
+//  }
 
   public void cacheResource(Resource r) throws FHIRException {
     cacheResourceFromPackage(r, null);
@@ -495,12 +503,18 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    * Returns true if both strings include the delimiter and have the same number
    * of occurrences of it
    */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //Regexes sourced from laterVersion; single-char patterns, safe
   private boolean hasDelimiter(String s1, String s2, String delimiter) {
     return s1.contains(delimiter) && s2.contains(delimiter) && s1.split(delimiter).length == s2.split(delimiter).length;
   }
 
   private boolean laterDelimitedVersion(String newVersion, String oldVersion, String delimiter) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //Regexes sourced from laterVersion; single-char patterns, safe
     String[] newParts = newVersion.split(delimiter);
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //Regexes sourced from laterVersion; single-char patterns, safe
     String[] oldParts = oldVersion.split(delimiter);
     for (int i = 0; i < newParts.length; i++) {
       if (!newParts[i].equals(oldParts[i])) {
@@ -1040,7 +1054,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private void setTerminologyOptions(ValidationOptions options, Parameters pIn) {
     if (options.hasLanguages()) {
-      pIn.addParameter("displayLanguage", options.getLanguages().toString());
+      pIn.addParameter("displayLanguage", options.getLanguages().toParameterValue());
     }
     if (options.isMembershipOnly()) {
       pIn.addParameter("valueset-membership-only", true);
@@ -1284,7 +1298,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.canRunWithoutTerminology = canRunWithoutTerminology;
   }
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   public void setLogger(ILoggingService logger) {
 
   }
@@ -1402,7 +1416,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version);
         }
-        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //anchored, uses Constants.URI_REGEX; non-overlapping segments, safe
+        boolean uriMatchesRegex = uri.matches(Constants.URI_REGEX);
+        if (uriMatchesRegex && !uri.contains("ValueSet")) {
           return null;
         }
 
@@ -1637,7 +1654,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) questionnaires.get(uri, version);
       }
       if (cls == null) {
-        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //anchored, uses Constants.URI_REGEX; non-overlapping segments, safe
+        boolean uriMatchesRegex = uri.matches(Constants.URI_REGEX);
+        if (uriMatchesRegex && !uri.contains("ValueSet")) {
           return null;
         }
 
@@ -1664,6 +1684,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public Resource fetchResourceById(String type, String uri) {
     synchronized (lock) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = uri.split("\\/");
       if (!Utilities.noString(type) && parts.length == 1) {
         if (allResourcesById.containsKey(type)) {
@@ -2019,7 +2041,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  @Deprecated
+  @Deprecated(forRemoval = true)
   public ILoggingService getLogger() {
     return null;
   }

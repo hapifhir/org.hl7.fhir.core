@@ -34,9 +34,14 @@ import java.io.IOException;
 
 import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.ValueSet;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@MarkedToMoveToAdjunctPackage
+
+
+/**
+ * The implemetation of IWorkerContext is deprecated - it is no longer maintained by the core team
+ */
+
+@Deprecated(forRemoval = true)
 public interface ValueSetExpander {
   public enum TerminologyServiceErrorClass {
     UNKNOWN, NOSERVICE, SERVER_ERROR, VALUESET_UNSUPPORTED;

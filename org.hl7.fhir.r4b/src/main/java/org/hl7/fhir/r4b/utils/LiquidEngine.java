@@ -50,14 +50,15 @@ import org.hl7.fhir.r4b.model.Base;
 import org.hl7.fhir.r4b.model.Identifier;
 import org.hl7.fhir.r4b.model.Tuple;
 import org.hl7.fhir.r4b.model.ValueSet;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
+@Deprecated(forRemoval = true)
 public class LiquidEngine implements IHostApplicationServices {
 
   public interface ILiquidRenderingSupport {
@@ -386,7 +387,7 @@ public class LiquidEngine implements IHostApplicationServices {
             break;
           }          
           if (lctxt.globalVars.containsKey(varName)) {
-            throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_VARIABLE_ALREADY_ASSIGNED, varName));
+            lctxt.globalVars.remove(varName);
           }
           lctxt.loopVars.put(varName, o);
           boolean wantBreak = false;

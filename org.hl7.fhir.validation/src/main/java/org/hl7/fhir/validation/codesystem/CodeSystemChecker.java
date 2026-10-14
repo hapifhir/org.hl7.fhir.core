@@ -5,10 +5,10 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
-import org.hl7.fhir.r5.utils.validation.ValidatorSession;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.validation.ValidatorSession;
+import org.hl7.fhir.services.xver.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -100,14 +100,14 @@ public abstract class CodeSystemChecker extends BaseValidator {
     switch (property) {
     case "concept" :
       return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, 
-          VersionUtilities.isR5Plus(context.getVersion()) ?
+          VersionUtilities.isR5Plus(context.getFHIRVersion()) ?
               addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,  
                   PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.ChildOf, PropertyOperation.NotIn) :      
                     addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,   
                         PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.NotIn));
     case "code" : 
       return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, 
-          VersionUtilities.isR5Plus(context.getVersion()) ?
+          VersionUtilities.isR5Plus(context.getFHIRVersion()) ?
               addToOps(ops, PropertyOperation.RegEx, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,  
                   PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA,  PropertyOperation.Generalizes, PropertyOperation.ChildOf, PropertyOperation.NotIn) :      
                     addToOps(ops, PropertyOperation.RegEx, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf,   

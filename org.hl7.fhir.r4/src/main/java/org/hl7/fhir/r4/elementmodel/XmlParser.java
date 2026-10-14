@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParserFactory;
@@ -61,7 +62,7 @@ import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.r4.utils.formats.XmlLocationAnnotator;
 import org.hl7.fhir.r4.utils.formats.XmlLocationData;
 import org.hl7.fhir.utilities.ElementDecoration;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -79,7 +80,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class XmlParser extends ParserBase {
   private boolean allowXsiLocation;
 
@@ -498,7 +499,7 @@ public class XmlParser extends ParserBase {
     xml.start();
     xml.setDefaultNamespace(e.getProperty().getNamespace());
     if (hasTypeAttr(e))
-      xml.namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+      xml.namespace(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "xsi");
     composeElement(xml, e, e.getType(), true);
     xml.end();
 

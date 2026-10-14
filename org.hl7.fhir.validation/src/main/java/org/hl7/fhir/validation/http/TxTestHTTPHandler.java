@@ -11,12 +11,13 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.core.ImplementationGuide;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.validation.special.TxTestData;
@@ -26,13 +27,25 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Handler for validating resources
  */
 class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
+
+  private IModelContext context;
+  private final FhirValidatorHttpService fhirValidatorHttpService;
+
+  public TxTestHTTPHandler(IModelContext context, FhirValidatorHttpService fhirValidatorHttpService) {
+    super(context);
+    this.context = context;
+    this.fhirValidatorHttpService = fhirValidatorHttpService;
+  }
+
 
   public class ServerTxTesterLoader implements TxTester.ITxTesterLoader {
     private TxTestData txtests;
@@ -79,9 +92,9 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
       // always load as R5
       try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
         if (filename.contains(".json")) {
-          return new JsonParser().parse(inputStream);
+          return new JsonParser(context).parse(inputStream);
         } else {
-          return new XmlParser().parse(inputStream);
+          return new XmlParser(context).parse(inputStream);
         }
       }
     }
@@ -116,12 +129,6 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     }
   }
 
-  private final FhirValidatorHttpService fhirValidatorHttpService;
-
-  public TxTestHTTPHandler(FhirValidatorHttpService fhirValidatorHttpService) {
-    this.fhirValidatorHttpService = fhirValidatorHttpService;
-  }
-
   @Override
   public void handle(HttpExchange exchange) throws IOException {
     if (!"GET".equals(exchange.getRequestMethod())) {
@@ -134,6 +141,8 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     String server = null;
     String externalFile = null;
     String version = null;
+    String folder = null;
+    String label = null;
     Set<String> modes = new HashSet<>();
 
     try {
@@ -143,6 +152,12 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
       server = params.get("server");
       version = params.get("version");
       externalFile = params.get("externals");
+      // where the run writes its expected/actual files. 'folder' names the run (under the temp
+      // directory - it is a name, not a path); 'label' names a subfolder of it for this one
+      // test, so a caller running the same test several ways does not have each run write over
+      // the last. Both default to what they did before: the server's host, and no subfolder.
+      folder = params.get("folder");
+      label = params.get("label");
       if (params.containsKey("modes")) {
         modes.addAll(parseListParameter(params.get("modes")));
       } else {
@@ -150,6 +165,9 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
         modes.add("omop");
         modes.add("general");
         modes.add("snomed");
+        modes.add("mimetypes");
+        modes.add("icd-11");
+        modes.add("closure");
       }
 
       if (suiteName == null) {
@@ -167,6 +185,18 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
       if (externalFile == null) {
         externalFile = "messages-tx.fhir.org.json";
       }
+      if (folder != null) {
+        String err = TxTester.checkFolderName(folder);
+        if (err != null) {
+          throw new FHIRException("Invalid 'folder' parameter: " + err);
+        }
+      }
+      if (label != null) {
+        String err = TxTester.checkFolderName(label);
+        if (err != null) {
+          throw new FHIRException("Invalid 'label' parameter: " + err);
+        }
+      }
       if (!externalFile.endsWith(".json")) {
         externalFile = externalFile + ".json";
       }
@@ -180,6 +210,10 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
         fhirValidatorHttpService.getTxTesters().put(server, tester);
       }
 
+      if (folder != null) {
+        tester.setFolderName(folder);
+      }
+
       org.hl7.fhir.utilities.json.model.JsonObject suite = tester.getSuite(suiteName);
       org.hl7.fhir.utilities.json.model.JsonObject test = tester.getTest(suite, testName);
       OperationOutcome outcome;
@@ -187,11 +221,21 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
         outcome = OperationOutcomeUtilities.createSuccess("Test is disabled");
       } else {
         // run the test
-        String err = tester.executeTest(tester.loader, suite, test, modes);
-        if (err != null) {
-          outcome = OperationOutcomeUtilities.createError(err);
-        } else {
+        String err = tester.executeTest(tester.loader, suite, test, modes, label);
+        if (err == null) {
           outcome = OperationOutcomeUtilities.createSuccess("Test passed");
+        } else if ("n/a".equals(err)) {
+          // The test never ran: it is gated on a mode that was not asked for. That is neither
+          // a pass nor a failure of the server, and reporting it as the bare "n/a" that
+          // executeTest returns tells the caller nothing - a whole suite gated on a mode the
+          // caller forgot to send arrives as a wall of failures with no reason attached. Say
+          // which mode would have run it, and which were actually asked for.
+          outcome = OperationOutcomeUtilities.createError("Test '" + suiteName + "/" + testName
+              + "' did not run: it is gated on mode " + describeModeGate(suite, test)
+              + ", and the modes requested were [" + String.join(", ", new TreeSet<>(modes))
+              + "]. Pass it in the 'modes' parameter to run this test.");
+        } else {
+          outcome = OperationOutcomeUtilities.createError(err);
         }
       }
       sendOperationOutcome(exchange, 200, outcome, getAcceptHeader(exchange));
@@ -199,5 +243,23 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
       OperationOutcome outcome = OperationOutcomeUtilities.createError("Testing failed: " + e.getMessage());
       sendOperationOutcome(exchange, 500, outcome, getAcceptHeader(exchange));
     }
+  }
+
+  /**
+   * The modes a test is gated on, for the message when it does not run. A test that names no
+   * mode always runs, so this only ever has to describe one that does - but both the suite and
+   * the test can carry a gate, and either can be the one that stopped it.
+   */
+  private String describeModeGate(JsonObject suite, JsonObject test) {
+    Set<String> required = new LinkedHashSet<>();
+    for (JsonObject o : new JsonObject[] { suite, test }) {
+      if (o.has("modes")) {
+        required.addAll(o.getStrings("modes"));
+      }
+      if (o.has("mode")) {
+        required.add(o.asString("mode"));
+      }
+    }
+    return required.isEmpty() ? "(no mode)" : "[" + String.join(", ", required) + "]";
   }
 }

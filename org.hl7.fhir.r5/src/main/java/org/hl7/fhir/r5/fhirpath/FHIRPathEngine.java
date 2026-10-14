@@ -54,9 +54,11 @@ import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.regex.RegexConstants;
 import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.util.ElementUtil;
@@ -218,7 +220,7 @@ public class FHIRPathEngine {
     analysis = (FHIRPathAnalysis) worker.retrieveAnalysis(this.getClass());
     if (analysis == null) {
       analysis = new FHIRPathAnalysis();
-      for (StructureDefinition sd : worker.fetchResourcesByType(StructureDefinition.class)) {
+      for (StructureDefinition sd : worker.fetchSpecializations()) {
         if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
           analysis.allTypes.put(sd.getName(), sd);
         }
@@ -404,6 +406,23 @@ public class FHIRPathEngine {
     }
 
   }
+  
+  /**
+   * Parse a path for later use using execute, but allow the path to be part of some other syntax (e.g. a Liquid expression)
+   * 
+   * @param lexer
+   * @return
+   * @throws FHIRLexerException
+   */
+  public ExpressionNodeWithOffset parsePartialExpression(FHIRLexer lexer) throws FHIRLexerException {
+    if (lexer.done()) {
+      throw lexer.error("Path cannot be empty");
+    }
+    ExpressionNode result = parseExpression(lexer, true);
+    result.check();
+    return new ExpressionNodeWithOffset(lexer.getCurrentStart(), result);    
+  }
+  
   /**
    * Parse a path for later use using execute
    * 
@@ -783,7 +802,7 @@ public class FHIRPathEngine {
       list.add(base);
     }
     traceLog = new StringBuilder();
-    return execute(new ExecutionContext(null, base.isResource() ? base : null, base.isResource() ? base : null, base, base), list, exp, true);
+    return execute(new ExecutionContext(null, base!=null && base.isResource() ? base : null, base!=null && base.isResource() ? base : null, base, base), list, exp, true);
   }
 
   /**
@@ -814,12 +833,34 @@ public class FHIRPathEngine {
    * @
    */
   public List<Base> evaluate(Object appContext, Base focusResource, Base rootResource, Base base, ExpressionNode expressionNode) throws FHIRException {
+    return evaluate(appContext, focusResource, rootResource, base, expressionNode, null);
+  }
+
+  /**
+   * evaluate a path with a set of variables already in scope, and return the matching elements.
+   *
+   * <p>The variables are visible to the expression as %name, exactly as if they had been introduced
+   * by defineVariable(). This is for callers that have their own notion of named variables to make
+   * available - e.g. the Questionnaire 'variable' extension, whose variables are in scope for the
+   * expressions in the Questionnaire that declares them.
+   *
+   * @param base - the object against which the path is being evaluated
+   * @param expressionNode - the parsed ExpressionNode statement to use
+   * @param variables - variables to define before evaluation; may be null
+   */
+  public List<Base> evaluate(Object appContext, Base focusResource, Base rootResource, Base base, ExpressionNode expressionNode, Map<String, List<Base>> variables) throws FHIRException {
     List<Base> list = new ArrayList<Base>();
     if (base != null) {
       list.add(base);
     }
     traceLog = new StringBuilder();
-    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list, expressionNode, true);
+    ExecutionContext context = new ExecutionContext(appContext, focusResource, rootResource, base, base);
+    if (variables != null) {
+      for (Map.Entry<String, List<Base>> e : variables.entrySet()) {
+        context.setDefinedVariable(e.getKey(), e.getValue());
+      }
+    }
+    return execute(context, list, expressionNode, true);
   }
 
   /**
@@ -889,6 +930,16 @@ public class FHIRPathEngine {
    */
   public boolean evaluateToBoolean(Object appInfo, Base focusResource, Base rootResource, Base base, ExpressionNode node) throws FHIRException {
     return convertToBoolean(evaluate(appInfo, focusResource, rootResource, base, node));
+  }
+
+  /**
+   * evaluate a path with a set of variables already in scope, and return true or false
+   *
+   * @param base - the object against which the path is being evaluated
+   * @param variables - variables to define before evaluation; may be null
+   */
+  public boolean evaluateToBoolean(Object appInfo, Base focusResource, Base rootResource, Base base, ExpressionNode node, Map<String, List<Base>> variables) throws FHIRException {
+    return convertToBoolean(evaluate(appInfo, focusResource, rootResource, base, node, variables));
   }
 
   /**
@@ -1511,7 +1562,9 @@ public class FHIRPathEngine {
     case HighBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case Precision: return checkParamCount(lexer, location, exp, 0);
     case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
-    case Debug: return checkParamCount(lexer, location, exp, 0, 1);
+      case Debug: return checkParamCount(lexer, location, exp, 0, 1);
+      case Section: return checkParamCount(lexer, location, exp, 1, 1);
+      case Entry: return checkParamCount(lexer, location, exp, 1, 1);
     case Custom: if (details != null) {
         return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
       }
@@ -1659,6 +1712,18 @@ public class FHIRPathEngine {
     return res;
   }
 
+  /**
+   * A FHIR primitive can have extensions but no value (e.g. when the data-absent-reason extension is used).
+   * Such an element is present in the tree - so exists() is true - but it has no value in the FHIRPath type
+   * system, so anything that needs the value gets nothing (see hasValue() and getValue() in the FHIR spec)
+   *
+   * @param list the focus or an operand
+   * @return true if the list is a single primitive that has no value
+   */
+  private boolean hasNoPrimitiveValue(List<Base> list) {
+    return list.size() == 1 && list.get(0).isPrimitive() && list.get(0).primitiveValue() == null;
+  }
+
   private TypeDetails executeTypeName(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, boolean atEntry) throws PathEngineException, DefinitionException {
     return new TypeDetails(CollectionStatus.SINGLETON, exp.getName());
   }
@@ -1678,7 +1743,7 @@ public class FHIRPathEngine {
         result.update(executeContextType(context, exp.getName(), exp, FHIRPathConstantEvaluationMode.NOVALUE));
       } else {
         for (String s : focus.getTypes()) {
-          result.update(executeType(s, exp, atEntry, focus, elementDependencies));
+          result.update(executeType(s, exp, atEntry, focus, elementDependencies, inContext));
         }
         if (result.hasNoTypes()) {
           if (!canBeNone) { 
@@ -1775,6 +1840,8 @@ public class FHIRPathEngine {
     } else if (!value.contains("T")) {
       date = value;
     } else {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = value.split("T");
       date = p[0];
       if (p.length > 1) {
@@ -2002,6 +2069,8 @@ public class FHIRPathEngine {
         return false;
       }
     }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] t = tn.split("\\.");
     if (t.length != 2) {
       return false;
@@ -2263,19 +2332,15 @@ public class FHIRPathEngine {
   private String removeTrailingZeros(String s) {
     if (Utilities.noString(s))
       return "";
+    // only zeros after the decimal point can go: 1.50 is 1.5 and 1.0 is 1, but 100 is not 1.
+    // Leave exponent forms alone
+    if (s.indexOf('.') < 0 || s.indexOf('e') >= 0 || s.indexOf('E') >= 0)
+      return s;
     int i = s.length()-1;
-    boolean done = false;
-    boolean dot = false;
-    while (i > 0 && !done) {
-      if (s.charAt(i) == '.') {
-        i--;
-        dot = true;
-      } else if (!dot && s.charAt(i) == '0') {
-        i--;
-      } else {
-        done = true;
-      }
-    }
+    while (i >= 0 && s.charAt(i) == '0')
+      i--;
+    if (i >= 0 && s.charAt(i) == '.')
+      i--;
     return s.substring(0, i+1);
   }
 
@@ -2294,11 +2359,15 @@ public class FHIRPathEngine {
     var rq = makeQuantity(right);
     if (lq instanceof Quantity && rq instanceof Quantity) {
       return qtyEqual(lq, rq);
+    } else if ((left.isPrimitive() || left.hasPrimitiveValue()) != (right.isPrimitive() || right.hasPrimitiveValue())) {
+      // a primitive and a complex value are different types, so they are not equal: = is false and
+      // != is true. A logical model type with a value (e.g. CDA ST) counts as primitive here
+      return false;
     } else if (left.hasType("date", "dateTime", "instant") && right.hasType("date", "dateTime", "instant")) { 
       var leftDate = new DateTimeType(left.primitiveValue());
       var rightDate = new DateTimeType(right.primitiveValue());
       return datesEqual(leftDate, rightDate);
-    } else if (left instanceof DecimalType || right instanceof DecimalType) { 
+    } else if (left.hasType("decimal") || right.hasType("decimal")) { 
       return decEqual(left.primitiveValue(), right.primitiveValue());
     } else if (left.isPrimitive() && right.isPrimitive()) {
       return Base.equals(left.primitiveValue(), right.primitiveValue());
@@ -2517,6 +2586,9 @@ public class FHIRPathEngine {
   private List<Base> opLessThan(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
+    if (hasNoPrimitiveValue(left) || hasNoPrimitiveValue(right)) {
+      return makeNull();
+    }
 
     if (left.size() == 1 && right.size() == 1 && left.get(0).isPrimitive() && right.get(0).isPrimitive()) {
       Base l = left.get(0);
@@ -2567,6 +2639,9 @@ public class FHIRPathEngine {
   private List<Base> opGreater(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
+    if (hasNoPrimitiveValue(left) || hasNoPrimitiveValue(right)) {
+      return makeNull();
+    }
     if (left.size() == 1 && right.size() == 1 && left.get(0).isPrimitive() && right.get(0).isPrimitive()) {
       Base l = left.get(0);
       Base r = right.get(0);
@@ -2616,6 +2691,9 @@ public class FHIRPathEngine {
   private List<Base> opLessOrEqual(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) { 
       return new ArrayList<Base>();
+    }
+    if (hasNoPrimitiveValue(left) || hasNoPrimitiveValue(right)) {
+      return makeNull();
     }
     if (left.size() == 1 && right.size() == 1 && left.get(0).isPrimitive() && right.get(0).isPrimitive()) {
       Base l = left.get(0);
@@ -2668,6 +2746,9 @@ public class FHIRPathEngine {
   private List<Base> opGreaterOrEqual(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) { 
       return new ArrayList<Base>();
+    }
+    if (hasNoPrimitiveValue(left) || hasNoPrimitiveValue(right)) {
+      return makeNull();
     }
     if (left.size() == 1 && right.size() == 1 && left.get(0).isPrimitive() && right.get(0).isPrimitive()) {
       Base l = left.get(0);
@@ -3412,12 +3493,28 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return hostServices.resolveConstantType(this, context.appInfo, name, mode);
   }
 
-  private TypeDetails executeType(String type, ExpressionNode exp, boolean atEntry, TypeDetails focus, Set<ElementDefinition> elementDependencies) throws PathEngineException, DefinitionException {
+  private TypeDetails executeType(String type, ExpressionNode exp, boolean atEntry, TypeDetails focus, Set<ElementDefinition> elementDependencies, ExecutionTypeContext inContext) throws PathEngineException, DefinitionException {
+    if (atEntry && inContext.appInfo != null && hostServices != null && checkWithHostServicesBeforeHand) {
+      // we'll see if the name matches a constant known by the context.
+      TypeDetails td = hostServices.resolveConstantType(this, inContext.appInfo, exp.getName(), FHIRPathConstantEvaluationMode.IMPLICIT_BEFORE);
+      if (td != null && !td.hasNoTypes()) {
+        return td;
+      }
+    }
     if (atEntry && Character.isUpperCase(exp.getName().charAt(0)) && (hashTail(type).equals(exp.getName()) || isAncestor(type, exp.getName()) )) { // special case for start up
       return new TypeDetails(CollectionStatus.SINGLETON, type);
     }
+
     TypeDetails result = new TypeDetails(focus.getCollectionStatus());
     getChildTypesByName(type, exp.getName(), result, exp, focus, elementDependencies);
+    if (atEntry && inContext.appInfo != null && hostServices != null && result.hasNoTypes()) {
+      // well, we didn't get a match on the name - we'll see if the name matches a constant known by the context.
+      // (if the name does match, and the user wants to get the constant value, they'll have to try harder...
+      TypeDetails td = hostServices.resolveConstantType(this, inContext.appInfo, exp.getName(), FHIRPathConstantEvaluationMode.IMPLICIT_AFTER);
+      if (td != null && !td.hasNoTypes()) {
+        return td;
+      }
+    }
     return result;
   }
 
@@ -3805,7 +3902,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     case Split:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
-      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+      return new TypeDetails(CollectionStatus.ORDERED, TypeDetails.FP_String);
     case Join:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
@@ -3927,6 +4024,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       }
       case Debug: {
         return focus;
+      }
+      case Section: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.SINGLETON, "Composition.section");
+      }
+      case Entry: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.SINGLETON, "Resource");
       }
     case Custom : {
       return hostServices.checkFunction(this, context.appInfo,exp.getName(), focus, paramTypes);
@@ -4210,7 +4315,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     case HighBoundary : return funcHighBoundary(context, focus, exp);
     case Precision : return funcPrecision(context, focus, exp);
     case hasTemplateIdOf: return funcHasTemplateIdOf(context, focus, exp);
-    case Debug: return funcDebug(context, focus, exp);
+      case Debug: return funcDebug(context, focus, exp);
+      case Section: return funcSection(context, focus, exp);
+      case Entry: return funcEntry(context, focus, exp);
 
 
     case Custom: { 
@@ -4249,6 +4356,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       boolean found = false;
       for (Identifier id : sd.getIdentifier()) {
         if (id.getValue().startsWith("urn:hl7ii:")) {   
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] p = id.getValue().split("\\:");
           if (p.length == 4) {
             found = found || hasTemplateId(focus.get(0), p[2], p[3]);
@@ -4664,6 +4773,16 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return focus;
   }
 
+  private List<Base> funcSection(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    // TODO: this method needs to be written yet
+    return null;
+  }
+
+  private List<Base> funcEntry(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    // TODO: this method needs to be written yet
+    return null;
+  }
+
   private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
   public static String bytesToHex(byte[] bytes) {
     char[] hexChars = new char[bytes.length * 2];
@@ -4690,7 +4809,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
     List<Base> result = new ArrayList<Base>();
 
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && focus.get(0).primitiveValue() != null) {
       String cnt = focus.get(0).primitiveValue();
       if ("hex".equals(param)) {
         result.add(new StringType(bytesToHex(cnt.getBytes())));        
@@ -4710,13 +4829,12 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && focus.get(0).primitiveValue() != null) {
       String cnt = focus.get(0).primitiveValue();
       if ("hex".equals(param)) {
         result.add(new StringType(new String(hexStringToByteArray(cnt))));        
       } else if ("base64".equals(param)) {
-        Base64.Decoder enc = Base64.getDecoder();
-        result.add(new StringType(new String(enc.decode(cnt))));
+        result.add(new StringType(new String(Utilities.decodeBase64(cnt, true))));
       } else if ("urlbase64".equals(param)) {
         Base64.Decoder enc = Base64.getUrlDecoder();
         result.add(new StringType(new String(enc.decode(cnt))));
@@ -4730,7 +4848,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && focus.get(0).primitiveValue() != null) {
       String cnt = focus.get(0).primitiveValue();
       if ("html".equals(param)) {
         result.add(new StringType(Utilities.escapeXml(cnt)));        
@@ -4751,7 +4869,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     String param = nl.get(0).primitiveValue();
 
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && focus.get(0).primitiveValue() != null) {
       String cnt = focus.get(0).primitiveValue();
       if ("html".equals(param)) {
         result.add(new StringType(Utilities.unescapeXml(cnt)));        
@@ -4769,7 +4887,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcTrim(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && focus.get(0).primitiveValue() != null) {
       String cnt = focus.get(0).primitiveValue();
       result.add(new StringType(cnt.trim()));
     }
@@ -4792,6 +4910,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcJoin(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    // FHIRPath: "If the input is empty, the result is empty".
+    if (focus.isEmpty()) {
+      return new ArrayList<Base>();
+    }
     List<Base> nl = exp.getParameters().size() > 0 ? execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true) : new ArrayList<Base>();
     String param = "";
     String param2 = "";
@@ -4814,11 +4936,21 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcHtmlChecks1(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    // todo: actually check the HTML
     if (focus.size() != 1) {
-      return makeBoolean(false);          
+      return new ArrayList<Base>();
     }
-    XhtmlNode x = focus.get(0).getXhtml();
+    Base n = focus.get(0);
+    XhtmlNode x;
+    if (n.getXhtml() != null)
+      x = n.getXhtml();
+    else if (n instanceof StringType || (n.isPrimitive() && "string".equals(n.fhirType()))) {
+      try {
+        x = new XhtmlParser().parseFragment("<div xmlns=\"http://www.w3.org/1999/xhtml\">"+n.primitiveValue()+"</div>");
+      } catch (Exception e) {
+        return makeBoolean(false);  
+      }
+    } else
+      return new ArrayList<Base>();
     if (x == null) {
       return makeBoolean(false);                
     }
@@ -4936,7 +5068,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         }
       }
       for (XhtmlNode c : node.getChildNodes()) {
-        if (!checkHtmlNames(c, block && !"p".equals(c))) {
+        if (!checkHtmlNames(c, block && !"p".equals(c))) { // FIXME SpotBugs issue: EC_UNRELATED_TYPES "p".equals(c) is always false (String vs XhtmlNode); compare "p".equals(c.getName())
           return false;
         }
       }
@@ -5121,10 +5253,18 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     String repl = convertToString(replB);
 
     if (focus.size() == 0 || regexB.size() == 0 || replB.size() == 0) {
-      //
+      // no-op
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
-      if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-        result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
+      String f = convertToString(focus.get(0));
+      if ((focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) && f != null) {
+        try {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+          String replaced = RegexTimeout.replaceAll(f, regex, repl);
+          result.add(new StringType(replaced).noExtensions());
+        } catch (TimeoutException te) {
+          throw new FHIRException("Timeout evaluating regex: " + regex, te);
+        }
       }
     } else {
       result.add(new StringType(convertToString(focus.get(0))).noExtensions());
@@ -5145,8 +5285,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     } else if (Utilities.noString(sw)) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-      if (focus.size() == 1 && !Utilities.noString(sw)) {
-        result.add(new BooleanType(convertToString(focus.get(0)).endsWith(sw)).noExtensions());
+      String s = convertToString(focus.get(0));
+      if (focus.size() == 1 && !Utilities.noString(sw) && s != null) {
+        result.add(new BooleanType(s.endsWith(sw)).noExtensions());
       } else {
         result.add(new BooleanType(false).noExtensions());
       }
@@ -5219,11 +5360,49 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return result;
   }
 
+  /**
+   * Implements FHIRPath toDateTime() - see https://hl7.org/fhirpath/#todatetime-datetime
+   *
+   * If the input collection contains a single item, this function returns:
+   *   - the item itself if it is a DateTime
+   *   - a DateTime built from a Date (a date is a valid datetime)
+   *   - a DateTime parsed from a String, if that string matches the FHIRPath
+   *     datetime format. Partial dates of the form YYYY, YYYY-MM and YYYY-MM-DD
+   *     are accepted.
+   *
+   * If the input collection is empty, the result is empty.
+   * If the input collection contains more than one item, an error is signalled.
+   */
   private List<Base> funcToDateTime(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
-    //  List<Base> result = new ArrayList<Base>();
-    //  result.add(new BooleanType(convertToBoolean(focus)));
-    //  return result;
-    throw makeException(expr, I18nConstants.FHIRPATH_NOT_IMPLEMENTED, "toDateTime");
+    List<Base> result = new ArrayList<Base>();
+    if (focus.size() > 1) {
+      throw makeException(expr, I18nConstants.FHIRPATH_NO_COLLECTION, "toDateTime", focus.size());
+    }
+    if (focus.size() == 0) {
+      return result;
+    }
+    Base item = focus.get(0);
+    if (item instanceof DateTimeType) {
+      result.add(item);
+    } else if (item instanceof DateType) {
+      // a date is a valid datetime
+      result.add(new DateTimeType(((DateType) item).getValueAsString()).noExtensions());
+    } else if (item instanceof StringType) {
+      String s = convertToString(item);
+
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //non-overlapping alternation with bounded optional groups, safe
+      boolean isMatch = s != null && s.matches(RegexConstants.DATE_TIME_REGEX);
+      if (isMatch) {
+        try {
+          result.add(new DateTimeType(s).noExtensions());
+        } catch (Exception e) {
+          // String matched the syntactic regex but the calendar value is not
+          // valid (e.g. 2024-02-30) - return empty per spec.
+        }
+      }
+    }
+    return result;
   }
 
   private List<Base> funcToTime(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
@@ -5516,7 +5695,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       for (Base item : current) {
         pc.clear();
         pc.add(item);
-        added.addAll(execute(changeThis(context, item), pc, exp.getParameters().get(0), false));
+        added.addAll(execute(changeThis(context, item), pc, exp.getParameters().get(0), true));
       }
       more = false;
       current.clear();
@@ -5563,6 +5742,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (focus.size() == 1) {
       return makeBoolean(true);
     }
+    List<String> keys = equalityKeys(focus);
+    if (keys != null) {
+      return makeBoolean(new HashSet<>(keys).size() == keys.size());
+    }
 
     boolean distinct = true;
     for (int i = 0; i < focus.size(); i++) {
@@ -5579,6 +5762,43 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return makeBoolean(distinct);
   }
 
+
+  /**
+   * isDistinct() and distinct() compare every pair of items with doEquals(), which is slow for big collections. When every
+   * item is a primitive with a value that isn't a date or a quantity, doEquals() compares the primitive values as they are,
+   * or, if either is a decimal, after removeTrailingZeros(). Then two items are equal exactly when the keys returned here are
+   * equal, as long as removeTrailingZeros() doesn't change any value that isn't a decimal's in a collection that has decimals.
+   *
+   * @return a key for each item, or null if the items have to be compared pair by pair
+   */
+  private List<String> equalityKeys(List<Base> focus) {
+    List<String> keys = new ArrayList<>(focus.size());
+    boolean hasDecimal = false;
+    for (Base b : focus) {
+      if (b == null || !b.isPrimitive() || makeQuantity(b) != null || b.hasType("date", "dateTime", "instant")) {
+        return null;
+      }
+      String v = b.primitiveValue();
+      if (v == null) {
+        return null;
+      }
+      if (b.hasType("decimal")) {
+        hasDecimal = true;
+        v = removeTrailingZeros(v);
+      }
+      keys.add(v);
+    }
+    if (hasDecimal) {
+      for (int i = 0; i < focus.size(); i++) {
+        String v = keys.get(i);
+        if (!focus.get(i).hasType("decimal") && !removeTrailingZeros(v).equals(v)) {
+          // e.g. the string '1.0', which equals the decimal 1 but not the string '1'
+          return null;
+        }
+      }
+    }
+    return keys;
+  }
 
   private List<Base> funcSupersetOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> target = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
@@ -5900,6 +6120,19 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (focus.size() <= 1) {
       return focus;
     }
+    List<String> keys = equalityKeys(focus);
+    if (keys != null) {
+      // the loop below keeps the last of a set of equal items, so walk backwards to keep the same ones, in the same order
+      Set<String> seen = new HashSet<>();
+      List<Base> result = new ArrayList<Base>();
+      for (int i = focus.size() - 1; i >= 0; i--) {
+        if (seen.add(keys.get(i))) {
+          result.add(focus.get(i));
+        }
+      }
+      Collections.reverse(result);
+      return result;
+    }
 
     List<Base> result = new ArrayList<Base>();
     for (int i = 0; i < focus.size(); i++) {
@@ -5960,7 +6193,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         } else {
           boolean ok;
           try {
-            ok = RegexTimeout.matches(st, "(?s)" + sw, regexTimeoutMillis);
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+            boolean matched = RegexTimeout.matches(st, "(?s)" + sw, regexTimeoutMillis);
+            ok = matched;
           } catch (TimeoutException e) {
             throw new FHIRException("Timeout evaluating regex: " + sw, e);
           }
@@ -6005,7 +6241,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String s = convertToString(focus.get(0));
-      result.add(new IntegerType(s.length()).noExtensions());
+      if (s != null) {
+        result.add(new IntegerType(s.length()).noExtensions());
+      }
     }
     return result;
   }
@@ -6013,7 +6251,11 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private List<Base> funcHasValue(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1) {
-      String s = convertToString(focus.get(0));
+      // only something with a primitive value has a value. For a complex type convertToString() gives
+      // toString(), which is never blank, so every complex item claimed to have one; but a logical
+      // model type (e.g. CDA ST) can carry a value without being a FHIR primitive
+      Base b = focus.get(0);
+      String s = b.isPrimitive() ? convertToString(b) : b.hasPrimitiveValue() ? b.primitiveValue() : null;
       result.add(new BooleanType(!Utilities.noString(s)).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
@@ -6069,8 +6311,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String s = convertToString(focus.get(0));
-      for (char c : s.toCharArray()) {  
-        result.add(new StringType(String.valueOf(c)).noExtensions());
+      if (s != null) {
+        for (char c : s.toCharArray()) {  
+          result.add(new StringType(String.valueOf(c)).noExtensions());
+        }
       }
     }
     return result;
@@ -6125,7 +6369,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String sw = convertToString(focus.get(0));
       String s;
-      if (i1 < 0 || i1 >= sw.length()) {
+      if (sw == null || i1 < 0 || i1 >= sw.length()) {
         return new ArrayList<Base>();
       }
       if (exp.parameterCount() == 2) {
@@ -6180,7 +6424,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     } else if (focus.get(0) instanceof BooleanType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType(Utilities.existsInList(convertToString(focus.get(0)).toLowerCase(), "true", "false")).noExtensions());
+      String s = convertToString(focus.get(0));
+      result.add(new BooleanType(s != null && Utilities.existsInList(s.toLowerCase(), "true", "false")).noExtensions());
     } else { 
       result.add(new BooleanType(false).noExtensions());
     }
@@ -6194,9 +6439,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     } else if (focus.get(0) instanceof DateTimeType || focus.get(0) instanceof DateType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches
-          ("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"))).noExtensions());
-    } else { 
+      String s = convertToString(focus.get(0));
+      result.add(new BooleanType(s != null && s.matches
+          (RegexConstants.DATE_TIME_REGEX)).noExtensions());
+    } else {
       result.add(new BooleanType(false).noExtensions());
     }
     return result;
@@ -6209,9 +6455,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     } else if (focus.get(0) instanceof DateTimeType || focus.get(0) instanceof DateType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches
-          ("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"))).noExtensions());
-    } else { 
+      String s = convertToString(focus.get(0));
+      result.add(new BooleanType(s != null && s.matches
+          (RegexConstants.DATE_TIME_REGEX)).noExtensions()); // FIXME Why is this regex not DATE_REGEX? Tests fail if the 'correct' regex is used.
+    } else {
       result.add(new BooleanType(false).noExtensions());
     }
     return result;
@@ -6238,8 +6485,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     } else if (focus.get(0) instanceof TimeType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches
-          ("(T)?([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"))).noExtensions());
+      String s = convertToString(focus.get(0));
+      result.add(new BooleanType(s != null && s.matches
+          ("(T)?([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?")).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
     }

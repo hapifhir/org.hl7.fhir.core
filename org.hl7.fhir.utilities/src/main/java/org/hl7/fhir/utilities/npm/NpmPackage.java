@@ -31,15 +31,10 @@ package org.hl7.fhir.utilities.npm;
 
 
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -70,11 +65,9 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.apache.commons.lang3.Validate;
+
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.ByteProvider;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -99,6 +92,7 @@ import org.hl7.fhir.utilities.regex.RegexUtils;
  */
 @Slf4j
 public class NpmPackage {
+
 
   public interface ITransformingLoader {
 
@@ -209,10 +203,14 @@ public class NpmPackage {
     }
   }
   
+  @SuppressWarnings("checkstyle:regexUtilsUsage")
+  //anchored start char, character class suffix, safe
   public static boolean isValidName(String pid) {
     return RegexUtils.splitRegexMatch(pid, "\\.", "[a-z][a-zA-Z0-9\\-]*", 2, -1);
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //anchored segments, safe
   public static boolean isValidVersion(String ver) {
     return ver.matches("^[0-9]+\\.[0-9]+\\.[0-9]+$");
   }
@@ -392,6 +390,23 @@ public class NpmPackage {
     }
 
 
+      /**
+       * The resource with the given type and id, or null if it's not in this folder. Also null if there's 
+       * no index in memory (in minimal memory mode, or if the folder's index couldn't be read)
+       */
+      public InputStream getResource(String type, String id) throws IOException {
+        if (cachedIndex == null) {
+          return null;
+        }
+        for (JsonObject res : cachedIndex.getJsonObjects("files")) {
+          if (type.equals(res.asString("resourceType")) && id.equals(res.asString("id"))) {
+            // fetchFile goes through ManagedFileAccess, and also works for packages loaded into memory from a tgz (no folder)
+            byte[] cnt = fetchFile(res.asString("filename"));
+            return cnt == null ? null : new ByteArrayInputStream(cnt);
+          }
+        }
+        return null;
+      }
   }
 
 
@@ -404,6 +419,8 @@ public class NpmPackage {
   private int size;
   private boolean warned = false;
   private static boolean loadCustomResources;
+  private static long defaultMaxLoadSize = 0; // 0 = no limit
+  private long maxLoadSize = defaultMaxLoadSize;
 
   /**
    * Constructor
@@ -514,7 +531,10 @@ public class NpmPackage {
   private void loadSubFolders(String rootPath, File dir) throws IOException {
     for (File f : dir.listFiles()) {
       if (f.isDirectory()) {
-        if (!"custom".equals(f.getName()) || loadCustomResources) {
+        // "del" is not a valid package folder. us.nlm.vsac#0.18.0 shipped one by mistake, and without
+        // this every context that loads that package also registers the ~14.8k superseded ValueSets in
+        // it, alongside - and competing with - the real ones
+        if ((!"custom".equals(f.getName()) || loadCustomResources) && !"del".equals(f.getName())) {
           String d = f.getAbsolutePath().substring(rootPath.length()+1);
           if (!d.startsWith("package")) {
             d = Utilities.path("package", d);
@@ -566,7 +586,18 @@ public class NpmPackage {
     res.readStream(tgz, desc, progress);
     return res;
   }
-  
+
+  /**
+   * Load a package, enforcing the given limit on the total decompressed size of the package
+   * (in bytes, 0 = no limit) instead of the default limit (see {@link #setDefaultMaxLoadSize(long)})
+   */
+  public static NpmPackage fromPackage(InputStream tgz, String desc, boolean progress, long maxLoadSize) throws IOException {
+    NpmPackage res = new NpmPackage();
+    res.maxLoadSize = maxLoadSize;
+    res.readStream(tgz, desc, progress);
+    return res;
+  }
+
   public static NpmPackage extractFromTgz(InputStream tgz, String desc, String tempDir, boolean minimal) throws IOException {
     FileUtilities.createDirectory(tempDir);
 
@@ -578,11 +609,11 @@ public class NpmPackage {
     } catch (Exception e) {
       throw new IOException("Error reading "+(desc == null ? "package" : desc)+": "+e.getMessage(), e);      
     }
-    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
+    try (TarArchiveInputStream tarIn = getTarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
 
       while ((entry = tarIn.getNextEntry()) != null) {
-        String n = entry.getName();
+        String n = getEntryName(entry);
         if (n.contains("/..") || n.contains("../")) {
           throw new RuntimeException("Entry with an illegal name: " + n);
         }
@@ -602,6 +633,7 @@ public class NpmPackage {
             while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
               dst.write(data, 0, count);
               size = size + count;
+              checkLoadedSize(size, defaultMaxLoadSize, desc); // no instance yet, so only the default limit applies here
             }
           }
           fos.close();
@@ -619,7 +651,46 @@ public class NpmPackage {
       throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/package.json: "+e.getMessage(), e);
     } 
   }
-  
+
+  /**
+   * Creates a TarArchiveInputStream using ISO_8859_1 encoding. ISO_8859_1 has a 1:1 byte-to-character mapping, so
+   * all raw bytes from entry names are preserved — avoiding the NioZipEncoding UTF-8 mode behavior (Apache Commons
+   * Compress 1.27.1+) of silently replacing invalid UTF-8 sequences with '?'. Use
+   * {@link #getEntryName(TarArchiveEntry)} to retrieve entry names, which will attempt UTF-8 decoding on the raw
+   * bytes and fall back to the ISO_8859_1 result only when the bytes are not valid UTF-8.
+   *
+   * @param gzipIn a gzip input stream
+   * @return a tar input stream
+   */
+  // Created by claude-sonnet-4-6
+  public static @Nonnull TarArchiveInputStream getTarArchiveInputStream(GzipCompressorInputStream gzipIn) {
+    return new TarArchiveInputStream(gzipIn, StandardCharsets.ISO_8859_1.name());
+  }
+
+  /**
+   * Returns the name of a tar entry decoded as UTF-8 when possible, falling back to ISO_8859_1. Because
+   * {@link #getTarArchiveInputStream} reads with ISO_8859_1, the name bytes are preserved 1:1 as character values.
+   * This method re-encodes those characters as ISO_8859_1 bytes and attempts strict UTF-8 decoding; if the bytes
+   * form a valid UTF-8 sequence the UTF-8 string is returned, otherwise the original ISO_8859_1 string is returned.
+   *
+   * @param entry a tar archive entry
+   * @return the entry name decoded as UTF-8 if valid, otherwise as ISO_8859_1
+   */
+  // Created by claude-sonnet-4-6
+  public static String getEntryName(TarArchiveEntry entry) {
+    String name = entry.getName();
+    byte[] bytes = name.getBytes(StandardCharsets.ISO_8859_1);
+    try {
+      return StandardCharsets.UTF_8.newDecoder()
+          .onMalformedInput(CodingErrorAction.REPORT)
+          .onUnmappableCharacter(CodingErrorAction.REPORT)
+          .decode(ByteBuffer.wrap(bytes))
+          .toString();
+    } catch (CharacterCodingException e) {
+      return name;
+    }
+  }
+
   public void readStream(InputStream tgz, String desc, boolean progress) throws IOException {
     GzipCompressorInputStream gzipIn;
     try {
@@ -629,13 +700,13 @@ public class NpmPackage {
     }
 
     boolean haveLoggedDotSlashPrefixWarning = false;
+    long loadedSize = 0;
 
-    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
+    try (TarArchiveInputStream tarIn = getTarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
-
       NpmPackageReadLogger readLogger = new NpmPackageReadLogger(progress);
       while ((entry = tarIn.getNextEntry()) != null) {
-        String entryName = entry.getName();
+        String entryName = getEntryName(entry);
         if (entryName.contains("..")) {
           throw new RuntimeException("Entry with an illegal name: " + entryName);
         }
@@ -661,6 +732,8 @@ public class NpmPackage {
           try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
             while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
               dest.write(data, 0, count);
+              loadedSize = loadedSize + count;
+              checkLoadedSize(loadedSize, maxLoadSize, desc);
             }
           }
           fos.close();
@@ -679,6 +752,12 @@ public class NpmPackage {
       throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/package.json: "+e.getMessage(), e);
     }
     checkIndexed(desc);
+  }
+
+  private static void checkLoadedSize(long loadedSize, long maxLoadSize, String desc) throws IOException {
+    if (maxLoadSize > 0 && loadedSize > maxLoadSize) {
+      throw new IOException("Refusing to load the package "+(desc == null ? "" : desc+" ")+"- the decompressed size exceeds the limit of "+maxLoadSize+" bytes");
+    }
   }
 
   public void loadFile(String n, byte[] data) throws IOException {
@@ -766,6 +845,7 @@ public class NpmPackage {
 
   public static NpmPackage fromZip(InputStream stream, boolean dropRootFolder, String desc) throws IOException {
     NpmPackage res = new NpmPackage();
+    long loadedSize = 0;
     ZipInputStream zip = new ZipInputStream(stream);
     ZipEntry ze;
     while ((ze = zip.getNextEntry()) != null) {
@@ -777,6 +857,8 @@ public class NpmPackage {
 
       while ((size = zip.read(buffer, 0, buffer.length)) != -1) {
         bos.write(buffer, 0, size);
+        loadedSize = loadedSize + size;
+        checkLoadedSize(loadedSize, res.maxLoadSize, desc);
       }
       bos.flush();
       bos.close();
@@ -1122,8 +1204,7 @@ public class NpmPackage {
       return npm.asString("version");
     else if (
         Utilities.existsInList(npm.asString("type"), "fhir.core", "fhir.examples") &&
-        Utilities.startsWithInList( npm.asString("name"), "hl7.fhir.r2.", "hl7.fhir.r2b.", "hl7.fhir.r3.", 
-             "hl7.fhir.r4.", "hl7.fhir.r4b.", "hl7.fhir.r5.")) {
+        Utilities.startsWithInList( npm.asString("name"), "hl7.fhir.r3.", "hl7.fhir.r4.", "hl7.fhir.r4b.", "hl7.fhir.r5.", "hl7.fhir.r6.")) {
       return npm.asString("version");
     } else {
       JsonObject dep = null;
@@ -1131,7 +1212,8 @@ public class NpmPackage {
         dep = npm.getJsonObject("dependencies");
         if (dep != null) {
           for (JsonProperty e : dep.getProperties()) {
-            if (Utilities.existsInList(e.getName(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core"))
+            if (Utilities.existsInList(e.getName(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core",
+              "hl7.fhir.r4.core", "hl7.fhir.r4b.core", "hl7.fhir.r5.core",  "hl7.fhir.r6.core"))
               return e.getValue().asString();
             if (Utilities.existsInList(e.getName(), "hl7.fhir.core")) // while all packages are updated
               return e.getValue().asString();
@@ -1560,6 +1642,8 @@ public class NpmPackage {
 
   public InputStream load(PackageResourceInformation p) throws IOException {
     if (p.filename.startsWith("@")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] pl = p.filename.substring(1).split("\\/");
       return new ByteArrayInputStream(folders.get(pl[0]).content.get(pl[1]));
     } else {
@@ -1626,6 +1710,34 @@ public class NpmPackage {
 
   public String vid() {
     return id()+"#"+version();
+  }
+
+  /**
+   * The default limit on the total decompressed size of a package being loaded, in bytes
+   * (0 = no limit, which is the default). Servers that load packages from untrusted sources
+   * should set this to guard against zip bombs. Applies to packages
+   * loaded after it is set; can be overridden per package instance (see
+   * {@link #fromPackage(InputStream, String, boolean, long)})
+   */
+  public static long getDefaultMaxLoadSize() {
+    return defaultMaxLoadSize;
+  }
+
+  public static void setDefaultMaxLoadSize(long value) {
+    defaultMaxLoadSize = value;
+  }
+
+  /**
+   * The limit on the total decompressed size of this package when it is loaded, in bytes
+   * (0 = no limit). Initialised from {@link #getDefaultMaxLoadSize()}; only relevant if
+   * set before the package content is read
+   */
+  public long getMaxLoadSize() {
+    return maxLoadSize;
+  }
+
+  public void setMaxLoadSize(long maxLoadSize) {
+    this.maxLoadSize = maxLoadSize;
   }
 
   public static boolean isLoadCustomResources() {

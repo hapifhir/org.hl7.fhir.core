@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.With;
 import org.apache.commons.lang3.ArrayUtils;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.settings.FhirSettings;
 import picocli.CommandLine;
 
 import java.util.ArrayList;
@@ -113,7 +112,7 @@ public class ValidationEngineOptions {
   @CommandLine.Option(names = {"-tx"},
     description = """
     Terminology server URL. To run without terminology, specify 'n/a' as the URL
-    By default 'http://tx.fhir.org' will be used.
+    By default 'https://tx.fhir.org' will be used.
     """)
   @With
   public String txServer = null;

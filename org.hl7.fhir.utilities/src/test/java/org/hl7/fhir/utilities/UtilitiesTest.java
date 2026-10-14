@@ -442,6 +442,45 @@ class UtilitiesTest {
     assertEquals(expected, Utilities.pathTail(input));
   }
 
+  static Stream<Arguments> makeNameFromCodeArguments() {
+    return Stream.of(
+      // plain names pass through unchanged
+      Arguments.of("simple", "simple"),
+      Arguments.of("Simple", "Simple"),
+      Arguments.of("alreadyCamelCase", "alreadyCamelCase"),
+      Arguments.of("code123", "code123"),
+      // non-name characters are stripped and the next letter is capitalised
+      Arguments.of("blood-pressure", "bloodPressure"),
+      Arguments.of("blood pressure", "bloodPressure"),
+      Arguments.of("blood_pressure", "bloodPressure"),
+      Arguments.of("blood.pressure.systolic", "bloodPressureSystolic"),
+      Arguments.of("a-b-c", "aBC"),
+      // consecutive separators collapse to a single capitalisation
+      Arguments.of("blood--pressure", "bloodPressure"),
+      Arguments.of("blood - pressure", "bloodPressure"),
+      // uppercase letters and digits after a separator are kept as-is
+      Arguments.of("blood-Pressure", "bloodPressure"),
+      Arguments.of("code-1a", "code1a"),
+      // leading separators capitalise the first letter; trailing ones are dropped
+      Arguments.of("-code", "Code"),
+      Arguments.of("code-", "code"),
+      Arguments.of(" code ", "Code"),
+      // unicode/symbol characters are stripped too
+      Arguments.of("http://example.org/code", "httpExampleOrgCode"),
+      Arguments.of("50%-done", "50Done"),
+      // nothing usable left -> "name"
+      Arguments.of("", "name"),
+      Arguments.of("---", "name"),
+      Arguments.of("!@#$", "name")
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("makeNameFromCodeArguments")
+  void testMakeNameFromCode(String code, String expected) {
+    assertEquals(expected, Utilities.makeNameFromCode(code));
+  }
+
   @Test
   void testAppendStringArray() {
     String[] a = new String[] {"A", "B"};
@@ -454,5 +493,79 @@ class UtilitiesTest {
     assertThat(result[3]).isEqualTo("D");
     assertThat(result[4]).isEqualTo("E");
   }
-}
 
+  @ParameterizedTest
+  @MethodSource("decodeBase64Valid")
+  void testDecodeBase64Valid(String input, String expected) {
+    assertEquals(expected, new String(Utilities.decodeBase64(input, false), StandardCharsets.UTF_8));
+    // anything that decodes when only whitespace is stripped decodes the same when invalid characters are too
+    assertEquals(expected, new String(Utilities.decodeBase64(input, true), StandardCharsets.UTF_8));
+  }
+
+  private static Stream<Arguments> decodeBase64Valid() {
+    return Stream.of(
+      Arguments.of("SGVsbG8=", "Hello"),
+      Arguments.of("", ""),
+      Arguments.of("SGVs\nbG8=", "Hello"),
+      Arguments.of("SGVs\r\nbG8=", "Hello"),
+      Arguments.of(" SGVs bG8= ", "Hello"),
+      Arguments.of("\tSGVs\tbG8=\n", "Hello"),
+      Arguments.of("S G V s b G 8 =", "Hello"),
+      Arguments.of("SGVsbG8gV29y\nbGQ=\n", "Hello World")
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("decodeBase64Invalid")
+  void testDecodeBase64Invalid(String input) {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> Utilities.decodeBase64(input, false));
+  }
+
+  private static Stream<Arguments> decodeBase64Invalid() {
+    return Stream.of(
+      Arguments.of("not valid base64!!"),
+      Arguments.of("SGV!sbG8="),
+      Arguments.of("SGV!\nsbG8="),
+      Arguments.of("SGVsbG8=SGVsbG8="),
+      Arguments.of("SGVsbG8=\nSGVsbG8="),
+      Arguments.of("SGVsbG8=!!"),
+      Arguments.of("SGVs\u00a0bG8="), // NBSP is not base64 whitespace
+      Arguments.of("\u0141AAA\n") // must not truncate to 'A' (which would make "AAAA", valid)
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("decodeBase64StripInvalid")
+  void testDecodeBase64StripInvalid(String input, String expected) {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> Utilities.decodeBase64(input, false));
+    assertEquals(expected, new String(Utilities.decodeBase64(input, true), StandardCharsets.UTF_8));
+  }
+
+  private static Stream<Arguments> decodeBase64StripInvalid() {
+    return Stream.of(
+      Arguments.of("SGV!sbG8=", "Hello"),
+      Arguments.of("SGV!\nsbG8=", "Hello"),
+      Arguments.of("SGVsbG8=!!", "Hello"),
+      Arguments.of("SGVs\u00a0bG8=", "Hello"),
+      Arguments.of("\"SGVsbG8=\"", "Hello"),
+      Arguments.of("SGVs-bG8_=", "Hello"), // URL safe characters are not valid here, so they're skipped too
+      Arguments.of("\u0141SGVsbG8=", "Hello")
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("decodeBase64StripInvalidStillInvalid")
+  void testDecodeBase64StripInvalidStillInvalid(String input) {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> Utilities.decodeBase64(input, true));
+  }
+
+  private static Stream<Arguments> decodeBase64StripInvalidStillInvalid() {
+    return Stream.of(
+      Arguments.of("SGVsbG8=SGVsbG8="), // content after padding
+      Arguments.of("SGVsbG8=\nSGVsbG8="),
+      Arguments.of("S=GVsbG8"), // padding in the wrong place
+      Arguments.of("SGVsbG8==!"), // too much padding
+      Arguments.of("SGVsb!") // a lone character in the last unit once the '!' is gone
+    );
+  }
+}

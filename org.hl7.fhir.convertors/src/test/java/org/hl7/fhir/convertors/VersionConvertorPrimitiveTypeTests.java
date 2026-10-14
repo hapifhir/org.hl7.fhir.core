@@ -961,19 +961,17 @@ public class VersionConvertorPrimitiveTypeTests {
     );
   }
 
-  private static String CONTEXT_PATH = VersionConvertorPrimitiveTypeTests.class.getName();
-
 
   @ParameterizedTest(name = "Test index: {index} Source Class={1} First Value={3} Second Class={4} Second Value={6}")
   @MethodSource("getDirectConversionParams")
   public <K, L> void testDirectConversion(Class<K> srcTypeClazz, Class<L> tgtTypeClazz, Function<K, L> convertFunction, String[] srcStrings, String[] tgtStrings) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
-    ConversionContext10_30.INSTANCE.init(mock(VersionConvertor_10_30.class), CONTEXT_PATH);
-    ConversionContext10_40.INSTANCE.init(mock(VersionConvertor_10_40.class), CONTEXT_PATH);
-    ConversionContext10_50.INSTANCE.init(mock(VersionConvertor_10_50.class), CONTEXT_PATH);
-    ConversionContext14_50.INSTANCE.init(mock(VersionConvertor_14_50.class), CONTEXT_PATH);
-    ConversionContext30_50.INSTANCE.init(mock(VersionConvertor_30_50.class), CONTEXT_PATH);
-    ConversionContext40_50.INSTANCE.init(mock(VersionConvertor_40_50.class), CONTEXT_PATH);
+    ConversionContext10_30.INSTANCE.init(mock(VersionConvertor_10_30.class));
+    ConversionContext10_40.INSTANCE.init(mock(VersionConvertor_10_40.class));
+    ConversionContext10_50.INSTANCE.init(mock(VersionConvertor_10_50.class));
+    ConversionContext14_50.INSTANCE.init(mock(VersionConvertor_14_50.class));
+    ConversionContext30_50.INSTANCE.init(mock(VersionConvertor_30_50.class));
+    ConversionContext40_50.INSTANCE.init(mock(VersionConvertor_40_50.class));
 
 
     Method srcSetValueAsStringMethod = srcTypeClazz.getMethod("setValueAsString", String.class);
@@ -1004,17 +1002,17 @@ public class VersionConvertorPrimitiveTypeTests {
         Assertions.assertFalse(tgtHasValueReturn);
       }
     }
-    ConversionContext10_30.INSTANCE.close(CONTEXT_PATH);
-    ConversionContext10_40.INSTANCE.close(CONTEXT_PATH);
-    ConversionContext10_50.INSTANCE.close(CONTEXT_PATH);
-    ConversionContext14_50.INSTANCE.close(CONTEXT_PATH);
-    ConversionContext30_50.INSTANCE.close(CONTEXT_PATH);
-    ConversionContext40_50.INSTANCE.close(CONTEXT_PATH);
+    ConversionContext10_30.INSTANCE.close();
+    ConversionContext10_40.INSTANCE.close();
+    ConversionContext10_50.INSTANCE.close();
+    ConversionContext14_50.INSTANCE.close();
+    ConversionContext30_50.INSTANCE.close();
+    ConversionContext40_50.INSTANCE.close();
   }
 
   @Test
   public void testCanonicalType10_40Conversion() {
-    ConversionContext10_40.INSTANCE.init(mock(VersionConvertor_10_40.class), CONTEXT_PATH);
+    ConversionContext10_40.INSTANCE.init(mock(VersionConvertor_10_40.class));
 
     for (String urlString : URL_STRINGS) {
       {
@@ -1034,7 +1032,7 @@ public class VersionConvertorPrimitiveTypeTests {
         Assertions.assertEquals(src.getReference(), tgt.getValueAsString());
       }
     }
-    ConversionContext10_40.INSTANCE.close(CONTEXT_PATH);
+    ConversionContext10_40.INSTANCE.close();
   }
 
 }

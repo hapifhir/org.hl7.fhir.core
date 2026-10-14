@@ -1,0 +1,28 @@
+{ 
+  "hierarchical": true,
+  "valueSet": {
+    "resourceType": "ValueSet",
+    "compose": {
+      "include": [
+        {
+          "system": "dummyIncludeSystem",
+          "version": "dummyIncludeVersion"
+        }
+      ],
+      "exclude": [
+        {
+          "system": "dummyExcludeSystem",
+          "version": "dummyExcludeVersion"
+        }
+      ]
+    },
+    "expansion": {
+      "contains": [
+        {
+          "system": "dummyContainsSystem",
+          "version": "dummyContainsVersion"
+        }
+      ]
+    }
+  }
+}

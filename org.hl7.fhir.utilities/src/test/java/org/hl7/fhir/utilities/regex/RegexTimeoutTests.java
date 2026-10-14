@@ -1,7 +1,11 @@
 package org.hl7.fhir.utilities.regex;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
 
@@ -35,7 +39,6 @@ class RegexTimeoutTests {
   }
 
   // find()
-
   @Test
   void test_BadRegex_Find_EvilString() {
     assertThrows(TimeoutException.class, () -> RegexTimeout.find(EVIL_NO_SUFFIX, BAD_SUFFIX_REGEX));
@@ -54,7 +57,6 @@ class RegexTimeoutTests {
   }
 
   // replaceAll()
-
   @Test
   void test_BadRegex_ReplaceAll_EvilString() {
     assertThrows(TimeoutException.class, () -> RegexTimeout.replaceAll(EVIL_NO_SUFFIX, BAD_SUFFIX_REGEX, "X"));
@@ -66,7 +68,6 @@ class RegexTimeoutTests {
   }
 
   // replaceFirst()
-
   @Test
   void test_BadRegex_ReplaceFirst_EvilString() {
     assertThrows(TimeoutException.class, () -> RegexTimeout.replaceFirst(EVIL_NO_SUFFIX, BAD_SUFFIX_REGEX, "X"));
@@ -78,7 +79,6 @@ class RegexTimeoutTests {
   }
 
   // split()
-
   @Test
   void test_BadRegex_Split_EvilString() {
     assertThrows(TimeoutException.class, () -> RegexTimeout.split(EVIL_NO_SUFFIX, BAD_SUFFIX_REGEX));
@@ -90,7 +90,6 @@ class RegexTimeoutTests {
   }
 
   // split(limit)
-
   @Test
   void test_BadRegex_SplitWithLimit_EvilString() {
     assertThrows(TimeoutException.class, () -> RegexTimeout.split(EVIL_NO_SUFFIX, BAD_SUFFIX_REGEX, 2));

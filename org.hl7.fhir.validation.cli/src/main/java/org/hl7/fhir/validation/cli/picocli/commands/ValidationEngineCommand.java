@@ -5,7 +5,6 @@ import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.options.*;
 import org.hl7.fhir.validation.service.ValidationService;
@@ -20,10 +19,11 @@ import java.util.Locale;
 @Slf4j
 public abstract class ValidationEngineCommand extends ValidationServiceCommand {
 
-
-
   @CommandLine.ArgGroup(validate = false, heading = "Validation Engine Options%n")
   ValidationEngineOptions validationEngineOptions = new ValidationEngineOptions();
+
+  @CommandLine.ArgGroup(validate = false, heading = "Translation Override Options%n")
+  TranslationOverrideOptions translationOverrideOptions = new TranslationOverrideOptions();
 
   protected ValidationEngineParameters getValidationEngineParameters() {
 
@@ -41,6 +41,10 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
   @Override
   public Integer call() {
 
+    // Install any editor-supplied PO overlays before anything else loads — the
+    // validation engine and message bundles latch on first access.
+    translationOverrideOptions.applyIfRequested();
+
     TimeTracker timeTracker = new TimeTracker();
     TimeTracker.Session timeTrackerSession = timeTracker.start("Loading");
 
@@ -52,7 +56,17 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
       return 1;
     }
     timeTrackerSession.end();
-    Integer result = call(getValidationService(), validationEngine);
+    Integer result;
+    try {
+      result = call(getValidationService(), validationEngine);
+    } finally {
+      // The command is what "an action" means for the CLI, so this is where the terminology
+      // cache gets written: every subcommand that owns an engine comes through here, and the
+      // cache's own timer is only a backstop between such points. In the finally block because
+      // a run that fell over still learned whatever it learned before it did, and there is no
+      // reason to make the next run ask for all of it again.
+      validationEngine.saveTerminologyCache();
+    }
     log.info("Done. " + timeTracker.report()+". Max Memory = "+ Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     return result;
   }
@@ -78,7 +92,7 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
       validationEngineOptions.fhirVersion = getValidationService().determineVersion(validationEngineParameters.getIgs(), sources, validationEngineParameters.isRecursive(), validationEngineParameters.isInferFhirVersion());
     }
 
-    validationEngineParameters.setSv(validationEngineOptions.fhirVersion);
+    validationEngineParameters.setStatedFHIRVersion(validationEngineOptions.fhirVersion);
 
     InstanceValidatorParameters instanceValidatorParameters = getInstanceValidatorParameters();
     if (instanceValidatorParameters != null) {
@@ -94,7 +108,6 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
 
     log.info("Loading");
     final String definitions = "dev".equals(validationEngineOptions.fhirVersion) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationEngineOptions.fhirVersion) + "#" + VersionUtilities.getCurrentVersion(validationEngineOptions.fhirVersion);
-
     return getValidationService().initializeValidator(validationEngineParameters, instanceValidatorParameters, definitions, timeTracker, sources);
   }
 }

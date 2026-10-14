@@ -1332,6 +1332,10 @@ public class ArtifactAssessment extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ArtifactAssessmentContentComponent) dst);
+      }
+
       public void copyValues(ArtifactAssessmentContentComponent dst) {
         super.copyValues(dst);
         dst.informationType = informationType == null ? null : informationType.copy();
@@ -2328,6 +2332,10 @@ public class ArtifactAssessment extends DomainResource {
         ArtifactAssessment dst = new ArtifactAssessment();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ArtifactAssessment) dst);
       }
 
       public void copyValues(ArtifactAssessment dst) {

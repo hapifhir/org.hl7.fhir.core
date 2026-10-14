@@ -4,7 +4,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@MarkedToMoveToAdjunctPackage
+
 public class ExcelDataProvider extends TableDataProvider {
 
   private Workbook workbook;
@@ -61,6 +61,8 @@ public class ExcelDataProvider extends TableDataProvider {
       }
     }
     if (range != null ) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = range.split(":");
       CellReference startCell = new CellReference(parts[0]);
       startRow = startCell.getRow();

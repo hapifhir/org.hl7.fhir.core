@@ -1,6 +1,5 @@
 package org.hl7.fhir.r5.test.utils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.r5.Constants;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
@@ -42,7 +40,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 
   }
 
-  static public Map<String, SimpleWorkerContext> fcontexts;
+  static public Map<String, SimpleWorkerContext> sharedContexts;
 
   final static public String DEFAULT_CONTEXT_VERSION = "5.0.0";
 
@@ -57,59 +55,50 @@ public class TestingUtilities extends BaseTestingUtilities {
   /**
    * Get an existing instantiation of a WorkerContext if available
    *
-   * @param version FHIR Version to get context for
+   * @param fhirVersion FHIR Version to get context for
    * @return
    */
-  public static SimpleWorkerContext getSharedWorkerContext(String version) {
-    if (!Utilities.existsInList(version, "1.0.2", "3.0.1", "4.0.1", "4.3.0", "5.0.0")) {
-      throw new Error("illegal version: "+version);
+  public static SimpleWorkerContext getSharedWorkerContext(String fhirVersion) {
+    if (!Utilities.existsInList(fhirVersion, "1.0.2", "3.0.1", "4.0.1", "4.3.0", "5.0.0")) {
+      throw new Error("illegal version: "+fhirVersion);
       
     }
     
-    String v = VersionUtilities.getMajMin(version);
-    if (fcontexts == null) {
-      fcontexts = new HashMap<>();
+    String normalizedVersion = VersionUtilities.getMajMin(fhirVersion);
+    if (sharedContexts == null) {
+      sharedContexts = new HashMap<>();
     }
-    if (!fcontexts.containsKey(v)) {
-      SimpleWorkerContext fcontext = getWorkerContext(version);
-        fcontexts.put(v, fcontext);
+    if (!sharedContexts.containsKey(normalizedVersion)) {
+      SimpleWorkerContext sharedContext = getWorkerContext(fhirVersion);
+        sharedContexts.put(normalizedVersion, sharedContext);
     }
-    return fcontexts.get(v);
+    return sharedContexts.get(normalizedVersion);
   }
 
-  public static SimpleWorkerContext getWorkerContext(String version) {
+  public static SimpleWorkerContext getWorkerContext(String fhirVersion) {
 
     FilesystemPackageCacheManager pcm;
     try {
       pcm = new FilesystemPackageCacheManager.Builder().build();
-      SimpleWorkerContext fcontext = null;
-      if (VersionUtilities.isR5Ver(version)) {
-        // for purposes of stability, the R5 core package comes from the test case repository
-        fcontext = getWorkerContext(loadR5CorePackage());
-      } else {
-        fcontext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
-      }
-      fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
-      fcontext.setExpansionParameters(new Parameters());
-      if (!fcontext.hasPackage("hl7.terminology.r5", null)) {
+      SimpleWorkerContext sharedContext = null;
+      sharedContext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(fhirVersion), fhirVersion));
+      sharedContext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
+      sharedContext.setExpansionParameters(new Parameters());
+      if (!sharedContext.hasPackage("hl7.terminology.r5", null)) {
         NpmPackage utg = pcm.loadPackage("hl7.terminology.r5");
         log.info("Loading THO: "+utg.name()+"#"+utg.version());
-        fcontext.loadFromPackage(utg, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "NamingSystem")));
+        sharedContext.loadFromPackage(utg, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "NamingSystem"), utg));
       } 
-      if (!fcontext.hasPackage("hl7.fhir.uv.extensions", null)) {
+      if (!sharedContext.hasPackage("hl7.fhir.uv.extensions", null)) {
         NpmPackage ext = pcm.loadPackage("hl7.fhir.uv.extensions", Constants.EXTENSIONS_WORKING_VERSION);
         log.info("Loading Extensions: "+ext.name()+"#"+ext.version());
-        fcontext.loadFromPackage(ext, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "StructureDefinition")));
+        sharedContext.loadFromPackage(ext, new TestPackageLoader(Utilities.stringSet("CodeSystem", "ValueSet", "StructureDefinition"), ext));
       } 
-      return fcontext;
+      return sharedContext;
     } catch (Exception e) {
       e.printStackTrace();
       throw new Error(e);
     }
-  }
-
-  public static NpmPackage loadR5CorePackage() throws IOException {
-    return NpmPackage.fromPackage(loadR5CorePackageSource());
   }
 
   private static InputStream loadR5CorePackageSource() throws IOException {
@@ -122,7 +111,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
     SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
-        .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage);
+        .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage, new TestPackageLoader(SimpleWorkerContext.defaultTypesToLoad(), npmPackage));
     TerminologyCache.setCacheErrors(true);
     return swc;
   }

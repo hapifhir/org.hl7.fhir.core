@@ -5,7 +5,7 @@ import java.util.*;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -377,7 +377,9 @@ public class ValidationResult {
 
   public ValidationResult setStatus(boolean inactive, String status) {
     this.inactive = inactive;
-    if (!"inactive".equals(status)) {
+    // 'active' and 'inactive' say nothing that the inactive flag doesn't already say, so they're
+    // not worth reporting. status is for the statuses that add something: retired, deprecated...
+    if (!"inactive".equals(status) && !"active".equals(status)) {
       this.status = status;
     }
     return this;

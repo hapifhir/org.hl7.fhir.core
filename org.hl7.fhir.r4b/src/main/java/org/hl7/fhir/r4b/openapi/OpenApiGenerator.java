@@ -54,10 +54,11 @@ import org.hl7.fhir.r4b.model.SearchParameter;
 import org.hl7.fhir.r4b.openapi.ParameterWriter.ParameterLocation;
 import org.hl7.fhir.r4b.openapi.ParameterWriter.ParameterStyle;
 import org.hl7.fhir.r4b.openapi.SchemaWriter.SchemaType;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 
-@MarkedToMoveToAdjunctPackage
+
+@Deprecated(forRemoval = true)
 public class OpenApiGenerator {
 
   private IWorkerContext context;

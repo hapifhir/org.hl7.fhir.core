@@ -34,12 +34,12 @@ import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.model.Type;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
-@MarkedToMoveToAdjunctPackage
+@Deprecated(forRemoval = true)
 @SuppressWarnings("checkstyle:systemout")
 public class CmdLineApp {
 
@@ -65,6 +65,8 @@ public class CmdLineApp {
     do {
       System.out.print("> ");
       String cmd = reader.readLine();
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //simple character class split; safe
       String[] p = cmd.split("\\s+");
       try {
         if (p.length == 1 && p[0].equals("x")) {

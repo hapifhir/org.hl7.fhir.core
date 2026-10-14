@@ -17,7 +17,7 @@ import org.hl7.fhir.r4b.model.StructureDefinition.ExtensionContextType;
 import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4b.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4b.model.UriType;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
@@ -26,7 +26,7 @@ import org.hl7.fhir.utilities.npm.PackageHacker;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-@MarkedToMoveToAdjunctPackage
+
 public class XVerExtensionManager {
 
   public enum XVerExtensionStatus {
@@ -154,11 +154,17 @@ public class XVerExtensionManager {
         TypeRefComponent tr = val.addType().setCode(translateDataType(verTarget, t));
         if (hasTargets(tr.getCode())) {
           s = s.substring(t.length() + 1);
-          for (String p : s.substring(0, s.length() - 1).split("\\|")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
+          String[] targetProfiles = s.substring(0, s.length() - 1).split("\\|");
+          for (String p : targetProfiles) {
             if ("Any".equals(p)) {
               tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource");
             } else if (p.contains(",")) {
-              for (String pp : p.split("\\,")) {
+              @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+              //single literal character split
+              String[] profileParts = p.split("\\,");
+              for (String pp : profileParts) {
                 tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/" + pp);
               }
             } else {

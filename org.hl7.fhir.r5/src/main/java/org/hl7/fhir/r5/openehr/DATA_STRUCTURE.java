@@ -65,6 +65,10 @@ public abstract class DATA_STRUCTURE extends LOCATABLE implements ICompositeType
 
       public abstract DATA_STRUCTURE copy();
 
+      public void assignValues(Base dst) {
+        copyValues((DATA_STRUCTURE) dst);
+      }
+
       public void copyValues(DATA_STRUCTURE dst) {
         super.copyValues(dst);
       }

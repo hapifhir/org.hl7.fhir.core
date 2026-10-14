@@ -50,6 +50,7 @@ public class CLI {
       throw new IllegalArgumentException(e);
     }
 
+    parentCommand.coordinateFhirSettings();
     verifyProxySystemProperties();
 
     Display.displaySystemInfo(log);
@@ -81,6 +82,7 @@ public class CLI {
     argMap.put("-lang-regen", "lang-regen");
     argMap.put("-narrative", "narrative");
     argMap.put("-codegen", "codegen");
+    argMap.put("-ig-codegen", "ig-codegen");
     argMap.put("-preloadCache", "preloadCache");
     argMap.put("-scan", "scan");
     argMap.put("-snapshot", "snapshot");
@@ -196,7 +198,7 @@ public class CLI {
 
   /**
    * This is a legacy behavior in which the presence of a -package-name and no explicit use of -re-package results in
-   * the execution of the codegen command.
+   * the execution of the codegen command (unless the codegen or ig-codegen command is already explicitly selected).
    * @param args Command-line args (with deprecated args already replaced with their Picocli versions)
    * @return new args with the codegen option included if necessary
    */
@@ -210,7 +212,7 @@ public class CLI {
       if ("re-package".equals(arg)) {
         hasRePackageParam = true;
       }
-      if ("codegen".equals(arg)) {
+      if ("codegen".equals(arg) || "ig-codegen".equals(arg)) {
         return args;
       }
     }

@@ -45,7 +45,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * See R5 rendering framework to render R4B resources
  * 
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class QuestionnaireResponseRenderer extends ResourceRenderer {
 
   public QuestionnaireResponseRenderer(RenderingContext context) {
@@ -98,7 +98,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Text"),
         translate("sd.hint", "Text for the item"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Definition"),
-        translate("sd.hint", "Minimum and Maximum # of times the the itemcan appear in the instance"), null, 0));
+        translate("sd.hint", "Minimum and Maximum # of times the item can appear in the instance"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Answer"),
         translate("sd.hint", "The type of the item"), null, 0));
 
@@ -126,7 +126,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Text"),
         translate("sd.hint", "Text for the item"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Definition"),
-        translate("sd.hint", "Minimum and Maximum # of times the the itemcan appear in the instance"), null, 0));
+        translate("sd.hint", "Minimum and Maximum # of times the item can appear in the instance"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Answer"),
         translate("sd.hint", "The type of the item"), null, 0));
 

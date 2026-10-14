@@ -38,12 +38,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.model.StructureDefinition;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
+@Deprecated(forRemoval = true)
 public class ConstraintJavaGenerator {
 
   private IWorkerContext context; // for doing expansions

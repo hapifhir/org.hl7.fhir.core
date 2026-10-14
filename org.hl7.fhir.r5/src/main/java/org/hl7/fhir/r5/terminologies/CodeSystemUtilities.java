@@ -33,7 +33,6 @@ package org.hl7.fhir.r5.terminologies;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -53,11 +52,10 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
 import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
 import org.hl7.fhir.r5.utils.CanonicalResourceUtilities;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -564,7 +562,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static void markStatus(@Nonnull CodeSystem cs, String wg, StandardsStatus status, String fmm, String normativeVersion) throws FHIRException {
+  public static void markStatus(@Nonnull CodeSystem cs, String wg, StandardsStatus status, String fmm, String normativeVersion, String thisVersion) throws FHIRException {
     if (wg != null) {
       if (!ExtensionUtilities.hasExtension(cs, ExtensionDefinitions.EXT_WORKGROUP) || 
           (Utilities.existsInList(ExtensionUtilities.readStringExtension(cs, ExtensionDefinitions.EXT_WORKGROUP), "fhir", "vocab") && !Utilities.existsInList(wg, "fhir", "vocab"))) {
@@ -574,7 +572,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     if (status != null) {
       StandardsStatus ss = ExtensionUtilities.getStandardsStatus(cs);
       if (ss == null || ss.isLowerThan(status)) 
-        ExtensionUtilities.setStandardsStatus(cs, status, normativeVersion);
+        ExtensionUtilities.setStandardsStatus(cs, status, normativeVersion, thisVersion);
       if (status == StandardsStatus.NORMATIVE) {
         cs.setStatus(PublicationStatus.ACTIVE);
       }
@@ -1015,11 +1013,19 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     }
   }
 
+  /**
+   * A simple subsumption test that only looks at nested concepts - it does not consider the
+   * #parent / #child properties, hierarchyMeaning, or the content mode, and it cannot tell
+   * 'no' from 'don't know'. Use TerminologySubsumptionTester instead, which does all of that.
+   */
   public static Boolean subsumes(@Nonnull CodeSystem cs, @Nonnull String pc, @Nonnull String cc) {
     if (pc.equals(cc)) {
       return true;
     }
     List<ConceptDefinitionComponent> child = findCodeWithParents(null, cs.getConcept(), cc);
+    if (child == null) { // cc isn't in the code system at all
+      return false;
+    }
     for (ConceptDefinitionComponent item : child) {
       if (pc.equals(item.getCode())) {
         return true;

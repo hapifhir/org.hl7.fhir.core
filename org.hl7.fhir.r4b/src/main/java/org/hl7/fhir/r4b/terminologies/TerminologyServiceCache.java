@@ -1,6 +1,6 @@
 package org.hl7.fhir.r4b.terminologies;
 
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -31,7 +31,8 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
   
  */
 
-@MarkedToMoveToAdjunctPackage
+
+@Deprecated(forRemoval = true)
 public class TerminologyServiceCache {
 
 }

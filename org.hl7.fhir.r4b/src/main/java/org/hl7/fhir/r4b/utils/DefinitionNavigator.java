@@ -38,10 +38,11 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.model.ElementDefinition;
 import org.hl7.fhir.r4b.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.r4b.model.StructureDefinition;
 
-@MarkedToMoveToAdjunctPackage
+
+@Deprecated(forRemoval = true)
 public class DefinitionNavigator {
 
   private IWorkerContext context;

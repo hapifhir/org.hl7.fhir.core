@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.9.8-SNAPSHOT</version>
+        <version>7.0.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -228,13 +228,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.everit.json</groupId>
-            <artifactId>org.everit.json.schema</artifactId>
-            <version>1.1.0</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>mockwebserver</artifactId>
             <optional>false</optional>
@@ -258,7 +251,7 @@
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>ST4</artifactId>
-            <version>4.1</version>
+            <version>4.3.4</version>
             <optional>false</optional>
             <scope>compile</scope>
         </dependency>
@@ -277,9 +270,9 @@
             <artifactId>logback-classic</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.fusesource.jansi</groupId>
+            <groupId>org.jline</groupId>
             <artifactId>jansi</artifactId>
-            <version>2.4.3</version>
+            <version>4.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -298,7 +291,7 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.ogce</groupId>
+            <groupId>org.codelibs</groupId>
             <artifactId>xpp3</artifactId>
         </dependency>
 
@@ -338,7 +331,7 @@
                             <goal>unpack-dependencies</goal>
                         </goals>
                         <configuration>
-                            <excludes>**/module-info.class,META-INF/*,**/logback-test.xml</excludes>
+                            <excludes>**/module-info.class,META-INF/MANIFEST.MF,META-INF/*.SF,META-INF/*.RSA,META-INF/*.DSA,META-INF/*.EC,META-INF/maven/**,**/logback-test.xml</excludes>
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
@@ -351,7 +344,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>${maven-jar-plugin.version}</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -466,6 +458,13 @@
                             <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.utilities</exclude>
                             <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.validation</exclude>
                         </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId><!-- Use the latest version -->
+                    <configuration>
+                        <onlyAnalyze>org.hl7.fhir.validation.cli.*</onlyAnalyze>
                     </configuration>
                 </plugin>
         	</plugins>

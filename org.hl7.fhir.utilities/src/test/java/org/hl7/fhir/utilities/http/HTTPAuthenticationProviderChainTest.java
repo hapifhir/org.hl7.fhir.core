@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ class HTTPAuthenticationProviderChainTest {
 
   @Test
   void canProvideHeaders_returnsTrueWhenAnyProviderMatches() throws MalformedURLException {
-    URL url = new URL("https://example.com/path");
+    URL url = URI.create("https://example.com/path").toURL();
     HTTPAuthenticationProviderChain chain = new HTTPAuthenticationProviderChain(List.of(
       mockNeverProvider(),
       mockProviderFor(url, Map.of("Authorization", "Bearer token"))
@@ -38,7 +39,7 @@ class HTTPAuthenticationProviderChainTest {
 
   @Test
   void canProvideHeaders_returnsFalseWhenNoProviderMatches() throws MalformedURLException {
-    URL url = new URL("https://example.com/path");
+    URL url = URI.create("https://example.com/path").toURL();
     HTTPAuthenticationProviderChain chain = new HTTPAuthenticationProviderChain(List.of(
       mockNeverProvider(),
       mockNeverProvider()
@@ -49,7 +50,7 @@ class HTTPAuthenticationProviderChainTest {
 
   @Test
   void getHeaders_returnsHeadersFromFirstMatchingProvider() throws MalformedURLException {
-    URL url = new URL("https://example.com/path");
+    URL url = URI.create("https://example.com/path").toURL();
     IHTTPAuthenticationProvider first = mockProviderFor(url, Map.of("Authorization", "Bearer first"));
     IHTTPAuthenticationProvider second = mockProviderFor(url, Map.of("Authorization", "Bearer second"));
 
@@ -61,7 +62,7 @@ class HTTPAuthenticationProviderChainTest {
 
   @Test
   void getHeaders_skipsNonMatchingProvidersAndUsesFirstMatch() throws MalformedURLException {
-    URL url = new URL("https://example.com/path");
+    URL url = URI.create("https://example.com/path").toURL();
     IHTTPAuthenticationProvider nonMatching = mockNeverProvider();
     IHTTPAuthenticationProvider matching = mockProviderFor(url, Map.of("Authorization", "Bearer token"));
 
@@ -73,7 +74,7 @@ class HTTPAuthenticationProviderChainTest {
 
   @Test
   void getHeaders_returnsEmptyMapWhenNoProviderMatches() throws MalformedURLException {
-    URL url = new URL("https://example.com/path");
+    URL url = URI.create("https://example.com/path").toURL();
     HTTPAuthenticationProviderChain chain = new HTTPAuthenticationProviderChain(List.of(
       mockNeverProvider(),
       mockNeverProvider()
@@ -84,8 +85,8 @@ class HTTPAuthenticationProviderChainTest {
 
   @Test
   void getHeaders_routesDifferentUrlsToDifferentProviders() throws MalformedURLException {
-    URL urlA = new URL("https://a.example.com/path");
-    URL urlB = new URL("https://b.example.com/path");
+    URL urlA = URI.create("https://a.example.com/path").toURL();
+    URL urlB = URI.create("https://b.example.com/path").toURL();
 
     IHTTPAuthenticationProvider providerA = mockProviderFor(urlA, Map.of("Authorization", "Bearer for-a"));
     IHTTPAuthenticationProvider providerB = mockProviderFor(urlB, Map.of("Authorization", "Bearer for-b"));

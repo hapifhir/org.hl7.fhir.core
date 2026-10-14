@@ -1,0 +1,851 @@
+package org.hl7.fhir.services.sql;
+
+import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.fhirpath.ExpressionNode;
+import org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine.IssueMessage;
+import org.hl7.fhir.services.fhirpath.TypeDetails;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.utilities.UserDataNames;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.model.*;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+// see also org.hl7.fhir.validation.instance.type.ViewDefinitionValidator
+
+
+@Slf4j
+public class Validator {
+
+  public enum TrueFalseOrUnknown {
+    TRUE, FALSE, UNKNOWN
+  }
+
+  @SuppressWarnings("checkstyle:patternUsage")
+  //fixed anchored pattern from the spec's sql-name invariant, no input of any kind, compiled once
+  private static final Pattern SQL_NAME = Pattern.compile("^[A-Za-z][A-Za-z0-9_]*$");
+  private static final String STRUCTURE_DEFINITION_NS = "http://hl7.org/fhir/StructureDefinition/";
+  private static final String FHIRPATH_SYSTEM_NS = "http://hl7.org/fhirpath/System.";
+
+  private IWorkerContext context;
+  private FHIRPathEngine fpe;
+  private List<String> prohibitedNames = new ArrayList<String>();
+  private List<ValidationMessage> issues = new ArrayList<ValidationMessage>();
+  private TrueFalseOrUnknown supportsArrays;
+  private TrueFalseOrUnknown supportsComplexTypes;
+  private TrueFalseOrUnknown supportsNeedsName;
+
+  private String resourceName;
+  private String name;
+
+  public Validator(IWorkerContext context, FHIRPathEngine fpe, List<String> prohibitedNames, @Nonnull TrueFalseOrUnknown supportsArrays, @Nonnull TrueFalseOrUnknown supportsComplexTypes, @Nonnull TrueFalseOrUnknown supportsNeedsName) {
+    super();
+    this.context = context;
+    this.fpe = fpe;
+    this.prohibitedNames = prohibitedNames;
+    this.supportsArrays = supportsArrays;
+    this.supportsComplexTypes = supportsComplexTypes;
+    this.supportsNeedsName = supportsNeedsName;
+  }
+
+  public String getResourceName() {
+    return resourceName;
+  }
+
+
+  public void checkViewDefinition(String path, JsonObject viewDefinition) {    
+    checkProperties(viewDefinition, path, "resourceType", "resourceDefinition", "id", "meta", "implicitRules", "language", "text", "contained", "modifierExtension", "url", "identifier", "version", "versionAlgorithmString", "versionAlgorithmCoding", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "copyrightLabel", "approvalDate", "lastReviewDate", "effectivePeriod", "topic", "author", "editor", "reviewer", "endorser", "relatedArtifact", "resource", "profile", "fhirVersion", "constant", "select", "where");
+    
+    JsonElement nameJ = viewDefinition.get("name");
+    if (nameJ == null) {
+      if (supportsNeedsName == null) {
+        hint(path, viewDefinition, "No name provided. A name is required in many contexts where a ViewDefinition is used");        
+      } else if (supportsNeedsName == TrueFalseOrUnknown.TRUE) {
+        error(path, viewDefinition, "No name provided", IssueType.REQUIRED);
+      }
+    } else if (!(nameJ instanceof JsonString)) {
+      error(path, viewDefinition, "name must be a string", IssueType.INVALID);      
+    } else {
+      name = nameJ.asString();
+      if (!isValidName(name)) {      
+        error(path+".name", nameJ, "The name '"+name+"' is not valid", IssueType.INVARIANT);
+      }
+      if (prohibitedNames.contains(name)) {      
+        error(path, nameJ, "The name '"+name+"' on the viewDefinition is not allowed in this context", IssueType.BUSINESSRULE);
+      }
+    }
+
+    List<Column> columns = new ArrayList<>();    
+    viewDefinition.setUserData(UserDataNames.db_columns, columns);
+    
+    JsonElement resourceNameJ = viewDefinition.get("resource");
+    if (resourceNameJ == null) {
+      error(path, viewDefinition, "No resource specified", IssueType.REQUIRED);      
+    } else if (!(resourceNameJ instanceof JsonString)) {
+      error(path, viewDefinition, "resource must be a string", IssueType.INVALID);      
+    } else {
+      resourceName = resourceNameJ.asString();
+      if (!context.getResourceNamesAsSet().contains(resourceName)) {      
+        error(path+".resource", resourceNameJ, "The resource '"+resourceName+"' is not a valid resource type", IssueType.BUSINESSRULE);
+      } else {
+        int i = 0;
+        if (checkAllObjects(path, viewDefinition, "constant")) {
+          for (JsonObject constant : viewDefinition.getJsonObjects("constant")) {
+            checkConstant(path+".constant["+i+"]", constant);
+            i++;
+          }
+        }
+        i = 0;
+        if (checkAllObjects(path, viewDefinition, "where")) {
+          for (JsonObject where : viewDefinition.getJsonObjects("where")) {
+            checkWhere(viewDefinition, path+".where["+i+"]", where);
+            i++;
+          }
+        }
+        TypeDetails t = new TypeDetails(CollectionStatus.SINGLETON, resourceName);
+
+        i = 0;
+        if (checkAllObjects(path, viewDefinition, "select")) {
+          for (JsonObject select : viewDefinition.getJsonObjects("select")) {
+            columns.addAll(checkSelect(viewDefinition, path+".select["+i+"]", select, t));
+            i++;
+          }
+          if (i == 0) {
+            error(path, viewDefinition, "No select statements found", IssueType.REQUIRED);
+          } else {
+            // Each select has already checked its own columns; sibling selects at this level
+            // have not been checked against each other.
+            checkColumnNamesUnique(viewDefinition, path, columns);
+          }
+        }
+      }
+    }
+  }
+
+  private List<Column> checkSelect(JsonObject vd, String path, JsonObject select, TypeDetails t) {
+    List<Column> columns = new ArrayList<>();
+    select.setUserData(UserDataNames.db_columns, columns);
+    checkProperties(select, path, "id", "modifierExtension", "column", "select", "forEach", "forEachOrNull", "repeat", "unionAll");
+
+    if (select.has("forEach")) {
+      if (select.has("forEachOrNull") || select.has("repeat")) {
+        error(path, select, "Only one of forEach, forEachOrNull, or repeat may be specified on a select", IssueType.INVALID);
+      }
+      t = checkForEach(vd, path, select, select.get("forEach"), t);
+    } else if (select.has("forEachOrNull")) {
+      if (select.has("repeat")) {
+        error(path, select, "Only one of forEach, forEachOrNull, or repeat may be specified on a select", IssueType.INVALID);
+      }
+      t = checkForEachOrNull(vd, path, select, select.get("forEachOrNull"), t);
+    } else if (select.has("repeat")) {
+      t = checkRepeat(vd, path, select, select.get("repeat"), t);
+    }
+
+    if (t != null) {
+      
+      if (select.has("column")) {
+        JsonElement a = select.get("column");
+        if (!(a instanceof JsonArray)) {
+          error(path+".column", a, "column is not an array", IssueType.INVALID);
+        } else {
+          int i = 0;
+          for (JsonElement e : ((JsonArray) a)) {
+            if (!(e instanceof JsonObject)) {
+              error(path+".column["+i+"]", a, "column["+i+"] is a "+e.type().toName()+" not an object", IssueType.INVALID);
+            } else { 
+              columns.add(checkColumn(vd, path+".column["+i+"]", (JsonObject) e, t));
+            }
+          }      
+        }     
+      }
+
+      if (select.has("select")) {
+        JsonElement a = select.get("select");
+        if (!(a instanceof JsonArray)) {
+          error(path+".select", a, "select is not an array", IssueType.INVALID);
+        } else {
+          int i = 0;
+          for (JsonElement e : ((JsonArray) a)) {
+            if (!(e instanceof JsonObject)) {
+              error(path+".select["+i+"]", e, "select["+i+"] is not an object", IssueType.INVALID);
+            } else { 
+              columns.addAll(checkSelect(vd, path+".select["+i+"]", (JsonObject) e, t));
+            }
+          }      
+        }     
+      }
+
+      if (select.has("unionAll")) {
+        columns.addAll(checkUnion(vd, path, select, select.get("unionAll"), t));
+      } 
+      if (columns.isEmpty()) {
+        error(path, select, "The select has no columns or selects", IssueType.REQUIRED);
+      } else {
+        checkColumnNamesUnique(select, path, columns);
+      }
+    }
+    return columns;
+  }
+
+
+  /**
+   * Column names must be unique across the view. The comparison ignores case: SQL identifiers are
+   * case-insensitive on most targets, and the Runner already merges cells by name ignoring case,
+   * so two names differing only in case would collide at execution time.
+   */
+  private void checkColumnNamesUnique(JsonObject focus, String path, List<Column> columns) {
+    Map<String, String> names = new HashMap<>();
+    for (Column col : columns) {
+      if (col != null) {
+        String key = col.getName().toLowerCase(Locale.ROOT);
+        String existing = names.get(key);
+        if (existing == null) {
+          names.put(key, col.getName());
+        } else if (!col.isDuplicateReported()) {
+          col.setDuplicateReported(true);
+          String note = existing.equals(col.getName()) ? "" : " (matches '"+existing+"' ignoring case)";
+          error(path, focus, "Duplicate Column Name '"+col.getName()+"'"+note, IssueType.BUSINESSRULE);
+        }
+      }
+    }    
+  }
+
+  /**
+   * Checks the branches of a unionAll and returns the columns they contribute to the enclosing
+   * select: the first branch's columns, once every other branch has been checked against them.
+   * Never returns null - a malformed union contributes no columns.
+   */
+  private List<Column> checkUnion(JsonObject vd, String path, JsonObject focus, JsonElement expression,  TypeDetails t) {
+    JsonElement a = focus.get("unionAll");
+    if (!(a instanceof JsonArray)) {
+      error(path+".unionAll", a, "union is not an array", IssueType.INVALID);
+      return new ArrayList<>();
+    }
+    List<JsonElement> branches = new ArrayList<>();
+    List<List<Column>> unionColumns = new ArrayList<>();
+    int i = 0;
+    for (JsonElement e : ((JsonArray) a)) {
+      if (!(e instanceof JsonObject)) {
+        error(path+".unionAll["+i+"]", e, "unionAll["+i+"] is not an object", IssueType.INVALID);
+      } else { 
+        branches.add(e);
+        unionColumns.add(checkSelect(vd, path+".unionAll["+i+"]", (JsonObject) e, t));
+      }
+      i++;
+    }  
+    if (i < 2) {
+      warning(path+".unionAll", a, "unionAll should have more than one item");        
+    }
+    if (unionColumns.isEmpty()) {
+      return new ArrayList<>();
+    }
+    List<Column> columns = unionColumns.get(0);
+    for (int ic = 1; ic < unionColumns.size(); ic++) {
+      String diff = columnDiffs(columns, unionColumns.get(ic));
+      if (diff != null) {
+        int index = ((JsonArray) a).getItems().indexOf(branches.get(ic));
+        error(path+".unionAll["+index+"]", branches.get(ic), "unionAll["+index+"] column definitions do not match: "+diff, IssueType.INVALID);            
+      }
+    }
+    a.setUserData(UserDataNames.db_columns, columns);
+    return columns;
+  }
+  
+  private String columnDiffs(List<Column> list1, List<Column> list2) {
+    if (list1.size() == list2.size()) {
+      for (int i = 0; i < list1.size(); i++) {
+        if (list1.get(i) == null || list2.get(i) == null) {
+          continue; // the column itself failed validation, which has already been reported
+        }
+        String diff = list1.get(i).diff(list2.get(i));
+        if (diff != null) {
+          return diff+" at #"+i;
+        }
+      }
+      return null;
+    } else {
+      return "Column counts differ: "+list1.size()+" vs "+list2.size();
+    }
+  }
+
+  private Column checkColumn(JsonObject vd, String path, JsonObject column, TypeDetails t) {
+    checkProperties(column, path, "id", "modifierExtension", "path", "name", "description", "collection", "type", "tag");
+
+    if (!column.has("path")) {
+      error(path, column, "no path found", IssueType.INVALID);      
+    } else {
+      JsonElement expression = column.get("path"); 
+      if (!(expression instanceof JsonString)) {
+        error(path+".forEach", expression, "forEach is not a string", IssueType.INVALID);
+      } else {
+        String expr = expression.asString();
+
+        List<IssueMessage> warnings = new ArrayList<>();
+        TypeDetails td = null;
+        ExpressionNode node = null;
+        try {
+          node = fpe.parse(expr);
+          column.setUserData(UserDataNames.db_path, node);
+          td = fpe.checkOnTypes(vd, "Resource", resourceName, t, node, warnings);
+        } catch (Exception e) {
+          error(path, expression, e.getMessage(), IssueType.INVALID);
+        }
+        if (td != null && node != null) {
+          for (IssueMessage s : warnings) {
+            warning(path+".path", expression, s.getMessage());
+          }
+          String columnName = null;
+          JsonElement nameJ = column.get("name");
+          if (nameJ != null) {
+            if (nameJ instanceof JsonString) {
+              columnName = nameJ.asString();
+              if (!isValidName(columnName)) {      
+                error(path+".name", nameJ, "The name '"+columnName+"' is not valid", IssueType.VALUE);
+              }
+            } else {
+              error(path+".name", nameJ, "name must be a string", IssueType.INVALID);
+            }
+          }
+          if (columnName == null) {
+            List<String> names = node.getDistalNames();
+            if (names.size() == 1 && names.get(0) != null) {
+              columnName = names.get(0);
+              if (!isValidName(columnName)) {      
+                error(path+".path", expression, "A column name is required. The natural name to chose is '"+columnName+"' (from the path)", IssueType.INVARIANT);
+              } else {
+                error(path, column, "A column name is required", IssueType.REQUIRED);
+              }
+            } else {
+              error(path, column, "A column name is required", IssueType.REQUIRED);
+            }
+          }
+          // ok, name is sorted!
+          if (columnName != null) {
+            column.setUserData(UserDataNames.db_name, columnName);
+            boolean isColl = false;
+            if (column.has("collection")) {
+              JsonElement collectionJ = column.get("collection");
+              if (!(collectionJ instanceof JsonBoolean)) {
+                error(path+".collection", collectionJ, "collection is not a boolean", IssueType.INVALID);
+              } else {
+                boolean collection = collectionJ.asJsonBoolean().asBoolean();
+                if (collection) {
+                  isColl = true;
+                }
+              }
+            }
+            if (isColl) {
+              if (td.getCollectionStatus() == CollectionStatus.SINGLETON) {
+                hint(path, column, "collection is true, but the path statement(s) ('"+expr+"') can only return single values for the column '"+columnName+"'");
+              }
+              if (supportsArrays == TrueFalseOrUnknown.UNKNOWN) {
+                warning(path, expression, "The column '"+columnName+"' is defined as a collection, but collections are not supported in all execution contexts");
+              } else if (supportsArrays == TrueFalseOrUnknown.FALSE) {
+                if (td.getCollectionStatus() == CollectionStatus.SINGLETON) {
+                  warning(path, expression, "The column '"+columnName+"' is defined as a collection, but this is not allowed in the current execution context. Note that the path '"+expr+"' can only return a single value");
+                } else {
+                  warning(path, expression, "The column '"+columnName+"' is defined as a collection, but this is not allowed in the current execution context. Note that the path '"+expr+"' can return a collection of values");                  
+                }
+              }
+            } else {
+              if (td.getCollectionStatus() != CollectionStatus.SINGLETON) {
+                warning(path, column, "This column is not defined as a collection, but the path statement '"+expr+"' might return multiple values for the column '"+columnName+"' for some inputs");
+              }
+            }
+            // The column's FHIR type is the declared type when there is one, otherwise the type
+            // the engine infers from the path. Its storage kind is that type's primitive family.
+            String fhirType = null;
+            Set<String> families = new HashSet<>();
+            if (node.isNullSet()) {
+              fhirType = "null";
+              families.add("null");
+            } else {
+              Set<String> inferred = new HashSet<>();
+              for (String type : td.getTypes()) {
+                String n = typeName(type);
+                inferred.add(n);
+                families.add(simpleType(n));
+              }
+              if (inferred.size() == 1) {
+                fhirType = inferred.iterator().next();
+              } else if (families.size() == 1) {
+                fhirType = families.iterator().next();
+              }
+
+              JsonElement typeJ = column.get("type");
+              if (typeJ != null) {
+                if (typeJ instanceof JsonString) {
+                  String type = typeJ.asString();
+                  if (!td.hasType(type) && !familyMatches(type, td)) {
+                    error(path+".type", typeJ, "The path expression ('"+expr+"') does not return a value of the type '"+type+"' - found "+td.describe(), IssueType.VALUE);
+                  } else {
+                    fhirType = typeName(type);
+                    families.clear();
+                    families.add(simpleType(fhirType));
+                  }
+                } else {
+                  error(path+".type", typeJ, "type must be a string", IssueType.INVALID);
+                }
+              }
+            }
+            if (families.size() != 1) {
+              error(path, column, "Unable to determine a type (found "+td.describe()+")", IssueType.BUSINESSRULE);
+            } else {
+              String family = families.iterator().next();
+              boolean ok = false;
+              if (!isSimpleType(family) && !"null".equals(family)) {
+                if (supportsComplexTypes == TrueFalseOrUnknown.UNKNOWN) {
+                  warning(path, expression, "Column from path '"+expr+"' is a complex type ('"+fhirType+"'). This is not supported in some Runners");
+                } else if (supportsComplexTypes == TrueFalseOrUnknown.FALSE) {            
+                  error(path, expression, "Column from path '"+expr+"' is a complex type ('"+fhirType+"') but this is not allowed in this context", IssueType.BUSINESSRULE);
+                } else {
+                  ok = true;
+                }
+              } else {
+                ok = true;
+              }
+              if (ok) {
+                Column col = new Column(columnName, isColl, fhirType, kindForType(family));
+                column.setUserData(UserDataNames.db_column, col);
+                return col;
+              }
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  private ColumnKind kindForType(String type) {
+    switch (type) {
+    case "null": return ColumnKind.Null;
+    case "dateTime": return ColumnKind.DateTime;
+    case "boolean": return ColumnKind.Boolean;
+    case "integer": return ColumnKind.Integer;
+    case "decimal": return ColumnKind.Decimal;
+    case "string": return ColumnKind.String;
+    case "canonical": return ColumnKind.String;
+    case "url": return ColumnKind.String;
+    case "uri": return ColumnKind.String;
+    case "oid": return ColumnKind.String;
+    case "uuid": return ColumnKind.String;
+    case "id": return ColumnKind.String;
+    case "code": return ColumnKind.String;
+    case "base64Binary": return ColumnKind.Binary;
+    case "time": return ColumnKind.Time;
+    default: return ColumnKind.Complex;
+    }
+  }
+
+  private boolean isSimpleType(String type) {
+    return Utilities.existsInList(type, "dateTime", "boolean", "integer", "decimal", "string", "base64Binary", "id", "code", "date", "time", "canonical", "uri", "url");
+  }
+
+  /**
+   * Reduces a type from the engine or a declared column type to a bare FHIR type name: strips the
+   * StructureDefinition and FHIRPath namespaces, maps a FHIRPath system type to its FHIR
+   * primitive, and reduces a backbone element reference (StructureDefinition/Observation#Observation.referenceRange)
+   * to the element-id notation column.type uses for it (Observation.referenceRange).
+   */
+  private String typeName(String type) {
+    if (type.startsWith(FHIRPATH_SYSTEM_NS)) {
+      String n = type.substring(FHIRPATH_SYSTEM_NS.length());
+      return "Quantity".equals(n) ? n : Character.toLowerCase(n.charAt(0))+n.substring(1);
+    }
+    if (type.startsWith(STRUCTURE_DEFINITION_NS)) {
+      type = type.substring(STRUCTURE_DEFINITION_NS.length());
+    }
+    int hash = type.indexOf('#');
+    return hash < 0 ? type : type.substring(hash+1);
+  }
+
+  private String simpleType(String type) {
+    type = typeName(type);
+    if (Utilities.existsInList(type, "date", "dateTime", "instant", "DateTime")) {
+      return "dateTime";
+    }
+    if (Utilities.existsInList(type, "Boolean", "boolean")) {
+      return "boolean";
+    }
+    if (Utilities.existsInList(type, "Integer", "integer", "integer64", "positiveInt", "unsignedInt")) {
+      return "integer";
+    }
+    if (Utilities.existsInList(type, "Decimal", "decimal")) {
+      return "decimal";
+    }
+    if (Utilities.existsInList(type, "String", "string", "code", "id", "oid", "uri", "url", "uuid", "canonical", "markdown", "sid")) {
+      return "string";
+    }
+    if (Utilities.existsInList(type, "Time", "time")) {
+      return "time";
+    }
+    if (Utilities.existsInList(type, "base64Binary")) {
+      return "base64Binary";
+    }
+    return type;
+  }
+
+  /**
+   * Returns true when the declared type shares a primitive base family with at least one of the
+   * engine-inferred types. This accepts valid declarations of a primitive specialisation (for
+   * example 'id') where the computable definitions type the element as its base primitive (for
+   * example 'string'), in either direction, while genuine cross-family mismatches still fail.
+   */
+  private boolean familyMatches(String declaredType, TypeDetails td) {
+    String declaredFamily = simpleType(declaredType);
+    for (String t : td.getTypes()) {
+      if (declaredFamily.equals(simpleType(t))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private TypeDetails checkForEach(JsonObject vd, String path, JsonObject focus, JsonElement expression, TypeDetails t) {
+    if (!(expression instanceof JsonString)) {
+      error(path+".forEach", expression, "forEach is not a string", IssueType.INVALID);
+      return null;
+    } else {
+      String expr = expression.asString();
+
+      List<IssueMessage> warnings = new ArrayList<>();
+      TypeDetails td = null;
+      try {
+        ExpressionNode n = fpe.parse(expr);
+        focus.setUserData(UserDataNames.db_forEach, n);
+        td = fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
+      } catch (Exception e) {
+        error(path, expression, e.getMessage(), IssueType.INVALID);
+      }
+      if (td != null) {
+        for (IssueMessage s : warnings) {
+          warning(path+".forEach", expression, s.getMessage());
+        }
+      }
+      return td == null ? null : td.toSingleton();
+    }
+  }
+
+  private TypeDetails checkForEachOrNull(JsonObject vd, String path, JsonObject focus, JsonElement expression, TypeDetails t) {
+    if (!(expression instanceof JsonString)) {
+      error(path+".forEachOrNull", expression, "forEachOrNull is not a string", IssueType.INVALID);
+      return null;
+    } else {
+      String expr = expression.asString();
+
+      List<IssueMessage> warnings = new ArrayList<>();
+      TypeDetails td = null;
+      try {
+        ExpressionNode n = fpe.parse(expr);
+        focus.setUserData(UserDataNames.db_forEachOrNull, n);
+        td = fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
+      } catch (Exception e) {
+        error(path, expression, e.getMessage(), IssueType.INVALID);
+      }
+      if (td != null) {
+        for (IssueMessage s : warnings) {
+          warning(path+".forEachOrNull", expression, s.getMessage());
+        }
+      }
+      return td == null ? null : td.toSingleton();
+    }
+  }
+
+  private TypeDetails checkRepeat(JsonObject vd, String path, JsonObject focus, JsonElement expression, TypeDetails t) {
+    if (!(expression instanceof JsonArray)) {
+      error(path+".repeat", expression, "repeat is not an array", IssueType.INVALID);
+      return null;
+    }
+    JsonArray arr = (JsonArray) expression;
+    if (arr.size() == 0) {
+      error(path+".repeat", expression, "repeat must contain at least one expression", IssueType.INVALID);
+      return null;
+    }
+    List<ExpressionNode> nodes = new ArrayList<>();
+    TypeDetails result = new TypeDetails(null);
+    int i = 0;
+    for (JsonElement e : arr) {
+      if (!(e instanceof JsonString)) {
+        error(path+".repeat["+i+"]", e, "repeat["+i+"] is not a string", IssueType.INVALID);
+      } else {
+        String expr = e.asString();
+        ExpressionNode n = null;
+        try {
+          n = fpe.parse(expr);
+          nodes.add(n);
+        } catch (Exception ex) {
+          error(path+".repeat["+i+"]", e, ex.getMessage(), IssueType.INVALID);
+        }
+        if (n != null) {
+          // Repeat paths are applied recursively to the focus and all yielded
+          // descendants, so a path may be invalid on the starting type but valid
+          // on a descendant yielded by another sibling path (e.g. 'answer.item'
+          // alongside 'item'). Type-check errors are recorded as warnings so the
+          // validator does not reject otherwise-valid recursive views; types that
+          // do resolve contribute to the union returned as the child focus.
+          List<IssueMessage> warnings = new ArrayList<>();
+          try {
+            TypeDetails td = fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
+            if (td != null) {
+              result.update(td);
+            }
+          } catch (Exception ex) {
+            warning(path+".repeat["+i+"]", e, ex.getMessage());
+          }
+          for (IssueMessage s : warnings) {
+            warning(path+".repeat["+i+"]", e, s.getMessage());
+          }
+        }
+      }
+      i++;
+    }
+    focus.setUserData(UserDataNames.db_repeat, nodes);
+    // If no path yielded any types, the runtime will produce no rows from this
+    // select. Returning null signals downstream validation to skip type-based
+    // checks on columns/nested selects, which would otherwise fail against an
+    // empty type. The runner handles empty repeat results by emitting no rows.
+    if (result.hasNoTypes()) {
+      return null;
+    }
+    // Like forEach, each yielded element becomes its own row, so columns and
+    // nested selects see a single element rather than the traversed collection.
+    return result.toSingleton();
+  }
+
+  private void checkConstant(String path, JsonObject constant) {
+    checkProperties(constant, path, "id", "modifierExtension", "name", "valueBase64Binary", "valueBoolean", "valueCanonical", "valueCode", "valueDate", "valueDateTime", "valueDecimal", "valueId", "valueInstant", "valueInteger", "valueInteger64", "valueOid", "valueString", "valuePositiveInt", "valueTime", "valueUnsignedInt", "valueUri", "valueUrl", "valueUuid");
+    JsonElement nameJ = constant.get("name");
+    if (nameJ == null) {
+      error(path, constant, "No name provided", IssueType.REQUIRED);      
+    } else if (!(nameJ instanceof JsonString)) {
+      error(path, constant, "Name must be a string", IssueType.INVALID);      
+    } else {
+      String name = constant.asString("name");
+      if (!isValidName(name)) {      
+        error(path+".name", nameJ, "The name '"+name+"' is not valid", IssueType.INVARIANT);
+      }
+    }
+    if (constant.has("valueBase64Binary")) {
+      checkIsString(path, constant, "valueBase64Binary", new Base64BinaryType());
+    } else if (constant.has("valueBoolean")) {
+      checkIsBoolean(path, constant, "valueBoolean", new BooleanType());
+    } else if (constant.has("valueCanonical")) { 
+      checkIsString(path, constant, "valueCanonical", new CanonicalType());
+    } else if (constant.has("valueCode")) {
+      checkIsString(path, constant, "valueCode", new CodeType());
+    } else if (constant.has("valueDate")) {
+      checkIsString(path, constant, "valueDate", new DateType());
+    } else if (constant.has("valueDateTime")) {
+      checkIsString(path, constant, "valueDateTime", new DateTimeType());
+    } else if (constant.has("valueDecimal")) {
+      checkIsNumber(path, constant, "valueDecimal", new DecimalType());
+    } else if (constant.has("valueId")) {
+      checkIsString(path, constant, "valueId", new IdType());
+    } else if (constant.has("valueInstant")) {
+      checkIsString(path, constant, "valueInstant", new InstantType());
+    } else if (constant.has("valueInteger")) {
+      checkIsNumber(path, constant, "valueInteger", new IntegerType());
+    } else if (constant.has("valueInteger64")) {
+      checkIsNumber(path, constant, "valueInteger64", new Integer64Type());
+    } else if (constant.has("valueOid")) {
+      checkIsString(path, constant, "valueOid", new OidType());
+    } else if (constant.has("valueString")) {
+      checkIsString(path, constant, "valueString", new StringType());
+    } else if (constant.has("valuePositiveInt")) {
+      checkIsNumber(path, constant, "valuePositiveInt", new PositiveIntType());
+    } else if (constant.has("valueTime")) {
+      checkIsString(path, constant, "valueTime", new TimeType());
+    } else if (constant.has("valueUnsignedInt")) {
+      checkIsNumber(path, constant, "valueUnsignedInt", new UnsignedIntType());
+    } else if (constant.has("valueUri")) {
+      checkIsString(path, constant, "valueUri", new UriType());
+    } else if (constant.has("valueUrl")) {
+      checkIsString(path, constant, "valueUrl", new UrlType());
+    } else if (constant.has("valueUuid")) {
+      checkIsString(path, constant, "valueUuid", new UuidType());
+    } else {
+      error(path, constant, "No value found", IssueType.REQUIRED);
+    }
+  }
+
+  private void checkIsString(String path, JsonObject constant, String name, PrimitiveType<?> value) {
+    JsonElement j = constant.get(name);
+    if (!(j instanceof JsonString)) {
+      error(path+"."+name, j, name+" must be a string", IssueType.INVALID);
+    } else {
+      setConstantValue(path, constant, name, j, value);
+    }
+  }
+
+  private void checkIsBoolean(String path, JsonObject constant, String name, PrimitiveType<?> value) {
+    JsonElement j = constant.get(name);
+    if (!(j instanceof JsonBoolean)) {
+      error(path+"."+name, j, name+" must be a boolean", IssueType.INVALID);
+    } else {
+      setConstantValue(path, constant, name, j, value);
+    }
+  }
+
+  private void checkIsNumber(String path, JsonObject constant, String name, PrimitiveType<?> value) {
+    JsonElement j = constant.get(name);
+    if (!(j instanceof JsonNumber)) {
+      error(path+"."+name, j, name+" must be a number", IssueType.INVALID);
+    } else {
+      setConstantValue(path, constant, name, j, value);
+    }
+  }
+
+  /**
+   * Parses the JSON text as the constant's FHIR type. Text the type rejects (a malformed date, a
+   * fraction for an integer) is a validation error, not an exception escaping the validator.
+   */
+  private void setConstantValue(String path, JsonObject constant, String name, JsonElement j, PrimitiveType<?> value) {
+    try {
+      value.setValueAsString(j.asString());
+      constant.setUserData(UserDataNames.db_value, value);
+    } catch (Exception e) {
+      error(path+"."+name, j, "Invalid value for "+name+": "+e.getMessage(), IssueType.VALUE);
+    }
+  }
+  
+  private void checkWhere(JsonObject vd, String path, JsonObject where) {
+    checkProperties(where, path, "id", "modifierExtension", "path", "description");
+
+    JsonElement pathJ = where.get("path");
+    if (pathJ == null) {
+      error(path, where, "No path provided", IssueType.REQUIRED);
+      return;
+    }
+    if (!(pathJ instanceof JsonString)) {
+      error(path+".path", pathJ, "path must be a string", IssueType.INVALID);
+      return;
+    }
+    String expr = pathJ.asString();
+    List<String> types = new ArrayList<>();
+    List<IssueMessage> warnings = new ArrayList<>();
+    types.add(resourceName);
+    TypeDetails td = null;
+    try {
+      ExpressionNode n = fpe.parse(expr);
+      where.setUserData(UserDataNames.db_path, n);
+      td = fpe.checkOnTypes(vd, "Resource", resourceName, types, n, warnings);
+    } catch (Exception e) {
+      error(path+".path", pathJ, e.getMessage(), IssueType.INVALID);
+    }
+    if (td != null) {
+      if (td.getCollectionStatus() != CollectionStatus.SINGLETON || td.getTypes().size() != 1 || !td.hasType("boolean")) {
+        error(path+".path", pathJ, "A where path must return a boolean, but the expression "+expr+" returns a "+td.describe(), IssueType.BUSINESSRULE);
+      } else {
+        for (IssueMessage s : warnings) {
+          warning(path+".path", pathJ, s.getMessage());
+        }
+      }
+    }
+  }
+
+  private void checkProperties(JsonObject obj, String path, String... names) {
+    for (JsonProperty p : obj.getProperties()) {
+      boolean nameOk = "extension".equals(p.getName());
+      for (String name : names) {
+        nameOk = nameOk || name.equals(p.getName());
+      }
+      if (!nameOk) {
+        error(path+"."+p.getName(), p.getValue(), "Unknown JSON property "+p.getName(), IssueType.UNKNOWN);
+      }
+    }
+    
+  }
+
+  /** The spec's sql-name invariant: {@code ^[A-Za-z][A-Za-z0-9_]*$}. */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //Matcher.matches() on the precompiled SQL_NAME - nothing is compiled per call
+  private boolean isValidName(String name) {
+    return SQL_NAME.matcher(name).matches();
+  }
+
+
+  private boolean checkAllObjects(String path, JsonObject focus, String name) {
+    if (!focus.has(name)) {
+      return true;
+    } else if (!(focus.get(name) instanceof JsonArray)) {
+      error(path+"."+name, focus.get(name), name+" must be an array", IssueType.INVALID);
+      return false;
+    } else {
+      JsonArray arr = focus.getJsonArray(name);
+      int i = 0;
+      boolean ok = true;
+      for (JsonElement e : arr) {
+        if (!(e instanceof JsonObject)) {
+          error(path+"."+name+"["+i+"]", e, name+"["+i+"] must be an object", IssueType.INVALID);
+          ok = false;
+        }
+      }
+      return ok;
+    }
+  }
+
+  private void error(String path, JsonElement e, String issue, IssueType type) {
+    ValidationMessage vm = new ValidationMessage(Source.InstanceValidator, type, e.getStart().getLine(), e.getStart().getCol(), path, issue, IssueSeverity.ERROR);
+    issues.add(vm);
+
+  }
+
+  private void warning(String path, JsonElement e, String issue) {
+    ValidationMessage vm = new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, e.getStart().getLine(), e.getStart().getCol(), path, issue, IssueSeverity.WARNING);
+    issues.add(vm);
+  }
+
+  private void hint(String path, JsonElement e, String issue) {
+    ValidationMessage vm = new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, e.getStart().getLine(), e.getStart().getCol(), path, issue, IssueSeverity.INFORMATION);
+    issues.add(vm);
+  }
+
+  public void dump() {
+    for (ValidationMessage vm : issues) {
+      log.info(vm.summary());
+    }
+
+  }
+
+  public void check() {    
+    if (!isOk()) {
+      throw new FHIRException("View Definition is not valid");
+    }
+
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public List<ValidationMessage> getIssues() {
+    return issues;
+  }
+
+  public boolean isOk() {
+    boolean ok = true;
+    for (ValidationMessage vm : issues) {
+      if (vm.isError()) {
+        ok = false;
+      }
+    }
+    return ok;
+  }
+}

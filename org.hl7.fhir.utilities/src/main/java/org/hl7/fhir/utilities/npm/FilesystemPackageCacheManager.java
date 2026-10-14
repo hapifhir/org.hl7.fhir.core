@@ -273,9 +273,18 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     return CACHE_VERSION.equals(version);
   }
 
+  /**
+   * Temp directories are where addPackageToCache extracts a package before renaming it into place. That runs
+   * under a package lock, which is a file lock, but this cleanup runs under the cache lock, which is in-process only -
+   * so another process sharing the cache folder can be installing into one of these right now. Only delete the ones
+   * that are too old to still be in use.
+   */
+  private static final long TEMP_DIRECTORY_MAX_AGE_MILLIS = 60L * 60L * 1000L;
+
   private void deleteOldTempDirectories() throws IOException {
+    long cutoff = System.currentTimeMillis() - TEMP_DIRECTORY_MAX_AGE_MILLIS;
     for (File f : Objects.requireNonNull(cacheFolder.listFiles())) {
-      if (f.isDirectory() && UUIDUtilities.isValidUUID(f.getName())) {
+      if (f.isDirectory() && UUIDUtilities.isValidUUID(f.getName()) && f.lastModified() < cutoff) {
         FileUtilities.clearDirectory(f.getAbsolutePath());
         f.delete();
       }
@@ -565,6 +574,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           return currentPackageFolder;
         }
         if (version != null && !Utilities.existsInList(version, "current", "dev") && (VersionUtilities.isSemVerWithWildcards(version) || Utilities.charCount(version, '.') < 2) && currentPackageFolder.contains("#")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] parts = currentPackageFolder.split("#");
           if (parts[0].equals(id) && VersionUtilities.isSemVer(parts[1], true) && VersionUtilities.versionMatches((foundVersion != null ? foundVersion : version), parts[1])) {
             foundVersion = parts[1];
@@ -835,7 +846,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   // ----- the old way, from before package server, while everything gets onto the package server
-  private InputStreamWithSrc fetchTheOldWay(String id, String v) {
+  private InputStreamWithSrc fetchTheOldWay(String id, String version) {
     String url = getUrlForPackage(id);
     if (url == null) {
       try {
@@ -844,31 +855,31 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       }
     }
     if (url == null) {
-      throw new FHIRException("Unable to resolve package id " + id + "#" + v);
+      throw new FHIRException("Unable to resolve package id " + id + "#" + version);
     }
     if (url.contains("/ImplementationGuide/")) {
       url = url.substring(0, url.indexOf("/ImplementationGuide/"));
     }
-    String pu = Utilities.pathURL(url, "package-list.json");
+    String packageListUrl = ManagedWebAccess.makeSecureRef(Utilities.pathURL(url, "package-list.json"));
 
-    PackageList pl;
+    PackageList packageList;
     try {
-      pl = PackageList.fromUrl(pu);
+      packageList = PackageList.fromUrl(packageListUrl);
     } catch (Exception e) {
-      String pv = Utilities.pathURL(url, v, "package.tgz");
+      String packageTgzUrl = ManagedWebAccess.makeSecureRef(Utilities.pathURL(url, version, "package.tgz"));
+
       try {
-        return new InputStreamWithSrc(fetchFromUrlSpecific(pv, false), pv, v);
+        return new InputStreamWithSrc(fetchFromUrlSpecific(packageTgzUrl, false), packageTgzUrl, version);
       } catch (Exception e1) {
-        throw new FHIRException("Error fetching package directly (" + pv + "), or fetching package list for " + id + " from " + pu + ": " + e1.getMessage(), e1);
+        throw new FHIRException("Error fetching package directly (" + packageTgzUrl + "), or fetching package list for " + id + " from " + packageListUrl + ": " + e1.getMessage(), e1);
       }
     }
-    if (!id.equals(pl.pid()))
-      throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + pl.pid());
-    for (PackageListEntry vo : pl.versions()) {
-      if (v.equals(vo.version())) {
-
-        String u = Utilities.pathURL(vo.path(), "package.tgz");
-        return new InputStreamWithSrc(fetchFromUrlSpecific(u, true), u, v);
+    if (!id.equals(packageList.pid()))
+      throw new FHIRException("Package ids do not match in " + packageListUrl + ": " + id + " vs " + packageList.pid());
+    for (PackageListEntry packageEntry : packageList.versions()) {
+      if (version.equals(packageEntry.version())) {
+        String packageTgzUrl = ManagedWebAccess.makeSecureRef(Utilities.pathURL(packageEntry.path(), "package.tgz"));
+        return new InputStreamWithSrc(fetchFromUrlSpecific(packageTgzUrl, true), packageTgzUrl, version);
       }
     }
 
@@ -890,7 +901,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (url == null) {
       throw new FHIRException("Unable to resolve package id " + id);
     }
-    PackageList pl = PackageList.fromUrl(Utilities.pathURL(url, "package-list.json"));
+    String secureUrl = ManagedWebAccess.makeSecureRef(url);
+    PackageList pl = PackageList.fromUrl(Utilities.pathURL(secureUrl, "package-list.json"));
     if (!id.equals(pl.pid()))
       throw new FHIRException("Package ids do not match in " + pl.source() + ": " + id + " vs " + pl.pid());
     for (PackageListEntry vo : pl.versions()) {

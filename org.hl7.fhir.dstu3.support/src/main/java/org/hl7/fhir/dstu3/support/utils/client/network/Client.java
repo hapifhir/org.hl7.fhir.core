@@ -60,7 +60,6 @@ public class Client {
                                                                      String resourceFormat,
                                                                      String message,
                                                                      long timeout) throws IOException {
-
     HTTPRequest request = new HTTPRequest()
       .withUrl(optionsUri.toURL())
       .withMethod(HTTPRequest.HttpMethod.OPTIONS);

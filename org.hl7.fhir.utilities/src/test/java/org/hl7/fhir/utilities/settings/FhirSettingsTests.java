@@ -16,23 +16,23 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
 
 @Isolated
-public class FhirSettingsTests implements ResourceLoaderTests {
+class FhirSettingsTests implements ResourceLoaderTests {
 
   private static String existingFhirSettingsPath;
 
   @BeforeAll
-  public static void beforeAll() {
+  static void beforeAll() {
     existingFhirSettingsPath = System.getProperty(FhirSettings.FHIR_SETTINGS_PATH);
     System.clearProperty(FhirSettings.FHIR_SETTINGS_PATH);
   }
 
   @AfterEach
-  public void afterEach() {
+  void afterEach() {
     System.clearProperty(FhirSettings.FHIR_SETTINGS_PATH);
   }
 
   @AfterAll
-  public static void afterAll() {
+  static void afterAll() {
     if (existingFhirSettingsPath == null) {
       System.clearProperty(FhirSettings.FHIR_SETTINGS_PATH);
     } else {
@@ -41,13 +41,13 @@ public class FhirSettingsTests implements ResourceLoaderTests {
   }
 
   @Test
-  public void testDefaultFhirSettingsPath() throws IOException {
+  void testDefaultFhirSettingsPath() throws IOException {
     String actualPath = FhirSettings.getSettingsFilePath(null);
     assertEquals(FhirSettings.getDefaultSettingsPath(), actualPath);
   }
 
   @Test
-  public void testJavaSystemPropertyFhirSettingsPath() throws IOException {
+  void testJavaSystemPropertyFhirSettingsPath() {
     final String dummyPath = "dummy-path";
     System.setProperty(FhirSettings.FHIR_SETTINGS_PATH, dummyPath);
     String actualPath = FhirSettings.getSettingsFilePath(null);
@@ -55,7 +55,7 @@ public class FhirSettingsTests implements ResourceLoaderTests {
   }
 
   @Test
-  public void testExplicitSettingsPathSelected() throws IOException {
+  void testExplicitSettingsPathSelected() {
     final String wrongDummyPath = "wrong-dummy-path";
     final String dummyPath = "dummy-path";
     System.setProperty(FhirSettings.FHIR_SETTINGS_PATH, wrongDummyPath);
@@ -64,21 +64,21 @@ public class FhirSettingsTests implements ResourceLoaderTests {
   }
 
   @Test
-  public void testExplicitFhirSettingsPath() throws IOException {
+  void testExplicitFhirSettingsPath() {
     final String dummyPath = "dummy-path";
     String actualPath = FhirSettings.getSettingsFilePath(dummyPath);
     assertEquals(dummyPath, actualPath);
   }
 
   @Test
-  public void testParseFhirSettings() throws IOException {
+  void testParseFhirSettings() throws IOException {
     Path path = Files.createTempFile("fhir-settings", "json").toAbsolutePath();
     copyResourceToFile(path, "settings", "settings-example.json");
 
     FhirSettingsPOJO fhirSettings = FhirSettings.getFhirSettingsPOJO(path.toString());
 
-   assertEquals("dummy-npm-path", fhirSettings.getNpmPath());
-   assertEquals("dummy-ruby-path", fhirSettings.getRubyPath());
+    assertEquals("dummy-npm-path", fhirSettings.getNpmPath());
+    assertEquals("dummy-ruby-path", fhirSettings.getRubyPath());
     assertEquals("dummy-api-key-value", fhirSettings.getApiKeys().get("dummy-api-key"));
     assertEquals("dummy-fhir-test-cases-path", fhirSettings.getFhirTestCasesPath());
     assertEquals("dummy-diff-tool-path", fhirSettings.getDiffToolPath());

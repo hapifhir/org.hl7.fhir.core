@@ -18,7 +18,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -30,7 +30,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public abstract class CanonicalResourceComparer extends ResourceComparer {
 
 
@@ -237,7 +237,7 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
     }
 
     public boolean noUpdates() {
-      return !(changedMetadata.noteable() || changedDefinitions.noteable() || !changedContent.noteable() || !changedContentInterpretation.noteable());
+      return !(changedMetadata.noteable() || changedDefinitions.noteable() || changedContent.noteable() || changedContentInterpretation.noteable());
     }
 
     public boolean noChangeOtherThanMetadata(String[] metadataFields) {
@@ -352,7 +352,10 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
 
   private CodeableConcept findCodeableConceptInList(List<CodeableConcept> list, CodeableConcept item) {
     for (CodeableConcept t : list) {
-      if (t.matches(item)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean conceptMatches = t.matches(item);
+      if (conceptMatches) {
         return t;
       }
     }

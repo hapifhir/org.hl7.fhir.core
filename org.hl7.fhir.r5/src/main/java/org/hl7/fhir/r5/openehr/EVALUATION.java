@@ -175,6 +175,10 @@ public class EVALUATION extends CARE_ENTRY implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((EVALUATION) dst);
+      }
+
       public void copyValues(EVALUATION dst) {
         super.copyValues(dst);
         dst.data = data == null ? null : data.copy();

@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionDifferential
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
@@ -46,7 +47,7 @@ public class StructureDefinitionRendererPatternTest {
   @BeforeAll
   public static void setUp() throws IOException {
     context = TestingUtilities.getSharedWorkerContext("5.0.0");
-    rc = new RenderingContext(context, null, null, CORE_PATH, "", null, ResourceRendererMode.TECHNICAL, GenerationRules.VALID_RESOURCE);
+    rc = new RenderingContext(context, new RendererFactory(), null, null, CORE_PATH, "", null, ResourceRendererMode.TECHNICAL, GenerationRules.VALID_RESOURCE);
     rc.setDefinitionsTarget(DEF_FILE);
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
     rc.setParser(new TestTypeParser());

@@ -1,11 +1,13 @@
-package org.hl7.fhir.{{jid}}.model;
+{{startMark}}
+package org.hl7.fhir.{{jid}}.core;
 
 {{license}}
 
-{{startMark}}
-  
+
+import org.hl7.fhir.model.*;
 import org.hl7.fhir.exceptions.FHIRException;
 
+{{generated}}
 public class ResourceFactory extends Factory {
 
     public static Resource createResource(String name) throws FHIRException {
@@ -60,26 +62,26 @@ public class ResourceFactory extends Factory {
             throw new FHIRException("Unknown Type Name '"+name+"'");    }
 
     public static Base createResourceOrType(String name) throws FHIRException {
-      switch (name.hashCode()) {
-        case -1216012752: return new Base64BinaryType();
-        case 64711720: return new BooleanType();
-        case 828351732: return new CanonicalType();
-        case 3059181: return new CodeType();
-        case 3076014: return new DateType();
-        case 1792749467: return new DateTimeType();
-        case 1542263633: return new DecimalType();
-        case 3355: return new IdType();
-        case 1957570017: return new InstantType();
-        case 1958052158: return new IntegerType();
-        case 246938863: return new MarkdownType();
-        case 110026: return new OidType();
-        case -131262666: return new PositiveIntType();
-        case -891985903: return new StringType();
-        case 3560141: return new TimeType();
-        case 1145198778: return new UnsignedIntType();
-        case 116076: return new UriType();
-        case 116079: return new UrlType();
-        case 3601339: return new UuidType();
+      switch (name) {
+        case "base64Binary": return new Base64BinaryType();
+        case "boolean": return new BooleanType();
+        case "canonical": return new CanonicalType();
+        case "code": return new CodeType();
+        case "date": return new DateType();
+        case "dateTime": return new DateTimeType();
+        case "decimal": return new DecimalType();
+        case "id": return new IdType();
+        case "instant": return new InstantType();
+        case "integer": return new IntegerType();
+        case "markdown": return new MarkdownType();
+        case "oid": return new OidType();
+        case "positiveInt": return new PositiveIntType();
+        case "string": return new StringType();
+        case "time": return new TimeType();
+        case "unsignedInt": return new UnsignedIntType();
+        case "uri": return new UriType();
+        case "url": return new UrlType();
+        case "uuid": return new UuidType();
 {{case-factory}}
       default:
         throw new FHIRException("Unknown Resource or Type Name '"+name+"'");

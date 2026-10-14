@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors.loaders.loaderR5;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ import org.hl7.fhir.r4.model.Basic;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r5.conformance.StructureDefinitionHacker;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
-import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
+import org.hl7.fhir.r5.context.PackageResourceLoader;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
@@ -57,10 +56,8 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
-import org.hl7.fhir.r5.utils.R5Hacker;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory5;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
 
@@ -156,7 +153,7 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
 
 
   @Override
-  public ITerminologyClientFactory txFactory() {
+  public ITerminologyClientFactory5 txFactory() {
     return new TerminologyClientFactory(versionString());
   }
 

@@ -15,14 +15,14 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
-@MarkedToMoveToAdjunctPackage
+
 public class MappingAssistant {
 
 
@@ -73,7 +73,7 @@ public class MappingAssistant {
               n = m.getIdentity() + i;
             }
             renames.put(m.getIdentity(), n);
-            masterList.add(m.copy().setName(n));
+            masterList.add(m.copy().setIdentity(n));
           } else {
             masterList.add(m.copy());
           }
@@ -102,23 +102,6 @@ public class MappingAssistant {
     return !Utilities.existsInList(m.getUri(), suppressedMappings);
   }
 
-  private boolean notExcluded(ElementDefinitionMappingComponent m) {
-    if (!m.hasIdentity()) {
-      return false;
-    }
-    StructureDefinitionMappingComponent mm = null;
-    for (StructureDefinitionMappingComponent t : base.getMapping()) {
-      if (m.getIdentity().equals(t.getIdentity())) {
-        mm = t;
-        break;
-      }
-    }
-    if (mm == null) {
-      return false;
-    } else {
-      return notExcluded(mm);
-    }
-  }
   
   private boolean nameExists(String n) {
     for (StructureDefinitionMappingComponent md : masterList) {
@@ -153,7 +136,10 @@ public class MappingAssistant {
     for (ElementDefinition ed : derived.getSnapshot().getElement()) {
       for (ElementDefinitionMappingComponent m : ed.getMapping()) {
         StructureDefinitionMappingComponent def = findDefinition(m.getIdentity());
-        if (def != null && notExcluded(m)) {
+        // Check the declaration we have already resolved, not the element's own
+        // identity: a renamed identity is never in the base profile's declarations,
+        // so looking it up there dropped the renamed mapping from the output.
+        if (def != null && notExcluded(def)) {
           usedList.add(def);
         } else {
           // not sure what to do?

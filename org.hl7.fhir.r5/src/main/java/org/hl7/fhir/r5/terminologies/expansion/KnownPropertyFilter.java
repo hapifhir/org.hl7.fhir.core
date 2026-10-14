@@ -9,10 +9,10 @@ import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyType;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 
-@MarkedToMoveToAdjunctPackage
+
 public class KnownPropertyFilter extends ConceptFilter {
 
   private ConceptSetFilterComponent filter;
@@ -25,6 +25,8 @@ public class KnownPropertyFilter extends ConceptFilter {
   }
 
   @Override
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //single literal character split
   public boolean includeConcept(CodeSystem cs, ConceptDefinitionComponent def) {
     ConceptPropertyComponent pc = getPropertyForConcept(def);
     if (pc != null) {

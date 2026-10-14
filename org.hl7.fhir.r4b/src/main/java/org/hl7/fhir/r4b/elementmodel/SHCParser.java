@@ -50,7 +50,7 @@ import com.google.gson.JsonPrimitive;
  * @author grahame
  *
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class SHCParser extends ParserBase {
 
   private JsonParser jsonParser;
@@ -302,6 +302,8 @@ public class SHCParser extends ParserBase {
   }
 
   static String[] splitToken(String token) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] parts = token.split("\\.");
     if (parts.length == 2 && token.endsWith(".")) {
       // Tokens with alg='none' have empty String as Signature.
@@ -317,11 +319,24 @@ public class SHCParser extends ParserBase {
     final Inflater inflater = new Inflater(true);
     inflater.setInput(data);
 
+    int writtenBytes = 0;
     try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length)) {
       byte[] buffer = new byte[BUFFER_SIZE];
       while (!inflater.finished()) {
         final int count = inflater.inflate(buffer);
-        outputStream.write(buffer, 0, count);
+        if (count > 0) {
+          outputStream.write(buffer, 0, count);
+          writtenBytes += count;
+          if (writtenBytes > MAX_ALLOWED_SHC_LENGTH * 2) { // This is not a strict check on JWT size; it is mean to prevent highly compressed data from causing OOM errors
+            throw new DataFormatException("Maximum size of SHC JWT exceeded.");
+          }
+        } else {
+          // Handle the 0 byte return condition
+          if (inflater.needsInput() || inflater.needsDictionary()) {
+            // Break out if no more input chunks are available or a preset dictionary is missing
+            break;
+          }
+        }
       }
 
       return outputStream.toByteArray();

@@ -49,10 +49,11 @@ import org.hl7.fhir.r4b.model.Enumerations;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.terminologies.ValueSetExpander;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.stringtemplate.v4.ST;
 
-@MarkedToMoveToAdjunctPackage
+
+@Deprecated(forRemoval = true)
 public class ShExGenerator {
 
   public enum HTMLLinkPolicy {
@@ -416,6 +417,8 @@ public class ShExGenerator {
     if (text.length() <= max_col) {
       rval.add(text);
     } else {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] words = text.split(" ");
       int word_idx = 0;
       while (word_idx < words.length) {
@@ -735,9 +738,13 @@ public class ShExGenerator {
   private String getTypeName(ElementDefinition.TypeRefComponent typ) {
     // TODO: This is brittle. There has to be a utility to do this...
     if (typ.hasTargetProfile()) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] els = typ.getTargetProfile().get(0).getValue().split("/");
       return els[els.length - 1];
     } else if (typ.hasProfile()) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] els = typ.getProfile().get(0).getValue().split("/");
       return els[els.length - 1];
     } else {

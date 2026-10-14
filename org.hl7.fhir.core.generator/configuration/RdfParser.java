@@ -1,28 +1,26 @@
-package org.hl7.fhir.{{jid}}.formats;
-
-
-// generated
+{{startMark}}
+package org.hl7.fhir.{{jid}}.core.formats;
 
 {{license}}
 
-{{startMark}}
-
-import org.hl7.fhir.{{jid}}.model.*;
-import org.hl7.fhir.{{jid}}.model.StringType;
+import org.hl7.fhir.model.*;
+import org.hl7.fhir.{{jid}}.core.*;
+import org.hl7.fhir.{{jid}}.core.StringType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.turtle.Turtle.*;
 import java.io.IOException;
 
+{{generated}}
 public class RdfParser extends RdfParserBase {
 
-  public RdfParser() {
-    super();
+  public RdfParser(IModelContext modelContext) {
+    super(modelContext);
   }
 
-  public RdfParser(boolean allowUnknownContent) {
-    super();
+  public RdfParser(IModelContext modelContext, boolean allowUnknownContent) {
+    super(modelContext);
     setAllowUnknownContent(allowUnknownContent);
   }
 

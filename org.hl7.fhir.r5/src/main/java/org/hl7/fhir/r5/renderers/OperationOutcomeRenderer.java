@@ -15,10 +15,11 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
+
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  
-@MarkedToMoveToAdjunctPackage
+
 public class OperationOutcomeRenderer extends ResourceRenderer { 
 
 
@@ -48,11 +49,11 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
       }
     }
     if (hint + warn + err == 0) {
-      return context.formatPhrase(RenderingContext.OP_OUT_SUMM_ALL_OK);
+      return context.formatPhrase(RenderingI18nContext.OP_OUT_SUMM_ALL_OK);
     } else if (hint == 0) {
-      return context.formatPhrase(RenderingContext.OP_OUT_SUMM_NOHINT, err, warn);
+      return context.formatPhrase(RenderingI18nContext.OP_OUT_SUMM_NOHINT, err, warn);
     } else {
-      return context.formatPhrase(RenderingContext.OP_OUT_SUMM, err, warn, hint);
+      return context.formatPhrase(RenderingI18nContext.OP_OUT_SUMM, err, warn, hint);
     }
   }
 
@@ -66,18 +67,18 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
       hasSource = hasSource || i.hasExtension(ExtensionDefinitions.EXT_ISSUE_SOURCE);
     } 
     if (success) { 
-      x.para().tx(context.formatPhrase(RenderingContext.OP_OUT_OK));
+      x.para().tx(context.formatPhrase(RenderingI18nContext.OP_OUT_OK));
     }
     if (op.has("issue")) { 
       XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource()); // on the basis that we'll most likely be rendered using the standard fhir css, but it doesn't really matter
       XhtmlNode tr = tbl.tr(); 
-      tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_SEV)); 
-      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_LOCATION)); 
-      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE)); 
-      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_DETAILS)); 
-      tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_DIAG)); 
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.OP_OUT_SEV)); 
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_LOCATION)); 
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_CODE)); 
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_DETAILS)); 
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.OP_OUT_DIAG)); 
       if (hasSource) {
-        tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_SRC));
+        tr.td().b().tx(context.formatPhrase(RenderingI18nContext.OP_OUT_SRC));
       }
       for (ResourceWrapper i : op.children("issue")) { 
         tr = tbl.tr(); 
@@ -109,7 +110,7 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
   } 
  
   public String display(OperationOutcome oo) { 
-    return (context.formatPhrase(RenderingContext.GENERAL_TODO)); 
+    return (context.formatPhrase(RenderingI18nContext.GENERAL_TODO)); 
   } 
  
   public static String toString(OperationOutcome oo) { 

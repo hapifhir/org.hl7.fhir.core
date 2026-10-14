@@ -31,66 +31,36 @@ public class PackageHacker {
   private static boolean useSecureReferences = false;
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-//    new PackageHacker().massEdit(ManagedFileAccess.file("/Users/grahamegrieve/web/hl7.org/fhir"));
-//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.core.tgz");
-//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.corexml.tgz");
-//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.examples.tgz");
-//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.expansions.tgz");
-//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot1/hl7.fhir.r6.search.tgz");
-//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.core.tgz");
-//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.corexml.tgz");
-//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.examples.tgz");
-//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.expansions.tgz");
-//    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/6.0.0-ballot2/hl7.fhir.r6.search.tgz");
-    
-//      new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/us/core/v311/package.tgz", "http://hl7.org/fhir/us/core/STU3.1.1");
-     // new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/us/core/v700/package.tgz", "http://hl7.org/fhir/us/core/STU7");
-    
-    PackageHacker self = new PackageHacker();
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/1.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/1.0.0/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/2.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/2.0.0/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/2.1.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/2.1.0/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/3.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/3.0.0/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/3.1.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/3.1.0/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/4.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/4.0.0/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.0.0/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.1.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.1.0/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.2.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.2.0/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.3.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.3.0/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.4.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.4.0/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/5.5.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/5.5.0/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.0/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.0/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.1/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.1/hl7.terminology.r4b.tgz");
-//    self.cloneToR4B("/Users/grahamegrieve/web/terminology.hl7.org/6.0.2/hl7.terminology.r4.tgz", "/Users/grahamegrieve/web/terminology.hl7.org/6.0.2/hl7.terminology.r4b.tgz");  
-   // self.packFolder("/Users/grahamegrieve/web/hl7.org/fhir/us/core/v610/package");
-    self.edit("/Users/grahamegrieve/web/www.hl7.org.fhir/us/womens-health-registries/0.2.0-withdrawal/package.tgz");
+//    new PackageHacker().edit("/Users/grahame/web/hl7-fhir/6.0.0-ballot5/hl7.fhir.r6.core.tgz");
+    new PackageHacker().edit("/Users/grahame/web/hl7-fhir/6.0.0-ballot5/hl7.fhir.r6.expansions.tgz");
+    new PackageHacker().edit("/Users/grahame/web/hl7-fhir/6.0.0-ballot5/hl7.fhir.r6.examples.tgz");
+    new PackageHacker().edit("/Users/grahame/web/hl7-fhir/6.0.0-ballot5/hl7.fhir.r6.search.tgz");
   }
-
-  private void packFolder(String src) throws FileNotFoundException, IOException {
-    NpmPackage npm = NpmPackage.fromFolder(src);
-    npm.save(new FileOutputStream(src+".tgz"));
-    
-  }
-
-  private void cloneToR4B(String src, String dst) throws IOException {
-    FileInputStream fs = ManagedFileAccess.inStream(src);
-    NpmPackage pck = NpmPackage.fromPackage(fs);
-    System.out.println(nice(pck.getNpm()));
-    JsonObject json = pck.getNpm();
-    String name = json.asString("name");
-    json.remove("name");
-    json.add("name", name.replace(".r4", ".r4b"));
-    json.remove("fhirVersions");
-    json.remove("dependencies");
-    JsonArray fv = new JsonArray();
-    json.add("fhirVersions", fv);
-    fv.add("4.3.0");
-    JsonObject dep = new JsonObject();
-    json.add("dependencies", dep);
-    dep.add(VersionUtilities.packageForVersion("4.3.0"), "4.3.0");
-    pck.save(new FileOutputStream(dst));
-  }
+//
+//  private void packFolder(String src) throws FileNotFoundException, IOException {
+//    NpmPackage npm = NpmPackage.fromFolder(src);
+//    npm.save(new FileOutputStream(src+".tgz"));
+//
+//  }
+//
+//  private void cloneToR4B(String src, String dst) throws IOException {
+//    FileInputStream fs = ManagedFileAccess.inStream(src);
+//    NpmPackage pck = NpmPackage.fromPackage(fs);
+//    System.out.println(nice(pck.getNpm()));
+//    JsonObject json = pck.getNpm();
+//    String name = json.asString("name");
+//    json.remove("name");
+//    json.add("name", name.replace(".r4", ".r4b"));
+//    json.remove("fhirVersions");
+//    json.remove("dependencies");
+//    JsonArray fv = new JsonArray();
+//    json.add("fhirVersions", fv);
+//    fv.add("4.3.0");
+//    JsonObject dep = new JsonObject();
+//    json.add("dependencies", dep);
+//    dep.add(VersionUtilities.packageForVersion("4.3.0"), "4.3.0");
+//    pck.save(new FileOutputStream(dst));
+//  }
 
 //  private void massEdit(File dir) throws IOException {
 //    System.out.println("process "+dir.getAbsolutePath());
@@ -190,14 +160,14 @@ public class PackageHacker {
   }
 
   private boolean change(JsonObject npm) throws FileNotFoundException, IOException {
-    npm.remove("version");
-    npm.add("version", "0.2.0-withdrawal");
-    return true;
-//    if (npm.has("notForPublication")) {
-//      npm.remove("notForPublication");
-//      return true;
-//    }
-//    return false;
+//    npm.remove("version");
+//    npm.add("version", "0.2.0-withdrawal");
+//    return true;
+    if (npm.has("notForPublication")) {
+      npm.remove("notForPublication");
+      return true;
+    }
+    return false;
   }
 
   private void fixVersionInContent(Map<String, byte[]> content) {
@@ -284,9 +254,11 @@ public class PackageHacker {
     case "file://C:\\GitHub\\hl7.fhir.uv.ips#1.0.0\\output":                 return "http://hl7.org/fhir/uv/ips/STU1"; 
     case "file://C:\\GitHub\\hl7.fhir.uv.mhealth-framework#0.1.0\\output":   return "http://hl7.org/fhir/uv/mhealth-framework/2020May"; 
     case "file://C:\\GitHub\\hl7.fhir.uv.security-label-ds4p#0.1.0\\output": return "http://hl7.org/fhir/uv/security-label-ds4p/2020May"; 
-    case "file://C:\\GitHub\\hl7.fhir.uv.shorthand#0.12.0\\output":          return "http://hl7.org/fhir/uv/shorthand/2020May"; 
-    case "http://build.fhir.org/branches/R4B//":                             return "http://hl7.org/fhir/2021Mar"; 
-    }
+    case "file://C:\\GitHub\\hl7.fhir.uv.shorthand#0.12.0\\output":          return "http://hl7.org/fhir/uv/shorthand/2020May";
+      case "http://build.fhir.org/branches/R4B//":                             return "http://hl7.org/fhir/2021Mar";
+      case "file:/Users/grahame/work/r6/publish/":                             return "http://hl7.org/fhir/6.0.0-ballot5";
+
+  }
 
     // https://github.com/HL7/fhir-ig-publisher/issues/295
     if (webref.contains("hl7.org/fhir/us/core/STU4.0.0")) {

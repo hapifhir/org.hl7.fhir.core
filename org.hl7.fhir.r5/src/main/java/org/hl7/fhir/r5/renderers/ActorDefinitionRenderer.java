@@ -13,10 +13,11 @@ import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ActorDefinitionRenderer extends ResourceRenderer {
 
 
@@ -53,15 +54,15 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
     //   * reference
     if (!summ) {
       // first row, if there's no summary table:
-      xlinkNarrative(tr.td(), acd.child("name")).b().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_ACT, context.getTranslated(acd.child("name")))  + " ");
+      xlinkNarrative(tr.td(), acd.child("name")).b().tx(context.formatPhrase(RenderingI18nContext.ACTOR_DEF_ACT, context.getTranslated(acd.child("name")))  + " ");
       xlinkNarrative(tr.td(), acd.child("title")).tx(context.getTranslated(acd.child("title")));
-      xlinkNarrative(tr.td(), acd.child("type")).tx(context.formatPhrase(RenderingContext.ACTOR_DEF_TYP, acd.primitiveValue("type")) + " ");      
+      xlinkNarrative(tr.td(), acd.child("type")).tx(context.formatPhrase(RenderingI18nContext.ACTOR_DEF_TYP, acd.primitiveValue("type")) + " ");      
       tr = tbl.tr();
       td = tr.td().colspan("3");
       xlinkNarrative(td, acd.child("documentation"));
       addMarkdown(td, context.getTranslated(acd.child("documentation")));
       if (acd.has("baseDefinition")) {
-        markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.ACTOR_DERIVED_FROM));
+        markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.ACTOR_DERIVED_FROM));
         td = tr.td().colspan("2");
         boolean first = true;
         for (ResourceWrapper t : acd.children("reference")) {
@@ -70,8 +71,8 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
         }      
       }
     } else {
-      xlinkNarrative(tr.td(), acd.child("type")).tx(context.formatPhrase(RenderingContext.ACTOR_DEF_TYP, acd.primitiveValue("type")) + " ");      
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.ACTOR_DERIVED_FROM));
+      xlinkNarrative(tr.td(), acd.child("type")).tx(context.formatPhrase(RenderingI18nContext.ACTOR_DEF_TYP, acd.primitiveValue("type")) + " ");      
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.ACTOR_DERIVED_FROM));
       td = tr.td();
       if (acd.has("baseDefinition")) {
         boolean first = true;
@@ -80,12 +81,12 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
           renderUri(status, spanIfTracking(td, t), t);
         }      
       } else {
-        markGenerated(td).style("opaque: 0.6").tx(context.formatPhrase(RenderingContext.ACTOR_DERIVED_FROM_NONE));
+        markGenerated(td).style("opaque: 0.6").tx(context.formatPhrase(RenderingI18nContext.ACTOR_DERIVED_FROM_NONE));
       }
     }
     if (acd.has("reference")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_REFS));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_REFS));
       td = tr.td().colspan("2");
       boolean first = true;
       for (ResourceWrapper t : acd.children("reference")) {
@@ -95,13 +96,13 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
     }
     if (acd.has("capabilities")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.ACTOR_DEF_CAP));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.ACTOR_DEF_CAP));
       td = tr.td().colspan("2");
       renderCanonical(status, xlinkNarrative(td, acd.child("capabilities")), acd.child("capabilities"));      
     }
     if (acd.has("derivedFrom")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.ACTOR_DEF_DER));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.ACTOR_DEF_DER));
       td = tr.td().colspan("2");
       boolean first = true;
       for (ResourceWrapper t : acd.children("derivedFrom")) {

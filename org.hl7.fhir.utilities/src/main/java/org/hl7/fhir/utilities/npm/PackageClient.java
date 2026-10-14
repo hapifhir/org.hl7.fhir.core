@@ -127,6 +127,19 @@ public class PackageClient {
   }
 
   public List<PackageInfo> search(String name, String pkgCanonical, String fhirVersion, boolean preRelease, String canonical) throws IOException {
+    return search(name, pkgCanonical, fhirVersion, preRelease, canonical, false);
+  }
+
+  /**
+   * Search the package server catalog.
+   *
+   * The server treats name and pkgCanonical as partial matches (e.g. searching for
+   * hl7.terminology.r4 also returns hl7.terminology.r4b, and http://hl7.org.au/fhir/
+   * matches every package whose canonical starts with it). Pass exactMatch = true
+   * when looking a package up by its id or canonical rather than searching, so that
+   * near-miss siblings are filtered out of the results.
+   */
+  public List<PackageInfo> search(String name, String pkgCanonical, String fhirVersion, boolean preRelease, String canonical, boolean exactMatch) throws IOException {
     CommaSeparatedStringBuilder params = new CommaSeparatedStringBuilder("&");
     if (!Utilities.noString(name)) {
       params.append("name="+name);
@@ -160,6 +173,14 @@ public class PackageClient {
           obj.asString("canonical"),
           address, d));
       }
+      if (exactMatch) {
+        if (!Utilities.noString(name)) {
+          res.removeIf(pi -> !name.equals(pi.getId()));
+        }
+        if (!Utilities.noString(pkgCanonical)) {
+          res.removeIf(pi -> !pkgCanonical.equals(pi.getCanonical()));
+        }
+      }
       if (hasDates) {
         Collections.sort(res, new PackageInfo.PackageInfoSorter(true));
       } else {
@@ -167,8 +188,8 @@ public class PackageClient {
       }
     } catch (IOException e1) {
     }
-    return res;    
-  }  
+    return res;
+  }
 
   public Date getNewPackages(Date lastCalled, List<PackageInfo> updates) {
     return null;

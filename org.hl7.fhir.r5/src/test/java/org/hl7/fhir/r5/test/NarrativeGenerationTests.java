@@ -30,7 +30,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClient5R5;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
@@ -43,6 +43,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -150,7 +151,7 @@ public class NarrativeGenerationTests {
 
   public static final String WINDOWS = "WINDOWS";
 
-  private static final String HEADER = "<html><head>"+
+  private static final String HEADER = "<html lang=\"en\"><head>"+
      "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/fhir.css\"/>"+
      "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/dist/css/bootstrap.css\"/>"+
      "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/assets/css/bootstrap-fhir.css\"/>"+
@@ -234,14 +235,19 @@ public class NarrativeGenerationTests {
   }
 
   @BeforeAll
-  public static void setUp() throws IOException {
+  static void setUp() throws IOException {
     var simpleContext = TestingUtilities.getSharedWorkerContext("5.0.0");
-    simpleContext.connectToTSServer(new TerminologyClientR5.TerminologyClientR5Factory(), "http://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
+    simpleContext.connectToTSServer(new TerminologyClient5R5.TerminologyClientR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
     context = simpleContext;
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");
     context.getManager().loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" )));
   }
+  @AfterAll
+  static void tearDown() {
+    context = null;
+  }
+
 
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
@@ -254,7 +260,7 @@ public class NarrativeGenerationTests {
         context.getManager().cacheResource(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
       }
     }
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]", "narrative"));
     rc.setShowSummaryTable(test.isHeader());
     rc.setTrackNarrativeSource(test.isTrack());
@@ -288,7 +294,7 @@ public class NarrativeGenerationTests {
       source = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"));      
     }
     
-    XhtmlNode x = RendererFactory.factory(source, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), source));
+    XhtmlNode x = new RendererFactory().factory(source, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), source));
     String expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".html"));
     String actual = HEADER+new XhtmlComposer(true, test.pretty).compose(x)+FOOTER;
     String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.html");
@@ -298,7 +304,7 @@ public class NarrativeGenerationTests {
     String msg = new CompareUtilities().checkXMLIsSame(id, expectedFileName, actualFileName);
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
 
-    String disp = RendererFactory.factory(source, rc).buildSummary(ResourceWrapper.forResource(rc.getContextUtilities(), source));
+    String disp = new RendererFactory().factory(source, rc).buildSummary(ResourceWrapper.forResource(rc.getContextUtilities(), source));
     expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".txt"));
     actual = disp;
     expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.txt");

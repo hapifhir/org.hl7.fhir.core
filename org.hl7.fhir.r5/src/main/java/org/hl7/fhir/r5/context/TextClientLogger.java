@@ -38,12 +38,12 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
-@MarkedToMoveToAdjunctPackage
+
 public class TextClientLogger extends BaseLogger implements ToolingClientLogger {
 
   private PrintStream file;
@@ -63,7 +63,7 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
       return;
     String id = nextId();
     file.println("\r\n--- "+id+" -----------------\r\nRequest: \r\n");
-    file.println(method+" "+url+" HTTP/1.0");
+    file.println(method+" "+url+" HTTP/1.1");
     if (headers != null) {
       for (String s : headers) { 
         if (s.startsWith("Api-Key")) {

@@ -1,0 +1,98 @@
+package org.hl7.fhir.standalone.terminology.validation;
+
+import lombok.Getter;
+import lombok.Setter;
+import org.hl7.fhir.model.core.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+
+public class ValidationProcessInfo {
+  private TerminologyServiceErrorClass err;
+  private List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+  @Getter @Setter
+  private String foundVersion;
+  private boolean isFromFragment = false;
+
+  public ValidationProcessInfo() {
+  }
+  
+  public ValidationProcessInfo(List<OperationOutcomeIssueComponent> issues) {
+    this.issues = issues;
+  }
+  public TerminologyServiceErrorClass getErr() {
+    return err;
+  }
+  public void setErr(TerminologyServiceErrorClass err) {
+    this.err = err;
+  }
+  
+  public List<OperationOutcomeIssueComponent> getIssues() {
+    return issues;
+  }
+  public void addIssue(List<OperationOutcomeIssueComponent> issues) {
+    this.issues.addAll(issues);
+    
+  }
+  public boolean hasErrors() {
+    for (OperationOutcomeIssueComponent issue : issues) {
+      if (issue.getSeverity() == IssueSeverity.FATAL || issue.getSeverity() == IssueSeverity.ERROR) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * The messages that explain the outcome: the errors and the warnings, not the information level
+   * notes about an individual coding. "This code is not in the value set", said about one coding
+   * of a CodeableConcept that validated on another, did not cause anything, and putting it in the
+   * summary message reads as though it had. If information is all there is, it is all we can say
+   */
+  public List<String> summaryList() {
+    List<String> msgs = new ArrayList<>();
+    for (OperationOutcomeIssueComponent issue : issues) {
+      if (issue.getSeverity() == IssueSeverity.FATAL || issue.getSeverity() == IssueSeverity.ERROR || issue.getSeverity() == IssueSeverity.WARNING) {
+        msgs.add(issue.getDetails().getText());
+      }
+    }
+    if (msgs.isEmpty()) {
+      for (OperationOutcomeIssueComponent issue : issues) {
+        msgs.add(issue.getDetails().getText());
+      }
+    }
+    Collections.sort(msgs);
+    return msgs;
+  }
+
+  public boolean hasMessage(String msg) {
+    for (OperationOutcomeIssueComponent iss : issues) {
+      if (msg.equals(iss.getDetails().getText())) {
+        return true;        
+      }
+    }
+    return false;
+  }
+
+  public boolean hasNotFound(String system) {
+    for (OperationOutcomeIssueComponent iss : issues) {
+      if (iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found") &&
+          iss.getDetails().hasText() && iss.getDetails().getText().contains(system)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean isFragment() {
+    return isFromFragment;
+  }
+
+  public void markFromFragment() {
+    isFromFragment = true;
+  }
+}

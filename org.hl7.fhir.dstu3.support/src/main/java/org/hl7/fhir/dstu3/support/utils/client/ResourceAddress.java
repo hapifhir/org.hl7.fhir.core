@@ -48,6 +48,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.model.ResourceType;
+import org.hl7.fhir.utilities.regex.RegexConstants;
 
 //Make resources address subclass of URI
 
@@ -59,7 +60,6 @@ import org.hl7.fhir.dstu3.model.ResourceType;
  */
 public class ResourceAddress {
 	
-	public static final String REGEX_ID_WITH_HISTORY = "(.*)(/)([a-zA-Z0-9]*)(/)([a-z0-9\\-\\.]{1,64})(/_history/)([a-z0-9\\-\\.]{1,64})$";
 	
 	private URI baseServiceUri;
 	
@@ -231,10 +231,15 @@ public class ResourceAddress {
 	 * Generalize later: http://hl7connect.healthintersections.com.au/svc/fhir/318/_history/1
 	 */
 	public static ResourceVersionedIdentifier parseCreateLocation(String locationResponseHeader) {
-		Pattern pattern = Pattern.compile(REGEX_ID_WITH_HISTORY);
+		@SuppressWarnings("checkstyle:patternUsage")
+		//bounded groups, end-anchored, safe
+		Pattern pattern = Pattern.compile(RegexConstants.ID_WITH_HISTORY_REGEX);
 		Matcher matcher = pattern.matcher(locationResponseHeader);
 		ResourceVersionedIdentifier parsedHeader = null;
-		if(matcher.matches()){
+		@SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+		//False positive: Matcher.matches() on pattern which has been independently reviewed
+		boolean matches = matcher.matches();
+		if(matches){
 			String serviceRoot = matcher.group(1);
 			String resourceType = matcher.group(3);
 			String id = matcher.group(5);

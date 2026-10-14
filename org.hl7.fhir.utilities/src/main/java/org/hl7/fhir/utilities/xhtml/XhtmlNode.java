@@ -324,7 +324,10 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   public void addTextWithLineBreaks(String content) {
     if (content != null) {
       boolean first = true;
-      for (String line : content.split("\\r?\\n")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //simple character class split; safe
+      String[] contentLines = content.split("\\r?\\n");
+      for (String line : contentLines) {
         if (first) {
           first = false;
         } else {
@@ -385,6 +388,19 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }
     
     StringBuilder b = new StringBuilder();
+    appendAllText(b);
+    return b.toString();
+  }
+
+  // appends what allText() returns to b. The whole subtree is written into the one builder: building a string for each
+  // child and then appending it made allText() cost O(size x depth), and some callers ask for it at every level
+  private void appendAllText(StringBuilder b) {
+    if (!hasChildren()) {
+      if (getContent() != null) {
+        b.append(getContent());
+      }
+      return;
+    }
     for (XhtmlNode n : childNodes) {
       if (n.getNodeType() == NodeType.Element && Utilities.existsInList(n.getName(), "li")) {
         b.append("* ");
@@ -396,7 +412,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       } 
       if (n.getNodeType() == NodeType.Element) {
         if (!Utilities.existsInList(n.getName(), "img")) {
-          b.append(n.allText());          
+          n.appendAllText(b);
         } else if (n.hasAttribute("alt")) {
           b.append(n.getAttribute("alt"));
         } else {
@@ -409,7 +425,6 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
         }
       }
     }
-    return b.toString();
   }
 
   public String toLiteralText() {
@@ -475,6 +490,82 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }
     getAttributes().put(name, value);
     return this;    
+  }
+
+  /**
+   * Shift every heading in this tree so that the highest one (the h1..h6 with the smallest number)
+   * ends up at {@code level}, keeping the relative structure intact. h1/h2/h2 shifted to 3 becomes
+   * h3/h4/h4; h4/h5 shifted to 3 becomes h3/h4.
+   * <p>
+   * This is for content that is about to be composed into a page as a fragment. Whoever wrote the
+   * content cannot know how deep in the including page it will land - the same narrative can be
+   * included under headings at different levels - so the including code has to say what depth it is
+   * putting the fragment at, and the heading levels are made to match.
+   * <p>
+   * The shift is calculated from the highest heading rather than the first one, so that afterwards
+   * nothing in the tree sits above {@code level}. That is the property the caller actually needs:
+   * the fragment must not compete with the heading of the page including it.
+   * <p>
+   * Headings inside an svg are left alone - that is markup inside a picture, not document structure.
+   * <p>
+   * NOTE: this MUTATES the tree. Narrative read off a resource shares its nodes with the resource,
+   * so copy() first unless you intend to change the resource's own narrative as well.
+   *
+   * @param level the level the highest heading should end up at, 1-6
+   * @throws FHIRException if level is out of range, or the shift would push a heading past h6
+   */
+  public void ensureTopHeadingIs(int level) {
+    if (level < 1 || level > 6) {
+      throw new FHIRException("Illegal Header level "+level);
+    }
+    List<XhtmlNode> headings = new ArrayList<XhtmlNode>();
+    listHeadings(this, headings);
+    if (headings.isEmpty()) {
+      return;
+    }
+    int min = 7;
+    int max = 0;
+    for (XhtmlNode h : headings) {
+      int l = headingLevel(h);
+      min = Math.min(min, l);
+      max = Math.max(max, l);
+    }
+    int delta = level - min;
+    if (delta == 0) {
+      return;
+    }
+    if (max + delta > 6) {
+      throw new FHIRException("Unable to make the top heading in this content h"+level+": the deepest heading in it is h"+max+
+          ", which would have to become h"+(max + delta)+", and HTML has no heading below h6");
+    }
+    for (XhtmlNode h : headings) {
+      h.setName("h"+Integer.toString(headingLevel(h) + delta));
+    }
+  }
+
+  private static void listHeadings(XhtmlNode focus, List<XhtmlNode> headings) {
+    if ("svg".equals(focus.getName())) {
+      return;
+    }
+    if (headingLevel(focus) > 0) {
+      headings.add(focus);
+    }
+    if (focus.hasChildren()) {
+      for (XhtmlNode c : focus.getChildNodes()) {
+        listHeadings(c, headings);
+      }
+    }
+  }
+
+  /**
+   * @return 1-6 for h1..h6, or 0 for any other node
+   */
+  private static int headingLevel(XhtmlNode focus) {
+    String n = focus.getName();
+    if (n != null && n.length() == 2 && (n.charAt(0) == 'h' || n.charAt(0) == 'H') && n.charAt(1) >= '1' && n.charAt(1) <= '6') {
+      return n.charAt(1) - '0';
+    }
+    return 0;
   }
 
   public XhtmlNode copy() {
@@ -793,10 +884,13 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
 
-  public XhtmlNode input(String name, String type, String placeholder, int size) {
+  public XhtmlNode input(String name, String label, String type, String placeholder, int size) {
     XhtmlNode p = new XhtmlNode(NodeType.Element, "input");
     if (name != null) {
       p.attribute("name", name);
+    }
+    if (label != null) {
+      p.attribute("aria-label", label);
     }
     p.attribute("type", type);
     if (placeholder != null) {
@@ -809,10 +903,13 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return p;
   }
 
-  public XhtmlNode select(String name) {
+  public XhtmlNode select(String name, String label) {
     XhtmlNode p = new XhtmlNode(NodeType.Element, "select");
     p.attribute("name", name);
     p.attribute("size", "1");
+    if (label != null) {
+      p.attribute("aria-label", label);
+    }
     addChildNode(p);
     return p;
   }
@@ -983,6 +1080,8 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
   private boolean passesTest(String test) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] p = test.split("\\s+");
     if (p.length != 3) {
       return false;
@@ -1067,7 +1166,11 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     if (!hasAttribute("class"))
       return false;
     String classValue = getAttribute("class");
-    return Arrays.asList(classValue.split(" ")).contains(name);
+
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] classNames = classValue.split(" ");
+    return Arrays.asList(classNames).contains(name);
   }
 
   public XhtmlNode clss(String name) {
@@ -1134,7 +1237,10 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     if (code) {
       XhtmlNode c = code();
       boolean first = true;
-      for (String line : cnt.split("\\r?\\n")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //simple character class split; safe
+      String[] cntLines = cnt.split("\\r?\\n");
+      for (String line : cntLines) {
         if (first) first = false; else c.br();
         c.tx(line.replace(" ", Character.toString(0xA0)));
       }
@@ -1154,13 +1260,16 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
 
-  public XhtmlNode button(String class_, String title) {
+  public XhtmlNode button(String class_, String alt, String title) {
     XhtmlNode btn = addTag("button");
     if (class_ != null) {
       btn.attribute("class", class_);
     }
     if (title != null) {
       btn.attribute("title", title);
+    }
+    if (alt != null) {
+      btn.attribute("aria-label", alt);
     }
     return btn;
   }

@@ -5,12 +5,8 @@ import java.util.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
-import org.hl7.fhir.r5.model.PackageInformation;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.*;
 
 /**
@@ -21,7 +17,7 @@ import org.hl7.fhir.utilities.*;
  *
  */
 
-@MarkedToMoveToAdjunctPackage
+
 public class CanonicalResourceManager<T extends CanonicalResource> {
 
   private static final String[] INVALID_TERMINOLOGY_URLS = {
@@ -30,122 +26,6 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     "http://nucc.org/provider-taxonomy"
   };
   private int loadCount = 0;
-
-  public abstract static class CanonicalResourceProxy {
-    private String type;
-    private String id;
-    private String url;
-    private String version;
-    private String supplements;
-    private String derivation;
-    private CanonicalResource resource;
-    private boolean hacked;
-    private String content;
-
-    public CanonicalResourceProxy(String type, String id, String url, String version, String supplements, String derivation, String content) {
-      super();
-      this.type = type;
-      this.id = id;
-      this.url = url;
-      this.version = version;
-      this.supplements = supplements;
-      this.content = content;
-      this.derivation = derivation;
-    }
-
-    public String getType() {
-      return type;
-    }
-
-    public String getId() {
-      return id;
-    }
-
-    public String getUrl() {
-      return url;
-    }
-
-    public String getVersion() {
-      return version;
-    }
-
-    public boolean hasId() {
-      return id != null;
-    }
-
-    public boolean hasUrl() {
-      return url != null;
-    }
-
-    public boolean hasVersion() {
-      return version != null;
-    }
-
-    public String getSupplements() {
-      return supplements;
-    }
-
-
-    public String getContent() {
-      return content;
-    }
-
-    public String getDerivation() {
-      return derivation;
-    }
-
-    public void setDerivation(String derivation) {
-      this.derivation = derivation;
-    }
-
-    public CanonicalResource getResource() throws FHIRException {
-      if (resource == null) {
-        resource = loadResource();
-        if (hacked) {
-          resource.setUrl(url).setVersion(version);
-        }
-        if (resource instanceof CodeSystem) {
-          CodeSystemUtilities.crossLinkCodeSystem((CodeSystem) resource);
-        }
-      }
-      return resource;
-    }
-
-    public void setResource(CanonicalResource resource) {
-      this.resource = resource;
-    }
-
-    public abstract CanonicalResource loadResource() throws FHIRException;
-
-    @Override
-    public String toString() {
-      return type+"/"+id+": "+url+"|"+version;
-    }
-
-    public void hack(String url, String version) {
-      this.url = url;
-      this.version = version;
-      this.hacked = true;
-
-    }
-
-    /**
-     * used in cross version settings by the package loaders.
-     */
-    public void updateInfo() {
-      type = resource.fhirType();
-      id = resource.getId();
-      url = resource.getUrl();
-      version = resource.getVersion();
-      if (resource instanceof CodeSystem) {
-        supplements = ((CodeSystem) resource).getSupplements();
-        content = ((CodeSystem) resource).getContentElement().asStringValue();
-      }
-      if (resource instanceof StructureDefinition) {
-        derivation = ((StructureDefinition) resource).getDerivationElement().asStringValue();
-      }
-    }
-  }
 
   public static class CanonicalListSorter implements Comparator<CanonicalResource> {
 
@@ -265,6 +145,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   private Set<CachedCanonicalResource<T>> allResources = new HashSet<>();
   private Map<String, List<CachedCanonicalResource<T>>> listForId;
   private Map<String, List<CachedCanonicalResource<T>>> listForUrl;
+  private Map<String, CachedCanonicalResource<T>> masterDefinitions;
   private Map<String, CachedCanonicalResource<T>> indexedResources;
   private Map<String, List<CachedCanonicalResource<T>>> supplements; // general index based on CodeSystem.supplements
   private String version; // for debugging purposes
@@ -276,6 +157,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     this.minimalMemory = minimalMemory;
     allResources = new HashSet<>();
     listForId = new HashMap<>();
+    masterDefinitions = new HashMap<>();
     listForUrl = new HashMap<>();
     indexedResources = new HashMap<>();
     supplements = new HashMap<>(); // general index based on CodeSystem.supplements
@@ -295,10 +177,23 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   public void copy(CanonicalResourceManager<T> source) {
     allResources.clear();
     indexedResources.clear();
+    listForUrl.clear();
+    listForId.clear();
+    masterDefinitions.clear();
+    supplements.clear();
     allResources.addAll(source.allResources);
     indexedResources.putAll(source.indexedResources);
     for (Map.Entry<String, List<CachedCanonicalResource<T>>> entry : source.listForUrl.entrySet()) {
       listForUrl.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+    }
+    for (Map.Entry<String, List<CachedCanonicalResource<T>>> entry : source.listForId.entrySet()) {
+      listForId.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+    }
+    // the master definitions decide which version of an unversioned canonical is used when the referencing 
+    // resource has no package (see getByPackage), without them the copy falls back to the latest version
+    masterDefinitions.putAll(source.masterDefinitions);
+    for (Map.Entry<String, List<CachedCanonicalResource<T>>> entry : source.supplements.entrySet()) {
+      supplements.put(entry.getKey(), new ArrayList<>(entry.getValue()));
     }
   }
 
@@ -360,15 +255,22 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
 
     // special case logic for UTG support prior to version 5
-    if (cr.getPackageInfo() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology")) {
-      List<CachedCanonicalResource<T>> toDrop = new ArrayList<>();
-      for (CachedCanonicalResource<T> n : allResources) {
-        if (n.getUrl() != null && n.getUrl().equals(cr.getUrl()) && isBasePackage(n.getPackageInfo())) {
-          toDrop.add(n);
+    // listForUrl holds exactly the same resources as allResources, indexed by url, and drop() keeps the two
+    // in step - so look the url up instead of scanning. Scanning made each hl7.terminology package cost
+    // O(resources already loaded), which is why the THO loads got slower the later they came: the vsac
+    // packages ahead of them add ~70k ValueSets that can never match this url
+    if (cr.getPackageInfo() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology") && cr.getUrl() != null) {
+      List<CachedCanonicalResource<T>> sameUrl = listForUrl.get(cr.getUrl());
+      if (sameUrl != null) {
+        List<CachedCanonicalResource<T>> toDrop = new ArrayList<>();
+        for (CachedCanonicalResource<T> n : sameUrl) {
+          if (isBasePackage(n.getPackageInfo())) {
+            toDrop.add(n);
+          }
         }
-      }
-      for (CachedCanonicalResource<T> n : toDrop) {
-        drop(n);
+        for (CachedCanonicalResource<T> n : toDrop) {
+          drop(n);
+        }
       }
     }
 //    CachedCanonicalResource<T> existing = cr.hasVersion() ? map.get(cr.getUrl()+"|"+cr.getVersion()) : map.get(cr.getUrl()+"|#0");
@@ -385,6 +287,14 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       set.add(cr);
     }
     allResources.add(cr);
+    if (cr.getPackageInfo() != null && cr.getPackageInfo().isMaster() && cr.getUrl() != null) {
+      String type = cr.proxy != null ? cr.proxy.getType() : cr.getResource().fhirType();
+      String deriv = cr.proxy != null ? cr.proxy.getDerivation() : cr.getResource() instanceof StructureDefinition ? ((StructureDefinition) cr.getResource()).getDerivationElement().primitiveValue() : null;
+      if ((Utilities.existsInList(type, "CodeSystem", "ValueSet") ||
+            "StructureDefinition".equals(type) && "specialization".equals(deriv)) && !cr.getUrl().startsWith("http://terminology.hl7.org")) {
+        masterDefinitions.put(cr.getUrl(), cr);
+      }
+    }
     if (!listForUrl.containsKey(cr.getUrl())) {
       listForUrl.put(cr.getUrl(), new ArrayList<>());
     }
@@ -469,7 +379,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   private int compareByLoadCount(int o1, int o2) {
-    if (01 == 0 && o2 == 0) {
+    if (o1 == 0 && o2 == 0) {
       return 0;
     } else if (o1 == 0) {
       return 1;
@@ -598,8 +508,8 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public void drop(CachedCanonicalResource<T> cr) {
     while (indexedResources.values().remove(cr));
-    while (listForId.values().remove(cr));
-    while (listForUrl.values().remove(cr));
+    while (listForId.values().remove(cr)); // FIXME SpotBugs issue: GC_UNRELATED_TYPES listForId.values().remove(cr) is always false (values() is Collection<List<CachedCanonicalResource<T>>>); fix to listForId.get(cr.getId()).remove(cr)
+    while (listForUrl.values().remove(cr)); // FIXME SpotBugs issue: GC_UNRELATED_TYPES listForUrl.values().remove(cr) is always false (same type mismatch); fix to listForUrl.get(cr.getUrl()).remove(cr)
     String surl = cr.supplements();
     if (surl != null) {
       supplements.get(surl).remove(cr);
@@ -632,12 +542,18 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       CachedCanonicalResource<T> cr = indexedResources.get(id);
       if (cr != null) {
         drop(cr);
+        if (masterDefinitions.containsKey(cr.getUrl())) {
+          masterDefinitions.remove(cr.getUrl());
+        }
       }
     } else {
       List<CachedCanonicalResource<T>> set = listForId.get(id);
       if (set != null) { // it really should be
         for (CachedCanonicalResource<T> i : set) {
           drop(i);
+          if (masterDefinitions.containsKey(i.getUrl())) {
+            masterDefinitions.remove(i.getUrl());
+          }
         }
       }
     }
@@ -691,10 +607,15 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public T get(String url) {
+    CachedCanonicalResource<T> cr = masterDefinitions.get(url);
+    if (cr != null) {
+      return cr.getResource();
+    }
     return indexedResources.containsKey(url) ? indexedResources.get(url).getResource() : null;
   }
 
   public T get(String system, String version) {
+
     if (version == null) {
       return get(system);
     } else {
@@ -753,10 +674,15 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         return indexedResources.get(pv+":"+url).getResource();
       }
     }
+    CachedCanonicalResource<T> cr = masterDefinitions.get(url);
+    if (cr != null) {
+      return cr.getResource();
+    }
     return indexedResources.containsKey(url) ? indexedResources.get(url).getResource() : null;
   }
 
   public T getByPackage(String system, String version, List<String> pvlist) {
+
     if (version == null) {
       return getByPackage(system, pvlist);
     } else {
