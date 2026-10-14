@@ -28,14 +28,14 @@ import org.junit.jupiter.api.Test;
  * duplicates, existing translations and orphans are handled - so that changes to how it is
  * implemented can be checked against it.
  */
-class LanguageUtilsGenerateTranslationsTest {
+class LanguageUtilsTranslationUnitsTest {
 
   private static String describe(TranslationUnit tu) {
     return tu.getId() + "|" + tu.getSrcText() + "|" + tu.getTgtText() + (tu.getOriginal() == null ? "" : "|was:" + tu.getOriginal());
   }
 
   private static List<String> describe(List<TranslationUnit> list) {
-    return list.stream().map(LanguageUtilsGenerateTranslationsTest::describe).collect(Collectors.toList());
+    return list.stream().map(LanguageUtilsTranslationUnitsTest::describe).collect(Collectors.toList());
   }
 
   @Test
