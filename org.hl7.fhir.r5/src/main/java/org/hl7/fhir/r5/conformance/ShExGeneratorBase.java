@@ -375,7 +375,7 @@ public abstract class ShExGeneratorBase {
     return "\n<$refType$Reference> CLOSED {" +
       "\n    fhir:Element.id @<" + getClassName("id") + ">?;" +
       "\n    fhir:Element.extension @<" + getClassName("Extension") + ">*;" +
-      "\n    " + getLinkPredicate() + " @<$refType$> OR CLOSED {a [fhir:$refType$]}?;" +
+      "\n    " + getLinkPredicate() + " @<$refType$> OR IRI?;" +
       "\n    fhir:Reference.reference @<" + getClassName("string") + ">?;" +
       "\n    fhir:Reference.display @<" + getClassName("string") + ">?;" +
       "\n}";
@@ -1548,8 +1548,8 @@ public abstract class ShExGeneratorBase {
         oneOrMoreTypes.add(defnToStore);
     } else {
       if (!refChoices.isEmpty()) {
-        defn += " AND {" + getLinkPredicate() + " \n\t\t\t@<" +
-          refChoices.replace("_OR_", "> OR \n\t\t\t@<") + "> ?}";
+        defn += " AND {" + getLinkPredicate() + " \n\t\t\t" +
+          relaxRefTargets("@<" + refChoices.replace("_OR_", "> OR \n\t\t\t@<") + ">") + " ?}";
       }
     }
 
@@ -1747,6 +1747,29 @@ public abstract class ShExGeneratorBase {
    * @param c
    * @return
    */
+  /**
+   * Relax each reference link target so it is satisfied either by the full referenced
+   * resource (when it is present/contained) OR by just being an IRI link. FHIR RDF carries a
+   * reference to a resource not inlined in the graph only as a link IRI — sometimes a type-only
+   * stub ({@code <x> a fhir:Encounter}), sometimes a bare IRI with no triples, and for Any/Resource
+   * targets the stub's rdf:type is the CONCRETE type ({@code a fhir:Procedure}), not fhir:Resource.
+   * A type-only relaxation ({@code a [fhir:T]}) therefore rejects Any-references and stubless
+   * external links, so the link target falls back to {@code IRI} (any IRI node), which subsumes all
+   * of these while still deep-validating the full resource when it is present.
+   *
+   * @param targets a target expression such as {@code @<Encounter>} or {@code @<A> OR @<B>}
+   */
+  protected static String relaxRefTargets(String targets) {
+    java.util.regex.Matcher m = java.util.regex.Pattern.compile("@<([^>]+)>").matcher(targets);
+    StringBuffer sb = new StringBuffer();
+    while (m.find()) {
+      String name = m.group(1);
+      m.appendReplacement(sb, java.util.regex.Matcher.quoteReplacement("(@<" + name + "> OR IRI)"));
+    }
+    m.appendTail(sb);
+    return sb.toString();
+  }
+
   private String getShexCode(String c) {
     switch (c) {
       case "boolean" :
@@ -1852,7 +1875,7 @@ public abstract class ShExGeneratorBase {
       }
 
       if (!refValues.isEmpty())
-        choiceEntries.add("(" + entry + " AND {" + getLinkPredicate() + " " + StringUtils.join(refValues, " OR \n\t\t\t ") + " ?}) ");
+        choiceEntries.add("(" + entry + " AND {" + getLinkPredicate() + " " + relaxRefTargets(StringUtils.join(refValues, " OR \n\t\t\t ")) + " ?}) ");
       else
         choiceEntries.add(entry);
     }
@@ -1903,10 +1926,9 @@ public abstract class ShExGeneratorBase {
       //ONE_OR_MORE_CHOICES is a literal string constant; safe
       String[] choicesParts = StringUtils.splitByWholeSeparator(oneOrMoreType, ONE_OR_MORE_CHOICES);
       origType = choicesParts[0];
-      restriction = "AND {" + getLinkPredicate() + " \n\t\t\t@<";
-
       String choices = choicesParts[1];
-      restriction += choices.replace("_OR_", "> OR \n\t\t\t@<") + "> ?}";
+      restriction = "AND {" + getLinkPredicate() + " \n\t\t\t"
+          + relaxRefTargets("@<" + choices.replace("_OR_", "> OR \n\t\t\t@<") + ">") + " ?}";
     }
 
     origType = origType.replace(ONE_OR_MORE_PREFIX, "");
