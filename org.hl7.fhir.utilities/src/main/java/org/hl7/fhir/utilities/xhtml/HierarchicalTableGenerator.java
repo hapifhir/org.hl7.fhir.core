@@ -1551,6 +1551,8 @@ public class HierarchicalTableGenerator {
    * Copies a piece's classes, attributes and hint (as title) onto the node it renders to.
    * A "class" in the piece's attributes is merged with its classList, not overwritten by it (or vice versa).
    */
+  // StringUtils.split splits on whitespace without a regex; the check is textual and can't tell it from String.split
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
   private void applyPieceAttributes(XhtmlNode node, Piece p) {
     Set<String> classes = new LinkedHashSet<>();
     if (p.classList != null) {
