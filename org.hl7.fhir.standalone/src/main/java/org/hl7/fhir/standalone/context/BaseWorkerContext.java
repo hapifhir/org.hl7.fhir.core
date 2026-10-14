@@ -111,6 +111,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext, IWorkerContextManager, IOIDServices {
   private static boolean allowedToIterateTerminologyResources;
   private long definitionsVersion = 0;
+  private final List<CodeSystem> externalCodeSystems = new ArrayList<>();
+  private String externalCodeSystemLanguage;
   private Map<String, Object> analyses = new HashMap();
 
   @Getter
@@ -2622,6 +2624,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @SuppressWarnings("unchecked")
   public <T extends Resource> T fetchResourceWithExceptionByVersion(Class<T> class_, String uri, VersionResolutionRules rules, String version, Resource sourceForReference) throws FHIRException {
+    invalidateExternalCodeSystemsForLanguage();
     if (uri == null) {
       return null;
     }
@@ -2900,6 +2903,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @SuppressWarnings("unchecked")
   public <T extends Resource> T fetchResourceWithExceptionByVersion(String cls, String uri, VersionResolutionRules rules, String version, CanonicalResource source) throws FHIRException {
+    invalidateExternalCodeSystemsForLanguage();
     if (uri == null) {
       return null;
     }
@@ -3923,6 +3927,68 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  private String getTerminologyResourceLanguage() {
+    Parameters parameters = expansionParameters.get();
+    if (parameters != null) {
+      for (ParametersParameterComponent p : parameters.getParameterList()) {
+        if ("displayLanguage".equals(p.getName()) && p.hasValuePrimitive()) {
+          String language = p.getValue().primitiveValue();
+          return language == null || language.isBlank() ? null : language.trim();
+        }
+      }
+    }
+    return null;
+  }
+
+  // Externally loaded resources also enter the canonical resource index. Discard
+  // only those resources on a language change, preserving local/package resources
+  // even when they share an id with an external resource.
+  private void invalidateExternalCodeSystemsForLanguage() {
+    String language = getTerminologyResourceLanguage();
+    synchronized (lock) {
+      if (java.util.Objects.equals(language, externalCodeSystemLanguage)) {
+        return;
+      }
+      for (CodeSystem cs : externalCodeSystems) {
+        for (var entry : new ArrayList<>(codeSystems.getCachedList())) {
+          if (java.util.Objects.equals(entry.getUrl(), cs.getUrl())
+              && java.util.Objects.equals(entry.getVersion(), cs.getVersion())
+              && entry.getResource() == cs) {
+            codeSystems.drop(entry);
+          }
+        }
+        List<ResourceProxy> byUrl = allResourcesByUrl.get(cs.getUrl());
+        if (byUrl != null) {
+          byUrl.removeIf(r -> r.getResource() == cs);
+          if (byUrl.isEmpty()) {
+            allResourcesByUrl.remove(cs.getUrl());
+          }
+        }
+        Map<String, ResourceProxy> byId = allResourcesById.get("CodeSystem");
+        if (byId != null) {
+          ResourceProxy current = byId.get(cs.getId());
+          if (current != null && current.getResource() == cs) {
+            if (current.replaced == null) {
+              byId.remove(cs.getId());
+            } else {
+              byId.put(cs.getId(), current.replaced);
+            }
+          }
+          for (ResourceProxy r = byId.get(cs.getId()); r != null; r = r.replaced) {
+            while (r.replaced != null && r.replaced.getResource() == cs) {
+              r.replaced = r.replaced.replaced;
+            }
+          }
+        }
+      }
+      if (!externalCodeSystems.isEmpty()) {
+        definitionsChanged();
+      }
+      externalCodeSystems.clear();
+      externalCodeSystemLanguage = language;
+    }
+  }
+
   private <T extends Resource> T doFindTxResource(Class<T> class_, String canonical, VersionResolutionRules rules) {
     // well, we haven't found it locally. We're going look it up
     if (class_ == ValueSet.class) {
@@ -3952,13 +4018,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) svs.getVs();
       }
     } else if (class_ == CodeSystem.class) {
+      String language = getTerminologyResourceLanguage();
       TerminologyCache.SourcedCodeSystem scs = null;
-      if (txCache.hasCodeSystem(canonical)) {
-        scs = txCache.getCodeSystem(canonical);
+      if (txCache.hasCodeSystem(canonical, language)) {
+        scs = txCache.getCodeSystem(canonical, language);
       } else {
-
-        scs = terminologyClientManager.findCodeSystemOnServer(canonical);
-        txCache.cacheCodeSystem(canonical, scs);
+        scs = terminologyClientManager.findCodeSystemOnServer(canonical, language);
+        txCache.cacheCodeSystem(canonical, language, scs);
       }
       if (scs != null) {
         String web = ExtensionUtilities.readStringExtension(scs.getCs(), ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW);
@@ -3971,7 +4037,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (scs == null) {
         return null;
       } else {
-        cacheResource(scs.getCs());
+        synchronized (lock) {
+          cacheResource(scs.getCs());
+          externalCodeSystems.add(scs.getCs());
+        }
         return (T) scs.getCs();
       }
     } else if (class_ == Resource.class) {
@@ -3991,7 +4060,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     T result = fetchResource(class_, canonical, rules, version, sourceOfReference);
     if (result == null) {
-      result = doFindTxResource(class_, canonical, rules);
+      result = doFindTxResource(class_, version == null ? canonical : canonical + "|" + version, rules);
     }
     return result;
   }
@@ -4013,7 +4082,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     T result = fetchResource(class_, canonical, rules, version);
     if (result == null) {
-      result = doFindTxResource(class_, canonical + "|" + version, rules);
+      result = doFindTxResource(class_, version == null ? canonical : canonical + "|" + version, rules);
     }
     return result;
   }
