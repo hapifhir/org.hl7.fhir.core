@@ -1,0 +1,99 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "NestedComposition",
+  "url": "http://example.org/fhir/StructureDefinition/NestedComposition",
+  "name": "NestedComposition",
+  "status": "draft",
+  "fhirVersion": "6.0.0-snapshot1",
+  "kind": "resource",
+  "abstract": false,
+  "type": "Composition",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Composition",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "Composition.section",
+        "path": "Composition.section",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "title"
+            }
+          ],
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Composition.section:summary",
+        "path": "Composition.section",
+        "sliceName": "summary",
+        "min": 0,
+        "max": "1"
+      },
+      {
+        "id": "Composition.section:summary.title",
+        "path": "Composition.section.title",
+        "min": 1,
+        "fixedString": "Summary"
+      },
+      {
+        "id": "Composition.section:summary.section",
+        "path": "Composition.section.section",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "title"
+            }
+          ],
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Composition.section:summary.section:details",
+        "path": "Composition.section.section",
+        "sliceName": "details",
+        "min": 0,
+        "max": "1",
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ]
+      },
+      {
+        "id": "Composition.section:summary.section:details.extension",
+        "path": "Composition.section.section.extension",
+        "min": 1
+      },
+      {
+        "id": "Composition.section:summary.section:details.extension:label",
+        "path": "Composition.section.section.extension",
+        "sliceName": "label",
+        "min": 1,
+        "max": "1",
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://example.org/fhir/StructureDefinition/LabelExtension"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Composition.section:summary.section:details.extension:label.value[x]",
+        "path": "Composition.section.section.extension.value[x]",
+        "fixedString": "Nested section label"
+      },
+      {
+        "id": "Composition.section:summary.section:details.title",
+        "path": "Composition.section.section.title",
+        "min": 1,
+        "fixedString": "Details"
+      }
+    ]
+  }
+}

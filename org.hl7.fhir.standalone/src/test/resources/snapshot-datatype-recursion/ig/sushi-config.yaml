@@ -1,0 +1,6 @@
+# FSHOnly preserves the supplied minimal ImplementationGuide when regenerating profiles.
+canonical: http://example.org/fhir
+status: draft
+version: 0.1.0
+fhirVersion: 6.0.0-snapshot1
+FSHOnly: true

@@ -57,3 +57,8 @@ From the repository root:
 Expected: 3 tests pass with the fix. The original content-reference case fails
 without it and the ordinary reslicing control passes. A null redirector reset
 also fails the nested-extension case with NullPointerException.
+
+Released Publisher reproducer:
+  The ig/ subdirectory contains a minimal IG with the same constraints expressed
+  in FSH and pre-generated FHIR JSON. ig/README.txt gives a command using the
+  released Publisher 3.0.0 JAR; no SUSHI or Maven build is needed for that run.
