@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import org.hl7.fhir.convertors.igs.testing.TestingR5Convertor;
+import org.hl7.fhir.convertors.igs.r5.testing.TestingR5Convertor;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.igs.testing.TestingJsonParser;
 import org.hl7.fhir.r5.model.Resource;

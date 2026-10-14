@@ -46,7 +46,7 @@ public class VersionConvertorRegistry {
    */
   public org.hl7.fhir.r5.model.Resource convertToR5(org.hl7.fhir.model.core.Resource source) {
     for (VersionConvertorIGBase converterIGBase : registeredConvertors) {
-      if (converterIGBase.handlesR5ToR5(source.fhirType())) {
+      if (converterIGBase.handlesRNToR5(source.fhirType())) {
         return converterIGBase.convertRNToR5(source);
       }
     }
