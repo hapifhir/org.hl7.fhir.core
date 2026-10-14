@@ -16,6 +16,15 @@ Pinned binary:
   Bundled FHIR Core 7.0.1.
   SHA-256: b8403abe5a438ddb9a3a07e02ad925f2c4bbbd9e903c49ecff50fcb481ec64ad
 
+Version prerequisite: the profiles must be generated for 6.0.0-snapshot1.
+The same FSH compiled for 4.0.1 does not reproduce this overflow. After changing
+fhirVersion, rerun SUSHI before using -no-sushi. The supplied JSON is already R6.
+
+The initialization message for DocumentStructure / example-composition about
+slice minimum 0 versus 2 belongs to a bundled core example. It occurs with and
+without this fix. The actual reproduced failure is the later StackOverflowError
+following "Generating Snapshots".
+
 Expected before the fix: process exits with code 1 and StackOverflowError.
 The stack repeatedly contains ProfilePathProcessor.processPathWithSlicedBaseDefault.
 
