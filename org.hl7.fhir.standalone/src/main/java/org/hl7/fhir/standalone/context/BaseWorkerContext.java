@@ -3094,6 +3094,25 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
+  @Override
+  public List<StructureDefinition> fetchSpecializations() {
+    List<StructureDefinition> res = new ArrayList<>();
+    synchronized (lock) {
+      // the same resources in the same order as structures.getList(), but a definition that the package
+      // index says is a constraint isn't loaded just to find that out. This has to give the same result
+      // as filtering fetchResourcesByType(StructureDefinition.class), so keep the two in step
+      for (CanonicalResourceManager<StructureDefinition>.CachedCanonicalResource<StructureDefinition> cr : structures.getCachedList()) {
+        if (!"constraint".equals(cr.getDerivation())) {
+          StructureDefinition sd = cr.getResource();
+          if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+            res.add(sd);
+          }
+        }
+      }
+    }
+    return res;
+  }
+
   @SuppressWarnings("unchecked")
   public <T extends Resource> List<T> fetchResourceVersionsByTypeAndUrl(Class<T> class_, String url) {
 

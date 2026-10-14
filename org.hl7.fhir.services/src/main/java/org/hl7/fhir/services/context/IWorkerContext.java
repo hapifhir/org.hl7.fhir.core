@@ -13,6 +13,7 @@ import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -479,6 +480,25 @@ public interface IWorkerContext {
    * @return all the resources
    */
   public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_);
+
+  /**
+   * The StructureDefinitions that define types ({@code derivation = specialization}), in the order
+   * {@code fetchResourcesByType(StructureDefinition.class)} returns them.
+   *
+   * A context that loads its resources lazily can skip loading the ones it already knows to be
+   * constraints, which are most of them.
+   *
+   * @return the StructureDefinitions whose derivation is specialization
+   */
+  public default List<StructureDefinition> fetchSpecializations() {
+    List<StructureDefinition> res = new ArrayList<>();
+    for (StructureDefinition sd : fetchResourcesByType(StructureDefinition.class)) {
+      if (sd.getDerivation() == StructureDefinition.TypeDerivationRule.SPECIALIZATION) {
+        res.add(sd);
+      }
+    }
+    return res;
+  }
 
   /**
    * Fetch all the versions of a resource.
