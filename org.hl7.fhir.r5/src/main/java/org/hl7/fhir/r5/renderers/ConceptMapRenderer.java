@@ -453,6 +453,18 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     return context.prefixLocalHref(cs.getWebPath() + "#" + cs.getId() + "-" + Utilities.nmtokenize(code));
   }
 
+  /**
+   * Builds the href of an element in the page of a StructureDefinition. The anchors in the
+   * structure tables replace '[' and ']' with '_', so value[x] is found at #s-...value_x_.
+   * Returns null - so the cell is rendered unlinked - when the StructureDefinition has no web path.
+   */
+  private String elementHref(StructureDefinition sd, String id) {
+    if (!sd.hasWebPath()) {
+      return null;
+    }
+    return sd.getWebPath() + "#s-" + id.replace("[", "_").replace("]", "_");
+  }
+
   private void renderRelationshipCell(XhtmlNode td, TargetElementComponent ccm, RelationshipCodeSystems eqcs) {
     if (ccm.hasExtension(ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
       String code = ExtensionUtilities.readStringExtension(ccm, ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
@@ -493,9 +505,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         if (edSrc == null) {        
           tr.td().colspan(3).addText(ccl.getCode());
         } else {
-          tr.td().ah(sdSrc.hasWebPath() ? sdSrc.getWebPath()+"#s-"+ccl.getCode() : null).tx(ccl.getCode());
+          tr.td().ah(elementHref(sdSrc, ccl.getCode())).tx(ccl.getCode());
           tr.td().tx(""+edSrc.getMin()+".."+edSrc.getMax());
-          tr.td().tx("todo");
+          tr.td().tx(edSrc.typeSummary());
         }
 
       if (ccl.getNoMap()) {
@@ -525,9 +537,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           if (edTgt == null) {        
             tr.td().colspan(3).addText(ccm.getCode());
           } else {
-            tr.td().ah(sdTgt.hasWebPath() ? sdTgt.getWebPath()+"#s-"+ccm.getCode() : null).tx(ccm.getCode());
+            tr.td().ah(elementHref(sdTgt, ccm.getCode())).tx(ccm.getCode());
             tr.td().tx(""+edTgt.getMin()+".."+edTgt.getMax());
-            tr.td().tx("todo");
+            tr.td().tx(edTgt.typeSummary());
           }
   
           if (hasComment)
