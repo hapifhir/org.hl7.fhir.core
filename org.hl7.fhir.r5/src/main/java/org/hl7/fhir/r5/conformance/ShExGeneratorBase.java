@@ -1542,8 +1542,11 @@ public abstract class ShExGeneratorBase {
       }
     }
 
-    // Adding OneOrMore as prefix to the reference type if cardinality is 1..* or 0..*
-    if (card.startsWith("*") || card.startsWith("+")) {
+    // Adding OneOrMore as prefix to the reference type if cardinality is 1..* or 0..*.
+    // FHIR RDF always represents a contained/bundled resource value as an RDF collection
+    // (e.g. `fhir:resource ( <IRI> )`), even for the 0..1 containers Bundle.entry.resource and
+    // Parameters.parameter.resource, so Resource-typed elements are always list-wrapped too.
+    if (card.startsWith("*") || card.startsWith("+") || "Resource".equals(typ)) {
       card = card.replace("+", "");
       card = card.replace("*", "?");
 
