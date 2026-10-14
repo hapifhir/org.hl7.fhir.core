@@ -1464,15 +1464,22 @@ public abstract class ShExGeneratorBase {
     }
 
     List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
+    boolean addedInnerType = false;
     if (children.size() > 0) {
       String parentPath = getStructurePathRoot(sd);
       if ((ed.hasContentReference() && (!ed.hasType())) || (!id.equals(parentPath + "." + shortId))) {
         //debug("Not Adding innerType:" + id + " to " + sd.getName());
-      } else
+      } else {
         addInnerType(sd, ed);
+        addedInnerType = true;
+      }
     }
 
-    if ("BackboneElement".equals(typ))
+    // BackboneElement always resolves to its generated inner shape (<Parent.child>). The same is
+    // needed when an element that has inline children is declared with the generic "Element" type
+    // (e.g. Timing.repeat, ElementDefinition.slicing/base/binding): reference the inner shape we
+    // just generated instead of the empty <Element> base, which would reject the child triples.
+    if ("BackboneElement".equals(typ) || (addedInnerType && "Element".equals(typ)))
       typ = id;
 
     defn = simpleElement(sd, ed, typ);
