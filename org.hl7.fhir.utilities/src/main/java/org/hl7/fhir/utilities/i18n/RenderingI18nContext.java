@@ -920,7 +920,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_FII = "STRUC_DEF_FII";
   public static final String STRUC_DEF_FIXED = "STRUC_DEF_FIXED";
   public static final String STRUC_DEF_FIXED_VALUE = "STRUC_DEF_FIXED_VALUE";
-  public static final String STRUC_DEF_FIXED_ABSENT = "STRUC_DEF_FIXED_ABSENT";
+  public static final String STRUC_DEF_NO_EXT_ALLOWED = "STRUC_DEF_NO_EXT_ALLOWED";
+  public static final String STRUC_DEF_EXT_ALLOWED = "STRUC_DEF_EXT_ALLOWED";
   public static final String STRUC_DEF_FOR_CODE = "STRUC_DEF_FOR_CODE";
   public static final String STRUC_DEF_FURTHER_INFO = "STRUC_DEF_FURTHER_INFO";
   public static final String STRUC_DEF_GRADE = "STRUC_DEF_GRADE";
