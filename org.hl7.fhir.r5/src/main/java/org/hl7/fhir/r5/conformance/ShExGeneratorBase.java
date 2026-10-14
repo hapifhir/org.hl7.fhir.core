@@ -164,7 +164,7 @@ public abstract class ShExGeneratorBase {
   private List<String> shortIdException = Arrays.asList(
     "base64Binary", "boolean",
     "date", "dateTime", "decimal", "instant", "integer64",
-    "integer", "string", "time", "uri", "xhtml"
+    "integer", "positiveInt", "unsignedInt", "string", "time", "uri", "xhtml"
   );
 
   private List<String> mappedFunctions = Arrays.asList(
@@ -677,6 +677,12 @@ public abstract class ShExGeneratorBase {
 
   private String getExtendedType(StructureDefinition sd){
     String bd = getBaseTypeName(sd);
+    // positiveInt/unsignedInt specialise integer but carry a DIFFERENT value datatype
+    // (xsd:positiveInteger / xsd:nonNegativeInteger, not xsd:int). ShEx datatype matching is exact
+    // and EXTENDS is conjunctive, so inheriting integer's "fhir:v xsd:int" makes their own value
+    // unsatisfiable. Extend the shared PrimitiveType base instead and emit their own value element.
+    if ("positiveInt".equals(sd.getName()) || "unsignedInt".equals(sd.getName()))
+      bd = "PrimitiveType";
     String sId = sd.getId();
 
     if (bd!=null) {
@@ -777,6 +783,9 @@ public abstract class ShExGeneratorBase {
           ed.getBase().getPath().startsWith(sdn)
             || (ed.getBase().getPath().startsWith("Extension"))
             || (ed.getBase().getPath().startsWith("Element.extension")&&(ed.hasSliceName()))
+            // positiveInt/unsignedInt redefine the inherited integer value with their own datatype;
+            // their value element keeps base.path "integer.value", so admit it explicitly.
+            || (("positiveInt".equals(sdn) || "unsignedInt".equals(sdn)) && ed.getPath().equals(sdn + ".value"))
         )
         )
       ){
