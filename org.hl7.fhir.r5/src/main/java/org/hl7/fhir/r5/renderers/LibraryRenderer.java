@@ -240,9 +240,13 @@ public class LibraryRenderer extends ResourceRenderer {
         else {
           p.code().tx(ct+lang(att));
         }
-        if (cnt.length < LibraryRenderer.DATA_IMG_SIZE_CUTOFF) {
-          x.img("data: "+ct+">;base64,"+b64(cnt), "data");
+        if (cnt.length < LibraryRenderer.DATA_IMG_SIZE_CUTOFF || (mustInlineImages() && cnt.length < MAX_IMAGE_LENGTH)) {
+          x.img("data:"+ct+";base64,"+b64(cnt), "data");
+        } else if (mustInlineImages()) {
+          // a narrative has to stand alone, so it can't refer to a file
+          x.para().i().tx(context.formatPhrase(RenderingI18nContext.LIB_REND_IMG_TOO_BIG, ct, cnt.length));
         } else {
+          // the IG publisher writes this file (see PublisherGenerator.generateOutputsLibrary)
           String filename = "Library-"+baseId+(counter == 0 ? "" : "-"+Integer.toString(counter))+"."+imgExtension(ct); 
           x.img(filename, "data");
         }        

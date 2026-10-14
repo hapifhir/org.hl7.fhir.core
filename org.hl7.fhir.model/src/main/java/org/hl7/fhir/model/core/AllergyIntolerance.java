@@ -711,6 +711,44 @@ public class AllergyIntolerance extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.substance != null) {
+            visitor.visit(this, "substance", -1, this.substance);
+          }
+          if (this.manifestationList != null) {
+            int i = 0;
+            for (Base v : this.manifestationList) {
+              if (v != null) {
+                visitor.visit(this, "manifestation", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.onset != null) {
+            visitor.visit(this, "onset", -1, this.onset);
+          }
+          if (this.severity != null) {
+            visitor.visit(this, "severity", -1, this.severity);
+          }
+          if (this.exposureRoute != null) {
+            visitor.visit(this, "exposureRoute", -1, this.exposureRoute);
+          }
+          if (this.noteList != null) {
+            int i = 0;
+            for (Base v : this.noteList) {
+              if (v != null) {
+                visitor.visit(this, "note", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "substance":  return new Property("substance", "CodeableConcept", "Identification of the specific substance (or pharmaceutical product) considered to be responsible for the Adverse Reaction event. Note: the substance for a specific reaction may be different from the substance identified as the cause of the risk, but it must be consistent with it. For instance, it may be a more specific substance (e.g. a brand medication) or a composite product that includes the identified substance. It must be clinically safe to only process the 'code' and ignore the 'reaction.substance'.  If a receiving system is unable to confirm that AllergyIntolerance.reaction.substance falls within the semantic scope of AllergyIntolerance.code, then the receiving system should ignore AllergyIntolerance.reaction.substance.", 0, 1, substance);
@@ -1811,6 +1849,83 @@ public class AllergyIntolerance extends DomainResource {
         children.add(new Property("lastOccurrence", "dateTime", "Represents the date and/or time of the last known occurrence of a reaction event.", 0, 1, lastOccurrence));
         children.add(new Property("note", "Annotation", "Additional narrative about the propensity for the Adverse Reaction, not captured in other fields.", 0, java.lang.Integer.MAX_VALUE, noteList));
         children.add(new Property("reaction", "", "Details about each adverse reaction event linked to exposure to the identified substance.", 0, java.lang.Integer.MAX_VALUE, reactionList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.clinicalStatus != null) {
+          visitor.visit(this, "clinicalStatus", -1, this.clinicalStatus);
+        }
+        if (this.verificationStatus != null) {
+          visitor.visit(this, "verificationStatus", -1, this.verificationStatus);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.criticality != null) {
+          visitor.visit(this, "criticality", -1, this.criticality);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.patient != null) {
+          visitor.visit(this, "patient", -1, this.patient);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.onset != null) {
+          visitor.visit(this, "onset[x]", -1, this.onset);
+        }
+        if (this.recordedDate != null) {
+          visitor.visit(this, "recordedDate", -1, this.recordedDate);
+        }
+        if (this.recorder != null) {
+          visitor.visit(this, "recorder", -1, this.recorder);
+        }
+        if (this.asserter != null) {
+          visitor.visit(this, "asserter", -1, this.asserter);
+        }
+        if (this.lastOccurrence != null) {
+          visitor.visit(this, "lastOccurrence", -1, this.lastOccurrence);
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reactionList != null) {
+          int i = 0;
+          for (Base v : this.reactionList) {
+            if (v != null) {
+              visitor.visit(this, "reaction", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

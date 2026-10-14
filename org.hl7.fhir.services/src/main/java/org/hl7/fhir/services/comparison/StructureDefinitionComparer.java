@@ -26,6 +26,7 @@ import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.BackgroundColorCode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
@@ -1311,7 +1312,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(session.getI18n(), Utilities.path("[tmp]", "compare"), false, true, "cmp");
     TableModel model = gen.initComparisonTable(corePath, id);
     genElementComp(null /* come back to this later */, null /* come back to this later */, gen, model.getRows(), comp.combined, corePath, prefix, null, true);
-    return gen.generate(model, prefix, 0, null);
+    return gen.generate(model, prefix, false, null);
   }
 
   public XhtmlNode renderUnion(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {    
@@ -1383,8 +1384,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
 
         
       Cell nc;
-      String leftColor = !combined.hasLeft() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
-      String rightColor = !combined.hasRight() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
+      BackgroundColorCode leftColor = !combined.hasLeft() ? BackgroundColorCode.COLOR_NO_ROW_LEFT : combined.hasErrors() ? BackgroundColorCode.COLOR_DIFFERENT : null;
+      BackgroundColorCode rightColor = !combined.hasRight() ? BackgroundColorCode.COLOR_NO_ROW_LEFT : combined.hasErrors() ? BackgroundColorCode.COLOR_DIFFERENT : null;
       if (combined.hasLeft()) {
         nc = sdrLeft.genElementNameCell(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, false, ext, used , ref, sName, null);
       } else {
@@ -1407,14 +1408,14 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       }
     }
 
-  private void frame(List<Cell> cells, String color) {
+  private void frame(List<Cell> cells, BackgroundColorCode color) {
     for (Cell cell : cells) {
       if (color != null) {
-        cell.setStyle("background-color: "+color);
+        cell.setBackgroundColor(color);
       }
     }
-    cells.get(0).setStyle("border-left: 1px grey solid"+(color == null ? "" : "; background-color: "+color));
-    cells.get(cells.size()-1).setStyle("border-right: 1px grey solid"+(color == null ? "" : "; background-color: "+color));
+    cells.get(0).setLeftLine(true);
+    cells.get(cells.size()-1).setRightLine(true);
   }
 
   private List<Cell> spacers(Row row, int count, HierarchicalTableGenerator gen) {

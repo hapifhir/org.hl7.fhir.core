@@ -589,6 +589,44 @@ public class Substance extends DomainResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.expiry != null) {
+          visitor.visit(this, "expiry", -1, this.expiry);
+        }
+        if (this.quantity != null) {
+          visitor.visit(this, "quantity", -1, this.quantity);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "identifier":  return new Property("identifier", "Identifier", "Unique identifier for the substance, often an identifier associated with the package/container of the substance instance (usually a label affixed directly).", 0, java.lang.Integer.MAX_VALUE, identifierList);

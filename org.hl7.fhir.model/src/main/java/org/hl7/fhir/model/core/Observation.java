@@ -369,6 +369,20 @@ public class Observation extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.observation != null) {
+            visitor.visit(this, "observation", -1, this.observation);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.reason != null) {
+            visitor.visit(this, "reason", -1, this.reason);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "observation":  return new Property("observation", "Reference(Observation)", "Reference to the triggering observation.", 0, 1, observation);
@@ -856,6 +870,38 @@ public class Observation extends DomainResource {
           children.add(new Property("appliesTo", "CodeableConcept", "Codes to indicate the target population this reference range applies to.  For example, a reference range may be based on the normal population or a particular sex or race.  Multiple `appliesTo`  are interpreted as an \"AND\" of the target populations.  For example, to represent a target population of African American females, both a code of female and a code for African American would be used.", 0, java.lang.Integer.MAX_VALUE, appliesToList));
           children.add(new Property("age", "Range", "The age at which this reference range is applicable. This is a neonatal age (e.g. number of weeks at term) if the meaning says so.", 0, 1, age));
           children.add(new Property("text", "markdown", "Text based reference range in an observation which may be used when a quantitative range is not appropriate for an observation.  An example would be a reference value of \"Negative\" or a list or table of \"normals\".", 0, 1, text));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.low != null) {
+            visitor.visit(this, "low", -1, this.low);
+          }
+          if (this.high != null) {
+            visitor.visit(this, "high", -1, this.high);
+          }
+          if (this.normalValue != null) {
+            visitor.visit(this, "normalValue", -1, this.normalValue);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.appliesToList != null) {
+            int i = 0;
+            for (Base v : this.appliesToList) {
+              if (v != null) {
+                visitor.visit(this, "appliesTo", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.age != null) {
+            visitor.visit(this, "age", -1, this.age);
+          }
+          if (this.text != null) {
+            visitor.visit(this, "text", -1, this.text);
+          }
         }
 
         @Override
@@ -1552,6 +1598,38 @@ public class Observation extends DomainResource {
           children.add(new Property("dataAbsentReason", "CodeableConcept", "Provides a reason why the expected value in the element Observation.component.value[x] is missing.", 0, 1, dataAbsentReason));
           children.add(new Property("interpretation", "CodeableConcept", "A categorical assessment of an observation value.  For example, high, low, normal.", 0, java.lang.Integer.MAX_VALUE, interpretationList));
           children.add(new Property("referenceRange", "@Observation.referenceRange", "Guidance on how to interpret the value by comparison to a normal or recommended range.", 0, java.lang.Integer.MAX_VALUE, referenceRangeList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.dataAbsentReason != null) {
+            visitor.visit(this, "dataAbsentReason", -1, this.dataAbsentReason);
+          }
+          if (this.interpretationList != null) {
+            int i = 0;
+            for (Base v : this.interpretationList) {
+              if (v != null) {
+                visitor.visit(this, "interpretation", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.referenceRangeList != null) {
+            int i = 0;
+            for (Base v : this.referenceRangeList) {
+              if (v != null) {
+                visitor.visit(this, "referenceRange", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -3630,6 +3708,197 @@ public class Observation extends DomainResource {
         children.add(new Property("hasMember", "Reference(Observation|QuestionnaireResponse)", "This observation is a group observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.", 0, java.lang.Integer.MAX_VALUE, hasMemberList));
         children.add(new Property("derivedFrom", "Reference(DocumentReference|ImagingStudy|ImagingSelection|QuestionnaireResponse|Observation)", "The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.", 0, java.lang.Integer.MAX_VALUE, derivedFromList));
         children.add(new Property("component", "", "Some observations have multiple component observations.  These component observations are expressed as separate code value pairs that share the same attributes.  Examples include systolic and diastolic component observations for blood pressure measurement and multiple component observations for genetics observations.", 0, java.lang.Integer.MAX_VALUE, componentList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.triggeredByList != null) {
+          int i = 0;
+          for (Base v : this.triggeredByList) {
+            if (v != null) {
+              visitor.visit(this, "triggeredBy", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.partOfList != null) {
+          int i = 0;
+          for (Base v : this.partOfList) {
+            if (v != null) {
+              visitor.visit(this, "partOf", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReason != null) {
+          visitor.visit(this, "statusReason", -1, this.statusReason);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.focusList != null) {
+          int i = 0;
+          for (Base v : this.focusList) {
+            if (v != null) {
+              visitor.visit(this, "focus", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.organizer != null) {
+          visitor.visit(this, "organizer", -1, this.organizer);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.effective != null) {
+          visitor.visit(this, "effective[x]", -1, this.effective);
+        }
+        if (this.issued != null) {
+          visitor.visit(this, "issued", -1, this.issued);
+        }
+        if (this.performerList != null) {
+          int i = 0;
+          for (Base v : this.performerList) {
+            if (v != null) {
+              visitor.visit(this, "performer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.value != null) {
+          visitor.visit(this, "value[x]", -1, this.value);
+        }
+        if (this.dataAbsentReason != null) {
+          visitor.visit(this, "dataAbsentReason", -1, this.dataAbsentReason);
+        }
+        if (this.interpretationList != null) {
+          int i = 0;
+          for (Base v : this.interpretationList) {
+            if (v != null) {
+              visitor.visit(this, "interpretation", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.contextList != null) {
+          int i = 0;
+          for (Base v : this.contextList) {
+            if (v != null) {
+              visitor.visit(this, "context", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.bodySite != null) {
+          visitor.visit(this, "bodySite", -1, this.bodySite);
+        }
+        if (this.bodyStructureList != null) {
+          int i = 0;
+          for (Base v : this.bodyStructureList) {
+            if (v != null) {
+              visitor.visit(this, "bodyStructure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.method != null) {
+          visitor.visit(this, "method", -1, this.method);
+        }
+        if (this.specimen != null) {
+          visitor.visit(this, "specimen", -1, this.specimen);
+        }
+        if (this.device != null) {
+          visitor.visit(this, "device", -1, this.device);
+        }
+        if (this.supportingDeviceList != null) {
+          int i = 0;
+          for (Base v : this.supportingDeviceList) {
+            if (v != null) {
+              visitor.visit(this, "supportingDevice", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.referenceRangeList != null) {
+          int i = 0;
+          for (Base v : this.referenceRangeList) {
+            if (v != null) {
+              visitor.visit(this, "referenceRange", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.hasMemberList != null) {
+          int i = 0;
+          for (Base v : this.hasMemberList) {
+            if (v != null) {
+              visitor.visit(this, "hasMember", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.derivedFromList != null) {
+          int i = 0;
+          for (Base v : this.derivedFromList) {
+            if (v != null) {
+              visitor.visit(this, "derivedFrom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.componentList != null) {
+          int i = 0;
+          for (Base v : this.componentList) {
+            if (v != null) {
+              visitor.visit(this, "component", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

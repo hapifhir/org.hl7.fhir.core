@@ -451,6 +451,17 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.version != null) {
+            visitor.visit(this, "version", -1, this.version);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "Name the software is known by.", 0, 1, name);
@@ -861,6 +872,23 @@ public class TerminologyCapabilities extends CanonicalResource {
           children.add(new Property("url", "url", "An absolute base URL for the implementation.", 0, 1, url));
           children.add(new Property("fragmentSupport", "markdown", "This element provides a description of how fragments are supported (or not).", 0, 1, fragmentSupport));
           children.add(new Property("supplementSupport", "markdown", "This element provides a description of how supplements are supported (or not).", 0, 1, supplementSupport));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.url != null) {
+            visitor.visit(this, "url", -1, this.url);
+          }
+          if (this.fragmentSupport != null) {
+            visitor.visit(this, "fragmentSupport", -1, this.fragmentSupport);
+          }
+          if (this.supplementSupport != null) {
+            visitor.visit(this, "supplementSupport", -1, this.supplementSupport);
+          }
         }
 
         @Override
@@ -1442,6 +1470,41 @@ public class TerminologyCapabilities extends CanonicalResource {
           children.add(new Property("version", "", "For the code system, a list of versions that are supported by the server.", 0, java.lang.Integer.MAX_VALUE, versionList));
           children.add(new Property("content", "code", "The extent of the content of the code system (the concepts and codes it defines) are represented in this resource instance.", 0, 1, content));
           children.add(new Property("subsumption", "boolean", "True if subsumption is supported for this version of the code system.", 0, 1, subsumption));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.uri != null) {
+            visitor.visit(this, "uri", -1, this.uri);
+          }
+          if (this.supplementList != null) {
+            int i = 0;
+            for (Base v : this.supplementList) {
+              if (v != null) {
+                visitor.visit(this, "supplement", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.versionAlgorithm != null) {
+            visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+          }
+          if (this.versionList != null) {
+            int i = 0;
+            for (Base v : this.versionList) {
+              if (v != null) {
+                visitor.visit(this, "version", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.content != null) {
+            visitor.visit(this, "content", -1, this.content);
+          }
+          if (this.subsumption != null) {
+            visitor.visit(this, "subsumption", -1, this.subsumption);
+          }
         }
 
         @Override
@@ -2209,6 +2272,59 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+          if (this.isDefault != null) {
+            visitor.visit(this, "isDefault", -1, this.isDefault);
+          }
+          if (this.content != null) {
+            visitor.visit(this, "content", -1, this.content);
+          }
+          if (this.supplementList != null) {
+            int i = 0;
+            for (Base v : this.supplementList) {
+              if (v != null) {
+                visitor.visit(this, "supplement", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.compositional != null) {
+            visitor.visit(this, "compositional", -1, this.compositional);
+          }
+          if (this.languageList != null) {
+            int i = 0;
+            for (Base v : this.languageList) {
+              if (v != null) {
+                visitor.visit(this, "language", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.filterList != null) {
+            int i = 0;
+            for (Base v : this.filterList) {
+              if (v != null) {
+                visitor.visit(this, "filter", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.propertyList != null) {
+            int i = 0;
+            for (Base v : this.propertyList) {
+              if (v != null) {
+                visitor.visit(this, "property", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "value":  return new Property("value", "string", "For version-less code systems, there should be a single version with no identifier.", 0, 1, value);
@@ -2642,6 +2758,23 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.opList != null) {
+            int i = 0;
+            for (Base v : this.opList) {
+              if (v != null) {
+                visitor.visit(this, "op", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "code", "Code of the property supported.", 0, 1, code);
@@ -2865,6 +2998,14 @@ public class TerminologyCapabilities extends CanonicalResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("globals", "code", "Codes that describes how the server implements global language packs - that is, supplements that contain only designations for a single language that are marked as intended by the extension http://hl7.org/fhir/StructureDefinition/codesystem-globalLangPack for use with all value sets and codesystem without explicit reference.", 0, 1, globals));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.globals != null) {
+            visitor.visit(this, "globals", -1, this.globals);
+          }
         }
 
         @Override
@@ -3303,6 +3444,32 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.hierarchical != null) {
+            visitor.visit(this, "hierarchical", -1, this.hierarchical);
+          }
+          if (this.paging != null) {
+            visitor.visit(this, "paging", -1, this.paging);
+          }
+          if (this.incomplete != null) {
+            visitor.visit(this, "incomplete", -1, this.incomplete);
+          }
+          if (this.parameterList != null) {
+            int i = 0;
+            for (Base v : this.parameterList) {
+              if (v != null) {
+                visitor.visit(this, "parameter", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.textFilter != null) {
+            visitor.visit(this, "textFilter", -1, this.textFilter);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "hierarchical":  return new Property("hierarchical", "boolean", "Whether the server can return nested value sets.", 0, 1, hierarchical);
@@ -3662,6 +3829,17 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.documentation != null) {
+            visitor.visit(this, "documentation", -1, this.documentation);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "code", "Name of the supported expansion parameter.", 0, 1, name);
@@ -3895,6 +4073,14 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.translations != null) {
+            visitor.visit(this, "translations", -1, this.translations);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "translations":  return new Property("translations", "boolean", "Whether translations are validated.", 0, 1, translations);
@@ -4104,6 +4290,14 @@ public class TerminologyCapabilities extends CanonicalResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("needsMap", "boolean", "Whether the client must identify the map.", 0, 1, needsMap));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.needsMap != null) {
+            visitor.visit(this, "needsMap", -1, this.needsMap);
+          }
         }
 
         @Override
@@ -5722,6 +5916,122 @@ public class TerminologyCapabilities extends CanonicalResource {
         children.add(new Property("codeSearch", "code", "The degree to which the server supports the code search parameter on ValueSet, if it is supported.", 0, 1, codeSearch));
         children.add(new Property("validateCode", "", "Information about the [ValueSet/$validate-code](valueset-operation-validate-code.html) operation.", 0, 1, validateCode));
         children.add(new Property("translation", "", "Information about the [ConceptMap/$translate](conceptmap-operation-translate.html) operation.", 0, 1, translation));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.kind != null) {
+          visitor.visit(this, "kind", -1, this.kind);
+        }
+        if (this.software != null) {
+          visitor.visit(this, "software", -1, this.software);
+        }
+        if (this.implementation != null) {
+          visitor.visit(this, "implementation", -1, this.implementation);
+        }
+        if (this.lockedDate != null) {
+          visitor.visit(this, "lockedDate", -1, this.lockedDate);
+        }
+        if (this.codeSystemList != null) {
+          int i = 0;
+          for (Base v : this.codeSystemList) {
+            if (v != null) {
+              visitor.visit(this, "codeSystem", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.supplements != null) {
+          visitor.visit(this, "supplements", -1, this.supplements);
+        }
+        if (this.expansion != null) {
+          visitor.visit(this, "expansion", -1, this.expansion);
+        }
+        if (this.codeSearch != null) {
+          visitor.visit(this, "codeSearch", -1, this.codeSearch);
+        }
+        if (this.validateCode != null) {
+          visitor.visit(this, "validateCode", -1, this.validateCode);
+        }
+        if (this.translation != null) {
+          visitor.visit(this, "translation", -1, this.translation);
+        }
       }
 
       @Override

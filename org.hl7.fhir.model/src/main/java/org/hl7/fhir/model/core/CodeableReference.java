@@ -151,6 +151,17 @@ public class CodeableReference extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.concept != null) {
+          visitor.visit(this, "concept", -1, this.concept);
+        }
+        if (this.reference != null) {
+          visitor.visit(this, "reference", -1, this.reference);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "concept":  return new Property("concept", "CodeableConcept", "A reference to a concept - e.g. the information is identified by its general class to the degree of precision found in the terminology.", 0, 1, concept);

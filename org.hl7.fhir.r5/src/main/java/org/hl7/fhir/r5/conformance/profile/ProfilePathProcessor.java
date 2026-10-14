@@ -1219,7 +1219,10 @@ public class ProfilePathProcessor {
           break;
         }
       }
-      if (t.getPath().length() < ed.getPath().length()) {
+      // stop once we've gone back above the level of ed. This has to compare depth, not length: the children of a
+      // choice element (e.g. value[x].id) can have shorter paths than the renamed choice (valueQuantity), and stopping
+      // there missed the slicer that was already added, so a second one was added
+      if (pathDepth(t.getPath()) < pathDepth(ed.getPath())) {
         break;
       }
       i--;
@@ -1238,6 +1241,10 @@ public class ProfilePathProcessor {
 //        log.error("checkToSeeIfSlicingExists: "+ed.getPath()+":"+ed.getSliceName()+" is not sliced");
       }
     }
+  }
+
+  private int pathDepth(String path) {
+    return Utilities.charCount(path, '.');
   }
 
   private boolean isJumpingIntoTypeSlicing(ElementDefinition ed, ElementDefinition template) {

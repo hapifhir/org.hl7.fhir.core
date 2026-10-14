@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.igs.testing;
+package org.hl7.fhir.convertors.igs.r5.testing;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
@@ -84,15 +84,19 @@ public class TestingR4Convertor extends VersionConvertorIGBase {
   public org.hl7.fhir.r4.model.Resource convertR5ToR4(Resource source) {
     VersionConvertor_40_50 vc = new VersionConvertor_40_50(new BaseAdvisor_40_50());
     ConversionContext40_50.INSTANCE.init(vc);
-    switch (source.fhirType() ) {
-      case "TestReport":
-        return convertTestReport((org.hl7.fhir.r5.igs.testing.TestReport) source);
-      case "TestPlan":
-        return convertTestPlan((org.hl7.fhir.r5.igs.testing.TestPlan) source);
-      case "TestScript":
-        return convertTestScript((org.hl7.fhir.r5.igs.testing.TestScript) source);
-      default:
-        return null;
+    try {
+      switch (source.fhirType() ) {
+        case "TestReport":
+          return convertTestReport((org.hl7.fhir.r5.igs.testing.TestReport) source);
+        case "TestPlan":
+          return convertTestPlan((org.hl7.fhir.r5.igs.testing.TestPlan) source);
+        case "TestScript":
+          return convertTestScript((org.hl7.fhir.r5.igs.testing.TestScript) source);
+        default:
+          return null;
+      }
+    } finally {
+      ConversionContext40_50.INSTANCE.close();
     }
   }
 

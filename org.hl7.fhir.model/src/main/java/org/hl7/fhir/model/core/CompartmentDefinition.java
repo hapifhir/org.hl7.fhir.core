@@ -3893,6 +3893,29 @@ public class CompartmentDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.paramList != null) {
+            int i = 0;
+            for (Base v : this.paramList) {
+              if (v != null) {
+                visitor.visit(this, "param", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.startParam != null) {
+            visitor.visit(this, "startParam", -1, this.startParam);
+          }
+          if (this.endParam != null) {
+            visitor.visit(this, "endParam", -1, this.endParam);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "code", "The name of a resource supported by the server.", 0, 1, code);
@@ -5200,6 +5223,77 @@ public class CompartmentDefinition extends CanonicalResource {
         children.add(new Property("code", "code", "Which compartment this definition describes.", 0, 1, code));
         children.add(new Property("search", "boolean", "Whether the search syntax is supported,.", 0, 1, search));
         children.add(new Property("resource", "", "Information about how a resource is related to the compartment.", 0, java.lang.Integer.MAX_VALUE, resourceList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.search != null) {
+          visitor.visit(this, "search", -1, this.search);
+        }
+        if (this.resourceList != null) {
+          int i = 0;
+          for (Base v : this.resourceList) {
+            if (v != null) {
+              visitor.visit(this, "resource", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

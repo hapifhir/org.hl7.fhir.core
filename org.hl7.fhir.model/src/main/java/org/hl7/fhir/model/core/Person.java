@@ -324,6 +324,17 @@ public class Person extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.language != null) {
+            visitor.visit(this, "language", -1, this.language);
+          }
+          if (this.preferred != null) {
+            visitor.visit(this, "preferred", -1, this.preferred);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "language":  return new Property("language", "CodeableConcept", "The language which may be used to communicate with the individual.", 0, 1, language);
@@ -595,6 +606,17 @@ public class Person extends DomainResource {
           super.listChildren(children);
           children.add(new Property("target", "Reference(Patient|Practitioner|RelatedPerson|Person)", "The resource to which this actual person is associated.", 0, 1, target));
           children.add(new Property("assurance", "code", "Level of assurance that this link is associated with the target resource.", 0, 1, assurance));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.target != null) {
+            visitor.visit(this, "target", -1, this.target);
+          }
+          if (this.assurance != null) {
+            visitor.visit(this, "assurance", -1, this.assurance);
+          }
         }
 
         @Override
@@ -1498,6 +1520,92 @@ public class Person extends DomainResource {
         children.add(new Property("communication", "", "A language which may be used to communicate with the person about his or her health.", 0, java.lang.Integer.MAX_VALUE, communicationList));
         children.add(new Property("managingOrganization", "Reference(Organization)", "The organization that is the custodian of the person record.", 0, 1, managingOrganization));
         children.add(new Property("link", "", "Link to a resource that concerns the same actual person.", 0, java.lang.Integer.MAX_VALUE, linkList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.active != null) {
+          visitor.visit(this, "active", -1, this.active);
+        }
+        if (this.nameList != null) {
+          int i = 0;
+          for (Base v : this.nameList) {
+            if (v != null) {
+              visitor.visit(this, "name", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.telecomList != null) {
+          int i = 0;
+          for (Base v : this.telecomList) {
+            if (v != null) {
+              visitor.visit(this, "telecom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.gender != null) {
+          visitor.visit(this, "gender", -1, this.gender);
+        }
+        if (this.birthDate != null) {
+          visitor.visit(this, "birthDate", -1, this.birthDate);
+        }
+        if (this.deceased != null) {
+          visitor.visit(this, "deceased[x]", -1, this.deceased);
+        }
+        if (this.addressList != null) {
+          int i = 0;
+          for (Base v : this.addressList) {
+            if (v != null) {
+              visitor.visit(this, "address", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.maritalStatus != null) {
+          visitor.visit(this, "maritalStatus", -1, this.maritalStatus);
+        }
+        if (this.photoList != null) {
+          int i = 0;
+          for (Base v : this.photoList) {
+            if (v != null) {
+              visitor.visit(this, "photo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.communicationList != null) {
+          int i = 0;
+          for (Base v : this.communicationList) {
+            if (v != null) {
+              visitor.visit(this, "communication", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.managingOrganization != null) {
+          visitor.visit(this, "managingOrganization", -1, this.managingOrganization);
+        }
+        if (this.linkList != null) {
+          int i = 0;
+          for (Base v : this.linkList) {
+            if (v != null) {
+              visitor.visit(this, "link", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

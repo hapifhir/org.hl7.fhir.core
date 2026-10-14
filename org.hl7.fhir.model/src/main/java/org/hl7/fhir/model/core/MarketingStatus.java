@@ -292,6 +292,26 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.country != null) {
+          visitor.visit(this, "country", -1, this.country);
+        }
+        if (this.jurisdiction != null) {
+          visitor.visit(this, "jurisdiction", -1, this.jurisdiction);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.dateRange != null) {
+          visitor.visit(this, "dateRange", -1, this.dateRange);
+        }
+        if (this.restoreDate != null) {
+          visitor.visit(this, "restoreDate", -1, this.restoreDate);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "country":  return new Property("country", "CodeableConcept", "The country in which the marketing status applies.", 0, 1, country);

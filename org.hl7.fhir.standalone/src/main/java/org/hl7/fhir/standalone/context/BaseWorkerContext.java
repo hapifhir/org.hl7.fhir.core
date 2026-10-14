@@ -106,6 +106,14 @@ import java.util.concurrent.atomic.AtomicReference;
   
  */
 
+/**
+ * Base implementation of IWorkerContext.
+ *
+ * Not thread safe, and not meant to be: like everything in org.hl7.fhir.standalone, this assumes a
+ * single thread. It loads resources lazily and derives state from them on first use. See "Thread Safety"
+ * in the README. Don't add synchronization to new code here - the existing {@code lock} is historical,
+ * and isn't a promise that the context can be shared between threads.
+ */
 @Slf4j
 
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext, IWorkerContextManager, IOIDServices {

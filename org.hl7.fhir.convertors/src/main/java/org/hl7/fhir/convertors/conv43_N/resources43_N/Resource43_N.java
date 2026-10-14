@@ -242,7 +242,7 @@ public class Resource43_N {
       return TestScript43_N.convertTestScript((org.hl7.fhir.r4b.model.TestScript) src);
 
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R4 to R5");
+      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R4B to RN");
     } else {
       return null;
     }
@@ -452,7 +452,7 @@ public class Resource43_N {
       return TestScript43_N.convertTestScript((org.hl7.fhir.model.testing.TestScript) src);
 
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R5 to R4");
+      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from RN to R4B");
     } else {
       return null;
     }

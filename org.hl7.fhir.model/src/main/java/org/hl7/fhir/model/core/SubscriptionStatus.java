@@ -642,6 +642,56 @@ public class SubscriptionStatus extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.eventNumber != null) {
+            visitor.visit(this, "eventNumber", -1, this.eventNumber);
+          }
+          if (this.triggerEventList != null) {
+            int i = 0;
+            for (Base v : this.triggerEventList) {
+              if (v != null) {
+                visitor.visit(this, "triggerEvent", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.timestamp != null) {
+            visitor.visit(this, "timestamp", -1, this.timestamp);
+          }
+          if (this.focus != null) {
+            visitor.visit(this, "focus", -1, this.focus);
+          }
+          if (this.additionalContextList != null) {
+            int i = 0;
+            for (Base v : this.additionalContextList) {
+              if (v != null) {
+                visitor.visit(this, "additionalContext", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.relatedQueryList != null) {
+            int i = 0;
+            for (Base v : this.relatedQueryList) {
+              if (v != null) {
+                visitor.visit(this, "relatedQuery", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.authorizationHintList != null) {
+            int i = 0;
+            for (Base v : this.authorizationHintList) {
+              if (v != null) {
+                visitor.visit(this, "authorizationHint", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "eventNumber":  return new Property("eventNumber", "integer64", "Either the sequential number of this event in this subscription context or a relative event number for this notification.", 0, 1, eventNumber);
@@ -1018,6 +1068,17 @@ public class SubscriptionStatus extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.queryType != null) {
+            visitor.visit(this, "queryType", -1, this.queryType);
+          }
+          if (this.query != null) {
+            visitor.visit(this, "query", -1, this.query);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "queryType":  return new Property("queryType", "Coding", "Coded value(s) used to describe the type of information that evaluating this query will provide. Subscribers can use the values to ensure the data they request are relevant and necessary for their use.", 0, 1, queryType);
@@ -1288,6 +1349,17 @@ public class SubscriptionStatus extends DomainResource {
           super.listChildren(children);
           children.add(new Property("authorizationType", "Coding", "Used by clients to determine what kind of authorization hint is being suggested by the sender.", 0, 1, authorizationType));
           children.add(new Property("value", "string", "A value related to the authorization (e.g., a token).", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.authorizationType != null) {
+            visitor.visit(this, "authorizationType", -1, this.authorizationType);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
         }
 
         @Override
@@ -1857,6 +1929,44 @@ public class SubscriptionStatus extends DomainResource {
         children.add(new Property("subscription", "Reference(Subscription)", "The reference to the Subscription which generated this notification.", 0, 1, subscription));
         children.add(new Property("topic", "canonical(SubscriptionTopic)", "The reference to the SubscriptionTopic for the Subscription which generated this notification.", 0, 1, topic));
         children.add(new Property("error", "CodeableConcept", "A record of errors that occurred when the server processed a notification.", 0, java.lang.Integer.MAX_VALUE, errorList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.eventsSinceSubscriptionStart != null) {
+          visitor.visit(this, "eventsSinceSubscriptionStart", -1, this.eventsSinceSubscriptionStart);
+        }
+        if (this.notificationEventList != null) {
+          int i = 0;
+          for (Base v : this.notificationEventList) {
+            if (v != null) {
+              visitor.visit(this, "notificationEvent", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subscription != null) {
+          visitor.visit(this, "subscription", -1, this.subscription);
+        }
+        if (this.topic != null) {
+          visitor.visit(this, "topic", -1, this.topic);
+        }
+        if (this.errorList != null) {
+          int i = 0;
+          for (Base v : this.errorList) {
+            if (v != null) {
+              visitor.visit(this, "error", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

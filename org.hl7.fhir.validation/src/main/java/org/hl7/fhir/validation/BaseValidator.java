@@ -1771,6 +1771,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
           org.hl7.fhir.r5.model.Resource r5 = new org.hl7.fhir.r5.formats.JsonParser().parse(json);
           rN = VersionConvertorFactory_50_N.convertResource(r5);
           break;
+        case R6:
+          org.hl7.fhir.model.core.Resource r6 = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(json);
+          rN = r6;
+          break;
         default:
           return null; // this can't happen
       }
@@ -1989,5 +1993,25 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     xverManager = value;
   }
 
+
+  protected String determineId(String path, Element element) {
+    if (element == null) {
+      return null;
+    }
+    if (path.endsWith("]")) {
+      path = path.substring(0, path.lastIndexOf("["));
+    }
+    switch (path) {
+      case "StructureDefinition.snapshot.element": return element.getNamedChildValue("id", "path");
+      case "StructureDefinition.differential.element": return element.getNamedChildValue("id", "path");
+      case "SearchParameter": return element.getNamedChildValue("code");
+      default:
+        if (path.contains(".")) {
+          return determineId(path.substring(0, path.lastIndexOf(".")), element.getParentForValidator());
+        } else {
+          return null;
+        }
+    }
+  }
 
 }

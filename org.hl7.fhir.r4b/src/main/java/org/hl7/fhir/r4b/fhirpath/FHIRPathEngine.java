@@ -363,7 +363,7 @@ public class FHIRPathEngine {
       }
       if (ed.fixedType != null) {
         types = new TypeDetails(CollectionStatus.SINGLETON, ed.fixedType);
-      } else if (ed.getDefinition().getType().isEmpty() || isAbstractType(ed.getDefinition().getType())) {
+      } else if (ed.getDefinition().getType().isEmpty() || (ed.getDefinition().getType().size() == 1 && isAbstractType(ed.getDefinition().getType()))) {
         types = new TypeDetails(CollectionStatus.SINGLETON, ctxt + "#" + context);
       } else {
         types = new TypeDetails(CollectionStatus.SINGLETON);
@@ -373,6 +373,24 @@ public class FHIRPathEngine {
       }
     }
 
+    return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, true);
+  }
+
+  /**
+   * check the expression against a focus that could be any of the listed types
+   * 
+   * @param typeList - the names of the types the focus might have
+   */
+  public TypeDetails checkOnTypes(Object appContext, String resourceType, List<String> typeList, ExpressionNode expr)
+      throws FHIRLexerException, PathEngineException, DefinitionException {
+    TypeDetails types = new TypeDetails(CollectionStatus.SINGLETON);
+    for (String t : typeList) {
+      StructureDefinition sd = worker.fetchTypeDefinition(t);
+      if (sd == null) {
+        throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT, t);
+      }
+      types.addType(sd.getUrl());
+    }
     return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, true);
   }
 
@@ -413,7 +431,7 @@ public class FHIRPathEngine {
       }
       if (ed.fixedType != null) {
         types = new TypeDetails(CollectionStatus.SINGLETON, ed.fixedType);
-      } else if (ed.getDefinition().getType().isEmpty() || isAbstractType(ed.getDefinition().getType())) {
+      } else if (ed.getDefinition().getType().isEmpty() || (ed.getDefinition().getType().size() == 1 && isAbstractType(ed.getDefinition().getType()))) {
         types = new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl() + "#" + context);
       } else {
         types = new TypeDetails(CollectionStatus.SINGLETON);
@@ -1564,21 +1582,301 @@ public class FHIRPathEngine {
     if (exp.isProximal() && exp.getOperation() != null) {
       ExpressionNode next = exp.getOpNext();
       ExpressionNode last = exp;
+      // type guards: in a chain of and / or / implies, an operand only matters for some of the types $this
+      // might have (e.g. $this is dateTime implies ...). see TypeGuard
+      Set<String> guardSubject = isLogicalOperation(exp.getOperation()) ? typeGuardSubject(inContext) : null;
+      TypeGuard guard = guardSubject == null ? null : typeGuardForOperand(exp, guardSubject, focus);
       while (next != null) {
         context = contextForParameter(inContext);
         TypeDetails work;
         if (last.getOperation() == Operation.Is || last.getOperation() == Operation.As) {
           work = executeTypeName(context, focus, next, atEntry);
         } else {
-          work = executeType(context, focus, next, atEntry);
+          Set<String> narrowed = guardSubject == null ? null : narrowedTypesForOperand(last.getOperation(), guard, guardSubject);
+          if (narrowed == null) {
+            work = executeType(context, focus, next, atEntry);
+          } else if (narrowed.isEmpty()) {
+            // the operand can't affect the outcome for any type $this might have, so it's not type checked
+            work = new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+          } else {
+            TypeDetails nThis = narrowTypes(context.thisItem, narrowed);
+            work = executeType(changeThis(context, nThis), isSameTypes(focus, context.thisItem) ? nThis : focus, next, atEntry);
+          }
         }
         result = operateTypes(result, last.getOperation(), work, last);
+        if (guardSubject != null) {
+          guard = combineTypeGuards(last.getOperation(), guard, typeGuardForOperand(next, guardSubject, focus), guardSubject);
+        }
         last = next;
         next = next.getOpNext();
       }
       exp.setOpTypes(result);
     }
     return result;
+  }
+
+  /**
+   * Type guards. When a boolean expression tests the type of $this (e.g. $this is dateTime, $this.is(dateTime),
+   * (...).not() of those, and combinations of them with and / or / implies), then the other operand of an
+   * and / or / implies, or the branches of an iif(), can only affect the outcome for some of the types that $this
+   * might have, so they are only type checked against those types:
+   *
+   *   A implies B, A and B, iif(A, B, ..) : B is checked against the types $this can have when A is true
+   *   A or B, iif(A, .., B)                : B is checked against the types $this can have when A is false
+   *
+   * We don't assume short-circuit evaluation (FHIRPath allows it but doesn't require it) - the point is that B can't
+   * change the outcome for the other types, whether or not it is evaluated. If there are no types left, B is not
+   * checked at all.
+   *
+   * whenTrue / whenFalse are the types $this can have when the expression is true / false. A null TypeGuard
+   * means 'nothing known' i.e. all the types $this can have, either way
+   */
+  private static class TypeGuard {
+    private final Set<String> whenTrue;
+    private final Set<String> whenFalse;
+
+    private TypeGuard(Set<String> whenTrue, Set<String> whenFalse) {
+      this.whenTrue = whenTrue;
+      this.whenFalse = whenFalse;
+    }
+
+    private TypeGuard not() {
+      return new TypeGuard(whenFalse, whenTrue);
+    }
+  }
+
+  private enum TypeRelationship { IS_A, SUPERTYPE, UNRELATED, UNKNOWN }
+
+  private boolean isLogicalOperation(Operation op) {
+    return op == Operation.And || op == Operation.Or || op == Operation.Xor || op == Operation.Implies;
+  }
+
+  /**
+   * the types of $this that type guards can narrow, or null if there's nothing to narrow.
+   * Only a singleton - for a collection, 'is' is false because of the cardinality, not the type
+   */
+  private Set<String> typeGuardSubject(ExecutionTypeContext context) {
+    TypeDetails thisItem = context.thisItem;
+    if (thisItem == null || thisItem.hasNoTypes() || thisItem.getCollectionStatus() != CollectionStatus.SINGLETON) {
+      return null;
+    }
+    return thisItem.getTypes();
+  }
+
+  private boolean isSameTypes(TypeDetails focus, TypeDetails thisItem) {
+    return focus != null && thisItem != null && (focus == thisItem || focus.getTypes().equals(thisItem.getTypes()));
+  }
+
+  /**
+   * @return the types to check the operand after 'op' against, or null if no narrowing applies
+   */
+  private Set<String> narrowedTypesForOperand(Operation op, TypeGuard guard, Set<String> subject) {
+    if (guard == null) {
+      return null;
+    }
+    switch (op) {
+    case And:
+    case Implies:
+      return guard.whenTrue;
+    case Or:
+      return guard.whenFalse;
+    default:
+      return null;
+    }
+  }
+
+  private TypeGuard combineTypeGuards(Operation op, TypeGuard left, TypeGuard right, Set<String> subject) {
+    if (left == null && right == null) {
+      return null;
+    }
+    Set<String> lt = left == null ? subject : left.whenTrue;
+    Set<String> lf = left == null ? subject : left.whenFalse;
+    Set<String> rt = right == null ? subject : right.whenTrue;
+    Set<String> rf = right == null ? subject : right.whenFalse;
+    switch (op) {
+    case And:
+      return new TypeGuard(intersectTypes(lt, rt), unionTypes(lf, rf));
+    case Or:
+      return new TypeGuard(unionTypes(lt, rt), intersectTypes(lf, rf));
+    case Implies:
+      return new TypeGuard(unionTypes(lf, rt), intersectTypes(lt, rf));
+    default:
+      return null;
+    }
+  }
+
+  private Set<String> intersectTypes(Set<String> left, Set<String> right) {
+    Set<String> res = new HashSet<>(left);
+    res.retainAll(right);
+    return res;
+  }
+
+  private Set<String> unionTypes(Set<String> left, Set<String> right) {
+    Set<String> res = new HashSet<>(left);
+    res.addAll(right);
+    return res;
+  }
+
+  /**
+   * what the expression node (including its inner chain and operator chain, if it's proximal) tells us about the type of $this
+   */
+  private TypeGuard typeGuardForNode(ExpressionNode node, Set<String> subject, TypeDetails focus) {
+    if (node.isProximal() && node.getOperation() != null && node.getOpNext() != null) {
+      if (node.getOperation() == Operation.Is) {
+        // $this is X - Is binds tighter than anything logical, so the whole chain is just this
+        if (isThis(node) && node.getOpNext().getOperation() == null) {
+          return typeGuardForIs(node.getOpNext(), subject);
+        }
+        return null;
+      }
+      if (!isLogicalOperation(node.getOperation())) {
+        return null;
+      }
+      TypeGuard guard = typeGuardForOperand(node, subject, focus);
+      ExpressionNode last = node;
+      ExpressionNode next = node.getOpNext();
+      while (next != null) {
+        if (!isLogicalOperation(last.getOperation())) {
+          return null;
+        }
+        guard = combineTypeGuards(last.getOperation(), guard, typeGuardForOperand(next, subject, focus), subject);
+        last = next;
+        next = next.getOpNext();
+      }
+      return guard;
+    } else {
+      return typeGuardForOperand(node, subject, focus);
+    }
+  }
+
+  /**
+   * what the node tells us about the type of $this, ignoring any operation that follows it
+   */
+  private TypeGuard typeGuardForOperand(ExpressionNode node, Set<String> subject, TypeDetails focus) {
+    TypeGuard guard;
+    boolean isSubject; // true if the value of the node so far is $this itself
+    ExpressionNode inner = node.getInner();
+    if (node.getKind() == Kind.Group) {
+      guard = typeGuardForNode(node.getGroup(), subject, focus);
+      isSubject = false;
+      if (guard == null) {
+        return null;
+      }
+    } else if (node.getKind() == Kind.Name && "$this".equals(node.getName())) {
+      guard = null;
+      isSubject = true;
+    } else if (node.getKind() == Kind.Function && node.getFunction() == Function.Is && isSameTypes(focus, new TypeDetails(CollectionStatus.SINGLETON, subject))) {
+      // is(X) with an implied focus that is $this
+      guard = typeGuardForIs(node.getParameters().get(0), subject);
+      isSubject = false;
+      if (guard == null) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+    while (inner != null) {
+      if (isSubject && inner.getKind() == Kind.Function && inner.getFunction() == Function.Is) {
+        guard = typeGuardForIs(inner.getParameters().get(0), subject);
+        isSubject = false;
+        if (guard == null) {
+          return null;
+        }
+      } else if (!isSubject && inner.getKind() == Kind.Function && inner.getFunction() == Function.Not) {
+        guard = guard.not();
+      } else {
+        return null;
+      }
+      inner = inner.getInner();
+    }
+    return isSubject ? null : guard;
+  }
+
+  private boolean isThis(ExpressionNode node) {
+    return node.getKind() == Kind.Name && "$this".equals(node.getName()) && node.getInner() == null;
+  }
+
+  private TypeGuard typeGuardForIs(ExpressionNode typeNode, Set<String> subject) {
+    String tn;
+    if (typeNode.getKind() != Kind.Name) {
+      return null;
+    } else if (typeNode.getInner() == null) {
+      tn = typeNode.getName();
+    } else if ("FHIR".equals(typeNode.getName()) && typeNode.getInner().getInner() == null) {
+      tn = typeNode.getInner().getName();
+    } else {
+      return null; // System types etc - not worth it for now
+    }
+    Set<String> whenTrue = new HashSet<>();
+    Set<String> whenFalse = new HashSet<>();
+    for (String t : subject) {
+      switch (typeRelationship(t, tn)) {
+      case IS_A:
+        whenTrue.add(t);
+        break;
+      case SUPERTYPE:
+        whenTrue.add(ProfiledType.ns(tn));
+        whenFalse.add(t);
+        break;
+      case UNRELATED:
+        whenFalse.add(t);
+        break;
+      default:
+        return null;
+      }
+    }
+    return new TypeGuard(whenTrue, whenFalse);
+  }
+
+  /**
+   * @param type a type uri from TypeDetails
+   * @param tn the name of a FHIR type
+   * @return IS_A if type is tn or a specialization of it, SUPERTYPE if tn is a specialization of type
+   */
+  private TypeRelationship typeRelationship(String type, String tn) {
+    if (!type.startsWith(TypeDetails.FHIR_NS) || type.contains("#")) {
+      return TypeRelationship.UNKNOWN;
+    }
+    String n = type.substring(TypeDetails.FHIR_NS.length());
+    if (n.equals(tn)) {
+      return TypeRelationship.IS_A;
+    }
+    StructureDefinition sd = worker.fetchTypeDefinition(n);
+    StructureDefinition sdt = worker.fetchTypeDefinition(tn);
+    if (sd == null || sdt == null) {
+      return TypeRelationship.UNKNOWN;
+    }
+    while (sd != null) {
+      if (tn.equals(sd.getType())) {
+        return TypeRelationship.IS_A;
+      }
+      sd = sd.hasBaseDefinition() ? worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition()) : null;
+    }
+    while (sdt != null) {
+      if (n.equals(sdt.getType())) {
+        return TypeRelationship.SUPERTYPE;
+      }
+      sdt = sdt.hasBaseDefinition() ? worker.fetchResource(StructureDefinition.class, sdt.getBaseDefinition()) : null;
+    }
+    return TypeRelationship.UNRELATED;
+  }
+
+  /**
+   * @return the subset of types (keeping profiles and bindings) that are in the narrowed set, plus any types in the narrowed set that aren't (more specialised types)
+   */
+  private TypeDetails narrowTypes(TypeDetails types, Set<String> narrowed) {
+    TypeDetails res = new TypeDetails(types.getCollectionStatus());
+    for (ProfiledType pt : types.getProfiledTypes()) {
+      if (narrowed.contains(pt.getUri())) {
+        res.addType(pt);
+      }
+    }
+    for (String t : narrowed) {
+      if (!res.getTypes().contains(t)) {
+        res.addType(t);
+      }
+    }
+    return res;
   }
 
   private List<Base> resolveConstant(ExecutionContext context, Base constant, ExpressionNode expr, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
@@ -3208,11 +3506,37 @@ public class FHIRPathEngine {
   }
 
   @SuppressWarnings("unchecked")
+  /**
+   * the true and otherwise branches of iif() are checked against the types $this can
+   * have when the criterion is true and false respectively (see TypeGuard)
+   */
+  private void evaluateIifParameters(ExecutionTypeContext context, ExpressionNode exp, List<TypeDetails> paramTypes) {
+    ExpressionNode criterion = exp.getParameters().get(0);
+    paramTypes.add(executeType(context, context.thisItem, criterion, true));
+    Set<String> subject = typeGuardSubject(context);
+    TypeGuard guard = subject == null ? null : typeGuardForNode(criterion, subject, context.thisItem);
+    for (int i = 1; i < exp.getParameters().size(); i++) {
+      ExpressionNode param = exp.getParameters().get(i);
+      Set<String> narrowed = guard == null ? null : i == 1 ? guard.whenTrue : guard.whenFalse;
+      if (narrowed == null) {
+        paramTypes.add(executeType(context, context.thisItem, param, true));
+      } else if (narrowed.isEmpty()) {
+        // this branch can't be taken, so it's not type checked, and contributes no types
+        paramTypes.add(new TypeDetails(CollectionStatus.SINGLETON));
+      } else {
+        ExecutionTypeContext nContext = changeThis(context, narrowTypes(context.thisItem, narrowed));
+        paramTypes.add(executeType(nContext, nContext.thisItem, param, true));
+      }
+    }
+  }
+
   private TypeDetails evaluateFunctionType(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp)
       throws PathEngineException, DefinitionException {
     List<TypeDetails> paramTypes = new ArrayList<TypeDetails>();
     if (exp.getFunction() == Function.Is || exp.getFunction() == Function.As || exp.getFunction() == Function.OfType) {
       paramTypes.add(new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+    } else if (exp.getFunction() == Function.Iif) {
+      evaluateIifParameters(context, exp, paramTypes);
     } else {
       int i = 0;
       for (ExpressionNode expr : exp.getParameters()) {
@@ -3699,11 +4023,11 @@ public class FHIRPathEngine {
     if (!focus.hasNoTypes()) {
       if (canQty) {
         if (!focus.hasType(primitiveTypes) && !focus.hasType("Quantity")) {
-          throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(),
+          throw makeExceptionPlural(focus.getTypes().size(), expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(),
               "Quantity, " + primitiveTypes.toString());
         }
       } else if (!focus.hasType(primitiveTypes)) {
-        throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(),
+        throw makeExceptionPlural(focus.getTypes().size(), expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(),
             primitiveTypes.toString());
       }
     }
@@ -4773,9 +5097,12 @@ public class FHIRPathEngine {
   private List<Base> funcToString(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
     for (Base item : focus) {
-      String value = convertToString(item);
-      if (value != null)
-        result.add(new StringType(value).noExtensions());
+      // only primitives and Quantity can be converted to a string; anything else is {}
+      if (item.isPrimitive() || "Quantity".equals(item.fhirType())) {
+        String value = convertToString(item);
+        if (value != null)
+          result.add(new StringType(value).noExtensions());
+      }
     }
 
     if (result.size() > 1) {

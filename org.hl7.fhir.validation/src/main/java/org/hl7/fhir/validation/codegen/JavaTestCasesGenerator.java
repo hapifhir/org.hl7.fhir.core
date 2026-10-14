@@ -72,7 +72,7 @@ public class JavaTestCasesGenerator extends JavaBaseGenerator {
     write("    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();\r\n");
     write("    for (String pid : PACKAGES) {\r\n");
     write("      NpmPackage npm = pcm.loadPackage(pid);\r\n");
-    write("      for (String filename : npm.list(\"example\")) {\r\n");
+    write("      for (String filename : npm.listExamples()) {\r\n");
     write("        if (filename.endsWith(\".json\") && filename.contains(\"-\")) {\r\n");
     write("          String resourceType = filename.substring(0, filename.indexOf(\"-\"));\r\n");
     write("          if (Utilities.existsInList(resourceType, RESOURCE_TYPES)) {\r\n");
@@ -88,7 +88,7 @@ public class JavaTestCasesGenerator extends JavaBaseGenerator {
     write("  @MethodSource(\"data\")\r\n");
     write("  public void testRoundTrip(String name, String pid, String filename) throws IOException {\r\n");
     write("    NpmPackage npm = new FilesystemPackageCacheManager.Builder().build().loadPackage(pid);\r\n");
-    write("    byte[] sourceJson = FileUtilities.streamToBytes(npm.load(\"example\", filename));\r\n");
+    write("    byte[] sourceJson = FileUtilities.streamToBytes(npm.loadExample(filename));\r\n");
     write("\r\n");
     write("    // what the example says, as parsed from the package\r\n");
     write("    Resource expected = new "+jname+"JsonParser(true, true).parse(sourceJson);\r\n");

@@ -1992,6 +1992,101 @@ public class Questionnaire extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.definitionList != null) {
+            int i = 0;
+            for (Base v : this.definitionList) {
+              if (v != null) {
+                visitor.visit(this, "definition", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.codeList != null) {
+            int i = 0;
+            for (Base v : this.codeList) {
+              if (v != null) {
+                visitor.visit(this, "code", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.prefix != null) {
+            visitor.visit(this, "prefix", -1, this.prefix);
+          }
+          if (this.text != null) {
+            visitor.visit(this, "text", -1, this.text);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.enableWhenList != null) {
+            int i = 0;
+            for (Base v : this.enableWhenList) {
+              if (v != null) {
+                visitor.visit(this, "enableWhen", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.enableBehavior != null) {
+            visitor.visit(this, "enableBehavior", -1, this.enableBehavior);
+          }
+          if (this.disabledDisplay != null) {
+            visitor.visit(this, "disabledDisplay", -1, this.disabledDisplay);
+          }
+          if (this.required != null) {
+            visitor.visit(this, "required", -1, this.required);
+          }
+          if (this.repeats != null) {
+            visitor.visit(this, "repeats", -1, this.repeats);
+          }
+          if (this.readOnly != null) {
+            visitor.visit(this, "readOnly", -1, this.readOnly);
+          }
+          if (this.maxLength != null) {
+            visitor.visit(this, "maxLength", -1, this.maxLength);
+          }
+          if (this.answerConstraint != null) {
+            visitor.visit(this, "answerConstraint", -1, this.answerConstraint);
+          }
+          if (this.answerValueSet != null) {
+            visitor.visit(this, "answerValueSet", -1, this.answerValueSet);
+          }
+          if (this.answerOptionList != null) {
+            int i = 0;
+            for (Base v : this.answerOptionList) {
+              if (v != null) {
+                visitor.visit(this, "answerOption", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.initialList != null) {
+            int i = 0;
+            for (Base v : this.initialList) {
+              if (v != null) {
+                visitor.visit(this, "initial", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.itemList != null) {
+            int i = 0;
+            for (Base v : this.itemList) {
+              if (v != null) {
+                visitor.visit(this, "item", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "linkId":  return new Property("linkId", "string", "An identifier that is unique within the Questionnaire allowing linkage to the equivalent item in a QuestionnaireResponse resource.", 0, 1, linkId);
@@ -2883,6 +2978,20 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.question != null) {
+            visitor.visit(this, "question", -1, this.question);
+          }
+          if (this.operator != null) {
+            visitor.visit(this, "operator", -1, this.operator);
+          }
+          if (this.answer != null) {
+            visitor.visit(this, "answer[x]", -1, this.answer);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "question":  return new Property("question", "string", "The linkId for the question whose answer (or lack of answer) governs whether this item is enabled.", 0, 1, question);
@@ -3382,6 +3491,17 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.initialSelected != null) {
+            visitor.visit(this, "initialSelected", -1, this.initialSelected);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "value[x]":  return new Property("value[x]", "decimal|integer|date|dateTime|time|string|uri|Coding|Quantity|Reference(Any)", "A potential answer that's allowed as the answer to this question.", 0, 1, value);
@@ -3819,6 +3939,14 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("value[x]", "boolean|decimal|integer|date|dateTime|time|string|uri|Attachment|Coding|Quantity|Reference(Any)", "The actual value to for an initial answer.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
         }
 
         @Override
@@ -5681,6 +5809,131 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         children.add(new Property("effectivePeriod", "Period", "The period during which the questionnaire content was or is planned to be in active use.", 0, 1, effectivePeriod));
         children.add(new Property("code", "Coding", "An identifier for this collection of questions in a particular terminology such as LOINC.", 0, java.lang.Integer.MAX_VALUE, codeList));
         children.add(new Property("item", "", "A particular question, question grouping or display text that is part of the questionnaire.", 0, java.lang.Integer.MAX_VALUE, itemList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.derivedFromList != null) {
+          int i = 0;
+          for (Base v : this.derivedFromList) {
+            if (v != null) {
+              visitor.visit(this, "derivedFrom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.subjectTypeList != null) {
+          int i = 0;
+          for (Base v : this.subjectTypeList) {
+            if (v != null) {
+              visitor.visit(this, "subjectType", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.effectivePeriod != null) {
+          visitor.visit(this, "effectivePeriod", -1, this.effectivePeriod);
+        }
+        if (this.codeList != null) {
+          int i = 0;
+          for (Base v : this.codeList) {
+            if (v != null) {
+              visitor.visit(this, "code", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.itemList != null) {
+          int i = 0;
+          for (Base v : this.itemList) {
+            if (v != null) {
+              visitor.visit(this, "item", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

@@ -369,13 +369,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private final boolean ADD_REFERENCE_TO_TABLE = true; 
  
-  private boolean useTableForFixedValues = true; 
   private String corePath;
   private JsonObject resourceGroupings; 
   private MapStructureMode mappingsMode;
   private List<StructureDefinition> mappingTargets = new ArrayList<>();
-  // Render-local store for pattern values merged into existing in-scope rows.
-  private final Map<ElementDefinition, List<Base>> mergedPatternValues = new IdentityHashMap<>();
   private FHIRPathEngine fpe;
  
   public static class UnusedTracker { 
@@ -509,7 +506,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     profiles.add(profile); 
     genGridElement(defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, true, profileBaseFileName, null, corePath, imagePath, true, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), diff);
     try { 
-      return gen.generate(model, imagePath, 1, outputTracker); 
+      return gen.generate(model, imagePath, true, outputTracker);
     } catch (FHIRException e) {
       throw new FHIRException(e.getMessage(), e); 
     } 
@@ -546,7 +543,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
       TableModel model = generateTableInner(status, defFile, profile, diff, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, mustSupport, rc, anchorPrefix, res, idSfx, gen);
       if (model == null) return null;
-      return gen.generate(model, imagePath, 0, outputTracker);
+      return gen.generate(model, imagePath, false, outputTracker);
     } catch (FHIRException e) {
       XhtmlNode xhtml = new XhtmlNode(NodeType.Element, "p");
       xhtml.span("color: maroon").tx(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()));
@@ -565,7 +562,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (model == null) {
         return null;
       }
-      return gen.generateAttributeTable(model, imagePath, 0, outputTracker);
+      return gen.generateAttributeTable(model, imagePath, false, outputTracker);
     } catch (FHIRException e) {
       XhtmlNode xhtml = new XhtmlNode(NodeType.Element, "p");
       xhtml.span("color: maroon").tx(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()));
@@ -574,7 +571,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   private TableModel generateTableInner(RenderingStatus status, String defFile, StructureDefinition profile, boolean diff, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, boolean logicalModel, boolean allInvariants, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res, String idSfx, HierarchicalTableGenerator gen) throws IOException {
-    mergedPatternValues.clear();
     List<ElementDefinition> list;
     if (diff) {
       list = new SnapshotGenerationPreProcessor(context.getProfileUtilities()).supplementMissingDiffElements(profile);
@@ -958,7 +954,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         row.setIcon("icon_resource.png", context.formatPhrase(RenderingI18nContext.GENERAL_RESOURCE));
       }
       if (element.hasUserData(UserDataNames.render_opaque)) { 
-        row.setOpacity(HierarchicalTableGenerator.STANDARD_OPACITY);
+        row.setTransparent(true);
       } 
       UnusedTracker used = new UnusedTracker(); 
       String ref = defPath == null ? null : defPath + element.getId(); 
@@ -1007,7 +1003,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           slicingRow = row; 
           for (Cell cell : row.getCells()) 
             for (Piece p : cell.getPieces()) { 
-              p.addStyle("font-style: italic"); 
+              p.styleAsItalic();
             } 
         } 
       } else if (element.hasSliceName()) { 
@@ -1019,9 +1015,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         for (Cell cell : row.getCells()) 
           for (Piece p : cell.getPieces()) {
             if (p.isUnderived()) {
-              p.setStyle("font-style: italic");
+              p.styleAsItalic();
             } else {
-              p.setStyle("text-decoration:line-through");
+              p.styleAsStrikeout();
             }
           }
       } else { 
@@ -1340,7 +1336,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (element != null && (hasNonBaseConstraints(element.getConstraintList()) || hasNonBaseConditions(element.getConditionList()))) { 
       Piece p = gc.addText(CONSTRAINT_CHAR); 
       p.setHint((context.formatPhrase(RenderingI18nContext.STRUC_DEF_ELE_AFFECTED, listConstraintsAndConditions(element), ")"))); 
-      p.addStyle(CONSTRAINT_STYLE); 
+      p.addNamedStyle("xhtConstraintStyle", CONSTRAINT_STYLE);
       p.setReference(Utilities.pathURL(VersionUtilities.getSpecUrl(context.getWorker().getFHIRVersion()), "conformance-rules.html#constraints"));
     } 
     if (element != null && element.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS)) { 
@@ -1511,11 +1507,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
     if (logicalModel && ExtensionUtilities.hasAnyOfExtensions(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
       if (root) {
-        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_NAME)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_NAME)) + ": ", null).styleAsBold());
         c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));
       } else if (!root && ExtensionUtilities.hasAnyOfExtensions(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED) &&
         !ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED).equals(ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED))) {
-        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_NAME)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_NAME)) + ": ", null).styleAsBold());
         c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));
       }
     }
@@ -1544,7 +1540,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
     }
     if (definition.getPath().endsWith("url") && definition.hasFixed()) {
-      c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\"" + buildJson(definition.getFixed()) + "\"", null).addStyle("color: darkgreen")));
+      c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\"" + buildJson(definition.getFixed()) + "\"", null).styleAsDarkGreen()));
     } else {
       if (definition != null && definition.hasShort()) {
         if (!c.getPieces().isEmpty()) {
@@ -1559,7 +1555,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (!c.getPieces().isEmpty()) {
           c.addPiece(gen.new Piece("br"));
         }
-        Piece piece = gen.new Piece(null, gt(fallback.getShortElement()), null).addStyle(context.getOpacity());
+        Piece piece = gen.new Piece(null, gt(fallback.getShortElement()), null).styleAsDeEmphasized();
         if (!definition.getShortElement().hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) {
           piece.setUnderived(true);
         }
@@ -1592,14 +1588,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
         if (fixedUrl == null) {
           if (!Utilities.noString(fullUrl)) {
-            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_URL)) + ": ", null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_URL)) + ": ", null).styleAsBold());
             c.getPieces().add(gen.new Piece(ref, fullUrl, null));
           }
         } else {
           // reference to a profile take on the extension show the base URL
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_URL)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_URL)) + ": ", null).styleAsBold());
           c.getPieces().add(gen.new Piece(ref2, fixedUrl, null));
-          c.getPieces().add(gen.new Piece(null, (" " + context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROFILED) + " ") + " ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, (" " + context.formatPhrase(RenderingI18nContext.STRUC_DEF_PROFILED) + " ") + " ", null).styleAsBold());
           c.getPieces().add(gen.new Piece(ref, fullUrl, null));
 
         }
@@ -1660,14 +1656,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (!c.getPieces().isEmpty()) {
           c.addPiece(gen.new Piece("br"));
         }
-        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICE)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICE)) + ": ", null).styleAsBold());
         c.getPieces().add(gen.new Piece(null, describeSlice(definition.getSlicing()), null));
       }
       if (!definition.getPath().contains(".") && ExtensionUtilities.hasExtension(profile, ExtensionDefinitions.EXT_BINDING_STYLE)) {
         if (!c.getPieces().isEmpty()) {
           c.addPiece(gen.new Piece("br"));
         }
-        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING)) + ": ", null).styleAsBold());
         c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_SET) + " "), null));
         c.getPieces().add(gen.new Piece(null, ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_BINDING_STYLE), null));
         c.getPieces().add(gen.new Piece(null, " " + context.formatPhrase(RenderingI18nContext.STRUC_DEF_BINDING_STYLE), null));
@@ -1689,7 +1685,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (!c.getPieces().isEmpty()) {
           c.addPiece(gen.new Piece("br"));
         }
-        c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MODIFIER_EXT), null).addStyle("font-weight:bold"));
+        c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MODIFIER_EXT), null).styleAsBold());
 
       }
 
@@ -1720,12 +1716,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         //  restrictions on status
         // direct linkage to data requirements
         if ((statusCodes.isEmpty() || statusCodes.size() == 4) && level == null && langCtrl.isEmpty()) {
-          c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to content, language, or traceability to data elements", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to content, language, or traceability to data elements", null).styleAsBold());
         } else {
           if ((statusCodes.isEmpty() || statusCodes.size() == 4)) {
-            c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative content by fixing the status codes", null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative content by fixing the status codes", null).styleAsBold());
           } else {
-            c.getPieces().add(gen.new Piece(null, "This profile constrains the narrative content by fixing the status codes to " + CommaSeparatedStringBuilder.join2(", ", " and ", statusCodes), null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, "This profile constrains the narrative content by fixing the status codes to " + CommaSeparatedStringBuilder.join2(", ", " and ", statusCodes), null).styleAsBold());
           }
           c.addPiece(gen.new Piece("br"));
           String ltx = null;
@@ -1748,13 +1744,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               }
             }
           }
-          c.getPieces().add(gen.new Piece(null, ltx, null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, ltx, null).styleAsBold());
           c.addPiece(gen.new Piece("br"));
 
           if (level == null) {
-            c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to traceability to data elements", null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, "This profile does not constrain the narrative in regard to traceability to data elements", null).styleAsBold());
           } else {
-            c.getPieces().add(gen.new Piece(null, "This profile indicates that if there are elements in the narrative without a source-type class, and " + level + " will be emitted", null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, "This profile indicates that if there are elements in the narrative without a source-type class, and " + level + " will be emitted", null).styleAsBold());
           }
         }
       }
@@ -1790,7 +1786,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (!c.getPieces().isEmpty()) {
           c.addPiece(gen.new Piece("br"));
         }
-        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_CHOICE_GRP)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_CHOICE_GRP)) + ": ", null).styleAsBold());
         c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_REPEAT), null));
       }
       if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED)) {
@@ -1798,20 +1794,20 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.addPiece(gen.new Piece("br"));
         }
         if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_XML)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_XML)) + ": ", null).styleAsBold());
           c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED), null));
           c.getPieces().add(gen.new Piece(null, " (", null));
           c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));
           c.getPieces().add(gen.new Piece(null, ")", null));
         } else {
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_ELE)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_ELE)) + ": ", null).styleAsBold());
           c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAME, ExtensionDefinitions.EXT_XML_NAME_DEPRECATED), null));
         }
       } else if (definition.hasExtension(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
         if (!c.getPieces().isEmpty()) {
           c.addPiece(gen.new Piece("br"));
         }
-        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_NAME)) + ": ", null).addStyle("font-weight:bold"));
+        c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_XML_NAME)) + ": ", null).styleAsBold());
         c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED), null));
       }
       if (definition.hasExtension(ExtensionDefinitions.EXT_JSON_EMPTY)) {
@@ -1831,10 +1827,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.addPiece(gen.new Piece("br"));
         }
         if (definition.getPath().contains(".")) {
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_JSON_NAME)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_JSON_NAME)) + ": ", null).styleAsBold());
           c.getPieces().add(gen.new Piece(null, jn, null));
         } else {
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_JSON_TYPE)) + ": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_JSON_TYPE)) + ": ", null).styleAsBold());
           Piece piece = gen.new Piece("code");
           piece.addHtml(new XhtmlNode(NodeType.Text).setContent(jn));
           c.getPieces().add(piece);
@@ -1887,14 +1883,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!c.getPieces().isEmpty()) {
             c.addPiece(gen.new Piece("br"));
           }
-          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE_PREFIX)+" ", null).addStyle("font-weight:bold"));
-          c.addPiece(gen.new Piece(corePath+"resource.html#additional", context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE_LINK), null).addStyle("font-weight:bold"));
+          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE_PREFIX)+" ", null).styleAsBold());
+          c.addPiece(gen.new Piece(corePath+"resource.html#additional", context.formatPhrase(RenderingI18nContext.STRUC_DEF_ADDITIONAL_RESOURCE_LINK), null).styleAsBold());
         }
         if (ExtensionUtilities.readBoolExtension(profile, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
           if (!c.getPieces().isEmpty()) {
             c.addPiece(gen.new Piece("br"));
           }
-          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG_ADD), null).addStyle("font-weight:bold"));
+          c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_OBLIG_ADD), null).styleAsBold());
         }
         addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_INHERITS_NEW, ExtensionDefinitions.EXT_OBLIGATION_INHERITS_OLD), "This profile picks up obligations and additional bindings from the profile", true, profile);
         addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE), "This profile also imposes the profile", true, profile);
@@ -1910,12 +1906,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!c.getPieces().isEmpty()) {
               c.addPiece(gen.new Piece("br"));
             }
-            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_CAN_TARGET), null).addStyle("font-weight:bold"));
+            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_CAN_TARGET), null).styleAsBold());
           } else {
             if (!c.getPieces().isEmpty()) {
               c.addPiece(gen.new Piece("br"));
             }
-            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_NOT_MARK), null).addStyle("font-weight:bold"));
+            c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_NOT_MARK), null).styleAsBold());
           }
 
           String ps = ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_PROFILE_STYLE);
@@ -1924,9 +1920,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.addPiece(gen.new Piece("br"));
             }
             if ("cda".equals(ps)) {
-              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_TEMPLATEID), null).addStyle("font-weight:bold"));
+              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_TEMPLATEID), null).styleAsBold());
             } else {
-              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_UNKNOWN_APPROACH, ps) + " ", null).addStyle("font-weight:bold"));
+              c.addPiece(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_UNKNOWN_APPROACH, ps) + " ", null).styleAsBold());
             }
           }
           Extension lc = ExtensionUtilities.getExtension(profile, ExtensionDefinitions.EXT_LOGICAL_CONTAINER);
@@ -1934,7 +1930,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!c.getPieces().isEmpty()) {
               c.addPiece(gen.new Piece("br"));
             }
-            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_LOGICAL_CONT)) + ": ", context.formatPhrase(RenderingI18nContext.STRUC_DEF_ROOT)).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_LOGICAL_CONT)) + ": ", context.formatPhrase(RenderingI18nContext.STRUC_DEF_ROOT)).styleAsBold());
 
             String uri = lc.getValue().primitiveValue();
             StructureDefinition lct = context.getContext().fetchTypeDefinition(uri);
@@ -1956,14 +1952,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!c.getPieces().isEmpty())
             c.addPiece(gen.new Piece("binding", "br"));
           if (!binding.hasValueSet()) {
-            c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_VS_1)) + ": ", null).addStyle("font-weight:bold")));
+            c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_VS_1)) + ": ", null).styleAsBold()));
             if (binding.hasStrength()) {
               c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, " (", null)));
               c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", corePath + "terminologies.html#" + binding.getStrength().toCode(), egt(binding.getStrengthElement()), binding.getStrength().getDefinition())));
               c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, ")", null)));
               if (binding.getStrength().testable()) {
                 c.getPieces().add(gen.new Piece("binding", null, " ", null));
-                c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, "\u26A0", context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_VS_2))).addStyle("font-weight:bold; color: #c97a18"));
+                c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, "\u26A0", context.formatPhrase(RenderingI18nContext.GENERAL_BINDING_NO_VS_2))).styleAsBold().addNamedStyle("xhtBindingNotTestable", "color: #c97a18"));
               }
             }
             c.getPieces().add(gen.new Piece("binding", null, ": ", null));
@@ -1974,7 +1970,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
           } else {
             BindingResolution br = context.getPkp() == null ? makeNullBr(binding) : context.getPkp().resolveBinding(profile, binding, definition.getPath());
-            c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING)) + ": ", null).addStyle("font-weight:bold")));
+            c.getPieces().add(checkForNoChange(binding, gen.new Piece("binding", null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING)) + ": ", null).styleAsBold()));
             c.getPieces().add(checkForNoChange(binding.getValueSetElement(), checkAddExternalFlag(br, gen.new Piece("binding", br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath + br.url, br.display, br.uri))));
             if (binding.hasStrength()) {
               c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece("binding", null, " (", null)));
@@ -2012,7 +2008,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
             } else
               c.addPiece(gen.new Piece("constraint", null, ", ", null));
-            c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, inv.getKey(), gt(inv.getHumanElement())).addStyle("font-weight:bold")));
+            c.getPieces().add(checkForNoChange(inv, gen.new Piece("constraint", null, inv.getKey(), gt(inv.getHumanElement())).styleAsBold()));
           }
         }
         if ((definition.hasBase() && "*".equals(definition.getBase().getMax())) || (definition.hasMax() && "*".equals(definition.getMax()))) {
@@ -2024,68 +2020,21 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             // don't show this, this it's important: c.getPieces().add(gen.new Piece(null, "This repeating element has no defined order", null));
           }
         }
-        if (definition.hasFixed()) {
-          if (!c.getPieces().isEmpty()) {
-            c.addPiece(gen.new Piece("br"));
-          }
-          c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED)) + ": ", null).addStyle("font-weight:bold")));
-          if (!useTableForFixedValues || !allowSubRows || definition.getFixed().isPrimitive()) {
-            String s = buildJson(definition.getFixed());
-            String link = null;
-            if (Utilities.isAbsoluteUrl(s) && context.getPkp() != null)
-              link = context.getPkp().getLinkForUrl(corePath, s);
-            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).addStyle("color: darkgreen")));
-          } else {
-            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_AS_SHOWN), null).addStyle("color: darkgreen")));
-            genFixedValue(gen, row, definition.getFixed(), snapshot, false, corePath, false, null, null, null);
-          }
-          if (isCoded(definition.getFixed()) && !hasDescription(definition.getFixed())) {
-            Piece p = describeCoded(gen, definition.getFixed());
-            if (p != null)
-              c.getPieces().add(p);
-          }
-        } else if (definition.hasPattern()) {
-          if (!c.getPieces().isEmpty()) {
-            c.addPiece(gen.new Piece("br"));
-          }
-          c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_REQ_PATT)) + ": ", null).addStyle("font-weight:bold")));
-          if (!useTableForFixedValues || !allowSubRows || definition.getPattern().isPrimitive())
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).addStyle("color: darkgreen")));
-          else {
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_LEAST_FOLLOW), null).addStyle("color: darkgreen")));
-            genFixedValue(gen, row, definition.getPattern(), snapshot, true, corePath, mustSupportOnly, definition.getPath(), definition.getId(), inScopeElements);
-          }
-        } else if (hasMergedPatternValues(definition)) {
-          if (!c.getPieces().isEmpty()) {
-            c.addPiece(gen.new Piece("br"));
-          }
-          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE)) + " ", null).addStyle("font-weight:bold"));
-          List<DataType> complexValues = new ArrayList<>();
-          boolean first = true;
-          for (Base b : getMergedPatternValues(definition)) {
-            if (!first) {
-              c.addPiece(gen.new Piece(null, ", ", null));
-            }
-            String s = formatMergedPatternValue(b);
-            String link = Utilities.isAbsoluteUrl(s) && context.getPkp() != null ? context.getPkp().getLinkForUrl(corePath, s) : null;
-            c.getPieces().add(gen.new Piece(link, s, null).addStyle("color: darkgreen"));
-            if (b instanceof DataType && !b.isPrimitive()) {
-              complexValues.add((DataType) b);
-            }
-            first = false;
-          }
-          if (useTableForFixedValues && allowSubRows && !complexValues.isEmpty()) {
-            for (DataType b : complexValues) {
-              genFixedValue(gen, row, b, snapshot, true, corePath, mustSupportOnly, definition.getPath(), definition.getId(), inScopeElements);
-            }
-          }
+        if (definition.hasMinValue()) {
+          addRangeValue(gen, c, definition.getMinValue(), RenderingI18nContext.STRUC_DEF_MIN_VALUE);
+        }
+        if (definition.hasMaxValue()) {
+          addRangeValue(gen, c, definition.getMaxValue(), RenderingI18nContext.STRUC_DEF_MAX_VALUE);
+        }
+        if (definition.hasFixed() || definition.hasPattern()) {
+          addFixedOrPattern(gen, c, definition, corePath);
         } else if (definition.hasExample()) {
           for (ElementDefinitionExampleComponent ex : definition.getExampleList()) {
             if (!c.getPieces().isEmpty()) {
               c.addPiece(gen.new Piece("br"));
             }
-            c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_EXAMPLE)) + ("".equals("General") ? "" : " " + ex.getLabel()) + ": ", null).addStyle("font-weight:bold")));
-            c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).addStyle("color: darkgreen")));
+            c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_EXAMPLE)) + ("".equals("General") ? "" : " " + ex.getLabel()) + ": ", null).styleAsBold()));
+            c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).styleAsDarkGreen()));
           }
         }
 
@@ -2101,8 +2050,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!c.getPieces().isEmpty()) {
             c.addPiece(gen.new Piece("br"));
           }
-          c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MAX_LENGTH), null).addStyle("font-weight:bold")));
-          c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).addStyle("color: darkgreen")));
+          c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MAX_LENGTH), null).styleAsBold()));
+          c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).styleAsDarkGreen()));
         }
         if (definition.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH)) {
           int min = ExtensionUtilities.readIntegerExtension(definition, ExtensionDefinitions.EXT_MIN_LENGTH, 0);
@@ -2110,8 +2059,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!c.getPieces().isEmpty()) {
               c.addPiece(gen.new Piece("br"));
             }
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MIN_LENGTH), null).addStyle("font-weight:bold"));
-            c.getPieces().add(gen.new Piece(null, Integer.toString(min), null).addStyle("color: darkgreen"));
+            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MIN_LENGTH), null).styleAsBold());
+            c.getPieces().add(gen.new Piece(null, Integer.toString(min), null).styleAsDarkGreen());
           }
         }
         if (profile != null) {
@@ -2138,7 +2087,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (!c.getPieces().isEmpty()) {
         c.addPiece(gen.new Piece("br"));
       }
-      c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICING_NOTE) + ": ", null).addStyle("font-weight:bold"));
+      c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICING_NOTE) + ": ", null).styleAsBold());
       c.getPieces().add(gen.new Piece(null, String.join(" ", slicingNotes), null));
     }
     return c;
@@ -2324,7 +2273,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
       Piece p = gen.new Piece(null, start+(list.size() != 1 ? "s" : "")+" ", null); 
       c.addPiece(p); 
-      if (bold) p.addStyle("font-weight:bold"); 
+      if (bold) p.styleAsBold();
        
       for (int i = 0; i < list.size(); i++) { 
         CanonicalType ct = list.get(i); 
@@ -2341,7 +2290,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           sd = context.findLinkableResource(StructureDefinition.class, iu);
         }
         if (sd == null) { 
-          p = gen.new Piece(null, iu, null).addStyle("font-weight:bold"); 
+          p = gen.new Piece(null, iu, null).styleAsBold();
           c.addPiece(p);                       
         } else { 
           String v = ""; 
@@ -2349,15 +2298,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             v = " ("+sd.getVersion()+")"; 
           } 
           if (sd.hasWebPath()) { 
-            p = gen.new Piece(sd.getWebPath(), sd.present()+v, null).addStyle("font-weight:bold"); 
+            p = gen.new Piece(sd.getWebPath(), sd.present()+v, null).styleAsBold();
             c.addPiece(p);                       
           } else { 
-            p = gen.new Piece(iu, sd.present()+v, null).addStyle("font-weight:bold"); 
+            p = gen.new Piece(iu, sd.present()+v, null).styleAsBold();
             c.addPiece(p);                       
           } 
         } 
         if (bold) {
-          p.addStyle("font-weight:bold"); 
+          p.styleAsBold();
         } 
       } 
     }     
@@ -2365,14 +2314,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private Piece checkForNoChange(Element source, Piece piece) { 
     if (source.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) { 
-      piece.addStyle(context.getOpacity());
+      piece.styleAsDeEmphasized();
     } 
     return piece; 
   } 
  
   private String checkForNoChange(Element source) { 
     if (source.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) { 
-      return context.getOpacity(); 
+      return "opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY; 
     } else {  
       return null; 
     } 
@@ -2429,7 +2378,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       Piece img = gen.new Piece("img");
       img.attr("src", typeProfileMarkSrc(mark));
       img.setHint(hint);
-      img.addStyle("vertical-align: baseline");
+      img.styleAsBaseLine();
       if (context.forPublisher()) {
         img.attr("alt", hint);
         img.attr("aria-label", hint);
@@ -2824,7 +2773,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       used.used = true; 
       Cell left = gen.new Cell(); 
       if (element.getTypeList().size() == 1 && element.getTypeList().get(0).isPrimitive()) 
-        left.getPieces().add(gen.new Piece(ref, "\u00A0\u00A0" + s, !hasDef ? null : gt(element.getDefinitionElement())).addStyle("font-weight:bold")); 
+        left.getPieces().add(gen.new Piece(ref, "\u00A0\u00A0" + s, !hasDef ? null : gt(element.getDefinitionElement())).styleAsBold());
       else 
         left.getPieces().add(gen.new Piece(ref, "\u00A0\u00A0" + s, !hasDef ? null : gt(element.getDefinitionElement()))); 
       if (element.hasSliceName()) { 
@@ -2957,277 +2906,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return b; 
   } 
  
-  private void genFixedValue(HierarchicalTableGenerator gen, Row erow, DataType value, boolean snapshot, boolean pattern, String corePath, boolean skipnoValue, String path, String id, List<ElementDefinition> inScopeElements) { 
-    String ref = context.getPkp().getLinkFor(corePath, value.fhirType()); 
-    if (ref != null && ref.contains(".html")) { 
-      ref = ref.substring(0, ref.indexOf(".html"))+"-definitions.html#"; 
-    } else { 
-      ref = "?gen-fv?"; 
-    } 
-    StructureDefinition sd = context.getWorker().fetchTypeDefinition(value.fhirType()); 
-    for (org.hl7.fhir.model.Property t : value.getChildren()) {
-      ElementDefinition ed = findElementDefinitionOrNull(sd, t.getName()); 
-      if (ed != null) { // might be null because of added properties across versions 
-        String childPath = path == null ? null : path+"."+t.getName();
-        String childId = id == null ? null : id+"."+t.getName();
-        if (pattern && childPath != null && inScopeElements != null) {
-          if (hasPathInScope(childPath, childId, inScopeElements)) {
-            mergePatternValuesIntoScope(childPath, childId, t.getValues(), inScopeElements);
-            continue;
-          } else if (hasDescendantPathInScope(childPath, childId, inScopeElements)) {
-            for (Base mergedValue : t.getValues()) {
-              if (mergedValue instanceof DataType && !mergedValue.isPrimitive()) {
-                genFixedValue(gen, erow, (DataType) mergedValue, snapshot, true, corePath, skipnoValue, childPath, childId, inScopeElements);
-              }
-            }
-            continue;
-          }
-        }
-        if (t.getValues().size() > 0 || snapshot) { 
-          if (t.getValues().size() == 0 || (t.getValues().size() == 1 && t.getValues().get(0).isEmpty())) { 
-            if (!skipnoValue) { 
-              Row row = gen.new Row(); 
-              row.setId(context.prefixAnchor(ed.getPath())); 
-              erow.getSubRows().add(row); 
-              Cell c = gen.new Cell(); 
-              row.getCells().add(c); 
-              c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : corePath+(VersionUtilities.isR5Plus(context.getWorker().getFHIRVersion()) ? "types-definitions.html#"+ed.getBase().getPath() : "element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
-              c = gen.new Cell(); 
-              row.getCells().add(c); 
-              c.addPiece(gen.new Piece(null, null, null)); 
-              c = gen.new Cell(); 
-              row.getCells().add(c); 
-              if (!pattern) { 
-                c.addPiece(gen.new Piece(null, "0..0", null)); 
-                row.setIcon("icon_fixed.gif", context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE) /*context.formatPhrase(RenderingI18nContext.TEXT_ICON_FIXED*/); 
-              } else if (context.getContext().isPrimitiveType(t.getTypeCode())) { 
-                row.setIcon("icon_primitive.png", context.formatPhrase(RenderingI18nContext.TEXT_ICON_PRIMITIVE)); 
-                c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null)); 
-              } else if (isReference(t.getTypeCode())) {  
-                row.setIcon("icon_reference.png", context.formatPhrase(RenderingI18nContext.TEXT_ICON_REFERENCE)); 
-                c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null)); 
-              } else {  
-                row.setIcon("icon_datatype.gif", context.formatPhrase(RenderingI18nContext.TEXT_ICON_DATATYPE)); 
-                c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null)); 
-              } 
-              c = gen.new Cell(); 
-              row.getCells().add(c); 
-              if (t.getTypeCode().contains("(")) { 
-                String tc = t.getTypeCode(); 
-                String tn = tc.substring(0, tc.indexOf("(")); 
-                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null)); 
-                c.addPiece(gen.new Piece(null, "(", null)); 
-                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-                //single literal character split
-                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
-                for (String s : p) { 
-                  c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null)); 
-                } 
-                c.addPiece(gen.new Piece(null, ")", null));             
-              } else { 
-                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, t.getTypeCode()), t.getTypeCode(), null)); 
-              } 
-              c = gen.new Cell(); 
-              c.addPiece(gen.new Piece(null, ed.getShort(), null)); 
-              row.getCells().add(c); 
-            } 
-          } else { 
-            for (Base b : t.getValues()) { 
-              Row row = gen.new Row(); 
-              row.setId(context.prefixAnchor(ed.getPath())); 
-              erow.getSubRows().add(row); 
-              row.setIcon("icon_fixed.gif", context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED) /*context.formatPhrase(RenderingI18nContext.TEXT_ICON_FIXED*/); 
- 
-              Cell c = gen.new Cell(); 
-              row.getCells().add(c); 
-              c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : (VersionUtilities.isR5Ver(context.getWorker().getFHIRVersion()) ? corePath+"types-definitions.html#"+ed.getBase().getPath() : corePath+"element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
- 
-              c = gen.new Cell(); 
-              row.getCells().add(c); 
-              c.addPiece(gen.new Piece(null, null, null)); 
- 
-              c = gen.new Cell(); 
-              row.getCells().add(c); 
-              if (pattern) 
-                c.addPiece(gen.new Piece(null, "1.."+(t.getMaxCardinality() == 2147483647 ? "*" : Integer.toString(t.getMaxCardinality())), null)); 
-              else 
-                c.addPiece(gen.new Piece(null, "1..1", null)); 
- 
-              c = gen.new Cell(); 
-              row.getCells().add(c); 
-              if (b.fhirType().contains("(")) { 
-                String tc = b.fhirType(); 
-                String tn = tc.substring(0, tc.indexOf("(")); 
-                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null)); 
-                c.addPiece(gen.new Piece(null, "(", null)); 
-                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-                //single literal character split
-                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
-                for (String s : p) { 
-                  c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null)); 
-                } 
-                c.addPiece(gen.new Piece(null, ")", null));             
-              } else { 
-                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, b.fhirType()), b.fhirType(), null)); 
-              } 
- 
-              if (b.isPrimitive()) { 
-                c = gen.new Cell(); 
-                row.getCells().add(c); 
-                c.addPiece(gen.new Piece(null, ed.getShort(), null)); 
-                c.addPiece(gen.new Piece("br")); 
-                c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE)+" ", null).addStyle("font-weight: bold")); 
-                String s = b.primitiveValue(); 
-                // ok. let's see if we can find a relevant link for this 
-                String link = null; 
-                if (Utilities.isAbsoluteUrl(s)) { 
-                  link = context.getPkp().getLinkForUrl(corePath, s); 
-                } 
-                c.getPieces().add(gen.new Piece(link, s, null).addStyle("color: darkgreen")); 
-              } else { 
-                c = gen.new Cell(); 
-                row.getCells().add(c); 
-                c.addPiece(gen.new Piece(null, ed.getShort(), null)); 
-                c.addPiece(gen.new Piece("br")); 
-                c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE)+" ", null).addStyle("font-weight: bold")); 
-                c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_COMPLEXBRACK), null).addStyle("color: darkgreen")); 
-                genFixedValue(gen, row, (DataType) b, snapshot, pattern, corePath, skipnoValue, childPath, childId, inScopeElements); 
-              } 
-            } 
-          } 
-        } 
-      } 
-    } 
-  } 
-
-  private boolean hasMergedPatternValues(ElementDefinition definition) {
-    // mergePatternValuesIntoScope only adds renderable values, so non-empty == has renderable values.
-    List<Base> values = mergedPatternValues.get(definition);
-    return values != null && !values.isEmpty();
-  }
-
-  private List<Base> getMergedPatternValues(ElementDefinition definition) {
-    return mergedPatternValues.getOrDefault(definition, Collections.emptyList());
-  }
-
-  private String formatMergedPatternValue(Base b) {
-    if (b == null) {
-      return "";
-    }
-    if (b.isPrimitive()) {
-      return b.primitiveValue();
-    }
-    // All FHIR R5 property values are either PrimitiveType or DataType subclasses.
-    if (b instanceof DataType) {
-      return context.formatPhrase(RenderingI18nContext.STRUC_DEF_COMPLEXBRACK);
-    }
-    throw new IllegalStateException("Unexpected Base type in merged pattern value: " + b.getClass().getName());
-  }
-
-  private void mergePatternValuesIntoScope(String childPath, String childId, List<Base> values, List<ElementDefinition> inScopeElements) {
-    if (Utilities.noString(childPath) || values == null || values.isEmpty() || inScopeElements == null) {
-      return;
-    }
-    for (ElementDefinition ed : inScopeElements) {
-      if (!matchesInScopeElement(childPath, childId, ed)) {
-        continue;
-      }
-      List<Base> merged = mergedPatternValues.computeIfAbsent(ed, k -> new ArrayList<>());
-      for (Base value : values) {
-        if (isRenderableMergedPatternValue(value) && !containsMergedValue(merged, value)) {
-          merged.add(value.copy(Base.COPY_NOTHING));
-        }
-      }
-    }
-  }
-
-  private boolean isRenderableMergedPatternValue(Base value) {
-    if (value == null) {
-      return false;
-    }
-    if (value.isPrimitive()) {
-      return !Utilities.noString(value.primitiveValue());
-    }
-    return !value.isEmpty();
-  }
-
-  private boolean containsMergedValue(List<Base> merged, Base value) {
-    for (Base b : merged) {
-      if (b != null && b.equalsDeep(value)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean hasPathInScope(String path, String id, List<ElementDefinition> inScopeElements) {
-    if (path == null || inScopeElements == null) {
-      return false;
-    }
-    for (ElementDefinition ed : inScopeElements) {
-      if (matchesInScopeElement(path, id, ed)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean hasDescendantPathInScope(String path, String id, List<ElementDefinition> inScopeElements) {
-    if (path == null || inScopeElements == null) {
-      return false;
-    }
-    for (ElementDefinition ed : inScopeElements) {
-      if (ed == null || !ed.hasPath()) {
-        continue;
-      }
-      if (isPathDescendant(path, ed.getPath())) {
-        if (Utilities.noString(id) || !id.contains(":")) {
-          return true;
-        }
-        if (ed.hasId() && ed.getId().startsWith(id + ".")) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  private boolean isPathDescendant(String basePath, String candidatePath) {
-    if (candidatePath == null || candidatePath.equals(basePath)) {
-      return false;
-    }
-    if (candidatePath.startsWith(basePath + ".")) {
-      return true;
-    }
-    if (basePath.endsWith("[x]")) {
-      String prefix = basePath.substring(0, basePath.length() - 3);
-      int dot = candidatePath.indexOf('.', prefix.length());
-      return candidatePath.startsWith(prefix) && dot > -1;
-    }
-    return false;
-  }
-
-  private boolean matchesInScopeElement(String path, String id, ElementDefinition candidate) {
-    if (candidate == null || !candidate.hasPath() || !matchesInScopePath(path, candidate.getPath())) {
-      return false;
-    }
-    if (Utilities.noString(id) || !id.contains(":")) {
-      return true;
-    }
-    if (!candidate.hasId()) {
-      return false;
-    }
-    return matchesInScopePath(id, candidate.getId());
-  }
-
-  private boolean matchesInScopePath(String path, String candidate) {
-    if (path.equals(candidate)) {
-      return true;
-    }
-    return candidate.endsWith("[x]") && path.startsWith(candidate.substring(0, candidate.length()-3));
-  }
-
-
   private ElementDefinition findElementDefinition(StructureDefinition sd, String name) { 
     String path = sd.getTypeName()+"."+name; 
     for (ElementDefinition ed : sd.getSnapshot().getElementList()) { 
@@ -3264,13 +2942,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       Coding c = (Coding) fixed; 
       ValidationResult vr = context.getWorker().validateCode(context.getTerminologyServiceOptions(), c.getSystem(), c.getVersion(), c.getCode(), c.getDisplay()); 
       if (vr.getDisplay() != null) 
-        return gen.new Piece(null, " ("+vr.getDisplay()+")", null).addStyle("color: darkgreen"); 
+        return gen.new Piece(null, " ("+vr.getDisplay()+")", null).styleAsDarkGreen();
     } else if (fixed instanceof CodeableConcept) { 
       CodeableConcept cc = (CodeableConcept) fixed; 
       for (Coding c : cc.getCodingList()) { 
         ValidationResult vr = context.getWorker().validateCode(context.getTerminologyServiceOptions(), c.getSystem(), c.getVersion(), c.getCode(), c.getDisplay()); 
         if (vr.getDisplay() != null) 
-          return gen.new Piece(null, " ("+vr.getDisplay()+")", null).addStyle("color: darkgreen"); 
+          return gen.new Piece(null, " ("+vr.getDisplay()+")", null).styleAsDarkGreen();
       } 
     } 
     return null; 
@@ -3315,7 +2993,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } 
       } 
       if (definition.getPath().endsWith("url") && definition.hasFixed()) { 
-        c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\""+buildJson(definition.getFixed())+"\"", null).addStyle("color: darkgreen"))); 
+        c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\""+buildJson(definition.getFixed())+"\"", null).styleAsDarkGreen()));
       } else { 
         if (url != null) { 
           if (!c.getPieces().isEmpty())  
@@ -3329,13 +3007,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               ref = p.startsWith("http:") || context.getRules() == GenerationRules.IG_PUBLISHER ? p : Utilities.pathURL(corePath, p); 
             } 
           } 
-          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_URLS), null).addStyle("font-weight:bold")); 
+          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_URLS), null).styleAsBold());
           c.getPieces().add(gen.new Piece(ref, fullUrl, null)); 
         } 
  
         if (definition.hasSlicing()) { 
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICES), null).addStyle("font-weight:bold")); 
+          c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SLICES), null).styleAsBold());
           c.getPieces().add(gen.new Piece(null, describeSlice(definition.getSlicing()), null)); 
         } 
         if (definition != null) { 
@@ -3348,7 +3026,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!c.getPieces().isEmpty())  
               c.addPiece(gen.new Piece("br")); 
             BindingResolution br = context.getPkp().resolveBinding(profile, binding, definition.getPath()); 
-            c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_BINDINGS), null).addStyle("font-weight:bold"))); 
+            c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_BINDINGS), null).styleAsBold()));
             c.getPieces().add(checkForNoChange(binding, checkAddExternalFlag(br, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, br.display, br.uri)))); 
             if (binding.hasStrength()) { 
               c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, " (", null))); 
@@ -3368,43 +3046,33 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } 
           for (ElementDefinitionConstraintComponent inv : definition.getConstraintList()) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getKey()+": ", null).addStyle("font-weight:bold"))); 
+            c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getKey()+": ", null).styleAsBold()));
             if (inv.getHumanElement().hasExtension(ExtensionDefinitions.EXT_REND_MD)) { 
               c.addMarkdown(inv.getHumanElement().getExtensionString(ExtensionDefinitions.EXT_REND_MD)); 
             } else { 
               c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getHuman(), null))); 
             } 
           } 
-          if (definition.hasFixed()) { 
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED_VALUE), null).addStyle("font-weight:bold"))); 
-            String s = buildJson(definition.getFixed()); 
-            String link = null; 
-            if (Utilities.isAbsoluteUrl(s)) 
-              link = context.getPkp().getLinkForUrl(corePath, s); 
-            c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).addStyle("color: darkgreen"))); 
-          } else if (definition.hasPattern()) { 
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_REQUIRED_PATT), null).addStyle("font-weight:bold"))); 
-            c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).addStyle("color: darkgreen"))); 
+          if (definition.hasFixed() || definition.hasPattern()) { 
+            addFixedOrPattern(gen, c, definition, corePath);
           } else if (definition.hasExample()) { 
             for (ElementDefinitionExampleComponent ex : definition.getExampleList()) { 
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-              c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_EXAMPLE) +"'"+("".equals("General")? "": " "+ex.getLabel()+"'")+": ", "").addStyle("font-weight:bold"))); 
-              c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).addStyle("color: darkgreen"))); 
+              c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_EXAMPLE) +"'"+("".equals("General")? "": " "+ex.getLabel()+"'")+": ", "").styleAsBold()));
+              c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).styleAsDarkGreen()));
             } 
           } 
           if (definition.hasMaxLength() && definition.getMaxLength()!=0) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MAX_LENGTH), null).addStyle("font-weight:bold"))); 
-            c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).addStyle("color: darkgreen"))); 
+            c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MAX_LENGTH), null).styleAsBold()));
+            c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).styleAsDarkGreen()));
           } 
           if (definition.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH)) {
             int min = ExtensionUtilities.readIntegerExtension(definition, ExtensionDefinitions.EXT_MIN_LENGTH, 0);
             if (min > 0) {
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-              c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MIN_LENGTH), null).addStyle("font-weight:bold")); 
-              c.getPieces().add(gen.new Piece(null, Integer.toString(min), null).addStyle("color: darkgreen"));
+              c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_MIN_LENGTH), null).styleAsBold());
+              c.getPieces().add(gen.new Piece(null, Integer.toString(min), null).styleAsDarkGreen());
             }
           }
           if (profile != null) { 
@@ -3425,14 +3093,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } 
           if (definition.hasDefinition()) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_DEFINITION_COLON), null).addStyle("font-weight:bold")); 
+            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.GENERAL_DEFINITION_COLON), null).styleAsBold());
             c.addPiece(gen.new Piece("br")); 
             c.addMarkdown(definition.getDefinition()); 
             //            c.getPieces().add(checkForNoChange(definition.getCommentElement(), gen.new Piece(null, definition.getComment(), null))); 
           } 
           if (definition.getComment()!=null) { 
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); } 
-            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_COMMENT), null).addStyle("font-weight:bold")); 
+            c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_COMMENT), null).styleAsBold());
             c.addPiece(gen.new Piece("br")); 
             c.addMarkdown(definition.getComment()); 
             //            c.getPieces().add(checkForNoChange(definition.getCommentElement(), gen.new Piece(null, definition.getComment(), null))); 
@@ -3709,12 +3377,255 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private Piece checkForNoChange(Element src1, Element src2, Piece piece) { 
     if (src1.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS) && src2.hasUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS)) { 
-      piece.addStyle(context.getOpacity()); 
+      piece.styleAsDeEmphasized();
     } 
     return piece; 
   } 
  
  
+  /**
+   * Fixed and pattern values are shown as they are, and not as rows in the table: a simple primitive as
+   * its value, anything else as JSON. They are not merged with the profile's own rows for the same
+   * elements - the profile and the value are separate constraints, and both apply
+   */
+  private void addFixedOrPattern(HierarchicalTableGenerator gen, Cell c, ElementDefinition definition, String corePath) throws IOException {
+    boolean isFixed = definition.hasFixed();
+    DataType value = isFixed ? definition.getFixed() : definition.getPattern();
+    if (!c.getPieces().isEmpty()) {
+      c.addPiece(gen.new Piece("br"));
+    }
+    c.getPieces().add(checkForNoChange(value, gen.new Piece(null, context.formatPhrase(isFixed ? RenderingI18nContext.STRUC_DEF_FIXED : RenderingI18nContext.STRUC_DEF_REQ_PATT) + ": ", null).styleAsBold()));
+    if (isSimplePrimitive(value)) {
+      String s = value.primitiveValue();
+      String link = Utilities.isAbsoluteUrl(s) && context.getPkp() != null ? context.getPkp().getLinkForUrl(corePath, s) : null;
+      c.getPieces().add(checkForNoChange(value, gen.new Piece(link, s, null).styleAsDarkGreen()));
+      c.getPieces().add(checkForNoChange(value, gen.new Piece(null, " "+context.formatPhrase(isFixed ? RenderingI18nContext.STRUC_DEF_NO_EXT_ALLOWED : RenderingI18nContext.STRUC_DEF_EXT_ALLOWED), null)));
+    } else {
+      // the pre is wrapped in a div that is not pretty printed, so that the pretty printer doesn't add whitespace inside the pre
+      XhtmlNode div = new XhtmlNode(NodeType.Element, "div").notPretty();
+      String opacity = checkForNoChange(value);
+      if (opacity != null) {
+        div.style(opacity);
+      }
+      div.pre("json").addChildNode(renderValueAsJson(value, valueElementName(definition, value, null)));
+      Piece p = gen.new Piece(null, null, null);
+      p.addHtml(div);
+      c.getPieces().add(p);
+    }
+  }
+
+  private void addRangeValue(HierarchicalTableGenerator gen, Cell c, DataType value, String label) {
+    if (!c.getPieces().isEmpty()) {
+      c.addPiece(gen.new Piece("br"));
+    }
+    c.getPieces().add(checkForNoChange(value, gen.new Piece(null, context.formatPhrase(label) + ": ", null).styleAsBold()));
+    c.getPieces().add(checkForNoChange(value, gen.new Piece(null, summariseRangeValue(value), null).styleAsDarkGreen()));
+  }
+
+  /**
+   * minValue and maxValue in the tree: primitives as is, and Quantity as "value unit (code)"
+   */
+  private String summariseRangeValue(DataType value) {
+    if (!(value instanceof Quantity)) {
+      return value.primitiveValue();
+    }
+    Quantity q = (Quantity) value;
+    StringBuilder b = new StringBuilder();
+    if (q.hasComparator()) {
+      b.append(q.getComparator().toCode());
+    }
+    b.append(q.getValueElement().asStringValue());
+    boolean ucum = !q.hasSystem() || "http://unitsofmeasure.org".equals(q.getSystem());
+    String code = q.hasCode() ? (ucum ? q.getCode() : q.getSystem() + "|" + q.getCode()) : null;
+    if (q.hasUnit()) {
+      b.append(" ");
+      b.append(q.getUnit());
+      if (code != null && !(ucum && q.getCode().equals(q.getUnit()))) {
+        b.append(" (");
+        b.append(code);
+        b.append(")");
+      }
+    } else if (code != null) {
+      b.append(" ");
+      b.append(code);
+    }
+    return b.toString();
+  }
+
+  private boolean isSimplePrimitive(DataType value) {
+    return value.isPrimitive() && !value.hasId() && !value.hasExtension();
+  }
+
+  /**
+   * the name the value has in an instance: the element name, with [x] replaced by the type
+   */
+  private String valueElementName(ElementDefinition definition, DataType value, String defaultName) {
+    String name = definition.getPath().contains(".") ? definition.getPath().substring(definition.getPath().lastIndexOf(".") + 1) : defaultName;
+    if (name == null) {
+      name = defaultName == null ? "value" : defaultName;
+    }
+    if (name.endsWith("[x]") && value != null) {
+      name = name.substring(0, name.length() - 3) + Utilities.capitalize(value.fhirType());
+    }
+    return name;
+  }
+
+  /**
+   * The detailed view: a simple primitive as its value, anything else as JSON then XML. fixed is null for min/maxValue
+   */
+  private XhtmlNode renderValueDetail(DataType value, DataType compare, int mode, String elementName, Boolean fixed) throws IOException {
+    boolean hasNew = value != null && !value.isEmpty();
+    boolean hasOld = compare != null && !compare.isEmpty();
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    if (mode != GEN_MODE_KEY || !hasOld) {
+      if (!hasNew) {
+        return null;
+      }
+      addValueDetail(renderStatus(value, x), value, elementName, fixed);
+    } else if (!hasNew) {
+      addValueDetail(x.div().style(removedStyle()), compare, elementName, fixed);
+    } else if (value.equalsDeep(compare)) {
+      addValueDetail(x.div().style(unchangedStyle()), value, elementName, fixed);
+    } else {
+      addValueDetail(renderStatus(value, x), value, elementName, fixed);
+      addValueDetail(x.div().style(removedStyle()), compare, elementName, fixed);
+    }
+    return x;
+  }
+
+  private void addValueDetail(XhtmlNode x, DataType value, String elementName, Boolean fixed) throws IOException {
+    // the detailed view always shows JSON then XML, primitives included (unlike the tree view)
+    // not pretty printed, so that the pretty printer doesn't add whitespace inside the pre
+    XhtmlNode div = x.div().notPretty();
+    div.pre("json").addChildNode(renderValueAsJson(value, elementName));
+    div.pre("xml").addChildNode(renderValueAsXml(value, elementName));
+  }
+
+  private final Map<String, String> codeDisplays = new HashMap<>();
+
+  /**
+   * JSON for a fixed or pattern value: the bare object. A primitive is shown the way it appears in an instance,
+   * as [name], plus _[name] if it has an id or extensions.
+   *
+   * Where a code is shown without a display, the display (if known) is a flyover on the code. The JSON has no hyperlinks.
+   */
+  private XhtmlNode renderValueAsJson(DataType value, String elementName) throws IOException {
+    org.hl7.fhir.utilities.json.model.JsonElement json;
+    if (value.isPrimitive()) {
+      org.hl7.fhir.utilities.json.model.JsonObject obj = new org.hl7.fhir.utilities.json.model.JsonObject();
+      if (value.hasPrimitiveValue()) {
+        String v = value.primitiveValue();
+        if (value instanceof BooleanType || value instanceof IntegerType || value instanceof DecimalType || value instanceof UnsignedIntType || value instanceof PositiveIntType) {
+          obj.add(elementName, org.hl7.fhir.utilities.json.parser.JsonParser.parse(v));
+        } else {
+          obj.add(elementName, v);
+        }
+      }
+      org.hl7.fhir.utilities.json.model.JsonObject ext = new org.hl7.fhir.utilities.json.model.JsonObject();
+      if (value.hasId()) {
+        ext.add("id", value.getId());
+      }
+      if (value.hasExtension()) {
+        org.hl7.fhir.utilities.json.model.JsonArray arr = new org.hl7.fhir.utilities.json.model.JsonArray();
+        for (Extension e : value.getExtensionList()) {
+          arr.add(org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(buildJson(e)));
+        }
+        ext.add("extension", arr);
+      }
+      if (value.hasId() || value.hasExtension()) {
+        obj.add("_" + elementName, ext);
+      }
+      json = obj;
+    } else {
+      json = org.hl7.fhir.utilities.json.parser.JsonParser.parse(buildJson(value));
+    }
+    XhtmlNode code = new XhtmlNode(NodeType.Element, "code");
+    renderJson(code, json, "", null, null);
+    return code;
+  }
+
+  private void renderJson(XhtmlNode x, org.hl7.fhir.utilities.json.model.JsonElement e, String indent, org.hl7.fhir.utilities.json.model.JsonObject parent, String name) {
+    if (e instanceof org.hl7.fhir.utilities.json.model.JsonObject) {
+      org.hl7.fhir.utilities.json.model.JsonObject o = (org.hl7.fhir.utilities.json.model.JsonObject) e;
+      x.tx("{");
+      boolean first = true;
+      for (org.hl7.fhir.utilities.json.model.JsonProperty p : o.getProperties()) {
+        x.tx((first ? "\n" : ",\n") + indent + "  \"" + p.getName() + "\" : ");
+        renderJson(x, p.getValue(), indent + "  ", o, p.getName());
+        first = false;
+      }
+      x.tx(first ? "}" : "\n" + indent + "}");
+    } else if (e instanceof org.hl7.fhir.utilities.json.model.JsonArray) {
+      org.hl7.fhir.utilities.json.model.JsonArray a = (org.hl7.fhir.utilities.json.model.JsonArray) e;
+      x.tx("[");
+      boolean first = true;
+      for (org.hl7.fhir.utilities.json.model.JsonElement i : a.getItems()) {
+        x.tx((first ? "\n" : ",\n") + indent + "  ");
+        renderJson(x, i, indent + "  ", parent, name);
+        first = false;
+      }
+      x.tx(first ? "]" : "\n" + indent + "]");
+    } else if (e instanceof org.hl7.fhir.utilities.json.model.JsonString) {
+      String s = "\"" + Utilities.escapeJson(((org.hl7.fhir.utilities.json.model.JsonString) e).getValue()) + "\"";
+      String display = "code".equals(name) && parent != null && !parent.has("display") ? lookupDisplay(parent) : null;
+      if (display != null) {
+        x.span().attribute("title", display).tx(s);
+      } else {
+        x.tx(s);
+      }
+    } else {
+      x.tx(e.toString());
+    }
+  }
+
+  private String lookupDisplay(org.hl7.fhir.utilities.json.model.JsonObject coding) {
+    if (!coding.has("system") || !coding.has("code") || coding.has("value") || coding.has("unit")) {
+      // not a coding (e.g. a Quantity)
+      return null;
+    }
+    String system = coding.asString("system");
+    String version = coding.has("version") ? coding.asString("version") : null;
+    String code = coding.asString("code");
+    String key = system + "|" + version + "|" + code;
+    if (codeDisplays.containsKey(key)) {
+      return codeDisplays.get(key);
+    }
+    String display = null;
+    try {
+      ValidationResult vr = context.getWorker().validateCode(context.getTerminologyServiceOptions(), system, version, code, null);
+      display = vr == null ? null : vr.getDisplay();
+    } catch (Exception ex) {
+      // no display, then
+    }
+    codeDisplays.put(key, display);
+    return display;
+  }
+
+  private XhtmlNode renderValueAsXml(DataType value, String elementName) throws IOException {
+    XmlParser parser = new XmlParser(context.getContext().getModelContext());
+    parser.setOutputStyle(OutputStyle.PRETTY);
+    // the parser names the root [prefix][Type]; it's renamed to the element name afterwards
+    String xml = parser.composeString(value, "x");
+    StringBuilder b = new StringBuilder();
+    for (String s : Utilities.splitLines(xml)) {
+      if (!Utilities.noString(s) && !s.startsWith("<?")) {
+        b.append(s.replace(" xmlns=\"http://hl7.org/fhir\"", ""));
+        b.append("\n");
+      }
+    }
+    String s = b.toString().trim();
+    String root = "x" + Utilities.capitalize(value.fhirType());
+    if (s.startsWith("<" + root)) {
+      s = "<" + elementName + s.substring(root.length() + 1);
+      if (s.endsWith("</" + root + ">")) {
+        s = s.substring(0, s.length() - root.length() - 3) + "</" + elementName + ">";
+      }
+    }
+    XhtmlNode code = new XhtmlNode(NodeType.Element, "code");
+    code.tx(s);
+    return code;
+  }
+
   private String buildJson(DataType value) throws IOException { 
     if (value instanceof PrimitiveType) 
       return ((PrimitiveType<?>) value).asStringValue(); 
@@ -3919,7 +3830,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     SpanEntry span = buildSpanningTable("(focus)", "", profile, processed, onlyConstraints, constraintPrefix); 
  
     genSpanEntry(gen, model.getRows(), span); 
-    return gen.generate(model, "", 0, outputTracker); 
+    return gen.generate(model, "", false, outputTracker);
   } 
  
   private SpanEntry buildSpanningTable(String name, String cardinality, StructureDefinition profile, Set<String> processed, boolean onlyConstraints, String constraintPrefix) throws IOException { 
@@ -4100,7 +4011,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (!full && !(deep || vdeep) && ved != null && ved.hasBinding()) {   
       c.addPiece(gen.new Piece("br")); 
       BindingResolution br = context.getPkp().resolveBinding(ed, ved.getBinding(), ved.getPath()); 
-      c.getPieces().add(checkForNoChange(ved.getBinding(), gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING))+": ", null).addStyle("font-weight:bold"))); 
+      c.getPieces().add(checkForNoChange(ved.getBinding(), gen.new Piece(null, (context.formatPhrase(RenderingI18nContext.GENERAL_BINDING))+": ", null).styleAsBold()));
       c.getPieces().add(checkForNoChange(ved.getBinding(), checkAddExternalFlag(br, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, br.display, br.uri)))); 
       if (ved.getBinding().hasStrength()) { 
         c.getPieces().add(checkForNoChange(ved.getBinding(), gen.new Piece(null, " (", null))); 
@@ -4123,7 +4034,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     r.getCells().add(c); 
  
     try { 
-      return gen.generate(model, corePath, 0, outputTracker); 
+      return gen.generate(model, corePath, false, outputTracker);
     } catch (FHIRException e) {
       throw new FHIRException(e.getMessage(), e); 
     } 
@@ -4743,16 +4654,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_LABEL), null, strikethrough, compareString(d.getLabel(), d.getLabelElement(), null, "label", d, (compare != null ? compare.getLabel() : null), null, mode, false, false));    
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_ALT_NAME), null, strikethrough, compareSimpleTypeLists(d.getAliasList(), ((compare==null) || slicedExtension ? null : compare.getAliasList()), mode)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_DEF_CODES), null, strikethrough, compareDataTypeLists(d.getCodeList(), ((compare==null) || slicedExtension ? null : compare.getCodeList()), mode)); 
-    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MIN_VALUE), null, strikethrough, compareString(d.hasMinValue() ? encodeValue(d.getMinValue(), null) : null, d.getMinValue(), null, "minValue", d, compare!= null && compare.hasMinValue() ? encodeValue(compare.getMinValue(), null) : null, null, mode, false, false)); 
-    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MAX_VALUE), null, strikethrough, compareString(d.hasMaxValue() ? encodeValue(d.getMaxValue(), null) : null, d.getMaxValue(), null, "maxValue", d, compare!= null && compare.hasMaxValue() ? encodeValue(compare.getMaxValue(), null) : null, null, mode, false, false)); 
+    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MIN_VALUE), null, strikethrough, renderValueDetail(d.getMinValue(), compare == null ? null : compare.getMinValue(), mode, valueElementName(d, d.getMinValue(), "minValue"), null)); 
+    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MAX_VALUE), null, strikethrough, renderValueDetail(d.getMaxValue(), compare == null ? null : compare.getMaxValue(), mode, valueElementName(d, d.getMaxValue(), "maxValue"), null)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_MAX_LENGTH), null, strikethrough, compareString(d.hasMaxLength() ? toStr(d.getMaxLength()) : null, d.getMaxLengthElement(), null, "maxLength", d, compare!= null && compare.hasMaxLengthElement() ? toStr(compare.getMaxLength()) : null, null, mode, false, false)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_MIN_LENGTH), null, strikethrough, ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_MIN_LENGTH)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_VALUE_REQ), null, strikethrough, compareString(encodeValue(d.getMustHaveValueElement(), null), d.getMustHaveValueElement(), null, (compare != null ? encodeValue(compare.getMustHaveValueElement(), null) : null), d, null, "mustHaveValueElement", mode, false, false));    
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_VALUE_ALT), null, strikethrough, compareSimpleTypeLists(d.getValueAlternativesList(), ((compare==null) || slicedExtension ? null : compare.getValueAlternativesList()), mode)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_DEFAULT_VALUE), null, strikethrough, encodeValue(d.getDefaultValue(), "defaultValue", d, compare==null ? null : compare.getDefaultValue(), mode, d.getName())); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_MEAN_MISS), null, strikethrough, d.getMeaningWhenMissing()); 
-    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED), null, strikethrough, encodeValue(d.getFixed(), "fixed", d, compare==null ? null : compare.getFixed(), mode, d.getName())); 
-    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_PATT_VALUE), null, strikethrough, encodeValue(d.getPattern(), "pattern", d, compare==null ? null : compare.getPattern(), mode, d.getName())); 
+    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_FIXED), null, strikethrough, renderValueDetail(d.getFixed(), compare == null ? null : compare.getFixed(), mode, valueElementName(d, d.getFixed(), null), true)); 
+    tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_PATT_VALUE), null, strikethrough, renderValueDetail(d.getPattern(), compare == null ? null : compare.getPattern(), mode, valueElementName(d, d.getPattern(), null), false)); 
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_EXAMPLE), null, strikethrough, encodeValues(d.getExampleList()));
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_INVAR), null, strikethrough, invariants(d.getConstraintList(), compare==null ? null : compare.getConstraintList(), d, mode));
     tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_LOINC), null, strikethrough, getMapping(sd, d, LOINC_MAPPING, compare, mode)); 
@@ -5776,7 +5687,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       new ElementTable(context, groups, this, ExtensionUtilities.hasExtensionValue(profile, ExtensionDefinitions.EXT_PROFILE_VIEW_HINT, "element-view-replace-cardinality")).build(gen, model);
           
       try { 
-        return gen.generate(model, imagePath, 0, outputTracker); 
+        return gen.generate(model, imagePath, false, outputTracker);
       } catch (FHIRException e) {
         throw new FHIRException(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()), e); 
       }
