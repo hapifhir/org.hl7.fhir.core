@@ -529,6 +529,10 @@ public class WebTemplate extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((WebTemplate) dst);
+      }
+
       public void copyValues(WebTemplate dst) {
         super.copyValues(dst);
         dst.templateId = templateId == null ? null : templateId.copy();

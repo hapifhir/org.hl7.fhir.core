@@ -18,7 +18,7 @@ public class UnicodeCharacterTests {
 
   @Test
   public void testUnicodeXml() throws FHIRFormatError, IOException {
-    XmlParser xml = new XmlParser(TestingUtilities.getSharedWorkerContext());
+    XmlParser xml = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext());
     xml.setOutputStyle(OutputStyle.PRETTY);
     Parameters p = (Parameters) xml.parse(TestingUtilities.loadTestResource("r5", "unicode-problem.xml"));
     Assertions.assertEquals("invalid: \u0013, not invalid: \r", p.getParameterFirstRep().getValue().primitiveValue());
@@ -32,7 +32,7 @@ public class UnicodeCharacterTests {
 
   @Test
   public void testUnicodeJson() throws FHIRFormatError, IOException {
-    JsonParser json = new JsonParser(TestingUtilities.getSharedWorkerContext());
+    JsonParser json = new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext());
     json.setOutputStyle(OutputStyle.PRETTY);
     Parameters p = (Parameters) json.parse(TestingUtilities.loadTestResource("r5", "unicode-problem.json"));
     Assertions.assertEquals("invalid: \u0013, not invalid: \r", p.getParameterFirstRep().getValue().primitiveValue());

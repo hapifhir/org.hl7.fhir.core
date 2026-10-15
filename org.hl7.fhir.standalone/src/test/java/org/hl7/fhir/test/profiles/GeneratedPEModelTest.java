@@ -29,10 +29,10 @@ public class GeneratedPEModelTest {
       NpmPackage npm = pc.loadPackage("hl7.fhir.us.core", "5.0.0");
       ctxt.getManager().loadFromPackage(npm, new TestPackageLoader(Utilities.stringSet("StructureDefinition"), ctxt));
       
-      ctxt.getManager().cacheResource(new JsonParser(ctxt).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-extension-simple.json")));
-      ctxt.getManager().cacheResource(new JsonParser(ctxt).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-extension-complex.json")));
-      ctxt.getManager().cacheResource(new JsonParser(ctxt).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-profile2.json")));
-      ctxt.getManager().cacheResource(new JsonParser(ctxt).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-profile1.json")));
+      ctxt.getManager().cacheResource(new JsonParser(ctxt.getModelContext()).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-extension-simple.json")));
+      ctxt.getManager().cacheResource(new JsonParser(ctxt.getModelContext()).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-extension-complex.json")));
+      ctxt.getManager().cacheResource(new JsonParser(ctxt.getModelContext()).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-profile2.json")));
+      ctxt.getManager().cacheResource(new JsonParser(ctxt.getModelContext()).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-profile1.json")));
     }
   }
 
@@ -40,7 +40,7 @@ public class GeneratedPEModelTest {
   public void testPEGenLoad() throws Exception {
     TimeZone.setDefault(TimeZone.getTimeZone("UTC+1100"));
     load();
-    Observation obs = (Observation) new XmlParser(ctxt).parse(TestingUtilities.loadTestResourceStream("r6", "profiles", "pe-instance.xml"));
+    Observation obs = (Observation) new XmlParser(ctxt.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", "profiles", "pe-instance.xml"));
     TestProfile tp = TestProfile.fromSource(ctxt, obs);
     Assertions.assertEquals("pe-instance", tp.getId());
     Assertions.assertNotNull(tp);
@@ -64,7 +64,7 @@ public class GeneratedPEModelTest {
     Assertions.assertEquals(0, tp.getComplex().getExtensions().size());
     
     Observation tgt = tp.build(ctxt);
-    new XmlParser(ctxt).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "pe-instance-gen.xml")), tgt);
+    new XmlParser(ctxt.getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "pe-instance-gen.xml")), tgt);
     
     String msg = new CompareUtilities().checkXMLIsSame("PEGEN", TestingUtilities.loadTestResourceStream("r6", "profiles", "pe-instance.xml"), ManagedFileAccess.inStream(Utilities.path("[tmp]", "pe-instance-gen.xml")));
     Assertions.assertNull(msg, msg);

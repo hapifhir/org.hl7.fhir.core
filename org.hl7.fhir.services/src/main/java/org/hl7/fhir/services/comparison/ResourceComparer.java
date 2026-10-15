@@ -7,6 +7,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.BackgroundColorCode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -242,10 +243,10 @@ public class ResourceComparer {
     return c;
   }
 
-  public Cell missingCell(HierarchicalTableGenerator gen, String color) {
+  public Cell missingCell(HierarchicalTableGenerator gen, BackgroundColorCode color) {
     Cell c = gen.new Cell(null, null, "", null, null);
     if (color != null) {
-      c.setStyle("background-color: "+color);
+      c.setBackgroundColor(color);
     }
     return c;
   }

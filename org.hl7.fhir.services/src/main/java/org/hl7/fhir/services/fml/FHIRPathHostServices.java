@@ -13,6 +13,7 @@ import org.hl7.fhir.model.core.Identifier;
 import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.model.core.VersionResolutionRules;
+import org.hl7.fhir.services.validation.IResourceValidator;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
@@ -30,12 +31,15 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     Variables vars = (Variables) appContext;
-    Base res = vars.get(VariableMode.INPUT, name);
+    Base res = vars.getLocal(VariableMode.INPUT, name);
     if (res == null)
-      res = vars.get(VariableMode.OUTPUT, name);
+      res = vars.getLocal(VariableMode.OUTPUT, name);
     List<Base> result = new ArrayList<Base>();
-    if (res != null)
+    if (res != null) {
       result.add(res);
+    } else if (vars.getConstants() != null) {
+      result.addAll(vars.getConstants().resolve(name));
+    }
     return result;
   }
 
@@ -52,7 +56,7 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public boolean log(String argument, List<Base> focus) {
-    throw new Error("Not Implemented Yet");
+    return true;
   }
 
   @Override
@@ -92,18 +96,17 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
-    throw new NotImplementedException("Not migrated to R6 yet");
-//    IResourceValidator val = structureMapUtilities.getWorker().newValidator();
-//    List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
-//    if (item instanceof Resource) {
-//      val.validate(appContext, valerrors, (Resource) item, url);
-//      return noErrorValidationMessages(valerrors);
-//    }
-//    if (item instanceof Element) {
-//      val.validate(appContext, valerrors, null, (Element) item, url);
-//      return noErrorValidationMessages(valerrors);
-//    }
-//    throw new NotImplementedException("Not done yet (FHIRPathHostServices.conformsToProfile), when item is not element or not resource");
+    IResourceValidator val = engine.getWorker().newValidator();
+    List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
+    if (item instanceof Resource) {
+      val.validate(appContext, valerrors, (Resource) item, url);
+      return noErrorValidationMessages(valerrors);
+    }
+    if (item instanceof Element) {
+      val.validate(appContext, valerrors, null, (Element) item, url);
+      return noErrorValidationMessages(valerrors);
+    }
+    throw new NotImplementedException("Not done yet (FHIRPathHostServices.conformsToProfile), when item is not element or not resource");
   }
 
   @Override

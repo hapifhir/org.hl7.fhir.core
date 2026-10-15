@@ -197,6 +197,10 @@ public class DV_TIME extends DV_ORDERED implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DV_TIME) dst);
+      }
+
       public void copyValues(DV_TIME dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

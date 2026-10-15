@@ -35,7 +35,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * See R5 rendering framework to render R4B resources
  * 
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ParametersRenderer extends ResourceRenderer {
 
   public ParametersRenderer(RenderingContext context) {

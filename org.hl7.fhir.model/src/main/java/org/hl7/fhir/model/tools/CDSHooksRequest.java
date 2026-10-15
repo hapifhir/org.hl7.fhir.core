@@ -422,6 +422,29 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.accessToken != null) {
+            visitor.visit(this, "accessToken", -1, this.accessToken);
+          }
+          if (this.tokenType != null) {
+            visitor.visit(this, "tokenType", -1, this.tokenType);
+          }
+          if (this.expiresIn != null) {
+            visitor.visit(this, "expiresIn", -1, this.expiresIn);
+          }
+          if (this.scope != null) {
+            visitor.visit(this, "scope", -1, this.scope);
+          }
+          if (this.subject != null) {
+            visitor.visit(this, "subject", -1, this.subject);
+          }
+          if (this.patient != null) {
+            visitor.visit(this, "patient", -1, this.patient);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "accessToken":  return new Property("accessToken", "string", "This is the OAuth 2.0 access token that provides access to the FHIR server", 0, 1, accessToken);
@@ -548,6 +571,10 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         CDSHooksRequestFhirAuthorizationComponent dst = new CDSHooksRequestFhirAuthorizationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksRequestFhirAuthorizationComponent) dst, options);
       }
 
       public void copyValues(CDSHooksRequestFhirAuthorizationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -712,6 +739,17 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "key":  return new Property("key", "code", "Name of the FHIR query/read from the CDS Hooks Services object provided by the server", 0, 1, key);
@@ -787,6 +825,10 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         CDSHooksRequestPrefetchComponent dst = new CDSHooksRequestPrefetchComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksRequestPrefetchComponent) dst, options);
       }
 
       public void copyValues(CDSHooksRequestPrefetchComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1121,6 +1163,35 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.hook != null) {
+          visitor.visit(this, "hook", -1, this.hook);
+        }
+        if (this.hookInstance != null) {
+          visitor.visit(this, "hookInstance", -1, this.hookInstance);
+        }
+        if (this.fhirServer != null) {
+          visitor.visit(this, "fhirServer", -1, this.fhirServer);
+        }
+        if (this.fhirAuthorization != null) {
+          visitor.visit(this, "fhirAuthorization", -1, this.fhirAuthorization);
+        }
+        if (this.context != null) {
+          visitor.visit(this, "context", -1, this.context);
+        }
+        if (this.prefetchList != null) {
+          int i = 0;
+          for (Base v : this.prefetchList) {
+            if (v != null) {
+              visitor.visit(this, "prefetch", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "hook":  return new Property("hook", "code", "The hook that triggered this CDS Service call", 0, 1, hook);
@@ -1252,6 +1323,10 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         CDSHooksRequest dst = new CDSHooksRequest(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksRequest) dst, options);
       }
 
       public void copyValues(CDSHooksRequest dst, EnumSet<CopyObjectOptions> options) {

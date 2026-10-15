@@ -64,7 +64,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
         stream = TestingUtilities.loadTestResourceStream("r5", parts[0].toLowerCase()+"-"+parts[1].toLowerCase()+".xml");
     }
 
-    Resource parsedResource =  stream != null ? new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(stream) : null;
+    Resource parsedResource =  stream != null ? new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(stream) : null;
 
     testResource(name, parsedResource, output, source, operation);
   }
@@ -113,7 +113,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     String[] parts = context.split("/");
     InputStream stream  = TestingUtilities.loadTestResourceStream("r5", parts[0].toLowerCase()+"-"+parts[1].toLowerCase()+".xml");
 
-    Resource parsedResource = new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(stream);
+    Resource parsedResource = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(stream);
 
     //Rather than duplicate the entire resource we modify the ID with a _history path
     parsedResource.setId("example/_history/1");
@@ -125,7 +125,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   public Resource lookup(Object appInfo, String type, String id) throws FHIRException  {
     try {
       if (TestingUtilities.findTestResource("r5", type.toLowerCase()+'-'+id.toLowerCase()+".xml")) {
-        return new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r5", type.toLowerCase()+'-'+id.toLowerCase()+".xml"));
+        return new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", type.toLowerCase()+'-'+id.toLowerCase()+".xml"));
       } else {
         return null;
       }
@@ -148,7 +148,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       } else {
         String[] parts = reference.getReferenceElement().getValue().split("/");
         if (TestingUtilities.findTestResource("r5", parts[0].toLowerCase()+'-'+parts[1].toLowerCase()+".xml"))
-          return new ReferenceResolution(null, new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r5", parts[0].toLowerCase()+'-'+parts[1].toLowerCase()+".xml")));
+          return new ReferenceResolution(null, new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", parts[0].toLowerCase()+'-'+parts[1].toLowerCase()+".xml")));
       }
       return null;
     } catch (Exception e) {
@@ -160,10 +160,10 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   public void listResources(Object appInfo, String type, List<Argument> searchParams, List<IBaseResource> matches) throws FHIRException {
     try {
       if (type.equals("Condition") && searchParams.get(0).hasValue("Patient/example"))
-        matches.add(new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r5", "condition-example.xml")));
+        matches.add(new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "condition-example.xml")));
       else if (type.equals("Patient")) {
-        matches.add(new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r5", "patient-example.xml")));
-        matches.add(new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r5", "patient-example-xds.xml")));
+        matches.add(new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "patient-example.xml")));
+        matches.add(new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "patient-example-xds.xml")));
       }
     } catch (Exception e) {
       throw new FHIRException(e);
@@ -182,10 +182,10 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       bl.setUrl("http://test.fhir.org/r4/Patient?_format=text/xhtml&search-id=77c97e03-8a6c-415f-a63d-11c80cf73f&&active=true&_sort=_id&search-offset=0&_count=50");
       BundleEntryComponent be = bnd.addEntry();
       be.setFullUrl("http://hl7.org/fhir/Patient/example");
-      be.setResource(new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r5", "patient-example.xml")));
+      be.setResource(new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "patient-example.xml")));
       be = bnd.addEntry();
       be.setFullUrl("http://hl7.org/fhir/Patient/example");
-      be.setResource(new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r5", "patient-example-xds.xml")));
+      be.setResource(new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", "patient-example-xds.xml")));
       be.getSearch().setScore(0.5);
       be.getSearch().setMode(SearchEntryMode.MATCH);
       bnd.setTotal(50);

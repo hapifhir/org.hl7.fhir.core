@@ -22,13 +22,12 @@ public class BaseAdvisor_14_40 extends BaseAdvisor40<org.hl7.fhir.dstu2016may.mo
   }
 
 
-  public boolean ignoreExtension(@Nonnull String path,
-                                 @Nonnull String url) {
+  public boolean ignoreExtension(@Nonnull String url) {
     // no globally ignored extensions here.
     return false;
   }
 
-  public boolean ignoreType(@Nonnull String path, @Nonnull Type type) {
+  public boolean ignoreType(@Nonnull Type type) {
     return ignoredExtensionTypes.contains(type.getClass());
   }
 }

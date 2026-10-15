@@ -439,6 +439,10 @@ public class EpisodeOfCare extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((EpisodeOfCareStatusHistoryComponent) dst);
+      }
+
       public void copyValues(EpisodeOfCareStatusHistoryComponent dst) {
         super.copyValues(dst);
         dst.status = status == null ? null : status.copy();
@@ -679,6 +683,10 @@ public class EpisodeOfCare extends DomainResource {
         ReasonComponent dst = new ReasonComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ReasonComponent) dst);
       }
 
       public void copyValues(ReasonComponent dst) {
@@ -925,6 +933,10 @@ public class EpisodeOfCare extends DomainResource {
         DiagnosisComponent dst = new DiagnosisComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((DiagnosisComponent) dst);
       }
 
       public void copyValues(DiagnosisComponent dst) {
@@ -1919,6 +1931,10 @@ public class EpisodeOfCare extends DomainResource {
         EpisodeOfCare dst = new EpisodeOfCare();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((EpisodeOfCare) dst);
       }
 
       public void copyValues(EpisodeOfCare dst) {

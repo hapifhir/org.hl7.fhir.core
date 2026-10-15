@@ -761,6 +761,10 @@ public class ActivityDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ActivityDefinitionParticipantComponent) dst);
+      }
+
       public void copyValues(ActivityDefinitionParticipantComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -1005,6 +1009,10 @@ public class ActivityDefinition extends MetadataResource {
         ActivityDefinitionDynamicValueComponent dst = new ActivityDefinitionDynamicValueComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ActivityDefinitionDynamicValueComponent) dst);
       }
 
       public void copyValues(ActivityDefinitionDynamicValueComponent dst) {
@@ -4748,6 +4756,10 @@ public class ActivityDefinition extends MetadataResource {
         ActivityDefinition dst = new ActivityDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ActivityDefinition) dst);
       }
 
       public void copyValues(ActivityDefinition dst) {

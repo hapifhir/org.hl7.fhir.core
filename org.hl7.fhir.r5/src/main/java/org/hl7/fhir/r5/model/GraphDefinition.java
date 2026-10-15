@@ -651,6 +651,10 @@ public class GraphDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((GraphDefinitionNodeComponent) dst);
+      }
+
       public void copyValues(GraphDefinitionNodeComponent dst) {
         super.copyValues(dst);
         dst.nodeId = nodeId == null ? null : nodeId.copy();
@@ -1414,6 +1418,10 @@ public class GraphDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((GraphDefinitionLinkComponent) dst);
+      }
+
       public void copyValues(GraphDefinitionLinkComponent dst) {
         super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
@@ -1912,6 +1920,10 @@ public class GraphDefinition extends CanonicalResource {
         GraphDefinitionLinkCompartmentComponent dst = new GraphDefinitionLinkCompartmentComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((GraphDefinitionLinkCompartmentComponent) dst);
       }
 
       public void copyValues(GraphDefinitionLinkCompartmentComponent dst) {
@@ -3499,6 +3511,10 @@ public class GraphDefinition extends CanonicalResource {
         GraphDefinition dst = new GraphDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((GraphDefinition) dst);
       }
 
       public void copyValues(GraphDefinition dst) {

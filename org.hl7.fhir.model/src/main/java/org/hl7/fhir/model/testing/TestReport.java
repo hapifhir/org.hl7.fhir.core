@@ -837,6 +837,23 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.uri != null) {
+            visitor.visit(this, "uri", -1, this.uri);
+          }
+          if (this.version != null) {
+            visitor.visit(this, "version", -1, this.version);
+          }
+          if (this.display != null) {
+            visitor.visit(this, "display", -1, this.display);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "code", "The type of participant.", 0, 1, type);
@@ -938,6 +955,10 @@ public class TestReport extends DomainResource {
         TestReportParticipantComponent dst = new TestReportParticipantComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportParticipantComponent) dst, options);
       }
 
       public void copyValues(TestReportParticipantComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1127,6 +1148,17 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.documentation != null) {
+            visitor.visit(this, "documentation", -1, this.documentation);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The name of the parameter passed in to the test runner.", 0, 1, name);
@@ -1201,6 +1233,10 @@ public class TestReport extends DomainResource {
         TestReportParameterComponent dst = new TestReportParameterComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportParameterComponent) dst, options);
       }
 
       public void copyValues(TestReportParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1336,6 +1372,20 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.actionList != null) {
+            int i = 0;
+            for (Base v : this.actionList) {
+              if (v != null) {
+                visitor.visit(this, "action", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "action":  return new Property("action", "", "Action would contain either an operation or an assertion.", 0, java.lang.Integer.MAX_VALUE, actionList);
@@ -1395,6 +1445,10 @@ public class TestReport extends DomainResource {
         TestReportSetupComponent dst = new TestReportSetupComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportSetupComponent) dst, options);
       }
 
       public void copyValues(TestReportSetupComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1517,6 +1571,17 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.operation != null) {
+            visitor.visit(this, "operation", -1, this.operation);
+          }
+          if (this.assert_ != null) {
+            visitor.visit(this, "assert", -1, this.assert_);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "operation":  return new Property("operation", "", "The operation performed.", 0, 1, operation);
@@ -1591,6 +1656,10 @@ public class TestReport extends DomainResource {
         SetupActionComponent dst = new SetupActionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionComponent) dst, options);
       }
 
       public void copyValues(SetupActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1833,6 +1902,20 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.result != null) {
+            visitor.visit(this, "result", -1, this.result);
+          }
+          if (this.message != null) {
+            visitor.visit(this, "message", -1, this.message);
+          }
+          if (this.detail != null) {
+            visitor.visit(this, "detail", -1, this.detail);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "result":  return new Property("result", "code", "The result of this operation.", 0, 1, result);
@@ -1921,6 +2004,10 @@ public class TestReport extends DomainResource {
         SetupActionOperationComponent dst = new SetupActionOperationComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionOperationComponent) dst, options);
       }
 
       public void copyValues(SetupActionOperationComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2228,6 +2315,29 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.result != null) {
+            visitor.visit(this, "result", -1, this.result);
+          }
+          if (this.message != null) {
+            visitor.visit(this, "message", -1, this.message);
+          }
+          if (this.detail != null) {
+            visitor.visit(this, "detail", -1, this.detail);
+          }
+          if (this.requirementList != null) {
+            int i = 0;
+            for (Base v : this.requirementList) {
+              if (v != null) {
+                visitor.visit(this, "requirement", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "result":  return new Property("result", "code", "The result of this assertion.", 0, 1, result);
@@ -2327,6 +2437,10 @@ public class TestReport extends DomainResource {
         SetupActionAssertComponent dst = new SetupActionAssertComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionAssertComponent) dst, options);
       }
 
       public void copyValues(SetupActionAssertComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2460,6 +2574,14 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.link != null) {
+            visitor.visit(this, "link[x]", -1, this.link);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "link[x]":  return new Property("link[x]", "uri|canonical(Requirements)", "Link or reference providing traceability to the testing requirement for this test.", 0, 1, link);
@@ -2530,6 +2652,10 @@ public class TestReport extends DomainResource {
         SetupActionAssertRequirementComponent dst = new SetupActionAssertRequirementComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionAssertRequirementComponent) dst, options);
       }
 
       public void copyValues(SetupActionAssertRequirementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2900,6 +3026,35 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.result != null) {
+            visitor.visit(this, "result", -1, this.result);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.actionList != null) {
+            int i = 0;
+            for (Base v : this.actionList) {
+              if (v != null) {
+                visitor.visit(this, "action", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.log != null) {
+            visitor.visit(this, "log", -1, this.log);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The name of this test used for tracking/logging purposes by test engines. This name links back to the test in the test script, so it must be directly linked (usually the same).", 0, 1, name);
@@ -3027,6 +3182,10 @@ public class TestReport extends DomainResource {
         TestReportTestComponent dst = new TestReportTestComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportTestComponent) dst, options);
       }
 
       public void copyValues(TestReportTestComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3168,6 +3327,17 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.operation != null) {
+            visitor.visit(this, "operation", -1, this.operation);
+          }
+          if (this.assert_ != null) {
+            visitor.visit(this, "assert", -1, this.assert_);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "operation":  return new Property("operation", "@TestReport.setup.action.operation", "An operation would involve a REST request to a server.", 0, 1, operation);
@@ -3244,6 +3414,10 @@ public class TestReport extends DomainResource {
         TestActionComponent dst = new TestActionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestActionComponent) dst, options);
       }
 
       public void copyValues(TestActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3379,6 +3553,20 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.actionList != null) {
+            int i = 0;
+            for (Base v : this.actionList) {
+              if (v != null) {
+                visitor.visit(this, "action", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "action":  return new Property("action", "", "The teardown action will only contain an operation.", 0, java.lang.Integer.MAX_VALUE, actionList);
@@ -3438,6 +3626,10 @@ public class TestReport extends DomainResource {
         TestReportTeardownComponent dst = new TestReportTeardownComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReportTeardownComponent) dst, options);
       }
 
       public void copyValues(TestReportTeardownComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3547,6 +3739,14 @@ public class TestReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.operation != null) {
+            visitor.visit(this, "operation", -1, this.operation);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "operation":  return new Property("operation", "@TestReport.setup.action.operation", "An operation would involve a REST request to a server.", 0, 1, operation);
@@ -3609,6 +3809,10 @@ public class TestReport extends DomainResource {
         TeardownActionComponent dst = new TeardownActionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TeardownActionComponent) dst, options);
       }
 
       public void copyValues(TeardownActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4479,6 +4683,77 @@ public class TestReport extends DomainResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifier != null) {
+          visitor.visit(this, "identifier", -1, this.identifier);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.testScript != null) {
+          visitor.visit(this, "testScript", -1, this.testScript);
+        }
+        if (this.result != null) {
+          visitor.visit(this, "result", -1, this.result);
+        }
+        if (this.score != null) {
+          visitor.visit(this, "score", -1, this.score);
+        }
+        if (this.tester != null) {
+          visitor.visit(this, "tester", -1, this.tester);
+        }
+        if (this.issued != null) {
+          visitor.visit(this, "issued", -1, this.issued);
+        }
+        if (this.participantList != null) {
+          int i = 0;
+          for (Base v : this.participantList) {
+            if (v != null) {
+              visitor.visit(this, "participant", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.parameterList != null) {
+          int i = 0;
+          for (Base v : this.parameterList) {
+            if (v != null) {
+              visitor.visit(this, "parameter", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.setup != null) {
+          visitor.visit(this, "setup", -1, this.setup);
+        }
+        if (this.testList != null) {
+          int i = 0;
+          for (Base v : this.testList) {
+            if (v != null) {
+              visitor.visit(this, "test", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.teardown != null) {
+          visitor.visit(this, "teardown", -1, this.teardown);
+        }
+        if (this.presentedForm != null) {
+          visitor.visit(this, "presentedForm", -1, this.presentedForm);
+        }
+        if (this.log != null) {
+          visitor.visit(this, "log", -1, this.log);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "identifier":  return new Property("identifier", "Identifier", "Identifier for the TestReport assigned for external purposes outside the context of FHIR.", 0, 1, identifier);
@@ -4739,6 +5014,10 @@ public class TestReport extends DomainResource {
         TestReport dst = new TestReport(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestReport) dst, options);
       }
 
       public void copyValues(TestReport dst, EnumSet<CopyObjectOptions> options) {

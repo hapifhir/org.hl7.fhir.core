@@ -223,8 +223,8 @@ public class CompareUtilities extends BaseTestingUtilities {
         if (actualNode == null)
           return "Attributes differ at " + path + ": missing attribute " + expectedNodeName;
         if (!normalise(expectedNode.getTextContent()).equals(normalise(actualNode.getTextContent()))) {
-          byte[] b1 = unBase64(expectedNode.getTextContent());
-          byte[] b2 = unBase64(actualNode.getTextContent());
+          byte[] b1 = unBase64(expectedNode.getTextContent(), true, false);
+          byte[] b2 = unBase64(actualNode.getTextContent(), true, false);
           if (!sameBytes(b1, b2))
             return createNotEqualMessage(id, "Attributes differ at " + path, normalise(expectedNode.getTextContent()).toString(), normalise(actualNode.getTextContent()).toString()) ;
         }
@@ -252,10 +252,6 @@ public class CompareUtilities extends BaseTestingUtilities {
       if (b1[i] != b2[i])
         return false;
     return true;
-  }
-
-  private byte[] unBase64(String text) {
-    return Base64.decodeBase64(text);
   }
 
   private Node skipBlankText(Node node) {
@@ -454,7 +450,7 @@ public class CompareUtilities extends BaseTestingUtilities {
         String expectedJsonString = expectedJsonPrimitive.asString();
         if (!(actualJsonString.contains("<div") && expectedJsonString.contains("<div")))
           if (!matches(actualJsonString, expectedJsonString))
-            if (!sameBytes(unBase64(actualJsonString), unBase64(expectedJsonString)))
+            if (!sameBytes(unBase64(actualJsonString, true, false), unBase64(expectedJsonString, true, false)))
               return createNotEqualMessage(id, "string property values differ at " + path, expectedJsonString, actualJsonString);
       } else if (actualJsonPrimitive.isJsonNumber() && expectedJsonPrimitive.isJsonNumber()) {
         if (!actualJsonPrimitive.asString().equals(expectedJsonPrimitive.asString()))

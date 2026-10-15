@@ -26,10 +26,10 @@ public class ResourceToElementTest {
     
     IWorkerContext ctxt = TestingUtilities.getSharedWorkerContext();
     ResourceParser p = new ResourceParser(ctxt);
-    Resource res = (Resource) new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r6", filename));
+    Resource res = (Resource) new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", filename));
     Element e = p.parse(res);
     new org.hl7.fhir.services.elementmodel.XmlParser(ctxt).compose(e, ManagedFileAccess.outStream(src), OutputStyle.PRETTY, null);
-    new XmlParser(TestingUtilities.getSharedWorkerContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst), res);
+    new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst), res);
     String msg = new CompareUtilities().checkXMLIsSame(filename, src, dst);
     Assertions.assertNull(msg);
   }

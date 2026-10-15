@@ -32,6 +32,8 @@ package org.hl7.fhir.model.core;
 
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import java.util.EnumSet;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.parser.DataFormatException;
@@ -60,6 +62,23 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   private TemporalPrecisionEnum myPrecision = null;
   private TimeZone myTimeZone;
   private boolean myTimeZoneZulu = false;
+
+  @Override
+  public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+    copyValues((BaseDateTimeType) dst, options);
+  }
+
+  /**
+   * precision and timezone are state on this class rather than part of the Date value - copy()
+   * used to rebuild them by round-tripping the string form through the constructor
+   */
+  public void copyValues(BaseDateTimeType dst, EnumSet<CopyObjectOptions> options) {
+    super.copyValues(dst, options);
+    dst.myFractionalSeconds = myFractionalSeconds;
+    dst.myPrecision = myPrecision;
+    dst.myTimeZone = myTimeZone;
+    dst.myTimeZoneZulu = myTimeZoneZulu;
+  }
 
   /**
    * Constructor
@@ -151,7 +170,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   /**
    * Adds the given amount to the field specified by theField
    *
-   * Note: beware of the effects of daylight saving  here - the maths is subject to the timezone the code is one.
+   * Note: years and months are calendar arithmetic, done in the value's own time zone (not the time zone the code runs in).
    *
    * @param theField
    *           The field, uses constants from {@link Calendar} such as {@link Calendar#YEAR}
@@ -161,29 +180,23 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   public void add(int theField, int theValue) {
     switch (theField) {
       case Calendar.YEAR:
-        setValue(DateUtils.addYears(getValue(), theValue), getPrecision());
-        break;
       case Calendar.MONTH:
-        setValue(DateUtils.addMonths(getValue(), theValue), getPrecision());
-        break;
       case Calendar.DATE:
-        setValue(DateUtils.addDays(getValue(), theValue), getPrecision());
-        break;
       case Calendar.HOUR:
-        setValue(DateUtils.addHours(getValue(), theValue), getPrecision());
-        break;
       case Calendar.MINUTE:
-        setValue(DateUtils.addMinutes(getValue(), theValue), getPrecision());
-        break;
       case Calendar.SECOND:
-        setValue(DateUtils.addSeconds(getValue(), theValue), getPrecision());
-        break;
       case Calendar.MILLISECOND:
-        setValue(DateUtils.addMilliseconds(getValue(), theValue), getPrecision());
         break;
       default:
         throw new DataFormatException("Unknown field constant: " + theField);
     }
+    Validate.notNull(getValue(), "Cannot add to a date/time with no value");
+    // the arithmetic is done in the value's own time zone (UTC for a 'Z' value), not the time zone
+    // the code happens to be running in. Otherwise adding days or months across a daylight saving
+    // change in the local time zone moves the time of day by an hour
+    GregorianCalendar cal = getValueAsCalendar();
+    cal.add(theField, theValue);
+    setValue(cal.getTime(), getPrecision());
   }
 
   /**
@@ -201,7 +214,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    *   <li><code>ms</code> - millisecond</li>
    * </ul>
    *
-   * Note: beware of the effects of daylight saving  here - the maths is subject to the timezone the code is one.
+   * Note: years and months are calendar arithmetic, done in the value's own time zone (not the time zone the code runs in).
    *
    * @param theValue
    *           The number of units to add (must be non-negative; use {@link #subtract(long, String)} for subtraction)
@@ -225,7 +238,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    *
    * <p>Supported UCUM time unit codes are the same as for {@link #add(long, String)}.</p>
    *
-   * Note: beware of the effects of daylight saving  here - the maths is subject to the timezone the code is one.
+   * Note: years and months are calendar arithmetic, done in the value's own time zone (not the time zone the code runs in).
    *
    * @param theValue
    *           The number of units to subtract (must be non-negative)
@@ -253,7 +266,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    * {@code min}, {@code s}) decimal values are accepted and converted down to
    * whole milliseconds. Use {@link Quantity#isExactTime()} to check in advance.</p>
    *
-   * Note: beware of the effects of daylight saving  here - the maths is subject to the timezone the code is one.
+   * Note: years and months are calendar arithmetic, done in the value's own time zone (not the time zone the code runs in).
    *
    * @param theQuantity
    *           A FHIR Quantity whose code is a UCUM time unit and whose value is non-negative
@@ -279,7 +292,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    *
    * <p>See {@link #add(Quantity)} for details on supported units and decimal handling.</p>
    *
-   * Note: beware of the effects of daylight saving  here - the maths is subject to the timezone the code is one.
+   * Note: years and months are calendar arithmetic, done in the value's own time zone (not the time zone the code runs in).
    *
    * @param theQuantity
    *           A FHIR Quantity whose code is a UCUM time unit and whose value is non-negative

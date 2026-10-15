@@ -267,6 +267,10 @@ public class DV_PARSABLE extends DV_ENCAPSULATED implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DV_PARSABLE) dst);
+      }
+
       public void copyValues(DV_PARSABLE dst) {
         super.copyValues(dst);
         dst.value = value == null ? null : value.copy();

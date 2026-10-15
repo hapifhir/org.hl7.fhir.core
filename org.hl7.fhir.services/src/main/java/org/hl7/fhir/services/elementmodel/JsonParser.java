@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.model.utilities.formats.*;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.Element.SpecialElement;
-import org.hl7.fhir.services.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.model.core.VersionResolutionRules;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
@@ -15,10 +15,6 @@ import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.model.core.ElementDefinition;
 import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.model.core.StructureDefinition;
-import org.hl7.fhir.model.utilities.formats.JsonCreator;
-import org.hl7.fhir.model.utilities.formats.JsonCreatorCanonical;
-import org.hl7.fhir.model.utilities.formats.JsonCreatorDirect;
-import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.*;
@@ -111,7 +107,11 @@ public class JsonParser extends ParserBase {
       ElementDefinition bEd = sd.getSnapshot().addElement();
       ElementDefinition nEd = sd.getSnapshot().addElement();
       bEd.setPath("Wrapper");
-      nEd.setPath("Wrapper."+obj.getProperties().get(0).getName());
+      String pn = obj.getProperties().get(0).getName();
+      if (pn.startsWith("_")) {
+        pn = pn.substring(1); // a primitive with no value, only an id and/or extensions
+      }
+      nEd.setPath("Wrapper."+pn);
       nEd.addType().setCode(type);
       nEd.setMax(obj.getProperties().get(0).getValue().isJsonArray() ? "*" : "1"); 
     }

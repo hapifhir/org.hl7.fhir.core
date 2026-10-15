@@ -162,7 +162,12 @@ public class DataRenderer extends Renderer implements CodeResolver {
           throw new DefinitionException(context.formatPhrase(RenderingI18nContext.DATA_REND_MKDWN_LNK, link) + " ");
         } 
 
-        text = left+"["+link+"]("+url+(path == null ? "" : "#"+path)+")"+right; 
+        if (url == null) {
+          // nothing to link to
+          text = left+link+right;
+        } else {
+          text = left+"["+link+"]("+url+(path == null ? "" : "#"+path)+")"+right; 
+        }
       } 
 
       // 2. markdown 
@@ -629,7 +634,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
     case "HumanName": return displayHumanName(type); 
     case "Address": return displayAddress(type); 
     case "ContactPoint": return displayContactPoint(type); 
-    case "Quantity": return displayQuantity(type); 
+    case "Quantity": 
+    case "Age": 
+    case "Duration": 
+    case "Distance": 
+    case "Count": 
+      return displayQuantity(type); 
+    case "RelativeTime": return displayRelativeTime(type); 
     case "Range": return displayRange(type); 
     case "Period": return displayPeriod(type); 
     case "Timing": return displayTiming(type); 
@@ -807,7 +818,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   
   public boolean canRenderDataType(String type) {
     return context.getContextUtilities().isPrimitiveType(type) ||  Utilities.existsInList(type, "Annotation", "Coding", "CodeableConcept",  "Identifier", "HumanName", "Address", "Dosage",
-          "Expression",  "Money", "ContactPoint",  "Quantity",  "Range",  "Period", "Timing", "SampledData",  "Reference", "UsageContext",  "ContactDetail",  "Ratio",  "Attachment",  "CodeableReference");
+          "Expression",  "Money", "ContactPoint",  "Quantity", "Age", "Duration", "Distance", "Count", "RelativeTime", "Range",  "Period", "Timing", "SampledData",  "Reference", "UsageContext",  "ContactDetail",  "Ratio",  "Attachment",  "CodeableReference");
   }
 
   public boolean renderDataType(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException {
@@ -860,7 +871,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
       break;
     case "Quantity": 
     case "Age":
+    case "Duration":
+    case "Distance":
+    case "Count":
       renderQuantity(status, x, type); 
+      break;
+    case "RelativeTime":
+      renderRelativeTime(status, x, type);
       break;
     case "Range": 
       renderRange(status, x, type); 
@@ -1028,16 +1045,16 @@ public class DataRenderer extends Renderer implements CodeResolver {
       if (first) first = false; else x.tx(", ");
       String url = ext.getUrl();
       if (url.equals(ExtensionDefinitions.EXT_DAR)) {
-        x.tx("Absent because : ");
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_ABSENT_BECAUSE)+" ");
         displayCode(x, wrapNC(ext.getValue()));
       } else if (url.equals(ExtensionDefinitions.EXT_NF)) {
-        x.tx("Null because: ");
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_NULL_BECAUSE)+" ");
         displayCode(x, wrapNC(ext.getValue()));
       } else if (url.equals(ExtensionDefinitions.EXT_OT)) {
-        x.code().tx("Text: ");
+        x.code().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_EXT_TEXT)+" ");
         displayCode(x, wrapNC(ext.getValue()));
       } else if (url.equals(ExtensionDefinitions.EXT_CQF_EXP)) {
-        x.code().tx("Value calculated by: ");
+        x.code().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_CALC_BY)+" ");
         renderExpression(status, x, wrapNC(ext.getValue()));
       } else {
         StructureDefinition def = context.getContext().fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
@@ -1062,16 +1079,16 @@ public class DataRenderer extends Renderer implements CodeResolver {
       if (first) first = false; else x.tx(", ");
       String url = ext.primitiveValue("url");
       if (url.equals(ExtensionDefinitions.EXT_DAR)) {
-        x.tx("Absent because : ");
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_ABSENT_BECAUSE)+" ");
         displayCode(x, ext.child("value"));
       } else if (url.equals(ExtensionDefinitions.EXT_NF)) {
-        x.tx("Null because: ");
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_NULL_BECAUSE)+" ");
         displayCode(x, ext.child("value"));
       } else if (url.equals(ExtensionDefinitions.EXT_OT)) {
-        x.code().tx("Text: ");
+        x.code().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_EXT_TEXT)+" ");
         displayCode(x, ext.child("value"));
       } else if (url.equals(ExtensionDefinitions.EXT_CQF_EXP)) {
-        x.code().tx("Value calculated by: ");
+        x.code().tx(context.formatPhrase(RenderingI18nContext.DATA_REND_CALC_BY)+" ");
         renderExpression(status, x, ext.child("value"));
       } else {
         StructureDefinition def = context.getContext().fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
@@ -1430,7 +1447,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   public String displayCodeableConcept(ResourceWrapper cc) { 
-    String s = context.getTranslated(cc.child("Text")); 
+    String s = context.getTranslated(cc.child("text")); 
     if (Utilities.noString(s)) { 
       for (ResourceWrapper c : cc.children("coding")) { 
         if (c.has("display")) { 
@@ -1546,8 +1563,66 @@ public class DataRenderer extends Renderer implements CodeResolver {
     checkRenderExtensions(status, x, cc);
   } 
 
+  /**
+   * The identifier has no value. Use the reason on the value (dataAbsentReason, nullFlavor etc) if 
+   * there is one, then a reason on the identifier itself, and otherwise just say there's no value
+   */
+  protected String displayIdentifierNoValue(ResourceWrapper ii) {
+    ResourceWrapper v = ii.child("value");
+    if (v != null && !v.hasPrimitiveValue() && !v.extensions().isEmpty()) {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      for (ResourceWrapper ext : v.extensions()) {
+        b.append(displayNoValueExtension(ext));
+      }
+      return b.toString();
+    }
+    ResourceWrapper ext = identifierAbsentReason(ii);
+    return ext != null ? displayNoValueExtension(ext) : context.formatPhrase(RenderingI18nContext.DATA_REND_NO_VALUE);
+  }
+
+  protected void renderIdentifierNoValue(RenderingStatus status, XhtmlNode x, ResourceWrapper ii) throws FHIRFormatError, DefinitionException, IOException {
+    ResourceWrapper v = ii.child("value");
+    if (v != null && !v.hasPrimitiveValue() && !v.extensions().isEmpty()) {
+      renderPrimitiveWithNoValue(status, x, v);
+    } else {
+      ResourceWrapper ext = identifierAbsentReason(ii);
+      if (ext != null) {
+        x.tx(displayNoValueExtension(ext));
+        status.setExtensions(true);
+      } else {
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_NO_VALUE));
+      }
+    }
+  }
+
+  private ResourceWrapper identifierAbsentReason(ResourceWrapper ii) {
+    if (ii.hasExtension(ExtensionDefinitions.EXT_DAR)) {
+      return ii.extension(ExtensionDefinitions.EXT_DAR);
+    } else if (ii.hasExtension(ExtensionDefinitions.EXT_NF)) {
+      return ii.extension(ExtensionDefinitions.EXT_NF);
+    } else {
+      return null;
+    }
+  }
+
+  private String displayNoValueExtension(ResourceWrapper ext) {
+    String url = ext.primitiveValue("url");
+    String v = displayDataType(ext.child("value"));
+    if (ExtensionDefinitions.EXT_DAR.equals(url)) {
+      return context.formatPhrase(RenderingI18nContext.DATA_REND_ABSENT_BECAUSE)+" "+v;
+    } else if (ExtensionDefinitions.EXT_NF.equals(url)) {
+      return context.formatPhrase(RenderingI18nContext.DATA_REND_NULL_BECAUSE)+" "+v;
+    } else if (ExtensionDefinitions.EXT_OT.equals(url)) {
+      return context.formatPhrase(RenderingI18nContext.DATA_REND_EXT_TEXT)+" "+v;
+    } else if (ExtensionDefinitions.EXT_CQF_EXP.equals(url)) {
+      return context.formatPhrase(RenderingI18nContext.DATA_REND_CALC_BY)+" "+v;
+    } else {
+      return tail(url)+": "+v;
+    }
+  }
+
   protected String displayIdentifier(ResourceWrapper ii) { 
-    String s = Utilities.noString(ii.primitiveValue("value")) ? "?ngen-9?" : ii.primitiveValue("value"); 
+    String s = Utilities.noString(ii.primitiveValue("value")) ? displayIdentifierNoValue(ii) : ii.primitiveValue("value"); 
     if ("urn:ietf:rfc:3986".equals(ii.primitiveValue("system")) && s.startsWith("urn:oid:")) { 
       s = "OID:"+s.substring(8); 
     } else if ("urn:ietf:rfc:3986".equals(ii.primitiveValue("system")) && s.startsWith("urn:uuid:")) { 
@@ -1563,8 +1638,10 @@ public class DataRenderer extends Renderer implements CodeResolver {
           s = context.getTranslated(type.child("text"))+":\u00A0"+s; 
         else if (type.has("coding") && type.children("coding").get(0).has("display")) 
           s = context.getTranslated(type.children("coding").get(0).child("display"))+": "+s; 
-        else if (type.has("coding") && type.children("coding").get(0).has("code")) 
-          s = lookupCode(type.children("coding").get(0).primitiveValue("system"), type.children("coding").get(0).primitiveValue("version"), type.children("coding").get(0).primitiveValue("code")); 
+        else if (type.has("coding") && type.children("coding").get(0).has("code")) { 
+          String t = lookupCode(type.children("coding").get(0).primitiveValue("system"), type.children("coding").get(0).primitiveValue("version"), type.children("coding").get(0).primitiveValue("code")); 
+          s = (Utilities.noString(t) ? type.children("coding").get(0).primitiveValue("code") : t)+": "+s; 
+        } 
       } else if (ii.has("system")) { 
         s = ii.primitiveValue("system")+"#"+s; 
       } 
@@ -1575,7 +1652,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       if (ii.has("use")) { 
         s = s + "use:\u00A0"+ii.primitiveValue("use"); 
       } 
-      if (ii.has("use") || ii.has("period")) { 
+      if (ii.has("use") && ii.has("period")) { 
         s = s + ",\u00A0"; 
       } 
       if (ii.has("period")) { 
@@ -1616,7 +1693,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
       } 
       x.tx("/"); 
     } 
-    x.tx(Utilities.noString(ii.primitiveValue("value")) ? "?ngen-9?" : ii.primitiveValue("value")); 
+    if (Utilities.noString(ii.primitiveValue("value"))) {
+      renderIdentifierNoValue(status, x, ii);
+    } else {
+      x.tx(ii.primitiveValue("value"));
+    }
 
     if (ii.has("use") || ii.has("period")) { 
       x.nbsp(); 
@@ -1626,7 +1707,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         x.nbsp(); 
         x.tx(ii.primitiveValue("use")); 
       } 
-      if (ii.has("use") || ii.has("period")) { 
+      if (ii.has("use") && ii.has("period")) { 
         x.tx(","); 
         x.nbsp(); 
       } 
@@ -1835,7 +1916,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
               x.addText(displayContactPoint(contact));
               break;
             case "url":
-              x.ah(context.prefixLocalHref(v)).tx(v);
+              if (Utilities.isAbsoluteUrlLinkable(v)) {
+                x.ah(context.prefixLocalHref(v)).tx(v);
+              } else {
+                x.tx(v);
+              }
               break;
             default:
               break;
@@ -1970,6 +2055,142 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (q.has("low") && q.child("low").has("unit")) 
       x.tx(" "+q.child("low").primitiveValue("unit")); 
   } 
+
+  // ---- RelativeTime (R6) ---------------------------------------------------------------------
+
+  /**
+   * The offset of a RelativeTime, ready to show: the magnitude (without a sign), and which way it goes 
+   */
+  private class RelativeOffset {
+    private String magnitude; // null if there's no offset
+    private String direction; // phrase: before, after, at, relative to
+  }
+
+  private RelativeOffset relativeOffset(ResourceWrapper rt) {
+    RelativeOffset res = new RelativeOffset();
+    ResourceWrapper o = rt.child("offset");
+    if (o == null) {
+      res.direction = RenderingI18nContext.DATA_REND_REL_AT;
+    } else if (o.fhirType().equals("Range")) {
+      BigDecimal low = decimalValue(o.child("low"));
+      BigDecimal high = decimalValue(o.child("high"));
+      if (low != null && high != null && low.signum() <= 0 && high.signum() <= 0 && !(low.signum() == 0 && high.signum() == 0)) {
+        res.magnitude = high.abs().toPlainString()+"-"+low.abs().toPlainString()+unitOf(o.child("low"), o.child("high"));
+        res.direction = RenderingI18nContext.DATA_REND_REL_BEFORE;
+      } else if (low != null && high != null && low.signum() >= 0 && high.signum() >= 0) {
+        res.magnitude = low.toPlainString()+"-"+high.toPlainString()+unitOf(o.child("low"), o.child("high"));
+        res.direction = RenderingI18nContext.DATA_REND_REL_AFTER;
+      } else {
+        res.magnitude = displayRange(o);
+        res.direction = RenderingI18nContext.DATA_REND_REL_RELATIVE;
+      }
+    } else {
+      BigDecimal v = decimalValue(o);
+      if (v == null) {
+        res.magnitude = displayQuantity(o);
+        res.direction = RenderingI18nContext.DATA_REND_REL_RELATIVE;
+      } else if (v.signum() == 0) {
+        res.direction = RenderingI18nContext.DATA_REND_REL_AT;
+      } else {
+        res.magnitude = v.abs().toPlainString()+unitOf(o, null);
+        res.direction = v.signum() < 0 ? RenderingI18nContext.DATA_REND_REL_BEFORE : RenderingI18nContext.DATA_REND_REL_AFTER;
+      }
+    }
+    return res;
+  }
+
+  private BigDecimal decimalValue(ResourceWrapper q) {
+    if (q == null || !q.has("value")) {
+      return null;
+    }
+    try {
+      return new BigDecimal(q.primitiveValue("value"));
+    } catch (NumberFormatException e) {
+      return null;
+    }
+  }
+
+  private String unitOf(ResourceWrapper q1, ResourceWrapper q2) {
+    for (ResourceWrapper q : new ResourceWrapper[] { q1, q2 }) {
+      if (q != null && q.has("unit")) {
+        return " "+context.getTranslated(q.child("unit"));
+      } else if (q != null && q.has("code")) {
+        return " "+q.primitiveValue("code");
+      }
+    }
+    return "";
+  }
+
+  private boolean hasRelativeTimeStructure(ResourceWrapper rt) {
+    return rt.hasMN("offset", "contextCode", "contextReference", "contextDefinition", "contextPath");
+  }
+
+  public String displayRelativeTime(ResourceWrapper rt) {
+    if (!hasRelativeTimeStructure(rt)) {
+      return rt.has("text") ? context.getTranslated(rt.child("text")) : "";
+    }
+    StringBuilder b = new StringBuilder();
+    RelativeOffset ro = relativeOffset(rt);
+    if (ro.magnitude != null) {
+      b.append(ro.magnitude);
+      b.append(" ");
+    }
+    b.append(context.formatPhrase(ro.direction));
+    b.append(" ");
+    if (rt.has("contextCode")) {
+      b.append(displayCodeableConcept(rt.child("contextCode")));
+    } else if (rt.has("contextReference")) {
+      String s = displayReference(rt.child("contextReference"));
+      b.append(s.startsWith("->") ? s.substring(2) : s);
+    } else if (rt.has("contextDefinition")) {
+      b.append(rt.primitiveValue("contextDefinition"));
+    } else {
+      b.append(context.formatPhrase(RenderingI18nContext.DATA_REND_REL_EVENT));
+    }
+    if (rt.has("contextPath")) {
+      b.append(" (");
+      b.append(rt.primitiveValue("contextPath"));
+      b.append(")");
+    }
+    if (rt.has("text")) {
+      b.append(" (");
+      b.append(context.getTranslated(rt.child("text")));
+      b.append(")");
+    }
+    return b.toString();
+  }
+
+  public void renderRelativeTime(RenderingStatus status, XhtmlNode x, ResourceWrapper rt) throws FHIRFormatError, DefinitionException, IOException {
+    if (!hasRelativeTimeStructure(rt)) {
+      if (rt.has("text")) {
+        x.tx(context.getTranslated(rt.child("text")));
+      }
+    } else {
+      RelativeOffset ro = relativeOffset(rt);
+      if (ro.magnitude != null) {
+        x.tx(ro.magnitude+" ");
+      }
+      x.tx(context.formatPhrase(ro.direction)+" ");
+      if (rt.has("contextCode")) {
+        renderCodeableConcept(status, x, rt.child("contextCode"));
+      } else if (rt.has("contextReference")) {
+        renderReference(status, x, rt.child("contextReference"));
+      } else if (rt.has("contextDefinition")) {
+        renderCanonical(status, x, rt.child("contextDefinition"));
+      } else {
+        x.tx(context.formatPhrase(RenderingI18nContext.DATA_REND_REL_EVENT));
+      }
+      if (rt.has("contextPath")) {
+        x.tx(" (");
+        x.code().tx(rt.primitiveValue("contextPath"));
+        x.tx(")");
+      }
+      if (rt.has("text")) {
+        x.tx(" ("+context.getTranslated(rt.child("text"))+")");
+      }
+    }
+    checkRenderExtensions(status, x, rt);
+  }
 
   public String displayPeriod(ResourceWrapper p) { 
     String s = !p.has("start") ? "(?)" : displayDateTime(p.child("start")); 

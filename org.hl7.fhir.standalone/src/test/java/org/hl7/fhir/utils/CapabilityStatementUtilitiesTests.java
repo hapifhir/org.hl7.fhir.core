@@ -50,7 +50,7 @@ class CapabilityStatementUtilitiesTests {
   @Test
   @Disabled
   void testOverall() {
-    IParser p = new XmlParser(TestingUtilities.getSharedWorkerContext(),false);
+    IParser p = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext(),false);
 
     CapabilityStatement c1 = null;
     CapabilityStatement c2 = null;

@@ -1,8 +1,8 @@
 package org.hl7.fhir.validation.service.model;
 
-import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.model.core.ImplementationGuide;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.StructureDefinition;
 
 public class ScanOutputItem {
   private String ref;

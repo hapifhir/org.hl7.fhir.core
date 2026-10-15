@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,20 +33,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.elementmodel.ElementUtilities;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.elementmodel.ParserBase;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.model.Base.ValidationMode;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
-import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.test.utils.CompareUtilities;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
+import org.hl7.fhir.model.ValidationInformation;
+import org.hl7.fhir.model.core.VersionResolutionRules;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.services.elementmodel.ParserBase;
+import org.hl7.fhir.model.core.Enumerations.FHIRVersion;
+import org.hl7.fhir.services.terminology.ValidationResult;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.services.testing.CompareUtilities;
+import org.hl7.fhir.services.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -122,7 +122,7 @@ public class BundleValidator extends BaseValidator {
     this.serverBase = serverBase;
   }
 
-  public boolean validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidationContext hostContext, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException {
+  public boolean validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidationContext hostContext, ResourcePercentageLogger pct, ValidationInformation.ValidationMode mode) throws FHIRException {
     boolean ok = true;
 
     String type = bundle.getNamedChildValue(TYPE, false);
@@ -211,7 +211,7 @@ public class BundleValidator extends BaseValidator {
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), !url.equals(fullUrl) || serverBase == null || (url.equals(Utilities.pathURL(serverBase, entry.getNamedChild(RESOURCE, false).fhirType(), id))), I18nConstants.BUNDLE_BUNDLE_ENTRY_CANONICAL, url, fullUrl) && ok;
       }
 
-      if (!VersionUtilities.isR2Ver(context.getVersion())) {
+      if (!VersionUtilities.isR2Ver(context.getFHIRVersion())) {
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), estack.getLiteralPath(), fullUrlOptional || fullUrl != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED) && ok;
       }
       // check bundle profile requests
@@ -222,7 +222,7 @@ public class BundleValidator extends BaseValidator {
         NodeStack rstack = estack.push(res, -1, null, null);
         for (BundleValidationRule bvr : validator().getBundleValidationRules()) {
           if (meetsRule(bvr, rtype, rcount, count)) {
-            StructureDefinition defn = context.fetchResource(StructureDefinition.class, bvr.getProfile(), IWorkerContext.VersionResolutionRules.defaultRule());
+            StructureDefinition defn = context.fetchResource(StructureDefinition.class, bvr.getProfile(), VersionResolutionRules.defaultRule());
             if (defn == null) {
               throw new Error(context.formatMessage(I18nConstants.BUNDLE_RULE_PROFILE_UNKNOWN, bvr.getRule(), bvr.getProfile()));
             } else {
@@ -248,7 +248,7 @@ public class BundleValidator extends BaseValidator {
     // this is the R6 signature approach
     // it can be preadopted in R5-, so we don't check the version here
     List<Element> signatureProvenances = new ArrayList<>();
-    ElementUtilities.findSignatures(bundle, signatureProvenances);
+    ElementModelUtilities.findSignatures(bundle, signatureProvenances);
     for (Element resource : signatureProvenances) {
       for (Element sig : resource.getChildrenByName("signature")) {
         if (sig.hasChild("data") && ("application/jose".equals(sig.getNamedChildValue("sigFormat")) || "application/pkcs7-signature".equals(sig.getNamedChildValue("sigFormat")))) {
@@ -692,7 +692,7 @@ public class BundleValidator extends BaseValidator {
    * <p></p>
    * Related JIRA ticket is <a href=https://jira.hl7.org/browse/FHIR-26544>FHIR-26544</a>
    *
-   * @param bundle {@link org.hl7.fhir.r5.elementmodel}
+   * @param bundle {@link org.hl7.fhir.services.elementmodel}
    * @param errors {@link List<ValidationMessage>}
    * @param stack {@link NodeStack}
    */
@@ -756,7 +756,7 @@ public class BundleValidator extends BaseValidator {
                   I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE_MSG, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));              
             } else {
               // this was illegal up to R4B, but changed to be legal in R5
-              if (VersionUtilities.isR5Plus(context.getVersion())) {
+              if (VersionUtilities.isR5Plus(context.getFHIRVersion())) {
                 hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, e.getEntry().line(), e.getEntry().col(), 
                     stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), isExpectedToBeReverse(e.getResource().fhirType()), 
                     I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE_R5, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));              
@@ -915,7 +915,7 @@ public class BundleValidator extends BaseValidator {
   }
 
   private void findReferences(Element start, List<StringWithSource> references) {
-    for (Element child : start.getChildren()) {
+    for (Element child : start.getChildList()) {
       if (child.getType().equals("Reference")) {
         String ref = child.getChildValue("reference");
         if (ref != null && !ref.startsWith("#") && !hasReference(ref, references))
@@ -1118,7 +1118,13 @@ public class BundleValidator extends BaseValidator {
         sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(sigT)));
       }
       if (sigT == null && header.has(DigitalSignatureSupport.JWT_HEADER_IAT)) {
-        sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(header.asString(DigitalSignatureSupport.JWT_HEADER_IAT))));
+        String iat = header.asString(DigitalSignatureSupport.JWT_HEADER_IAT);
+        if (Utilities.isInteger(iat)) {
+          sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(iat)));
+        } else {
+          // iat is seconds since the epoch; if it is not, say so rather than throwing out of the validator
+          ok = rule(errors, "2026-09-02", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_SIGNATURE_SIG_TIME_INVALID, iat) && ok;
+        }
       }
       if (sigT == null) {
         warning(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_HEADER_NO_SIG_TIME); 
@@ -1126,7 +1132,8 @@ public class BundleValidator extends BaseValidator {
       if (when == null) {
         rule(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_NO_WHEN);        
       } else if (sigT != null) {
-        ok = rule(errors, "2025-06-13", IssueType.BUSINESSRULE, stack, agreeWithin(sigT, when.primitiveValue(), 2), I18nConstants.BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH, sigT, when.primitiveValue()) && ok;
+        Instant sigTime = parseSignatureInstant(errors, stack, sigT, I18nConstants.BUNDLE_SIGNATURE_SIG_TIME_INVALID);
+        ok = sigTime != null && checkTimesAgree(errors, stack, sigTime, sigT, when.primitiveValue(), I18nConstants.BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH) && ok;
       }
 
       // 2. canonicalisation
@@ -1355,10 +1362,45 @@ public class BundleValidator extends BaseValidator {
     }
     return ok;
   }
-  static boolean agreeWithin(String a, String b, long toleranceSeconds) {
-    Instant ia = OffsetDateTime.parse(a).toInstant();
-    Instant ib = OffsetDateTime.parse(b).toInstant();
-    return Duration.between(ia, ib).abs().compareTo(Duration.ofSeconds(toleranceSeconds)) <= 0;
+  /**
+   * How far the time in the signature and Signature.when may differ and still be taken to
+   * describe the same signing event. They are written by different code at (nearly) the same
+   * moment, so they are compared as instants with a small allowance rather than as strings -
+   * both are instants, and the same instant has many valid lexical forms (see #2385).
+   */
+  private static final long SIGNATURE_TIME_TOLERANCE_SECONDS = 2;
+
+  static boolean agreeWithin(Instant a, Instant b, long toleranceSeconds) {
+    return Duration.between(a, b).abs().compareTo(Duration.ofSeconds(toleranceSeconds)) <= 0;
+  }
+
+  /**
+   * Parse one of the signature's times. Neither the time in the signature nor Signature.when is
+   * known to be well formed - that is what is being validated - so a value that cannot be parsed
+   * is reported as a validation message naming the offending value, rather than thrown. Returns
+   * null when the value is not a valid instant.
+   */
+  private Instant parseSignatureInstant(List<ValidationMessage> errors, NodeStack stack, String value, String msgId) {
+    try {
+      return OffsetDateTime.parse(value).toInstant();
+    } catch (DateTimeParseException e) {
+      rule(errors, "2026-09-02", IssueType.INVALID, stack, false, msgId, value);
+      return null;
+    }
+  }
+
+  /**
+   * Cross check the time in the signature against Signature.when. sigTime is the already parsed
+   * signature time; sigT is its lexical form, for the message. If Signature.when cannot be
+   * parsed, that is reported (naming it, so it is clear which of the two times is at fault) and
+   * no comparison is made.
+   */
+  private boolean checkTimesAgree(List<ValidationMessage> errors, NodeStack stack, Instant sigTime, String sigT, String when, String mismatchMsgId) {
+    Instant whenTime = parseSignatureInstant(errors, stack, when, I18nConstants.BUNDLE_SIGNATURE_WHEN_INVALID);
+    if (whenTime == null) {
+      return false;
+    }
+    return rule(errors, "2025-06-13", IssueType.BUSINESSRULE, stack, agreeWithin(sigTime, whenTime, SIGNATURE_TIME_TOLERANCE_SECONDS), mismatchMsgId, sigT, when);
   }
   public String certificateToPEMSingleLine(X509Certificate cert) throws Exception {
     byte[] encoded = cert.getEncoded();
@@ -1403,8 +1445,8 @@ public class BundleValidator extends BaseValidator {
       p.getElementsToIgnore().clear();
       p.getElementsToIgnore().addAll(excludedElements);
     }
-    if (p instanceof org.hl7.fhir.r5.elementmodel.JsonParser) {
-      ((org.hl7.fhir.r5.elementmodel.JsonParser) p).setCanonicalizeXhtml(jsonXml);
+    if (p instanceof org.hl7.fhir.services.elementmodel.JsonParser) {
+      ((org.hl7.fhir.services.elementmodel.JsonParser) p).setCanonicalizeXhtml(jsonXml);
     }
     p.compose(bundle, ba, OutputStyle.CANONICAL, null);
     toSign = ba.toByteArray();
@@ -1488,12 +1530,13 @@ public class BundleValidator extends BaseValidator {
       if (sigT == null) {
         warning(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_DIGSIG_NO_SIG_TIME); 
       } else {
-        instant = Instant.parse(sigT);
+        instant = parseSignatureInstant(errors, stack, sigT, I18nConstants.BUNDLE_SIGNATURE_SIG_TIME_INVALID);
+        ok = instant != null && ok;
       }
       if (when == null) {
         rule(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_NO_WHEN);        
-      } else if (sigT != null) { 
-        ok = rule(errors, "2025-06-13", IssueType.BUSINESSRULE, stack, sigT.equals(when.primitiveValue()), I18nConstants.BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH, sigT, when.primitiveValue()) && ok;                            
+      } else if (instant != null) { 
+        ok = checkTimesAgree(errors, stack, instant, sigT, when.primitiveValue(), I18nConstants.BUNDLE_SIGNATURE_DIGSIG_WHEN_MISMATCH) && ok;                            
       }
 
       // 2. canonicalisation

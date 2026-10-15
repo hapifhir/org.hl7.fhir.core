@@ -73,10 +73,10 @@ public class PETests {
       NpmPackage npm = pc.loadPackage("hl7.fhir.us.core", "6.0.0");
       ctxt.getManager().loadFromPackage(npm, new TestPackageLoader(Utilities.stringSet("StructureDefinition" ), ctxt));
       
-      ctxt.getManager().cacheResource(new JsonParser(ctxt).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-extension-simple.json")));
-      ctxt.getManager().cacheResource(new JsonParser(ctxt).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-extension-complex.json")));
-      ctxt.getManager().cacheResource(new JsonParser(ctxt).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-profile2.json")));
-      ctxt.getManager().cacheResource(new JsonParser(ctxt).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-profile1.json")));
+      ctxt.getManager().cacheResource(new JsonParser(ctxt.getModelContext()).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-extension-simple.json")));
+      ctxt.getManager().cacheResource(new JsonParser(ctxt.getModelContext()).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-extension-complex.json")));
+      ctxt.getManager().cacheResource(new JsonParser(ctxt.getModelContext()).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-profile2.json")));
+      ctxt.getManager().cacheResource(new JsonParser(ctxt.getModelContext()).parse(TestingUtilities.loadTestResource("r6", "profiles", "pe-profile1.json")));
     }
   }
 
@@ -343,7 +343,7 @@ public class PETests {
     Assertions.assertEquals("final", res.getStatusElement().asStringValue());
     Assertions.assertEquals("76690-7", res.getCode().getCodingFirstRep().getCode());
     
-    String json = new JsonParser(ctxt).setOutputStyle(OutputStyle.PRETTY).composeString(res);
+    String json = new JsonParser(ctxt.getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeString(res);
     System.out.println(json);
   }
 
@@ -352,7 +352,7 @@ public class PETests {
   public void testLoad() throws IOException {
     load();
     
-    Resource res = new JsonParser(ctxt).parse(TestingUtilities.loadTestResource("r5", "pe-observation-1.json"));
+    Resource res = new JsonParser(ctxt.getModelContext()).parse(TestingUtilities.loadTestResource("r5", "pe-observation-1.json"));
     PEInstance obs = new PEBuilder(ctxt, PEElementPropertiesPolicy.EXTENSION, true).buildPEInstance("http://hl7.org/fhir/test/StructureDefinition/pe-profile1", res);
     
     PEInstance status = obs.child("status");

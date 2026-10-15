@@ -210,6 +210,31 @@ public class InstanceValidatorOptions {
   @With
   public List<String> extensions = new ArrayList<>();
 
+  @CommandLine.Option(names = {"-usage"},
+    description = """
+      A use context that applies to this validation, as code=value. Some bindings and constraints are scoped to a use context, and only apply when that context is in force; the validator does not decide which use contexts apply, so specify them here.
+      The code is always system#code. The value is type:... where the type says what is being given:
+        * Coding:system#code            e.g. -usage http://terminology.hl7.org/CodeSystem/usage-context-type#gender=Coding:http://hl7.org/fhir/administrative-gender#female
+        * Quantity:decimal:system#code  e.g. -usage http://terminology.hl7.org/CodeSystem/usage-context-type#age=Quantity:65:http://unitsofmeasure.org#a
+        * Reference:url                 e.g. -usage http://terminology.hl7.org/CodeSystem/usage-context-type#focus=Reference:http://example.org/fhir/Patient/1
+      A value with no type prefix is read as a Coding. Can repeat multiple times.
+      """,
+    arity = "1")
+  @With
+  public List<String> usages = new ArrayList<>();
+
+  @CommandLine.Option(names = {"-launch-context"},
+    description = """
+      A launch context to make available to Questionnaire processing, as name:reference. Where a questionnaire variable is not resolved from the questionnaire or the resource being validated, it can fall back to a launch context with the same name.
+      The name is the one the Questionnaire declares in its launchContext, e.g. patient or user. The reference is a relative or absolute file name, or an absolute URL that can be dereferenced:
+        * -launch-context patient:patient-example.json
+        * -launch-context user:http://example.org/fhir/Practitioner/1
+      Can repeat multiple times.
+      """,
+    arity = "1")
+  @With
+  public List<String> launchContexts = new ArrayList<>();
+
   @CommandLine.Option(names = {"-bundle"},
     description = """
       Validate a specific resource in a bundle against a profile. This option accepts two arguments: -bundle <rule> <profile>

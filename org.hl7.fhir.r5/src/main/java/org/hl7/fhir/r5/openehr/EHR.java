@@ -729,6 +729,10 @@ public class EHR extends Any implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((EHR) dst);
+      }
+
       public void copyValues(EHR dst) {
         super.copyValues(dst);
         if (system_idList != null) {

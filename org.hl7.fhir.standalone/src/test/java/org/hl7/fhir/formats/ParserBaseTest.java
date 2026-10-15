@@ -23,7 +23,7 @@ public class ParserBaseTest {
 
     @BeforeEach
     public void beforeEach() {
-    parserBase = new ParserBase(TestingUtilities.getSharedWorkerContext()) {
+    parserBase = new ParserBase(TestingUtilities.getSharedWorkerContext().getModelContext()) {
       @Override
       public ParserType getType() {
         return null;

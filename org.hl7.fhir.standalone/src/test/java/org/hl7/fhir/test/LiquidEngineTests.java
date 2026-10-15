@@ -94,7 +94,7 @@ public class LiquidEngineTests implements ILiquidEngineIncludeResolver {
   private Resource loadResource() throws IOException, FHIRFormatError {
     String name = test.get("focus").getAsString();
     if (!resources.containsKey(name)) {
-      resources.put(name, new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r6", (name.replace("/", "-") + ".xml").toLowerCase())));
+      resources.put(name, new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", (name.replace("/", "-") + ".xml").toLowerCase())));
     }
     return resources.get(test.get("focus").getAsString());
   }

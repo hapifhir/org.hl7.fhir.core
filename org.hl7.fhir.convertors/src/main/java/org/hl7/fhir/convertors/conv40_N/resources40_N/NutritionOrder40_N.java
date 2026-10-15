@@ -399,7 +399,7 @@ public class NutritionOrder40_N {
     org.hl7.fhir.model.core.NutritionOrder.NutritionOrderEnteralFormulaComponent tgt = new org.hl7.fhir.model.core.NutritionOrder.NutritionOrderEnteralFormulaComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
     if (src.hasBaseFormulaType())
-      tgt.setType(CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getBaseFormulaType()));
+      tgt.addType(CodeableConcept40_N.convertCodeableConceptToCodeableReference(src.getBaseFormulaType()));
     if (src.hasBaseFormulaProductName())
       tgt.setProductNameElement(String40_N.convertString(src.getBaseFormulaProductNameElement()));
 //    if (src.hasAdditiveType())
@@ -424,8 +424,9 @@ public class NutritionOrder40_N {
       return null;
     org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderEnteralFormulaComponent tgt = new org.hl7.fhir.r4.model.NutritionOrder.NutritionOrderEnteralFormulaComponent();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyBackboneElement(src, tgt);
-    if (src.hasType())
-      tgt.setBaseFormulaType(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(src.getType()));
+    for (org.hl7.fhir.model.core.CodeableReference t : src.getTypeList()) {
+      tgt.setBaseFormulaType(CodeableConcept40_N.convertCodeableReferenceToCodeableConcept(t));
+    }
     if (src.hasProductName())
       tgt.setBaseFormulaProductNameElement(String40_N.convertString(src.getProductNameElement()));
       tgt.setBaseFormulaProductNameElement(String40_N.convertString(src.getProductNameElement()));

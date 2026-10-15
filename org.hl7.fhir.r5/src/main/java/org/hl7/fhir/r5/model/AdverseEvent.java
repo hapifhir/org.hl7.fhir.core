@@ -465,6 +465,10 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventParticipantComponent) dst);
+      }
+
       public void copyValues(AdverseEventParticipantComponent dst) {
         super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
@@ -718,6 +722,10 @@ public class AdverseEvent extends DomainResource {
         AdverseEventSuspectEntityComponent dst = new AdverseEventSuspectEntityComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventSuspectEntityComponent) dst);
       }
 
       public void copyValues(AdverseEventSuspectEntityComponent dst) {
@@ -981,6 +989,10 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventSuspectEntityCausalityComponent) dst);
+      }
+
       public void copyValues(AdverseEventSuspectEntityCausalityComponent dst) {
         super.copyValues(dst);
         dst.assessmentMethod = assessmentMethod == null ? null : assessmentMethod.copy();
@@ -1193,6 +1205,10 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventContributingFactorComponent) dst);
+      }
+
       public void copyValues(AdverseEventContributingFactorComponent dst) {
         super.copyValues(dst);
         dst.item = item == null ? null : item.copy();
@@ -1399,6 +1415,10 @@ public class AdverseEvent extends DomainResource {
         AdverseEventPreventiveActionComponent dst = new AdverseEventPreventiveActionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventPreventiveActionComponent) dst);
       }
 
       public void copyValues(AdverseEventPreventiveActionComponent dst) {
@@ -1609,6 +1629,10 @@ public class AdverseEvent extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventMitigatingActionComponent) dst);
+      }
+
       public void copyValues(AdverseEventMitigatingActionComponent dst) {
         super.copyValues(dst);
         dst.item = item == null ? null : item.copy();
@@ -1815,6 +1839,10 @@ public class AdverseEvent extends DomainResource {
         AdverseEventSupportingInfoComponent dst = new AdverseEventSupportingInfoComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AdverseEventSupportingInfoComponent) dst);
       }
 
       public void copyValues(AdverseEventSupportingInfoComponent dst) {
@@ -3584,6 +3612,10 @@ public class AdverseEvent extends DomainResource {
         AdverseEvent dst = new AdverseEvent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AdverseEvent) dst);
       }
 
       public void copyValues(AdverseEvent dst) {

@@ -382,6 +382,10 @@ public class Invoice extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((InvoiceParticipantComponent) dst);
+      }
+
       public void copyValues(InvoiceParticipantComponent dst) {
         super.copyValues(dst);
         dst.role = role == null ? null : role.copy();
@@ -812,6 +816,10 @@ public class Invoice extends DomainResource {
         InvoiceLineItemComponent dst = new InvoiceLineItemComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((InvoiceLineItemComponent) dst);
       }
 
       public void copyValues(InvoiceLineItemComponent dst) {
@@ -2090,6 +2098,10 @@ public class Invoice extends DomainResource {
         Invoice dst = new Invoice();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Invoice) dst);
       }
 
       public void copyValues(Invoice dst) {

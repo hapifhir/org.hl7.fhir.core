@@ -81,7 +81,10 @@ public class TestingJsonParser extends org.hl7.fhir.model.core.formats.JsonParse
       return parseTestingTestScript(json);
 
     } else {
-      throw new FHIRFormatError("Unknown/Unrecognised resource type '"+t+"' (in property 'resourceType')");
+      // not one of this package's resource types - the base parser knows the core ones, and the
+      // model context's registry knows the other add-on packages'. This matters for contained
+      // resources, which are parsed through this same call
+      return super.parseResource(json);
     }
   }
 
@@ -464,7 +467,7 @@ public class TestingJsonParser extends org.hl7.fhir.model.core.formats.JsonParse
     if (json.has("_result"))
       parseElementProperties(getJObject(json, "_result"), res.getResultElement());
     if (json.has("score"))
-      res.setScoreElement(parseDecimal(json.get("score").getAsBigDecimal()));
+      res.setScoreElement(parseDecimal(json.get("score")));
     if (json.has("_score"))
       parseElementProperties(getJObject(json, "_score"), res.getScoreElement());
     if (json.has("tester"))
@@ -3130,8 +3133,10 @@ public class TestingJsonParser extends org.hl7.fhir.model.core.formats.JsonParse
     } else if (resource instanceof TestScript) {
       composeTestScript("TestScript", (TestScript)resource);
  
-    } else
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+    } else {
+      // see the note in parseResource
+      super.composeResource(resource);
+    }
   }
 
 }

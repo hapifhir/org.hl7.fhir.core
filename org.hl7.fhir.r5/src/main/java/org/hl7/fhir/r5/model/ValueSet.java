@@ -513,6 +513,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ValueSetComposeComponent) dst);
+      }
+
       public void copyValues(ValueSetComposeComponent dst) {
         super.copyValues(dst);
         dst.lockedDate = lockedDate == null ? null : lockedDate.copy();
@@ -1095,6 +1099,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ConceptSetComponent) dst);
+      }
+
       public void copyValues(ConceptSetComponent dst) {
         super.copyValues(dst);
         dst.system = system == null ? null : system.copy();
@@ -1461,6 +1469,10 @@ public class ValueSet extends MetadataResource {
         ConceptReferenceComponent dst = new ConceptReferenceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ConceptReferenceComponent) dst);
       }
 
       public void copyValues(ConceptReferenceComponent dst) {
@@ -1859,6 +1871,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ConceptReferenceDesignationComponent) dst);
+      }
+
       public void copyValues(ConceptReferenceDesignationComponent dst) {
         super.copyValues(dst);
         dst.language = language == null ? null : language.copy();
@@ -2198,6 +2214,10 @@ public class ValueSet extends MetadataResource {
         ConceptSetFilterComponent dst = new ConceptSetFilterComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ConceptSetFilterComponent) dst);
       }
 
       public void copyValues(ConceptSetFilterComponent dst) {
@@ -2897,6 +2917,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ValueSetExpansionComponent) dst);
+      }
+
       public void copyValues(ValueSetExpansionComponent dst) {
         super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
@@ -3306,6 +3330,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ValueSetExpansionParameterComponent) dst);
+      }
+
       public void copyValues(ValueSetExpansionParameterComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -3574,6 +3602,10 @@ public class ValueSet extends MetadataResource {
         ValueSetExpansionPropertyComponent dst = new ValueSetExpansionPropertyComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ValueSetExpansionPropertyComponent) dst);
       }
 
       public void copyValues(ValueSetExpansionPropertyComponent dst) {
@@ -4337,6 +4369,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ValueSetExpansionContainsComponent) dst);
+      }
+
       public void copyValues(ValueSetExpansionContainsComponent dst) {
         super.copyValues(dst);
         dst.system = system == null ? null : system.copy();
@@ -4813,6 +4849,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ConceptPropertyComponent) dst);
+      }
+
       public void copyValues(ConceptPropertyComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -5196,6 +5236,10 @@ public class ValueSet extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ConceptSubPropertyComponent) dst);
+      }
+
       public void copyValues(ConceptSubPropertyComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -5454,6 +5498,10 @@ public class ValueSet extends MetadataResource {
         ValueSetScopeComponent dst = new ValueSetScopeComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ValueSetScopeComponent) dst);
       }
 
       public void copyValues(ValueSetScopeComponent dst) {
@@ -7666,6 +7714,10 @@ public class ValueSet extends MetadataResource {
         ValueSet dst = new ValueSet();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ValueSet) dst);
       }
 
       public void copyValues(ValueSet dst) {

@@ -408,6 +408,10 @@ A coverage may only be responsible for specific types of charges, and the sequen
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((CoverageComponent) dst);
+      }
+
       public void copyValues(CoverageComponent dst) {
         super.copyValues(dst);
         dst.coverage = coverage == null ? null : coverage.copy();
@@ -693,6 +697,10 @@ A coverage may only be responsible for specific types of charges, and the sequen
         GuarantorComponent dst = new GuarantorComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((GuarantorComponent) dst);
       }
 
       public void copyValues(GuarantorComponent dst) {
@@ -1225,6 +1233,10 @@ A coverage may only be responsible for specific types of charges, and the sequen
         AccountDiagnosisComponent dst = new AccountDiagnosisComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AccountDiagnosisComponent) dst);
       }
 
       public void copyValues(AccountDiagnosisComponent dst) {
@@ -1780,6 +1792,10 @@ A coverage may only be responsible for specific types of charges, and the sequen
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((AccountProcedureComponent) dst);
+      }
+
       public void copyValues(AccountProcedureComponent dst) {
         super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
@@ -2019,6 +2035,10 @@ A coverage may only be responsible for specific types of charges, and the sequen
         AccountRelatedAccountComponent dst = new AccountRelatedAccountComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AccountRelatedAccountComponent) dst);
       }
 
       public void copyValues(AccountRelatedAccountComponent dst) {
@@ -2356,6 +2376,10 @@ A coverage may only be responsible for specific types of charges, and the sequen
         AccountBalanceComponent dst = new AccountBalanceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AccountBalanceComponent) dst);
       }
 
       public void copyValues(AccountBalanceComponent dst) {
@@ -3615,6 +3639,10 @@ The balances with a `term` that is not current are usually generated/updated by 
         Account dst = new Account();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Account) dst);
       }
 
       public void copyValues(Account dst) {

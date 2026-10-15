@@ -9,16 +9,16 @@ import java.util.concurrent.TimeoutException;
 import javax.annotation.Nonnull;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.validation.IMessagingServices;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
-import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
-import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.ValueSet;
+import org.hl7.fhir.services.validation.IMessagingServices;
+import org.hl7.fhir.services.validation.IResourceValidator;
+import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.services.validation.constants.BindingKind;
+import org.hl7.fhir.services.validation.constants.ContainedReferenceValidationPolicy;
+import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
@@ -162,10 +162,10 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
   
   @Override
   public ReferenceValidationPolicy policyForReference(IResourceValidator validator,
-                                               Object appContext,
-                                               String path,
-                                               String url,
-                                               ReferenceDestinationType destinationType) {
+                                                      Object appContext,
+                                                      String path,
+                                                      String url,
+                                                      ReferenceDestinationType destinationType) {
     if (base != null) {
       return base.policyForReference(validator, appContext, path, url, destinationType);      
     } else {
@@ -175,14 +175,14 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
 
   @Override
   public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator,
-                                                        Object appContext,
-                                                        StructureDefinition structure,
-                                                        ElementDefinition element,
-                                                        String containerType,
-                                                        String containerId,
-                                                        Element.SpecialElement containingResourceType,
-                                                        String path,
-                                                        String url) {
+                                                               Object appContext,
+                                                               StructureDefinition structure,
+                                                               ElementDefinition element,
+                                                               String containerType,
+                                                               String containerId,
+                                                               Element.SpecialElement containingResourceType,
+                                                               String path,
+                                                               String url) {
     if (base != null) {
       return base.policyForContained(validator, appContext, structure, element, containerType, containerId, containingResourceType, path, url);      
     } else {

@@ -58,7 +58,18 @@ public class ValueSet40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ValueSet tgt = new org.hl7.fhir.r5.model.ValueSet();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt, VersionConvertorConstants.EXT_VS_SCOPE);
+    if (src.hasExtension(VersionConvertorConstants.EXT_VS_SCOPE)) {
+      org.hl7.fhir.r4.model.Extension ext = src.getExtensionByUrl(VersionConvertorConstants.EXT_VS_SCOPE);
+      org.hl7.fhir.r4.model.Extension inc = ext.getExtensionByUrl("inclusionCriteria");
+      if (inc != null && inc.hasValue()) {
+        tgt.getScope().setInclusionCriteria(inc.getValue().primitiveValue());
+      }
+      org.hl7.fhir.r4.model.Extension exc = ext.getExtensionByUrl("exclusionCriteria");
+      if (exc != null && exc.hasValue()) {
+        tgt.getScope().setExclusionCriteria(exc.getValue().primitiveValue());
+      }
+    }
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
@@ -103,6 +114,16 @@ public class ValueSet40_50 {
       return null;
     org.hl7.fhir.r4.model.ValueSet tgt = new org.hl7.fhir.r4.model.ValueSet();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    if (src.hasScope() && (src.getScope().hasInclusionCriteria() || src.getScope().hasExclusionCriteria())) {
+      org.hl7.fhir.r4.model.Extension ext = new org.hl7.fhir.r4.model.Extension(VersionConvertorConstants.EXT_VS_SCOPE);
+      if (src.getScope().hasInclusionCriteria()) {
+        ext.addExtension("inclusionCriteria", new org.hl7.fhir.r4.model.StringType(src.getScope().getInclusionCriteria()));
+      }
+      if (src.getScope().hasExclusionCriteria()) {
+        ext.addExtension("exclusionCriteria", new org.hl7.fhir.r4.model.StringType(src.getScope().getExclusionCriteria()));
+      }
+      tgt.addExtension(ext);
+    }
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
@@ -142,11 +163,25 @@ public class ValueSet40_50 {
     return tgt;
   }
 
+  /**
+   * ValueSet.compose.property is R5 and up: it is how a client says which properties it wants
+   * back in an expansion. R4 has nowhere to put it, so it travels as a cross-version
+   * extension and is read back on the way up. Without this, a round trip through R4 drops
+   * the request silently, and the expansion comes back without the properties that were asked
+   * for - which looks like a server fault rather than a conversion one.
+   */
+  public static final String COMPOSE_PROPERTY_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.property";
+
   public static org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent convertValueSetComposeComponent(org.hl7.fhir.r4.model.ValueSet.ValueSetComposeComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, COMPOSE_PROPERTY_EXTENSION_URL);
+    for (org.hl7.fhir.r4.model.Extension e : src.getExtensionsByUrl(COMPOSE_PROPERTY_EXTENSION_URL)) {
+      if (e.hasValue() && e.getValue().isPrimitive()) {
+        tgt.addProperty(e.getValue().primitiveValue());
+      }
+    }
     if (src.hasLockedDate())
       tgt.setLockedDateElement(Date40_50.convertDate(src.getLockedDateElement()));
     if (src.hasInactive())
@@ -171,6 +206,8 @@ public class ValueSet40_50 {
       tgt.addInclude(convertConceptSetComponent(t));
     for (org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent t : src.getExclude())
       tgt.addExclude(convertConceptSetComponent(t));
+    for (org.hl7.fhir.r5.model.StringType t : src.getProperty())
+      tgt.addExtension(COMPOSE_PROPERTY_EXTENSION_URL, String40_50.convertString(t));
     return tgt;
   }
 

@@ -32,8 +32,6 @@ public class TestProvider implements Provider {
     if (resource.hasId()) {
       String fullId = resourceType + "/" + resource.getIdElement().getIdPart();
       resourcesById.put(fullId, resource);
-      // Also store without resource type prefix for relative references.
-      resourcesById.put(resource.getIdElement().getIdPart(), resource);
     }
   }
 

@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.http;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.hl7.fhir.model.IModelContext;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,7 +16,7 @@ class DocsHTTPHandler implements HttpHandler {
 
   private final String html;
 
-  DocsHTTPHandler(String html) {
+  DocsHTTPHandler(IModelContext context, String html) {
     this.html = html;
   }
 

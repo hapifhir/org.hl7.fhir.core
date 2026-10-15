@@ -447,6 +447,10 @@ public class MedicationDispense extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicationDispensePerformerComponent) dst);
+      }
+
       public void copyValues(MedicationDispensePerformerComponent dst) {
         super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
@@ -809,6 +813,10 @@ public class MedicationDispense extends DomainResource {
         MedicationDispenseSubstitutionComponent dst = new MedicationDispenseSubstitutionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicationDispenseSubstitutionComponent) dst);
       }
 
       public void copyValues(MedicationDispenseSubstitutionComponent dst) {
@@ -2673,6 +2681,10 @@ public class MedicationDispense extends DomainResource {
         MedicationDispense dst = new MedicationDispense();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicationDispense) dst);
       }
 
       public void copyValues(MedicationDispense dst) {

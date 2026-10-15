@@ -313,11 +313,38 @@ public class FHIRPathEngine {
    * @
    */
   public List<Base> evaluate(Object appContext, Base resource, Base base, ExpressionNode ExpressionNode) throws FHIRException {
+    return evaluate(appContext, resource, base, ExpressionNode, null);
+  }
+
+  /**
+   * evaluate a path with a set of variables already in scope, and return the matching elements.
+   *
+   * <p>The variables are visible to the expression as %name. This is for callers that have their own
+   * notion of named variables to make available - e.g. the Questionnaire 'variable' extension, whose
+   * variables are in scope for the expressions in the Questionnaire that declares them.
+   *
+   * <p>This version of the engine only handles singleton constants, so a variable holding more than
+   * one value is rejected, the same way the engine rejects any other multi-valued constant.
+   *
+   * @param base - the object against which the path is being evaluated
+   * @param ExpressionNode - the parsed ExpressionNode statement to use
+   * @param variables - variables to define before evaluation; may be null
+   * @throws FHIRException
+   */
+  public List<Base> evaluate(Object appContext, Base resource, Base base, ExpressionNode ExpressionNode, Map<String, List<Base>> variables) throws FHIRException {
     List<Base> list = new ArrayList<Base>();
     if (base != null)
       list.add(base);
     log = new StringBuilder();
-    return execute(new ExecutionContext(appContext, resource, base, null, base), list, ExpressionNode, true);
+    ExecutionContext context = new ExecutionContext(appContext, resource, base, null, base);
+    if (variables != null) {
+      for (Map.Entry<String, List<Base>> e : variables.entrySet()) {
+        if (isSystemVariable(e.getKey()))
+          throw new PathEngineException("Attempt to redefine the fixed constant '%"+e.getKey()+"'");
+        context.setDefinedVariable(e.getKey(), e.getValue() == null ? null : justOne(e.getValue()));
+      }
+    }
+    return execute(context, list, ExpressionNode, true);
   }
 
   /**
@@ -385,6 +412,17 @@ public class FHIRPathEngine {
    */
   public boolean evaluateToBoolean(Base resource, Base base, ExpressionNode node) throws FHIRException {
     return convertToBoolean(evaluate(null, resource, base, node));
+  }
+
+  /**
+   * evaluate a path with a set of variables already in scope, and return true or false
+   *
+   * @param base - the object against which the path is being evaluated
+   * @param variables - variables to define before evaluation; may be null
+   * @throws FHIRException
+   */
+  public boolean evaluateToBoolean(Object appInfo, Base resource, Base base, ExpressionNode node, Map<String, List<Base>> variables) throws FHIRException {
+    return convertToBoolean(evaluate(appInfo, resource, base, node, variables));
   }
 
   /**
@@ -932,6 +970,8 @@ public class FHIRPathEngine {
 
 
   private Base resolveConstant(ExecutionContext context, String s, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
+    if (context.hasDefinedVariable(s.substring(1)))
+      return context.getDefinedVariable(s.substring(1));
     if (s.equals("%sct"))
       return new StringType("http://snomed.info/sct");
     else if (s.equals("%loinc"))
@@ -956,6 +996,13 @@ public class FHIRPathEngine {
       throw new PathEngineException("Unknown fixed constant '"+s+"'");
     else
       return justOne(hostServices.resolveConstant(this, context.getAppInfo(), s.substring(1), mode));
+  }
+
+  /**
+   * The constants the engine resolves itself; a caller-supplied variable must not shadow one.
+   */
+  static boolean isSystemVariable(String name) {
+    return Utilities.existsInList(name, "sct", "loinc", "ucum", "resource", "context", "us-zip");
   }
 
   private Base justOne(List<Base> bases) {
@@ -2170,6 +2217,12 @@ public class FHIRPathEngine {
 
   private List<Base> funcToString(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
+    for (Base item : focus) {
+      // only primitives can be converted to a string; anything else is {}
+      if (!item.isPrimitive()) {
+        return result;
+      }
+    }
     result.add(new StringType(convertToString(focus)));
     return result;
   }
@@ -2487,7 +2540,11 @@ public class FHIRPathEngine {
   private List<Base> funcHasValue(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1) {
-      String s = convertToString(focus.get(0));
+      // only something with a primitive value has a value. For a complex type convertToString() gives
+      // toString(), which is never blank, so every complex item claimed to have one; but a logical
+      // model type (e.g. CDA ST) can carry a value without being a FHIR primitive
+      Base b = focus.get(0);
+      String s = b.isPrimitive() ? convertToString(b) : b.hasPrimitiveValue() ? b.primitiveValue() : null;
       result.add(new BooleanType(!Utilities.noString(s)));
     }
     return result;

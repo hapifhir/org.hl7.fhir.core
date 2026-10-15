@@ -204,6 +204,17 @@ public class TestPlan extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "reference":  return new Property("reference", "canonical(ActorDefinition|ImplementationGuide|StructureDefinition|CapabilityStatement|Requirements)", "A reference to what is being tested.", 0, 1, reference);
@@ -278,6 +289,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanScopeComponent dst = new TestPlanScopeComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanScopeComponent) dst, options);
       }
 
       public void copyValues(TestPlanScopeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -464,6 +479,17 @@ public class TestPlan extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "reference":  return new Property("reference", "canonical(TestPlan)", "The test cases.", 0, 1, reference);
@@ -538,6 +564,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanDependencyComponent dst = new TestPlanDependencyComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanDependencyComponent) dst, options);
       }
 
       public void copyValues(TestPlanDependencyComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -724,6 +754,17 @@ public class TestPlan extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "string", "The code by which the mode is identified when passed to runner. This code is used to select which suite and tests are run, and which parameters and inputs are used. Codes are entirely at the descretion of the TestPlan, but typically 'advanced' or 'general' are the kind of codes that could be used.", 0, 1, code);
@@ -798,6 +839,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanModeComponent dst = new TestPlanModeComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanModeComponent) dst, options);
       }
 
       public void copyValues(TestPlanModeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1147,6 +1192,20 @@ public class TestPlan extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "Name for the parameter as defined by the runner definition.", 0, 1, name);
@@ -1278,6 +1337,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanParameterComponent dst = new TestPlanParameterComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanParameterComponent) dst, options);
       }
 
       public void copyValues(TestPlanParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1826,6 +1889,65 @@ public class TestPlan extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+          if (this.inputList != null) {
+            int i = 0;
+            for (Base v : this.inputList) {
+              if (v != null) {
+                visitor.visit(this, "input", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.parameterList != null) {
+            int i = 0;
+            for (Base v : this.parameterList) {
+              if (v != null) {
+                visitor.visit(this, "parameter", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.testList != null) {
+            int i = 0;
+            for (Base v : this.testList) {
+              if (v != null) {
+                visitor.visit(this, "test", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.suiteList != null) {
+            int i = 0;
+            for (Base v : this.suiteList) {
+              if (v != null) {
+                visitor.visit(this, "suite", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.planList != null) {
+            int i = 0;
+            for (Base v : this.planList) {
+              if (v != null) {
+                visitor.visit(this, "plan", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The name by which this suite is known by in the test system. The name must be unique in the amongst the suites.", 0, 1, name);
@@ -1968,6 +2090,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanSuiteComponent dst = new TestPlanSuiteComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanSuiteComponent) dst, options);
       }
 
       public void copyValues(TestPlanSuiteComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2262,6 +2388,23 @@ public class TestPlan extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.file != null) {
+            visitor.visit(this, "file", -1, this.file);
+          }
+          if (this.resource != null) {
+            visitor.visit(this, "resource", -1, this.resource);
+          }
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "A name that identifies this resource. The runner definition defines whether there must be a name, and what names there are.", 0, 1, name);
@@ -2363,6 +2506,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanSuiteInputComponent dst = new TestPlanSuiteInputComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanSuiteInputComponent) dst, options);
       }
 
       public void copyValues(TestPlanSuiteInputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2910,6 +3057,59 @@ public class TestPlan extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.operation != null) {
+            visitor.visit(this, "operation", -1, this.operation);
+          }
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+          if (this.parameterList != null) {
+            int i = 0;
+            for (Base v : this.parameterList) {
+              if (v != null) {
+                visitor.visit(this, "parameter", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.inputList != null) {
+            int i = 0;
+            for (Base v : this.inputList) {
+              if (v != null) {
+                visitor.visit(this, "input", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.expectedList != null) {
+            int i = 0;
+            for (Base v : this.expectedList) {
+              if (v != null) {
+                visitor.visit(this, "expected", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.assertionList != null) {
+            int i = 0;
+            for (Base v : this.assertionList) {
+              if (v != null) {
+                visitor.visit(this, "assertion", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The name by which this test is known by in the test system. The name must be unique in the suite.", 0, 1, name);
@@ -3054,6 +3254,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanSuiteTestComponent dst = new TestPlanSuiteTestComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanSuiteTestComponent) dst, options);
       }
 
       public void copyValues(TestPlanSuiteTestComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3407,6 +3611,26 @@ public class TestPlan extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.focus != null) {
+            visitor.visit(this, "focus", -1, this.focus);
+          }
+          if (this.severity != null) {
+            visitor.visit(this, "severity", -1, this.severity);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
+          if (this.human != null) {
+            visitor.visit(this, "human", -1, this.human);
+          }
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "focus":  return new Property("focus", "string", "Resources expected as output from this test. Often, but not always, these resources are Matchetype resources.", 0, 1, focus);
@@ -3521,6 +3745,10 @@ public class TestPlan extends CanonicalResource {
         TestPlanSuiteTestAssertionComponent dst = new TestPlanSuiteTestAssertionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlanSuiteTestAssertionComponent) dst, options);
       }
 
       public void copyValues(TestPlanSuiteTestAssertionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4940,6 +5168,134 @@ public class TestPlan extends CanonicalResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.scopeList != null) {
+          int i = 0;
+          for (Base v : this.scopeList) {
+            if (v != null) {
+              visitor.visit(this, "scope", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.dependencyList != null) {
+          int i = 0;
+          for (Base v : this.dependencyList) {
+            if (v != null) {
+              visitor.visit(this, "dependency", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.runner != null) {
+          visitor.visit(this, "runner", -1, this.runner);
+        }
+        if (this.modeList != null) {
+          int i = 0;
+          for (Base v : this.modeList) {
+            if (v != null) {
+              visitor.visit(this, "mode", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.parameterList != null) {
+          int i = 0;
+          for (Base v : this.parameterList) {
+            if (v != null) {
+              visitor.visit(this, "parameter", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.suiteList != null) {
+          int i = 0;
+          for (Base v : this.suiteList) {
+            if (v != null) {
+              visitor.visit(this, "suite", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "url":  return new Property("url", "uri", "An absolute URI that is used to identify this test plan when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this test plan is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the test plan is stored on different servers.", 0, 1, url);
@@ -5284,6 +5640,10 @@ public class TestPlan extends CanonicalResource {
         TestPlan dst = new TestPlan(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestPlan) dst, options);
       }
 
       public void copyValues(TestPlan dst, EnumSet<CopyObjectOptions> options) {

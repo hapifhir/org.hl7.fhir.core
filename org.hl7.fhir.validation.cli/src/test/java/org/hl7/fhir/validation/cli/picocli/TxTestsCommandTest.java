@@ -14,10 +14,15 @@ public class TxTestsCommandTest {
     assertThat(commandLine.getCommandName()).isEqualTo("txTests");
   }
 
+  /**
+   * txTests is a documented conformance workflow (https://hl7.org/fhir/uv/tx-ecosystem/testcases.html),
+   * not an internal tool, so it has to appear in the help - otherwise someone who gets an option
+   * wrong has no way to discover the right one.
+   */
   @Test
-  public void testCommandIsHidden() {
+  public void testCommandIsNotHidden() {
     CommandLine commandLine = new CommandLine(new TxTestsCommand());
-    assertThat(commandLine.getCommandSpec().usageMessage().hidden()).isTrue();
+    assertThat(commandLine.getCommandSpec().usageMessage().hidden()).isFalse();
   }
 
   @Test

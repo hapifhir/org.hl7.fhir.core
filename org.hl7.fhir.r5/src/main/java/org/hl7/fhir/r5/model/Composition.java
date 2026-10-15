@@ -308,6 +308,10 @@ public class Composition extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((CompositionAttesterComponent) dst);
+      }
+
       public void copyValues(CompositionAttesterComponent dst) {
         super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
@@ -549,6 +553,10 @@ public class Composition extends DomainResource {
         CompositionEventComponent dst = new CompositionEventComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CompositionEventComponent) dst);
       }
 
       public void copyValues(CompositionEventComponent dst) {
@@ -1205,6 +1213,10 @@ public class Composition extends DomainResource {
         SectionComponent dst = new SectionComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SectionComponent) dst);
       }
 
       public void copyValues(SectionComponent dst) {
@@ -2672,6 +2684,10 @@ public class Composition extends DomainResource {
         Composition dst = new Composition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Composition) dst);
       }
 
       public void copyValues(Composition dst) {

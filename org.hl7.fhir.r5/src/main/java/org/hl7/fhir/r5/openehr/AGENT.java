@@ -69,6 +69,10 @@ public class AGENT extends ACTOR implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((AGENT) dst);
+      }
+
       public void copyValues(AGENT dst) {
         super.copyValues(dst);
       }

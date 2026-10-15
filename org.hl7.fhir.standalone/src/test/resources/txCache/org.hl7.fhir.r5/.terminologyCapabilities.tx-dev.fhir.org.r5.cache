@@ -1902,6 +1902,18 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://id.who.int/icd/entity",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/icf",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://id.who.int/icd/release/11/mms",
+    "content" : "complete"
+  },
+  {
     "uri" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
     "content" : "complete"
   },
@@ -2654,7 +2666,23 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-affiliate",
+    "content" : "complete"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-document-format-codes",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-jira-spec-work-group-concept-properties",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-organizational-entity-concept-properties",
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-staff-role",
     "content" : "complete"
   },
   {
@@ -2971,10 +2999,6 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
-    "content" : "complete"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/published-in-type",
     "content" : "complete"
   },
   {
@@ -5355,7 +5379,7 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-mediaType",
-    "content" : "fragment"
+    "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-MessageCondition",
@@ -5779,9 +5803,6 @@
       "documentation" : "Additional valuesets needed for evaluation e.g. value sets referred to from the import statement of the value set being expanded"
     },
     {
-      "name" : "_incomplete"
-    },
-    {
       "name" : "abstract"
     },
     {
@@ -5791,10 +5812,19 @@
       "name" : "check-system-version"
     },
     {
+      "name" : "check-valueset-version"
+    },
+    {
       "name" : "count"
     },
     {
       "name" : "default-to-latest-version"
+    },
+    {
+      "name" : "default-valueset-version"
+    },
+    {
+      "name" : "designation"
     },
     {
       "name" : "displayLanguage"
@@ -5809,13 +5839,13 @@
       "name" : "excludePostCoordinated"
     },
     {
+      "name" : "filter"
+    },
+    {
       "name" : "force-system-version"
     },
     {
-      "name" : "inactive"
-    },
-    {
-      "name" : "includeAlternateCodes"
+      "name" : "force-valueset-version"
     },
     {
       "name" : "includeDefinition"
@@ -5824,14 +5854,8 @@
       "name" : "includeDesignations"
     },
     {
-      "name" : "incomplete-ok"
-    },
-    {
-      "name" : "limitedExpansion"
-    },
-    {
-      "name" : "mode",
-      "documentation" : "=lenient-display-validation"
+      "name" : "limit",
+      "documentation" : "Upper bound on the size of the expansion; the operation fails as too-costly beyond it"
     },
     {
       "name" : "no-cache"
@@ -5846,11 +5870,23 @@
       "name" : "property"
     },
     {
+      "name" : "sort",
+      "documentation" : "code | display | design | prop:{name}; prefix with - to reverse. Ignored for hierarchical expansions"
+    },
+    {
       "name" : "system-version"
     },
     {
-      "name" : "valueSetMode",
-      "documentation" : "= CHECK_MEMBERSHIP_ONLY | NO_MEMBERSHIP_CHECK"
+      "name" : "url"
+    },
+    {
+      "name" : "useSupplement"
+    },
+    {
+      "name" : "valueSet"
+    },
+    {
+      "name" : "valueSetVersion"
     }]
   },
   "validateCode" : {

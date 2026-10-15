@@ -1481,6 +1481,23 @@ public class StructureMap extends CanonicalResource {
     }
 
     @Override
+    protected void visitChildren(IModelObjectVisitor visitor) {
+      super.visitChildren(visitor);
+      if (this.url != null) {
+        visitor.visit(this, "url", -1, this.url);
+      }
+      if (this.mode != null) {
+        visitor.visit(this, "mode", -1, this.mode);
+      }
+      if (this.alias != null) {
+        visitor.visit(this, "alias", -1, this.alias);
+      }
+      if (this.documentation != null) {
+        visitor.visit(this, "documentation", -1, this.documentation);
+      }
+    }
+
+    @Override
     public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
       switch (_name) {
         case "url":
@@ -1593,6 +1610,10 @@ public class StructureMap extends CanonicalResource {
       StructureMapStructureComponent dst = new StructureMapStructureComponent(this.modelContext);
       copyValues(dst, options);
       return dst;
+    }
+
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapStructureComponent) dst, options);
     }
 
     public void copyValues(StructureMapStructureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1777,6 +1798,17 @@ public class StructureMap extends CanonicalResource {
     }
 
     @Override
+    protected void visitChildren(IModelObjectVisitor visitor) {
+      super.visitChildren(visitor);
+      if (this.name != null) {
+        visitor.visit(this, "name", -1, this.name);
+      }
+      if (this.value != null) {
+        visitor.visit(this, "value", -1, this.value);
+      }
+    }
+
+    @Override
     public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
       switch (_name) {
         case "name":
@@ -1858,6 +1890,10 @@ public class StructureMap extends CanonicalResource {
       StructureMapConstComponent dst = new StructureMapConstComponent(this.modelContext);
       copyValues(dst, options);
       return dst;
+    }
+
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapConstComponent) dst, options);
     }
 
     public void copyValues(StructureMapConstComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2280,6 +2316,41 @@ public class StructureMap extends CanonicalResource {
     }
 
     @Override
+    protected void visitChildren(IModelObjectVisitor visitor) {
+      super.visitChildren(visitor);
+      if (this.name != null) {
+        visitor.visit(this, "name", -1, this.name);
+      }
+      if (this.extends_ != null) {
+        visitor.visit(this, "extends", -1, this.extends_);
+      }
+      if (this.typeMode != null) {
+        visitor.visit(this, "typeMode", -1, this.typeMode);
+      }
+      if (this.documentation != null) {
+        visitor.visit(this, "documentation", -1, this.documentation);
+      }
+      if (this.inputList != null) {
+        int i = 0;
+        for (Base v : this.inputList) {
+          if (v != null) {
+            visitor.visit(this, "input", i, v);
+          }
+          i++;
+        }
+      }
+      if (this.ruleList != null) {
+        int i = 0;
+        for (Base v : this.ruleList) {
+          if (v != null) {
+            visitor.visit(this, "rule", i, v);
+          }
+          i++;
+        }
+      }
+    }
+
+    @Override
     public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
       switch (_name) {
         case "name":
@@ -2418,6 +2489,10 @@ public class StructureMap extends CanonicalResource {
       StructureMapGroupComponent dst = new StructureMapGroupComponent(this.modelContext);
       copyValues(dst, options);
       return dst;
+    }
+
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupComponent) dst, options);
     }
 
     public void copyValues(StructureMapGroupComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2738,6 +2813,23 @@ public class StructureMap extends CanonicalResource {
     }
 
     @Override
+    protected void visitChildren(IModelObjectVisitor visitor) {
+      super.visitChildren(visitor);
+      if (this.name != null) {
+        visitor.visit(this, "name", -1, this.name);
+      }
+      if (this.type != null) {
+        visitor.visit(this, "type", -1, this.type);
+      }
+      if (this.mode != null) {
+        visitor.visit(this, "mode", -1, this.mode);
+      }
+      if (this.documentation != null) {
+        visitor.visit(this, "documentation", -1, this.documentation);
+      }
+    }
+
+    @Override
     public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
       switch (_name) {
         case "name":
@@ -2850,6 +2942,10 @@ public class StructureMap extends CanonicalResource {
       StructureMapGroupInputComponent dst = new StructureMapGroupInputComponent(this.modelContext);
       copyValues(dst, options);
       return dst;
+    }
+
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupInputComponent) dst, options);
     }
 
     public void copyValues(StructureMapGroupInputComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3287,6 +3383,53 @@ public class StructureMap extends CanonicalResource {
     }
 
     @Override
+    protected void visitChildren(IModelObjectVisitor visitor) {
+      super.visitChildren(visitor);
+      if (this.name != null) {
+        visitor.visit(this, "name", -1, this.name);
+      }
+      if (this.sourceList != null) {
+        int i = 0;
+        for (Base v : this.sourceList) {
+          if (v != null) {
+            visitor.visit(this, "source", i, v);
+          }
+          i++;
+        }
+      }
+      if (this.targetList != null) {
+        int i = 0;
+        for (Base v : this.targetList) {
+          if (v != null) {
+            visitor.visit(this, "target", i, v);
+          }
+          i++;
+        }
+      }
+      if (this.ruleList != null) {
+        int i = 0;
+        for (Base v : this.ruleList) {
+          if (v != null) {
+            visitor.visit(this, "rule", i, v);
+          }
+          i++;
+        }
+      }
+      if (this.dependentList != null) {
+        int i = 0;
+        for (Base v : this.dependentList) {
+          if (v != null) {
+            visitor.visit(this, "dependent", i, v);
+          }
+          i++;
+        }
+      }
+      if (this.documentation != null) {
+        visitor.visit(this, "documentation", -1, this.documentation);
+      }
+    }
+
+    @Override
     public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
       switch (_name) {
         case "name":
@@ -3420,6 +3563,10 @@ public class StructureMap extends CanonicalResource {
       StructureMapGroupRuleComponent dst = new StructureMapGroupRuleComponent(this.modelContext);
       copyValues(dst, options);
       return dst;
+    }
+
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupRuleComponent) dst, options);
     }
 
     public void copyValues(StructureMapGroupRuleComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4159,6 +4306,50 @@ public class StructureMap extends CanonicalResource {
     }
 
     @Override
+    protected void visitChildren(IModelObjectVisitor visitor) {
+      super.visitChildren(visitor);
+      if (this.context != null) {
+        visitor.visit(this, "context", -1, this.context);
+      }
+      if (this.min != null) {
+        visitor.visit(this, "min", -1, this.min);
+      }
+      if (this.max != null) {
+        visitor.visit(this, "max", -1, this.max);
+      }
+      if (this.type != null) {
+        visitor.visit(this, "type", -1, this.type);
+      }
+      if (this.defaultValue != null) {
+        visitor.visit(this, "defaultValue", -1, this.defaultValue);
+      }
+      if (this.elementList != null) {
+        int i = 0;
+        for (Base v : this.elementList) {
+          if (v != null) {
+            visitor.visit(this, "element", i, v);
+          }
+          i++;
+        }
+      }
+      if (this.listMode != null) {
+        visitor.visit(this, "listMode", -1, this.listMode);
+      }
+      if (this.variable != null) {
+        visitor.visit(this, "variable", -1, this.variable);
+      }
+      if (this.condition != null) {
+        visitor.visit(this, "condition", -1, this.condition);
+      }
+      if (this.check != null) {
+        visitor.visit(this, "check", -1, this.check);
+      }
+      if (this.logMessage != null) {
+        visitor.visit(this, "logMessage", -1, this.logMessage);
+      }
+    }
+
+    @Override
     public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
       switch (_name) {
         case "context":
@@ -4374,6 +4565,10 @@ public class StructureMap extends CanonicalResource {
       StructureMapGroupRuleSourceComponent dst = new StructureMapGroupRuleSourceComponent(this.modelContext);
       copyValues(dst, options);
       return dst;
+    }
+
+    public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+      copyValues((StructureMapGroupRuleSourceComponent) dst, options);
     }
 
     public void copyValues(StructureMapGroupRuleSourceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4916,6 +5111,50 @@ public class StructureMap extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.context != null) {
+            visitor.visit(this, "context", -1, this.context);
+          }
+          if (this.elementList != null) {
+            int i = 0;
+            for (Base v : this.elementList) {
+              if (v != null) {
+                visitor.visit(this, "element", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.variable != null) {
+            visitor.visit(this, "variable", -1, this.variable);
+          }
+          if (this.listModeList != null) {
+            int i = 0;
+            for (Base v : this.listModeList) {
+              if (v != null) {
+                visitor.visit(this, "listMode", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.listRuleId != null) {
+            visitor.visit(this, "listRuleId", -1, this.listRuleId);
+          }
+          if (this.transform != null) {
+            visitor.visit(this, "transform", -1, this.transform);
+          }
+          if (this.parameterList != null) {
+            int i = 0;
+            for (Base v : this.parameterList) {
+              if (v != null) {
+                visitor.visit(this, "parameter", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "context":  return new Property("context", "string", "Variable this rule applies to.", 0, 1, context);
@@ -5051,6 +5290,10 @@ public class StructureMap extends CanonicalResource {
         StructureMapGroupRuleTargetComponent dst = new StructureMapGroupRuleTargetComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMapGroupRuleTargetComponent) dst, options);
       }
 
       public void copyValues(StructureMapGroupRuleTargetComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5321,6 +5564,14 @@ public class StructureMap extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "value[x]":  return new Property("value[x]", "id|string|boolean|integer|decimal|date|time|dateTime", "Parameter value - variable or literal.", 0, 1, value);
@@ -5421,6 +5672,10 @@ public class StructureMap extends CanonicalResource {
         StructureMapGroupRuleTargetParameterComponent dst = new StructureMapGroupRuleTargetParameterComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMapGroupRuleTargetParameterComponent) dst, options);
       }
 
       public void copyValues(StructureMapGroupRuleTargetParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5615,6 +5870,23 @@ public class StructureMap extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.parameterList != null) {
+            int i = 0;
+            for (Base v : this.parameterList) {
+              if (v != null) {
+                visitor.visit(this, "parameter", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "id", "Name of a rule or group to apply.", 0, 1, name);
@@ -5687,6 +5959,10 @@ public class StructureMap extends CanonicalResource {
         StructureMapGroupRuleDependentComponent dst = new StructureMapGroupRuleDependentComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMapGroupRuleDependentComponent) dst, options);
       }
 
       public void copyValues(StructureMapGroupRuleDependentComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6992,6 +7268,122 @@ public class StructureMap extends CanonicalResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.structureList != null) {
+          int i = 0;
+          for (Base v : this.structureList) {
+            if (v != null) {
+              visitor.visit(this, "structure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.import_List != null) {
+          int i = 0;
+          for (Base v : this.import_List) {
+            if (v != null) {
+              visitor.visit(this, "import", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.const_List != null) {
+          int i = 0;
+          for (Base v : this.const_List) {
+            if (v != null) {
+              visitor.visit(this, "const", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.groupList != null) {
+          int i = 0;
+          for (Base v : this.groupList) {
+            if (v != null) {
+              visitor.visit(this, "group", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "url":  return new Property("url", "uri", "An absolute URI that is used to identify this structure map when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this structure map is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the structure map is stored on different servers.", 0, 1, url);
@@ -7312,6 +7704,10 @@ public class StructureMap extends CanonicalResource {
         StructureMap dst = new StructureMap(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((StructureMap) dst, options);
       }
 
       public void copyValues(StructureMap dst, EnumSet<CopyObjectOptions> options) {

@@ -338,7 +338,7 @@ public class ShexGeneratorTests {
   }
 
   private static StructureDefinition loadFromXmlFile(String filePath) throws IOException {
-      XmlParser parser = new XmlParser(TestingUtilities.getSharedWorkerContext());
+      XmlParser parser = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext());
       try (InputStream is = ManagedFileAccess.inStream(filePath)) {
         Resource resource = parser.parse(is);
           if (resource instanceof StructureDefinition) {

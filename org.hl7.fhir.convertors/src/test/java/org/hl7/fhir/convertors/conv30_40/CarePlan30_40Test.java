@@ -14,7 +14,7 @@ class CarePlan30_40Test {
 
   @BeforeEach
   public void setUp() {
-    ConversionContext30_40.INSTANCE.init(new VersionConvertor_30_40(new BaseAdvisor_30_40()), "");
+    ConversionContext30_40.INSTANCE.init(new VersionConvertor_30_40(new BaseAdvisor_30_40()));
   }
 
   @Test

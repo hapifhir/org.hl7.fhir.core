@@ -183,6 +183,10 @@ public class CLUSTER extends ITEM implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((CLUSTER) dst);
+      }
+
       public void copyValues(CLUSTER dst) {
         super.copyValues(dst);
         if (itemsList != null) {

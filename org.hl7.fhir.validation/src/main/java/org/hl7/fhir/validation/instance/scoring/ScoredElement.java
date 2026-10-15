@@ -1,7 +1,7 @@
 package org.hl7.fhir.validation.instance.scoring;
 
 import lombok.Getter;
-import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.model.core.Extension;
 
 import java.util.ArrayList;
 import java.util.List;

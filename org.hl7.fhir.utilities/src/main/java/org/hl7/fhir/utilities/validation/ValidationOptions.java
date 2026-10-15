@@ -46,7 +46,7 @@ public class ValidationOptions {
   private boolean englishOk = true;
   private boolean activeOnly = false;
   private boolean exampleOK = false;
-  private FhirPublication fhirVersion;
+  final private FhirPublication fhirVersion;
   private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
   private boolean isDefaultLang = false;
   private boolean noAbstract = false;
@@ -62,6 +62,7 @@ public class ValidationOptions {
 
   public ValidationOptions(FhirPublication fhirVersion, String language) {
     super();
+    this.fhirVersion = fhirVersion;
     if (!Utilities.noString(language)) {
       langs = new AcceptLanguageHeader(language, false);
       isDefaultLang = false;
@@ -335,7 +336,9 @@ public class ValidationOptions {
   }
   
   public ValidationOptions withExampleOK() {
-    return setExampleOK(true);
+    ValidationOptions n = this.copy();
+    n.exampleOK = true;
+    return n;
   }
 
   
@@ -351,8 +354,9 @@ public class ValidationOptions {
   }
 
   public ValidationOptions withR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
-    setR5BundleRelativeReferencePolicy(r5BundleRelativeReferencePolicy);
-    return this;
+    ValidationOptions n = this.copy();
+    n.setR5BundleRelativeReferencePolicy(r5BundleRelativeReferencePolicy);
+    return n;
   }
 
   public ValidationOptions copy() {
@@ -370,6 +374,8 @@ public class ValidationOptions {
     n.useValueSetDisplays = useValueSetDisplays;   
     n.displayWarningMode = displayWarningMode;
     n.exampleOK = exampleOK;
+    n.englishOk = englishOk;
+    n.externalSource = externalSource;
     n.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
     return n;
   }
@@ -380,7 +386,15 @@ public class ValidationOptions {
       "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"noAbstract\":\""+Boolean.toString(noAbstract)+"\", \"activeOnly\":\""+Boolean.toString(activeOnly)+(exampleOK ? "\", \"exampleOK\":\""+Boolean.toString(exampleOK) : "")+
        "\", \"membershipOnly\":\""+Boolean.toString(membershipOnly)+"\", \"displayWarningMode\":\""+Boolean.toString(displayWarningMode)+
        "\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\""+
-       (r5BundleRelativeReferencePolicy != R5BundleRelativeReferencePolicy.DEFAULT ? ", \"r5BundleRelativeReferencePolicy\":\""+r5BundleRelativeReferencePolicy.toCode()+"\"" : "");
+       (r5BundleRelativeReferencePolicy != R5BundleRelativeReferencePolicy.DEFAULT ? ", \"r5BundleRelativeReferencePolicy\":\""+r5BundleRelativeReferencePolicy.toCode()+"\"" : "")+
+       // everything below here also changes the answer, so it has to be part of the terminology cache key
+       // (see TerminologyCache.generateValidationToken). Each is only emitted when it is not at its default
+       // value, so that cache entries recorded before these were added still match where they never varied
+       (englishOk ? "" : ", \"englishOk\":\"false\"")+
+       (useValueSetDisplays ? ", \"useValueSetDisplays\":\"true\"" : "")+
+       (vsAsUrl ? ", \"vsAsUrl\":\"true\"" : "")+
+       (isDefaultLang ? ", \"isDefaultLang\":\"true\"" : "")+
+       (externalSource == null ? "" : ", \"externalSource\":\""+Utilities.escapeJson(externalSource.toString())+"\"");
   }
 
   public String langSummary() {
@@ -400,8 +414,9 @@ public class ValidationOptions {
   }
 
   public ValidationOptions withExternalSource(Object res) {
-    this.externalSource = res;
-    return this;
+    ValidationOptions n = this.copy();
+    n.externalSource = res;
+    return n;
   }
 
 

@@ -1076,6 +1076,10 @@ public class ImagingStudy extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ImagingStudySeriesComponent) dst);
+      }
+
       public void copyValues(ImagingStudySeriesComponent dst) {
         super.copyValues(dst);
         dst.uid = uid == null ? null : uid.copy();
@@ -1329,6 +1333,10 @@ public class ImagingStudy extends DomainResource {
         ImagingStudySeriesPerformerComponent dst = new ImagingStudySeriesPerformerComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ImagingStudySeriesPerformerComponent) dst);
       }
 
       public void copyValues(ImagingStudySeriesPerformerComponent dst) {
@@ -1709,6 +1717,10 @@ public class ImagingStudy extends DomainResource {
         ImagingStudySeriesInstanceComponent dst = new ImagingStudySeriesInstanceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ImagingStudySeriesInstanceComponent) dst);
       }
 
       public void copyValues(ImagingStudySeriesInstanceComponent dst) {
@@ -3057,6 +3069,10 @@ public class ImagingStudy extends DomainResource {
         ImagingStudy dst = new ImagingStudy();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ImagingStudy) dst);
       }
 
       public void copyValues(ImagingStudy dst) {

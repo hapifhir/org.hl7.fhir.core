@@ -186,6 +186,10 @@ public class FHIRPathTests {
       fail = TestResultType.EXECUTION;      
     };
     fp.setAllowPolymorphicNames("lenient/polymorphics".equals(test.getAttribute("mode")));
+    // context: a FHIRPath expression evaluated first, as a preparatory filter; the test expression is evaluated on its (single) result
+    // contextType: the type(s) to use as the focus when checking the expression - overrides context for type checking
+    String testContext = test.getAttribute("context");
+    String testContextType = test.getAttribute("contextType");
     boolean skipStaticCheck = false;
     if ("true".equals(test.getAttribute("skipStaticCheck")))
       skipStaticCheck = true;
@@ -221,10 +225,15 @@ public class FHIRPathTests {
       
       if (!skipStaticCheck) {
         try {
-          if (Utilities.noString(input)) {
+          String rt = res == null ? null : res.fhirType();
+          if (!Utilities.noString(testContextType)) {
+            fp.checkOnTypes(res, rt, rt, Arrays.asList(testContextType.split("\\|")), node, new ArrayList<>());
+          } else if (!Utilities.noString(testContext)) {
+            fp.check(res, rt, rt, testContext, node);
+          } else if (res == null) {
             fp.check(null, null, null, node);
           } else {
-            fp.check(res, res.fhirType(), res.fhirType(), res.fhirType(), node);
+            fp.check(res, rt, rt, rt, node);
           }
           Assertions.assertTrue(fail != TestResultType.SEMANTICS, String.format("Expected exception didn't occur checking %s", expression));
         } catch (Exception e) {
@@ -239,9 +248,9 @@ public class FHIRPathTests {
       try {
         if ("element".equals(test.getAttribute("mode"))) {
           List<ValidatedFragment> e = Manager.parse(fp.getWorker(), TestingUtilities.loadTestResourceStream("r5", input), input.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML);                        
-          outcome = fp.evaluate(e.get(0).getElement(), node);
+          outcome = evaluateInContext(e.get(0).getElement(), testContext, node);
         } else {
-          outcome = fp.evaluate(res, node);
+          outcome = evaluateInContext(res, testContext, node);
         }
         Assertions.assertTrue(fail == TestResultType.OK, String.format("Expected exception didn't occur executing %s", expression));
       } catch (Exception e) {
@@ -309,6 +318,21 @@ public class FHIRPathTests {
     }
   }
 
+  /**
+   * if the test specifies a context, evaluate that first as a preparatory filter, and then evaluate the
+   * expression against the single item it selects (it's an error in the test if it selects zero, or more than one)
+   */
+  private List<Base> evaluateInContext(Base root, String testContext, ExpressionNode node) {
+    if (Utilities.noString(testContext)) {
+      return fp.evaluate(root, node);
+    }
+    List<Base> focus = fp.evaluate(root, fp.parse(testContext));
+    if (focus.size() != 1) {
+      Assertions.fail(String.format("Context '%s' selected %d items, but must select exactly one", testContext, focus.size()));
+    }
+    return fp.evaluate(null, root, root, focus.get(0), node);
+  }
+
   @Test
   @DisplayName("resolveConstant returns a list of Base")
   public void resolveConstantReturnsList() throws IOException {
@@ -358,5 +382,23 @@ public class FHIRPathTests {
     input.setBirthDateElement(dtv);
     List<Base> results = fp.evaluate(input, "Patient.birthDate.toString()");
     assertEquals(0, results.size());
+  }
+
+  // join() on an empty input collection must return an empty collection, not an
+  // empty string (FHIRPath: "If the input is empty, the result is empty").
+  @Test
+  public void testEvaluate_JoinOnEmptyInput() {
+    Patient input = new Patient();
+    List<Base> results = fp.evaluate(input, "Patient.name.given.join(',')");
+    assertEquals(0, results.size());
+  }
+
+  @Test
+  public void testEvaluate_JoinOnNonEmptyInput() {
+    Patient input = new Patient();
+    input.addName().addGiven("g1").addGiven("g2");
+    List<Base> results = fp.evaluate(input, "Patient.name.given.join(',')");
+    assertEquals(1, results.size());
+    assertEquals("g1,g2", results.get(0).primitiveValue());
   }
 }

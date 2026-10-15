@@ -69,6 +69,10 @@ public class UUID extends UID implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((UUID) dst);
+      }
+
       public void copyValues(UUID dst) {
         super.copyValues(dst);
       }

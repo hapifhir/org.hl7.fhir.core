@@ -504,6 +504,10 @@ public class CareTeam extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((CareTeamParticipantComponent) dst);
+      }
+
       public void copyValues(CareTeamParticipantComponent dst) {
         super.copyValues(dst);
         dst.role = role == null ? null : role.copy();
@@ -1394,6 +1398,10 @@ public class CareTeam extends DomainResource {
         CareTeam dst = new CareTeam();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CareTeam) dst);
       }
 
       public void copyValues(CareTeam dst) {

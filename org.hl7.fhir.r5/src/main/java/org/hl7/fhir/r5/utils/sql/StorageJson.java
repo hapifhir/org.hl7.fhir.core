@@ -55,7 +55,7 @@ public class StorageJson implements Storage {
     if (value == null) {
       return new JsonNull();
     } else if (value.getValueInt() != null) {
-      return new JsonNumber(value.getValueInt().intValue());
+      return new JsonNumber(value.getValueInt().longValue());
     }
     if (value.getValueBoolean() != null) {
       return new JsonBoolean(value.getValueBoolean().booleanValue());

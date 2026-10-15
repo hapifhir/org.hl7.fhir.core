@@ -5,13 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.r5.ips.IPSRenderer.InternalTemplateEngine;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Composition;
 import org.hl7.fhir.r5.model.Composition.SectionComponent;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient5;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -31,13 +30,13 @@ public class IPSRenderer {
   private interface ITemplateImplementer {
     public String buildPage(Map<String, String> headers, String content);
   }
-  private ITerminologyClient tx;
+  private ITerminologyClient5 tx;
   private String folder; // for images etc
   private Map<String, byte[]> binaries; // from the pubpack
   private ITemplateImplementer templater;
   private Map<String, String> headers;
 
-  public IPSRenderer(ITerminologyClient tx, String folder, Map<String, byte[]> binaries, ITemplateImplementer templater) {
+  public IPSRenderer(ITerminologyClient5 tx, String folder, Map<String, byte[]> binaries, ITemplateImplementer templater) {
     super();
     this.tx = tx;
     this.folder = folder;
@@ -45,7 +44,7 @@ public class IPSRenderer {
     this.templater = templater;
   }
   
-  public IPSRenderer(ITerminologyClient tx, String folder, Map<String, byte[]> binaries) {
+  public IPSRenderer(ITerminologyClient5 tx, String folder, Map<String, byte[]> binaries) {
     super();
     this.tx = tx;
     this.folder = folder;

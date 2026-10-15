@@ -13,7 +13,4 @@ public class CacheToken {
   @Getter @Setter
   private String request;
 
-  @Getter @Setter
-  private boolean hasVersion;
-
 }

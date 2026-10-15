@@ -60,7 +60,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-
+@Deprecated(forRemoval = true)
 public interface ValueSetExpanderFactory {
   public ValueSetExpander getExpander();
 }

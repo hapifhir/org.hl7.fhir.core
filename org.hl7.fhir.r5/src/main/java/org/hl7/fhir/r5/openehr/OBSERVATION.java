@@ -225,6 +225,10 @@ public class OBSERVATION extends CARE_ENTRY implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((OBSERVATION) dst);
+      }
+
       public void copyValues(OBSERVATION dst) {
         super.copyValues(dst);
         dst.data = data == null ? null : data.copy();

@@ -2,7 +2,9 @@ package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.utils.URIBuilder;
-import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.formats.JsonParser;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptions;
 import org.hl7.fhir.validation.service.ValidationOutputRenderSummary;
 import org.hl7.fhir.validation.service.ValidationOutputRenderUtilities;
@@ -18,7 +20,6 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.concurrent.Callable;
 
-import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.validation.http.ParamNames;
 
 /**
@@ -126,7 +127,7 @@ public class HTTPClientCommand implements Callable<Integer> {
           .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        JsonParser jsonParser = new JsonParser();
+        JsonParser jsonParser = new JsonParser(ModelContext.fullCoreContext());
         Resource resource = jsonParser.parse(response.body());
         ValidationOutputRenderSummary renderSummary = ValidationOutputRenderUtilities.renderValidationOutput(resource, null, null, false, false, "NOW!", null);
         if (renderSummary.totalErrors() > 0) {

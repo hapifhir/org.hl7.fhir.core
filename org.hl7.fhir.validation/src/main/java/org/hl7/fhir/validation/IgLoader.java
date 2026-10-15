@@ -16,22 +16,22 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50;
+import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IContextResourceLoader;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.context.IContextResourceLoaderN;
+import org.hl7.fhir.services.fml.StructureMapTools;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.core.Constants;
+import org.hl7.fhir.model.core.ImplementationGuide;
+import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
-import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerNew;
+import org.hl7.fhir.services.xver.XVerExtensionManagerNew;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -62,6 +62,30 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
 
     InputStream fetchByPackage(String src) throws IOException;
 
+  }
+
+  public static class SourceWithFHIRVersion {
+
+    @Getter private final String fhirVersion;
+    @Getter private final String source;
+
+    public SourceWithFHIRVersion(String src) throws FHIRException {
+      if (src.startsWith("[") && src.indexOf(']', 1) > 1) {
+        this.fhirVersion = src.substring(1, src.indexOf(']', 1));
+        this.source = src.substring(src.indexOf(']', 1) + 1);
+        if (!VersionUtilities.isSupportedVersion(this.fhirVersion)) {
+          throw new FHIRException("Unsupported FHIR Version: " + this.fhirVersion + " valid versions are " + VersionUtilities.listSupportedVersions());
+        }
+      } else {
+        this.fhirVersion = null;
+        this.source = src;
+      }
+    }
+
+    public SourceWithFHIRVersion(String fhirVersion, String source) {
+      this.fhirVersion = fhirVersion;
+      this.source = source;
+    }
   }
 
   private static final String[] IGNORED_EXTENSIONS = {"md", "css", "js", "png", "gif", "jpg", "html", "tgz", "pack", "zip"};
@@ -107,26 +131,15 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
                      String src,
                      boolean recursive) throws IOException, FHIRException {
 
-    final String explicitFhirVersion;
-    final String srcPackage;
-    if (src.startsWith("[") && src.indexOf(']', 1) > 1) {
-      explicitFhirVersion = src.substring(1,src.indexOf(']', 1));
-      srcPackage = src.substring(src.indexOf(']',1) + 1);
-      if (!VersionUtilities.isSupportedVersion(explicitFhirVersion)) {
-        throw new FHIRException("Unsupported FHIR Version: " + explicitFhirVersion + " valid versions are " + VersionUtilities.listSupportedVersions());
-      }
-    } else {
-      explicitFhirVersion = null;
-      srcPackage = src;
-    }
+    final SourceWithFHIRVersion sourceWithFHIRVersion = new SourceWithFHIRVersion(src);
 
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //anchored package name pattern, safe
-    NpmPackage npm = srcPackage.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !ManagedFileAccess.file(srcPackage).exists() ? getPackageCacheManager().loadPackage(srcPackage, null) : null;
-    if (npm == null && ManagedFileAccess.file(srcPackage).exists()) {
+    NpmPackage npm = sourceWithFHIRVersion.getSource().matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !ManagedFileAccess.file(sourceWithFHIRVersion.getSource()).exists() ? getPackageCacheManager().loadPackage(sourceWithFHIRVersion.getSource(), null) : null;
+    if (npm == null && ManagedFileAccess.file(sourceWithFHIRVersion.getSource()).exists()) {
       // try treating the file as an npm
       try {
-        npm = NpmPackage.fromPackage(ManagedFileAccess.inStream(srcPackage));
+        npm = NpmPackage.fromPackage(ManagedFileAccess.inStream(sourceWithFHIRVersion.getSource()));
       } catch (Exception e) {
         // nothing - any errors will be properly handled later in the process
       }
@@ -140,20 +153,20 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
         }
       }
       StringBuilder packageLoadLine = new StringBuilder();
-      packageLoadLine.append("  Load " + srcPackage);
-      if (!srcPackage.contains("#")) {
+      packageLoadLine.append("  Load " + sourceWithFHIRVersion.getSource());
+      if (!sourceWithFHIRVersion.getSource().contains("#")) {
         packageLoadLine.append("#" + npm.version());
       }
-      IContextResourceLoader loader = ValidatorUtils.loaderForVersion(npm.fhirVersion());
+      IContextResourceLoaderN loader = ValidatorUtils.loaderForVersion(context.getModelContext(), npm.fhirVersion());
       loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
       int count = getContext().loadFromPackage(npm, loader, false);
       log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
     } else {
       StringBuilder packageLoadLine = new StringBuilder();
-      packageLoadLine.append("  Load " + srcPackage);
+      packageLoadLine.append("  Load " + sourceWithFHIRVersion.getSource());
       String canonical = null;
       int count = 0;
-      Map<String, ByteProvider> source = loadIgSource(srcPackage, recursive, true);
+      Map<String, ByteProvider> source = loadIgSource(sourceWithFHIRVersion.getSource(), recursive, true);
       String version = Constants.VERSION;
       if (getVersion() != null) {
         version = getVersion();
@@ -161,8 +174,8 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       if (source.containsKey("version.info")) {
         version = readInfoVersion(source.get("version.info"));
       }
-      if (explicitFhirVersion != null) {
-        version = explicitFhirVersion;
+      if (sourceWithFHIRVersion.getFhirVersion() != null) {
+        version = sourceWithFHIRVersion.getFhirVersion();
       }
 
       for (Map.Entry<String, ByteProvider> t : source.entrySet()) {
@@ -176,7 +189,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
               canonical = ((ImplementationGuide) r).getUrl();
               igs.add((ImplementationGuide) r);
               if (canonical.contains("/ImplementationGuide/")) {
-                Resource r2 = r.copy();
+                Resource r2 = r.copy(Base.COPY_NOTHING);
                 ((ImplementationGuide) r2).setUrl(canonical.substring(0, canonical.indexOf("/ImplementationGuide/")));
                 getContext().cacheResource(r2);
               }
@@ -214,19 +227,19 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
     for (Map.Entry<String, ByteProvider> t : s.entrySet()) {
       res.setFocus(t.getValue());
       if (t.getKey().endsWith(".json"))
-        res.setCntType(Manager.FhirFormat.JSON);
+        res.setCntType(FhirFormat.JSON);
       else if (t.getKey().endsWith(".ndjson"))
-        res.setCntType(Manager.FhirFormat.NDJSON);
+        res.setCntType(FhirFormat.NDJSON);
       else if (t.getKey().endsWith(".xml"))
-        res.setCntType(Manager.FhirFormat.XML);
+        res.setCntType(FhirFormat.XML);
       else if (t.getKey().endsWith(".ttl"))
-        res.setCntType(Manager.FhirFormat.TURTLE);
+        res.setCntType(FhirFormat.TURTLE);
       else if (t.getKey().endsWith(".shc"))
-        res.setCntType(Manager.FhirFormat.SHC);
+        res.setCntType(FhirFormat.SHC);
       else if (t.getKey().endsWith(".txt"))
-        res.setCntType(Manager.FhirFormat.TEXT);
+        res.setCntType(FhirFormat.TEXT);
       else if (t.getKey().endsWith(".fml") || t.getKey().endsWith(".map"))
-        res.setCntType(Manager.FhirFormat.FML);
+        res.setCntType(FhirFormat.FML);
       else
         throw new FHIRException("Todo: Determining resource type is not yet done");
     }
@@ -312,7 +325,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
         stream.close();
       }
 
-      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), FileUtilities.fileToBytes(f), src, true);
+      FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), FileUtilities.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, ByteProvider> res = new HashMap<String, ByteProvider>();
         res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
@@ -493,7 +506,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
         return readZip(ManagedFileAccess.inStream(src));
       if (src.endsWith("igpack.zip"))
         return readZip(ManagedFileAccess.inStream(src));
-      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), FileUtilities.fileToBytes(f), src, true);
+      FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), FileUtilities.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, ByteProvider> res = new HashMap<String, ByteProvider>();
         res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
@@ -570,7 +583,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
     if (!pi.isCoreExamples()) {
       if (loadInContext) {
         //      getContext().getLoadedPackages().add(pi.name() + "#" + pi.version());
-        getContext().loadFromPackage(pi, ValidatorUtils.loaderForVersion(pi.fhirVersion()));
+        getContext().loadFromPackage(pi, ValidatorUtils.loaderForVersion(context.getModelContext(), pi.fhirVersion()));
       }
       for (String s : pi.listResources("CodeSystem", "ConceptMap", "ImplementationGuide", "CapabilityStatement", "SearchParameter", "Conformance", "StructureMap", "ValueSet", "StructureDefinition")) {
         res.put(s, pi.getProvider("package", s));
@@ -655,7 +668,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
     else
       cnt = FileUtilities.streamToBytes(stream);
 
-    Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), cnt, src, true);
+    FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), cnt, src, true);
     if (fmt != null) {
       Map<String, ByteProvider> res = new HashMap<String, ByteProvider>();
       res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forBytes(cnt));
@@ -724,7 +737,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       throw new FHIRException("Unable to fetch content from " + src + " (" + errors.toString() + ")");
 
     }
-    Manager.FhirFormat fmt = checkFormat(cnt, src);
+    FhirFormat fmt = checkFormat(cnt, src);
     if (fmt != null) {
       Map<String, ByteProvider> res = new HashMap<>();
       res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forBytes(cnt));
@@ -746,7 +759,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       if (ff.isDirectory() && recursive) {
         res.putAll(scanDirectory(ff, true));
       } else if (!ff.isDirectory() && !isIgnoreFile(ff)) {
-        Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), FileUtilities.fileToBytes(ff), ff.getAbsolutePath(), true);
+        FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), FileUtilities.fileToBytes(ff), ff.getAbsolutePath(), true);
         if (fmt != null) {
           res.put(FileUtilities.changeFileExt(ff.getName(), "." + fmt.getExtension()), ByteProvider.forFile(ff));
         }
@@ -768,30 +781,30 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
     return b.toString();
   }
 
-  private Manager.FhirFormat checkFormat(byte[] cnt, String filename) throws IOException {
+  private FhirFormat checkFormat(byte[] cnt, String filename) throws IOException {
     String text = FileUtilities.bytesToString(cnt);
     log.info("   ..Detect format for " + filename);
     try {
       org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(cnt);
-      return Manager.FhirFormat.JSON;
+      return FhirFormat.JSON;
     } catch (Exception e) {
       log.debug("Not JSON: " + e.getMessage());
     }
     try {
       ValidatorUtils.parseXml(cnt);
-      return Manager.FhirFormat.XML;
+      return FhirFormat.XML;
     } catch (Exception e) {
       log.debug("Not XML: " + e.getMessage());
     }
     try {
       new Turtle().parse(FileUtilities.bytesToString(cnt));
-      return Manager.FhirFormat.TURTLE;
+      return FhirFormat.TURTLE;
     } catch (Exception e) {
       log.debug("Not Turtle: " + e.getMessage());
     }
     try {
-      new StructureMapUtilities(getContext(), null, null).parse(FileUtilities.bytesToString(cnt), null);
-      return Manager.FhirFormat.TEXT;
+      new StructureMapTools(getContext(), null, null).parse(FileUtilities.bytesToString(cnt), null);
+      return FhirFormat.TEXT;
     } catch (Exception e) {
       log.debug("Not Text: " + e.getMessage());
     }
@@ -829,7 +842,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
         res = new org.hl7.fhir.dstu3.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
-      r = VersionConvertorFactory_30_50.convertResource(res);
+      r = VersionConvertorFactory_30_N.convertResource(res);
     } else if (fhirVersion.startsWith("4.0")) {
       org.hl7.fhir.r4.model.Resource res;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
@@ -840,7 +853,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
         res = new org.hl7.fhir.r4.utils.StructureMapUtilities(org.hl7.fhir.r4.context.SimpleWorkerContext.fromNothing()).parse(new String(content), fn);
       else
         throw new FHIRException("Unsupported format for " + fn);
-      r = VersionConvertorFactory_40_50.convertResource(res);
+      r = VersionConvertorFactory_40_N.convertResource(res);
     } else if (fhirVersion.startsWith("4.3")) {
       org.hl7.fhir.r4b.model.Resource res;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
@@ -851,7 +864,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
         res = new org.hl7.fhir.r4b.utils.structuremap.StructureMapUtilities(org.hl7.fhir.r4b.context.SimpleWorkerContext.fromNothing()).parse(new String(content), fn);
       else
         throw new FHIRException("Unsupported format for " + fn);
-      r = VersionConvertorFactory_43_50.convertResource(res);
+      r = VersionConvertorFactory_43_N.convertResource(res);
     } else if (fhirVersion.startsWith("1.4")) {
       org.hl7.fhir.dstu2016may.model.Resource res;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
@@ -860,25 +873,42 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
         res = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
-      r = VersionConvertorFactory_14_50.convertResource(res);
+      r = VersionConvertorFactory_14_N.convertResource(res);
     } else if (fhirVersion.startsWith("1.0")) {
       org.hl7.fhir.dstu2.model.Resource res;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
-        res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(new ByteArrayInputStream(content));
+        res = new org.hl7.fhir.dstu2.formats.XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
-      r = VersionConvertorFactory_10_50.convertResource(res, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
+      r = VersionConvertorFactory_10_N.convertResource(res, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
     } else if (fhirVersion.startsWith("5.0")) {
+      org.hl7.fhir.r5.model.Resource res;
+      r = null;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
-        r = new XmlParser().parse(new ByteArrayInputStream(content));
+        res = new org.hl7.fhir.r5.formats.XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
-        r = new JsonParser().parse(new ByteArrayInputStream(content));
+        res = new org.hl7.fhir.r5.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".txt"))
-        r = new StructureMapUtilities(getContext(), null, null).parse(FileUtilities.bytesToString(content), fn);
+        res = new StructureMapUtilities(null, null).parse(FileUtilities.bytesToString(content), fn);
+      else if (fn.endsWith(".map") || fn.endsWith(".fml")) {
+        res = null; // we can't use the old R5 code here -so we just treat it as R6. This will become painful later
+        r = new StructureMapTools(context).parse(new String(content), fn);
+      } else
+        throw new FHIRException("Unsupported format for " + fn);
+      if (r == null) {
+        r = VersionConvertorFactory_50_N.convertResource(res);
+      }
+    } else if (fhirVersion.startsWith("6.0")) {
+      if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
+        r = new XmlParser(context.getModelContext()).parse(new ByteArrayInputStream(content));
+      else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
+        r = new JsonParser(context.getModelContext()).parse(new ByteArrayInputStream(content));
+      else if (fn.endsWith(".txt"))
+        r = new StructureMapTools(getContext(), null, null).parse(FileUtilities.bytesToString(content), fn);
       else if (fn.endsWith(".map") || fn.endsWith(".fml"))
-        r = new StructureMapUtilities(context).parse(new String(content), fn);
+        r = new StructureMapTools(context).parse(new String(content), fn);
       else
         throw new FHIRException("Unsupported format for " + fn);
     } else
@@ -910,15 +940,15 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
     if (!idAndVer.contains("#")) {
       packageLoadLine.append("#" + npm.version());
     }
-    IContextResourceLoader loader = ValidatorUtils.loaderForVersion(npm.fhirVersion());
+    IContextResourceLoaderN loader = ValidatorUtils.loaderForVersion(context.getModelContext(), npm.fhirVersion());
     loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
     int count = getContext().loadFromPackage(npm, loader);
     log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
   }
 
   @Override
-  public IContextResourceLoader makeLoader(String version) {
-    return ValidatorUtils.loaderForVersion(version);
+  public IContextResourceLoaderN makeLoaderN(IModelContext context, String version) {
+    return ValidatorUtils.loaderForVersion(context, version);
   }
 
 }

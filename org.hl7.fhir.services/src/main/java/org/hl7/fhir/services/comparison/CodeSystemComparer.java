@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.comparison;
+package org.hl7.fhir.services.comparison;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,9 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.services.comparison.CanonicalResourceComparer;
-import org.hl7.fhir.services.comparison.ComparisonSession;
-import org.hl7.fhir.services.comparison.StructuralMatch;
 import org.hl7.fhir.services.renderers.CodeSystemRenderer;
 import org.hl7.fhir.services.renderers.RendererFactory;
 import org.hl7.fhir.services.renderers.utils.RenderingContext;
@@ -34,6 +31,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.BackgroundColorCode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
@@ -121,13 +119,13 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     cs.setStatus(left.getStatus());
     cs.setDate(new Date());
     for (PropertyComponent pL : left.getPropertyList()) {
-      cs.addProperty(pL.copy(Base.COPY_DATA));
+      cs.addProperty(pL.copy(Base.COPY_NOTHING));
     }
     for (PropertyComponent pR : left.getPropertyList()) {
       PropertyComponent pL = findProperty(left, pR);
       if (pL == null) {
         String code = getUniqued(pR.getCode(), cs.getPropertyList());
-        cs.addProperty(pR.copy(Base.COPY_DATA).setCode(code));
+        cs.addProperty(pR.copy(Base.COPY_NOTHING).setCode(code));
       } else {
         res.getPropMap().put(pR.getCode(), pL.getCode());
       }
@@ -382,7 +380,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
   private ConceptDefinitionComponent merge(ConceptDefinitionComponent l, ConceptDefinitionComponent r, List<PropertyComponent> destProps, CodeSystemComparison res) {
-    ConceptDefinitionComponent cd = l.copy(Base.COPY_DATA);
+    ConceptDefinitionComponent cd = l.copy(Base.COPY_NOTHING);
     if (!l.hasDisplay() && r.hasDisplay()) {
       cd.setDisplay(r.getDisplay());
     }
@@ -395,7 +393,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
   private PropertyComponent merge(PropertyComponent l, PropertyComponent r, CodeSystemComparison res) {
-    PropertyComponent cd = l.copy(Base.COPY_DATA);
+    PropertyComponent cd = l.copy(Base.COPY_NOTHING);
     if (!l.hasDescription() && r.hasDescription()) {
       cd.setDescription(r.getDescription());
     }
@@ -404,7 +402,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
 
 
   private CodeSystemFilterComponent merge(CodeSystemFilterComponent l, CodeSystemFilterComponent r, CodeSystemComparison res) {
-    CodeSystemFilterComponent cd = l.copy(Base.COPY_DATA);
+    CodeSystemFilterComponent cd = l.copy(Base.COPY_NOTHING);
     if (!l.hasDescription() && r.hasDescription()) {
       cd.setDescription(r.getDescription());
     }
@@ -412,7 +410,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
   private ConceptDefinitionComponent intersect(ConceptDefinitionComponent l, ConceptDefinitionComponent r, CodeSystemComparison res) {
-    ConceptDefinitionComponent cd = l.copy(Base.COPY_DATA);
+    ConceptDefinitionComponent cd = l.copy(Base.COPY_NOTHING);
     if (l.hasDisplay() && !r.hasDisplay()) {
       cd.setDisplay(null);
     }
@@ -425,7 +423,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
   private PropertyComponent intersect(PropertyComponent l, PropertyComponent r, CodeSystemComparison res) {
-    PropertyComponent cd = l.copy(Base.COPY_DATA);
+    PropertyComponent cd = l.copy(Base.COPY_NOTHING);
     if (l.hasDescription() && !r.hasDescription()) {
       cd.setDescription(null);
     }
@@ -433,7 +431,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
   private CodeSystemFilterComponent intersect(CodeSystemFilterComponent l, CodeSystemFilterComponent r, CodeSystemComparison res) {
-    CodeSystemFilterComponent cd = l.copy(Base.COPY_DATA);
+    CodeSystemFilterComponent cd = l.copy(Base.COPY_NOTHING);
     if (l.hasDescription() && !r.hasDescription()) {
       cd.setDescription(null);
     }
@@ -500,7 +498,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
         matchR.add(rp);
         cd.getPropertyList().add(lp);
         if (!lp.getValue().equalsDeep(rp.getValue())) {
-          ConceptPropertyComponent pc = rp.copy(Base.COPY_DATA);
+          ConceptPropertyComponent pc = rp.copy(Base.COPY_NOTHING);
           String code = res.getPropMap().get(rp.getCode());
           if (code != null) {
             pc.setCode(code);
@@ -511,7 +509,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     }
     for (ConceptPropertyComponent rp : r.getPropertyList()) {
       if (!matchR.contains(rp)) {
-        ConceptPropertyComponent pc = rp.copy(Base.COPY_DATA);
+        ConceptPropertyComponent pc = rp.copy(Base.COPY_NOTHING);
         String code = res.getPropMap().get(rp.getCode());
         if (code != null) {
           pc.setCode(code);
@@ -554,7 +552,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     for (StructuralMatch<ConceptDefinitionComponent> t : comparison.getCombined().getChildren()) {
       addRow(gen, model.getRows(), t, comparison);
     }
-    return gen.generate(model, prefix, 0, null);
+    return gen.generate(model, prefix, false, null);
   }
 
   private void addRow(HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<ConceptDefinitionComponent> t, CodeSystemComparison comparison) {
@@ -566,14 +564,14 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
         if (t.getLeft().getDisplay().equals(t.getRight().getDisplay())) {
           r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null).span(2));
         } else {
-          r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));
-          r.getCells().add(gen.new Cell(null, null, t.getRight().getDisplay(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));
+          r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
+          r.getCells().add(gen.new Cell(null, null, t.getRight().getDisplay(), null, null).setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT));
         }
       } else if (t.getLeft().hasDisplay()) {
         r.getCells().add(gen.new Cell(null, null, t.getLeft().getDisplay(), null, null));
-        r.getCells().add(missingCell(gen, COLOR_NO_CELL_RIGHT));
+        r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_RIGHT));
       } else if (t.getRight().hasDisplay()) {
-        r.getCells().add(missingCell(gen, COLOR_NO_CELL_LEFT));
+        r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_LEFT));
         r.getCells().add(gen.new Cell(null, null, t.getRight().getDisplay(), null, null));
       } else {
         r.getCells().add(missingCell(gen).span(2));
@@ -591,9 +589,9 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
           }
         } else if (lp != null) {
           r.getCells().add(gen.new Cell(null, null, lp.getValue().toString(), null, null));
-          r.getCells().add(missingCell(gen, COLOR_NO_CELL_RIGHT));
+          r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_RIGHT));
         } else if (rp != null) {
-          r.getCells().add(missingCell(gen, COLOR_NO_CELL_LEFT));
+          r.getCells().add(missingCell(gen, BackgroundColorCode.COLOR_NO_CELL_LEFT));
           r.getCells().add(gen.new Cell(null, null, rp.getValue().toString(), null, null));
         } else {
           r.getCells().add(missingCell(gen).span(2));
@@ -623,7 +621,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   private Cell propertyCell(HierarchicalTableGenerator gen, ConceptDefinitionComponent cd, PropertyComponent p, boolean right, CodeSystemComparison comp) {
     ConceptPropertyComponent cp = getProp(cd, p, right, comp);
     if (cp == null) {
-      return missingCell(gen, right ? COLOR_NO_CELL_RIGHT : COLOR_NO_CELL_LEFT);
+      return missingCell(gen, right ? BackgroundColorCode.COLOR_NO_CELL_RIGHT : BackgroundColorCode.COLOR_NO_CELL_LEFT);
     } else {
       return gen.new Cell(null, null, cp.getValue().toString(), null, null);
     }

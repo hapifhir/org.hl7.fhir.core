@@ -29,8 +29,8 @@ import java.util.List;
 
 @Slf4j
 public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
-  private XmlParser xml = new XmlParser(context);
-  private JsonParser json = new JsonParser(context);
+  private XmlParser xml = new XmlParser(context.getModelContext());
+  private JsonParser json = new JsonParser(context.getModelContext());
   private boolean asXml;
   private boolean hideMustSupportFalse;
   private List<StructureDefinitionMappingComponent> mapKeys = new ArrayList<StructureDefinitionMappingComponent>();

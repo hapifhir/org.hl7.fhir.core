@@ -474,6 +474,10 @@ public class Medication extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((MedicationIngredientComponent) dst);
+      }
+
       public void copyValues(MedicationIngredientComponent dst) {
         super.copyValues(dst);
         dst.item = item == null ? null : item.copy();
@@ -735,6 +739,10 @@ public class Medication extends DomainResource {
         MedicationBatchComponent dst = new MedicationBatchComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((MedicationBatchComponent) dst);
       }
 
       public void copyValues(MedicationBatchComponent dst) {
@@ -1368,6 +1376,10 @@ public class Medication extends DomainResource {
         Medication dst = new Medication();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Medication) dst);
       }
 
       public void copyValues(Medication dst) {

@@ -1813,6 +1813,32 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.index != null) {
+            visitor.visit(this, "index", -1, this.index);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.actorList != null) {
+            int i = 0;
+            for (Base v : this.actorList) {
+              if (v != null) {
+                visitor.visit(this, "actor", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.url != null) {
+            visitor.visit(this, "url", -1, this.url);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "index":  return new Property("index", "positiveInt", "Number for the test system that is unique within this test script.  Referenced by operation.origin and/or operation.destination.", 0, 1, index);
@@ -1924,6 +1950,10 @@ public class TestScript extends CanonicalResource {
         TestScriptTestSystemComponent dst = new TestScriptTestSystemComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptTestSystemComponent) dst, options);
       }
 
       public void copyValues(TestScriptTestSystemComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2130,6 +2160,29 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkList != null) {
+            int i = 0;
+            for (Base v : this.linkList) {
+              if (v != null) {
+                visitor.visit(this, "link", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.capabilityList != null) {
+            int i = 0;
+            for (Base v : this.capabilityList) {
+              if (v != null) {
+                visitor.visit(this, "capability", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "link":  return new Property("link", "", "A link to the FHIR specification that this test is covering.", 0, java.lang.Integer.MAX_VALUE, linkList);
@@ -2200,6 +2253,10 @@ public class TestScript extends CanonicalResource {
         TestScriptMetadataComponent dst = new TestScriptMetadataComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptMetadataComponent) dst, options);
       }
 
       public void copyValues(TestScriptMetadataComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2393,6 +2450,17 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.url != null) {
+            visitor.visit(this, "url", -1, this.url);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "url":  return new Property("url", "uri", "URL to a particular requirement or feature within the FHIR specification.", 0, 1, url);
@@ -2467,6 +2535,10 @@ public class TestScript extends CanonicalResource {
         TestScriptMetadataLinkComponent dst = new TestScriptMetadataLinkComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptMetadataLinkComponent) dst, options);
       }
 
       public void copyValues(TestScriptMetadataLinkComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2950,6 +3022,44 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.required != null) {
+            visitor.visit(this, "required", -1, this.required);
+          }
+          if (this.validated != null) {
+            visitor.visit(this, "validated", -1, this.validated);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.originList != null) {
+            int i = 0;
+            for (Base v : this.originList) {
+              if (v != null) {
+                visitor.visit(this, "origin", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.destination != null) {
+            visitor.visit(this, "destination", -1, this.destination);
+          }
+          if (this.linkList != null) {
+            int i = 0;
+            for (Base v : this.linkList) {
+              if (v != null) {
+                visitor.visit(this, "link", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.capabilities != null) {
+            visitor.visit(this, "capabilities", -1, this.capabilities);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "required":  return new Property("required", "boolean", "Whether or not the test execution will require the given capabilities of the server in order for this test script to execute.", 0, 1, required);
@@ -3085,6 +3195,10 @@ public class TestScript extends CanonicalResource {
         TestScriptMetadataCapabilityComponent dst = new TestScriptMetadataCapabilityComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptMetadataCapabilityComponent) dst, options);
       }
 
       public void copyValues(TestScriptMetadataCapabilityComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3296,6 +3410,20 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.artifact != null) {
+            visitor.visit(this, "artifact", -1, this.artifact);
+          }
+          if (this.conformance != null) {
+            visitor.visit(this, "conformance", -1, this.conformance);
+          }
+          if (this.phase != null) {
+            visitor.visit(this, "phase", -1, this.phase);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "artifact":  return new Property("artifact", "canonical(Any)", "The specific conformance artifact being tested. The canonical reference can be version-specific.", 0, 1, artifact);
@@ -3385,6 +3513,10 @@ public class TestScript extends CanonicalResource {
         TestScriptScopeComponent dst = new TestScriptScopeComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptScopeComponent) dst, options);
       }
 
       public void copyValues(TestScriptScopeComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -3633,6 +3765,23 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.autocreate != null) {
+            visitor.visit(this, "autocreate", -1, this.autocreate);
+          }
+          if (this.autodelete != null) {
+            visitor.visit(this, "autodelete", -1, this.autodelete);
+          }
+          if (this.resource != null) {
+            visitor.visit(this, "resource", -1, this.resource);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "autocreate":  return new Property("autocreate", "boolean", "Whether or not to implicitly create the fixture during setup. If true, the fixture is automatically created on each server being tested during setup, therefore no create operation is required for this fixture in the TestScript.setup section.", 0, 1, autocreate);
@@ -3735,6 +3884,10 @@ public class TestScript extends CanonicalResource {
         TestScriptFixtureComponent dst = new TestScriptFixtureComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptFixtureComponent) dst, options);
       }
 
       public void copyValues(TestScriptFixtureComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4241,6 +4394,35 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.defaultValue != null) {
+            visitor.visit(this, "defaultValue", -1, this.defaultValue);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
+          if (this.headerField != null) {
+            visitor.visit(this, "headerField", -1, this.headerField);
+          }
+          if (this.hint != null) {
+            visitor.visit(this, "hint", -1, this.hint);
+          }
+          if (this.path != null) {
+            visitor.visit(this, "path", -1, this.path);
+          }
+          if (this.sourceId != null) {
+            visitor.visit(this, "sourceId", -1, this.sourceId);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "Descriptive name for this variable.", 0, 1, name);
@@ -4396,6 +4578,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptVariableComponent) dst, options);
+      }
+
       public void copyValues(TestScriptVariableComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.name = name == null ? null : name.copy(options);
@@ -4532,6 +4718,20 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.actionList != null) {
+            int i = 0;
+            for (Base v : this.actionList) {
+              if (v != null) {
+                visitor.visit(this, "action", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "action":  return new Property("action", "", "Action would contain either a common or operation or an assertion.", 0, java.lang.Integer.MAX_VALUE, actionList);
@@ -4591,6 +4791,10 @@ public class TestScript extends CanonicalResource {
         TestScriptSetupComponent dst = new TestScriptSetupComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptSetupComponent) dst, options);
       }
 
       public void copyValues(TestScriptSetupComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -4740,6 +4944,20 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.common != null) {
+            visitor.visit(this, "common", -1, this.common);
+          }
+          if (this.operation != null) {
+            visitor.visit(this, "operation", -1, this.operation);
+          }
+          if (this.assert_ != null) {
+            visitor.visit(this, "assert", -1, this.assert_);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "common":  return new Property("common", "", "Links or references to common collection(s) of actions in this or an external TestScript instance.", 0, 1, common);
@@ -4827,6 +5045,10 @@ public class TestScript extends CanonicalResource {
         SetupActionComponent dst = new SetupActionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionComponent) dst, options);
       }
 
       public void copyValues(SetupActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5075,6 +5297,26 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.testScript != null) {
+            visitor.visit(this, "testScript", -1, this.testScript);
+          }
+          if (this.keyRef != null) {
+            visitor.visit(this, "keyRef", -1, this.keyRef);
+          }
+          if (this.parameterList != null) {
+            int i = 0;
+            for (Base v : this.parameterList) {
+              if (v != null) {
+                visitor.visit(this, "parameter", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "testScript":  return new Property("testScript", "canonical(TestScript)", "Canonical reference providing traceability to the common TestScript instance containing the commonKey.", 0, 1, testScript);
@@ -5160,6 +5402,10 @@ public class TestScript extends CanonicalResource {
         SetupActionCommonComponent dst = new SetupActionCommonComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionCommonComponent) dst, options);
       }
 
       public void copyValues(SetupActionCommonComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -5348,6 +5594,17 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The name of this parameter from the identified common collection of actions from this or an external TestScript.", 0, 1, name);
@@ -5422,6 +5679,10 @@ public class TestScript extends CanonicalResource {
         SetupActionCommonParameterComponent dst = new SetupActionCommonParameterComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionCommonParameterComponent) dst, options);
       }
 
       public void copyValues(SetupActionCommonParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -6437,6 +6698,68 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.resource != null) {
+            visitor.visit(this, "resource", -1, this.resource);
+          }
+          if (this.label != null) {
+            visitor.visit(this, "label", -1, this.label);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.accept != null) {
+            visitor.visit(this, "accept", -1, this.accept);
+          }
+          if (this.contentType != null) {
+            visitor.visit(this, "contentType", -1, this.contentType);
+          }
+          if (this.destination != null) {
+            visitor.visit(this, "destination", -1, this.destination);
+          }
+          if (this.encodeRequestUrl != null) {
+            visitor.visit(this, "encodeRequestUrl", -1, this.encodeRequestUrl);
+          }
+          if (this.method != null) {
+            visitor.visit(this, "method", -1, this.method);
+          }
+          if (this.origin != null) {
+            visitor.visit(this, "origin", -1, this.origin);
+          }
+          if (this.params != null) {
+            visitor.visit(this, "params", -1, this.params);
+          }
+          if (this.requestHeaderList != null) {
+            int i = 0;
+            for (Base v : this.requestHeaderList) {
+              if (v != null) {
+                visitor.visit(this, "requestHeader", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.requestId != null) {
+            visitor.visit(this, "requestId", -1, this.requestId);
+          }
+          if (this.responseId != null) {
+            visitor.visit(this, "responseId", -1, this.responseId);
+          }
+          if (this.sourceId != null) {
+            visitor.visit(this, "sourceId", -1, this.sourceId);
+          }
+          if (this.targetId != null) {
+            visitor.visit(this, "targetId", -1, this.targetId);
+          }
+          if (this.url != null) {
+            visitor.visit(this, "url", -1, this.url);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "Coding", "Server interaction or operation type.", 0, 1, type);
@@ -6708,6 +7031,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionOperationComponent) dst, options);
+      }
+
       public void copyValues(SetupActionOperationComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.type = type == null ? null : type.copy(options);
@@ -6919,6 +7246,17 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.field != null) {
+            visitor.visit(this, "field", -1, this.field);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "field":  return new Property("field", "string", "The HTTP header field e.g. \"Accept\".", 0, 1, field);
@@ -6993,6 +7331,10 @@ public class TestScript extends CanonicalResource {
         SetupActionOperationRequestHeaderComponent dst = new SetupActionOperationRequestHeaderComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionOperationRequestHeaderComponent) dst, options);
       }
 
       public void copyValues(SetupActionOperationRequestHeaderComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -8568,6 +8910,104 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.label != null) {
+            visitor.visit(this, "label", -1, this.label);
+          }
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
+          if (this.evaluateBasedOnList != null) {
+            int i = 0;
+            for (Base v : this.evaluateBasedOnList) {
+              if (v != null) {
+                visitor.visit(this, "evaluateBasedOn", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.direction != null) {
+            visitor.visit(this, "direction", -1, this.direction);
+          }
+          if (this.compareToSourceId != null) {
+            visitor.visit(this, "compareToSourceId", -1, this.compareToSourceId);
+          }
+          if (this.compareToSourceExpression != null) {
+            visitor.visit(this, "compareToSourceExpression", -1, this.compareToSourceExpression);
+          }
+          if (this.compareToSourcePath != null) {
+            visitor.visit(this, "compareToSourcePath", -1, this.compareToSourcePath);
+          }
+          if (this.contentType != null) {
+            visitor.visit(this, "contentType", -1, this.contentType);
+          }
+          if (this.defaultManualCompletion != null) {
+            visitor.visit(this, "defaultManualCompletion", -1, this.defaultManualCompletion);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
+          if (this.headerField != null) {
+            visitor.visit(this, "headerField", -1, this.headerField);
+          }
+          if (this.minimumId != null) {
+            visitor.visit(this, "minimumId", -1, this.minimumId);
+          }
+          if (this.navigationLinks != null) {
+            visitor.visit(this, "navigationLinks", -1, this.navigationLinks);
+          }
+          if (this.operator != null) {
+            visitor.visit(this, "operator", -1, this.operator);
+          }
+          if (this.path != null) {
+            visitor.visit(this, "path", -1, this.path);
+          }
+          if (this.requestMethod != null) {
+            visitor.visit(this, "requestMethod", -1, this.requestMethod);
+          }
+          if (this.requestURL != null) {
+            visitor.visit(this, "requestURL", -1, this.requestURL);
+          }
+          if (this.resource != null) {
+            visitor.visit(this, "resource", -1, this.resource);
+          }
+          if (this.response != null) {
+            visitor.visit(this, "response", -1, this.response);
+          }
+          if (this.responseCode != null) {
+            visitor.visit(this, "responseCode", -1, this.responseCode);
+          }
+          if (this.sourceId != null) {
+            visitor.visit(this, "sourceId", -1, this.sourceId);
+          }
+          if (this.stopTestOnFail != null) {
+            visitor.visit(this, "stopTestOnFail", -1, this.stopTestOnFail);
+          }
+          if (this.validateProfileId != null) {
+            visitor.visit(this, "validateProfileId", -1, this.validateProfileId);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+          if (this.warningOnly != null) {
+            visitor.visit(this, "warningOnly", -1, this.warningOnly);
+          }
+          if (this.requirementList != null) {
+            int i = 0;
+            for (Base v : this.requirementList) {
+              if (v != null) {
+                visitor.visit(this, "requirement", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "label":  return new Property("label", "string", "The label would be used for tracking/logging purposes by test engines.", 0, 1, label);
@@ -8972,6 +9412,10 @@ public class TestScript extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionAssertComponent) dst, options);
+      }
+
       public void copyValues(SetupActionAssertComponent dst, EnumSet<CopyObjectOptions> options) {
         super.copyValues(dst, options);
         dst.label = label == null ? null : label.copy(options);
@@ -9209,6 +9653,17 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "reference":  return new Property("reference", "canonical(Requirements)", "Canonical reference providing traceability to the testing requirement for this assert.", 0, 1, reference);
@@ -9283,6 +9738,10 @@ public class TestScript extends CanonicalResource {
         SetupActionAssertRequirementComponent dst = new SetupActionAssertRequirementComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((SetupActionAssertRequirementComponent) dst, options);
       }
 
       public void copyValues(SetupActionAssertRequirementComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9523,6 +9982,26 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.actionList != null) {
+            int i = 0;
+            for (Base v : this.actionList) {
+              if (v != null) {
+                visitor.visit(this, "action", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The name of this test used for tracking/logging purposes by test engines.", 0, 1, name);
@@ -9608,6 +10087,10 @@ public class TestScript extends CanonicalResource {
         TestScriptTestComponent dst = new TestScriptTestComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptTestComponent) dst, options);
       }
 
       public void copyValues(TestScriptTestComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -9776,6 +10259,20 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.common != null) {
+            visitor.visit(this, "common", -1, this.common);
+          }
+          if (this.operation != null) {
+            visitor.visit(this, "operation", -1, this.operation);
+          }
+          if (this.assert_ != null) {
+            visitor.visit(this, "assert", -1, this.assert_);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "common":  return new Property("common", "@TestScript.setup.action.common", "Links or references to common collection(s) of actions in this or an external TestScript instance.", 0, 1, common);
@@ -9866,6 +10363,10 @@ public class TestScript extends CanonicalResource {
         TestActionComponent dst = new TestActionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestActionComponent) dst, options);
       }
 
       public void copyValues(TestActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10004,6 +10505,20 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.actionList != null) {
+            int i = 0;
+            for (Base v : this.actionList) {
+              if (v != null) {
+                visitor.visit(this, "action", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "action":  return new Property("action", "", "The teardown action will only contain an operation.", 0, java.lang.Integer.MAX_VALUE, actionList);
@@ -10063,6 +10578,10 @@ public class TestScript extends CanonicalResource {
         TestScriptTeardownComponent dst = new TestScriptTeardownComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptTeardownComponent) dst, options);
       }
 
       public void copyValues(TestScriptTeardownComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10204,6 +10723,17 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.common != null) {
+            visitor.visit(this, "common", -1, this.common);
+          }
+          if (this.operation != null) {
+            visitor.visit(this, "operation", -1, this.operation);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "common":  return new Property("common", "@TestScript.setup.action.common", "Links or references to common collection(s) of actions in this or an external TestScript instance. Action asserts will be ignored for the TestScript.teardown.", 0, 1, common);
@@ -10280,6 +10810,10 @@ public class TestScript extends CanonicalResource {
         TeardownActionComponent dst = new TeardownActionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TeardownActionComponent) dst, options);
       }
 
       public void copyValues(TeardownActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10644,6 +11178,38 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.parameterList != null) {
+            int i = 0;
+            for (Base v : this.parameterList) {
+              if (v != null) {
+                visitor.visit(this, "parameter", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.actionList != null) {
+            int i = 0;
+            for (Base v : this.actionList) {
+              if (v != null) {
+                visitor.visit(this, "action", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "key":  return new Property("key", "id", "Key that identifies this common collection of actions (unique within this resource).", 0, 1, key);
@@ -10753,6 +11319,10 @@ public class TestScript extends CanonicalResource {
         TestScriptCommonComponent dst = new TestScriptCommonComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScriptCommonComponent) dst, options);
       }
 
       public void copyValues(TestScriptCommonComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -10947,6 +11517,17 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The name of this parameter that will referenced in this common collection of actions using the TestScript variable nomenclature '${name}.", 0, 1, name);
@@ -11021,6 +11602,10 @@ public class TestScript extends CanonicalResource {
         CommonParameterComponent dst = new CommonParameterComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CommonParameterComponent) dst, options);
       }
 
       public void copyValues(CommonParameterComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -11150,6 +11735,17 @@ public class TestScript extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.operation != null) {
+            visitor.visit(this, "operation", -1, this.operation);
+          }
+          if (this.assert_ != null) {
+            visitor.visit(this, "assert", -1, this.assert_);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "operation":  return new Property("operation", "@TestScript.setup.action.operation", "An operation would involve a REST request to a server.", 0, 1, operation);
@@ -11226,6 +11822,10 @@ public class TestScript extends CanonicalResource {
         CommonActionComponent dst = new CommonActionComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CommonActionComponent) dst, options);
       }
 
       public void copyValues(CommonActionComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -12793,6 +13393,158 @@ public class TestScript extends CanonicalResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.testSystemList != null) {
+          int i = 0;
+          for (Base v : this.testSystemList) {
+            if (v != null) {
+              visitor.visit(this, "testSystem", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.metadata != null) {
+          visitor.visit(this, "metadata", -1, this.metadata);
+        }
+        if (this.scopeList != null) {
+          int i = 0;
+          for (Base v : this.scopeList) {
+            if (v != null) {
+              visitor.visit(this, "scope", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.fixtureList != null) {
+          int i = 0;
+          for (Base v : this.fixtureList) {
+            if (v != null) {
+              visitor.visit(this, "fixture", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.profileList != null) {
+          int i = 0;
+          for (Base v : this.profileList) {
+            if (v != null) {
+              visitor.visit(this, "profile", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.variableList != null) {
+          int i = 0;
+          for (Base v : this.variableList) {
+            if (v != null) {
+              visitor.visit(this, "variable", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.setup != null) {
+          visitor.visit(this, "setup", -1, this.setup);
+        }
+        if (this.testList != null) {
+          int i = 0;
+          for (Base v : this.testList) {
+            if (v != null) {
+              visitor.visit(this, "test", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.teardown != null) {
+          visitor.visit(this, "teardown", -1, this.teardown);
+        }
+        if (this.commonList != null) {
+          int i = 0;
+          for (Base v : this.commonList) {
+            if (v != null) {
+              visitor.visit(this, "common", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "url":  return new Property("url", "uri", "An absolute URI that is used to identify this test script when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This is globally unique and a literal address at which an authoritative instance of this test script is (or will be) published. This URL can be the target of a canonical reference. It will remain the same when the test script is stored on different servers.", 0, 1, url);
@@ -13185,6 +13937,10 @@ public class TestScript extends CanonicalResource {
         TestScript dst = new TestScript(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((TestScript) dst, options);
       }
 
       public void copyValues(TestScript dst, EnumSet<CopyObjectOptions> options) {

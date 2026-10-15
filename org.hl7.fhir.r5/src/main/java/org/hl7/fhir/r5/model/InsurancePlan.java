@@ -340,6 +340,10 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((InsurancePlanCoverageComponent) dst);
+      }
+
       public void copyValues(InsurancePlanCoverageComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -669,6 +673,10 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((CoverageBenefitComponent) dst);
+      }
+
       public void copyValues(CoverageBenefitComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -886,6 +894,10 @@ public class InsurancePlan extends DomainResource {
         CoverageBenefitLimitComponent dst = new CoverageBenefitLimitComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CoverageBenefitLimitComponent) dst);
       }
 
       public void copyValues(CoverageBenefitLimitComponent dst) {
@@ -1428,6 +1440,10 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((InsurancePlanPlanComponent) dst);
+      }
+
       public void copyValues(InsurancePlanPlanComponent dst) {
         super.copyValues(dst);
         if (identifier != null) {
@@ -1805,6 +1821,10 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((InsurancePlanPlanGeneralCostComponent) dst);
+      }
+
       public void copyValues(InsurancePlanPlanGeneralCostComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -2057,6 +2077,10 @@ public class InsurancePlan extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((InsurancePlanPlanSpecificCostComponent) dst);
+      }
+
       public void copyValues(InsurancePlanPlanSpecificCostComponent dst) {
         super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
@@ -2307,6 +2331,10 @@ public class InsurancePlan extends DomainResource {
         PlanBenefitComponent dst = new PlanBenefitComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((PlanBenefitComponent) dst);
       }
 
       public void copyValues(PlanBenefitComponent dst) {
@@ -2654,6 +2682,10 @@ public class InsurancePlan extends DomainResource {
         PlanBenefitCostComponent dst = new PlanBenefitCostComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((PlanBenefitCostComponent) dst);
       }
 
       public void copyValues(PlanBenefitCostComponent dst) {
@@ -3754,6 +3786,10 @@ public class InsurancePlan extends DomainResource {
         InsurancePlan dst = new InsurancePlan();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((InsurancePlan) dst);
       }
 
       public void copyValues(InsurancePlan dst) {

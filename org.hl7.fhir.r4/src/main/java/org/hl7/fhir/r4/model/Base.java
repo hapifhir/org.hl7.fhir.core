@@ -31,10 +31,7 @@ package org.hl7.fhir.r4.model;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBase;
@@ -79,6 +76,18 @@ public abstract class Base implements Serializable, IBase, IElement {
   public void clearUserData(String name) {
     if (userData != null)
       userData.remove(name);
+  }
+
+  public void clearUserData() {
+    userData  = null;
+  }
+
+  public Set<String> getUserDataNames() {
+    if (userData == null) {
+      return new HashSet<>();
+    } else {
+      return userData.keySet();
+    }
   }
 
   public void setUserDataINN(String name, Object value) {

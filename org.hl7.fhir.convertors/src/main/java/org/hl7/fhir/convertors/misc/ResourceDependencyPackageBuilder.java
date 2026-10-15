@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.misc;
 
 import java.io.IOException;
+import org.hl7.fhir.model.ModelContext;
 import java.util.Set;
 
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;

@@ -236,6 +236,10 @@ public class Condition extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ConditionParticipantComponent) dst);
+      }
+
       public void copyValues(ConditionParticipantComponent dst) {
         super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
@@ -523,6 +527,10 @@ public class Condition extends DomainResource {
         ConditionStageComponent dst = new ConditionStageComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ConditionStageComponent) dst);
       }
 
       public void copyValues(ConditionStageComponent dst) {
@@ -1829,6 +1837,10 @@ public class Condition extends DomainResource {
         Condition dst = new Condition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Condition) dst);
       }
 
       public void copyValues(Condition dst) {

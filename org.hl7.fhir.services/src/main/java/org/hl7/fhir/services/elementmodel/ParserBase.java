@@ -100,7 +100,7 @@ public abstract class ParserBase {
   private ProfileUtilities profileUtilities;
   private ContextUtilities contextUtilities;
   protected Set<String> canonicalFilter = new HashSet<>();
-  @Getter @Setter protected Set<Element> setElementsToIgnore = new HashSet<>();
+  @Getter @Setter protected Set<Element> elementsToIgnore = new HashSet<>();
 
 	public ParserBase(IWorkerContext context, ProfileUtilities utilities) {
 		super();
@@ -303,19 +303,19 @@ public abstract class ParserBase {
    * true if this element is in the set of elements that the caller has asked not to be serialised
    */
   protected boolean isIgnored(Element e) {
-    return !setElementsToIgnore.isEmpty() && setElementsToIgnore.contains(e);
+    return !elementsToIgnore.isEmpty() && elementsToIgnore.contains(e);
   }
 
   /**
    * the members of list that aren't in setElementsToIgnore (the list itself, if there's nothing to ignore)
    */
   protected List<Element> removeIgnored(List<Element> list) {
-    if (setElementsToIgnore.isEmpty()) {
+    if (elementsToIgnore.isEmpty()) {
       return list;
     }
     List<Element> res = new ArrayList<>();
     for (Element e : list) {
-      if (!setElementsToIgnore.contains(e)) {
+      if (!elementsToIgnore.contains(e)) {
         res.add(e);
       }
     }

@@ -4,10 +4,10 @@ import okhttp3.Headers;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.services.terminology.ResourceFormat;
-import org.hl7.fhir.standalone.terminology.client.Client;
-import org.hl7.fhir.standalone.terminology.client.FHIRToolingClient;
-import org.hl7.fhir.standalone.terminology.client.ResourceRequest;
+import org.hl7.fhir.services.client.ResourceFormat;
+import org.hl7.fhir.services.client.Client;
+import org.hl7.fhir.services.client.FHIRToolingClient;
+import org.hl7.fhir.services.client.ResourceRequest;
 import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.http.HTTPRequest;
@@ -68,7 +68,7 @@ class FHIRToolingClientTest {
     Mockito.when(mockClient.executeBundleRequest(Mockito.any(HTTPRequest.class), Mockito.anyString(),
         ArgumentMatchers.any(), Mockito.anyString(), Mockito.anyInt(), Mockito.anyLong()))
       .thenReturn(generateBundle());
-    toolingClient = new FHIRToolingClient(TX_ADDR, "fhir/test-cases", TestingUtilities.getSharedWorkerContext());
+    toolingClient = new FHIRToolingClient(TX_ADDR, "fhir/test-cases", TestingUtilities.getSharedWorkerContext().getModelContext());
     toolingClient.setClient(mockClient);
   }
 

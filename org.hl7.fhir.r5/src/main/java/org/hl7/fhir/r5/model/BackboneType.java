@@ -219,6 +219,10 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
 
   public abstract BackboneType copy();
 
+  public void assignValues(Base dst) {
+    copyValues((BackboneType) dst);
+  }
+
   public void copyValues(BackboneType dst) {
     super.copyValues(dst);
     if (modifierExtension != null) {

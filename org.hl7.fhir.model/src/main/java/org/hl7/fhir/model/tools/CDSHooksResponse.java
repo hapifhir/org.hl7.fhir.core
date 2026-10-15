@@ -1006,6 +1006,56 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.uuid != null) {
+            visitor.visit(this, "uuid", -1, this.uuid);
+          }
+          if (this.summary != null) {
+            visitor.visit(this, "summary", -1, this.summary);
+          }
+          if (this.detail != null) {
+            visitor.visit(this, "detail", -1, this.detail);
+          }
+          if (this.indicator != null) {
+            visitor.visit(this, "indicator", -1, this.indicator);
+          }
+          if (this.source != null) {
+            visitor.visit(this, "source", -1, this.source);
+          }
+          if (this.suggestionsList != null) {
+            int i = 0;
+            for (Base v : this.suggestionsList) {
+              if (v != null) {
+                visitor.visit(this, "suggestions", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.selectionBehavior != null) {
+            visitor.visit(this, "selectionBehavior", -1, this.selectionBehavior);
+          }
+          if (this.overrideReasonsList != null) {
+            int i = 0;
+            for (Base v : this.overrideReasonsList) {
+              if (v != null) {
+                visitor.visit(this, "overrideReasons", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.linksList != null) {
+            int i = 0;
+            for (Base v : this.linksList) {
+              if (v != null) {
+                visitor.visit(this, "links", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "uuid":  return new Property("uuid", "uuid", "Unique identifier of the card. MAY be used for auditing and logging cards and SHALL be included in any subsequent calls to the CDS service's feedback endpoint.", 0, 1, uuid);
@@ -1167,6 +1217,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         CDSHooksResponseCardsComponent dst = new CDSHooksResponseCardsComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsComponent) dst, options);
       }
 
       public void copyValues(CDSHooksResponseCardsComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1465,6 +1519,23 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.label != null) {
+            visitor.visit(this, "label", -1, this.label);
+          }
+          if (this.url != null) {
+            visitor.visit(this, "url", -1, this.url);
+          }
+          if (this.icon != null) {
+            visitor.visit(this, "icon", -1, this.icon);
+          }
+          if (this.topic != null) {
+            visitor.visit(this, "topic", -1, this.topic);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "label":  return new Property("label", "string", "A short, human-readable label to display for the source of the information displayed on this card. If a url is also specified, this MAY be the text for the hyperlink.", 0, 1, label);
@@ -1566,6 +1637,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         CDSHooksResponseCardsSourceComponent dst = new CDSHooksResponseCardsSourceComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsSourceComponent) dst, options);
       }
 
       public void copyValues(CDSHooksResponseCardsSourceComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -1869,6 +1944,29 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.label != null) {
+            visitor.visit(this, "label", -1, this.label);
+          }
+          if (this.uuid != null) {
+            visitor.visit(this, "uuid", -1, this.uuid);
+          }
+          if (this.isRecommended != null) {
+            visitor.visit(this, "isRecommended", -1, this.isRecommended);
+          }
+          if (this.actionsList != null) {
+            int i = 0;
+            for (Base v : this.actionsList) {
+              if (v != null) {
+                visitor.visit(this, "actions", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "label":  return new Property("label", "string", "Human-readable label to display for this suggestion", 0, 1, label);
@@ -1967,6 +2065,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         CDSHooksResponseCardsSuggestionsComponent dst = new CDSHooksResponseCardsSuggestionsComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsSuggestionsComponent) dst, options);
       }
 
       public void copyValues(CDSHooksResponseCardsSuggestionsComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2245,6 +2347,23 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.resource != null) {
+            visitor.visit(this, "resource", -1, this.resource);
+          }
+          if (this.resourceId != null) {
+            visitor.visit(this, "resourceId", -1, this.resourceId);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "code", "The type of action being performed. Allowed values are: create, update, delete.", 0, 1, type);
@@ -2347,6 +2466,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         CDSHooksResponseCardsSuggestionsActionsComponent dst = new CDSHooksResponseCardsSuggestionsActionsComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsSuggestionsActionsComponent) dst, options);
       }
 
       public void copyValues(CDSHooksResponseCardsSuggestionsActionsComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2648,6 +2771,23 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.label != null) {
+            visitor.visit(this, "label", -1, this.label);
+          }
+          if (this.url != null) {
+            visitor.visit(this, "url", -1, this.url);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.appContext != null) {
+            visitor.visit(this, "appContext", -1, this.appContext);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "label":  return new Property("label", "string", "Human-readable label to display for this link (e.g. the CDS Client might render this as the underlined text of a clickable link).", 0, 1, label);
@@ -2749,6 +2889,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         CDSHooksResponseCardsLinksComponent dst = new CDSHooksResponseCardsLinksComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponseCardsLinksComponent) dst, options);
       }
 
       public void copyValues(CDSHooksResponseCardsLinksComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -2939,6 +3083,29 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.cardsList != null) {
+          int i = 0;
+          for (Base v : this.cardsList) {
+            if (v != null) {
+              visitor.visit(this, "cards", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.systemActionsList != null) {
+          int i = 0;
+          for (Base v : this.systemActionsList) {
+            if (v != null) {
+              visitor.visit(this, "systemActions", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "cards":  return new Property("cards", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "An array of Cards. Cards can provide a combination of information (for reading), suggested actions (to be applied if a user selects them), and links (to launch an app if the user selects them).", 0, java.lang.Integer.MAX_VALUE, cardsList);
@@ -3014,6 +3181,10 @@ public class CDSHooksResponse extends CDSHooksElement implements ICompositeType 
         CDSHooksResponse dst = new CDSHooksResponse(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksResponse) dst, options);
       }
 
       public void copyValues(CDSHooksResponse dst, EnumSet<CopyObjectOptions> options) {

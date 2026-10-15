@@ -11,12 +11,13 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.core.Constants;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.validation.special.TxTestData;
@@ -36,7 +37,8 @@ class StopHTTPHandler extends BaseHTTPHandler implements HttpHandler {
 
   private final FhirValidatorHttpService fhirValidatorHttpService;
 
-  public StopHTTPHandler(FhirValidatorHttpService fhirValidatorHttpService) {
+  public StopHTTPHandler(IModelContext context, FhirValidatorHttpService fhirValidatorHttpService) {
+    super(context);
     this.fhirValidatorHttpService = fhirValidatorHttpService;
   }
 

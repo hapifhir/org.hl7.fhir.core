@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.Element;
 
 public class IndexedElement {
   private int index;

@@ -34,6 +34,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.MultiLanguagePolicy;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.CodeSystemHierarchy;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
@@ -286,7 +287,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       definitions = definitions || conceptsHaveDefinition(c);
       listConceptLanguages(cs, c, langs);
     }
-    CodeSystemNavigator csNav = new CodeSystemNavigator(cs);
+    CodeSystemNavigator csNav = new CodeSystemNavigator(cs, CodeSystemHierarchy.forCodeSystem(cs, context.isCacheResourceAnalysis()));
     hierarchy = hierarchy || csNav.isRestructure();
     
     if (langs.size() < 2) {
@@ -670,9 +671,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     if (context.isCopyButton()) {
       td = tr.td();
-      clipboard(td, "icon_clipboard_x.png", "XML", "<system value=\""+Utilities.escapeXml(cs.getUrl())+"\">\n"+(cs.getVersionNeeded() ? "<version value=\""+Utilities.escapeXml(cs.getVersion())+"\">\n" : "")+"<code value=\""+Utilities.escapeXml(c.getCode())+"\">\n<display value=\""+Utilities.escapeXml(c.getDisplay())+"\">\n");
+      clipboard(td, "icon_clipboard_x.png", "XML", "<system value=\""+Utilities.escapeXml(cs.getUrl())+"\"/>\n"+(cs.getVersionNeeded() ? "<version value=\""+Utilities.escapeXml(cs.getVersion())+"\"/>\n" : "")+"<code value=\""+Utilities.escapeXml(c.getCode())+"\"/>\n<display value=\""+Utilities.escapeXml(c.getDisplay())+"\"/>\n");
       td.nbsp();
-      clipboard(td, "icon_clipboard_j.png", "JSON", "\"system\" : \""+Utilities.escapeXml(cs.getUrl())+"\",\n"+(cs.getVersionNeeded() ? "\"version\" : \""+Utilities.escapeXml(cs.getVersion())+"\",\n" : "")+"\"code\" : \""+Utilities.escapeXml(c.getCode())+"\",\n\"display\" : \""+Utilities.escapeXml(c.getDisplay())+"\"\n");
+      clipboard(td, "icon_clipboard_j.png", "JSON", "\"system\" : \""+Utilities.escapeJson(cs.getUrl())+"\",\n"+(cs.getVersionNeeded() ? "\"version\" : \""+Utilities.escapeJson(cs.getVersion())+"\",\n" : "")+"\"code\" : \""+Utilities.escapeJson(c.getCode())+"\",\n\"display\" : \""+Utilities.escapeJson(c.getDisplay())+"\"\n");
     }
   }
 

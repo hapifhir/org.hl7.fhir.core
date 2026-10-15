@@ -102,7 +102,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
  * See R5 rendering framework to render R4B resources
  * 
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class DataRenderer extends Renderer {
 
   // -- 1. context --------------------------------------------------------------
