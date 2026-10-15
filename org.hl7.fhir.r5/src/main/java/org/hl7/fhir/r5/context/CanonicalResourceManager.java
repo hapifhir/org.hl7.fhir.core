@@ -177,10 +177,23 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   public void copy(CanonicalResourceManager<T> source) {
     allResources.clear();
     indexedResources.clear();
+    listForUrl.clear();
+    listForId.clear();
+    masterDefinitions.clear();
+    supplements.clear();
     allResources.addAll(source.allResources);
     indexedResources.putAll(source.indexedResources);
     for (Map.Entry<String, List<CachedCanonicalResource<T>>> entry : source.listForUrl.entrySet()) {
       listForUrl.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+    }
+    for (Map.Entry<String, List<CachedCanonicalResource<T>>> entry : source.listForId.entrySet()) {
+      listForId.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+    }
+    // the master definitions decide which version of an unversioned canonical is used when the referencing 
+    // resource has no package (see getByPackage), without them the copy falls back to the latest version
+    masterDefinitions.putAll(source.masterDefinitions);
+    for (Map.Entry<String, List<CachedCanonicalResource<T>>> entry : source.supplements.entrySet()) {
+      supplements.put(entry.getKey(), new ArrayList<>(entry.getValue()));
     }
   }
 
@@ -242,15 +255,22 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
 
     // special case logic for UTG support prior to version 5
-    if (cr.getPackageInfo() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology")) {
-      List<CachedCanonicalResource<T>> toDrop = new ArrayList<>();
-      for (CachedCanonicalResource<T> n : allResources) {
-        if (n.getUrl() != null && n.getUrl().equals(cr.getUrl()) && isBasePackage(n.getPackageInfo())) {
-          toDrop.add(n);
+    // listForUrl holds exactly the same resources as allResources, indexed by url, and drop() keeps the two
+    // in step - so look the url up instead of scanning. Scanning made each hl7.terminology package cost
+    // O(resources already loaded), which is why the THO loads got slower the later they came: the vsac
+    // packages ahead of them add ~70k ValueSets that can never match this url
+    if (cr.getPackageInfo() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology") && cr.getUrl() != null) {
+      List<CachedCanonicalResource<T>> sameUrl = listForUrl.get(cr.getUrl());
+      if (sameUrl != null) {
+        List<CachedCanonicalResource<T>> toDrop = new ArrayList<>();
+        for (CachedCanonicalResource<T> n : sameUrl) {
+          if (isBasePackage(n.getPackageInfo())) {
+            toDrop.add(n);
+          }
         }
-      }
-      for (CachedCanonicalResource<T> n : toDrop) {
-        drop(n);
+        for (CachedCanonicalResource<T> n : toDrop) {
+          drop(n);
+        }
       }
     }
 //    CachedCanonicalResource<T> existing = cr.hasVersion() ? map.get(cr.getUrl()+"|"+cr.getVersion()) : map.get(cr.getUrl()+"|#0");
@@ -359,7 +379,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   private int compareByLoadCount(int o1, int o2) {
-    if (01 == 0 && o2 == 0) {
+    if (o1 == 0 && o2 == 0) {
       return 0;
     } else if (o1 == 0) {
       return 1;

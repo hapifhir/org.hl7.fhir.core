@@ -905,6 +905,59 @@ public class AppointmentResponse extends DomainResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.appointment != null) {
+          visitor.visit(this, "appointment", -1, this.appointment);
+        }
+        if (this.proposedNewTime != null) {
+          visitor.visit(this, "proposedNewTime", -1, this.proposedNewTime);
+        }
+        if (this.start != null) {
+          visitor.visit(this, "start", -1, this.start);
+        }
+        if (this.end != null) {
+          visitor.visit(this, "end", -1, this.end);
+        }
+        if (this.participantTypeList != null) {
+          int i = 0;
+          for (Base v : this.participantTypeList) {
+            if (v != null) {
+              visitor.visit(this, "participantType", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.actor != null) {
+          visitor.visit(this, "actor", -1, this.actor);
+        }
+        if (this.participantStatus != null) {
+          visitor.visit(this, "participantStatus", -1, this.participantStatus);
+        }
+        if (this.comment != null) {
+          visitor.visit(this, "comment", -1, this.comment);
+        }
+        if (this.recurring != null) {
+          visitor.visit(this, "recurring", -1, this.recurring);
+        }
+        if (this.occurrenceDate != null) {
+          visitor.visit(this, "occurrenceDate", -1, this.occurrenceDate);
+        }
+        if (this.recurrenceId != null) {
+          visitor.visit(this, "recurrenceId", -1, this.recurrenceId);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "identifier":  return new Property("identifier", "Identifier", "This records identifiers associated with this appointment response concern that are defined by business processes and/ or used to refer to it when a direct URL reference to the resource itself is not appropriate.", 0, java.lang.Integer.MAX_VALUE, identifierList);

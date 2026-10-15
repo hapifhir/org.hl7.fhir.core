@@ -1167,6 +1167,107 @@ public class GuidanceResponse extends DomainResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.requestIdentifier != null) {
+          visitor.visit(this, "requestIdentifier", -1, this.requestIdentifier);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.module != null) {
+          visitor.visit(this, "module[x]", -1, this.module);
+        }
+        if (this.topicList != null) {
+          int i = 0;
+          for (Base v : this.topicList) {
+            if (v != null) {
+              visitor.visit(this, "topic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.occurrenceDateTime != null) {
+          visitor.visit(this, "occurrenceDateTime", -1, this.occurrenceDateTime);
+        }
+        if (this.performer != null) {
+          visitor.visit(this, "performer", -1, this.performer);
+        }
+        if (this.location != null) {
+          visitor.visit(this, "location", -1, this.location);
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.evaluationMessageList != null) {
+          int i = 0;
+          for (Base v : this.evaluationMessageList) {
+            if (v != null) {
+              visitor.visit(this, "evaluationMessage", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.inputParameters != null) {
+          visitor.visit(this, "inputParameters", -1, this.inputParameters);
+        }
+        if (this.outputParameters != null) {
+          visitor.visit(this, "outputParameters", -1, this.outputParameters);
+        }
+        if (this.indicator != null) {
+          visitor.visit(this, "indicator", -1, this.indicator);
+        }
+        if (this.resultList != null) {
+          int i = 0;
+          for (Base v : this.resultList) {
+            if (v != null) {
+              visitor.visit(this, "result", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.dataRequirementList != null) {
+          int i = 0;
+          for (Base v : this.dataRequirementList) {
+            if (v != null) {
+              visitor.visit(this, "dataRequirement", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "requestIdentifier":  return new Property("requestIdentifier", "Identifier", "The identifier of the request associated with this response. If an identifier was given as part of the request, it will be reproduced here to enable the requester to more easily identify the response in a multi-request scenario.", 0, 1, requestIdentifier);

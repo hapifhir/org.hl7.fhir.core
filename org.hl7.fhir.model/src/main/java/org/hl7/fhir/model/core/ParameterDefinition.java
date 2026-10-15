@@ -504,6 +504,32 @@ public class ParameterDefinition extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.use != null) {
+          visitor.visit(this, "use", -1, this.use);
+        }
+        if (this.min != null) {
+          visitor.visit(this, "min", -1, this.min);
+        }
+        if (this.max != null) {
+          visitor.visit(this, "max", -1, this.max);
+        }
+        if (this.documentation != null) {
+          visitor.visit(this, "documentation", -1, this.documentation);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.profile != null) {
+          visitor.visit(this, "profile", -1, this.profile);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "name":  return new Property("name", "code", "The name of the parameter used to allow access to the value of the parameter in evaluation contexts.", 0, 1, name);

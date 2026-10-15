@@ -18,7 +18,8 @@ public class ParameterDefinition30_50 {
     if (src.hasMin()) tgt.setMinElement(Integer30_50.convertInteger(src.getMinElement()));
     if (src.hasMax()) tgt.setMaxElement(String30_50.convertString(src.getMaxElement()));
     if (src.hasDocumentation()) tgt.setDocumentationElement(String30_50.convertString(src.getDocumentationElement()));
-    if (src.hasType()) tgt.setType(org.hl7.fhir.r5.model.Enumerations.FHIRTypes.fromCode(src.getType()));
+    // R5 renamed Any to Resource
+    if (src.hasType()) tgt.setType(org.hl7.fhir.r5.model.Enumerations.FHIRTypes.fromCode("Any".equals(src.getType()) ? "Resource" : src.getType()));
     if (src.hasProfile()) {
       tgt.setProfile(Reference30_50.convertReference(src.getProfile()).getReference());
     }

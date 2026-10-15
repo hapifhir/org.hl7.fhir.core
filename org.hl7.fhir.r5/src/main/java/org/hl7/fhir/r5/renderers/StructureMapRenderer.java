@@ -12,6 +12,8 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ConceptMap;
@@ -55,14 +57,12 @@ public class StructureMapRenderer extends TerminologyRenderer {
  
   @Override
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    if (r.isDirect()) {
-      renderResourceTechDetails(r, x);
-      genSummaryTable(status, x, (StructureMap) r.getBase());
-      renderMap(status, x.pre("fml"), (StructureMap) r.getBase());      
-    } else {
-      // the intention is to change this in the future
-      x.para().tx("StructureMapRenderer only renders native resources directly");
-    }
+    StructureMap map = r.isDirect()
+        ? (StructureMap) r.getBase()
+        : (StructureMap) new ObjectConverter(context.getContext()).convert((Element) r.getBase());
+    renderResourceTechDetails(r, x);
+    genSummaryTable(status, x, map);
+    renderMap(status, x.pre("fml"), map);
   }
   
   
@@ -86,6 +86,9 @@ public class StructureMapRenderer extends TerminologyRenderer {
     x.tx("\r\n");
     if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
       renderMetadata(x, "url", map.getUrlElement());
+      if (map.hasVersion()) {
+        renderMetadata(x, "version", map.getVersionElement());
+      }
       renderMetadata(x, "name", map.getNameElement());
       if (map.hasTitle()) {
         renderMetadata(x, "title", map.getTitleElement());
@@ -438,7 +441,9 @@ public class StructureMapRenderer extends TerminologyRenderer {
       return false;
     if (t.hasTransform() && t.getTransform() != StructureMapTransform.CREATE)
       return false;
-    return s.getElement().equals(t.getElement());
+    List<String> sourcePath = StructureMapUtilities.elementPath(s);
+    List<String> targetPath = StructureMapUtilities.elementPath(t);
+    return sourcePath.size() == 1 && targetPath.size() == 1 && sourcePath.equals(targetPath);
   }
 
   private static String identityBatchPrefix(StructureMapGroupRuleComponent r) {
@@ -641,11 +646,11 @@ public class StructureMapRenderer extends TerminologyRenderer {
       return false;
     if (!source.get(0).hasElement())
       return false;
-    String s = source.get(0).getElement();
+    String s = StructureMapUtilities.elementPathString(source.get(0));
     if (n.equals(s) || n.equals("\"" + s + "\""))
       return true;
     if (source.get(0).hasType()) {
-      s = source.get(0).getElement() + Utilities.capitalize(source.get(0).getType());
+      s = StructureMapUtilities.elementPathString(source.get(0)) + Utilities.capitalize(source.get(0).getType());
       return n.equals(s) || n.equals("\"" + s + "\"");
     }
     return false;
@@ -676,7 +681,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.color(COLOR_SYNTAX).tx(")");
     } else if (rs.hasElement()) {
       x.tx(".");
-      x.tx(StructureMapUtilities.renderElementName(rs.getElement()));
+      x.tx(StructureMapUtilities.renderElementPath(StructureMapUtilities.elementPath(rs)));
     }
     if (rs.hasType()) {
       x.color(COLOR_SYNTAX).tx(" : ");
@@ -728,7 +733,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.tx(rt.getContext());
       if (rt.hasElement()) {
         x.tx(".");
-        x.tx(StructureMapUtilities.renderElementName(rt.getElement()));
+        x.tx(StructureMapUtilities.renderElementPath(StructureMapUtilities.elementPath(rt)));
       }
     }
     if (!abbreviate && rt.hasTransform()) {

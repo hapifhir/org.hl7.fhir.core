@@ -18,16 +18,29 @@ public class VersionConvertorRegistry {
     registeredConvertors.add(convertor);
   }
 
-  public boolean isHandled(String resourceType, String version) {
-    if (VersionUtilities.isR4Ver(version)) {
+  public boolean isHandled(String resourceType, String sourceVersion, String destVersion) {
+    if (!(VersionUtilities.isR6Ver(sourceVersion) || VersionUtilities.isR5Ver(sourceVersion))) {
+      return false;
+    }
+    boolean r6 = VersionUtilities.isR6Ver(sourceVersion);
+
+    if (VersionUtilities.isR4Ver(destVersion)) {
       for (VersionConvertorIGBase converterIGBase : registeredConvertors) {
-        if (converterIGBase.handlesR5ToR4(resourceType)) {
+        if (r6) {
+          if (converterIGBase.handlesRNToR4(resourceType)) {
+            return true;
+          }
+        } else if (converterIGBase.handlesR5ToR4(resourceType)) {
           return true;
         }
       }
-    } else if (VersionUtilities.isR5Ver(version)) {
+    } else if (VersionUtilities.isR5Ver(destVersion)) {
       for (VersionConvertorIGBase converterIGBase : registeredConvertors) {
-        if (converterIGBase.handlesR5ToR5(resourceType)) {
+        if (r6) {
+          if (converterIGBase.handlesRNToR5(resourceType)) {
+            return true;
+          }
+        } else if (converterIGBase.handlesR5ToR5(resourceType)) {
           return true;
         }
       }
@@ -36,17 +49,15 @@ public class VersionConvertorRegistry {
   }
 
   /**
-   * This method converts from R5 to R5, but it does something very specific: it converts
+   * This method converts from RN to R5, but it does something very specific: it converts
    * from the additional resource definition to whatever is appropriate in R5.
-   *
-   * in the future, this will become an R6 based conversion, not R5
    *
    * @param source
    * @return
    */
   public org.hl7.fhir.r5.model.Resource convertToR5(org.hl7.fhir.model.core.Resource source) {
     for (VersionConvertorIGBase converterIGBase : registeredConvertors) {
-      if (converterIGBase.handlesR5ToR5(source.fhirType())) {
+      if (converterIGBase.handlesRNToR5(source.fhirType())) {
         return converterIGBase.convertRNToR5(source);
       }
     }

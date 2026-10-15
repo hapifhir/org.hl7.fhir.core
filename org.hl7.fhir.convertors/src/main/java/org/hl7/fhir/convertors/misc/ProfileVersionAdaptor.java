@@ -87,13 +87,18 @@ public class ProfileVersionAdaptor {
       for (TypeRefComponent td : ed.getTypeList()) {
         List<CanonicalType> toRemove = new ArrayList<CanonicalType>();
         for (CanonicalType c : td.getTargetProfileList()) {
-          String tp = getCorrectedProfile(c);
+          String tp = ProfileUtilities.isApplicableToVersion(c, tCtxt.getFHIRVersion()) ? getCorrectedProfile(c) : null;
           if (tp == null) {
             log.add(new ConversionMessage("Remove the target profile " + c.getValue() + " from the element " + ed.getIdOrPath(), ConversionMessageStatus.WARNING));
             toRemove.add(c);
           } else if (!tp.equals(c.getValue())) {
             log.add(new ConversionMessage("Change the target profile " + c.getValue() + " to " + tp + " on the element " + ed.getIdOrPath(), ConversionMessageStatus.WARNING));
             c.setValue(tp);
+          }
+          if (tp != null) {
+            // the target applies to the version being produced, so its version range has done its job:
+            // e.g. Media, R4B and earlier, is just an ordinary target in the R4B/R4/R3 versions
+            c.removeExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE);
           }
         }
         td.getTargetProfileList().removeAll(toRemove);
@@ -287,13 +292,18 @@ public class ProfileVersionAdaptor {
       for (TypeRefComponent td : ed.getTypeList()) {
         List<CanonicalType> toRemove = new ArrayList<CanonicalType>();
         for (CanonicalType c : td.getTargetProfileList()) {
-          String tp = getCorrectedProfile(c);
+          String tp = ProfileUtilities.isApplicableToVersion(c, tCtxt.getFHIRVersion()) ? getCorrectedProfile(c) : null;
           if (tp == null) {
             log.add(new ConversionMessage("Remove the target profile "+c.getValue()+" from the element "+ed.getIdOrPath(), ConversionMessageStatus.WARNING));
             toRemove.add(c);
           } else if (!tp.equals(c.getValue())) {
             log.add(new ConversionMessage("Change the target profile "+c.getValue()+" to "+tp+" on the element "+ed.getIdOrPath(), ConversionMessageStatus.WARNING));
             c.setValue(tp);
+          }
+          if (tp != null) {
+            // the target applies to the version being produced, so its version range has done its job:
+            // e.g. Media, R4B and earlier, is just an ordinary target in the R4B/R4/R3 versions
+            c.removeExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE);
           }
         }
         td.getTargetProfileList().removeAll(toRemove);
@@ -475,9 +485,17 @@ public class ProfileVersionAdaptor {
         switch (ctxt.getType()) {
         case ELEMENT:
           // what happens here depends on whether there's version specific mappings.
-          // if they're version specific, we leave everything, but if it's not, we
-          // try guessing.
-          if (!ctxt.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE)) {
+          // if they're version specific, the context is kept as authored when it applies to the
+          // version being produced (and the version range has done its job, so it's removed), and
+          // dropped when it doesn't. If it's not version specific, we try guessing.
+          if (ctxt.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE)) {
+            if (ProfileUtilities.isApplicableToVersion(ctxt, tCtxt.getFHIRVersion())) {
+              ctxt.removeExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE);
+            } else {
+              log.add(new ConversionMessage("Remove the extension context " + ctxt.getExpression() + " (not for this version)", ConversionMessageStatus.WARNING));
+              toRemove.add(ctxt);
+            }
+          } else {
             String newPath = adaptPath(ctxt.getExpression());
             if (newPath == null) {
               log.add(new ConversionMessage("Remove the extension context " + ctxt.getExpression(), ConversionMessageStatus.WARNING));

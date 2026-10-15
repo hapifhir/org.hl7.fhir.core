@@ -317,6 +317,35 @@ public class CDSHookOrderDispatchContext extends CDSHookContext implements IComp
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.patientId != null) {
+          visitor.visit(this, "patientId", -1, this.patientId);
+        }
+        if (this.dispatchedOrdersList != null) {
+          int i = 0;
+          for (Base v : this.dispatchedOrdersList) {
+            if (v != null) {
+              visitor.visit(this, "dispatchedOrders", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.performer != null) {
+          visitor.visit(this, "performer", -1, this.performer);
+        }
+        if (this.fulfillmentTasksList != null) {
+          int i = 0;
+          for (Base v : this.fulfillmentTasksList) {
+            if (v != null) {
+              visitor.visit(this, "fulfillmentTasks", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "patientId":  return new Property("patientId", "id", "The FHIR Patient.id of the current patient in context", 0, 1, patientId);

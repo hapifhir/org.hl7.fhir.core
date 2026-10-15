@@ -555,6 +555,47 @@ public class Endpoint extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.typeList != null) {
+            int i = 0;
+            for (Base v : this.typeList) {
+              if (v != null) {
+                visitor.visit(this, "type", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.mimeTypeList != null) {
+            int i = 0;
+            for (Base v : this.mimeTypeList) {
+              if (v != null) {
+                visitor.visit(this, "mimeType", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.profileCanonicalList != null) {
+            int i = 0;
+            for (Base v : this.profileCanonicalList) {
+              if (v != null) {
+                visitor.visit(this, "profileCanonical", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.profileUriList != null) {
+            int i = 0;
+            for (Base v : this.profileUriList) {
+              if (v != null) {
+                visitor.visit(this, "profileUri", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The payload type describes the acceptable content that can be communicated on the endpoint.", 0, java.lang.Integer.MAX_VALUE, typeList);
@@ -1485,6 +1526,86 @@ public class Endpoint extends DomainResource {
         children.add(new Property("payload", "", "The set of payloads that are provided/available at this endpoint.", 0, java.lang.Integer.MAX_VALUE, payloadList));
         children.add(new Property("address", "url", "The uri that describes the actual end-point to connect to.", 0, 1, address));
         children.add(new Property("header", "string", "Additional headers / information to send when connecting to the endpoint.", 0, java.lang.Integer.MAX_VALUE, headerList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.connectionTypeList != null) {
+          int i = 0;
+          for (Base v : this.connectionTypeList) {
+            if (v != null) {
+              visitor.visit(this, "connectionType", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.environmentTypeList != null) {
+          int i = 0;
+          for (Base v : this.environmentTypeList) {
+            if (v != null) {
+              visitor.visit(this, "environmentType", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.managingOrganization != null) {
+          visitor.visit(this, "managingOrganization", -1, this.managingOrganization);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.availability != null) {
+          visitor.visit(this, "availability", -1, this.availability);
+        }
+        if (this.payloadList != null) {
+          int i = 0;
+          for (Base v : this.payloadList) {
+            if (v != null) {
+              visitor.visit(this, "payload", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.address != null) {
+          visitor.visit(this, "address", -1, this.address);
+        }
+        if (this.headerList != null) {
+          int i = 0;
+          for (Base v : this.headerList) {
+            if (v != null) {
+              visitor.visit(this, "header", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

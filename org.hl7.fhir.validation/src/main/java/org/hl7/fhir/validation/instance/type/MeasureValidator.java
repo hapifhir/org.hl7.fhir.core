@@ -11,13 +11,11 @@ import java.util.List;
 import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.services.elementmodel.ElementUtilities;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.elementmodel.JsonParser;
 import org.hl7.fhir.services.elementmodel.ObjectConverter;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
-import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.model.core.Measure.MeasureGroupComponent;
 import org.hl7.fhir.model.core.Measure.MeasureGroupPopulationComponent;
@@ -52,7 +50,7 @@ public class MeasureValidator extends BaseValidator {
     for (Element lib : libs) {
       String ref = lib.isPrimitive() ? lib.primitiveValue() : lib.getChildValue("reference");
       if (!Utilities.noString(ref)) {
-        Library l = context.fetchResource(Library.class, ref, ElementUtilities.getVersionResolutionRules(lib));
+        Library l = context.fetchResource(Library.class, ref, ElementModelUtilities.getVersionResolutionRules(lib));
         if (hint(errors, NO_RULE_DATE, IssueType.NOTFOUND, lib.line(), lib.col(), stack.getLiteralPath(), l != null, I18nConstants.MEASURE_M_LIB_UNKNOWN, ref)) {
           mctxt.seeLibrary(l);
         }

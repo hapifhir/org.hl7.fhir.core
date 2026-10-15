@@ -416,6 +416,17 @@ public class DiagnosticReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The code value for the role of the supporting information in the diagnostic report.", 0, 1, type);
@@ -687,6 +698,17 @@ public class DiagnosticReport extends DomainResource {
           super.listChildren(children);
           children.add(new Property("comment", "string", "A comment about the image or data. Typically, this is used to provide an explanation for why the image or data is included, or to draw the viewer's attention to important features.", 0, 1, comment));
           children.add(new Property("link", "Reference(DocumentReference)", "Reference to the image or data source.", 0, 1, link));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.comment != null) {
+            visitor.visit(this, "comment", -1, this.comment);
+          }
+          if (this.link != null) {
+            visitor.visit(this, "link", -1, this.link);
+          }
         }
 
         @Override
@@ -2354,6 +2376,194 @@ public class DiagnosticReport extends DomainResource {
         children.add(new Property("presentedForm", "Attachment", "Rich text representation of the entire result as issued by the diagnostic service. Multiple formats are allowed but they SHALL be semantically equivalent.", 0, java.lang.Integer.MAX_VALUE, presentedFormList));
         children.add(new Property("communication", "Reference(Communication)", "Communications initiated during the generation of the DiagnosticReport by members of the organization fulfilling that order. e.g. direct communication of time critical results by the radiologist to the referring physician.", 0, java.lang.Integer.MAX_VALUE, communicationList));
         children.add(new Property("comparison", "Reference(List)", "Prior data and findings made available for comparison when determining the current interpretation.", 0, 1, comparison));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReason != null) {
+          visitor.visit(this, "statusReason", -1, this.statusReason);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.relatesToList != null) {
+          int i = 0;
+          for (Base v : this.relatesToList) {
+            if (v != null) {
+              visitor.visit(this, "relatesTo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.effective != null) {
+          visitor.visit(this, "effective[x]", -1, this.effective);
+        }
+        if (this.issued != null) {
+          visitor.visit(this, "issued", -1, this.issued);
+        }
+        if (this.procedureList != null) {
+          int i = 0;
+          for (Base v : this.procedureList) {
+            if (v != null) {
+              visitor.visit(this, "procedure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.performerList != null) {
+          int i = 0;
+          for (Base v : this.performerList) {
+            if (v != null) {
+              visitor.visit(this, "performer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.resultsInterpreterList != null) {
+          int i = 0;
+          for (Base v : this.resultsInterpreterList) {
+            if (v != null) {
+              visitor.visit(this, "resultsInterpreter", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.specimenList != null) {
+          int i = 0;
+          for (Base v : this.specimenList) {
+            if (v != null) {
+              visitor.visit(this, "specimen", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.resultList != null) {
+          int i = 0;
+          for (Base v : this.resultList) {
+            if (v != null) {
+              visitor.visit(this, "result", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.studyList != null) {
+          int i = 0;
+          for (Base v : this.studyList) {
+            if (v != null) {
+              visitor.visit(this, "study", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.supportingInfoList != null) {
+          int i = 0;
+          for (Base v : this.supportingInfoList) {
+            if (v != null) {
+              visitor.visit(this, "supportingInfo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.mediaList != null) {
+          int i = 0;
+          for (Base v : this.mediaList) {
+            if (v != null) {
+              visitor.visit(this, "media", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.composition != null) {
+          visitor.visit(this, "composition", -1, this.composition);
+        }
+        if (this.conclusion != null) {
+          visitor.visit(this, "conclusion", -1, this.conclusion);
+        }
+        if (this.conclusionCodeList != null) {
+          int i = 0;
+          for (Base v : this.conclusionCodeList) {
+            if (v != null) {
+              visitor.visit(this, "conclusionCode", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.recommendationList != null) {
+          int i = 0;
+          for (Base v : this.recommendationList) {
+            if (v != null) {
+              visitor.visit(this, "recommendation", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.presentedFormList != null) {
+          int i = 0;
+          for (Base v : this.presentedFormList) {
+            if (v != null) {
+              visitor.visit(this, "presentedForm", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.communicationList != null) {
+          int i = 0;
+          for (Base v : this.communicationList) {
+            if (v != null) {
+              visitor.visit(this, "communication", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.comparison != null) {
+          visitor.visit(this, "comparison", -1, this.comparison);
+        }
       }
 
       @Override

@@ -395,6 +395,29 @@ public class RelativeTime extends BackboneType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.contextReference != null) {
+          visitor.visit(this, "contextReference", -1, this.contextReference);
+        }
+        if (this.contextDefinition != null) {
+          visitor.visit(this, "contextDefinition", -1, this.contextDefinition);
+        }
+        if (this.contextPath != null) {
+          visitor.visit(this, "contextPath", -1, this.contextPath);
+        }
+        if (this.contextCode != null) {
+          visitor.visit(this, "contextCode", -1, this.contextCode);
+        }
+        if (this.offset != null) {
+          visitor.visit(this, "offset[x]", -1, this.offset);
+        }
+        if (this.text != null) {
+          visitor.visit(this, "text", -1, this.text);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "contextReference":  return new Property("contextReference", "Reference(Any)", "The specific event occurrence or resource context used as a base point (reference point) in time.  This establishes the context in which the 'path' is evaluated.", 0, 1, contextReference);

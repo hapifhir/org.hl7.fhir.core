@@ -44,6 +44,7 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import ca.uhn.fhir.model.base.composite.BaseQuantityDt;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.fhir.ucum.UcumEssenceService;
@@ -74,7 +75,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
 
-public class TestingUtilities {
+public class TestingUtilities extends BaseTestingUtilities {
   private static final boolean SHOW_DIFF = false;
 
   static public IWorkerContext fcontext;
@@ -221,8 +222,8 @@ public class TestingUtilities {
         if (ta == null)
           return "Attributes differ at " + path + ": missing attribute " + sn;
         if (!normalise(sa.getTextContent()).equals(normalise(ta.getTextContent()))) {
-          byte[] b1 = unBase64(sa.getTextContent());
-          byte[] b2 = unBase64(ta.getTextContent());
+          byte[] b1 = unBase64(sa.getTextContent(), true, false);
+          byte[] b2 = unBase64(ta.getTextContent(), true, false);
           if (!sameBytes(b1, b2))
             return "Attributes differ at " + path + ": value " + normalise(sa.getTextContent()) + "/"
                 + normalise(ta.getTextContent());
@@ -241,10 +242,6 @@ public class TestingUtilities {
       if (b1[i] != b2[i])
         return false;
     return true;
-  }
-
-  private static byte[] unBase64(String text) {
-    return Base64.decodeBase64(text);
   }
 
   private static Node skipBlankText(Node node) {
@@ -380,7 +377,7 @@ public class TestingUtilities {
         String s2 = p2.getAsString();
         if (!(s1.contains("<div") && s2.contains("<div")))
           if (!s1.equals(s2))
-            if (!sameBytes(unBase64(s1), unBase64(s2)))
+            if (!sameBytes(unBase64(s1, true, false), unBase64(s2, true, false)))
               return "string property values differ at " + path + ": type " + s1 + "/" + s2;
       } else if (p1.isNumber() && p2.isNumber()) {
         if (!p1.getAsString().equals(p2.getAsString()))

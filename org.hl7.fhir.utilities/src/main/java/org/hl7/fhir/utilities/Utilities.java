@@ -1882,39 +1882,49 @@ public class Utilities {
    * Decode FHIR base64Binary content.
    *
    * FHIR says that base64Binary content does not include whitespace, but that readers should ignore it
-   * (per RFC 4648), and before R5 line-wrapped content was common. So whitespace is skipped, but otherwise
-   * this is as strict as {@link Base64#getDecoder()}: illegal characters, bad padding and content after
-   * the padding all throw an IllegalArgumentException with the JDK's message. (Don't use the MIME decoder
-   * or commons-codec for this: they skip whitespace, but they also silently skip every other illegal
-   * character, so they will "decode" any string at all.)
+   * (per RFC 4648), and before R5 line-wrapped content was common. So whitespace is always skipped.
+   *
+   * What happens to other characters that are not valid base64 depends on stripInvalid:
+   * <ul>
+   *   <li>false: this is as strict as {@link Base64#getDecoder()}: illegal characters, bad padding and
+   *     content after the padding all throw an IllegalArgumentException with the JDK's message</li>
+   *   <li>true: every character that is not in the base64 alphabet (A-Z, a-z, 0-9, '+', '/') or the
+   *     padding character '=' is skipped, like whitespace. Padding is still checked: bad padding and
+   *     content after the padding still throw, as does content that is the wrong length once the
+   *     invalid characters are gone</li>
+   * </ul>
+   * (Don't use the MIME decoder or commons-codec as a substitute for stripInvalid = true: they skip illegal
+   * characters, but are also lax about padding and trailing content, so they will "decode" any string at all.)
    *
    * This costs no more than Base64.getDecoder().decode(String), which copies the string into a byte[]
-   * before decoding anyway; this just makes that copy itself and leaves the whitespace out. When there
-   * is no whitespace, it is exactly that call. Note that when there is whitespace, the offset in a
-   * 'incorrect ending byte at n' message is into the content without the whitespace.
+   * before decoding anyway; this just makes that copy itself and leaves the skipped characters out. When
+   * there is nothing to skip, it is exactly that call. Note that when characters are skipped, the offset
+   * in a 'incorrect ending byte at n' message is into the content without them.
    *
    * @param value the base64 content
+   * @param stripInvalid true to skip all characters that are not valid base64, not just whitespace
    * @return the decoded bytes
-   * @throws IllegalArgumentException if the content is not valid base64
+   * @throws IllegalArgumentException if the content is not valid base64 (after skipping)
    */
-  public static byte[] decodeBase64(String value) {
+  public static byte[] decodeBase64(String value, boolean stripInvalid) {
     int len = value.length();
-    int ws = 0;
+    int skip = 0;
     for (int i = 0; i < len; i++) {
-      if (isBase64Whitespace(value.charAt(i))) {
-        ws++;
+      if (isSkippedInBase64(value.charAt(i), stripInvalid)) {
+        skip++;
       }
     }
-    if (ws == 0) {
+    if (skip == 0) {
       return Base64.getDecoder().decode(value);
     }
-    byte[] src = new byte[len - ws];
+    byte[] src = new byte[len - skip];
     int n = 0;
     for (int i = 0; i < len; i++) {
       char ch = value.charAt(i);
-      if (!isBase64Whitespace(ch)) {
+      if (!isSkippedInBase64(ch, stripInvalid)) {
         // a non-ASCII character is never valid base64. Map it to a character that isn't either, rather
-        // than letting the cast truncate it into one that is (U+0141 would become 'A')
+        // than letting the cast truncate it into one that is (U+0141 would become 'A'). (When stripInvalid
+        // is true, non-ASCII characters have already been skipped)
         src[n++] = ch < 0x80 ? (byte) ch : (byte) '?';
       }
     }
@@ -1922,11 +1932,23 @@ public class Utilities {
   }
 
   /**
-   * The whitespace that is skipped in base64 content: the ASCII whitespace (space, tab, LF, VT, FF, CR) -
-   * the same characters that {@link #isWhitespace(int)} accepts below 0x80.
+   * Whether a character is left out of base64 content before it is decoded: always the ASCII whitespace
+   * (space, tab, LF, VT, FF, CR - the same characters that {@link #isWhitespace(int)} accepts below 0x80),
+   * and, if stripInvalid, anything else that isn't in the base64 alphabet or '='.
    */
+  private static boolean isSkippedInBase64(char ch, boolean stripInvalid) {
+    return stripInvalid ? !isBase64Char(ch) : isBase64Whitespace(ch);
+  }
+
   private static boolean isBase64Whitespace(char ch) {
     return ch == ' ' || (ch >= 0x09 && ch <= 0x0D);
+  }
+
+  /**
+   * The base64 alphabet (RFC 4648 table 1, not the URL safe one) plus the padding character
+   */
+  private static boolean isBase64Char(char ch) {
+    return (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9') || ch == '+' || ch == '/' || ch == '=';
   }
 
   // from https://en.wikipedia.org/wiki/Whitespace_character#Unicode  

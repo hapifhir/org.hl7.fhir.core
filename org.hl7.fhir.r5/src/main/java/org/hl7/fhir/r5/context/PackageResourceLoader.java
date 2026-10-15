@@ -4,7 +4,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.PackageInformation;
-import org.hl7.fhir.r5.utils.R5Hacker;
+import org.hl7.fhir.r5.utils.PackageHackerR5;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
@@ -31,9 +31,9 @@ public class PackageResourceLoader extends CanonicalResourceProxy {
       FileInputStream f = ManagedFileAccess.inStream(filename);
       try {
         if (loader != null) {
-          return setPi(R5Hacker.fixR5BrokenResource((CanonicalResource) loader.loadResource(f, true)));
+          return setPi(PackageHackerR5.fixLoadedResource((CanonicalResource) loader.loadResource(f, true)));
         } else {
-          return setPi(R5Hacker.fixR5BrokenResource((CanonicalResource) new JsonParser().parse(f)));
+          return setPi(PackageHackerR5.fixLoadedResource((CanonicalResource) new JsonParser().parse(f)));
         }
       } finally {
         f.close();

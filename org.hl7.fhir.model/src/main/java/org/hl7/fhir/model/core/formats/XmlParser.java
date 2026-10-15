@@ -25653,6 +25653,9 @@ public class XmlParser extends XmlParserBase {
       throw new IOException("prefix == null!");
     } else if (xpp == null) {
       throw new IOException("xpp == null!");
+    } else if (!xpp.getName().startsWith(prefix)) {
+      // all the names below start with the prefix, so if this one does not, there is no need to try them
+      return false;
     } else if (xpp.getName().equals(prefix+"RatioRange")) {
       return true;
     } else if (xpp.getName().equals(prefix+"Quantity")) {
@@ -28147,7 +28150,7 @@ public class XmlParser extends XmlParserBase {
   protected void composeReferenceElements(Reference element) throws IOException {
     composeDataTypeElements(element);
     if (element.hasReferenceElement()) {
-      composeString("reference", element.getReferenceElement());
+      composeString("reference", element.getReferenceElement_());
     }
     if (element.hasTypeElement()) {
       composeUri("type", element.getTypeElement());

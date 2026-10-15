@@ -10,11 +10,11 @@ import org.hl7.fhir.r4.model.Expression;
 import org.hl7.fhir.r4.model.Extension;
 
 public final class ExpressionAdvisor40 extends BaseAdvisor_10_40 {
-  public boolean useAdvisorForExtension(@Nonnull String path, @Nonnull Extension ext) throws FHIRException {
+  public boolean useAdvisorForExtension(@Nonnull Extension ext) throws FHIRException {
     return ext.hasValue() && ext.getValue() instanceof Expression;
   }
 
-  public void handleExtension(@Nonnull String path, @Nonnull Extension src, @Nonnull org.hl7.fhir.dstu2.model.Extension tgt) throws FHIRException {
+  public void handleExtension(@Nonnull Extension src, @Nonnull org.hl7.fhir.dstu2.model.Extension tgt) throws FHIRException {
     if (src.getValue() instanceof Expression) {
       StringType type = new StringType();
       if (src.getValue() == null) {

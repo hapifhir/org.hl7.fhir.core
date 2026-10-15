@@ -194,6 +194,36 @@ public class JsonTrackingParser {
       }
     }
     
+    /**
+     * Inside a string, appends the characters up to the next quote, backslash or
+     * line break to the token in one go. getNextChar() would return each of them
+     * in turn, add one to the column, and the caller would append it as is.
+     *
+     * Leaves the cursor on the last character copied, so the next getNextChar()
+     * returns the quote, backslash or line break. Does nothing if there are
+     * pushed back characters, so they are still read first.
+     */
+    private void copyPlainChars() {
+      if (peek != null) {
+        return;
+      }
+      int start = cursor + 1;
+      int end = start;
+      int len = source.length();
+      while (end < len) {
+        char c = source.charAt(end);
+        if (c == '"' || c == '\\' || c == '\n') {
+          break;
+        }
+        end++;
+      }
+      if (end > start) {
+        b.append(source, start, end);
+        location.col += end - start;
+        cursor = end - 1;
+      }
+    }
+
     private void push(char ch){
     	peek = peek == null ? String.valueOf(ch) : String.valueOf(ch)+peek;
     }
@@ -266,7 +296,7 @@ public class JsonTrackingParser {
     		    push(ch1);
     		  }    		  
     		}
-    	} while (more() && Utilities.charInSet(ch, ' ', '\r', '\n', '\t'));
+    	} while (more() && (ch == ' ' || ch == '\r' || ch == '\n' || ch == '\t'));
     	lastLocationAWS = location.copy();
 
     	if (!more()) {
@@ -283,6 +313,7 @@ public class JsonTrackingParser {
     			type = TokenType.String;
     			b.setLength(0);
     			do {
+    				copyPlainChars();
     				ch = getNextChar();
     				if (ch == '\\') {
     					ch = getNextChar();
@@ -363,6 +394,9 @@ public class JsonTrackingParser {
   private String itemValue;
   private boolean errorOnDuplicates = true;
   private boolean allowComments = false;
+
+  private static final int MAX_JSON_DEPTH = 500;
+  private int parseDepth = 0;
 
   public static JsonObject parseJson(String source) throws IOException {
     return parse(source, null);
@@ -450,6 +484,13 @@ public class JsonTrackingParser {
   }
 
 	private void readObject(JsonObject obj, boolean root) throws IOException {
+    parseDepth++;
+    try {
+      // guard against unbounded recursion in readObject/readArray (mutually recursive on nested
+      // objects/arrays) on deeply nested JSON, which would otherwise cause a StackOverflowError.
+      if (parseDepth > MAX_JSON_DEPTH) {
+        throw lexer.error("Exceeded maximum JSON nesting depth of " + MAX_JSON_DEPTH);
+      }
 	  if (map != null)
       map.put(obj, lexer.location.copy());
 
@@ -524,9 +565,19 @@ public class JsonTrackingParser {
 			}
 			next();
 		}
+	  } finally {
+	    parseDepth--;
+	  }
 	}
 
 	private boolean readArray(JsonArray arr, boolean root) throws IOException {
+    parseDepth++;
+    try {
+      // guard against unbounded recursion in readObject/readArray (mutually recursive on nested
+      // objects/arrays) on deeply nested JSON, which would otherwise cause a StackOverflowError.
+      if (parseDepth > MAX_JSON_DEPTH) {
+        throw lexer.error("Exceeded maximum JSON nesting depth of " + MAX_JSON_DEPTH);
+      }
 	  boolean res = false;
 	  while (!((itemType == ItemType.End) || (root && (itemType == ItemType.Eof)))) {
 	    res  = true;
@@ -577,6 +628,9 @@ public class JsonTrackingParser {
 	    next();
 	  }
 	  return res;
+	  } finally {
+	    parseDepth--;
+	  }
 	}
 
   private void next() throws IOException {

@@ -189,6 +189,14 @@ public class CommunicationRequest extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.content != null) {
+            visitor.visit(this, "content[x]", -1, this.content);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "content[x]":  return new Property("content[x]", "Attachment|Reference(Any)|CodeableConcept|string", "The content (or for multi-part communications, one portion of the communication) to be communicated.", 0, 1, content);
@@ -1563,6 +1571,143 @@ public class CommunicationRequest extends DomainResource {
         children.add(new Property("informationProvider", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|HealthcareService|Endpoint|Group)", "The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.", 0, java.lang.Integer.MAX_VALUE, informationProviderList));
         children.add(new Property("reason", "CodeableReference(Any)", "Describes why the request is being made in coded or textual form.", 0, java.lang.Integer.MAX_VALUE, reasonList));
         children.add(new Property("note", "Annotation", "Comments made about the request by the requester, sender, recipient, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, noteList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.replacesList != null) {
+          int i = 0;
+          for (Base v : this.replacesList) {
+            if (v != null) {
+              visitor.visit(this, "replaces", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.groupIdentifier != null) {
+          visitor.visit(this, "groupIdentifier", -1, this.groupIdentifier);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReason != null) {
+          visitor.visit(this, "statusReason", -1, this.statusReason);
+        }
+        if (this.intent != null) {
+          visitor.visit(this, "intent", -1, this.intent);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.priority != null) {
+          visitor.visit(this, "priority", -1, this.priority);
+        }
+        if (this.doNotPerform != null) {
+          visitor.visit(this, "doNotPerform", -1, this.doNotPerform);
+        }
+        if (this.mediumList != null) {
+          int i = 0;
+          for (Base v : this.mediumList) {
+            if (v != null) {
+              visitor.visit(this, "medium", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.aboutList != null) {
+          int i = 0;
+          for (Base v : this.aboutList) {
+            if (v != null) {
+              visitor.visit(this, "about", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.payloadList != null) {
+          int i = 0;
+          for (Base v : this.payloadList) {
+            if (v != null) {
+              visitor.visit(this, "payload", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.occurrence != null) {
+          visitor.visit(this, "occurrence[x]", -1, this.occurrence);
+        }
+        if (this.authoredOn != null) {
+          visitor.visit(this, "authoredOn", -1, this.authoredOn);
+        }
+        if (this.requester != null) {
+          visitor.visit(this, "requester", -1, this.requester);
+        }
+        if (this.recipientList != null) {
+          int i = 0;
+          for (Base v : this.recipientList) {
+            if (v != null) {
+              visitor.visit(this, "recipient", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.informationProviderList != null) {
+          int i = 0;
+          for (Base v : this.informationProviderList) {
+            if (v != null) {
+              visitor.visit(this, "informationProvider", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

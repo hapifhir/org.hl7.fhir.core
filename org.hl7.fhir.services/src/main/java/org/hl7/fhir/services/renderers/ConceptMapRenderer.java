@@ -15,6 +15,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -24,6 +25,39 @@ import java.util.*;
 
 
 public class ConceptMapRenderer extends TerminologyRenderer {
+
+  private static final String CS_CONCEPT_MAP_RELATIONSHIP = "http://hl7.org/fhir/concept-map-relationship";
+  private static final String CS_CONCEPT_MAP_EQUIVALENCE = "http://hl7.org/fhir/concept-map-equivalence";
+
+  /**
+   * Holds the code systems that own the codes rendered in a relationship column. The primary code
+   * system is resolved eagerly and follows the context version gate: relationship for R5 and later,
+   * equivalence for earlier versions. The equivalence one is resolved lazily, only when a legacy
+   * equivalence extension row is actually encountered, and then memoized so a context without it is
+   * probed at most once.
+   */
+  private class RelationshipCodeSystems {
+    private final boolean r5Plus;
+    private final CodeSystem primary;
+    private boolean equivalenceResolved;
+    private CodeSystem equivalence;
+
+    private RelationshipCodeSystems() {
+      r5Plus = VersionUtilities.isR5Plus(context.getContext().getFHIRVersion());
+      primary = getContext().getWorker().fetchCodeSystem(r5Plus ? CS_CONCEPT_MAP_RELATIONSHIP : CS_CONCEPT_MAP_EQUIVALENCE, VersionResolutionRules.defaultRule());
+    }
+
+    private CodeSystem equivalence() {
+      if (!r5Plus) {
+        return primary;
+      }
+      if (!equivalenceResolved) {
+        equivalence = getContext().getWorker().fetchCodeSystem(CS_CONCEPT_MAP_EQUIVALENCE, VersionResolutionRules.defaultRule());
+        equivalenceResolved = true;
+      }
+      return equivalence;
+    }
+  }
 
 
   public ConceptMapRenderer(RenderingContext context) { 
@@ -339,10 +373,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     x.br();
     int gc = 0;
 
-    CodeSystem cs = VersionUtilities.isR5Plus(context.getContext().getFHIRVersion()) ?
-      getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship", VersionResolutionRules.defaultRule()) :
-      getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence", VersionResolutionRules.defaultRule());
-    String eqpath = cs == null ? null : cs.getWebPath();
+    RelationshipCodeSystems eqcs = new RelationshipCodeSystems();
 
     for (ConceptMapGroupComponent grp : cm.getGroupList()) {
       boolean hasComment = false;
@@ -383,9 +414,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       StructureDefinition sdSrc = findSourceStructure(grp.getSource(), grp.getSourceElement());
       StructureDefinition sdTgt = findSourceStructure(grp.getTarget(), grp.getTargetElement());
       if (sdSrc != null && sdTgt != null) {
-        renderModelMap(sdSrc, sdTgt, status, res, x, gc, eqpath, grp, hasComment, isSimple, props, sources, targets, cm.getGroupList().size() > 1);
+        renderModelMap(sdSrc, sdTgt, status, res, x, gc, eqcs, grp, hasComment, isSimple, props, sources, targets, cm.getGroupList().size() > 1);
       } else {
-        renderCodeSystemMap(status, res, x, gc, eqpath, grp, hasComment, isSimple, props, sources, targets, cm.getGroupList().size() > 1);
+        renderCodeSystemMap(status, res, x, gc, eqcs, grp, hasComment, isSimple, props, sources, targets, cm.getGroupList().size() > 1);
       }
     }
   }
@@ -398,7 +429,63 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     return sd;
   }
 
-  private void renderModelMap(StructureDefinition sdSrc, StructureDefinition sdTgt, RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, String eqpath,
+  /**
+   * Builds the relationship-column href. Returns null - so the cell is rendered unlinked - when
+   * the code system can't be resolved or has no web path to link to.
+   */
+  private String codeHref(CodeSystem cs, String code) {
+    if (cs == null || !cs.hasWebPath()) {
+      return null;
+    }
+    return context.prefixLocalHref(cs.getWebPath() + "#" + cs.getId() + "-" + Utilities.nmtokenize(code));
+  }
+
+  /**
+   * Builds the href of an element in the page of a StructureDefinition, or null - so the cell is
+   * rendered unlinked - when the StructureDefinition has no web path. The anchor depends on what
+   * made the page:
+   * <ul>
+   * <li>a web path that already has a fragment (core spec datatypes: datatypes.html#Quantity) - the
+   *   page section, since there's no element anchor to add to it</li>
+   * <li>core spec resources and datatypes - the definitions page, #Observation.value_x_ (the same in
+   *   STU3 through R5)</li>
+   * <li>core spec profiles - the definitions page, #vitalsigns.Observation.value[x] (the profile id
+   *   prefixes the element id, and [x] is not replaced)</li>
+   * <li>anything else is taken to be an IG publisher page - the snapshot structure table,
+   *   #s-Observation.value_x_. IGs published before mid 2024 have no 's-' prefix, so the link
+   *   lands at the top of the page</li>
+   * </ul>
+   */
+  private String elementHref(StructureDefinition sd, String id) {
+    if (!sd.hasWebPath()) {
+      return null;
+    }
+    String path = sd.getWebPath();
+    if (path.contains("#")) {
+      return path;
+    }
+    if (sd.hasSourcePackage() && sd.getSourcePackage().isCore() && path.endsWith(".html")) {
+      String defns = path.substring(0, path.length() - 5) + "-definitions.html";
+      if (sd.getDerivation() == StructureDefinition.TypeDerivationRule.CONSTRAINT) {
+        return defns + "#" + sd.getId() + "." + id;
+      } else {
+        return defns + "#" + id.replace("[", "_").replace("]", "_");
+      }
+    }
+    return path + "#s-" + id.replace("[", "_").replace("]", "_");
+  }
+
+  private void renderRelationshipCell(XhtmlNode td, TargetElementComponent ccm, RelationshipCodeSystems eqcs) {
+    if (ccm.hasExtension(ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+      String code = ExtensionUtilities.readStringExtension(ccm, ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+      td.ahOrNot(codeHref(eqcs.equivalence(), code), code).tx(presentEquivalenceCode(code));
+    } else {
+      String code = ccm.getRelationship().toCode();
+      td.ahOrNot(codeHref(eqcs.primary, code), code).tx(presentRelationshipCode(code));
+    }
+  }
+
+  private void renderModelMap(StructureDefinition sdSrc, StructureDefinition sdTgt, RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, RelationshipCodeSystems eqcs,
       ConceptMapGroupComponent grp, boolean hasComment, boolean ok,
       Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets, boolean hasMultipleGroups)
       throws UnsupportedEncodingException, IOException {
@@ -428,9 +515,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         if (edSrc == null) {        
           tr.td().colspan(3).addText(ccl.getCode());
         } else {
-          tr.td().ah(sdSrc.getWebPath()+"#s-"+ccl.getCode()).tx(ccl.getCode());
+          tr.td().ah(elementHref(sdSrc, ccl.getCode())).tx(ccl.getCode());
           tr.td().tx(""+edSrc.getMin()+".."+edSrc.getMax());
-          tr.td().tx("todo");
+          tr.td().tx(edSrc.typeSummary());
         }
 
       if (ccl.getNoMap()) {
@@ -449,25 +536,20 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             first = false;
           } else {
             tr = tbl.tr();
-            tr.td().colspan(3).style(context.getOpacity()).addText("\"");
+            tr.td().colspan(3).style("opacity: "+ HierarchicalTableGenerator.STANDARD_OPACITY).addText("\"");
           }
           if (!ccm.hasRelationship()) {
             tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
           } else {
-            if (ccm.hasExtension(ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-              String code = ExtensionUtilities.readStringExtension(ccm, ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-              tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
-            } else {
-              tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
-            }
+            renderRelationshipCell(tr.td(), ccm, eqcs);
           }
           ElementDefinition edTgt = sdTgt.getSnapshot().getElementById(ccm.getCode());
           if (edTgt == null) {        
             tr.td().colspan(3).addText(ccm.getCode());
           } else {
-            tr.td().ah(sdTgt.getWebPath()+"#s-"+ccm.getCode()).tx(ccm.getCode());
+            tr.td().ah(elementHref(sdTgt, ccm.getCode())).tx(ccm.getCode());
             tr.td().tx(""+edTgt.getMin()+".."+edTgt.getMax());
-            tr.td().tx("todo");
+            tr.td().tx(edTgt.typeSummary());
           }
   
           if (hasComment)
@@ -477,7 +559,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     }
   }
   
-  private void renderCodeSystemMap(RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, String eqpath,
+  private void renderCodeSystemMap(RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, RelationshipCodeSystems eqcs,
       ConceptMapGroupComponent grp, boolean hasComment, boolean isSimple,
       Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets, boolean hasMultipleGroups)
       throws UnsupportedEncodingException, IOException {
@@ -533,17 +615,12 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               first = false;
             } else {
               tr = tbl.tr();
-              tr.td().style(context.getOpacity()).tx("\"");
+              tr.td().style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY).tx("\"");
             }
             if (!ccm.hasRelationship())
               tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
             else {
-              if (ccm.hasExtension(ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-                String code = ExtensionUtilities.readStringExtension(ccm, ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                tr.td().ah(context.prefixLocalHref(eqpath+"#concept-map-equivalence-"+code), code).tx(presentEquivalenceCode(code));
-              } else {
-                tr.td().ah(context.prefixLocalHref(eqpath+"#concept-map-relationship-"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
-              }
+              renderRelationshipCell(tr.td(), ccm, eqcs);
             }
             td = tr.td();
             td.addText(ccm.getCode());
@@ -688,12 +765,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               if (!ccm.hasRelationship())
                 tr.td();
               else {
-                if (ccm.hasExtension(ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-                  String code = ExtensionUtilities.readStringExtension(ccm, ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                  tr.td().ah(context.prefixLocalHref(eqpath+"#"+code), code).tx(presentEquivalenceCode(code));                
-                } else {
-                  tr.td().ah(context.prefixLocalHref(eqpath+"#"+ccm.getRelationship().toCode()), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
-                }
+                renderRelationshipCell(tr.td(), ccm, eqcs);
               }
             }
             td = tr.td().style("border-right-width: 0px");
@@ -791,7 +863,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       return "maps to wider concept";
     } else if ("subsumes".equals(code)) {
       return "is subsumed by";
-    } else if ("source-is-broader-than-target".equals(code)) {
+    } else if ("narrower".equals(code)) {
       return "maps to narrower concept";
     } else if ("specializes".equals(code)) {
       return "has specialization";
