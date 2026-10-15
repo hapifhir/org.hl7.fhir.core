@@ -3681,8 +3681,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, matches, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE_ALT, elementValue, ptFmt, e.fhirType(), regext) && ok;
                 }
               }
-            } catch (TimeoutException te) {
-              ok = rule(errors, "2026-04-30", IssueType.EXCEPTION, e.line(), e.col(), path, false, I18nConstants.REGEX_MATCH_TIMED_OUT, regex) && ok;
+            } catch (java.util.concurrent.TimeoutException te) {
+              ok = rule(errors, "2026-04-30", IssueType.EXCEPTION, e.line(), e.col(), path, false, I18nConstants.REGEX_MATCH_TIMED_OUT, regext) && ok;
             }
           } catch (Throwable ex) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_EXCEPTION, regext, e.fhirType(), ex.getMessage()) && ok;          
