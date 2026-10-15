@@ -7756,21 +7756,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // retaining contentReferenceProfile. Apply these additional constraints in both
     // representations, without replacing the constraints on the referencing element.
     if (definition.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE)) {
-      String reference = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_CONTENT_PROFILE);
-      int separator = reference.indexOf('#');
-      if (separator < 0) {
-        throw new DefinitionException(this.context.formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT_WITH_ID_, reference));
-      }
-      String url = separator == 0 ? profile.getVersionedUrl() : reference.substring(0, separator);
-      StructureDefinition targetProfile = profileUtilities.findProfileStr(url, profile);
-      if (targetProfile == null) {
-        throw new DefinitionException(this.context.formatMessage(I18nConstants.UNABLE_TO_FIND_PROFILE__AT_, url, definition.getPath()));
-      }
-      ElementDefinition target = getElementByTail(targetProfile, reference.substring(separator + 1));
-      if (!element.hasValidated(targetProfile, target)) {
-        ok = validateElement(valContext, errors, targetProfile, target, profile, definition, resource, element,
-          actualType, stack, inCodeableConcept, checkDisplayInContext, extensionUrl, pct, mode) && ok;
-      }
+      ok = validateContentReferenceProfile(valContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, extensionUrl, pct, mode) && ok;
     }
     
     vi.setValid(ok);    
@@ -7793,6 +7779,35 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }      
     
     return ok;
+  }
+
+  /**
+   * The element has been validated against its own definition. When that definition carries
+   * contentReferenceProfile, validate the element against the referenced definition as well, so
+   * that both sets of constraints apply. A reference that cannot be resolved is a problem in the
+   * profile; it is reported against the element instead of stopping the validation.
+   */
+  private boolean validateContentReferenceProfile(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition, Element resource, Element element,
+                                                   String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException, TimeoutException {
+    String reference = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_CONTENT_PROFILE);
+    if (reference == null || !reference.contains("#")) {
+      return rule(errors, "2026-10-15", IssueType.INVALID, stack, false, I18nConstants.CONTENT_REFERENCE_PROFILE_INVALID, reference, definition.getId(), profile.getVersionedUrl());
+    }
+    int separator = reference.indexOf('#');
+    String url = separator == 0 ? profile.getVersionedUrl() : reference.substring(0, separator);
+    StructureDefinition targetProfile = profileUtilities.findProfileStr(url, profile);
+    if (targetProfile == null) {
+      return rule(errors, "2026-10-15", IssueType.NOTFOUND, stack, false, I18nConstants.CONTENT_REFERENCE_PROFILE_UNKNOWN_PROFILE, reference, definition.getId(), profile.getVersionedUrl(), url);
+    }
+    String id = reference.substring(separator + 1);
+    ElementDefinition target = targetProfile.getSnapshot().getElementById(id);
+    if (target == null) {
+      return rule(errors, "2026-10-15", IssueType.NOTFOUND, stack, false, I18nConstants.CONTENT_REFERENCE_PROFILE_UNKNOWN_ELEMENT, reference, definition.getId(), profile.getVersionedUrl(), id, targetProfile.getVersionedUrl());
+    }
+    if (element.hasValidated(targetProfile, target)) {
+      return true;
+    }
+    return validateElement(valContext, errors, targetProfile, target, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, extensionUrl, pct, mode);
   }
 
   private SourcedChildDefinitions mergeChildLists(SourcedChildDefinitions source, SourcedChildDefinitions additional, String masterPath, String typePath) {
