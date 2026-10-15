@@ -31,15 +31,7 @@ package org.hl7.fhir.utilities.npm;
 
 
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CodingErrorAction;
@@ -54,6 +46,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -398,6 +391,23 @@ public class NpmPackage {
     }
 
 
+      /**
+       * The resource with the given type and id, or null if it's not in this folder. Also null if there's 
+       * no index in memory (in minimal memory mode, or if the folder's index couldn't be read)
+       */
+      public InputStream getResource(String type, String id) throws IOException {
+        if (cachedIndex == null) {
+          return null;
+        }
+        for (JsonObject res : cachedIndex.getJsonObjects("files")) {
+          if (type.equals(res.asString("resourceType")) && id.equals(res.asString("id"))) {
+            // fetchFile goes through ManagedFileAccess, and also works for packages loaded into memory from a tgz (no folder)
+            byte[] cnt = fetchFile(res.asString("filename"));
+            return cnt == null ? null : new ByteArrayInputStream(cnt);
+          }
+        }
+        return null;
+      }
   }
 
 
@@ -522,7 +532,10 @@ public class NpmPackage {
   private void loadSubFolders(String rootPath, File dir) throws IOException {
     for (File f : dir.listFiles()) {
       if (f.isDirectory()) {
-        if (!"custom".equals(f.getName()) || loadCustomResources) {
+        // "del" is not a valid package folder. us.nlm.vsac#0.18.0 shipped one by mistake, and without
+        // this every context that loads that package also registers the ~14.8k superseded ValueSets in
+        // it, alongside - and competing with - the real ones
+        if ((!"custom".equals(f.getName()) || loadCustomResources) && !"del".equals(f.getName())) {
           String d = f.getAbsolutePath().substring(rootPath.length()+1);
           if (!d.startsWith("package")) {
             d = Utilities.path("package", d);
@@ -935,7 +948,7 @@ public class NpmPackage {
           for (String s : folder.types.keySet()) {
             if (folder.types.containsKey(s)) {
               for (String n : folder.types.get(s)) {
-                res.add(new PackagedResourceFile(folder.folderName, n, s, folder.getFolderName().equals("example")));
+                res.add(new PackagedResourceFile(folder.folderName, n, s, isExampleFolder(folder.getFolderName())));
               }
             }
           }
@@ -943,7 +956,7 @@ public class NpmPackage {
           for (String s : types) {
             if (folder.types.containsKey(s)) {
               for (String n : folder.types.get(s)) {
-                res.add(new PackagedResourceFile(folder.folderName, n, s, folder.getFolderName().equals("example")));
+                res.add(new PackagedResourceFile(folder.folderName, n, s, isExampleFolder(folder.getFolderName())));
               }
             }
           }
@@ -961,7 +974,7 @@ public class NpmPackage {
         for (String s : folder.types.keySet()) {
           if (folder.types.containsKey(s)) {
             for (String n : folder.types.get(s)) {
-              res.add(new PackagedResourceFile(folder.folderName, n, s, folder.getFolderName().equals("example")));
+              res.add(new PackagedResourceFile(folder.folderName, n, s, isExampleFolder(folder.getFolderName())));
             }
           }
         }
@@ -1311,23 +1324,75 @@ public class NpmPackage {
   }
 
   public InputStream loadExampleResource(String type, String id) throws IOException {
-    NpmPackageFolder f = folders.get("example");
-    if (f == null) {
-      f = folders.get("package/example");      
-    }
-    if (f == null) {
-      f = folders.get("package\\example");      
-    }
-    if (f != null) {
-      JsonArray files = f.index().getJsonArray("files");
-      for (JsonElement e : files.getItems()) {
-        JsonObject i = (JsonObject) e;
-        if (type.equals(i.asString("resourceType")) && id.equals(i.asString("id"))) {
-          return load("example", i.asString("filename"));
+    for (String folderName : EXAMPLE_FOLDERS) {
+      NpmPackageFolder f = findFolder(folderName);
+      if (f != null && f.index() != null) {
+        JsonArray files = f.index().getJsonArray("files");
+        for (JsonElement e : files.getItems()) {
+          JsonObject i = (JsonObject) e;
+          if (type.equals(i.asString("resourceType")) && id.equals(i.asString("id"))) {
+            return load(folderName, i.asString("filename"));
+          }
         }
       }
     }
     return null;
+  }
+
+  /**
+   * The names of the folders that examples are found in. The package spec says 'examples', and 
+   * that's what new packages are written with, but the IG publisher wrote 'example' for years 
+   * (see fhir-ig-publisher#1373), so wherever we look for examples, we look in both
+   */
+  public static final List<String> EXAMPLE_FOLDERS = Collections.unmodifiableList(Arrays.asList("examples", "example"));
+
+  /**
+   * whether a folder (as named in getFolders() - with or without the leading 'package/') is one 
+   * of the example folders
+   */
+  public static boolean isExampleFolder(String folderName) {
+    if (folderName == null) {
+      return false;
+    }
+    String n = folderName;
+    if (n.startsWith("package/") || n.startsWith("package\\")) {
+      n = n.substring(8);
+    }
+    return EXAMPLE_FOLDERS.contains(n);
+  }
+
+  /**
+   * the names of the files in the example folder(s) - 'examples' and/or 'example' (see EXAMPLE_FOLDERS)
+   */
+  public List<String> listExamples() throws IOException {
+    Set<String> res = new LinkedHashSet<>();
+    for (String folderName : EXAMPLE_FOLDERS) {
+      res.addAll(list(folderName));
+    }
+    return new ArrayList<>(res);
+  }
+
+  /**
+   * load a file from the example folder(s) - 'examples' or 'example' (see EXAMPLE_FOLDERS)
+   */
+  public InputStream loadExample(String file) throws IOException {
+    for (String folderName : EXAMPLE_FOLDERS) {
+      if (hasFile(folderName, file)) {
+        return load(folderName, file);
+      }
+    }
+    throw new IOException("Unable to find the example "+file+" in the package "+name());
+  }
+
+  private NpmPackageFolder findFolder(String folderName) {
+    NpmPackageFolder f = folders.get(folderName);
+    if (f == null) {
+      f = folders.get("package/"+folderName);
+    }
+    if (f == null) {
+      f = folders.get("package\\"+folderName);
+    }
+    return f;
   }
 
   /** special case when playing around inside the package **/

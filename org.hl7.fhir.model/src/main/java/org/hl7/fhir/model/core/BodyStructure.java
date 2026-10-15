@@ -538,6 +538,71 @@ public class BodyStructure extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.structure != null) {
+            visitor.visit(this, "structure", -1, this.structure);
+          }
+          if (this.laterality != null) {
+            visitor.visit(this, "laterality", -1, this.laterality);
+          }
+          if (this.bodyLandmarkOrientationList != null) {
+            int i = 0;
+            for (Base v : this.bodyLandmarkOrientationList) {
+              if (v != null) {
+                visitor.visit(this, "bodyLandmarkOrientation", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.spatialReferenceList != null) {
+            int i = 0;
+            for (Base v : this.spatialReferenceList) {
+              if (v != null) {
+                visitor.visit(this, "spatialReference", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.imageList != null) {
+            int i = 0;
+            for (Base v : this.imageList) {
+              if (v != null) {
+                visitor.visit(this, "image", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.qualifierList != null) {
+            int i = 0;
+            for (Base v : this.qualifierList) {
+              if (v != null) {
+                visitor.visit(this, "qualifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.morphologyList != null) {
+            int i = 0;
+            for (Base v : this.morphologyList) {
+              if (v != null) {
+                visitor.visit(this, "morphology", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.originList != null) {
+            int i = 0;
+            for (Base v : this.originList) {
+              if (v != null) {
+                visitor.visit(this, "origin", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "structure":  return new Property("structure", "CodeableConcept", "Code that represents the included structure.", 0, 1, structure);
@@ -1078,6 +1143,47 @@ public class BodyStructure extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.landmarkDescriptionList != null) {
+            int i = 0;
+            for (Base v : this.landmarkDescriptionList) {
+              if (v != null) {
+                visitor.visit(this, "landmarkDescription", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.clockFacePositionList != null) {
+            int i = 0;
+            for (Base v : this.clockFacePositionList) {
+              if (v != null) {
+                visitor.visit(this, "clockFacePosition", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.distanceFromLandmarkList != null) {
+            int i = 0;
+            for (Base v : this.distanceFromLandmarkList) {
+              if (v != null) {
+                visitor.visit(this, "distanceFromLandmark", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.surfaceOrientationList != null) {
+            int i = 0;
+            for (Base v : this.surfaceOrientationList) {
+              if (v != null) {
+                visitor.visit(this, "surfaceOrientation", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "landmarkDescription":  return new Property("landmarkDescription", "CodeableConcept", "Body landmark description used as a reference to locate something else.", 0, java.lang.Integer.MAX_VALUE, landmarkDescriptionList);
@@ -1405,6 +1511,29 @@ public class BodyStructure extends DomainResource {
           super.listChildren(children);
           children.add(new Property("device", "CodeableReference(Device)", "An instrument, tool, analyzer, etc. used in the measurement.", 0, java.lang.Integer.MAX_VALUE, deviceList));
           children.add(new Property("value", "Quantity", "The measured distance (e.g., in cm) from a body landmark.", 0, java.lang.Integer.MAX_VALUE, valueList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.deviceList != null) {
+            int i = 0;
+            for (Base v : this.deviceList) {
+              if (v != null) {
+                visitor.visit(this, "device", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.valueList != null) {
+            int i = 0;
+            for (Base v : this.valueList) {
+              if (v != null) {
+                visitor.visit(this, "value", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -1974,6 +2103,56 @@ public class BodyStructure extends DomainResource {
         children.add(new Property("description", "markdown", "A summary, characterization or explanation of the body structure.", 0, 1, description));
         children.add(new Property("image", "Attachment", "Image(s) used to identify aspects of the overall structure.", 0, java.lang.Integer.MAX_VALUE, imageList));
         children.add(new Property("patient", "Reference(Patient)", "The person to which the body site belongs.", 0, 1, patient));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.active != null) {
+          visitor.visit(this, "active", -1, this.active);
+        }
+        if (this.includedStructureList != null) {
+          int i = 0;
+          for (Base v : this.includedStructureList) {
+            if (v != null) {
+              visitor.visit(this, "includedStructure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.excludedStructureList != null) {
+          int i = 0;
+          for (Base v : this.excludedStructureList) {
+            if (v != null) {
+              visitor.visit(this, "excludedStructure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.imageList != null) {
+          int i = 0;
+          for (Base v : this.imageList) {
+            if (v != null) {
+              visitor.visit(this, "image", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.patient != null) {
+          visitor.visit(this, "patient", -1, this.patient);
+        }
       }
 
       @Override

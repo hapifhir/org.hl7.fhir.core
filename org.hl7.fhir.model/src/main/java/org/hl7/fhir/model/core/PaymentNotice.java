@@ -769,6 +769,68 @@ public class PaymentNotice extends DomainResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReason != null) {
+          visitor.visit(this, "statusReason", -1, this.statusReason);
+        }
+        if (this.request != null) {
+          visitor.visit(this, "request", -1, this.request);
+        }
+        if (this.response != null) {
+          visitor.visit(this, "response", -1, this.response);
+        }
+        if (this.created != null) {
+          visitor.visit(this, "created", -1, this.created);
+        }
+        if (this.reporter != null) {
+          visitor.visit(this, "reporter", -1, this.reporter);
+        }
+        if (this.payment != null) {
+          visitor.visit(this, "payment", -1, this.payment);
+        }
+        if (this.paymentDate != null) {
+          visitor.visit(this, "paymentDate", -1, this.paymentDate);
+        }
+        if (this.claimIdentifierList != null) {
+          int i = 0;
+          for (Base v : this.claimIdentifierList) {
+            if (v != null) {
+              visitor.visit(this, "claimIdentifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.payee != null) {
+          visitor.visit(this, "payee", -1, this.payee);
+        }
+        if (this.recipient != null) {
+          visitor.visit(this, "recipient", -1, this.recipient);
+        }
+        if (this.patient != null) {
+          visitor.visit(this, "patient", -1, this.patient);
+        }
+        if (this.amount != null) {
+          visitor.visit(this, "amount", -1, this.amount);
+        }
+        if (this.paymentStatus != null) {
+          visitor.visit(this, "paymentStatus", -1, this.paymentStatus);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "identifier":  return new Property("identifier", "Identifier", "A unique identifier assigned to this payment notice.", 0, java.lang.Integer.MAX_VALUE, identifierList);

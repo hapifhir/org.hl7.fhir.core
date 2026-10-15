@@ -586,6 +586,17 @@ public class Consent extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+          if (this.uri != null) {
+            visitor.visit(this, "uri", -1, this.uri);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "reference":  return new Property("reference", "Reference(Any)", "A Reference that identifies the policy the organization will enforce for this Consent.", 0, 1, reference);
@@ -992,6 +1003,32 @@ public class Consent extends DomainResource {
           children.add(new Property("verifiedBy", "Reference(Organization|Practitioner|PractitionerRole)", "The person who conducted the verification/validation of the Grantor decision.", 0, 1, verifiedBy));
           children.add(new Property("verifiedWith", "Reference(Patient|RelatedPerson|Group)", "Who verified the instruction (Patient, Relative or other Authorized Person).", 0, 1, verifiedWith));
           children.add(new Property("date", "dateTime", "Date(s) verification was collected.", 0, java.lang.Integer.MAX_VALUE, dateList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.verified != null) {
+            visitor.visit(this, "verified", -1, this.verified);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.verifiedBy != null) {
+            visitor.visit(this, "verifiedBy", -1, this.verifiedBy);
+          }
+          if (this.verifiedWith != null) {
+            visitor.visit(this, "verifiedWith", -1, this.verifiedWith);
+          }
+          if (this.dateList != null) {
+            int i = 0;
+            for (Base v : this.dateList) {
+              if (v != null) {
+                visitor.visit(this, "date", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -1853,6 +1890,98 @@ public class Consent extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.actorList != null) {
+            int i = 0;
+            for (Base v : this.actorList) {
+              if (v != null) {
+                visitor.visit(this, "actor", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.actionList != null) {
+            int i = 0;
+            for (Base v : this.actionList) {
+              if (v != null) {
+                visitor.visit(this, "action", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.securityLabelList != null) {
+            int i = 0;
+            for (Base v : this.securityLabelList) {
+              if (v != null) {
+                visitor.visit(this, "securityLabel", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.purposeList != null) {
+            int i = 0;
+            for (Base v : this.purposeList) {
+              if (v != null) {
+                visitor.visit(this, "purpose", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.documentTypeList != null) {
+            int i = 0;
+            for (Base v : this.documentTypeList) {
+              if (v != null) {
+                visitor.visit(this, "documentType", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.resourceTypeList != null) {
+            int i = 0;
+            for (Base v : this.resourceTypeList) {
+              if (v != null) {
+                visitor.visit(this, "resourceType", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.codeList != null) {
+            int i = 0;
+            for (Base v : this.codeList) {
+              if (v != null) {
+                visitor.visit(this, "code", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.dataPeriod != null) {
+            visitor.visit(this, "dataPeriod", -1, this.dataPeriod);
+          }
+          if (this.dataList != null) {
+            int i = 0;
+            for (Base v : this.dataList) {
+              if (v != null) {
+                visitor.visit(this, "data", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.provisionList != null) {
+            int i = 0;
+            for (Base v : this.provisionList) {
+              if (v != null) {
+                visitor.visit(this, "provision", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "period":  return new Property("period", "Period", "Time frame for this provision.", 0, 1, period);
@@ -2278,6 +2407,17 @@ public class Consent extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.role != null) {
+            visitor.visit(this, "role", -1, this.role);
+          }
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "role":  return new Property("role", "CodeableConcept", "How the individual is involved in the resources content targeted by this provision.", 0, 1, role);
@@ -2547,6 +2687,17 @@ public class Consent extends DomainResource {
           super.listChildren(children);
           children.add(new Property("meaning", "code", "How the resource reference is interpreted when testing consent restrictions.", 0, 1, meaning));
           children.add(new Property("reference", "Reference(Any)", "A reference to a specific resource that defines which resources are covered by this consent.", 0, 1, reference));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.meaning != null) {
+            visitor.visit(this, "meaning", -1, this.meaning);
+          }
+          if (this.reference != null) {
+            visitor.visit(this, "reference", -1, this.reference);
+          }
         }
 
         @Override
@@ -3741,6 +3892,137 @@ public class Consent extends DomainResource {
         children.add(new Property("verification", "", "Whether the consent instructions/rules (e.g. artificial respiration: yes or no) have been verified with the patient, his/her family, or another authorized person.", 0, java.lang.Integer.MAX_VALUE, verificationList));
         children.add(new Property("decision", "code", "Action to take - permit or deny - as default.", 0, 1, decision));
         children.add(new Property("provision", "", "Constraints and exceptions to the base policy that can add or remove some access permissions under specific conditions.", 0, java.lang.Integer.MAX_VALUE, provisionList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.grantorList != null) {
+          int i = 0;
+          for (Base v : this.grantorList) {
+            if (v != null) {
+              visitor.visit(this, "grantor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.granteeList != null) {
+          int i = 0;
+          for (Base v : this.granteeList) {
+            if (v != null) {
+              visitor.visit(this, "grantee", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.managerList != null) {
+          int i = 0;
+          for (Base v : this.managerList) {
+            if (v != null) {
+              visitor.visit(this, "manager", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.controllerList != null) {
+          int i = 0;
+          for (Base v : this.controllerList) {
+            if (v != null) {
+              visitor.visit(this, "controller", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.sourceAttachmentList != null) {
+          int i = 0;
+          for (Base v : this.sourceAttachmentList) {
+            if (v != null) {
+              visitor.visit(this, "sourceAttachment", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.sourceReferenceList != null) {
+          int i = 0;
+          for (Base v : this.sourceReferenceList) {
+            if (v != null) {
+              visitor.visit(this, "sourceReference", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.regulatoryBasisList != null) {
+          int i = 0;
+          for (Base v : this.regulatoryBasisList) {
+            if (v != null) {
+              visitor.visit(this, "regulatoryBasis", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.policyBasis != null) {
+          visitor.visit(this, "policyBasis", -1, this.policyBasis);
+        }
+        if (this.policyTextList != null) {
+          int i = 0;
+          for (Base v : this.policyTextList) {
+            if (v != null) {
+              visitor.visit(this, "policyText", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.verificationList != null) {
+          int i = 0;
+          for (Base v : this.verificationList) {
+            if (v != null) {
+              visitor.visit(this, "verification", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.decision != null) {
+          visitor.visit(this, "decision", -1, this.decision);
+        }
+        if (this.provisionList != null) {
+          int i = 0;
+          for (Base v : this.provisionList) {
+            if (v != null) {
+              visitor.visit(this, "provision", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

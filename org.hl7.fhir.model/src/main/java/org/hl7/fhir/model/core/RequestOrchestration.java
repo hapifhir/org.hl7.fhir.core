@@ -1789,6 +1789,155 @@ public class RequestOrchestration extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.prefix != null) {
+            visitor.visit(this, "prefix", -1, this.prefix);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.textEquivalent != null) {
+            visitor.visit(this, "textEquivalent", -1, this.textEquivalent);
+          }
+          if (this.priority != null) {
+            visitor.visit(this, "priority", -1, this.priority);
+          }
+          if (this.codeList != null) {
+            int i = 0;
+            for (Base v : this.codeList) {
+              if (v != null) {
+                visitor.visit(this, "code", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.documentationList != null) {
+            int i = 0;
+            for (Base v : this.documentationList) {
+              if (v != null) {
+                visitor.visit(this, "documentation", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.goalList != null) {
+            int i = 0;
+            for (Base v : this.goalList) {
+              if (v != null) {
+                visitor.visit(this, "goal", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.conditionList != null) {
+            int i = 0;
+            for (Base v : this.conditionList) {
+              if (v != null) {
+                visitor.visit(this, "condition", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.inputList != null) {
+            int i = 0;
+            for (Base v : this.inputList) {
+              if (v != null) {
+                visitor.visit(this, "input", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.outputList != null) {
+            int i = 0;
+            for (Base v : this.outputList) {
+              if (v != null) {
+                visitor.visit(this, "output", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.relatedActionList != null) {
+            int i = 0;
+            for (Base v : this.relatedActionList) {
+              if (v != null) {
+                visitor.visit(this, "relatedAction", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.timing != null) {
+            visitor.visit(this, "timing[x]", -1, this.timing);
+          }
+          if (this.location != null) {
+            visitor.visit(this, "location", -1, this.location);
+          }
+          if (this.participantList != null) {
+            int i = 0;
+            for (Base v : this.participantList) {
+              if (v != null) {
+                visitor.visit(this, "participant", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.applicabilityBehavior != null) {
+            visitor.visit(this, "applicabilityBehavior", -1, this.applicabilityBehavior);
+          }
+          if (this.groupingBehavior != null) {
+            visitor.visit(this, "groupingBehavior", -1, this.groupingBehavior);
+          }
+          if (this.selectionBehavior != null) {
+            visitor.visit(this, "selectionBehavior", -1, this.selectionBehavior);
+          }
+          if (this.requiredBehavior != null) {
+            visitor.visit(this, "requiredBehavior", -1, this.requiredBehavior);
+          }
+          if (this.precheckBehavior != null) {
+            visitor.visit(this, "precheckBehavior", -1, this.precheckBehavior);
+          }
+          if (this.cardinalityBehavior != null) {
+            visitor.visit(this, "cardinalityBehavior", -1, this.cardinalityBehavior);
+          }
+          if (this.resource != null) {
+            visitor.visit(this, "resource", -1, this.resource);
+          }
+          if (this.definition != null) {
+            visitor.visit(this, "definition[x]", -1, this.definition);
+          }
+          if (this.transform != null) {
+            visitor.visit(this, "transform", -1, this.transform);
+          }
+          if (this.dynamicValueList != null) {
+            int i = 0;
+            for (Base v : this.dynamicValueList) {
+              if (v != null) {
+                visitor.visit(this, "dynamicValue", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.actionList != null) {
+            int i = 0;
+            for (Base v : this.actionList) {
+              if (v != null) {
+                visitor.visit(this, "action", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "linkId":  return new Property("linkId", "string", "The linkId of the action from the PlanDefinition that corresponds to this action in the RequestOrchestration resource.", 0, 1, linkId);
@@ -2669,6 +2818,17 @@ public class RequestOrchestration extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.kind != null) {
+            visitor.visit(this, "kind", -1, this.kind);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "kind":  return new Property("kind", "code", "The kind of condition.", 0, 1, kind);
@@ -2989,6 +3149,20 @@ public class RequestOrchestration extends DomainResource {
           children.add(new Property("title", "string", "A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.", 0, 1, title));
           children.add(new Property("requirement", "DataRequirement", "Defines the data that is to be provided as input to the action.", 0, 1, requirement));
           children.add(new Property("relatedData", "id", "Points to an existing input or output element that provides data to this input.", 0, 1, relatedData));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.requirement != null) {
+            visitor.visit(this, "requirement", -1, this.requirement);
+          }
+          if (this.relatedData != null) {
+            visitor.visit(this, "relatedData", -1, this.relatedData);
+          }
         }
 
         @Override
@@ -3334,6 +3508,20 @@ public class RequestOrchestration extends DomainResource {
           children.add(new Property("title", "string", "A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.", 0, 1, title));
           children.add(new Property("requirement", "DataRequirement", "Defines the data that results as output from the action.", 0, 1, requirement));
           children.add(new Property("relatedData", "string", "Points to an existing input or output element that is results as output from the action.", 0, 1, relatedData));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.requirement != null) {
+            visitor.visit(this, "requirement", -1, this.requirement);
+          }
+          if (this.relatedData != null) {
+            visitor.visit(this, "relatedData", -1, this.relatedData);
+          }
         }
 
         @Override
@@ -3772,6 +3960,23 @@ public class RequestOrchestration extends DomainResource {
           children.add(new Property("relationship", "code", "The relationship of this action to the related action.", 0, 1, relationship));
           children.add(new Property("endRelationship", "code", "The relationship of the end of this action to the related action.", 0, 1, endRelationship));
           children.add(new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.targetId != null) {
+            visitor.visit(this, "targetId", -1, this.targetId);
+          }
+          if (this.relationship != null) {
+            visitor.visit(this, "relationship", -1, this.relationship);
+          }
+          if (this.endRelationship != null) {
+            visitor.visit(this, "endRelationship", -1, this.endRelationship);
+          }
+          if (this.offset != null) {
+            visitor.visit(this, "offset[x]", -1, this.offset);
+          }
         }
 
         @Override
@@ -4288,6 +4493,29 @@ public class RequestOrchestration extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.typeCanonical != null) {
+            visitor.visit(this, "typeCanonical", -1, this.typeCanonical);
+          }
+          if (this.typeReference != null) {
+            visitor.visit(this, "typeReference", -1, this.typeReference);
+          }
+          if (this.role != null) {
+            visitor.visit(this, "role", -1, this.role);
+          }
+          if (this.function != null) {
+            visitor.visit(this, "function", -1, this.function);
+          }
+          if (this.actor != null) {
+            visitor.visit(this, "actor[x]", -1, this.actor);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "code", "The type of participant in the action.", 0, 1, type);
@@ -4646,6 +4874,17 @@ public class RequestOrchestration extends DomainResource {
           super.listChildren(children);
           children.add(new Property("path", "string", "The path to the element to be customized. This is the path on the resource that will hold the result of the calculation defined by the expression. The specified path SHALL be a FHIRPath resolvable on the specified target type of the ActivityDefinition, and SHALL consist only of identifiers, constant indexers, and a restricted subset of functions. The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details).", 0, 1, path));
           children.add(new Property("expression", "Expression", "An expression specifying the value of the customized element.", 0, 1, expression));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.path != null) {
+            visitor.visit(this, "path", -1, this.path);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
         }
 
         @Override
@@ -5800,6 +6039,119 @@ public class RequestOrchestration extends DomainResource {
         children.add(new Property("goal", "Reference(Goal)", "Goals that are intended to be achieved by following the requests in this RequestOrchestration.", 0, java.lang.Integer.MAX_VALUE, goalList));
         children.add(new Property("note", "Annotation", "Provides a mechanism to communicate additional information about the response.", 0, java.lang.Integer.MAX_VALUE, noteList));
         children.add(new Property("action", "", "The actions, if any, produced by the evaluation of the artifact.", 0, java.lang.Integer.MAX_VALUE, actionList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.instantiatesCanonicalList != null) {
+          int i = 0;
+          for (Base v : this.instantiatesCanonicalList) {
+            if (v != null) {
+              visitor.visit(this, "instantiatesCanonical", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.instantiatesUriList != null) {
+          int i = 0;
+          for (Base v : this.instantiatesUriList) {
+            if (v != null) {
+              visitor.visit(this, "instantiatesUri", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.replacesList != null) {
+          int i = 0;
+          for (Base v : this.replacesList) {
+            if (v != null) {
+              visitor.visit(this, "replaces", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.groupIdentifier != null) {
+          visitor.visit(this, "groupIdentifier", -1, this.groupIdentifier);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.intent != null) {
+          visitor.visit(this, "intent", -1, this.intent);
+        }
+        if (this.priority != null) {
+          visitor.visit(this, "priority", -1, this.priority);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.authoredOn != null) {
+          visitor.visit(this, "authoredOn", -1, this.authoredOn);
+        }
+        if (this.author != null) {
+          visitor.visit(this, "author", -1, this.author);
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.goalList != null) {
+          int i = 0;
+          for (Base v : this.goalList) {
+            if (v != null) {
+              visitor.visit(this, "goal", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.actionList != null) {
+          int i = 0;
+          for (Base v : this.actionList) {
+            if (v != null) {
+              visitor.visit(this, "action", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

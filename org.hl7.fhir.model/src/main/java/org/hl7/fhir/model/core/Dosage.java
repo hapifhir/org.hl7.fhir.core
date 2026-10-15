@@ -289,6 +289,20 @@ public class Dosage extends BackboneType implements ICompositeType {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.dose != null) {
+            visitor.visit(this, "dose[x]", -1, this.dose);
+          }
+          if (this.rate != null) {
+            visitor.visit(this, "rate[x]", -1, this.rate);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The kind of dose or rate specified, for example, ordered or calculated.", 0, 1, type);
@@ -1106,6 +1120,71 @@ public class Dosage extends BackboneType implements ICompositeType {
         children.add(new Property("method", "CodeableConcept", "Technique for administering medication.", 0, 1, method));
         children.add(new Property("doseAndRate", "", "Depending on the resource,this is the amount of medication administered, to  be administered or typical amount to be administered.", 0, java.lang.Integer.MAX_VALUE, doseAndRateList));
         children.add(new Property("safety", "DosageSafety", "Safety Information about the this dosage instructions.", 0, 1, safety));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.conditionList != null) {
+          int i = 0;
+          for (Base v : this.conditionList) {
+            if (v != null) {
+              visitor.visit(this, "condition", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.text != null) {
+          visitor.visit(this, "text", -1, this.text);
+        }
+        if (this.additionalInstructionList != null) {
+          int i = 0;
+          for (Base v : this.additionalInstructionList) {
+            if (v != null) {
+              visitor.visit(this, "additionalInstruction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.patientInstruction != null) {
+          visitor.visit(this, "patientInstruction", -1, this.patientInstruction);
+        }
+        if (this.timing != null) {
+          visitor.visit(this, "timing", -1, this.timing);
+        }
+        if (this.asNeeded != null) {
+          visitor.visit(this, "asNeeded", -1, this.asNeeded);
+        }
+        if (this.asNeededForList != null) {
+          int i = 0;
+          for (Base v : this.asNeededForList) {
+            if (v != null) {
+              visitor.visit(this, "asNeededFor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.site != null) {
+          visitor.visit(this, "site", -1, this.site);
+        }
+        if (this.route != null) {
+          visitor.visit(this, "route", -1, this.route);
+        }
+        if (this.method != null) {
+          visitor.visit(this, "method", -1, this.method);
+        }
+        if (this.doseAndRateList != null) {
+          int i = 0;
+          for (Base v : this.doseAndRateList) {
+            if (v != null) {
+              visitor.visit(this, "doseAndRate", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.safety != null) {
+          visitor.visit(this, "safety", -1, this.safety);
+        }
       }
 
       @Override

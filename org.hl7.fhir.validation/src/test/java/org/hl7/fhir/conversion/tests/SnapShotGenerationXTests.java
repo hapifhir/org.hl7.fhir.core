@@ -480,6 +480,7 @@ public class SnapShotGenerationXTests {
     StructureDefinition output = pva.convert(sd, log);
     pva.generateSnapshots(log);
     Assertions.assertNotNull(output);
+    output.setText(null); // the narrative is not part of what's being tested
 
     String folder = Utilities.path("[tmp]", "snapshotX");
     FileUtilities.createDirectory(folder);
@@ -576,6 +577,8 @@ public class SnapShotGenerationXTests {
       rc.setProfileUtilities(new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), null, new TestPKP()));
       new RendererFactory().factory(output, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), output));
     }
+    // the narrative is rendered to exercise the renderer, but it's not part of what's being tested, and it's not in the expected outputs
+    output.setText(null);
     if (!fail) {
       String folder = Utilities.path("[tmp]", "snapshotX");
       FileUtilities.createDirectory(folder);

@@ -383,6 +383,26 @@ public class Expression extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.language != null) {
+          visitor.visit(this, "language", -1, this.language);
+        }
+        if (this.expression != null) {
+          visitor.visit(this, "expression", -1, this.expression);
+        }
+        if (this.reference != null) {
+          visitor.visit(this, "reference", -1, this.reference);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "description":  return new Property("description", "string", "A brief, natural language description of the condition that effectively communicates the intended semantics.", 0, 1, description);

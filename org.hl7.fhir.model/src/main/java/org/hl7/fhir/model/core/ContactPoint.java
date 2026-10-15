@@ -689,6 +689,26 @@ public class ContactPoint extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.system != null) {
+          visitor.visit(this, "system", -1, this.system);
+        }
+        if (this.value != null) {
+          visitor.visit(this, "value", -1, this.value);
+        }
+        if (this.use != null) {
+          visitor.visit(this, "use", -1, this.use);
+        }
+        if (this.rank != null) {
+          visitor.visit(this, "rank", -1, this.rank);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "system":  return new Property("system", "code", "Telecommunications form for contact point - what communications system is required to make use of the contact.", 0, 1, system);

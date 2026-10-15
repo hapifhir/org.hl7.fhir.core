@@ -82,11 +82,31 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     return terminologyCache;
   }
 
-  // A fresh temp directory yields a genuinely empty cache. NOTE: new TerminologyCache(lock, null)
-  // does NOT - null resolves to the shared [tmp]/default-tx-cache and loads whatever is on disk,
-  // so any test that asserts on cache size/contents must use an isolated directory like this.
+  // A fresh temp directory yields a genuinely empty cache that is kept on disk. (A null folder is
+  // also empty now, but memory only - it no longer resolves to a shared [tmp]/default-tx-cache.)
   private TerminologyCache createEmptyTerminologyCache() throws IOException {
     return new TerminologyCache(new Object(), createTempCacheDirectory().toString());
+  }
+
+  @Test
+  void testNullFolderIsMemoryOnly() throws IOException {
+    TerminologyCache cache = new TerminologyCache(new Object(), null);
+    assertNull(cache.getFolder());
+    TerminologyCache legacy = new TerminologyCache(new Object(), "n/a");
+    assertNull(legacy.getFolder());
+  }
+
+  @Test
+  void testDefaultFolderIsPerFhirVersion() throws IOException {
+    assertTrue(TerminologyCache.defaultFolder("1.0.2").endsWith(File.separator+"default-tx-cache"+File.separator+"r2"));
+    assertTrue(TerminologyCache.defaultFolder("3.0.2").endsWith(File.separator+"r3"));
+    assertTrue(TerminologyCache.defaultFolder("4.0.1").endsWith(File.separator+"r4"));
+    assertTrue(TerminologyCache.defaultFolder("4.0").endsWith(File.separator+"r4"));
+    assertTrue(TerminologyCache.defaultFolder("4.3.0").endsWith(File.separator+"r4"));
+    assertTrue(TerminologyCache.defaultFolder("5.0.0").endsWith(File.separator+"r5"));
+    assertTrue(TerminologyCache.defaultFolder("6.0.0-ballot3").endsWith(File.separator+"r6"));
+    assertThrows(org.hl7.fhir.exceptions.FHIRException.class, () -> TerminologyCache.defaultFolder(null));
+    assertThrows(org.hl7.fhir.exceptions.FHIRException.class, () -> TerminologyCache.defaultFolder("banana"));
   }
 
   public Path createTempCacheDirectory() throws IOException {
@@ -971,10 +991,14 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
   class HashJsonSpeedTests {
     private static Stream<Arguments> hashJsonSpeedInputs() {
       return Stream.of(
-        Arguments.of(1_000_000, 1_000),
-        Arguments.of(100_000, 10_000),
-        Arguments.of(10_000, 100_000),
-        Arguments.of(1_000, 1_000_000)
+        // 100M characters a case: about 0.15s on a developer machine, so the timeout leaves
+        // plenty of room for a slow, busy CI agent while still catching a hash that has gone
+        // quadratic or started allocating. (At 1G characters a case, ~1.5s locally, the first
+        // case timed out on the pipeline.)
+        Arguments.of(1_000_000, 100),
+        Arguments.of(100_000, 1_000),
+        Arguments.of(10_000, 10_000),
+        Arguments.of(1_000, 100_000)
       );
     }
 
@@ -999,6 +1023,111 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       for (int i = 0; i < iterations; i++) {
         cache.hashJson(input);
       }
+    }
+  }
+
+  /**
+   * Entries that miss the save window: without deferred flush they are only written by a later
+   * store, a save or the shutdown hook, so a cache that is dropped loses them; with it, they are
+   * written when the window closes, even if nothing holds the cache any more.
+   */
+  @Nested
+  class DeferredFlushTests {
+
+    private static final long WINDOW = 300;
+
+    private Path folder;
+
+    @BeforeEach
+    void setUp() throws IOException {
+      folder = createTempCacheDirectory();
+    }
+
+    private TerminologyCache cache(boolean deferredFlush) throws IOException {
+      TerminologyCache cache = new TerminologyCache(new Object(), folder.toString(), deferredFlush);
+      cache.setSaveDelayMs(WINDOW);
+      return cache;
+    }
+
+    private TerminologyCache.CacheToken token(TerminologyCache cache, int i) {
+      return cache.generateValidationToken(CacheTestUtils.validationOptions,
+          new Coding().setSystem("http://example.org/sys").setCode("code-" + i), new ValueSet(), new Parameters());
+    }
+
+    private void store(TerminologyCache cache, int i) {
+      cache.cacheValidation(token(cache, i), new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "m" + i, null), true);
+    }
+
+    /** what a fresh cache over the folder finds on disk */
+    private boolean onDisk(int i) throws IOException {
+      TerminologyCache fresh = new TerminologyCache(new Object(), folder.toString());
+      return fresh.getValidation(token(fresh, i)) != null;
+    }
+
+    private boolean waitForDisk(int i, long timeoutMs) throws IOException, InterruptedException {
+      long end = System.currentTimeMillis() + timeoutMs;
+      while (System.currentTimeMillis() < end) {
+        if (onDisk(i)) {
+          return true;
+        }
+        Thread.sleep(50);
+      }
+      return onDisk(i);
+    }
+
+    private void storeTwoAndDrop(boolean deferredFlush) throws IOException {
+      TerminologyCache cache = cache(deferredFlush);
+      store(cache, 1); // the first store in a session is written straight away
+      store(cache, 2); // this one waits out the window
+    }
+
+    @Test
+    void testPendingEntryIsNotWrittenBeforeTheWindowCloses() throws IOException {
+      TerminologyCache cache = cache(true);
+      cache.setSaveDelayMs(60000);
+      store(cache, 1);
+      store(cache, 2);
+      assertTrue(onDisk(1));
+      assertFalse(onDisk(2));
+      cache.save();
+      assertTrue(onDisk(2));
+    }
+
+    @Test
+    void testDeferredFlushWritesPendingEntryOfADroppedCache() throws IOException, InterruptedException {
+      storeTwoAndDrop(true);
+      System.gc();
+      assertTrue(waitForDisk(2, 5000), "the pending entry should be written when the window closes");
+      assertTrue(onDisk(1));
+    }
+
+    @Test
+    void testWithoutDeferredFlushPendingEntryOfADroppedCacheIsLost() throws IOException, InterruptedException {
+      storeTwoAndDrop(false);
+      System.gc();
+      Thread.sleep(WINDOW * 3);
+      assertTrue(onDisk(1));
+      assertFalse(onDisk(2), "by default, nothing writes the pending entry of a cache that was dropped");
+    }
+
+    @Test
+    void testUnloadedCacheIsNotFlushedAgain() throws IOException, InterruptedException {
+      TerminologyCache cache = cache(true);
+      store(cache, 1); // written straight away
+      store(cache, 2); // pending, with a deferred flush scheduled
+      // Swap the cache folder for a plain file of the same name, so the save in unload() fails
+      // and the cache is left dirty. (If that save succeeded, it would leave nothing for a
+      // leftover flush to write, and this test would prove nothing.)
+      org.hl7.fhir.utilities.FileUtilities.clearDirectory(folder.toString());
+      Files.delete(folder);
+      Files.createFile(folder);
+      cache.unload();
+      // put back an empty folder for the pending flush, if there still is one, to write into
+      Files.delete(folder);
+      Files.createDirectory(folder);
+      Thread.sleep(WINDOW * 3);
+      assertFalse(onDisk(1), "a flush left over from the unloaded cache must not write it out");
+      assertFalse(onDisk(2), "a flush left over from the unloaded cache must not write it out");
     }
   }
 

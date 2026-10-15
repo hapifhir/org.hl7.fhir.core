@@ -388,6 +388,19 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }
     
     StringBuilder b = new StringBuilder();
+    appendAllText(b);
+    return b.toString();
+  }
+
+  // appends what allText() returns to b. The whole subtree is written into the one builder: building a string for each
+  // child and then appending it made allText() cost O(size x depth), and some callers ask for it at every level
+  private void appendAllText(StringBuilder b) {
+    if (!hasChildren()) {
+      if (getContent() != null) {
+        b.append(getContent());
+      }
+      return;
+    }
     for (XhtmlNode n : childNodes) {
       if (n.getNodeType() == NodeType.Element && Utilities.existsInList(n.getName(), "li")) {
         b.append("* ");
@@ -399,7 +412,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       } 
       if (n.getNodeType() == NodeType.Element) {
         if (!Utilities.existsInList(n.getName(), "img")) {
-          b.append(n.allText());          
+          n.appendAllText(b);
         } else if (n.hasAttribute("alt")) {
           b.append(n.getAttribute("alt"));
         } else {
@@ -412,7 +425,6 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
         }
       }
     }
-    return b.toString();
   }
 
   public String toLiteralText() {
@@ -872,10 +884,13 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
 
-  public XhtmlNode input(String name, String type, String placeholder, int size) {
+  public XhtmlNode input(String name, String label, String type, String placeholder, int size) {
     XhtmlNode p = new XhtmlNode(NodeType.Element, "input");
     if (name != null) {
       p.attribute("name", name);
+    }
+    if (label != null) {
+      p.attribute("aria-label", label);
     }
     p.attribute("type", type);
     if (placeholder != null) {
@@ -888,10 +903,13 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return p;
   }
 
-  public XhtmlNode select(String name) {
+  public XhtmlNode select(String name, String label) {
     XhtmlNode p = new XhtmlNode(NodeType.Element, "select");
     p.attribute("name", name);
     p.attribute("size", "1");
+    if (label != null) {
+      p.attribute("aria-label", label);
+    }
     addChildNode(p);
     return p;
   }
@@ -1164,6 +1182,16 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return this;
   }
 
+  public XhtmlNode clssList(String... names) {
+    for (String name : names) {
+      if (name != null) {
+        clss(name);
+      }
+    }
+    return this;
+  }
+
+
   public void styleCells(XhtmlNode x) {
     setUserData("cells", x);    
   }
@@ -1242,13 +1270,16 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
 
-  public XhtmlNode button(String class_, String title) {
+  public XhtmlNode button(String class_, String alt, String title) {
     XhtmlNode btn = addTag("button");
     if (class_ != null) {
       btn.attribute("class", class_);
     }
     if (title != null) {
       btn.attribute("title", title);
+    }
+    if (alt != null) {
+      btn.attribute("aria-label", alt);
     }
     return btn;
   }

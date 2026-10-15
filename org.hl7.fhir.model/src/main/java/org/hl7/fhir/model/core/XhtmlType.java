@@ -33,6 +33,7 @@ package org.hl7.fhir.model.core;
 
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.IModelObjectVisitor;
 import java.util.EnumSet;
 
 import java.util.*;
@@ -80,6 +81,11 @@ public class XhtmlType extends PrimitiveType<String> {
 
   @Override
   protected void listChildren(List<Property> result) {
+  }
+
+  @Override
+  protected void visitChildren(IModelObjectVisitor visitor) {
+    // as listChildren(): nothing
   }
 
   @Override

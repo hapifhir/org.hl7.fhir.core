@@ -186,6 +186,20 @@ public class RatioRange extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.lowNumerator != null) {
+          visitor.visit(this, "lowNumerator", -1, this.lowNumerator);
+        }
+        if (this.highNumerator != null) {
+          visitor.visit(this, "highNumerator", -1, this.highNumerator);
+        }
+        if (this.denominator != null) {
+          visitor.visit(this, "denominator", -1, this.denominator);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "lowNumerator":  return new Property("lowNumerator", "Quantity", "The value of the low limit numerator.", 0, 1, lowNumerator);

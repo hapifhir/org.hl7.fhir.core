@@ -21,7 +21,7 @@ import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class RenderingContext {
 
   // provides liquid templates, if they are available for the content

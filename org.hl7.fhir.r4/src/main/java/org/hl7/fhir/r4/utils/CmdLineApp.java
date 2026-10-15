@@ -39,7 +39,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
-
+@Deprecated(forRemoval = true)
 @SuppressWarnings("checkstyle:systemout")
 public class CmdLineApp {
 

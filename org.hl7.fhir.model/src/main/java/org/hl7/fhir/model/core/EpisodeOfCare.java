@@ -389,6 +389,17 @@ public class EpisodeOfCare extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.status != null) {
+            visitor.visit(this, "status", -1, this.status);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "status":  return new Property("status", "code", "planned | waitlist | active | onhold | finished | cancelled | entered-in-error | unknown.", 0, 1, status);
@@ -681,6 +692,29 @@ public class EpisodeOfCare extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.useList != null) {
+            int i = 0;
+            for (Base v : this.useList) {
+              if (v != null) {
+                visitor.visit(this, "use", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.valueList != null) {
+            int i = 0;
+            for (Base v : this.valueList) {
+              if (v != null) {
+                visitor.visit(this, "value", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "use":  return new Property("use", "CodeableConcept", "What the reason value should be used as e.g. Chief Complaint, Health Concern, Health Maintenance (including screening).", 0, java.lang.Integer.MAX_VALUE, useList);
@@ -966,6 +1000,29 @@ public class EpisodeOfCare extends DomainResource {
           super.listChildren(children);
           children.add(new Property("condition", "CodeableReference(Condition)", "The medical condition that was addressed during the episode of care, expressed as a text, code or a reference to another resource.", 0, java.lang.Integer.MAX_VALUE, conditionList));
           children.add(new Property("use", "CodeableConcept", "Role that this diagnosis has within the episode of care (e.g. admission, billing, discharge …).", 0, java.lang.Integer.MAX_VALUE, useList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.conditionList != null) {
+            int i = 0;
+            for (Base v : this.conditionList) {
+              if (v != null) {
+                visitor.visit(this, "condition", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.useList != null) {
+            int i = 0;
+            for (Base v : this.useList) {
+              if (v != null) {
+                visitor.visit(this, "use", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -1827,6 +1884,98 @@ public class EpisodeOfCare extends DomainResource {
         children.add(new Property("careManager", "Reference(Practitioner|PractitionerRole)", "The practitioner that is the care manager/care coordinator for this patient.", 0, 1, careManager));
         children.add(new Property("careTeam", "Reference(CareTeam)", "The list of practitioners that may be facilitating this episode of care for specific purposes.", 0, java.lang.Integer.MAX_VALUE, careTeamList));
         children.add(new Property("account", "Reference(Account)", "The set of accounts that may be used for billing for this EpisodeOfCare.", 0, java.lang.Integer.MAX_VALUE, accountList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusHistoryList != null) {
+          int i = 0;
+          for (Base v : this.statusHistoryList) {
+            if (v != null) {
+              visitor.visit(this, "statusHistory", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.typeList != null) {
+          int i = 0;
+          for (Base v : this.typeList) {
+            if (v != null) {
+              visitor.visit(this, "type", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.diagnosisList != null) {
+          int i = 0;
+          for (Base v : this.diagnosisList) {
+            if (v != null) {
+              visitor.visit(this, "diagnosis", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.managingOrganization != null) {
+          visitor.visit(this, "managingOrganization", -1, this.managingOrganization);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.referralRequestList != null) {
+          int i = 0;
+          for (Base v : this.referralRequestList) {
+            if (v != null) {
+              visitor.visit(this, "referralRequest", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.careManager != null) {
+          visitor.visit(this, "careManager", -1, this.careManager);
+        }
+        if (this.careTeamList != null) {
+          int i = 0;
+          for (Base v : this.careTeamList) {
+            if (v != null) {
+              visitor.visit(this, "careTeam", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.accountList != null) {
+          int i = 0;
+          for (Base v : this.accountList) {
+            if (v != null) {
+              visitor.visit(this, "account", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

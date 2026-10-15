@@ -32087,6 +32087,9 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected Type parseType(String prefix, JsonObject json) throws IOException, FHIRFormatError {
+    if (!hasPropertyWithPrefix(json, prefix)) {
+      return null;
+    }
     if (json.has(prefix + "Extension"))
       return parseExtension(getJObject(json, prefix + "Extension"));
     else if (json.has(prefix + "Narrative"))
@@ -32353,6 +32356,9 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected boolean hasTypeName(JsonObject json, String prefix) {
+    if (!hasPropertyWithPrefix(json, prefix)) {
+      return false;
+    }
     if (json.has(prefix + "Extension"))
       return true;
     if (json.has(prefix + "Narrative"))
