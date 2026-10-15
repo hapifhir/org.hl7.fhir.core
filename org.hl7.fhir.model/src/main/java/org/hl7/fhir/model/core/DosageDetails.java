@@ -317,6 +317,32 @@ public class DosageDetails extends BackboneType implements ICompositeType {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.start != null) {
+            visitor.visit(this, "start", -1, this.start);
+          }
+          if (this.end != null) {
+            visitor.visit(this, "end", -1, this.end);
+          }
+          if (this.count != null) {
+            visitor.visit(this, "count", -1, this.count);
+          }
+          if (this.componentList != null) {
+            int i = 0;
+            for (Base v : this.componentList) {
+              if (v != null) {
+                visitor.visit(this, "component", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.safety != null) {
+            visitor.visit(this, "safety", -1, this.safety);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "start":  return new Property("start", "RelativeTime", "When the step starts. In the absence of a linked event, the step is assumed to start immediately (or after the previous step).", 0, 1, start);
@@ -701,6 +727,26 @@ public class DosageDetails extends BackboneType implements ICompositeType {
         children.add(new Property("renderedInstruction", "markdown", "The full representation of the dose of the medication included in all dosage instructions. The renderedInstructions element must always be present to ensure the full dosage intent is communicated in every case.", 0, 1, renderedInstruction));
         children.add(new Property("step", "", "One step in a sequence of steps that comprise the dosage course.", 0, java.lang.Integer.MAX_VALUE, stepList));
         children.add(new Property("safety", "DosageSafety", "Safety Information about the combined dose course.", 0, 1, safety));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.renderedInstruction != null) {
+          visitor.visit(this, "renderedInstruction", -1, this.renderedInstruction);
+        }
+        if (this.stepList != null) {
+          int i = 0;
+          for (Base v : this.stepList) {
+            if (v != null) {
+              visitor.visit(this, "step", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.safety != null) {
+          visitor.visit(this, "safety", -1, this.safety);
+        }
       }
 
       @Override

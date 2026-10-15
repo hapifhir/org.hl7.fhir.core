@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.dstu2016may.formats.TurtleLexer.TurtleTokenType;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
 
 public class RdfGenerator {
@@ -170,8 +171,11 @@ public class RdfGenerator {
   }
 
   public class Section {
+    private static final int MAX_TTL_DEPTH = 500;
+
     private String name;
     private List<Subject> subjects = new ArrayList<Subject>();
+    private int importDepth = 0;
 
     public Subject triple(String subject, String predicate, String object, String comment) {
       return triple(subject, predicate, new StringType(object), comment);
@@ -237,21 +241,32 @@ public class RdfGenerator {
     }
 
     private Complex importComplex(TurtleLexer lexer) throws Exception {
-      lexer.next(); // read [
-      Complex obj = new Complex();
-      while (!lexer.peek().equals("]")) {
-        String predicate = lexer.next();
-        if (lexer.peekType() == TurtleTokenType.TOKEN || lexer.peekType() == TurtleTokenType.LITERAL) {
-          obj.predicate(predicate, lexer.next());
-        } else if (lexer.peek().equals("[")) {
-          obj.predicate(predicate, importComplex(lexer));
-        } else
-          throw new Exception("Not done yet");
-        if (lexer.peek().equals(";"))
-          lexer.next();
+      importDepth++;
+      try {
+        // guard against unbounded recursion in importComplex (self-recursive on nested "[ ... ]"
+        // blank-node objects) on deeply nested Turtle/RDF documents, which would otherwise cause
+        // a StackOverflowError.
+        if (importDepth > MAX_TTL_DEPTH) {
+          throw new FHIRFormatError("Turtle nesting depth exceeds maximum of " + MAX_TTL_DEPTH);
+        }
+        lexer.next(); // read [
+        Complex obj = new Complex();
+        while (!lexer.peek().equals("]")) {
+          String predicate = lexer.next();
+          if (lexer.peekType() == TurtleTokenType.TOKEN || lexer.peekType() == TurtleTokenType.LITERAL) {
+            obj.predicate(predicate, lexer.next());
+          } else if (lexer.peek().equals("[")) {
+            obj.predicate(predicate, importComplex(lexer));
+          } else
+            throw new Exception("Not done yet");
+          if (lexer.peek().equals(";"))
+            lexer.next();
+        }
+        lexer.next(); // read ]
+        return obj;
+      } finally {
+        importDepth--;
       }
-      lexer.next(); // read ]
-      return obj;
     }
 
     public Subject subject(String subject) {

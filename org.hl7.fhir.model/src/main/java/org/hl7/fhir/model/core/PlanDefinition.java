@@ -425,6 +425,50 @@ public class PlanDefinition extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.category != null) {
+            visitor.visit(this, "category", -1, this.category);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.priority != null) {
+            visitor.visit(this, "priority", -1, this.priority);
+          }
+          if (this.start != null) {
+            visitor.visit(this, "start", -1, this.start);
+          }
+          if (this.addressesList != null) {
+            int i = 0;
+            for (Base v : this.addressesList) {
+              if (v != null) {
+                visitor.visit(this, "addresses", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.documentationList != null) {
+            int i = 0;
+            for (Base v : this.documentationList) {
+              if (v != null) {
+                visitor.visit(this, "documentation", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.targetList != null) {
+            int i = 0;
+            for (Base v : this.targetList) {
+              if (v != null) {
+                visitor.visit(this, "target", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "category":  return new Property("category", "CodeableConcept", "Indicates a category the goal falls within.", 0, 1, category);
@@ -909,6 +953,20 @@ public class PlanDefinition extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.measure != null) {
+            visitor.visit(this, "measure", -1, this.measure);
+          }
+          if (this.detail != null) {
+            visitor.visit(this, "detail[x]", -1, this.detail);
+          }
+          if (this.due != null) {
+            visitor.visit(this, "due", -1, this.due);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "measure":  return new Property("measure", "CodeableConcept", "The parameter whose value is to be tracked, e.g. body weight, blood pressure, or hemoglobin A1c level.", 0, 1, measure);
@@ -1325,6 +1383,26 @@ public class PlanDefinition extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.optionList != null) {
+            int i = 0;
+            for (Base v : this.optionList) {
+              if (v != null) {
+                visitor.visit(this, "option", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "title":  return new Property("title", "string", "A descriptive label for the actor.", 0, 1, title);
@@ -1702,6 +1780,23 @@ public class PlanDefinition extends MetadataResource {
           children.add(new Property("typeCanonical", "canonical(ActorDefinition|CapabilityStatement|DeviceDefinition|Group|SpecimenDefinition|StructureDefinition)", "The type of participant in the action.", 0, 1, typeCanonical));
           children.add(new Property("typeReference", "Reference(BiologicallyDerivedProduct|CareTeam|Device|Endpoint|HealthcareService|Location|Medication|MedicinalProductDefinition|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|Specimen|Substance|SubstanceDefinition)", "The type of participant in the action.", 0, 1, typeReference));
           children.add(new Property("role", "CodeableConcept", "The role the participant should play in performing the described action.", 0, 1, role));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.typeCanonical != null) {
+            visitor.visit(this, "typeCanonical", -1, this.typeCanonical);
+          }
+          if (this.typeReference != null) {
+            visitor.visit(this, "typeReference", -1, this.typeReference);
+          }
+          if (this.role != null) {
+            visitor.visit(this, "role", -1, this.role);
+          }
         }
 
         @Override
@@ -3739,6 +3834,167 @@ public class PlanDefinition extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.prefix != null) {
+            visitor.visit(this, "prefix", -1, this.prefix);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.textEquivalent != null) {
+            visitor.visit(this, "textEquivalent", -1, this.textEquivalent);
+          }
+          if (this.priority != null) {
+            visitor.visit(this, "priority", -1, this.priority);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.reasonList != null) {
+            int i = 0;
+            for (Base v : this.reasonList) {
+              if (v != null) {
+                visitor.visit(this, "reason", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.documentationList != null) {
+            int i = 0;
+            for (Base v : this.documentationList) {
+              if (v != null) {
+                visitor.visit(this, "documentation", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.goalIdList != null) {
+            int i = 0;
+            for (Base v : this.goalIdList) {
+              if (v != null) {
+                visitor.visit(this, "goalId", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.subject != null) {
+            visitor.visit(this, "subject[x]", -1, this.subject);
+          }
+          if (this.triggerList != null) {
+            int i = 0;
+            for (Base v : this.triggerList) {
+              if (v != null) {
+                visitor.visit(this, "trigger", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.conditionList != null) {
+            int i = 0;
+            for (Base v : this.conditionList) {
+              if (v != null) {
+                visitor.visit(this, "condition", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.inputList != null) {
+            int i = 0;
+            for (Base v : this.inputList) {
+              if (v != null) {
+                visitor.visit(this, "input", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.outputList != null) {
+            int i = 0;
+            for (Base v : this.outputList) {
+              if (v != null) {
+                visitor.visit(this, "output", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.relatedActionList != null) {
+            int i = 0;
+            for (Base v : this.relatedActionList) {
+              if (v != null) {
+                visitor.visit(this, "relatedAction", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.timing != null) {
+            visitor.visit(this, "timing[x]", -1, this.timing);
+          }
+          if (this.location != null) {
+            visitor.visit(this, "location", -1, this.location);
+          }
+          if (this.participantList != null) {
+            int i = 0;
+            for (Base v : this.participantList) {
+              if (v != null) {
+                visitor.visit(this, "participant", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.applicabilityBehavior != null) {
+            visitor.visit(this, "applicabilityBehavior", -1, this.applicabilityBehavior);
+          }
+          if (this.groupingBehavior != null) {
+            visitor.visit(this, "groupingBehavior", -1, this.groupingBehavior);
+          }
+          if (this.selectionBehavior != null) {
+            visitor.visit(this, "selectionBehavior", -1, this.selectionBehavior);
+          }
+          if (this.requiredBehavior != null) {
+            visitor.visit(this, "requiredBehavior", -1, this.requiredBehavior);
+          }
+          if (this.precheckBehavior != null) {
+            visitor.visit(this, "precheckBehavior", -1, this.precheckBehavior);
+          }
+          if (this.cardinalityBehavior != null) {
+            visitor.visit(this, "cardinalityBehavior", -1, this.cardinalityBehavior);
+          }
+          if (this.definition != null) {
+            visitor.visit(this, "definition[x]", -1, this.definition);
+          }
+          if (this.transform != null) {
+            visitor.visit(this, "transform", -1, this.transform);
+          }
+          if (this.dynamicValueList != null) {
+            int i = 0;
+            for (Base v : this.dynamicValueList) {
+              if (v != null) {
+                visitor.visit(this, "dynamicValue", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.actionList != null) {
+            int i = 0;
+            for (Base v : this.actionList) {
+              if (v != null) {
+                visitor.visit(this, "action", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "linkId":  return new Property("linkId", "string", "An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestOrchestration.", 0, 1, linkId);
@@ -4665,6 +4921,17 @@ public class PlanDefinition extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.kind != null) {
+            visitor.visit(this, "kind", -1, this.kind);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "kind":  return new Property("kind", "code", "The kind of condition.", 0, 1, kind);
@@ -4985,6 +5252,20 @@ public class PlanDefinition extends MetadataResource {
           children.add(new Property("title", "string", "A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.", 0, 1, title));
           children.add(new Property("requirement", "DataRequirement", "Defines the data that is to be provided as input to the action.", 0, 1, requirement));
           children.add(new Property("relatedData", "string", "Points to an existing input or output element that provides data to this input.", 0, 1, relatedData));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.requirement != null) {
+            visitor.visit(this, "requirement", -1, this.requirement);
+          }
+          if (this.relatedData != null) {
+            visitor.visit(this, "relatedData", -1, this.relatedData);
+          }
         }
 
         @Override
@@ -5330,6 +5611,20 @@ public class PlanDefinition extends MetadataResource {
           children.add(new Property("title", "string", "A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.", 0, 1, title));
           children.add(new Property("requirement", "DataRequirement", "Defines the data that results as output from the action.", 0, 1, requirement));
           children.add(new Property("relatedData", "string", "Points to an existing input or output element that is results as output from the action.", 0, 1, relatedData));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.requirement != null) {
+            visitor.visit(this, "requirement", -1, this.requirement);
+          }
+          if (this.relatedData != null) {
+            visitor.visit(this, "relatedData", -1, this.relatedData);
+          }
         }
 
         @Override
@@ -5768,6 +6063,23 @@ public class PlanDefinition extends MetadataResource {
           children.add(new Property("relationship", "code", "The relationship of the start of this action to the related action.", 0, 1, relationship));
           children.add(new Property("endRelationship", "code", "The relationship of the end of this action to the related action.", 0, 1, endRelationship));
           children.add(new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.targetId != null) {
+            visitor.visit(this, "targetId", -1, this.targetId);
+          }
+          if (this.relationship != null) {
+            visitor.visit(this, "relationship", -1, this.relationship);
+          }
+          if (this.endRelationship != null) {
+            visitor.visit(this, "endRelationship", -1, this.endRelationship);
+          }
+          if (this.offset != null) {
+            visitor.visit(this, "offset[x]", -1, this.offset);
+          }
         }
 
         @Override
@@ -6282,6 +6594,29 @@ public class PlanDefinition extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.actorId != null) {
+            visitor.visit(this, "actorId", -1, this.actorId);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.typeCanonical != null) {
+            visitor.visit(this, "typeCanonical", -1, this.typeCanonical);
+          }
+          if (this.typeReference != null) {
+            visitor.visit(this, "typeReference", -1, this.typeReference);
+          }
+          if (this.role != null) {
+            visitor.visit(this, "role", -1, this.role);
+          }
+          if (this.function != null) {
+            visitor.visit(this, "function", -1, this.function);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "actorId":  return new Property("actorId", "string", "A reference to the id element of the actor who will participate in this action.", 0, 1, actorId);
@@ -6632,6 +6967,17 @@ public class PlanDefinition extends MetadataResource {
           super.listChildren(children);
           children.add(new Property("path", "string", "The path to the element to be customized. This is the path on the resource that will hold the result of the calculation defined by the expression. The specified path SHALL be a FHIRPath resolvable on the specified target type of the ActivityDefinition, and SHALL consist only of identifiers, constant indexers, and a restricted subset of functions. The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details).", 0, 1, path));
           children.add(new Property("expression", "Expression", "An expression specifying the value of the customized element.", 0, 1, expression));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.path != null) {
+            visitor.visit(this, "path", -1, this.path);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
         }
 
         @Override
@@ -8900,6 +9246,200 @@ public class PlanDefinition extends MetadataResource {
         children.add(new Property("actor", "", "Actors represent the individuals or groups involved in the execution of the defined set of activities.", 0, java.lang.Integer.MAX_VALUE, actorList));
         children.add(new Property("action", "", "An action or group of actions to be taken as part of the plan. For example, in clinical care, an action would be to prescribe a particular indicated medication, or perform a particular test as appropriate. In pharmaceutical quality, an action would be the test that needs to be performed on a drug product as defined in the quality specification or the steps that are planned in a manufacturing process of a drug product or a drug substance.", 0, java.lang.Integer.MAX_VALUE, actionList));
         children.add(new Property("asNeeded[x]", "boolean|CodeableConcept", "If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example \"pain\", \"on flare-up\", etc.", 0, 1, asNeeded));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.subtitle != null) {
+          visitor.visit(this, "subtitle", -1, this.subtitle);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject[x]", -1, this.subject);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.usage != null) {
+          visitor.visit(this, "usage", -1, this.usage);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.effectivePeriod != null) {
+          visitor.visit(this, "effectivePeriod", -1, this.effectivePeriod);
+        }
+        if (this.topicList != null) {
+          int i = 0;
+          for (Base v : this.topicList) {
+            if (v != null) {
+              visitor.visit(this, "topic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.authorList != null) {
+          int i = 0;
+          for (Base v : this.authorList) {
+            if (v != null) {
+              visitor.visit(this, "author", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.editorList != null) {
+          int i = 0;
+          for (Base v : this.editorList) {
+            if (v != null) {
+              visitor.visit(this, "editor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reviewerList != null) {
+          int i = 0;
+          for (Base v : this.reviewerList) {
+            if (v != null) {
+              visitor.visit(this, "reviewer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.endorserList != null) {
+          int i = 0;
+          for (Base v : this.endorserList) {
+            if (v != null) {
+              visitor.visit(this, "endorser", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.relatedArtifactList != null) {
+          int i = 0;
+          for (Base v : this.relatedArtifactList) {
+            if (v != null) {
+              visitor.visit(this, "relatedArtifact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.libraryList != null) {
+          int i = 0;
+          for (Base v : this.libraryList) {
+            if (v != null) {
+              visitor.visit(this, "library", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.goalList != null) {
+          int i = 0;
+          for (Base v : this.goalList) {
+            if (v != null) {
+              visitor.visit(this, "goal", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.actorList != null) {
+          int i = 0;
+          for (Base v : this.actorList) {
+            if (v != null) {
+              visitor.visit(this, "actor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.actionList != null) {
+          int i = 0;
+          for (Base v : this.actionList) {
+            if (v != null) {
+              visitor.visit(this, "action", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.asNeeded != null) {
+          visitor.visit(this, "asNeeded[x]", -1, this.asNeeded);
+        }
       }
 
       @Override

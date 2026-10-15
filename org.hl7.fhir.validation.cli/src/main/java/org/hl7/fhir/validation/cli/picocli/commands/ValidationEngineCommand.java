@@ -5,7 +5,6 @@ import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.options.*;
 import org.hl7.fhir.validation.service.ValidationService;
@@ -93,7 +92,7 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
       validationEngineOptions.fhirVersion = getValidationService().determineVersion(validationEngineParameters.getIgs(), sources, validationEngineParameters.isRecursive(), validationEngineParameters.isInferFhirVersion());
     }
 
-    validationEngineParameters.setSv(validationEngineOptions.fhirVersion);
+    validationEngineParameters.setStatedFHIRVersion(validationEngineOptions.fhirVersion);
 
     InstanceValidatorParameters instanceValidatorParameters = getInstanceValidatorParameters();
     if (instanceValidatorParameters != null) {

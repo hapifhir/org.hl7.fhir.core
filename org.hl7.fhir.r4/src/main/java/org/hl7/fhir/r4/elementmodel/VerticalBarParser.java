@@ -49,7 +49,7 @@ import org.hl7.fhir.r4.model.StructureDefinition;
  * @author Grahame Grieve
  *
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class VerticalBarParser extends ParserBase {
 
   /**

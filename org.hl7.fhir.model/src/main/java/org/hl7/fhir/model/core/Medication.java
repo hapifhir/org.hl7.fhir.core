@@ -275,6 +275,17 @@ public class Medication extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.numberOfItems != null) {
+            visitor.visit(this, "numberOfItems", -1, this.numberOfItems);
+          }
+          if (this.amountPerItem != null) {
+            visitor.visit(this, "amountPerItem", -1, this.amountPerItem);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "numberOfItems":  return new Property("numberOfItems", "Quantity", "The number of items in the package that are represented by the code, e.g. 5 vials or 100 tablets.", 0, 1, numberOfItems);
@@ -659,6 +670,23 @@ public class Medication extends DomainResource {
           children.add(new Property("isActive", "boolean", "Indication of whether this ingredient affects the therapeutic action of the drug.", 0, 1, isActive));
           children.add(new Property("role", "CodeableConcept", "Indication of whether this ingredient affects the therapeutic action of the drug.", 0, 1, role));
           children.add(new Property("strength[x]", "Ratio|CodeableConcept|Quantity", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.", 0, 1, strength));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.item != null) {
+            visitor.visit(this, "item", -1, this.item);
+          }
+          if (this.isActive != null) {
+            visitor.visit(this, "isActive", -1, this.isActive);
+          }
+          if (this.role != null) {
+            visitor.visit(this, "role", -1, this.role);
+          }
+          if (this.strength != null) {
+            visitor.visit(this, "strength[x]", -1, this.strength);
+          }
         }
 
         @Override
@@ -1066,6 +1094,26 @@ public class Medication extends DomainResource {
           children.add(new Property("identifier", "Identifier", "Identifier for the physical instance, typically a serial number.", 0, java.lang.Integer.MAX_VALUE, identifierList));
           children.add(new Property("lotNumber", "string", "The assigned lot number of a batch of the specified product.", 0, 1, lotNumber));
           children.add(new Property("expirationDate", "dateTime", "When this specific instance of product will expire.", 0, 1, expirationDate));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.identifierList != null) {
+            int i = 0;
+            for (Base v : this.identifierList) {
+              if (v != null) {
+                visitor.visit(this, "identifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.lotNumber != null) {
+            visitor.visit(this, "lotNumber", -1, this.lotNumber);
+          }
+          if (this.expirationDate != null) {
+            visitor.visit(this, "expirationDate", -1, this.expirationDate);
+          }
         }
 
         @Override
@@ -1648,6 +1696,50 @@ public class Medication extends DomainResource {
         children.add(new Property("ingredient", "", "Identifies a particular constituent of interest in the product.", 0, java.lang.Integer.MAX_VALUE, ingredientList));
         children.add(new Property("instance", "", "Information that only applies to packages (not products).", 0, 1, instance));
         children.add(new Property("definition", "Reference(MedicinalProductDefinition|AdministrableProductDefinition|PackagedProductDefinition|ManufacturedItemDefinition)", "A reference to a definitional resource that provides more information about this medication.", 0, 1, definition));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.marketingAuthorizationHolder != null) {
+          visitor.visit(this, "marketingAuthorizationHolder", -1, this.marketingAuthorizationHolder);
+        }
+        if (this.doseForm != null) {
+          visitor.visit(this, "doseForm", -1, this.doseForm);
+        }
+        if (this.packageSize != null) {
+          visitor.visit(this, "packageSize", -1, this.packageSize);
+        }
+        if (this.ingredientList != null) {
+          int i = 0;
+          for (Base v : this.ingredientList) {
+            if (v != null) {
+              visitor.visit(this, "ingredient", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.instance != null) {
+          visitor.visit(this, "instance", -1, this.instance);
+        }
+        if (this.definition != null) {
+          visitor.visit(this, "definition", -1, this.definition);
+        }
       }
 
       @Override

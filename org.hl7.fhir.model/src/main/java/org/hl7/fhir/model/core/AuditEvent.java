@@ -545,6 +545,23 @@ public class AuditEvent extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.detailList != null) {
+            int i = 0;
+            for (Base v : this.detailList) {
+              if (v != null) {
+                visitor.visit(this, "detail", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "Coding", "Indicates whether the event succeeded or failed.", 0, 1, code);
@@ -1154,6 +1171,53 @@ public class AuditEvent extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.roleList != null) {
+            int i = 0;
+            for (Base v : this.roleList) {
+              if (v != null) {
+                visitor.visit(this, "role", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.who != null) {
+            visitor.visit(this, "who", -1, this.who);
+          }
+          if (this.requestor != null) {
+            visitor.visit(this, "requestor", -1, this.requestor);
+          }
+          if (this.location != null) {
+            visitor.visit(this, "location", -1, this.location);
+          }
+          if (this.policyList != null) {
+            int i = 0;
+            for (Base v : this.policyList) {
+              if (v != null) {
+                visitor.visit(this, "policy", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.network != null) {
+            visitor.visit(this, "network[x]", -1, this.network);
+          }
+          if (this.authorizationList != null) {
+            int i = 0;
+            for (Base v : this.authorizationList) {
+              if (v != null) {
+                visitor.visit(this, "authorization", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The way the agent participated in the event.", 0, 1, type);
@@ -1605,6 +1669,26 @@ public class AuditEvent extends DomainResource {
           children.add(new Property("site", "Reference(Location)", "Logical source location within the healthcare enterprise network.  For example, a hospital or other provider location within a multi-entity provider group.", 0, 1, site));
           children.add(new Property("observer", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|Patient|Device|RelatedPerson)", "Identifier of the source where the event was detected.", 0, 1, observer));
           children.add(new Property("type", "CodeableConcept", "Code specifying the type of source where event originated.", 0, java.lang.Integer.MAX_VALUE, typeList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.site != null) {
+            visitor.visit(this, "site", -1, this.site);
+          }
+          if (this.observer != null) {
+            visitor.visit(this, "observer", -1, this.observer);
+          }
+          if (this.typeList != null) {
+            int i = 0;
+            for (Base v : this.typeList) {
+              if (v != null) {
+                visitor.visit(this, "type", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -2173,6 +2257,50 @@ public class AuditEvent extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.what != null) {
+            visitor.visit(this, "what", -1, this.what);
+          }
+          if (this.role != null) {
+            visitor.visit(this, "role", -1, this.role);
+          }
+          if (this.securityLabelList != null) {
+            int i = 0;
+            for (Base v : this.securityLabelList) {
+              if (v != null) {
+                visitor.visit(this, "securityLabel", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.query != null) {
+            visitor.visit(this, "query", -1, this.query);
+          }
+          if (this.detailList != null) {
+            int i = 0;
+            for (Base v : this.detailList) {
+              if (v != null) {
+                visitor.visit(this, "detail", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.agentList != null) {
+            int i = 0;
+            for (Base v : this.agentList) {
+              if (v != null) {
+                visitor.visit(this, "agent", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "what":  return new Property("what", "Reference(Any)", "Identifies a specific instance of the entity. The reference SHOULD be version specific. This is allowed to be a Parameters resource.", 0, 1, what);
@@ -2688,6 +2816,17 @@ public class AuditEvent extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "The name of extra detail provided in the value. This element is the tag for the value. Where a simple string is used for the tag name, use the CodeableConcept.display element.", 0, 1, type));
           children.add(new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Ratio|time|dateTime|Period|base64Binary", "The  value of the extra detail.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
         }
 
         @Override
@@ -3644,6 +3783,83 @@ public class AuditEvent extends DomainResource {
         children.add(new Property("agent", "", "An actor taking an active role in the event or activity that is logged.", 0, java.lang.Integer.MAX_VALUE, agentList));
         children.add(new Property("source", "", "The actor that is reporting the event.", 0, 1, source));
         children.add(new Property("entity", "", "Specific instances of data or objects that have been accessed.", 0, java.lang.Integer.MAX_VALUE, entityList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.subtypeList != null) {
+          int i = 0;
+          for (Base v : this.subtypeList) {
+            if (v != null) {
+              visitor.visit(this, "subtype", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.action != null) {
+          visitor.visit(this, "action", -1, this.action);
+        }
+        if (this.severity != null) {
+          visitor.visit(this, "severity", -1, this.severity);
+        }
+        if (this.occurred != null) {
+          visitor.visit(this, "occurred[x]", -1, this.occurred);
+        }
+        if (this.recorded != null) {
+          visitor.visit(this, "recorded", -1, this.recorded);
+        }
+        if (this.outcome != null) {
+          visitor.visit(this, "outcome", -1, this.outcome);
+        }
+        if (this.authorizationList != null) {
+          int i = 0;
+          for (Base v : this.authorizationList) {
+            if (v != null) {
+              visitor.visit(this, "authorization", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.patient != null) {
+          visitor.visit(this, "patient", -1, this.patient);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.agentList != null) {
+          int i = 0;
+          for (Base v : this.agentList) {
+            if (v != null) {
+              visitor.visit(this, "agent", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.source != null) {
+          visitor.visit(this, "source", -1, this.source);
+        }
+        if (this.entityList != null) {
+          int i = 0;
+          for (Base v : this.entityList) {
+            if (v != null) {
+              visitor.visit(this, "entity", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

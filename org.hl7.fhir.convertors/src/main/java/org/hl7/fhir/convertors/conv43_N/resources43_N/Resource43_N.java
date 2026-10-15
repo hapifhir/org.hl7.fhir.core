@@ -3,7 +3,6 @@ package org.hl7.fhir.convertors.conv43_N.resources43_N;
 import java.util.Arrays;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_43_N;
-import org.hl7.fhir.convertors.context.ConversionContext43_N;
 import org.hl7.fhir.convertors.conv43_N.datatypes43_N.primitive43_N.Code43_N;
 import org.hl7.fhir.convertors.conv43_N.datatypes43_N.primitive43_N.Id43_N;
 import org.hl7.fhir.convertors.conv43_N.datatypes43_N.primitive43_N.Uri43_N;
@@ -243,7 +242,7 @@ public class Resource43_N {
       return TestScript43_N.convertTestScript((org.hl7.fhir.r4b.model.TestScript) src);
 
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R4 to R5");
+      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R4B to RN");
     } else {
       return null;
     }
@@ -453,7 +452,7 @@ public class Resource43_N {
       return TestScript43_N.convertTestScript((org.hl7.fhir.model.testing.TestScript) src);
 
     if (advisor.failFastOnNullOrUnknownEntry()) {
-      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R5 to R4");
+      throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from RN to R4B");
     } else {
       return null;
     }
@@ -466,16 +465,16 @@ public class Resource43_N {
       .map(this::convertResource)
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension(ConversionContext43_N.INSTANCE.path(), extension)) {
+      if (advisor.useAdvisorForExtension(extension)) {
         org.hl7.fhir.model.core.Extension convertExtension = new org.hl7.fhir.model.core.Extension();
-        advisor.handleExtension(ConversionContext43_N.INSTANCE.path(), extension, convertExtension);
+        advisor.handleExtension(extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext43_N.INSTANCE.path(), extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
+      } else if (!advisor.ignoreExtension(extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
         tgt.addExtension(Extension43_N.convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension(ConversionContext43_N.INSTANCE.path(), extension))
+      .filter(extension -> !advisor.ignoreExtension(extension))
       .map(Extension43_N::convertExtension)
       .forEach(tgt::addModifierExtension);
   }
@@ -487,16 +486,16 @@ public class Resource43_N {
       .map(this::convertResource)
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension(ConversionContext43_N.INSTANCE.path(), extension)) {
+      if (advisor.useAdvisorForExtension(extension)) {
         org.hl7.fhir.r4b.model.Extension convertExtension = new org.hl7.fhir.r4b.model.Extension();
-        advisor.handleExtension(ConversionContext43_N.INSTANCE.path(), extension, convertExtension);
+        advisor.handleExtension(extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(ConversionContext43_N.INSTANCE.path(), extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
+      } else if (!advisor.ignoreExtension(extension) && !Arrays.asList(extensionUrlsToIgnore).contains(extension.getUrl())) {
         tgt.addExtension(Extension43_N.convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension(ConversionContext43_N.INSTANCE.path(), extension))
+      .filter(extension -> !advisor.ignoreExtension(extension))
       .map(Extension43_N::convertExtension)
       .forEach(tgt::addModifierExtension);
   }

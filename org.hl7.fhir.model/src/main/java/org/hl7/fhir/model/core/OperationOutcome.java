@@ -1132,6 +1132,32 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.severity != null) {
+            visitor.visit(this, "severity", -1, this.severity);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.details != null) {
+            visitor.visit(this, "details", -1, this.details);
+          }
+          if (this.diagnostics != null) {
+            visitor.visit(this, "diagnostics", -1, this.diagnostics);
+          }
+          if (this.expressionList != null) {
+            int i = 0;
+            for (Base v : this.expressionList) {
+              if (v != null) {
+                visitor.visit(this, "expression", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "severity":  return new Property("severity", "code", "Indicates whether the issue indicates a variation from successful processing.", 0, 1, severity);
@@ -1489,6 +1515,20 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("issue", "", "An error, warning, or information message that results from a system action.", 0, java.lang.Integer.MAX_VALUE, issueList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.issueList != null) {
+          int i = 0;
+          for (Base v : this.issueList) {
+            if (v != null) {
+              visitor.visit(this, "issue", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

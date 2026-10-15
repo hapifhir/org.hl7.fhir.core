@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 /**
   @deprecated turtle parser + tests moved to org.hl7.fhir.utilities
  */
-@Deprecated(since="2020-05-29")
+@Deprecated(forRemoval = true, since="2020-05-29")
 class TurtleTests {
 
   private void doTest(String filename, boolean ok) {

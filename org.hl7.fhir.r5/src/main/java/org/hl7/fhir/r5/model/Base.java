@@ -29,10 +29,7 @@ package org.hl7.fhir.r5.model;
   */
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBase;
@@ -168,8 +165,15 @@ public abstract class Base implements Serializable, IBase, IElement {
     if (userData != null)
       userData.remove(name);
   }
- 
-  
+
+  /**
+   * Clear all user Data
+   */
+  public void clearUserData() {
+    userData  = null;
+  }
+
+
   public void setUserDataINN(String name, Object value) {
     if (value == null)
       return;
@@ -208,7 +212,15 @@ public abstract class Base implements Serializable, IBase, IElement {
       }
       userData.putAll(other.userData);
     }
-  }      
+  }
+
+  public Set<String> getUserDataNames() {
+    if (userData == null) {
+      return new HashSet<>();
+    } else {
+      return userData.keySet();
+    }
+  }
 
   public boolean hasFormatComment() {
     return hasFormatCommentPre() || hasFormatCommentPost();

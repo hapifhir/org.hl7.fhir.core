@@ -222,6 +222,17 @@ public class Money extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.value != null) {
+          visitor.visit(this, "value", -1, this.value);
+        }
+        if (this.currency != null) {
+          visitor.visit(this, "currency", -1, this.currency);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "value":  return new Property("value", "decimal", "Numerical value (with implicit precision).", 0, 1, value);

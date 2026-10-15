@@ -30,6 +30,9 @@ import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestResour
 import org.hl7.fhir.model.core.CapabilityStatement.ResourceInteractionComponent;
 import org.hl7.fhir.model.core.CapabilityStatement.SystemInteractionComponent;
 import org.hl7.fhir.model.core.CodeType;
+import org.hl7.fhir.model.core.ConceptMap;
+import org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.model.core.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.model.core.CodeableConcept;
 import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.model.core.Enumeration;
@@ -76,6 +79,23 @@ public class TxTesterSorters {
     Collections.sort(oo.getIssueList(), new TxTesterSorters.OperationIssueSorter());
   }
   
+  /**
+   * A $closure response lists entries in no particular order: groups by source then target
+   * system, elements by code, and each element's targets by code.
+   */
+  public static void sortConceptMap(ConceptMap cm) {
+    Collections.sort(cm.getGroupList(), (a, b) -> {
+      int c = String.valueOf(a.getSource()).compareTo(String.valueOf(b.getSource()));
+      return c != 0 ? c : String.valueOf(a.getTarget()).compareTo(String.valueOf(b.getTarget()));
+    });
+    for (ConceptMapGroupComponent g : cm.getGroupList()) {
+      Collections.sort(g.getElementList(), (a, b) -> String.valueOf(a.getCode()).compareTo(String.valueOf(b.getCode())));
+      for (SourceElementComponent e : g.getElementList()) {
+        Collections.sort(e.getTargetList(), (a, b) -> String.valueOf(a.getCode()).compareTo(String.valueOf(b.getCode())));
+      }
+    }
+  }
+
   public static void sortValueSet(ValueSet vs) {
     Collections.sort(vs.getExtension(), new TxTesterSorters.ExtensionSorter());
     if (vs.hasExpansion()) {
@@ -215,7 +235,7 @@ public class TxTesterSorters {
       Collections.sort(o2.getExtension(), new ExtensionSorter());
       Collections.sort(o1.getPartList(), new ParameterSorter());
       Collections.sort(o2.getPartList(), new ParameterSorter());
-      if (o1.getName().equals(o2.getName()) && o1.getName().equals("property")) {
+      if (o1.getName().equals(o2.getName()) && (o1.getName().equals("property") || o1.getName().equals("subproperty"))) {
         String code1 = o1.getPart("code").getValue().primitiveValue().toLowerCase();
         String code2 = o2.getPart("code").getValue().primitiveValue().toLowerCase();
         if (code1 != null && code2 != null && !code1.equals(code2)) {

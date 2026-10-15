@@ -15,8 +15,7 @@ public class BaseAdvisor_14_50 extends BaseAdvisor50<org.hl7.fhir.dstu2016may.mo
   }
 
   @Override
-  public boolean ignoreExtension(@Nonnull String path,
-                                 @Nonnull String url) throws FHIRException {
+  public boolean ignoreExtension(@Nonnull String url) throws FHIRException {
     // no globally ignored extensions here.
     return false;
   }

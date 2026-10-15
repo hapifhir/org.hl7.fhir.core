@@ -194,7 +194,8 @@ public class OperationDefinition10_50 {
         tgt.setSearchType(SearchParamType.fromCode(src.getType()));
     } else {
       if (src.hasType())
-        tgt.setType(Enumerations.FHIRTypes.fromCode(src.getType()));
+        // R5 renamed Any to Resource
+        tgt.setType(Enumerations.FHIRTypes.fromCode("Any".equals(src.getType()) ? "Resource" : src.getType()));
     }
     tgt.addTargetProfile(src.getProfile().getReference());
     if (src.hasBinding())

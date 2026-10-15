@@ -197,10 +197,24 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     TerminologyClientContext.setCanUseCacheId(true);
   }
 
+  /**
+   * The terminology cache only writes to disk once per SAVE_DELAY_MS window, so whatever an
+   * engine learned since its last write is still in memory. Once the engine is dropped, nothing
+   * will ever write that out, and the next run asks the server again (and adds it to the cache
+   * files again) - so flush before letting an engine go.
+   */
+  private static void saveTerminologyCache() {
+    if (currentEngine != null) {
+      currentEngine.saveTerminologyCache();
+    }
+  }
+
   @AfterClass
   public static void cleanup() throws IOException {
     String content = new GsonBuilder().setPrettyPrinting().create().toJson(manifest);
     FileUtilities.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
+
+    saveTerminologyCache();
 
     currentEngine = null;
     igLoader = null;
@@ -235,6 +249,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
 
     version = VersionUtilities.getMajMin(version);
     if (!version.equals(currentVersion)) {
+      saveTerminologyCache();
       currentEngine = buildVersionEngine(version, txLog);
       currentVersion = version;
     }
