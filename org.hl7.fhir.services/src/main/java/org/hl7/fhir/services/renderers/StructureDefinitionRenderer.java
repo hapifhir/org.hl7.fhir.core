@@ -2620,6 +2620,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } 
       } 
     } 
+    if (e.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE)) {
+      String[] cp = contentReferenceProfileLink(ExtensionUtilities.readStringExtension(e, ExtensionDefinitions.EXT_CONTENT_PROFILE), profile);
+      c.getPieces().add(gen.new Piece(null, " ("+context.formatPhrase(RenderingI18nContext.STRUC_DEF_CONT_PROFILE)+" ", null));
+      c.getPieces().add(gen.new Piece(cp[0], cp[1], cp[2]));
+      c.getPieces().add(gen.new Piece(null, ")", null));
+    }
     return c; 
   } 
  
@@ -4505,7 +4511,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_TYPE), null, strikethrough, context.formatPhrase(RenderingI18nContext.STRUC_DEF_SEE) + d.getContentReference().substring(1)); 
       }
     } else { 
-      tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_TYPE), "datatypes.html", strikethrough, describeTypes(d.getTypeList(), false, d, compare, mode, value, compareValue, sd));  
+      XhtmlNode types = describeTypes(d.getTypeList(), false, d, compare, mode, value, compareValue, sd);
+      if (d.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE)) {
+        String[] cp = contentReferenceProfileLink(ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_CONTENT_PROFILE), sd);
+        types.tx(" ("+context.formatPhrase(RenderingI18nContext.STRUC_DEF_CONT_PROFILE)+" ");
+        if (cp[0] != null) {
+          types.ah(context.prefixLocalHref(cp[0]), cp[2]).tx(cp[1]);
+        } else {
+          types.tx(cp[1]);
+        }
+        types.tx(")");
+      }
+      tableRow(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_TYPE), "datatypes.html", strikethrough, types);
     } 
     if (root && sd.hasExtension(ExtensionDefinitions.EXT_TYPE_PARAMETER)) {
       tableRow(tbl, context.formatPhrase(RenderingI18nContext.STRUC_DEF_TYPE_PARAMETER), "http://hl7.org/fhir/tools/StructureDefinition-type-parameter.html", strikethrough, renderTypeParameter(sd.getExtensionByUrl(ExtensionDefinitions.EXT_TYPE_PARAMETER)));

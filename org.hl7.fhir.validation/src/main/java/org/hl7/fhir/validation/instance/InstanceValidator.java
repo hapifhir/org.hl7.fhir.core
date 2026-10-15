@@ -6273,21 +6273,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private ElementDefinition resolveElementReference(String location, String sourceProfile, String contentProfile) {
-    String profile = contentProfile.startsWith("#") ? contentProfile.substring(1) : sourceProfile;
-    String element = contentProfile.substring(contentProfile.indexOf("#") + 1);
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, profile);
-    if (sd == null) {
-      throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_PROFILE__AT_, profile, location));
-    }
-    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
-      if (element.equals(ed.getId())) {
-        return ed;
-      }
-    }
-    throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT_WITH_ID_, element));
-  }
-
   private ElementDefinition resolveNameReference(StructureDefinitionSnapshotComponent snapshot, String contentReference) {
     for (ElementDefinition ed : snapshot.getElementList())
       if (contentReference.equals("#" + ed.getId()))
@@ -7766,6 +7751,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     // check type invariants (after we've sliced the children)
     ok = checkInvariants(valContext, errors, profile, definition, resource, element, stack, false) && ok;
+
+    // Snapshot expansion can replace a contentReference with BackboneElement while
+    // retaining contentReferenceProfile. Apply these additional constraints in both
+    // representations, without replacing the constraints on the referencing element.
+    if (definition.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE)) {
+      String reference = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_CONTENT_PROFILE);
+      int separator = reference.indexOf('#');
+      if (separator < 0) {
+        throw new DefinitionException(this.context.formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT_WITH_ID_, reference));
+      }
+      String url = separator == 0 ? profile.getVersionedUrl() : reference.substring(0, separator);
+      StructureDefinition targetProfile = profileUtilities.findProfileStr(url, profile);
+      if (targetProfile == null) {
+        throw new DefinitionException(this.context.formatMessage(I18nConstants.UNABLE_TO_FIND_PROFILE__AT_, url, definition.getPath()));
+      }
+      ElementDefinition target = getElementByTail(targetProfile, reference.substring(separator + 1));
+      if (!element.hasValidated(targetProfile, target)) {
+        ok = validateElement(valContext, errors, targetProfile, target, profile, definition, resource, element,
+          actualType, stack, inCodeableConcept, checkDisplayInContext, extensionUrl, pct, mode) && ok;
+      }
+    }
     
     vi.setValid(ok);    
 
@@ -7955,13 +7961,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTYPE, ei.getName(), describeTypes(checkDefn.getTypeList())) && ok;
       }
     } else if (checkDefn.getContentReference() != null) {
-      if (checkDefn.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE)) {
-        String uri = ExtensionUtilities.readStringExtension(checkDefn, ExtensionDefinitions.EXT_CONTENT_PROFILE);
-        typeDefn = resolveElementReference(checkDefn.getPath(), profile.getVersionedUrl(), uri);
-        checkDefn = typeDefn;
-      } else {
-        typeDefn = resolveNameReference(profile.getSnapshot(), checkDefn.getContentReference());
-      }
+      typeDefn = resolveNameReference(profile.getSnapshot(), checkDefn.getContentReference());
       
     } else if (checkDefn.getTypeList().size() == 1 && ("Element".equals(checkDefn.getTypeList().get(0).getWorkingCode()) || "BackboneElement".equals(checkDefn.getTypeList().get(0).getWorkingCode()))) {
       if (checkDefn.getTypeList().get(0).hasProfile()) {
