@@ -128,12 +128,12 @@ public abstract class Base implements Serializable, IBase, IElement {
    * next to (say) composing the tree
    */
   public void assertModelContext() throws FHIRException {
-    assertModelContext(fhirType(), modelContext, true);
+    assertModelContext(modelContext);
   }
 
   /** as assertModelContext(), but also requires that the tree's context IS the given one */
   public void assertModelContext(IModelContext expected) throws FHIRException {
-    assertModelContext(fhirType(), expected, true);
+    checkTree(expected, true);
   }
 
   /**
@@ -148,7 +148,7 @@ public abstract class Base implements Serializable, IBase, IElement {
   /** the message for the first node that doesn't carry the given context, or null. No side effects */
   private String findModelContextMismatch(IModelContext expected) {
     try {
-      assertModelContext(fhirType(), expected, false);
+      checkTree(expected, false);
       return null;
     } catch (FHIRException e) {
       return e.getMessage();
@@ -159,10 +159,9 @@ public abstract class Base implements Serializable, IBase, IElement {
    * The check the serialisers make before composing: as assertModelContext(expected), but for this
    * node only - an instance without a context adopts the expected one (setModelContext cascades it),
    * an instance with an incompatible context is rejected. The tree below is kept consistent with its
-   * root by the constructors, setters, BaseList and the setModelContext cascades; walking it on every
-   * compose (assertModelContext) costs a listChildren() and a Property for each node, as much as
-   * composing the tree itself. So that invariant is checked with an assert (hasConsistentModelContext): 
-   * it costs nothing in production, but runs in the test suites
+   * root by the constructors, setters, BaseList and the setModelContext cascades, so walking it on 
+   * every compose (assertModelContext) is wasted work. That invariant is checked with an assert 
+   * (hasConsistentModelContext): it costs nothing in production, but runs in the test suites
    */
   public void checkModelContext(IModelContext expected) throws FHIRException {
     if (expected == null) {
@@ -180,50 +179,35 @@ public abstract class Base implements Serializable, IBase, IElement {
    * @param adopt whether a node without a context adopts the expected one (assertModelContext), or is 
    *   a mismatch (hasConsistentModelContext, which must not have side effects)
    */
-  private void assertModelContext(String path, IModelContext expected, boolean adopt) {
-    if (expected == null) {
-      return;
-    }
-    if (this.modelContext == null) {
-      if (!adopt) {
-        throw new FHIRException("Model context mismatch at "+path+": expected "+describeContext(expected)+" but found "+describeContext(null));
-      }
-      this.modelContext = expected;
-    } else if (this.modelContext != expected && !this.modelContext.isCompatibleModelContext(expected)) {
-      throw new FHIRException("Model context mismatch at "+path+": expected "+describeContext(expected)+" but found "+describeContext(this.modelContext));
-    }
-    List<Property> children = new ArrayList<Property>();
-    listChildren(children);
-    for (Property c : children) {
-      int i = 0;
-      for (Base b : c.getValues()) {
-        if (b != null) {
-          b.assertModelContext(path+"."+c.getName()+(c.isList() ? "["+i+"]" : ""), expected, adopt);
-        }
-        i++;
+  private void checkTree(IModelContext expected, boolean adopt) throws FHIRException {
     if (expected == null) {
       return;
     }
     try {
-      new ModelContextChecker(expected).check(this);
+      new ModelContextChecker(expected, adopt).check(this);
     } catch (ModelContextMismatch e) {
       throw new FHIRException("Model context mismatch at "+fhirType()+e.getPath()+": expected "+describeContext(expected)+" but found "+describeContext(e.found));
     }
   }
 
   /**
-   * One instance per assertModelContext() call. The path to a node is only built if there is a 
+   * One instance per check of a tree. The path to a node is only built if there is a 
    * mismatch: the exception collects it on the way back up
    */
   private static class ModelContextChecker implements IModelObjectVisitor {
     private final IModelContext expected;
+    private final boolean adopt;
 
-    private ModelContextChecker(IModelContext expected) {
+    private ModelContextChecker(IModelContext expected, boolean adopt) {
       this.expected = expected;
+      this.adopt = adopt;
     }
 
     private void check(Base node) {
       if (node.modelContext == null) {
+        if (!adopt) {
+          throw new ModelContextMismatch(null);
+        }
         node.modelContext = expected;
       } else if (node.modelContext != expected && !node.modelContext.isCompatibleModelContext(expected)) {
         throw new ModelContextMismatch(node.modelContext);
