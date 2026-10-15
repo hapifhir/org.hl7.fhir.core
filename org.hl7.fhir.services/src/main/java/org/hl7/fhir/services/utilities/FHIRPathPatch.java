@@ -2,6 +2,7 @@ package org.hl7.fhir.services.utilities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.services.context.IWorkerContext;
@@ -233,6 +234,9 @@ public class FHIRPathPatch {
     return matches.get(0);
   }
 
+  // an element name: a letter followed by letters and digits (reviewed pattern)
+  private static final Pattern ELEMENT_NAME = Pattern.compile("[A-Za-z][A-Za-z0-9]*");
+
   /**
    * For insert and move the path names a list: the element that holds it, and the entries'
    * name. The list may be empty, in which case the path itself selects nothing, so the parent
@@ -241,7 +245,7 @@ public class FHIRPathPatch {
   private ListTarget listTarget(Element root, String path, String op) {
     int dot = path.lastIndexOf('.');
     String name = dot < 0 ? null : path.substring(dot + 1);
-    if (name == null || !name.matches("[A-Za-z][A-Za-z0-9]*")) {
+    if (name == null || !ELEMENT_NAME.matcher(name).matches()) {
       throw new FHIRException("FHIRPath Patch: " + op + " at " + path + ": the path must name a list, ending in an element name (for example Patient.name)");
     }
     Element parent = single(root, path.substring(0, dot), op);
