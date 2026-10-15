@@ -2,7 +2,7 @@ package org.hl7.fhir.r4b.terminologies;
 
 import org.hl7.fhir.utilities.Utilities;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ValueSetWorker {
 
   public boolean isServerSide(String url) {

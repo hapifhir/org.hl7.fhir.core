@@ -1771,6 +1771,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
           org.hl7.fhir.r5.model.Resource r5 = new org.hl7.fhir.r5.formats.JsonParser().parse(json);
           rN = VersionConvertorFactory_50_N.convertResource(r5);
           break;
+        case R6:
+          org.hl7.fhir.model.core.Resource r6 = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext()).parse(json);
+          rN = r6;
+          break;
         default:
           return null; // this can't happen
       }
@@ -1784,6 +1788,32 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     } catch (IOException e) {
       throw new FHIRException(e);
     }
+  }
+
+  /**
+   * whether an element (a search parameter base, a target profile...) applies to the FHIR version
+   * being validated, according to the version-specific-use extension on it (absent = all versions).
+   * Start and end are each optional and inclusive, and are compared at major.minor
+   */
+  protected boolean isForThisVersion(Element e) {
+    Element ext = e.getExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE);
+    if (ext == null) {
+      return true;
+    }
+    String ver = context.getFHIRVersion();
+    if (ext.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START)) {
+      String start = ext.getExtensionString(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START);
+      if (!Utilities.noString(start) && !VersionUtilities.isThisOrLater(start, ver, VersionUtilities.VersionPrecision.MINOR)) {
+        return false;
+      }
+    }
+    if (ext.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END)) {
+      String end = ext.getExtensionString(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END);
+      if (!Utilities.noString(end) && !VersionUtilities.isThisOrLater(ver, end, VersionUtilities.VersionPrecision.MINOR)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   protected boolean isHL7(Element cr) {
@@ -1963,5 +1993,25 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     xverManager = value;
   }
 
+
+  protected String determineId(String path, Element element) {
+    if (element == null) {
+      return null;
+    }
+    if (path.endsWith("]")) {
+      path = path.substring(0, path.lastIndexOf("["));
+    }
+    switch (path) {
+      case "StructureDefinition.snapshot.element": return element.getNamedChildValue("id", "path");
+      case "StructureDefinition.differential.element": return element.getNamedChildValue("id", "path");
+      case "SearchParameter": return element.getNamedChildValue("code");
+      default:
+        if (path.contains(".")) {
+          return determineId(path.substring(0, path.lastIndexOf(".")), element.getParentForValidator());
+        } else {
+          return null;
+        }
+    }
+  }
 
 }

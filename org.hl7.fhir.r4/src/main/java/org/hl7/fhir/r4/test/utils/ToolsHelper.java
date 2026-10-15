@@ -68,7 +68,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 @SuppressWarnings("checkstyle:systemout")
 public class ToolsHelper {
 

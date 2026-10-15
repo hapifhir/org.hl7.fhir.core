@@ -458,6 +458,24 @@ public class TypeDetails {
       return pt.uri;
     return null;
   }
+
+  /**
+   * Converts a FHIRPath system type identifier to a FHIR type name.
+   * Other type identifiers are unchanged; this does not resolve a StructureDefinition.
+   * The R5 SQL Validator (org.hl7.fhir.r5.utils.sql.Validator.typeName) could be refactored
+   * to reuse this conversion while retaining its SQL-specific namespace and backbone handling.
+   */
+  public static String FhirTypeName(String type) {
+    String prefix = FP_NS + "System.";
+    if (type != null && type.startsWith(prefix)) {
+      String name = type.substring(prefix.length());
+      if (name.isEmpty()) {
+        throw new DefinitionException("FHIRPath system type name is missing: " + type);
+      }
+      return "Quantity".equals(name) ? name : Character.toLowerCase(name.charAt(0)) + name.substring(1);
+    }
+    return type;
+  }
   
   @Override
   public String toString() {

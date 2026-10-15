@@ -273,9 +273,18 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     return CACHE_VERSION.equals(version);
   }
 
+  /**
+   * Temp directories are where addPackageToCache extracts a package before renaming it into place. That runs
+   * under a package lock, which is a file lock, but this cleanup runs under the cache lock, which is in-process only -
+   * so another process sharing the cache folder can be installing into one of these right now. Only delete the ones
+   * that are too old to still be in use.
+   */
+  private static final long TEMP_DIRECTORY_MAX_AGE_MILLIS = 60L * 60L * 1000L;
+
   private void deleteOldTempDirectories() throws IOException {
+    long cutoff = System.currentTimeMillis() - TEMP_DIRECTORY_MAX_AGE_MILLIS;
     for (File f : Objects.requireNonNull(cacheFolder.listFiles())) {
-      if (f.isDirectory() && UUIDUtilities.isValidUUID(f.getName())) {
+      if (f.isDirectory() && UUIDUtilities.isValidUUID(f.getName()) && f.lastModified() < cutoff) {
         FileUtilities.clearDirectory(f.getAbsolutePath());
         f.delete();
       }

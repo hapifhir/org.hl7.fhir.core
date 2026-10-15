@@ -1,6 +1,8 @@
 package org.hl7.fhir.r4.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import org.hl7.fhir.r4.fhirpath.ExpressionNode.CollectionStatus;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -188,6 +190,10 @@ public class FHIRPathTests {
     Resource res = null;
 
     List<Base> outcome = new ArrayList<Base>();
+    // context: a FHIRPath expression evaluated first, as a preparatory filter; the test expression is evaluated on its (single) result
+    // contextType: the type(s) to use as the focus when checking the expression - overrides context for type checking
+    String testContext = test.getAttribute("context");
+    String testContextType = test.getAttribute("contextType");
 
     System.out.println(name);
 
@@ -216,10 +222,15 @@ public class FHIRPathTests {
       }
 
       try {
-        if (Utilities.noString(input)) {
+        String rt = res == null ? null : res.getResourceType().toString();
+        if (!Utilities.noString(testContextType)) {
+          fp.checkOnTypes(res, "Resource", rt, Arrays.asList(testContextType.split("\\|")), node, new ArrayList<>());
+        } else if (!Utilities.noString(testContext)) {
+          fp.check(res, "Resource", rt, testContext, node);
+        } else if (res == null) {
           fp.check(null, null, null, node);
         } else {
-          fp.check(res, "Resource", res.getResourceType().toString(), res.getResourceType().toString(), node);
+          fp.check(res, "Resource", rt, rt, node);
         }
         Assertions.assertTrue(fail != TestResultType.SEMANTICS,
             String.format("Expected exception didn't occur checking %s", expression));
@@ -236,7 +247,7 @@ public class FHIRPathTests {
 
     if (node != null) {
       try {
-        outcome = fp.evaluate(res, node);
+        outcome = evaluateInContext(res, testContext, node);
         Assertions.assertTrue(fail == TestResultType.OK,
             String.format("Expected exception didn't occur executing %s", expression));
       } catch (Exception e) {
@@ -313,6 +324,21 @@ public class FHIRPathTests {
     }
   }
 
+  /**
+   * if the test specifies a context, evaluate that first as a preparatory filter, and then evaluate the
+   * expression against the single item it selects (it's an error in the test if it selects zero, or more than one)
+   */
+  private List<Base> evaluateInContext(Resource root, String testContext, ExpressionNode node) {
+    if (Utilities.noString(testContext)) {
+      return fp.evaluate(root, node);
+    }
+    List<Base> focus = fp.evaluate(root, fp.parse(testContext));
+    if (focus.size() != 1) {
+      Assertions.fail(String.format("Context '%s' selected %d items, but must select exactly one", testContext, focus.size()));
+    }
+    return fp.evaluate(null, root, root, focus.get(0), node);
+  }
+
   @Test
   @DisplayName("resolveConstant returns a list of Base")
   public void resolveConstantReturnsList() {
@@ -370,5 +396,31 @@ public class FHIRPathTests {
     List<Base> results = fp.evaluate(input, "Patient.name.given.join(',')");
     assertEquals(1, results.size());
     assertEquals("g1,g2", results.get(0).primitiveValue());
+  }
+
+  // split() returns an ordered collection of strings, so first() on its result is legal.
+  // Typing it as a singleton raised a spurious FHIRPATH_NOT_A_COLLECTION warning (#2640).
+  @Test
+  public void testCheck_SplitIsAnOrderedCollection() throws Exception {
+    TypeDetails focus = new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+    TypeDetails td = fp.checkOnTypes(null, "Resource", "string", focus, fp.parse("'fr-BE'.split('-')"), new ArrayList<>());
+    assertEquals(CollectionStatus.ORDERED, td.getCollectionStatus());
+  }
+
+  @Test
+  public void testCheck_FirstOnSplitIsNotReportedAsNotACollection() throws Exception {
+    TypeDetails focus = new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
+    List<FHIRPathEngine.IssueMessage> warnings = new ArrayList<>();
+    fp.checkOnTypes(null, "Resource", "string", focus, fp.parse("'fr-BE'.split('-').first().lower()"), warnings);
+    for (FHIRPathEngine.IssueMessage w : warnings) {
+      assertNotEquals("FHIRPATH_NOT_A_COLLECTION", w.getId());
+    }
+  }
+
+  @Test
+  public void testEvaluate_FirstOnSplit() throws Exception {
+    List<Base> results = fp.evaluate(new Patient(), "'fr-BE'.split('-').first().lower()");
+    assertEquals(1, results.size());
+    assertEquals("fr", results.get(0).primitiveValue());
   }
 }

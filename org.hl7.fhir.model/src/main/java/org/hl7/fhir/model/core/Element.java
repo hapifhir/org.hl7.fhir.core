@@ -209,6 +209,23 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.id != null) {
+          visitor.visit(this, "id", -1, this.id);
+        }
+        if (this.extensionList != null) {
+          int i = 0;
+          for (Base v : this.extensionList) {
+            if (v != null) {
+              visitor.visit(this, "extension", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "id":  return new Property("id", "string", "Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.", 0, 1, id);
@@ -516,9 +533,12 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     * Returns the value as a string of the first extension found for any of the given URLs (in the order given)
     */
    public String getExtensionString(String... theUrls) throws FHIRException {
+     // Select ordinary extensions only; hasExtension can also match modifiers.
      for (String url : theUrls) {
-       if (hasExtension(url)) {
-         return getExtensionString(url);
+       for (Extension next : getExtensionsForRead()) {
+         if (url.equals(next.getUrl())) {
+           return getExtensionString(url);
+         }
        }
      }
      return null;
@@ -584,9 +604,9 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   public StandardsStatus getStandardsStatus() {
     return ExtensionUtilities.getStandardsStatus(this);
   }
-  
-  public void setStandardsStatus(StandardsStatus status) {
-    ExtensionUtilities.setStandardsStatus(this, status, null, null);
+
+  public void setStandardsStatus(StandardsStatus status, String thisVersion) {
+    ExtensionUtilities.setStandardsStatus(this, status, null, thisVersion);
   }
 
    public FhirPublication getFHIRPublicationVersion() {
@@ -604,8 +624,17 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
 
    public void copyNewExtensions(org.hl7.fhir.model.core.Element src, String... urls) {
      for (Extension e : src.getExtensionList()) {
-       if (Utilities.existsInList(e.getUrl(), urls) && !hasExtension(e.getUrl())) {
-         addExtension(e.copy(Base.COPY_DATA));
+       if (Utilities.existsInList(e.getUrl(), urls)) {
+         boolean exists = false;
+         for (Extension next : getExtensionsForRead()) {
+           if (e.getUrl().equals(next.getUrl())) {
+             exists = true;
+             break;
+           }
+         }
+         if (!exists) {
+           addExtension(e.copy(Base.COPY_DATA));
+         }
        }
      }
    }

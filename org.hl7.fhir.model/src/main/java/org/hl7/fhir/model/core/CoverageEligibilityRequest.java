@@ -331,6 +331,17 @@ public class CoverageEligibilityRequest extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.when != null) {
+            visitor.visit(this, "when[x]", -1, this.when);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "A coded event such as when a service is expected or a card printed.", 0, 1, type);
@@ -663,6 +674,20 @@ public class CoverageEligibilityRequest extends DomainResource {
           children.add(new Property("sequence", "positiveInt", "A number to uniquely identify supporting information entries.", 0, 1, sequence));
           children.add(new Property("information", "Reference(Any)", "Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.", 0, 1, information));
           children.add(new Property("appliesToAll", "boolean", "The supporting materials are applicable for all detail items, product/servce categories and specific billing codes.", 0, 1, appliesToAll));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.sequence != null) {
+            visitor.visit(this, "sequence", -1, this.sequence);
+          }
+          if (this.information != null) {
+            visitor.visit(this, "information", -1, this.information);
+          }
+          if (this.appliesToAll != null) {
+            visitor.visit(this, "appliesToAll", -1, this.appliesToAll);
+          }
         }
 
         @Override
@@ -1016,6 +1041,20 @@ public class CoverageEligibilityRequest extends DomainResource {
           children.add(new Property("focal", "boolean", "A flag to indicate that this Coverage is to be used for evaluation of this request when set to true.", 0, 1, focal));
           children.add(new Property("coverage", "Reference(Coverage)", "Reference to the insurance card level information contained in the Coverage resource. The coverage issuing insurer will use these details to locate the patient's actual coverage within the insurer's information system.", 0, 1, coverage));
           children.add(new Property("businessArrangement", "string", "A business agreement number established between the provider and the insurer for special business processing purposes.", 0, 1, businessArrangement));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.focal != null) {
+            visitor.visit(this, "focal", -1, this.focal);
+          }
+          if (this.coverage != null) {
+            visitor.visit(this, "coverage", -1, this.coverage);
+          }
+          if (this.businessArrangement != null) {
+            visitor.visit(this, "businessArrangement", -1, this.businessArrangement);
+          }
         }
 
         @Override
@@ -1675,6 +1714,65 @@ public class CoverageEligibilityRequest extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.supportingInfoSequenceList != null) {
+            int i = 0;
+            for (Base v : this.supportingInfoSequenceList) {
+              if (v != null) {
+                visitor.visit(this, "supportingInfoSequence", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.category != null) {
+            visitor.visit(this, "category", -1, this.category);
+          }
+          if (this.productOrService != null) {
+            visitor.visit(this, "productOrService", -1, this.productOrService);
+          }
+          if (this.modifierList != null) {
+            int i = 0;
+            for (Base v : this.modifierList) {
+              if (v != null) {
+                visitor.visit(this, "modifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.provider != null) {
+            visitor.visit(this, "provider", -1, this.provider);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.unitPrice != null) {
+            visitor.visit(this, "unitPrice", -1, this.unitPrice);
+          }
+          if (this.facility != null) {
+            visitor.visit(this, "facility", -1, this.facility);
+          }
+          if (this.diagnosisList != null) {
+            int i = 0;
+            for (Base v : this.diagnosisList) {
+              if (v != null) {
+                visitor.visit(this, "diagnosis", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.detailList != null) {
+            int i = 0;
+            for (Base v : this.detailList) {
+              if (v != null) {
+                visitor.visit(this, "detail", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "supportingInfoSequence":  return new Property("supportingInfoSequence", "positiveInt", "Exceptions, special conditions and supporting information applicable for this service or product line.", 0, java.lang.Integer.MAX_VALUE, supportingInfoSequenceList);
@@ -2050,6 +2148,14 @@ public class CoverageEligibilityRequest extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("diagnosis", "CodeableReference(Condition)", "The nature of illness or problem in a coded form or as a reference to an external defined Condition.", 0, 1, diagnosis));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.diagnosis != null) {
+            visitor.visit(this, "diagnosis", -1, this.diagnosis);
+          }
         }
 
         @Override
@@ -3030,6 +3136,95 @@ public class CoverageEligibilityRequest extends DomainResource {
         children.add(new Property("supportingInfo", "", "Additional information codes regarding exceptions, special considerations, the condition, situation, prior or concurrent issues.", 0, java.lang.Integer.MAX_VALUE, supportingInfoList));
         children.add(new Property("insurance", "", "Financial instruments for reimbursement for the health care products and services.", 0, java.lang.Integer.MAX_VALUE, insuranceList));
         children.add(new Property("item", "", "Service categories or billable services for which benefit details and/or an authorization prior to service delivery may be required by the payer.", 0, java.lang.Integer.MAX_VALUE, itemList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReason != null) {
+          visitor.visit(this, "statusReason", -1, this.statusReason);
+        }
+        if (this.priority != null) {
+          visitor.visit(this, "priority", -1, this.priority);
+        }
+        if (this.purposeList != null) {
+          int i = 0;
+          for (Base v : this.purposeList) {
+            if (v != null) {
+              visitor.visit(this, "purpose", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.patient != null) {
+          visitor.visit(this, "patient", -1, this.patient);
+        }
+        if (this.eventList != null) {
+          int i = 0;
+          for (Base v : this.eventList) {
+            if (v != null) {
+              visitor.visit(this, "event", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.serviced != null) {
+          visitor.visit(this, "serviced[x]", -1, this.serviced);
+        }
+        if (this.created != null) {
+          visitor.visit(this, "created", -1, this.created);
+        }
+        if (this.enterer != null) {
+          visitor.visit(this, "enterer", -1, this.enterer);
+        }
+        if (this.provider != null) {
+          visitor.visit(this, "provider", -1, this.provider);
+        }
+        if (this.insurer != null) {
+          visitor.visit(this, "insurer", -1, this.insurer);
+        }
+        if (this.facility != null) {
+          visitor.visit(this, "facility", -1, this.facility);
+        }
+        if (this.supportingInfoList != null) {
+          int i = 0;
+          for (Base v : this.supportingInfoList) {
+            if (v != null) {
+              visitor.visit(this, "supportingInfo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.insuranceList != null) {
+          int i = 0;
+          for (Base v : this.insuranceList) {
+            if (v != null) {
+              visitor.visit(this, "insurance", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.itemList != null) {
+          int i = 0;
+          for (Base v : this.itemList) {
+            if (v != null) {
+              visitor.visit(this, "item", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

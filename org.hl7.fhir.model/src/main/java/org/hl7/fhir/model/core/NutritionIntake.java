@@ -280,6 +280,35 @@ public class NutritionIntake extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.nutritionProduct != null) {
+            visitor.visit(this, "nutritionProduct", -1, this.nutritionProduct);
+          }
+          if (this.consumedItemList != null) {
+            int i = 0;
+            for (Base v : this.consumedItemList) {
+              if (v != null) {
+                visitor.visit(this, "consumedItem", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.notConsumedItemList != null) {
+            int i = 0;
+            for (Base v : this.notConsumedItemList) {
+              if (v != null) {
+                visitor.visit(this, "notConsumedItem", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "Indicates what a category of item that is intended to be consumed: e.g., food (i.e. solid and/or liquid), breastmilk, infant formula, supplements, enteral formula.", 0, 1, type);
@@ -684,6 +713,29 @@ public class NutritionIntake extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.schedule != null) {
+            visitor.visit(this, "schedule", -1, this.schedule);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
+          if (this.rate != null) {
+            visitor.visit(this, "rate[x]", -1, this.rate);
+          }
+          if (this.totalIntakeList != null) {
+            int i = 0;
+            for (Base v : this.totalIntakeList) {
+              if (v != null) {
+                visitor.visit(this, "totalIntake", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "schedule":  return new Property("schedule", "Timing", "Scheduled frequency of consumption.", 0, 1, schedule);
@@ -1022,6 +1074,20 @@ public class NutritionIntake extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.nutrient != null) {
+            visitor.visit(this, "nutrient", -1, this.nutrient);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
+          if (this.energy != null) {
+            visitor.visit(this, "energy", -1, this.energy);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "nutrient":  return new Property("nutrient", "CodeableReference(SubstanceDefinition)", "Type of nutrient consumed. This could be a macronutrient (protein, fat, carbohydrate), or a vitamin and mineral.", 0, 1, nutrient);
@@ -1320,6 +1386,20 @@ public class NutritionIntake extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.reason != null) {
+            visitor.visit(this, "reason", -1, this.reason);
+          }
+          if (this.schedule != null) {
+            visitor.visit(this, "schedule", -1, this.schedule);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "reason":  return new Property("reason", "CodeableConcept", "Document the reason the nutrition item was not consumed, such as refused, held, etc.", 0, 1, reason);
@@ -1591,6 +1671,17 @@ public class NutritionIntake extends DomainResource {
           super.listChildren(children);
           children.add(new Property("function", "CodeableConcept", "Type of performance.", 0, 1, function));
           children.add(new Property("actor", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|Patient|Device|RelatedPerson|Group)", "Who or what performed the intake.", 0, 1, actor));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.function != null) {
+            visitor.visit(this, "function", -1, this.function);
+          }
+          if (this.actor != null) {
+            visitor.visit(this, "actor", -1, this.actor);
+          }
         }
 
         @Override
@@ -2702,6 +2793,116 @@ public class NutritionIntake extends DomainResource {
         children.add(new Property("derivedFrom", "Reference(Any)", "Allows linking the NutritionIntake to the underlying NutritionOrder, or to other information, such as AllergyIntolerance, that supports or is used to derive the NutritionIntake.", 0, java.lang.Integer.MAX_VALUE, derivedFromList));
         children.add(new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "A reason, Condition or observation for why the food (i.e. solid and/or liquid) is /was consumed.", 0, java.lang.Integer.MAX_VALUE, reasonList));
         children.add(new Property("note", "Annotation", "Provides extra information about the Nutrition Intake that is not conveyed by the other attributes.", 0, java.lang.Integer.MAX_VALUE, noteList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.partOfList != null) {
+          int i = 0;
+          for (Base v : this.partOfList) {
+            if (v != null) {
+              visitor.visit(this, "partOf", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReasonList != null) {
+          int i = 0;
+          for (Base v : this.statusReasonList) {
+            if (v != null) {
+              visitor.visit(this, "statusReason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.occurrence != null) {
+          visitor.visit(this, "occurrence[x]", -1, this.occurrence);
+        }
+        if (this.recorded != null) {
+          visitor.visit(this, "recorded", -1, this.recorded);
+        }
+        if (this.reported != null) {
+          visitor.visit(this, "reported[x]", -1, this.reported);
+        }
+        if (this.nutritionItemList != null) {
+          int i = 0;
+          for (Base v : this.nutritionItemList) {
+            if (v != null) {
+              visitor.visit(this, "nutritionItem", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.performerList != null) {
+          int i = 0;
+          for (Base v : this.performerList) {
+            if (v != null) {
+              visitor.visit(this, "performer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.location != null) {
+          visitor.visit(this, "location", -1, this.location);
+        }
+        if (this.derivedFromList != null) {
+          int i = 0;
+          for (Base v : this.derivedFromList) {
+            if (v != null) {
+              visitor.visit(this, "derivedFrom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

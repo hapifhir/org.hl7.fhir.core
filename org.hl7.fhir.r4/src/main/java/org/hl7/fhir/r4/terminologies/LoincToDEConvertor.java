@@ -62,7 +62,7 @@ import org.xmlpull.v1.XmlPullParserException;
  * @author Grahame
  *
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 @SuppressWarnings("checkstyle:systemout")
 public class LoincToDEConvertor {
 

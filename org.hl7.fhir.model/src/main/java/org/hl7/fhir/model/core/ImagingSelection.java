@@ -654,6 +654,17 @@ public class ImagingSelection extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.function != null) {
+            visitor.visit(this, "function", -1, this.function);
+          }
+          if (this.actor != null) {
+            visitor.visit(this, "actor", -1, this.actor);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "function":  return new Property("function", "CodeableConcept", "Distinguishes the type of involvement of the performer in the imaging selection.", 0, 1, function);
@@ -1411,6 +1422,74 @@ public class ImagingSelection extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.uid != null) {
+            visitor.visit(this, "uid", -1, this.uid);
+          }
+          if (this.number != null) {
+            visitor.visit(this, "number", -1, this.number);
+          }
+          if (this.sopClass != null) {
+            visitor.visit(this, "sopClass", -1, this.sopClass);
+          }
+          if (this.frameNumberList != null) {
+            int i = 0;
+            for (Base v : this.frameNumberList) {
+              if (v != null) {
+                visitor.visit(this, "frameNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.referencedContentItemIdentifierList != null) {
+            int i = 0;
+            for (Base v : this.referencedContentItemIdentifierList) {
+              if (v != null) {
+                visitor.visit(this, "referencedContentItemIdentifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.segmentNumberList != null) {
+            int i = 0;
+            for (Base v : this.segmentNumberList) {
+              if (v != null) {
+                visitor.visit(this, "segmentNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.regionOfInterestList != null) {
+            int i = 0;
+            for (Base v : this.regionOfInterestList) {
+              if (v != null) {
+                visitor.visit(this, "regionOfInterest", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.waveFormChannelList != null) {
+            int i = 0;
+            for (Base v : this.waveFormChannelList) {
+              if (v != null) {
+                visitor.visit(this, "waveFormChannel", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.imageRegion2DList != null) {
+            int i = 0;
+            for (Base v : this.imageRegion2DList) {
+              if (v != null) {
+                visitor.visit(this, "imageRegion2D", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "uid":  return new Property("uid", "id", "The SOP Instance UID for the selected DICOM this image or other DICOM content.", 0, 1, uid);
@@ -1865,6 +1944,23 @@ public class ImagingSelection extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.regionType != null) {
+            visitor.visit(this, "regionType", -1, this.regionType);
+          }
+          if (this.coordinateList != null) {
+            int i = 0;
+            for (Base v : this.coordinateList) {
+              if (v != null) {
+                visitor.visit(this, "coordinate", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "regionType":  return new Property("regionType", "code", "The type of image region.", 0, 1, regionType);
@@ -2169,6 +2265,23 @@ public class ImagingSelection extends DomainResource {
           super.listChildren(children);
           children.add(new Property("regionType", "code", "Specifies the type of image region.", 0, 1, regionType));
           children.add(new Property("coordinate", "decimal", "The coordinates defining the image region. Encoded as an ordered set of (x,y,z) triplets (in mm and MAY be negative) that define a region of interest in the patient-relative Reference Coordinate System defined by ImagingSelection.frameOfReferenceUid element.", 0, java.lang.Integer.MAX_VALUE, coordinateList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.regionType != null) {
+            visitor.visit(this, "regionType", -1, this.regionType);
+          }
+          if (this.coordinateList != null) {
+            int i = 0;
+            for (Base v : this.coordinateList) {
+              if (v != null) {
+                visitor.visit(this, "coordinate", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -3394,6 +3507,122 @@ public class ImagingSelection extends DomainResource {
         children.add(new Property("endpoint", "Reference(Endpoint)", "The network services providing access to the selected images, frames, etc. See implementation notes for information about using DICOM endpoints.", 0, java.lang.Integer.MAX_VALUE, endpointList));
         children.add(new Property("instance", "", "Each imaging selection includes one or more selected DICOM SOP instances.", 0, java.lang.Integer.MAX_VALUE, instanceList));
         children.add(new Property("imageRegion3D", "", "Specifies a 3D image region, defined by a region type and a set of 3D coordinates.", 0, java.lang.Integer.MAX_VALUE, imageRegion3DList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.modality != null) {
+          visitor.visit(this, "modality", -1, this.modality);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.issued != null) {
+          visitor.visit(this, "issued", -1, this.issued);
+        }
+        if (this.performerList != null) {
+          int i = 0;
+          for (Base v : this.performerList) {
+            if (v != null) {
+              visitor.visit(this, "performer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.derivedFrom != null) {
+          visitor.visit(this, "derivedFrom", -1, this.derivedFrom);
+        }
+        if (this.studyUid != null) {
+          visitor.visit(this, "studyUid", -1, this.studyUid);
+        }
+        if (this.seriesUid != null) {
+          visitor.visit(this, "seriesUid", -1, this.seriesUid);
+        }
+        if (this.seriesNumber != null) {
+          visitor.visit(this, "seriesNumber", -1, this.seriesNumber);
+        }
+        if (this.frameOfReferenceUid != null) {
+          visitor.visit(this, "frameOfReferenceUid", -1, this.frameOfReferenceUid);
+        }
+        if (this.bodySiteList != null) {
+          int i = 0;
+          for (Base v : this.bodySiteList) {
+            if (v != null) {
+              visitor.visit(this, "bodySite", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.focusList != null) {
+          int i = 0;
+          for (Base v : this.focusList) {
+            if (v != null) {
+              visitor.visit(this, "focus", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.endpointList != null) {
+          int i = 0;
+          for (Base v : this.endpointList) {
+            if (v != null) {
+              visitor.visit(this, "endpoint", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.instanceList != null) {
+          int i = 0;
+          for (Base v : this.instanceList) {
+            if (v != null) {
+              visitor.visit(this, "instance", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.imageRegion3DList != null) {
+          int i = 0;
+          for (Base v : this.imageRegion3DList) {
+            if (v != null) {
+              visitor.visit(this, "imageRegion3D", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

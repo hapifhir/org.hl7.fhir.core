@@ -50,6 +50,11 @@ public class Utilities40_50 {
     } else if (Utilities.existsInList(src.primitiveValue(), "EffectEvidenceSynthesis", "CatalogEntry", "ResearchDefinition", "ResearchElementDefinition", "RiskEvidenceSynthesis",
         "Contributor", "ProdCharacteristic", "SubstanceAmount")) {
       setType(tgt, src.primitiveValue(), "Basic");
+
+    } else if (Utilities.existsInList(src.primitiveValue(), "Any")) {
+      // R5 renamed Any to Resource. setType keeps the original code in the extension, so
+      // converting back restores Any rather than leaving Resource behind
+      setType(tgt, src.primitiveValue(), "Resource");
     
     } else {
       tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRTypes.fromCode(src.primitiveValue()));

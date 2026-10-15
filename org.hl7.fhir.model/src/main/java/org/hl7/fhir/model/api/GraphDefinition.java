@@ -545,6 +545,23 @@ public class GraphDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.nodeId != null) {
+            visitor.visit(this, "nodeId", -1, this.nodeId);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.profile != null) {
+            visitor.visit(this, "profile", -1, this.profile);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "nodeId":  return new Property("nodeId", "id", "Internal ID of node - target for link references.", 0, 1, nodeId);
@@ -1234,6 +1251,44 @@ public class GraphDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.min != null) {
+            visitor.visit(this, "min", -1, this.min);
+          }
+          if (this.max != null) {
+            visitor.visit(this, "max", -1, this.max);
+          }
+          if (this.sourceId != null) {
+            visitor.visit(this, "sourceId", -1, this.sourceId);
+          }
+          if (this.path != null) {
+            visitor.visit(this, "path", -1, this.path);
+          }
+          if (this.sliceName != null) {
+            visitor.visit(this, "sliceName", -1, this.sliceName);
+          }
+          if (this.targetId != null) {
+            visitor.visit(this, "targetId", -1, this.targetId);
+          }
+          if (this.params != null) {
+            visitor.visit(this, "params", -1, this.params);
+          }
+          if (this.compartmentList != null) {
+            int i = 0;
+            for (Base v : this.compartmentList) {
+              if (v != null) {
+                visitor.visit(this, "compartment", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "description":  return new Property("description", "string", "Information about why this link is of interest in this graph definition.", 0, 1, description);
@@ -1767,6 +1822,26 @@ public class GraphDefinition extends CanonicalResource {
           children.add(new Property("code", "code", "Identifies the compartment.", 0, 1, code));
           children.add(new Property("expression", "string", "Custom rule, as a FHIRPath expression.", 0, 1, expression));
           children.add(new Property("description", "string", "Documentation for FHIRPath expression.", 0, 1, description));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.use != null) {
+            visitor.visit(this, "use", -1, this.use);
+          }
+          if (this.rule != null) {
+            visitor.visit(this, "rule", -1, this.rule);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.expression != null) {
+            visitor.visit(this, "expression", -1, this.expression);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
         }
 
         @Override
@@ -3124,6 +3199,107 @@ public class GraphDefinition extends CanonicalResource {
         children.add(new Property("start", "id", "The Node at which instances of this graph start. If there is no nominated start, the graph can start at any of the nodes.", 0, 1, start));
         children.add(new Property("node", "", "Potential target for the link.", 0, java.lang.Integer.MAX_VALUE, nodeList));
         children.add(new Property("link", "", "Links this graph makes rules about.", 0, java.lang.Integer.MAX_VALUE, linkList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.start != null) {
+          visitor.visit(this, "start", -1, this.start);
+        }
+        if (this.nodeList != null) {
+          int i = 0;
+          for (Base v : this.nodeList) {
+            if (v != null) {
+              visitor.visit(this, "node", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.linkList != null) {
+          int i = 0;
+          for (Base v : this.linkList) {
+            if (v != null) {
+              visitor.visit(this, "link", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

@@ -1373,6 +1373,59 @@ public class Group extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.exclude != null) {
+            visitor.visit(this, "exclude", -1, this.exclude);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.methodList != null) {
+            int i = 0;
+            for (Base v : this.methodList) {
+              if (v != null) {
+                visitor.visit(this, "method", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.formula != null) {
+            visitor.visit(this, "formula", -1, this.formula);
+          }
+          if (this.determiner != null) {
+            visitor.visit(this, "determiner", -1, this.determiner);
+          }
+          if (this.offset != null) {
+            visitor.visit(this, "offset", -1, this.offset);
+          }
+          if (this.instances != null) {
+            visitor.visit(this, "instances[x]", -1, this.instances);
+          }
+          if (this.duration != null) {
+            visitor.visit(this, "duration[x]", -1, this.duration);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.relativeTimeList != null) {
+            int i = 0;
+            for (Base v : this.relativeTimeList) {
+              if (v != null) {
+                visitor.visit(this, "relativeTime", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "A code that identifies the kind of trait being asserted.", 0, 1, code);
@@ -2006,6 +2059,29 @@ public class Group extends CanonicalResource {
           children.add(new Property("involvement", "CodeableConcept", "A code that describes how a user is involved in the group. Some groups (e.g. exposure-group) typically don't have variance between members, or it is not tracked, while for other groups (e.g. family, household) this may be meaningful.", 0, java.lang.Integer.MAX_VALUE, involvementList));
           children.add(new Property("period", "Period", "The period that the member was in the group, if known.", 0, 1, period));
           children.add(new Property("inactive", "boolean", "A flag to indicate that the member is no longer in the group, but previously may have been a member.", 0, 1, inactive));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.entity != null) {
+            visitor.visit(this, "entity", -1, this.entity);
+          }
+          if (this.involvementList != null) {
+            int i = 0;
+            for (Base v : this.involvementList) {
+              if (v != null) {
+                visitor.visit(this, "involvement", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.inactive != null) {
+            visitor.visit(this, "inactive", -1, this.inactive);
+          }
         }
 
         @Override
@@ -3701,6 +3777,116 @@ public class Group extends CanonicalResource {
         children.add(new Property("combinationThreshold", "positiveInt", "Provides the value of \"n\" when \"at-least\" or \"at-most\" codes are used for combinationMethod.", 0, 1, combinationThreshold));
         children.add(new Property("characteristic", "", "Identifies traits whose presence r absence is shared by members of the group.", 0, java.lang.Integer.MAX_VALUE, characteristicList));
         children.add(new Property("member", "", "Identifies the resource instances that are members of the group.", 0, java.lang.Integer.MAX_VALUE, memberList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.membership != null) {
+          visitor.visit(this, "membership", -1, this.membership);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.quantity != null) {
+          visitor.visit(this, "quantity", -1, this.quantity);
+        }
+        if (this.managingEntity != null) {
+          visitor.visit(this, "managingEntity", -1, this.managingEntity);
+        }
+        if (this.combinationMethod != null) {
+          visitor.visit(this, "combinationMethod", -1, this.combinationMethod);
+        }
+        if (this.combinationThreshold != null) {
+          visitor.visit(this, "combinationThreshold", -1, this.combinationThreshold);
+        }
+        if (this.characteristicList != null) {
+          int i = 0;
+          for (Base v : this.characteristicList) {
+            if (v != null) {
+              visitor.visit(this, "characteristic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.memberList != null) {
+          int i = 0;
+          for (Base v : this.memberList) {
+            if (v != null) {
+              visitor.visit(this, "member", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

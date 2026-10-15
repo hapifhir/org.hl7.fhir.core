@@ -1006,8 +1006,11 @@ public class ExtensionUtilities {
   }
 
   public static String getPresentation(Element holder, PrimitiveType<?> type) {
-    if (holder.hasExtension(ExtensionDefinitions.EXT_RENDERED_VALUE))
-      return readStringExtension(holder, ExtensionDefinitions.EXT_RENDERED_VALUE);
+    for (Extension e : holder.getExtensionsForRead()) {
+      if (ExtensionDefinitions.EXT_RENDERED_VALUE.equals(e.getUrl())) {
+        return readStringExtension(holder, ExtensionDefinitions.EXT_RENDERED_VALUE);
+      }
+    }
     if (type.hasExtension(ExtensionDefinitions.EXT_RENDERED_VALUE))
       return readStringExtension(type, ExtensionDefinitions.EXT_RENDERED_VALUE);
     return type.primitiveValue();

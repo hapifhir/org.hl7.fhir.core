@@ -314,6 +314,17 @@ public class NutritionProduct extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.item != null) {
+            visitor.visit(this, "item", -1, this.item);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount[x]", -1, this.amount);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "item":  return new Property("item", "CodeableReference(SubstanceDefinition)", "The (relevant) nutrients in the product.", 0, 1, item);
@@ -652,6 +663,20 @@ public class NutritionProduct extends DomainResource {
           children.add(new Property("item", "CodeableReference(NutritionProduct)", "The ingredient contained in the product.", 0, 1, item));
           children.add(new Property("amount[x]", "Ratio|Quantity", "The amount of ingredient that is in the product.", 0, 1, amount));
           children.add(new Property("allergen", "boolean", "A known or suspected allergenic and/or substance that is associated with an intolerance.", 0, 1, allergen));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.item != null) {
+            visitor.visit(this, "item", -1, this.item);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount[x]", -1, this.amount);
+          }
+          if (this.allergen != null) {
+            visitor.visit(this, "allergen", -1, this.allergen);
+          }
         }
 
         @Override
@@ -1020,6 +1045,17 @@ public class NutritionProduct extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "A code specifying which characteristic of the product is being described (for example, colour, shape).", 0, 1, type));
           children.add(new Property("value[x]", "CodeableConcept|string|Quantity|base64Binary|Attachment|boolean", "The actual characteristic value corresponding to the type.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
         }
 
         @Override
@@ -1587,6 +1623,38 @@ public class NutritionProduct extends DomainResource {
           children.add(new Property("expiry", "dateTime", "The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.", 0, 1, expiry));
           children.add(new Property("useBy", "dateTime", "The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.", 0, 1, useBy));
           children.add(new Property("biologicalSourceEvent", "Identifier", "An identifier of the donation, collection, or pooling event from which biological material in this nutrition product was derived.", 0, 1, biologicalSourceEvent));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.identifierList != null) {
+            int i = 0;
+            for (Base v : this.identifierList) {
+              if (v != null) {
+                visitor.visit(this, "identifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.lotNumber != null) {
+            visitor.visit(this, "lotNumber", -1, this.lotNumber);
+          }
+          if (this.expiry != null) {
+            visitor.visit(this, "expiry", -1, this.expiry);
+          }
+          if (this.useBy != null) {
+            visitor.visit(this, "useBy", -1, this.useBy);
+          }
+          if (this.biologicalSourceEvent != null) {
+            visitor.visit(this, "biologicalSourceEvent", -1, this.biologicalSourceEvent);
+          }
         }
 
         @Override
@@ -2482,6 +2550,86 @@ public class NutritionProduct extends DomainResource {
         children.add(new Property("characteristic", "", "Specifies descriptive properties of the nutrition product.", 0, java.lang.Integer.MAX_VALUE, characteristicList));
         children.add(new Property("instance", "", "Conveys instance-level information about this product item. One or several physical, countable instances or occurrences of the product.", 0, java.lang.Integer.MAX_VALUE, instanceList));
         children.add(new Property("note", "Annotation", "Comments made about the product.", 0, java.lang.Integer.MAX_VALUE, noteList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.manufacturerList != null) {
+          int i = 0;
+          for (Base v : this.manufacturerList) {
+            if (v != null) {
+              visitor.visit(this, "manufacturer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.nutrientList != null) {
+          int i = 0;
+          for (Base v : this.nutrientList) {
+            if (v != null) {
+              visitor.visit(this, "nutrient", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.ingredientSummary != null) {
+          visitor.visit(this, "ingredientSummary", -1, this.ingredientSummary);
+        }
+        if (this.ingredientList != null) {
+          int i = 0;
+          for (Base v : this.ingredientList) {
+            if (v != null) {
+              visitor.visit(this, "ingredient", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.energy != null) {
+          visitor.visit(this, "energy", -1, this.energy);
+        }
+        if (this.characteristicList != null) {
+          int i = 0;
+          for (Base v : this.characteristicList) {
+            if (v != null) {
+              visitor.visit(this, "characteristic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.instanceList != null) {
+          int i = 0;
+          for (Base v : this.instanceList) {
+            if (v != null) {
+              visitor.visit(this, "instance", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override
