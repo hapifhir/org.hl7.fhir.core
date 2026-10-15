@@ -109,7 +109,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     for (BaseWrapper i : items) {
       hasExt = renderTreeItem(gen, row.getSubRows(), qr, i) || hasExt;
     }
-    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
+    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), true, null);
     x.addChildNode(xn);
     return hasExt;
   }
@@ -136,7 +136,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     for (QuestionnaireResponseItemComponent i : q.getItem()) {
       hasExt = renderTreeItem(gen, row.getSubRows(), q, i) || hasExt;
     }
-    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
+    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), true, null);
     x.addChildNode(xn);
     return hasExt;
   }

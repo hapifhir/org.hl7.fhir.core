@@ -119,60 +119,59 @@ public class CodeSystemUtilities extends TerminologyUtilities {
 
   public static final String USER_DATA_CROSS_LINK = "cs.utils.cross.link";
 
+  /**
+   * Walks the concepts of a code system for rendering, re-arranging the top level concepts under the
+   * parents that properties say they have (see {@link CodeSystemHierarchy}).
+   * <p>
+   * The navigator keeps track of which concepts it has already returned, so it is for one rendering of
+   * the code system only. The analysis it works from doesn't change, and can be shared and cached.
+   */
   public static class CodeSystemNavigator {
 
-    private CodeSystem cs;
-    private boolean restructure;
-    private Set<String> processed = new HashSet<>();
-    // top level concepts by the codes they are subsumedBy, in concept order. Built on first use; without it every
-    // row rendered scanned the whole code system, which is quadratic for large flat code systems
-    private Map<String, List<ConceptDefinitionComponent>> subsumedByIndex;
+    private final CodeSystem cs;
+    private final CodeSystemHierarchy hierarchy;
+    private final Set<String> processed = new HashSet<>();
 
-    public CodeSystemNavigator(CodeSystem cs) {
+    public CodeSystemNavigator(@Nonnull CodeSystem cs) {
+      this(cs, new CodeSystemHierarchy(cs));
+    }
+
+    public CodeSystemNavigator(@Nonnull CodeSystem cs, @Nonnull CodeSystemHierarchy hierarchy) {
+      if (hierarchy.getCodeSystem() != cs) {
+        throw new IllegalArgumentException("The hierarchy was built for a different CodeSystem object");
+      }
       this.cs = cs;
-      restructure = hasExtraRelationships(cs.getConceptList());
+      this.hierarchy = hierarchy;
+    }
+
+    public CodeSystemHierarchy getHierarchy() {
+      return hierarchy;
     }
 
     public boolean isRestructure() {
-      return restructure;
+      return hierarchy.isRestructure();
     }
 
-    private boolean hasExtraRelationships(List<ConceptDefinitionComponent> concept) {
-      for (ConceptDefinitionComponent cd : concept) {
-        if (!getSubsumedBy(cd).isEmpty()) {
-          return true;
-        }
-        for (ConceptDefinitionComponent cdc : cd.getConceptList()) {
-          if (hasExtraRelationships(cdc.getConceptList())) {
-            return true;
-          }
-        }
-      }
-      return false;
-    }
-
-    public List<ConceptDefinitionComponent> getConcepts(@Nonnull ConceptDefinitionComponent context) {
+    public List<ConceptDefinitionComponent> getConcepts(ConceptDefinitionComponent context) {
       if (context == null) {
-        if (restructure) {
+        if (isRestructure()) {
           List<ConceptDefinitionComponent> res = new ArrayList<>();
-          for (ConceptDefinitionComponent cd : cs.getConceptList()) {
-            if (getSubsumedBy(cd).isEmpty()) {
-              res.add(cd);
-              processed.add(cd.getCode());
-            }
+          for (ConceptDefinitionComponent cd : hierarchy.getRoots()) {
+            res.add(cd);
+            processed.add(cd.getCode());
           }
           return res;
         } else {
           return cs.getConceptList();
         }
       } else {
-        if (restructure) {
+        if (isRestructure()) {
           List<ConceptDefinitionComponent> res = new ArrayList<>();
           for (ConceptDefinitionComponent cd : context.getConceptList()) {
             res.add(cd);
             processed.add(cd.getCode());
           }
-          for (ConceptDefinitionComponent cd : getSubsumedConcepts(context.getCode())) {
+          for (ConceptDefinitionComponent cd : hierarchy.getStatedChildren(context.getCode())) {
             if (!processed.contains(cd.getCode())) {
               res.add(cd);
               processed.add(cd.getCode());
@@ -185,32 +184,13 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       }
     }
 
-    private List<String> getSubsumedBy(ConceptDefinitionComponent cd) {
-      List<String> codes = new ArrayList<>();
-      for (ConceptPropertyComponent cp : cd.getPropertyList()) {
-        if ("subsumedBy".equals(cp.getCode())) {
-          codes.add(cp.getValue().primitiveValue());
-        }
-      }
-      return codes;
-    }
-
-    private List<ConceptDefinitionComponent> getSubsumedConcepts(String code) {
-      if (subsumedByIndex == null) {
-        subsumedByIndex = new HashMap<>();
-        for (ConceptDefinitionComponent cd : cs.getConceptList()) {
-          // a concept is listed once per code, even if it says it is subsumedBy the same code more than once
-          for (String parent : new LinkedHashSet<>(getSubsumedBy(cd))) {
-            subsumedByIndex.computeIfAbsent(parent, k -> new ArrayList<>()).add(cd);
-          }
-        }
-      }
-      return subsumedByIndex.getOrDefault(code, Collections.emptyList());
-    }
-
+    /**
+     * @return the concepts that are stated to be children of the context, but that have already been
+     * returned somewhere else (because they have more than one parent)
+     */
     public List<ConceptDefinitionComponent> getOtherChildren(@Nonnull ConceptDefinitionComponent context) {
       List<ConceptDefinitionComponent> res = new ArrayList<>();
-      for (ConceptDefinitionComponent cd : getSubsumedConcepts(context.getCode())) {
+      for (ConceptDefinitionComponent cd : hierarchy.getStatedChildren(context.getCode())) {
         if (processed.contains(cd.getCode())) {
           res.add(cd);
         }

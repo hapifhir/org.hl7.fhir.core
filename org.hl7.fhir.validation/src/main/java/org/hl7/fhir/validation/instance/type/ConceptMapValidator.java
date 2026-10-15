@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.model.core.ConceptMap.SourceElementComponent;
+import org.hl7.fhir.model.core.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.model.core.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.model.core.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
@@ -140,6 +143,7 @@ public class ConceptMapValidator extends BaseValidator {
 
   private Map<String, Boolean> checkServerURLs = new HashMap<>();
   private final List<CMCodingValidationRequest> batch = new ArrayList<>();
+  private final List<GroupInfo> groupInfos = new ArrayList<>();
   
   public ConceptMapValidator(BaseValidator parent) {
     super(parent);
@@ -221,6 +225,7 @@ public class ConceptMapValidator extends BaseValidator {
 
       }
     }
+    checkMappingQuality(errors, cm, stack, options, sourceScope, targetScope);
     return ok;
   }
 
@@ -330,6 +335,7 @@ public class ConceptMapValidator extends BaseValidator {
       ok = validateGroupElement(errors, stack, element, stack.push(element, ci, null, null), props, attribs, options, ctxt, relationships) && ok;
       ci++;
     }    
+    groupInfos.add(buildGroupInfo(grp, stack, ctxt));
     return ok;
   }
 
@@ -404,11 +410,11 @@ public class ConceptMapValidator extends BaseValidator {
     boolean noMap = "true".equals(src.getNamedChildValue("noMap"));
     if (noMap) {
       if (!relationships.has(source)) {
-        relationships.see(source, "unmapped");
-      } else if (!relationships.get(source).equals("unmapped")) {
-        warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, code.primitiveValue());            
+        relationships.see(source, "noMap");
+      } else if (!relationships.get(source).equals("noMap")) {
+        warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, "--", relationships.get(source), "noMap");
       } else {
-        warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION, source, code.primitiveValue());            
+        warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION, source, "--", "noMap");
       }
     }
     return ok;
@@ -455,19 +461,19 @@ public class ConceptMapValidator extends BaseValidator {
         if (!relationships.has(source)) {
           relationships.see(source, reln);
         } else if (relationships.get(source).equals(reln)) {
-          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION, source, tgtForMsg);            
+          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION, source, tgtForMsg, reln);
         } else {
-          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, tgtForMsg, reln, relationships.get(source));            
+          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, tgtForMsg, relationships.get(source), reln);
         }
       } else {
         if (relationships.has(source)) {
-          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, tgtForMsg, reln, relationships.get(source));            
+          warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, "--", relationships.get(source), reln);
         }
         if (relationships.has(source, target)) {
           if (relationships.get(source, target).equals(reln)) {
-            warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, tgtForMsg, reln, relationships.get(source, target));
+            warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION, source, tgtForMsg, reln);
           } else {
-            warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION, source, tgtForMsg);            
+            warning(errors, "2023-03-05", IssueType.BUSINESSRULE, stack, false, I18nConstants.CONCEPTMAP_GROUP_TARGET_DUPLICATION_DIFFERENT, source, tgtForMsg, relationships.get(source, target), reln);
           }
         } else {
           relationships.see(source, target, reln);
@@ -584,5 +590,499 @@ public class ConceptMapValidator extends BaseValidator {
         batch.add(new CMCodingValidationRequest(stack, c));
       }
     }
+  }
+  // ---- mapping quality checks -----------------------------------------------------------------
+  //
+  // These look at what the map claims about the meaning of the codes, rather than at whether the
+  // codes are valid. Hints are for things that look like they are missing, warnings are for
+  // claims that are inconsistent with each other, with the code system hierarchies, or with a
+  // reverse map (if one is found in the context - that only happens if someone provides it).
+
+  private static final String REL_EQUIVALENT = "equivalent";
+  private static final String REL_NARROWER = "source-is-narrower-than-target";
+  private static final String REL_BROADER = "source-is-broader-than-target";
+  private static final String REL_RELATED = "related-to";
+  private static final String REL_UNRELATED = "not-related-to";
+  private static final String REL_NOMAP = "noMap";
+
+  private static class MapTarget {
+    private String code;
+    private String relationship; // normalised to the R5 relationship codes
+    private boolean conditional; // has dependsOn or product, so the simple rules don't apply
+    private NodeStack stack;
+  }
+
+  private static class MapRow {
+    private String code;
+    private boolean noMap;
+    private NodeStack stack;
+    private final List<MapTarget> targets = new ArrayList<>();
+  }
+
+  private static class GroupInfo {
+    private NodeStack stack;
+    private GroupContext ctxt;
+    private boolean hasUnmapped;
+    private final List<MapRow> rows = new ArrayList<>();
+  }
+
+  private static class SubsumptionCheck {
+    private String system;
+    private String version;
+    private String parent;
+    private String child;
+    private boolean local;
+    private NodeStack stack;
+    private String msgId;
+    private Object[] params;
+  }
+
+  private GroupInfo buildGroupInfo(Element grp, NodeStack stack, GroupContext ctxt) {
+    boolean r5 = VersionUtilities.isR5Plus(context.getFHIRVersion());
+    GroupInfo gi = new GroupInfo();
+    gi.stack = stack;
+    gi.ctxt = ctxt;
+    gi.hasUnmapped = grp.hasChild("unmapped", false);
+    int ei = 0;
+    for (Element element : grp.getChildrenByName("element")) {
+      MapRow row = new MapRow();
+      row.code = element.getNamedChildValue("code", false);
+      row.noMap = "true".equals(element.getNamedChildValue("noMap", false));
+      row.stack = stack.push(element, ei, null, null);
+      int ti = 0;
+      for (Element tgt : element.getChildrenByName("target")) {
+        String raw = tgt.getNamedChildValue(r5 ? "relationship" : "equivalence", false);
+        String code = tgt.getNamedChildValue("code", false);
+        if (!r5 && "unmatched".equals(raw) && code == null) {
+          row.noMap = true; // the R4 way of saying noMap
+        } else {
+          String rel = normaliseRelationship(raw, r5);
+          if (code != null && rel != null) {
+            MapTarget t = new MapTarget();
+            t.code = code;
+            t.relationship = rel;
+            t.conditional = !tgt.getChildrenByName("dependsOn").isEmpty() || !tgt.getChildrenByName("product").isEmpty();
+            t.stack = row.stack.push(tgt, ti, null, null);
+            row.targets.add(t);
+          }
+        }
+        ti++;
+      }
+      if (row.code != null) {
+        gi.rows.add(row);
+      }
+      ei++;
+    }
+    return gi;
+  }
+
+  /**
+   * R4 equivalence codes describe the target relative to the source; R5 relationship codes
+   * describe the source relative to the target. Everything is worked in R5 terms
+   */
+  private String normaliseRelationship(String raw, boolean r5) {
+    if (raw == null || r5) {
+      return raw;
+    }
+    switch (raw) {
+      case "equal":
+      case "equivalent":
+        return REL_EQUIVALENT;
+      case "wider":
+      case "subsumes":
+        return REL_NARROWER;
+      case "narrower":
+      case "specializes":
+        return REL_BROADER;
+      case "relatedto":
+      case "inexact":
+        return REL_RELATED;
+      case "disjoint":
+        return REL_UNRELATED;
+      default:
+        return null;
+    }
+  }
+
+  private String inverseRelationship(String rel) {
+    if (REL_NARROWER.equals(rel)) {
+      return REL_BROADER;
+    } else if (REL_BROADER.equals(rel)) {
+      return REL_NARROWER;
+    } else {
+      return rel;
+    }
+  }
+
+  private boolean relationshipsConsistent(String forward, String reverse) {
+    if (REL_RELATED.equals(forward) || REL_RELATED.equals(reverse)) {
+      // related-to is weak - it only conflicts with an explicit statement that there's no relationship
+      return !REL_UNRELATED.equals(forward) && !REL_UNRELATED.equals(reverse);
+    }
+    return inverseRelationship(forward).equals(reverse);
+  }
+
+  private void checkMappingQuality(List<ValidationMessage> errors, Element cm, NodeStack stack, ValidationOptions options, VSReference sourceScope, VSReference targetScope) {
+    for (GroupInfo gi : groupInfos) {
+      checkEquivalenceDuplicates(errors, gi);
+    }
+    checkSubsumption(errors, stack, options);
+    checkScopeCoverage(errors, options, sourceScope);
+    String url = cm.getNamedChildValue("url", false);
+    for (GroupInfo gi : groupInfos) {
+      if (checkDirection(errors, gi, sourceScope, targetScope)) {
+        checkReverseMap(errors, gi, url, sourceScope, targetScope);
+      }
+    }
+  }
+
+  private void checkEquivalenceDuplicates(List<ValidationMessage> errors, GroupInfo gi) {
+    Map<String, String> equivalentSource = new HashMap<>();
+    for (MapRow row : gi.rows) {
+      String firstTarget = null;
+      for (MapTarget t : row.targets) {
+        if (REL_EQUIVALENT.equals(t.relationship) && !t.conditional) {
+          if (firstTarget == null) {
+            firstTarget = t.code;
+          } else if (!firstTarget.equals(t.code)) {
+            warning(errors, "2026-10-13", IssueType.BUSINESSRULE, t.stack, false, I18nConstants.CONCEPTMAP_QUALITY_EQUIVALENT_TARGETS, row.code, firstTarget, t.code);
+          }
+          String other = equivalentSource.get(t.code);
+          if (other == null) {
+            equivalentSource.put(t.code, row.code);
+          } else if (!other.equals(row.code)) {
+            warning(errors, "2026-10-13", IssueType.BUSINESSRULE, t.stack, false, I18nConstants.CONCEPTMAP_QUALITY_EQUIVALENT_SOURCES, other, row.code, t.code);
+          }
+        }
+      }
+    }
+  }
+
+  private void checkSubsumption(List<ValidationMessage> errors, NodeStack stack, ValidationOptions options) {
+    List<SubsumptionCheck> checks = new ArrayList<>();
+    for (GroupInfo gi : groupInfos) {
+      boolean srcOk = gi.ctxt.source != null && doesSubsumption(gi.ctxt.source);
+      boolean tgtOk = gi.ctxt.target != null && doesSubsumption(gi.ctxt.target);
+      // source side: a1 = b, a2 < b or a2 > b, so a1 and a2 must be related in the source hierarchy
+      Map<String, String> equivalentSource = new HashMap<>();
+      for (MapRow row : gi.rows) {
+        for (MapTarget t : row.targets) {
+          if (REL_EQUIVALENT.equals(t.relationship) && !t.conditional) {
+            equivalentSource.putIfAbsent(t.code, row.code);
+          }
+        }
+      }
+      for (MapRow row : gi.rows) {
+        // target side: a = b1, a < b2 or a > b2, so b1 and b2 must be related in the target hierarchy
+        String b1 = null;
+        for (MapTarget t : row.targets) {
+          if (REL_EQUIVALENT.equals(t.relationship) && !t.conditional) {
+            b1 = t.code;
+            break;
+          }
+        }
+        for (MapTarget t : row.targets) {
+          boolean narrower = REL_NARROWER.equals(t.relationship);
+          if (t.conditional || !(narrower || REL_BROADER.equals(t.relationship))) {
+            continue;
+          }
+          String a1 = equivalentSource.get(t.code);
+          if (srcOk && a1 != null && !a1.equals(row.code)) {
+            checks.add(subsumptionCheck(gi.ctxt.source, narrower ? a1 : row.code, narrower ? row.code : a1, t.stack,
+                I18nConstants.CONCEPTMAP_QUALITY_SOURCE_SUBSUMPTION, a1, t.code, row.code, t.relationship));
+          }
+          if (tgtOk && b1 != null && !b1.equals(t.code)) {
+            checks.add(subsumptionCheck(gi.ctxt.target, narrower ? t.code : b1, narrower ? b1 : t.code, t.stack,
+                I18nConstants.CONCEPTMAP_QUALITY_TARGET_SUBSUMPTION, row.code, b1, t.code, t.relationship));
+          }
+        }
+      }
+    }
+    if (checks.isEmpty() || noTerminologyChecks) {
+      return;
+    }
+    int codeLimit = settings.getCodeSystemValidationSizeLimit();
+    if (codeLimit > 0 && checks.size() > codeLimit) {
+      hint(errors, "2026-10-13", IssueType.INFORMATIONAL, stack, false, I18nConstants.CONCEPTMAP_QUALITY_TOO_MANY_CHECKS, checks.size(), codeLimit);
+      return;
+    }
+    Map<String, Boolean> results = new HashMap<>();
+    for (SubsumptionCheck check : checks) {
+      String key = check.system + "|" + check.version + "#" + check.parent + ">" + check.child;
+      // if we have the code system, the internal subsumption tester is authoritative: if it can't
+      // tell, the server won't be able to either (and we don't want a server call for each check)
+      ValidationOptions opts = check.local ? options.withNoServer() : options;
+      Boolean subsumes;
+      if (results.containsKey(key)) {
+        subsumes = results.get(key);
+      } else {
+        subsumes = context.subsumes(opts, new Coding(check.system, check.version, check.parent, null), new Coding(check.system, check.version, check.child, null));
+        results.put(key, subsumes);
+      }
+      // null = can't tell; only report when we know it doesn't
+      if (Boolean.FALSE.equals(subsumes)) {
+        warning(errors, "2026-10-13", IssueType.BUSINESSRULE, check.stack, false, check.msgId, check.params);
+      }
+    }
+  }
+
+  private SubsumptionCheck subsumptionCheck(CSReference system, String parent, String child, NodeStack stack, String msgId, Object... params) {
+    SubsumptionCheck check = new SubsumptionCheck();
+    check.system = system.url;
+    check.version = system.version;
+    check.local = localCodeSystem(system) != null;
+    check.parent = parent;
+    check.child = child;
+    check.stack = stack;
+    check.msgId = msgId;
+    Object[] p = Arrays.copyOf(params, params.length + 2);
+    p[params.length] = parent;
+    p[params.length + 1] = child;
+    check.params = p;
+    return check;
+  }
+
+  /**
+   * Subsumption rules only apply if the hierarchy is is-a. If the hierarchyMeaning isn't stated,
+   * we assume is-a (that's what's observed in practice). If there's no CodeSystem resource
+   * (e.g. SNOMED CT), we leave it to the terminology server
+   */
+  private boolean doesSubsumption(CSReference system) {
+    if (system.url == null) {
+      return false;
+    }
+    CodeSystem cs = localCodeSystem(system);
+    if (cs == null) {
+      return true;
+    }
+    return !cs.hasHierarchyMeaning() || cs.getHierarchyMeaning() == CodeSystem.CodeSystemHierarchyMeaning.ISA;
+  }
+
+  /**
+   * The code system, if we have a resource that carries its content (so not the stubs for SNOMED CT,
+   * LOINC etc). A fragment counts - subsumption can't be determined from it, but nor can it be
+   * determined by sending the fragment to the server
+   */
+  private CodeSystem localCodeSystem(CSReference system) {
+    CodeSystem cs = system.cs != null ? system.cs : context.fetchCodeSystem(system.url, VersionResolutionRules.defaultRule(), system.version, null);
+    if (cs == null || isServerSideOnly(cs) || cs.getContent() == CodeSystemContentMode.NOTPRESENT) {
+      return null;
+    }
+    return cs;
+  }
+
+  private void checkScopeCoverage(List<ValidationMessage> errors, ValidationOptions options, VSReference sourceScope) {
+    if (sourceScope == null || sourceScope.vs == null || noTerminologyChecks) {
+      return;
+    }
+    Map<String, GroupInfo> firstGroup = new LinkedHashMap<>();
+    Map<String, Set<String>> covered = new HashMap<>();
+    Set<String> allCovered = new HashSet<>();
+    for (GroupInfo gi : groupInfos) {
+      if (gi.ctxt.source == null || gi.ctxt.source.cs == null || gi.ctxt.source.cs.getContent() != CodeSystemContentMode.COMPLETE) {
+        continue;
+      }
+      String key = gi.ctxt.source.cs.getVersionedUrl();
+      firstGroup.putIfAbsent(key, gi);
+      Set<String> codes = covered.computeIfAbsent(key, k -> new HashSet<>());
+      for (MapRow row : gi.rows) {
+        codes.add(row.code);
+      }
+      if (gi.hasUnmapped) {
+        allCovered.add(key);
+      }
+    }
+    int codeLimit = settings.getCodeSystemValidationSizeLimit();
+    for (String key : firstGroup.keySet()) {
+      if (allCovered.contains(key)) {
+        continue;
+      }
+      GroupInfo gi = firstGroup.get(key);
+      CodeSystem cs = gi.ctxt.source.cs;
+      List<ConceptDefinitionComponent> concepts = new ArrayList<>();
+      listConcepts(concepts, cs.getConceptList());
+      if (codeLimit > 0 && concepts.size() > codeLimit) {
+        continue;
+      }
+      Set<String> codes = covered.get(key);
+      for (ConceptDefinitionComponent cd : concepts) {
+        if (codes.contains(cd.getCode()) || CodeSystemUtilities.isNotSelectable(cs, cd) || CodeSystemUtilities.isInactive(cs, cd)) {
+          continue;
+        }
+        ValidationResult vr = context.validateCode(options.withCheckValueSetOnly().withNoServer(), gi.ctxt.source.url, gi.ctxt.source.version, cd.getCode(), null, sourceScope.vs);
+        if (vr.isOk()) {
+          hint(errors, "2026-10-13", IssueType.INFORMATIONAL, gi.stack, false, I18nConstants.CONCEPTMAP_QUALITY_SCOPE_UNMAPPED, cd.getCode(), sourceScope.vs.getVersionedUrl());
+        }
+      }
+    }
+  }
+
+  private void listConcepts(List<ConceptDefinitionComponent> list, List<ConceptDefinitionComponent> concepts) {
+    for (ConceptDefinitionComponent cd : concepts) {
+      list.add(cd);
+      listConcepts(list, cd.getConceptList());
+    }
+  }
+
+  private void checkReverseMap(List<ValidationMessage> errors, GroupInfo gi, String url, VSReference sourceScope, VSReference targetScope) {
+    if (gi.ctxt.source == null || gi.ctxt.target == null || gi.ctxt.source.url == null || gi.ctxt.target.url == null) {
+      return;
+    }
+    List<ConceptMap> candidates = findReverseMaps(gi, url, sourceScope, targetScope);
+    if (candidates.isEmpty()) {
+      return;
+    }
+    if (candidates.size() > 1) {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      for (ConceptMap cm : candidates) {
+        b.append(cm.getVersionedUrl());
+      }
+      hint(errors, "2026-10-13", IssueType.INFORMATIONAL, gi.stack, false, I18nConstants.CONCEPTMAP_QUALITY_REVERSE_MULTIPLE, b.toString());
+      return;
+    }
+    ConceptMap reverse = candidates.get(0);
+    String rurl = reverse.getVersionedUrl();
+
+    // index the reverse map: reverse source code (our target) -> [reverse target (our source), relationship]
+    Map<String, List<String[]>> byTarget = new HashMap<>();
+    Map<String, List<String[]>> bySource = new HashMap<>();
+    Set<String> noMaps = new HashSet<>();
+    for (ConceptMapGroupComponent g : reverse.getGroupList()) {
+      if (!isReverseGroup(gi, g)) {
+        continue;
+      }
+      for (SourceElementComponent e : g.getElementList()) {
+        if (!e.hasCode()) {
+          continue;
+        }
+        if (e.getNoMap()) {
+          noMaps.add(e.getCode());
+        }
+        for (TargetElementComponent t : e.getTargetList()) {
+          if (t.hasCode() && t.hasRelationship() && t.getDependsOnList().isEmpty() && t.getProductList().isEmpty()) {
+            String[] entry = new String[] { e.getCode(), t.getCode(), t.getRelationship().toCode() };
+            byTarget.computeIfAbsent(e.getCode(), k -> new ArrayList<>()).add(entry);
+            bySource.computeIfAbsent(t.getCode(), k -> new ArrayList<>()).add(entry);
+          }
+        }
+      }
+    }
+
+    for (MapRow row : gi.rows) {
+      if (row.noMap) {
+        // nothing in the target is equivalent to or broader than this code - so the reverse map shouldn't say otherwise
+        for (String[] entry : bySource.getOrDefault(row.code, new ArrayList<>())) {
+          if (REL_EQUIVALENT.equals(entry[2]) || REL_BROADER.equals(entry[2])) {
+            warning(errors, "2026-10-13", IssueType.BUSINESSRULE, row.stack, false, I18nConstants.CONCEPTMAP_QUALITY_NOMAP_REVERSE, row.code, rurl, entry[0], entry[2], inverseRelationship(entry[2]));
+          }
+        }
+      }
+      for (MapTarget t : row.targets) {
+        if (t.conditional) {
+          continue;
+        }
+        List<String[]> back = new ArrayList<>();
+        for (String[] entry : byTarget.getOrDefault(t.code, new ArrayList<>())) {
+          if (entry[1].equals(row.code)) {
+            back.add(entry);
+          }
+        }
+        if (back.isEmpty()) {
+          if (noMaps.contains(t.code) && (REL_EQUIVALENT.equals(t.relationship) || REL_BROADER.equals(t.relationship))) {
+            warning(errors, "2026-10-13", IssueType.BUSINESSRULE, t.stack, false, I18nConstants.CONCEPTMAP_QUALITY_REVERSE_INCONSISTENT, row.code, t.code, t.relationship, inverseRelationship(t.relationship), rurl, REL_NOMAP);
+          } else if (REL_EQUIVALENT.equals(t.relationship)) {
+            hint(errors, "2026-10-13", IssueType.INFORMATIONAL, t.stack, false, I18nConstants.CONCEPTMAP_QUALITY_REVERSE_MISSING, row.code, t.code, t.relationship, rurl);
+          }
+        } else {
+          for (String[] entry : back) {
+            if (!relationshipsConsistent(t.relationship, entry[2])) {
+              warning(errors, "2026-10-13", IssueType.BUSINESSRULE, t.stack, false, I18nConstants.CONCEPTMAP_QUALITY_REVERSE_INCONSISTENT, row.code, t.code, t.relationship, inverseRelationship(t.relationship), rurl, entry[2]);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * A map from a code system to itself has to say which way it goes - by version, or by scope - or it's
+   * not usable, and there's no way to tell a reverse map from another map going the same way
+   *
+   * @return true if the group has a direction, so reverse checking can proceed
+   */
+  private boolean checkDirection(List<ValidationMessage> errors, GroupInfo gi, VSReference sourceScope, VSReference targetScope) {
+    if (gi.ctxt.source == null || gi.ctxt.target == null || gi.ctxt.source.url == null || !gi.ctxt.source.url.equals(gi.ctxt.target.url)) {
+      return true;
+    }
+    boolean ok = versionsDiffer(gi) || (sourceScope != null && targetScope != null && sourceScope.url != null && targetScope.url != null
+        && !(sourceScope.url + "|" + sourceScope.version).equals(targetScope.url + "|" + targetScope.version));
+    warning(errors, "2026-10-15", IssueType.BUSINESSRULE, gi.stack, ok, I18nConstants.CONCEPTMAP_QUALITY_SAME_SYSTEM_UNDIRECTED, gi.ctxt.source.url);
+    return ok;
+  }
+
+  private boolean versionsDiffer(GroupInfo gi) {
+    return gi.ctxt.source.version != null && gi.ctxt.target.version != null && !gi.ctxt.source.version.equals(gi.ctxt.target.version);
+  }
+
+  /**
+   * A reverse map is one whose group goes from our target system to our source system, and whose scopes
+   * (if either map has them) are our scopes, reversed
+   */
+  private List<ConceptMap> findReverseMaps(GroupInfo gi, String url, VSReference sourceScope, VSReference targetScope) {
+    List<ConceptMap> res = new ArrayList<>();
+    for (ConceptMap cm : context.fetchResourcesByType(ConceptMap.class)) {
+      if (url != null && url.equals(cm.getUrl())) {
+        continue;
+      }
+      boolean groupMatches = false;
+      for (ConceptMapGroupComponent g : cm.getGroupList()) {
+        if (isReverseGroup(gi, g)) {
+          groupMatches = true;
+          break;
+        }
+      }
+      if (groupMatches && scopeMatches(sourceScope, cm.getTargetScope()) && scopeMatches(targetScope, cm.getSourceScope()) && !res.contains(cm)) {
+        res.add(cm);
+      }
+    }
+    return res;
+  }
+
+  /**
+   * Versions have to match where both sides state them. For a map from a code system to itself that
+   * is directed by version, the other group has to state them too (or it could be going either way)
+   */
+  private boolean isReverseGroup(GroupInfo gi, ConceptMapGroupComponent g) {
+    boolean strict = gi.ctxt.source.url.equals(gi.ctxt.target.url) && versionsDiffer(gi);
+    return systemMatches(gi.ctxt.target.url, gi.ctxt.target.version, g.getSource(), strict)
+        && systemMatches(gi.ctxt.source.url, gi.ctxt.source.version, g.getTarget(), strict);
+  }
+
+  private boolean systemMatches(String url, String version, String canonical, boolean strict) {
+    if (url == null || canonical == null) {
+      return false;
+    }
+    String curl = canonical.contains("|") ? canonical.substring(0, canonical.indexOf("|")) : canonical;
+    String cver = canonical.contains("|") ? canonical.substring(canonical.indexOf("|") + 1) : null;
+    if (!url.equals(curl)) {
+      return false;
+    }
+    if (version == null || cver == null) {
+      return !strict;
+    }
+    return version.equals(cver);
+  }
+
+  private boolean scopeMatches(VSReference scope, DataType other) {
+    String o = other == null ? null : other.primitiveValue();
+    if (scope == null || scope.url == null) {
+      return o == null;
+    }
+    if (o == null) {
+      return false;
+    }
+    String ourl = o.contains("|") ? o.substring(0, o.indexOf("|")) : o;
+    String over = o.contains("|") ? o.substring(o.indexOf("|") + 1) : null;
+    return scope.url.equals(ourl) && (scope.version == null || over == null || scope.version.equals(over));
   }
 }

@@ -303,6 +303,17 @@ public class DocumentReference extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.target != null) {
+            visitor.visit(this, "target", -1, this.target);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "Type of the relationship between the document reference and the related resource.", 0, 1, code);
@@ -613,6 +624,20 @@ public class DocumentReference extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+          if (this.time != null) {
+            visitor.visit(this, "time", -1, this.time);
+          }
+          if (this.party != null) {
+            visitor.visit(this, "party", -1, this.party);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "mode":  return new Property("mode", "CodeableConcept", "The type of attestation the authenticator offers.", 0, 1, mode);
@@ -883,6 +908,17 @@ public class DocumentReference extends DomainResource {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "The type of relationship that this document has with anther document.", 0, 1, code));
           children.add(new Property("target", "Reference(DocumentReference)", "The target document of this relationship.", 0, 1, target));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.target != null) {
+            visitor.visit(this, "target", -1, this.target);
+          }
         }
 
         @Override
@@ -1161,6 +1197,23 @@ public class DocumentReference extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.attachment != null) {
+            visitor.visit(this, "attachment", -1, this.attachment);
+          }
+          if (this.profileList != null) {
+            int i = 0;
+            for (Base v : this.profileList) {
+              if (v != null) {
+                visitor.visit(this, "profile", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "attachment":  return new Property("attachment", "Attachment", "The document or URL of the document along with critical metadata to prove content has integrity.", 0, 1, attachment);
@@ -1414,6 +1467,14 @@ public class DocumentReference extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("value[x]", "Coding|uri|canonical", "Code|uri|canonical.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
         }
 
         @Override
@@ -2892,6 +2953,161 @@ public class DocumentReference extends DomainResource {
         children.add(new Property("description", "markdown", "Human-readable description of the source document.", 0, 1, description));
         children.add(new Property("securityLabel", "CodeableConcept", "A set of Security-Tag codes specifying the level of privacy/security of the Document found at DocumentReference.content.attachment.url. Note that DocumentReference.meta.security contains the security labels of the data elements in DocumentReference, while DocumentReference.securityLabel contains the security labels for the document the reference refers to. The distinction recognizes that the document may contain sensitive information, while the DocumentReference is metadata about the document and thus might not be as sensitive as the document. For example: a psychotherapy episode may contain highly sensitive information, while the metadata may simply indicate that some episode happened.", 0, java.lang.Integer.MAX_VALUE, securityLabelList));
         children.add(new Property("content", "", "The document and format referenced.  If there are multiple content element repetitions, these must all represent the same document in different format, or attachment metadata.", 0, java.lang.Integer.MAX_VALUE, contentList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.docStatus != null) {
+          visitor.visit(this, "docStatus", -1, this.docStatus);
+        }
+        if (this.modalityList != null) {
+          int i = 0;
+          for (Base v : this.modalityList) {
+            if (v != null) {
+              visitor.visit(this, "modality", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.contextList != null) {
+          int i = 0;
+          for (Base v : this.contextList) {
+            if (v != null) {
+              visitor.visit(this, "context", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.eventList != null) {
+          int i = 0;
+          for (Base v : this.eventList) {
+            if (v != null) {
+              visitor.visit(this, "event", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.relatedList != null) {
+          int i = 0;
+          for (Base v : this.relatedList) {
+            if (v != null) {
+              visitor.visit(this, "related", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.bodyStructureList != null) {
+          int i = 0;
+          for (Base v : this.bodyStructureList) {
+            if (v != null) {
+              visitor.visit(this, "bodyStructure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.facilityType != null) {
+          visitor.visit(this, "facilityType", -1, this.facilityType);
+        }
+        if (this.practiceSetting != null) {
+          visitor.visit(this, "practiceSetting", -1, this.practiceSetting);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.authorList != null) {
+          int i = 0;
+          for (Base v : this.authorList) {
+            if (v != null) {
+              visitor.visit(this, "author", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.attesterList != null) {
+          int i = 0;
+          for (Base v : this.attesterList) {
+            if (v != null) {
+              visitor.visit(this, "attester", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.custodian != null) {
+          visitor.visit(this, "custodian", -1, this.custodian);
+        }
+        if (this.relatesToList != null) {
+          int i = 0;
+          for (Base v : this.relatesToList) {
+            if (v != null) {
+              visitor.visit(this, "relatesTo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.securityLabelList != null) {
+          int i = 0;
+          for (Base v : this.securityLabelList) {
+            if (v != null) {
+              visitor.visit(this, "securityLabel", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.contentList != null) {
+          int i = 0;
+          for (Base v : this.contentList) {
+            if (v != null) {
+              visitor.visit(this, "content", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

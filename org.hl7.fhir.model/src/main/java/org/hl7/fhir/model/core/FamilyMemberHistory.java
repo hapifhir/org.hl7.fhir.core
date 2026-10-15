@@ -513,6 +513,32 @@ public class FamilyMemberHistory extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.outcome != null) {
+            visitor.visit(this, "outcome", -1, this.outcome);
+          }
+          if (this.contributedToDeath != null) {
+            visitor.visit(this, "contributedToDeath", -1, this.contributedToDeath);
+          }
+          if (this.onset != null) {
+            visitor.visit(this, "onset[x]", -1, this.onset);
+          }
+          if (this.noteList != null) {
+            int i = 0;
+            for (Base v : this.noteList) {
+              if (v != null) {
+                visitor.visit(this, "note", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "The actual condition, allergy, or intolerance specified. Could be a coded condition (like MI or Diabetes) or a less specific string like 'cancer' depending on how much is known about the condition and the capabilities of the creating system.", 0, 1, code);
@@ -1068,6 +1094,32 @@ public class FamilyMemberHistory extends DomainResource {
           children.add(new Property("contributedToDeath", "boolean", "This procedure contributed to the cause of death of the related person. If contributedToDeath is not populated, then it is unknown.", 0, 1, contributedToDeath));
           children.add(new Property("performed[x]", "Age|Range|Period|string|dateTime", "Estimated or actual date, date-time, period, or age when the procedure was performed. Allows a period to support complex procedures that span more than one date, and also allows for the length of the procedure to be captured.", 0, 1, performed));
           children.add(new Property("note", "Annotation", "An area where general notes can be placed about this specific procedure.", 0, java.lang.Integer.MAX_VALUE, noteList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.outcome != null) {
+            visitor.visit(this, "outcome", -1, this.outcome);
+          }
+          if (this.contributedToDeath != null) {
+            visitor.visit(this, "contributedToDeath", -1, this.contributedToDeath);
+          }
+          if (this.performed != null) {
+            visitor.visit(this, "performed[x]", -1, this.performed);
+          }
+          if (this.noteList != null) {
+            int i = 0;
+            for (Base v : this.noteList) {
+              if (v != null) {
+                visitor.visit(this, "note", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -2292,6 +2344,92 @@ public class FamilyMemberHistory extends DomainResource {
         children.add(new Property("note", "Annotation", "This property allows a non condition-specific note to the made about the related person. Ideally, the note would be in the condition property, but this is not always possible.", 0, java.lang.Integer.MAX_VALUE, noteList));
         children.add(new Property("condition", "", "The significant Conditions (or condition) that the family member had. This is a repeating section to allow a system to represent more than one condition per resource, though there is nothing stopping multiple resources - one per condition.", 0, java.lang.Integer.MAX_VALUE, conditionList));
         children.add(new Property("procedure", "", "The significant Procedures (or procedure) that the family member had. This is a repeating section to allow a system to represent more than one procedure per resource, though there is nothing stopping multiple resources - one per procedure.", 0, java.lang.Integer.MAX_VALUE, procedureList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.dataAbsentReason != null) {
+          visitor.visit(this, "dataAbsentReason", -1, this.dataAbsentReason);
+        }
+        if (this.patient != null) {
+          visitor.visit(this, "patient", -1, this.patient);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.recorder != null) {
+          visitor.visit(this, "recorder", -1, this.recorder);
+        }
+        if (this.asserter != null) {
+          visitor.visit(this, "asserter", -1, this.asserter);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.relationship != null) {
+          visitor.visit(this, "relationship", -1, this.relationship);
+        }
+        if (this.sex != null) {
+          visitor.visit(this, "sex", -1, this.sex);
+        }
+        if (this.born != null) {
+          visitor.visit(this, "born[x]", -1, this.born);
+        }
+        if (this.age != null) {
+          visitor.visit(this, "age[x]", -1, this.age);
+        }
+        if (this.deceased != null) {
+          visitor.visit(this, "deceased[x]", -1, this.deceased);
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.conditionList != null) {
+          int i = 0;
+          for (Base v : this.conditionList) {
+            if (v != null) {
+              visitor.visit(this, "condition", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.procedureList != null) {
+          int i = 0;
+          for (Base v : this.procedureList) {
+            if (v != null) {
+              visitor.visit(this, "procedure", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

@@ -1632,7 +1632,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx("\uD83D\uDE80");
       x.tx(" Latest");
       XhtmlNode span = x.span();
-      span.style(context.getOpacity());
+      span.style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
       span.tx(" ("+actualVersion+")");
     } else if (statedVersion != null && actualVersion != null && !statedVersion.equals(actualVersion) && fromPackages) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_WILDCARD_BY_PACKAGE, statedVersion, actualVersion));
@@ -1645,7 +1645,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx("\uD83D\uDCCD");
       x.tx(actualVersion);
       XhtmlNode span = x.span();
-      span.style(context.getOpacity());
+      span.style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
       span.tx(" → ");
       span.tx(statedVersion);
     } else if (statedVersion != null) {
@@ -1662,7 +1662,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx(actualVersion);
     } else if (actualVersion != null) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_FOUND, actualVersion));
-      x.style(context.getOpacity());
+      x.style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
       x.tx("\u23FF");
       x.tx(actualVersion);
     } else if (tgt != null) {

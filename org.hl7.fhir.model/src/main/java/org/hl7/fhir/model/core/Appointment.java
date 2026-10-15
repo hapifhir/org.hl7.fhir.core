@@ -868,6 +868,32 @@ public class Appointment extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.typeList != null) {
+            int i = 0;
+            for (Base v : this.typeList) {
+              if (v != null) {
+                visitor.visit(this, "type", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.actor != null) {
+            visitor.visit(this, "actor", -1, this.actor);
+          }
+          if (this.required != null) {
+            visitor.visit(this, "required", -1, this.required);
+          }
+          if (this.status != null) {
+            visitor.visit(this, "status", -1, this.status);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "Role of participant in the appointment.", 0, java.lang.Integer.MAX_VALUE, typeList);
@@ -1612,6 +1638,59 @@ public class Appointment extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.timezone != null) {
+            visitor.visit(this, "timezone", -1, this.timezone);
+          }
+          if (this.recurrenceType != null) {
+            visitor.visit(this, "recurrenceType", -1, this.recurrenceType);
+          }
+          if (this.lastOccurrenceDate != null) {
+            visitor.visit(this, "lastOccurrenceDate", -1, this.lastOccurrenceDate);
+          }
+          if (this.occurrenceCount != null) {
+            visitor.visit(this, "occurrenceCount", -1, this.occurrenceCount);
+          }
+          if (this.occurrenceDateList != null) {
+            int i = 0;
+            for (Base v : this.occurrenceDateList) {
+              if (v != null) {
+                visitor.visit(this, "occurrenceDate", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.weeklyTemplate != null) {
+            visitor.visit(this, "weeklyTemplate", -1, this.weeklyTemplate);
+          }
+          if (this.monthlyTemplate != null) {
+            visitor.visit(this, "monthlyTemplate", -1, this.monthlyTemplate);
+          }
+          if (this.yearlyTemplate != null) {
+            visitor.visit(this, "yearlyTemplate", -1, this.yearlyTemplate);
+          }
+          if (this.excludingDateList != null) {
+            int i = 0;
+            for (Base v : this.excludingDateList) {
+              if (v != null) {
+                visitor.visit(this, "excludingDate", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.excludingRecurrenceIdList != null) {
+            int i = 0;
+            for (Base v : this.excludingRecurrenceIdList) {
+              if (v != null) {
+                visitor.visit(this, "excludingRecurrenceId", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "timezone":  return new Property("timezone", "CodeableConcept", "The timezone of the recurring appointment occurrences.", 0, 1, timezone);
@@ -2094,6 +2173,23 @@ public class Appointment extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.daysOfWeekList != null) {
+            int i = 0;
+            for (Base v : this.daysOfWeekList) {
+              if (v != null) {
+                visitor.visit(this, "daysOfWeek", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.weekInterval != null) {
+            visitor.visit(this, "weekInterval", -1, this.weekInterval);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "daysOfWeek":  return new Property("daysOfWeek", "code", "Indicates which days of the week the appointment will occur on.", 0, java.lang.Integer.MAX_VALUE, daysOfWeekList);
@@ -2508,6 +2604,23 @@ public class Appointment extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.dayOfMonth != null) {
+            visitor.visit(this, "dayOfMonth", -1, this.dayOfMonth);
+          }
+          if (this.nthWeekOfMonth != null) {
+            visitor.visit(this, "nthWeekOfMonth", -1, this.nthWeekOfMonth);
+          }
+          if (this.dayOfWeek != null) {
+            visitor.visit(this, "dayOfWeek", -1, this.dayOfWeek);
+          }
+          if (this.monthInterval != null) {
+            visitor.visit(this, "monthInterval", -1, this.monthInterval);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "dayOfMonth":  return new Property("dayOfMonth", "positiveInt", "Indicates that appointments in the series of recurring appointments should occur on a specific day of the month.", 0, 1, dayOfMonth);
@@ -2787,6 +2900,14 @@ public class Appointment extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("yearInterval", "positiveInt", "Appointment recurs every nth year.", 0, 1, yearInterval));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.yearInterval != null) {
+            visitor.visit(this, "yearInterval", -1, this.yearInterval);
+          }
         }
 
         @Override
@@ -4722,6 +4843,209 @@ public class Appointment extends DomainResource {
         children.add(new Property("recurrenceId", "positiveInt", "The sequence number that identifies a specific appointment in a recurring pattern.", 0, 1, recurrenceId));
         children.add(new Property("occurrenceChanged", "boolean", "This appointment varies from the recurring pattern.", 0, 1, occurrenceChanged));
         children.add(new Property("recurrenceTemplate", "", "The details of the recurrence pattern or template that is used to generate recurring appointments.", 0, java.lang.Integer.MAX_VALUE, recurrenceTemplateList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.cancellationReason != null) {
+          visitor.visit(this, "cancellationReason", -1, this.cancellationReason);
+        }
+        if (this.class_List != null) {
+          int i = 0;
+          for (Base v : this.class_List) {
+            if (v != null) {
+              visitor.visit(this, "class", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.serviceCategoryList != null) {
+          int i = 0;
+          for (Base v : this.serviceCategoryList) {
+            if (v != null) {
+              visitor.visit(this, "serviceCategory", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.serviceTypeList != null) {
+          int i = 0;
+          for (Base v : this.serviceTypeList) {
+            if (v != null) {
+              visitor.visit(this, "serviceType", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.specialtyList != null) {
+          int i = 0;
+          for (Base v : this.specialtyList) {
+            if (v != null) {
+              visitor.visit(this, "specialty", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.appointmentType != null) {
+          visitor.visit(this, "appointmentType", -1, this.appointmentType);
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.priority != null) {
+          visitor.visit(this, "priority", -1, this.priority);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.replacesList != null) {
+          int i = 0;
+          for (Base v : this.replacesList) {
+            if (v != null) {
+              visitor.visit(this, "replaces", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.virtualServiceList != null) {
+          int i = 0;
+          for (Base v : this.virtualServiceList) {
+            if (v != null) {
+              visitor.visit(this, "virtualService", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.supportingInformationList != null) {
+          int i = 0;
+          for (Base v : this.supportingInformationList) {
+            if (v != null) {
+              visitor.visit(this, "supportingInformation", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.previousAppointment != null) {
+          visitor.visit(this, "previousAppointment", -1, this.previousAppointment);
+        }
+        if (this.originatingAppointment != null) {
+          visitor.visit(this, "originatingAppointment", -1, this.originatingAppointment);
+        }
+        if (this.start != null) {
+          visitor.visit(this, "start", -1, this.start);
+        }
+        if (this.end != null) {
+          visitor.visit(this, "end", -1, this.end);
+        }
+        if (this.minutesDuration != null) {
+          visitor.visit(this, "minutesDuration", -1, this.minutesDuration);
+        }
+        if (this.requestedPeriodList != null) {
+          int i = 0;
+          for (Base v : this.requestedPeriodList) {
+            if (v != null) {
+              visitor.visit(this, "requestedPeriod", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.slotList != null) {
+          int i = 0;
+          for (Base v : this.slotList) {
+            if (v != null) {
+              visitor.visit(this, "slot", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.accountList != null) {
+          int i = 0;
+          for (Base v : this.accountList) {
+            if (v != null) {
+              visitor.visit(this, "account", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.created != null) {
+          visitor.visit(this, "created", -1, this.created);
+        }
+        if (this.cancellationDate != null) {
+          visitor.visit(this, "cancellationDate", -1, this.cancellationDate);
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.patientInstructionList != null) {
+          int i = 0;
+          for (Base v : this.patientInstructionList) {
+            if (v != null) {
+              visitor.visit(this, "patientInstruction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.participantList != null) {
+          int i = 0;
+          for (Base v : this.participantList) {
+            if (v != null) {
+              visitor.visit(this, "participant", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.recurrenceId != null) {
+          visitor.visit(this, "recurrenceId", -1, this.recurrenceId);
+        }
+        if (this.occurrenceChanged != null) {
+          visitor.visit(this, "occurrenceChanged", -1, this.occurrenceChanged);
+        }
+        if (this.recurrenceTemplateList != null) {
+          int i = 0;
+          for (Base v : this.recurrenceTemplateList) {
+            if (v != null) {
+              visitor.visit(this, "recurrenceTemplate", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

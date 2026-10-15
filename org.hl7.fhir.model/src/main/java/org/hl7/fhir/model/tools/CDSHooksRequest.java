@@ -422,6 +422,29 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.accessToken != null) {
+            visitor.visit(this, "accessToken", -1, this.accessToken);
+          }
+          if (this.tokenType != null) {
+            visitor.visit(this, "tokenType", -1, this.tokenType);
+          }
+          if (this.expiresIn != null) {
+            visitor.visit(this, "expiresIn", -1, this.expiresIn);
+          }
+          if (this.scope != null) {
+            visitor.visit(this, "scope", -1, this.scope);
+          }
+          if (this.subject != null) {
+            visitor.visit(this, "subject", -1, this.subject);
+          }
+          if (this.patient != null) {
+            visitor.visit(this, "patient", -1, this.patient);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "accessToken":  return new Property("accessToken", "string", "This is the OAuth 2.0 access token that provides access to the FHIR server", 0, 1, accessToken);
@@ -713,6 +736,17 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
           super.listChildren(children);
           children.add(new Property("key", "code", "Name of the FHIR query/read from the CDS Hooks Services object provided by the server", 0, 1, key));
           children.add(new Property("value", "Resource", "What was found by executing the search or read requested by the CDS Hooks Service in the context of this particular hook invocation", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
         }
 
         @Override
@@ -1126,6 +1160,35 @@ public class CDSHooksRequest extends CDSHooksElement implements ICompositeType {
         children.add(new Property("fhirAuthorization", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "A structure holding an OAuth 2.0 bearer access token granting the CDS Service access to FHIR resources, along with supplemental information relating to the token", 0, 1, fhirAuthorization));
         children.add(new Property("context", "http://hl7.org/fhir/tools/StructureDefinition/CDSHookContext", "Hook-specific contextual data that the CDS service will need", 0, 1, context));
         children.add(new Property("prefetch", "Base", "An object containing key/value pairs of FHIR queries that this Request is requesting the CDS Client to perform and provide on each Request call. The key is a string that describes the type of data being requested and the value is a string representing the FHIR query", 0, java.lang.Integer.MAX_VALUE, prefetchList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.hook != null) {
+          visitor.visit(this, "hook", -1, this.hook);
+        }
+        if (this.hookInstance != null) {
+          visitor.visit(this, "hookInstance", -1, this.hookInstance);
+        }
+        if (this.fhirServer != null) {
+          visitor.visit(this, "fhirServer", -1, this.fhirServer);
+        }
+        if (this.fhirAuthorization != null) {
+          visitor.visit(this, "fhirAuthorization", -1, this.fhirAuthorization);
+        }
+        if (this.context != null) {
+          visitor.visit(this, "context", -1, this.context);
+        }
+        if (this.prefetchList != null) {
+          int i = 0;
+          for (Base v : this.prefetchList) {
+            if (v != null) {
+              visitor.visit(this, "prefetch", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override
