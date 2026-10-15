@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * GITB Validation Service for matchetype comparison at {@code /itb/matchetype}.
@@ -26,6 +27,9 @@ import java.util.Set;
  */
 @Slf4j
 class GitbMatchetypeHandler extends GitbValidationServiceHandler {
+
+  // comma-separated list inputs are split on the literal character (reviewed pattern)
+  private static final Pattern COMMA = Pattern.compile(",");
 
   GitbMatchetypeHandler(FhirValidatorHttpService service) {
     super(service, "/itb/matchetype");
@@ -68,7 +72,7 @@ class GitbMatchetypeHandler extends GitbValidationServiceHandler {
     Set<String> modes = new HashSet<>();
     String modesInput = optionalInput(input, "modes", null);
     if (modesInput != null) {
-      for (String m : modesInput.split(",")) {
+      for (String m : COMMA.split(modesInput)) {
         if (!m.trim().isEmpty()) {
           modes.add(m.trim());
         }
