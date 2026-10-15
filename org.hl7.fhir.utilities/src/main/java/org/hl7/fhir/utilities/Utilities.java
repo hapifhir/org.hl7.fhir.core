@@ -1726,7 +1726,11 @@ public class Utilities {
         ld--;
       }
       if (nv.charAt(ld) >= '5' && !down) {
-        s = nv.substring(0, ld-1)+((char) (nv.charAt(ld-1)+1));
+        s = plusOne(nv.substring(0, ld));
+        if (s.length() > ld && dp > -1) {
+          // the carry added a leading digit (9.96 to 10.0), so the decimal point moves one place right
+          dp++;
+        }
       } else {
         s = nv.substring(0, ld);
       }
@@ -1735,6 +1739,19 @@ public class Utilities {
       s = s.substring(0, s.length()-1);
     }
     return dp == -1 || dp >= s.length() ? s : s.substring(0, dp)+"."+s.substring(dp);
+  }
+
+  private static String plusOne(String digits) {
+    StringBuilder s = new StringBuilder(digits);
+    for (int i = s.length()-1; i >= 0; i--) {
+      if (s.charAt(i) == '9') {
+        s.setCharAt(i, '0');
+      } else {
+        s.setCharAt(i, (char) (s.charAt(i)+1));
+        return s.toString();
+      }
+    }
+    return "1"+s;
   }
 
   private static String minusOne(String value) {
