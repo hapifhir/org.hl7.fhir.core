@@ -1291,7 +1291,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     x.br();
     x.tx("table"); 
-    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
+    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), true, null);
     x.addChildNode(xn);
   }
 

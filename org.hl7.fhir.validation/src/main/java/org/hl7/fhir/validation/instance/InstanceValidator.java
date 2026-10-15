@@ -2802,7 +2802,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             } else {
               //pu = en;
             }
-            if (Utilities.existsInList(en, "Element", "Any")) {
+            if (Utilities.existsInList(en, "Element", "Any", "Base")) {
               ok = true;
             } else if (en.equals("Resource") && container.isResource()) {
               ok = true;
@@ -8950,26 +8950,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return ok;
-  }
-
-  private String determineId(String path, Element element) {
-    if (element == null) {
-      return null;
-    }
-    if (path.endsWith("]")) {
-      path = path.substring(0, path.lastIndexOf("["));
-    }
-    switch (path) {
-      case "StructureDefinition.snapshot.element": return element.getNamedChildValue("path");
-      case "StructureDefinition.differential.element": return element.getNamedChildValue("path");
-      case "SearchParameter": return element.getNamedChildValue("code");
-      default:
-        if (path.contains(".")) {
-          return determineId(path.substring(0, path.lastIndexOf(".")), element.getParentForValidator());
-        } else {
-          return null;
-        }
-    }
   }
 
   private boolean IsExemptInvariant(String path, Element element, ElementDefinitionConstraintComponent inv) {

@@ -661,6 +661,53 @@ public class DeviceAssociation extends DomainResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.device != null) {
+          visitor.visit(this, "device", -1, this.device);
+        }
+        if (this.relationship != null) {
+          visitor.visit(this, "relationship", -1, this.relationship);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReason != null) {
+          visitor.visit(this, "statusReason", -1, this.statusReason);
+        }
+        if (this.relationshipStatus != null) {
+          visitor.visit(this, "relationshipStatus", -1, this.relationshipStatus);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.focus != null) {
+          visitor.visit(this, "focus", -1, this.focus);
+        }
+        if (this.bodyStructureList != null) {
+          int i = 0;
+          for (Base v : this.bodyStructureList) {
+            if (v != null) {
+              visitor.visit(this, "bodyStructure", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "identifier":  return new Property("identifier", "Identifier", "Instance identifier.", 0, java.lang.Integer.MAX_VALUE, identifierList);

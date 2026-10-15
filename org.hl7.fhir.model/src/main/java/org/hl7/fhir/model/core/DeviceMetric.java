@@ -488,6 +488,20 @@ public class DeviceMetric extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.state != null) {
+            visitor.visit(this, "state", -1, this.state);
+          }
+          if (this.time != null) {
+            visitor.visit(this, "time", -1, this.time);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "Describes the type of the calibration method.", 0, 1, type);
@@ -1177,6 +1191,56 @@ public class DeviceMetric extends DomainResource {
         children.add(new Property("measurementFrequency", "Quantity", "The frequency at which the metric is taken or recorded. Devices measure metrics at a wide range of frequencies; for example, an ECG might sample measurements in the millisecond range, while an NIBP might trigger only once an hour. Less often, the measurementFrequency is based on a unit other than time, such as distance (e.g., for a measuring wheel). The update period could be different than the measurement frequency, if the device does not update the published observed value with the same frequency as it was measured.", 0, 1, measurementFrequency));
         children.add(new Property("availability", "CodeableConcept", "Indicates whether the metric is derived (measured) by a continuous means or by an intermittent means.", 0, 1, availability));
         children.add(new Property("calibration", "", "Describes the calibrations that have been performed or that are required to be performed.", 0, java.lang.Integer.MAX_VALUE, calibrationList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.operationalStatus != null) {
+          visitor.visit(this, "operationalStatus", -1, this.operationalStatus);
+        }
+        if (this.category != null) {
+          visitor.visit(this, "category", -1, this.category);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.device != null) {
+          visitor.visit(this, "device", -1, this.device);
+        }
+        if (this.unit != null) {
+          visitor.visit(this, "unit", -1, this.unit);
+        }
+        if (this.color != null) {
+          visitor.visit(this, "color", -1, this.color);
+        }
+        if (this.measurementFrequency != null) {
+          visitor.visit(this, "measurementFrequency", -1, this.measurementFrequency);
+        }
+        if (this.availability != null) {
+          visitor.visit(this, "availability", -1, this.availability);
+        }
+        if (this.calibrationList != null) {
+          int i = 0;
+          for (Base v : this.calibrationList) {
+            if (v != null) {
+              visitor.visit(this, "calibration", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

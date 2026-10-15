@@ -690,6 +690,50 @@ public class HumanName extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.use != null) {
+          visitor.visit(this, "use", -1, this.use);
+        }
+        if (this.text != null) {
+          visitor.visit(this, "text", -1, this.text);
+        }
+        if (this.family != null) {
+          visitor.visit(this, "family", -1, this.family);
+        }
+        if (this.givenList != null) {
+          int i = 0;
+          for (Base v : this.givenList) {
+            if (v != null) {
+              visitor.visit(this, "given", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.prefixList != null) {
+          int i = 0;
+          for (Base v : this.prefixList) {
+            if (v != null) {
+              visitor.visit(this, "prefix", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.suffixList != null) {
+          int i = 0;
+          for (Base v : this.suffixList) {
+            if (v != null) {
+              visitor.visit(this, "suffix", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "use":  return new Property("use", "code", "Identifies the purpose for this name.", 0, 1, use);

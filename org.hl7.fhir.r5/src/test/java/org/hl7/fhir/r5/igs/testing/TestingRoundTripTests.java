@@ -71,7 +71,7 @@ public class TestingRoundTripTests {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     for (String pid : PACKAGES) {
       NpmPackage npm = pcm.loadPackage(pid);
-      for (String filename : npm.list("example")) {
+      for (String filename : npm.listExamples()) {
         if (filename.endsWith(".json") && filename.contains("-")) {
           String resourceType = filename.substring(0, filename.indexOf("-"));
           if (Utilities.existsInList(resourceType, RESOURCE_TYPES)) {
@@ -87,7 +87,7 @@ public class TestingRoundTripTests {
   @MethodSource("data")
   public void testRoundTrip(String name, String pid, String filename) throws IOException {
     NpmPackage npm = new FilesystemPackageCacheManager.Builder().build().loadPackage(pid);
-    byte[] sourceJson = FileUtilities.streamToBytes(npm.load("example", filename));
+    byte[] sourceJson = FileUtilities.streamToBytes(npm.loadExample(filename));
 
     // what the example says, as parsed from the package
     Resource expected = new TestingJsonParser(true, true).parse(sourceJson);

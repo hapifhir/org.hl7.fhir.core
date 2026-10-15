@@ -17,6 +17,10 @@ import java.util.*;
  * This manages a cached list of resources, and provides high speed access by URL / URL+version, and assumes that patch version doesn't matter for access
  * note, though, that not all resources have semver versions
  *
+ * Not thread safe, and not meant to be: resources are loaded from their proxies lazily, on first use,
+ * and nothing guards that against other threads. See "Thread Safety" in the README. Don't add
+ * synchronization to new code here.
+ *
  * @author graha
  *
  */

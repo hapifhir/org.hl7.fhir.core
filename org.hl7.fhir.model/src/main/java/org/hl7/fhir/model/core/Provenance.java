@@ -432,6 +432,29 @@ public class Provenance extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.roleList != null) {
+            int i = 0;
+            for (Base v : this.roleList) {
+              if (v != null) {
+                visitor.visit(this, "role", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.who != null) {
+            visitor.visit(this, "who", -1, this.who);
+          }
+          if (this.onBehalfOf != null) {
+            visitor.visit(this, "onBehalfOf", -1, this.onBehalfOf);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The Functional Role of the agent with respect to the activity.", 0, 1, type);
@@ -806,6 +829,26 @@ public class Provenance extends DomainResource {
           children.add(new Property("role", "code", "How the entity was used during the activity.", 0, 1, role));
           children.add(new Property("what", "Reference(Any)", "Identity of the  Entity used. May be a logical or physical uri and maybe absolute or relative.", 0, 1, what));
           children.add(new Property("agent", "@Provenance.agent", "The entity is attributed to an agent to express the agent's responsibility for that entity, possibly along with other agents. This description can be understood as shorthand for saying that the agent was responsible for the activity which used the entity.", 0, java.lang.Integer.MAX_VALUE, agentList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.role != null) {
+            visitor.visit(this, "role", -1, this.role);
+          }
+          if (this.what != null) {
+            visitor.visit(this, "what", -1, this.what);
+          }
+          if (this.agentList != null) {
+            int i = 0;
+            for (Base v : this.agentList) {
+              if (v != null) {
+                visitor.visit(this, "agent", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -1764,6 +1807,95 @@ public class Provenance extends DomainResource {
         children.add(new Property("agent", "", "An actor taking a role in an activity  for which it can be assigned some degree of responsibility for the activity taking place.", 0, java.lang.Integer.MAX_VALUE, agentList));
         children.add(new Property("entity", "", "An entity used in this activity.", 0, java.lang.Integer.MAX_VALUE, entityList));
         children.add(new Property("signature", "Signature", "A digital signature on the target Reference(s). The signer SHOULD match a Provenance.agent. The purpose of the signature is indicated.", 0, java.lang.Integer.MAX_VALUE, signatureList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.targetList != null) {
+          int i = 0;
+          for (Base v : this.targetList) {
+            if (v != null) {
+              visitor.visit(this, "target", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.occurred != null) {
+          visitor.visit(this, "occurred[x]", -1, this.occurred);
+        }
+        if (this.recorded != null) {
+          visitor.visit(this, "recorded", -1, this.recorded);
+        }
+        if (this.policyList != null) {
+          int i = 0;
+          for (Base v : this.policyList) {
+            if (v != null) {
+              visitor.visit(this, "policy", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.location != null) {
+          visitor.visit(this, "location", -1, this.location);
+        }
+        if (this.authorizationList != null) {
+          int i = 0;
+          for (Base v : this.authorizationList) {
+            if (v != null) {
+              visitor.visit(this, "authorization", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.why != null) {
+          visitor.visit(this, "why", -1, this.why);
+        }
+        if (this.activity != null) {
+          visitor.visit(this, "activity", -1, this.activity);
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.patient != null) {
+          visitor.visit(this, "patient", -1, this.patient);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.agentList != null) {
+          int i = 0;
+          for (Base v : this.agentList) {
+            if (v != null) {
+              visitor.visit(this, "agent", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.entityList != null) {
+          int i = 0;
+          for (Base v : this.entityList) {
+            if (v != null) {
+              visitor.visit(this, "entity", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.signatureList != null) {
+          int i = 0;
+          for (Base v : this.signatureList) {
+            if (v != null) {
+              visitor.visit(this, "signature", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

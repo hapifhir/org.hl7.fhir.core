@@ -151,6 +151,20 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     return parseAnyType(json, type);
   }
 
+  /**
+   * Whether the object has a property whose name starts with {@code prefix} or {@code "_" + prefix}.
+   * {@code parseType(prefix, json)} and {@code hasTypeName(json, prefix)} only look for properties
+   * like that, so when there are none they can stop without trying every type name in turn.
+   */
+  protected boolean hasPropertyWithPrefix(JsonObject json, String prefix) {
+    for (String name : json.keySet()) {
+      if (name.startsWith(prefix) || (name.startsWith("_") && name.startsWith(prefix, 1))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   protected JsonObject getJObject(JsonObject parent, String name) throws IOException {
     JsonElement j = parent.get(name);
     if (j == null) { 

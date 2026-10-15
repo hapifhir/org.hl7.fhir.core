@@ -1248,6 +1248,65 @@ public class MeasureReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.calculatedDate != null) {
+            visitor.visit(this, "calculatedDate", -1, this.calculatedDate);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.subject != null) {
+            visitor.visit(this, "subject", -1, this.subject);
+          }
+          if (this.scoring != null) {
+            visitor.visit(this, "scoring", -1, this.scoring);
+          }
+          if (this.compositeScoring != null) {
+            visitor.visit(this, "compositeScoring", -1, this.compositeScoring);
+          }
+          if (this.improvementNotation != null) {
+            visitor.visit(this, "improvementNotation", -1, this.improvementNotation);
+          }
+          if (this.improvementNotationGuidance != null) {
+            visitor.visit(this, "improvementNotationGuidance", -1, this.improvementNotationGuidance);
+          }
+          if (this.populationList != null) {
+            int i = 0;
+            for (Base v : this.populationList) {
+              if (v != null) {
+                visitor.visit(this, "population", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.measureScore != null) {
+            visitor.visit(this, "measureScore[x]", -1, this.measureScore);
+          }
+          if (this.stratifierList != null) {
+            int i = 0;
+            for (Base v : this.stratifierList) {
+              if (v != null) {
+                visitor.visit(this, "stratifier", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "linkId":  return new Property("linkId", "string", "The group from the Measure that corresponds to this group in the MeasureReport resource. This element SHALL be populated based on the corresponding element in the Measure being reported.", 0, 1, linkId);
@@ -2156,6 +2215,44 @@ public class MeasureReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.count != null) {
+            visitor.visit(this, "count", -1, this.count);
+          }
+          if (this.countQuantity != null) {
+            visitor.visit(this, "countQuantity", -1, this.countQuantity);
+          }
+          if (this.subjectResults != null) {
+            visitor.visit(this, "subjectResults", -1, this.subjectResults);
+          }
+          if (this.subjectReportList != null) {
+            int i = 0;
+            for (Base v : this.subjectReportList) {
+              if (v != null) {
+                visitor.visit(this, "subjectReport", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.subjects != null) {
+            visitor.visit(this, "subjects", -1, this.subjects);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "linkId":  return new Property("linkId", "string", "The population from the Measure that corresponds to this population in the MeasureReport resource. This element SHALL be populated based on the corresponding element in the Measure being reported.", 0, 1, linkId);
@@ -2751,6 +2848,32 @@ public class MeasureReport extends DomainResource {
           children.add(new Property("code", "CodeableConcept", "The meaning of this stratifier, as defined in the measure definition. This element SHALL be populated with at least the codings in the code element of the corresponding stratifier in the Measure group being reported.", 0, 1, code));
           children.add(new Property("description", "markdown", "The human readable description of this stratifier criteria. This element SHOULD be populated with the description element of the corresponding stratifier in the Measure group being reported.", 0, 1, description));
           children.add(new Property("stratum", "", "This element contains the results for a single stratum within the stratifier. For example, when stratifying on administrative gender, there will be four strata, one for each possible gender value.", 0, java.lang.Integer.MAX_VALUE, stratumList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.stratumList != null) {
+            int i = 0;
+            for (Base v : this.stratumList) {
+              if (v != null) {
+                visitor.visit(this, "stratum", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -3399,6 +3522,35 @@ public class MeasureReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.componentList != null) {
+            int i = 0;
+            for (Base v : this.componentList) {
+              if (v != null) {
+                visitor.visit(this, "component", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.populationList != null) {
+            int i = 0;
+            for (Base v : this.populationList) {
+              if (v != null) {
+                visitor.visit(this, "population", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.measureScore != null) {
+            visitor.visit(this, "measureScore[x]", -1, this.measureScore);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "value[x]":  return new Property("value[x]", "CodeableConcept|boolean|Period|Quantity|Range|Reference|string", "The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.", 0, 1, value);
@@ -3986,6 +4138,23 @@ public class MeasureReport extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "linkId":  return new Property("linkId", "string", "The stratifier component from the Measure that corresponds to this stratifier component in the MeasureReport resource. This element SHALL be populated based on the corresponding element in the Measure being reported.", 0, 1, linkId);
@@ -4546,6 +4715,38 @@ public class MeasureReport extends DomainResource {
           children.add(new Property("subjectResults", "Reference(List)", "This element refers to a List of individual level MeasureReport resources, one for each subject in this population in this stratum.", 0, 1, subjectResults));
           children.add(new Property("subjectReport", "Reference(MeasureReport)", "A reference to an individual level MeasureReport resource for a member of the population.", 0, java.lang.Integer.MAX_VALUE, subjectReportList));
           children.add(new Property("subjects", "Reference(Group)", "Optional Group identifying the individuals that make up the population.", 0, 1, subjects));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.count != null) {
+            visitor.visit(this, "count", -1, this.count);
+          }
+          if (this.countQuantity != null) {
+            visitor.visit(this, "countQuantity", -1, this.countQuantity);
+          }
+          if (this.subjectResults != null) {
+            visitor.visit(this, "subjectResults", -1, this.subjectResults);
+          }
+          if (this.subjectReportList != null) {
+            int i = 0;
+            for (Base v : this.subjectReportList) {
+              if (v != null) {
+                visitor.visit(this, "subjectReport", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.subjects != null) {
+            visitor.visit(this, "subjects", -1, this.subjects);
+          }
         }
 
         @Override
@@ -5684,6 +5885,92 @@ public class MeasureReport extends DomainResource {
         children.add(new Property("group", "", "The results of the calculation, one for each population group in the measure. A MeasureReport SHALL have a group element corresponding to each group element defined in the Measure being reported.", 0, java.lang.Integer.MAX_VALUE, groupList));
         children.add(new Property("supplementalData", "Reference(Any)", "A reference to a Resource that represents additional information collected for the report. If the value of the supplemental data is not a Resource (i.e. evaluating the supplementalData expression for this case in the measure results in a value that is not a FHIR Resource), it is reported as a reference to a contained Observation resource.", 0, java.lang.Integer.MAX_VALUE, supplementalDataList));
         children.add(new Property("evaluatedResource", "Reference(Any)", "Evaluated resources are used to capture what data was involved in the calculation of a measure. This usage is only allowed for individual reports to ensure that the size of the MeasureReport resource is bounded.", 0, java.lang.Integer.MAX_VALUE, evaluatedResourceList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.category != null) {
+          visitor.visit(this, "category", -1, this.category);
+        }
+        if (this.messages != null) {
+          visitor.visit(this, "messages", -1, this.messages);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.dataUpdateType != null) {
+          visitor.visit(this, "dataUpdateType", -1, this.dataUpdateType);
+        }
+        if (this.measure != null) {
+          visitor.visit(this, "measure", -1, this.measure);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.reporter != null) {
+          visitor.visit(this, "reporter", -1, this.reporter);
+        }
+        if (this.reportingVendor != null) {
+          visitor.visit(this, "reportingVendor", -1, this.reportingVendor);
+        }
+        if (this.locationList != null) {
+          int i = 0;
+          for (Base v : this.locationList) {
+            if (v != null) {
+              visitor.visit(this, "location", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.inputParameters != null) {
+          visitor.visit(this, "inputParameters", -1, this.inputParameters);
+        }
+        if (this.groupList != null) {
+          int i = 0;
+          for (Base v : this.groupList) {
+            if (v != null) {
+              visitor.visit(this, "group", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.supplementalDataList != null) {
+          int i = 0;
+          for (Base v : this.supplementalDataList) {
+            if (v != null) {
+              visitor.visit(this, "supplementalData", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.evaluatedResourceList != null) {
+          int i = 0;
+          for (Base v : this.evaluatedResourceList) {
+            if (v != null) {
+              visitor.visit(this, "evaluatedResource", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

@@ -235,7 +235,7 @@ public class TxTesterSorters {
       Collections.sort(o2.getExtension(), new ExtensionSorter());
       Collections.sort(o1.getPartList(), new ParameterSorter());
       Collections.sort(o2.getPartList(), new ParameterSorter());
-      if (o1.getName().equals(o2.getName()) && o1.getName().equals("property")) {
+      if (o1.getName().equals(o2.getName()) && (o1.getName().equals("property") || o1.getName().equals("subproperty"))) {
         String code1 = o1.getPart("code").getValue().primitiveValue().toLowerCase();
         String code2 = o2.getPart("code").getValue().primitiveValue().toLowerCase();
         if (code1 != null && code2 != null && !code1.equals(code2)) {

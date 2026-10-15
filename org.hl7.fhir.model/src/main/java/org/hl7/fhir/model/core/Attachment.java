@@ -862,6 +862,50 @@ public class Attachment extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.contentType != null) {
+          visitor.visit(this, "contentType", -1, this.contentType);
+        }
+        if (this.language != null) {
+          visitor.visit(this, "language", -1, this.language);
+        }
+        if (this.data != null) {
+          visitor.visit(this, "data", -1, this.data);
+        }
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.size != null) {
+          visitor.visit(this, "size", -1, this.size);
+        }
+        if (this.hash != null) {
+          visitor.visit(this, "hash", -1, this.hash);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.creation != null) {
+          visitor.visit(this, "creation", -1, this.creation);
+        }
+        if (this.height != null) {
+          visitor.visit(this, "height", -1, this.height);
+        }
+        if (this.width != null) {
+          visitor.visit(this, "width", -1, this.width);
+        }
+        if (this.frames != null) {
+          visitor.visit(this, "frames", -1, this.frames);
+        }
+        if (this.duration != null) {
+          visitor.visit(this, "duration", -1, this.duration);
+        }
+        if (this.pages != null) {
+          visitor.visit(this, "pages", -1, this.pages);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "contentType":  return new Property("contentType", "code", "Identifies the type of the data in the attachment and allows a method to be chosen to interpret or render the data. Includes mime type parameters such as charset where appropriate.", 0, 1, contentType);
