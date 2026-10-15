@@ -884,15 +884,15 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     // reads extensions. Convert before parsing, or the optionality is silently ignored.
     byte[] pattern = matchetypeFormat == FhirFormat.JSON ? MatchetypeMarkers.toExtensions(matchetype) : matchetype;
     List<ValidationMessage> patternErrors = new ArrayList<>();
-    org.hl7.fhir.r5.elementmodel.ParserBase patternParser = Manager.makeParser(context, matchetypeFormat);
-    patternParser.setupValidation(org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy.EVERYTHING);
+    ParserBase patternParser = Manager.makeParser(context, matchetypeFormat);
+    patternParser.setupValidation(ParserBase.ValidationPolicy.EVERYTHING);
     Element exp = patternParser.parseSingle(new ByteArrayInputStream(pattern), patternErrors);
 
     List<ValidationMessage> messages = new ArrayList<>();
     for (ValidationMessage e : patternErrors) {
       if (e.getType() == ValidationMessage.IssueType.STRUCTURE && e.isError()) {
         messages.add(new ValidationMessage(ValidationMessage.Source.MatchetypeValidator, ValidationMessage.IssueType.STRUCTURE,
-          e.getLine(), e.getCol(), e.getLocation(), "matchetype: " + e.getMessage() + " (not defined in FHIR " + context.getVersion() + ")",
+          e.getLine(), e.getCol(), e.getLocation(), "matchetype: " + e.getMessage() + " (not defined in FHIR " + getVersion() + ")",
           ValidationMessage.IssueSeverity.ERROR));
       }
     }

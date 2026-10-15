@@ -38,6 +38,7 @@ abstract class GitbServiceHandler extends BaseHTTPHandler implements HttpHandler
   private final String pathPrefix;
 
   protected GitbServiceHandler(FhirValidatorHttpService service, String pathPrefix) {
+    super(service.getValidationEngine().getContext().getModelContext());
     this.service = service;
     this.pathPrefix = pathPrefix;
   }

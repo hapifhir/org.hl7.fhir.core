@@ -2,13 +2,14 @@ package org.hl7.fhir.validation.special;
 
 import java.io.IOException;
 
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.core.CapabilityStatement;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.Parameters;
+import org.hl7.fhir.model.core.Resource;
+import org.hl7.fhir.model.core.TerminologyCapabilities;
+import org.hl7.fhir.model.core.ValueSet;
 
 /**
  * Puts a resource into the form the terminology test runner ({@link TxTester}) compares
@@ -58,7 +59,7 @@ public class TxTesterNormalizer {
    * The same on a JSON resource: parse, normalize, and serialise again.
    */
   public static byte[] normalizeJson(byte[] json, boolean tight) throws IOException {
-    JsonParser parser = new JsonParser();
+    JsonParser parser = new JsonParser(ModelContext.fullCoreContext());
     Resource r = parser.parse(json);
     normalize(r, tight);
     return parser.composeBytes(r);

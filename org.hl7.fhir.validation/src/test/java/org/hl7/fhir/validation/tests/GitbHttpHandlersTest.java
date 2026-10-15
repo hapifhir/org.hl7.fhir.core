@@ -13,15 +13,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.Parameters;
+import org.hl7.fhir.model.core.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.standalone.testing.TestingUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.instance.MatchetypeValidator;
 import org.hl7.fhir.validation.instance.MatchetypeMarkers;
@@ -68,6 +68,8 @@ class GitbHttpHandlersTest {
   @BeforeEach
   void setUp() throws IOException {
     engine = mock(ValidationEngine.class);
+    // the handlers take the model context from the engine's worker context at start-up
+    when(engine.getContext()).thenReturn(TestingUtilities.getSharedWorkerContext());
     service = new FhirValidatorHttpService(engine, true, TEST_PORT);
     service.startServer();
     client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
@@ -529,11 +531,11 @@ class GitbHttpHandlersTest {
 
   /** The same content with the parameter array and every part array reversed. */
   private String lookupReversed() throws Exception {
-    org.hl7.fhir.r5.formats.JsonParser jp = new org.hl7.fhir.r5.formats.JsonParser();
+    org.hl7.fhir.model.core.formats.JsonParser jp = new org.hl7.fhir.model.core.formats.JsonParser(org.hl7.fhir.model.ModelContext.fullCoreContext());
     Parameters p = (Parameters) jp.parse(LOOKUP.getBytes(StandardCharsets.UTF_8));
-    Collections.reverse(p.getParameter());
-    for (ParametersParameterComponent pp : p.getParameter()) {
-      Collections.reverse(pp.getPart());
+    Collections.reverse(p.getParameterList());
+    for (ParametersParameterComponent pp : p.getParameterList()) {
+      Collections.reverse(pp.getPartList());
     }
     return new String(jp.composeBytes(p), StandardCharsets.UTF_8);
   }

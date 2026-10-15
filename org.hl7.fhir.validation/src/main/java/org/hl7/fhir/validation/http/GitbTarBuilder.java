@@ -1,8 +1,8 @@
 package org.hl7.fhir.validation.http;
 
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 
@@ -46,7 +46,7 @@ final class GitbTarBuilder {
     int infos = 0;
     JsonArray items = new JsonArray();
 
-    for (OperationOutcomeIssueComponent issue : outcome.getIssue()) {
+    for (OperationOutcomeIssueComponent issue : outcome.getIssueList()) {
       IssueSeverity sev = issue.getSeverity();
       if (sev == IssueSeverity.FATAL || sev == IssueSeverity.ERROR) errors++;
       else if (sev == IssueSeverity.WARNING) warnings++;
@@ -91,7 +91,7 @@ final class GitbTarBuilder {
 
   private static IssueSeverity highestSeverity(OperationOutcome outcome) {
     IssueSeverity highest = null;
-    for (OperationOutcomeIssueComponent issue : outcome.getIssue()) {
+    for (OperationOutcomeIssueComponent issue : outcome.getIssueList()) {
       IssueSeverity sev = issue.getSeverity();
       if (sev == null) continue;
       if (highest == null || sev.ordinal() < highest.ordinal()) {
@@ -205,11 +205,9 @@ final class GitbTarBuilder {
   }
 
   private static String locationFor(OperationOutcomeIssueComponent issue) {
+    // the model has no issue.location any more; the validator reports paths in expression
     if (issue.hasExpression()) {
-      return joinSemicolon(issue.getExpression().stream().map(s -> s.getValue()).toArray(String[]::new));
-    }
-    if (issue.hasLocation()) {
-      return joinSemicolon(issue.getLocation().stream().map(s -> s.getValue()).toArray(String[]::new));
+      return joinSemicolon(issue.getExpressionList().stream().map(s -> s.getValue()).toArray(String[]::new));
     }
     return null;
   }

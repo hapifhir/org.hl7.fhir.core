@@ -1,7 +1,7 @@
 package org.hl7.fhir.validation.http;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.validation.ValidationEngine;

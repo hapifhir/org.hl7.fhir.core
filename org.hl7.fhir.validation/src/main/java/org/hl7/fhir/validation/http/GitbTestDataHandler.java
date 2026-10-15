@@ -1,8 +1,13 @@
 package org.hl7.fhir.validation.http;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.ModelContext;
+import java.util.ArrayList;
+import java.util.List;
+import org.hl7.fhir.model.core.Parameters;
+import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -42,7 +47,7 @@ class GitbTestDataHandler extends GitbProcessingServiceHandler {
 
     JsonObject modifyInputs = typedParameters(
       new TypedParam("resource",   "binary",  true,  "Existing FHIR resource (stringified JSON) to modify."),
-      new TypedParam("operations", "string",  true,  "Stringified JSON array of {op, path, value|parts} entries (op: set|add|remove)."),
+      new TypedParam("operations", "string",  true,  "A FHIRPath Patch: a Parameters resource (stringified JSON) of add / insert / delete / replace / move operations, as accepted on PATCH by a FHIR server."),
       new TypedParam("profile",    "string",  false, "Optional canonical URL of a StructureDefinition for post-modification validation."),
       new TypedParam("enforce",    "boolean", false, "When true (default), validate the modified resource and return an OperationOutcome. When false, skip validation entirely.")
     );
@@ -108,30 +113,32 @@ class GitbTestDataHandler extends GitbProcessingServiceHandler {
     String profileUrl = optionalInput(input, "profile", null);
     boolean enforce = optionalBooleanInput(input, "enforce", true);
 
-    JsonArray operations = parseArrayOrEmpty(operationsStr);
-    if (operations.size() == 0) {
-      throw new InvalidInputException("'operations' must be a non-empty JSON array");
-    }
+    Parameters patch = parsePatch(operationsStr);
 
     ValidationEngine engine = service.getValidationEngine();
-    ValidationEngine.ManipulationResult result;
+    byte[] patched;
     try {
-      result = engine.manipulateResource(
-        resource.getBytes(StandardCharsets.UTF_8),
-        FhirFormat.JSON,
-        profileUrl,
-        operations,
-        enforce,
-        FhirFormat.JSON);
+      patched = engine.patchResource(resource.getBytes(StandardCharsets.UTF_8), FhirFormat.JSON, patch, FhirFormat.JSON);
     } catch (Throwable t) {
       log.warn("GITB test-data modify failed", t);
       throw new RuntimeException("Modification failed: " + t.getMessage(), t);
     }
 
     JsonArray output = new JsonArray();
-    output.add(anyContent("resource", new String(result.getResource(), StandardCharsets.UTF_8), "application/fhir+json"));
-    OperationOutcome outcome = result.getOutcome();
-    if (outcome != null) {
+    output.add(anyContent("resource", new String(patched, StandardCharsets.UTF_8), "application/fhir+json"));
+    if (enforce) {
+      // the patch itself checks nothing; the caller asked for the result to be validated
+      List<String> profiles = new ArrayList<>();
+      if (profileUrl != null) {
+        profiles.add(profileUrl);
+      }
+      OperationOutcome outcome;
+      try {
+        outcome = engine.validate(patched, FhirFormat.JSON, profiles, new ArrayList<>());
+      } catch (Throwable t) {
+        log.warn("GITB test-data modify: validation of the result failed", t);
+        throw new RuntimeException("Validation of the modified resource failed: " + t.getMessage(), t);
+      }
       String outcomeJson;
       try {
         outcomeJson = GitbFhirHandler.serializeOutcome(outcome);
@@ -141,6 +148,27 @@ class GitbTestDataHandler extends GitbProcessingServiceHandler {
       output.add(anyContent("outcome", outcomeJson, "application/fhir+json"));
     }
     return ProcessResult.ofOutput(output);
+  }
+
+  /** The operations input: a FHIRPath Patch, which is a Parameters resource in JSON. */
+  private static Parameters parsePatch(String json) {
+    if (json == null || json.trim().isEmpty()) {
+      throw new InvalidInputException("'operations' must be a FHIRPath Patch: a Parameters resource in JSON");
+    }
+    Resource parsed;
+    try {
+      parsed = new org.hl7.fhir.model.core.formats.JsonParser(ModelContext.fullCoreContext()).parse(json);
+    } catch (Exception e) {
+      throw new InvalidInputException("'operations' is not a FHIR resource in JSON: " + e.getMessage());
+    }
+    if (!(parsed instanceof Parameters)) {
+      throw new InvalidInputException("'operations' must be a Parameters resource (a FHIRPath Patch), not " + parsed.fhirType());
+    }
+    Parameters patch = (Parameters) parsed;
+    if (patch.getParameterList().isEmpty()) {
+      throw new InvalidInputException("'operations' holds no operation");
+    }
+    return patch;
   }
 
   private static JsonArray parseArrayOrEmpty(String json) {

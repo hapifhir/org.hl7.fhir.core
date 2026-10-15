@@ -1,8 +1,9 @@
 package org.hl7.fhir.validation.http;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.core.OperationOutcome;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -139,7 +140,7 @@ class GitbMatchetypeHandler extends GitbValidationServiceHandler {
   }
 
   /**
-   * Convert a JSON resource from one FHIR version to another through the R5 model, with the
+   * Convert a JSON resource from one FHIR version to another through the version-neutral model, with the
    * version convertors the validator uses everywhere else. Returns the input unchanged when
    * the two versions are the same publication (R5 and R6 share the model here).
    */
@@ -147,24 +148,24 @@ class GitbMatchetypeHandler extends GitbValidationServiceHandler {
     if (sameModel(from, to)) {
       return json;
     }
-    org.hl7.fhir.r5.model.Resource r5;
+    org.hl7.fhir.model.core.Resource r;
     if (VersionUtilities.isR4Ver(from)) {
-      r5 = org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(json));
+      r = org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_N.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(json));
     } else if (VersionUtilities.isR4BVer(from)) {
-      r5 = org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50.convertResource(new org.hl7.fhir.r4b.formats.JsonParser().parse(json));
+      r = org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_N.convertResource(new org.hl7.fhir.r4b.formats.JsonParser().parse(json));
     } else if (VersionUtilities.isR3Ver(from)) {
-      r5 = org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(json));
+      r = org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_N.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(json));
     } else {
-      r5 = new org.hl7.fhir.r5.formats.JsonParser().parse(json);
+      r = new org.hl7.fhir.model.core.formats.JsonParser(ModelContext.fullCoreContext()).parse(json);
     }
     if (VersionUtilities.isR4Ver(to)) {
-      return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50.convertResource(r5));
+      return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_N.convertResource(r));
     } else if (VersionUtilities.isR4BVer(to)) {
-      return new org.hl7.fhir.r4b.formats.JsonParser().composeBytes(org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50.convertResource(r5));
+      return new org.hl7.fhir.r4b.formats.JsonParser().composeBytes(org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_N.convertResource(r));
     } else if (VersionUtilities.isR3Ver(to)) {
-      return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50.convertResource(r5));
+      return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_N.convertResource(r));
     } else {
-      return new org.hl7.fhir.r5.formats.JsonParser().composeBytes(r5);
+      return new org.hl7.fhir.model.core.formats.JsonParser(ModelContext.fullCoreContext()).composeBytes(r);
     }
   }
 

@@ -1,11 +1,12 @@
 package org.hl7.fhir.validation.http;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.model.core.formats.JsonParser;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -120,7 +121,7 @@ class GitbFhirHandler extends GitbValidationServiceHandler {
 
   static String serializeOutcome(OperationOutcome outcome) throws java.io.IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    new JsonParser().compose(baos, outcome);
+    new JsonParser(ModelContext.fullCoreContext()).compose(baos, outcome);
     return baos.toString(StandardCharsets.UTF_8.name());
   }
 

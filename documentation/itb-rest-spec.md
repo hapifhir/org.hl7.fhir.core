@@ -318,12 +318,12 @@ For pass/fail assertions, use `FHIRPathAssertion` (§3.3).
 
 Output: `resource` (the generated FHIR resource as JSON). `generateBundle` wraps it in a Bundle.
 
-`modify` mutates an existing resource by applying a sequence of `set` / `add` / `remove` operations.
+`modify` applies a FHIRPath Patch to an existing resource: a `Parameters` resource of `add` / `insert` / `delete` / `replace` / `move` operations, as a FHIR server accepts on PATCH.
 
 | Input | Required | Notes |
 |---|---|---|
 | `resource` | yes | Existing FHIR resource (stringified JSON) to modify. |
-| `operations` | yes | Stringified JSON array of `{op, path, value\|parts}` entries. `op` is `set`, `add`, or `remove`. |
+| `operations` | yes | The FHIRPath Patch: a `Parameters` resource (stringified JSON) with one `operation` parameter per change. |
 | `profile` | no | Canonical URL to validate the result against (used when `enforce=true`). |
 | `enforce` | no | When `"true"` (default), the modified resource is validated and the OperationOutcome returned as `output[1]`. When `"false"`, validation is skipped entirely. |
 
