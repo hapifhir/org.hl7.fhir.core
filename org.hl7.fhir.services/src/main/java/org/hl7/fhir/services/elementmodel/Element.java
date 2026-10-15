@@ -1632,7 +1632,7 @@ public class Element extends Base implements NamedItem {
     }    
     dest.line = line;
     dest.col = col;
-    dest.xhtml = xhtml;
+    dest.xhtml = xhtml == null ? null : xhtml.copy(); // a copy must not share the (mutable) narrative with the original
     dest.xhtmlSource = xhtmlSource;
     dest.xhtmlOutputHash = xhtmlOutputHash;
     dest.explicitType = explicitType;

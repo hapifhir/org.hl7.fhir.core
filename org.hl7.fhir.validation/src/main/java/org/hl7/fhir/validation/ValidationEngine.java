@@ -242,6 +242,35 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   private ContextUtilities cu = null;
 
+  /** the default number of resources that fetch() keeps converted to the element model */
+  public static final int DEFAULT_FETCH_CACHE_SIZE = 100;
+
+  /**
+   * A resource of the context that fetch() converted to the element model, and the resource instance it
+   * was converted from (a resource that is replaced in the context is a new instance, and is converted again)
+   */
+  private static class FetchedElement {
+    private final Resource resource;
+    private final Element element;
+
+    private FetchedElement(Resource resource, Element element) {
+      this.resource = resource;
+      this.element = element;
+    }
+  }
+
+  /** the number of resources that fetch() keeps converted, 0 to keep none */
+  @Getter
+  private volatile int fetchCacheSize = DEFAULT_FETCH_CACHE_SIZE;
+
+  /** the resources that fetch() converted, by URL, least recently used first. Guarded by itself */
+  private final LinkedHashMap<String, FetchedElement> fetchedElements = new LinkedHashMap<String, FetchedElement>(16, 0.75f, true) {
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<String, FetchedElement> eldest) {
+      return size() > fetchCacheSize;
+    }
+  };
+
   /**
    * Creating a validation engine is an expensive operation - takes seconds.
    * Once you have a validation engine created, you can quickly clone it to
@@ -264,6 +293,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     debug = other.debug;
     logValidationProgress = other.logValidationProgress;
     fetcher = other.fetcher;
+    fetchCacheSize = other.fetchCacheSize; // the converted resources aren't shared
     policyAdvisor = other.policyAdvisor;
     locator = other.locator;
     noExtensibleBindingMessages = other.noExtensibleBindingMessages;
@@ -1326,16 +1356,84 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     igLoader.loadIg(getIgs(), getBinaries(),id + (ver == null ? "" : "#" + ver), true);
   }
 
+  /**
+   * Converting a resource of the context to the element model (compose to JSON, parse) is expensive, and
+   * invariants such as 'http://.../ConceptMap/x'.resolve() fetch the same resources for every instance that
+   * is validated (the InstanceValidator fetches each URL once per validation). So the last used conversions
+   * are kept (see setFetchCacheSize()), and each call gets a copy, which the validator can decorate
+   * (parents, slices, messages).
+   *
+   * The kept element is never handed out, it is only copied, under its lock: the element model isn't
+   * thread-safe (e.g. NamedItemList builds its name map lazily), so concurrent validations must not
+   * navigate a shared element. The copies share no mutable state with it (Element.copyValues copies the
+   * narrative too).
+   *
+   * This assumes that the content of a resource of the context doesn't change after fetchResource()
+   * returned it. A resource that is replaced in the context is a new instance, and is converted again
+   */
   @Override
   public Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRException, IOException {
     Resource resource = context.fetchResource(Resource.class, url);
     if (resource != null) {
-      return new ObjectConverter(context).convert(resource);
+      if (fetchCacheSize <= 0) {
+        return new ObjectConverter(context).convert(resource);
+      }
+      Element element;
+      synchronized (fetchedElements) {
+        FetchedElement fetched = fetchedElements.get(url);
+        element = fetched != null && fetched.resource == resource ? fetched.element : null;
+      }
+      if (element == null) {
+        element = new ObjectConverter(context).convert(resource);
+        synchronized (fetchedElements) {
+          FetchedElement fetched = fetchedElements.get(url);
+          if (fetched != null && fetched.resource == resource) {
+            element = fetched.element; // converted by another thread in the meantime
+          } else {
+            fetchedElements.put(url, new FetchedElement(resource, element));
+          }
+        }
+      }
+      Element copy;
+      synchronized (element) {
+        copy = element.copy(EnumSet.allOf(Base.CopyObjectOptions.class));
+      }
+      copy.numberChildren(); // copy() doesn't copy the indexes
+      return copy;
     }
     if (fetcher != null) {
       return fetcher.fetch(validator, appContext, url);
     }
     return null;
+  }
+
+  /**
+   * Set the number of resources that fetch() keeps converted to the element model (the least recently
+   * used are dropped first), 0 to keep none. The default is DEFAULT_FETCH_CACHE_SIZE
+   */
+  public void setFetchCacheSize(int fetchCacheSize) {
+    synchronized (fetchedElements) {
+      this.fetchCacheSize = Math.max(0, fetchCacheSize);
+      Iterator<String> iterator = fetchedElements.keySet().iterator();
+      while (fetchedElements.size() > this.fetchCacheSize && iterator.hasNext()) {
+        iterator.next();
+        iterator.remove();
+      }
+    }
+  }
+
+  /** the URLs of the resources that fetch() keeps converted, least recently used first */
+  public List<String> getFetchCacheUrls() {
+    synchronized (fetchedElements) {
+      return new ArrayList<>(fetchedElements.keySet());
+    }
+  }
+
+  /** drop the resources that fetch() keeps converted to the element model */
+  public void clearFetchCache() {
+    synchronized (fetchedElements) {
+      fetchedElements.clear();
+    }
   }
 
   /**

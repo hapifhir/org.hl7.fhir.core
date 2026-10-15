@@ -416,8 +416,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (externalHostServices != null) {
         return setParentsBase(externalHostServices.resolveReference(engine, c.getAppContext(), url, identifier, refContext));
       } else if (fetcher != null) {
+        // through the fetch cache of the validation, like resolve() - invariants such as 
+        // 'http://.../ConceptMap/x'.resolve() may resolve the same URL many times
+        if (fetchCache.containsKey(url)) {
+          return fetchCache.get(url);
+        }
         try {
-          return setParents(fetcher.fetch(InstanceValidator.this, c.getAppContext(), url));
+          Element fetched = setParents(fetcher.fetch(InstanceValidator.this, c.getAppContext(), url));
+          fetchCache.put(url, fetched);
+          return fetched;
         } catch (IOException e) {
           throw new FHIRException(e);
         }

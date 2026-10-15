@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,25 +43,27 @@ import org.hl7.fhir.utilities.regex.RegexUtils;
 
 public class OIDUtilities {
 
-  // Simple class to hold OID information
+  // Simple class to hold OID information - immutable, the registry is shared by all instances
   public static class OIDInfo {
-    private String oid;
-    private String name;
-    private String codeSystem;
-    private Integer type;
+    private final String oid;
+    private final String name;
+    private final String codeSystem;
+    private final Integer type;
 
-    // Getters and setters
+    public OIDInfo(String oid, Integer type, String name, String codeSystem) {
+      this.oid = oid;
+      this.type = type;
+      this.name = name;
+      this.codeSystem = codeSystem;
+    }
+
     public String getOid() { return oid; }
-    public void setOid(String oid) { this.oid = oid; }
 
     public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
 
     public String getCodeSystem() { return codeSystem; }
-    public void setCodeSystem(String codeSystem) { this.codeSystem = codeSystem; }
 
     public Integer getType() { return type; }
-    public void setType(Integer type) { this.type = type; }
 
     @Override
     public String toString() {
@@ -72,17 +75,31 @@ public class OIDUtilities {
   }
 
 
-  private final Map<String, OIDInfo> oidMap = new HashMap<>();
+  /**
+   * The OID registry (oidregistry.csv), loaded once: the validator creates an OIDUtilities for every
+   * InstanceValidator, and parsing the registry takes milliseconds. It is unmodifiable, and so are its entries
+   */
+  private static Map<String, OIDInfo> registry;
+
+  private final Map<String, OIDInfo> oidMap;
 
 
   public OIDUtilities() {
-    loadOIDsFromCSV();
+    oidMap = getRegistry();
   }
 
-  private void loadOIDsFromCSV() throws FHIRException {
+  private static synchronized Map<String, OIDInfo> getRegistry() throws FHIRException {
+    if (registry == null) {
+      registry = Collections.unmodifiableMap(loadOIDsFromCSV());
+    }
+    return registry;
+  }
+
+  private static Map<String, OIDInfo> loadOIDsFromCSV() throws FHIRException {
+    Map<String, OIDInfo> oidMap = new HashMap<>();
     try {
 
-      try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("oidregistry.csv");
+      try (InputStream inputStream = OIDUtilities.class.getClassLoader().getResourceAsStream("oidregistry.csv");
           BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 
         String line;
@@ -97,11 +114,7 @@ public class OIDUtilities {
             //single literal character split
             String[] parts = line.split(",");
             if (parts.length >= 4) {
-              OIDInfo info = new OIDInfo();
-              info.setOid(parts[0].trim());
-              info.setType(Integer.parseInt(parts[1].trim()));
-              info.setName(parts[2].trim());
-              info.setCodeSystem(parts[3].trim());
+              OIDInfo info = new OIDInfo(parts[0].trim(), Integer.parseInt(parts[1].trim()), parts[2].trim(), parts[3].trim());
 
               // Add to map with OID as key
               oidMap.put(info.getOid(), info);
@@ -112,6 +125,7 @@ public class OIDUtilities {
     } catch (Exception e) {
       throw new FHIRException(e);
     }
+    return oidMap;
   }
 
   /*

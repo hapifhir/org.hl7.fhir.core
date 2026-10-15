@@ -216,7 +216,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
    */
   @Override
   public void compose(OutputStream stream, Resource resource) throws IOException {
-    resource.assertModelContext(modelContext);
+    resource.checkModelContext(modelContext);
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
     if (style == OutputStyle.CANONICAL) {
       json = new JsonCreatorCanonical(osw);
@@ -283,7 +283,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
    * @throws IOException 
    */
   public void compose(JsonCreator writer, Resource resource) throws IOException {
-    resource.assertModelContext(modelContext);
+    resource.checkModelContext(modelContext);
     json = writer;
     composeResource(resource);
   }
@@ -294,7 +294,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     // object, which is what callers such as the SD renderer's buildJson() rely on for an
     // ElementDefinition.example that carries no value[x]
     if (type != null) {
-      type.assertModelContext(modelContext);
+      type.checkModelContext(modelContext);
     }
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
     if (style == OutputStyle.CANONICAL) {

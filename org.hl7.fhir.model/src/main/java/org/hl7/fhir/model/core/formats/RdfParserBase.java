@@ -78,7 +78,7 @@ public abstract class RdfParserBase extends ParserBase implements IParser {
 
 	@Override
 	public void compose(OutputStream stream, Resource resource) throws IOException {
-		resource.assertModelContext(modelContext);
+		resource.checkModelContext(modelContext);
 	  Turtle ttl = new Turtle();
 		//      ttl.setFormat(FFormat);
 		ttl.prefix("fhir", "http://hl7.org/fhir/");
@@ -106,7 +106,7 @@ public abstract class RdfParserBase extends ParserBase implements IParser {
 		// don't dereference a null type here - composeType() below reports it properly
 		// ("type == null"), and that is a better error than an NPE from the assertion
 		if (type != null) {
-		  type.assertModelContext(modelContext);
+		  type.checkModelContext(modelContext);
 		}
 		throw new Error("Not supported in RDF");  
 	}

@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* Various Performance improvements, thanks Vadim Peretokin
+* Various Performance improvements, thanks Vadim Peretokin & Oliver Egger
 * Snapshot generation: fix type slicing when a type specific name (e.g. valueQuantity) is used where the base restricts a choice element but doesn't type slice it (IG publisher 2.3.5 regression, seen in AU Core blood pressure), and report duplicate slice names and differential fixed/pattern values that conflict with the base profile
 * Snapshot generation: a profile on an extension now takes the context of the extension it profiles when it doesn't state its own
 * ConceptMap validation: new mapping quality checks - consistency with the reverse ConceptMap when one is found in the context (equivalence, narrower/broader, noMap, source/target scope), and subsumption checks on sources and targets when the code system has an is-a hierarchy (hints for missing things, warnings for inconsistent things). Reverse maps are matched on versions as well as systems (a map that doesn't state versions still matches), a map from a code system to itself is only usable if versions or scopes distinguish source from target, and subsumption on a code system that is available locally is never sent to the terminology server
