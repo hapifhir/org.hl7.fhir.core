@@ -631,7 +631,7 @@ public class ProfileBasedFactory {
    */
   private String checkBase64(LogSet ls, String path, String val) {
     try {
-      return java.util.Base64.getEncoder().encodeToString(Utilities.decodeBase64(val));
+      return java.util.Base64.getEncoder().encodeToString(Utilities.decodeBase64(val, false));
     } catch (IllegalArgumentException e) {
       ls.others.add("base64Binary value for "+path+" rejected ("+e.getMessage()+"); a generated value is used instead");
       return null;
