@@ -197,6 +197,17 @@ public class ClaimResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.when != null) {
+            visitor.visit(this, "when[x]", -1, this.when);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "A coded event such as when a service is expected or a card printed.", 0, 1, type);
@@ -1518,6 +1529,32 @@ public class ClaimResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.sequence != null) {
+            visitor.visit(this, "sequence", -1, this.sequence);
+          }
+          if (this.category != null) {
+            visitor.visit(this, "category", -1, this.category);
+          }
+          if (this.subCategory != null) {
+            visitor.visit(this, "subCategory", -1, this.subCategory);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.timing != null) {
+            visitor.visit(this, "timing[x]", -1, this.timing);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.reason != null) {
+            visitor.visit(this, "reason", -1, this.reason);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "sequence":  return new Property("sequence", "positiveInt", "A number to uniquely identify supporting information entries.", 0, 1, sequence);
@@ -2507,6 +2544,62 @@ public class ClaimResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.itemSequence != null) {
+            visitor.visit(this, "itemSequence", -1, this.itemSequence);
+          }
+          if (this.traceNumberList != null) {
+            int i = 0;
+            for (Base v : this.traceNumberList) {
+              if (v != null) {
+                visitor.visit(this, "traceNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.informationSequenceList != null) {
+            int i = 0;
+            for (Base v : this.informationSequenceList) {
+              if (v != null) {
+                visitor.visit(this, "informationSequence", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.noteNumberList != null) {
+            int i = 0;
+            for (Base v : this.noteNumberList) {
+              if (v != null) {
+                visitor.visit(this, "noteNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.reviewOutcome != null) {
+            visitor.visit(this, "reviewOutcome", -1, this.reviewOutcome);
+          }
+          if (this.adjudicationList != null) {
+            int i = 0;
+            for (Base v : this.adjudicationList) {
+              if (v != null) {
+                visitor.visit(this, "adjudication", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.detailList != null) {
+            int i = 0;
+            for (Base v : this.detailList) {
+              if (v != null) {
+                visitor.visit(this, "detail", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "itemSequence":  return new Property("itemSequence", "positiveInt", "A number to uniquely reference the claim item entries.", 0, 1, itemSequence);
@@ -2973,6 +3066,29 @@ public class ClaimResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.decision != null) {
+            visitor.visit(this, "decision", -1, this.decision);
+          }
+          if (this.reasonList != null) {
+            int i = 0;
+            for (Base v : this.reasonList) {
+              if (v != null) {
+                visitor.visit(this, "reason", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.preAuthRef != null) {
+            visitor.visit(this, "preAuthRef", -1, this.preAuthRef);
+          }
+          if (this.preAuthPeriod != null) {
+            visitor.visit(this, "preAuthPeriod", -1, this.preAuthPeriod);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "decision":  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
@@ -3394,6 +3510,26 @@ public class ClaimResponse extends DomainResource {
           children.add(new Property("amount", "Money", "Monetary amount associated with the category.", 0, 1, amount));
           children.add(new Property("quantity", "Quantity", "A non-monetary value associated with the category. Mutually exclusive to the amount element above.", 0, 1, quantity));
           children.add(new Property("decisionDate", "dateTime", "The date and time the adjudication decision occured.", 0, 1, decisionDate));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.category != null) {
+            visitor.visit(this, "category", -1, this.category);
+          }
+          if (this.reason != null) {
+            visitor.visit(this, "reason", -1, this.reason);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.decisionDate != null) {
+            visitor.visit(this, "decisionDate", -1, this.decisionDate);
+          }
         }
 
         @Override
@@ -3986,6 +4122,53 @@ public class ClaimResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.detailSequence != null) {
+            visitor.visit(this, "detailSequence", -1, this.detailSequence);
+          }
+          if (this.traceNumberList != null) {
+            int i = 0;
+            for (Base v : this.traceNumberList) {
+              if (v != null) {
+                visitor.visit(this, "traceNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.noteNumberList != null) {
+            int i = 0;
+            for (Base v : this.noteNumberList) {
+              if (v != null) {
+                visitor.visit(this, "noteNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.reviewOutcome != null) {
+            visitor.visit(this, "reviewOutcome", -1, this.reviewOutcome);
+          }
+          if (this.adjudicationList != null) {
+            int i = 0;
+            for (Base v : this.adjudicationList) {
+              if (v != null) {
+                visitor.visit(this, "adjudication", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.subDetailList != null) {
+            int i = 0;
+            for (Base v : this.subDetailList) {
+              if (v != null) {
+                visitor.visit(this, "subDetail", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "detailSequence":  return new Property("detailSequence", "positiveInt", "A number to uniquely reference the claim detail entry.", 0, 1, detailSequence);
@@ -4528,6 +4711,44 @@ public class ClaimResponse extends DomainResource {
           children.add(new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumberList));
           children.add(new Property("reviewOutcome", "@ClaimResponse.item.reviewOutcome", "The high-level results of the adjudication if adjudication has been performed.", 0, 1, reviewOutcome));
           children.add(new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudicationList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.subDetailSequence != null) {
+            visitor.visit(this, "subDetailSequence", -1, this.subDetailSequence);
+          }
+          if (this.traceNumberList != null) {
+            int i = 0;
+            for (Base v : this.traceNumberList) {
+              if (v != null) {
+                visitor.visit(this, "traceNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.noteNumberList != null) {
+            int i = 0;
+            for (Base v : this.noteNumberList) {
+              if (v != null) {
+                visitor.visit(this, "noteNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.reviewOutcome != null) {
+            visitor.visit(this, "reviewOutcome", -1, this.reviewOutcome);
+          }
+          if (this.adjudicationList != null) {
+            int i = 0;
+            for (Base v : this.adjudicationList) {
+              if (v != null) {
+                visitor.visit(this, "adjudication", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -6169,6 +6390,167 @@ public class ClaimResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.itemSequenceList != null) {
+            int i = 0;
+            for (Base v : this.itemSequenceList) {
+              if (v != null) {
+                visitor.visit(this, "itemSequence", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.detailSequenceList != null) {
+            int i = 0;
+            for (Base v : this.detailSequenceList) {
+              if (v != null) {
+                visitor.visit(this, "detailSequence", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.subdetailSequenceList != null) {
+            int i = 0;
+            for (Base v : this.subdetailSequenceList) {
+              if (v != null) {
+                visitor.visit(this, "subdetailSequence", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.traceNumberList != null) {
+            int i = 0;
+            for (Base v : this.traceNumberList) {
+              if (v != null) {
+                visitor.visit(this, "traceNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.subject != null) {
+            visitor.visit(this, "subject", -1, this.subject);
+          }
+          if (this.informationSequenceList != null) {
+            int i = 0;
+            for (Base v : this.informationSequenceList) {
+              if (v != null) {
+                visitor.visit(this, "informationSequence", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.providerList != null) {
+            int i = 0;
+            for (Base v : this.providerList) {
+              if (v != null) {
+                visitor.visit(this, "provider", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.revenue != null) {
+            visitor.visit(this, "revenue", -1, this.revenue);
+          }
+          if (this.category != null) {
+            visitor.visit(this, "category", -1, this.category);
+          }
+          if (this.productOrService != null) {
+            visitor.visit(this, "productOrService", -1, this.productOrService);
+          }
+          if (this.productOrServiceEnd != null) {
+            visitor.visit(this, "productOrServiceEnd", -1, this.productOrServiceEnd);
+          }
+          if (this.requestList != null) {
+            int i = 0;
+            for (Base v : this.requestList) {
+              if (v != null) {
+                visitor.visit(this, "request", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.modifierList != null) {
+            int i = 0;
+            for (Base v : this.modifierList) {
+              if (v != null) {
+                visitor.visit(this, "modifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.programCodeList != null) {
+            int i = 0;
+            for (Base v : this.programCodeList) {
+              if (v != null) {
+                visitor.visit(this, "programCode", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.serviced != null) {
+            visitor.visit(this, "serviced[x]", -1, this.serviced);
+          }
+          if (this.location != null) {
+            visitor.visit(this, "location[x]", -1, this.location);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.unitPrice != null) {
+            visitor.visit(this, "unitPrice", -1, this.unitPrice);
+          }
+          if (this.factor != null) {
+            visitor.visit(this, "factor", -1, this.factor);
+          }
+          if (this.tax != null) {
+            visitor.visit(this, "tax", -1, this.tax);
+          }
+          if (this.net != null) {
+            visitor.visit(this, "net", -1, this.net);
+          }
+          if (this.bodySiteList != null) {
+            int i = 0;
+            for (Base v : this.bodySiteList) {
+              if (v != null) {
+                visitor.visit(this, "bodySite", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.noteNumberList != null) {
+            int i = 0;
+            for (Base v : this.noteNumberList) {
+              if (v != null) {
+                visitor.visit(this, "noteNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.reviewOutcome != null) {
+            visitor.visit(this, "reviewOutcome", -1, this.reviewOutcome);
+          }
+          if (this.adjudicationList != null) {
+            int i = 0;
+            for (Base v : this.adjudicationList) {
+              if (v != null) {
+                visitor.visit(this, "adjudication", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.detailList != null) {
+            int i = 0;
+            for (Base v : this.detailList) {
+              if (v != null) {
+                visitor.visit(this, "detail", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "itemSequence":  return new Property("itemSequence", "positiveInt", "Claim items which this service line is intended to replace.", 0, java.lang.Integer.MAX_VALUE, itemSequenceList);
@@ -7011,6 +7393,29 @@ public class ClaimResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.siteList != null) {
+            int i = 0;
+            for (Base v : this.siteList) {
+              if (v != null) {
+                visitor.visit(this, "site", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.subSiteList != null) {
+            int i = 0;
+            for (Base v : this.subSiteList) {
+              if (v != null) {
+                visitor.visit(this, "subSite", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "site":  return new Property("site", "CodeableReference(BodyStructure)", "Physical service site on the patient (limb, tooth, etc.).", 0, java.lang.Integer.MAX_VALUE, siteList);
@@ -7848,6 +8253,83 @@ public class ClaimResponse extends DomainResource {
           children.add(new Property("reviewOutcome", "@ClaimResponse.item.reviewOutcome", "The high-level results of the adjudication if adjudication has been performed.", 0, 1, reviewOutcome));
           children.add(new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudicationList));
           children.add(new Property("subDetail", "", "The third-tier service adjudications for payer added services.", 0, java.lang.Integer.MAX_VALUE, subDetailList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.traceNumberList != null) {
+            int i = 0;
+            for (Base v : this.traceNumberList) {
+              if (v != null) {
+                visitor.visit(this, "traceNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.revenue != null) {
+            visitor.visit(this, "revenue", -1, this.revenue);
+          }
+          if (this.productOrService != null) {
+            visitor.visit(this, "productOrService", -1, this.productOrService);
+          }
+          if (this.productOrServiceEnd != null) {
+            visitor.visit(this, "productOrServiceEnd", -1, this.productOrServiceEnd);
+          }
+          if (this.modifierList != null) {
+            int i = 0;
+            for (Base v : this.modifierList) {
+              if (v != null) {
+                visitor.visit(this, "modifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.unitPrice != null) {
+            visitor.visit(this, "unitPrice", -1, this.unitPrice);
+          }
+          if (this.factor != null) {
+            visitor.visit(this, "factor", -1, this.factor);
+          }
+          if (this.tax != null) {
+            visitor.visit(this, "tax", -1, this.tax);
+          }
+          if (this.net != null) {
+            visitor.visit(this, "net", -1, this.net);
+          }
+          if (this.noteNumberList != null) {
+            int i = 0;
+            for (Base v : this.noteNumberList) {
+              if (v != null) {
+                visitor.visit(this, "noteNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.reviewOutcome != null) {
+            visitor.visit(this, "reviewOutcome", -1, this.reviewOutcome);
+          }
+          if (this.adjudicationList != null) {
+            int i = 0;
+            for (Base v : this.adjudicationList) {
+              if (v != null) {
+                visitor.visit(this, "adjudication", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.subDetailList != null) {
+            int i = 0;
+            for (Base v : this.subDetailList) {
+              if (v != null) {
+                visitor.visit(this, "subDetail", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -8895,6 +9377,74 @@ public class ClaimResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.traceNumberList != null) {
+            int i = 0;
+            for (Base v : this.traceNumberList) {
+              if (v != null) {
+                visitor.visit(this, "traceNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.revenue != null) {
+            visitor.visit(this, "revenue", -1, this.revenue);
+          }
+          if (this.productOrService != null) {
+            visitor.visit(this, "productOrService", -1, this.productOrService);
+          }
+          if (this.productOrServiceEnd != null) {
+            visitor.visit(this, "productOrServiceEnd", -1, this.productOrServiceEnd);
+          }
+          if (this.modifierList != null) {
+            int i = 0;
+            for (Base v : this.modifierList) {
+              if (v != null) {
+                visitor.visit(this, "modifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.unitPrice != null) {
+            visitor.visit(this, "unitPrice", -1, this.unitPrice);
+          }
+          if (this.factor != null) {
+            visitor.visit(this, "factor", -1, this.factor);
+          }
+          if (this.tax != null) {
+            visitor.visit(this, "tax", -1, this.tax);
+          }
+          if (this.net != null) {
+            visitor.visit(this, "net", -1, this.net);
+          }
+          if (this.noteNumberList != null) {
+            int i = 0;
+            for (Base v : this.noteNumberList) {
+              if (v != null) {
+                visitor.visit(this, "noteNumber", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.reviewOutcome != null) {
+            visitor.visit(this, "reviewOutcome", -1, this.reviewOutcome);
+          }
+          if (this.adjudicationList != null) {
+            int i = 0;
+            for (Base v : this.adjudicationList) {
+              if (v != null) {
+                visitor.visit(this, "adjudication", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "traceNumber":  return new Property("traceNumber", "Identifier", "Trace number for tracking purposes. May be defined at the jurisdiction level or between trading partners.", 0, java.lang.Integer.MAX_VALUE, traceNumberList);
@@ -9387,6 +9937,17 @@ public class ClaimResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.category != null) {
+            visitor.visit(this, "category", -1, this.category);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "category":  return new Property("category", "CodeableConcept", "A code to indicate the information type of this adjudication record. Information types may include: the value submitted, maximum values or percentages allowed or payable under the plan, amounts that the patient is responsible for in aggregate or pertaining to this item, amounts paid by other coverages, and the benefit payable for this item.", 0, 1, category);
@@ -9801,6 +10362,29 @@ public class ClaimResponse extends DomainResource {
           children.add(new Property("date", "date", "Estimated date the payment will be issued or the actual issue date of payment.", 0, 1, date));
           children.add(new Property("amount", "Money", "Benefits payable less any payment adjustment.", 0, 1, amount));
           children.add(new Property("identifier", "Identifier", "Issuer's unique identifier for the payment instrument.", 0, 1, identifier));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.adjustment != null) {
+            visitor.visit(this, "adjustment", -1, this.adjustment);
+          }
+          if (this.adjustmentReason != null) {
+            visitor.visit(this, "adjustmentReason", -1, this.adjustmentReason);
+          }
+          if (this.date != null) {
+            visitor.visit(this, "date", -1, this.date);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
+          if (this.identifier != null) {
+            visitor.visit(this, "identifier", -1, this.identifier);
+          }
         }
 
         @Override
@@ -10292,6 +10876,26 @@ public class ClaimResponse extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.class_ != null) {
+            visitor.visit(this, "class", -1, this.class_);
+          }
+          if (this.number != null) {
+            visitor.visit(this, "number", -1, this.number);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.text != null) {
+            visitor.visit(this, "text", -1, this.text);
+          }
+          if (this.language != null) {
+            visitor.visit(this, "language", -1, this.language);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "class":  return new Property("class", "CodeableConcept", "A code to indicate the business purpose of the note.", 0, 1, class_);
@@ -10778,6 +11382,26 @@ public class ClaimResponse extends DomainResource {
           children.add(new Property("coverage", "Reference(Coverage)", "Reference to the insurance card level information contained in the Coverage resource. The coverage issuing insurer will use these details to locate the patient's actual coverage within the insurer's information system.", 0, 1, coverage));
           children.add(new Property("businessArrangement", "string", "A business agreement number established between the provider and the insurer for special business processing purposes.", 0, 1, businessArrangement));
           children.add(new Property("claimResponse", "Reference(ClaimResponse)", "The result of the adjudication of the line items for the Coverage specified in this insurance.", 0, 1, claimResponse));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.sequence != null) {
+            visitor.visit(this, "sequence", -1, this.sequence);
+          }
+          if (this.focal != null) {
+            visitor.visit(this, "focal", -1, this.focal);
+          }
+          if (this.coverage != null) {
+            visitor.visit(this, "coverage", -1, this.coverage);
+          }
+          if (this.businessArrangement != null) {
+            visitor.visit(this, "businessArrangement", -1, this.businessArrangement);
+          }
+          if (this.claimResponse != null) {
+            visitor.visit(this, "claimResponse", -1, this.claimResponse);
+          }
         }
 
         @Override
@@ -11297,6 +11921,32 @@ public class ClaimResponse extends DomainResource {
           children.add(new Property("subDetailSequence", "positiveInt", "The sequence number of the sub-detail within the detail within the line item submitted which contains the error. This value is omitted when the error occurs outside of the item structure.", 0, 1, subDetailSequence));
           children.add(new Property("code", "CodeableConcept", "An error code, from a specified code system, which details why the claim could not be adjudicated.", 0, 1, code));
           children.add(new Property("expression", "string", "A [simple subset of FHIRPath](fhirpath.html#simple) limited to element names, repetition indicators and the default child accessor that identifies one of the elements in the resource that caused this issue to be raised.", 0, java.lang.Integer.MAX_VALUE, expressionList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.itemSequence != null) {
+            visitor.visit(this, "itemSequence", -1, this.itemSequence);
+          }
+          if (this.detailSequence != null) {
+            visitor.visit(this, "detailSequence", -1, this.detailSequence);
+          }
+          if (this.subDetailSequence != null) {
+            visitor.visit(this, "subDetailSequence", -1, this.subDetailSequence);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.expressionList != null) {
+            int i = 0;
+            for (Base v : this.expressionList) {
+              if (v != null) {
+                visitor.visit(this, "expression", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -13242,6 +13892,191 @@ public class ClaimResponse extends DomainResource {
         children.add(new Property("communicationRequest", "Reference(CommunicationRequest)", "Request for additional supporting or authorizing information.", 0, java.lang.Integer.MAX_VALUE, communicationRequestList));
         children.add(new Property("insurance", "", "Financial instruments for reimbursement for the health care products and services specified on the claim.", 0, java.lang.Integer.MAX_VALUE, insuranceList));
         children.add(new Property("error", "", "Errors encountered during the processing of the adjudication.", 0, java.lang.Integer.MAX_VALUE, errorList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.traceNumberList != null) {
+          int i = 0;
+          for (Base v : this.traceNumberList) {
+            if (v != null) {
+              visitor.visit(this, "traceNumber", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReason != null) {
+          visitor.visit(this, "statusReason", -1, this.statusReason);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.subType != null) {
+          visitor.visit(this, "subType", -1, this.subType);
+        }
+        if (this.use != null) {
+          visitor.visit(this, "use", -1, this.use);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.created != null) {
+          visitor.visit(this, "created", -1, this.created);
+        }
+        if (this.insurer != null) {
+          visitor.visit(this, "insurer", -1, this.insurer);
+        }
+        if (this.requestor != null) {
+          visitor.visit(this, "requestor", -1, this.requestor);
+        }
+        if (this.request != null) {
+          visitor.visit(this, "request", -1, this.request);
+        }
+        if (this.outcome != null) {
+          visitor.visit(this, "outcome", -1, this.outcome);
+        }
+        if (this.decision != null) {
+          visitor.visit(this, "decision", -1, this.decision);
+        }
+        if (this.disposition != null) {
+          visitor.visit(this, "disposition", -1, this.disposition);
+        }
+        if (this.preAuthRef != null) {
+          visitor.visit(this, "preAuthRef", -1, this.preAuthRef);
+        }
+        if (this.preAuthPeriod != null) {
+          visitor.visit(this, "preAuthPeriod", -1, this.preAuthPeriod);
+        }
+        if (this.eventList != null) {
+          int i = 0;
+          for (Base v : this.eventList) {
+            if (v != null) {
+              visitor.visit(this, "event", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.payeeType != null) {
+          visitor.visit(this, "payeeType", -1, this.payeeType);
+        }
+        if (this.encounterList != null) {
+          int i = 0;
+          for (Base v : this.encounterList) {
+            if (v != null) {
+              visitor.visit(this, "encounter", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.diagnosisRelatedGroup != null) {
+          visitor.visit(this, "diagnosisRelatedGroup", -1, this.diagnosisRelatedGroup);
+        }
+        if (this.supportingInfoList != null) {
+          int i = 0;
+          for (Base v : this.supportingInfoList) {
+            if (v != null) {
+              visitor.visit(this, "supportingInfo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.itemList != null) {
+          int i = 0;
+          for (Base v : this.itemList) {
+            if (v != null) {
+              visitor.visit(this, "item", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.addItemList != null) {
+          int i = 0;
+          for (Base v : this.addItemList) {
+            if (v != null) {
+              visitor.visit(this, "addItem", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.adjudicationList != null) {
+          int i = 0;
+          for (Base v : this.adjudicationList) {
+            if (v != null) {
+              visitor.visit(this, "adjudication", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.totalList != null) {
+          int i = 0;
+          for (Base v : this.totalList) {
+            if (v != null) {
+              visitor.visit(this, "total", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.payment != null) {
+          visitor.visit(this, "payment", -1, this.payment);
+        }
+        if (this.fundsReserve != null) {
+          visitor.visit(this, "fundsReserve", -1, this.fundsReserve);
+        }
+        if (this.formCode != null) {
+          visitor.visit(this, "formCode", -1, this.formCode);
+        }
+        if (this.form != null) {
+          visitor.visit(this, "form", -1, this.form);
+        }
+        if (this.processNoteList != null) {
+          int i = 0;
+          for (Base v : this.processNoteList) {
+            if (v != null) {
+              visitor.visit(this, "processNote", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.communicationRequestList != null) {
+          int i = 0;
+          for (Base v : this.communicationRequestList) {
+            if (v != null) {
+              visitor.visit(this, "communicationRequest", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.insuranceList != null) {
+          int i = 0;
+          for (Base v : this.insuranceList) {
+            if (v != null) {
+              visitor.visit(this, "insurance", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.errorList != null) {
+          int i = 0;
+          for (Base v : this.errorList) {
+            if (v != null) {
+              visitor.visit(this, "error", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

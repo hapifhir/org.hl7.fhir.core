@@ -574,6 +574,35 @@ public class Subscription extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.resource != null) {
+            visitor.visit(this, "resource", -1, this.resource);
+          }
+          if (this.filterParameter != null) {
+            visitor.visit(this, "filterParameter", -1, this.filterParameter);
+          }
+          if (this.comparator != null) {
+            visitor.visit(this, "comparator", -1, this.comparator);
+          }
+          if (this.modifier != null) {
+            visitor.visit(this, "modifier", -1, this.modifier);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+          if (this.eventList != null) {
+            int i = 0;
+            for (Base v : this.eventList) {
+              if (v != null) {
+                visitor.visit(this, "event", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "resource":  return new Property("resource", "uri", "A resource listed in the `SubscriptionTopic` this `Subscription` references (`SubscriptionTopic.canFilterBy.resource`). This element can be used to differentiate filters for topics that include more than one resource type.", 0, 1, resource);
@@ -951,6 +980,17 @@ public class Subscription extends DomainResource {
           super.listChildren(children);
           children.add(new Property("name", "string", "Parameter name for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the name would be Authorization.", 0, 1, name));
           children.add(new Property("value", "string", "Parameter value for information passed to the channel for notifications, for example in the case of a REST hook wanting to pass through an authorization header, the value would be `Bearer 0193...`.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
         }
 
         @Override
@@ -2086,6 +2126,86 @@ public class Subscription extends DomainResource {
         children.add(new Property("contentType", "code", "The MIME type to send the payload in - e.g., `application/fhir+xml` or `application/fhir+json`. Note that:\n\n* clients may request notifications in a specific FHIR version by using the [FHIR Version Parameter](http.html#version-parameter) - e.g., `application/fhir+json; fhirVersion=4.0`.\n\n* additional MIME types can be allowed by channels - e.g., `text/plain` and `text/html` are defined by the Email channel.", 0, 1, contentType));
         children.add(new Property("content", "code", "How much resource content to deliver in the notification payloads. The choices are an empty payload, only the resource id, or the full resource content.", 0, 1, content));
         children.add(new Property("maxCount", "positiveInt", "If present, the maximum number of events that will be included in a notification bundle. Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.", 0, 1, maxCount));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.topic != null) {
+          visitor.visit(this, "topic", -1, this.topic);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.end != null) {
+          visitor.visit(this, "end", -1, this.end);
+        }
+        if (this.managingEntity != null) {
+          visitor.visit(this, "managingEntity", -1, this.managingEntity);
+        }
+        if (this.reason != null) {
+          visitor.visit(this, "reason", -1, this.reason);
+        }
+        if (this.filterByList != null) {
+          int i = 0;
+          for (Base v : this.filterByList) {
+            if (v != null) {
+              visitor.visit(this, "filterBy", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.channelType != null) {
+          visitor.visit(this, "channelType", -1, this.channelType);
+        }
+        if (this.endpoint != null) {
+          visitor.visit(this, "endpoint", -1, this.endpoint);
+        }
+        if (this.parameterList != null) {
+          int i = 0;
+          for (Base v : this.parameterList) {
+            if (v != null) {
+              visitor.visit(this, "parameter", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.heartbeatPeriod != null) {
+          visitor.visit(this, "heartbeatPeriod", -1, this.heartbeatPeriod);
+        }
+        if (this.timeout != null) {
+          visitor.visit(this, "timeout", -1, this.timeout);
+        }
+        if (this.contentType != null) {
+          visitor.visit(this, "contentType", -1, this.contentType);
+        }
+        if (this.content != null) {
+          visitor.visit(this, "content", -1, this.content);
+        }
+        if (this.maxCount != null) {
+          visitor.visit(this, "maxCount", -1, this.maxCount);
+        }
       }
 
       @Override

@@ -829,6 +829,32 @@ public class Device extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.deviceIdentifier != null) {
+            visitor.visit(this, "deviceIdentifier", -1, this.deviceIdentifier);
+          }
+          if (this.deviceIdentifierSystem != null) {
+            visitor.visit(this, "deviceIdentifierSystem", -1, this.deviceIdentifierSystem);
+          }
+          if (this.issuer != null) {
+            visitor.visit(this, "issuer", -1, this.issuer);
+          }
+          if (this.jurisdiction != null) {
+            visitor.visit(this, "jurisdiction", -1, this.jurisdiction);
+          }
+          if (this.carrierAIDC != null) {
+            visitor.visit(this, "carrierAIDC", -1, this.carrierAIDC);
+          }
+          if (this.carrierHRF != null) {
+            visitor.visit(this, "carrierHRF", -1, this.carrierHRF);
+          }
+          if (this.entryType != null) {
+            visitor.visit(this, "entryType", -1, this.entryType);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "deviceIdentifier":  return new Property("deviceIdentifier", "string", "The device identifier (UDI-DI) is a mandatory, fixed portion of a UDI that identifies the labeler and the specific version or model of a device. The UDI-DI portion is placed on a device label or package. Note that the DeviceDefinition may include multiple UDI-DIs if it is sold in multiple jurisdictions.", 0, 1, deviceIdentifier);
@@ -1266,6 +1292,20 @@ public class Device extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.display != null) {
+            visitor.visit(this, "display", -1, this.display);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "value":  return new Property("value", "string", "The actual name that identifies the device.", 0, 1, value);
@@ -1653,6 +1693,23 @@ public class Device extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.component != null) {
+            visitor.visit(this, "component", -1, this.component);
+          }
+          if (this.installDate != null) {
+            visitor.visit(this, "installDate", -1, this.installDate);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The type of the device version, e.g. manufacturer, approved, internal.", 0, 1, type);
@@ -2005,6 +2062,20 @@ public class Device extends DomainResource {
           children.add(new Property("category", "CodeableConcept", "Describes the type of the standard, specification, or formal guidance.", 0, 1, category));
           children.add(new Property("specification", "CodeableConcept", "Code that identifies the specific standard, specification, protocol, formal guidance, regulation, legislation, or certification scheme to which the device adheres.", 0, 1, specification));
           children.add(new Property("version", "string", "Identifies the specific form or variant of the standard, specification, or formal guidance. This may be a 'version number', release, document edition, publication year, or other label.", 0, 1, version));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.category != null) {
+            visitor.visit(this, "category", -1, this.category);
+          }
+          if (this.specification != null) {
+            visitor.visit(this, "specification", -1, this.specification);
+          }
+          if (this.version != null) {
+            visitor.visit(this, "version", -1, this.version);
+          }
         }
 
         @Override
@@ -2384,6 +2455,17 @@ public class Device extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "Code that specifies the property, such as resolution, color, size, being represented.", 0, 1, type);
@@ -2664,6 +2746,17 @@ public class Device extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableReference(SubstanceDefinition|Substance)", "The type of the substance added to the container.  This is represented as a concept from a code system or described in a Substance or SubstanceDefinition resource.", 0, 1, type));
           children.add(new Property("quantity", "Quantity", "The quantity of the additive substance in the container; may be volume, dimensions, or other appropriate measurements, depending on the container and additive substance type.", 0, 1, quantity));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
         }
 
         @Override
@@ -4247,6 +4340,158 @@ public class Device extends DomainResource {
         children.add(new Property("note", "Annotation", "Descriptive information, usage information or implantation information that is not captured in an existing element.", 0, java.lang.Integer.MAX_VALUE, noteList));
         children.add(new Property("safety", "CodeableConcept", "Provides additional safety characteristics about a medical device.  For example devices containing latex.", 0, java.lang.Integer.MAX_VALUE, safetyList));
         children.add(new Property("parent", "Reference(Device)", "The higher level or encompassing device that this device is a logical part of.", 0, 1, parent));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.definition != null) {
+          visitor.visit(this, "definition", -1, this.definition);
+        }
+        if (this.udiCarrierList != null) {
+          int i = 0;
+          for (Base v : this.udiCarrierList) {
+            if (v != null) {
+              visitor.visit(this, "udiCarrier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.availabilityStatus != null) {
+          visitor.visit(this, "availabilityStatus", -1, this.availabilityStatus);
+        }
+        if (this.biologicalSourceEvent != null) {
+          visitor.visit(this, "biologicalSourceEvent", -1, this.biologicalSourceEvent);
+        }
+        if (this.manufacturer != null) {
+          visitor.visit(this, "manufacturer", -1, this.manufacturer);
+        }
+        if (this.manufactureDate != null) {
+          visitor.visit(this, "manufactureDate", -1, this.manufactureDate);
+        }
+        if (this.expirationDate != null) {
+          visitor.visit(this, "expirationDate", -1, this.expirationDate);
+        }
+        if (this.lotNumber != null) {
+          visitor.visit(this, "lotNumber", -1, this.lotNumber);
+        }
+        if (this.serialNumber != null) {
+          visitor.visit(this, "serialNumber", -1, this.serialNumber);
+        }
+        if (this.nameList != null) {
+          int i = 0;
+          for (Base v : this.nameList) {
+            if (v != null) {
+              visitor.visit(this, "name", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.modelNumber != null) {
+          visitor.visit(this, "modelNumber", -1, this.modelNumber);
+        }
+        if (this.partNumber != null) {
+          visitor.visit(this, "partNumber", -1, this.partNumber);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.typeList != null) {
+          int i = 0;
+          for (Base v : this.typeList) {
+            if (v != null) {
+              visitor.visit(this, "type", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.deviceVersionList != null) {
+          int i = 0;
+          for (Base v : this.deviceVersionList) {
+            if (v != null) {
+              visitor.visit(this, "deviceVersion", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.conformsToList != null) {
+          int i = 0;
+          for (Base v : this.conformsToList) {
+            if (v != null) {
+              visitor.visit(this, "conformsTo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.propertyList != null) {
+          int i = 0;
+          for (Base v : this.propertyList) {
+            if (v != null) {
+              visitor.visit(this, "property", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.additiveList != null) {
+          int i = 0;
+          for (Base v : this.additiveList) {
+            if (v != null) {
+              visitor.visit(this, "additive", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.location != null) {
+          visitor.visit(this, "location", -1, this.location);
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.safetyList != null) {
+          int i = 0;
+          for (Base v : this.safetyList) {
+            if (v != null) {
+              visitor.visit(this, "safety", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.parent != null) {
+          visitor.visit(this, "parent", -1, this.parent);
+        }
       }
 
       @Override

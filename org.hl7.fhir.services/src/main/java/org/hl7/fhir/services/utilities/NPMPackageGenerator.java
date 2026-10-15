@@ -70,7 +70,7 @@ public class NPMPackageGenerator {
     private String getDirectory() {
       switch (this) {
       case RESOURCE: return "package/";
-      case EXAMPLE: return "package/example/";
+      case EXAMPLE: return "package/examples/"; // as the package spec says. Older packages have package/example/ - see NpmPackage.EXAMPLE_FOLDERS
       case OPENAPI: return "package/openapi/";
       case SCHEMATRON: return "package/xml/";
       case RDF: return "package/rdf/";      
@@ -259,7 +259,7 @@ public class NPMPackageGenerator {
     JsonObject dir = new JsonObject();
     npm.add("directories", dir);
     dir.add("lib", "package");
-    dir.add("example", "example");
+    dir.add("example", "examples");
     Coding c = jurisdiction(ig);
     if (c != null) {
       npm.add("jurisdiction", c.getSystem()+"#"+c.getCode());

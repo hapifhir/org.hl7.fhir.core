@@ -311,6 +311,17 @@ public class Coverage extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.party != null) {
+            visitor.visit(this, "party", -1, this.party);
+          }
+          if (this.responsibility != null) {
+            visitor.visit(this, "responsibility", -1, this.responsibility);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "party":  return new Property("party", "Reference(Patient|RelatedPerson|Organization)", "The list of parties providing non-insurance payment for the treatment costs.", 0, 1, party);
@@ -653,6 +664,23 @@ public class Coverage extends DomainResource {
           children.add(new Property("value", "Identifier", "The alphanumeric identifier associated with the insurer issued label.", 0, 1, value));
           children.add(new Property("code", "Coding", "The coded term associated with the insurer issued label.", 0, 1, code));
           children.add(new Property("name", "string", "A short description for the class.", 0, 1, name));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
         }
 
         @Override
@@ -1172,6 +1200,38 @@ public class Coverage extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.category != null) {
+            visitor.visit(this, "category", -1, this.category);
+          }
+          if (this.network != null) {
+            visitor.visit(this, "network", -1, this.network);
+          }
+          if (this.unit != null) {
+            visitor.visit(this, "unit", -1, this.unit);
+          }
+          if (this.term != null) {
+            visitor.visit(this, "term", -1, this.term);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.exceptionList != null) {
+            int i = 0;
+            for (Base v : this.exceptionList) {
+              if (v != null) {
+                visitor.visit(this, "exception", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The category of patient centric costs associated with treatment.", 0, 1, type);
@@ -1538,6 +1598,17 @@ public class Coverage extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "The code for the specific exception.", 0, 1, type));
           children.add(new Property("period", "Period", "The timeframe the exception is in force.", 0, 1, period));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
         }
 
         @Override
@@ -2625,6 +2696,98 @@ public class Coverage extends DomainResource {
         children.add(new Property("network", "Reference(Organization)", "The insurer-specific identifier for the insurer-defined network of providers to which the beneficiary may seek treatment which will be covered at the 'in-network' rate, otherwise 'out of network' terms and conditions apply.", 0, 1, network));
         children.add(new Property("costToBeneficiary", "", "A suite of codes indicating the cost category and associated amount which have been detailed in the policy and may have been  included on the health card.", 0, java.lang.Integer.MAX_VALUE, costToBeneficiaryList));
         children.add(new Property("subrogation", "boolean", "When 'subrogation=true' this insurance instance has been included not for adjudication but to provide insurers with the details to recover costs.", 0, 1, subrogation));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReason != null) {
+          visitor.visit(this, "statusReason", -1, this.statusReason);
+        }
+        if (this.kind != null) {
+          visitor.visit(this, "kind", -1, this.kind);
+        }
+        if (this.paymentByList != null) {
+          int i = 0;
+          for (Base v : this.paymentByList) {
+            if (v != null) {
+              visitor.visit(this, "paymentBy", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.policyHolder != null) {
+          visitor.visit(this, "policyHolder", -1, this.policyHolder);
+        }
+        if (this.subscriber != null) {
+          visitor.visit(this, "subscriber", -1, this.subscriber);
+        }
+        if (this.subscriberIdList != null) {
+          int i = 0;
+          for (Base v : this.subscriberIdList) {
+            if (v != null) {
+              visitor.visit(this, "subscriberId", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.beneficiary != null) {
+          visitor.visit(this, "beneficiary", -1, this.beneficiary);
+        }
+        if (this.dependent != null) {
+          visitor.visit(this, "dependent", -1, this.dependent);
+        }
+        if (this.relationship != null) {
+          visitor.visit(this, "relationship", -1, this.relationship);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.insurer != null) {
+          visitor.visit(this, "insurer", -1, this.insurer);
+        }
+        if (this.class_List != null) {
+          int i = 0;
+          for (Base v : this.class_List) {
+            if (v != null) {
+              visitor.visit(this, "class", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.order != null) {
+          visitor.visit(this, "order", -1, this.order);
+        }
+        if (this.network != null) {
+          visitor.visit(this, "network", -1, this.network);
+        }
+        if (this.costToBeneficiaryList != null) {
+          int i = 0;
+          for (Base v : this.costToBeneficiaryList) {
+            if (v != null) {
+              visitor.visit(this, "costToBeneficiary", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subrogation != null) {
+          visitor.visit(this, "subrogation", -1, this.subrogation);
+        }
       }
 
       @Override

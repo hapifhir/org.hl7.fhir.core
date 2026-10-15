@@ -3,6 +3,7 @@ package org.hl7.fhir.model.core;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.IModelObjectVisitor;
 import org.hl7.fhir.model.Property;
 
 import java.util.EnumSet;
@@ -63,6 +64,14 @@ public class NamedElementExtension extends Element  {
   protected void listChildren(List<Property> children) {
     super.listChildren(children);
     children.add(new Property("value[x]", "Base", "Value of extension", 0, 1, value));
+  }
+
+  @Override
+  protected void visitChildren(IModelObjectVisitor visitor) {
+    super.visitChildren(visitor);
+    if (this.value != null) {
+      visitor.visit(this, "value[x]", -1, this.value);
+    }
   }
 
   @Override

@@ -520,6 +520,29 @@ public class Identifier extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.use != null) {
+          visitor.visit(this, "use", -1, this.use);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.system != null) {
+          visitor.visit(this, "system", -1, this.system);
+        }
+        if (this.value != null) {
+          visitor.visit(this, "value", -1, this.value);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.assigner != null) {
+          visitor.visit(this, "assigner", -1, this.assigner);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "use":  return new Property("use", "code", "The purpose of this identifier.", 0, 1, use);

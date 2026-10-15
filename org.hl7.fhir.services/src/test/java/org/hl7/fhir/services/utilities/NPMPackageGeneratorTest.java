@@ -382,7 +382,7 @@ class NPMPackageGeneratorTest {
           + "{\"name\":\"Beta\",\"url\":\"https://example.org/beta\"}]",
           JsonParser.compose(json.getJsonArray("maintainers")));
       assertEquals("https://example.org/home", json.asString("homepage"));
-      assertJsonEquals("{\"lib\":\"package\",\"example\":\"example\"}",
+      assertJsonEquals("{\"lib\":\"package\",\"example\":\"examples\"}",
           JsonParser.compose(json.getJsonObject("directories")));
       assertEquals("urn:iso:std:iso:3166#US", json.asString("jurisdiction"));
       assertJsonEquals("{\"example.peer.b\":\"2.0.0\",\"example.peer.a\":null}",

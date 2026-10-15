@@ -286,6 +286,11 @@ public abstract class MetadataResource extends CanonicalResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         default: return super.getNamedProperty(_name, _checkValid);

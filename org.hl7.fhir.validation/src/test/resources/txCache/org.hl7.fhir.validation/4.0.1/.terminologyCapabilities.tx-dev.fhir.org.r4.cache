@@ -3113,9 +3113,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/action-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3126,9 +3123,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/activity-definition-category",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -3159,9 +3153,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/adjudication",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3172,9 +3163,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/adjudication-error",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3185,9 +3173,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/adjudication-reason",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3198,9 +3183,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/admit-source",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3211,9 +3193,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/adverse-event-category",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -3224,9 +3203,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/adverse-event-causality-assess",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3237,9 +3213,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/adverse-event-causality-method",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -3260,9 +3233,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/adverse-event-seriousness",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3273,9 +3243,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/adverse-event-severity",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -3286,9 +3253,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/allerg-intol-substance-exp-risk",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -3299,9 +3263,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3312,9 +3273,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3325,9 +3283,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/applicability",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3338,9 +3293,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/appointment-cancellation-reason",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.1.1"
     }]
   },
@@ -3421,9 +3373,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/audit-entity-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3444,9 +3393,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/audit-event-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.0"
     }]
   },
@@ -3457,9 +3403,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/basic-resource-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3470,9 +3413,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/benefit-network",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -3483,9 +3423,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/benefit-term",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3496,9 +3433,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/benefit-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3509,9 +3443,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/benefit-unit",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3522,9 +3453,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/can-push-updates",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3555,9 +3483,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/catalogType",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3598,9 +3523,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/certainty-subcomponent-rating",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -3611,9 +3533,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/certainty-subcomponent-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -3644,9 +3563,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/chargeitem-billingcodes",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3657,9 +3573,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/choice-list-orientation",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -3670,9 +3583,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/chromosome-human",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -3783,9 +3693,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/claim-exception",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3796,9 +3703,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/claim-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3809,9 +3713,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/claimcareteamrole",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3822,9 +3723,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/claiminformationcategory",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3835,9 +3733,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/codesystem-altcode-kind",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.0"
     }]
   },
@@ -3868,9 +3763,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/common-tags",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3881,9 +3773,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/communication-category",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3894,9 +3783,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/communication-not-done-reason",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3907,9 +3793,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/communication-topic",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3920,9 +3803,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/composite-measure-scoring",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -3933,9 +3813,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/composition-altcode-kind",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -3966,9 +3843,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/condition-category",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -3979,9 +3853,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -3992,9 +3863,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/condition-state",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -4005,9 +3873,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.1"
     }]
   },
@@ -4018,9 +3883,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/conformance-expectation",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -4031,9 +3893,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/consentaction",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4044,9 +3903,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/consentcategorycodes",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4057,9 +3913,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/consentpolicycodes",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "3.0.1"
     }]
   },
@@ -4070,9 +3923,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/consentscope",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.1"
     }]
   },
@@ -4093,9 +3943,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/contactentity-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -4106,9 +3953,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/container-cap",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4119,9 +3963,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/contract-content-derivative",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4132,9 +3973,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/contract-data-meaning",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -4145,9 +3983,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/contract-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4158,9 +3993,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/contractaction",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4171,9 +4003,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/contractactorrole",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4184,9 +4013,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/contractsignertypecodes",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4197,9 +4023,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/contractsubtypecodes",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4210,9 +4033,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/contracttermsubtypecodes",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4223,9 +4043,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/contracttermtypecodes",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4276,9 +4093,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/copy-number-event",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -4289,9 +4103,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/coverage-class",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4302,9 +4113,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/coverage-copay-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4315,9 +4123,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/coverage-selfpay",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4328,9 +4133,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/coverageeligibilityresponse-ex-auth-support",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4361,9 +4163,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/data-absent-reason",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -4374,9 +4173,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/definition-status",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -4387,9 +4183,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/definition-topic",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4400,9 +4193,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/definition-use",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -4473,9 +4263,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/device-status-reason",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -4596,9 +4383,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/diagnosis-role",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.1.1"
     }]
   },
@@ -4619,9 +4403,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/dicom-audit-lifecycle",
     "version" : [{
-      "value" : "20100826"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -4632,9 +4413,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/diet",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4655,9 +4433,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/discharge-disposition",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4678,9 +4453,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/dose-rate-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -4701,9 +4473,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/encounter-special-arrangements",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4724,9 +4493,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/encounter-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4737,9 +4503,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/endpoint-connection-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.1.1"
     }]
   },
@@ -4750,9 +4513,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/endpoint-payload-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.1"
     }]
   },
@@ -4763,9 +4523,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/entformula-additive",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4776,9 +4533,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/episodeofcare-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4789,9 +4543,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/evidence-quality",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4832,9 +4583,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-benefitcategory",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4845,9 +4593,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-claimsubtype",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4858,9 +4603,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-coverage-financial-exception",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4871,9 +4613,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-diagnosis-on-admission",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4884,9 +4623,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-diagnosisrelatedgroup",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4897,9 +4633,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-diagnosistype",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4910,9 +4643,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-payee-resource-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.0"
     }]
   },
@@ -4923,9 +4653,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-paymenttype",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4936,9 +4663,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-procedure-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4949,9 +4673,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-programcode",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4962,9 +4683,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-providerqualification",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4975,9 +4693,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-relatedclaimrelationship",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -4988,9 +4703,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-revenue-center",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5001,9 +4713,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-serviceplace",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5014,9 +4723,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-tooth",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.0"
     }]
   },
@@ -5027,9 +4733,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-USCLS",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.0"
     }]
   },
@@ -5040,9 +4743,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-visionprescriptionproduct",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5053,9 +4753,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/expansion-parameter-source",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5066,9 +4763,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/expansion-processing-rule",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5079,9 +4773,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/extra-security-role-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5092,9 +4783,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/failure-action",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5105,9 +4793,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/FDI-surface",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.0"
     }]
   },
@@ -5118,9 +4803,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/financialtaskcode",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5131,9 +4813,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/financialtaskinputtype",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5144,9 +4823,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/flag-category",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5157,9 +4833,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/forms-codes",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5170,9 +4843,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/fundsreserve",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5183,9 +4853,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/goal-acceptance-status",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5196,9 +4863,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/goal-achievement",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5209,9 +4873,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/goal-category",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5222,9 +4883,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/goal-priority",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5235,9 +4893,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/goal-relationship-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5268,9 +4923,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/handling-condition",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5281,9 +4933,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/history-absent-reason",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5344,9 +4993,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "10.0.0"
     }]
   },
@@ -5394,9 +5040,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5407,9 +5050,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status-reason",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5420,9 +5060,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/immunization-funding-source",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5433,9 +5070,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/immunization-origin",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5446,9 +5080,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/immunization-program-eligibility",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5459,9 +5090,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/immunization-recommendation-status",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5472,9 +5100,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/immunization-subpotent-reason",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5485,9 +5110,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/implantStatus",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5508,9 +5130,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/insurance-plan-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.1"
     }]
   },
@@ -5551,9 +5170,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/library-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5564,9 +5180,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/list-empty-reason",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5577,9 +5190,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/list-example-use-codes",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5590,9 +5200,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/list-order",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5603,9 +5210,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/location-physical-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.1"
     }]
   },
@@ -5616,9 +5220,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/match-grade",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5639,9 +5240,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/measure-data-usage",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5652,9 +5250,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/measure-improvement-notation",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5665,9 +5260,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/measure-population",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5678,9 +5270,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/measure-scoring",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -5701,9 +5290,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/measure-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "3.0.1"
     }]
   },
@@ -5714,9 +5300,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/med-admin-perform-function",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5817,9 +5400,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/medicationdispense-performer-function",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5840,9 +5420,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/medicationknowledge-characteristic",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5853,9 +5430,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/medicationknowledge-package-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5866,9 +5440,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/medicationknowledge-status",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5889,9 +5460,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/medicationrequest-category",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -5902,9 +5470,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/medicationrequest-course-of-therapy",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5915,9 +5480,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/medicationrequest-status-reason",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5928,9 +5490,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/message-reasons-encounter",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -5991,9 +5550,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/missingtoothreason",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6004,9 +5560,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/modifiers",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6017,9 +5570,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/name-assembly-order",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6040,9 +5590,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/need",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6073,9 +5620,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/object-role",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.1.0"
     }]
   },
@@ -6086,9 +5630,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/observation-category",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6109,9 +5650,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/observation-statistics",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6122,9 +5660,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/operation-outcome",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -6165,9 +5700,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/organization-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -6178,9 +5710,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/parameter-group",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6191,9 +5720,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/participant-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6204,9 +5730,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/payeetype",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6217,9 +5740,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/payment-adjustment-reason",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6230,9 +5750,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/payment-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6243,9 +5760,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/paymentstatus",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6256,9 +5770,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/plan-definition-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6269,9 +5780,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/practitioner-role",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6292,9 +5800,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/primary-source-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6315,9 +5820,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/processpriority",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6338,9 +5840,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/program",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6351,9 +5850,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6364,9 +5860,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/push-type-available",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6377,9 +5870,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/question-max-occurs",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6390,9 +5880,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/questionnaire-usage-mode",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6403,9 +5890,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/reaction-event-certainty",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6426,9 +5910,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/reason-medication-given",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6439,9 +5920,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/recommendation-strength",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6452,9 +5930,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/referencerange-meaning",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6465,9 +5940,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/rejection-criteria",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6478,9 +5950,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/research-study-objective-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6501,9 +5970,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/research-study-phase",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.0"
     }]
   },
@@ -6514,9 +5980,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/research-study-prim-purp-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6537,9 +6000,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/research-study-reason-stopped",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6590,9 +6050,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/resource-security-category",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6603,9 +6060,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/resource-type-link",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6636,9 +6090,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/risk-probability",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6649,9 +6100,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/security-source-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.0"
     }]
   },
@@ -6662,9 +6110,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/service-category",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.1.1"
     }]
   },
@@ -6685,9 +6130,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/service-provision-conditions",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6698,9 +6140,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/service-referral-method",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6711,9 +6150,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/service-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.1.1"
     }]
   },
@@ -6734,9 +6170,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/smart-capabilities",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6757,9 +6190,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/special-values",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -6770,9 +6200,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/standards-status",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6813,9 +6240,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/study-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6826,9 +6250,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/subscriber-relationship",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6869,9 +6290,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/subscription-tag",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6882,9 +6300,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/substance-category",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6895,9 +6310,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/supply-item-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6908,9 +6320,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/supply-kind",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6921,9 +6330,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/supplyrequest-reason",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6934,9 +6340,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/synthesis-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6957,9 +6360,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/testscript-operation-codes",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -6970,9 +6370,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/testscript-profile-destination-types",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -6983,9 +6380,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/testscript-profile-origin-types",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -7046,9 +6440,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/usage-context-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.1"
     }]
   },
@@ -7069,9 +6460,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0001",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7082,9 +6470,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0002",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7095,9 +6480,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0003",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7108,9 +6490,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0004",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7147,9 +6526,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0007",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7160,9 +6536,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0008",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7173,9 +6546,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0009",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7186,9 +6556,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0012",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7199,9 +6566,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0017",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7222,9 +6586,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0027",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7235,9 +6596,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0033",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7248,9 +6606,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0034",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7261,9 +6616,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0038",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7284,9 +6636,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0048",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7297,9 +6646,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0052",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7310,9 +6656,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0061",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7323,9 +6666,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0062",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7336,9 +6676,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0063",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7349,9 +6686,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0065",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7362,9 +6696,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0066",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7375,9 +6706,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0069",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7388,9 +6716,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0070",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7401,9 +6726,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0074",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7414,9 +6736,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0076",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7437,9 +6756,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0080",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7450,9 +6766,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0083",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7463,9 +6776,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0085",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7476,9 +6786,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0091",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7489,9 +6796,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0092",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7502,9 +6806,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0098",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7515,9 +6816,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0100",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7528,9 +6826,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0102",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7541,9 +6836,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0103",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7554,9 +6846,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0104",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7567,9 +6856,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0105",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7580,9 +6866,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0106",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7593,9 +6876,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0107",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7606,9 +6886,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0108",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7619,9 +6896,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0109",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7632,9 +6906,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0116",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7645,9 +6916,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0119",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7658,9 +6926,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0121",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7671,9 +6936,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0122",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7684,9 +6946,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0123",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7697,9 +6956,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0124",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7710,9 +6966,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0126",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7723,9 +6976,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0127",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7736,9 +6986,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0128",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7749,9 +6996,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0130",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7762,9 +7006,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0131",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7775,9 +7016,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0133",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7788,9 +7026,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0135",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7811,9 +7046,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0137",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7824,9 +7056,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0140",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7847,9 +7076,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0142",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7860,9 +7086,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0144",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7873,9 +7096,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0145",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7886,9 +7106,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0146",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7899,9 +7116,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0147",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7912,9 +7126,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0148",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7925,9 +7136,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0149",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7938,9 +7146,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0150",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7961,9 +7166,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0155",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7974,9 +7176,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0156",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -7987,9 +7186,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0157",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8000,9 +7196,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0158",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8013,9 +7206,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0159",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8026,9 +7216,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0160",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8039,9 +7226,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0161",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8052,9 +7236,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0162",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8065,9 +7246,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0163",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8078,9 +7256,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0164",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8091,9 +7266,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0165",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8104,9 +7276,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0166",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8117,9 +7286,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0167",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8130,9 +7296,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0168",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8143,9 +7306,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0169",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8156,9 +7316,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0170",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8169,9 +7326,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0173",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8182,9 +7336,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0174",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8195,9 +7346,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0175",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8208,9 +7356,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0177",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8221,9 +7366,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0178",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8234,9 +7376,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0179",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8247,9 +7386,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0180",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8260,9 +7396,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0181",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8273,9 +7406,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0183",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8286,9 +7416,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0185",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8299,9 +7426,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0187",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8312,9 +7436,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0189",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8325,9 +7446,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0190",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8338,9 +7456,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0191",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8351,9 +7466,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0193",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8364,9 +7476,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0200",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8377,9 +7486,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0201",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -8390,9 +7496,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0202",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8403,9 +7506,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0203",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -8416,9 +7516,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0204",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8429,9 +7526,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0205",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8442,9 +7536,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0206",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8455,9 +7546,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0207",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8468,9 +7556,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0208",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8481,9 +7566,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0209",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8494,9 +7576,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0210",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8507,9 +7586,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0211",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8520,9 +7596,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0213",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8533,9 +7606,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0214",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8546,9 +7616,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0215",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8559,9 +7626,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0216",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8572,9 +7636,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0217",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8585,9 +7646,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0220",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8598,9 +7656,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0223",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8611,9 +7666,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0224",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8624,9 +7676,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0225",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8647,9 +7696,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0228",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8670,9 +7716,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0230",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8683,9 +7726,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0231",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8696,9 +7736,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0232",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8709,9 +7746,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0234",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8722,9 +7756,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0235",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8735,9 +7766,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0236",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8748,9 +7776,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0237",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8761,9 +7786,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0238",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8774,9 +7796,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0239",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8787,9 +7806,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0240",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8800,9 +7816,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0241",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8813,9 +7826,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0242",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8826,9 +7836,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0243",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8839,9 +7846,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0247",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8852,9 +7856,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0248",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8865,9 +7866,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0250",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8878,9 +7876,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0251",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8891,9 +7886,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0252",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8904,9 +7896,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0253",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8917,9 +7906,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0254",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8930,9 +7916,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0255",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8943,9 +7926,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0256",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8956,9 +7936,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0257",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8969,9 +7946,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0258",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -8992,9 +7966,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0260",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9005,9 +7976,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0261",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9018,9 +7986,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0262",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9031,9 +7996,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0263",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9044,9 +8006,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0265",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9057,9 +8016,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0267",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9070,9 +8026,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0268",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9083,9 +8036,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0269",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9096,9 +8046,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0270",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9109,9 +8056,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0271",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9122,9 +8066,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0272",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9135,9 +8076,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0273",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9148,9 +8086,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0275",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9161,9 +8096,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0276",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9174,9 +8106,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0277",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9187,9 +8116,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0278",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9200,9 +8126,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0279",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9213,9 +8136,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0280",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9226,9 +8146,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0281",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9239,9 +8156,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0282",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9252,9 +8166,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0283",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9265,9 +8176,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0284",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9278,9 +8186,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0286",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9291,9 +8196,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0287",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9304,9 +8206,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0290",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9317,9 +8216,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0291",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9340,9 +8236,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0294",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9353,9 +8246,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0298",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9366,9 +8256,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0299",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9379,9 +8266,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0301",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9392,9 +8276,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0305",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9405,9 +8286,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0309",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9418,9 +8296,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0311",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9431,9 +8306,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0315",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9444,9 +8316,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0316",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9457,9 +8326,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0317",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9470,9 +8336,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0321",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9483,9 +8346,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0322",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9496,9 +8356,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0323",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9509,9 +8366,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0324",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9522,9 +8376,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0325",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9535,9 +8386,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0326",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9548,9 +8396,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0329",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9561,9 +8406,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0330",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9574,9 +8416,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0331",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9587,9 +8426,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0332",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9600,9 +8436,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0334",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9613,9 +8446,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0335",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9626,9 +8456,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0336",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9639,9 +8466,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0337",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9662,9 +8486,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0339",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9675,9 +8496,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0344",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9718,9 +8536,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0354",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9731,9 +8546,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0355",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9744,9 +8556,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0356",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9757,9 +8566,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0357",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9770,9 +8576,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0359",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9809,9 +8612,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0364",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9822,9 +8622,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0365",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9835,9 +8632,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0366",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9848,9 +8642,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0367",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9861,9 +8652,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0368",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9874,9 +8662,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0369",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9887,9 +8672,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0370",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9900,9 +8682,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0371",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9913,9 +8692,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0372",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9926,9 +8702,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0373",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9939,9 +8712,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0374",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9952,9 +8722,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0375",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9965,9 +8732,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0376",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9978,9 +8742,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0377",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -9991,9 +8752,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0383",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10004,9 +8762,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0384",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10017,9 +8772,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0387",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10030,9 +8782,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0388",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10043,9 +8792,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0389",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10072,9 +8818,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0392",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10085,9 +8828,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0393",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10098,9 +8838,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0394",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10111,9 +8848,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0395",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10124,9 +8858,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0396",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -10137,9 +8868,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0397",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10150,9 +8878,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0398",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10163,9 +8888,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0401",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10176,9 +8898,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0402",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10189,9 +8908,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0403",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10202,9 +8918,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0404",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10215,9 +8928,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0406",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10228,9 +8938,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0409",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10251,9 +8958,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0415",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10264,9 +8968,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0416",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10277,9 +8978,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0417",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10290,9 +8988,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0418",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10303,9 +8998,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0421",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10316,9 +9008,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0422",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10329,9 +9018,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0423",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10342,9 +9028,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0424",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10355,9 +9038,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0425",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10368,9 +9048,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0426",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10381,9 +9058,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0427",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10394,9 +9068,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0428",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10407,9 +9078,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0429",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10420,9 +9088,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0430",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10433,9 +9098,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0431",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10446,9 +9108,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0432",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10459,9 +9118,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0433",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10472,9 +9128,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0434",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10485,9 +9138,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0435",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10498,9 +9148,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0436",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10511,9 +9158,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0437",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10524,9 +9168,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0438",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10537,9 +9178,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0440",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10550,9 +9188,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0441",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10563,9 +9198,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0442",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10576,9 +9208,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0443",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10589,9 +9218,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0444",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10602,9 +9228,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0445",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10615,9 +9238,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0450",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10648,9 +9268,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0457",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10681,9 +9298,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0465",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10694,9 +9308,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0466",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10707,9 +9318,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0468",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10720,9 +9328,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0469",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10733,9 +9338,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0470",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10746,9 +9348,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0472",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10759,9 +9358,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0473",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10772,9 +9368,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0474",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10785,9 +9378,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0475",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10798,9 +9388,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0477",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10811,9 +9398,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0478",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10824,9 +9408,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0480",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10837,9 +9418,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0482",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10850,9 +9428,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0483",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10863,9 +9438,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0484",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10876,9 +9448,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0485",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10889,9 +9458,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0487",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10902,9 +9468,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0488",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10915,9 +9478,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0489",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10928,9 +9488,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0490",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10941,9 +9498,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0491",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10954,9 +9508,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0492",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10967,9 +9518,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0493",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10980,9 +9528,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0494",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -10993,9 +9538,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0495",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11006,9 +9548,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0496",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11019,9 +9558,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0497",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11032,9 +9568,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0498",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11045,9 +9578,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0499",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11058,9 +9588,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0500",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11071,9 +9598,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0501",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11084,9 +9608,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0502",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11097,9 +9618,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0503",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11110,9 +9628,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0504",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11123,9 +9638,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0505",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11136,9 +9648,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0506",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11149,9 +9658,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0507",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11162,9 +9668,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0508",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11175,9 +9678,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0510",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11188,9 +9688,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0511",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11201,9 +9698,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0513",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11214,9 +9708,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0514",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11227,9 +9718,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0516",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11240,9 +9728,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0517",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11253,9 +9738,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0518",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11266,9 +9748,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0520",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11279,9 +9758,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0523",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11292,9 +9768,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0524",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11305,9 +9778,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0527",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11318,9 +9788,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0528",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11331,9 +9798,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0529",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11344,9 +9808,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0530",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11367,9 +9828,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0534",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11380,9 +9838,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0535",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11393,9 +9848,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0536",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11406,9 +9858,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0538",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11419,9 +9868,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0540",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11432,9 +9878,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0544",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11445,9 +9888,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0547",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11458,9 +9898,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0548",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11471,9 +9908,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0550",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -11484,9 +9918,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0553",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11497,9 +9928,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0554",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11510,9 +9938,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0555",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11523,9 +9948,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0556",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11536,9 +9958,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0557",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11549,9 +9968,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0558",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11562,9 +9978,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0559",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11585,9 +9998,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0561",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11598,9 +10008,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0562",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11611,9 +10018,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0564",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11624,9 +10028,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0565",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11637,9 +10038,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0566",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11650,9 +10048,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0569",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11663,9 +10058,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0570",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11676,9 +10068,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0571",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11689,9 +10078,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0572",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11702,9 +10088,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0615",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11715,9 +10098,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0616",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11728,9 +10108,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0617",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11741,9 +10118,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0618",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11754,9 +10128,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0625",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11767,9 +10138,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0634",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11780,9 +10148,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0642",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11793,9 +10158,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0651",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11806,9 +10168,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0653",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11819,9 +10178,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0657",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11832,9 +10188,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0659",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11845,9 +10198,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0667",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11858,9 +10208,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0669",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11871,9 +10218,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0682",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11884,9 +10228,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0702",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11897,9 +10238,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0717",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11930,9 +10268,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0728",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11943,9 +10278,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0731",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11956,9 +10288,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0734",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11969,9 +10298,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0739",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11982,9 +10308,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0742",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -11995,9 +10318,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0749",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12008,9 +10328,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0755",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12021,9 +10338,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0757",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12034,9 +10348,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0759",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12047,9 +10358,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0761",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12060,9 +10368,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0763",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12073,9 +10378,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0776",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12086,9 +10388,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0778",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12099,9 +10398,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0790",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12112,9 +10408,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0793",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12125,9 +10418,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0806",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12138,9 +10428,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0818",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12151,9 +10438,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0834",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12164,9 +10448,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0868",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12177,9 +10458,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0871",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12190,9 +10468,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0881",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12203,9 +10478,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0882",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12216,9 +10488,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0894",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12239,9 +10508,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0904",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12252,9 +10518,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0905",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12265,9 +10528,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0906",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12278,9 +10538,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0907",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12291,9 +10548,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0909",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12304,9 +10558,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0912",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12317,9 +10568,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0914",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12330,9 +10578,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0916",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12343,9 +10588,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0917",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12356,9 +10598,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0918",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12369,9 +10608,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0919",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12382,9 +10618,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0920",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12395,9 +10628,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0921",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12408,9 +10638,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0922",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12421,9 +10648,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0923",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12434,9 +10658,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0924",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12447,9 +10668,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0925",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12460,9 +10678,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0926",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12473,9 +10688,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0927",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12486,9 +10698,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0933",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12499,9 +10708,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-0935",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12652,9 +10858,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v2-4000",
     "version" : [{
-      "value" : "2.9"
-    },
-    {
       "value" : "3.0.0"
     }]
   },
@@ -12675,9 +10878,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-AcknowledgementCondition",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -12688,9 +10888,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-AcknowledgementDetailCode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -12701,9 +10898,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-AcknowledgementDetailType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -12714,9 +10908,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-AcknowledgementType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -12727,9 +10918,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActClass",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -12740,9 +10928,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "11.0.0"
     }]
   },
@@ -12753,9 +10938,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActExposureLevelCode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -12766,9 +10948,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActInvoiceElementModifier",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -12779,9 +10958,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActMood",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -12792,9 +10968,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActPriority",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -12805,9 +10978,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActReason",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -12818,9 +10988,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActRelationshipCheckpoint",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -12831,9 +10998,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActRelationshipJoin",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -12844,9 +11008,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActRelationshipSplit",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -12857,9 +11018,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActRelationshipSubset",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -12870,9 +11028,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActRelationshipType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -12883,9 +11038,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActSite",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -12896,9 +11048,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActStatus",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -12909,9 +11058,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActUncertainty",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -12922,9 +11068,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActUSPrivacyLaw",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -12935,9 +11078,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-AddressPartType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -12948,9 +11088,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-AddressUse",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -12961,9 +11098,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-AdministrativeGender",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -12974,9 +11108,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-AmericanIndianAlaskaNativeLanguages",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -12987,9 +11118,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-Calendar",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13000,9 +11128,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-CalendarCycle",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13013,9 +11138,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-CalendarType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13026,9 +11148,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-Charset",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13059,9 +11178,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-CodingRationale",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13072,9 +11188,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-CommunicationFunctionType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13085,9 +11198,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-CompressionAlgorithm",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13138,9 +11248,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13151,9 +11258,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ContainerCap",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13164,9 +11268,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ContainerSeparator",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13177,9 +11278,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ContentProcessingMode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13190,9 +11288,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ContextControl",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13223,9 +11318,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "7.0.0"
     }]
   },
@@ -13246,9 +11338,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-Dentition",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13259,9 +11348,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-DeviceAlertLevel",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13272,9 +11358,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-DocumentCompletion",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13285,9 +11368,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-DocumentStorage",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13308,9 +11388,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EducationLevel",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13321,9 +11398,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EmployeeJobClass",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13354,9 +11428,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EncounterAdmissionSource",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13377,9 +11448,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EncounterSpecialCourtesy",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13390,9 +11458,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityClass",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13403,9 +11468,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityCode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13416,9 +11478,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityDeterminer",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13429,9 +11488,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityHandling",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13442,9 +11498,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNamePartQualifier",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13455,9 +11508,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNamePartQualifierR2",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13468,9 +11518,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNamePartType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13481,9 +11528,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNamePartTypeR2",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13494,9 +11538,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNameUse",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13507,9 +11548,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNameUseR2",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13520,9 +11558,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityRisk",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13533,9 +11568,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityStatus",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13546,9 +11578,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EquipmentAlertLevel",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13559,9 +11588,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-Ethnicity",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "6.0.0"
     }]
   },
@@ -13572,9 +11598,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ExposureMode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13585,9 +11608,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-GenderStatus",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13598,9 +11618,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-GTSAbbreviation",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13621,9 +11638,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7ApprovalStatus",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13634,9 +11648,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7CMETAttribution",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13667,9 +11678,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-HL7ContextConductionStyle",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13700,9 +11708,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7ITSType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13713,9 +11718,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7ITSVersionCode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13726,9 +11728,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7PublishingDomain",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13739,9 +11738,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7PublishingSection",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13752,9 +11748,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7PublishingSubSection",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13765,9 +11758,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7Realm",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13778,9 +11768,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-HL7StandardVersionCode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13791,9 +11778,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-HL7UpdateMode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13804,9 +11788,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7V3Conformance",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13817,9 +11798,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7VoteResolution",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13830,9 +11808,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-HtmlLinkType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13843,9 +11818,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-IdentifierReliability",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13856,9 +11828,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-IdentifierScope",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13869,9 +11838,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-IntegrityCheckAlgorithm",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13922,9 +11888,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-LanguageAbilityMode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13935,9 +11898,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-LanguageAbilityProficiency",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13948,9 +11908,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-LivingArrangement",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -13961,9 +11918,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-LocalMarkupIgnore",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13974,9 +11928,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-LocalRemoteControlState",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -13987,9 +11938,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ManagedParticipationStatus",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14010,9 +11958,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-MapRelationship",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14023,9 +11968,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14126,9 +12068,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-MessageWaitingPriority",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14139,9 +12078,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ModifyIndicator",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14152,9 +12088,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14165,9 +12098,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ObservationCategory",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14178,9 +12108,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14191,9 +12118,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ObservationMethod",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14204,9 +12128,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "6.0.0"
     }]
   },
@@ -14217,9 +12138,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14250,9 +12168,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ParticipationFunction",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14263,9 +12178,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ParticipationMode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "6.0.0"
     }]
   },
@@ -14276,9 +12188,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ParticipationSignature",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14289,9 +12198,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "7.0.0"
     }]
   },
@@ -14302,9 +12208,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-PatientImportance",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14315,9 +12218,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-PaymentTerms",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14328,9 +12228,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-PersonDisabilityType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14361,9 +12258,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ProbabilityDistributionType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14374,9 +12268,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ProcessingID",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14387,9 +12278,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ProcessingMode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14400,9 +12288,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-QueryParameterValue",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14413,9 +12298,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-QueryPriority",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14436,9 +12318,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-QueryRequestLimit",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14449,9 +12328,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-QueryResponse",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14462,9 +12338,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-QueryStatusCode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14475,9 +12348,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-Race",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "6.0.0"
     }]
   },
@@ -14488,9 +12358,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-RelationalOperator",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14501,9 +12368,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-RelationshipConjunction",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14514,9 +12378,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ReligiousAffiliation",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14527,9 +12388,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ResponseLevel",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14540,9 +12398,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ResponseModality",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14553,9 +12408,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ResponseMode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14566,9 +12418,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleClass",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "6.0.0"
     }]
   },
@@ -14579,9 +12428,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14592,9 +12438,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleLinkStatus",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14605,9 +12448,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleLinkType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14618,9 +12458,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleStatus",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14631,9 +12468,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14644,9 +12478,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-Sequencing",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14657,9 +12488,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-SetOperator",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14680,9 +12508,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-SpecimenType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14693,9 +12518,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-styleType",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14706,9 +12528,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-substanceAdminSubstitution",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14719,9 +12538,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-SubstitutionCondition",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14732,9 +12548,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-TableCellHorizontalAlign",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14745,9 +12558,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-TableCellScope",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14758,9 +12568,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-TableCellVerticalAlign",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14771,9 +12578,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-TableFrame",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14784,9 +12588,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-TableRules",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14797,9 +12598,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-TargetAwareness",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14820,9 +12618,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-TelecommunicationCapabilities",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14833,9 +12628,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "5.0.0"
     }]
   },
@@ -14846,9 +12638,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-TransmissionRelationshipTypeCode",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14859,9 +12648,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-TribalEntityUS",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "6.0.0"
     }]
   },
@@ -14892,9 +12678,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-VaccineManufacturer",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14925,9 +12708,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-WorkClassificationODH",
     "version" : [{
-      "value" : "2018-08-12"
-    },
-    {
       "value" : "4.0.0"
     }]
   },
@@ -14938,9 +12718,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/validation-process",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -14951,9 +12728,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/validation-status",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -14964,9 +12738,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/validation-type",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.1"
     }]
   },
@@ -14997,9 +12768,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/variant-state",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "2.0.0"
     }]
   },
@@ -15010,9 +12778,6 @@
     }],
     "uri" : "http://terminology.hl7.org/CodeSystem/verificationresult-communication-method",
     "version" : [{
-      "value" : "4.0.1"
-    },
-    {
       "value" : "1.0.0"
     }]
   },

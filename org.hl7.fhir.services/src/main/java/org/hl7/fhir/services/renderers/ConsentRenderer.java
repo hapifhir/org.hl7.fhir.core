@@ -193,7 +193,7 @@ public class ConsentRenderer extends ResourceRenderer {
       for (ResourceWrapper i : consent.childrenMN("provision", "except")) {
         renderConsentProvision(status, gen, row.getSubRows(), consent, i, permit, hasWhen, hasWho, hasWhat, hasRules);
       }
-      XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
+      XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), true, null);
       x.addChildNode(xn);
     } else {
       x.para().tx(context.formatPhrase(permit ? RenderingContext.CONSENT_PERMIT_DESC :  RenderingContext.CONSENT_DENY_DESC));

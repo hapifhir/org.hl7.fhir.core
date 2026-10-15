@@ -67,7 +67,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
 //    for (ResourceWrapper select : vd.children("select")) { 
 //      renderSelect(status, gen, row.getSubRows(), vd, select); 
 //    } 
-    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null); 
+    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), true, null);
     x.addChildNode(xn); 
  
     
@@ -114,7 +114,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
       cell.getPieces().add(gen.new Piece(null, input.primitiveValue("suffix"), null));
       cell.getPieces().add(gen.new Piece(null, " ", null));      
     }
-    cell.getPieces().add(gen.new Piece(null, input.primitiveValue("type"), null).addStyle("font-weight: bold"));
+    cell.getPieces().add(gen.new Piece(null, input.primitiveValue("type"), null).styleAsBold());
     if (input.has("defaultValue")) {
       cell.getPieces().add(gen.new Piece(null, "(=", null));
       cell.getPieces().add(gen.new Piece(null, input.primitiveValue("defaultValue"), null));

@@ -214,6 +214,17 @@ public class DeviceRequest extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "A code or string that identifies the device detail being asserted.", 0, 1, code);
@@ -1792,6 +1803,146 @@ public class DeviceRequest extends DomainResource {
         children.add(new Property("supportingInfo", "Reference(Any)", "Additional clinical information about the patient that may influence the request fulfilment.  For example, this may include where on the subject's body the device will be used (i.e. the target site).", 0, java.lang.Integer.MAX_VALUE, supportingInfoList));
         children.add(new Property("note", "Annotation", "Details about this request that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.", 0, java.lang.Integer.MAX_VALUE, noteList));
         children.add(new Property("relevantHistory", "Reference(Provenance)", "Key events in the history of the request.", 0, java.lang.Integer.MAX_VALUE, relevantHistoryList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.replacesList != null) {
+          int i = 0;
+          for (Base v : this.replacesList) {
+            if (v != null) {
+              visitor.visit(this, "replaces", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.groupIdentifier != null) {
+          visitor.visit(this, "groupIdentifier", -1, this.groupIdentifier);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.intent != null) {
+          visitor.visit(this, "intent", -1, this.intent);
+        }
+        if (this.priority != null) {
+          visitor.visit(this, "priority", -1, this.priority);
+        }
+        if (this.doNotPerform != null) {
+          visitor.visit(this, "doNotPerform", -1, this.doNotPerform);
+        }
+        if (this.product != null) {
+          visitor.visit(this, "product[x]", -1, this.product);
+        }
+        if (this.quantity != null) {
+          visitor.visit(this, "quantity", -1, this.quantity);
+        }
+        if (this.parameterList != null) {
+          int i = 0;
+          for (Base v : this.parameterList) {
+            if (v != null) {
+              visitor.visit(this, "parameter", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.occurrence != null) {
+          visitor.visit(this, "occurrence[x]", -1, this.occurrence);
+        }
+        if (this.authoredOn != null) {
+          visitor.visit(this, "authoredOn", -1, this.authoredOn);
+        }
+        if (this.requester != null) {
+          visitor.visit(this, "requester", -1, this.requester);
+        }
+        if (this.performer != null) {
+          visitor.visit(this, "performer", -1, this.performer);
+        }
+        if (this.locationList != null) {
+          int i = 0;
+          for (Base v : this.locationList) {
+            if (v != null) {
+              visitor.visit(this, "location", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.asNeeded != null) {
+          visitor.visit(this, "asNeeded", -1, this.asNeeded);
+        }
+        if (this.asNeededFor != null) {
+          visitor.visit(this, "asNeededFor", -1, this.asNeededFor);
+        }
+        if (this.insuranceList != null) {
+          int i = 0;
+          for (Base v : this.insuranceList) {
+            if (v != null) {
+              visitor.visit(this, "insurance", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.supportingInfoList != null) {
+          int i = 0;
+          for (Base v : this.supportingInfoList) {
+            if (v != null) {
+              visitor.visit(this, "supportingInfo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.relevantHistoryList != null) {
+          int i = 0;
+          for (Base v : this.relevantHistoryList) {
+            if (v != null) {
+              visitor.visit(this, "relevantHistory", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override
