@@ -250,10 +250,18 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
 
     public SimpleWorkerContext fromPackage(NpmPackage pi) throws IOException, FHIRException {
+      return fromPackage(pi, null);
+    }
+
+    /**
+     * As for fromPackage(pi), but using the loader provided (e.g. so that it can set web paths).
+     * Unlike fromPackage(pi, loader, genSnapshots), this doesn't finish loading
+     */
+    public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader) throws IOException, FHIRException {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       context.setAllowLoadingDuplicates(allowLoadingDuplicates);
       context.terminologyClientManager.setFactory(TerminologyClient5R5.factory());
-      context.loadFromPackage(pi, null, true);
+      context.loadFromPackage(pi, loader, true);
       return build(context);
     }
     
@@ -341,6 +349,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
   }
 
+  /**
+   * Known limitation (a bug, not yet fixed): resources loaded here don't go through the package hacks
+   * (PackageHackerR5.fixRegisteredResource and fixLoadedResource), which are only applied on the
+   * registerResourceFromPackage / PackageResourceLoader path. So the work arounds for problems in
+   * published packages - including the SimpleQuantity sqty-1 fix - are not applied to anything loaded here
+   */
   private Resource loadDefinitionItem(String name, InputStream stream, IContextResourceLoader loader, ILoadFilter filter, PackageInformation pi) throws IOException, FHIRException {
     if (name.endsWith(".xml"))
       return loadFromFile(stream, name, loader, filter);

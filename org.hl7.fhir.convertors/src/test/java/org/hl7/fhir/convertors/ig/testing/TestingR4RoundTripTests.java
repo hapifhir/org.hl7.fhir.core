@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.igs.testing.TestingR4Convertor;
+import org.hl7.fhir.convertors.igs.r5.testing.TestingR4Convertor;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.igs.testing.TestingJsonParser;
 import org.hl7.fhir.r5.model.Resource;
@@ -62,7 +62,7 @@ public class TestingR4RoundTripTests {
     List<Arguments> objects = new ArrayList<>();
     for (String pid : PACKAGES) {
       NpmPackage npm = getPackage(pid);
-      for (String fn : npm.list("example")) {
+      for (String fn : npm.listExamples()) {
         if (fn.endsWith(".json") && fn.contains("-")) {
           String rt = fn.substring(0, fn.indexOf("-"));
           if (Utilities.existsInList(rt, RESOURCE_TYPES)) {
@@ -78,7 +78,7 @@ public class TestingR4RoundTripTests {
   @MethodSource("data")
   public void testRoundTrip(String name, String pid, String filename) throws IOException {
     Assumptions.assumeFalse(SUPPRESSED.containsKey(filename), () -> "suppressed: " + SUPPRESSED.get(filename));
-    byte[] source = FileUtilities.streamToBytes(getPackage(pid).load("example", filename));
+    byte[] source = FileUtilities.streamToBytes(getPackage(pid).loadExample(filename));
 
     Resource r1 = new TestingJsonParser(true, true).parse(source);
     Resource r2 = convertToR4AndBack(r1);
@@ -97,7 +97,7 @@ public class TestingR4RoundTripTests {
     // thread-local ConversionContext40_50, so it has to be initialised around the direct calls
     // (VersionConvertorFactory_40_50 does this itself, but it doesn't know the igs.testing types)
     VersionConvertor_40_50 vc = new VersionConvertor_40_50(new BaseAdvisor_40_50());
-    ConversionContext40_50.INSTANCE.init(vc, r1.fhirType());
+    ConversionContext40_50.INSTANCE.init(vc);
     try {
       if (r1 instanceof org.hl7.fhir.r5.igs.testing.TestScript) {
         org.hl7.fhir.r4.model.TestScript r4 = TestingR4Convertor.convertTestScript((org.hl7.fhir.r5.igs.testing.TestScript) r1);
@@ -112,7 +112,7 @@ public class TestingR4RoundTripTests {
         throw new IllegalStateException("Unexpected resource type: " + r1.fhirType());
       }
     } finally {
-      ConversionContext40_50.INSTANCE.close(r1.fhirType());
+      ConversionContext40_50.INSTANCE.close();
     }
   }
 

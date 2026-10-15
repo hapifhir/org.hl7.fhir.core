@@ -41,14 +41,15 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.Bundle.BundleType;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.InstantType;
-import org.hl7.fhir.r5.model.Meta;
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.model.core.formats.XmlParser;
+import org.hl7.fhir.model.core.Bundle;
+import org.hl7.fhir.model.core.Bundle.BundleType;
+import org.hl7.fhir.model.core.CodeableConcept;
+import org.hl7.fhir.model.core.Coding;
+import org.hl7.fhir.model.core.DateTimeType;
+import org.hl7.fhir.model.core.InstantType;
+import org.hl7.fhir.model.core.Meta;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -157,7 +158,7 @@ public class LoincToDEConvertor {
 	}
 
 	private void saveBundle() throws FHIRFormatError, IOException, XmlPullParserException {
-		XmlParser xml = new XmlParser();
+		XmlParser xml = new XmlParser(ModelContext.fullCoreContext());
 		FileOutputStream s = ManagedFileAccess.outStream(dest);
     xml.compose(s, bundle, true);
     s.close();
@@ -240,7 +241,7 @@ public class LoincToDEConvertor {
 			return null;
 		CodeableConcept cc = new CodeableConcept();
 		cc.setText(text);
-		cc.getCoding().add(new Coding().setCode(ucum).setSystem("http://unitsofmeasure.org"));
+		cc.getCodingList().add(new Coding().setCode(ucum).setSystem("http://unitsofmeasure.org"));
 		return cc;
 	}
   public Bundle getBundle() {

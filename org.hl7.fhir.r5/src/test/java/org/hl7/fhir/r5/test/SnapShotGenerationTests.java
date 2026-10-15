@@ -143,7 +143,7 @@ public class SnapShotGenerationTests {
       if (Utilities.noString(aa)) {
         allow = AllowUnknownProfile.ALL_TYPES;
       } else if ("no-extensions".equals(aa)) {
-        allow = AllowUnknownProfile.NON_EXTNEIONS;
+        allow = AllowUnknownProfile.NON_EXTENSIONS;
       } else if ("none".equals(aa)) {
         allow = AllowUnknownProfile.NONE;
       } else {
@@ -346,13 +346,13 @@ public class SnapShotGenerationTests {
       if (id.equals("parameters"))
         return testContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Parameters", IWorkerContext.VersionResolutionRules.defaultRule());
 
-      if (id.contains("-")) {
-        String[] p = id.split("\\-");
-        id = p[0];
-        if (p[1].equals("output"))
-          mode = TestFetchMode.OUTPUT;
-        else if (p[1].equals("include"))
-          mode = TestFetchMode.INCLUDE;
+      // test ids can contain dashes (e.g. tsis-shortcut), so the mode is whatever follows the last dash
+      if (id.endsWith("-output")) {
+        id = id.substring(0, id.length() - "-output".length());
+        mode = TestFetchMode.OUTPUT;
+      } else if (id.endsWith("-include")) {
+        id = id.substring(0, id.length() - "-include".length());
+        mode = TestFetchMode.INCLUDE;
       }
       for (TestDetails td : tests) {
         if (td.getId().equals(id))

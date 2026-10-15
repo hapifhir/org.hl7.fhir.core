@@ -36,7 +36,6 @@ import org.hl7.fhir.services.elementmodel.LanguageUtils;
 import org.hl7.fhir.services.elementmodel.Manager;
 import org.hl7.fhir.services.elementmodel.ValidatedFragment;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.model.utilities.formats.IParser;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.services.liquid.BaseTableWrapper;
 import org.hl7.fhir.services.liquid.GlobalObject.GlobalObjectRandomFunction;
@@ -107,10 +106,10 @@ public class ValidationService {
   }
   public void putBaseEngine(String key, ValidationEngineParameters validationEngineParameters, InstanceValidatorParameters defaultInstanceValidatorParameters) throws IOException, URISyntaxException {
 
-    if (validationEngineParameters.getSv() == null) {
+    if (validationEngineParameters.getStatedFHIRVersion() == null) {
       throw new IllegalArgumentException("Cannot create a base engine without an explicit version");
     }
-    String definitions = VersionUtilities.packageForVersion(validationEngineParameters.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationEngineParameters.getSv());
+    String definitions = VersionUtilities.packageForVersion(validationEngineParameters.getStatedFHIRVersion()) + "#" + VersionUtilities.getCurrentVersion(validationEngineParameters.getStatedFHIRVersion());
 
     ValidationEngine baseEngine = buildValidationEngine(validationEngineParameters, defaultInstanceValidatorParameters, definitions, new TimeTracker());
     baseEngines.put(key, baseEngine);
@@ -428,7 +427,7 @@ public class ValidationService {
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
     List<String> sources = validationContext.getSources();
-    generateSnapshot(validationEngine, new GenerateSnapshotParameters(validationEngineParameters.getSv(), sources, outputParameters.getOutput(), outputParameters.getOutputSuffix()));
+    generateSnapshot(validationEngine, new GenerateSnapshotParameters(validationEngineParameters.getStatedFHIRVersion(), sources, outputParameters.getOutput(), outputParameters.getOutputSuffix()));
   }
 
     public void generateSnapshot(ValidationEngine validationEngine, GenerateSnapshotParameters generateSnapshotParameters) throws Exception {
@@ -459,7 +458,7 @@ public class ValidationService {
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
     List<String> sources = validationContext.getSources();
-    generateNarrative(validationEngine, validationEngineParameters.getSv(), sources, outputParameters.getOutput());
+    generateNarrative(validationEngine, validationEngineParameters.getStatedFHIRVersion(), sources, outputParameters.getOutput());
   }
 
 
@@ -619,11 +618,11 @@ public class ValidationService {
       }
       sessionCache.cleanUp();
 
-      if (validationEngineParameters.getSv() == null) {
+      if (validationEngineParameters.getStatedFHIRVersion() == null) {
         String sv = determineVersion(validationEngineParameters.getIgs(), sources, validationEngineParameters.isRecursive(), validationEngineParameters.isInferFhirVersion());
-        validationEngineParameters.setSv(sv);
+        validationEngineParameters.setStatedFHIRVersion(sv);
       }
-      final String engineDefinitions = definitions != null ? definitions : VersionUtilities.packageForVersion(validationEngineParameters.getSv()) + "#" + VersionUtilities.getCurrentVersion(validationEngineParameters.getSv());
+      final String engineDefinitions = definitions != null ? definitions : VersionUtilities.packageForVersion(validationEngineParameters.getStatedFHIRVersion()) + "#" + VersionUtilities.getCurrentVersion(validationEngineParameters.getStatedFHIRVersion());
 
       ValidationEngine validationEngine = getValidationEngineFromParameters(validationEngineParameters, defaultInstanceValidatorParameters, engineDefinitions, tt);
       sessionId = sessionCache.cacheSession(validationEngine);
@@ -655,28 +654,29 @@ public class ValidationService {
   //Called
   @Nonnull
   protected ValidationEngine buildValidationEngine(ValidationEngineParameters validationEngineParameters, InstanceValidatorParameters defaultInstanceValidatorParameters, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
-    log.info("  Loading FHIR v" + validationEngineParameters.getSv() + " from " + definitions);
+    log.info("  Loading FHIR v" + validationEngineParameters.getStatedFHIRVersion() + " from " + definitions);
     final InstanceValidatorParameters instanceValidatorParameters = defaultInstanceValidatorParameters == null ? new InstanceValidatorParameters(): defaultInstanceValidatorParameters;
     ValidationEngine validationEngine = getValidationEngineBuilder()
       .withDefaultInstanceValidatorParameters(new InstanceValidatorParameters(instanceValidatorParameters))
-      .withVersion(validationEngineParameters.getSv())
+      .withVersion(validationEngineParameters.getStatedFHIRVersion())
       .withTimeTracker(timeTracker)
       .withUserAgent(Common.getValidatorUserAgent())
       .withThoVersion(Constants.THO_WORKING_VERSION)
       .withExtensionsVersion(Constants.EXTENSIONS_WORKING_VERSION)
       .fromSource(definitions);
-    FhirPublication ver = FhirPublication.fromCode(validationEngineParameters.getSv());
+    FhirPublication ver = FhirPublication.fromCode(validationEngineParameters.getStatedFHIRVersion());
     log.info("  Loaded FHIR - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
-    final String lineStart = "  Terminology server " + validationEngineParameters.getTxServer();
-    final String txver = validationEngine.setTerminologyServer(validationEngineParameters.getTxServer(), validationEngineParameters.getTxLog(), ver, !validationEngineParameters.getNoEcosystem());
-    log.info(lineStart + " - Version " + txver + " (" + timeTracker.milestone() + ")");
-    validationEngine.setDebug(validationEngineParameters.isDoDebug());
-    validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
-    loadIgsAndExtensions(validationEngine, validationEngineParameters.getIgs(), validationEngineParameters.isRecursive());
-    if (validationEngineParameters.getTxCache() != null) {
-      TerminologyCache cache = new TerminologyCache(new Object(), validationEngineParameters.getTxCache(), validationEngine.getContext());
-      validationEngine.getContext().initTxCache(cache);
+    // The cache is set up before connecting to the terminology server, so that what the connection
+    // learns (capability statements, server routing) is kept too. A context's own cache is memory
+    // only, so without -txCache the validator uses the shared per-version default folder
+    // (-txCache n/a for none). The default folder depends on the FHIR version; if that isn't known
+    // (not stated, and the definitions don't say), there's no default folder, and the cache is memory only.
+    String txCacheFolder = validationEngineParameters.getTxCache();
+    if (txCacheFolder == null) {
+      String sv = validationEngineParameters.getStatedFHIRVersion() != null ? validationEngineParameters.getStatedFHIRVersion() : validationEngine.getContext().getFHIRVersion();
+      txCacheFolder = sv == null ? null : TerminologyCache.defaultFolder(sv);
     }
+    validationEngine.getContext().initTxCache(new TerminologyCache(new Object(), txCacheFolder, validationEngine.getContext()));
     if (validationEngine.getContext().getTxCache() == null || validationEngine.getContext().getTxCache().getFolder() == null) {
       log.info("  No Terminology Cache");
     } else {
@@ -686,6 +686,12 @@ public class ValidationService {
         validationEngine.getContext().getTxCache().clear();
       }
     }
+    final String lineStart = "  Terminology server " + validationEngineParameters.getTxServer();
+    final String txver = validationEngine.setTerminologyServer(validationEngineParameters.getTxServer(), validationEngineParameters.getTxLog(), ver, !validationEngineParameters.getNoEcosystem());
+    log.info(lineStart + " - Version " + txver + " (" + timeTracker.milestone() + ")");
+    validationEngine.setDebug(validationEngineParameters.isDoDebug());
+    validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
+    loadIgsAndExtensions(validationEngine, validationEngineParameters.getIgs(), validationEngineParameters.isRecursive());
     validationEngine.setDoNative(validationEngineParameters.isDoNative());
     log.info("  Get set... ");
 
@@ -780,7 +786,7 @@ public class ValidationService {
     ValidationEngineParameters validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
     List<String> sources = validationContext.getSources();
-    generateSpreadsheet(validator, validationEngineParameters.getSv(), sources, outputParameters.getOutput());
+    generateSpreadsheet(validator, validationEngineParameters.getStatedFHIRVersion(), sources, outputParameters.getOutput());
   }
 
     public void generateSpreadsheet(ValidationEngine validationEngine, String version, List<String> sources, String output) throws Exception {
@@ -971,7 +977,7 @@ public class ValidationService {
     PackageNameParameters packageNameParameters = ValidationContextUtilities.getPackageNameParameters(validationContext);
     org.hl7.fhir.validation.service.model.CodeGenParameters codeGenParameters = ValidationContextUtilities.getCodeGenParameters(validationContext);
     OutputParameters outputParameters = ValidationContextUtilities.getOutputParameters(validationContext);
-    codeGen(validationEngine, new CodeGenParameters(validationEngineParameters.getSv(), instanceValidatorParameters.getProfiles(), codeGenParameters.getOptions(), packageNameParameters.getPackageName(), outputParameters.getOutput()));
+    codeGen(validationEngine, new CodeGenParameters(validationEngineParameters.getStatedFHIRVersion(), instanceValidatorParameters.getProfiles(), codeGenParameters.getOptions(), packageNameParameters.getPackageName(), outputParameters.getOutput()));
     }
 
   public void codeGen(ValidationEngine validationEngine, CodeGenParameters codeGenParameters) throws IOException {

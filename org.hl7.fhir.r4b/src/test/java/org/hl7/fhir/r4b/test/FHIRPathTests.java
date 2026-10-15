@@ -36,6 +36,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.hl7.fhir.r4b.fhirpath.ExpressionNode.CollectionStatus;
 
 public class FHIRPathTests {
 
@@ -185,6 +186,10 @@ public class FHIRPathTests {
     Resource res = null;
 
     List<Base> outcome = new ArrayList<Base>();
+    // context: a FHIRPath expression evaluated first, as a preparatory filter; the test expression is evaluated on its (single) result
+    // contextType: the type(s) to use as the focus when checking the expression - overrides context for type checking
+    String testContext = test.getAttribute("context");
+    String testContextType = test.getAttribute("contextType");
 
     System.out.println(name);
 
@@ -213,10 +218,15 @@ public class FHIRPathTests {
       }
 
       try {
-        if (Utilities.noString(input)) {
+        String rt = res == null ? null : res.getResourceType().toString();
+        if (!Utilities.noString(testContextType)) {
+          fp.checkOnTypes(res, rt, Arrays.asList(testContextType.split("\\|")), node);
+        } else if (!Utilities.noString(testContext)) {
+          fp.check(res, rt, testContext, node);
+        } else if (res == null) {
           fp.check(null, null, node);
         } else {
-          fp.check(res, res.getResourceType().toString(), res.getResourceType().toString(), node);
+          fp.check(res, rt, rt, node);
         }
         Assertions.assertTrue(fail != TestResultType.SEMANTICS,
             String.format("Expected exception didn't occur checking %s", expression));
@@ -233,7 +243,7 @@ public class FHIRPathTests {
 
     if (node != null) {
       try {
-        outcome = fp.evaluate(res, node);
+        outcome = evaluateInContext(res, testContext, node);
         Assertions.assertTrue(fail == TestResultType.OK,
             String.format("Expected exception didn't occur executing %s", expression));
       } catch (Exception e) {
@@ -310,6 +320,21 @@ public class FHIRPathTests {
     }
   }
 
+  /**
+   * if the test specifies a context, evaluate that first as a preparatory filter, and then evaluate the
+   * expression against the single item it selects (it's an error in the test if it selects zero, or more than one)
+   */
+  private List<Base> evaluateInContext(Resource root, String testContext, ExpressionNode node) {
+    if (Utilities.noString(testContext)) {
+      return fp.evaluate(root, node);
+    }
+    List<Base> focus = fp.evaluate(root, fp.parse(testContext));
+    if (focus.size() != 1) {
+      Assertions.fail(String.format("Context '%s' selected %d items, but must select exactly one", testContext, focus.size()));
+    }
+    return fp.evaluate(null, root, root, focus.get(0), node);
+  }
+
   @Test
   @DisplayName("resolveConstant returns a list of Base")
   public void resolveConstantReturnsList() {
@@ -359,5 +384,20 @@ public class FHIRPathTests {
     input.setBirthDateElement(dtv);
     List<Base> results = fp.evaluate(input, "Patient.birthDate.toString()");
     assertEquals(0, results.size());
+  }
+
+  // split() returns an ordered collection of strings; it was typed as a singleton (#2640).
+  // r4b emits no collection-status warnings, but check() still hands callers the type.
+  @Test
+  public void testCheck_SplitIsAnOrderedCollection() throws Exception {
+    TypeDetails td = fp.check(null, "Patient", "Patient", fp.parse("'fr-BE'.split('-')"));
+    assertEquals(CollectionStatus.ORDERED, td.getCollectionStatus());
+  }
+
+  @Test
+  public void testEvaluate_FirstOnSplit() throws Exception {
+    List<Base> results = fp.evaluate(new Patient(), "'fr-BE'.split('-').first().lower()");
+    assertEquals(1, results.size());
+    assertEquals("fr", results.get(0).primitiveValue());
   }
 }

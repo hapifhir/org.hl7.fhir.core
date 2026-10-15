@@ -14,6 +14,7 @@ import org.hl7.fhir.services.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.services.renderers.utils.RenderingContext.MultiLanguagePolicy;
 import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.model.utilities.CodeSystemHierarchy;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities.CodeSystemNavigator;
 import org.hl7.fhir.model.utilities.EOperationOutcome;
 import org.hl7.fhir.utilities.LoincLinker;
@@ -270,7 +271,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       definitions = definitions || conceptsHaveDefinition(c);
       listConceptLanguages(cs, c, langs);
     }
-    CodeSystemNavigator csNav = new CodeSystemNavigator(cs);
+    CodeSystemNavigator csNav = new CodeSystemNavigator(cs, CodeSystemHierarchy.forCodeSystem(cs, context.isCacheResourceAnalysis()));
     hierarchy = hierarchy || csNav.isRestructure();
     
     if (langs.size() < 2) {

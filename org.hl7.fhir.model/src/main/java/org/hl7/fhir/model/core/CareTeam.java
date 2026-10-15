@@ -466,6 +466,32 @@ public class CareTeam extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.role != null) {
+            visitor.visit(this, "role", -1, this.role);
+          }
+          if (this.member != null) {
+            visitor.visit(this, "member", -1, this.member);
+          }
+          if (this.onBehalfOf != null) {
+            visitor.visit(this, "onBehalfOf", -1, this.onBehalfOf);
+          }
+          if (this.effective != null) {
+            visitor.visit(this, "effective[x]", -1, this.effective);
+          }
+          if (this.supportingInfoList != null) {
+            int i = 0;
+            for (Base v : this.supportingInfoList) {
+              if (v != null) {
+                visitor.visit(this, "supportingInfo", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "role":  return new Property("role", "CodeableConcept", "Indicates specific responsibility of an individual within the care team, such as \"Primary care physician\", \"Trained social worker counselor\", \"Caregiver\", etc.", 0, 1, role);
@@ -1324,6 +1350,86 @@ public class CareTeam extends DomainResource {
         children.add(new Property("managingOrganization", "Reference(Organization)", "The organization responsible for the care team.", 0, java.lang.Integer.MAX_VALUE, managingOrganizationList));
         children.add(new Property("telecom", "ContactPoint", "A central contact detail for the care team (that applies to all members).", 0, java.lang.Integer.MAX_VALUE, telecomList));
         children.add(new Property("note", "Annotation", "Comments made about the CareTeam.", 0, java.lang.Integer.MAX_VALUE, noteList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.categoryList != null) {
+          int i = 0;
+          for (Base v : this.categoryList) {
+            if (v != null) {
+              visitor.visit(this, "category", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject", -1, this.subject);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.participantList != null) {
+          int i = 0;
+          for (Base v : this.participantList) {
+            if (v != null) {
+              visitor.visit(this, "participant", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.managingOrganizationList != null) {
+          int i = 0;
+          for (Base v : this.managingOrganizationList) {
+            if (v != null) {
+              visitor.visit(this, "managingOrganization", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.telecomList != null) {
+          int i = 0;
+          for (Base v : this.telecomList) {
+            if (v != null) {
+              visitor.visit(this, "telecom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

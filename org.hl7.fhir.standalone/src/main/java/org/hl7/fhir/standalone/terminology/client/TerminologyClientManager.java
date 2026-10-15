@@ -238,12 +238,14 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
     }
     
-    // now we look for a server that's authoritative for one of them and a candidate for the others
+    // now we look for a server that's authoritative for one of them and a candidate for the others.
+    // A system that the registry knows no server for at all doesn't constrain the choice - any
+    // server is as good as any other for it - so it doesn't stop a server qualifying here
     for (ServerOptionList ol : choices) {
       for (String s : ol.authoritative) {
         boolean ok = true;
         for (ServerOptionList t : choices) {
-          if (!t.authoritative.contains(s) && !t.candidates.contains(s)) {
+          if (!isUnresolved(t) && !t.authoritative.contains(s) && !t.candidates.contains(s)) {
             ok = false;
           }
         }
@@ -274,30 +276,23 @@ public class TerminologyClientManager implements ITerminologyClientManager {
       }
     }
 
-    // check the candidates actually support the code system - but filter a copy: the
-    // ServerOptionList objects are cached in resMap (and persisted to system-map.json),
-    // and must keep recording what the registry actually said, not the outcome of a
-    // possibly-transient support check
-    List<ServerOptionList> filteredChoices = new ArrayList<>();
-    for (ServerOptionList choice : choices) {
-      ServerOptionList filtered = checkActuallySupports(choice);
-      if (filtered.candidates.size() < choice.candidates.size()) {
-        List<String> removed = new ArrayList<>(choice.candidates);
-        removed.removeAll(filtered.candidates);
-        log(vs, null, systems, choices, "Candidate server(s) "+CommaSeparatedStringBuilder.join("|", removed)+" dropped for "+choice.url+": no usable copy of the code system found there");
-      }
-      filteredChoices.add(filtered);
-    }
-    choices = filteredChoices;
-
-    // now we look for a server that's a candidate for all of them
+    // now we look for a server that's a candidate for all of them (again, systems no server is
+    // known for don't constrain the choice), and that actually has a usable copy of the code
+    // systems. The support check costs a round trip (or several) per server, so it's only done
+    // for a server that would otherwise be chosen, stopping at the first that passes. Note that
+    // the outcome of the check is not written back to the ServerOptionList objects: they are
+    // cached in resMap (and persisted to system-map.json), and must keep recording what the
+    // registry actually said, not the outcome of a possibly-transient support check
     for (ServerOptionList ol : choices) {
       for (String s : ol.candidates) {
         boolean ok = true;
         for (ServerOptionList t : choices) {
-          if (!t.candidates.contains(s)) {
+          if (!isUnresolved(t) && !t.candidates.contains(s)) {
             ok = false;
           }
+        }
+        if (ok) {
+          ok = actuallySupportsAll(vs, s, systems, choices);
         }
         if (ok) {
           log(vs, s, systems, choices, "Found candidate server " + s);
@@ -356,16 +351,38 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     }
   }
 
-  private ServerOptionList checkActuallySupports(ServerOptionList choice) {
-    for (String s : choice.candidates) {
-      if (isTxFhirOrg(s)) {
-        return choice;
+  /**
+   * the registry answered, but knows of no server at all for the system
+   */
+  private boolean isUnresolved(ServerOptionList choice) {
+    return choice.authoritative.isEmpty() && choice.candidates.isEmpty();
+  }
+
+  /**
+   * check that a candidate server really has a usable copy of each of the code systems
+   * it is a candidate for. Systems where tx.fhir.org is among the candidates aren't
+   * checked (then the registry is trusted)
+   */
+  private boolean actuallySupportsAll(ValueSet vs, String server, Set<String> systems, List<ServerOptionList> choices) {
+    for (ServerOptionList t : choices) {
+      if (isUnresolved(t) || !t.candidates.contains(server) || hasTxFhirOrgCandidate(t)) {
+        continue;
+      }
+      if (!isSupportedServer(server, t.url)) {
+        log(vs, null, systems, choices, "Candidate server "+server+" dropped for "+t.url+": no usable copy of the code system found there");
+        return false;
       }
     }
-    ServerOptionList res = new ServerOptionList(choice.url, choice.authoritative, choice.candidates);
-    res.language = choice.language;
-    res.candidates.removeIf(server -> !isSupportedServer(server, choice.url));
-    return res;
+    return true;
+  }
+
+  private boolean hasTxFhirOrgCandidate(ServerOptionList choice) {
+    for (String s : choice.candidates) {
+      if (isTxFhirOrg(s)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean isSupportedServer(String server, String url) {

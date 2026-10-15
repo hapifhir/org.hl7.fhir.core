@@ -67,7 +67,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFilterColumn;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFilters;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.STFilterOperator;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 @Slf4j
 public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
   private XmlParser xml = new XmlParser();

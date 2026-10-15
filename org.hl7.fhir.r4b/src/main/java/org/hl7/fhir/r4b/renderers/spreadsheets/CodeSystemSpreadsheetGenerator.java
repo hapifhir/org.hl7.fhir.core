@@ -29,7 +29,7 @@ import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionMappingComp
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 @Slf4j
 public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
 

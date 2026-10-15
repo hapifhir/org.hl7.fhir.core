@@ -894,6 +894,74 @@ public class Slot extends DomainResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.serviceCategoryList != null) {
+          int i = 0;
+          for (Base v : this.serviceCategoryList) {
+            if (v != null) {
+              visitor.visit(this, "serviceCategory", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.serviceTypeList != null) {
+          int i = 0;
+          for (Base v : this.serviceTypeList) {
+            if (v != null) {
+              visitor.visit(this, "serviceType", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.specialtyList != null) {
+          int i = 0;
+          for (Base v : this.specialtyList) {
+            if (v != null) {
+              visitor.visit(this, "specialty", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.appointmentTypeList != null) {
+          int i = 0;
+          for (Base v : this.appointmentTypeList) {
+            if (v != null) {
+              visitor.visit(this, "appointmentType", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.schedule != null) {
+          visitor.visit(this, "schedule", -1, this.schedule);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.start != null) {
+          visitor.visit(this, "start", -1, this.start);
+        }
+        if (this.end != null) {
+          visitor.visit(this, "end", -1, this.end);
+        }
+        if (this.overbooked != null) {
+          visitor.visit(this, "overbooked", -1, this.overbooked);
+        }
+        if (this.comment != null) {
+          visitor.visit(this, "comment", -1, this.comment);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "identifier":  return new Property("identifier", "Identifier", "External Ids for this item.", 0, java.lang.Integer.MAX_VALUE, identifierList);

@@ -844,6 +844,26 @@ public class ConceptMap extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.uri != null) {
+            visitor.visit(this, "uri", -1, this.uri);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.system != null) {
+            visitor.visit(this, "system", -1, this.system);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "code", "A code that is used to identify the property. The code is used internally (in ConceptMap.group.element.target.property.code) and also in the $translate operation.", 0, 1, code);
@@ -1322,6 +1342,23 @@ public class ConceptMap extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.uri != null) {
+            visitor.visit(this, "uri", -1, this.uri);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "code", "A code that is used to identify this additional data attribute. The code is used internally in ConceptMap.group.element.target.dependsOn.attribute and ConceptMap.group.element.target.product.attribute.", 0, 1, code);
@@ -1758,6 +1795,29 @@ public class ConceptMap extends MetadataResource {
           children.add(new Property("target", "canonical(CodeSystem)", "An absolute URI that identifies the target system that the concepts will be mapped to.", 0, 1, target));
           children.add(new Property("element", "", "Mappings for an individual concept in the source to one or more concepts in the target.", 0, java.lang.Integer.MAX_VALUE, elementList));
           children.add(new Property("unmapped", "", "What to do when there is no mapping to a target concept from the source concept and ConceptMap.group.element.noMap is not true. This provides the \"default\" to be applied when there is no target concept mapping specified or the expansion of ConceptMap.group.element.target.valueSet is empty.", 0, 1, unmapped));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.source != null) {
+            visitor.visit(this, "source", -1, this.source);
+          }
+          if (this.target != null) {
+            visitor.visit(this, "target", -1, this.target);
+          }
+          if (this.elementList != null) {
+            int i = 0;
+            for (Base v : this.elementList) {
+              if (v != null) {
+                visitor.visit(this, "element", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.unmapped != null) {
+            visitor.visit(this, "unmapped", -1, this.unmapped);
+          }
         }
 
         @Override
@@ -2337,6 +2397,35 @@ public class ConceptMap extends MetadataResource {
           children.add(new Property("noMap", "boolean", "If noMap = true this indicates that no mapping to a target concept exists for this source concept.", 0, 1, noMap));
           children.add(new Property("comment", "string", "Comments related to the mapping of the source element, potentially including why there is no target.", 0, 1, comment));
           children.add(new Property("target", "", "A concept from the target value set that this concept maps to.", 0, java.lang.Integer.MAX_VALUE, targetList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.display != null) {
+            visitor.visit(this, "display", -1, this.display);
+          }
+          if (this.valueSet != null) {
+            visitor.visit(this, "valueSet", -1, this.valueSet);
+          }
+          if (this.noMap != null) {
+            visitor.visit(this, "noMap", -1, this.noMap);
+          }
+          if (this.comment != null) {
+            visitor.visit(this, "comment", -1, this.comment);
+          }
+          if (this.targetList != null) {
+            int i = 0;
+            for (Base v : this.targetList) {
+              if (v != null) {
+                visitor.visit(this, "target", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -3102,6 +3191,53 @@ public class ConceptMap extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.display != null) {
+            visitor.visit(this, "display", -1, this.display);
+          }
+          if (this.valueSet != null) {
+            visitor.visit(this, "valueSet", -1, this.valueSet);
+          }
+          if (this.relationship != null) {
+            visitor.visit(this, "relationship", -1, this.relationship);
+          }
+          if (this.comment != null) {
+            visitor.visit(this, "comment", -1, this.comment);
+          }
+          if (this.propertyList != null) {
+            int i = 0;
+            for (Base v : this.propertyList) {
+              if (v != null) {
+                visitor.visit(this, "property", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.dependsOnList != null) {
+            int i = 0;
+            for (Base v : this.dependsOnList) {
+              if (v != null) {
+                visitor.visit(this, "dependsOn", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.productList != null) {
+            int i = 0;
+            for (Base v : this.productList) {
+              if (v != null) {
+                visitor.visit(this, "product", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "code", "Identity (code or path) or the element/item that the map refers to.", 0, 1, code);
@@ -3602,6 +3738,17 @@ public class ConceptMap extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "code", "A reference to a mapping property defined in ConceptMap.property.", 0, 1, code);
@@ -4033,6 +4180,20 @@ public class ConceptMap extends MetadataResource {
           children.add(new Property("attribute", "code", "A reference to the additional attribute that holds a value the map depends on.", 0, 1, attribute));
           children.add(new Property("value[x]", "code|Coding|string|boolean|Quantity", "Data element value that the map depends on / produces. If the data type is a code, that code SHALL come from the .group.source code system for .dependsOn.valueCode or from the .group.target code system for .product.valueCode.", 0, 1, value));
           children.add(new Property("valueSet", "canonical(ValueSet)", "This mapping applies if the data element value is a code from this value set.", 0, 1, valueSet));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.attribute != null) {
+            visitor.visit(this, "attribute", -1, this.attribute);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.valueSet != null) {
+            visitor.visit(this, "valueSet", -1, this.valueSet);
+          }
         }
 
         @Override
@@ -4675,6 +4836,32 @@ public class ConceptMap extends MetadataResource {
           children.add(new Property("valueSet", "canonical(ValueSet)", "The set of fixed codes to use when the mode = 'fixed'  - all unmapped codes are mapped to each of the fixed codes.", 0, 1, valueSet));
           children.add(new Property("relationship", "code", "The default relationship value to apply between the source and target concepts when the source code is unmapped and the mode is 'fixed' or 'use-source-code'.", 0, 1, relationship));
           children.add(new Property("otherMap", "canonical(ConceptMap)", "The canonical reference to an additional ConceptMap resource instance to use for mapping if this ConceptMap resource contains no matching mapping for the source concept.", 0, 1, otherMap));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.display != null) {
+            visitor.visit(this, "display", -1, this.display);
+          }
+          if (this.comment != null) {
+            visitor.visit(this, "comment", -1, this.comment);
+          }
+          if (this.valueSet != null) {
+            visitor.visit(this, "valueSet", -1, this.valueSet);
+          }
+          if (this.relationship != null) {
+            visitor.visit(this, "relationship", -1, this.relationship);
+          }
+          if (this.otherMap != null) {
+            visitor.visit(this, "otherMap", -1, this.otherMap);
+          }
         }
 
         @Override
@@ -6918,6 +7105,191 @@ public class ConceptMap extends MetadataResource {
         children.add(new Property("sourceScope[x]", "uri|canonical(ValueSet)", "Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.  Limits the scope of the map to source codes (ConceptMap.group.element code or valueSet) that are members of this value set.", 0, 1, sourceScope));
         children.add(new Property("targetScope[x]", "uri|canonical(ValueSet)", "Identifier for the target value set that provides important context about how the mapping choices are made.  Limits the scope of the map to target codes (ConceptMap.group.element.target code or valueSet) that are members of this value set.", 0, 1, targetScope));
         children.add(new Property("group", "", "A group of mappings that all have the same source and target system.", 0, java.lang.Integer.MAX_VALUE, groupList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.effectivePeriod != null) {
+          visitor.visit(this, "effectivePeriod", -1, this.effectivePeriod);
+        }
+        if (this.topicList != null) {
+          int i = 0;
+          for (Base v : this.topicList) {
+            if (v != null) {
+              visitor.visit(this, "topic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.authorList != null) {
+          int i = 0;
+          for (Base v : this.authorList) {
+            if (v != null) {
+              visitor.visit(this, "author", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.editorList != null) {
+          int i = 0;
+          for (Base v : this.editorList) {
+            if (v != null) {
+              visitor.visit(this, "editor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reviewerList != null) {
+          int i = 0;
+          for (Base v : this.reviewerList) {
+            if (v != null) {
+              visitor.visit(this, "reviewer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.endorserList != null) {
+          int i = 0;
+          for (Base v : this.endorserList) {
+            if (v != null) {
+              visitor.visit(this, "endorser", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.relatedArtifactList != null) {
+          int i = 0;
+          for (Base v : this.relatedArtifactList) {
+            if (v != null) {
+              visitor.visit(this, "relatedArtifact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.propertyList != null) {
+          int i = 0;
+          for (Base v : this.propertyList) {
+            if (v != null) {
+              visitor.visit(this, "property", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.additionalAttributeList != null) {
+          int i = 0;
+          for (Base v : this.additionalAttributeList) {
+            if (v != null) {
+              visitor.visit(this, "additionalAttribute", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.allowedRelationshipList != null) {
+          int i = 0;
+          for (Base v : this.allowedRelationshipList) {
+            if (v != null) {
+              visitor.visit(this, "allowedRelationship", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.sourceScope != null) {
+          visitor.visit(this, "sourceScope[x]", -1, this.sourceScope);
+        }
+        if (this.targetScope != null) {
+          visitor.visit(this, "targetScope[x]", -1, this.targetScope);
+        }
+        if (this.groupList != null) {
+          int i = 0;
+          for (Base v : this.groupList) {
+            if (v != null) {
+              visitor.visit(this, "group", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

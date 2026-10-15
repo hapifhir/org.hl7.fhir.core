@@ -893,6 +893,110 @@ public class PractitionerRole extends DomainResource {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.active != null) {
+          visitor.visit(this, "active", -1, this.active);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.practitioner != null) {
+          visitor.visit(this, "practitioner", -1, this.practitioner);
+        }
+        if (this.organization != null) {
+          visitor.visit(this, "organization", -1, this.organization);
+        }
+        if (this.codeList != null) {
+          int i = 0;
+          for (Base v : this.codeList) {
+            if (v != null) {
+              visitor.visit(this, "code", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.display != null) {
+          visitor.visit(this, "display", -1, this.display);
+        }
+        if (this.specialtyList != null) {
+          int i = 0;
+          for (Base v : this.specialtyList) {
+            if (v != null) {
+              visitor.visit(this, "specialty", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.locationList != null) {
+          int i = 0;
+          for (Base v : this.locationList) {
+            if (v != null) {
+              visitor.visit(this, "location", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.healthcareServiceList != null) {
+          int i = 0;
+          for (Base v : this.healthcareServiceList) {
+            if (v != null) {
+              visitor.visit(this, "healthcareService", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.characteristicList != null) {
+          int i = 0;
+          for (Base v : this.characteristicList) {
+            if (v != null) {
+              visitor.visit(this, "characteristic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.communicationList != null) {
+          int i = 0;
+          for (Base v : this.communicationList) {
+            if (v != null) {
+              visitor.visit(this, "communication", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.availability != null) {
+          visitor.visit(this, "availability", -1, this.availability);
+        }
+        if (this.endpointList != null) {
+          int i = 0;
+          for (Base v : this.endpointList) {
+            if (v != null) {
+              visitor.visit(this, "endpoint", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "identifier":  return new Property("identifier", "Identifier", "Business Identifiers that are specific to a role/location.", 0, java.lang.Integer.MAX_VALUE, identifierList);

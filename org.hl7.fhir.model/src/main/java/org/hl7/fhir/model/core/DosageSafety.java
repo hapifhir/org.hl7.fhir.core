@@ -460,6 +460,23 @@ public class DosageSafety extends BackboneType implements ICompositeType {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.scope != null) {
+            visitor.visit(this, "scope", -1, this.scope);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.text != null) {
+            visitor.visit(this, "text", -1, this.text);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "value[x]":  return new Property("value[x]", "integer|Quantity|Expression", "Quantity that is safe to use.", 0, 1, value);
@@ -802,6 +819,23 @@ public class DosageSafety extends BackboneType implements ICompositeType {
         super.listChildren(children);
         children.add(new Property("doseLimit", "", "A dose limit for safe use of the medication.", 0, java.lang.Integer.MAX_VALUE, doseLimitList));
         children.add(new Property("ifExceeded", "string", "What to do if the instructions lead to exceeding the dose limits.", 0, 1, ifExceeded));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.doseLimitList != null) {
+          int i = 0;
+          for (Base v : this.doseLimitList) {
+            if (v != null) {
+              visitor.visit(this, "doseLimit", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.ifExceeded != null) {
+          visitor.visit(this, "ifExceeded", -1, this.ifExceeded);
+        }
       }
 
       @Override

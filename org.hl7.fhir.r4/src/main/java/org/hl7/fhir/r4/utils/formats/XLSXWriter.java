@@ -84,7 +84,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFilterColumn;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFilters;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.STFilterOperator;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class XLSXWriter extends TextStreamWriter {
 
   private StructureDefinition def;
