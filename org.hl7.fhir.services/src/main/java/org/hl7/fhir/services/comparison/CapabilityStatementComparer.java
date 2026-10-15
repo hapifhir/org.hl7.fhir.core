@@ -16,6 +16,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.BackgroundColorCode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
@@ -256,10 +257,10 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     List<Extension> r = right.getExtensionsByUrl(ExtensionDefinitions.EXT_CAP_STMT_EXPECT);
     if (l.size() == 1 || r.size() == 1) {
       if (l.size() == 0) {
-        union.addExtension(r.get(0).copy(Base.COPY_DATA));
+        union.addExtension(r.get(0).copy(Base.COPY_NOTHING));
         combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added this expectation", path), r.get(0)));        
       } else if (r.size() == 0) {
-        union.addExtension(l.get(0).copy(Base.COPY_DATA));
+        union.addExtension(l.get(0).copy(Base.COPY_NOTHING));
         combined.getChildren().add(new StructuralMatch<Element>(l.get(0), vmI(IssueSeverity.INFORMATION, "Removed this expectation", path)));              
       } else if (l.size() == 1 && r.size() == 1) {
         StructuralMatch<Element> sm = new StructuralMatch<Element>(l.get(0), r.get(0));
@@ -267,8 +268,8 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
         String ls = l.get(0).getValue().primitiveValue();
         String rs = r.get(0).getValue().primitiveValue();
         if (ls.equals(rs)) {
-          union.addExtension(l.get(0).copy(Base.COPY_DATA));
-          intersection.addExtension(l.get(0).copy(Base.COPY_DATA));
+          union.addExtension(l.get(0).copy(Base.COPY_NOTHING));
+          intersection.addExtension(l.get(0).copy(Base.COPY_NOTHING));
         } else {
           sm.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path+".extension('http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation')", "Changed value for expectation: '"+ls+"' vs '"+rs+"'", IssueSeverity.WARNING));
           String lowest = lower(ls, rs) ? ls : rs;
@@ -312,7 +313,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
   }
 
   private CapabilityStatement.CapabilityStatementRestComponent merge(CapabilityStatement.CapabilityStatementRestComponent l, CapabilityStatement.CapabilityStatementRestComponent r, CapabilityStatementComparison res) {
-    CapabilityStatement.CapabilityStatementRestComponent cd = l.copy(Base.COPY_DATA);
+    CapabilityStatement.CapabilityStatementRestComponent cd = l.copy(Base.COPY_NOTHING);
     if (!l.hasDocumentation() && r.hasDocumentation()) {
       cd.setDocumentation(r.getDocumentation());
     }
@@ -340,13 +341,13 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
         }
       }
       if (add) {
-        tgt.add(cd.copy(Base.COPY_DATA));
+        tgt.add(cd.copy(Base.COPY_NOTHING));
       }
     }    
   }
 
   private CapabilityStatement.CapabilityStatementRestComponent intersect(CapabilityStatement.CapabilityStatementRestComponent l, CapabilityStatement.CapabilityStatementRestComponent r, CapabilityStatementComparison res) {
-    CapabilityStatement.CapabilityStatementRestComponent cd = l.copy(Base.COPY_DATA);
+    CapabilityStatement.CapabilityStatementRestComponent cd = l.copy(Base.COPY_NOTHING);
     if (l.hasDocumentation() && !r.hasDocumentation()) {
       cd.setDocumentation(null);
     }
@@ -434,11 +435,11 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
       // nothing in this case 
     } else if (!left.hasValue()) {
       // the intersection is anything in right. The union is everything (or nothing, in this case)
-      intersection.setProfileElement(right.copy(Base.COPY_DATA));
+      intersection.setProfileElement(right.copy(Base.COPY_NOTHING));
       combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.WARNING, "Added this profile", path), right).setName("profile"));        
     } else if (!right.hasValue()) {
       // the intersection is anything in right. The union is everything (or nothing, in this case)
-      intersection.setProfileElement(left.copy(Base.COPY_DATA));
+      intersection.setProfileElement(left.copy(Base.COPY_NOTHING));
       combined.getChildren().add(new StructuralMatch<Element>(left, vmI(IssueSeverity.WARNING, "Removed this profile", path)).setName("profile"));        
     } else {
       // profiles on both sides...
@@ -451,17 +452,17 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
       } else if (sdRight == null) {
         combined.getChildren().add(new StructuralMatch<Element>(left, right, vmI(IssueSeverity.ERROR, "Cannot compare profiles because '"+right.getValue()+"' is not known", path)).setName("profile"));                
       } else if (sdLeft.getUrl().equals(sdRight.getUrl())) {
-        intersection.setProfileElement(left.copy(Base.COPY_DATA));
-        union.setProfileElement(left.copy(Base.COPY_DATA));
+        intersection.setProfileElement(left.copy(Base.COPY_NOTHING));
+        union.setProfileElement(left.copy(Base.COPY_NOTHING));
         combined.getChildren().add(new StructuralMatch<Element>(left, right).setName("profile"));                
       } else if (profileInherits(sdLeft, sdRight, session.getContextLeft())) {
         // if left inherits from right:
-        intersection.setProfileElement(left.copy(Base.COPY_DATA));
-        union.setProfileElement(right.copy(Base.COPY_DATA));
+        intersection.setProfileElement(left.copy(Base.COPY_NOTHING));
+        union.setProfileElement(right.copy(Base.COPY_NOTHING));
         combined.getChildren().add(new StructuralMatch<Element>(left, right, vmI(IssueSeverity.WARNING, "Changed this profile to a broader profile", path)).setName("profile"));                
       } else if (profileInherits(sdRight, sdLeft, session.getContextRight())) {
-        intersection.setProfileElement(right.copy(Base.COPY_DATA));
-        union.setProfileElement(left.copy(Base.COPY_DATA));
+        intersection.setProfileElement(right.copy(Base.COPY_NOTHING));
+        union.setProfileElement(left.copy(Base.COPY_NOTHING));
         combined.getChildren().add(new StructuralMatch<Element>(left, right, vmI(IssueSeverity.WARNING, "Changed this profile to a narrower one", path)).setName("profile"));                
       } else {
         combined.getChildren().add(new StructuralMatch<Element>(left, right, vmI(IssueSeverity.WARNING, "Different", path)).setName("profile"));                
@@ -542,7 +543,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
 
 
   private CapabilityStatement.CapabilityStatementRestResourceComponent mergeRestResource(CapabilityStatement.CapabilityStatementRestResourceComponent l, CapabilityStatement.CapabilityStatementRestResourceComponent r) {
-    CapabilityStatement.CapabilityStatementRestResourceComponent res = l.copy(Base.COPY_DATA);
+    CapabilityStatement.CapabilityStatementRestResourceComponent res = l.copy(Base.COPY_NOTHING);
     // todo: compare profiles, not just copy
     if (!l.hasProfile() && r.hasProfile()) {
       res.setProfile(r.getProfile());
@@ -603,7 +604,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
   }
 
   private CapabilityStatement.ResourceInteractionComponent mergeRestResourceInteractions(CapabilityStatement.ResourceInteractionComponent l, CapabilityStatement.ResourceInteractionComponent r) {
-    CapabilityStatement.ResourceInteractionComponent res = l.copy(Base.COPY_DATA);
+    CapabilityStatement.ResourceInteractionComponent res = l.copy(Base.COPY_NOTHING);
     if (!res.hasDocumentation() && r.hasDocumentation()) {
       res.setDocumentation(r.getDocumentation());
     }
@@ -611,7 +612,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
   }
 
   private CapabilityStatement.ResourceInteractionComponent intersectRestResourceInteractions(CapabilityStatement.ResourceInteractionComponent l, CapabilityStatement.ResourceInteractionComponent r) {
-    CapabilityStatement.ResourceInteractionComponent res = l.copy(Base.COPY_DATA);
+    CapabilityStatement.ResourceInteractionComponent res = l.copy(Base.COPY_NOTHING);
     if (res.hasDocumentation() && !r.hasDocumentation()) {
       res.setDocumentation(null);
     }
@@ -658,7 +659,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
   }
   
   private CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent mergeSearchParams(CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent l, CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent r) {
-    CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent res = l.copy(Base.COPY_DATA);
+    CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent res = l.copy(Base.COPY_NOTHING);
     if (!res.hasDocumentation() && r.hasDocumentation()) {
       res.setDocumentation(r.getDocumentation());
     }
@@ -713,7 +714,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
   }
   
   private CapabilityStatement.CapabilityStatementRestResourceOperationComponent mergeOperations(CapabilityStatement.CapabilityStatementRestResourceOperationComponent l, CapabilityStatement.CapabilityStatementRestResourceOperationComponent r) {
-    CapabilityStatement.CapabilityStatementRestResourceOperationComponent res = l.copy(Base.COPY_DATA);
+    CapabilityStatement.CapabilityStatementRestResourceOperationComponent res = l.copy(Base.COPY_NOTHING);
     if (!res.hasDocumentation() && r.hasDocumentation()) {
       res.setDocumentation(r.getDocumentation());
     }
@@ -753,7 +754,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     for (StructuralMatch<Element> t : comparison.getCombined().getChildren()) {
       addRow(gen, model.getRows(), t, comparison);
     }
-    return gen.generate(model, prefix, 0, null);
+    return gen.generate(model, prefix, false, null);
   }
 
   private void addRow(HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<Element> t, CapabilityStatementComparison comparison) {
@@ -920,15 +921,15 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
   private Cell style(Cell cell, String left, String right, boolean isLeft) {
     if (left != null && right != null) {
       if (!left.equals(right)) {
-        cell.setStyle("background-color: "+COLOR_DIFFERENT);
+        cell.setBackgroundColor(BackgroundColorCode.COLOR_DIFFERENT);
       }
     } else if (left != null) {
       if (!isLeft) {        
-        cell.setStyle("background-color: "+COLOR_NO_CELL_RIGHT);
+        cell.setBackgroundColor(BackgroundColorCode.COLOR_NO_CELL_RIGHT);
       }
     } else if (right != null) {        
       if (isLeft) {        
-        cell.setStyle("background-color: "+COLOR_NO_CELL_LEFT);
+        cell.setBackgroundColor(BackgroundColorCode.COLOR_NO_CELL_LEFT);
       }
     }
     return cell;

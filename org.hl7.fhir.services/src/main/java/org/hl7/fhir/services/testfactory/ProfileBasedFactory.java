@@ -1,10 +1,10 @@
 package org.hl7.fhir.services.testfactory;
 
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.Manager;
-import org.hl7.fhir.services.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
@@ -160,7 +160,7 @@ public class ProfileBasedFactory {
           ls.line.append("fixed value = "+fv.primitiveValue());
           focus.setValue(fv.primitiveValue());
         } else {
-          ls.line.append("fixed value = "+new org.hl7.fhir.model.core.formats.JsonParser(fpe.getWorker()).setOutputStyle(OutputStyle.NORMAL).composeString((DataType) fv, "data"));
+          ls.line.append("fixed value = "+new org.hl7.fhir.model.core.formats.JsonParser(fpe.getWorker().getModelContext()).setOutputStyle(OutputStyle.NORMAL).composeString((DataType) fv, "data"));
           populateElementFromDataType(focus, fv, null);
         }
       } else {

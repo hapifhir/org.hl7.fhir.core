@@ -1,14 +1,14 @@
 package org.hl7.fhir.validation.instance;
 
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.model.core.CodeableConcept;
+import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
@@ -54,7 +54,7 @@ class InstanceValidatorTests {
   }
 
   private void testCheckCodeOnServer(NodeStack stack, String expectedLocale) throws InstanceValidator.CheckCodeOnServerException {
-    when(context.getVersion()).thenReturn("5.0.1");
+    when(context.getFHIRVersion()).thenReturn("5.0.1");
     InstanceValidator instanceValidator = new InstanceValidator(context, null, null, null, new ValidatorSettings());
 
 
@@ -74,7 +74,7 @@ class InstanceValidatorTests {
 
   @Test
   void testElementDebug() throws IOException {
-    when(context.getVersion()).thenReturn("5.0.1");
+    when(context.getFHIRVersion()).thenReturn("5.0.1");
     InstanceValidator instanceValidator = new InstanceValidator(context, null, null, null, new ValidatorSettings());
 
 
@@ -86,7 +86,7 @@ class InstanceValidatorTests {
 
   @Test
   void testTimeoutParameter() {
-    when(context.getVersion()).thenReturn("5.0.1");
+    when(context.getFHIRVersion()).thenReturn("5.0.1");
     final String dummyTimeoutSource = "Dummy Timeout Source";
     final String originalMessage = "Original Message";
     final String dummyTimeoutMessage = "Dummy Timeout Message";

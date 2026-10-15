@@ -183,6 +183,10 @@ public class SECTION extends CONTENT_ITEM implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SECTION) dst);
+      }
+
       public void copyValues(SECTION dst) {
         super.copyValues(dst);
         if (itemsList != null) {

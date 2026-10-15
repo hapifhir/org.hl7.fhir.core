@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -11,6 +12,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
+import org.hl7.fhir.model.ModelContext;
+import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -71,6 +74,19 @@ class LoadIgSourcePolicyTests {
   private static final int LOOPBACK_PORT = 18092;
   private static final String LOCAL_PATH_BODY = "{\"ig\": \"/definitely/not/a/package\"}";
 
+  /**
+   * A mocked engine, with just enough model context to serialise a response: the service hands each
+   * handler the engine context's model context, the handlers compose their OperationOutcomes with
+   * it, and an R6 parser refuses a null one.
+   */
+  private static ValidationEngine mockEngine() {
+    ValidationEngine engine = mock(ValidationEngine.class);
+    SimpleWorkerContext context = mock(SimpleWorkerContext.class);
+    when(context.getModelContext()).thenReturn(ModelContext.fullCoreContext());
+    when(engine.getContext()).thenReturn(context);
+    return engine;
+  }
+
   private static HttpResponse<String> postLoadIg(int port, String body) throws Exception {
     HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
     HttpRequest request = HttpRequest.newBuilder()
@@ -86,7 +102,7 @@ class LoadIgSourcePolicyTests {
   void networkModeRefusesLocalPath() throws Exception {
     // A mocked engine has no IgLoader: if the handler reached it, the result would be a 500,
     // so a 400 here proves the refusal happens first.
-    FhirValidatorHttpService service = new FhirValidatorHttpService(mock(ValidationEngine.class), false, NETWORK_PORT);
+    FhirValidatorHttpService service = new FhirValidatorHttpService(mockEngine(), false, NETWORK_PORT);
     service.startServer();
     try {
       HttpResponse<String> response = postLoadIg(NETWORK_PORT, LOCAL_PATH_BODY);
@@ -102,7 +118,7 @@ class LoadIgSourcePolicyTests {
   void loopbackModePassesLocalPathThrough() throws Exception {
     // Same mocked engine: reaching it yields a 500 from the null loader, which is exactly what
     // shows the path was NOT refused by the policy check.
-    FhirValidatorHttpService service = new FhirValidatorHttpService(mock(ValidationEngine.class), true, LOOPBACK_PORT);
+    FhirValidatorHttpService service = new FhirValidatorHttpService(mockEngine(), true, LOOPBACK_PORT);
     service.startServer();
     try {
       HttpResponse<String> response = postLoadIg(LOOPBACK_PORT, LOCAL_PATH_BODY);

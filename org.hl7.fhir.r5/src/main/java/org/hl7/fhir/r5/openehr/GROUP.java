@@ -69,6 +69,10 @@ public class GROUP extends ACTOR implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((GROUP) dst);
+      }
+
       public void copyValues(GROUP dst) {
         super.copyValues(dst);
       }

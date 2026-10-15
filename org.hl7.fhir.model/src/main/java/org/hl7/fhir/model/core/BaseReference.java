@@ -124,6 +124,10 @@ public abstract class BaseReference extends DataType implements IBaseReference, 
 	}
 
   @Override
+  public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+    copyValues((Element) dst, options);
+  }
+
   public void copyValues(Element dst, EnumSet<CopyObjectOptions> options) {
     super.copyValues(dst, options);
     if (resource != null && dst instanceof BaseReference) {

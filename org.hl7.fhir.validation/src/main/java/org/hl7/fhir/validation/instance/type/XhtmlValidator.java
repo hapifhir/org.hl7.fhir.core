@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.formats.FormatUtilities;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.model.utilities.formats.FormatUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -42,7 +42,6 @@ public class XhtmlValidator extends BaseValidator {
       "area.coords", "area.href", "area.nohref", "area.alt", "table.summary", "table.width", "table.border",
       "table.frame", "table.rules", "table.cellspacing", "table.cellpadding", "pre.space", "td.nowrap"));
   private static final HashSet<String> HTML_BLOCK_LIST = new HashSet<>(Arrays.asList("div",  "blockquote", "table", "ol", "ul", "p"));
-
   
   private List<ValidationMessage> errors;
   private NodeStack stack;

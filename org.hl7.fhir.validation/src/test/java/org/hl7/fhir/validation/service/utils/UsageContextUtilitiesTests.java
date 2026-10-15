@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.model.UsageContext;
+import org.hl7.fhir.model.core.CodeableConcept;
+import org.hl7.fhir.model.core.Quantity;
+import org.hl7.fhir.model.core.Reference;
+import org.hl7.fhir.model.core.UsageContext;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -32,7 +32,7 @@ public class UsageContextUtilitiesTests {
     // UsageContext.value[x] has no Coding choice, so a coding is carried as a CodeableConcept
     UsageContext usage = parse("Coding:http://hl7.org/fhir/administrative-gender#female");
     assertThat(usage.getValue()).isInstanceOf(CodeableConcept.class);
-    assertThat(usage.getValueCodeableConcept().getCoding()).hasSize(1);
+    assertThat(usage.getValueCodeableConcept().getCodingList()).hasSize(1);
     assertThat(usage.getValueCodeableConcept().getCodingFirstRep().getSystem()).isEqualTo("http://hl7.org/fhir/administrative-gender");
     assertThat(usage.getValueCodeableConcept().getCodingFirstRep().getCode()).isEqualTo("female");
   }

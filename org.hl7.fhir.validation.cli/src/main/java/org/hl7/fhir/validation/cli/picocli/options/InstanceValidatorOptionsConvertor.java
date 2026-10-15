@@ -1,14 +1,14 @@
 package org.hl7.fhir.validation.cli.picocli.options;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
-import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hl7.fhir.model.utilities.JurisdictionUtilities;
+import org.hl7.fhir.services.validation.BundleValidationRule;
+import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.cli.picocli.OptionUtilities;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;

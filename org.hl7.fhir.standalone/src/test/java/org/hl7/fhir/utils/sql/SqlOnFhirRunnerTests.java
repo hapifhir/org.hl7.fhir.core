@@ -195,7 +195,7 @@ public class SqlOnFhirRunnerTests {
   }
 
   private void loadResources(JsonArray resources, TestProvider provider) throws IOException {
-    org.hl7.fhir.model.core.formats.JsonParser fhirParser = new org.hl7.fhir.model.core.formats.JsonParser(context);
+    org.hl7.fhir.model.core.formats.JsonParser fhirParser = new org.hl7.fhir.model.core.formats.JsonParser(context.getModelContext());
 
     for (JsonElement element : resources) {
       if (element instanceof JsonObject) {

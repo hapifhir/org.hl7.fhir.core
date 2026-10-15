@@ -26,7 +26,7 @@ public class JsonElementModelParserTests {
     List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
     Element e = jp.parseSingle(cnt, errors);
     
-    Assertions.assertEquals(2, e.getChildren("extension").get(0).getChildren().size());
+    Assertions.assertEquals(2, e.getChildren("extension").get(0).getChildList().size());
   }
 
 }

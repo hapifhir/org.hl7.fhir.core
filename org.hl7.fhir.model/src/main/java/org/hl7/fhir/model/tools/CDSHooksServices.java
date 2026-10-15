@@ -414,6 +414,35 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.hook != null) {
+            visitor.visit(this, "hook", -1, this.hook);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.id != null) {
+            visitor.visit(this, "id", -1, this.id);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.usageRequirements != null) {
+            visitor.visit(this, "usageRequirements", -1, this.usageRequirements);
+          }
+          if (this.prefetchList != null) {
+            int i = 0;
+            for (Base v : this.prefetchList) {
+              if (v != null) {
+                visitor.visit(this, "prefetch", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "hook":  return new Property("hook", "string", "The hook this Services should be invoked on", 0, 1, hook);
@@ -539,6 +568,10 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         CDSHooksServicesServicesComponent dst = new CDSHooksServicesServicesComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksServicesServicesComponent) dst, options);
       }
 
       public void copyValues(CDSHooksServicesServicesComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -733,6 +766,17 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "key":  return new Property("key", "code", "Key of FHIR query - name for client to use when sending to Services", 0, 1, key);
@@ -807,6 +851,10 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         CDSHooksServicesServicesPrefetchComponent dst = new CDSHooksServicesServicesPrefetchComponent(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksServicesServicesPrefetchComponent) dst, options);
       }
 
       public void copyValues(CDSHooksServicesServicesPrefetchComponent dst, EnumSet<CopyObjectOptions> options) {
@@ -931,6 +979,20 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.servicesList != null) {
+          int i = 0;
+          for (Base v : this.servicesList) {
+            if (v != null) {
+              visitor.visit(this, "services", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "services":  return new Property("services", "http://hl7.org/fhir/tools/StructureDefinition/CDSHooksElement", "A list of CDS services", 0, java.lang.Integer.MAX_VALUE, servicesList);
@@ -995,6 +1057,10 @@ public class CDSHooksServices extends CDSHooksElement implements ICompositeType 
         CDSHooksServices dst = new CDSHooksServices(this.modelContext);
         copyValues(dst, options);
         return dst;
+      }
+
+      public void assignValues(Base dst, EnumSet<CopyObjectOptions> options) {
+        copyValues((CDSHooksServices) dst, options);
       }
 
       public void copyValues(CDSHooksServices dst, EnumSet<CopyObjectOptions> options) {

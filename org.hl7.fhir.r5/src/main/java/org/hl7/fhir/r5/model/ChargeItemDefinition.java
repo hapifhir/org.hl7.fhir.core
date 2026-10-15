@@ -275,6 +275,10 @@ public class ChargeItemDefinition extends MetadataResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ChargeItemDefinitionApplicabilityComponent) dst);
+      }
+
       public void copyValues(ChargeItemDefinitionApplicabilityComponent dst) {
         super.copyValues(dst);
         dst.condition = condition == null ? null : condition.copy();
@@ -544,6 +548,10 @@ public class ChargeItemDefinition extends MetadataResource {
         ChargeItemDefinitionPropertyGroupComponent dst = new ChargeItemDefinitionPropertyGroupComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ChargeItemDefinitionPropertyGroupComponent) dst);
       }
 
       public void copyValues(ChargeItemDefinitionPropertyGroupComponent dst) {
@@ -2812,6 +2820,10 @@ public class ChargeItemDefinition extends MetadataResource {
         ChargeItemDefinition dst = new ChargeItemDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ChargeItemDefinition) dst);
       }
 
       public void copyValues(ChargeItemDefinition dst) {

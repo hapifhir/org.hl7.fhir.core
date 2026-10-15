@@ -29,3 +29,8 @@
     }
     return b.toString();
   }
+
+  public String toString() {
+    return (ordered == null ? "??" : "true".equals(ordered.asStringValue()) ? "ordered" : "unordered")+"/"+
+        (rules == null ? "??" : rules.asStringValue())+" "+getDiscriminatorList().toString();
+  }

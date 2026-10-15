@@ -2654,6 +2654,24 @@ public class Enumerations50_N {
         case _6_0_0:
           tgt.setValue(org.hl7.fhir.model.core.Enumerations.FHIRVersion._6_0_0);
           break;
+        case _6_0_0_BALLOT1:
+          tgt.setValue(org.hl7.fhir.model.core.Enumerations.FHIRVersion._6_0_0BALLOT1);
+          break;
+        case _6_0_0_BALLOT2:
+          tgt.setValue(org.hl7.fhir.model.core.Enumerations.FHIRVersion._6_0_0BALLOT2);
+          break;
+        case _6_0_0_BALLOT3:
+          tgt.setValue(org.hl7.fhir.model.core.Enumerations.FHIRVersion._6_0_0BALLOT3);
+          break;
+        case _6_0_0_BALLOT4:
+          tgt.setValue(org.hl7.fhir.model.core.Enumerations.FHIRVersion._6_0_0BALLOT4);
+          break;
+        case _6_0_0_BALLOT5:
+          tgt.setValue(org.hl7.fhir.model.core.Enumerations.FHIRVersion._6_0_0BALLOT5);
+          break;
+        case _6_0_0_SNAPSHOT1:
+          tgt.setValue(org.hl7.fhir.model.core.Enumerations.FHIRVersion._6_0_0SNAPSHOT1);
+          break;
         default:
           tgt.setValue(org.hl7.fhir.model.core.Enumerations.FHIRVersion.NULL);
           break;
@@ -2844,6 +2862,24 @@ public class Enumerations50_N {
           break;
         case _6_0_0:
           tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._6_0_0);
+          break;
+        case _6_0_0BALLOT1:
+          tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._6_0_0_BALLOT1);
+          break;
+        case _6_0_0BALLOT2:
+          tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._6_0_0_BALLOT2);
+          break;
+        case _6_0_0BALLOT3:
+          tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._6_0_0_BALLOT3);
+          break;
+        case _6_0_0BALLOT4:
+          tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._6_0_0_BALLOT4);
+          break;
+        case _6_0_0BALLOT5:
+          tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._6_0_0_BALLOT5);
+          break;
+        case _6_0_0SNAPSHOT1:
+          tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._6_0_0_SNAPSHOT1);
           break;
         default:
           tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion.NULL);

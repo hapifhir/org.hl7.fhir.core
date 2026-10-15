@@ -432,6 +432,10 @@ public class Basic extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Basic) dst);
+      }
+
       public void copyValues(Basic dst) {
         super.copyValues(dst);
         if (identifier != null) {

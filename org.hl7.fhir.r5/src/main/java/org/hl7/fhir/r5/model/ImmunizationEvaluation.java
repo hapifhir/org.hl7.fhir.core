@@ -1061,6 +1061,10 @@ public class ImmunizationEvaluation extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ImmunizationEvaluation) dst);
+      }
+
       public void copyValues(ImmunizationEvaluation dst) {
         super.copyValues(dst);
         if (identifier != null) {

@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient5;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -52,14 +52,14 @@ public class TerminologyClientFactoryTest {
   @ParameterizedTest
   @MethodSource("data")
   void testMakeClient(String url, FhirPublication fhirPublication, String expectedAddress) throws URISyntaxException {
-    ITerminologyClient terminologyClient = new TerminologyClientFactory(fhirPublication).makeClient("id", url, "dummyUserAgent", null);
+    ITerminologyClient5 terminologyClient = new TerminologyClientFactory(fhirPublication).makeClientR5("id", url, "dummyUserAgent", null);
     assertEquals(expectedAddress, terminologyClient.getAddress());
   }
 
   @Test
   void testMakeClientDstu1Fails() {
     assertThrows(Error.class, () -> {
-         new TerminologyClientFactory(FhirPublication.DSTU1).makeClient("id", "urldoesnotmatter", "dummyUserAgent", null);
+         new TerminologyClientFactory(FhirPublication.DSTU1).makeClientR5("id", "urldoesnotmatter", "dummyUserAgent", null);
       }
     );
   }
@@ -67,7 +67,7 @@ public class TerminologyClientFactoryTest {
   @Test
   public void testMakeClientNullFails() throws URISyntaxException {
     assertThrows(Error.class, () -> {
-        ITerminologyClient terminologyClient = new TerminologyClientFactory(FhirPublication.NULL).makeClient("id", "urldoesnotmatter", "dummyUserAgent", null);
+        ITerminologyClient5 terminologyClient = new TerminologyClientFactory(FhirPublication.NULL).makeClientR5("id", "urldoesnotmatter", "dummyUserAgent", null);
       }
     );
   }

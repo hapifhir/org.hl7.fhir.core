@@ -35,12 +35,11 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.model.utilities.EFhirClientException;
+import org.hl7.fhir.services.client.EFhirClientException;
 import org.hl7.fhir.services.terminology.OpIssueCode;
-import org.hl7.fhir.services.terminology.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
 import org.hl7.fhir.standalone.context.BaseWorkerContext;
-import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.LanguageUtils;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
@@ -58,8 +57,6 @@ import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.ValueSet.*;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
 import org.hl7.fhir.model.utilities.ValueSetUtilities;
-import org.hl7.fhir.standalone.terminology.expansion.ConceptFilter;
-import org.hl7.fhir.standalone.terminology.expansion.WorkingContext;
 import org.hl7.fhir.standalone.terminology.providers.CodeSystemProvider;
 import org.hl7.fhir.standalone.terminology.providers.CodeSystemProviderExtension;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyOperationContext;
@@ -704,7 +701,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       checkCanonical(exp, base, focus);
       imports.remove(0);
       base.checkNoModifiers("Imported ValueSet", "expanding");
-      excludeImport(wc, base.getExpansion().getContainsList(), imports, exp, null);
+      excludeImport(wc, base.getExpansion(), base.getExpansion().getContainsList(), imports, exp, null);
       return;
     }
     String sv = exc.getSystem() + (exc.hasVersion() ? "#" + exc.getVersion() : "");
@@ -743,7 +740,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       checkCanonical(exp, base, focus);
       imports.remove(0);
       base.checkNoModifiers("Imported ValueSet", "expanding");
-      excludeImport(wc, base.getExpansion().getContainsList(), imports, exp, null);
+      excludeImport(wc, base.getExpansion(), base.getExpansion().getContainsList(), imports, exp, null);
     }
     for (ConceptReferenceComponent c : exc.getConceptList()) {
       if (imports.isEmpty() || filterContainsCode(imports, exc.getSystem(), exc.getVersion(), c.getCode(), exp)) {
@@ -767,21 +764,48 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
-  private void excludeImport(WorkingContext wc, List<ValueSetExpansionContainsComponent> list, List<ValueSet> imports, ValueSetExpansionComponent exp, String system) {
+  private void excludeImport(WorkingContext wc, ValueSetExpansionComponent src, List<ValueSetExpansionContainsComponent> list, List<ValueSet> imports, ValueSetExpansionComponent exp, String system) {
     opContext.deadCheck("excludeImport");
 
     for (ValueSetExpansionContainsComponent c : list) {
       c.checkNoModifiers("Imported Expansion in Code System", "expanding");
       if ((imports.isEmpty() || !filterContainsCode(imports, c.getSystem(), c.getVersion(), c.getCode(), exp)) && (system == null || system.equals(c.getSystem()))) {
-        excludeCode(wc, c.getSystem(), c.getVersion(), c.getCode());
+        excludeImportedCode(wc, src, c);
       }
-      excludeImport(wc, c.getContainsList(), imports, exp, system);
+      excludeImport(wc, src, c.getContainsList(), imports, exp, system);
     }
   }
 
   private void excludeCodes(WorkingContext wc, ValueSetExpansionComponent expand) {
     opContext.deadCheck("excludeCodes");
     for (ValueSetExpansionContainsComponent c : expand.getContainsList()) {
+      excludeImportedCode(wc, expand, c);
+    }
+  }
+
+  /**
+   * Exclude a code taken from another expansion. The exclusion key includes the code system
+   * version, but an expansion only reports versions in contains when they differ, so the code
+   * usually arrives without one - and would then never match the (versioned) codes being
+   * included. In that case the version is taken from the expansion's used-codesystem
+   * parameter(s); if it used several versions of the system, the code is excluded in each
+   */
+  private void excludeImportedCode(WorkingContext wc, ValueSetExpansionComponent src, ValueSetExpansionContainsComponent c) {
+    if (c.hasVersion() || src == null) {
+      excludeCode(wc, c.getSystem(), c.getVersion(), c.getCode());
+      return;
+    }
+    boolean done = false;
+    for (ValueSetExpansionParameterComponent p : src.getParameterList()) {
+      if ("used-codesystem".equals(p.getName()) && p.hasValue()) {
+        String v = p.getValue().primitiveValue();
+        if (v != null && c.getSystem() != null && v.startsWith(c.getSystem() + "|")) {
+          excludeCode(wc, c.getSystem(), v.substring(c.getSystem().length() + 1), c.getCode());
+          done = true;
+        }
+      }
+    }
+    if (!done) {
       excludeCode(wc, c.getSystem(), c.getVersion(), c.getCode());
     }
   }
@@ -798,7 +822,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   public ValueSetExpansionOutcome expand(ValueSet source, Parameters expParams) {
     allErrors.clear();
     try {
-      opContext.seeContext(source.getVersionedUrl());
+      opContext.seeContext(contextName(source));
       
       return expandInternal(source, expParams);
     } catch (NoTerminologyServiceException e) {
@@ -844,7 +868,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     altCodeParams.seeParameters(expParams);
     altCodeParams.seeValueSet(source);
     source.checkNoModifiers("ValueSet", "expanding");
-    focus = source.copy(Base.COPY_DATA);
+    focus = source.copy(Base.COPY_NOTHING);
     focus.setIdBase(null);
     focus.setExpansion(new ValueSet.ValueSetExpansionComponent());
     focus.getExpansion().setTimestampElement(DateTimeType.now());
@@ -944,7 +968,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     // ValueSet.compose.property names the properties to return "if the client doesn't ask for any
     // particular properties", so it is only consulted when the request named none
     if (source.hasCompose() && !source.getCompose().getPropertyList().isEmpty() && !expParams.hasParameter("property")) {
-      expParams = expParams.copy(Base.COPY_DATA);
+      expParams = expParams.copy(Base.COPY_NOTHING);
       for (StringType t : source.getCompose().getPropertyList()) {
         expParams.addParameter("property", new StringType(t.getValue()));
       }
@@ -983,7 +1007,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if ("displayLanguage".equals(name)) {
       this.langs = new AcceptLanguageHeader(value.primitiveValue(), true);
       focus.getExpansion().getParameterList().removeIf(p -> p.getName().equals(name));
-      focus.getExpansion().addParameter().setName(name).setValue(new CodeType(value.primitiveValue()));
+      // echo it back in its normal form - "en,*;q=0", not whatever spacing the request used
+      focus.getExpansion().addParameter().setName(name).setValue(new CodeType(this.langs.toParameterValue()));
     }
     if ("designation".equals(name)) {
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
@@ -1024,7 +1049,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     altCodeParams.seeParameters(expParams);
     altCodeParams.seeValueSet(source);
     source.checkNoModifiers("ValueSet", "expanding");
-    focus = source.copy(Base.COPY_DATA);
+    focus = source.copy(Base.COPY_NOTHING);
     focus.setIdBase(null);
     focus.setExpansion(new ValueSet.ValueSetExpansionComponent());
     focus.getExpansion().setTimestampElement(DateTimeType.now());
@@ -1227,7 +1252,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
     checkCanonical(exp, vs, focus);
-    expParams = expParams.copy(Base.COPY_DATA);
+    expParams = expParams.copy(Base.COPY_NOTHING);
     expParams.getParameterList().removeIf(pp -> Utilities.existsInList(pp.getName(), "offset", "count"));
     if (noInactive) {
       expParams.addParameter("activeOnly", true);
@@ -1293,7 +1318,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     checkCanonical(exp, vs, focus);
     if (noInactive) {
-      expParams = expParams.copy(Base.COPY_DATA);
+      expParams = expParams.copy(Base.COPY_NOTHING);
       expParams.addParameter("activeOnly", true);
     }
     ValueSetExpander expander = new ValueSetExpander(context, opContext.copy(), allErrors);
@@ -1306,7 +1331,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       throw fail(I18nConstants.VS_EXP_IMPORT_FAIL_X, vs.getUrl());
     }
     
-    if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
+    // a contained value set has a made-up url: it is not reported as used, as for an include
+    if (!vs.hasUserData(UserDataNames.CONTAINED_RESOURCE) && (vs.hasVersion() || REPORT_VERSION_ANYWAY)) {
       UriType u = new UriType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
       if (!existsInParams(exp.getParameterList(), "used-valueset", u))
         exp.getParameterList().add(new ValueSetExpansionParameterComponent().setName("used-valueset").setValue(u));

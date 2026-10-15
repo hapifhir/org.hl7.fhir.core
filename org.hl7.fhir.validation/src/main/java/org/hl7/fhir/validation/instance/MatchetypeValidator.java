@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.Property;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.Property;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -112,7 +112,7 @@ public class MatchetypeValidator {
     doSort(actualElement, expectedElement);
     List<String> optionals = listOptionals(expectedElement);
     List<String> countOnlys = listCountOnlys(expectedElement);
-    for (Property en : actualElement.children()) {
+    for (Property en : actualElement.getChildren()) {
       String n = en.getName();
       if (expectedElement.hasChildren(n)) {
         Property ep = expectedElement.getChildByName(n);
@@ -124,7 +124,7 @@ public class MatchetypeValidator {
         ok = false;
       }
     }
-    for (Property en : expectedElement.children()) {
+    for (Property en : expectedElement.getChildren()) {
       String n = en.getName();
       if (isAllMatchetypeExtensions(en)) {
         // nothing

@@ -65,6 +65,10 @@ public abstract class DV_TEMPORAL extends DV_ABSOLUTE_QUANTITY implements ICompo
 
       public abstract DV_TEMPORAL copy();
 
+      public void assignValues(Base dst) {
+        copyValues((DV_TEMPORAL) dst);
+      }
+
       public void copyValues(DV_TEMPORAL dst) {
         super.copyValues(dst);
       }

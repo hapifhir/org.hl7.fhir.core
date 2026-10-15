@@ -2,7 +2,7 @@ package org.hl7.fhir.validation.instance.utils;
 
 import java.util.Comparator;
 
-import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.model.core.StructureDefinition;
 
 public class StructureDefinitionSorterByUrl implements Comparator<StructureDefinition> {
 

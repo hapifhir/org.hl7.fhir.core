@@ -4,9 +4,9 @@ import java.util.*;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.UsageContext;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.model.core.Coding;
+import org.hl7.fhir.model.core.UsageContext;
+import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.instance.utils.DigitalSignatureSupport;

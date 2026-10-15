@@ -9,7 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.model.utilities.EOperationOutcome;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -46,7 +46,7 @@ public class PackageVisitor {
     private String pid;
     private NpmPackage npm;
     private String version;
-    protected PackageContext(String pid, NpmPackage npm, String version) {
+    public PackageContext(String pid, NpmPackage npm, String version) {
       super();
       this.pid = pid;
       this.npm = npm;
@@ -64,11 +64,11 @@ public class PackageVisitor {
   }
   
   public interface IPackageVisitorProcessor {
-    public Object startPackage(PackageContext context) throws FHIRException, IOException, EOperationOutcome;
-    public void processResource(PackageContext context, Object clientContext, String type, String id, byte[] content) throws FHIRException, IOException, EOperationOutcome;
-    public void finishPackage(PackageContext context) throws FHIRException, IOException, EOperationOutcome;
+    public Object startPackage(PackageContext context) throws FHIRException, IOException;
+    public void processResource(PackageContext context, Object clientContext, String type, String id, byte[] content) throws FHIRException, IOException;
+    public void finishPackage(PackageContext context) throws FHIRException, IOException;
 
-    public void alreadyVisited(String pid) throws FHIRException, IOException, EOperationOutcome;
+    public void alreadyVisited(String pid) throws FHIRException, IOException;
   }
 
   private Set<String> resourceTypes = new HashSet<>();
@@ -158,7 +158,7 @@ public class PackageVisitor {
     this.processor = processor;
   }
 
-  public void visitPackages() throws IOException, ParserConfigurationException, SAXException, FHIRException, EOperationOutcome {
+  public void visitPackages() throws IOException, ParserConfigurationException, SAXException, FHIRException {
     log.info("Finding packages");
     pc = clientPackageServer == null
       ? new PackageClient(PackageServer.primaryServer())
@@ -353,7 +353,7 @@ public class PackageVisitor {
   }
 
 
-  private void processPackage(String pid, String v, int i, int t) throws IOException, FHIRException, EOperationOutcome {
+  private void processPackage(String pid, String v, int i, int t) throws IOException, FHIRException {
     NpmPackage npm = null;
     String fv = null;
     try {

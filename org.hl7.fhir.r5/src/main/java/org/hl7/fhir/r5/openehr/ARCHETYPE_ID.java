@@ -69,6 +69,10 @@ public class ARCHETYPE_ID extends OBJECT_ID implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ARCHETYPE_ID) dst);
+      }
+
       public void copyValues(ARCHETYPE_ID dst) {
         super.copyValues(dst);
       }

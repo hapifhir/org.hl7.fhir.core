@@ -152,7 +152,7 @@ public class FHIRPathDebugTracerTests {
 
     IWorkerContext ctxt = TestingUtilities.getSharedWorkerContext();
     ResourceParser p = new ResourceParser(ctxt);
-    Resource res = (Resource) new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(TestingUtilities.loadTestResourceStream("r5", filename));
+    Resource res = (Resource) new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(TestingUtilities.loadTestResourceStream("r5", filename));
     org.hl7.fhir.services.elementmodel.Element e = p.parse(res);
     return e;
   }

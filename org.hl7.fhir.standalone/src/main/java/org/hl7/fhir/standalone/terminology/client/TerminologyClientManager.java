@@ -3,15 +3,15 @@ package org.hl7.fhir.standalone.terminology.client;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.utilities.ImplicitValueSets;
-import org.hl7.fhir.services.context.ILoggingService;
 import org.hl7.fhir.model.core.Bundle.BundleEntryComponent;
 import org.hl7.fhir.model.core.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.model.utilities.CodeSystemUtilities;
 import org.hl7.fhir.model.utilities.ValueSetUtilities;
-import org.hl7.fhir.services.terminology.ITerminologyClient;
-import org.hl7.fhir.services.terminology.ITerminologyClientFactory;
+import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
+import org.hl7.fhir.services.terminology.ITerminologyClientManager;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -21,6 +21,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import java.io.File;
@@ -32,7 +33,7 @@ import java.net.URL;
 import java.util.*;
 
 
-public class TerminologyClientManager {
+public class TerminologyClientManager implements ITerminologyClientManager {
 
   private ImplicitValueSets implicitValueSets;
 
@@ -77,7 +78,7 @@ public class TerminologyClientManager {
     
   }
 
-  public ITerminologyClientFactory getFactory() {
+  public ITerminologyClientFactoryN getFactory() {
     return factory;
   }
 
@@ -135,7 +136,7 @@ public class TerminologyClientManager {
 
   private static final boolean IGNORE_TX_REGISTRY = false;
   
-  private ITerminologyClientFactory factory;
+  private ITerminologyClientFactoryN factory;
   private List<TerminologyClientContext> serverList = new ArrayList<>(); // clients by server address
   private Map<String, TerminologyClientContext> serverMap = new HashMap<>(); // clients by server address
   private Map<String, Boolean> serverSupportMap = new HashMap<>(); // clients by server address
@@ -163,7 +164,7 @@ public class TerminologyClientManager {
   private boolean isShutdown;
   private IModelContext context;
 
-  public TerminologyClientManager(IModelContext context, ITerminologyClientFactory factory, ILoggingService logger) {
+  public TerminologyClientManager(IModelContext context, ITerminologyClientFactoryN factory, ILoggingService logger) {
     super();
     this.context = context;
     this.factory = factory;
@@ -237,12 +238,14 @@ public class TerminologyClientManager {
       }
     }
     
-    // now we look for a server that's authoritative for one of them and a candidate for the others
+    // now we look for a server that's authoritative for one of them and a candidate for the others.
+    // A system that the registry knows no server for at all doesn't constrain the choice - any
+    // server is as good as any other for it - so it doesn't stop a server qualifying here
     for (ServerOptionList ol : choices) {
       for (String s : ol.authoritative) {
         boolean ok = true;
         for (ServerOptionList t : choices) {
-          if (!t.authoritative.contains(s) && !t.candidates.contains(s)) {
+          if (!isUnresolved(t) && !t.authoritative.contains(s) && !t.candidates.contains(s)) {
             ok = false;
           }
         }
@@ -273,30 +276,23 @@ public class TerminologyClientManager {
       }
     }
 
-    // check the candidates actually support the code system - but filter a copy: the
-    // ServerOptionList objects are cached in resMap (and persisted to system-map.json),
-    // and must keep recording what the registry actually said, not the outcome of a
-    // possibly-transient support check
-    List<ServerOptionList> filteredChoices = new ArrayList<>();
-    for (ServerOptionList choice : choices) {
-      ServerOptionList filtered = checkActuallySupports(choice);
-      if (filtered.candidates.size() < choice.candidates.size()) {
-        List<String> removed = new ArrayList<>(choice.candidates);
-        removed.removeAll(filtered.candidates);
-        log(vs, null, systems, choices, "Candidate server(s) "+CommaSeparatedStringBuilder.join("|", removed)+" dropped for "+choice.url+": no usable copy of the code system found there");
-      }
-      filteredChoices.add(filtered);
-    }
-    choices = filteredChoices;
-
-    // now we look for a server that's a candidate for all of them
+    // now we look for a server that's a candidate for all of them (again, systems no server is
+    // known for don't constrain the choice), and that actually has a usable copy of the code
+    // systems. The support check costs a round trip (or several) per server, so it's only done
+    // for a server that would otherwise be chosen, stopping at the first that passes. Note that
+    // the outcome of the check is not written back to the ServerOptionList objects: they are
+    // cached in resMap (and persisted to system-map.json), and must keep recording what the
+    // registry actually said, not the outcome of a possibly-transient support check
     for (ServerOptionList ol : choices) {
       for (String s : ol.candidates) {
         boolean ok = true;
         for (ServerOptionList t : choices) {
-          if (!t.candidates.contains(s)) {
+          if (!isUnresolved(t) && !t.candidates.contains(s)) {
             ok = false;
           }
+        }
+        if (ok) {
+          ok = actuallySupportsAll(vs, s, systems, choices);
         }
         if (ok) {
           log(vs, s, systems, choices, "Found candidate server " + s);
@@ -355,16 +351,38 @@ public class TerminologyClientManager {
     }
   }
 
-  private ServerOptionList checkActuallySupports(ServerOptionList choice) {
-    for (String s : choice.candidates) {
-      if (isTxFhirOrg(s)) {
-        return choice;
+  /**
+   * the registry answered, but knows of no server at all for the system
+   */
+  private boolean isUnresolved(ServerOptionList choice) {
+    return choice.authoritative.isEmpty() && choice.candidates.isEmpty();
+  }
+
+  /**
+   * check that a candidate server really has a usable copy of each of the code systems
+   * it is a candidate for. Systems where tx.fhir.org is among the candidates aren't
+   * checked (then the registry is trusted)
+   */
+  private boolean actuallySupportsAll(ValueSet vs, String server, Set<String> systems, List<ServerOptionList> choices) {
+    for (ServerOptionList t : choices) {
+      if (isUnresolved(t) || !t.candidates.contains(server) || hasTxFhirOrgCandidate(t)) {
+        continue;
+      }
+      if (!isSupportedServer(server, t.url)) {
+        log(vs, null, systems, choices, "Candidate server "+server+" dropped for "+t.url+": no usable copy of the code system found there");
+        return false;
       }
     }
-    ServerOptionList res = new ServerOptionList(choice.url, choice.authoritative, choice.candidates);
-    res.language = choice.language;
-    res.candidates.removeIf(server -> !isSupportedServer(server, choice.url));
-    return res;
+    return true;
+  }
+
+  private boolean hasTxFhirOrgCandidate(ServerOptionList choice) {
+    for (String s : choice.candidates) {
+      if (isTxFhirOrg(s)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean isSupportedServer(String server, String url) {
@@ -437,7 +455,7 @@ public class TerminologyClientManager {
     TerminologyClientContext client = serverMap.get(server);
     if (client == null) {
       try {
-        client = new TerminologyClientContext(factory.makeClient(context, "id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
+        client = new TerminologyClientContext(factory.makeClientN(context, "id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
       } catch (Exception e) {
         throw new TerminologyServiceException("Error accessing "+server+" for "+CommaSeparatedStringBuilder.join(",", systems)+": "+e.getMessage(), e);
       }
@@ -667,7 +685,7 @@ public class TerminologyClientManager {
     }
   }
 
-  public TerminologyClientContext setMasterClient(ITerminologyClient client, boolean useEcosystem) throws IOException {
+  public TerminologyClientContext setMasterClient(ITerminologyClientN client, boolean useEcosystem) throws IOException {
     this.useEcosystem = useEcosystem;
     TerminologyClientContext terminologyClientContext = new TerminologyClientContext(client, cache, true, logger);
     // Note: the cleared contexts are deliberately NOT released here. Releasing one
@@ -687,7 +705,7 @@ public class TerminologyClientManager {
     return serverList.isEmpty() ? null : serverList.get(0);
   }
 
-  public ITerminologyClient getMasterClient() {
+  public ITerminologyClientN getMasterClient() {
     return serverList.isEmpty() ? null : serverList.get(0).getClient();
   }
 
@@ -700,7 +718,7 @@ public class TerminologyClientManager {
   }
 
 
-  public void setFactory(ITerminologyClientFactory factory) {
+  public void setFactory(ITerminologyClientFactoryN factory) {
     this.factory = factory;    
   }
 
@@ -862,7 +880,7 @@ public class TerminologyClientManager {
       TerminologyClientContext client = serverMap.get(server);
       if (client == null) {
         try {
-          client = new TerminologyClientContext(factory.makeClient(context,"id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
+          client = new TerminologyClientContext(factory.makeClientN(context,"id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
         } catch (URISyntaxException | IOException e) {
           throw new TerminologyServiceException(e);
         }
@@ -956,7 +974,7 @@ public class TerminologyClientManager {
       TerminologyClientContext client = serverMap.get(server);
       if (client == null) {
         try {
-          client = new TerminologyClientContext(factory.makeClient(context, "id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
+          client = new TerminologyClientContext(factory.makeClientN(context, "id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
         } catch (URISyntaxException | IOException e) {
           throw new TerminologyServiceException("Error accessing "+server+" for "+canonical+": "+e.getMessage(), e);
         }

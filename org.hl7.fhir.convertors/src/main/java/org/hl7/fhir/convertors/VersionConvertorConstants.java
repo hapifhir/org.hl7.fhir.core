@@ -85,6 +85,8 @@ public class VersionConvertorConstants {
   public static final String EXT_DOC_REF_CREATED = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DocumentReference.created";
   public static final String EXT_DIA_REP_PERFORMER = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DiagnosticReport.performer.role";
   public static final String EXT_VERSION_ALGORITHM = "http://hl7.org/fhir/5.0/StructureDefinition/extension-CanonicalResource.versionAlgorithm";
+  // ValueSet.scope (trial use in R5, removed in R6) is represented by this extension in other versions
+  public static final String EXT_VS_SCOPE = "http://hl7.org/fhir/StructureDefinition/valueset-scope";
   public static final String EXT_CS_FILTER_OPERATOR = "http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.filter.operator"; // for operators introduced in R6 (property-value-of)
   public static final String EXT_CS_FILTER_OPERATOR_R5 = "http://hl7.org/fhir/5.0/StructureDefinition/extension-CodeSystem.filter.operator"; // for operators introduced in R5 (child-of, descendent-leaf)
   public static final String EXT_CS_DESIGNATION_ADDITIONAL_USE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-CodeSystem.concept.designation.additionalUse"; // additionalUse was introduced in R5

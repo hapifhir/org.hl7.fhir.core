@@ -269,6 +269,10 @@ public abstract class ACTOR extends PARTY implements ICompositeType {
 
       public abstract ACTOR copy();
 
+      public void assignValues(Base dst) {
+        copyValues((ACTOR) dst);
+      }
+
       public void copyValues(ACTOR dst) {
         super.copyValues(dst);
         if (languagesList != null) {

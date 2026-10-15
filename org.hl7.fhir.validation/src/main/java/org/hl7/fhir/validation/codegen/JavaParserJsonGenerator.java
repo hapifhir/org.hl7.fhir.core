@@ -35,15 +35,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.fhirpath.ExpressionNode;
-import org.hl7.fhir.r5.fhirpath.ExpressionNode.Operation;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.services.fhirpath.ExpressionNode;
+import org.hl7.fhir.services.fhirpath.ExpressionNode.Operation;
+import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.Extension;
+import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -321,7 +321,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         ei = (EnumInfo) ed.getUserData("java.enum"); // getCodeListType(cd.getBinding());
         ValueSet vs = ei.getValueSet();
         if (vs.hasUserData("java.core.enum")) {
-          en = (isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.r5.model")+".Enumerations."+ei.getName();
+          en = (isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.model.core")+".Enumerations."+ei.getName();
         } else if (vs.hasUserData("shared")) {
           en = "Enumerations."+ei.getName();
         } else {
@@ -564,7 +564,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         ValueSet vs = ei.getValueSet();
         enShared = vs.hasUserData("shared") || vs.hasUserData("java.core.enum");
         if (vs.hasUserData("java.core.enum")) {
-          en = (isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.r5.model")+".Enumerations."+ei.getName();
+          en = (isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.model.core")+".Enumerations."+ei.getName();
         } else if (vs.hasUserData("shared")) {
           en = "Enumerations."+ei.getName();
         } else {

@@ -526,6 +526,10 @@ public class VirtualServiceDetail extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((VirtualServiceDetail) dst);
+      }
+
       public void copyValues(VirtualServiceDetail dst) {
         super.copyValues(dst);
         dst.channelType = channelType == null ? null : channelType.copy();

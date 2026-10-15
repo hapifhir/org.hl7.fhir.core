@@ -332,6 +332,10 @@ public class Binary extends BaseBinary implements IBaseBinary {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Binary) dst);
+      }
+
       public void copyValues(Binary dst) {
         super.copyValues(dst);
         dst.contentType = contentType == null ? null : contentType.copy();

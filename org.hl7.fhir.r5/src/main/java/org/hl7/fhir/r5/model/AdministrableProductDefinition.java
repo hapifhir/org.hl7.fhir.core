@@ -420,6 +420,10 @@ public class AdministrableProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((AdministrableProductDefinitionPropertyComponent) dst);
+      }
+
       public void copyValues(AdministrableProductDefinitionPropertyComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -906,6 +910,10 @@ public class AdministrableProductDefinition extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((AdministrableProductDefinitionRouteOfAdministrationComponent) dst);
+      }
+
       public void copyValues(AdministrableProductDefinitionRouteOfAdministrationComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -1166,6 +1174,10 @@ public class AdministrableProductDefinition extends DomainResource {
         AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent dst = new AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent) dst);
       }
 
       public void copyValues(AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent dst) {
@@ -1464,6 +1476,10 @@ public class AdministrableProductDefinition extends DomainResource {
         AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent dst = new AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent) dst);
       }
 
       public void copyValues(AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent dst) {
@@ -2333,6 +2349,10 @@ public class AdministrableProductDefinition extends DomainResource {
         AdministrableProductDefinition dst = new AdministrableProductDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AdministrableProductDefinition) dst);
       }
 
       public void copyValues(AdministrableProductDefinition dst) {

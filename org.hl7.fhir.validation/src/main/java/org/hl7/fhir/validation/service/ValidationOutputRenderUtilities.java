@@ -1,11 +1,12 @@
 package org.hl7.fhir.validation.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.model.core.Bundle;
+import org.hl7.fhir.model.core.OperationOutcome;
+import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.service.renderers.*;
@@ -44,8 +45,8 @@ public class ValidationOutputRenderUtilities {
       if (renderer.handlesBundleDirectly()) {
         renderer.render((Bundle) resource);
       } else {
-        renderer.start(((Bundle) resource).getEntry().size() > 1);
-        for (Bundle.BundleEntryComponent e : ((Bundle) resource).getEntry()) {
+        renderer.start(((Bundle) resource).getEntryList().size() > 1);
+        for (Bundle.BundleEntryComponent e : ((Bundle) resource).getEntryList()) {
           OperationOutcome op = (OperationOutcome) e.getResource();
           errorCount = errorCount + countErrors(op);
           renderer.render(op);
@@ -71,7 +72,7 @@ public class ValidationOutputRenderUtilities {
 
   private static int countErrors(OperationOutcome oo) {
     int error = 0;
-    for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
+    for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssueList()) {
       if (issue.getSeverity() == OperationOutcome.IssueSeverity.FATAL || issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR)
         error++;
     }
@@ -87,9 +88,9 @@ public class ValidationOutputRenderUtilities {
       if (output == null) {
         return new DefaultRenderer();
       } else if (output.endsWith(".json")) {
-        return new NativeRenderer(Manager.FhirFormat.JSON);
+        return new NativeRenderer(FhirFormat.JSON);
       } else {
-        return new NativeRenderer(Manager.FhirFormat.XML);
+        return new NativeRenderer(FhirFormat.XML);
       }
     } else if (Utilities.existsInList(style, "eslint-compact")) {
       return new ESLintCompactRenderer();
@@ -100,9 +101,9 @@ public class ValidationOutputRenderUtilities {
     } else if (Utilities.existsInList(style, "csv")) {
       return new CSVRenderer();
     } else if (Utilities.existsInList(style, "xml")) {
-      return new NativeRenderer(Manager.FhirFormat.XML);
+      return new NativeRenderer(FhirFormat.XML);
     } else if (Utilities.existsInList(style, "json")) {
-      return new NativeRenderer(Manager.FhirFormat.JSON);
+      return new NativeRenderer(FhirFormat.JSON);
     } else {
       log.info("Unknown output style '"+style+"'");
       return new DefaultRenderer();

@@ -45,7 +45,7 @@ import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
-import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
+import org.hl7.fhir.r5.context.PackageResourceLoader;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
@@ -53,7 +53,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory5;
 
 public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
 
@@ -142,7 +142,7 @@ public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
   }
 
   @Override
-  public ITerminologyClientFactory txFactory() {
+  public ITerminologyClientFactory5 txFactory() {
     return new TerminologyClientFactory(versionString());
   }
 

@@ -277,6 +277,10 @@ public class Claim extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((RelatedClaimComponent) dst);
+      }
+
       public void copyValues(RelatedClaimComponent dst) {
         super.copyValues(dst);
         dst.claim = claim == null ? null : claim.copy();
@@ -499,6 +503,10 @@ public class Claim extends DomainResource {
         PayeeComponent dst = new PayeeComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((PayeeComponent) dst);
       }
 
       public void copyValues(PayeeComponent dst) {
@@ -756,6 +764,10 @@ public class Claim extends DomainResource {
         ClaimEventComponent dst = new ClaimEventComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ClaimEventComponent) dst);
       }
 
       public void copyValues(ClaimEventComponent dst) {
@@ -1160,6 +1172,10 @@ public class Claim extends DomainResource {
         CareTeamComponent dst = new CareTeamComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((CareTeamComponent) dst);
       }
 
       public void copyValues(CareTeamComponent dst) {
@@ -1750,6 +1766,10 @@ public class Claim extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SupportingInformationComponent) dst);
+      }
+
       public void copyValues(SupportingInformationComponent dst) {
         super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
@@ -2156,6 +2176,10 @@ public class Claim extends DomainResource {
         DiagnosisComponent dst = new DiagnosisComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((DiagnosisComponent) dst);
       }
 
       public void copyValues(DiagnosisComponent dst) {
@@ -2663,6 +2687,10 @@ public class Claim extends DomainResource {
         ProcedureComponent dst = new ProcedureComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((ProcedureComponent) dst);
       }
 
       public void copyValues(ProcedureComponent dst) {
@@ -3235,6 +3263,10 @@ public class Claim extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((InsuranceComponent) dst);
+      }
+
       public void copyValues(InsuranceComponent dst) {
         super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
@@ -3570,6 +3602,10 @@ public class Claim extends DomainResource {
         AccidentComponent dst = new AccidentComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((AccidentComponent) dst);
       }
 
       public void copyValues(AccidentComponent dst) {
@@ -5402,6 +5438,10 @@ public class Claim extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ItemComponent) dst);
+      }
+
       public void copyValues(ItemComponent dst) {
         super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
@@ -5765,6 +5805,10 @@ public class Claim extends DomainResource {
         BodySiteComponent dst = new BodySiteComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((BodySiteComponent) dst);
       }
 
       public void copyValues(BodySiteComponent dst) {
@@ -6861,6 +6905,10 @@ public class Claim extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DetailComponent) dst);
+      }
+
       public void copyValues(DetailComponent dst) {
         super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
@@ -7912,6 +7960,10 @@ public class Claim extends DomainResource {
         SubDetailComponent dst = new SubDetailComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SubDetailComponent) dst);
       }
 
       public void copyValues(SubDetailComponent dst) {
@@ -9967,6 +10019,10 @@ public class Claim extends DomainResource {
         Claim dst = new Claim();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((Claim) dst);
       }
 
       public void copyValues(Claim dst) {

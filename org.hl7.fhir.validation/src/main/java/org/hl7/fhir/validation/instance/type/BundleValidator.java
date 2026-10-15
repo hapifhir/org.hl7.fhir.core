@@ -33,20 +33,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.elementmodel.ElementUtilities;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.elementmodel.ParserBase;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.model.Base.ValidationMode;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
-import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.test.utils.CompareUtilities;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
+import org.hl7.fhir.model.ValidationInformation;
+import org.hl7.fhir.model.core.VersionResolutionRules;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
+import org.hl7.fhir.services.elementmodel.Manager;
+import org.hl7.fhir.services.elementmodel.ParserBase;
+import org.hl7.fhir.model.core.Enumerations.FHIRVersion;
+import org.hl7.fhir.services.terminology.ValidationResult;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.services.testing.CompareUtilities;
+import org.hl7.fhir.services.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -123,7 +122,7 @@ public class BundleValidator extends BaseValidator {
     this.serverBase = serverBase;
   }
 
-  public boolean validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidationContext hostContext, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException {
+  public boolean validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidationContext hostContext, ResourcePercentageLogger pct, ValidationInformation.ValidationMode mode) throws FHIRException {
     boolean ok = true;
 
     String type = bundle.getNamedChildValue(TYPE, false);
@@ -212,7 +211,7 @@ public class BundleValidator extends BaseValidator {
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), !url.equals(fullUrl) || serverBase == null || (url.equals(Utilities.pathURL(serverBase, entry.getNamedChild(RESOURCE, false).fhirType(), id))), I18nConstants.BUNDLE_BUNDLE_ENTRY_CANONICAL, url, fullUrl) && ok;
       }
 
-      if (!VersionUtilities.isR2Ver(context.getVersion())) {
+      if (!VersionUtilities.isR2Ver(context.getFHIRVersion())) {
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), estack.getLiteralPath(), fullUrlOptional || fullUrl != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED) && ok;
       }
       // check bundle profile requests
@@ -223,7 +222,7 @@ public class BundleValidator extends BaseValidator {
         NodeStack rstack = estack.push(res, -1, null, null);
         for (BundleValidationRule bvr : validator().getBundleValidationRules()) {
           if (meetsRule(bvr, rtype, rcount, count)) {
-            StructureDefinition defn = context.fetchResource(StructureDefinition.class, bvr.getProfile(), IWorkerContext.VersionResolutionRules.defaultRule());
+            StructureDefinition defn = context.fetchResource(StructureDefinition.class, bvr.getProfile(), VersionResolutionRules.defaultRule());
             if (defn == null) {
               throw new Error(context.formatMessage(I18nConstants.BUNDLE_RULE_PROFILE_UNKNOWN, bvr.getRule(), bvr.getProfile()));
             } else {
@@ -249,7 +248,7 @@ public class BundleValidator extends BaseValidator {
     // this is the R6 signature approach
     // it can be preadopted in R5-, so we don't check the version here
     List<Element> signatureProvenances = new ArrayList<>();
-    ElementUtilities.findSignatures(bundle, signatureProvenances);
+    ElementModelUtilities.findSignatures(bundle, signatureProvenances);
     for (Element resource : signatureProvenances) {
       for (Element sig : resource.getChildrenByName("signature")) {
         if (sig.hasChild("data") && ("application/jose".equals(sig.getNamedChildValue("sigFormat")) || "application/pkcs7-signature".equals(sig.getNamedChildValue("sigFormat")))) {
@@ -693,7 +692,7 @@ public class BundleValidator extends BaseValidator {
    * <p></p>
    * Related JIRA ticket is <a href=https://jira.hl7.org/browse/FHIR-26544>FHIR-26544</a>
    *
-   * @param bundle {@link org.hl7.fhir.r5.elementmodel}
+   * @param bundle {@link org.hl7.fhir.services.elementmodel}
    * @param errors {@link List<ValidationMessage>}
    * @param stack {@link NodeStack}
    */
@@ -757,7 +756,7 @@ public class BundleValidator extends BaseValidator {
                   I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE_MSG, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));              
             } else {
               // this was illegal up to R4B, but changed to be legal in R5
-              if (VersionUtilities.isR5Plus(context.getVersion())) {
+              if (VersionUtilities.isR5Plus(context.getFHIRVersion())) {
                 hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, e.getEntry().line(), e.getEntry().col(), 
                     stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), isExpectedToBeReverse(e.getResource().fhirType()), 
                     I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE_R5, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));              
@@ -916,7 +915,7 @@ public class BundleValidator extends BaseValidator {
   }
 
   private void findReferences(Element start, List<StringWithSource> references) {
-    for (Element child : start.getChildren()) {
+    for (Element child : start.getChildList()) {
       if (child.getType().equals("Reference")) {
         String ref = child.getChildValue("reference");
         if (ref != null && !ref.startsWith("#") && !hasReference(ref, references))
@@ -1446,8 +1445,8 @@ public class BundleValidator extends BaseValidator {
       p.getElementsToIgnore().clear();
       p.getElementsToIgnore().addAll(excludedElements);
     }
-    if (p instanceof org.hl7.fhir.r5.elementmodel.JsonParser) {
-      ((org.hl7.fhir.r5.elementmodel.JsonParser) p).setCanonicalizeXhtml(jsonXml);
+    if (p instanceof org.hl7.fhir.services.elementmodel.JsonParser) {
+      ((org.hl7.fhir.services.elementmodel.JsonParser) p).setCanonicalizeXhtml(jsonXml);
     }
     p.compose(bundle, ba, OutputStyle.CANONICAL, null);
     toSign = ba.toByteArray();

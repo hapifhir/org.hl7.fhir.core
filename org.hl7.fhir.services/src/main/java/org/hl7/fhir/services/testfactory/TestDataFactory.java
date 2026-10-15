@@ -1,12 +1,12 @@
 package org.hl7.fhir.services.testfactory;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.Element;
 import org.hl7.fhir.services.elementmodel.Manager;
-import org.hl7.fhir.services.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.services.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.services.fhirpath.FHIRPathFunctionDefinition;
@@ -353,7 +353,7 @@ public class TestDataFactory {
         Element resource = factory.generate(profile);
         Element be = bundle.makeElement("entry");
         be.makeElement("fullUrl").setValue(Utilities.pathURL(canonical, "test", resource.fhirType(), resource.getIdBase()));
-        be.makeElement("resource").getChildren().addAll(resource.getChildren());
+        be.makeElement("resource").getChildList().addAll(resource.getChildList());
       }
     }
     log("Saving Bundle");
@@ -458,7 +458,7 @@ public class TestDataFactory {
       Element resource = Manager.parse(context, new ByteArrayInputStream(data), format).get(0).getElement();
       Element be = bundle.makeElement("entry");
       be.makeElement("fullUrl").setValue(Utilities.pathURL(canonical, "test", resource.fhirType(), resource.getIdBase()));
-      be.makeElement("resource").getChildren().addAll(resource.getChildren());
+      be.makeElement("resource").getChildList().addAll(resource.getChildList());
     }
     log("Saving Bundle");
     ByteArrayOutputStream bs = new ByteArrayOutputStream();

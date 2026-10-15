@@ -136,16 +136,25 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
   } 
 
   public String displayDiagnosticReport(ResourceWrapper dr) {
+    return displayDiagnosticReport(dr, 0);
+  }
+
+  public String displayDiagnosticReport(ResourceWrapper dr, int recursionCount) {
     ResourceWrapper c = dr.child("code");
     String cd = c == null ? context.formatPhrase(RenderingI18nContext.DIAG_REP_UNSPECIFIED_CODE) : displayCodeableConcept(c);
     ResourceWrapper s = dr.child("subject");
-    String sd = s == null ? context.formatPhrase(RenderingI18nContext.DIAG_REP_UNSPECIFIED_SUBJECT) : displayReference(s);
+    String sd = s == null ? context.formatPhrase(RenderingI18nContext.DIAG_REP_UNSPECIFIED_SUBJECT) : displayReference(s, recursionCount);
     return context.formatPhrase(RenderingI18nContext.DIAG_REP_SUMMARY, cd, sd);
   } 
 
   @Override 
   public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException { 
-    return displayDiagnosticReport(r); 
+    return displayDiagnosticReport(r, 0); 
+  } 
+
+  @Override 
+  public String buildSummary(ResourceWrapper r, int recursionCount) throws UnsupportedEncodingException, IOException { 
+    return displayDiagnosticReport(r, recursionCount); 
   } 
 
 

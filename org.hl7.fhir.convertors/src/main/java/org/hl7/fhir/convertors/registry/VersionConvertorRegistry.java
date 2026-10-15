@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.registry;
 
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_N;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_50_N;
 import org.hl7.fhir.convertors.igs.VersionConvertorIGBase;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -16,21 +18,50 @@ public class VersionConvertorRegistry {
     registeredConvertors.add(convertor);
   }
 
-  public boolean isHandled(String resourceType, String version) {
-    if (VersionUtilities.isR4Ver(version)) {
+  public boolean isHandled(String resourceType, String sourceVersion, String destVersion) {
+    if (!(VersionUtilities.isR6Ver(sourceVersion) || VersionUtilities.isR5Ver(sourceVersion))) {
+      return false;
+    }
+    boolean r6 = VersionUtilities.isR6Ver(sourceVersion);
+
+    if (VersionUtilities.isR4Ver(destVersion)) {
       for (VersionConvertorIGBase converterIGBase : registeredConvertors) {
-        if (converterIGBase.handlesR5ToR4(resourceType)) {
+        if (r6) {
+          if (converterIGBase.handlesRNToR4(resourceType)) {
+            return true;
+          }
+        } else if (converterIGBase.handlesR5ToR4(resourceType)) {
           return true;
         }
       }
-    } else if (VersionUtilities.isR5Ver(version)) {
+    } else if (VersionUtilities.isR5Ver(destVersion)) {
       for (VersionConvertorIGBase converterIGBase : registeredConvertors) {
-        if (converterIGBase.handlesR5ToR5(resourceType)) {
+        if (r6) {
+          if (converterIGBase.handlesRNToR5(resourceType)) {
+            return true;
+          }
+        } else if (converterIGBase.handlesR5ToR5(resourceType)) {
           return true;
         }
       }
     }
     return false;
+  }
+
+  /**
+   * This method converts from RN to R5, but it does something very specific: it converts
+   * from the additional resource definition to whatever is appropriate in R5.
+   *
+   * @param source
+   * @return
+   */
+  public org.hl7.fhir.r5.model.Resource convertToR5(org.hl7.fhir.model.core.Resource source) {
+    for (VersionConvertorIGBase converterIGBase : registeredConvertors) {
+      if (converterIGBase.handlesRNToR5(source.fhirType())) {
+        return converterIGBase.convertRNToR5(source);
+      }
+    }
+    return VersionConvertorFactory_50_N.convertResource(source);
   }
 
   /**
@@ -51,6 +82,16 @@ public class VersionConvertorRegistry {
     return source;
   }
 
+  public org.hl7.fhir.r4.model.Resource convertToR4(org.hl7.fhir.model.core.Resource source) {
+    for (VersionConvertorIGBase converterIGBase : registeredConvertors) {
+      if (converterIGBase.handlesRNToR4(source.fhirType())) {
+        return converterIGBase.convertRNToR4(source);
+      }
+    }
+    return  VersionConvertorFactory_40_N.convertResource(source);
+  }
+
+
   public org.hl7.fhir.r4.model.Resource convertToR4(org.hl7.fhir.r5.model.Resource source) {
     for (VersionConvertorIGBase converterIGBase : registeredConvertors) {
       if (converterIGBase.handlesR5ToR4(source.fhirType())) {
@@ -60,7 +101,7 @@ public class VersionConvertorRegistry {
     return  VersionConvertorFactory_40_50.convertResource(source);
   }
 
-  public org.hl7.fhir.dstu3.model.Resource convertToR3(org.hl7.fhir.r5.model.Resource source) {
+  public org.hl7.fhir.dstu3.model.Resource convertToR3(org.hl7.fhir.model.core.Resource source) {
     throw new FHIRException("Converting resources to R3 Not supported (nor planned)");
   }
 

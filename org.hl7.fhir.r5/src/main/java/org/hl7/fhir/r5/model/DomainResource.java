@@ -387,6 +387,10 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
 
       public abstract DomainResource copy();
 
+      public void assignValues(Base dst) {
+        copyValues((DomainResource) dst);
+      }
+
       public void copyValues(DomainResource dst) {
         super.copyValues(dst);
         dst.text = text == null ? null : text.copy();

@@ -1304,6 +1304,10 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((OperationDefinitionParameterComponent) dst);
+      }
+
       public void copyValues(OperationDefinitionParameterComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -1609,6 +1613,10 @@ public class OperationDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((OperationDefinitionParameterBindingComponent) dst);
+      }
+
       public void copyValues(OperationDefinitionParameterBindingComponent dst) {
         super.copyValues(dst);
         dst.strength = strength == null ? null : strength.copy();
@@ -1871,6 +1879,10 @@ public class OperationDefinition extends CanonicalResource {
         OperationDefinitionParameterReferencedFromComponent dst = new OperationDefinitionParameterReferencedFromComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((OperationDefinitionParameterReferencedFromComponent) dst);
       }
 
       public void copyValues(OperationDefinitionParameterReferencedFromComponent dst) {
@@ -2143,6 +2155,10 @@ public class OperationDefinition extends CanonicalResource {
         OperationDefinitionOverloadComponent dst = new OperationDefinitionOverloadComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((OperationDefinitionOverloadComponent) dst);
       }
 
       public void copyValues(OperationDefinitionOverloadComponent dst) {
@@ -4439,6 +4455,10 @@ public class OperationDefinition extends CanonicalResource {
         OperationDefinition dst = new OperationDefinition();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((OperationDefinition) dst);
       }
 
       public void copyValues(OperationDefinition dst) {

@@ -256,6 +256,10 @@ public class SubstancePolymer extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymerMonomerSetComponent) dst);
+      }
+
       public void copyValues(SubstancePolymerMonomerSetComponent dst) {
         super.copyValues(dst);
         dst.ratioType = ratioType == null ? null : ratioType.copy();
@@ -588,6 +592,10 @@ public class SubstancePolymer extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymerMonomerSetStartingMaterialComponent) dst);
+      }
+
       public void copyValues(SubstancePolymerMonomerSetStartingMaterialComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -901,6 +909,10 @@ public class SubstancePolymer extends DomainResource {
         SubstancePolymerRepeatComponent dst = new SubstancePolymerRepeatComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymerRepeatComponent) dst);
       }
 
       public void copyValues(SubstancePolymerRepeatComponent dst) {
@@ -1363,6 +1375,10 @@ public class SubstancePolymer extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymerRepeatRepeatUnitComponent) dst);
+      }
+
       public void copyValues(SubstancePolymerRepeatRepeatUnitComponent dst) {
         super.copyValues(dst);
         dst.unit = unit == null ? null : unit.copy();
@@ -1743,6 +1759,10 @@ public class SubstancePolymer extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) dst);
+      }
+
       public void copyValues(SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
@@ -2076,6 +2096,10 @@ public class SubstancePolymer extends DomainResource {
         SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent dst = new SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent) dst);
       }
 
       public void copyValues(SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent dst) {
@@ -2638,6 +2662,10 @@ public class SubstancePolymer extends DomainResource {
         SubstancePolymer dst = new SubstancePolymer();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((SubstancePolymer) dst);
       }
 
       public void copyValues(SubstancePolymer dst) {

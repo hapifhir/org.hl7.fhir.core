@@ -473,6 +473,10 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ExtendedContactDetail) dst);
+      }
+
       public void copyValues(ExtendedContactDetail dst) {
         super.copyValues(dst);
         dst.purpose = purpose == null ? null : purpose.copy();

@@ -1,8 +1,8 @@
 package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.model.core.ImplementationGuide;
+import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.options.*;

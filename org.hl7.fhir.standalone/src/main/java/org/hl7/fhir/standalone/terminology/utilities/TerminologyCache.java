@@ -35,10 +35,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.formats.*;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
@@ -54,8 +52,12 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 
 /**
  * This implements a two level cache. 
@@ -63,7 +65,28 @@ import java.util.concurrent.atomic.AtomicReference;
  *  - a persistent cache for remembering tx server operations
  *  
  * the cache is a series of pairs: a map, and a list. the map is the loaded cache, the list is the persistent cache, carefully maintained in order for version control consistency
- * 
+ *
+ * <h2>Where the cache lives</h2>
+ *
+ * <p>A cache is either memory only, or kept in a folder, and which it is is decided when it
+ * is created. A null folder (or the legacy "n/a") means memory only: nothing is read from disk,
+ * nothing is written, and whatever the cache learned is gone when it is. <b>There is no
+ * implicit default folder.</b> Up to 2026-09 a null folder quietly meant
+ * {@code [tmp]/default-tx-cache}, so every worker context - including the throwaway one each
+ * context creates before its real cache is set - read and registered that folder, tests
+ * depended on whatever an earlier run had left in it, and one folder was shared by every FHIR
+ * version.
+ *
+ * <p>A caller that wants the old shared location asks for it explicitly with
+ * {@link #defaultFolder(String)}, which is now per FHIR version ({@code [tmp]/default-tx-cache/r4}
+ * etc). The validator CLI does this when it isn't given {@code -txCache}.
+ *
+ * <p>A folder backed cache writes coalesced saves (see {@link #SAVE_DELAY_MS}); entries
+ * waiting out the window are written by {@link #save()}, {@link #unload()}, the next store past
+ * the window, or the shutdown hook - or by a background thread, if the cache was created with
+ * deferred flush (see {@link #deferredFlush}). Otherwise, a cache that is dropped without being
+ * saved loses them.
+ *
  * @author graha
  *
  */
@@ -160,13 +183,23 @@ public class TerminologyCache {
   private static final String BREAK = "####";
   private static final String CACHE_FILE_EXTENSION = ".cache";
   /**
-   * Prefix of the header line that carries a cache file's nonce - a fresh random value
-   * written on every save, used to detect that someone else has rewritten the file since we
-   * last read or wrote it. It sits before the first {@link #ENTRY_MARKER}, and everything
-   * before that marker is discarded on load, so older readers simply ignore it and a file
-   * without one still loads.
+   * Extension of the partner file that carries a cache file's nonce: {@code foo.cache} is
+   * accompanied by {@code foo.cache.nonce}. The nonce is a fresh random value written on every
+   * save, used to detect that someone else has rewritten the cache since we last read or wrote
+   * it.
+   *
+   * <p>It lives beside the cache rather than in a header line inside it because cache folders
+   * are routinely kept in version control - core's own test txCache, IG repositories, the
+   * auto-builder's cache repo - and a value that changes on every save would turn every run
+   * into a diff of every file. This file is local bookkeeping only: deleting it costs one
+   * extra merge and nothing else, and a repository holding a cache folder should ignore
+   * {@code *.cache.nonce}. Where one does get committed it still costs nothing, because only a
+   * cache that is being rewritten gets a new nonce: the partner file never changes on its own.
+   *
+   * <p>Deliberately does not end in {@link #CACHE_FILE_EXTENSION}, so {@link #load()} does not
+   * mistake it for a cache.
    */
-  private static final String NONCE_MARKER = "# nonce: ";
+  private static final String NONCE_FILE_EXTENSION = ".cache.nonce";
 
   /**
    * Suffix for the scratch file a save writes into before swapping it over the real one.
@@ -197,6 +230,33 @@ public class TerminologyCache {
    * How long a JVM shutdown waits for pending cache entries to be written before giving up.
    */
   private static final long SHUTDOWN_SAVE_TIMEOUT_MS = 10000;
+
+  /**
+   * Whether this cache writes out entries left waiting by the {@link #SAVE_DELAY_MS} window by
+   * itself, once the window closes. Decided when the cache is created, and fixed for its life.
+   *
+   * <p>By default it doesn't: entries that miss the window are only written by the next store
+   * past the deadline, an explicit {@link #save()} or {@link #unload()}, or the shutdown hook -
+   * and the shutdown hook only sees caches that are still reachable. A cache that is dropped
+   * without being saved loses whatever it was holding. That is the caller's responsibility.
+   *
+   * <p>With deferred flush, a store that isn't written straight away schedules a write for the
+   * end of the window on a shared background thread. The scheduled write holds the cache until
+   * it runs, so a dropped cache is written out at most {@link #SAVE_DELAY_MS} later (or at JVM
+   * shutdown, whichever comes first) and then released.
+   */
+  private final boolean deferredFlush;
+
+  /**
+   * The save window for this cache: {@link #SAVE_DELAY_MS}, except in tests.
+   */
+  private long saveDelayMs = SAVE_DELAY_MS;
+
+  /**
+   * Runs deferred flushes for every cache that asked for them. One daemon thread, created on
+   * first use, so that caches which don't use deferred flush never start a thread.
+   */
+  private static ScheduledExecutorService deferredFlusher;
 
   /**
    * Every cache that has a folder, so a shutdown can flush them all. Held weakly, so a cache
@@ -334,10 +394,14 @@ public class TerminologyCache {
     private boolean dirty = false;
     /** Wall-clock time of the last on-disk save for this cache (0 = never saved this session). */
     private long lastSaveAt = 0;
+    /** The deferred flush waiting to write this cache out, if there is one (see {@link TerminologyCache#deferredFlush}). */
+    private ScheduledFuture<?> pendingFlush;
     /**
-     * The nonce in the copy of this cache we last read or wrote. Null when we have never
-     * touched the file. If what is on disk no longer carries this value, another process has
-     * rewritten it and we must merge before saving over the top - see {@link #mergeWithDiskCache}.
+     * The nonce of the copy of this cache we last read or wrote, as recorded in the partner
+     * file described by {@link #NONCE_FILE_EXTENSION}. Null when we have never touched the
+     * file, or when writing the nonce failed. If the partner file no longer carries this
+     * value, another process has rewritten the cache and we must merge before saving over the
+     * top - see {@link #mergeWithDiskCache}.
      */
     private String nonce = null;
 
@@ -392,17 +456,68 @@ public class TerminologyCache {
   @Getter @Setter private static boolean noCaching;
   @Getter @Setter private static boolean cacheErrors;
 
+  /**
+   * The shared, per FHIR version cache folder under the temp directory:
+   * {@code [tmp]/default-tx-cache/rX}, where X is 2, 3, 4, 5 or 6 (R4B shares r4). This is where
+   * the validator keeps its cache when it isn't told where to. Nothing uses it unless it's asked
+   * for - see the class documentation.
+   *
+   * @param fhirVersion any version string for the release (e.g. 4.0.1, 4.0, 5.0.0-ballot)
+   */
+  public static String defaultFolder(String fhirVersion) throws IOException {
+    return Utilities.path("[tmp]", "default-tx-cache", "r"+releaseNumber(fhirVersion));
+  }
+
+  private static String releaseNumber(String fhirVersion) {
+    if (fhirVersion == null) {
+      throw new FHIRException("A FHIR version is required to choose the default terminology cache folder");
+    }
+    if (VersionUtilities.isR2Ver(fhirVersion) || VersionUtilities.isR2BVer(fhirVersion)) {
+      return "2";
+    } else if (VersionUtilities.isR3Ver(fhirVersion)) {
+      return "3";
+    } else if (VersionUtilities.isR4Ver(fhirVersion) || VersionUtilities.isR4BVer(fhirVersion)) {
+      return "4";
+    } else if (VersionUtilities.isR5Ver(fhirVersion)) {
+      return "5";
+    } else if (VersionUtilities.isR6Ver(fhirVersion)) {
+      return "6";
+    } else {
+      throw new FHIRException("Unknown FHIR version '"+fhirVersion+"' choosing the default terminology cache folder");
+    }
+  }
+
+  /**
+   * @param lock the object the cache synchronizes on (normally the worker context's lock)
+   * @param folder where the persistent entries are kept, or null (or the legacy "n/a") for a
+   *   memory only cache. There is no implicit default folder: see the class documentation, and
+   *   {@link #defaultFolder(String)} for the shared per-version one.
+   * @param capabilityCacheExpirationMilliseconds how long server capability statements are kept
+   */
   public TerminologyCache(Object lock, String folder, Long capabilityCacheExpirationMilliseconds, IWorkerContext context) throws FileNotFoundException, IOException, FHIRException {
+    this(lock, folder, capabilityCacheExpirationMilliseconds, context, false);
+  }
+
+  /**
+   * @param lock the object the cache synchronizes on (normally the worker context's lock)
+   * @param folder where the persistent entries are kept, or null (or the legacy "n/a") for a
+   *   memory only cache. There is no implicit default folder: see the class documentation, and
+   *   {@link #defaultFolder(String)} for the shared per-version one.
+   * @param capabilityCacheExpirationMilliseconds how long server capability statements are kept
+   * @param deferredFlush whether entries waiting out the save window are written by a
+   *   background thread when it closes, rather than only by the next store, an explicit save,
+   *   or the shutdown hook. See {@link #deferredFlush}.
+   */
+  public TerminologyCache(Object lock, String folder, Long capabilityCacheExpirationMilliseconds, IWorkerContext context, boolean deferredFlush) throws FileNotFoundException, IOException, FHIRException {
     super();
    this.lock = lock;
+   this.deferredFlush = deferredFlush;
    this.context = context;
    this.capabilityCacheExpirationMilliseconds = capabilityCacheExpirationMilliseconds;
    capabilityStatementCache = new CommonsTerminologyCapabilitiesCache<>(capabilityCacheExpirationMilliseconds, TimeUnit.MILLISECONDS);
    terminologyCapabilitiesCache = new CommonsTerminologyCapabilitiesCache<>(capabilityCacheExpirationMilliseconds, TimeUnit.MILLISECONDS);
-    if (folder == null) {
-      folder = Utilities.path("[tmp]", "default-tx-cache");
-    } else if ("n/a".equals(folder)) {
-      // this is a weird way to do things but it maintains the legacy interface
+    if ("n/a".equals(folder)) {
+      // the legacy way of asking for a memory only cache; null now means the same thing
       folder = null;
     }
     this.folder = folder;
@@ -426,8 +541,25 @@ public class TerminologyCache {
   }
 
   // use lock from the context
+  /**
+   * @param lock the object the cache synchronizes on (normally the worker context's lock)
+   * @param folder where the persistent entries are kept, or null (or the legacy "n/a") for a
+   *   memory only cache. There is no implicit default folder: see the class documentation, and
+   *   {@link #defaultFolder(String)} for the shared per-version one.
+   */
   public TerminologyCache(Object lock, String folder, IWorkerContext context) throws IOException, FHIRException {
     this(lock, folder, CAPABILITY_CACHE_EXPIRATION_MILLISECONDS, context);
+  }
+
+  /**
+   * @param lock the object the cache synchronizes on (normally the worker context's lock)
+   * @param folder where the persistent entries are kept, or null (or the legacy "n/a") for a
+   *   memory only cache. There is no implicit default folder: see the class documentation, and
+   *   {@link #defaultFolder(String)} for the shared per-version one.
+   * @param deferredFlush see {@link #deferredFlush}
+   */
+  public TerminologyCache(Object lock, String folder, IWorkerContext context, boolean deferredFlush) throws IOException, FHIRException {
+    this(lock, folder, CAPABILITY_CACHE_EXPIRATION_MILLISECONDS, context, deferredFlush);
   }
 
   private void checkVersion() throws IOException {
@@ -535,17 +667,31 @@ public class TerminologyCache {
   }
 
   public void unload() {
-    // not useable after this is called — flush any pending writes first so we don't lose
-    // entries that were waiting out the SAVE_DELAY_MS coalescing window.
-    save();
-    liveCaches.remove(this);
-    caches.clear();
-    vsCache.clear();
-    csCache.clear();
-    unloaded = true;
+    // not useable after this is called. All of it happens under the lock: a deferred flush that
+    // has already started can't be cancelled, only kept waiting for the lock, and it must not
+    // get in between the save below and unloaded being set - by the time it gets the lock, it
+    // finds the cache unloaded and does nothing.
+    synchronized (lock) {
+      // No deferred flush is needed once we're done - even a write that fails in save() is
+      // abandoned, since this cache is finished - so cancel them before saving.
+      for (NamedCache nc : caches.values()) {
+        cancelFlush(nc);
+      }
+      // flush any pending writes so we don't lose entries that were waiting out the
+      // SAVE_DELAY_MS coalescing window
+      save();
+      liveCaches.remove(this);
+      caches.clear();
+      vsCache.clear();
+      csCache.clear();
+      unloaded = true;
+    }
   }
 
   public void clear() throws IOException {
+    for (NamedCache nc : caches.values()) {
+      cancelFlush(nc);
+    }
     if (folder != null) {
       FileUtilities.clearDirectory(folder);
     }
@@ -596,7 +742,16 @@ public class TerminologyCache {
     return oldName;
   }
 
+  /**
+   * The path defaults to "Coding" - the path the great majority of callers validate at. Callers
+   * that validate at some other path (the code parameter form, which uses "$") must say so, or
+   * they will share cache entries with a query that has a different answer
+   */
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs, Parameters expParameters) {
+    return generateValidationToken(options, code, vs, expParameters, "Coding");
+  }
+
+  public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs, Parameters expParameters, String path) {
     try {
       CacheToken ct = new CacheToken();
       if (code.hasSystem()) {
@@ -605,21 +760,28 @@ public class TerminologyCache {
         ct.setName(getSystemName(NAME_FOR_NO_SYSTEM, ct.getName()));
       }
       nameCacheToken(vs, ct);
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
 
+      // the path is part of the answer, not just the question: it is the prefix of every issue
+      // expression in the result, so two calls that differ only in it get different answers and
+      // must not share a cache entry (a code validated as "$" - the code parameter form - and the
+      // same code validated as "Coding" are not the same query). "Coding" is the common case and
+      // is left out, so that entries cached before this was added still match
+      String pathJS = (path == null || "Coding".equals(path)) ? "" : ", \"path\": \""+Utilities.escapeJson(path)+"\"";
+
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
         ct.setRequest("{\"code\" : " + json.composeString(code, "codeableConcept") + ", \"url\": \"" + Utilities.escapeJson(vs.getUrl())
-          + "\", \"version\": \"" + Utilities.escapeJson(vs.getVersion()) + "\"" + (options == null ? "" : ", " + options.toJson()) + ", \"profile\": " + expJS + "}\r\n");
+          + "\", \"version\": \"" + Utilities.escapeJson(vs.getVersion()) + "\"" + (options == null ? "" : ", " + options.toJson()) + pathJS + ", \"profile\": " + expJS + "}\r\n");
       } else  if (vs != null && vs.hasUrl()) {
           ct.setRequest("{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
-            +"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n");
+            +"\""+(options == null ? "" : ", "+options.toJson())+pathJS+", \"profile\": "+expJS+"}\r\n");
       } else if (options.getVsAsUrl()) {
-        ct.setRequest("{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+extracted(json, vs)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}");
+        ct.setRequest("{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+extracted(json, vs)+(options == null ? "" : ", "+options.toJson())+pathJS+", \"profile\": "+expJS+"}");
       } else {
         ValueSet vsc = getVSEssense(vs);
-        ct.setRequest("{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}");
+        ct.setRequest("{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+pathJS+", \"profile\": "+expJS+"}");
       }
       ct.setKey(String.valueOf(hashJson(ct.getRequest())));
       return ct;
@@ -637,7 +799,7 @@ public class TerminologyCache {
         ct.setName(getSystemName(NAME_FOR_NO_SYSTEM, ct.getName()));
       }
       ct.setName(getSystemName(vsUrl, ct.getName()));
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
 
@@ -687,7 +849,7 @@ public class TerminologyCache {
         }
       }
       nameCacheToken(vs, ct);
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
@@ -725,7 +887,7 @@ public class TerminologyCache {
       ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\"}\r\n");
     } else {
       ValueSet vsc = getVSEssense(vs);
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       try {
         ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n");
@@ -851,8 +1013,10 @@ public class TerminologyCache {
       // Coalesce frequent writes: only flush if it's been at least SAVE_DELAY_MS since
       // the last save for this NamedCache. Entries that miss the window stay in memory
       // until the next write past the deadline, or until save() is called explicitly.
-      if (now - nc.lastSaveAt >= SAVE_DELAY_MS) {
+      if (now - nc.lastSaveAt >= saveDelayMs) {
         save(nc, now);
+      } else if (deferredFlush) {
+        scheduleFlush(nc, nc.lastSaveAt + saveDelayMs - now);
       }
     }
   }
@@ -965,12 +1129,12 @@ public class TerminologyCache {
 
     try {
       String target = Utilities.path(folder, title + CACHE_FILE_EXTENSION);
-      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target));
-           OutputStreamWriter tempFileWriter = new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8)) {
-        JsonParser jsonParser = new JsonParser(context);
-        jsonParser.setOutputStyle(OutputStyle.PRETTY);
-
-        tempFileWriter.write(jsonParser.composeString(resource).trim());
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target))) {
+        try (OutputStreamWriter tempFileWriter = new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8)) {
+          JsonParser jsonParser = new JsonParser(context.getModelContext());
+          jsonParser.setOutputStyle(OutputStyle.PRETTY);
+          tempFileWriter.write(jsonParser.composeString(resource).trim());
+        }
         FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
         tempFile.setDeleted();
       }
@@ -993,16 +1157,77 @@ public class TerminologyCache {
   }
 
   /**
-   * Remove a scratch file that never made it into place. Best effort: an orphan is harmless
-   * (load() ignores it) and only survives a hard kill mid-save.
+   * What the nonce file beside a cache says: the nonce written by the save that produced the
+   * cache file, and the length that file had when it was written.
    */
-  private void deleteQuietly(String path) {
-    if (path != null) {
-      try {
-        ManagedFileAccess.file(path).delete();
-      } catch (Exception e) {
-        // nothing useful to do
+  private static class DiskNonce {
+    private final String nonce;
+    private final long length;
+
+    private DiskNonce(String nonce, long length) {
+      this.nonce = nonce;
+      this.length = length;
+    }
+  }
+
+  /**
+   * Read the nonce file beside a cache.
+   *
+   * @return what it says, or null if there isn't one, or it can't be read or understood - all
+   *   of which mean the same thing to the caller: we can't prove the cache is untouched
+   */
+  private DiskNonce readNonce(String name) {
+    try {
+      String path = Utilities.path(folder, name+NONCE_FILE_EXTENSION);
+      if (!ManagedFileAccess.file(path).exists()) {
+        return null;
       }
+      try (BufferedReader r = new BufferedReader(new InputStreamReader(
+          ManagedFileAccess.inStream(path), StandardCharsets.UTF_8))) {
+        String line;
+        while ((line = r.readLine()) != null) {
+          line = line.trim();
+          if (line.isEmpty() || line.startsWith("#")) {
+            continue;
+          }
+          int i = line.indexOf(' ');
+          if (i < 1) {
+            return null;
+          }
+          return new DiskNonce(line.substring(0, i), Long.parseLong(line.substring(i+1).trim()));
+        }
+      }
+      return null;
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  /**
+   * Write the nonce file beside a cache we have just saved. Records the cache file's length as
+   * well as the nonce, because the nonce alone only proves that the last writer to come
+   * through this code was us: a checkout of a version-controlled cache folder, a hand edit or
+   * an older build can all replace the cache without touching its partner, and the lengths not
+   * agreeing is what catches that.
+   *
+   * @return true if it was written
+   */
+  private boolean writeNonce(String name, String nonce, long length) {
+    try {
+      String target = Utilities.path(folder, name+NONCE_FILE_EXTENSION);
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target))) {
+        try (BufferedWriter w = new BufferedWriter(new OutputStreamWriter(
+            ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8))) {
+          w.write("# nonce for "+name+CACHE_FILE_EXTENSION+" - local bookkeeping, safe to delete, do not commit\r\n");
+          w.write(nonce+" "+length+"\r\n");
+        }
+        FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
+        tempFile.setDeleted();
+      }
+      return true;
+    } catch (Exception e) {
+      log.debug("Unable to write the nonce for "+name+" ("+e.getMessage()+") - the next save will merge from disk");
+      return false;
     }
   }
 
@@ -1043,13 +1268,15 @@ public class TerminologyCache {
    * Has the file behind this cache been rewritten by someone else since we last read or wrote
    * it?
    *
-   * <p>Answered from a nonce in the file's header rather than from its timestamp: mtime
+   * <p>Answered from the nonce beside the file rather than from its timestamp: mtime
    * granularity is a whole second on some filesystems, which sits well inside the window in
-   * which two processes can both save, whereas the nonce is exact. Answering costs one line.
+   * which two processes can both save, whereas the nonce is exact. Answering costs one small
+   * read and a stat.
    *
-   * <p>A file carrying no nonce was written by a version of this code from before the header
-   * existed, so it counts as changed. That happens once: our own save writes a nonce, so it
-   * converges immediately.
+   * <p>A cache with no nonce beside it counts as changed - it was written by a version of this
+   * code from before the partner file existed, or the folder came out of version control, or
+   * someone tidied up. That happens once: our own save writes a nonce, so it converges
+   * immediately.
    */
   private boolean shouldMergeWithDiskCache(NamedCache nc) {
     try {
@@ -1057,15 +1284,12 @@ public class TerminologyCache {
       if (!ManagedFileAccess.file(path).exists()) {
         return false;
       }
-      String nonce = null;
-      try (BufferedReader r = new BufferedReader(new InputStreamReader(
-          ManagedFileAccess.inStream(path), StandardCharsets.UTF_8))) {
-        String line = r.readLine();
-        if (line != null && line.startsWith(NONCE_MARKER)) {
-          nonce = line.substring(NONCE_MARKER.length()).trim();
-        }
+      DiskNonce disk = readNonce(nc.name);
+      if (disk == null || !disk.nonce.equals(nc.nonce)) {
+        return true;
       }
-      return nonce == null || !nonce.equals(nc.nonce);
+      // the nonce is ours, but it only vouches for a file of the length we wrote it for
+      return disk.length != ManagedFileAccess.file(path).length();
     } catch (Exception e) {
       // if we can't tell, assume it changed: re-reading a file needlessly is cheap, and
       // dropping another process's entries is not
@@ -1129,22 +1353,27 @@ public class TerminologyCache {
     boolean saved = false;
     try {
       String target = Utilities.path(folder, namedCache.name+CACHE_FILE_EXTENSION);
-      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target));
-           BufferedWriter tempFileWriter = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8))) {
-        String nonce = UUID.randomUUID().toString();
-        tempFileWriter.write(NONCE_MARKER+nonce+"\r\n");
-        tempFileWriter.write(ENTRY_MARKER+"\r\n");
-        JsonParser jsonParser = new JsonParser(context);
-        jsonParser.setOutputStyle(OutputStyle.PRETTY);
-        for (CacheEntry cacheEntry : namedCache.list) {
-          writeCacheEntryToFile(cacheEntry, tempFileWriter, jsonParser);
+      try (AutoCloseableTempFile tempFile = new AutoCloseableTempFile(tempFileFor(target))) {
+        // the writer has to be closed - so everything is flushed - before the swap, or the file
+        // that lands in place can be missing its tail (and on Windows the move of a file that is
+        // still open fails outright)
+        try (BufferedWriter tempFileWriter = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(tempFile.getFilePath()), StandardCharsets.UTF_8))) {
+          tempFileWriter.write(ENTRY_MARKER+"\r\n");
+          JsonParser jsonParser = new JsonParser(context.getModelContext());
+          jsonParser.setOutputStyle(OutputStyle.PRETTY);
+          for (CacheEntry cacheEntry : namedCache.list) {
+            writeCacheEntryToFile(cacheEntry, tempFileWriter, jsonParser);
+          }
         }
-
         FileUtilities.replaceFileAtomically(ManagedFileAccess.file(tempFile.getFilePath()), ManagedFileAccess.file(target));
         tempFile.setDeleted();
-        namedCache.nonce = nonce;
-        saved = true;
       }
+      // The nonce goes in the partner file, and only once the cache itself is in place: if we
+      // die between the two, the nonce is stale or missing and the next save merges, which is
+      // the safe way round.
+      String nonce = UUID.randomUUID().toString();
+      namedCache.nonce = writeNonce(namedCache.name, nonce, ManagedFileAccess.file(target).length()) ? nonce : null;
+      saved = true;
     } catch (Exception e) {
       log.error("error saving "+namedCache.name+": "+e.getMessage(), e);
     }
@@ -1154,6 +1383,58 @@ public class TerminologyCache {
     // SAVE_DELAY_MS window rather than on every single store.
     namedCache.dirty = !saved;
     namedCache.lastSaveAt = lastSaveAt;
+    if (saved) {
+      cancelFlush(namedCache);
+    }
+  }
+
+  /**
+   * Arrange for a NamedCache to be written out once its save window closes. Called with the lock
+   * held. If a flush is already scheduled, it will write this entry too.
+   */
+  private void scheduleFlush(NamedCache namedCache, long delay) {
+    if (namedCache.pendingFlush == null) {
+      namedCache.pendingFlush = deferredFlusher().schedule(() -> deferredFlush(namedCache), Math.max(0, delay), TimeUnit.MILLISECONDS);
+    }
+  }
+
+  private void deferredFlush(NamedCache namedCache) {
+    synchronized (lock) {
+      namedCache.pendingFlush = null;
+      // the cache may have been unloaded or cleared since this was scheduled - in which case
+      // this NamedCache is no longer ours to write
+      if (!unloaded && namedCache.dirty && caches.get(namedCache.name) == namedCache) {
+        save(namedCache, System.currentTimeMillis());
+      }
+    }
+  }
+
+  private static void cancelFlush(NamedCache namedCache) {
+    if (namedCache.pendingFlush != null) {
+      namedCache.pendingFlush.cancel(false);
+      namedCache.pendingFlush = null;
+    }
+  }
+
+  private static synchronized ScheduledExecutorService deferredFlusher() {
+    if (deferredFlusher == null) {
+      ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1, r -> {
+        Thread t = new Thread(r, "terminology-cache-deferred-flush");
+        t.setDaemon(true); // the shutdown hook writes whatever is still pending when the JVM exits
+        return t;
+      });
+      executor.setRemoveOnCancelPolicy(true);
+      deferredFlusher = executor;
+    }
+    return deferredFlusher;
+  }
+
+  /**
+   * For tests: shorten the save window, so deferred flush can be observed without waiting
+   * {@link #SAVE_DELAY_MS}. Public only because the tests for this class live in another package.
+   */
+  public void setSaveDelayMs(long saveDelayMs) {
+    this.saveDelayMs = saveDelayMs;
   }
 
   private static void writeCacheEntryToFile(CacheEntry cacheEntry, BufferedWriter writer, JsonParser json) throws IOException {
@@ -1266,7 +1547,7 @@ public class TerminologyCache {
       String address = getServerForId(serverId);
       if (address != null) {
         JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(src);
-        Resource resource = new JsonParser(context).parse(o);
+        Resource resource = new JsonParser(context.getModelContext()).parse(o);
 
         if (fn.startsWith(CAPABILITY_STATEMENT_TITLE)) {
           this.capabilityStatementCache.put(address, (CapabilityStatement) resource);
@@ -1300,7 +1581,7 @@ public class TerminologyCache {
     if (e == 'e') {
       TerminologyServiceErrorClass errorClass = o.has("class") ? TerminologyServiceErrorClass.valueOf(o.get("class").getAsString()) : TerminologyServiceErrorClass.UNKNOWN;
       if (o.has("valueSet")) {
-        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser(context).parse(o.getAsJsonObject("valueSet")), error, errorClass, o.has("from-server"));
+        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser(context.getModelContext()).parse(o.getAsJsonObject("valueSet")), error, errorClass, o.has("from-server"));
         if (o.has("source")) {
           ce.e.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, o.get("source").getAsString());
         }
@@ -1321,8 +1602,8 @@ public class TerminologyCache {
       String status = loadJS(o.get("status"));
       boolean inactive = "true".equals(loadJS(o.get("inactive")));
       String unknownSystems = loadJS(o.get("unknown-systems"));
-      OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser(context).parse(o.getAsJsonObject("issues")) : null;
-      Parameters p = o.has("parameters") ? (Parameters) new JsonParser(context).parse(o.getAsJsonObject("parameters")) : null;
+      OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser(context.getModelContext()).parse(o.getAsJsonObject("issues")) : null;
+      Parameters p = o.has("parameters") ? (Parameters) new JsonParser(context.getModelContext()).parse(o.getAsJsonObject("parameters")) : null;
       t = loadJS(o.get("class")); 
       TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
       ce.v = new ValidationResult(severity, error, system, version, new CodeSystem.ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display, null).setErrorClass(errorClass);
@@ -1356,6 +1637,12 @@ public class TerminologyCache {
     int c = 0;
     NamedCache nc = new NamedCache(name);
 
+    // The nonce is read before the content, not after: if a save lands between the two we end
+    // up holding the older nonce for newer content, which costs a needless merge next time
+    // rather than losing an entry.
+    DiskNonce dn = readNonce(name);
+    nc.nonce = dn == null ? null : dn.nonce;
+
     // Stream the file one entry at a time. Cache files can be very large (e.g. the ICD-11
     // cache), and reading the whole file into a single String (as FileUtilities.fileToString
     // does) needs 2-3x the file size in transient heap just for the read - enough to OOM.
@@ -1372,13 +1659,12 @@ public class TerminologyCache {
           if (seenMarker) {
             loadCacheEntry(nc, segment.toString(), fn, ++c);
           }
-          // Content before the first marker (including any legacy '?' prefix) is discarded.
+          // Content before the first marker is discarded: a legacy '?' prefix, and the nonce
+          // header that builds between #2332 and this change wrote there. Rewriting the file
+          // drops that line, so a cache folder in version control settles down after one save.
           seenMarker = true;
           segment.setLength(0);
         } else {
-          if (!seenMarker && line.startsWith(NONCE_MARKER)) {
-            nc.nonce = line.substring(NONCE_MARKER.length()).trim();
-          }
           segment.append(line).append("\r\n");
         }
       }
@@ -1626,7 +1912,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser(context).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser(context.getModelContext()).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
       } catch (Exception e) {
         return null;
       }
@@ -1639,7 +1925,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser(context).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser(context.getModelContext()).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
       } catch (Exception e) {
         return null;
       }
@@ -1657,7 +1943,7 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "vs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser(context).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
+          new JsonParser(context.getModelContext()).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
         }
         vsCache.put(canonical, new SourcedValueSetEntry(svs.getServer(), fn));
       }    
@@ -1694,7 +1980,7 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "cs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser(context).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
+          new JsonParser(context.getModelContext()).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
         }
         csCache.put(canonical, new SourcedCodeSystemEntry(scs.getServer(), fn));
       }    
@@ -1729,7 +2015,7 @@ public class TerminologyCache {
       if (child.hasSystem()) {
         ct.setName(getSystemName(child.getSystem(), ct.getName()));
       }
-      JsonParser json = new JsonParser(context);
+      JsonParser json = new JsonParser(context.getModelContext());
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
       ct.setRequest( "{\"op\": \"subsumes\", \"parent\" : "+json.composeString(parent, "code")+", \"child\" :"+json.composeString(child, "code")+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}");

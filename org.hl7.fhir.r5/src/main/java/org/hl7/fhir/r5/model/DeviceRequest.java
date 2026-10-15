@@ -303,6 +303,10 @@ public class DeviceRequest extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((DeviceRequestParameterComponent) dst);
+      }
+
       public void copyValues(DeviceRequestParameterComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
@@ -2199,6 +2203,10 @@ public class DeviceRequest extends DomainResource {
         DeviceRequest dst = new DeviceRequest();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((DeviceRequest) dst);
       }
 
       public void copyValues(DeviceRequest dst) {

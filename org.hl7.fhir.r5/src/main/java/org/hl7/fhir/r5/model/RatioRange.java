@@ -275,6 +275,10 @@ public class RatioRange extends DataType implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((RatioRange) dst);
+      }
+
       public void copyValues(RatioRange dst) {
         super.copyValues(dst);
         dst.lowNumerator = lowNumerator == null ? null : lowNumerator.copy();

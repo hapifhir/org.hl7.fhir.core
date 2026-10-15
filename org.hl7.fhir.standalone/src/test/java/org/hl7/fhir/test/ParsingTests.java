@@ -56,10 +56,10 @@ public class ParsingTests {
   public void test(String name) throws Exception {
     byte[] b = FileUtilities.streamToBytes(npm.load("package", name));
     String src = new String(b);
-    Resource r = new JsonParser(TestingUtilities.getSharedWorkerContext()).parse(b);
-    b = new XmlParser(TestingUtilities.getSharedWorkerContext()).composeBytes(r);
-    r = new XmlParser(TestingUtilities.getSharedWorkerContext()).parse(b);
-    b = new JsonParser(TestingUtilities.getSharedWorkerContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(r);
+    Resource r = new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(b);
+    b = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).composeBytes(r);
+    r = new XmlParser(TestingUtilities.getSharedWorkerContext().getModelContext()).parse(b);
+    b = new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).setOutputStyle(OutputStyle.PRETTY).composeBytes(r);
     String output = new String(b);
     String msg = new CompareUtilities().checkJsonSrcIsSame(name, src, output);
     if (msg != null) {

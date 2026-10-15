@@ -14,7 +14,7 @@ import org.hl7.fhir.convertors.analytics.PackageVisitor;
 import org.hl7.fhir.convertors.analytics.PackageVisitor.IPackageVisitorProcessor;
 import org.hl7.fhir.convertors.analytics.PackageVisitor.PackageContext;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.model.utilities.EOperationOutcome;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -73,7 +73,7 @@ public class VSACFinder implements IPackageVisitorProcessor {
   }
 
   @Override
-  public Object startPackage(PackageContext context) throws FHIRException, IOException, EOperationOutcome {
+  public Object startPackage(PackageContext context) throws FHIRException, IOException {
     if (usesVSAC(context.getNpm())) {
       System.out.println(context.getPid()+" uses VSAC");
       return this;
@@ -95,7 +95,7 @@ public class VSACFinder implements IPackageVisitorProcessor {
 
   @Override
   public void processResource(PackageContext context, Object clientContext, String type, String id, byte[] content)
-      throws FHIRException, IOException, EOperationOutcome {
+      throws FHIRException, IOException {
     if (clientContext != null) {
       JsonObject r = JsonParser.parseObject(content);
       if ("StructureDefinition".equals(type)) {
@@ -139,11 +139,11 @@ public class VSACFinder implements IPackageVisitorProcessor {
   }
 
   @Override
-  public void finishPackage(PackageContext context) throws FHIRException, IOException, EOperationOutcome {    
+  public void finishPackage(PackageContext context) throws FHIRException, IOException {
   }
 
   @Override
-  public void alreadyVisited(String pid) throws FHIRException, IOException, EOperationOutcome {
+  public void alreadyVisited(String pid) throws FHIRException, IOException {
   }
 
 }

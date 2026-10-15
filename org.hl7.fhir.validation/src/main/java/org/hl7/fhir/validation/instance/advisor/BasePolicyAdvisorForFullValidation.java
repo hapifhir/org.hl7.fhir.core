@@ -3,20 +3,20 @@ package org.hl7.fhir.validation.instance.advisor;
 import java.util.*;
 
 import lombok.Getter;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.validation.IMessagingServices;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ReferenceDestinationType;
-import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
-import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
-import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.model.core.VersionResolutionRules;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.elementmodel.Element;
+import org.hl7.fhir.services.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.ValueSet;
+import org.hl7.fhir.services.validation.IMessagingServices;
+import org.hl7.fhir.services.validation.IResourceValidator;
+import org.hl7.fhir.services.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.services.validation.constants.BindingKind;
+import org.hl7.fhir.services.validation.constants.ContainedReferenceValidationPolicy;
+import org.hl7.fhir.services.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -54,7 +54,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
 
   @Override
   public ReferenceValidationPolicy policyForReference(IResourceValidator validator, Object appContext, String path, String url,
-      ReferenceDestinationType destinationType) {
+                                                      ReferenceDestinationType destinationType) {
     boolean inList = false;
     String urls = url.replace("https://", "http://");
     for (String u : checkReferencesTo) {
@@ -68,8 +68,8 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
 
   @Override
   public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator, Object appContext,
-      StructureDefinition structure, ElementDefinition element, String containerType, String containerId,
-      SpecialElement containingResourceType, String path, String url) {
+                                                               StructureDefinition structure, ElementDefinition element, String containerType, String containerId,
+                                                               SpecialElement containingResourceType, String path, String url) {
 
     return ContainedReferenceValidationPolicy.CHECK_VALID;
   }
@@ -101,10 +101,10 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
 
   @Override
   public List<StructureDefinition> getImpliedProfilesForResource(IResourceValidator validator, Object appContext,
-      String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
-      IMessagingServices msgServices, List<ValidationMessage> messages) {
+                                                                 String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
+                                                                 IMessagingServices msgServices, List<ValidationMessage> messages) {
     List<StructureDefinition> profiles = new ArrayList<StructureDefinition>();
-    if ("Observation".equals(resource.fhirType()) && VersionUtilities.isR4Plus(validator.getContext().getVersion())) {
+    if ("Observation".equals(resource.fhirType()) && VersionUtilities.isR4Plus(validator.getContext().getFHIRVersion())) {
       getImpliedProfilesForObservation(profiles, msgServices, messages, validator.getContext(), stackPath, resource);
     }
     return profiles;
@@ -166,7 +166,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
 
   private void addProfile(List<StructureDefinition> profiles, IMessagingServices msgServices, List<ValidationMessage> messages, IWorkerContext context, String stackPath, Element resource, String url, String name, String systemName, List<String> codes) {
     resource.addMessage(msgServices.signpost(messages, null, IssueType.INFORMATIONAL, resource.line(), resource.col(), stackPath, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_OBS, url, name, systemName, codes.get(0)));
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url, VersionResolutionRules.defaultRule());
     if (sd != null) {
       profiles.add(sd);
     } else {

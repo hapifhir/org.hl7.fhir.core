@@ -1,10 +1,10 @@
 package org.hl7.fhir.validation.cli.picocli;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
-import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
+import org.hl7.fhir.services.validation.BundleValidationRule;
+import org.hl7.fhir.services.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.services.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptions;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptionsConvertor;

@@ -5,8 +5,7 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.services.terminology.OpIssueCode;
-import org.hl7.fhir.services.terminology.TerminologyServiceErrorClass;
+import org.hl7.fhir.model.utilities.TerminologyServiceErrorClass;
 
 /**
  * Thrown when a subsumption test cannot be performed at all - typically because the 

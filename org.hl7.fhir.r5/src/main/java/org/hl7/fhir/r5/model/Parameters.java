@@ -1449,6 +1449,10 @@ public class Parameters extends Resource implements IBaseParameters {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ParametersParameterComponent) dst);
+      }
+
       public void copyValues(ParametersParameterComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
@@ -1717,6 +1721,10 @@ public String toString() {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Parameters) dst);
+      }
+
       public void copyValues(Parameters dst) {
         super.copyValues(dst);
         if (parameter != null) {
@@ -1888,7 +1896,7 @@ public String toString() {
       if (p.getName().equals(name)) {
         if (p.getValue() instanceof BooleanType)
           return ((BooleanType) p.getValue()).booleanValue();
-        boolean ok = Boolean.getBoolean(p.getValue().primitiveValue());
+        boolean ok = "true".equals(p.getValue().primitiveValue());
         return ok;
       }
     }

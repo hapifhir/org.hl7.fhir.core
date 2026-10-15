@@ -308,6 +308,10 @@ public class OBJECT_REF extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((OBJECT_REF) dst);
+      }
+
       public void copyValues(OBJECT_REF dst) {
         super.copyValues(dst);
         dst.namespace = namespace == null ? null : namespace.copy();

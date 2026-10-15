@@ -1348,6 +1348,10 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((Extension) dst);
+      }
+
       public void copyValues(Extension dst) {
         super.copyValues(dst);
         dst.url = url == null ? null : url.copy();

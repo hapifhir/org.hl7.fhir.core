@@ -69,6 +69,10 @@ public class GENERIC_ID extends OBJECT_ID implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((GENERIC_ID) dst);
+      }
+
       public void copyValues(GENERIC_ID dst) {
         super.copyValues(dst);
       }

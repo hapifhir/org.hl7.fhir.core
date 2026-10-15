@@ -371,6 +371,10 @@ public class NutritionProduct extends DomainResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((NutritionProductNutrientComponent) dst);
+      }
+
       public void copyValues(NutritionProductNutrientComponent dst) {
         super.copyValues(dst);
         dst.item = item == null ? null : item.copy();
@@ -621,6 +625,10 @@ public class NutritionProduct extends DomainResource {
         NutritionProductIngredientComponent dst = new NutritionProductIngredientComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((NutritionProductIngredientComponent) dst);
       }
 
       public void copyValues(NutritionProductIngredientComponent dst) {
@@ -962,6 +970,10 @@ public class NutritionProduct extends DomainResource {
         NutritionProductCharacteristicComponent dst = new NutritionProductCharacteristicComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((NutritionProductCharacteristicComponent) dst);
       }
 
       public void copyValues(NutritionProductCharacteristicComponent dst) {
@@ -1533,6 +1545,10 @@ public class NutritionProduct extends DomainResource {
         NutritionProductInstanceComponent dst = new NutritionProductInstanceComponent();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((NutritionProductInstanceComponent) dst);
       }
 
       public void copyValues(NutritionProductInstanceComponent dst) {
@@ -2396,6 +2412,10 @@ public class NutritionProduct extends DomainResource {
         NutritionProduct dst = new NutritionProduct();
         copyValues(dst);
         return dst;
+      }
+
+      public void assignValues(Base dst) {
+        copyValues((NutritionProduct) dst);
       }
 
       public void copyValues(NutritionProduct dst) {

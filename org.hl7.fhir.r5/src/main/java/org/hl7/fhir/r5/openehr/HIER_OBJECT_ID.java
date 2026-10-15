@@ -69,6 +69,10 @@ public class HIER_OBJECT_ID extends UID_BASED_ID implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((HIER_OBJECT_ID) dst);
+      }
+
       public void copyValues(HIER_OBJECT_ID dst) {
         super.copyValues(dst);
       }

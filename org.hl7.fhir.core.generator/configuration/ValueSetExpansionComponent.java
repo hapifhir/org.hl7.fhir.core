@@ -10,5 +10,5 @@
 
 
       public void addParameter(String name, DataType value) {
-        getParameterList().add(new ValueSetExpansionParameterComponent(name).setValue(value));
+        getParameterList().add(new ValueSetExpansionParameterComponent(modelContext, name).setValue(value));
       }

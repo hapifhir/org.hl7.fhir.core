@@ -1757,6 +1757,10 @@ public class ActorDefinition extends CanonicalResource {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((ActorDefinition) dst);
+      }
+
       public void copyValues(ActorDefinition dst) {
         super.copyValues(dst);
         dst.url = url == null ? null : url.copy();

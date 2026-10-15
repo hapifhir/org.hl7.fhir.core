@@ -152,9 +152,20 @@ public class ValueSetUtilities extends TerminologyUtilities {
    */
   public static void checkExpansionIsFlat(ValueSet vs) throws FHIRException {
     if (vs != null && vs.hasExpansion()) {
+      String explanation = ". There is no expansion excludeNested parameter";
+      for (ValueSet.ValueSetExpansionParameterComponent p : vs.getExpansion().getParameterList()) {
+        if ("excludeNested".equals(p.getName())) {
+          if ("true".equals(p.getValue().primitiveValue())) {
+            explanation = ". The expansion expansion parameter is excludeNested true";
+          } else {
+            explanation = ". The expansion expansion parameter is false";
+          }
+        }
+      }
+      String purpose = vs.getUserString(UserDataNames.EXPANSION_PURPOSE);
       for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContainsList()) {
         if (cc.hasContains()) {
-          throw new FHIRException("The expansion of the value set "+vs.getVersionedUrl()+" is not flat: the code '"+cc.getCode()+"' contains nested codes (starting with '"+cc.getContainsList().get(0).getCode()+"')");
+          throw new FHIRException("The "+(purpose == null ? "" : purpose+" ")+"expansion of the value set "+vs.getVersionedUrl()+" is not flat: the code '"+cc.getCode()+"' contains nested codes (starting with '"+cc.getContainsList().get(0).getCode()+"')"+explanation);
         }
       }
     }
@@ -182,35 +193,6 @@ public class ValueSetUtilities extends TerminologyUtilities {
       }
     }
     vs.addIdentifier().setSystem("urn:ietf:rfc:3986").setValue(oid);
-  }
-
-  public static void markStatus(ValueSet vs, String wg, StandardsStatus status, String fmm, String normativeVersion, String thisVersion) throws FHIRException {
-    if (vs.hasUserData(UserDataNames.render_external_link))
-      return;
-    
-    if (wg != null) {
-      if (!ExtensionUtilities.hasExtension(vs, ExtensionDefinitions.EXT_WORKGROUP) ||
-          (!Utilities.existsInList(ExtensionUtilities.readStringExtension(vs, ExtensionDefinitions.EXT_WORKGROUP), "fhir", "vocab") && Utilities.existsInList(wg, "fhir", "vocab"))) {
-        CanonicalResourceUtilities.setHl7WG(vs, wg);
-      }
-    }
-    if (status != null) {
-      StandardsStatus ss = ExtensionUtilities.getStandardsStatus(vs);
-      if (ss == null || ss.isLowerThan(status)) 
-        ExtensionUtilities.setStandardsStatus(vs, status, normativeVersion, thisVersion);
-      if (status == StandardsStatus.NORMATIVE) {
-        vs.setStatus(PublicationStatus.ACTIVE);
-      }
-    }
-    if (fmm != null) {
-      String sfmm = ExtensionUtilities.readStringExtension(vs, ExtensionDefinitions.EXT_FMM_LEVEL);
-      if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm))  {
-        ExtensionUtilities.setIntegerExtension(vs, ExtensionDefinitions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
-      }
-    }
-    if (vs.hasUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM)) {
-      CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM), wg, status, fmm, normativeVersion, thisVersion);
-    }
   }
 
   private static int ssval(String status) {
@@ -406,6 +388,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return i;
   }
 
+
   public static boolean isIncompleteExpansion(ValueSet valueSet) {
     if (valueSet.hasExpansion()) {
       ValueSetExpansionComponent exp = valueSet.getExpansion();
@@ -417,7 +400,6 @@ public class ValueSetUtilities extends TerminologyUtilities {
     }
     return false;
   }
-
 
   public static Set<String> codes(ValueSet vs, CodeSystem cs) {
     Set<String> res = new HashSet<>();
@@ -557,5 +539,4 @@ public class ValueSetUtilities extends TerminologyUtilities {
       return s1.equals(s2);
     }
   }
-
 }

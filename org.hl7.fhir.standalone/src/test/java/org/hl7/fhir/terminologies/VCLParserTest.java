@@ -276,7 +276,7 @@ public class VCLParserTest {
   public void testIncludeExcludeSameValueSet() throws VCLParser.VCLParseException, IOException {
     ValueSet vs = VCLParser.parse("(^(http://csiro.au/fhir/ValueSet/selfexclude))-(^(http://csiro.au/fhir/ValueSet/selfexclude))");
 
-    System.out.println(new JsonParser(TestingUtilities.getSharedWorkerContext()).composeString(vs));
+    System.out.println(new JsonParser(TestingUtilities.getSharedWorkerContext().getModelContext()).composeString(vs));
     assertEquals(1, vs.getCompose().getIncludeList().size());
     assertEquals(1, vs.getCompose().getExcludeList().size());
 

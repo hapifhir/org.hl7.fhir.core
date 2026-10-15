@@ -3,8 +3,6 @@ package org.hl7.fhir.r4b.comparison;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r4b.comparison.ResourceComparer.MessageCounts;
-import org.hl7.fhir.r4b.comparison.ResourceComparer.ResourceComparison;
 import org.hl7.fhir.r4b.model.CanonicalResource;
 import org.hl7.fhir.r4b.model.CodeSystem;
 import org.hl7.fhir.r4b.model.StructureDefinition;
@@ -16,12 +14,14 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.BackgroundColorCode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
+@Deprecated(forRemoval = true)
 public class ResourceComparer {
 
   public static class MessageCounts {
@@ -248,10 +248,10 @@ public class ResourceComparer {
     return c;
   }
 
-  public Cell missingCell(HierarchicalTableGenerator gen, String color) {
+  public Cell missingCell(HierarchicalTableGenerator gen, BackgroundColorCode color) {
     Cell c = gen.new Cell(null, null, "", null, null);
     if (color != null) {
-      c.setStyle("background-color: " + color);
+      c.setBackgroundColor(color);
     }
     return c;
   }

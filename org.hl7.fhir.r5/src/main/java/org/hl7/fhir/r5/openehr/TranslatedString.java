@@ -267,6 +267,10 @@ public class TranslatedString extends LogicalBase implements ICompositeType {
         return dst;
       }
 
+      public void assignValues(Base dst) {
+        copyValues((TranslatedString) dst);
+      }
+
       public void copyValues(TranslatedString dst) {
         super.copyValues(dst);
         dst.language = language == null ? null : language.copy();

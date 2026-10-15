@@ -41,16 +41,16 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
-import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.model.core.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.model.core.Enumerations.BindingStrength;
+import org.hl7.fhir.model.core.ValueSet.ConceptReferenceComponent;
+import org.hl7.fhir.model.core.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.model.utilities.CodeSystemUtilities;
+import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -440,7 +440,7 @@ public class JavaBaseGenerator extends OutputStreamWriter {
   }
  
   protected boolean isJavaPrimitive(ElementDefinition e) {
-    return e.getType().size() == 1 && (isPrimitive(e.getType().get(0).getWorkingCode()));
+    return e.getTypeList().size() == 1 && (isPrimitive(e.getTypeList().get(0).getWorkingCode()));
   }
 
   protected boolean isPrimitive(String name) {
@@ -460,12 +460,12 @@ public class JavaBaseGenerator extends OutputStreamWriter {
 	}
 
 	protected String getTypeName(ElementDefinition e) throws Exception {
-		if (e.getType().size() > 1) {
+		if (e.getTypeList().size() > 1) {
 			return "DataType";
-		} else if (e.getType().size() == 0) {
+		} else if (e.getTypeList().size() == 0) {
 			throw new Exception("not supported");
 		} else {
-			return getTypename(e.getType().get(0));
+			return getTypename(e.getTypeList().get(0));
 		}
 	}
 
@@ -505,14 +505,14 @@ public class JavaBaseGenerator extends OutputStreamWriter {
 
   protected List<ConceptDefinitionComponent> listAllCodes(CodeSystem cs) {
     List<ConceptDefinitionComponent> result = new ArrayList<ConceptDefinitionComponent>();
-    addAllCodes(result, cs.getConcept());
+    addAllCodes(result, cs.getConceptList());
     return result;
   }
 
   private void addAllCodes(List<ConceptDefinitionComponent> result, List<ConceptDefinitionComponent> concept) {
     for (ConceptDefinitionComponent c : concept) {
       result.add(c);
-      addAllCodes(result, c.getConcept());
+      addAllCodes(result, c.getConceptList());
     }
   }
 
@@ -565,7 +565,7 @@ public class JavaBaseGenerator extends OutputStreamWriter {
     if (ok) {
       if (cd.getValueSet() != null) {
         ValueSet vs = definitions.getValuesets().get(cd.getValueSet()); 
-        if (vs != null && vs.hasCompose() && vs.getCompose().getInclude().size() == 1) {
+        if (vs != null && vs.hasCompose() && vs.getCompose().getIncludeList().size() == 1) {
           ConceptSetComponent inc = vs.getCompose().getIncludeFirstRep();
           if (inc.hasSystem() && !inc.hasFilter() && !inc.hasConcept() && !(inc.getSystem().startsWith("http://hl7.org/fhir") || inc.getSystem().startsWith("http://terminology.hl7.org")))
             ok = false;
@@ -626,7 +626,7 @@ public class JavaBaseGenerator extends OutputStreamWriter {
    * abstract dispatcher covers all the concrete descendents)
    */
   protected boolean isAbstractGeneratedType(ElementDefinition ed) {
-    if (ed.getType().size() != 1) {
+    if (ed.getTypeList().size() != 1) {
       return false;
     }
     String code = ed.getTypeFirstRep().getWorkingCode();
@@ -647,8 +647,8 @@ public class JavaBaseGenerator extends OutputStreamWriter {
   protected boolean isTypeSpecifierTarget(Analysis analysis) {
     String url = analysis.getStructure().getUrl();
     for (StructureDefinition sd : definitions.getStructures().getList()) {
-      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
-        if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC) && ed.getType().size() == 1 
+      for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
+        if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC) && ed.getTypeList().size() == 1 
             && url.equals(ed.getTypeFirstRep().getWorkingCode())) {
           return true;
         }
@@ -687,7 +687,7 @@ public class JavaBaseGenerator extends OutputStreamWriter {
     ValueSet res = new ValueSet();
     res.setUrl(vs.getUrl());
     res.setVersion(vs.getVersion());
-    for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+    for (ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
       if (inc.hasFilter() || inc.hasValueSet() || !inc.hasSystem()) {
         return null;
       }
@@ -699,13 +699,13 @@ public class JavaBaseGenerator extends OutputStreamWriter {
         return null;
       }
       if (inc.hasConcept()) {
-        for (ConceptReferenceComponent c : inc.getConcept()) {
+        for (ConceptReferenceComponent c : inc.getConceptList()) {
           ConceptDefinitionComponent d = cs.getDefinitionByCode(c.getCode());
           res.getExpansion().addContains().setSystem(inc.getSystem()).setCode(c.getCode())
               .setDisplay(c.hasDisplay() ? c.getDisplay() : (d == null ? null : d.getDisplay()));
         }
       } else {
-        addAllCodes(res, cs, inc.getSystem(), cs.getConcept());
+        addAllCodes(res, cs, inc.getSystem(), cs.getConceptList());
       }
     }
     return res.getExpansion().hasContains() ? res : null;
@@ -716,7 +716,7 @@ public class JavaBaseGenerator extends OutputStreamWriter {
       if (!CodeSystemUtilities.isNotSelectable(cs, c)) {
         res.getExpansion().addContains().setSystem(system).setCode(c.getCode()).setDisplay(c.getDisplay());
       }
-      addAllCodes(res, cs, system, c.getConcept());
+      addAllCodes(res, cs, system, c.getConceptList());
     }
   }
 

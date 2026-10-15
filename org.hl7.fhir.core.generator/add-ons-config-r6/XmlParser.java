@@ -35,7 +35,8 @@ public class {{jname}}XmlParser extends org.hl7.fhir.model.core.formats.XmlParse
       throw new IOException("xpp == null!");
 {{parse-resource}}
     } else {
-      throw new FHIRFormatError("Unknown resource type "+xpp.getName()+"");
+      // not one of this package's resource types - see the note in the json parser
+      return super.parseResource(xpp);
     }
   }
 
@@ -197,6 +198,9 @@ public class {{jname}}XmlParser extends org.hl7.fhir.model.core.formats.XmlParse
       throw new IOException("prefix == null!");
     } else if (xpp == null) {
       throw new IOException("xpp == null!");
+    } else if (!xpp.getName().startsWith(prefix)) {
+      // all the names below start with the prefix, so if this one does not, there is no need to try them
+      return false;
 {{check-type}}
     } else if (xpp.getName().equals(prefix+"Date")) {
       return true;
@@ -259,7 +263,8 @@ public class {{jname}}XmlParser extends org.hl7.fhir.model.core.formats.XmlParse
       throw new IOException("resource == null");
 {{compose-resource}}      
     } else {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      // see the note in parseResource
+      super.composeResource(resource);
     }
   }
 
@@ -270,7 +275,8 @@ public class {{jname}}XmlParser extends org.hl7.fhir.model.core.formats.XmlParse
       throw new IOException("resource == null");
 {{compose-resource-name}}      
     } else {
-      throw new Error("Unhandled resource type "+resource.getClass().getName());
+      // see the note in parseResource
+      super.composeResource(name, resource);
     }
   }
 

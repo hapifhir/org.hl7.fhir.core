@@ -65,6 +65,7 @@ import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.r4b.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.TranslationServices;
+import org.hl7.fhir.utilities.logging.ILoggingService;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -578,7 +579,7 @@ public interface IWorkerContext {
 
   String formatMessagePlural(Integer pl, String theMessage, Object... theMessageArguments);
 
-  @Deprecated
+  @Deprecated(forRemoval = true)
   void setValidationMessageLanguage(Locale locale);
 
   class ValidationResult {
@@ -822,16 +823,6 @@ public interface IWorkerContext {
    */
   public boolean hasCache();
 
-  public interface ILoggingService {
-    public enum LogCategory {
-      INIT, PROGRESS, TX, CONTEXT, GENERATE, HTML
-    }
-
-    public void logMessage(String message); // status messages, always display
-
-    public void logDebugMessage(LogCategory category, String message); // verbose; only when debugging
-  }
-
   public void setLogger(ILoggingService logger);
 
   public ILoggingService getLogger();
@@ -892,7 +883,7 @@ public interface IWorkerContext {
    * @param types  - which types of resources to load
    * @return the number of resources loaded
    */
-  @Deprecated
+  @Deprecated(forRemoval = true)
   int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String[] types)
       throws FileNotFoundException, IOException, FHIRException;
 

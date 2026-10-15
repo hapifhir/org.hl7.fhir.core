@@ -40,6 +40,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.CRC32;
@@ -99,27 +100,46 @@ public class ZipGenerator {
 	}
 
 	public void addFolder(String actualDir, String statedDir, boolean omitIfExists) throws IOException  {
-	  File fd = ManagedFileAccess.csfile(actualDir);
-	  String files[] = fd.list();
-	  for (String f : files) {
-	    if (!".DS_Store".equals(f)) {
-	      if (ManagedFileAccess.csfile(Utilities.path(actualDir, f)).isDirectory())
-	        addFolder(Utilities.path(actualDir, f), Utilities.pathURL(statedDir, f), omitIfExists);
-	      else
-	        addFileName(Utilities.pathURL(statedDir, f), Utilities.path(actualDir, f), omitIfExists);
-	    }
-	  }
+	  addFolder(actualDir, statedDir, omitIfExists, null);
 	}
 
+  /**
+   * Recursively add the contents of actualDir to the zip under statedDir.
+   *
+   * Symbolic links (common in node_modules/.bin, pnpm stores etc) are handled explicitly:
+   * <ul>
+   *   <li>a link to a file is followed, and the target's content is stored under the link's name</li>
+   *   <li>a link to a directory is skipped (with a warning) - following it risks cycles and duplicated content</li>
+   *   <li>a broken link is skipped (with a warning)</li>
+   * </ul>
+   *
+   * Children are opened with ManagedFileAccess.file, not csfile: the names come from list(), so they
+   * can't be case-mismatched, and CSFile's check misfires on any link whose name differs from its target's.
+   */
   public void addFolder(String actualDir, String statedDir, boolean omitIfExists, String noExt) throws IOException  {
     File fd = ManagedFileAccess.csfile(actualDir);
     String files[] = fd.list();
+    if (files == null) {
+      log.warn("Unable to list the contents of "+fd.getAbsolutePath()+" - not added to zip");
+      return;
+    }
     for (String f : files) {
       if (!".DS_Store".equals(f)) {
-        if (ManagedFileAccess.csfile(Utilities.path(actualDir, f)).isDirectory())
-          addFolder(Utilities.path(actualDir, f), Utilities.pathURL(statedDir, f), omitIfExists, noExt);
+        String fn = Utilities.path(actualDir, f);
+        File cf = ManagedFileAccess.file(fn);
+        if (Files.isSymbolicLink(cf.toPath())) {
+          if (!cf.exists()) {
+            log.warn("Skipping broken symbolic link "+cf.getAbsolutePath()+" - not added to zip");
+            continue;
+          } else if (cf.isDirectory()) {
+            log.warn("Skipping symbolic link to directory "+cf.getAbsolutePath()+" - not added to zip");
+            continue;
+          }
+        }
+        if (cf.isDirectory())
+          addFolder(fn, Utilities.pathURL(statedDir, f), omitIfExists, noExt);
         else if (noExt == null || !f.endsWith(noExt))
-          addFileName(Utilities.pathURL(statedDir, f), Utilities.path(actualDir, f), omitIfExists);
+          addFileName(Utilities.pathURL(statedDir, f), fn, omitIfExists);
       }
     }
   }
