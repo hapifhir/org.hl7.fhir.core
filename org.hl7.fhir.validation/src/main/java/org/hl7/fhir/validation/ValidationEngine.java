@@ -12,7 +12,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.*;
-import java.util.regex.Pattern;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -1111,10 +1110,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return !items.isEmpty();
   }
 
-  // the item path is the linkId with sub-item and slice decorations taken off; a dot is the
-  // element separator, so it is split on the literal character (reviewed pattern)
-  private static final Pattern LINK_ID_DOT = Pattern.compile("\\.");
-
   /**
    * Derive the element path a Questionnaire item corresponds to from its {@code linkId}.
    * The QuestionnaireBuilder sets linkIds to the element path, sometimes with a
@@ -1136,7 +1131,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       s = s.substring(0, us);
     }
     StringBuilder b = new StringBuilder();
-    for (String seg : LINK_ID_DOT.split(s, -1)) {
+    for (String seg : Utilities.simpleSplit(s, ".")) {
       int colon = seg.indexOf(':');
       if (b.length() > 0) {
         b.append('.');
