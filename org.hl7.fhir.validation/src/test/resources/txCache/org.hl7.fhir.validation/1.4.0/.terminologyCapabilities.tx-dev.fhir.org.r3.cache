@@ -3466,7 +3466,19 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/history-absent-reason"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-affiliate"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-document-format-codes"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-jira-spec-work-group-concept-properties"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-organizational-entity-concept-properties"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/hl7-staff-role"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group"
@@ -3704,9 +3716,6 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/published-in-type"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/push-type-available"
@@ -5813,9 +5822,6 @@
       "name" : "tx-resource"
     },
     {
-      "name" : "_incomplete"
-    },
-    {
       "name" : "abstract"
     },
     {
@@ -5825,10 +5831,19 @@
       "name" : "check-system-version"
     },
     {
+      "name" : "check-valueset-version"
+    },
+    {
       "name" : "count"
     },
     {
       "name" : "default-to-latest-version"
+    },
+    {
+      "name" : "default-valueset-version"
+    },
+    {
+      "name" : "designation"
     },
     {
       "name" : "displayLanguage"
@@ -5843,13 +5858,13 @@
       "name" : "excludePostCoordinated"
     },
     {
+      "name" : "filter"
+    },
+    {
       "name" : "force-system-version"
     },
     {
-      "name" : "inactive"
-    },
-    {
-      "name" : "includeAlternateCodes"
+      "name" : "force-valueset-version"
     },
     {
       "name" : "includeDefinition"
@@ -5858,13 +5873,7 @@
       "name" : "includeDesignations"
     },
     {
-      "name" : "incomplete-ok"
-    },
-    {
-      "name" : "limitedExpansion"
-    },
-    {
-      "name" : "mode"
+      "name" : "limit"
     },
     {
       "name" : "no-cache"
@@ -5879,10 +5888,22 @@
       "name" : "property"
     },
     {
+      "name" : "sort"
+    },
+    {
       "name" : "system-version"
     },
     {
-      "name" : "valueSetMode"
+      "name" : "url"
+    },
+    {
+      "name" : "useSupplement"
+    },
+    {
+      "name" : "valueSet"
+    },
+    {
+      "name" : "valueSetVersion"
     }]
   }
 }

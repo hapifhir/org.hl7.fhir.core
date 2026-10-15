@@ -1,7 +1,7 @@
 package org.hl7.fhir.standalone.context;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.standalone.context.CanonicalResourceManager.CanonicalResourceProxy;
+import org.hl7.fhir.services.context.CanonicalResourceProxy;
 import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.model.core.StructureDefinition.TypeDerivationRule;

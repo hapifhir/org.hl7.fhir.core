@@ -189,6 +189,17 @@ public class RelatedPerson extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.language != null) {
+            visitor.visit(this, "language", -1, this.language);
+          }
+          if (this.preferred != null) {
+            visitor.visit(this, "preferred", -1, this.preferred);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "language":  return new Property("language", "CodeableConcept", "The language which may be used to communicate with the individual.", 0, 1, language);
@@ -1099,6 +1110,98 @@ public class RelatedPerson extends DomainResource {
         children.add(new Property("photo", "Attachment", "Image of the person.", 0, java.lang.Integer.MAX_VALUE, photoList));
         children.add(new Property("period", "Period", "The period of time during which this relationship is or was active. If there are no dates defined, then the interval is unknown.", 0, 1, period));
         children.add(new Property("communication", "", "A language which may be used to communicate with the related person.", 0, java.lang.Integer.MAX_VALUE, communicationList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.active != null) {
+          visitor.visit(this, "active", -1, this.active);
+        }
+        if (this.patient != null) {
+          visitor.visit(this, "patient", -1, this.patient);
+        }
+        if (this.relationshipList != null) {
+          int i = 0;
+          for (Base v : this.relationshipList) {
+            if (v != null) {
+              visitor.visit(this, "relationship", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.roleList != null) {
+          int i = 0;
+          for (Base v : this.roleList) {
+            if (v != null) {
+              visitor.visit(this, "role", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.nameList != null) {
+          int i = 0;
+          for (Base v : this.nameList) {
+            if (v != null) {
+              visitor.visit(this, "name", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.telecomList != null) {
+          int i = 0;
+          for (Base v : this.telecomList) {
+            if (v != null) {
+              visitor.visit(this, "telecom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.gender != null) {
+          visitor.visit(this, "gender", -1, this.gender);
+        }
+        if (this.birthDate != null) {
+          visitor.visit(this, "birthDate", -1, this.birthDate);
+        }
+        if (this.addressList != null) {
+          int i = 0;
+          for (Base v : this.addressList) {
+            if (v != null) {
+              visitor.visit(this, "address", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.photoList != null) {
+          int i = 0;
+          for (Base v : this.photoList) {
+            if (v != null) {
+              visitor.visit(this, "photo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.communicationList != null) {
+          int i = 0;
+          for (Base v : this.communicationList) {
+            if (v != null) {
+              visitor.visit(this, "communication", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

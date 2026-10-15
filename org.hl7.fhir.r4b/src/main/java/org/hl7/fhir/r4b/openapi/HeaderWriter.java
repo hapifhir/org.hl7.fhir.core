@@ -34,6 +34,7 @@ package org.hl7.fhir.r4b.openapi;
 import com.google.gson.JsonObject;
 
 
+@Deprecated(forRemoval = true)
 public class HeaderWriter extends ParameterWriter {
 
   public HeaderWriter(JsonObject object) {

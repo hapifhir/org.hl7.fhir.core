@@ -38,14 +38,21 @@ public class ValidationEngineParameters {
   public String getSv() {
     return sv;
   }
+  public String getStatedFHIRVersion() {
+    return sv;
+  }
 
   @SerializedName("sv")
   @JsonProperty("sv")
   public ValidationEngineParameters setSv(String sv) {
-    if (sv != null && (sv.startsWith("R") || sv.startsWith("r"))) {
-      this.sv = VersionUtilities.versionFromCode(sv.toLowerCase());
+    return setStatedFHIRVersion(sv);
+  }
+
+  public ValidationEngineParameters setStatedFHIRVersion(String statedFHIRVersion) {
+    if (statedFHIRVersion != null && (statedFHIRVersion.startsWith("R") || statedFHIRVersion.startsWith("r"))) {
+      this.sv = VersionUtilities.versionFromCode(statedFHIRVersion.toLowerCase());
     } else {
-      this.sv = sv;
+      this.sv = statedFHIRVersion;
     }
     return this;
   }

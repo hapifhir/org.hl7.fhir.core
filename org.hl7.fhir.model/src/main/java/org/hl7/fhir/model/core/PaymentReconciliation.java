@@ -967,6 +967,62 @@ public class PaymentReconciliation extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.identifier != null) {
+            visitor.visit(this, "identifier", -1, this.identifier);
+          }
+          if (this.predecessor != null) {
+            visitor.visit(this, "predecessor", -1, this.predecessor);
+          }
+          if (this.target != null) {
+            visitor.visit(this, "target", -1, this.target);
+          }
+          if (this.targetItem != null) {
+            visitor.visit(this, "targetItem[x]", -1, this.targetItem);
+          }
+          if (this.characteristics != null) {
+            visitor.visit(this, "characteristics", -1, this.characteristics);
+          }
+          if (this.encounter != null) {
+            visitor.visit(this, "encounter", -1, this.encounter);
+          }
+          if (this.account != null) {
+            visitor.visit(this, "account", -1, this.account);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.submitter != null) {
+            visitor.visit(this, "submitter", -1, this.submitter);
+          }
+          if (this.response != null) {
+            visitor.visit(this, "response", -1, this.response);
+          }
+          if (this.date != null) {
+            visitor.visit(this, "date", -1, this.date);
+          }
+          if (this.responsible != null) {
+            visitor.visit(this, "responsible", -1, this.responsible);
+          }
+          if (this.payee != null) {
+            visitor.visit(this, "payee", -1, this.payee);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
+          if (this.noteNumberList != null) {
+            int i = 0;
+            for (Base v : this.noteNumberList) {
+              if (v != null) {
+                visitor.visit(this, "noteNumber", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "identifier":  return new Property("identifier", "Identifier", "Unique identifier for the current payment item for the referenced payable.", 0, 1, identifier);
@@ -1647,6 +1703,23 @@ public class PaymentReconciliation extends DomainResource {
           children.add(new Property("number", "positiveInt", "A number to uniquely identify a note entry.", 0, 1, number));
           children.add(new Property("type", "code", "The business purpose of the note text.", 0, 1, type));
           children.add(new Property("text", "markdown", "The explanation or description associated with the processing.", 0, 1, text));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.class_ != null) {
+            visitor.visit(this, "class", -1, this.class_);
+          }
+          if (this.number != null) {
+            visitor.visit(this, "number", -1, this.number);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.text != null) {
+            visitor.visit(this, "text", -1, this.text);
+          }
         }
 
         @Override
@@ -3295,6 +3368,119 @@ public class PaymentReconciliation extends DomainResource {
         children.add(new Property("allocation", "", "Distribution of the payment amount for a previously acknowledged payable.", 0, java.lang.Integer.MAX_VALUE, allocationList));
         children.add(new Property("formCode", "CodeableConcept", "A code for the form to be used for printing the content.", 0, 1, formCode));
         children.add(new Property("processNote", "", "A note that describes or explains the processing in a human readable form.", 0, java.lang.Integer.MAX_VALUE, processNoteList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReason != null) {
+          visitor.visit(this, "statusReason", -1, this.statusReason);
+        }
+        if (this.kind != null) {
+          visitor.visit(this, "kind", -1, this.kind);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.created != null) {
+          visitor.visit(this, "created", -1, this.created);
+        }
+        if (this.enterer != null) {
+          visitor.visit(this, "enterer", -1, this.enterer);
+        }
+        if (this.issuerType != null) {
+          visitor.visit(this, "issuerType", -1, this.issuerType);
+        }
+        if (this.paymentIssuer != null) {
+          visitor.visit(this, "paymentIssuer", -1, this.paymentIssuer);
+        }
+        if (this.request != null) {
+          visitor.visit(this, "request", -1, this.request);
+        }
+        if (this.requestor != null) {
+          visitor.visit(this, "requestor", -1, this.requestor);
+        }
+        if (this.outcome != null) {
+          visitor.visit(this, "outcome", -1, this.outcome);
+        }
+        if (this.disposition != null) {
+          visitor.visit(this, "disposition", -1, this.disposition);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.location != null) {
+          visitor.visit(this, "location", -1, this.location);
+        }
+        if (this.method != null) {
+          visitor.visit(this, "method", -1, this.method);
+        }
+        if (this.cardBrand != null) {
+          visitor.visit(this, "cardBrand", -1, this.cardBrand);
+        }
+        if (this.accountNumber != null) {
+          visitor.visit(this, "accountNumber", -1, this.accountNumber);
+        }
+        if (this.expirationDate != null) {
+          visitor.visit(this, "expirationDate", -1, this.expirationDate);
+        }
+        if (this.processor != null) {
+          visitor.visit(this, "processor", -1, this.processor);
+        }
+        if (this.referenceNumber != null) {
+          visitor.visit(this, "referenceNumber", -1, this.referenceNumber);
+        }
+        if (this.authorization != null) {
+          visitor.visit(this, "authorization", -1, this.authorization);
+        }
+        if (this.tenderedAmount != null) {
+          visitor.visit(this, "tenderedAmount", -1, this.tenderedAmount);
+        }
+        if (this.returnedAmount != null) {
+          visitor.visit(this, "returnedAmount", -1, this.returnedAmount);
+        }
+        if (this.amount != null) {
+          visitor.visit(this, "amount", -1, this.amount);
+        }
+        if (this.paymentIdentifier != null) {
+          visitor.visit(this, "paymentIdentifier", -1, this.paymentIdentifier);
+        }
+        if (this.allocationList != null) {
+          int i = 0;
+          for (Base v : this.allocationList) {
+            if (v != null) {
+              visitor.visit(this, "allocation", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.formCode != null) {
+          visitor.visit(this, "formCode", -1, this.formCode);
+        }
+        if (this.processNoteList != null) {
+          int i = 0;
+          for (Base v : this.processNoteList) {
+            if (v != null) {
+              visitor.visit(this, "processNote", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

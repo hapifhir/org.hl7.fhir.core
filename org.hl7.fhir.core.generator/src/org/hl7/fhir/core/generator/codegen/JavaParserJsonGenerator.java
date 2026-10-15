@@ -285,7 +285,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         if ((isPrimitive(ed.typeSummary()) || ed.typeSummary().startsWith("canonical(")) && !tn.equals("XhtmlNode")) {
           parser.append("      res.set"+upFirst(getElementName(name, false))+"Element("+prsr+");\r\n");
           parser.append("    if (json.has(\"_"+escapeJavaString(name)+"\"))\r\n");
-          parser.append("      parseElementProperties(getJObject(json, \"_"+escapeJavaString(name)+"\"), res.get"+upFirst(getElementName(name, false))+"Element());\r\n");
+          parser.append("      parseElementProperties(getJObject(json, \"_"+escapeJavaString(name)+"\"), res."+primitiveElementGetter(ed, name)+");\r\n");
         } else {
           parser.append("      res.set"+upFirst(getElementName(name, false))+"("+prsr+");\r\n");
         }
@@ -497,8 +497,8 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         composer.append("        }\r\n");
       } else if (!"xhtml".equals(ed.typeSummary()) && (isPrimitive(ed) || ed.typeSummary().startsWith("canonical("))) {
         composer.append("      if (element.has"+upFirst(getElementName(name, false))+"Element()) {\r\n");
-        composer.append("        "+comp+"Core(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), false);\r\n");
-        composer.append("        "+comp+"Extras(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), false);\r\n");
+        composer.append("        "+comp+"Core(\""+escapeJavaString(name)+"\", element."+primitiveElementGetter(ed, name)+", false);\r\n");
+        composer.append("        "+comp+"Extras(\""+escapeJavaString(name)+"\", element."+primitiveElementGetter(ed, name)+", false);\r\n");
         composer.append("      }\r\n");
       } else if (tn.equals("xhtml")) {
         composer.append("      if (element.has"+upFirst(getElementName(name, false))+"()) {\r\n");
@@ -703,4 +703,13 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
 //      return name.replace("[x]", "");
 //  }
 
+
+  /**
+   * the getter for the object that holds a primitive element (value, id, extensions). Reference.reference
+   * is special: BaseReference defines getReferenceElement() as the HAPI IIdType view, which is a new object
+   * each time, so the generated Reference class calls the real one getReferenceElement_()
+   */
+  private String primitiveElementGetter(ElementDefinition ed, String name) {
+    return "get"+upFirst(getElementName(name, false))+"Element"+("Reference.reference".equals(ed.getPath()) ? "_" : "")+"()";
+  }
 }

@@ -547,6 +547,20 @@ public class Location extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.longitude != null) {
+            visitor.visit(this, "longitude", -1, this.longitude);
+          }
+          if (this.latitude != null) {
+            visitor.visit(this, "latitude", -1, this.latitude);
+          }
+          if (this.altitude != null) {
+            visitor.visit(this, "altitude", -1, this.altitude);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "longitude":  return new Property("longitude", "decimal", "Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes on Location main page).", 0, 1, longitude);
@@ -1720,6 +1734,116 @@ public class Location extends DomainResource {
         children.add(new Property("hoursOfOperation", "Availability", "What days/times during a week is this location usually open, and any exceptions where the location is not available.", 0, 1, hoursOfOperation));
         children.add(new Property("virtualService", "VirtualServiceDetail", "Connection details of a virtual service (e.g. shared conference call facility with dedicated number/details).", 0, java.lang.Integer.MAX_VALUE, virtualServiceList));
         children.add(new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for the location.", 0, java.lang.Integer.MAX_VALUE, endpointList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.operationalStatus != null) {
+          visitor.visit(this, "operationalStatus", -1, this.operationalStatus);
+        }
+        if (this.codeList != null) {
+          int i = 0;
+          for (Base v : this.codeList) {
+            if (v != null) {
+              visitor.visit(this, "code", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.aliasList != null) {
+          int i = 0;
+          for (Base v : this.aliasList) {
+            if (v != null) {
+              visitor.visit(this, "alias", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.mode != null) {
+          visitor.visit(this, "mode", -1, this.mode);
+        }
+        if (this.typeList != null) {
+          int i = 0;
+          for (Base v : this.typeList) {
+            if (v != null) {
+              visitor.visit(this, "type", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.address != null) {
+          visitor.visit(this, "address", -1, this.address);
+        }
+        if (this.form != null) {
+          visitor.visit(this, "form", -1, this.form);
+        }
+        if (this.position != null) {
+          visitor.visit(this, "position", -1, this.position);
+        }
+        if (this.managingOrganization != null) {
+          visitor.visit(this, "managingOrganization", -1, this.managingOrganization);
+        }
+        if (this.partOf != null) {
+          visitor.visit(this, "partOf", -1, this.partOf);
+        }
+        if (this.characteristicList != null) {
+          int i = 0;
+          for (Base v : this.characteristicList) {
+            if (v != null) {
+              visitor.visit(this, "characteristic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.hoursOfOperation != null) {
+          visitor.visit(this, "hoursOfOperation", -1, this.hoursOfOperation);
+        }
+        if (this.virtualServiceList != null) {
+          int i = 0;
+          for (Base v : this.virtualServiceList) {
+            if (v != null) {
+              visitor.visit(this, "virtualService", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.endpointList != null) {
+          int i = 0;
+          for (Base v : this.endpointList) {
+            if (v != null) {
+              visitor.visit(this, "endpoint", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

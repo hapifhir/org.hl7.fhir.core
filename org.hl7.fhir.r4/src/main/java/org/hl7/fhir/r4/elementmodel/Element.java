@@ -66,7 +66,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * @author Grahame Grieve
  *
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class Element extends Base {
 
   public enum SpecialElement {

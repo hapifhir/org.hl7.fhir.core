@@ -158,6 +158,17 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.jurisdiction != null) {
+            visitor.visit(this, "jurisdiction", -1, this.jurisdiction);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "The actual status of supply. Conveys in what situation this package type may be supplied for use.", 0, 1, code);
@@ -964,6 +975,92 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.identifierList != null) {
+            int i = 0;
+            for (Base v : this.identifierList) {
+              if (v != null) {
+                visitor.visit(this, "identifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.componentPart != null) {
+            visitor.visit(this, "componentPart", -1, this.componentPart);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
+          if (this.materialList != null) {
+            int i = 0;
+            for (Base v : this.materialList) {
+              if (v != null) {
+                visitor.visit(this, "material", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.alternateMaterialList != null) {
+            int i = 0;
+            for (Base v : this.alternateMaterialList) {
+              if (v != null) {
+                visitor.visit(this, "alternateMaterial", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.shelfLifeStorageList != null) {
+            int i = 0;
+            for (Base v : this.shelfLifeStorageList) {
+              if (v != null) {
+                visitor.visit(this, "shelfLifeStorage", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.manufacturerList != null) {
+            int i = 0;
+            for (Base v : this.manufacturerList) {
+              if (v != null) {
+                visitor.visit(this, "manufacturer", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.propertyList != null) {
+            int i = 0;
+            for (Base v : this.propertyList) {
+              if (v != null) {
+                visitor.visit(this, "property", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.containedItemList != null) {
+            int i = 0;
+            for (Base v : this.containedItemList) {
+              if (v != null) {
+                visitor.visit(this, "containedItem", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.packagingList != null) {
+            int i = 0;
+            for (Base v : this.packagingList) {
+              if (v != null) {
+                visitor.visit(this, "packaging", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "identifier":  return new Property("identifier", "Identifier", "A business identifier that is specific to this particular part of the packaging, often assigned by the manufacturer. Including possibly Data Carrier Identifier (a GS1 barcode).", 0, java.lang.Integer.MAX_VALUE, identifierList);
@@ -1473,6 +1570,17 @@ public class PackagedProductDefinition extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type);
@@ -1742,6 +1850,17 @@ public class PackagedProductDefinition extends DomainResource {
           super.listChildren(children);
           children.add(new Property("item", "CodeableReference(ManufacturedItemDefinition|DeviceDefinition|PackagedProductDefinition|BiologicallyDerivedProduct|NutritionProduct)", "The actual item(s) of medication, as manufactured, or a device (typically, but not necessarily, a co-packaged one), or other medically related item (such as food, biologicals, raw materials, medical fluids, gases etc.), as contained in the package. This also allows another whole packaged product to be included, which is solely for the case where a package of other entire packages is wanted - such as a wholesale or distribution pack (for layers within one package, use PackagedProductDefinition.packaging.packaging).", 0, 1, item));
           children.add(new Property("amount", "Quantity", "The number of this type of item within this packaging or for continuous items such as liquids it is the quantity (for example 25ml). See also PackagedProductDefinition.containedItemQuantity (especially the long definition).", 0, 1, amount));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.item != null) {
+            visitor.visit(this, "item", -1, this.item);
+          }
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
         }
 
         @Override
@@ -2739,6 +2858,104 @@ public class PackagedProductDefinition extends DomainResource {
         children.add(new Property("attachedDocument", "Reference(DocumentReference)", "Additional information or supporting documentation about the packaged product.", 0, java.lang.Integer.MAX_VALUE, attachedDocumentList));
         children.add(new Property("packaging", "", "A packaging item, as a container for medically related items, possibly with other packaging items within, or a packaging component, such as bottle cap (which is not a device or a medication manufactured item).", 0, 1, packaging));
         children.add(new Property("characteristic", "@PackagedProductDefinition.packaging.property", "Allows the key features to be recorded, such as \"hospital pack\", \"nurse prescribable\", \"calendar pack\".", 0, java.lang.Integer.MAX_VALUE, characteristicList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.packageForList != null) {
+          int i = 0;
+          for (Base v : this.packageForList) {
+            if (v != null) {
+              visitor.visit(this, "packageFor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusDate != null) {
+          visitor.visit(this, "statusDate", -1, this.statusDate);
+        }
+        if (this.containedItemQuantityList != null) {
+          int i = 0;
+          for (Base v : this.containedItemQuantityList) {
+            if (v != null) {
+              visitor.visit(this, "containedItemQuantity", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.legalStatusOfSupplyList != null) {
+          int i = 0;
+          for (Base v : this.legalStatusOfSupplyList) {
+            if (v != null) {
+              visitor.visit(this, "legalStatusOfSupply", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.marketingStatusList != null) {
+          int i = 0;
+          for (Base v : this.marketingStatusList) {
+            if (v != null) {
+              visitor.visit(this, "marketingStatus", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.copackagedIndicator != null) {
+          visitor.visit(this, "copackagedIndicator", -1, this.copackagedIndicator);
+        }
+        if (this.manufacturerList != null) {
+          int i = 0;
+          for (Base v : this.manufacturerList) {
+            if (v != null) {
+              visitor.visit(this, "manufacturer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.attachedDocumentList != null) {
+          int i = 0;
+          for (Base v : this.attachedDocumentList) {
+            if (v != null) {
+              visitor.visit(this, "attachedDocument", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.packaging != null) {
+          visitor.visit(this, "packaging", -1, this.packaging);
+        }
+        if (this.characteristicList != null) {
+          int i = 0;
+          for (Base v : this.characteristicList) {
+            if (v != null) {
+              visitor.visit(this, "characteristic", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

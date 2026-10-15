@@ -1841,6 +1841,80 @@ public class Timing extends BackboneType implements ICompositeType {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.bounds != null) {
+            visitor.visit(this, "bounds[x]", -1, this.bounds);
+          }
+          if (this.count != null) {
+            visitor.visit(this, "count", -1, this.count);
+          }
+          if (this.countMax != null) {
+            visitor.visit(this, "countMax", -1, this.countMax);
+          }
+          if (this.duration != null) {
+            visitor.visit(this, "duration", -1, this.duration);
+          }
+          if (this.durationMax != null) {
+            visitor.visit(this, "durationMax", -1, this.durationMax);
+          }
+          if (this.durationUnit != null) {
+            visitor.visit(this, "durationUnit", -1, this.durationUnit);
+          }
+          if (this.frequency != null) {
+            visitor.visit(this, "frequency", -1, this.frequency);
+          }
+          if (this.frequencyMax != null) {
+            visitor.visit(this, "frequencyMax", -1, this.frequencyMax);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.periodMax != null) {
+            visitor.visit(this, "periodMax", -1, this.periodMax);
+          }
+          if (this.periodUnit != null) {
+            visitor.visit(this, "periodUnit", -1, this.periodUnit);
+          }
+          if (this.startOffset != null) {
+            visitor.visit(this, "startOffset", -1, this.startOffset);
+          }
+          if (this.endOffset != null) {
+            visitor.visit(this, "endOffset", -1, this.endOffset);
+          }
+          if (this.dayOfWeekList != null) {
+            int i = 0;
+            for (Base v : this.dayOfWeekList) {
+              if (v != null) {
+                visitor.visit(this, "dayOfWeek", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.timeOfDayList != null) {
+            int i = 0;
+            for (Base v : this.timeOfDayList) {
+              if (v != null) {
+                visitor.visit(this, "timeOfDay", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.whenList != null) {
+            int i = 0;
+            for (Base v : this.whenList) {
+              if (v != null) {
+                visitor.visit(this, "when", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.offset != null) {
+            visitor.visit(this, "offset", -1, this.offset);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "bounds[x]":  return new Property("bounds[x]", "Duration|Range|Period", "Either a duration for the length of the timing schedule, a range of possible length, or outer bounds for start and/or end limits of the timing schedule.", 0, 1, bounds);
@@ -2488,6 +2562,26 @@ public class Timing extends BackboneType implements ICompositeType {
         children.add(new Property("event", "dateTime", "Identifies specific times when the event occurs.", 0, java.lang.Integer.MAX_VALUE, eventList));
         children.add(new Property("repeat", "", "A set of rules that describe when the event is scheduled.", 0, 1, repeat));
         children.add(new Property("code", "CodeableConcept", "A code for the timing schedule (or just text in code.text). Some codes such as BID are ubiquitous, but many institutions define their own additional codes. If a code is provided, the code is understood to be a complete statement of whatever is specified in the structured timing data, and either the code or the data may be used to interpret the Timing, with the exception that .repeat.bounds still applies over the code (and is not contained in the code).", 0, 1, code));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.eventList != null) {
+          int i = 0;
+          for (Base v : this.eventList) {
+            if (v != null) {
+              visitor.visit(this, "event", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.repeat != null) {
+          visitor.visit(this, "repeat", -1, this.repeat);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
       }
 
       @Override

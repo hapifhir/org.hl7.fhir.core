@@ -27,6 +27,9 @@ import org.hl7.fhir.services.client.ResourceFormat;
 import org.hl7.fhir.model.core.Bundle;
 import org.hl7.fhir.model.core.Bundle.BundleEntryComponent;
 import org.hl7.fhir.model.core.CapabilityStatement;
+import org.hl7.fhir.model.core.DateTimeType;
+import org.hl7.fhir.model.core.Period;
+import org.hl7.fhir.model.core.ConceptMap;
 import org.hl7.fhir.model.core.OperationOutcome;
 import org.hl7.fhir.model.core.Parameters;
 import org.hl7.fhir.model.core.Resource;
@@ -37,6 +40,7 @@ import org.hl7.fhir.model.testing.TestReport.TestReportParticipantTypeValueSet;
 import org.hl7.fhir.model.testing.TestReport.TestReportResultValueSet;
 import org.hl7.fhir.model.testing.TestReport.TestReportStatusValueSet;
 import org.hl7.fhir.model.testing.TestReport.TestReportTestComponent;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.model.core.ValueSet;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
 
@@ -168,6 +172,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
   private final ThreadLocal<Map<String, String>> suiteCaches = ThreadLocal.withInitial(HashMap::new);
   private TxTesterConversionLogger conversionLogger;
   private TestReport testReport;
+  // who ran the tests: the start of TestReport.tester, which goes on to list the modes
+  private String testerName = "HL7 Ecosystem Test Runner";
+  private static final String TEST_CASES_URL = "https://github.com/HL7/fhir-tx-ecosystem-ig/blob/main/tests/test-cases.json";
+  private static final String TEST_ENGINE_URL = "https://github.com/hapifhir/org.hl7.fhir.core";
 
   public TxTester(ITxTesterLoader loader, String server, boolean tight, JsonObject externals, String version) {
     super();
@@ -214,9 +222,14 @@ public class TxTester implements ITerminologyRequestIdProvider {
     FileUtilities.createDirectory(Utilities.path(outputDir, "actual"));
     FileUtilities.createDirectory(Utilities.path(outputDir, "expected"));
     log.info("  Term Service Url: "+server);
+    // the server's name and version are filled in from its CapabilityStatement (checkClient)
     testReport.addParticipant().setType(TestReportParticipantTypeValueSet.SERVER).setUri(server);
     log.info("  External Strings: "+(externals != null));
     log.info("  Test  Exec Modes: "+modes.toString());
+    List<String> modeList = Utilities.sorted(modes);
+    testReport.setTester(testerName+" (modes "+String.join(", ", modeList)+")");
+    testReport.addParticipant().setType(TestReportParticipantTypeValueSet.TESTENGINE).setUri(TEST_ENGINE_URL)
+      .setVersion(VersionUtil.getBaseVersion()).setDisplay("HL7 Ecosystem Test Runner (modes "+String.join("+", modeList)+")");
 
     if (filter != null) {
       log.info("  Filter Parameter: "+filter);
@@ -252,12 +265,13 @@ public class TxTester implements ITerminologyRequestIdProvider {
       }
       FileUtilities.stringToFile(JsonParser.compose(json, true), Utilities.path(outputDir, "test-results.json"));
 
-      int c = counter.intValue() * 100;
-      int e = errCount.intValue() * 100;
-      double s = counter.intValue() == 0 ? 0 : (c - e) / counter.intValue();
-
-      testReport.setScore(s / 100);
+      // TestReport.score is the percentage of tests passed (0..100), not a fraction. Kept to
+      // two decimal places, so a single failure in a large run doesn't round away to 100
+      int total = counter.intValue();
+      double score = total == 0 ? 0 : Math.round((total - errCount.intValue()) * 10000.0 / total) / 100.0;
+      testReport.setScore(score);
       testReport.setResult(errCount.intValue() == 0 ? TestReportResultValueSet.PASS : TestReportResultValueSet.FAIL);
+      testReport.setIssuedElement(instant(System.currentTimeMillis()));
 
       if (filter == null && suite == null) {
         String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join("+", modes);
@@ -364,9 +378,29 @@ public class TxTester implements ITerminologyRequestIdProvider {
 //    testCases.setName("TxEcosystemTests");
 //    testCases.setDescription(tests.asString("introduction"));
     testReport.setName("TxEcosystemTests");
-    testReport.setTestScript("http://hl7.org/fhir/uv/tx-ecosystem/TestCases/tx-ecosystem-test-cases|"+version);
-    testReport.setTester("HL7 Ecosystem Test Runner v"+VersionUtil.getBaseVersion());
+    testReport.setTestScript(TEST_CASES_URL+"|"+version);
     testReport.setStatus(TestReportStatusValueSet.COMPLETED);
+  }
+
+  /**
+   * Who ran the tests, for TestReport.tester (default "HL7 Ecosystem Test Runner"). The
+   * modes are added after it, e.g. "FHIRsmith build (modes general, snomed)".
+   */
+  public TxTester setTesterName(String testerName) {
+    this.testerName = testerName;
+    return this;
+  }
+
+  /** A dateTime to the millisecond, in UTC - the default precision is only seconds. */
+  private static DateTimeType instant(long ms) {
+    return new DateTimeType(new Date(ms), TemporalPrecisionEnum.MILLI, TimeZone.getTimeZone("UTC"));
+  }
+
+  /** Record a test's outcome on its TestReport.test: its result, as the test's and its action's, and how long it took. */
+  private static void recordResult(TestReportTestComponent tr, TestReportActionResultValueSet result, String message, long start) {
+    tr.setResult(result);
+    tr.getActionFirstRep().getOperation().setResult(result).setMessage(message);
+    tr.setPeriod(new Period().setStartElement(instant(start)).setEndElement(instant(System.currentTimeMillis())));
   }
 
   private TestReportTestComponent getTestReportTest(JsonObject suite, JsonObject test) {
@@ -417,7 +451,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
     capabilityStatement = client().getCapabilitiesStatement();
     if (capabilityStatement.hasSoftware()) {
       software = capabilityStatement.getSoftware().getName()+" v"+ capabilityStatement.getSoftware().getVersion();
-      testReport.getParticipantFirstRep().setDisplay(software);
+      testReport.getParticipantFirstRep().setDisplay(capabilityStatement.getSoftware().getName());
+      if (capabilityStatement.getSoftware().hasVersion()) {
+        testReport.getParticipantFirstRep().setVersion(capabilityStatement.getSoftware().getVersion());
+      }
     }
     terminologyCapabilities = client().getTerminologyCapabilities();
     return true;
@@ -825,6 +862,8 @@ public class TxTester implements ITerminologyRequestIdProvider {
           msg = compare(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("subsumes")) {
           msg = subsumes(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+        } else if (test.asString("operation").equals("closure")) {
+          msg = closure(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -838,14 +877,14 @@ public class TxTester implements ITerminologyRequestIdProvider {
         if (msg != null) {
           outputT.add("message", msg);
         }
-        tr.getActionFirstRep().getOperation().setResult(msg == null ? TestReportActionResultValueSet.PASS : TestReportActionResultValueSet.FAIL).setMessage(msg);
+        recordResult(tr, msg == null ? TestReportActionResultValueSet.PASS : TestReportActionResultValueSet.FAIL, msg, start);
         return msg == null ? new ResultInformation(true) : new ResultInformation(msg);
       } catch (Exception e) {
         log.error("  Tested "+ testName +": "+ "  ... Exception: "+e.getMessage());
 
         fails.add(suite.asString("name")+"/"+ testName);
         log.error(e.getMessage(), e);
-        tr.getActionFirstRep().getOperation().setResult(TestReportActionResultValueSet.ERROR).setMessage(e.getMessage());
+        recordResult(tr, TestReportActionResultValueSet.ERROR, e.getMessage(), start);
         return new ResultInformation(e.getMessage());
       } finally {
         // Reset headers on this thread's client so the next test run on the
@@ -861,6 +900,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       }
     } else {
       outputT.add("status", "ignored");
+      tr.setResult(TestReportActionResultValueSet.SKIP);
       tr.getActionFirstRep().getOperation().setResult(TestReportActionResultValueSet.SKIP);
       return new ResultInformation(true);
     }
@@ -1045,6 +1085,50 @@ public class TxTester implements ITerminologyRequestIdProvider {
       code = e.getCode();
       OperationOutcome oo = e.getServerErrors().get(0);
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
+      pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null) {
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(resp, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(pj, actFn);
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    return diff;
+  }
+
+  /**
+   * $closure. The response is a ConceptMap rather than a Parameters. Closure tests are
+   * stateful - each builds on the table the previous one left - so their suite is marked
+   * "sequential" and the runners run it in order on one thread, after everything else.
+   */
+  private String closure(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+    for (Resource r : setup) {
+      p.addParameter().setName("tx-resource").setResource(r);
+    }
+    client().setAcceptLanguage(lang);
+    p.getParameterList().addAll(profile.getParameterList());
+    int code = 0;
+    String pj;
+    try {
+      ConceptMap cm = client().closure(p);
+      cm.setText(null);
+      TxTesterSorters.sortConceptMap(cm);
+      pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(cm);
+      code = 200;
+    } catch (EFhirClientException e) {
+      code = e.getCode();
+      OperationOutcome oo = e.getServerErrors().get(0);
+      if (oo == null) {
+        throw e;
+      }
+      TxTesterScrubbers.scrubOperationOutcome(oo, tight);
+      oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
     CompareUtilities c = new CompareUtilities(modes, ext, vars());

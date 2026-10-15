@@ -456,6 +456,47 @@ public class Meta extends DataType implements IBaseMetaType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.versionId != null) {
+          visitor.visit(this, "versionId", -1, this.versionId);
+        }
+        if (this.lastUpdated != null) {
+          visitor.visit(this, "lastUpdated", -1, this.lastUpdated);
+        }
+        if (this.source != null) {
+          visitor.visit(this, "source", -1, this.source);
+        }
+        if (this.profileList != null) {
+          int i = 0;
+          for (Base v : this.profileList) {
+            if (v != null) {
+              visitor.visit(this, "profile", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.securityList != null) {
+          int i = 0;
+          for (Base v : this.securityList) {
+            if (v != null) {
+              visitor.visit(this, "security", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.tagList != null) {
+          int i = 0;
+          for (Base v : this.tagList) {
+            if (v != null) {
+              visitor.visit(this, "tag", i, v);
+            }
+            i++;
+          }
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "versionId":  return new Property("versionId", "id", "The version specific identifier, as it appears in the version portion of the URL. This value changes when the resource is created, updated, or deleted.", 0, 1, versionId);

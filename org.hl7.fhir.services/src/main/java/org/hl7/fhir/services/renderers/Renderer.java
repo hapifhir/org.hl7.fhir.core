@@ -75,6 +75,55 @@ public class Renderer  {
   }
 
 
+  /**
+   * The largest image (decoded size, in bytes) that will be inlined into the output as a data: url
+   */
+  protected static final int MAX_IMAGE_LENGTH = 2*1024*1024;
+
+  /**
+   * Whether images have to be inlined as data: urls, rather than written to files alongside the
+   * output: a narrative (VALID_RESOURCE) has to stand alone, and the host may ask for inline graphics
+   */
+  protected boolean mustInlineImages() {
+    return context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics();
+  }
+
+  /**
+   * base64Binary content may contain whitespace - it's not supposed to, but readers must ignore it, and 
+   * before R5 line-wrapped content was common. A data: url shouldn't contain whitespace, so use this 
+   * on base64 content from the resource being rendered before putting it into a data: url. Base64 that 
+   * the renderers encode themselves doesn't need it. 
+   * 
+   * Removes the same whitespace that Utilities.decodeBase64 skips (space, tab, LF, VT, FF, CR). Returns 
+   * the string as is if there's no whitespace in it  
+   */
+  public static String cleanBase64(String b64) {
+    if (b64 == null) {
+      return null;
+    }
+    int len = b64.length();
+    int i = 0;
+    while (i < len && !isBase64Whitespace(b64.charAt(i))) {
+      i++;
+    }
+    if (i == len) {
+      return b64;
+    }
+    StringBuilder b = new StringBuilder(len);
+    b.append(b64, 0, i);
+    for (; i < len; i++) {
+      char ch = b64.charAt(i);
+      if (!isBase64Whitespace(ch)) {
+        b.append(ch);
+      }
+    }
+    return b.toString();
+  }
+
+  private static boolean isBase64Whitespace(char ch) {
+    return ch == ' ' || (ch >= 0x09 && ch <= 0x0D);
+  }
+
   protected String formatPhrase(String theMessage, Object... theMessageArguments) {
     return context.formatPhrase(theMessage, theMessageArguments);
   }
@@ -100,20 +149,20 @@ public class Renderer  {
     case Added:
       XhtmlNode spanOuter = x.span("border: solid 1px #dddddd; margin: 2px; padding: 2px", null);
       XhtmlNode spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatPhrase(RenderingI18nContext.REND_SINCE_ADDED, context.getChangeVersion())));
-      spanInner.img("icon-change-add.png", "icon");
+      spanInner.img("icon-change-add.png", "");
       spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_ADDED));
       return spanOuter;
     case Changed:
       spanOuter = x.span("border: solid 1px #dddddd; margin: 2px; padding: 2px", null);
       String s = context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED, context.getChangeVersion());
       spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", vca.getOriginal() == null ? s : context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED_WAS, context.getChangeVersion(), vca.getOriginal()));
-      spanInner.img("icon-change-edit.png", "icon");
+      spanInner.img("icon-change-edit.png", "");
       spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_CHANGED));
       return spanOuter;
     case Deleted:
       spanOuter = x.span("border: solid 1px #dddddd; margin: 2px; padding: 2px", null);
       spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatPhrase(RenderingI18nContext.GENERAL_REMOVED_SINCE, context.getChangeVersion())));
-      spanInner.img("icon-change-remove.png", "icon");
+      spanInner.img("icon-change-remove.png", "");
       spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_REMOVED));
       return spanOuter.strikethrough();
     default:
@@ -133,20 +182,20 @@ public class Renderer  {
     case Added:
       XhtmlNode divOuter = x.div("border: solid 1px #dddddd; margin: 2px; padding: 2px");
       XhtmlNode spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatPhrase(RenderingI18nContext.REND_SINCE_ADDED, context.getChangeVersion())));
-      spanInner.img("icon-change-add.png", "icon");
+      spanInner.img("icon-change-add.png", "");
       spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_ADDED));
       return divOuter;
     case Changed:
       divOuter = x.div("border: solid 1px #dddddd; margin: 2px; padding: 2px");
       String s = context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED, context.getChangeVersion());
       spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", vca.getOriginal() == null ? s : context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED_WAS, context.getChangeVersion(),  vca.getOriginal()));
-      spanInner.img("icon-change-edit.png", "icon");
+      spanInner.img("icon-change-edit.png", "");
       spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_CHANGED));
       return divOuter;
     case Deleted:
       divOuter = x.div("border: solid 1px #dddddd; margin: 2px; padding: 2px");
       spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatPhrase(RenderingI18nContext.GENERAL_REMOVED_SINCE, context.getChangeVersion())));
-      spanInner.img("icon-change-remove.png", "icon");
+      spanInner.img("icon-change-remove.png", "");
       spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_REMOVED));
       return divOuter.strikethrough();
     default:
@@ -170,7 +219,7 @@ public class Renderer  {
       }
       XhtmlNode td = tr.td();
       XhtmlNode span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatPhrase(RenderingI18nContext.REND_ROW_SINCE, context.getChangeVersion())));
-      span.img("icon-change-add.png", "icon");
+      span.img("icon-change-add.png", "");
       span.tx(" "+ context.formatPhrase(RenderingI18nContext.REND_ADDED));
       XhtmlNode x = new XhtmlNode(NodeType.Element, "holder");
       x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", context.formatPhrase(RenderingI18nContext.REND_ROW_SINCE, context.getChangeVersion())).tx(" ");
@@ -179,14 +228,14 @@ public class Renderer  {
     case Changed:
       td = tr.td();
       span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", context.formatPhrase(RenderingI18nContext.REND_ROW_CHANGED_SINCE_WAS, context.getChangeVersion(), vca.getOriginal()));
-      span.img("icon-change-edit.png", "icon");
+      span.img("icon-change-edit.png", "");
       span.tx(" "+ context.formatPhrase(RenderingI18nContext.REND_CHANGED));
       return td;
     case Deleted:
       tr.style("text-decoration: line-through");
       td = tr.td();
       span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", context.formatPhrase(RenderingI18nContext.GENERAL_REMOVED_SINCE, context.getChangeVersion()));
-      span.img("icon-change-remove.png", "icon");
+      span.img("icon-change-remove.png", "");
       span.tx(" "+ context.formatPhrase(RenderingI18nContext.REND_REMOVED));
       x = new XhtmlNode(NodeType.Element, "holder");
       x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px; text-decoration: none", context.formatPhrase(RenderingI18nContext.REND_ROW_SINCE, context.getChangeVersion())).tx(" ");
@@ -213,23 +262,28 @@ public class Renderer  {
       switch (self.getType()) {
       case Added:
         XhtmlNode spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", context.formatPhrase(RenderingI18nContext.REND_SINCE_ADDED, version));
-        spanInner.img("icon-change-add.png", "icon");
+        spanInner.img("icon-change-add.png", "");
         spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_ADDED));
         return true;
       case Changed:
-        if (self.getComp().noChangeOtherThanMetadata(metadataFields)) {
+        if (self.getComp() != null && self.getComp().noChangeOtherThanMetadata(metadataFields)) {
           x.span("color: #eeeeee").tx("n/c");
           return false;
         } else {
           spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px",
               self.getOriginal() != null ? context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED_WAS, version, self.getOriginal()) : context.formatPhrase(RenderingI18nContext.REND_SINCE_CHANGED, version));
-          spanInner.img("icon-change-edit.png", "icon");
+          spanInner.img("icon-change-edit.png", "");
           spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_CHANGED));
+          String kinds = self.getComp() == null ? null : self.getComp().changeKindCodes(metadataFields);
+          if (!Utilities.noString(kinds)) {
+            spanInner.tx(" ");
+            spanInner.span(null, context.formatPhrase(RenderingI18nContext.REND_CHANGE_KINDS)).tx("("+kinds+")");
+          }
         }
         return true;
       case Deleted:
         spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", context.formatPhrase(RenderingI18nContext.GENERAL_REMOVED_SINCE, version));
-        spanInner.img("icon-change-remove.png", "icon");
+        spanInner.img("icon-change-remove.png", "");
         spanInner.tx(" "+context.formatPhrase(RenderingI18nContext.REND_REMOVED));
         return true;
       default:

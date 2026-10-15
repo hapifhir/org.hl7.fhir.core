@@ -243,6 +243,20 @@ public class ResearchStudy extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+          if (this.language != null) {
+            visitor.visit(this, "language", -1, this.language);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "Kind of name.", 0, 1, type);
@@ -584,6 +598,17 @@ public class ResearchStudy extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "The type of relationship to the related artifact.", 0, 1, type));
           children.add(new Property("target[x]", "uri|Attachment|canonical(Any)|Reference(Any)|markdown", "The artifact that is related to this ResearchStudy Resource.", 0, 1, target));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.target != null) {
+            visitor.visit(this, "target[x]", -1, this.target);
+          }
         }
 
         @Override
@@ -1043,6 +1068,38 @@ public class ResearchStudy extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.role != null) {
+            visitor.visit(this, "role", -1, this.role);
+          }
+          if (this.periodList != null) {
+            int i = 0;
+            for (Base v : this.periodList) {
+              if (v != null) {
+                visitor.visit(this, "period", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.classifierList != null) {
+            int i = 0;
+            for (Base v : this.classifierList) {
+              if (v != null) {
+                visitor.visit(this, "classifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.party != null) {
+            visitor.visit(this, "party", -1, this.party);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "Name of associated party.", 0, 1, name);
@@ -1409,6 +1466,20 @@ public class ResearchStudy extends DomainResource {
           children.add(new Property("state", "CodeableConcept", "Label for status or state (e.g. recruitment status).", 0, 1, state));
           children.add(new Property("actual", "boolean", "An indication of whether or not the date is a known date when the state changed or will change. A value of true indicates a known date. A value of false indicates an estimated date.", 0, 1, actual));
           children.add(new Property("period", "Period", "Date range.", 0, 1, period));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.state != null) {
+            visitor.visit(this, "state", -1, this.state);
+          }
+          if (this.actual != null) {
+            visitor.visit(this, "actual", -1, this.actual);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
         }
 
         @Override
@@ -1841,6 +1912,26 @@ public class ResearchStudy extends DomainResource {
           children.add(new Property("eligibility", "Reference(Group)", "Inclusion and exclusion criteria. The referenced Group Resource should have a membership element value of either 'definitional' or 'conceptual'.", 0, 1, eligibility));
           children.add(new Property("actualGroup", "Reference(Group)", "Group of participants who were enrolled in study. The referenced Group Resource should have a membership element value of 'enumerated'.", 0, 1, actualGroup));
           children.add(new Property("description", "markdown", "Free text description of the recruitment of the study.", 0, 1, description));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.targetNumber != null) {
+            visitor.visit(this, "targetNumber", -1, this.targetNumber);
+          }
+          if (this.actualNumber != null) {
+            visitor.visit(this, "actualNumber", -1, this.actualNumber);
+          }
+          if (this.eligibility != null) {
+            visitor.visit(this, "eligibility", -1, this.eligibility);
+          }
+          if (this.actualGroup != null) {
+            visitor.visit(this, "actualGroup", -1, this.actualGroup);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
         }
 
         @Override
@@ -2381,6 +2472,29 @@ public class ResearchStudy extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.targetNumber != null) {
+            visitor.visit(this, "targetNumber", -1, this.targetNumber);
+          }
+          if (this.actualNumber != null) {
+            visitor.visit(this, "actualNumber", -1, this.actualNumber);
+          }
+          if (this.eligibility != null) {
+            visitor.visit(this, "eligibility", -1, this.eligibility);
+          }
+          if (this.observedGroup != null) {
+            visitor.visit(this, "observedGroup", -1, this.observedGroup);
+          }
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "targetNumber":  return new Property("targetNumber", "unsignedInt", "Estimated total number of participants to be enrolled in the comparison group.", 0, 1, targetNumber);
@@ -2851,6 +2965,29 @@ public class ResearchStudy extends DomainResource {
           children.add(new Property("type", "CodeableConcept", "The kind of study objective.", 0, 1, type));
           children.add(new Property("description", "markdown", "Free text description of the objective of the study. This is what the study is trying to achieve rather than how it is going to achieve it (see ResearchStudy.description).", 0, 1, description));
           children.add(new Property("outcomeMeasure", "", "An \"outcome measure\", \"endpoint\", \"effect measure\" or \"measure of effect\" is a specific measurement or observation used to quantify the effect of experimental variables on the participants in a study, or for observational studies, to describe patterns of diseases or traits or associations with exposures, risk factors or treatment.", 0, java.lang.Integer.MAX_VALUE, outcomeMeasureList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.outcomeMeasureList != null) {
+            int i = 0;
+            for (Base v : this.outcomeMeasureList) {
+              if (v != null) {
+                visitor.visit(this, "outcomeMeasure", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -3503,6 +3640,47 @@ public class ResearchStudy extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.endpoint != null) {
+            visitor.visit(this, "endpoint", -1, this.endpoint);
+          }
+          if (this.population != null) {
+            visitor.visit(this, "population", -1, this.population);
+          }
+          if (this.intervention != null) {
+            visitor.visit(this, "intervention", -1, this.intervention);
+          }
+          if (this.comparator != null) {
+            visitor.visit(this, "comparator", -1, this.comparator);
+          }
+          if (this.summaryMeasure != null) {
+            visitor.visit(this, "summaryMeasure", -1, this.summaryMeasure);
+          }
+          if (this.endpointAnalysisPlan != null) {
+            visitor.visit(this, "endpointAnalysisPlan", -1, this.endpointAnalysisPlan);
+          }
+          if (this.eventHandlingList != null) {
+            int i = 0;
+            for (Base v : this.eventHandlingList) {
+              if (v != null) {
+                visitor.visit(this, "eventHandling", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "Label for the outcome measure.", 0, 1, name);
@@ -4011,6 +4189,23 @@ public class ResearchStudy extends DomainResource {
           children.add(new Property("group", "CodeableConcept", "The group that is affected by this event handling.", 0, 1, group));
           children.add(new Property("handling", "CodeableConcept", "How the data is handled.", 0, 1, handling));
           children.add(new Property("description", "markdown", "Text summary of event handling.", 0, 1, description));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.event != null) {
+            visitor.visit(this, "event", -1, this.event);
+          }
+          if (this.group != null) {
+            visitor.visit(this, "group", -1, this.group);
+          }
+          if (this.handling != null) {
+            visitor.visit(this, "handling", -1, this.handling);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
         }
 
         @Override
@@ -6078,6 +6273,221 @@ public class ResearchStudy extends DomainResource {
         children.add(new Property("comparisonGroup", "", "Describes an expected event or sequence of events for one of the subjects of a study. E.g. for a living subject: exposure to drug A, wash-out, exposure to drug B, wash-out, follow-up. E.g. for a stability study: {store sample from lot A at 25 degrees for 1 month}, {store sample from lot A at 40 degrees for 1 month}.", 0, java.lang.Integer.MAX_VALUE, comparisonGroupList));
         children.add(new Property("objective", "", "A goal that the study is aiming to achieve in terms of a scientific question to be answered by the analysis of data collected during the study.", 0, java.lang.Integer.MAX_VALUE, objectiveList));
         children.add(new Property("result", "Reference(Composition|DiagnosticReport|DocumentReference|Evidence)", "Link to one or more sets of results generated by the study. Could also link to a research registry holding the results such as ClinicalTrials.gov.", 0, java.lang.Integer.MAX_VALUE, resultList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.labelList != null) {
+          int i = 0;
+          for (Base v : this.labelList) {
+            if (v != null) {
+              visitor.visit(this, "label", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.protocolList != null) {
+          int i = 0;
+          for (Base v : this.protocolList) {
+            if (v != null) {
+              visitor.visit(this, "protocol", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.partOfList != null) {
+          int i = 0;
+          for (Base v : this.partOfList) {
+            if (v != null) {
+              visitor.visit(this, "partOf", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.citeAs != null) {
+          visitor.visit(this, "citeAs", -1, this.citeAs);
+        }
+        if (this.relatesToList != null) {
+          int i = 0;
+          for (Base v : this.relatesToList) {
+            if (v != null) {
+              visitor.visit(this, "relatesTo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.purposeTypeList != null) {
+          int i = 0;
+          for (Base v : this.purposeTypeList) {
+            if (v != null) {
+              visitor.visit(this, "purposeType", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.phase != null) {
+          visitor.visit(this, "phase", -1, this.phase);
+        }
+        if (this.studyDesignList != null) {
+          int i = 0;
+          for (Base v : this.studyDesignList) {
+            if (v != null) {
+              visitor.visit(this, "studyDesign", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.focusList != null) {
+          int i = 0;
+          for (Base v : this.focusList) {
+            if (v != null) {
+              visitor.visit(this, "focus", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.conditionList != null) {
+          int i = 0;
+          for (Base v : this.conditionList) {
+            if (v != null) {
+              visitor.visit(this, "condition", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.keywordList != null) {
+          int i = 0;
+          for (Base v : this.keywordList) {
+            if (v != null) {
+              visitor.visit(this, "keyword", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.regionList != null) {
+          int i = 0;
+          for (Base v : this.regionList) {
+            if (v != null) {
+              visitor.visit(this, "region", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.descriptionSummary != null) {
+          visitor.visit(this, "descriptionSummary", -1, this.descriptionSummary);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.period != null) {
+          visitor.visit(this, "period", -1, this.period);
+        }
+        if (this.siteList != null) {
+          int i = 0;
+          for (Base v : this.siteList) {
+            if (v != null) {
+              visitor.visit(this, "site", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.classifierList != null) {
+          int i = 0;
+          for (Base v : this.classifierList) {
+            if (v != null) {
+              visitor.visit(this, "classifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.associatedPartyList != null) {
+          int i = 0;
+          for (Base v : this.associatedPartyList) {
+            if (v != null) {
+              visitor.visit(this, "associatedParty", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.progressStatusList != null) {
+          int i = 0;
+          for (Base v : this.progressStatusList) {
+            if (v != null) {
+              visitor.visit(this, "progressStatus", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.whyStopped != null) {
+          visitor.visit(this, "whyStopped", -1, this.whyStopped);
+        }
+        if (this.recruitment != null) {
+          visitor.visit(this, "recruitment", -1, this.recruitment);
+        }
+        if (this.comparisonGroupList != null) {
+          int i = 0;
+          for (Base v : this.comparisonGroupList) {
+            if (v != null) {
+              visitor.visit(this, "comparisonGroup", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.objectiveList != null) {
+          int i = 0;
+          for (Base v : this.objectiveList) {
+            if (v != null) {
+              visitor.visit(this, "objective", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.resultList != null) {
+          int i = 0;
+          for (Base v : this.resultList) {
+            if (v != null) {
+              visitor.visit(this, "result", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

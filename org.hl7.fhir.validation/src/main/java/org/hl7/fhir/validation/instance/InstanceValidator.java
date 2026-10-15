@@ -2795,7 +2795,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             } else {
               //pu = en;
             }
-            if (Utilities.existsInList(en, "Element", "Any")) {
+            if (Utilities.existsInList(en, "Element", "Any", "Base")) {
               ok = true;
             } else if (en.equals("Resource") && container.isResource()) {
               ok = true;
@@ -4027,7 +4027,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                r = fetcher.fetchCanonicalResource(this, valContext.getAppContext(), url);
               }
               if (r == null) {
-                r = this.context.fetchResource(Resource.class, url, ElementUtilities.getVersionResolutionRules(urlCtxt));
+                r = this.context.fetchResource(Resource.class, url, ElementModelUtilities.getVersionResolutionRules(urlCtxt));
               }
               if (r == null) {
                 warningOrError(internal, errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, rp != ReferenceValidationPolicy.CHECK_VALID, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE_NC, url);                    
@@ -4040,7 +4040,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 if (!url.contains("|") && r instanceof CanonicalResource) {
 
                   if (!Utilities.existsInList(context.getBase().getPath(), "ImplementationGuide.dependsOn.uri", "ConceptMap.group.source", "ConceptMap.group.target") &&
-                    ElementUtilities.getVersionResolutionRules(e) != VersionResolutionRules.LATEST) {
+                    ElementModelUtilities.getVersionResolutionRules(e) != VersionResolutionRules.LATEST) {
                     // ImplementationGuide.dependsOn.version is mandatory, and ConceptMap is checked in the ConceptMap validator
                     Set<IValidatorResourceFetcher.ResourceVersionInformation> possibleVersions = fetcher.fetchCanonicalResourceVersions(this, valContext.getAppContext(), url);
                     warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
@@ -4065,7 +4065,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       boolean found = isDefinitionURL(url) || (settings.isAllowExamples() && isExampleUrl(url)) /* || (url.startsWith("http://hl7.org/fhir/tools")) */ || isCommunicationsUrl(url) ||
         SpecialExtensions.isKnownExtension(url) || isXverUrl(url) || SIDUtilities.isKnownSID(url) || isKnownNamespaceUri(url) || isRfcRef(url) || isKnownMappingUri(url) || oids.isKnownOID(url);
       if (!found) {
-        return fetcher.resolveURL(this, valContext, context.getBase().getPath(), url, ElementUtilities.getVersionResolutionRules(ctxt),
+        return fetcher.resolveURL(this, valContext, context.getBase().getPath(), url, ElementModelUtilities.getVersionResolutionRules(ctxt),
           type, type.equals("canonical"), context.getByType(type) != null ? context.getByType(type).getTargetProfileList() : null);
       } else {
         return true;
@@ -4831,7 +4831,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private byte[] readBase64Data(List<ValidationMessage> errors, NodeStack theStack, String name, String b64) {
     try {
-      return Utilities.decodeBase64(b64);
+      return Utilities.decodeBase64(b64, false);
     } catch (Exception e) {
       rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL, name, e.getMessage());
     }
@@ -4923,7 +4923,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           // avoid that, but only the whole-array decoder checks that nothing follows the padding, and it 
           // words the error differently, so the checking is worth more than the memory here. Whitespace 
           // is ignored (readers should ignore it), so it makes no difference to the size or the hash
-          summariseContent(res, Utilities.decodeBase64(b64), wantHash);
+          summariseContent(res, Utilities.decodeBase64(b64, false), wantHash);
         } catch (Exception e) {
           res.decodeError = e.getMessage();
         }
@@ -7461,7 +7461,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           String ref = searchParam.getChildValue("definition");
           String type = searchParam.getChildValue(TYPE);
           if (!Utilities.noString(ref)) {
-            SearchParameter sp = context.fetchResource(SearchParameter.class, ref, ElementUtilities.getVersionResolutionRules(searchParam.getNamedChild("definition")));
+            SearchParameter sp = context.fetchResource(SearchParameter.class, ref, ElementModelUtilities.getVersionResolutionRules(searchParam.getNamedChild("definition")));
             if (sp != null) {
               ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, searchParam.line(), searchParam.col(), stack.getLiteralPath() + ".rest[" + iRest + "].resource[" + iResource + "].searchParam[" + iSP + "]",
                 sp.getType().toCode().equals(type), I18nConstants.CAPABALITYSTATEMENT_CS_SP_WRONGTYPE, sp.getVersionedUrl(), sp.getType().toCode(), type) && ok;
@@ -8314,10 +8314,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     String elementSupported = ei.getElement().getUserString(UserDataNames.keyview_elementSupported);
     String fixedValue = ei.getElement().getUserString(UserDataNames.keyview_hasFixed);
-    if ((elementSupported == null || !elementSupported.equals("Y")) && ei.getDefinition().getMustSupport()) {
-      if (ei.getDefinition().getMustSupport()) {
-        ei.getElement().setUserData(UserDataNames.keyview_elementSupported, "Y");
-      }
+    // the rules on a slicer (including must-support) apply to all its slices, but they're not repeated in the slices
+    boolean mustSupport = ei.getDefinition().getMustSupport() || (ei.getSlice() != null && ei.getSlice().getMustSupport());
+    if ((elementSupported == null || !elementSupported.equals("Y")) && mustSupport) {
+      ei.getElement().setUserData(UserDataNames.keyview_elementSupported, "Y");
     } else if (elementSupported == null && !usesMustSupport.equals("Y"))
       ei.getElement().setUserData(UserDataNames.keyview_elementSupported, "NA");
     if (fixedValue==null  && (ei.getDefinition().hasFixed() || ei.getDefinition().hasPattern()))
@@ -8909,12 +8909,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       String msgId = null;
       String mSrc = settings.isForPublication() ? inv.getHuman() + " ("+inv.getExpression()+")" : inv.getHuman();
+      String id = determineId(path, element);
       if (inv.hasSource()) {
-        msg = context.formatMessage(I18nConstants.INV_FAILED_SOURCE, inv.getKey(), mSrc, inv.getSource())+msg;
+        if (id != null) {
+          msg = context.formatMessage(I18nConstants.INV_FAILED_ID_SOURCE, inv.getKey(), mSrc, id, inv.getSource()) + msg;
+        } else {
+          msg = context.formatMessage(I18nConstants.INV_FAILED_SOURCE, inv.getKey(), mSrc, inv.getSource()) + msg;
+        }
         msgId = inv.getSource()+"#"+inv.getKey();
       } else {
+        if (id != null) {
+          msg = context.formatMessage(I18nConstants.INV_FAILED_ID, inv.getKey(), mSrc, id) + msg;
+        } else {
+          msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey(), mSrc) + msg;
+        }
         msgId = profile.getUrl()+"#"+inv.getKey();
-        msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey(), mSrc)+msg;
       }
       String invId = (inv.hasSource() ? inv.getSource() : profile.getUrl()) + "#"+inv.getKey();
       
@@ -8935,7 +8944,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     return ok;
   }
-  
+
   private boolean IsExemptInvariant(String path, Element element, ElementDefinitionConstraintComponent inv) {
     if ("eld-24".equals(inv.getKey())) {
       String p = element.getNamedChildValue("path", false);

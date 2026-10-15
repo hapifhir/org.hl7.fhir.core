@@ -52,7 +52,7 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.Type;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ObjectConverter {
 
   private IWorkerContext context;
