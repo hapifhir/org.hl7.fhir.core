@@ -10,13 +10,13 @@ import org.hl7.fhir.services.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 /**
  * GITB Validation Service for the FHIR validator at {@code /itb/fhir}.
@@ -27,9 +27,6 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 class GitbFhirHandler extends GitbValidationServiceHandler {
-
-  // comma-separated list inputs are split on the literal character (reviewed pattern)
-  private static final Pattern COMMA = Pattern.compile(",");
 
   GitbFhirHandler(FhirValidatorHttpService service) {
     super(service, "/itb/fhir");
@@ -67,7 +64,7 @@ class GitbFhirHandler extends GitbValidationServiceHandler {
 
     InstanceValidatorParameters params = new InstanceValidatorParameters();
     if (profilesStr != null) {
-      for (String p : COMMA.split(profilesStr)) {
+      for (String p : Utilities.simpleSplit(profilesStr, ",")) {
         String trimmed = p.trim();
         if (!trimmed.isEmpty()) params.addProfile(trimmed);
       }

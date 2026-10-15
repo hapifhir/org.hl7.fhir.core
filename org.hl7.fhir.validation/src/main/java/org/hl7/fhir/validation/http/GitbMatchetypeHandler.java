@@ -7,6 +7,7 @@ import org.hl7.fhir.model.core.OperationOutcome;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.special.TxTesterNormalizer;
 
@@ -16,7 +17,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * GITB Validation Service for matchetype comparison at {@code /itb/matchetype}.
@@ -28,9 +28,6 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 class GitbMatchetypeHandler extends GitbValidationServiceHandler {
-
-  // comma-separated list inputs are split on the literal character (reviewed pattern)
-  private static final Pattern COMMA = Pattern.compile(",");
 
   GitbMatchetypeHandler(FhirValidatorHttpService service) {
     super(service, "/itb/matchetype");
@@ -73,7 +70,7 @@ class GitbMatchetypeHandler extends GitbValidationServiceHandler {
     Set<String> modes = new HashSet<>();
     String modesInput = optionalInput(input, "modes", null);
     if (modesInput != null) {
-      for (String m : COMMA.split(modesInput)) {
+      for (String m : Utilities.simpleSplit(modesInput, ",")) {
         if (!m.trim().isEmpty()) {
           modes.add(m.trim());
         }
