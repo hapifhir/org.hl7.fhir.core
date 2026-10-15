@@ -333,6 +333,11 @@ public class TerminologyClientNR3 implements ITerminologyClientN {
   }
 
   @Override
+  public ConceptMap closure(Parameters params) throws FHIRException {
+    return (ConceptMap) VersionConvertorFactory_30_N.convertResource(client.closure((org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_N.convertResource(params)));
+  }
+
+  @Override
   public void setConversionLogger(ITerminologyConversionLogger logger) {
     // TODO Auto-generated method stub
     

@@ -22,7 +22,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
  * @author grahamegrieve
  *
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ParametersBuilder {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {

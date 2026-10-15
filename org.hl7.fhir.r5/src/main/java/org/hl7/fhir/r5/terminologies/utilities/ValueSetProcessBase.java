@@ -415,4 +415,17 @@ public class ValueSetProcessBase {
     return list;
   }
 
+
+  /**
+   * The name a value set is known by in the circularity check, and so in its error message. A
+   * contained value set is given a made-up urn:uuid: url when it is resolved, which means nothing
+   * to the user, so it is named after its container instead: [container url]#[id]
+   */
+  protected String contextName(CanonicalResource vs) {
+    Object container = vs.getUserData(UserDataNames.CONTAINER_RESOURCE);
+    if (container instanceof CanonicalResource && ((CanonicalResource) container).hasUrl() && vs.hasId()) {
+      return ((CanonicalResource) container).getUrl() + "#" + vs.getIdBase();
+    }
+    return vs.getVersionedUrl();
+  }
 }

@@ -183,6 +183,17 @@ public class Measure extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.definition != null) {
+            visitor.visit(this, "definition", -1, this.definition);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "CodeableConcept", "A codeable representation of the defined term.", 0, 1, code);
@@ -1385,6 +1396,104 @@ public class Measure extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.typeList != null) {
+            int i = 0;
+            for (Base v : this.typeList) {
+              if (v != null) {
+                visitor.visit(this, "type", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.subject != null) {
+            visitor.visit(this, "subject[x]", -1, this.subject);
+          }
+          if (this.basis != null) {
+            visitor.visit(this, "basis", -1, this.basis);
+          }
+          if (this.basisRequirementList != null) {
+            int i = 0;
+            for (Base v : this.basisRequirementList) {
+              if (v != null) {
+                visitor.visit(this, "basisRequirement", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.scoring != null) {
+            visitor.visit(this, "scoring", -1, this.scoring);
+          }
+          if (this.scoringUnit != null) {
+            visitor.visit(this, "scoringUnit", -1, this.scoringUnit);
+          }
+          if (this.scoringPrecision != null) {
+            visitor.visit(this, "scoringPrecision", -1, this.scoringPrecision);
+          }
+          if (this.compositeScoring != null) {
+            visitor.visit(this, "compositeScoring", -1, this.compositeScoring);
+          }
+          if (this.componentList != null) {
+            int i = 0;
+            for (Base v : this.componentList) {
+              if (v != null) {
+                visitor.visit(this, "component", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.rateAggregation != null) {
+            visitor.visit(this, "rateAggregation", -1, this.rateAggregation);
+          }
+          if (this.improvementNotation != null) {
+            visitor.visit(this, "improvementNotation", -1, this.improvementNotation);
+          }
+          if (this.improvementNotationGuidance != null) {
+            visitor.visit(this, "improvementNotationGuidance", -1, this.improvementNotationGuidance);
+          }
+          if (this.libraryList != null) {
+            int i = 0;
+            for (Base v : this.libraryList) {
+              if (v != null) {
+                visitor.visit(this, "library", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.populationList != null) {
+            int i = 0;
+            for (Base v : this.populationList) {
+              if (v != null) {
+                visitor.visit(this, "population", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.stratifierList != null) {
+            int i = 0;
+            for (Base v : this.stratifierList) {
+              if (v != null) {
+                visitor.visit(this, "stratifier", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "linkId":  return new Property("linkId", "string", "An identifier that is unique within the Measure allowing linkage to the equivalent item in a MeasureReport resource.", 0, 1, linkId);
@@ -2129,6 +2238,20 @@ public class Measure extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.measure != null) {
+            visitor.visit(this, "measure", -1, this.measure);
+          }
+          if (this.groupId != null) {
+            visitor.visit(this, "groupId", -1, this.groupId);
+          }
+          if (this.weight != null) {
+            visitor.visit(this, "weight", -1, this.weight);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "measure":  return new Property("measure", "canonical", "The measure that contains the definition of the component calculation.", 0, 1, measure);
@@ -2698,6 +2821,35 @@ public class Measure extends MetadataResource {
           children.add(new Property("groupDefinition", "Reference(Group)", "A Group resource that defines this population as a set of characteristics.", 0, 1, groupDefinition));
           children.add(new Property("inputPopulationId", "string", "The id of a population element in this measure that provides the input for this population criteria. In most cases, the scoring structure of the measure implies specific relationships (e.g. the Numerator uses the Denominator as the source in a proportion scoring). In some cases, however, multiple possible choices exist and must be resolved explicitly. For example in a ratio measure with multiple initial populations, the denominator must specify which population should be used as the starting point.", 0, 1, inputPopulationId));
           children.add(new Property("aggregateMethod", "CodeableConcept", "Specifies which method should be used to aggregate measure observation values. For most scoring types, this is implied by scoring (e.g. a proportion measure counts members of the populations). For continuous variables, however, this information must be specified to ensure correct calculation.", 0, 1, aggregateMethod));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.criteria != null) {
+            visitor.visit(this, "criteria", -1, this.criteria);
+          }
+          if (this.groupDefinition != null) {
+            visitor.visit(this, "groupDefinition", -1, this.groupDefinition);
+          }
+          if (this.inputPopulationId != null) {
+            visitor.visit(this, "inputPopulationId", -1, this.inputPopulationId);
+          }
+          if (this.aggregateMethod != null) {
+            visitor.visit(this, "aggregateMethod", -1, this.aggregateMethod);
+          }
         }
 
         @Override
@@ -3349,6 +3501,38 @@ public class Measure extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.criteria != null) {
+            visitor.visit(this, "criteria", -1, this.criteria);
+          }
+          if (this.groupDefinition != null) {
+            visitor.visit(this, "groupDefinition", -1, this.groupDefinition);
+          }
+          if (this.componentList != null) {
+            int i = 0;
+            for (Base v : this.componentList) {
+              if (v != null) {
+                visitor.visit(this, "component", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "linkId":  return new Property("linkId", "string", "An identifier that is unique within the Measure allowing linkage to the equivalent item in a MeasureReport resource.", 0, 1, linkId);
@@ -3969,6 +4153,32 @@ public class Measure extends MetadataResource {
           children.add(new Property("groupDefinition", "Reference(Group)", "A Group resource that defines this population as a set of characteristics.", 0, 1, groupDefinition));
           children.add(new Property("valueSet", "canonical(ValueSet)", "A value set defining the set of possible values for stratum in this stratifier. If criteria and valueSet are both present, they SHALL be consistent (i.e. criteria expressions SHALL produce stratum values that are codes in the value set referenced by this element). Note that this MAY be strictly at the code level (e.g. an Age Range code that is just the string value `01Y--05Y` with the system ignored).", 0, 1, valueSet));
           children.add(new Property("unit", "string", "Indicates what units, if any, stratifier values are expected to be expressed in. This element SHOULD be specified in UCUM units or calendar units.", 0, 1, unit));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.criteria != null) {
+            visitor.visit(this, "criteria", -1, this.criteria);
+          }
+          if (this.groupDefinition != null) {
+            visitor.visit(this, "groupDefinition", -1, this.groupDefinition);
+          }
+          if (this.valueSet != null) {
+            visitor.visit(this, "valueSet", -1, this.valueSet);
+          }
+          if (this.unit != null) {
+            visitor.visit(this, "unit", -1, this.unit);
+          }
         }
 
         @Override
@@ -4631,6 +4841,38 @@ public class Measure extends MetadataResource {
           children.add(new Property("criteria", "Expression", "The criteria for the supplemental data. This is typically the name of a valid expression defined within a referenced library, but it may also be a path to a specific data element. The criteria defines the data to be returned for this element.", 0, 1, criteria));
           children.add(new Property("valueSet", "canonical(ValueSet)", "A value set defining the set of possible values for supplemental data in this element. If criteria and valueSet are both present, they SHALL be consistent (i.e. criteria expressions SHALL produce supplemental data values that are codes in the value set referenced by this element). Note that this MAY be strictly at the code level (e.g. an Age Range code that is just the string value `01Y--05Y` with the system ignored).", 0, 1, valueSet));
           children.add(new Property("unit", "string", "Indicates what units, if any, supplemental data values are expected to be expressed in. This element SHOULD be specified in UCUM units or calendar units.", 0, 1, unit));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.linkId != null) {
+            visitor.visit(this, "linkId", -1, this.linkId);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.usageList != null) {
+            int i = 0;
+            for (Base v : this.usageList) {
+              if (v != null) {
+                visitor.visit(this, "usage", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.criteria != null) {
+            visitor.visit(this, "criteria", -1, this.criteria);
+          }
+          if (this.valueSet != null) {
+            visitor.visit(this, "valueSet", -1, this.valueSet);
+          }
+          if (this.unit != null) {
+            visitor.visit(this, "unit", -1, this.unit);
+          }
         }
 
         @Override
@@ -7230,6 +7472,212 @@ public class Measure extends MetadataResource {
         children.add(new Property("term", "", "Provides a description of an individual term used within the measure.", 0, java.lang.Integer.MAX_VALUE, termList));
         children.add(new Property("group", "", "A group of population criteria for the measure.", 0, java.lang.Integer.MAX_VALUE, groupList));
         children.add(new Property("supplementalData", "", "The supplemental data criteria for the measure report, specified as either the name of a valid CQL expression within a referenced library, or a valid FHIR Resource Path.", 0, java.lang.Integer.MAX_VALUE, supplementalDataList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.subtitle != null) {
+          visitor.visit(this, "subtitle", -1, this.subtitle);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.subject != null) {
+          visitor.visit(this, "subject[x]", -1, this.subject);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.usage != null) {
+          visitor.visit(this, "usage", -1, this.usage);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.effectivePeriod != null) {
+          visitor.visit(this, "effectivePeriod", -1, this.effectivePeriod);
+        }
+        if (this.reportingFrequency != null) {
+          visitor.visit(this, "reportingFrequency", -1, this.reportingFrequency);
+        }
+        if (this.topicList != null) {
+          int i = 0;
+          for (Base v : this.topicList) {
+            if (v != null) {
+              visitor.visit(this, "topic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.authorList != null) {
+          int i = 0;
+          for (Base v : this.authorList) {
+            if (v != null) {
+              visitor.visit(this, "author", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.editorList != null) {
+          int i = 0;
+          for (Base v : this.editorList) {
+            if (v != null) {
+              visitor.visit(this, "editor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reviewerList != null) {
+          int i = 0;
+          for (Base v : this.reviewerList) {
+            if (v != null) {
+              visitor.visit(this, "reviewer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.endorserList != null) {
+          int i = 0;
+          for (Base v : this.endorserList) {
+            if (v != null) {
+              visitor.visit(this, "endorser", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.relatedArtifactList != null) {
+          int i = 0;
+          for (Base v : this.relatedArtifactList) {
+            if (v != null) {
+              visitor.visit(this, "relatedArtifact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.libraryList != null) {
+          int i = 0;
+          for (Base v : this.libraryList) {
+            if (v != null) {
+              visitor.visit(this, "library", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.disclaimer != null) {
+          visitor.visit(this, "disclaimer", -1, this.disclaimer);
+        }
+        if (this.riskAdjustment != null) {
+          visitor.visit(this, "riskAdjustment", -1, this.riskAdjustment);
+        }
+        if (this.rateAggregation != null) {
+          visitor.visit(this, "rateAggregation", -1, this.rateAggregation);
+        }
+        if (this.rationale != null) {
+          visitor.visit(this, "rationale", -1, this.rationale);
+        }
+        if (this.clinicalRecommendationStatement != null) {
+          visitor.visit(this, "clinicalRecommendationStatement", -1, this.clinicalRecommendationStatement);
+        }
+        if (this.termList != null) {
+          int i = 0;
+          for (Base v : this.termList) {
+            if (v != null) {
+              visitor.visit(this, "term", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.groupList != null) {
+          int i = 0;
+          for (Base v : this.groupList) {
+            if (v != null) {
+              visitor.visit(this, "group", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.supplementalDataList != null) {
+          int i = 0;
+          for (Base v : this.supplementalDataList) {
+            if (v != null) {
+              visitor.visit(this, "supplementalData", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

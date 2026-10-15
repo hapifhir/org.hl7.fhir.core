@@ -507,6 +507,32 @@ public class DeviceDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.deviceIdentifier != null) {
+            visitor.visit(this, "deviceIdentifier", -1, this.deviceIdentifier);
+          }
+          if (this.issuer != null) {
+            visitor.visit(this, "issuer", -1, this.issuer);
+          }
+          if (this.jurisdiction != null) {
+            visitor.visit(this, "jurisdiction", -1, this.jurisdiction);
+          }
+          if (this.marketDistributionList != null) {
+            int i = 0;
+            for (Base v : this.marketDistributionList) {
+              if (v != null) {
+                visitor.visit(this, "marketDistribution", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.deviceIdentifierSystem != null) {
+            visitor.visit(this, "deviceIdentifierSystem", -1, this.deviceIdentifierSystem);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "deviceIdentifier":  return new Property("deviceIdentifier", "string", "The identifier that is to be associated with every Device that references this DeviceDefintiion for the issuer and jurisdiction provided in the DeviceDefinition.udiDeviceIdentifier.", 0, 1, deviceIdentifier);
@@ -840,6 +866,17 @@ public class DeviceDefinition extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("marketPeriod", "Period", "Begin and end dates for the commercial distribution of the device.", 0, 1, marketPeriod));
           children.add(new Property("subJurisdiction", "uri", "National state or territory to which the marketDistribution recers, typically where the device is commercialized.", 0, 1, subJurisdiction));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.marketPeriod != null) {
+            visitor.visit(this, "marketPeriod", -1, this.marketPeriod);
+          }
+          if (this.subJurisdiction != null) {
+            visitor.visit(this, "subJurisdiction", -1, this.subJurisdiction);
+          }
         }
 
         @Override
@@ -1290,6 +1327,26 @@ public class DeviceDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.identifier != null) {
+            visitor.visit(this, "identifier", -1, this.identifier);
+          }
+          if (this.issuer != null) {
+            visitor.visit(this, "issuer", -1, this.issuer);
+          }
+          if (this.jurisdiction != null) {
+            visitor.visit(this, "jurisdiction", -1, this.jurisdiction);
+          }
+          if (this.identifierSystem != null) {
+            visitor.visit(this, "identifierSystem", -1, this.identifierSystem);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "The type of identifier itself.", 0, 1, type);
@@ -1628,6 +1685,17 @@ public class DeviceDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "A human-friendly name that is used to refer to the device - depending on the type, it can be the brand name, the common name or alias, or other.", 0, 1, name);
@@ -1900,6 +1968,23 @@ public class DeviceDefinition extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "A classification or risk class of the device model.", 0, 1, type));
           children.add(new Property("justification", "RelatedArtifact", "Further information qualifying this classification of the device model.", 0, java.lang.Integer.MAX_VALUE, justificationList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.justificationList != null) {
+            int i = 0;
+            for (Base v : this.justificationList) {
+              if (v != null) {
+                visitor.visit(this, "justification", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -2283,6 +2368,35 @@ public class DeviceDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.category != null) {
+            visitor.visit(this, "category", -1, this.category);
+          }
+          if (this.specification != null) {
+            visitor.visit(this, "specification", -1, this.specification);
+          }
+          if (this.versionList != null) {
+            int i = 0;
+            for (Base v : this.versionList) {
+              if (v != null) {
+                visitor.visit(this, "version", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.sourceList != null) {
+            int i = 0;
+            for (Base v : this.sourceList) {
+              if (v != null) {
+                visitor.visit(this, "source", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "category":  return new Property("category", "CodeableConcept", "Describes the type of the standard, specification, or formal guidance.", 0, 1, category);
@@ -2621,6 +2735,17 @@ public class DeviceDefinition extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("definition[x]", "canonical(DeviceDefinition)|CodeableConcept", "The device that is part of the current device.", 0, 1, definition));
           children.add(new Property("count", "integer", "Number of instances of the component device in the current device.", 0, 1, count));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.definition != null) {
+            visitor.visit(this, "definition[x]", -1, this.definition);
+          }
+          if (this.count != null) {
+            visitor.visit(this, "count", -1, this.count);
+          }
         }
 
         @Override
@@ -3134,6 +3259,53 @@ public class DeviceDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.identifierList != null) {
+            int i = 0;
+            for (Base v : this.identifierList) {
+              if (v != null) {
+                visitor.visit(this, "identifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.count != null) {
+            visitor.visit(this, "count", -1, this.count);
+          }
+          if (this.distributorList != null) {
+            int i = 0;
+            for (Base v : this.distributorList) {
+              if (v != null) {
+                visitor.visit(this, "distributor", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.udiDeviceIdentifierList != null) {
+            int i = 0;
+            for (Base v : this.udiDeviceIdentifierList) {
+              if (v != null) {
+                visitor.visit(this, "udiDeviceIdentifier", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.packagingList != null) {
+            int i = 0;
+            for (Base v : this.packagingList) {
+              if (v != null) {
+                visitor.visit(this, "packaging", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "identifier":  return new Property("identifier", "Identifier", "The business identifiers of the packaged device.", 0, java.lang.Integer.MAX_VALUE, identifierList);
@@ -3505,6 +3677,23 @@ public class DeviceDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.organizationReferenceList != null) {
+            int i = 0;
+            for (Base v : this.organizationReferenceList) {
+              if (v != null) {
+                visitor.visit(this, "organizationReference", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "Distributor's human-readable name.", 0, 1, name);
@@ -3807,6 +3996,20 @@ public class DeviceDefinition extends CanonicalResource {
           children.add(new Property("type", "CodeableConcept", "The type of the device version, e.g. manufacturer, approved, internal.", 0, 1, type));
           children.add(new Property("component", "Identifier", "The hardware or software module of the device to which the version applies.", 0, 1, component));
           children.add(new Property("value", "string", "The version text.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.component != null) {
+            visitor.visit(this, "component", -1, this.component);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
         }
 
         @Override
@@ -4185,6 +4388,17 @@ public class DeviceDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "CodeableConcept", "Code that specifies the property such as a resolution or color being represented.", 0, 1, type);
@@ -4494,6 +4708,17 @@ public class DeviceDefinition extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("relation", "Coding", "The type indicates the relationship of the related device to the device instance.", 0, 1, relation));
           children.add(new Property("relatedDevice[x]", "canonical(DeviceDefinition)|CodeableConcept", "A reference to the linked device.", 0, 1, relatedDevice));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.relation != null) {
+            visitor.visit(this, "relation", -1, this.relation);
+          }
+          if (this.relatedDevice != null) {
+            visitor.visit(this, "relatedDevice[x]", -1, this.relatedDevice);
+          }
         }
 
         @Override
@@ -4833,6 +5058,20 @@ public class DeviceDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.substance != null) {
+            visitor.visit(this, "substance", -1, this.substance);
+          }
+          if (this.alternate != null) {
+            visitor.visit(this, "alternate", -1, this.alternate);
+          }
+          if (this.allergenicIndicator != null) {
+            visitor.visit(this, "allergenicIndicator", -1, this.allergenicIndicator);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "substance":  return new Property("substance", "CodeableConcept", "A substance that the device contains, may contain, or is made of - for example latex - to be used to determine patient compatibility. This is not intended to represent the composition of the device, only the clinically relevant materials.", 0, 1, substance);
@@ -5103,6 +5342,17 @@ public class DeviceDefinition extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableReference(SubstanceDefinition)", "The type of the substance added to the container.  This is represented as a concept from a code system or described in a SubstanceDefinition resource.", 0, 1, type));
           children.add(new Property("quantity", "Quantity", "The quantity of the additive substance in the container; may be volume, dimensions, or other appropriate measurements, depending on the container and additive substance type.", 0, 1, quantity));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.quantity != null) {
+            visitor.visit(this, "quantity", -1, this.quantity);
+          }
         }
 
         @Override
@@ -5702,6 +5952,62 @@ public class DeviceDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.useContextList != null) {
+            int i = 0;
+            for (Base v : this.useContextList) {
+              if (v != null) {
+                visitor.visit(this, "useContext", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.usageInstruction != null) {
+            visitor.visit(this, "usageInstruction", -1, this.usageInstruction);
+          }
+          if (this.relatedArtifactList != null) {
+            int i = 0;
+            for (Base v : this.relatedArtifactList) {
+              if (v != null) {
+                visitor.visit(this, "relatedArtifact", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.indicationList != null) {
+            int i = 0;
+            for (Base v : this.indicationList) {
+              if (v != null) {
+                visitor.visit(this, "indication", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.contraindicationList != null) {
+            int i = 0;
+            for (Base v : this.contraindicationList) {
+              if (v != null) {
+                visitor.visit(this, "contraindication", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.warningList != null) {
+            int i = 0;
+            for (Base v : this.warningList) {
+              if (v != null) {
+                visitor.visit(this, "warning", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.intendedUse != null) {
+            visitor.visit(this, "intendedUse", -1, this.intendedUse);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "useContext":  return new Property("useContext", "UsageContext", "The circumstances that form the setting for using the device.", 0, java.lang.Integer.MAX_VALUE, useContextList);
@@ -6138,6 +6444,20 @@ public class DeviceDefinition extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.recall != null) {
+            visitor.visit(this, "recall", -1, this.recall);
+          }
+          if (this.scope != null) {
+            visitor.visit(this, "scope", -1, this.scope);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "recall":  return new Property("recall", "boolean", "Whether the last corrective action known for this device was a recall.", 0, 1, recall);
@@ -6504,6 +6824,29 @@ public class DeviceDefinition extends CanonicalResource {
           children.add(new Property("count", "Quantity", "Coefficient applicable to the billing code.", 0, 1, count));
           children.add(new Property("effectivePeriod", "Period", "A specific time period in which this charge item applies.", 0, 1, effectivePeriod));
           children.add(new Property("useContext", "UsageContext", "The context to which this charge item applies.", 0, java.lang.Integer.MAX_VALUE, useContextList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.chargeItemCode != null) {
+            visitor.visit(this, "chargeItemCode", -1, this.chargeItemCode);
+          }
+          if (this.count != null) {
+            visitor.visit(this, "count", -1, this.count);
+          }
+          if (this.effectivePeriod != null) {
+            visitor.visit(this, "effectivePeriod", -1, this.effectivePeriod);
+          }
+          if (this.useContextList != null) {
+            int i = 0;
+            for (Base v : this.useContextList) {
+              if (v != null) {
+                visitor.visit(this, "useContext", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -9236,6 +9579,272 @@ public class DeviceDefinition extends CanonicalResource {
         children.add(new Property("guideline", "", "Information aimed at providing directions for the usage of this model of device.", 0, 1, guideline));
         children.add(new Property("correctiveAction", "", "Tracking of latest field safety corrective action.", 0, 1, correctiveAction));
         children.add(new Property("chargeItem", "", "Billing code or reference associated with the device.", 0, java.lang.Integer.MAX_VALUE, chargeItemList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.effectivePeriod != null) {
+          visitor.visit(this, "effectivePeriod", -1, this.effectivePeriod);
+        }
+        if (this.partNumber != null) {
+          visitor.visit(this, "partNumber", -1, this.partNumber);
+        }
+        if (this.manufacturer != null) {
+          visitor.visit(this, "manufacturer", -1, this.manufacturer);
+        }
+        if (this.modelNumber != null) {
+          visitor.visit(this, "modelNumber", -1, this.modelNumber);
+        }
+        if (this.udiDeviceIdentifierList != null) {
+          int i = 0;
+          for (Base v : this.udiDeviceIdentifierList) {
+            if (v != null) {
+              visitor.visit(this, "udiDeviceIdentifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.regulatoryIdentifierList != null) {
+          int i = 0;
+          for (Base v : this.regulatoryIdentifierList) {
+            if (v != null) {
+              visitor.visit(this, "regulatoryIdentifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.deviceNameList != null) {
+          int i = 0;
+          for (Base v : this.deviceNameList) {
+            if (v != null) {
+              visitor.visit(this, "deviceName", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.classificationList != null) {
+          int i = 0;
+          for (Base v : this.classificationList) {
+            if (v != null) {
+              visitor.visit(this, "classification", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.conformsToList != null) {
+          int i = 0;
+          for (Base v : this.conformsToList) {
+            if (v != null) {
+              visitor.visit(this, "conformsTo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.hasPartList != null) {
+          int i = 0;
+          for (Base v : this.hasPartList) {
+            if (v != null) {
+              visitor.visit(this, "hasPart", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.packagingList != null) {
+          int i = 0;
+          for (Base v : this.packagingList) {
+            if (v != null) {
+              visitor.visit(this, "packaging", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.deviceVersionList != null) {
+          int i = 0;
+          for (Base v : this.deviceVersionList) {
+            if (v != null) {
+              visitor.visit(this, "deviceVersion", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.safetyList != null) {
+          int i = 0;
+          for (Base v : this.safetyList) {
+            if (v != null) {
+              visitor.visit(this, "safety", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.shelfLifeStorageList != null) {
+          int i = 0;
+          for (Base v : this.shelfLifeStorageList) {
+            if (v != null) {
+              visitor.visit(this, "shelfLifeStorage", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.outputLanguageList != null) {
+          int i = 0;
+          for (Base v : this.outputLanguageList) {
+            if (v != null) {
+              visitor.visit(this, "outputLanguage", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.propertyList != null) {
+          int i = 0;
+          for (Base v : this.propertyList) {
+            if (v != null) {
+              visitor.visit(this, "property", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.linkList != null) {
+          int i = 0;
+          for (Base v : this.linkList) {
+            if (v != null) {
+              visitor.visit(this, "link", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.materialList != null) {
+          int i = 0;
+          for (Base v : this.materialList) {
+            if (v != null) {
+              visitor.visit(this, "material", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.additiveList != null) {
+          int i = 0;
+          for (Base v : this.additiveList) {
+            if (v != null) {
+              visitor.visit(this, "additive", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.productionIdentifierInUDIList != null) {
+          int i = 0;
+          for (Base v : this.productionIdentifierInUDIList) {
+            if (v != null) {
+              visitor.visit(this, "productionIdentifierInUDI", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.guideline != null) {
+          visitor.visit(this, "guideline", -1, this.guideline);
+        }
+        if (this.correctiveAction != null) {
+          visitor.visit(this, "correctiveAction", -1, this.correctiveAction);
+        }
+        if (this.chargeItemList != null) {
+          int i = 0;
+          for (Base v : this.chargeItemList) {
+            if (v != null) {
+              visitor.visit(this, "chargeItem", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

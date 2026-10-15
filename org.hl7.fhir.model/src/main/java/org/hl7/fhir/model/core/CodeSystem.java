@@ -659,6 +659,29 @@ public class CodeSystem extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.operatorList != null) {
+            int i = 0;
+            for (Base v : this.operatorList) {
+              if (v != null) {
+                visitor.visit(this, "operator", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "code", "The code that identifies this filter when it is used as a filter in [ValueSet](valueset.html#).compose.include.filter.", 0, 1, code);
@@ -1112,6 +1135,23 @@ public class CodeSystem extends MetadataResource {
           children.add(new Property("uri", "uri", "Reference to the formal meaning of the property. One possible source of meaning is the [Concept Properties](codesystem-concept-properties.html) code system.", 0, 1, uri));
           children.add(new Property("description", "string", "A description of the property- why it is defined, and how its value might be used.", 0, 1, description));
           children.add(new Property("type", "code", "The type of the property value. Properties of type \"code\" contain a code defined by the code system or another code system.", 0, 1, type));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.uri != null) {
+            visitor.visit(this, "uri", -1, this.uri);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
         }
 
         @Override
@@ -1697,6 +1737,47 @@ public class CodeSystem extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.display != null) {
+            visitor.visit(this, "display", -1, this.display);
+          }
+          if (this.definition != null) {
+            visitor.visit(this, "definition", -1, this.definition);
+          }
+          if (this.designationList != null) {
+            int i = 0;
+            for (Base v : this.designationList) {
+              if (v != null) {
+                visitor.visit(this, "designation", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.propertyList != null) {
+            int i = 0;
+            for (Base v : this.propertyList) {
+              if (v != null) {
+                visitor.visit(this, "property", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.conceptList != null) {
+            int i = 0;
+            for (Base v : this.conceptList) {
+              if (v != null) {
+                visitor.visit(this, "concept", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "code", "A code - a text symbol - that uniquely identifies the concept within the code system.", 0, 1, code);
@@ -2180,6 +2261,29 @@ public class CodeSystem extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.language != null) {
+            visitor.visit(this, "language", -1, this.language);
+          }
+          if (this.use != null) {
+            visitor.visit(this, "use", -1, this.use);
+          }
+          if (this.additionalUseList != null) {
+            int i = 0;
+            for (Base v : this.additionalUseList) {
+              if (v != null) {
+                visitor.visit(this, "additionalUse", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "language":  return new Property("language", "code", "The language this designation is defined for.", 0, 1, language);
@@ -2592,6 +2696,17 @@ public class CodeSystem extends MetadataResource {
           super.listChildren(children);
           children.add(new Property("code", "code", "Identifies a property that is either defined in this CodeSystem (`CodeSystem.property.code`) or is a code from [http://hl7.org/fhir/concept-properties](codesystem.html#defined-props).", 0, 1, code));
           children.add(new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this property.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
         }
 
         @Override
@@ -5026,6 +5141,200 @@ public class CodeSystem extends MetadataResource {
         children.add(new Property("filter", "", "A filter that can be used in a value set compose statement when selecting concepts using a filter.", 0, java.lang.Integer.MAX_VALUE, filterList));
         children.add(new Property("property", "", "A property defines an additional slot through which additional information can be provided about a concept.", 0, java.lang.Integer.MAX_VALUE, propertyList));
         children.add(new Property("concept", "", "Concepts that are in the code system. The concept definitions are inherently hierarchical, but the definitions must be consulted to determine what the meanings of the hierarchical relationships are.", 0, java.lang.Integer.MAX_VALUE, conceptList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.effectivePeriod != null) {
+          visitor.visit(this, "effectivePeriod", -1, this.effectivePeriod);
+        }
+        if (this.topicList != null) {
+          int i = 0;
+          for (Base v : this.topicList) {
+            if (v != null) {
+              visitor.visit(this, "topic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.authorList != null) {
+          int i = 0;
+          for (Base v : this.authorList) {
+            if (v != null) {
+              visitor.visit(this, "author", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.editorList != null) {
+          int i = 0;
+          for (Base v : this.editorList) {
+            if (v != null) {
+              visitor.visit(this, "editor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reviewerList != null) {
+          int i = 0;
+          for (Base v : this.reviewerList) {
+            if (v != null) {
+              visitor.visit(this, "reviewer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.endorserList != null) {
+          int i = 0;
+          for (Base v : this.endorserList) {
+            if (v != null) {
+              visitor.visit(this, "endorser", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.relatedArtifactList != null) {
+          int i = 0;
+          for (Base v : this.relatedArtifactList) {
+            if (v != null) {
+              visitor.visit(this, "relatedArtifact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.caseSensitive != null) {
+          visitor.visit(this, "caseSensitive", -1, this.caseSensitive);
+        }
+        if (this.valueSet != null) {
+          visitor.visit(this, "valueSet", -1, this.valueSet);
+        }
+        if (this.hierarchyMeaning != null) {
+          visitor.visit(this, "hierarchyMeaning", -1, this.hierarchyMeaning);
+        }
+        if (this.compositional != null) {
+          visitor.visit(this, "compositional", -1, this.compositional);
+        }
+        if (this.versionNeeded != null) {
+          visitor.visit(this, "versionNeeded", -1, this.versionNeeded);
+        }
+        if (this.content != null) {
+          visitor.visit(this, "content", -1, this.content);
+        }
+        if (this.supplements != null) {
+          visitor.visit(this, "supplements", -1, this.supplements);
+        }
+        if (this.count != null) {
+          visitor.visit(this, "count", -1, this.count);
+        }
+        if (this.filterList != null) {
+          int i = 0;
+          for (Base v : this.filterList) {
+            if (v != null) {
+              visitor.visit(this, "filter", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.propertyList != null) {
+          int i = 0;
+          for (Base v : this.propertyList) {
+            if (v != null) {
+              visitor.visit(this, "property", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.conceptList != null) {
+          int i = 0;
+          for (Base v : this.conceptList) {
+            if (v != null) {
+              visitor.visit(this, "concept", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

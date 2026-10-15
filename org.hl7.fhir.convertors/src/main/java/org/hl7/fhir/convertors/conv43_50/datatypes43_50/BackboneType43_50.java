@@ -21,15 +21,19 @@ public class BackboneType43_50 {
 
   public static void copyBackboneType(org.hl7.fhir.r5.model.BackboneType src, org.hl7.fhir.r4b.model.BackboneType tgt, String... var) throws FHIRException {
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt, var);
-    for (org.hl7.fhir.r5.model.Extension e : src.getModifierExtension()) {
-      tgt.addModifierExtension(Extension43_50.convertExtension(e));
+    if (src.hasModifierExtension()) {
+      for (org.hl7.fhir.r5.model.Extension e : src.getModifierExtension()) {
+        tgt.addModifierExtension(Extension43_50.convertExtension(e));
+      }
     }
   }
 
   public static void copyBackboneType(org.hl7.fhir.r4b.model.BackboneType src, org.hl7.fhir.r5.model.BackboneType tgt, String... var) throws FHIRException {
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt, var);
-    for (org.hl7.fhir.r4b.model.Extension e : src.getModifierExtension()) {
-      tgt.addModifierExtension(Extension43_50.convertExtension(e));
+    if (src.hasModifierExtension()) {
+      for (org.hl7.fhir.r4b.model.Extension e : src.getModifierExtension()) {
+        tgt.addModifierExtension(Extension43_50.convertExtension(e));
+      }
     }
   }
 }

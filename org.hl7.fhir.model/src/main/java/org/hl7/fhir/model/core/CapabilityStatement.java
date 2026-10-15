@@ -1720,6 +1720,20 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.version != null) {
+            visitor.visit(this, "version", -1, this.version);
+          }
+          if (this.releaseDate != null) {
+            visitor.visit(this, "releaseDate", -1, this.releaseDate);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "Name the software is known by.", 0, 1, name);
@@ -2069,6 +2083,20 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           children.add(new Property("description", "markdown", "Information about the specific installation that this capability statement relates to.", 0, 1, description));
           children.add(new Property("url", "url", "An absolute base URL for the implementation.  This forms the base for REST interfaces as well as the mailbox and document interfaces.", 0, 1, url));
           children.add(new Property("custodian", "Reference(Organization)", "The organization responsible for the management of the instance and oversight of the data on the server at the specified URL.", 0, 1, custodian));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.url != null) {
+            visitor.visit(this, "url", -1, this.url);
+          }
+          if (this.custodian != null) {
+            visitor.visit(this, "custodian", -1, this.custodian);
+          }
         }
 
         @Override
@@ -2738,6 +2766,65 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+          if (this.documentation != null) {
+            visitor.visit(this, "documentation", -1, this.documentation);
+          }
+          if (this.security != null) {
+            visitor.visit(this, "security", -1, this.security);
+          }
+          if (this.resourceList != null) {
+            int i = 0;
+            for (Base v : this.resourceList) {
+              if (v != null) {
+                visitor.visit(this, "resource", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.interactionList != null) {
+            int i = 0;
+            for (Base v : this.interactionList) {
+              if (v != null) {
+                visitor.visit(this, "interaction", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.searchParamList != null) {
+            int i = 0;
+            for (Base v : this.searchParamList) {
+              if (v != null) {
+                visitor.visit(this, "searchParam", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.operationList != null) {
+            int i = 0;
+            for (Base v : this.operationList) {
+              if (v != null) {
+                visitor.visit(this, "operation", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.compartmentList != null) {
+            int i = 0;
+            for (Base v : this.compartmentList) {
+              if (v != null) {
+                visitor.visit(this, "compartment", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "mode":  return new Property("mode", "code", "Identifies whether this portion of the statement is describing the ability to initiate or receive restful interactions.", 0, 1, mode);
@@ -3207,6 +3294,26 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           children.add(new Property("cors", "boolean", "Server adds CORS headers when responding to requests - this enables Javascript applications to use the server.", 0, 1, cors));
           children.add(new Property("service", "CodeableConcept", "Types of security services that are supported/required by the system.", 0, java.lang.Integer.MAX_VALUE, serviceList));
           children.add(new Property("description", "markdown", "General description of how security works.", 0, 1, description));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.cors != null) {
+            visitor.visit(this, "cors", -1, this.cors);
+          }
+          if (this.serviceList != null) {
+            int i = 0;
+            for (Base v : this.serviceList) {
+              if (v != null) {
+                visitor.visit(this, "service", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
         }
 
         @Override
@@ -4569,6 +4676,110 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.definition != null) {
+            visitor.visit(this, "definition", -1, this.definition);
+          }
+          if (this.profile != null) {
+            visitor.visit(this, "profile", -1, this.profile);
+          }
+          if (this.supportedProfileList != null) {
+            int i = 0;
+            for (Base v : this.supportedProfileList) {
+              if (v != null) {
+                visitor.visit(this, "supportedProfile", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.documentation != null) {
+            visitor.visit(this, "documentation", -1, this.documentation);
+          }
+          if (this.interactionList != null) {
+            int i = 0;
+            for (Base v : this.interactionList) {
+              if (v != null) {
+                visitor.visit(this, "interaction", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.versioning != null) {
+            visitor.visit(this, "versioning", -1, this.versioning);
+          }
+          if (this.readHistory != null) {
+            visitor.visit(this, "readHistory", -1, this.readHistory);
+          }
+          if (this.updateCreate != null) {
+            visitor.visit(this, "updateCreate", -1, this.updateCreate);
+          }
+          if (this.conditionalCreate != null) {
+            visitor.visit(this, "conditionalCreate", -1, this.conditionalCreate);
+          }
+          if (this.conditionalRead != null) {
+            visitor.visit(this, "conditionalRead", -1, this.conditionalRead);
+          }
+          if (this.conditionalUpdate != null) {
+            visitor.visit(this, "conditionalUpdate", -1, this.conditionalUpdate);
+          }
+          if (this.conditionalPatch != null) {
+            visitor.visit(this, "conditionalPatch", -1, this.conditionalPatch);
+          }
+          if (this.conditionalDelete != null) {
+            visitor.visit(this, "conditionalDelete", -1, this.conditionalDelete);
+          }
+          if (this.referencePolicyList != null) {
+            int i = 0;
+            for (Base v : this.referencePolicyList) {
+              if (v != null) {
+                visitor.visit(this, "referencePolicy", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.searchIncludeList != null) {
+            int i = 0;
+            for (Base v : this.searchIncludeList) {
+              if (v != null) {
+                visitor.visit(this, "searchInclude", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.searchRevIncludeList != null) {
+            int i = 0;
+            for (Base v : this.searchRevIncludeList) {
+              if (v != null) {
+                visitor.visit(this, "searchRevInclude", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.searchParamList != null) {
+            int i = 0;
+            for (Base v : this.searchParamList) {
+              if (v != null) {
+                visitor.visit(this, "searchParam", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.operationList != null) {
+            int i = 0;
+            for (Base v : this.operationList) {
+              if (v != null) {
+                visitor.visit(this, "operation", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "uri", "A relative URL, in which case it is a type of resource exposed via the restful interface, either a resource defined in this specification, or an [additional resource](resource.html#additional), or else a full URL referring to some other type that specialises the base resource (e.g. a custom resource).", 0, 1, type);
@@ -5237,6 +5448,17 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.documentation != null) {
+            visitor.visit(this, "documentation", -1, this.documentation);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "code", "Coded identifier of the interaction, supported by the system resource.", 0, 1, code);
@@ -5649,6 +5871,23 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.definition != null) {
+            visitor.visit(this, "definition", -1, this.definition);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.documentation != null) {
+            visitor.visit(this, "documentation", -1, this.documentation);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The label used for the search parameter in this particular system's API - i.e. the 'name' portion of the name-value pair that will appear as part of the search URL.  This SHOULD be the same as the SearchParameter.code of the defining SearchParameter.  However, it can sometimes differ if necessary to disambiguate when a server supports multiple SearchParameters that happen to share the same code.", 0, 1, name);
@@ -6045,6 +6284,20 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.definition != null) {
+            visitor.visit(this, "definition", -1, this.definition);
+          }
+          if (this.documentation != null) {
+            visitor.visit(this, "documentation", -1, this.documentation);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "The name of the operation or query. For an operation, this name is prefixed with $ and used in the URL. For a query, this is the name used in the _query parameter when the query is called. This SHOULD be the same as the OperationDefinition.code of the defining OperationDefinition.  However, it can sometimes differ if necessary to disambiguate when a server supports multiple OperationDefinition that happen to share the same code.", 0, 1, name);
@@ -6360,6 +6613,17 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           super.listChildren(children);
           children.add(new Property("code", "code", "A coded identifier of the interaction, supported by the system.", 0, 1, code));
           children.add(new Property("documentation", "markdown", "Guidance specific to the implementation of this interaction, such as limitations on the kind of transactions allowed, or information about system wide search is implemented.", 0, 1, documentation));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.documentation != null) {
+            visitor.visit(this, "documentation", -1, this.documentation);
+          }
         }
 
         @Override
@@ -6768,6 +7032,35 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.endpointList != null) {
+            int i = 0;
+            for (Base v : this.endpointList) {
+              if (v != null) {
+                visitor.visit(this, "endpoint", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.reliableCache != null) {
+            visitor.visit(this, "reliableCache", -1, this.reliableCache);
+          }
+          if (this.documentation != null) {
+            visitor.visit(this, "documentation", -1, this.documentation);
+          }
+          if (this.supportedMessageList != null) {
+            int i = 0;
+            for (Base v : this.supportedMessageList) {
+              if (v != null) {
+                visitor.visit(this, "supportedMessage", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "endpoint":  return new Property("endpoint", "", "An endpoint (network accessible address) to which messages and/or replies are to be sent.", 0, java.lang.Integer.MAX_VALUE, endpointList);
@@ -7082,6 +7375,17 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.protocol != null) {
+            visitor.visit(this, "protocol", -1, this.protocol);
+          }
+          if (this.address != null) {
+            visitor.visit(this, "address", -1, this.address);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "protocol":  return new Property("protocol", "Coding", "A list of the messaging transport protocol(s) identifiers, supported by this endpoint.", 0, 1, protocol);
@@ -7371,6 +7675,17 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           super.listChildren(children);
           children.add(new Property("mode", "code", "The mode of this event declaration - whether application is sender or receiver.", 0, 1, mode));
           children.add(new Property("definition", "canonical(MessageDefinition)", "Points to a message definition that identifies the messaging event, message structure, allowed responses, etc.", 0, 1, definition));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+          if (this.definition != null) {
+            visitor.visit(this, "definition", -1, this.definition);
+          }
         }
 
         @Override
@@ -7723,6 +8038,20 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           children.add(new Property("mode", "code", "Mode of this document declaration - whether an application is a producer or consumer.", 0, 1, mode));
           children.add(new Property("documentation", "markdown", "A description of how the application supports or uses the specified document profile.  For example, when documents are created, what action is taken with consumed documents, etc.", 0, 1, documentation));
           children.add(new Property("profile", "canonical(StructureDefinition)", "A profile on the document Bundle that constrains which resources are present, and their contents.", 0, 1, profile));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.mode != null) {
+            visitor.visit(this, "mode", -1, this.mode);
+          }
+          if (this.documentation != null) {
+            visitor.visit(this, "documentation", -1, this.documentation);
+          }
+          if (this.profile != null) {
+            visitor.visit(this, "profile", -1, this.profile);
+          }
         }
 
         @Override
@@ -9797,6 +10126,188 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         children.add(new Property("rest", "", "A definition of the restful capabilities of the solution, if any.", 0, java.lang.Integer.MAX_VALUE, restList));
         children.add(new Property("messaging", "", "A description of the messaging capabilities of the solution.", 0, java.lang.Integer.MAX_VALUE, messagingList));
         children.add(new Property("document", "", "A document definition.", 0, java.lang.Integer.MAX_VALUE, documentList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.actorDefinitionList != null) {
+          int i = 0;
+          for (Base v : this.actorDefinitionList) {
+            if (v != null) {
+              visitor.visit(this, "actorDefinition", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.kind != null) {
+          visitor.visit(this, "kind", -1, this.kind);
+        }
+        if (this.instantiatesList != null) {
+          int i = 0;
+          for (Base v : this.instantiatesList) {
+            if (v != null) {
+              visitor.visit(this, "instantiates", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.importsList != null) {
+          int i = 0;
+          for (Base v : this.importsList) {
+            if (v != null) {
+              visitor.visit(this, "imports", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.software != null) {
+          visitor.visit(this, "software", -1, this.software);
+        }
+        if (this.implementation != null) {
+          visitor.visit(this, "implementation", -1, this.implementation);
+        }
+        if (this.fhirVersion != null) {
+          visitor.visit(this, "fhirVersion", -1, this.fhirVersion);
+        }
+        if (this.formatList != null) {
+          int i = 0;
+          for (Base v : this.formatList) {
+            if (v != null) {
+              visitor.visit(this, "format", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.patchFormatList != null) {
+          int i = 0;
+          for (Base v : this.patchFormatList) {
+            if (v != null) {
+              visitor.visit(this, "patchFormat", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.acceptLanguageList != null) {
+          int i = 0;
+          for (Base v : this.acceptLanguageList) {
+            if (v != null) {
+              visitor.visit(this, "acceptLanguage", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.implementationGuideList != null) {
+          int i = 0;
+          for (Base v : this.implementationGuideList) {
+            if (v != null) {
+              visitor.visit(this, "implementationGuide", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.restList != null) {
+          int i = 0;
+          for (Base v : this.restList) {
+            if (v != null) {
+              visitor.visit(this, "rest", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.messagingList != null) {
+          int i = 0;
+          for (Base v : this.messagingList) {
+            if (v != null) {
+              visitor.visit(this, "messaging", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.documentList != null) {
+          int i = 0;
+          for (Base v : this.documentList) {
+            if (v != null) {
+              visitor.visit(this, "document", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

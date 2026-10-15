@@ -185,6 +185,24 @@ public abstract class ResourceRenderer extends DataRenderer {
   // these three are what the descendants of this class override
   public abstract void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
   public abstract String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException;
+
+  /**
+   * How deep summaries can nest - the summary of a resource can include the summary of a resource it refers to.
+   * Real content never gets near this; it stops circular references (A refers to B refers to A) recursing
+   * until the stack runs out
+   */
+  public static final int MAX_SUMMARY_RECURSION = 5;
+
+  /**
+   * Build the summary of a resource that is being summarised as part of the summary of another resource;
+   * recursionCount is how many summaries deep this is.
+   *
+   * Renderers whose summary includes the summary of a resource they refer to override this, implement
+   * buildSummary(r) as buildSummary(r, 0), and pass recursionCount on to displayReference()
+   */
+  public String buildSummary(ResourceWrapper r, int recursionCount) throws UnsupportedEncodingException, IOException {
+    return buildSummary(r);
+  }
     
   public void buildSummary(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     x.tx(buildSummary(r));
@@ -267,6 +285,13 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
   
   protected String displayReference(ResourceWrapper type) {
+    return displayReference(type, 0);
+  }
+
+  /**
+   * @param recursionCount how many summaries deep this is - see buildSummary(ResourceWrapper, int)
+   */
+  protected String displayReference(ResourceWrapper type, int recursionCount) {
     if (type == null) {
       return "";
     }
@@ -298,7 +323,13 @@ public abstract class ResourceRenderer extends DataRenderer {
         } else {
           String disp;
           try {
-            disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : context.getRendererFactory().factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
+            if (display != null && display.hasPrimitiveValue()) {
+              disp = displayDataType(display);
+            } else if (recursionCount >= MAX_SUMMARY_RECURSION) {
+              disp = "???";
+            } else {
+              disp = context.getRendererFactory().factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource(), recursionCount+1);
+            }
           } catch (IOException e) {
             disp = e.getMessage();
           }
@@ -306,7 +337,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         }
       }
     } else if (display != null) {
-      return "->"+display;
+      return "->"+displayDataType(display);
     } else if (id != null) {
       return "id: "+displayIdentifier(id);
     } else {
@@ -367,9 +398,9 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else {
         if (url.contains("|")) {
           if (lang!=null)
-            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang)+ context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion())+")");
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang)+" ("+context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion()).trim()+")");
           else
-            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion())+")");
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+" ("+context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion()).trim()+")");
         } else {
           if (lang!=null)
             x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang));
@@ -897,7 +928,7 @@ public abstract class ResourceRenderer extends DataRenderer {
        if (cd == null) {
          x.tx(code);
        } else {
-         x.ah(context.prefixLocalHref(cs.getWebPath()+"#"+cs.getId()+"-"+cd.getCode())).tx(cd.getDisplay());
+         x.ah(cs.hasWebPath() ? context.prefixLocalHref(cs.getWebPath()+"#"+cs.getId()+"-"+cd.getCode()) : null).tx(cd.getDisplay());
        }
      }
    }
@@ -1377,7 +1408,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (cd == null) {
         x.tx(code);        
       } else {
-        x.ah(cs.getWebPath()+"#"+cs.getId()+"-"+cd.getCode()).tx(cd.getDisplay());
+        x.ah(cs.hasWebPath() ? cs.getWebPath()+"#"+cs.getId()+"-"+cd.getCode() : null).tx(cd.getDisplay());
       }
     }
   }
@@ -1592,7 +1623,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx("\uD83D\uDE80");
       x.tx(" Latest");
       XhtmlNode span = x.span();
-      span.style(context.getOpacity());
+      span.style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
       span.tx(" ("+actualVersion+")");
     } else if (statedVersion != null && actualVersion != null && !statedVersion.equals(actualVersion) && fromPackages) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_WILDCARD_BY_PACKAGE, statedVersion, actualVersion));
@@ -1605,7 +1636,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx("\uD83D\uDCCD");
       x.tx(actualVersion);
       XhtmlNode span = x.span();
-      span.style(context.getOpacity());
+      span.style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
       span.tx(" → ");
       span.tx(statedVersion);
     } else if (statedVersion != null) {
@@ -1622,7 +1653,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx(actualVersion);
     } else if (actualVersion != null) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_FOUND, actualVersion));
-      x.style(context.getOpacity());
+      x.style("opacity: "+HierarchicalTableGenerator.STANDARD_OPACITY);
       x.tx("\u23FF");
       x.tx(actualVersion);
     } else if (tgt != null) {

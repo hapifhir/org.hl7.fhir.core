@@ -406,7 +406,7 @@ public class BaseWorkerContextTests {
     ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5).withGuessSystem().withVersionFlexible(false);
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding");
     Mockito.doReturn(cachedValidationResult).when(terminologyCache).getValidation(cacheToken);
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
@@ -426,7 +426,7 @@ public class BaseWorkerContextTests {
     ValueSet valueSet = new ValueSet();
     valueSet.setUrl(UUIDUtilities.makeUuidUrn());
     Coding coding = new Coding();
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding");
 
     Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), any(), any());
     Mockito.doReturn(createdValidationResult).when(valueSetCheckerSimple).validateCode(eq("Coding"), any(Coding.class));
@@ -449,7 +449,7 @@ public class BaseWorkerContextTests {
     ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5).withGuessSystem().withVersionFlexible(false).withNoClient();
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
-    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters);
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters, "Coding");
     Mockito.doReturn(pIn).when(context).constructParameters(validationOptions, coding);
 
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();

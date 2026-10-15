@@ -66,7 +66,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 @Slf4j
 public class NPMPackageGenerator {
 

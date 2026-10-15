@@ -372,10 +372,11 @@ public class JsonParser {
   }
 
   private void readObject(String path, JsonObject obj, boolean root) throws IOException, JsonException {
-    if (++parseDepth > MAX_JSON_DEPTH) {
+    parseDepth++;
+    try {
+    if (parseDepth > MAX_JSON_DEPTH) {
       throw lexer.error("Exceeded maximum JSON nesting depth of " + MAX_JSON_DEPTH);
     }
-    try {
     while (!(itemType == ItemType.End) || (root && (itemType == ItemType.Eof))) {
       obj.setExtraComma(false);
       switch (itemType) {
@@ -456,10 +457,11 @@ public class JsonParser {
   }
 
   private boolean readArray(String path, JsonArray arr, boolean root) throws IOException, JsonException {
-    if (++parseDepth > MAX_JSON_DEPTH) {
+    parseDepth++;
+    try {
+    if (parseDepth > MAX_JSON_DEPTH) {
       throw lexer.error("Exceeded maximum JSON nesting depth of " + MAX_JSON_DEPTH);
     }
-    try {
     boolean res = false;
     while (!((itemType == ItemType.End) || (root && (itemType == ItemType.Eof)))) {
       res  = true;

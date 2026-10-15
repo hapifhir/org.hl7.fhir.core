@@ -43,7 +43,7 @@ import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class Unbundler {
 
   public static void main(String[] args) throws Exception {

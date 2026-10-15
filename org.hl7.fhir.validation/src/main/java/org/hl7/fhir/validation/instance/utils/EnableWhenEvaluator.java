@@ -48,7 +48,6 @@ import org.hl7.fhir.model.core.Coding;
 import org.hl7.fhir.model.core.DataType;
 import org.hl7.fhir.model.core.Expression;
 import org.hl7.fhir.model.core.Extension;
-import org.hl7.fhir.model.Factory;
 import org.hl7.fhir.model.core.PrimitiveType;
 import org.hl7.fhir.model.core.Quantity;
 import org.hl7.fhir.model.core.Questionnaire.EnableWhenBehavior;
@@ -449,17 +448,7 @@ public class EnableWhenEvaluator {
     if (element.fhirType().equals("BackboneElement")) {
       return null;
     }
-    DataType b = new Factory().create(element.fhirType());
-    if (b instanceof PrimitiveType) {
-      ((PrimitiveType<?>) b).setValueAsString(element.primitiveValue());
-    } else {
-      for (Element child : element.getChildList()) {
-        if (!isExtension(child)) {
-          b.setProperty(child.getName(), convertToType(child));
-        }
-      }
-    }
-    return b;
+    return element.asType();
   }
 
 

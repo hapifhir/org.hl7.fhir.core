@@ -74,6 +74,11 @@ msgstr ""
 msgid "{0} specified in an additional binding"
 msgstr ""
 
+# BINDING_ADDITIONAL_IN_SCOPE
+#: BINDING_ADDITIONAL_IN_SCOPE
+msgid "The additional binding to {0} applies to this element, because {1}"
+msgstr ""
+
 # BINDING_ADDITIONAL_UC
 #: BINDING_ADDITIONAL_UC
 msgid "{0} specified in an additional binding which applies because {1}"
@@ -455,6 +460,11 @@ msgstr ""
 msgid "There is no value for sigFormat. In the absence of a stated signature format, the signature cannot be interpreted reliably (or validated)"
 msgstr ""
 
+# BUNDLE_SIGNATURE_NO_WHEN
+#: BUNDLE_SIGNATURE_NO_WHEN
+msgid "There is no stated time in the signature"
+msgstr ""
+
 # BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF
 #: BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF
 msgid "The signed bytes are identical, but the base64 representations differ"
@@ -569,6 +579,16 @@ msgstr ""
 # BUNDLE_SIGNATURE_SIG_OK
 #: BUNDLE_SIGNATURE_SIG_OK
 msgid "The signature verified OK"
+msgstr ""
+
+# BUNDLE_SIGNATURE_SIG_TIME_INVALID
+#: BUNDLE_SIGNATURE_SIG_TIME_INVALID
+msgid "The time in the signature ''{0}'' is not a valid instant, so it cannot be compared with Signature.when"
+msgstr ""
+
+# BUNDLE_SIGNATURE_WHEN_INVALID
+#: BUNDLE_SIGNATURE_WHEN_INVALID
+msgid "Signature.when ''{0}'' is not a valid instant, so it cannot be compared with the time in the signature"
 msgstr ""
 
 # BUNDLE_SIGNATURE_WHO_MISMATCH
@@ -723,9 +743,24 @@ msgstr ""
 msgid "Expected {0} but found {1} event elements"
 msgstr ""
 
+# CACHE_ID_CLEARED
+#: CACHE_ID_CLEARED
+msgid "The cache ''{0}'' was dropped {1} ago, when this server cleared all of its caches"
+msgstr ""
+
+# CACHE_ID_CLOSED
+#: CACHE_ID_CLOSED
+msgid "The cache ''{0}'' was closed {1} ago by the client, using $cache-control?mode=end (it had been open for {2}). It did not expire and it was not idle: something in the client released this cache while this request was still using it"
+msgstr ""
+
+# CACHE_ID_EXPIRED
+#: CACHE_ID_EXPIRED
+msgid "The cache ''{0}'' expired: it went {1} without being used, and this server closes caches that have been idle for more than {2} (this one was dropped {3} ago). Every request that uses a cache resets its idle clock, so a client that keeps using a cache will not see this"
+msgstr ""
+
 # CACHE_ID_UNKNOWN
 #: CACHE_ID_UNKNOWN
-msgid "The cache ''{0}'' is not known to this server. Caches are created with $cache-control?mode=start; this one was never created, or has expired or been released"
+msgid "The cache ''{0}'' was never issued by this server, and this server has no record of it ever existing. Caches are created with $cache-control?mode=start, and a cache-id is only valid on the server instance and endpoint that issued it - either it was issued somewhere else, or this server has restarted since it was issued"
 msgstr ""
 
 # CANONICAL_MULTIPLE_VERSIONS_KNOWN
@@ -856,6 +891,11 @@ msgstr ""
 # CODESYSTEM_CS_SUPP_NO_SUPP
 #: CODESYSTEM_CS_SUPP_NO_SUPP
 msgid "The code system is marked as a supplement, but it does not define what code system it supplements"
+msgstr ""
+
+# CODESYSTEM_CS_SUPP_TOO_MANY_CODES
+#: CODESYSTEM_CS_SUPP_TOO_MANY_CODES
+msgid "The supplement has too many concepts to validate ({0}, more than the limit of {1}), so they have not been checked against the base CodeSystem"
 msgstr ""
 
 # CODESYSTEM_CS_UNK_EXPANSION
@@ -1200,7 +1240,7 @@ msgstr ""
 
 # CONCEPTMAP_VS_TOO_MANY_CODES
 #: CONCEPTMAP_VS_TOO_MANY_CODES
-msgid "The concept map has too many codes to validate ({0})"
+msgid "The concept map has too many codes to validate ({0}, more than the limit of {1})"
 msgstr ""
 
 # CONCEPT_DEPRECATED_IN_VALUESET
@@ -1409,7 +1449,7 @@ msgstr ""
 
 # ED_INVARIANT_DIFF_NO_SOURCE
 #: ED_INVARIANT_DIFF_NO_SOURCE
-msgid "The invariant {0} defined in the differential must have no source, or the source must be the same as the profile ({1} vs {2})"
+msgid "The invariant {0} defined in the differential must have no source, or the source must be this profile, or a profile that this profile imposes ({1} vs {2})"
 msgstr ""
 
 # ED_INVARIANT_EXPRESSION_CONFLICT
@@ -1420,6 +1460,21 @@ msgstr ""
 # ED_INVARIANT_EXPRESSION_ERROR
 #: ED_INVARIANT_EXPRESSION_ERROR
 msgid "Error in constraint ''{0}'' with expression ''{1}'': {2}"
+msgstr ""
+
+# ED_INVARIANT_IMPOSE_DIFFERENT
+#: ED_INVARIANT_IMPOSE_DIFFERENT
+msgid "The invariant {0} has the source ''{1}'', which this profile imposes, but the invariant {0} in that profile has a different expression (''{2}'' vs ''{3}'')"
+msgstr ""
+
+# ED_INVARIANT_IMPOSE_NOT_DEFINED
+#: ED_INVARIANT_IMPOSE_NOT_DEFINED
+msgid "The invariant {0} has the source ''{1}'', which this profile imposes, but that profile does not define an invariant with the key ''{0}''"
+msgstr ""
+
+# ED_INVARIANT_IMPOSE_NOT_FOUND
+#: ED_INVARIANT_IMPOSE_NOT_FOUND
+msgid "The invariant {0} has the source ''{1}'', which this profile imposes, but that profile could not be found, so the invariant could not be checked"
 msgstr ""
 
 # ED_INVARIANT_KEY_ALREADY_USED
@@ -2528,7 +2583,7 @@ msgstr ""
 
 # MEASURE_MR_GRP_DUPL_CODE
 #: MEASURE_MR_GRP_DUPL_CODE
-msgid "The code for this group is duplicated with another group"
+msgid "The linkId or code for this group is duplicated with another group"
 msgstr ""
 
 # MEASURE_MR_GRP_MISSING_BY_CODE
@@ -2603,7 +2658,7 @@ msgstr ""
 
 # MEASURE_MR_GRP_POP_DUPL_CODE
 #: MEASURE_MR_GRP_POP_DUPL_CODE
-msgid "The code for this group population is duplicated with another group"
+msgid "The linkId or code for this group population is duplicated with another population"
 msgstr ""
 
 # MEASURE_MR_GRP_POP_MISSING_BY_CODE
@@ -2703,7 +2758,7 @@ msgstr ""
 
 # MEASURE_MR_SCORE_PROHIBITED_MS
 #: MEASURE_MR_SCORE_PROHIBITED_MS
-msgid "No measureScore when the scoring of the message is ''cohort''"
+msgid "No measureScore when the scoring of the measure is ''cohort''"
 msgstr ""
 
 # MEASURE_MR_SCORE_PROHIBITED_RT
@@ -2729,6 +2784,11 @@ msgstr ""
 # MEASURE_MR_SCORE_VALUE_INVALID_01
 #: MEASURE_MR_SCORE_VALUE_INVALID_01
 msgid "The value is invalid - it must be between 0 and 1"
+msgstr ""
+
+# MEASURE_MR_SCORE_VALUE_INVALID_02
+#: MEASURE_MR_SCORE_VALUE_INVALID_02
+msgid "The value is invalid - it must be greater than or equal to 0"
 msgstr ""
 
 # MEASURE_MR_SCORE_VALUE_REQUIRED
@@ -2763,7 +2823,7 @@ msgstr ""
 
 # MEASURE_M_CRITERIA_CQL_NO_ELM
 #: MEASURE_M_CRITERIA_CQL_NO_ELM
-msgid "Error in {0}: No compiled version of CQL found"
+msgid "Warning in {0}: No compiled version of CQL found"
 msgstr ""
 
 # MEASURE_M_CRITERIA_CQL_NO_LIB
@@ -3746,6 +3806,11 @@ msgstr ""
 msgid "Items not of type DISPLAY should not have items - linkId {0}"
 msgstr ""
 
+# Questionnaire_QR_Item_EnableWhen_Uncheckable
+#: Questionnaire_QR_Item_EnableWhen_Uncheckable
+msgid "The enableWhen expression for the item {0} could not be evaluated ({1}), so the item is treated as enabled, and its answers have not been checked against it"
+msgstr ""
+
 # Questionnaire_QR_Item_Group
 #: Questionnaire_QR_Item_Group
 msgid "Items of type {0} should not have answers"
@@ -3868,6 +3933,11 @@ msgstr ""
 msgid "Cannot validate string answer option because no option list is provided"
 msgstr ""
 
+# Questionnaire_QR_Item_StringNotAllowed
+#: Questionnaire_QR_Item_StringNotAllowed
+msgid "The answer to the item {0} is a string, but answerConstraint is ''{1}'', so the answer has to be one of the options the questionnaire specifies"
+msgstr ""
+
 # Questionnaire_QR_Item_Text
 #: Questionnaire_QR_Item_Text
 msgid "If text exists, it must match the questionnaire definition for linkId {0}"
@@ -3883,6 +3953,16 @@ msgstr ""
 msgid "Answer value must be of the type {1} not {2}"
 msgid_plural "Answer value must be one of the {0} types {1} not {2}"
 msgstr[0] ""
+
+# Questionnaire_QR_LaunchContext_NotLoaded
+#: Questionnaire_QR_LaunchContext_NotLoaded
+msgid "The launch context ''{0}'' could not be loaded from ''{1}'': {2}. Expressions that use it cannot be evaluated"
+msgstr ""
+
+# Questionnaire_QR_LaunchContext_WrongType
+#: Questionnaire_QR_LaunchContext_WrongType
+msgid "The launch context ''{0}'' loaded from ''{1}'' is a {2}, but the questionnaire declares it as a {3}, so it has not been used"
+msgstr ""
 
 # Questionnaire_QR_Q_None
 #: Questionnaire_QR_Q_None
@@ -3927,6 +4007,11 @@ msgstr ""
 # REFERENCE_REF_QUERY_INVALID
 #: REFERENCE_REF_QUERY_INVALID
 msgid "The query part of the conditional reference is not a valid query string ({0})"
+msgstr ""
+
+# REFERENCE_REF_QUERY_NOT_TRANSACTION
+#: REFERENCE_REF_QUERY_NOT_TRANSACTION
+msgid "The reference ''{0}'' is a conditional reference, and conditional references are only valid inside a transaction Bundle"
 msgstr ""
 
 # REFERENCE_REF_REL_UNSOLVEABLE
@@ -4510,6 +4595,11 @@ msgstr ""
 msgid "The element {0} is required on the element {1} in the context of a {2}"
 msgstr ""
 
+# SD_TYPE_ADDITIONAL_UNCHECKABLE
+#: SD_TYPE_ADDITIONAL_UNCHECKABLE
+msgid "Unable to read the list of approved additional resources from {0}, so unable to check whether unknown resource types are approved additional resources - some of the type errors reported may be incorrect"
+msgstr ""
+
 # SD_TYPE_MISSING
 #: SD_TYPE_MISSING
 msgid "No type found"
@@ -4930,6 +5020,51 @@ msgstr ""
 msgid "The concept ''{1}'' is valid but is {0}"
 msgstr ""
 
+# SUBSUMPTION_CS_HIERARCHY_MEANING
+#: SUBSUMPTION_CS_HIERARCHY_MEANING
+msgid "The CodeSystem ''{0}'' has hierarchyMeaning = {1}, so its hierarchy does not describe subsumption, and subsumption cannot be tested"
+msgstr ""
+
+# SUBSUMPTION_CS_NOT_COMPLETE
+#: SUBSUMPTION_CS_NOT_COMPLETE
+msgid "The CodeSystem ''{0}'' has content = {1}, so subsumption cannot be tested (subsumption can only be tested against a code system with content = complete)"
+msgstr ""
+
+# SUBSUMPTION_CS_NOT_FOUND
+#: SUBSUMPTION_CS_NOT_FOUND
+msgid "A definition for the CodeSystem ''{0}'' could not be found, so subsumption cannot be tested"
+msgstr ""
+
+# SUBSUMPTION_CS_NOT_FOUND_VERSION
+#: SUBSUMPTION_CS_NOT_FOUND_VERSION
+msgid "A definition for the CodeSystem ''{0}'' version ''{1}'' could not be found, so subsumption cannot be tested"
+msgstr ""
+
+# SUBSUMPTION_NO_CODE
+#: SUBSUMPTION_NO_CODE
+msgid "No code is provided for {0}, so subsumption cannot be tested"
+msgstr ""
+
+# SUBSUMPTION_NO_CODING
+#: SUBSUMPTION_NO_CODING
+msgid "No value is provided for {0}, so subsumption cannot be tested"
+msgstr ""
+
+# SUBSUMPTION_NO_SYSTEM
+#: SUBSUMPTION_NO_SYSTEM
+msgid "No code system is provided for {0}, so subsumption cannot be tested"
+msgstr ""
+
+# SUBSUMPTION_SYSTEM_MISMATCH
+#: SUBSUMPTION_SYSTEM_MISMATCH
+msgid "Subsumption can only be tested between two codes in the same code system, but the code systems are ''{0}'' and ''{1}''"
+msgstr ""
+
+# SUBSUMPTION_VERSION_MISMATCH
+#: SUBSUMPTION_VERSION_MISMATCH
+msgid "Subsumption can only be tested between two codes in the same version of ''{0}'', but the versions are ''{1}'' and ''{2}''"
+msgstr ""
+
 # SYSTEM_VERSION_MULTIPLE_DEFAULT
 #: SYSTEM_VERSION_MULTIPLE_DEFAULT
 msgid "Multiple default versions found for system {0}: ''{1}'', ''{2}'');"
@@ -5070,6 +5205,16 @@ msgstr ""
 msgid "No valid coding was found for the value set ''{0}''"
 msgstr ""
 
+# TX_SERVER_BATCH_RESPONSE_MISMATCH
+#: TX_SERVER_BATCH_RESPONSE_MISMATCH
+msgid "The terminology server {0} returned a batch validation result for ''{2}'' at position {1}, but the code at that position was ''{3}'', so the results cannot be matched to the codes"
+msgstr ""
+
+# TX_SERVER_BATCH_RESPONSE_SIZE
+#: TX_SERVER_BATCH_RESPONSE_SIZE
+msgid "The terminology server {0} returned {1} results for a batch validation request that contained {2} codes, so the results cannot be matched to the codes"
+msgstr ""
+
 # TX_SERVER_NO_BATCH_RESPONSE
 #: TX_SERVER_NO_BATCH_RESPONSE
 msgid "The server return null from a batch validation request"
@@ -5100,6 +5245,11 @@ msgstr ""
 msgid "The base64 content in the {0} element is not valid base64: {1}"
 msgstr ""
 
+# TYPE_SPECIFIC_CHECKS_DT_ATT_FETCH_ERROR
+#: TYPE_SPECIFIC_CHECKS_DT_ATT_FETCH_ERROR
+msgid "Error fetching the content: {0}"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH
 msgid "The hash of the data did not match the data (stated: ''{0}'', actual: ''{1}'')"
@@ -5112,7 +5262,7 @@ msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER
-msgid "Attachment size cannot be checked because the validator has not been set up to access the network (url = {0})"
+msgid "Attachment content cannot be checked because the validator has not been set up to access the network (url = {0})"
 msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT
@@ -5132,17 +5282,22 @@ msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME
-msgid "Attachment size cannot be checked because the validator doesn''t understand how to access {0}"
+msgid "Attachment content cannot be checked because the validator doesn''t understand how to access {0}"
 msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR
 #: TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR
-msgid "Attachment size cannot be checked because there was an error accesssing {0}: {1}"
+msgid "Attachment content cannot be checked because there was an error accesssing {0}: {1}"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_ATT_URL_NOT_A_LINK
+#: TYPE_SPECIFIC_CHECKS_DT_ATT_URL_NOT_A_LINK
+msgid "Attachment content was not checked: {0} is not a directly accessible link"
 msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR
 #: TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR
-msgid "Base64 encoded values are not allowed to contain any whitespace (per RFC 4648). Note that non-validating readers are encouraged to accept whitespace anyway"
+msgid "Base64 encoded content does not include any whitespace or line feeds (per the FHIR specification and RFC 4648). Readers should ignore whitespace, but it should not be present"
 msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING
@@ -5927,7 +6082,12 @@ msgstr ""
 
 # Type_Specific_Checks_DT_Time_Valid
 #: Type_Specific_Checks_DT_Time_Valid
-msgid "Not a valid time ({0})"
+msgid "The time ''{0}'' is not a valid time"
+msgstr ""
+
+# Type_Specific_Checks_DT_Time_Valid_Cause
+#: Type_Specific_Checks_DT_Time_Valid_Cause
+msgid "The time ''{0}'' is not a valid time: {1}"
 msgstr ""
 
 # Type_Specific_Checks_DT_URI_OID
@@ -6034,6 +6194,11 @@ msgstr[0] ""
 # UNKNOWN_CODESYSTEM
 #: UNKNOWN_CODESYSTEM
 msgid "A definition for CodeSystem ''{0}'' could not be found, so the code cannot be validated"
+msgstr ""
+
+# UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED
+#: UNKNOWN_CODESYSTEM_CODING_NOT_CHECKED
+msgid "A definition for the code system ''{0}'' could not be found, so this coding was not checked. The CodeableConcept is still valid: another coding is in the value set"
 msgstr ""
 
 # UNKNOWN_CODESYSTEM_EXP
@@ -6895,11 +7060,6 @@ msgstr ""
 msgid "The concepts in the value set include have not been validated because the code system ''{1}'' is not known, and no terminology service supports it"
 msgstr ""
 
-# VALUESET_INC_NOT_VALIDATING
-#: VALUESET_INC_NOT_VALIDATING
-msgid "The concepts in the value set include have not been validated because the validator is configured not to check them"
-msgstr ""
-
 # VALUESET_INC_NO_BATCH_ON_SERVER
 #: VALUESET_INC_NO_BATCH_ON_SERVER
 msgid "The concepts in the value set include have not been validated because the terminology server {0} does not support batch validation (tests version < 1.7.8)"
@@ -6912,7 +7072,7 @@ msgstr ""
 
 # VALUESET_INC_TOO_MANY_CODES
 #: VALUESET_INC_TOO_MANY_CODES
-msgid "The value set include has too many concepts to validate ({0}), so each individual code has not been checked"
+msgid "The value set include has too many concepts to validate ({0}, more than the limit of {1}), so each individual code has not been checked"
 msgstr ""
 
 # VALUESET_NO_SYSTEM_WARNING
@@ -7093,6 +7253,11 @@ msgstr ""
 msgid "Duplicate Column Name ''{0}''"
 msgstr ""
 
+# VIEWDEFINITION_ITERATION_CONFLICT
+#: VIEWDEFINITION_ITERATION_CONFLICT
+msgid "Only one of forEach, forEachOrNull, or repeat may be specified on a select"
+msgstr ""
+
 # VIEWDEFINITION_NAME_INVALID
 #: VIEWDEFINITION_NAME_INVALID
 msgid "The {0} name ''{1}'' is not valid"
@@ -7136,6 +7301,16 @@ msgstr ""
 # VIEWDEFINITION_UNABLE_TO_TYPE
 #: VIEWDEFINITION_UNABLE_TO_TYPE
 msgid "Unable to determine a type (found ''{0}''){1}"
+msgstr ""
+
+# VIEWDEFINITION_UNION_MISMATCH
+#: VIEWDEFINITION_UNION_MISMATCH
+msgid "unionAll column definitions do not match: {0}"
+msgstr ""
+
+# VIEWDEFINITION_UNION_SINGLE
+#: VIEWDEFINITION_UNION_SINGLE
+msgid "unionAll should have more than one item"
 msgstr ""
 
 # VIEWDEFINITION_UNKNOWN_RESOURCE

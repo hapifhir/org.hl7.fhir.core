@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS",
   "code" : "TURVAKIELTO"
-}, "url": "http://hl7.org/fhir/ValueSet/security-labels", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/security-labels", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "externalSource":"StructureDefinition[http://hl7.org/fhir/StructureDefinition/Meta|4.0.1]", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",

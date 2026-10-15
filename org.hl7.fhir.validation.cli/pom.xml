@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.10.5-SNAPSHOT</version>
+        <version>7.0.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -251,7 +251,7 @@
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>ST4</artifactId>
-            <version>4.1</version>
+            <version>4.3.4</version>
             <optional>false</optional>
             <scope>compile</scope>
         </dependency>

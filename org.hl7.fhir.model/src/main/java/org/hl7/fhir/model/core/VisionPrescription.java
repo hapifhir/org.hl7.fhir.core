@@ -1231,6 +1231,65 @@ public class VisionPrescription extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.product != null) {
+            visitor.visit(this, "product", -1, this.product);
+          }
+          if (this.eye != null) {
+            visitor.visit(this, "eye", -1, this.eye);
+          }
+          if (this.sphere != null) {
+            visitor.visit(this, "sphere", -1, this.sphere);
+          }
+          if (this.cylinder != null) {
+            visitor.visit(this, "cylinder", -1, this.cylinder);
+          }
+          if (this.axis != null) {
+            visitor.visit(this, "axis", -1, this.axis);
+          }
+          if (this.prismList != null) {
+            int i = 0;
+            for (Base v : this.prismList) {
+              if (v != null) {
+                visitor.visit(this, "prism", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.add != null) {
+            visitor.visit(this, "add", -1, this.add);
+          }
+          if (this.power != null) {
+            visitor.visit(this, "power", -1, this.power);
+          }
+          if (this.backCurve != null) {
+            visitor.visit(this, "backCurve", -1, this.backCurve);
+          }
+          if (this.diameter != null) {
+            visitor.visit(this, "diameter", -1, this.diameter);
+          }
+          if (this.duration != null) {
+            visitor.visit(this, "duration", -1, this.duration);
+          }
+          if (this.color != null) {
+            visitor.visit(this, "color", -1, this.color);
+          }
+          if (this.brand != null) {
+            visitor.visit(this, "brand", -1, this.brand);
+          }
+          if (this.noteList != null) {
+            int i = 0;
+            for (Base v : this.noteList) {
+              if (v != null) {
+                visitor.visit(this, "note", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "product":  return new Property("product", "CodeableConcept", "Identifies the type of vision correction product which is required for the patient.", 0, 1, product);
@@ -1799,6 +1858,17 @@ public class VisionPrescription extends DomainResource {
           super.listChildren(children);
           children.add(new Property("amount", "decimal", "Amount of prism to compensate for eye alignment in fractional units.", 0, 1, amount));
           children.add(new Property("base", "code", "The relative base, or reference lens edge, for the prism.", 0, 1, base));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.amount != null) {
+            visitor.visit(this, "amount", -1, this.amount);
+          }
+          if (this.base != null) {
+            visitor.visit(this, "base", -1, this.base);
+          }
         }
 
         @Override
@@ -2651,6 +2721,68 @@ public class VisionPrescription extends DomainResource {
         children.add(new Property("effectiveEndDate", "dateTime", "The date/time after which the prescription is considered expired and can no longer be used to obtain lenses.", 0, 1, effectiveEndDate));
         children.add(new Property("prescriber", "Reference(Practitioner|PractitionerRole)", "The healthcare professional responsible for authorizing the prescription.", 0, 1, prescriber));
         children.add(new Property("lensSpecification", "", "Contain the details of  the individual lens specifications and serves as the authorization for the fullfillment by certified professionals.", 0, java.lang.Integer.MAX_VALUE, lensSpecificationList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.groupIdentifier != null) {
+          visitor.visit(this, "groupIdentifier", -1, this.groupIdentifier);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.intent != null) {
+          visitor.visit(this, "intent", -1, this.intent);
+        }
+        if (this.priority != null) {
+          visitor.visit(this, "priority", -1, this.priority);
+        }
+        if (this.created != null) {
+          visitor.visit(this, "created", -1, this.created);
+        }
+        if (this.patient != null) {
+          visitor.visit(this, "patient", -1, this.patient);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.dateWritten != null) {
+          visitor.visit(this, "dateWritten", -1, this.dateWritten);
+        }
+        if (this.effectiveEndDate != null) {
+          visitor.visit(this, "effectiveEndDate", -1, this.effectiveEndDate);
+        }
+        if (this.prescriber != null) {
+          visitor.visit(this, "prescriber", -1, this.prescriber);
+        }
+        if (this.lensSpecificationList != null) {
+          int i = 0;
+          for (Base v : this.lensSpecificationList) {
+            if (v != null) {
+              visitor.visit(this, "lensSpecification", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

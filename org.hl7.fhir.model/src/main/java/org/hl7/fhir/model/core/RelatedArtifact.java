@@ -735,6 +735,35 @@ public class RelatedArtifact extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.type != null) {
+          visitor.visit(this, "type", -1, this.type);
+        }
+        if (this.label != null) {
+          visitor.visit(this, "label", -1, this.label);
+        }
+        if (this.display != null) {
+          visitor.visit(this, "display", -1, this.display);
+        }
+        if (this.citation != null) {
+          visitor.visit(this, "citation", -1, this.citation);
+        }
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.document != null) {
+          visitor.visit(this, "document", -1, this.document);
+        }
+        if (this.resource != null) {
+          visitor.visit(this, "resource", -1, this.resource);
+        }
+        if (this.resourceReference != null) {
+          visitor.visit(this, "resourceReference", -1, this.resourceReference);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "type":  return new Property("type", "code", "The type of relationship to the related artifact.", 0, 1, type);
