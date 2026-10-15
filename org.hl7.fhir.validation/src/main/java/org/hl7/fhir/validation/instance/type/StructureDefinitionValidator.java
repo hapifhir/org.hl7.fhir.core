@@ -2050,12 +2050,20 @@ public class StructureDefinitionValidator extends BaseValidator {
     if (VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains(type)) {
       return true;
     }
-    StructureDefinition sd = context.fetchTypeDefinition(type);
-    while (sd != null) {
+    return isCanonicalResource(context.fetchTypeDefinition(type), new HashSet<>());
+  }
+
+  private boolean isCanonicalResource(StructureDefinition sd, Set<String> visited) {
+    while (sd != null && visited.add(sd.getVersionedUrl())) {
       if ("CanonicalResource".equals(sd.getType())) {
         return true;
       }
-      if ("http://hl7.org/fhir/StructureDefinition/CanonicalResource".equals(ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS))) {
+      String implemented = ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS);
+      if ("http://hl7.org/fhir/StructureDefinition/CanonicalResource".equals(implemented)) {
+        return true;
+      }
+      // an implemented interface such as MetadataResource can itself implement CanonicalResource
+      if (implemented != null && isCanonicalResource(context.fetchResource(StructureDefinition.class, implemented), visited)) {
         return true;
       }
       sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
