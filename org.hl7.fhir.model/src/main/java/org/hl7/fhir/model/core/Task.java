@@ -653,6 +653,14 @@ public class Task extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "value[x]":  return new Property("value[x]", "Reference(Any)|canonical(CanonicalResource)", "What task is acting on.", 0, 1, value);
@@ -886,6 +894,17 @@ public class Task extends DomainResource {
           super.listChildren(children);
           children.add(new Property("function", "CodeableConcept", "A code or description of the performer of the task.", 0, 1, function));
           children.add(new Property("actor", "Reference(Practitioner|Device|Organization|PractitionerRole|CareTeam|Patient|RelatedPerson|Group)", "The actor or entity who performed the task.", 0, 1, actor));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.function != null) {
+            visitor.visit(this, "function", -1, this.function);
+          }
+          if (this.actor != null) {
+            visitor.visit(this, "actor", -1, this.actor);
+          }
         }
 
         @Override
@@ -1206,6 +1225,26 @@ public class Task extends DomainResource {
           children.add(new Property("repetitions", "positiveInt", "Indicates the number of times the requested action should occur.", 0, 1, repetitions));
           children.add(new Property("period", "Period", "The time-period for which fulfillment is sought. This must fall within the overall time period authorized in the referenced request.  E.g. ServiceRequest.occurrence[x].", 0, 1, period));
           children.add(new Property("recipient", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Group|Organization|Device)", "For requests directed at multiple potential recipients or targets, this is used to specify the individual or entity from whom fulfillment is being sought.", 0, java.lang.Integer.MAX_VALUE, recipientList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.repetitions != null) {
+            visitor.visit(this, "repetitions", -1, this.repetitions);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+          if (this.recipientList != null) {
+            int i = 0;
+            for (Base v : this.recipientList) {
+              if (v != null) {
+                visitor.visit(this, "recipient", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -2300,6 +2339,17 @@ public class Task extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "A code or description to distinguish between inputs.", 0, 1, type));
           children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|VirtualServiceDetail|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
         }
 
         @Override
@@ -3646,6 +3696,17 @@ public class Task extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "A code or description to distinguish between outputs.", 0, 1, type));
           children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|VirtualServiceDetail|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
         }
 
         @Override
@@ -5691,6 +5752,182 @@ public class Task extends DomainResource {
         children.add(new Property("restriction", "", "If the Task.focus is a request resource and the task is seeking fulfillment (i.e. is asking for the request to be actioned), this element identifies any limitations on what parts of the referenced request should be actioned.", 0, 1, restriction));
         children.add(new Property("input", "", "Additional information that may be needed in the execution of the task.", 0, java.lang.Integer.MAX_VALUE, inputList));
         children.add(new Property("output", "", "Outputs produced by the Task.", 0, java.lang.Integer.MAX_VALUE, outputList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.basedOnList != null) {
+          int i = 0;
+          for (Base v : this.basedOnList) {
+            if (v != null) {
+              visitor.visit(this, "basedOn", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.groupIdentifier != null) {
+          visitor.visit(this, "groupIdentifier", -1, this.groupIdentifier);
+        }
+        if (this.partOfList != null) {
+          int i = 0;
+          for (Base v : this.partOfList) {
+            if (v != null) {
+              visitor.visit(this, "partOf", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.statusReasonList != null) {
+          int i = 0;
+          for (Base v : this.statusReasonList) {
+            if (v != null) {
+              visitor.visit(this, "statusReason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.businessStatus != null) {
+          visitor.visit(this, "businessStatus", -1, this.businessStatus);
+        }
+        if (this.intent != null) {
+          visitor.visit(this, "intent", -1, this.intent);
+        }
+        if (this.priority != null) {
+          visitor.visit(this, "priority", -1, this.priority);
+        }
+        if (this.doNotPerform != null) {
+          visitor.visit(this, "doNotPerform", -1, this.doNotPerform);
+        }
+        if (this.code != null) {
+          visitor.visit(this, "code", -1, this.code);
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.focusList != null) {
+          int i = 0;
+          for (Base v : this.focusList) {
+            if (v != null) {
+              visitor.visit(this, "focus", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.for_ != null) {
+          visitor.visit(this, "for", -1, this.for_);
+        }
+        if (this.encounter != null) {
+          visitor.visit(this, "encounter", -1, this.encounter);
+        }
+        if (this.requestedPeriod != null) {
+          visitor.visit(this, "requestedPeriod", -1, this.requestedPeriod);
+        }
+        if (this.executionPeriod != null) {
+          visitor.visit(this, "executionPeriod", -1, this.executionPeriod);
+        }
+        if (this.authoredOn != null) {
+          visitor.visit(this, "authoredOn", -1, this.authoredOn);
+        }
+        if (this.lastModified != null) {
+          visitor.visit(this, "lastModified", -1, this.lastModified);
+        }
+        if (this.requester != null) {
+          visitor.visit(this, "requester", -1, this.requester);
+        }
+        if (this.requestedPerformerList != null) {
+          int i = 0;
+          for (Base v : this.requestedPerformerList) {
+            if (v != null) {
+              visitor.visit(this, "requestedPerformer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.owner != null) {
+          visitor.visit(this, "owner", -1, this.owner);
+        }
+        if (this.performerList != null) {
+          int i = 0;
+          for (Base v : this.performerList) {
+            if (v != null) {
+              visitor.visit(this, "performer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.location != null) {
+          visitor.visit(this, "location", -1, this.location);
+        }
+        if (this.reasonList != null) {
+          int i = 0;
+          for (Base v : this.reasonList) {
+            if (v != null) {
+              visitor.visit(this, "reason", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.insuranceList != null) {
+          int i = 0;
+          for (Base v : this.insuranceList) {
+            if (v != null) {
+              visitor.visit(this, "insurance", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.noteList != null) {
+          int i = 0;
+          for (Base v : this.noteList) {
+            if (v != null) {
+              visitor.visit(this, "note", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.relevantHistoryList != null) {
+          int i = 0;
+          for (Base v : this.relevantHistoryList) {
+            if (v != null) {
+              visitor.visit(this, "relevantHistory", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.restriction != null) {
+          visitor.visit(this, "restriction", -1, this.restriction);
+        }
+        if (this.inputList != null) {
+          int i = 0;
+          for (Base v : this.inputList) {
+            if (v != null) {
+              visitor.visit(this, "input", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.outputList != null) {
+          int i = 0;
+          for (Base v : this.outputList) {
+            if (v != null) {
+              visitor.visit(this, "output", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

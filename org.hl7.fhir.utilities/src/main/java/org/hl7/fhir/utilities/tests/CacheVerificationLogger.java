@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.Utilities;
 
 import lombok.Getter;
 
@@ -21,7 +22,7 @@ public class CacheVerificationLogger implements ToolingClientLogger {
       if (headers != null) {
         for (String header : headers) {
 
-          System.err.println("Header: " + header);
+          System.err.println("Header: " + redact(header));
         }
       }
       if (body != null) {
@@ -31,6 +32,20 @@ public class CacheVerificationLogger implements ToolingClientLogger {
       }
     }
     requests++;
+  }
+
+  /**
+   * this output ends up in build logs, so don't echo credentials (e.g. api keys from fhir-settings.json)
+   */
+  static String redact(String header) {
+    int i = header.indexOf(':');
+    if (i > 0) {
+      String name = header.substring(0, i).trim().toLowerCase();
+      if (Utilities.existsInList(name, "api-key", "x-api-key", "authorization", "proxy-authorization", "cookie") || name.contains("token") || name.contains("secret")) {
+        return header.substring(0, i) + ": [redacted]";
+      }
+    }
+    return header;
   }
 
   @Override

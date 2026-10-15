@@ -11,7 +11,7 @@ public enum ReferenceValidationPolicy {
   CHECK_TYPE_IF_EXISTS, // if the reference can be resolved, check that the type of the target is correct
   CHECK_EXISTS, // check that the reference can be resolved, but don't check anything else
   CHECK_EXISTS_AND_TYPE, // check that the reference be resolved, and check that the type of the target is correct
-  CHECK_VALID; // check the the reference can be resolved, and then check that it conforms to applicable profiles etc
+  CHECK_VALID; // check that the reference can be resolved, and then check that it conforms to applicable profiles etc
 
   public boolean ignore() {
     return this == IGNORE;

@@ -99,6 +99,12 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
   )
   private List<String> modes = new ArrayList<>();
 
+  @CommandLine.Option(
+    names = {"-tester"},
+    description = "Who is running the tests, for TestReport.tester in report.json (default: HL7 Ecosystem Test Runner). The modes are added after it"
+  )
+  private String tester;
+
   @Override
   public Integer call() {
     try {
@@ -120,6 +126,10 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
         externalsJson,
         null
       );
+
+      if (tester != null) {
+        txTester.setTesterName(tester);
+      }
 
       // Add input loaders
       for (String input : inputs) {

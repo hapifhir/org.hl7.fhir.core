@@ -22,6 +22,7 @@ import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -65,11 +66,6 @@ import java.util.*;
  */
 
 public class RenderingContext extends RenderingI18nContext {
-
-
-  public String getOpacity() {
-    return wcagConformant ? "font-style: italics" : "opacity: 0.5";
-  }
 
   public enum DesignationMode {
     ALL,
@@ -360,6 +356,13 @@ public class RenderingContext extends RenderingI18nContext {
   @Getter @Setter private boolean wcagConformant;
 
   /**
+   * if this is true, analysis of a resource that only changes when the resource does (e.g. the hierarchy of a
+   * CodeSystem) is kept in the resource's user data, so that rendering the resource more than once doesn't repeat
+   * it. Only set this when resources aren't structurally changed once they have been rendered (as in the IG Publisher)
+   */
+  @Getter @Setter private boolean cacheResourceAnalysis;
+
+  /**
    * 
    * @param workerContext - access to all related resources that might be needed
    * @param pi - package information needed for certain Questionnaire rendering views
@@ -451,6 +454,8 @@ public class RenderingContext extends RenderingI18nContext {
     res.trackNarrativeSource = trackNarrativeSource;
     res.crossLinkKeyGen = crossLinkKeyGen;
     res.inferResourceConformance = inferResourceConformance;
+    res.cacheResourceAnalysis = cacheResourceAnalysis;
+    res.wcagConformant = wcagConformant;
     
     res.getActorWhiteList().addAll(actorWhiteList);
 

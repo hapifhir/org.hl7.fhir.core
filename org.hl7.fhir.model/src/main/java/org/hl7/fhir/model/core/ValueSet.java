@@ -404,6 +404,44 @@ public class ValueSet extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.lockedDate != null) {
+            visitor.visit(this, "lockedDate", -1, this.lockedDate);
+          }
+          if (this.inactive != null) {
+            visitor.visit(this, "inactive", -1, this.inactive);
+          }
+          if (this.includeList != null) {
+            int i = 0;
+            for (Base v : this.includeList) {
+              if (v != null) {
+                visitor.visit(this, "include", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.excludeList != null) {
+            int i = 0;
+            for (Base v : this.excludeList) {
+              if (v != null) {
+                visitor.visit(this, "exclude", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.propertyList != null) {
+            int i = 0;
+            for (Base v : this.propertyList) {
+              if (v != null) {
+                visitor.visit(this, "property", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "lockedDate":  return new Property("lockedDate", "date", "The Locked Date is  the effective date that is used to determine the version of all referenced Code Systems and Value Set Definitions included in the compose that are not already tied to a specific version.", 0, 1, lockedDate);
@@ -1005,6 +1043,47 @@ public class ValueSet extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.system != null) {
+            visitor.visit(this, "system", -1, this.system);
+          }
+          if (this.version != null) {
+            visitor.visit(this, "version", -1, this.version);
+          }
+          if (this.conceptList != null) {
+            int i = 0;
+            for (Base v : this.conceptList) {
+              if (v != null) {
+                visitor.visit(this, "concept", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.filterList != null) {
+            int i = 0;
+            for (Base v : this.filterList) {
+              if (v != null) {
+                visitor.visit(this, "filter", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.valueSetList != null) {
+            int i = 0;
+            for (Base v : this.valueSetList) {
+              if (v != null) {
+                visitor.visit(this, "valueSet", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.copyright != null) {
+            visitor.visit(this, "copyright", -1, this.copyright);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "system":  return new Property("system", "uri", "An absolute URI which is the code system from which the selected codes come from.", 0, 1, system);
@@ -1456,6 +1535,26 @@ public class ValueSet extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.display != null) {
+            visitor.visit(this, "display", -1, this.display);
+          }
+          if (this.designationList != null) {
+            int i = 0;
+            for (Base v : this.designationList) {
+              if (v != null) {
+                visitor.visit(this, "designation", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "code", "Specifies a code for the concept to be included or excluded.", 0, 1, code);
@@ -1867,6 +1966,29 @@ public class ValueSet extends MetadataResource {
           children.add(new Property("use", "Coding", "A code that represents types of uses of designations.", 0, 1, use));
           children.add(new Property("additionalUse", "Coding", "Additional codes that detail how this designation would be used, if there is more than one use.", 0, java.lang.Integer.MAX_VALUE, additionalUseList));
           children.add(new Property("value", "string", "The text value for this designation.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.language != null) {
+            visitor.visit(this, "language", -1, this.language);
+          }
+          if (this.use != null) {
+            visitor.visit(this, "use", -1, this.use);
+          }
+          if (this.additionalUseList != null) {
+            int i = 0;
+            for (Base v : this.additionalUseList) {
+              if (v != null) {
+                visitor.visit(this, "additionalUse", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
         }
 
         @Override
@@ -2323,6 +2445,29 @@ public class ValueSet extends MetadataResource {
           children.add(new Property("op", "code", "The kind of operation to perform as a part of the filter criteria.", 0, 1, op));
           children.add(new Property("value", "string", "ValueSet.compose.include.filter.value is represented as a string, and the string value must be as described in [Using Filter Values](valueset.html#filter-values).", 0, 1, value));
           children.add(new Property("filter", "@ValueSet.compose.include.filter", "Nested filters which may be used if and only if the operator allows for a list of concept codes or a value set. This element supports defining the outer filter with a value, or by the application of one or more sub-filters. If one or more sub-filters are present, the intersection of the filters specifies the set of concept codes that are the `value` the operator acts on.", 0, java.lang.Integer.MAX_VALUE, filterList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.property != null) {
+            visitor.visit(this, "property", -1, this.property);
+          }
+          if (this.op != null) {
+            visitor.visit(this, "op", -1, this.op);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value", -1, this.value);
+          }
+          if (this.filterList != null) {
+            int i = 0;
+            for (Base v : this.filterList) {
+              if (v != null) {
+                visitor.visit(this, "filter", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -3019,6 +3164,53 @@ public class ValueSet extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.identifier != null) {
+            visitor.visit(this, "identifier", -1, this.identifier);
+          }
+          if (this.next != null) {
+            visitor.visit(this, "next", -1, this.next);
+          }
+          if (this.timestamp != null) {
+            visitor.visit(this, "timestamp", -1, this.timestamp);
+          }
+          if (this.total != null) {
+            visitor.visit(this, "total", -1, this.total);
+          }
+          if (this.offset != null) {
+            visitor.visit(this, "offset", -1, this.offset);
+          }
+          if (this.parameterList != null) {
+            int i = 0;
+            for (Base v : this.parameterList) {
+              if (v != null) {
+                visitor.visit(this, "parameter", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.propertyList != null) {
+            int i = 0;
+            for (Base v : this.propertyList) {
+              if (v != null) {
+                visitor.visit(this, "property", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.containsList != null) {
+            int i = 0;
+            for (Base v : this.containsList) {
+              if (v != null) {
+                visitor.visit(this, "contains", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "identifier":  return new Property("identifier", "uri", "An identifier that uniquely identifies this expansion of the valueset, based on a unique combination of the provided parameters, the system default parameters, and the underlying system code system versions etc. Systems may re-use the same identifier as long as those factors remain the same, and the expansion is the same, but are not required to do so. This is a business identifier.", 0, 1, identifier);
@@ -3533,6 +3725,17 @@ public class ValueSet extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "name":  return new Property("name", "string", "Name of the input parameter to the $expand operation; may be a server-assigned name for additional default or other server-supplied parameters used to control the expansion process.", 0, 1, name);
@@ -3857,6 +4060,17 @@ public class ValueSet extends MetadataResource {
           super.listChildren(children);
           children.add(new Property("code", "code", "A code that is used to identify the property. The code is used in ValueSet.expansion.contains.property.code.", 0, 1, code));
           children.add(new Property("uri", "uri", "Reference to the formal meaning of the property. One possible source of meaning is the [Concept Properties](codesystem-concept-properties.html) code system.", 0, 1, uri));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.uri != null) {
+            visitor.visit(this, "uri", -1, this.uri);
+          }
         }
 
         @Override
@@ -4561,6 +4775,56 @@ public class ValueSet extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.system != null) {
+            visitor.visit(this, "system", -1, this.system);
+          }
+          if (this.abstract_ != null) {
+            visitor.visit(this, "abstract", -1, this.abstract_);
+          }
+          if (this.inactive != null) {
+            visitor.visit(this, "inactive", -1, this.inactive);
+          }
+          if (this.version != null) {
+            visitor.visit(this, "version", -1, this.version);
+          }
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.display != null) {
+            visitor.visit(this, "display", -1, this.display);
+          }
+          if (this.designationList != null) {
+            int i = 0;
+            for (Base v : this.designationList) {
+              if (v != null) {
+                visitor.visit(this, "designation", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.propertyList != null) {
+            int i = 0;
+            for (Base v : this.propertyList) {
+              if (v != null) {
+                visitor.visit(this, "property", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.containsList != null) {
+            int i = 0;
+            for (Base v : this.containsList) {
+              if (v != null) {
+                visitor.visit(this, "contains", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "system":  return new Property("system", "uri", "An absolute URI which is the code system in which the code for this item in the expansion is defined.", 0, 1, system);
@@ -5143,6 +5407,26 @@ public class ValueSet extends MetadataResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
+          if (this.subPropertyList != null) {
+            int i = 0;
+            for (Base v : this.subPropertyList) {
+              if (v != null) {
+                visitor.visit(this, "subProperty", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "code":  return new Property("code", "code", "A code that is a reference to ValueSet.expansion.property.code.", 0, 1, code);
@@ -5567,6 +5851,17 @@ public class ValueSet extends MetadataResource {
           super.listChildren(children);
           children.add(new Property("code", "code", "A code that is a reference to ValueSet.expansion.property.code.", 0, 1, code));
           children.add(new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this subproperty.", 0, 1, value));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.code != null) {
+            visitor.visit(this, "code", -1, this.code);
+          }
+          if (this.value != null) {
+            visitor.visit(this, "value[x]", -1, this.value);
+          }
         }
 
         @Override
@@ -7481,6 +7776,158 @@ public class ValueSet extends MetadataResource {
         children.add(new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.", 0, java.lang.Integer.MAX_VALUE, relatedArtifactList));
         children.add(new Property("compose", "", "A set of criteria that define the contents of the value set by including or excluding codes selected from the specified code system(s) that the value set draws from. This is also known as the Content Logical Definition (CLD).", 0, 1, compose));
         children.add(new Property("expansion", "", "A value set can also be \"expanded\", where the value set is turned into a simple collection of enumerated codes. This element holds the expansion, if it has been performed.", 0, 1, expansion));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.immutable != null) {
+          visitor.visit(this, "immutable", -1, this.immutable);
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.approvalDate != null) {
+          visitor.visit(this, "approvalDate", -1, this.approvalDate);
+        }
+        if (this.lastReviewDate != null) {
+          visitor.visit(this, "lastReviewDate", -1, this.lastReviewDate);
+        }
+        if (this.effectivePeriod != null) {
+          visitor.visit(this, "effectivePeriod", -1, this.effectivePeriod);
+        }
+        if (this.topicList != null) {
+          int i = 0;
+          for (Base v : this.topicList) {
+            if (v != null) {
+              visitor.visit(this, "topic", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.authorList != null) {
+          int i = 0;
+          for (Base v : this.authorList) {
+            if (v != null) {
+              visitor.visit(this, "author", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.editorList != null) {
+          int i = 0;
+          for (Base v : this.editorList) {
+            if (v != null) {
+              visitor.visit(this, "editor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.reviewerList != null) {
+          int i = 0;
+          for (Base v : this.reviewerList) {
+            if (v != null) {
+              visitor.visit(this, "reviewer", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.endorserList != null) {
+          int i = 0;
+          for (Base v : this.endorserList) {
+            if (v != null) {
+              visitor.visit(this, "endorser", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.relatedArtifactList != null) {
+          int i = 0;
+          for (Base v : this.relatedArtifactList) {
+            if (v != null) {
+              visitor.visit(this, "relatedArtifact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.compose != null) {
+          visitor.visit(this, "compose", -1, this.compose);
+        }
+        if (this.expansion != null) {
+          visitor.visit(this, "expansion", -1, this.expansion);
+        }
       }
 
       @Override

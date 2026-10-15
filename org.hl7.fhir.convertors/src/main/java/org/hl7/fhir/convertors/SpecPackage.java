@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.ValueSet;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

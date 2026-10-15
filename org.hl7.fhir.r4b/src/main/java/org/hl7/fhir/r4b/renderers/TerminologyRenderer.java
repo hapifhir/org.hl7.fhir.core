@@ -38,7 +38,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * See R5 rendering framework to render R4B resources
  * 
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public abstract class TerminologyRenderer extends ResourceRenderer {
 
   public TerminologyRenderer(RenderingContext context) {

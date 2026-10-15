@@ -2310,7 +2310,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("reference"))
       res.setReferenceElement(parseString(json.get("reference").getAsString()));
     if (json.has("_reference"))
-      parseElementProperties(getJObject(json, "_reference"), res.getReferenceElement());
+      parseElementProperties(getJObject(json, "_reference"), res.getReferenceElement_());
     if (json.has("type"))
       res.setTypeElement(parseUri(json.get("type").getAsString()));
     if (json.has("_type"))
@@ -29169,6 +29169,9 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected DataType parseType(String prefix, JsonObject json) throws IOException, FHIRFormatError {
+    if (!hasPropertyWithPrefix(json, prefix)) {
+      return null;
+    }
     if (json.has(prefix+"Date") || json.has("_"+prefix+"Date")) {
       DataType t = json.has(prefix+"Date") ? parseDate(json.get(prefix+"Date").getAsString()) : new DateType();
       if (json.has("_"+prefix+"Date"))
@@ -29488,6 +29491,9 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected boolean hasTypeName(JsonObject json, String prefix) {
+    if (!hasPropertyWithPrefix(json, prefix)) {
+      return false;
+    }
     if (json.has(prefix+"RatioRange")) {
       return true;
     };
@@ -32608,8 +32614,8 @@ public class JsonParser extends JsonParserBase {
   protected void composeReferenceProperties(Reference element) throws IOException {
     composeDataTypeProperties(element);
       if (element.hasReferenceElement()) {
-        composeStringCore("reference", element.getReferenceElement(), false);
-        composeStringExtras("reference", element.getReferenceElement(), false);
+        composeStringCore("reference", element.getReferenceElement_(), false);
+        composeStringExtras("reference", element.getReferenceElement_(), false);
       }
       if (element.hasTypeElement()) {
         composeUriCore("type", element.getTypeElement(), false);

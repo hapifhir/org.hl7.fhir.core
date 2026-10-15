@@ -300,7 +300,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
           if (!msg.isIgnorableError()) {
             throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___ELEMENT__ERROR_GENERATING_SNAPSHOT_, p.getName(), p.getUrl(), msg.getLocation(), msg.getMessage()));
           } else {
-            log.error(msg.getMessage());
+            log.error(context.formatMessage(I18nConstants.PROFILE___ELEMENT__ERROR_GENERATING_SNAPSHOT_, p.getName(), p.getUrl(), msg.getLocation(), msg.getMessage()));
           }
         }
       }

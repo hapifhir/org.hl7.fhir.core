@@ -37,12 +37,10 @@ import org.hl7.fhir.model.ValidationInformation;
 import org.hl7.fhir.model.core.VersionResolutionRules;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
-import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.Element;
-import org.hl7.fhir.services.elementmodel.ElementUtilities;
+import org.hl7.fhir.services.elementmodel.ElementModelUtilities;
 import org.hl7.fhir.services.elementmodel.Manager;
 import org.hl7.fhir.services.elementmodel.ParserBase;
-import org.hl7.fhir.model.core.DateTimeType;
 import org.hl7.fhir.model.core.Enumerations.FHIRVersion;
 import org.hl7.fhir.services.terminology.ValidationResult;
 import org.hl7.fhir.model.core.StructureDefinition;
@@ -250,7 +248,7 @@ public class BundleValidator extends BaseValidator {
     // this is the R6 signature approach
     // it can be preadopted in R5-, so we don't check the version here
     List<Element> signatureProvenances = new ArrayList<>();
-    ElementUtilities.findSignatures(bundle, signatureProvenances);
+    ElementModelUtilities.findSignatures(bundle, signatureProvenances);
     for (Element resource : signatureProvenances) {
       for (Element sig : resource.getChildrenByName("signature")) {
         if (sig.hasChild("data") && ("application/jose".equals(sig.getNamedChildValue("sigFormat")) || "application/pkcs7-signature".equals(sig.getNamedChildValue("sigFormat")))) {

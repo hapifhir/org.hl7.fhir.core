@@ -241,6 +241,9 @@ public class OperationDefinition14_50 {
   private static String fixTypeCode(String type) {
     if ("Type".equals(type)) {
       return "DataType";
+    } else if ("Any".equals(type)) {
+      // R5 renamed Any to Resource
+      return "Resource";
     } else {
       return type;
     }

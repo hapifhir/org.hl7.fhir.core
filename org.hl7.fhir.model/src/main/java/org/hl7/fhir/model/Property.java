@@ -106,6 +106,18 @@ public class Property {
 	    this.values.add(value);
   }
 
+  /**
+   * For version wrappers
+   */
+  public Property(String name, String typeCode, String definition, int minCardinality, int maxCardinality) {
+    super();
+    this.name = name;
+    this.typeCode = typeCode;
+    this.definition = definition;
+    this.minCardinality = minCardinality;
+    this.maxCardinality = maxCardinality;
+  }
+
 	/**
 	 * Internal constructor
 	 */

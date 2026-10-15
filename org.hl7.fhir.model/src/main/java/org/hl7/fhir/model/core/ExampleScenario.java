@@ -391,6 +391,26 @@ public class ExampleScenario extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.definition != null) {
+            visitor.visit(this, "definition", -1, this.definition);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "key":  return new Property("key", "string", "A unique string within the scenario that is used to reference the actor.", 0, 1, key);
@@ -1126,6 +1146,50 @@ public class ExampleScenario extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
+          if (this.structureType != null) {
+            visitor.visit(this, "structureType", -1, this.structureType);
+          }
+          if (this.structureVersion != null) {
+            visitor.visit(this, "structureVersion", -1, this.structureVersion);
+          }
+          if (this.structureProfile != null) {
+            visitor.visit(this, "structureProfile[x]", -1, this.structureProfile);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.content != null) {
+            visitor.visit(this, "content", -1, this.content);
+          }
+          if (this.versionList != null) {
+            int i = 0;
+            for (Base v : this.versionList) {
+              if (v != null) {
+                visitor.visit(this, "version", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.containedInstanceList != null) {
+            int i = 0;
+            for (Base v : this.containedInstanceList) {
+              if (v != null) {
+                visitor.visit(this, "containedInstance", i, v);
+              }
+              i++;
+            }
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "key":  return new Property("key", "string", "A unique string within the scenario that is used to reference the instance.", 0, 1, key);
@@ -1673,6 +1737,23 @@ public class ExampleScenario extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.key != null) {
+            visitor.visit(this, "key", -1, this.key);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.content != null) {
+            visitor.visit(this, "content", -1, this.content);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "key":  return new Property("key", "string", "A unique string within the instance that is used to reference the version of the instance.", 0, 1, key);
@@ -2009,6 +2090,17 @@ public class ExampleScenario extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("instanceReference", "string", "A reference to the key of an instance found within this one.", 0, 1, instanceReference));
           children.add(new Property("versionReference", "string", "A reference to the key of a specific version of an instance in this instance.", 0, 1, versionReference));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.instanceReference != null) {
+            visitor.visit(this, "instanceReference", -1, this.instanceReference);
+          }
+          if (this.versionReference != null) {
+            visitor.visit(this, "versionReference", -1, this.versionReference);
+          }
         }
 
         @Override
@@ -2486,6 +2578,32 @@ public class ExampleScenario extends CanonicalResource {
           children.add(new Property("preConditions", "markdown", "Description of the initial state of the actors, environment and data before the process starts.", 0, 1, preConditions));
           children.add(new Property("postConditions", "markdown", "Description of the final state of the actors, environment and data after the process has been successfully completed.", 0, 1, postConditions));
           children.add(new Property("step", "", "A significant action that occurs as part of the process.", 0, java.lang.Integer.MAX_VALUE, stepList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.preConditions != null) {
+            visitor.visit(this, "preConditions", -1, this.preConditions);
+          }
+          if (this.postConditions != null) {
+            visitor.visit(this, "postConditions", -1, this.postConditions);
+          }
+          if (this.stepList != null) {
+            int i = 0;
+            for (Base v : this.stepList) {
+              if (v != null) {
+                visitor.visit(this, "step", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -3025,6 +3143,35 @@ public class ExampleScenario extends CanonicalResource {
           children.add(new Property("operation", "", "The step represents a single operation invoked on receiver by sender.", 0, 1, operation));
           children.add(new Property("alternative", "", "Indicates an alternative step that can be taken instead of the sub-process, scenario or operation.  E.g. to represent non-happy-path/exceptional/atypical circumstances.", 0, java.lang.Integer.MAX_VALUE, alternativeList));
           children.add(new Property("pause", "boolean", "If true, indicates that, following this step, there is a pause in the flow and the subsequent step will occur at some later time (triggered by some event).", 0, 1, pause));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.number != null) {
+            visitor.visit(this, "number", -1, this.number);
+          }
+          if (this.process != null) {
+            visitor.visit(this, "process", -1, this.process);
+          }
+          if (this.workflow != null) {
+            visitor.visit(this, "workflow", -1, this.workflow);
+          }
+          if (this.operation != null) {
+            visitor.visit(this, "operation", -1, this.operation);
+          }
+          if (this.alternativeList != null) {
+            int i = 0;
+            for (Base v : this.alternativeList) {
+              if (v != null) {
+                visitor.visit(this, "alternative", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.pause != null) {
+            visitor.visit(this, "pause", -1, this.pause);
+          }
         }
 
         @Override
@@ -3808,6 +3955,41 @@ public class ExampleScenario extends CanonicalResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.definition != null) {
+            visitor.visit(this, "definition", -1, this.definition);
+          }
+          if (this.initiator != null) {
+            visitor.visit(this, "initiator", -1, this.initiator);
+          }
+          if (this.receiver != null) {
+            visitor.visit(this, "receiver", -1, this.receiver);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.initiatorActive != null) {
+            visitor.visit(this, "initiatorActive", -1, this.initiatorActive);
+          }
+          if (this.receiverActive != null) {
+            visitor.visit(this, "receiverActive", -1, this.receiverActive);
+          }
+          if (this.request != null) {
+            visitor.visit(this, "request", -1, this.request);
+          }
+          if (this.response != null) {
+            visitor.visit(this, "response", -1, this.response);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "type":  return new Property("type", "Coding", "The standardized type of action (FHIR or otherwise).", 0, 1, type);
@@ -4337,6 +4519,26 @@ public class ExampleScenario extends CanonicalResource {
           children.add(new Property("title", "string", "The label to display for the alternative that gives a sense of the circumstance in which the alternative should be invoked.", 0, 1, title));
           children.add(new Property("description", "markdown", "A human-readable description of the alternative explaining when the alternative should occur rather than the base step.", 0, 1, description));
           children.add(new Property("step", "@ExampleScenario.process.step", "Indicates the operation, sub-process or scenario that happens if the alternative option is selected.", 0, java.lang.Integer.MAX_VALUE, stepList));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.title != null) {
+            visitor.visit(this, "title", -1, this.title);
+          }
+          if (this.description != null) {
+            visitor.visit(this, "description", -1, this.description);
+          }
+          if (this.stepList != null) {
+            int i = 0;
+            for (Base v : this.stepList) {
+              if (v != null) {
+                visitor.visit(this, "step", i, v);
+              }
+              i++;
+            }
+          }
         }
 
         @Override
@@ -5738,6 +5940,113 @@ public class ExampleScenario extends CanonicalResource {
         children.add(new Property("actor", "", "A system or person who shares or receives an instance within the scenario.", 0, java.lang.Integer.MAX_VALUE, actorList));
         children.add(new Property("instance", "", "A single data collection that is shared as part of the scenario.", 0, java.lang.Integer.MAX_VALUE, instanceList));
         children.add(new Property("process", "", "A group of operations that represents a significant step within a scenario.", 0, java.lang.Integer.MAX_VALUE, processList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.url != null) {
+          visitor.visit(this, "url", -1, this.url);
+        }
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.version != null) {
+          visitor.visit(this, "version", -1, this.version);
+        }
+        if (this.versionAlgorithm != null) {
+          visitor.visit(this, "versionAlgorithm[x]", -1, this.versionAlgorithm);
+        }
+        if (this.name != null) {
+          visitor.visit(this, "name", -1, this.name);
+        }
+        if (this.title != null) {
+          visitor.visit(this, "title", -1, this.title);
+        }
+        if (this.status != null) {
+          visitor.visit(this, "status", -1, this.status);
+        }
+        if (this.experimental != null) {
+          visitor.visit(this, "experimental", -1, this.experimental);
+        }
+        if (this.date != null) {
+          visitor.visit(this, "date", -1, this.date);
+        }
+        if (this.publisher != null) {
+          visitor.visit(this, "publisher", -1, this.publisher);
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.description != null) {
+          visitor.visit(this, "description", -1, this.description);
+        }
+        if (this.useContextList != null) {
+          int i = 0;
+          for (Base v : this.useContextList) {
+            if (v != null) {
+              visitor.visit(this, "useContext", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.jurisdictionList != null) {
+          int i = 0;
+          for (Base v : this.jurisdictionList) {
+            if (v != null) {
+              visitor.visit(this, "jurisdiction", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.purpose != null) {
+          visitor.visit(this, "purpose", -1, this.purpose);
+        }
+        if (this.copyright != null) {
+          visitor.visit(this, "copyright", -1, this.copyright);
+        }
+        if (this.copyrightLabel != null) {
+          visitor.visit(this, "copyrightLabel", -1, this.copyrightLabel);
+        }
+        if (this.actorList != null) {
+          int i = 0;
+          for (Base v : this.actorList) {
+            if (v != null) {
+              visitor.visit(this, "actor", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.instanceList != null) {
+          int i = 0;
+          for (Base v : this.instanceList) {
+            if (v != null) {
+              visitor.visit(this, "instance", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.processList != null) {
+          int i = 0;
+          for (Base v : this.processList) {
+            if (v != null) {
+              visitor.visit(this, "process", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

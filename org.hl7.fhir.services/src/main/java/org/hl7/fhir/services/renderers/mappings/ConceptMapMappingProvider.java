@@ -7,6 +7,7 @@ import org.hl7.fhir.model.core.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.model.core.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.services.renderers.StructureDefinitionRenderer.Column;
 import org.hl7.fhir.services.renderers.utils.RenderingContext;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import java.util.ArrayList;
@@ -18,17 +19,14 @@ public class ConceptMapMappingProvider extends ModelMappingProvider {
 
   private ConceptMap map;
   private ConceptMapGroupComponent grp;
-  private Object eqpath;
+  private CodeSystem relationshipCS;
 
   public ConceptMapMappingProvider(RenderingContext context, StructureDefinition dest, boolean reverse, ConceptMap map, ConceptMapGroupComponent grp) {
     super(context, dest, reverse);
     this.map = map;
     this.grp = grp;
 
-    CodeSystem cs = context.getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship", VersionResolutionRules.defaultRule());
-    if (cs == null)
-      cs = context.getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence", VersionResolutionRules.defaultRule());
-    eqpath = cs == null ? null : cs.getWebPath();
+    relationshipCS = context.getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship", VersionResolutionRules.defaultRule());
   }
 
   @Override
@@ -72,11 +70,20 @@ public class ConceptMapMappingProvider extends ModelMappingProvider {
     return codes.size();
   }
 
+  private String relationshipHref(String code) {
+    if (relationshipCS == null || relationshipCS.getWebPath() == null) {
+      return null;
+    }
+    return context.prefixLocalHref(relationshipCS.getWebPath() + "#" + relationshipCS.getId() + "-" + Utilities.nmtokenize(code));
+  }
+
   private void renderMap(XhtmlNode x, TargetElementComponent tgt) {
     if (tgt == null) {
       x.tx("No Equivalent");
-    } else {
-      x.ahOrNot(eqpath == null ? null : eqpath+"#"+tgt.getRelationship().toCode()).tx(rel(tgt.getRelationship()));
+      return;
+    }
+    if (tgt.hasRelationship()) {
+      x.ahOrNot(relationshipHref(tgt.getRelationship().toCode())).tx(rel(tgt.getRelationship()));
     }
     x.tx(" ");
     x.ah(ref()+"#"+tgt.getCode()).tx(tgt.getCode());
