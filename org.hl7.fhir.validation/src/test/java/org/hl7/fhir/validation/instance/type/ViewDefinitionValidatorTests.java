@@ -38,8 +38,11 @@ import org.junit.jupiter.api.Test;
  */
 class ViewDefinitionValidatorTests {
 
+  private static final String SHAREABLE = "http://hl7.org/fhir/uv/sql-on-fhir/StructureDefinition/ShareableViewDefinition";
+
   private static ValidationEngine engine;
   private static InstanceValidator validator;
+  private static StructureDefinition shareable;
 
   @BeforeAll
   static void setUpAll() throws Exception {
@@ -49,6 +52,9 @@ class ViewDefinitionValidatorTests {
     StructureDefinition sd = (StructureDefinition) new JsonParser(ModelContext.fullCoreContext())
         .parse(npm.loadResource("StructureDefinition-ViewDefinition.json"));
     engine.getContext().cacheResource(sd);
+    shareable = (StructureDefinition) new JsonParser(ModelContext.fullCoreContext())
+        .parse(npm.loadResource("StructureDefinition-ShareableViewDefinition.json"));
+    engine.getContext().cacheResource(shareable);
     validator = engine.getValidator(FhirFormat.JSON);
   }
 
@@ -58,6 +64,7 @@ class ViewDefinitionValidatorTests {
     // JVM.
     validator = null;
     engine = null;
+    shareable = null;
     System.gc();
   }
 
@@ -65,6 +72,23 @@ class ViewDefinitionValidatorTests {
     List<ValidationMessage> messages = new ArrayList<>();
     validator.validate(null, messages, new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
         FhirFormat.JSON);
+    return messages;
+  }
+
+  private static List<ValidationMessage> validateAgainstShareable(String resourceDefinition) {
+    String json = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"resourceDefinition\": \"" + resourceDefinition + "\",\n"
+        + "  \"url\": \"http://example.org/ViewDefinition/vt_test\",\n"
+        + "  \"name\": \"vt_test\",\n"
+        + "  \"status\": \"active\",\n"
+        + "  \"fhirVersion\": [\"5.0.0\"],\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{ \"column\": [" + column("id", "id", "string") + "] }]\n"
+        + "}";
+    List<ValidationMessage> messages = new ArrayList<>();
+    validator.validate(null, messages, new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
+        FhirFormat.JSON, List.of(shareable));
     return messages;
   }
 
@@ -211,5 +235,24 @@ class ViewDefinitionValidatorTests {
         + "  { \"column\": [" + column("id", "gender", "string") + "] }"
         + "] }"));
     assertNoneWithId(messages, I18nConstants.VIEWDEFINITION_DUPL_COL_NAME);
+  }
+
+  // A profile on an additional resource is a constraint, but resourceDefinition names the
+  // additional resource itself, so validating against the profile must accept that value.
+  @Test
+  void resourceDefinitionMatchesTheResourceWhenValidatingAgainstAProfile() {
+    List<ValidationMessage> messages = validateAgainstShareable("http://hl7.org/fhir/StructureDefinition/ViewDefinition|3.0.0-ballot");
+    assertNoneWithId(messages, I18nConstants.VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG);
+    assertNoneWithId(messages, I18nConstants.VALIDATION_ADDITIONAL_RESOURCE_WRONG);
+  }
+
+  // A wrong resourceDefinition is still reported when validating against a profile, as a wrong
+  // value for an additional resource.
+  @Test
+  void wrongResourceDefinitionIsReportedWhenValidatingAgainstAProfile() {
+    List<ValidationMessage> messages = validateAgainstShareable(SHAREABLE);
+    assertNoneWithId(messages, I18nConstants.VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG);
+    assertTrue(!withId(messages, I18nConstants.VALIDATION_ADDITIONAL_RESOURCE_WRONG).isEmpty(),
+        "Expected " + I18nConstants.VALIDATION_ADDITIONAL_RESOURCE_WRONG + " but found: " + messages);
   }
 }
