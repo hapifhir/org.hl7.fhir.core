@@ -7529,6 +7529,40 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
    * @throws PathEngineException 
    * @throws DefinitionException 
    */
+  /**
+   * The slicing entry a slice belongs to (for a reslice, its parent slice), or null if the element is not a
+   * slice or its entry cannot be found in the snapshot. A slice added by a derived profile does not repeat
+   * the extension slices that its slicing entry defines, so a discriminator naming such an extension has to
+   * be resolved against the entry.
+   */
+  private ElementDefinition slicingEntryOf(StructureDefinition sd, ElementDefinition slice) {
+    if (sd == null || !sd.hasSnapshot() || slice == null || !slice.hasSliceName()) {
+      return null;
+    }
+    List<ElementDefinition> list = sd.getSnapshot().getElement();
+    int i = list.indexOf(slice);
+    for (int k = 0; i < 0 && k < list.size(); k++) {
+      if (slice.getId() != null && slice.getId().equals(list.get(k).getId())) {
+        i = k;
+      }
+    }
+    if (i < 0) {
+      return null;
+    }
+    String path = slice.getPath();
+    for (int j = i - 1; j >= 0; j--) {
+      ElementDefinition candidate = list.get(j);
+      if (candidate.getPath().equals(path)) {
+        if (candidate.hasSlicing() && (!candidate.hasSliceName() || slice.getSliceName().startsWith(candidate.getSliceName() + "/"))) {
+          return candidate;
+        }
+      } else if (!candidate.getPath().startsWith(path + ".")) {
+        return null; // before the slicing entry: not a slice of a sliced element
+      }
+    }
+    return null;
+  }
+
   public TypedElementDefinition evaluateDefinition(ExpressionNode expr, StructureDefinition profile, TypedElementDefinition element, StructureDefinition source, boolean dontWalkIntoReferences) throws DefinitionException {
     StructureDefinition sd = profile;
     TypedElementDefinition focus = null;
@@ -7585,22 +7619,30 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         focus = new TypedElementDefinition(sd.getSnapshot().getElementFirstRep());
       } else if ("extension".equals(expr.getName())) {
         String targetUrl = expr.getParameters().get(0).getConstant().primitiveValue();
-        SourcedChildDefinitions childDefinitions = profileUtilities.getChildMap(sd, element.getElement(), true);
-        for (ElementDefinition t : childDefinitions.getList()) {
-          if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
-            StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
-                null : profileUtilities.findProfile(t.getType().get(0).getProfile().get(0), profile);
-            while (exsd != null && !exsd.getBaseDefinitionNoVersion().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
-              exsd = profileUtilities.findProfile(exsd.getBaseDefinitionElement(), exsd);
-            }
-            if (exsd != null && exsd.getUrl().equals(targetUrl)) {
-              if (profileUtilities.getChildMap(sd, t, false).getList().isEmpty()) {
-                sd = exsd;
+        // The extension slice is looked for on the element itself first. A slice that a derived profile
+        // adds does not repeat the extension slices defined on its slicing entry (the snapshot generator
+        // builds it from the element before it was sliced), while the slicing entry's rules apply to all
+        // of its slices, so a discriminator naming such an extension is then resolved against the entry.
+        ElementDefinition owner = element.getElement();
+        while (focus == null && owner != null) {
+          SourcedChildDefinitions childDefinitions = profileUtilities.getChildMap(sd, owner, true);
+          for (ElementDefinition t : childDefinitions.getList()) {
+            if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
+              StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
+                  null : profileUtilities.findProfile(t.getType().get(0).getProfile().get(0), profile);
+              while (exsd != null && !exsd.getBaseDefinitionNoVersion().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
+                exsd = profileUtilities.findProfile(exsd.getBaseDefinitionElement(), exsd);
               }
-              focus = new TypedElementDefinition(t);
-              break;
+              if (exsd != null && exsd.getUrl().equals(targetUrl)) {
+                if (profileUtilities.getChildMap(sd, t, false).getList().isEmpty()) {
+                  sd = exsd;
+                }
+                focus = new TypedElementDefinition(t);
+                break;
+              }
             }
           }
+          owner = focus == null ? slicingEntryOf(sd, owner) : null;
         }
         if (focus == null) { 
           throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION, expr.toString(), targetUrl, element.getElement().getId(), sd.getUrl());
