@@ -28,6 +28,14 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 @Slf4j
 public class PackageClient {
 
+  /**
+   * Sent with a request for a package tarball at {server}/{id}/{version}. On a FHIR package server that
+   * is also an npm registry, that URL returns the version's npm JSON document when the request asks for
+   * JSON; with this header present, it returns the tarball whatever the request's Accept header says.
+   */
+  public static final String TARBALL_HEADER = "FHIR-Package-Download";
+  public static final String TARBALL_HEADER_VALUE = "tarball";
+
   private PackageServer server;
   private String address;
 
@@ -49,7 +57,15 @@ public class PackageClient {
   }
 
   public InputStream fetch(String id, String ver) throws IOException {
-    return fetchCached(getPackageTarballUrl(id, ver));
+    return fetchTarball(id, ver);
+  }
+
+  private InputStream fetchTarball(String id, String ver) throws IOException {
+    String url = getPackageTarballUrl(id, ver);
+    if (server.getServerType() == PackageServer.PackageServerType.NPM) {
+      return fetchCached(url); // the tarball URL from the version's npm document
+    }
+    return fetchUrl(url, null, TARBALL_HEADER, TARBALL_HEADER_VALUE);
   }
 
   private String getPackageTarballUrl(String id, String ver) throws IOException {
@@ -70,7 +86,7 @@ public class PackageClient {
   }
 
   public InputStream fetch(PackageInfo info) throws IOException {
-    return fetchCached(getPackageTarballUrl(info.getId(), info.getVersion()));
+    return fetchTarball(info.getId(), info.getVersion());
   }
 
   public InputStream fetchCached(String url) throws IOException, FileNotFoundException {
@@ -196,7 +212,14 @@ public class PackageClient {
   }
  
   private InputStream fetchUrl(String urlString, String accept) throws IOException {
+    return fetchUrl(urlString, accept, null, null);
+  }
+
+  private InputStream fetchUrl(String urlString, String accept, String headerName, String headerValue) throws IOException {
     ManagedWebAccessor webAccessor = ManagedWebAccess.accessor(Arrays.asList("web"), new PackageServerHTTPAuthProvider(server));
+    if (headerName != null) {
+      webAccessor.getHeaders().put(headerName, headerValue);
+    }
 
     HTTPResult res = webAccessor.get(urlString, accept);
     res.checkThrowException();
