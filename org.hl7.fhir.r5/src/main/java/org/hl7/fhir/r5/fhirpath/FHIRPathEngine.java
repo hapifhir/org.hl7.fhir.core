@@ -7519,16 +7519,6 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
 
-  /** given an element definition in a profile, what element contains the differentiating fixed 
-   * for the element, given the differentiating expression. The expression is only allowed to 
-   * use a subset of FHIRPath
-   * 
-   * @param profile
-   * @param element
-   * @return
-   * @throws PathEngineException 
-   * @throws DefinitionException 
-   */
   /**
    * The slicing entry a slice belongs to (for a reslice, its parent slice), or null if the element is not a
    * slice or its entry cannot be found in the snapshot. A slice added by a derived profile does not repeat
@@ -7563,6 +7553,16 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return null;
   }
 
+  /** given an element definition in a profile, what element contains the differentiating fixed
+   * for the element, given the differentiating expression. The expression is only allowed to
+   * use a subset of FHIRPath
+   *
+   * @param profile
+   * @param element
+   * @return
+   * @throws PathEngineException
+   * @throws DefinitionException
+   */
   public TypedElementDefinition evaluateDefinition(ExpressionNode expr, StructureDefinition profile, TypedElementDefinition element, StructureDefinition source, boolean dontWalkIntoReferences) throws DefinitionException {
     StructureDefinition sd = profile;
     TypedElementDefinition focus = null;
