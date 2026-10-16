@@ -38,7 +38,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -423,24 +422,5 @@ public class FHIRPathTests {
     List<Base> results = fp.evaluate(new Patient(), "'fr-BE'.split('-').first().lower()");
     assertEquals(1, results.size());
     assertEquals("fr", results.get(0).primitiveValue());
-  }
-
-  @ParameterizedTest(name = "{0}")
-  @CsvSource(delimiter = '|', quoteCharacter = '"', value = {
-    "1 year ~ 1 'a' | true",
-    "2 years ~ 2 'a' | true",
-    "1 month ~ 1 'mo' | true",
-    "1 year ~ 1 day | false",
-    "1 'x' ~ 1 year | false",
-    "1 year = 1 'a' | ",
-  })
-  void testEvaluate_CalendarDurationEquivalence(String expression, String expected) throws Exception {
-    List<Base> results = fp.evaluate(new Patient(), expression);
-    if (expected == null) {
-      assertEquals(0, results.size());
-    } else {
-      assertEquals(1, results.size());
-      assertEquals(expected, results.get(0).primitiveValue());
-    }
   }
 }

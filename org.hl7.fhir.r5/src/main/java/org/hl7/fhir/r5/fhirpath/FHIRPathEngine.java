@@ -6871,7 +6871,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       if (s.equals("year") || s.equals("years")) {
         return Quantity.fromUcum(v, "a");
       } else if (s.equals("month") || s.equals("months")) {
-        return Quantity.fromUcum(v, "mo_s");
+        return Quantity.fromUcum(v, "mo");
       } else if (s.equals("week") || s.equals("weeks")) {
         return Quantity.fromUcum(v, "wk");
       } else if (s.equals("day") || s.equals("days")) {
