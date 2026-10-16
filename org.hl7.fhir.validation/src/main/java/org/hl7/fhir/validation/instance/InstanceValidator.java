@@ -6869,8 +6869,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private StructureDefinition getResourceSpecialization(StructureDefinition defn) {
+    Set<String> visited = new HashSet<>();
     StructureDefinition sd = defn;
-    while (sd != null && sd.getDerivation() == TypeDerivationRule.CONSTRAINT && sd.hasBaseDefinition()) {
+    while (sd != null && sd.getDerivation() == TypeDerivationRule.CONSTRAINT && sd.hasBaseDefinition() && visited.add(sd.getVersionedUrl())) {
       sd = profileUtilities.findProfile(sd.getBaseDefinitionElement(), sd);
     }
     return sd == null ? defn : sd;
