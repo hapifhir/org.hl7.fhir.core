@@ -24,6 +24,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.ibm.icu.text.PluralRules;
 import org.junit.jupiter.api.DisplayName;
@@ -259,13 +260,32 @@ class I18nBaseTest {
   }
 
   @Test
+  @DisplayName("Setting the locale that is already set keeps the loaded bundle.")
+  void testSetSameLocaleKeepsTheLoadedBundle() {
+    AtomicInteger loads = new AtomicInteger();
+    I18nTestClass testClass = new I18nTestClass() {
+      @Override
+      protected String getMessagesSourceFileName() {
+        loads.incrementAndGet();
+        return super.getMessagesSourceFileName();
+      }
+    };
+    testClass.setLocale(Locale.GERMAN);
+    String german = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
+    testClass.setLocale(Locale.GERMAN);
+    assertEquals(german, testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1));
+    assertEquals(1, loads.get());
+  }
+
+  @Test
   @Timeout(60)
   @DisplayName("Formatting messages while another thread calls setLocale() on the same instance never fails.")
   void testFormatMessageWhileLocaleIsSetOnAnotherThread() throws Exception {
     I18nTestClass testClass = new I18nTestClass();
     testClass.setLocale(Locale.ENGLISH);
     String english = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
-    assertNull(formatWhileSettingLocale(testClass, english, Locale.ENGLISH));
+    // en and en-US are different locales with the same text, so each call still drops the loaded bundle
+    assertNull(formatWhileSettingLocale(testClass, english, Locale.ENGLISH, english, Locale.US));
   }
 
   @Test

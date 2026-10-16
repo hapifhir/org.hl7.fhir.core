@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.i18n;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -19,7 +20,7 @@ public abstract class I18nBase {
 
   public static final String KEY_DELIMITER = "_";
 
-  public static final Map<Locale, Set<String>> uncontainedKeys = new HashMap<>();
+  public static final Map<Locale, Set<String>> uncontainedKeys = new ConcurrentHashMap<>();
 
   // An instance can be shared across threads. Each lookup works on one local copy of the bundle,
   // and a loaded bundle is only kept if the locale did not change while it was loading.
@@ -29,7 +30,7 @@ public abstract class I18nBase {
   private volatile PluralRules pluralRules = null;
   private boolean warnAboutMissingMessages = true;
   private volatile long bundleGeneration = 0;
-  private static Set<String> warnedLocales;
+  private static final Set<String> warnedLocales = ConcurrentHashMap.newKeySet();
   private static boolean useMessageIdsDirectly;
 
   /**
@@ -81,6 +82,10 @@ public abstract class I18nBase {
 
   public void setLocale(Locale locale) {
     synchronized (bundleLock) {
+      if (Objects.equals(this.locale, locale)) {
+        // keep the loaded bundle: a shared instance can get the same locale again for each request
+        return;
+      }
       this.locale = locale;
       // Set the following to null. They will lazy-load when needed.
       this.messages = null;
@@ -120,12 +125,8 @@ public abstract class I18nBase {
   private void warnIfUnknownLocale(@Nonnull Locale locale, @Nonnull ResourceBundle bundle) {
     if (Locale.ROOT.equals(bundle.getLocale())) {
       if (!locale.getLanguage().equals("en")) {
-        if (warnedLocales == null) {
-          warnedLocales = new HashSet<>();
-        }
-        if (!warnedLocales.contains(locale.toLanguageTag())) {
+        if (warnedLocales.add(locale.toLanguageTag())) {
           logUncontainedMessage("The locale " + locale.toLanguageTag() + " is not supported. Messages will default to en-US.");
-          warnedLocales.add(locale.toLanguageTag());
         }
       }
     }
@@ -162,11 +163,10 @@ public abstract class I18nBase {
     if (!exists) {
       if (!message.contains(" ")) {
         if (warnAboutMissingMessages && (hasArgs || !message.contains(" "))) {
-          Set<String> uncontainedKeys = I18nBase.uncontainedKeys.computeIfAbsent(getLocale(), k -> new HashSet<>());
-          if (!uncontainedKeys.contains(message)) {
+          Set<String> uncontainedKeys = I18nBase.uncontainedKeys.computeIfAbsent(getLocale(), k -> ConcurrentHashMap.newKeySet());
+          if (uncontainedKeys.add(message)) {
             logUncontainedMessage("Attempting to localize " + typeOfString() + " " + message + ", but no such equivalent message exists for" +
               " the locale " + getLocale());
-            uncontainedKeys.add(message);
           }
         }
       }
