@@ -554,6 +554,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noBindingMsgSuppressed;
   private Map<String, Element> fetchCache = new HashMap<>();
   private HashMap<Element, ResourceValidationTracker> resourceTracker = new HashMap<>();
+  private final Set<ContentReferenceValidation> activeContentReferenceValidations = new HashSet<>();
   long time = 0;
   long start = 0;
   long lastlog = 0;
@@ -1117,6 +1118,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     fetchCache.clear();
     fetchCache.put(element.fhirType() + "/" + element.getIdBase(), element);
     resourceTracker.clear();
+    activeContentReferenceValidations.clear();
     trackedMessages.clear();
     messagesToRemove.clear();
     executionId = UUID.randomUUID().toString();
@@ -7807,11 +7809,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (target == null) {
       return rule(errors, "2026-10-15", IssueType.NOTFOUND, stack, false, I18nConstants.CONTENT_REFERENCE_PROFILE_UNKNOWN_ELEMENT, reference, definition.getId(), profile.getVersionedUrl(), id, targetProfile.getVersionedUrl());
     }
-    if (element.hasValidated(targetProfile, target)) {
-      return true;
+    // Only an active reference chain is a cycle. A completed validation may have failed
+    // in another profile candidate (with its own error list), or in an earlier execution.
+    ContentReferenceValidation source = new ContentReferenceValidation(element, profile, definition);
+    boolean added = activeContentReferenceValidations.add(source);
+    try {
+      if (activeContentReferenceValidations.contains(new ContentReferenceValidation(element, targetProfile, target))) {
+        return true;
+      }
+      return validateElement(valContext, errors, targetProfile, target, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, extensionUrl, pct, mode);
+    } finally {
+      if (added) {
+        activeContentReferenceValidations.remove(source);
+      }
     }
-    return validateElement(valContext, errors, targetProfile, target, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, extensionUrl, pct, mode);
   }
+
+  private record ContentReferenceValidation(Element element, StructureDefinition profile, ElementDefinition definition) { }
 
   private SourcedChildDefinitions mergeChildLists(SourcedChildDefinitions source, SourcedChildDefinitions additional, String masterPath, String typePath) {
     SourcedChildDefinitions res = new SourcedChildDefinitions(additional.getSource(), new ArrayList<>());

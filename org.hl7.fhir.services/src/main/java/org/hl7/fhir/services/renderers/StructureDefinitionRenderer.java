@@ -2476,8 +2476,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             tt.setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, true); 
             types.add(tt); 
           } 
-        } else { 
-          return c; 
         } 
       } 
     } 
@@ -4516,6 +4514,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else { 
       XhtmlNode types = describeTypes(d.getTypeList(), false, d, compare, mode, value, compareValue, sd);
       if (d.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE)) {
+        if (types == null) {
+          types = new XhtmlNode(NodeType.Element, "div");
+        }
         String[] cp = contentReferenceProfileLink(ExtensionUtilities.readStringExtension(d, ExtensionDefinitions.EXT_CONTENT_PROFILE), sd);
         types.tx(" ("+context.formatPhrase(RenderingI18nContext.STRUC_DEF_CONT_PROFILE)+" ");
         if (cp[0] != null) {

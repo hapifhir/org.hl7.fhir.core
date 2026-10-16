@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -1134,15 +1135,17 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
   /**
-   * contentReferenceProfile is checked once per element: on the differential element that states it,
-   * otherwise on the snapshot element (inherited from the base, or there is no differential)
+   * contentReferenceProfile is checked once for each distinct value on an element: on the differential
+   * element that states it, and on the snapshot element if it has a different or inherited value.
    */
   private boolean checkContentReferenceProfileHere(Element element, boolean snapshot, Map<String, Element> diffById) {
     if (!snapshot) {
       return true;
     }
     Element diff = diffById == null ? null : diffById.get(element.getNamedChildValue("id", false));
-    return diff == null || !diff.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE);
+    Element diffExtension = diff == null ? null : diff.getExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE);
+    return diffExtension == null || !Objects.equals(diffExtension.getNamedChildValue("value", false),
+        element.getExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE).getNamedChildValue("value", false));
   }
 
   /**
