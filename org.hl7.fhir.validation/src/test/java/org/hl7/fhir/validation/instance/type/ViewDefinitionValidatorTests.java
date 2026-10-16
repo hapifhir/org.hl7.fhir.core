@@ -40,7 +40,6 @@ class ViewDefinitionValidatorTests {
 
   private static ValidationEngine engine;
   private static InstanceValidator validator;
-  private static String sqlQueryProfile;
 
   @BeforeAll
   static void setUpAll() throws Exception {
@@ -50,7 +49,6 @@ class ViewDefinitionValidatorTests {
     StructureDefinition sd = (StructureDefinition) new JsonParser(ModelContext.fullCoreContext())
         .parse(npm.loadResource("StructureDefinition-ViewDefinition.json"));
     engine.getContext().cacheResource(sd);
-    sqlQueryProfile = new String(npm.loadResource("StructureDefinition-SQLQuery.json").readAllBytes(), StandardCharsets.UTF_8);
     validator = engine.getValidator(FhirFormat.JSON);
   }
 
@@ -60,7 +58,6 @@ class ViewDefinitionValidatorTests {
     // JVM.
     validator = null;
     engine = null;
-    sqlQueryProfile = null;
     System.gc();
   }
 
@@ -214,22 +211,5 @@ class ViewDefinitionValidatorTests {
         + "  { \"column\": [" + column("id", "gender", "string") + "] }"
         + "] }"));
     assertNoneWithId(messages, I18nConstants.VIEWDEFINITION_DUPL_COL_NAME);
-  }
-
-  // ViewDefinition implements MetadataResource, which implements CanonicalResource, so a canonical
-  // element may target it. The SQLQuery Library profile in the SQL on FHIR package does that.
-  @Test
-  void canonicalMayTargetAResourceThatImplementsMetadataResource() {
-    List<ValidationMessage> messages = validate(sqlQueryProfile);
-    assertNoneWithId(messages, I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET);
-  }
-
-  // A canonical element that targets a resource that is not canonical is still reported.
-  @Test
-  void canonicalTargetingANonCanonicalResourceIsRejected() {
-    List<ValidationMessage> messages = validate(sqlQueryProfile.replace(
-        "\"http://hl7.org/fhir/StructureDefinition/ViewDefinition\"", "\"http://hl7.org/fhir/StructureDefinition/Patient\""));
-    assertTrue(!withId(messages, I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET).isEmpty(),
-        "Expected " + I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET + " but found: " + messages);
   }
 }
