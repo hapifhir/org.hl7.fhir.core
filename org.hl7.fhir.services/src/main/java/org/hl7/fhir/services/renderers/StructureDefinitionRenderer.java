@@ -2402,23 +2402,26 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   /**
-   * The value of the contentReferenceProfile extension has the same format as a contentReference:
-   * [canonical]#[element id], where a missing canonical means this profile
+   * The value of the contentReferenceProfile extension is a canonical URL for the profile, followed
+   * by '#' and the element id. A value without the canonical is invalid and is not resolved against this profile
    *
    * @return {href (null if it can't be resolved), text, hint}
    */
   private String[] contentReferenceProfileLink(String uri, StructureDefinition profile) {
-    if (uri == null) {
-      return new String[] {null, "?", null};
+    // a canonical URL for the profile, followed by '#' and the element id. Anything else is shown
+    // as invalid: a value without the canonical is not resolved against this profile
+    int separator = uri == null ? -1 : uri.indexOf('#');
+    if (separator <= 0 || separator == uri.length() - 1) {
+      return new String[] {null, context.formatPhrase(RenderingI18nContext.STRUC_DEF_CONT_PROFILE_INVALID, uri == null ? "?" : uri), null};
     }
-    String url = uri.contains("#") ? uri.substring(0, uri.indexOf("#")) : uri;
-    String eid = uri.contains("#") ? uri.substring(uri.indexOf("#")+1) : null;
-    StructureDefinition sd = Utilities.noString(url) ? profile : context.getProfileUtilities().findProfileStr(url, profile);
+    String url = uri.substring(0, separator);
+    String eid = uri.substring(separator + 1);
+    StructureDefinition sd = url.equals(profile.getUrl()) || url.equals(profile.getVersionedUrl()) ? profile : context.getProfileUtilities().findProfileStr(url, profile);
     if (sd == null) {
       return new String[] {null, uri, null};
     }
-    String text = eid == null ? sd.present() : sd == profile ? eid : eid+" ("+sd.present()+")";
-    String href = sd == profile ? (eid == null ? null : "#"+eid) : !sd.hasWebPath() ? null : eid == null ? sd.getWebPath() : sd.getWebPath()+"#"+eid;
+    String text = sd == profile ? eid : eid+" ("+sd.present()+")";
+    String href = sd == profile ? "#"+eid : !sd.hasWebPath() ? null : sd.getWebPath()+"#"+eid;
     return new String[] {href, text, uri};
   }
 

@@ -7785,17 +7785,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * The element has been validated against its own definition. When that definition carries
    * contentReferenceProfile, validate the element against the referenced definition as well, so
    * that both sets of constraints apply. A reference that cannot be resolved is a problem in the
-   * profile; it is reported against the element instead of stopping the validation.
+   * profile. StructureDefinitionValidator reports it against the profile; here it is reported against
+   * the element instead of stopping the validation, for profiles that were only loaded.
    */
   private boolean validateContentReferenceProfile(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition, Element resource, Element element,
                                                    String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException, TimeoutException {
     String reference = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_CONTENT_PROFILE);
-    if (reference == null || !reference.contains("#")) {
+    // a canonical URL for the profile, followed by '#' and the element id. A value without the
+    // canonical is not resolved against the current profile: it is invalid
+    int separator = reference == null ? -1 : reference.indexOf('#');
+    if (separator <= 0 || separator == reference.length() - 1) {
       return rule(errors, "2026-10-15", IssueType.INVALID, stack, false, I18nConstants.CONTENT_REFERENCE_PROFILE_INVALID, reference, definition.getId(), profile.getVersionedUrl());
     }
-    int separator = reference.indexOf('#');
-    String url = separator == 0 ? profile.getVersionedUrl() : reference.substring(0, separator);
-    StructureDefinition targetProfile = profileUtilities.findProfileStr(url, profile);
+    String url = reference.substring(0, separator);
+    StructureDefinition targetProfile = url.equals(profile.getUrl()) || url.equals(profile.getVersionedUrl()) ? profile : profileUtilities.findProfileStr(url, profile);
     if (targetProfile == null) {
       return rule(errors, "2026-10-15", IssueType.NOTFOUND, stack, false, I18nConstants.CONTENT_REFERENCE_PROFILE_UNKNOWN_PROFILE, reference, definition.getId(), profile.getVersionedUrl(), url);
     }

@@ -880,6 +880,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_CONSTRAINTS = "STRUC_DEF_CONSTRAINTS";
   public static final String STRUC_DEF_CONTROL = "STRUC_DEF_CONTROL";
   public static final String STRUC_DEF_CONT_PROFILE = "STRUC_DEF_CONT_PROFILE";
+  public static final String STRUC_DEF_CONT_PROFILE_INVALID = "STRUC_DEF_CONT_PROFILE_INVALID";
   public static final String STRUC_DEF_CONT_RULE = "STRUC_DEF_CONT_RULE";
   public static final String STRUC_DEF_CONT_TYPE = "STRUC_DEF_CONT_TYPE";
   public static final String STRUC_DEF_COPY_URL = "STRUC_DEF_COPY_URL";
