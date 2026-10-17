@@ -4265,7 +4265,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (path.contains(".")) {
           String type = path.substring(0, path.indexOf('.'));
           String tail = path.substring(path.indexOf('.')+1);
-          if ("url".equals(tail) && VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains(type)) {
+          if ("url".equals(tail) && cu.isCanonicalResource(type)) {
             return true;
           }
         }
@@ -4289,7 +4289,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     return
       Utilities.existsInList(p[0], "CanonicalResource", "MetadataResource") ||
-      VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains((p[0]));
+      cu.isCanonicalResource(p[0]);
   }
 
   private boolean isDefinitionURL(String url) {
@@ -7197,7 +7197,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     long t = System.nanoTime();
     try {
-      if (VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains(element.getType())) {
+      if (cu.isCanonicalResource(element.getType())) {
         Base base = element.getExtensionValue(ExtensionDefinitions.EXT_STANDARDS_STATUS);
         String standardsStatus = base != null && base.isPrimitive() ? base.primitiveValue() : null;
         String status = element.getNamedChildValue("status", false);
