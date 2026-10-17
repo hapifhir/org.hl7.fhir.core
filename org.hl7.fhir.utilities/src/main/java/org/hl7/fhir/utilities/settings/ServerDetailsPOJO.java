@@ -16,7 +16,7 @@ public class ServerDetailsPOJO {
   
     String url;
 
-    // possible values: none, basic, token, apikey
+    // possible values: none, basic, token, apikey, oauth_client_credentials
     String authenticationType;
 
   /**
@@ -35,10 +35,13 @@ public class ServerDetailsPOJO {
 
     String username;
 
+    @lombok.ToString.Exclude
     String password;
 
+    @lombok.ToString.Exclude
     String token;
 
+    @lombok.ToString.Exclude
     String apikey;
 
     /**
@@ -58,11 +61,18 @@ public class ServerDetailsPOJO {
     Map<String, String> headers;
 
     /**
-     * Returns a deep copy, with a new {@link #headers} map, so that mutating the copy cannot affect this instance.
+     * Required when {@link #authenticationType} is {@code oauth_client_credentials}.
+     */
+    OAuthClientCredentialsPOJO oauthClientCredentials;
+
+    /**
+     * Returns a deep copy, with a new {@link #headers} map and {@link #oauthClientCredentials}, so that mutating the
+     * copy cannot affect this instance.
      */
     public ServerDetailsPOJO copy() {
       return toBuilder()
         .headers(headers == null ? null : new HashMap<>(headers))
+        .oauthClientCredentials(oauthClientCredentials == null ? null : oauthClientCredentials.toBuilder().build())
         .build();
     }
 }

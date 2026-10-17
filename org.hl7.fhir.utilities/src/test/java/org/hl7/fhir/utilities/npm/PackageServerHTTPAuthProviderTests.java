@@ -5,6 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -78,7 +79,7 @@ class PackageServerHTTPAuthProviderTests {
 
   @ParameterizedTest()
   @MethodSource("headerAccessTestParams")
-  void headerAccessTest(String serverUrlString, String requestUrlString, boolean canProvideHeaders) throws MalformedURLException {
+  void headerAccessTest(String serverUrlString, String requestUrlString, boolean canProvideHeaders) throws IOException {
     PackageServerHTTPAuthProvider provider = new PackageServerHTTPAuthProvider(getPackageServer(serverUrlString));
     URL requestUrl = URI.create(requestUrlString).toURL();
     if (canProvideHeaders) {

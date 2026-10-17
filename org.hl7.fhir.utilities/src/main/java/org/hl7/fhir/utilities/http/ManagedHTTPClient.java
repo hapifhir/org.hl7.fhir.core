@@ -19,6 +19,7 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Dns;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -29,6 +30,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import javax.annotation.Nonnull;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * An HTTP client supporting simple GET, PUT, POST, DELETE, and OPTIONS operations with no
@@ -56,6 +59,7 @@ import javax.annotation.Nonnull;
  * exact address OkHttp connects to, so there is no separate resolution step for an attacker to exploit via DNS
  * rebinding.
  */
+@Slf4j
 public class ManagedHTTPClient {
 
   private static final int MAX_REDIRECTS = 5;
@@ -83,6 +87,22 @@ public class ManagedHTTPClient {
 
   @Getter
   private final boolean ssrfProtectionEnabled;
+
+  /**
+   * Whether 301/302/307/308 responses are followed. When false the redirect response itself is
+   * returned - for a request whose body carries a credential, which following a redirect would
+   * re-send to wherever the Location header points.
+   */
+  @Getter
+  private final boolean followRedirects;
+
+  /**
+   * Whether OkHttp may transparently re-send a request after a connection failure (a stale
+   * pooled connection, or another route to the same host). This happens below
+   * {@link RetryInterceptor}, so a request that must be sent at most once needs it off too.
+   */
+  @Getter
+  private final boolean retryOnConnectionFailure;
 
   @Getter
   private final ToolingClientLogger logger;
@@ -132,6 +152,8 @@ public class ManagedHTTPClient {
                             Collection<HTTPHeader> headers,
                             IHTTPAuthenticationProvider authProvider,
                             Boolean ssrfProtectionEnabled,
+                            Boolean followRedirects,
+                            Boolean retryOnConnectionFailure,
                             ToolingClientLogger logger) {
     this.timeout = timeout != null ? timeout : DEFAULT_TIMEOUT;
     this.timeoutUnit = timeoutUnit != null ? timeoutUnit : DEFAULT_TIMEOUT_UNIT;
@@ -140,9 +162,23 @@ public class ManagedHTTPClient {
     this.authProvider = authProvider;
     // Boxed so an unset builder value (null) defaults to true, rather than the primitive default of false.
     this.ssrfProtectionEnabled = ssrfProtectionEnabled == null || ssrfProtectionEnabled;
+    this.followRedirects = followRedirects == null || followRedirects;
+    this.retryOnConnectionFailure = retryOnConnectionFailure == null || retryOnConnectionFailure;
     this.logger = logger;
     this.baseClient = buildBaseClient();
     this.nonPublicAddressRejectingClient = buildNonPublicAddressRejectingClient(this.baseClient);
+  }
+
+  /**
+   * Test-only TLS trust, so that tests can stand up an https server with a self-signed
+   * certificate. Never set outside tests: it replaces the platform's trust store.
+   */
+  private static volatile SSLSocketFactory testSslSocketFactory;
+  private static volatile X509TrustManager testTrustManager;
+
+  static void setTestTrust(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager) {
+    testSslSocketFactory = sslSocketFactory;
+    testTrustManager = trustManager;
   }
 
   /**
@@ -153,7 +189,13 @@ public class ManagedHTTPClient {
       .addInterceptor(new RetryInterceptor(retries))
       .connectTimeout(timeout, timeoutUnit)
       .writeTimeout(timeout, timeoutUnit)
-      .readTimeout(timeout, timeoutUnit);
+      .readTimeout(timeout, timeoutUnit)
+      .retryOnConnectionFailure(retryOnConnectionFailure);
+    SSLSocketFactory sslSocketFactory = testSslSocketFactory;
+    X509TrustManager trustManager = testTrustManager;
+    if (sslSocketFactory != null && trustManager != null) {
+      builder.sslSocketFactory(sslSocketFactory, trustManager);
+    }
     if (logger != null) {
       builder.addInterceptor(new LoggingInterceptor(logger));
     }
@@ -230,6 +272,7 @@ public class ManagedHTTPClient {
     }
     URI uri = originalUri;
     int redirects = 0;
+    boolean credentialsRefreshed = false;
 
     while (true) {
       if (++redirects > MAX_REDIRECTS) {
@@ -251,6 +294,9 @@ public class ManagedHTTPClient {
         if (!authProvider.isProtocolAllowed(url)) {
           throw new IOException("URL does not use permitted protocol: " + url);
         }
+        if (isSsrfProtectionEnabled()) {
+          ManagedWebAccessUtils.throwExceptionIfBlockedHost(uri);
+        }
       } else if (isSsrfProtectionEnabled()) {
         ManagedWebAccessUtils.throwExceptionIfNotAllowedScheme(uri);
       }
@@ -270,6 +316,9 @@ public class ManagedHTTPClient {
       try (Response response = client.newCall(request).execute()) {
         switch (response.code()) {
           case 301, 302, 307, 308 -> {
+            if (!followRedirects) {
+              return toResult(uri, response);
+            }
             String location = response.header("Location");
             if (location == null) {
               throw new IOException("Location header missing in " + response.code() + " redirect");
@@ -277,13 +326,37 @@ public class ManagedHTTPClient {
             location = URLDecoder.decode(location, StandardCharsets.UTF_8);
             uri = uri.resolve(location); // Deal with relative URLs, resolved against the current hop
           }
+          case 401 -> {
+            // The credentials may simply have gone stale. Give the auth provider one chance to
+            // discard them, then repeat this hop - buildRequest() will ask it for fresh headers.
+            // Done here rather than around the whole call so that it applies per redirect hop,
+            // exactly like the auth headers themselves, and sees the response the server sent.
+            // Only 401: an expired or revoked bearer token is answered with 401 invalid_token,
+            // whereas 403 insufficient_scope means the token was valid but not permitted - a
+            // fresh token for the same client would be refused the same way (RFC 6750 §3.1).
+            if (credentialsRefreshed || !authCanHandle || !authProvider.canRefreshCredentials(url)
+                || !authProvider.invalidateCachedCredentials(url, request.header("Authorization"))) {
+              return toResult(uri, response);
+            }
+            // Scheme, host and path only: the query string can carry codes or API keys, and
+            // userinfo can carry a password.
+            log.warn("Received HTTP 401 for {}://{}{}; refreshed credentials and retrying once",
+              httpUrl.scheme(), httpUrl.host(), httpUrl.encodedPath());
+            credentialsRefreshed = true;
+            redirects--; // a credential refresh is not a redirect hop
+          }
           default -> {
-            byte[] body = response.body().bytes();
-            return new HTTPResult(uri.toString(), response.code(), response.message(), response.header("Content-Type"), body, toHTTPHeaders(response.headers()));
+            return toResult(uri, response);
           }
         }
       }
     }
+  }
+
+  private HTTPResult toResult(URI uri, Response response) throws IOException {
+    byte[] body = response.body().bytes();
+    return new HTTPResult(uri.toString(), response.code(), response.message(),
+      response.header("Content-Type"), body, toHTTPHeaders(response.headers()));
   }
 
   private Request buildRequest(String requestMethod, HttpUrl httpUrl, String contentType, byte[] content, String acceptHeader, Iterable<HTTPHeader> extraHeaders, URL authUrl) throws IOException {
