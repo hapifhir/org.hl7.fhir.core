@@ -6868,6 +6868,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
+  private StructureDefinition getResourceSpecialization(StructureDefinition defn) {
+    Set<String> visited = new HashSet<>();
+    StructureDefinition sd = defn;
+    while (sd != null && sd.getDerivation() == TypeDerivationRule.CONSTRAINT && sd.hasBaseDefinition() && visited.add(sd.getVersionedUrl())) {
+      sd = profileUtilities.findProfile(sd.getBaseDefinitionElement(), sd);
+    }
+    return sd == null ? defn : sd;
+  }
+
   // checkSpecials = we're only going to run these tests if we are actually validating this content (as opposed to we looked it up)
   private boolean start(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) throws FHIRException, TimeoutException {
 
@@ -6875,17 +6884,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     boolean ok = !hasErrors(errors);
 
-    if (ExtensionUtilities.readBoolExtension(defn, ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE) && defn.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+    // resourceDefinition names the definition of the resource itself, so for a profile check it against the
+    // specialization that the profile constrains, not against the profile
+    StructureDefinition resourceDefn = getResourceSpecialization(defn);
+    if (ExtensionUtilities.readBoolExtension(resourceDefn, ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE) && resourceDefn.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
       if (Utilities.noString(element.getResourceDefinition())) {
-        rule(errors, "2025-09-30", IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_ADDITIONAL_RESOURCE_ABSENT, defn.getVersionedUrl());
+        rule(errors, "2025-09-30", IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_ADDITIONAL_RESOURCE_ABSENT, resourceDefn.getVersionedUrl());
         ok = false;
-      } else if (!element.getResourceDefinition().equals(defn.getVersionedUrl())) {
-        rule(errors, "2025-09-30", IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), element.getResourceDefinition() == null, I18nConstants.VALIDATION_ADDITIONAL_RESOURCE_WRONG, element.getResourceDefinition(), defn.getVersionedUrl());
+      } else if (!element.getResourceDefinition().equals(resourceDefn.getVersionedUrl())) {
+        rule(errors, "2025-09-30", IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), element.getResourceDefinition() == null, I18nConstants.VALIDATION_ADDITIONAL_RESOURCE_WRONG, element.getResourceDefinition(), resourceDefn.getVersionedUrl());
         ok = false;
       }
     } else {
-      if (!Utilities.noString(element.getResourceDefinition()) && !element.getResourceDefinition().equals(defn.getVersionedUrl())) {
-        rule(errors, "2025-09-30", IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), element.getResourceDefinition() == null, I18nConstants.VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG, element.getResourceDefinition(), defn.getVersionedUrl());
+      if (!Utilities.noString(element.getResourceDefinition()) && !element.getResourceDefinition().equals(resourceDefn.getVersionedUrl())) {
+        rule(errors, "2025-09-30", IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), element.getResourceDefinition() == null, I18nConstants.VALIDATION_ADDITIONAL_RESOURCE_NO_WRONG, element.getResourceDefinition(), resourceDefn.getVersionedUrl());
         ok = false;
       } else {
         warning(errors, "2025-09-30", IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), Utilities.noString(element.getResourceDefinition()), I18nConstants.VALIDATION_ADDITIONAL_RESOURCE_NO, element.getResourceDefinition());
