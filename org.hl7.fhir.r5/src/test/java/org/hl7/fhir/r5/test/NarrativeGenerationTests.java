@@ -24,6 +24,8 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
+import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.MapStructureMode;
+import org.hl7.fhir.r5.renderers.ResourceRenderer;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -316,7 +318,12 @@ public class NarrativeGenerationTests {
       source = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"));      
     }
     
-    XhtmlNode x = new RendererFactory().factory(source, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), source));
+    ResourceRenderer renderer = new RendererFactory().factory(source, rc);
+    if (renderer instanceof StructureDefinitionRenderer && rc.getStructureMode() == StructureDefinitionRendererMode.MAPPINGS) {
+      // no IG list of structures here: show the mappings to every structure the context knows
+      ((StructureDefinitionRenderer) renderer).setMappingsMode(MapStructureMode.NOT_IN_LIST);
+    }
+    XhtmlNode x = renderer.buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), source));
     String expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".html"));
     String actual = HEADER+new XhtmlComposer(true, test.pretty).compose(x)+FOOTER;
     String expectedFileName = CompareUtilities.tempFile("narrative5", test.getId() + ".expected.html");
