@@ -912,7 +912,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     TxTesterSorters.sortCapStmt(cs);
     String csj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(cs);
 
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     warnings.addAll(c.getWarnings());
     if (diff != null) {
@@ -929,7 +929,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     TxTesterScrubbers.scrubTermCaps(cs, tight);
     TxTesterSorters.sortTermCaps(cs);
     String csj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(cs);
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     warnings.addAll(c.getWarnings());
     if (diff != null) {
@@ -1052,7 +1052,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
     if (diff != null) {
@@ -1087,7 +1087,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
     if (diff != null) {
@@ -1131,7 +1131,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
     if (diff != null) {
@@ -1166,7 +1166,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
     if (diff != null) {
@@ -1210,7 +1210,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, vsj, false);
     warnings.addAll(c.getWarnings());
     if (diff != null) {
@@ -1257,7 +1257,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
     if (diff != null) {
@@ -1297,7 +1297,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
     if (diff != null) {
@@ -1348,7 +1348,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
     if (diff != null) {
@@ -1388,7 +1388,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
     if (diff != null) {
@@ -1435,7 +1435,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       bj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, bj, false);
     warnings.addAll(c.getWarnings());
     if (diff != null) {

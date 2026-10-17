@@ -33,6 +33,8 @@ public class CompareUtilities extends BaseTestingUtilities {
   private Map<String, String> variables;
   private Set<String> modes;
   private boolean patternMode;
+  private boolean collectAll;
+  private int maxErrors = 50;
 
   @Getter
   private List<String> warnings = new ArrayList<>();
@@ -72,6 +74,29 @@ public class CompareUtilities extends BaseTestingUtilities {
 
   public CompareUtilities setPatternMode(boolean patternMode) {
     this.patternMode = patternMode;
+    return this;
+  }
+
+  /**
+   * JSON only: report every difference rather than stopping at the first. The comparison carries
+   * on through an object's remaining properties after a difference; an array still stops at its
+   * first failing item (the items after it are not reliably aligned any more), but its container
+   * carries on, and the differences inside that first failing item are all reported. The result is
+   * the differences joined by line breaks, or null if there are none. Off by default, so existing
+   * callers see exactly the first difference, as before.
+   */
+  public boolean isCollectAll() {
+    return collectAll;
+  }
+
+  public CompareUtilities setCollectAll(boolean collectAll) {
+    this.collectAll = collectAll;
+    return this;
+  }
+
+  /** In collect-all mode, the most differences reported before giving up (default 50). */
+  public CompareUtilities setMaxErrors(int maxErrors) {
+    this.maxErrors = maxErrors;
     return this;
   }
 
@@ -336,13 +361,142 @@ public class CompareUtilities extends BaseTestingUtilities {
   private String compareJsonSrc(String id, String expected, String actual) throws FileNotFoundException, IOException {
     JsonObject actualJsonObject = JsonParser.parseObject(actual);
     JsonObject expectedJsonObject = JsonParser.parseObject(expected);
-    return compareObjects(id, "", expectedJsonObject, actualJsonObject);
+    return compareRoot(id, expectedJsonObject, actualJsonObject);
   }
 
   private String compareJson(String id, String expected, String actual) throws FileNotFoundException, IOException {
     JsonObject actualJsonObject = JsonParser.parseObject(FileUtilities.fileToString(actual));
     JsonObject expectedJsonObject = JsonParser.parseObject(FileUtilities.fileToString(expected));
-    return compareObjects(id, "", expectedJsonObject, actualJsonObject);
+    return compareRoot(id, expectedJsonObject, actualJsonObject);
+  }
+
+  private String compareRoot(String id, JsonObject expectedJsonObject, JsonObject actualJsonObject) {
+    if (!collectAll) {
+      return compareObjects(id, "", expectedJsonObject, actualJsonObject);
+    }
+    List<String> errors = compareObjectsAll(id, "", expectedJsonObject, actualJsonObject);
+    return errors.isEmpty() ? null : String.join("\r\n", errors);
+  }
+
+  /**
+   * Every difference between the two objects, subject to maxErrors. compareObjects / compareNodes
+   * keep their first-difference contract, because the array matching relies on it: a probe that
+   * fails is how an optional item, or a pattern-mode candidate, is found not to match. So this only
+   * re-walks the structure where carrying on is safe - an object's properties, and the first
+   * failing item of an array - and uses the first-difference methods for everything else.
+   */
+  public List<String> compareObjectsAll(String id, String path, JsonObject expectedJsonObject, JsonObject actualJsonObject) {
+    List<String> errors = new ArrayList<>();
+    collectObjects(id, path, expectedJsonObject, actualJsonObject, errors);
+    return errors;
+  }
+
+  private boolean full(List<String> errors) {
+    return errors.size() >= maxErrors;
+  }
+
+  private void addError(List<String> errors, String s) {
+    if (Utilities.noString(s) || full(errors)) {
+      return;
+    }
+    errors.add(s);
+    if (full(errors)) {
+      errors.add("(stopped after " + maxErrors + " differences)");
+    }
+  }
+
+  private void collectObjects(String id, String path, JsonObject expectedJsonObject, JsonObject actualJsonObject, List<String> errors) {
+    List<String> optionals = listOptionals(expectedJsonObject);
+    List<String> countOnlys = listCountOnlys(expectedJsonObject);
+    for (JsonProperty en : actualJsonObject.getProperties()) {
+      if (full(errors)) {
+        return;
+      }
+      String n = en.getName();
+      if (!n.equals("fhir_comments")) {
+        if (expectedJsonObject.has(n)) {
+          if (isProhibited(expectedJsonObject.get(n))) {
+            addError(errors, "properties differ at " + path + ": prohibited property " + n + " (only allowed when '" + expectedJsonObject.get(n).asJsonObject().asString("$only$") + "')");
+          } else {
+            collectNodes(id, path + '.' + n, expectedJsonObject.get(n), en.getValue(), countOnlys.contains(n), n, actualJsonObject, errors);
+          }
+        } else if (!patternMode && !optionals.contains(n)) {
+          addError(errors, "properties differ at " + path + ": unexpected property " + n);
+        }
+      }
+    }
+    for (JsonProperty en : expectedJsonObject.getProperties()) {
+      String n = en.getName();
+      if (!n.equals("fhir_comments") && !isOptional(n, optionals) && !isProhibited(en.getValue())) {
+        if (!actualJsonObject.has(n) && !allOptional(en.getValue())) {
+          addError(errors, "properties differ at " + path + ": missing property " + n);
+        }
+      }
+    }
+  }
+
+  private void collectNodes(String id, String path, JsonElement expectedJsonElement, JsonElement actualJsonElement, boolean countOnly, String name, JsonObject parent, List<String> errors) {
+    if (expectedJsonElement instanceof JsonObject && actualJsonElement instanceof JsonObject) {
+      collectObjects(id, path, (JsonObject) expectedJsonElement, (JsonObject) actualJsonElement, errors);
+    } else if (expectedJsonElement instanceof JsonArray && actualJsonElement instanceof JsonArray && !countOnly && !patternMode) {
+      collectArray(id, path, (JsonArray) expectedJsonElement, (JsonArray) actualJsonElement, name, parent, errors);
+    } else {
+      addError(errors, compareNodes(id, path, expectedJsonElement, actualJsonElement, countOnly, name, parent));
+    }
+  }
+
+  /**
+   * The array checks of compareNodes, except that when an item does not match, every difference
+   * inside it is reported (when it is an object) before the array is abandoned.
+   */
+  private void collectArray(String id, String path, JsonArray expectedArray, JsonArray actualArray, String name, JsonObject parent, List<String> errors) {
+    String prohibited = checkProhibited(id, path, expectedArray, actualArray);
+    if (prohibited != null) {
+      addError(errors, prohibited);
+      return;
+    }
+    expectedArray = removeProhibited(expectedArray);
+    int as = actualArray.size();
+    int es = expectedArray.size();
+    int expectedMin = countExpectedMin(expectedArray, name, parent);
+    int oc = optionalCount(expectedArray, name, parent);
+    if (as > es || as < expectedMin) {
+      addError(errors, createNotEqualMessage(id, "array item count differs at " + path, Integer.toString(es), Integer.toString(as)));
+      return;
+    }
+    int c = 0;
+    for (int i = 0; i < es; i++) {
+      if (c >= as) {
+        if (i >= es - oc && isOptional(expectedArray.get(i), name, parent)) {
+          String wt = isOptionalWarning(expectedArray.get(i), name, parent);
+          if (wt != null) {
+            warnings.add(wt);
+          }
+          return; // this is OK
+        } else {
+          addError(errors, "One or more array items did not match at "+path+" starting at index "+i);
+          return;
+        }
+      }
+      String itemPath = path + "[" + Integer.toString(i) + "]";
+      String s = compareNodes(id, itemPath, expectedArray.get(i), actualArray.get(c), false, null, null);
+      if (!Utilities.noString(s) && !isOptional(expectedArray.get(i), name, parent)) {
+        int before = errors.size();
+        if (expectedArray.get(i) instanceof JsonObject && actualArray.get(c) instanceof JsonObject) {
+          collectObjects(id, itemPath, (JsonObject) expectedArray.get(i), (JsonObject) actualArray.get(c), errors);
+        }
+        if (errors.size() == before) {
+          addError(errors, s); // never lose the difference the probe found
+        }
+        return;
+      }
+      if (Utilities.noString(s)) {
+        c++;
+      }
+    }
+    if (c < as) {
+      addError(errors, "Unexpected Node found in array at '"+path+"' at index "+c);
+    }
   }
 
   public String compareObjects(String id, String path, JsonObject expectedJsonObject, JsonObject actualJsonObject) {

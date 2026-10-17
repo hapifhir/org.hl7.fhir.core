@@ -101,4 +101,59 @@ public class CompareUtilitiesTests implements ResourceLoaderTests {
      assertEquals(expectedOutput, normalizeNewlines(actualOutput));
    }
  }
+
+ private static Stream<Arguments> getCollectAllParams() {
+   return Stream.of(
+     // every property difference in an object is reported, not just the first
+     Arguments.of("{\"a\":\"x\",\"b\":1,\"c\":true}", "{\"a\":\"y\",\"b\":2,\"c\":true}", 0,
+       "string property values differ at .a\nExpected:\"x\" for t\nActual  :\"y\"\n"
+       + "number property values differ at .b\nExpected:\"1\" for t\nActual  :\"2\""),
+     Arguments.of("{\"a\":\"x\",\"b\":1}", "{\"a\":\"x\",\"z\":1}", 0,
+       "properties differ at : unexpected property z\nproperties differ at : missing property b"),
+     // an array stops at its first failing item - every difference inside that item is reported,
+     // the items after it are not - but the array's container carries on
+     Arguments.of("{\"p\":[{\"n\":\"a\",\"v\":1},{\"n\":\"b\",\"v\":2,\"w\":3},{\"n\":\"c\",\"v\":9}],\"after\":\"x\"}",
+       "{\"p\":[{\"n\":\"a\",\"v\":1},{\"n\":\"b\",\"v\":5,\"w\":4},{\"n\":\"c\",\"v\":8}],\"after\":\"y\"}", 0,
+       "number property values differ at .p[1].v\nExpected:\"2\" for t\nActual  :\"5\"\n"
+       + "number property values differ at .p[1].w\nExpected:\"3\" for t\nActual  :\"4\"\n"
+       + "string property values differ at .after\nExpected:\"x\" for t\nActual  :\"y\""),
+     Arguments.of("{\"p\":[1,2],\"q\":\"x\"}", "{\"p\":[1],\"q\":\"y\"}", 0,
+       "array item count differs at .p\nExpected:\"2\" for t\nActual  :\"1\"\n"
+       + "string property values differ at .q\nExpected:\"x\" for t\nActual  :\"y\""),
+     // a type mismatch stops that node, not the comparison
+     Arguments.of("{\"a\":{\"b\":1},\"c\":2}", "{\"a\":[1],\"c\":3}", 0,
+       "properties differ at .a\nExpected:\"org.hl7.fhir.utilities.json.model.JsonObject\" for t\nActual  :\"org.hl7.fhir.utilities.json.model.JsonArray\"\n"
+       + "number property values differ at .c\nExpected:\"2\" for t\nActual  :\"3\""),
+     // probing an optional item is not a difference
+     Arguments.of("{\"p\":[{\"$optional$\":true,\"n\":\"o\"},{\"n\":\"a\"}],\"q\":1}", "{\"p\":[{\"n\":\"a\"}],\"q\":1}", 0, null),
+     Arguments.of("{\"a\":[{\"b\":\"$string$\"}]}", "{\"a\":[{\"b\":\"q\"}]}", 0, null),
+     // the cap
+     Arguments.of("{\"a\":1,\"b\":1,\"c\":1}", "{\"a\":2,\"b\":2,\"c\":2}", 2,
+       "number property values differ at .a\nExpected:\"1\" for t\nActual  :\"2\"\n"
+       + "number property values differ at .b\nExpected:\"1\" for t\nActual  :\"2\"\n"
+       + "(stopped after 2 differences)")
+   );
+ }
+
+ @ParameterizedTest
+ @MethodSource("getCollectAllParams")
+ void testCompareJSONCollectAll(String expected, String actual, int max, String expectedOutput) throws IOException {
+   CompareUtilities cu = new CompareUtilities().setCollectAll(true);
+   if (max > 0) {
+     cu.setMaxErrors(max);
+   }
+   String output = cu.checkJsonSrcIsSame("t", expected, actual, false);
+   if (expectedOutput == null) {
+     assertNull(output);
+   } else {
+     assertEquals(expectedOutput, normalizeNewlines(output));
+   }
+   // with collect-all off, the result is exactly the first of those differences, as before
+   String first = new CompareUtilities().checkJsonSrcIsSame("t", expected, actual, false);
+   if (expectedOutput == null) {
+     assertNull(first);
+   } else {
+     assertEquals(true, expectedOutput.startsWith(normalizeNewlines(first)));
+   }
+ }
 }
