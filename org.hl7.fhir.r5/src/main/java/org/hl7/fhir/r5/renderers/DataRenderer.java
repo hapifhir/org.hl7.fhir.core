@@ -392,16 +392,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(t); 
     if (sd == null) 
       return false; 
-    if (VersionUtilities.getCanonicalResourceNames(getContext().getWorker().getVersion()).contains(t)) { 
-      return true; 
-    } 
-    if (Utilities.existsInList(t,  
-        "ActivityDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CodeSystem", 
-        "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", 
-        "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "PlanDefinition" 
-        )) 
-      return true; 
-    return false; 
+    return context.getContextUtilities().isCanonicalResource(t); 
   } 
 
   // -- 4. Language support ------------------------------------------------------ 
