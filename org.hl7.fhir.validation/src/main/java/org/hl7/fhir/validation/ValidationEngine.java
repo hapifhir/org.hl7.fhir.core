@@ -685,6 +685,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     InstanceValidator validator = getValidator(cntType, instanceValidatorParameters);
 
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(instanceValidatorParameters.getProfiles()));
+    ValidationLevel.filter(messages, instanceValidatorParameters.getLevel());
+    if (validator.validatedContent != null) {
+      for (var vf : validator.validatedContent) {
+        ValidationLevel.filter(vf.getErrors(), instanceValidatorParameters.getLevel());
+      }
+    }
     return new ValidatedFragments(validator.validatedContent,
       ValidationTime.fromTimeTracker(validator.timeTracker));
   }
@@ -708,6 +714,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     InstanceValidator validator = getValidator(cntType, instanceValidatorParameters);
 
     Element res = validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(instanceValidatorParameters.getProfiles()));
+    ValidationLevel.filter(messages, instanceValidatorParameters.getLevel());
     boolean first = true;
     for (String fn : matchetypes) {
       if (first) {
