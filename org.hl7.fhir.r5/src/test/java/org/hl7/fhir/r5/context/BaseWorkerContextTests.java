@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.context;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext.VersionResolutionRules;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient5;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
@@ -798,5 +799,53 @@ public class BaseWorkerContextTests {
     });
     assertThat(exceptions).isEmpty();
     assertThat(successCount.get()).isEqualTo(numberOfThreads);
+  }
+
+  @Test
+  void externalCodeSystemsFollowLanguageChangesWithoutDroppingLocalResources(
+      @org.junit.jupiter.api.io.TempDir java.nio.file.Path folder) throws IOException {
+    String url = "http://standardterms.edqm.eu";
+    var rules = VersionResolutionRules.defaultRule();
+    TerminologyCache cache = new TerminologyCache(new Object(), folder.toString());
+    CodeSystem csSource = new CodeSystem().setUrl(url).setVersion("2.0").setName("Czech");
+    csSource.setId("edqm");
+    CodeSystem enSource = new CodeSystem().setUrl(url).setVersion("2.0").setName("English");
+    enSource.setId("edqm");
+    cache.cacheCodeSystem(url, "cs", new TerminologyCache.SourcedCodeSystem("https://cz.example/r4", csSource));
+    cache.cacheCodeSystem(url, "en", new TerminologyCache.SourcedCodeSystem("https://en.example/r4", enSource));
+    context.initTxCache(cache);
+    context.setExpansionParameters(new Parameters().addParameter("displayLanguage", "cs"));
+    CodeSystem czech = context.findTxResource(CodeSystem.class, url, rules);
+    assertEquals("Czech", czech.getName());
+    assertSame(czech, context.findTxResource(CodeSystem.class, url, rules));
+
+    // A local version with the same id must survive invalidating the external version.
+    context.setAllowLoadingDuplicates(true);
+    CodeSystem local = new CodeSystem().setUrl(url).setVersion("1.0").setName("Local");
+    local.setId("edqm");
+    context.cacheResource(local);
+    context.setExpansionParameters(new Parameters().addParameter("displayLanguage", "en"));
+    assertSame(local, context.fetchResource(CodeSystem.class, url, rules, "1.0"));
+    assertSame(local, context.findTxResource(CodeSystem.class, url, rules));
+    cache.cacheCodeSystem(url + "|2.0", "en", cache.getCodeSystem(url, "en"));
+    CodeSystem english = context.findTxResource(CodeSystem.class, url, rules, "2.0");
+    assertEquals("English", english.getName());
+    assertSame(local, context.fetchResource(CodeSystem.class, url, rules, "1.0"));
+    context.setExpansionParameters(new Parameters().addParameter("displayLanguage", "cs"));
+    cache.cacheCodeSystem(url + "|2.0", "cs", cache.getCodeSystem(url, "cs"));
+    assertEquals("Czech", context.findTxResource(CodeSystem.class, url, rules, "2.0").getName());
+    assertSame(local, context.fetchResource(CodeSystem.class, url, rules, "1.0"));
+  }
+
+  @Test
+  void externalCodeSystemLookupKeepsExplicitVersionAndLanguage() {
+    String url = "http://standardterms.edqm.eu";
+    context.setExpansionParameters(new Parameters().addParameter("displayLanguage", "cs"));
+    CodeSystem cs = new CodeSystem().setUrl(url).setVersion("1.0");
+    when(terminologyCache.hasCodeSystem(url + "|1.0", "cs")).thenReturn(true);
+    when(terminologyCache.getCodeSystem(url + "|1.0", "cs"))
+        .thenReturn(new TerminologyCache.SourcedCodeSystem("https://cz.example/r4", cs));
+    assertSame(cs, context.findTxResource(CodeSystem.class, url, VersionResolutionRules.defaultRule(), "1.0", null));
+    verify(terminologyCache).getCodeSystem(url + "|1.0", "cs");
   }
 }

@@ -1919,8 +1919,16 @@ public class TerminologyCache {
     return vsCache.containsKey(canonical);
   }
 
+  private String codeSystemCacheKey(String canonical, String language) {
+    return language == null || language.isBlank() ? canonical : canonical + " in " + language.trim();
+  }
+
   public boolean hasCodeSystem(String canonical) {
-    return csCache.containsKey(canonical);
+    return hasCodeSystem(canonical, null);
+  }
+
+  public boolean hasCodeSystem(String canonical, String language) {
+    return csCache.containsKey(codeSystemCacheKey(canonical, language));
   }
 
   public SourcedValueSet getValueSet(String canonical) {
@@ -1937,7 +1945,11 @@ public class TerminologyCache {
   }
 
   public SourcedCodeSystem getCodeSystem(String canonical) {
-    SourcedCodeSystemEntry sp = csCache.get(canonical);
+    return getCodeSystem(canonical, null);
+  }
+
+  public SourcedCodeSystem getCodeSystem(String canonical, String language) {
+    SourcedCodeSystemEntry sp = csCache.get(codeSystemCacheKey(canonical, language));
     if (sp == null || folder == null) {
       return null;
     } else {
@@ -1987,19 +1999,24 @@ public class TerminologyCache {
   }
 
   public void cacheCodeSystem(String canonical, SourcedCodeSystem scs) {
+    cacheCodeSystem(canonical, null, scs);
+  }
+
+  public void cacheCodeSystem(String canonical, String language, SourcedCodeSystem scs) {
     if (canonical == null) {
       return;
     }
+    String key = codeSystemCacheKey(canonical, language);
     try {
       if (scs == null) {
-        csCache.put(canonical, null);
+        csCache.put(key, null);
       } else {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "cs-"+uuid+".json";
         if (folder != null) {
           new JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
         }
-        csCache.put(canonical, new SourcedCodeSystemEntry(scs.getServer(), fn));
+        csCache.put(key, new SourcedCodeSystemEntry(scs.getServer(), fn));
       }    
       org.hl7.fhir.utilities.json.model.JsonObject j = new org.hl7.fhir.utilities.json.model.JsonObject();
       for (String k : csCache.keySet()) {
