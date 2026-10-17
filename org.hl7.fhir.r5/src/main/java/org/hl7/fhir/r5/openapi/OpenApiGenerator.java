@@ -48,6 +48,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction;
 import org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteraction;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ContactDetail;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode;
@@ -224,7 +225,7 @@ public class OpenApiGenerator {
     if (isJson())
       resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/CapabilityStatement");
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef()+"/CapabilityStatement.xsd");
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/capabilitystatement.xsd");
 
     // parameters - but do they apply?
     op.paramRef("#/components/parameters/format");
@@ -285,6 +286,20 @@ public class OpenApiGenerator {
           }
         }
       }
+    }
+    List<StringType> includes = r.getSearchInclude();
+    if (!includes.isEmpty()) {
+      String[] vals = includes.stream().map(StringType::getValue).toArray(String[]::new);
+      ParameterWriter pi = op.parameter("_include");
+      pi.in(ParameterLocation.query).description("Request that the server include additional resources related to the primary search results");
+      pi.schema().type(SchemaType.array).items().type(SchemaType.string).enums(vals);
+    }
+    List<StringType> revincludes = r.getSearchRevInclude();
+    if (!revincludes.isEmpty()) {
+      String[] vals = revincludes.stream().map(StringType::getValue).toArray(String[]::new);
+      ParameterWriter pri = op.parameter("_revinclude");
+      pri.in(ParameterLocation.query).description("Request that the server include additional resources that refer to the primary search results");
+      pri.schema().type(SchemaType.array).items().type(SchemaType.string).enums(vals);
     }
   }
 
