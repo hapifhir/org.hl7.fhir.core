@@ -21,6 +21,7 @@ import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.SocketPolicy;
 
 
 import org.junit.jupiter.api.BeforeEach;
@@ -251,6 +252,39 @@ public class ManagedHTTPClientTest {
     return urls;
   }
 
+  @ParameterizedTest
+  @ValueSource(strings = {"http://metadata.google.internal/token", "https://METADATA.amazonaws.com/token"})
+  void blockedHostIsRejectedEvenWhenAuthProviderTrustsIt(String url) throws IOException {
+    // An auth provider that would allow anything - http, private networks - must still not reach
+    // a cloud metadata host: the blocked-host list applies whichever branch checks the scheme.
+    IHTTPAuthenticationProvider permissive = mock(IHTTPAuthenticationProvider.class);
+    when(permissive.canProvideHeaders(any())).thenReturn(true);
+    when(permissive.isProtocolAllowed(any())).thenReturn(true);
+    when(permissive.isPrivateNetworkAllowed(any())).thenReturn(true);
+    when(permissive.getHeaders(any())).thenReturn(Map.of());
+
+    ManagedHTTPClient httpClient = ManagedHTTPClient.builder().authProvider(permissive).build();
+
+    assertThatThrownBy(() -> httpClient.get(url))
+      .isInstanceOf(IOException.class)
+      .hasMessageContaining("explicitly blocked host");
+  }
+
+  @Test
+  void redirectIsReturnedNotFollowedWhenDisabled() throws IOException {
+    server.enqueue(new MockResponse()
+      .setResponseCode(307)
+      .addHeader("Location", server.url("elsewhere").url().toString()));
+    server.enqueue(new MockResponse().setResponseCode(200).setBody("Followed"));
+
+    ManagedHTTPClient httpClient = ManagedHTTPClient.builder().followRedirects(false).ssrfProtectionEnabled(false).build();
+
+    HTTPResult res = httpClient.post(server.url("start").url().toString(), "text/plain", "secret".getBytes(), null);
+
+    assertThat(res.getCode()).isEqualTo(307);
+    assertThat(server.getRequestCount()).isEqualTo(1);
+  }
+
   @Nested
   class Retries {
 
@@ -293,6 +327,46 @@ public class ManagedHTTPClientTest {
       HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
 
       assertThat(res.getCode()).isEqualTo(500);
+      assertThat(server.getRequestCount()).isEqualTo(1);
+    }
+
+    @Test
+    void zeroRetriesSendsRequestOnceOnTransportFailure() throws IOException {
+      // DISCONNECT_AFTER_REQUEST so the server records the request before dropping the socket.
+      // Two are queued so that a second attempt would be recorded rather than block.
+      server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AFTER_REQUEST));
+      server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AFTER_REQUEST));
+
+      ManagedHTTPClient httpClient = ManagedHTTPClient.builder().retries(0).ssrfProtectionEnabled(false).build();
+
+      assertThrows(IOException.class, () ->
+        httpClient.post(server.url("resource").url().toString(), "text/plain", "body".getBytes(), null));
+      assertThat(server.getRequestCount()).isEqualTo(1);
+    }
+
+    @Test
+    void exhaustedRetriesOnTransportFailureMakeNoExtraAttempt() throws IOException {
+      server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AFTER_REQUEST));
+      server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AFTER_REQUEST));
+      server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AFTER_REQUEST));
+
+      ManagedHTTPClient httpClient = ManagedHTTPClient.builder().retries(1).ssrfProtectionEnabled(false).build();
+
+      assertThrows(IOException.class, () -> httpClient.get(server.url("resource").url().toString(), null));
+      assertThat(server.getRequestCount()).isEqualTo(2);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {401, 403})
+    void authFailureIsNotRetried(int code) throws IOException {
+      server.enqueue(new MockResponse().setResponseCode(code));
+      server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
+
+      ManagedHTTPClient httpClient = ManagedHTTPClient.builder().ssrfProtectionEnabled(false).build();
+
+      HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
+
+      assertThat(res.getCode()).isEqualTo(code);
       assertThat(server.getRequestCount()).isEqualTo(1);
     }
 

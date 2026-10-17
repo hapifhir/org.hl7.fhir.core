@@ -220,6 +220,14 @@ public class FhirSettings {
   /**
    * Normalizes settings after deserialization to ensure required fields have safe defaults.
    * This prevents NPEs when switch statements expect non-null values.
+   * <p/>
+   * An unusable {@code oauth_client_credentials} entry is logged here but left as it is, and
+   * fails closed at the point of use: every request to that server fails with an
+   * {@link IOException} naming the problem, rather than going out unauthenticated. Throwing here
+   * instead would propagate to {@link #getInstance()}, which substitutes an empty
+   * {@link FhirSettingsPOJO} - so one incomplete server entry would silently discard the whole
+   * settings file for the life of the JVM, taking npm paths, api keys, proxy configuration and
+   * every other server's credentials with it.
    */
   private static void normalizeSettings(FhirSettingsPOJO settings) {
     if (settings == null || settings.getServers() == null) {
@@ -233,7 +241,23 @@ public class FhirSettings {
       if (server.getAuthenticationType() == null) {
         server.setAuthenticationType("none");
       }
+      if ("oauth_client_credentials".equals(server.getAuthenticationType())) {
+        String problem = findClientCredentialsProblem(server);
+        if (problem != null) {
+          log.error("Server entry for {} has authenticationType 'oauth_client_credentials' but {}."
+            + " Requests to this server will fail; the rest of the settings are unaffected.",
+            server.getUrl() != null ? server.getUrl() : "(unknown)", problem);
+        }
+      }
     }
+  }
+
+  /** Returns a description of the first problem with a server's client_credentials, or null if usable. */
+  public static String findClientCredentialsProblem(ServerDetailsPOJO server) {
+    if (server.getOauthClientCredentials() == null) {
+      return "has no oauthClientCredentials";
+    }
+    return server.getOauthClientCredentials().findProblem();
   }
 
   protected static String getDefaultSettingsPath() throws IOException {
