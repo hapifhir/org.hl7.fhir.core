@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.i18n;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -19,14 +20,17 @@ public abstract class I18nBase {
 
   public static final String KEY_DELIMITER = "_";
 
-  public static final Map<Locale, Set<String>> uncontainedKeys = new HashMap<>();
+  public static final Map<Locale, Set<String>> uncontainedKeys = new ConcurrentHashMap<>();
 
-  private Locale locale = null;
-  private ResourceBundle messages = null;
-  private PluralRules pluralRules = null;
+  // An instance can be shared across threads. Each lookup works on one local copy of the bundle,
+  // and a loaded bundle is only kept if the locale did not change while it was loading.
+  private final Object bundleLock = new Object();
+  private volatile Locale locale = null;
+  private volatile ResourceBundle messages = null;
+  private volatile PluralRules pluralRules = null;
   private boolean warnAboutMissingMessages = true;
-  private long bundleGeneration = 0;
-  private static Set<String> warnedLocales;
+  private volatile long bundleGeneration = 0;
+  private static final Set<String> warnedLocales = ConcurrentHashMap.newKeySet();
   private static boolean useMessageIdsDirectly;
 
   /**
@@ -77,58 +81,72 @@ public abstract class I18nBase {
   }
 
   public void setLocale(Locale locale) {
-    this.locale = locale;
-    // Set the following to null. They will lazy-load when needed.
-    this.messages = null;
-    this.pluralRules = null;
+    synchronized (bundleLock) {
+      if (Objects.equals(this.locale, locale)) {
+        // keep the loaded bundle: a shared instance can get the same locale again for each request
+        return;
+      }
+      this.locale = locale;
+      // Set the following to null. They will lazy-load when needed.
+      this.messages = null;
+      this.pluralRules = null;
+    }
   }
 
   /**
    * Verifies if a {@link ResourceBundle} has been loaded for the current {@link Locale}. If not, it triggers a load.
+   * @return the loaded bundle, which stays valid for the caller even if another thread changes the locale
    */
-  private void checkResourceBundleIsLoaded() {
-    if (messages == null || bundleGeneration != overlayGeneration) {
+  private ResourceBundle checkResourceBundleIsLoaded() {
+    ResourceBundle bundle = messages;
+    if (bundle == null || bundleGeneration != overlayGeneration) {
       Locale locale = getLocale();
-      loadMessages(locale);
-      warnIfUnknownLocale(locale);
+      bundle = loadMessages(locale);
+      warnIfUnknownLocale(locale, bundle);
     }
+    return bundle;
   }
 
-  private void loadMessages(Locale locale) {
+  private ResourceBundle loadMessages(Locale locale) {
     // Read the generation first so an overlay installed during the load triggers another reload
     long generation = overlayGeneration;
-    messages = loadBundle(locale);
-    bundleGeneration = generation;
-    pluralRules = null;
+    ResourceBundle bundle = loadBundle(locale);
+    synchronized (bundleLock) {
+      // if setLocale() ran during the load, this bundle is for an old locale: use it for this lookup only
+      if (Objects.equals(this.locale, locale)) {
+        messages = bundle;
+        bundleGeneration = generation;
+        pluralRules = null;
+      }
+    }
+    return bundle;
   }
 
-  private void warnIfUnknownLocale(@Nonnull Locale locale) {
-    if (Locale.ROOT.equals(messages.getLocale())) {
+  private void warnIfUnknownLocale(@Nonnull Locale locale, @Nonnull ResourceBundle bundle) {
+    if (Locale.ROOT.equals(bundle.getLocale())) {
       if (!locale.getLanguage().equals("en")) {
-        if (warnedLocales == null) {
-          warnedLocales = new HashSet<>();
-        }
-        if (!warnedLocales.contains(locale.toLanguageTag())) {
+        if (warnedLocales.add(locale.toLanguageTag())) {
           logUncontainedMessage("The locale " + locale.toLanguageTag() + " is not supported. Messages will default to en-US.");
-          warnedLocales.add(locale.toLanguageTag());
         }
       }
     }
   }
 
   protected ResourceBundle getMessages() {
-    checkResourceBundleIsLoaded();
-
-    return messages;
+    return checkResourceBundleIsLoaded();
   }
 
   protected PluralRules getPluralRules() {
-    checkResourceBundleIsLoaded();
+    ResourceBundle bundle = checkResourceBundleIsLoaded();
     PluralRules rules = pluralRules;
     if (rules == null) {
-      Locale bundleLocale = getMessages().getLocale();
+      Locale bundleLocale = bundle.getLocale();
       rules = PluralRules.forLocale(Locale.ROOT.equals(bundleLocale) ? Locale.US : bundleLocale);
-      pluralRules = rules;
+      synchronized (bundleLock) {
+        if (messages == bundle) {
+          pluralRules = rules;
+        }
+      }
     }
     return rules;
   }
@@ -136,24 +154,24 @@ public abstract class I18nBase {
    * Checks the loaded {@link ResourceBundle} to see if the passed in message exists with the current loaded {@link Locale}.
    * If no {@link Locale} is currently loaded, it will load the {@link Locale} (the JVM default {@link Locale} if none is
    * specified), and search.
+   * @param bundle The bundle to search, taken once by the caller so the check and the read use the same bundle
    * @param message The {@link String} message to search for within the current {@link Locale}
    * @return {@link Boolean#TRUE} if the message exists within the loaded {@link Locale}.
    */
-  private boolean messageExistsForLocale(String message, boolean hasArgs) {
-    checkResourceBundleIsLoaded();
-    if (!messageKeyExistsForLocale(message)) {
+  private boolean messageExistsForLocale(ResourceBundle bundle, String message, boolean hasArgs) {
+    boolean exists = bundle.containsKey(message);
+    if (!exists) {
       if (!message.contains(" ")) {
         if (warnAboutMissingMessages && (hasArgs || !message.contains(" "))) {
-          Set<String> uncontainedKeys = I18nBase.uncontainedKeys.computeIfAbsent(getLocale(), k -> new HashSet<>());
-          if (!uncontainedKeys.contains(message)) {
+          Set<String> uncontainedKeys = I18nBase.uncontainedKeys.computeIfAbsent(getLocale(), k -> ConcurrentHashMap.newKeySet());
+          if (uncontainedKeys.add(message)) {
             logUncontainedMessage("Attempting to localize " + typeOfString() + " " + message + ", but no such equivalent message exists for" +
               " the locale " + getLocale());
-            uncontainedKeys.add(message);
           }
         }
       }
     }
-    return messageKeyExistsForLocale(message);
+    return exists;
   }
 
   protected void logUncontainedMessage(String message) {
@@ -165,7 +183,7 @@ public abstract class I18nBase {
   }
 
   protected boolean messageKeyExistsForLocale(String message) {
-    return messages.containsKey(message);
+    return getMessages().containsKey(message);
   }
 
 
@@ -209,11 +227,12 @@ public abstract class I18nBase {
       return theMessage;
     }
     String message = theMessage;
-    if (messageExistsForLocale(theMessage, (theMessageArguments != null && theMessageArguments.length > 0))) {
+    ResourceBundle bundle = getMessages();
+    if (messageExistsForLocale(bundle, theMessage, (theMessageArguments != null && theMessageArguments.length > 0))) {
       if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
-        message = MessageFormat.format(messages.getString(theMessage).trim(), theMessageArguments);
+        message = MessageFormat.format(bundle.getString(theMessage).trim(), theMessageArguments);
       } else {
-        message = MessageFormat.format(messages.getString(theMessage).trim(), (Object) null);
+        message = MessageFormat.format(bundle.getString(theMessage).trim(), (Object) null);
       }
     }
     return message;
@@ -254,8 +273,15 @@ public abstract class I18nBase {
    */
   @Deprecated
   public void setValidationMessageLanguage(Locale locale) {
-    loadMessages(locale);
-    this.locale = locale;
+    // load before changing anything, so a failed load leaves the current locale and bundle in place
+    long generation = overlayGeneration;
+    ResourceBundle bundle = loadBundle(locale);
+    synchronized (bundleLock) {
+      this.locale = locale;
+      messages = bundle;
+      bundleGeneration = generation;
+      pluralRules = null;
+    }
   }
 
   /**
