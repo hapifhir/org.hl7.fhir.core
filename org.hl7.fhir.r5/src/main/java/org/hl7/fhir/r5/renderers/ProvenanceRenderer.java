@@ -230,6 +230,32 @@ public class ProvenanceRenderer extends ResourceRenderer {
         x.para().i().tx(context.formatPhrase(RenderingI18nContext.PROV_ENT_MORE, MAX_ENTITIES, entities.size()));
       }
     }
+
+    if (prv.has("contained")) {
+      if (context.isTechnicalMode()) {
+        x.hr();
+        x.para().b().tx(context.formatMessagePlural(prv.children("contained").size(), RenderingContext.PAT_CONTAINED));
+        addContained(status, x, prv.children("contained"));
+      } else {
+        addContainedAnchors(x, prv.children("contained"));
+      }
+    }
+  }
+
+  // references to contained resources resolve to these anchors even when the resources themselves are not rendered
+  private void addContainedAnchors(XhtmlNode x, List<ResourceWrapper> list) {
+    for (ResourceWrapper c : list) {
+      String sid = c.getScopedId();
+      if (sid == null) {
+        continue;
+      }
+      for (String anchor : new String[] {sid, "hc" + sid}) {
+        if (!context.hasAnchor(anchor)) {
+          context.addAnchor(anchor);
+          x.an(context.prefixAnchor(anchor));
+        }
+      }
+    }
   }
 
   private void renderEntityAgent(RenderingStatus status, XhtmlNode x, ResourceWrapper a) throws FHIRFormatError, DefinitionException, IOException {
