@@ -3991,7 +3991,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     T result = fetchResource(class_, canonical, rules, version, sourceOfReference);
     if (result == null) {
-      result = doFindTxResource(class_, canonical, rules);
+      result = doFindTxResource(class_, version == null ? canonical : canonical + "|" + version, rules);
     }
     return result;
   }
@@ -4013,7 +4013,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     T result = fetchResource(class_, canonical, rules, version);
     if (result == null) {
-      result = doFindTxResource(class_, canonical + "|" + version, rules);
+      result = doFindTxResource(class_, version == null ? canonical : canonical + "|" + version, rules);
     }
     return result;
   }
