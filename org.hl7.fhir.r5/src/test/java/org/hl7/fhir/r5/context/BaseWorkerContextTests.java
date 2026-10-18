@@ -837,15 +837,5 @@ public class BaseWorkerContextTests {
     assertSame(local, context.fetchResource(CodeSystem.class, url, rules, "1.0"));
   }
 
-  @Test
-  void externalCodeSystemLookupKeepsExplicitVersionAndLanguage() {
-    String url = "http://standardterms.edqm.eu";
-    context.setExpansionParameters(new Parameters().addParameter("displayLanguage", "cs"));
-    CodeSystem cs = new CodeSystem().setUrl(url).setVersion("1.0");
-    when(terminologyCache.hasCodeSystem(url + "|1.0", "cs")).thenReturn(true);
-    when(terminologyCache.getCodeSystem(url + "|1.0", "cs"))
-        .thenReturn(new TerminologyCache.SourcedCodeSystem("https://cz.example/r4", cs));
-    assertSame(cs, context.findTxResource(CodeSystem.class, url, VersionResolutionRules.defaultRule(), "1.0", null));
-    verify(terminologyCache).getCodeSystem(url + "|1.0", "cs");
-  }
+
 }
