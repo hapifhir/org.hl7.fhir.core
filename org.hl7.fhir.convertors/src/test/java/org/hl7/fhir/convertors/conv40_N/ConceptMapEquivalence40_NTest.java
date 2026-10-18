@@ -21,7 +21,8 @@ public class ConceptMapEquivalence40_NTest {
     return cm;
   }
 
-  // unmatched is left out: it does not become a target, it becomes group.unmapped
+  // unmatched is left out: it becomes element.noMap, not a target, so it never goes through the
+  // relationship conversion
   @ParameterizedTest
   @EnumSource(value = ConceptMapEquivalence.class, names = {"NULL", "UNMATCHED"}, mode = EnumSource.Mode.EXCLUDE)
   public void theEquivalenceExtensionIsOnlyAddedWhenTheRelationshipLosesIt(ConceptMapEquivalence equivalence) {
