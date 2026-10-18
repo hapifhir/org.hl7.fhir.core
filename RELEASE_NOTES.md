@@ -1,5 +1,6 @@
 ## Validator Changes
 
+* Do not check the values of the xml-namespace extensions (e.g. noNamespace) for URL resolution (HL7/fhir-ig-publisher#1416)
 * Apply -level to all validation messages, including issues returned by the terminology server (previously these were always reported)
 * Decide whether a type is a canonical resource from the type hierarchy (including all structuredefinition-implements interfaces), not from whether it has a url element, everywhere the validator and renderers check it (ContextUtilities.isCanonicalResource) - fixes additional resources such as ViewDefinition, and removes Composition, Device etc. from getCanonicalResourceNames()
 
