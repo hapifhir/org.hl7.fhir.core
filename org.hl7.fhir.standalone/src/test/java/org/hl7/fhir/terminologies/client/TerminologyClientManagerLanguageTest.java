@@ -3,6 +3,8 @@ package org.hl7.fhir.terminologies.client;
 import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.services.client.ITerminologyClientN;
 import org.hl7.fhir.model.core.CapabilityStatement;
+import org.hl7.fhir.model.core.Bundle;
+import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.Parameters;
 import org.hl7.fhir.model.core.TerminologyCapabilities;
 import org.hl7.fhir.services.client.ITerminologyClientFactoryN;
@@ -92,6 +94,12 @@ public class TerminologyClientManagerLanguageTest {
         new Class<?>[] { ITerminologyClientN.class }, (proxy, method, args) -> {
       switch (method.getName()) {
       case "getAddress": return address;
+      case "search":
+        Bundle bundle = new Bundle();
+        bundle.addEntry().setResource(new CodeSystem().setUrl(CS).setId("colours"));
+        return bundle;
+      case "read":
+        return new CodeSystem().setUrl(CS).setName(address.equals(DE_SERVER) ? "German" : "Default").setId("colours");
       case "getUserAgent": return "fhir-core-tests";
       case "getCapabilitiesStatement":
       case "getCapabilitiesStatementQuick": return new CapabilityStatement();
@@ -220,5 +228,35 @@ public class TerminologyClientManagerLanguageTest {
     TerminologyClientContext tc = mgr.chooseServer(null, systems(), false);
     assertEquals(MAIN, tc.getAddress());
     assertTrue(!mgr.lastRequest().contains("language="));
+  }
+  @Test
+  void testCodeSystemReadRoutesByLanguage() throws IOException {
+    TestManager mgr = makeManager();
+    var german = mgr.findCodeSystemOnServer(CS, "de");
+    assertEquals(DE_SERVER, german.getServer());
+    assertEquals("German", german.getCs().getName());
+    assertTrue(mgr.lastRequest().contains("&language=de"));
+
+    var defaultCs = mgr.findCodeSystemOnServer(CS);
+    assertEquals(MAIN, defaultCs.getServer());
+    assertEquals("Default", defaultCs.getCs().getName());
+    assertTrue(!mgr.lastRequest().contains("language="));
+  }
+
+  @Test
+  void testCodeSystemReadPreservesWeightedLanguageAndVersion() throws IOException {
+    TestManager mgr = makeManager();
+    String language = "de-AT, de;q=0.9, en;q=0.1";
+    assertEquals(DE_SERVER, mgr.findCodeSystemOnServer(CS + "|1.0", language).getServer());
+    assertTrue(mgr.lastRequest().contains("url=" + Utilities.URLEncode(CS + "|1.0")));
+    assertTrue(mgr.lastRequest().contains("&language=" + Utilities.URLEncode(language)));
+  }
+
+  @Test
+  void testCodeSystemReadWithoutEcosystemDoesNotResolve() throws IOException {
+    TestManager mgr = makeManager();
+    mgr.setMasterClient(makeFakeClient(MAIN), false);
+    org.junit.jupiter.api.Assertions.assertNull(mgr.findCodeSystemOnServer(CS, "de"));
+    assertTrue(mgr.requests.isEmpty());
   }
 }
