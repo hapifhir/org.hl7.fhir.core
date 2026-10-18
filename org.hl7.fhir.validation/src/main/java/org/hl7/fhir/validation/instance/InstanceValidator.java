@@ -4176,7 +4176,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         
         return Utilities.existsInList(ext, 
             ExtensionDefinitions.EXT_TEXT_LINK,  // we're going to check that elsewhere
-            "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-namespaceUri" // we don't need to check this one
+            "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-namespaceUri", // we don't need to check this one
+            ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED // an XML namespace name (or the special value noNamespace), not a reference
             );
       }
     }
