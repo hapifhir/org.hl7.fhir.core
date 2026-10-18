@@ -1461,13 +1461,6 @@ public abstract class ShExGeneratorBase {
       typ = ed.getType().get(0).getWorkingCode();
     }
 
-    // FHIR RDF emits the resource carried by a Parameters.parameter under the full path-qualified
-    // predicate fhir:Parameters.parameter.resource (unlike Bundle.entry.resource, which is just
-    // fhir:resource). This mirrors the data generator's PARAMETER special (getFormalName uses the
-    // element definition path), so the schema predicate must match.
-    if ("Parameters.parameter.resource".equals(ed.getPath()))
-      shortId = ed.getPath();
-
     String defn = "";
     ST element_def;
     String card = ("*".equals(ed.getMax()) ? (ed.getMin() == 0 ? "*" : "+") : (ed.getMin() == 0 ? "?" : "")) + ";";
