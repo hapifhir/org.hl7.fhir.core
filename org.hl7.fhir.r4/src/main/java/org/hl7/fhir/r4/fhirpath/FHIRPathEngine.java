@@ -2658,8 +2658,11 @@ public class FHIRPathEngine {
       return true;
     }
     if (!left.hasValue() || !right.hasValue()) {
-      return null;
+      return false;
     }
+    // for equivalence, the calendar durations year and month match the UCUM units 'a' and 'mo'
+    left = calendarDurationAsUcum(left);
+    right = calendarDurationAsUcum(right);
     if (worker.getUcumService() != null) {
       Pair dl = qtyToCanonicalPair(left);
       Pair dr = qtyToCanonicalPair(right);
@@ -2673,14 +2676,27 @@ public class FHIRPathEngine {
     }
     if (left.hasCode() || right.hasCode()) {
       if (!(left.hasCode() && right.hasCode()) || !left.getCode().equals(right.getCode())) {
-        return null;
+        return false;
       }
     } else if (!left.hasUnit() || right.hasUnit()) {
       if (!(left.hasUnit() && right.hasUnit()) || !left.getUnit().equals(right.getUnit())) {
-        return null;
+        return false;
       }
     }
     return doEquivalent(new DecimalType(left.getValue()), new DecimalType(right.getValue()));
+  }
+
+  private Quantity calendarDurationAsUcum(Quantity q) {
+    if (q.hasCode() || !q.hasUnit() || (q.hasSystem() && !"http://unitsofmeasure.org".equals(q.getSystem()))) {
+      return q;
+    }
+    if (Utilities.existsInList(q.getUnit(), "year", "years")) {
+      return new Quantity().setValue(q.getValue()).setUnit(q.getUnit()).setSystem("http://unitsofmeasure.org").setCode("a");
+    }
+    if (Utilities.existsInList(q.getUnit(), "month", "months")) {
+      return new Quantity().setValue(q.getValue()).setUnit(q.getUnit()).setSystem("http://unitsofmeasure.org").setCode("mo");
+    }
+    return q;
   }
 
 
@@ -6431,7 +6447,7 @@ public class FHIRPathEngine {
       if (s.equals("year") || s.equals("years")) {
         return Quantity.fromUcum(v, "a");
       } else if (s.equals("month") || s.equals("months")) {
-        return Quantity.fromUcum(v, "mo_s");
+        return Quantity.fromUcum(v, "mo");
       } else if (s.equals("week") || s.equals("weeks")) {
         return Quantity.fromUcum(v, "wk");
       } else if (s.equals("day") || s.equals("days")) {

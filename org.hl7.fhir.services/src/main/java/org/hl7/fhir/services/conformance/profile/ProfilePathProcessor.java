@@ -1750,7 +1750,7 @@ public class ProfilePathProcessor {
                 int start = cursors.diffCursor;
                 while (getDifferential().getElementList().size() > cursors.diffCursor && profileUtilities.pathStartsWith(getDifferential().getElementList().get(cursors.diffCursor).getPath(), diffMatches.get(0).getPath() + "."))
                   cursors.diffCursor++;
-                ProfilePathProcessorState nc = new ProfilePathProcessorState(childSource, childBase, baseStart, start - 1,
+                ProfilePathProcessorState nc = new ProfilePathProcessorState(childSource, childBase, baseStart, start,
                     cursors.contextName, cursors.resultPathBase);
                 ProfilePathProcessor childProcessor = this.incrementDebugIndent().withBaseLimit(baseMax - 1)
                     .withDiffLimit(cursors.diffCursor - 1)
@@ -1777,7 +1777,7 @@ public class ProfilePathProcessor {
                 while (getDifferential().getElementList().size() > cursors.diffCursor && profileUtilities.pathStartsWith(getDifferential().getElementList().get(cursors.diffCursor).getPath(), diffMatches.get(0).getPath() + "."))
                   cursors.diffCursor++;
                 /* starting again on the data type, but skip the root */
-                ProfilePathProcessorState nc = new ProfilePathProcessorState(dt, dt.getSnapshot(), 1 /* starting again on the data type, but skip the root */, start - 1,
+                ProfilePathProcessorState nc = new ProfilePathProcessorState(dt, dt.getSnapshot(), 1 /* starting again on the data type, but skip the root */, start,
                     cursors.contextName, cursors.resultPathBase);
                   this
                     .incrementDebugIndent()
@@ -1785,7 +1785,9 @@ public class ProfilePathProcessor {
                     .withDiffLimit(cursors.diffCursor - 1)
                     .withWebUrl(profileUtilities.getWebUrl(dt, getWebUrl()))
                     .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, 0))
-                    .withContextPathSource(diffMatches.get(0).getPath()).withContextPathTarget(outcome.getPath()).withSlicing(new PathSlicingParams())
+                    .withContextPathSource(diffMatches.get(0).getPath()).withContextPathTarget(outcome.getPath())
+                    // The content-reference redirection has already been applied to these paths.
+                    .withRedirector(new ArrayList<ElementRedirection>()).withSlicing(new PathSlicingParams())
                     .processPaths(nc, mapHelper, null);
               }
             }
