@@ -38,6 +38,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -422,5 +423,19 @@ public class FHIRPathTests {
     List<Base> results = fp.evaluate(new Patient(), "'fr-BE'.split('-').first().lower()");
     assertEquals(1, results.size());
     assertEquals("fr", results.get(0).primitiveValue());
+  }
+
+  @ParameterizedTest(name = "{0}")
+  @CsvSource(delimiter = '|', quoteCharacter = '"', value = {
+    "'100'.toDecimal() = 1 | false",
+    "'10'.toDecimal() = 1 | false",
+    "'100'.toDecimal() = 100 | true",
+    "'1.50'.toDecimal() = 1.5 | true",
+    "'1.0'.toDecimal() = 1 | true",
+  })
+  public void testEvaluate_DecimalEquality(String expression, String expected) throws Exception {
+    List<Base> results = fp.evaluate(new Patient(), expression);
+    assertEquals(1, results.size());
+    assertEquals(expected, results.get(0).primitiveValue());
   }
 }
