@@ -284,7 +284,7 @@ class I18nBaseTest {
     I18nTestClass testClass = new I18nTestClass();
     testClass.setLocale(Locale.ENGLISH);
     String english = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
-    // en and en-US are different locales with the same text, so each call still drops the loaded bundle
+    // en and en-US are different locales with the same text, so each call still replaces the state
     assertNull(formatWhileSettingLocale(testClass, english, Locale.ENGLISH, english, Locale.US));
   }
 
@@ -299,6 +299,17 @@ class I18nBaseTest {
     String english = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
     assertNotEquals(english, german);
     assertNull(formatWhileSettingLocale(testClass, english, Locale.ENGLISH, german, Locale.GERMAN));
+  }
+
+  @Test
+  @Timeout(60)
+  @DisplayName("Formatting while another thread switches between a locale and no locale gives the text of one of them.")
+  void testFormatMessageWhileLocaleIsClearedOnAnotherThread() throws Exception {
+    String defaultText = new I18nTestClass().formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
+    I18nTestClass testClass = new I18nTestClass();
+    testClass.setLocale(Locale.GERMAN);
+    String german = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
+    assertNull(formatWhileSettingLocale(testClass, german, Locale.GERMAN, defaultText, null));
   }
 
   /**
