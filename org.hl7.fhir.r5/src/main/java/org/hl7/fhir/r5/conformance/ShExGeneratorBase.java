@@ -573,8 +573,6 @@ public abstract class ShExGeneratorBase {
       }
 
       if (completeModel && known_resources.size() > 0) {
-        shapeDefinitions.append("\n").append(tmplt(COMPLETE_RESOURCE_TEMPLATE)
-          .add("resources", StringUtils.join(known_resources, "> OR\n\t@<")).render());
         shapeDefinitions.append("\n").append(tmplt(SIMPLEQUANTITY)
           .add("restriction", "SimpleQuantity").add("base", "Quantity").render());
         List<String> all_entries = new ArrayList<String>();
