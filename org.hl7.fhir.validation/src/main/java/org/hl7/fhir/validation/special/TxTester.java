@@ -175,7 +175,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
   // the same time would add to, and reset, each other's table and fail on the versions.
   // Each run uses its own table instead: this suffix goes on the name the requests carry.
   // The expected responses don't check the name.
-  private final String closureRunSuffix = UUID.randomUUID().toString();
+  private final String closureRunSuffix = UUID.randomUUID().toString().substring(0, 8);
   private TxTesterConversionLogger conversionLogger;
   private TestReport testReport;
   // who ran the tests: the start of TestReport.tester, which goes on to list the modes
@@ -1113,14 +1113,20 @@ public class TxTester implements ITerminologyRequestIdProvider {
    * stateful - each builds on the table the previous one left - so their suite is marked
    * "sequential" and the runners run it in order on one thread, after everything else.
    */
+  // tx.fhir.org refuses a closure table name longer than this
+  static final int CLOSURE_NAME_MAX_LENGTH = 64;
+
   /**
    * Point a $closure request at this run's own closure table, by putting the run's suffix on the
-   * table name it carries. See closureRunSuffix.
+   * table name it carries, cutting the name short where it would otherwise be too long for a
+   * server. See closureRunSuffix.
    */
   static void useRunClosureTable(Parameters p, String suffix) {
     for (Parameters.ParametersParameterComponent pp : p.getParameterList()) {
       if ("name".equals(pp.getName()) && pp.hasValue()) {
-        pp.setValue(new StringType(pp.getValue().primitiveValue() + "-" + suffix));
+        String name = pp.getValue().primitiveValue();
+        int keep = Math.min(name.length(), CLOSURE_NAME_MAX_LENGTH - suffix.length() - 1);
+        pp.setValue(new StringType(name.substring(0, keep) + "-" + suffix));
       }
     }
   }
