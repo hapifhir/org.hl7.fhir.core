@@ -1813,7 +1813,7 @@ public abstract class ShExGeneratorBase {
     StringBuffer sb = new StringBuffer();
     while (m.find()) {
       String name = m.group(1);
-      m.appendReplacement(sb, java.util.regex.Matcher.quoteReplacement("(@<" + name + "> OR IRI)"));
+      m.appendReplacement(sb, java.util.regex.Matcher.quoteReplacement("(@<" + name + "> OR CLOSED {a [fhir:" + name + "]?})"));
     }
     m.appendTail(sb);
     return sb.toString();
