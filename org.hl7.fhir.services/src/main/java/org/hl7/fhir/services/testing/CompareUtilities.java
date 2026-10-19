@@ -539,6 +539,22 @@ public class CompareUtilities extends BaseTestingUtilities {
    * 
    * This returns true for the second case: the filter doesn't pass, so the item is prohibited.
    */
+  /**
+   * Compare a single element of an expected response with the actual one, with all the same rules
+   * as a whole response. Null if they match, otherwise a description of the first difference.
+   */
+  public String compareJsonElements(String id, String path, JsonElement expected, JsonElement actual) {
+    return compareNodes(id, path, expected, actual, false, null, null);
+  }
+
+  /**
+   * Whether an item of an expected array is one this version or mode must not have at all
+   * (a $only$ whose filter doesn't pass) - see isProhibited.
+   */
+  public boolean isProhibitedItem(JsonElement e) {
+    return isProhibited(e);
+  }
+
   private boolean isProhibited(JsonElement e) {
     if (e != null && e.isJsonObject()) {
       JsonObject j = e.asJsonObject();

@@ -834,6 +834,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
         if (fo.exists()) {
           fo.delete();
         }
+        fo = ManagedFileAccess.file(Utilities.path(base, "comparison", fn));
+        if (fo.exists()) {
+          fo.delete();
+        }
+        currentOutput.set(new String[] { base, fn });
 
         JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
@@ -887,6 +892,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         recordResult(tr, TestReportActionResultValueSet.ERROR, e.getMessage(), start);
         return new ResultInformation(e.getMessage());
       } finally {
+        currentOutput.remove();
         // Reset headers on this thread's client so the next test run on the
         // same worker starts with a clean slate. This only matters if this
         // test set any; a plain client has no headers to clear.
@@ -915,12 +921,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(csj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, csj, modes, diff != null);
     return diff;
   }
 
@@ -932,12 +933,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(csj, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(resp, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, csj, modes, diff != null);
     return diff;
   }
 
@@ -1055,12 +1051,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1090,12 +1081,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1134,12 +1120,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1169,12 +1150,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1213,12 +1189,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, vsj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(vsj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, vsj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1260,12 +1231,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1300,12 +1266,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1351,12 +1312,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1391,12 +1347,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1438,18 +1389,70 @@ public class TxTester implements ITerminologyRequestIdProvider {
     CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, bj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(bj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, bj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
     return diff;
   }
 
+
+  // where the test running on this thread writes its output: { base folder, response file name }
+  private final ThreadLocal<String[]> currentOutput = new ThreadLocal<>();
+  // the comparison copy of the externals file, by base folder
+  private final Map<String, JsonObject> comparisonMessages = new HashMap<>();
+
+  // TEMPORARY: write the comparison for every test, passed or not. Set to false to only write it
+  // for failed tests, alongside the expected and actual files
+  private static final boolean COMPARISON_FOR_ALL_TESTS = true;
+
+  /**
+   * When a test fails, write the expected and actual responses, and the comparison form of the
+   * actual response - the actual response with what the expected response only matches by
+   * pattern ($external$, $uuid$, $instant$...) put back as those patterns, so that a diff of
+   * expected against comparison only shows what matters. The server's wording of the $external$
+   * messages goes into comparison/messages.json, a copy of the externals file (if there is one)
+   * with this test's messages set to what the server said.
+   */
+  private void writeTestOutput(String expFn, String expected, String actFn, String actual, Set<String> modes, boolean failed) throws IOException {
+    if (failed) {
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(expected, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(actual, actFn);
+    } else if (!COMPARISON_FOR_ALL_TESTS) {
+      return;
+    }
+
+    String[] output = currentOutput.get();
+    if (output == null) {
+      return;
+    }
+    try {
+      TxTesterComparison comparison = new TxTesterComparison(modes, vars());
+      org.hl7.fhir.utilities.json.model.JsonElement normalised = comparison.normalise(JsonParser.parse(expected), JsonParser.parse(actual));
+      String cmpFn = Utilities.path(output[0], "comparison", output[1]);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(cmpFn));
+      FileUtilities.stringToFile(JsonParser.compose(normalised, true), cmpFn);
+      if (!comparison.getMessages().isEmpty()) {
+        recordComparisonMessages(output[0], output[1], comparison.getMessages());
+      }
+    } catch (Exception e) {
+      // the comparison is only a convenience; the expected and actual files are written
+      log.warn("Unable to write the comparison for " + output[1] + ": " + e.getMessage());
+    }
+  }
+
+  private synchronized void recordComparisonMessages(String base, String fn, Map<String, String> messages) throws IOException {
+    JsonObject all = comparisonMessages.computeIfAbsent(base, b -> externals == null ? new JsonObject() : externals.deepCopy());
+    JsonObject entry = all.forceObject(fn);
+    for (Map.Entry<String, String> m : messages.entrySet()) {
+      entry.set(m.getKey(), m.getValue());
+    }
+    String fn2 = Utilities.path(base, "comparison", "messages.json");
+    FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fn2));
+    FileUtilities.stringToFile(JsonParser.compose(all, true), fn2);
+  }
 
   private Map<String, String> vars() throws URISyntaxException, IOException {
     Map<String, String> vars = new HashMap<String, String>();
