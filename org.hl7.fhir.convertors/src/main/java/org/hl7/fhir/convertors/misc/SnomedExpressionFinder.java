@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -301,12 +300,6 @@ public class SnomedExpressionFinder implements IPackageVisitorProcessor {
     }
   }
 
-  // things that are clearly not expressions, and not worth reporting:
-  private static final Pattern PLAIN_ID = Pattern.compile("[0-9]+");                      // a concept id (or any other number)
-  private static final Pattern SINGLE_WORD = Pattern.compile("[A-Za-z0-9_.]+");              // a single word (e.g. a code from some other system)
-  private static final Pattern DECIMAL = Pattern.compile("[+-]?[0-9]*\\.?[0-9]+([eE][+-]?[0-9]+)?"); // decimals, incl. exponential form
-  private static final Pattern WORD_WORD = Pattern.compile("[A-Za-z0-9]+(-[A-Za-z0-9]+)+");     // word-word (e.g. SRT codes like G-D705)
-  
   /**
    * @return null if this is a plain concept id, or something that clearly isn't 
    *   an expression (a single word, a decimal, or a word-word code), otherwise what kind of thing it is 
@@ -316,7 +309,7 @@ public class SnomedExpressionFinder implements IPackageVisitorProcessor {
     if (c.isEmpty()) {
       return null;
     }
-    if (PLAIN_ID.matcher(c).matches() || SINGLE_WORD.matcher(c).matches() || DECIMAL.matcher(c).matches() || WORD_WORD.matcher(c).matches()) {
+    if (isSingleWord(c) || isDecimal(c) || isWordWord(c)) {
       return null;
     }
     // compositional grammar: refinement (:), attribute (=), attribute group ({ }), 
@@ -327,6 +320,80 @@ public class SnomedExpressionFinder implements IPackageVisitorProcessor {
       }
     }
     return CodeKind.OTHER;
+  }
+
+  private static boolean isWordChar(char ch) {
+    return Character.isLetterOrDigit(ch) || ch == '_' || ch == '.';
+  }
+  
+  /** a single word - includes a plain concept id, and codes from other systems */
+  private static boolean isSingleWord(String c) {
+    for (char ch : c.toCharArray()) {
+      if (!isWordChar(ch)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /** a decimal, including exponential form: [+-]digits[.digits][e[+-]digits] */
+  private static boolean isDecimal(String c) {
+    int i = 0;
+    int n = c.length();
+    if (i < n && (c.charAt(i) == '+' || c.charAt(i) == '-')) {
+      i++;
+    }
+    int digits = 0;
+    while (i < n && Character.isDigit(c.charAt(i))) {
+      i++;
+      digits++;
+    }
+    if (i < n && c.charAt(i) == '.') {
+      i++;
+      while (i < n && Character.isDigit(c.charAt(i))) {
+        i++;
+        digits++;
+      }
+    }
+    if (digits == 0) {
+      return false;
+    }
+    if (i < n && (c.charAt(i) == 'e' || c.charAt(i) == 'E')) {
+      i++;
+      if (i < n && (c.charAt(i) == '+' || c.charAt(i) == '-')) {
+        i++;
+      }
+      int exp = 0;
+      while (i < n && Character.isDigit(c.charAt(i))) {
+        i++;
+        exp++;
+      }
+      if (exp == 0) {
+        return false;
+      }
+    }
+    return i == n;
+  }
+
+  /** word-word (one or more dashes between alphanumeric words, e.g. SRT codes like G-D705) */
+  private static boolean isWordWord(String c) {
+    if (!c.contains("-")) {
+      return false;
+    }
+    boolean inWord = false;
+    for (char ch : c.toCharArray()) {
+      if (Character.isLetterOrDigit(ch)) {
+        inWord = true;
+      } else if (ch == '-') {
+        if (!inWord) {
+          return false; // leading dash or double dash
+        }
+        inWord = false;
+      } else {
+        return false;
+      }
+    }
+    return inWord; // no trailing dash
   }
 
   @Override
