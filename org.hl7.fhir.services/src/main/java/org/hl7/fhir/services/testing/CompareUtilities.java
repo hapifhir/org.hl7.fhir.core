@@ -1,7 +1,6 @@
 package org.hl7.fhir.services.testing;
 
 import lombok.Getter;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -391,16 +390,16 @@ public class CompareUtilities extends BaseTestingUtilities {
     return errors;
   }
 
-  private boolean full(List<String> errors) {
+  private boolean maxErrorsExceeded(List<String> errors) {
     return errors.size() >= maxErrors;
   }
 
   private void addError(List<String> errors, String s) {
-    if (Utilities.noString(s) || full(errors)) {
+    if (Utilities.noString(s) || maxErrorsExceeded(errors)) {
       return;
     }
     errors.add(s);
-    if (full(errors)) {
+    if (maxErrorsExceeded(errors)) {
       errors.add("(stopped after " + maxErrors + " differences)");
     }
   }
@@ -409,7 +408,7 @@ public class CompareUtilities extends BaseTestingUtilities {
     List<String> optionals = listOptionals(expectedJsonObject);
     List<String> countOnlys = listCountOnlys(expectedJsonObject);
     for (JsonProperty en : actualJsonObject.getProperties()) {
-      if (full(errors)) {
+      if (maxErrorsExceeded(errors)) {
         return;
       }
       String n = en.getName();

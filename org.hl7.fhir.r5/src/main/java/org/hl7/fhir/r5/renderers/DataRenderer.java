@@ -385,16 +385,6 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return lang; 
   } 
 
-  private boolean isCanonical(String path) { 
-    if (!path.endsWith(".url"))  
-      return false; 
-    String t = path.substring(0, path.length()-4); 
-    StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(t); 
-    if (sd == null) 
-      return false; 
-    return context.getContextUtilities().isCanonicalResource(t); 
-  } 
-
   // -- 4. Language support ------------------------------------------------------ 
 
   public String gt(@SuppressWarnings("rawtypes") PrimitiveType value) { 

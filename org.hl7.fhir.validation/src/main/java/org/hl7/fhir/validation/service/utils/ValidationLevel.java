@@ -56,7 +56,7 @@ public enum ValidationLevel {
    * terminology server) don't go through those checks, so this is applied to
    * the final list of messages.
    */
-  public static void filter(List<ValidationMessage> messages, ValidationLevel level) {
+  public static void removeMessagesBelowLevel(List<ValidationMessage> messages, ValidationLevel level) {
     if (messages != null && level != null && level != HINTS) {
       messages.removeIf(vm -> !includes(level, vm.getLevel()));
     }

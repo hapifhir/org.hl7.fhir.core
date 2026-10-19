@@ -76,7 +76,7 @@ class ValidationLevelTests {
   @Test
   void testFilterErrors() {
     List<ValidationMessage> list = messages();
-    ValidationLevel.filter(list, ValidationLevel.ERRORS);
+    ValidationLevel.removeMessagesBelowLevel(list, ValidationLevel.ERRORS);
     assertEquals(2, list.size());
     assertTrue(list.stream().allMatch(vm -> vm.getLevel().isError()));
   }
@@ -84,7 +84,7 @@ class ValidationLevelTests {
   @Test
   void testFilterWarnings() {
     List<ValidationMessage> list = messages();
-    ValidationLevel.filter(list, ValidationLevel.WARNINGS);
+    ValidationLevel.removeMessagesBelowLevel(list, ValidationLevel.WARNINGS);
     assertEquals(3, list.size());
     assertFalse(list.stream().anyMatch(vm -> vm.getLevel() == IssueSeverity.INFORMATION));
   }
@@ -92,9 +92,9 @@ class ValidationLevelTests {
   @Test
   void testFilterHintsAndNull() {
     List<ValidationMessage> list = messages();
-    ValidationLevel.filter(list, ValidationLevel.HINTS);
+    ValidationLevel.removeMessagesBelowLevel(list, ValidationLevel.HINTS);
     assertEquals(4, list.size());
-    ValidationLevel.filter(list, null);
+    ValidationLevel.removeMessagesBelowLevel(list, null);
     assertEquals(4, list.size());
   }
 }
