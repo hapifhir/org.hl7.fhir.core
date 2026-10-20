@@ -130,6 +130,7 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
       if (tester != null) {
         txTester.setTesterName(tester);
       }
+      txTester.setExternalsName(externals);
 
       // Add input loaders
       for (String input : inputs) {
