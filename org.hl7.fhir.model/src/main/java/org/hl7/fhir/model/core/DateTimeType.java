@@ -235,7 +235,9 @@ public class DateTimeType extends BaseDateTimeType {
 
 	@Override
 	public DateTimeType copy(EnumSet<CopyObjectOptions> options) {
-		DateTimeType ret = new DateTimeType(modelContext, getValueAsString());
+		// copyValues copies the value, precision and timezone, so the string is not parsed again: a FHIRPath
+		// literal such as @2015-02-04T10:00 has minute precision, which the parser rejects
+		DateTimeType ret = new DateTimeType(modelContext);
     copyValues(ret, options);
     return ret;
 	}

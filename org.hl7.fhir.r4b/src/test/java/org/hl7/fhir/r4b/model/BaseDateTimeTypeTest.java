@@ -12,6 +12,7 @@ import java.util.TimeZone;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class BaseDateTimeTypeTest {
 
@@ -180,5 +181,17 @@ public class BaseDateTimeTypeTest {
   public void testGetValueAsString(DateTimeType theType, TemporalPrecisionEnum thePrecision,
       String expectedStringValue) {
     assertEquals(expectedStringValue, theType.getValueAsString(thePrecision));
+  }
+
+  // a FHIRPath literal such as @2015-02-04T10:00 is built like this, and its string has no seconds
+  @ParameterizedTest
+  @ValueSource(strings = {"2015-02-04T10:00:00", "2015-02-04T10:00:00Z", "2015-02-04T10:00:00-05:00"})
+  void copyKeepsMinutePrecision(String value) {
+    DateTimeType dateTime = new DateTimeType(value);
+    dateTime.setPrecision(TemporalPrecisionEnum.MINUTE);
+    DateTimeType copy = dateTime.copy();
+    assertEquals(dateTime.getValueAsString(), copy.getValueAsString());
+    assertEquals(TemporalPrecisionEnum.MINUTE, copy.getPrecision());
+    assertEquals(dateTime.getValue(), copy.getValue());
   }
 }
