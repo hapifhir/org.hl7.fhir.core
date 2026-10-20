@@ -132,7 +132,14 @@ public abstract class ShExGeneratorBase {
   // Start template for complete (closed) model
   private static final String ALL_START_TEMPLATE = "\n\nstart=@<All>\n";
 
-  private static final String ALL_TEMPLATE = "\n<All> $all_entries$\n";
+  private static final String ALL_TEMPLATE =
+    "\n# <All> is used as a START shape to validate the root resource of a FHIR RDF document.\n" +
+      "# It checks the root's rdf:type for a matching shape, enabling one to validate any FHIR resource without needing to specify its type.\n" +
+      "# Inline/contained resources are not roots and the shapes that reference them are used instead (e.g. <Bundle>).\n" +
+      "# Each clause means: \"If this node is the root and it's typed fhir:X, then it must conform to the shape <X>.\"\n" +
+      "# The final clause requires a root node to have a recognized rdf:type.\n" +
+      "<All> $all_entries$ AND\n\t" +
+      "(NOT { fhir:nodeRole [fhir:treeRoot] } OR\n\t  { a [$all_types$] })\n";
 
   private static final String ALL_ENTRY_TEMPLATE = "(NOT { fhir:nodeRole [fhir:treeRoot] ; a [fhir:$id$] } OR @<$id$>)";
 
@@ -191,12 +198,6 @@ public abstract class ShExGeneratorBase {
       "\n    a [fhir:$restriction$]?;" +
       "\n    fhir:comparator . {0}" +
       "\n} \n";
-
-  // If we have knowledge of all of the possible resources available to us (completeModel = true), we can build
-  // a model of all possible resources.
-  private static final String COMPLETE_RESOURCE_TEMPLATE =
-	    "<Resource>  @<$resources$>" +
-      "\n\n";
 
   // Resource Declaration
   //      a type node
@@ -576,10 +577,15 @@ public abstract class ShExGeneratorBase {
         shapeDefinitions.append("\n").append(tmplt(SIMPLEQUANTITY)
           .add("restriction", "SimpleQuantity").add("base", "Quantity").render());
         List<String> all_entries = new ArrayList<String>();
-        for (String kr : known_resources)
-          all_entries.add(tmplt(ALL_ENTRY_TEMPLATE).add("id", getClassName(kr)).render());
+        List<String> allTypes = new ArrayList<String>();
+        for (String kr : known_resources) {
+          String className = getClassName(kr);
+          all_entries.add(tmplt(ALL_ENTRY_TEMPLATE).add("id", className).render());
+          allTypes.add("fhir:" + className);
+        }
         shapeDefinitions.append("\n").append(tmplt(ALL_TEMPLATE)
-          .add("all_entries", StringUtils.join(all_entries, " OR\n\t")).render());
+          .add("all_entries", StringUtils.join(all_entries, " AND\n\t"))
+          .add("all_types", StringUtils.join(allTypes, " ")).render());
       }
 
       if (required_value_sets.size() > 0) {
