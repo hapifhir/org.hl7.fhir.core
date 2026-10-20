@@ -1,0 +1,5918 @@
+
+# ACTOR_DEF_ACT
+#: ACTOR_DEF_ACT
+msgid "Actor: {0}"
+msgstr "Aktér: {0}"
+
+# ACTOR_DEF_CAP
+#: ACTOR_DEF_CAP
+msgid "Capabilities:"
+msgstr "Schopnosti:"
+
+# ACTOR_DEF_DER
+#: ACTOR_DEF_DER
+msgid "Derived from:"
+msgstr "Odvozeno od:"
+
+# ACTOR_DEF_TYP
+#: ACTOR_DEF_TYP
+msgid "Type: {0}"
+msgstr "Typ: {0}"
+
+# ACTOR_DERIVED_FROM
+#: ACTOR_DERIVED_FROM
+msgctxt "ACTOR_DERIVED_FROM"
+msgid "Derived From"
+msgstr "Odvozeno od"
+
+# ACTOR_DERIVED_FROM_NONE
+#: ACTOR_DERIVED_FROM_NONE
+msgctxt "ACTOR_DERIVED_FROM_NONE"
+msgid "(none)"
+msgstr "(žádné)"
+
+# ADD_BIND_ADD_BIND
+#: ADD_BIND_ADD_BIND
+msgid "Additional Bindings"
+msgstr "Další vazby"
+
+# ADD_BIND_ALL_REP
+#: ADD_BIND_ALL_REP
+msgid "All repeats"
+msgstr "Všechna opakování"
+
+# ADD_BIND_ANY
+#: ADD_BIND_ANY
+msgctxt "ADD_BIND_ANY"
+msgid "Any"
+msgstr "Libovolné"
+
+# ADD_BIND_ANY_REP
+#: ADD_BIND_ANY_REP
+msgid "any repeat"
+msgstr "libovolné opakování"
+
+# ADD_BIND_CURR_BIND
+#: ADD_BIND_CURR_BIND
+msgctxt "ADD_BIND_CURR_BIND"
+msgid "Current"
+msgstr "Aktuální"
+
+# ADD_BIND_DESIG_SYS
+#: ADD_BIND_DESIG_SYS
+msgid "This value set is a good set of codes to start with when designing your system"
+msgstr "Tato sada hodnot je vhodná výchozí sada kódů při návrhu vašeho systému"
+
+# ADD_BIND_EXT_PREF
+#: ADD_BIND_EXT_PREF
+msgid "A required binding, for use when the binding strength is ''extensible'' or ''preferred''"
+msgstr "Povinná vazba pro použití v případech, kdy je síla vazby ''extensible'' nebo ''preferred''"
+
+# ADD_BIND_EX_BIND
+#: ADD_BIND_EX_BIND
+msgctxt "ADD_BIND_EX_BIND"
+msgid "Extensible"
+msgstr "Rozšiřitelná"
+
+# ADD_BIND_GIVEN_CONT
+#: ADD_BIND_GIVEN_CONT
+msgid "This value set is provided to user look up in a given context"
+msgstr "Tato sada hodnot je poskytnuta uživateli pro vyhledávání v daném kontextu"
+
+# ADD_BIND_MAX
+#: ADD_BIND_MAX
+msgid "Max Binding"
+msgstr "Maximální vazba"
+
+# ADD_BIND_MIN
+#: ADD_BIND_MIN
+msgid "Min Binding"
+msgstr "Minimální vazba"
+
+# ADD_BIND_NEW_REC
+#: ADD_BIND_NEW_REC
+msgid "New records are required to use this value set, but legacy records may use other codes"
+msgstr "Nové záznamy musí používat tuto sadu hodnot, ale starší záznamy mohou používat jiné kódy"
+
+# ADD_BIND_PREF_BIND
+#: ADD_BIND_PREF_BIND
+msgctxt "ADD_BIND_PREF_BIND"
+msgid "Preferred"
+msgstr "Preferovaná"
+
+# ADD_BIND_RECOM_VALUE_SET
+#: ADD_BIND_RECOM_VALUE_SET
+msgid "This is the value set that is recommended (documentation should explain why)"
+msgstr "Toto je doporučená sada hodnot (dokumentace by měla vysvětlit proč)"
+
+# ADD_BIND_REQ_BIND
+#: ADD_BIND_REQ_BIND
+msgctxt "ADD_BIND_REQ_BIND"
+msgid "Required"
+msgstr "Povinná"
+
+# ADD_BIND_UI
+#: ADD_BIND_UI
+msgctxt "ADD_BIND_UI"
+msgid "UI"
+msgstr "UI"
+
+# ADD_BIND_UI_BIND
+#: ADD_BIND_UI_BIND
+msgid "UI Binding"
+msgstr "Vazba UI"
+
+# ADD_BIND_UNKNOWN_PUR
+#: ADD_BIND_UNKNOWN_PUR
+msgid "Unknown code for purpose"
+msgstr "Neznámý kód pro účel"
+
+# ADD_BIND_VALID_EXT
+#: ADD_BIND_VALID_EXT
+msgid "Validators will check this binding (strength = extensible)"
+msgstr "Validátory budou tuto vazbu kontrolovat (síla = extensible)"
+
+# ADD_BIND_VALID_REQ
+#: ADD_BIND_VALID_REQ
+msgid "Validators will check this binding (strength = required)"
+msgstr "Validátory budou tuto vazbu kontrolovat (síla = required)"
+
+# ADD_BIND_VALUE_COMP
+#: ADD_BIND_VALUE_COMP
+msgid "This value set is a component of the base value set"
+msgstr "Tato sada hodnot je komponentou základní sady hodnot"
+
+# BUNDLE_DOCUMENT_CONTENT
+#: BUNDLE_DOCUMENT_CONTENT
+msgid "Document Content"
+msgstr "Obsah dokumentu"
+
+# BUNDLE_DOCUMENT_DETAILS
+#: BUNDLE_DOCUMENT_DETAILS
+msgid "Document Details"
+msgstr "Podrobnosti dokumentu"
+
+# BUNDLE_ETAG
+#: BUNDLE_ETAG
+msgid "ETag = {0}"
+msgstr "ETag = {0}"
+
+# BUNDLE_HEADER_DOCUMENT_CONTENTS
+#: BUNDLE_HEADER_DOCUMENT_CONTENTS
+msgid "Additional Resources Included in Document"
+msgstr "Další zdroje zahrnuté v dokumentu"
+
+# BUNDLE_HEADER_ENTRY
+#: BUNDLE_HEADER_ENTRY
+msgid "Entry {0}"
+msgstr "Položka {0}"
+
+# BUNDLE_HEADER_ENTRY_URL
+#: BUNDLE_HEADER_ENTRY_URL
+msgid "Entry {0} - fullUrl = {1}"
+msgstr "Položka {0} - fullUrl = {1}"
+
+# BUNDLE_HEADER_ROOT
+#: BUNDLE_HEADER_ROOT
+msgid "Bundle {0} of type {1}"
+msgstr "Bundle {0} typu {1}"
+
+# BUNDLE_IF_MATCH
+#: BUNDLE_IF_MATCH
+msgid "If-Match = {0}"
+msgstr "If-Match = {0}"
+
+# BUNDLE_IF_MOD
+#: BUNDLE_IF_MOD
+msgid "If-Modified-Since = {0}"
+msgstr "If-Modified-Since = {0}"
+
+# BUNDLE_IF_NONE
+#: BUNDLE_IF_NONE
+msgid "If-None-Exist = {0}"
+msgstr "If-None-Exist = {0}"
+
+# BUNDLE_IF_NON_MATCH
+#: BUNDLE_IF_NON_MATCH
+msgid "If-None-Match = {0}"
+msgstr "If-None-Match = {0}"
+
+# BUNDLE_LAST_MOD
+#: BUNDLE_LAST_MOD
+msgid "LastModified = {0}"
+msgstr "LastModified = {0}"
+
+# BUNDLE_LOCATION
+#: BUNDLE_LOCATION
+msgid "Location = {0}"
+msgstr "Location = {0}"
+
+# BUNDLE_REQUEST
+#: BUNDLE_REQUEST
+msgid "Request:"
+msgstr "Požadavek:"
+
+# BUNDLE_RESOURCE
+#: BUNDLE_RESOURCE
+msgid "Resource {0}:"
+msgstr "Zdroj {0}:"
+
+# BUNDLE_RESPONSE
+#: BUNDLE_RESPONSE
+msgid "Response:"
+msgstr "Odpověď:"
+
+# BUNDLE_REV_EXCP
+#: BUNDLE_REV_EXCP
+msgid "Exception generating narrative: {0}"
+msgstr "Výjimka při generování narativu: {0}"
+
+# BUNDLE_SEARCH
+#: BUNDLE_SEARCH
+msgid "Search:"
+msgstr "Vyhledávání:"
+
+# BUNDLE_SEARCH_MODE
+#: BUNDLE_SEARCH_MODE
+msgid "Mode = {0}"
+msgstr "Režim = {0}"
+
+# BUNDLE_SEARCH_SCORE
+#: BUNDLE_SEARCH_SCORE
+msgid "Score = {0}"
+msgstr "Skóre = {0}"
+
+# BUNDLE_SUMMARY
+#: BUNDLE_SUMMARY
+msgid "{0} Bundle, {1} Entries"
+msgstr "{0} Bundle, {1} položek"
+
+# BUND_REND_INVALID_DOC
+#: BUND_REND_INVALID_DOC
+msgid "Invalid document ''{0}'' - first entry is not a Composition ({0})"
+msgstr "Neplatný dokument ''{0}'' - první položka není Composition ({0})"
+
+# CANON_REND_COMMITTEE
+#: CANON_REND_COMMITTEE
+msgid "Committee"
+msgstr "Komise"
+
+# CANON_REND_JSON
+#: CANON_REND_JSON
+msgid "JSON"
+msgstr "JSON"
+
+# CANON_REND_MATURITY
+#: CANON_REND_MATURITY
+msgid "Maturity"
+msgstr "Zralost"
+
+# CANON_REND_PUBLISHER
+#: CANON_REND_PUBLISHER
+msgid "Publisher"
+msgstr "Vydavatel"
+
+# CANON_REND_SOURCE_RES
+#: CANON_REND_SOURCE_RES
+msgid "Source Resource"
+msgstr "Zdrojový prostředek"
+
+# CANON_REND_TURTLE
+#: CANON_REND_TURTLE
+msgid "Turtle"
+msgstr "Turtle"
+
+# CAPABILITY_ADD_SUPP_PROF
+#: CAPABILITY_ADD_SUPP_PROF
+msgid "Additional supported profiles:"
+msgstr "Další podporované profily:"
+
+# CAPABILITY_BASE_SYS
+#: CAPABILITY_BASE_SYS
+msgid "Base System Profile"
+msgstr "Základní systémový profil"
+
+# CAPABILITY_COMB_SEARCH_PAR
+#: CAPABILITY_COMB_SEARCH_PAR
+msgid "Combined Search Parameters"
+msgstr "Kombinované vyhledávací parametry"
+
+# CAPABILITY_CORS_NO
+#: CAPABILITY_CORS_NO
+msgid "Enable CORS: no"
+msgstr "Povolit CORS: ne"
+
+# CAPABILITY_CORS_YES
+#: CAPABILITY_CORS_YES
+msgid "Enable CORS: yes"
+msgstr "Povolit CORS: ano"
+
+# CAPABILITY_CREATE_INT
+#: CAPABILITY_CREATE_INT
+msgid "POST a new resource (create interaction)"
+msgstr "POST nového zdroje (interakce create)"
+
+# CAPABILITY_DELETE_INT
+#: CAPABILITY_DELETE_INT
+msgid "DELETE a resource (delete interaction)"
+msgstr "DELETE zdroje (interakce delete)"
+
+# CAPABILITY_DOCUMENT_CAPS
+#: CAPABILITY_DOCUMENT_CAPS
+msgid "FHIR Document Capabilities"
+msgstr "Schopnosti dokumentů FHIR"
+
+# CAPABILITY_ENDPOINTS
+#: CAPABILITY_ENDPOINTS
+msgid "Endpoint(s)"
+msgstr "Koncový bod / koncové body"
+
+# CAPABILITY_ERR_DET
+#: CAPABILITY_ERR_DET
+msgid "Error detected"
+msgstr "Zjištěna chyba"
+
+# CAPABILITY_EXT_OP
+#: CAPABILITY_EXT_OP
+msgid "Extended Operations"
+msgstr "Rozšířené operace"
+
+# CAPABILITY_FHIR
+#: CAPABILITY_FHIR
+msgid "Core FHIR Resource"
+msgstr "Základní zdroj FHIR"
+
+# CAPABILITY_FHIR_VER
+#: CAPABILITY_FHIR_VER
+msgid "FHIR Version: {0}"
+msgstr "Verze FHIR: {0}"
+
+# CAPABILITY_HISTORY_INT
+#: CAPABILITY_HISTORY_INT
+msgid "GET changes to a resource (history interaction on instance)"
+msgstr "GET změn zdroje (interakce history na instanci)"
+
+# CAPABILITY_HISTORY_TYPE
+#: CAPABILITY_HISTORY_TYPE
+msgid "GET changes for all resources of the type (history interaction on type)"
+msgstr "GET změn pro všechny zdroje daného typu (interakce history na typu)"
+
+# CAPABILITY_IMP_VER
+#: CAPABILITY_IMP_VER
+msgid "Implementation Guide Version: {0}"
+msgstr "Verze implementační příručky: {0}"
+
+# CAPABILITY_INT
+#: CAPABILITY_INT
+msgid "interaction."
+msgstr "interakce."
+
+# CAPABILITY_INTER_SUPP
+#: CAPABILITY_INTER_SUPP
+msgid "The interactions supported by each resource ("
+msgstr "Interakce podporované jednotlivými zdroji ("
+
+# CAPABILITY_INT_DESC
+#: CAPABILITY_INT_DESC
+msgid "interaction described as follows:"
+msgstr "interakce popsaná takto:"
+
+# CAPABILITY_INT_SUMM
+#: CAPABILITY_INT_SUMM
+msgid "Interaction summary"
+msgstr "Souhrn interakcí"
+
+# CAPABILITY_MAY_SUPP
+#: CAPABILITY_MAY_SUPP
+msgid "MAY Support the Following Implementation Guides"
+msgstr "MAY podporovat následující implementační příručky"
+
+# CAPABILITY_MESSAGING_CAP
+#: CAPABILITY_MESSAGING_CAP
+msgid "Messaging Capability"
+msgstr "Schopnost zasílání zpráv"
+
+# CAPABILITY_MESSAGING_CAPS
+#: CAPABILITY_MESSAGING_CAPS
+msgid "FHIR Messaging Capabilities"
+msgstr "Schopnosti zasílání zpráv FHIR"
+
+# CAPABILITY_MULT_EXT
+#: CAPABILITY_MULT_EXT
+msgid "this mark indicates that there are more than one expectation extensions present"
+msgstr "tato značka označuje, že je přítomno více než jedno rozšíření očekávání"
+
+# CAPABILITY_NOTE_CAP
+#: CAPABILITY_NOTE_CAP
+msgid "Note to Implementers: FHIR Capabilities"
+msgstr "Poznámka pro implementátory: schopnosti FHIR"
+
+# CAPABILITY_OP
+#: CAPABILITY_OP
+msgid "Operations"
+msgstr "Operace"
+
+# CAPABILITY_OPER
+#: CAPABILITY_OPER
+msgid "Operation"
+msgstr "Operace"
+
+# CAPABILITY_OTH_RES_ENB
+#: CAPABILITY_OTH_RES_ENB
+msgid "The other resources enabled for"
+msgstr "Ostatní zdroje povolené pro"
+
+# CAPABILITY_PATCH_INT
+#: CAPABILITY_PATCH_INT
+msgid "PATCH a new resource version (patch interaction)"
+msgstr "PATCH nové verze zdroje (interakce patch)"
+
+# CAPABILITY_PROF_CONF
+#: CAPABILITY_PROF_CONF
+msgid "Profile Conformance"
+msgstr "Shoda s profilem"
+
+# CAPABILITY_PROF_MAP
+#: CAPABILITY_PROF_MAP
+msgid "Profile Mapping"
+msgstr "Mapování profilu"
+
+# CAPABILITY_PROF_RES_DOC
+#: CAPABILITY_PROF_RES_DOC
+msgid "Document Resource Profile"
+msgstr "Profil zdroje dokumentu"
+
+# CAPABILITY_PUB_BY
+#: CAPABILITY_PUB_BY
+msgid "Published by: {0}"
+msgstr "Vydal: {0}"
+
+# CAPABILITY_PUB_ON
+#: CAPABILITY_PUB_ON
+msgid "Published on: {0}"
+msgstr "Vydáno dne: {0}"
+
+# CAPABILITY_READ_INT
+#: CAPABILITY_READ_INT
+msgid "GET a resource (read interaction)"
+msgstr "GET zdroje (interakce read)"
+
+# CAPABILITY_REF_PROF
+#: CAPABILITY_REF_PROF
+msgid "Reference Policy"
+msgstr "Zásady referencí"
+
+# CAPABILITY_REQ_RECOM
+#: CAPABILITY_REQ_RECOM
+msgid "Required and recommended search parameters"
+msgstr "Povinné a doporučené vyhledávací parametry"
+
+# CAPABILITY_REST_CAPS
+#: CAPABILITY_REST_CAPS
+msgid "FHIR RESTful Capabilities"
+msgstr "Schopnosti FHIR RESTful rozhraní"
+
+# CAPABILITY_REST_CONFIG
+#: CAPABILITY_REST_CONFIG
+msgid "REST Configuration: {0}"
+msgstr "Konfigurace REST: {0}"
+
+# CAPABILITY_RES_CONF
+#: CAPABILITY_RES_CONF
+msgid "Resource Conformance: {0}"
+msgstr "Shoda zdroje: {0}"
+
+# CAPABILITY_RES_ENB
+#: CAPABILITY_RES_ENB
+msgid "The linked resources enabled for"
+msgstr "Propojené zdroje povolené pro"
+
+# CAPABILITY_RES_OPER
+#: CAPABILITY_RES_OPER
+msgid "The operations on the resource (if any)"
+msgstr "Operace nad zdrojem (pokud existují)"
+
+# CAPABILITY_RES_PRO
+#: CAPABILITY_RES_PRO
+msgid "Capabilities by Resource/Profile"
+msgstr "Schopnosti podle zdroje/profilu"
+
+# CAPABILITY_RES_TYP
+#: CAPABILITY_RES_TYP
+msgid "Resource Type"
+msgstr "Typ zdroje"
+
+# CAPABILITY_REV_PROF
+#: CAPABILITY_REV_PROF
+msgid "The relevant profiles (if any)"
+msgstr "Relevantní profily (pokud existují)"
+
+# CAPABILITY_SEARCHES
+#: CAPABILITY_SEARCHES
+msgid "Searches"
+msgstr "Vyhledávání"
+
+# CAPABILITY_SEARCH_INT
+#: CAPABILITY_SEARCH_INT
+msgid "GET all set of resources of the type (search interaction)"
+msgstr "GET všech sad zdrojů daného typu (interakce search)"
+
+# CAPABILITY_SEARCH_PAR
+#: CAPABILITY_SEARCH_PAR
+msgid "The required, recommended, and some optional search parameters (if any)."
+msgstr "Povinné, doporučené a některé volitelné vyhledávací parametry (pokud existují)."
+
+# CAPABILITY_SEARCH_PARS
+#: CAPABILITY_SEARCH_PARS
+msgid "Search Parameters"
+msgstr "Vyhledávací parametry"
+
+# CAPABILITY_SHOULD_SUPP
+#: CAPABILITY_SHOULD_SUPP
+msgid "SHOULD Support the Following Implementation Guides"
+msgstr "SHOULD podporovat následující implementační příručky"
+
+# CAPABILITY_SUMM_RES
+#: CAPABILITY_SUMM_RES
+msgid "The summary table lists the resources that are part of this configuration, and for each resource it lists:"
+msgstr "Souhrnná tabulka uvádí zdroje, které jsou součástí této konfigurace, a pro každý zdroj uvádí:"
+
+# CAPABILITY_SUMM_SYS_INT
+#: CAPABILITY_SUMM_SYS_INT
+msgid "Summary of System-wide Interactions"
+msgstr "Souhrn celosystémových interakcí"
+
+# CAPABILITY_SUMM_SYS_OP
+#: CAPABILITY_SUMM_SYS_OP
+msgid "Summary of System-wide Operations"
+msgstr "Souhrn celosystémových operací"
+
+# CAPABILITY_SUMM_SYS_SP
+#: CAPABILITY_SUMM_SYS_SP
+msgid "Summary of System-wide Search Parameters"
+msgstr "Souhrn celosystémových vyhledávacích parametrů"
+
+# CAPABILITY_SUPP
+#: CAPABILITY_SUPP
+msgid "support"
+msgstr "podporuje"
+
+# CAPABILITY_SUPPS
+#: CAPABILITY_SUPPS
+msgid "Supports"
+msgstr "Podporuje"
+
+# CAPABILITY_SUPPS_THE
+#: CAPABILITY_SUPPS_THE
+msgid "Supports the"
+msgstr "Podporuje"
+
+# CAPABILITY_SUPP_FORM
+#: CAPABILITY_SUPP_FORM
+msgid "Supported Formats:"
+msgstr "Podporované formáty:"
+
+# CAPABILITY_SUPP_MSGS
+#: CAPABILITY_SUPP_MSGS
+msgid "Supported Message(s)"
+msgstr "Podporované zprávy"
+
+# CAPABILITY_SUPP_PATCH_FORM
+#: CAPABILITY_SUPP_PATCH_FORM
+msgid "Supported Patch Formats:"
+msgstr "Podporované formáty Patch:"
+
+# CAPABILITY_SUPP_PROFS
+#: CAPABILITY_SUPP_PROFS
+msgid "Supported Profiles"
+msgstr "Podporované profily"
+
+# CAPABILITY_SUPP_THE
+#: CAPABILITY_SUPP_THE
+msgid "support the"
+msgstr "podporuje"
+
+# CAPABILITY_TYPS
+#: CAPABILITY_TYPS
+msgid "Types"
+msgstr "Typy"
+
+# CAPABILITY_TYP_PRES
+#: CAPABILITY_TYP_PRES
+msgid "ype are only present if at least one of the resources has support for them."
+msgstr "typu jsou přítomny pouze tehdy, pokud je podporuje alespoň jeden ze zdrojů."
+
+# CAPABILITY_UPDATE_INT
+#: CAPABILITY_UPDATE_INT
+msgid "PUT a new resource version (update interaction)"
+msgstr "PUT nové verze zdroje (interakce update)"
+
+# CAPABILITY_VREAD_INT
+#: CAPABILITY_VREAD_INT
+msgid "GET past versions of resources (vread interaction)"
+msgstr "GET minulých verzí zdrojů (interakce vread)"
+
+# CAPABILTY_ALLOW_CAP
+#: CAPABILTY_ALLOW_CAP
+msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
+msgstr "Systém může povolit libovolnou schopnost FHIR, pokud není výslovně označena jako ''SHALL NOT''. Několik položek je v implementační příručce označeno jako MAY, aby se zdůraznila jejich možná relevance pro daný případ použití."
+
+# CAPABILTY_SHALL_SUPP
+#: CAPABILTY_SHALL_SUPP
+msgid "SHALL Support the Following Implementation Guides"
+msgstr "SHALL podporovat následující implementační příručky"
+
+# CODESYSTEM_CONCEPTS
+#: CODESYSTEM_CONCEPTS
+msgid "Concepts"
+msgstr "Koncepty"
+
+# CODESYSTEM_CONTENT_COMPLETE
+#: CODESYSTEM_CONTENT_COMPLETE
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "Tento <param name=\"cased\"/> systém kódů <param name=\"cs\"/> definuje následující kód<if test=\"code-count != 1\">y</if><param name=\"h\"/>:"
+
+# CODESYSTEM_CONTENT_EXAMPLE
+#: CODESYSTEM_CONTENT_EXAMPLE
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
+msgstr "Tento <param name=\"cased\"/> systém kódů <param name=\"cs\"/> poskytuje několik kód<if test=\"code-count != 1\">ů</if><param name=\"h\"/> <b>pouze jako příklady</b>:"
+
+# CODESYSTEM_CONTENT_FRAGMENT
+#: CODESYSTEM_CONTENT_FRAGMENT
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "Tento <param name=\"cased\"/> systém kódů <param name=\"cs\"/> poskytuje <b>fragment</b>, který obsahuje následující kód<if test=\"code-count != 1\">y</if><param name=\"h\"/>:"
+
+# CODESYSTEM_CONTENT_NOTPRESENT
+#: CODESYSTEM_CONTENT_NOTPRESENT
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
+msgstr "Tento <param name=\"cased\"/> systém kódů <param name=\"cs\"/> definuje kódy<param name=\"h\"/>, ale zde nejsou žádné kódy uvedeny"
+
+# CODESYSTEM_CONTENT_SUPPLEMENT
+#: CODESYSTEM_CONTENT_SUPPLEMENT
+msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
+msgstr "Tento doplněk systému kódů <param name=\"cs\"/> definuje {0} pro následující kód<if test=\"code-count != 1\">y</if>:"
+
+# CODESYSTEM_DEPRECATED
+#: CODESYSTEM_DEPRECATED
+msgid "Deprecated"
+msgstr "Zastaralé"
+
+# CODESYSTEM_FILTERS
+#: CODESYSTEM_FILTERS
+msgid "Filters"
+msgstr "Filtry"
+
+# CODESYSTEM_FILTER_OP
+#: CODESYSTEM_FILTER_OP
+msgid "Op"
+msgstr "Operátor"
+
+# CODESYSTEM_PROPS_DESC
+#: CODESYSTEM_PROPS_DESC
+msgid "This code system defines the following properties for its concepts"
+msgstr "Tento systém kódů definuje následující vlastnosti pro své koncepty"
+
+# CODE_SYS_CODE_NOT_HERE
+#: CODE_SYS_CODE_NOT_HERE
+msgid "This CodeSystem is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr "Tento CodeSystem se zde nepoužívá; může být použit jinde (např. ve specifikacích a/nebo implementacích, které tento obsah používají)"
+
+# CODE_SYS_COMPLETE
+#: CODE_SYS_COMPLETE
+msgid "All the concepts defined by the code system are included in the code system resource"
+msgstr "Ve zdroji systému kódů jsou zahrnuty všechny koncepty definované systémem kódů"
+
+# CODE_SYS_COPY
+#: CODE_SYS_COPY
+msgid "Copy"
+msgstr "Kopírovat"
+
+# CODE_SYS_DISP
+#: CODE_SYS_DISP
+msgid "displays"
+msgstr "zobrazení"
+
+# CODE_SYS_DISP_PROP
+#: CODE_SYS_DISP_PROP
+msgid "displays and properties"
+msgstr "zobrazení a vlastnosti"
+
+# CODE_SYS_EXAMPLE
+#: CODE_SYS_EXAMPLE
+msgid "A few representative concepts are included in the code system resource"
+msgstr "Ve zdroji systému kódů je zahrnuto několik reprezentativních konceptů"
+
+# CODE_SYS_FEAT
+#: CODE_SYS_FEAT
+msgid "features"
+msgstr "funkce"
+
+# CODE_SYS_FOR_OID
+#: CODE_SYS_FOR_OID
+msgid "{0} (for OID based terminology systems)"
+msgstr "{0} (pro terminologické systémy založené na OID)"
+
+# CODE_SYS_FRAGMENT
+#: CODE_SYS_FRAGMENT
+msgid "A subset of the code system concepts are included in the code system resource"
+msgstr "Ve zdroji systému kódů je zahrnuta podmnožina konceptů systému kódů"
+
+# CODE_SYS_IN_A_HIERARCHY
+#: CODE_SYS_IN_A_HIERARCHY
+msgid "in a {0} hierarchy"
+msgstr "v hierarchii {0}"
+
+# CODE_SYS_NOTPRESENT
+#: CODE_SYS_NOTPRESENT
+msgid "None of the concepts defined by the code system are included in the code system resource"
+msgstr "Ve zdroji systému kódů nejsou zahrnuty žádné koncepty definované systémem kódů"
+
+# CODE_SYS_PROP
+#: CODE_SYS_PROP
+msgid "properties"
+msgstr "vlastnosti"
+
+# CODE_SYS_REPLACED_BY
+#: CODE_SYS_REPLACED_BY
+msgid "(replaced by"
+msgstr "(nahrazeno"
+
+# CODE_SYS_SUPPLEMENT
+#: CODE_SYS_SUPPLEMENT
+msgid "This code system resource is a supplement to"
+msgstr "Tento zdroj systému kódů je doplňkem k"
+
+# CODE_SYS_SUPP_CODE_NOT_HERE
+#: CODE_SYS_SUPP_CODE_NOT_HERE
+msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr "Tento doplněk CodeSystem se zde nepoužívá; může být použit jinde (např. ve specifikacích a/nebo implementacích, které tento obsah používají)"
+
+# CODE_SYS_THE_VALUE_SET
+#: CODE_SYS_THE_VALUE_SET
+msgid "{0} is the value set for all codes in this code system"
+msgstr "{0} je sada hodnot pro všechny kódy v tomto systému kódů"
+
+# CODE_SYS_UNDEF_HIER
+#: CODE_SYS_UNDEF_HIER
+msgid "in an undefined hierarchy"
+msgstr "v nedefinované hierarchii"
+
+# CODE_SYS_UNKN_MODE
+#: CODE_SYS_UNKN_MODE
+msgid "Unknown CodeSystemContentMode mode"
+msgstr "Neznámý režim CodeSystemContentMode"
+
+# CONC_MAP_CODES
+#: CONC_MAP_CODES
+msgid "Codes"
+msgstr "Kódy"
+
+# CONC_MAP_CODE_SYS_UNSPEC
+#: CONC_MAP_CODE_SYS_UNSPEC
+msgid "unspecified code system"
+msgstr "neurčený systém kódů"
+
+# CONC_MAP_FRM
+#: CONC_MAP_FRM
+msgid "from"
+msgstr "z"
+
+# CONC_MAP_FROM
+#: CONC_MAP_FROM
+msgid "Mapping from"
+msgstr "Mapování z"
+
+# CONC_MAP_GRP
+#: CONC_MAP_GRP
+msgid "Group {0}"
+msgstr "Skupina {0}"
+
+# CONC_MAP_NOT_SPEC
+#: CONC_MAP_NOT_SPEC
+msgid "(not specified)"
+msgstr "(nespecifikováno)"
+
+# CONC_MAP_REL
+#: CONC_MAP_REL
+msgid "Relationship"
+msgstr "Vztah"
+
+# CONC_MAP_SOURCE
+#: CONC_MAP_SOURCE
+msgid "Source Code"
+msgstr "Zdrojový kód"
+
+# CONC_MAP_SOURCE_CARD
+#: CONC_MAP_SOURCE_CARD
+msgctxt "CONC_MAP_SOURCE_CARD"
+msgid "Card."
+msgstr "Kard."
+
+# CONC_MAP_SOURCE_TYPE
+#: CONC_MAP_SOURCE_TYPE
+msgctxt "CONC_MAP_SOURCE_TYPE"
+msgid "Type"
+msgstr "Typ"
+
+# CONC_MAP_SRC_DET
+#: CONC_MAP_SRC_DET
+msgid "Source Concept Details"
+msgstr "Podrobnosti zdrojového konceptu"
+
+# CONC_MAP_TO
+#: CONC_MAP_TO
+msgctxt "CONC_MAP_TO"
+msgid "to"
+msgstr "na"
+
+# CONC_MAP_TRGT
+#: CONC_MAP_TRGT
+msgid "Target Code"
+msgstr "Cílový kód"
+
+# CONC_MAP_TRGT_CARD
+#: CONC_MAP_TRGT_CARD
+msgctxt "CONC_MAP_TRGT_CARD"
+msgid "Card."
+msgstr "Kard."
+
+# CONC_MAP_TRGT_DET
+#: CONC_MAP_TRGT_DET
+msgid "Target Concept Details"
+msgstr "Podrobnosti cílového konceptu"
+
+# CONC_MAP_TRGT_TYPE
+#: CONC_MAP_TRGT_TYPE
+msgctxt "CONC_MAP_TRGT_TYPE"
+msgid "Type"
+msgstr "Typ"
+
+# CONF_MAY
+#: CONF_MAY
+msgctxt "CONF_MAY"
+msgid "MAY"
+msgstr "MAY"
+
+# CONF_MAY_PLURAL
+#: CONF_MAY_PLURAL
+msgctxt "CONF_MAY_PLURAL"
+msgid "MAY"
+msgstr "MAY"
+
+# CONF_SHALL
+#: CONF_SHALL
+msgctxt "CONF_SHALL"
+msgid "SHALL"
+msgstr "SHALL"
+
+# CONF_SHALLNOT
+#: CONF_SHALLNOT
+msgctxt "CONF_SHALLNOT"
+msgid "SHALL NOT"
+msgstr "SHALL NOT"
+
+# CONF_SHALLNOT_PLURAL
+#: CONF_SHALLNOT_PLURAL
+msgctxt "CONF_SHALLNOT_PLURAL"
+msgid "SHALL NOT"
+msgstr "SHALL NOT"
+
+# CONF_SHALL_PLURAL
+#: CONF_SHALL_PLURAL
+msgctxt "CONF_SHALL_PLURAL"
+msgid "SHALL"
+msgstr "SHALL"
+
+# CONF_SHOULD
+#: CONF_SHOULD
+msgctxt "CONF_SHOULD"
+msgid "SHOULD"
+msgstr "SHOULD"
+
+# CONF_SHOULDNOT
+#: CONF_SHOULDNOT
+msgctxt "CONF_SHOULDNOT"
+msgid "SHOULD NOT"
+msgstr "SHOULD NOT"
+
+# CONF_SHOULDNOT_PLURAL
+#: CONF_SHOULDNOT_PLURAL
+msgctxt "CONF_SHOULDNOT_PLURAL"
+msgid "SHOULD NOT"
+msgstr "SHOULD NOT"
+
+# CONF_SHOULD_PLURAL
+#: CONF_SHOULD_PLURAL
+msgctxt "CONF_SHOULD_PLURAL"
+msgid "SHOULD"
+msgstr "SHOULD"
+
+# CONSENT_CATEGORY
+#: CONSENT_CATEGORY
+msgid "Category"
+msgid_plural "Categories"
+msgstr[0] "Kategorie"
+msgstr[1] "Kategorie"
+
+# CONSENT_DATE
+#: CONSENT_DATE
+msgid "Agreement Date"
+msgstr "Datum dohody"
+
+# CONSENT_PART_TBL_CONTROLLER
+#: CONSENT_PART_TBL_CONTROLLER
+msgid "Controller"
+msgstr "Správce"
+
+# CONSENT_PART_TBL_DETAILS
+#: CONSENT_PART_TBL_DETAILS
+msgctxt "CONSENT_PART_TBL_DETAILS"
+msgid "Details"
+msgstr "Podrobnosti"
+
+# CONSENT_PART_TBL_GRANTEE
+#: CONSENT_PART_TBL_GRANTEE
+msgid "Grantee"
+msgstr "Příjemce oprávnění"
+
+# CONSENT_PART_TBL_GRANTOR
+#: CONSENT_PART_TBL_GRANTOR
+msgid "Grantor"
+msgstr "Poskytovatel oprávnění"
+
+# CONSENT_PART_TBL_MANAGER
+#: CONSENT_PART_TBL_MANAGER
+msgid "Manager"
+msgstr "Správce"
+
+# CONSENT_PART_TBL_PARTY
+#: CONSENT_PART_TBL_PARTY
+msgid "Party"
+msgstr "Strana"
+
+# CONSENT_PART_TBL_PATIENT
+#: CONSENT_PART_TBL_PATIENT
+msgid "Patient"
+msgstr "Pacient"
+
+# CONSENT_PART_TBL_ROLE
+#: CONSENT_PART_TBL_ROLE
+msgctxt "CONSENT_PART_TBL_ROLE"
+msgid "Role"
+msgstr "Role"
+
+# CONSENT_PERIOD
+#: CONSENT_PERIOD
+msgid "Applicable Period"
+msgstr "Použitelné období"
+
+# CONSENT_SCOPE
+#: CONSENT_SCOPE
+msgctxt "CONSENT_SCOPE"
+msgid "Scope"
+msgid_plural "Scopes"
+msgstr[0] "Rozsah"
+msgstr[1] "Rozsahy"
+
+# CSREQ_DESC
+#: CSREQ_DESC
+msgid "Conformance statements found throughout the narrative of the IG consolidated into this computable resource for traceability purposes"
+msgstr "Prohlášení o shodě nalezená v narativu IG jsou kvůli sledovatelnosti sloučena do tohoto počítačově zpracovatelného zdroje"
+
+# CSREQ_TITLE
+#: CSREQ_TITLE
+msgid "Narrative Conformance Statements"
+msgstr "Narativní prohlášení o shodě"
+
+# CSTABLE_CLEAR_FILTERS
+#: CSTABLE_CLEAR_FILTERS
+msgid "Clear Filters"
+msgstr "Vymazat filtry"
+
+# CSTABLE_COND_ANY
+#: CSTABLE_COND_ANY
+msgctxt "CSTABLE_COND_ANY"
+msgid "Any"
+msgstr "Libovolné"
+
+# CSTABLE_COND_NO
+#: CSTABLE_COND_NO
+msgid "No"
+msgstr "Ne"
+
+# CSTABLE_COND_YES
+#: CSTABLE_COND_YES
+msgid "Yes"
+msgstr "Ano"
+
+# CSTABLE_HEAD_ACTOR
+#: CSTABLE_HEAD_ACTOR
+msgid "Actor{1}"
+msgid_plural "Actors{1}"
+msgstr[0] "Aktér{1}"
+msgstr[1] "Aktéři{1}"
+
+# CSTABLE_HEAD_CAT
+#: CSTABLE_HEAD_CAT
+msgid "Category{1}"
+msgid_plural "Categories{1}"
+msgstr[0] "Kategorie{1}"
+msgstr[1] "Kategorie{1}"
+
+# CSTABLE_HEAD_COND
+#: CSTABLE_HEAD_COND
+msgid "Conditional?"
+msgstr "Podmíněné?"
+
+# CSTABLE_HEAD_EXPECT
+#: CSTABLE_HEAD_EXPECT
+msgid "Expectation"
+msgstr "Očekávání"
+
+# CSTABLE_HEAD_ID
+#: CSTABLE_HEAD_ID
+msgctxt "CSTABLE_HEAD_ID"
+msgid "Id"
+msgstr "Id"
+
+# CSTABLE_HEAD_RULE
+#: CSTABLE_HEAD_RULE
+msgid "Rule"
+msgstr "Pravidlo"
+
+# CSTABLE_TITLE_ACTOR
+#: CSTABLE_TITLE_ACTOR
+msgid "Filter to only statements that apply to the specified actor(s)"
+msgstr "Filtrovat pouze prohlášení, která se vztahují k určeným aktérům"
+
+# CSTABLE_TITLE_CAT
+#: CSTABLE_TITLE_CAT
+msgid "Filter to only statements that apply to the specified category(ies)"
+msgstr "Filtrovat pouze prohlášení, která se vztahují k určeným kategoriím"
+
+# CSTABLE_TITLE_CLEAR
+#: CSTABLE_TITLE_CLEAR
+msgid "Clear the Filter"
+msgstr "Vymazat filtr"
+
+# CSTABLE_TITLE_COND
+#: CSTABLE_TITLE_COND
+msgid "Filter to only statements that are conditional, not conditional, or no constraint"
+msgstr "Filtrovat pouze prohlášení, která jsou podmíněná, nepodmíněná nebo bez omezení"
+
+# CSTABLE_TITLE_EXPECT
+#: CSTABLE_TITLE_EXPECT
+msgid "Filter to only statements with one of the selected expectation type(s)"
+msgstr "Filtrovat pouze prohlášení s jedním z vybraných typů očekávání"
+
+# CSTABLE_TITLE_ID
+#: CSTABLE_TITLE_ID
+msgid "Filter to only statements with ids that contain the specified text"
+msgstr "Filtrovat pouze prohlášení s id obsahujícími určený text"
+
+# CSTABLE_TITLE_RULE
+#: CSTABLE_TITLE_RULE
+msgid "Filter to only statements that contain the specified text"
+msgstr "Filtrovat pouze prohlášení obsahující určený text"
+
+# CS_VERSION_NOTHING_TEXT
+#: CS_VERSION_NOTHING_TEXT
+msgid "Not Stated (use latest from terminology server)"
+msgstr "Neuvedeno (použít nejnovější z terminologického serveru)"
+
+# DATA_REND_AFTERNOON
+#: DATA_REND_AFTERNOON
+msgid "Afternoon"
+msgstr "Odpoledne"
+
+# DATA_REND_AFTERNOON_EARLY
+#: DATA_REND_AFTERNOON_EARLY
+msgid "Early Afternoon"
+msgstr "Brzké odpoledne"
+
+# DATA_REND_AFTERNOON_LATE
+#: DATA_REND_AFTERNOON_LATE
+msgid "Late Afternoon"
+msgstr "Pozdní odpoledne"
+
+# DATA_REND_AFTER_SLEEP
+#: DATA_REND_AFTER_SLEEP
+msgid "After Sleep"
+msgstr "Po spánku"
+
+# DATA_REND_AFTRBKFST
+#: DATA_REND_AFTRBKFST
+msgid "after breakfast"
+msgstr "po snídani"
+
+# DATA_REND_AFTRDINR
+#: DATA_REND_AFTRDINR
+msgid "after dinner"
+msgstr "po večeři"
+
+# DATA_REND_AFTRLUNCH
+#: DATA_REND_AFTRLUNCH
+msgid "after lunch"
+msgstr "po obědě"
+
+# DATA_REND_AFTRMEALS
+#: DATA_REND_AFTRMEALS
+msgid "after meals"
+msgstr "po jídle"
+
+# DATA_REND_AFTRWKNG
+#: DATA_REND_AFTRWKNG
+msgid "after waking"
+msgstr "po probuzení"
+
+# DATA_REND_ATBKFST
+#: DATA_REND_ATBKFST
+msgid "at breakfast"
+msgstr "při snídani"
+
+# DATA_REND_ATDINR
+#: DATA_REND_ATDINR
+msgid "at dinner"
+msgstr "při večeři"
+
+# DATA_REND_ATLUNCH
+#: DATA_REND_ATLUNCH
+msgid "at lunch"
+msgstr "při obědě"
+
+# DATA_REND_ATT_DATA
+#: DATA_REND_ATT_DATA
+msgctxt "DATA_REND_ATT_DATA"
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+# DATA_REND_ATT_URL
+#: DATA_REND_ATT_URL
+msgid "{0} @ {1}"
+msgstr "{0} @ {1}"
+
+# DATA_REND_BASE64
+#: DATA_REND_BASE64
+msgid "(base64 data - {0} base64 chars)"
+msgstr "(data base64 - {0} znaků base64)"
+
+# DATA_REND_BFBKFST
+#: DATA_REND_BFBKFST
+msgid "before breakfast"
+msgstr "před snídaní"
+
+# DATA_REND_BFDINR
+#: DATA_REND_BFDINR
+msgid "before dinner"
+msgstr "před večeří"
+
+# DATA_REND_BFLUNCH
+#: DATA_REND_BFLUNCH
+msgid "before lunch"
+msgstr "před obědem"
+
+# DATA_REND_BFMEALS
+#: DATA_REND_BFMEALS
+msgid "before meals"
+msgstr "před jídlem"
+
+# DATA_REND_BFSLEEP
+#: DATA_REND_BFSLEEP
+msgid "before sleeping"
+msgstr "před spaním"
+
+# DATA_REND_BY
+#: DATA_REND_BY
+msgid "By"
+msgstr "Podle"
+
+# DATA_REND_CODES
+#: DATA_REND_CODES
+msgid "Codes:"
+msgstr "Kódy:"
+
+# DATA_REND_COND
+#: DATA_REND_COND
+msgid "Condition"
+msgstr "Podmínka"
+
+# DATA_REND_COUNT
+#: DATA_REND_COUNT
+msgid "Count {0}"
+msgstr "Počet {0}"
+
+# DATA_REND_CURRENCY
+#: DATA_REND_CURRENCY
+msgid "{1} {0}"
+msgstr "{1} {0}"
+
+# DATA_REND_DATA
+#: DATA_REND_DATA
+msgid "Data: {0}"
+msgstr "Data: {0}"
+
+# DATA_REND_DETAILS
+#: DATA_REND_DETAILS
+msgid "(Details: {0}  code"
+msgstr "(Podrobnosti: {0} kód"
+
+# DATA_REND_DETAILS_STATED
+#: DATA_REND_DETAILS_STATED
+msgid "(Details: {0} code {1} = ''{2}'')"
+msgstr "(Podrobnosti: {0} kód {1} = ''{2}'')"
+
+# DATA_REND_DETAILS_STATED_ND
+#: DATA_REND_DETAILS_STATED_ND
+msgid "(Details: {0} code {1})"
+msgstr "(Podrobnosti: {0} kód {1})"
+
+# DATA_REND_DICOM
+#: DATA_REND_DICOM
+msgid "DICOM"
+msgstr "DICOM"
+
+# DATA_REND_DIM
+#: DATA_REND_DIM
+msgid "Dimensions: {0}"
+msgstr "Rozměry: {0}"
+
+# DATA_REND_DURATION
+#: DATA_REND_DURATION
+msgid "Duration {0}"
+msgstr "Doba trvání {0}"
+
+# DATA_REND_ERROR
+#: DATA_REND_ERROR
+msgid "Error: {0}"
+msgstr "Chyba: {0}"
+
+# DATA_REND_EVENING
+#: DATA_REND_EVENING
+msgid "Evening"
+msgstr "Večer"
+
+# DATA_REND_EVENING_EARLY
+#: DATA_REND_EVENING_EARLY
+msgid "Early Evening"
+msgstr "Brzký večer"
+
+# DATA_REND_EVENING_LATE
+#: DATA_REND_EVENING_LATE
+msgid "Late Evening"
+msgstr "Pozdní večer"
+
+# DATA_REND_EVENTS
+#: DATA_REND_EVENTS
+msgid "Events: {0}"
+msgstr "Události: {0}"
+
+# DATA_REND_EXCEPTION
+#: DATA_REND_EXCEPTION
+msgid "Exception"
+msgstr "Výjimka"
+
+# DATA_REND_FACT
+#: DATA_REND_FACT
+msgid "Factor: {0}"
+msgstr "Faktor: {0}"
+
+# DATA_REND_FAX
+#: DATA_REND_FAX
+msgid "Fax: {0}"
+msgstr "Fax: {0}"
+
+# DATA_REND_GLN
+#: DATA_REND_GLN
+msgid "Global Location Number"
+msgstr "Global Location Number"
+
+# DATA_REND_ICD
+#: DATA_REND_ICD
+msgid "ICD-9"
+msgstr "ICD-9"
+
+# DATA_REND_IMMEDIATE
+#: DATA_REND_IMMEDIATE
+msgid "Immediate"
+msgstr "Okamžitě"
+
+# DATA_REND_INT
+#: DATA_REND_INT
+msgid "Interval: {0}"
+msgstr "Interval: {0}"
+
+# DATA_REND_LIMIT
+#: DATA_REND_LIMIT
+msgid "Limit"
+msgstr "Limit"
+
+# DATA_REND_LOINC
+#: DATA_REND_LOINC
+msgid "LOINC"
+msgstr "LOINC"
+
+# DATA_REND_LOWER
+#: DATA_REND_LOWER
+msgid "Lower: {0}"
+msgstr "Dolní: {0}"
+
+# DATA_REND_MEALS
+#: DATA_REND_MEALS
+msgid "at meals"
+msgstr "při jídle"
+
+# DATA_REND_MKDWN_LNK
+#: DATA_REND_MKDWN_LNK
+msgid "Unable to resolve markdown link ''{0}''"
+msgstr "Nelze vyřešit odkaz v markdownu ''{0}''"
+
+# DATA_REND_MORNING
+#: DATA_REND_MORNING
+msgid "Morning"
+msgstr "Ráno"
+
+# DATA_REND_MORNING_EARLY
+#: DATA_REND_MORNING_EARLY
+msgid "Early Morning"
+msgstr "Brzy ráno"
+
+# DATA_REND_MORNING_LATE
+#: DATA_REND_MORNING_LATE
+msgid "Late Morning"
+msgstr "Pozdě ráno"
+
+# DATA_REND_NIGHT
+#: DATA_REND_NIGHT
+msgid "Night"
+msgstr "Noc"
+
+# DATA_REND_NOON
+#: DATA_REND_NOON
+msgid "Noon"
+msgstr "Poledne"
+
+# DATA_REND_NOT_STAT
+#: DATA_REND_NOT_STAT
+msgid "[not stated]"
+msgstr "[neuvedeno]"
+
+# DATA_REND_NO_DISP
+#: DATA_REND_NO_DISP
+msgid "No display for {0}"
+msgstr "Žádné zobrazení pro {0}"
+
+# DATA_REND_ONCE
+#: DATA_REND_ONCE
+msgid "Once"
+msgstr "Jednou"
+
+# DATA_REND_ONGOING
+#: DATA_REND_ONGOING
+msgid "(ongoing)"
+msgstr "(probíhá)"
+
+# DATA_REND_ORIGIN
+#: DATA_REND_ORIGIN
+msgid "Origin: {0}"
+msgstr "Počátek: {0}"
+
+# DATA_REND_PER
+#: DATA_REND_PER
+msgid "per"
+msgstr "za"
+
+# DATA_REND_PERIOD
+#: DATA_REND_PERIOD
+msgid "period:"
+msgstr "období:"
+
+# DATA_REND_PHONE
+#: DATA_REND_PHONE
+msgid "Phone: {0}"
+msgstr "Telefon: {0}"
+
+# DATA_REND_RXNORM
+#: DATA_REND_RXNORM
+msgid "RxNorm"
+msgstr "RxNorm"
+
+# DATA_REND_SEARCH
+#: DATA_REND_SEARCH
+msgid "Search on: {0}"
+msgstr "Vyhledat podle: {0}"
+
+# DATA_REND_SNOMED
+#: DATA_REND_SNOMED
+msgid "SNOMED CT"
+msgstr "SNOMED CT"
+
+# DATA_REND_SORT
+#: DATA_REND_SORT
+msgid "Sort"
+msgstr "Řazení"
+
+# DATA_REND_SOURCE
+#: DATA_REND_SOURCE
+msgid "source"
+msgstr "zdroj"
+
+# DATA_REND_STARTING
+#: DATA_REND_STARTING
+msgid "Starting {0}"
+msgstr "Od {0}"
+
+# DATA_REND_THESE_CODES
+#: DATA_REND_THESE_CODES
+msgid "One of these codes:"
+msgstr "Jeden z těchto kódů:"
+
+# DATA_REND_TIMING
+#: DATA_REND_TIMING
+msgid "Timing"
+msgstr "Časování"
+
+# DATA_REND_TO_DO
+#: DATA_REND_TO_DO
+msgid "to do: {0}"
+msgstr "k dokončení: {0}"
+
+# DATA_REND_UNKNWN
+#: DATA_REND_UNKNWN
+msgid "unknown"
+msgstr "neznámé"
+
+# DATA_REND_UNRD_EX
+#: DATA_REND_UNRD_EX
+msgid "WARNING: Unrenderable Modifier Extension!"
+msgstr "VAROVÁNÍ: Nevyrenderovatelné modifikující rozšíření!"
+
+# DATA_REND_UNTIL
+#: DATA_REND_UNTIL
+msgid "Until {0}"
+msgstr "Do {0}"
+
+# DATA_REND_UP
+#: DATA_REND_UP
+msgid "Upper: {0}"
+msgstr "Horní: {0}"
+
+# DATA_REND_USE
+#: DATA_REND_USE
+msgid "use:"
+msgstr "použití:"
+
+# DATA_REND_VALUESET
+#: DATA_REND_VALUESET
+msgid "In ValueSet"
+msgstr "Ve ValueSet"
+
+# DATA_REND_VERSION
+#: DATA_REND_VERSION
+msgid "(version = {0} {1}"
+msgstr "(verze = {0} {1}"
+
+# DIAG_REP_REND_AGE
+#: DIAG_REP_REND_AGE
+msgid "Age"
+msgstr "Věk"
+
+# DIAG_REP_REND_CODECON
+#: DIAG_REP_REND_CODECON
+msgid "Coded Conclusions:"
+msgstr "Kódované závěry:"
+
+# DIAG_REP_REND_ERR
+#: DIAG_REP_REND_ERR
+msgid "Error:"
+msgstr "Chyba:"
+
+# DIAG_REP_REND_FOR
+#: DIAG_REP_REND_FOR
+msgid "for"
+msgstr "pro"
+
+# DIAG_REP_REND_IDENTIFIER
+#: DIAG_REP_REND_IDENTIFIER
+msgctxt "DIAG_REP_REND_IDENTIFIER"
+msgid "Identifier"
+msgstr "Identifikátor"
+
+# DIAG_REP_REND_NOTRES
+#: DIAG_REP_REND_NOTRES
+msgid "The observation ''{0}'' could not be resolved"
+msgstr "Pozorování ''{0}'' se nepodařilo vyřešit"
+
+# DIAG_REP_REND_OBS
+#: DIAG_REP_REND_OBS
+msgid "Observation"
+msgstr "Pozorování"
+
+# DIAG_REP_REND_PER
+#: DIAG_REP_REND_PER
+msgid "Performer"
+msgstr "Vykonavatel"
+
+# DIAG_REP_REND_REFRAN
+#: DIAG_REP_REND_REFRAN
+msgid "Reference Range"
+msgstr "Referenční rozmezí"
+
+# DIAG_REP_REND_REP
+#: DIAG_REP_REND_REP
+msgid "Reported"
+msgstr "Nahlášeno"
+
+# DIAG_REP_REND_REPDET
+#: DIAG_REP_REND_REPDET
+msgid "Report Details"
+msgstr "Podrobnosti zprávy"
+
+# DIAG_REP_REND_UNABLE
+#: DIAG_REP_REND_UNABLE
+msgid "Unable to get Patient Details"
+msgstr "Nelze získat podrobnosti o pacientovi"
+
+# DIAG_REP_REND_WHEN
+#: DIAG_REP_REND_WHEN
+msgid "When For"
+msgstr "Kdy pro"
+
+# DIAG_REP_SUMMARY
+#: DIAG_REP_SUMMARY
+msgid "Diagnostic Report for ''{0}'' for ''{1}''"
+msgstr "Diagnostická zpráva pro ''{0}'' pro ''{1}''"
+
+# DIAG_REP_UNSPECIFIED_CODE
+#: DIAG_REP_UNSPECIFIED_CODE
+msgid "Unspecified Report Type"
+msgstr "Nespecifikovaný typ zprávy"
+
+# DIAG_REP_UNSPECIFIED_SUBJECT
+#: DIAG_REP_UNSPECIFIED_SUBJECT
+msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
+msgid "Unspecified Subject"
+msgstr "Nespecifikovaný subjekt"
+
+# DOCUMENT_SUMMARY
+#: DOCUMENT_SUMMARY
+msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
+msgstr "<param name=\"status\"/> dokument v <param name=\"date\"/> od <param name=\"author\"/> pro <param name=\"subject\"/> <if test=\"has-encounter = true\"> v kontaktu <param name=\"encounter\"/></if>"
+
+# EXAMPLE_SCEN_STEP_SCEN
+#: EXAMPLE_SCEN_STEP_SCEN
+msgid "Step {0}  - See scenario {1}"
+msgstr "Krok {0} - viz scénář {1}"
+
+# EX_SCEN_ALT
+#: EX_SCEN_ALT
+msgid "Alternative {0}"
+msgstr "Alternativa {0}"
+
+# EX_SCEN_BEL
+#: EX_SCEN_BEL
+msgid "below"
+msgstr "níže"
+
+# EX_SCEN_CONTA
+#: EX_SCEN_CONTA
+msgid "Contains:"
+msgstr "Obsahuje:"
+
+# EX_SCEN_ERR_REN
+#: EX_SCEN_ERR_REN
+msgid "Error rendering ExampleScenario {0}"
+msgstr "Chyba při vykreslování ExampleScenario {0}"
+
+# EX_SCEN_FVER
+#: EX_SCEN_FVER
+msgid "FHIR version"
+msgstr "Verze FHIR"
+
+# EX_SCEN_IN
+#: EX_SCEN_IN
+msgid "Initiator"
+msgstr "Iniciátor"
+
+# EX_SCEN_OTH
+#: EX_SCEN_OTH
+msgid "See other scenario"
+msgstr "Viz jiný scénář"
+
+# EX_SCEN_POSTCON
+#: EX_SCEN_POSTCON
+msgid "Post-conditions:"
+msgstr "Následné podmínky:"
+
+# EX_SCEN_PRECON
+#: EX_SCEN_PRECON
+msgid "Pre-conditions:"
+msgstr "Předpoklady:"
+
+# EX_SCEN_PROC
+#: EX_SCEN_PROC
+msgid "Process: {0}"
+msgstr "Proces: {0}"
+
+# EX_SCEN_REC
+#: EX_SCEN_REC
+msgid "Receiver"
+msgstr "Příjemce"
+
+# EX_SCEN_RES
+#: EX_SCEN_RES
+msgid "Response"
+msgstr "Odpověď"
+
+# EX_SCEN_SEE
+#: EX_SCEN_SEE
+msgid "See subprocess"
+msgstr "Viz podproces"
+
+# EX_SCEN_STEP
+#: EX_SCEN_STEP
+msgid "Step"
+msgstr "Krok"
+
+# EX_SCEN_TIME
+#: EX_SCEN_TIME
+msgid "... time passes ..."
+msgstr "... čas plyne ..."
+
+# EX_SCEN_UN
+#: EX_SCEN_UN
+msgid "Unknown ExampleScenario Renderer Mode {0}"
+msgstr "Neznámý režim rendereru ExampleScenario {0}"
+
+# EX_SCEN_UN_ACT
+#: EX_SCEN_UN_ACT
+msgid "Unable to find referenced actor {0}"
+msgstr "Nelze najít odkazovaného aktéra {0}"
+
+# FMM_TABLE
+#: FMM_TABLE
+msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgstr "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Úroveň zralosti</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Stav standardu\">{2}</a></td></tr></tbody></table>"
+
+# GENERAL_ADDITIONAL_BINDING
+#: GENERAL_ADDITIONAL_BINDING
+msgid "This element has additional bindings"
+msgstr "Tento element má další vazby"
+
+# GENERAL_ADD_LANG
+#: GENERAL_ADD_LANG
+msgid "Additional Language Displays"
+msgstr "Další jazyková zobrazení"
+
+# GENERAL_BINDING
+#: GENERAL_BINDING
+msgid "Binding"
+msgstr "Vazba"
+
+# GENERAL_BINDINGS
+#: GENERAL_BINDINGS
+msgid "Bindings"
+msgstr "Vazby"
+
+# GENERAL_BINDING_NO_DESC
+#: GENERAL_BINDING_NO_DESC
+msgid "No description provided"
+msgstr "Nebyl uveden popis"
+
+# GENERAL_BINDING_NO_VS_1
+#: GENERAL_BINDING_NO_VS_1
+msgid "Binding Description"
+msgstr "Popis vazby"
+
+# GENERAL_BINDING_NO_VS_2
+#: GENERAL_BINDING_NO_VS_2
+msgid "This binding doesn''t define a testable ValueSet"
+msgstr "Tato vazba nedefinuje testovatelný ValueSet"
+
+# GENERAL_BIND_MIN_ALLOW
+#: GENERAL_BIND_MIN_ALLOW
+msgid "The minimum allowable value set - any conformant system SHALL support all these codes"
+msgstr "Minimální povolená sada hodnot - každý vyhovující systém MUSÍ podporovat všechny tyto kódy"
+
+# GENERAL_CARD
+#: GENERAL_CARD
+msgctxt "GENERAL_CARD"
+msgid "Card."
+msgstr "Kard."
+
+# GENERAL_CARDINALITY
+#: GENERAL_CARDINALITY
+msgid "Cardinality"
+msgstr "Kardinalita"
+
+# GENERAL_CODE
+#: GENERAL_CODE
+msgid "Code"
+msgstr "Kód"
+
+# GENERAL_CODESYSTEM
+#: GENERAL_CODESYSTEM
+msgid "Code System"
+msgstr "Systém kódů"
+
+# GENERAL_COMMENT
+#: GENERAL_COMMENT
+msgid "Comment"
+msgstr "Komentář"
+
+# GENERAL_COMMENTS
+#: GENERAL_COMMENTS
+msgid "Comments"
+msgstr "Komentáře"
+
+# GENERAL_COMPARATORS
+#: GENERAL_COMPARATORS
+msgid "Comparators"
+msgstr "Komparátory"
+
+# GENERAL_COMPONENT
+#: GENERAL_COMPONENT
+msgid "Component"
+msgstr "Komponenta"
+
+# GENERAL_CONFORMANCE
+#: GENERAL_CONFORMANCE
+msgid "Conformance"
+msgstr "Shoda"
+
+# GENERAL_CONSTRAINTS
+#: GENERAL_CONSTRAINTS
+msgctxt "GENERAL_CONSTRAINTS"
+msgid "Constraints"
+msgstr "Omezení"
+
+# GENERAL_CONTACT
+#: GENERAL_CONTACT
+msgid "Contact:"
+msgstr "Kontakt:"
+
+# GENERAL_CONTENT
+#: GENERAL_CONTENT
+msgid "Content"
+msgstr "Obsah"
+
+# GENERAL_COPYRIGHT
+#: GENERAL_COPYRIGHT
+msgid "Copyright"
+msgstr "Copyright"
+
+# GENERAL_CRIT
+#: GENERAL_CRIT
+msgid "Criteria"
+msgstr "Kritéria"
+
+# GENERAL_DATA_DISPLAY_PROPERTY
+#: GENERAL_DATA_DISPLAY_PROPERTY
+msgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+# GENERAL_DEFINING_URL
+#: GENERAL_DEFINING_URL
+msgid "Defining URL"
+msgstr "Definiční URL"
+
+# GENERAL_DEFINITION
+#: GENERAL_DEFINITION
+msgctxt "GENERAL_DEFINITION"
+msgid "Definition"
+msgstr "Definice"
+
+# GENERAL_DEFINITION_COLON
+#: GENERAL_DEFINITION_COLON
+msgid "Definition:"
+msgstr "Definice:"
+
+# GENERAL_DESC
+#: GENERAL_DESC
+msgid "Description"
+msgstr "Popis"
+
+# GENERAL_DESC_CONST
+#: GENERAL_DESC_CONST
+msgid "Description & Constraints"
+msgstr "Popis a omezení"
+
+# GENERAL_DETAILS
+#: GENERAL_DETAILS
+msgctxt "GENERAL_DETAILS"
+msgid "Details"
+msgstr "Podrobnosti"
+
+# GENERAL_DOCUMENTATION
+#: GENERAL_DOCUMENTATION
+msgid "Documentation"
+msgstr "Dokumentace"
+
+# GENERAL_EXAMPLE
+#: GENERAL_EXAMPLE
+msgid "Example"
+msgstr "Příklad"
+
+# GENERAL_EXPER
+#: GENERAL_EXPER
+msgid "Experimental"
+msgstr "Experimentální"
+
+# GENERAL_FILTER
+#: GENERAL_FILTER
+msgid "Filter"
+msgstr "Filtr"
+
+# GENERAL_FIXED_VALUE
+#: GENERAL_FIXED_VALUE
+msgctxt "GENERAL_FIXED_VALUE"
+msgid "Fixed Value: {0}"
+msgstr "Pevná hodnota: {0}"
+
+# GENERAL_FLAGS
+#: GENERAL_FLAGS
+msgid "Flags"
+msgstr "Příznaky"
+
+# GENERAL_IDENTIFIER
+#: GENERAL_IDENTIFIER
+msgctxt "GENERAL_IDENTIFIER"
+msgid "Identifier"
+msgid_plural "Identifiers"
+msgstr[0] "Identifikátor"
+msgstr[1] "Identifikátory"
+
+# GENERAL_LOCATION
+#: GENERAL_LOCATION
+msgid "Location"
+msgstr "Umístění"
+
+# GENERAL_LOGICAL_NAME
+#: GENERAL_LOGICAL_NAME
+msgid "The logical name of the element"
+msgstr "Logický název elementu"
+
+# GENERAL_MAX_LENGTH
+#: GENERAL_MAX_LENGTH
+msgid "Max Length:"
+msgstr "Max. délka:"
+
+# GENERAL_MIN_LENGTH
+#: GENERAL_MIN_LENGTH
+msgid "Min Length:"
+msgstr "Min. délka:"
+
+# GENERAL_MODIFIERS
+#: GENERAL_MODIFIERS
+msgid "Modifiers"
+msgstr "Modifikátory"
+
+# GENERAL_NAME
+#: GENERAL_NAME
+msgid "Name"
+msgstr "Název"
+
+# GENERAL_NCI_THES
+#: GENERAL_NCI_THES
+msgid "NCI Thesaurus"
+msgstr "Tezaurus NCI"
+
+# GENERAL_NOTE
+#: GENERAL_NOTE
+msgid "Note"
+msgstr "Poznámka"
+
+# GENERAL_OBLIG
+#: GENERAL_OBLIG
+msgctxt "GENERAL_OBLIG"
+msgid "Obligations"
+msgstr "Povinnosti"
+
+# GENERAL_OBLIGATIONS
+#: GENERAL_OBLIGATIONS
+msgctxt "GENERAL_OBLIGATIONS"
+msgid "Obligations"
+msgstr "Povinnosti"
+
+# GENERAL_OID
+#: GENERAL_OID
+msgid "OID"
+msgstr "OID"
+
+# GENERAL_PAR
+#: GENERAL_PAR
+msgid "Parameter"
+msgstr "Parametr"
+
+# GENERAL_PARS
+#: GENERAL_PARS
+msgid "Parameters"
+msgstr "Parametry"
+
+# GENERAL_PATTERN_VALUE
+#: GENERAL_PATTERN_VALUE
+msgctxt "GENERAL_PATTERN_VALUE"
+msgid "Pattern Value: {0}"
+msgstr "Hodnota vzoru: {0}"
+
+# GENERAL_PREFERRED
+#: GENERAL_PREFERRED
+msgctxt "GENERAL_PREFERRED"
+msgid "Preferred"
+msgstr "Preferované"
+
+# GENERAL_PROF
+#: GENERAL_PROF
+msgctxt "GENERAL_PROF"
+msgid "Profile"
+msgstr "Profil"
+
+# GENERAL_PROPS
+#: GENERAL_PROPS
+msgid "Properties"
+msgstr "Vlastnosti"
+
+# GENERAL_PURPOSE
+#: GENERAL_PURPOSE
+msgid "Purpose"
+msgstr "Účel"
+
+# GENERAL_REFS
+#: GENERAL_REFS
+msgid "References:"
+msgstr "Reference:"
+
+# GENERAL_REMOVED_SINCE
+#: GENERAL_REMOVED_SINCE
+msgid "This content has been removed since {0}"
+msgstr "Tento obsah byl odstraněn od {0}"
+
+# GENERAL_REQUEST
+#: GENERAL_REQUEST
+msgid "Request"
+msgstr "Požadavek"
+
+# GENERAL_REQUIRED
+#: GENERAL_REQUIRED
+msgctxt "GENERAL_REQUIRED"
+msgid "Required"
+msgstr "Povinné"
+
+# GENERAL_REQUIRED_BINDING
+#: GENERAL_REQUIRED_BINDING
+msgid "Required Binding to ValueSet {0}"
+msgstr "Povinná vazba na ValueSet {0}"
+
+# GENERAL_RESOURCE
+#: GENERAL_RESOURCE
+msgctxt "GENERAL_RESOURCE"
+msgid "Resource"
+msgstr "Zdroj"
+
+# GENERAL_SECURITY_LABEL
+#: GENERAL_SECURITY_LABEL
+msgid "Security Label"
+msgstr "Bezpečnostní štítek"
+
+# GENERAL_SOURCE
+#: GENERAL_SOURCE
+msgctxt "GENERAL_SOURCE"
+msgid "Source"
+msgstr "Zdroj"
+
+# GENERAL_SRC
+#: GENERAL_SRC
+msgid "Source:"
+msgstr "Zdroj:"
+
+# GENERAL_STARTER
+#: GENERAL_STARTER
+msgid "Starter"
+msgstr "Výchozí"
+
+# GENERAL_STATUS
+#: GENERAL_STATUS
+msgctxt "GENERAL_STATUS"
+msgid "Status"
+msgstr "Stav"
+
+# GENERAL_SUBJ
+#: GENERAL_SUBJ
+msgid "Subject"
+msgstr "Subjekt"
+
+# GENERAL_SUMM
+#: GENERAL_SUMM
+msgid "Summary"
+msgstr "Souhrn"
+
+# GENERAL_TITLE
+#: GENERAL_TITLE
+msgid "Title"
+msgstr "Název"
+
+# GENERAL_TODO
+#: GENERAL_TODO
+msgid "Not done yet"
+msgstr "Ještě není hotovo"
+
+# GENERAL_TYPE
+#: GENERAL_TYPE
+msgctxt "GENERAL_TYPE"
+msgid "Type"
+msgstr "Typ"
+
+# GENERAL_TYPE_PROFILE
+#: GENERAL_TYPE_PROFILE
+msgid "This element has profiles on it's type: {0}"
+msgstr "Tento element má profily na svém typu: {0}"
+
+# GENERAL_TYPE_TARGET_PROFILE
+#: GENERAL_TYPE_TARGET_PROFILE
+msgid "This element has restrictions/profiles on it's targets: {0}"
+msgstr "Tento element má omezení/profily na svých cílech: {0}"
+
+# GENERAL_UCUM
+#: GENERAL_UCUM
+msgid "UCUM"
+msgstr "UCUM"
+
+# GENERAL_URI
+#: GENERAL_URI
+msgid "URI"
+msgstr "URI"
+
+# GENERAL_URL
+#: GENERAL_URL
+msgid "URL"
+msgstr "URL"
+
+# GENERAL_USAGE
+#: GENERAL_USAGE
+msgid "Usage"
+msgstr "Použití"
+
+# GENERAL_VALUE
+#: GENERAL_VALUE
+msgid "Value"
+msgstr "Hodnota"
+
+# GENERAL_VALUESET
+#: GENERAL_VALUESET
+msgid "Value Set"
+msgstr "Sada hodnot"
+
+# GENERAL_VALUE_BOUNDED
+#: GENERAL_VALUE_BOUNDED
+msgid "The value must be between {0} and {1} (or equal)"
+msgstr "Hodnota musí být mezi {0} a {1} (včetně)"
+
+# GENERAL_VALUE_MAX
+#: GENERAL_VALUE_MAX
+msgid "The value must be less or equal to {0}"
+msgstr "Hodnota musí být menší nebo rovna {0}"
+
+# GENERAL_VALUE_MIN
+#: GENERAL_VALUE_MIN
+msgid "The value must be greater or equal to {0}"
+msgstr "Hodnota musí být větší nebo rovna {0}"
+
+# GENERAL_VER
+#: GENERAL_VER
+msgid "Version"
+msgstr "Verze"
+
+# GENERAL_VER_LOW
+#: GENERAL_VER_LOW
+msgid "version"
+msgstr "verze"
+
+# GENERAL_XML
+#: GENERAL_XML
+msgid "XML"
+msgstr "XML"
+
+# IMP_GUIDE_URL
+#: IMP_GUIDE_URL
+msgid "The official URL for this implementation guide is:"
+msgstr "Oficiální URL této implementační příručky je:"
+
+# IP_INTRO
+#: IP_INTRO
+msgid "This {0} includes IP covered under the following statements."
+msgstr "Tento {0} zahrnuje duševní vlastnictví pokryté následujícími prohlášeními."
+
+# IP_NONE
+#: IP_NONE
+msgid "No use of external IP"
+msgstr "Bez použití externího duševního vlastnictví"
+
+# IP_NONE_EXT
+#: IP_NONE_EXT
+msgid "No use of external IP (other than from the FHIR specification)"
+msgstr "Bez použití externího duševního vlastnictví (kromě specifikace FHIR)"
+
+# KIND_EXTENSION
+#: KIND_EXTENSION
+msgid "extension"
+msgstr "rozšíření"
+
+# KIND_LOGICAL
+#: KIND_LOGICAL
+msgid "logical model"
+msgstr "logický model"
+
+# KIND_PROFILE
+#: KIND_PROFILE
+msgid "profile"
+msgstr "profil"
+
+# LIB_REND_ART
+#: LIB_REND_ART
+msgid "Related Artifacts"
+msgstr "Související artefakty"
+
+# LIB_REND_AUT
+#: LIB_REND_AUT
+msgid "Author"
+msgstr "Autor"
+
+# LIB_REND_CONT
+#: LIB_REND_CONT
+msgid "Contents"
+msgstr "Obsah"
+
+# LIB_REND_ED
+#: LIB_REND_ED
+msgid "Editor"
+msgstr "Editor"
+
+# LIB_REND_END
+#: LIB_REND_END
+msgid "Endorser"
+msgstr "Schvalovatel"
+
+# LIB_REND_NOCONT
+#: LIB_REND_NOCONT
+msgid "No Content"
+msgstr "Žádný obsah"
+
+# LIB_REND_PAR
+#: LIB_REND_PAR
+msgid "Participants"
+msgstr "Účastníci"
+
+# LIB_REND_REQ
+#: LIB_REND_REQ
+msgid "Data Requirements"
+msgstr "Datové požadavky"
+
+# LIB_REND_REV
+#: LIB_REND_REV
+msgid "Reviewer"
+msgstr "Recenzent"
+
+# LIB_REND_SHOW
+#: LIB_REND_SHOW
+msgid "Content not shown - ("
+msgstr "Obsah není zobrazen - ("
+
+# LIB_REND_SIZE
+#: LIB_REND_SIZE
+msgid ", size = {0}"
+msgstr ", velikost = {0}"
+
+# LIST_REND_CODE
+#: LIST_REND_CODE
+msgid "Code: {0}"
+msgstr "Kód: {0}"
+
+# LIST_REND_DAT
+#: LIST_REND_DAT
+msgid "Date"
+msgstr "Datum"
+
+# LIST_REND_DATE
+#: LIST_REND_DATE
+msgid "Date: {0}"
+msgstr "Datum: {0}"
+
+# LIST_REND_DEL
+#: LIST_REND_DEL
+msgid "Deleted"
+msgstr "Odstraněno"
+
+# LIST_REND_ENC
+#: LIST_REND_ENC
+msgid "Encounter:"
+msgstr "Kontakt:"
+
+# LIST_REND_FLAG
+#: LIST_REND_FLAG
+msgid "Flag"
+msgstr "Příznak"
+
+# LIST_REND_ITEM
+#: LIST_REND_ITEM
+msgid "Items"
+msgstr "Položky"
+
+# LIST_REND_MODE
+#: LIST_REND_MODE
+msgid "Mode: {0}"
+msgstr "Režim: {0}"
+
+# LIST_REND_ORD
+#: LIST_REND_ORD
+msgid "Order: {0}"
+msgstr "Pořadí: {0}"
+
+# LIST_REND_STAT
+#: LIST_REND_STAT
+msgid "Status: {0}"
+msgstr "Stav: {0}"
+
+# LIST_REND_SUB
+#: LIST_REND_SUB
+msgid "Subject:"
+msgstr "Subjekt:"
+
+# LIST_SUMMARY
+#: LIST_SUMMARY
+msgid "List for ''{0}'' for ''{1}''"
+msgstr "Seznam pro ''{0}'' pro ''{1}''"
+
+# LIST_UNSPECIFIED_CODE
+#: LIST_UNSPECIFIED_CODE
+msgid "Unspecified List Type"
+msgstr "Nespecifikovaný typ seznamu"
+
+# LIST_UNSPECIFIED_SUBJECT
+#: LIST_UNSPECIFIED_SUBJECT
+msgctxt "LIST_UNSPECIFIED_SUBJECT"
+msgid "Unspecified Subject"
+msgstr "Nespecifikovaný subjekt"
+
+# MAP_DEFAULT_COMMENT
+#: MAP_DEFAULT_COMMENT
+msgid "This element was not defined prior to R5"
+msgstr "Tento element nebyl před R5 definován"
+
+# MATURITY_MATURITY
+#: MATURITY_MATURITY
+msgid "Maturity Level: {0}"
+msgstr "Úroveň zralosti: {0}"
+
+# MATURITY_PUBLISHER
+#: MATURITY_PUBLISHER
+msgid "Publisher: {0}"
+msgstr "Vydavatel: {0}"
+
+# MATURITY_STATUS
+#: MATURITY_STATUS
+msgctxt "MATURITY_STATUS"
+msgid "Status"
+msgstr "Stav"
+
+# MATURITY_STDS_STATUS
+#: MATURITY_STDS_STATUS
+msgid "Standards Status: {0}"
+msgstr "Stav standardu: {0}"
+
+# NAME_SYS_IDEN
+#: NAME_SYS_IDEN
+msgid "Identifiers"
+msgstr "Identifikátory"
+
+# NAME_SYS_PER
+#: NAME_SYS_PER
+msgid "Period"
+msgstr "Období"
+
+# OBLIGATION_SOURCE
+#: OBLIGATION_SOURCE
+msgid "This obligation is defined in the profile {0}"
+msgstr "Tato povinnost je definována v profilu {0}"
+
+# OBLIG_ACT
+#: OBLIG_ACT
+msgid "Actor"
+msgstr "Aktér"
+
+# OBLIG_ELE
+#: OBLIG_ELE
+msgid "Elements"
+msgstr "Elementy"
+
+# OP_DEF_INPAR
+#: OP_DEF_INPAR
+msgid "Input parameters Profile:"
+msgstr "Profil vstupních parametrů:"
+
+# OP_DEF_OFFIC
+#: OP_DEF_OFFIC
+msgid "The official URL for this operation definition is:"
+msgstr "Oficiální URL této definice operace je:"
+
+# OP_DEF_OUTPAR
+#: OP_DEF_OUTPAR
+msgid "Output parameters Profile:"
+msgstr "Profil výstupních parametrů:"
+
+# OP_DEF_SCO
+#: OP_DEF_SCO
+msgctxt "OP_DEF_SCO"
+msgid "Scope"
+msgstr "Rozsah"
+
+# OP_DEF_URL
+#: OP_DEF_URL
+msgid "URL: [base]/{0}"
+msgstr "URL: [base]/{0}"
+
+# OP_DEF_USE
+#: OP_DEF_USE
+msgid "Use"
+msgstr "Použití"
+
+# OP_OUT_DIAG
+#: OP_OUT_DIAG
+msgid "Diagnostics"
+msgstr "Diagnostika"
+
+# OP_OUT_OK
+#: OP_OUT_OK
+msgid "All OK"
+msgstr "Vše OK"
+
+# OP_OUT_SEV
+#: OP_OUT_SEV
+msgid "Severity"
+msgstr "Závažnost"
+
+# OP_OUT_SRC
+#: OP_OUT_SRC
+msgctxt "OP_OUT_SRC"
+msgid "Source"
+msgstr "Zdroj"
+
+# OP_OUT_SUMM
+#: OP_OUT_SUMM
+msgid "OperationOutcome ({0} Error(s), {1} Warning(s), {2} Hint(s))"
+msgstr "OperationOutcome ({0} chyb, {1} varování, {2} doporučení)"
+
+# OP_OUT_SUMM_ALL_OK
+#: OP_OUT_SUMM_ALL_OK
+msgid "OperationOutcome (ALL OK)"
+msgstr "OperationOutcome (VŠE OK)"
+
+# OP_OUT_SUMM_NOHINT
+#: OP_OUT_SUMM_NOHINT
+msgid "OperationOutcome ({0} Error(s), {1} Warning(s))"
+msgstr "OperationOutcome ({0} chyb, {1} varování)"
+
+# PARS_SUMMARY_LIST
+#: PARS_SUMMARY_LIST
+msgid "Parameters: {0}"
+msgstr "Parametry: {0}"
+
+# PARS_SUMMARY_SIZE
+#: PARS_SUMMARY_SIZE
+msgid "Parameters ({0} parameters)"
+msgstr "Parametry ({0} parametrů)"
+
+# PAT_ACTIVE
+#: PAT_ACTIVE
+msgid "Active:"
+msgstr "Aktivní:"
+
+# PAT_ACTIVE_HINT
+#: PAT_ACTIVE_HINT
+msgid "Record is active"
+msgstr "Záznam je aktivní"
+
+# PAT_ALT_NAME
+#: PAT_ALT_NAME
+msgid "Alt. Name:"
+msgstr "Alternativní jméno:"
+
+# PAT_ALT_NAME_HINT
+#: PAT_ALT_NAME_HINT
+msgid "Alternate names (see the one above)"
+msgstr "Alternativní jména (viz výše uvedené)"
+
+# PAT_CONTACT
+#: PAT_CONTACT
+msgid "Contact Detail"
+msgstr "Kontaktní údaje"
+
+# PAT_CONTACT_HINT
+#: PAT_CONTACT_HINT
+msgid "Ways to contact the Patient"
+msgstr "Způsoby kontaktování pacienta"
+
+# PAT_CONTAINED
+#: PAT_CONTAINED
+msgid "Contained Resource"
+msgid_plural "Contained Resources"
+msgstr[0] "Obsažený zdroj"
+msgstr[1] "Obsažené zdroje"
+
+# PAT_DECEASED
+#: PAT_DECEASED
+msgid "Deceased:"
+msgstr "Zemřelý:"
+
+# PAT_DECEASED_HINT
+#: PAT_DECEASED_HINT
+msgid "Known status of Patient"
+msgstr "Známý stav pacienta"
+
+# PAT_DOB
+#: PAT_DOB
+msgid "DoB: {0}"
+msgstr "Datum narození: {0}"
+
+# PAT_GENDER
+#: PAT_GENDER
+msgid "Gender: {0}"
+msgstr "Pohlaví: {0}"
+
+# PAT_GP
+#: PAT_GP
+msgid "General Practitioner"
+msgstr "Praktický lékař"
+
+# PAT_LANG
+#: PAT_LANG
+msgid "Language:"
+msgid_plural "Languages:"
+msgstr[0] "Jazyk:"
+msgstr[1] "Jazyky:"
+
+# PAT_LANG_HINT
+#: PAT_LANG_HINT
+msgid "Language spoken"
+msgid_plural "Languages spoken"
+msgstr[0] "Používaný jazyk"
+msgstr[1] "Používané jazyky"
+
+# PAT_LANG_PREFERRED
+#: PAT_LANG_PREFERRED
+msgid "(preferred)"
+msgstr "(preferováno)"
+
+# PAT_LINKS
+#: PAT_LINKS
+msgctxt "PAT_LINKS"
+msgid "Links:"
+msgstr "Odkazy:"
+
+# PAT_LINKS_HINT
+#: PAT_LINKS_HINT
+msgid "Patient Links"
+msgstr "Odkazy pacienta"
+
+# PAT_LINK_REFER
+#: PAT_LINK_REFER
+msgid "Please refer to"
+msgstr "Odkazujte prosím na"
+
+# PAT_LINK_REPL
+#: PAT_LINK_REPL
+msgid "This record replaces"
+msgstr "Tento záznam nahrazuje"
+
+# PAT_LINK_REPLBY
+#: PAT_LINK_REPLBY
+msgid "This record replaced by"
+msgstr "Tento záznam byl nahrazen"
+
+# PAT_LINK_SEE
+#: PAT_LINK_SEE
+msgid "Also see"
+msgstr "Viz také"
+
+# PAT_MARITAL
+#: PAT_MARITAL
+msgid "Marital Status:"
+msgstr "Rodinný stav:"
+
+# PAT_MARITAL_HINT
+#: PAT_MARITAL_HINT
+msgid "Known Marital status of Patient"
+msgstr "Známý rodinný stav pacienta"
+
+# PAT_MO
+#: PAT_MO
+msgid "Managing Organization"
+msgstr "Spravující organizace"
+
+# PAT_MUL_BIRTH
+#: PAT_MUL_BIRTH
+msgid "Multiple Birth:"
+msgstr "Vícečetný porod:"
+
+# PAT_MUL_BIRTH_HINT
+#: PAT_MUL_BIRTH_HINT
+msgid "Known multipleBirth status of Patient"
+msgstr "Známý stav multipleBirth pacienta"
+
+# PAT_NOK_CONTACT_HINT
+#: PAT_NOK_CONTACT_HINT
+msgid "Patient contact"
+msgstr "Kontakt pacienta"
+
+# PAT_NOM_CONTACT
+#: PAT_NOM_CONTACT
+msgid "Nominated Contact:"
+msgstr "Určený kontakt:"
+
+# PAT_NO_DOB
+#: PAT_NO_DOB
+msgid "DoB Unknown"
+msgstr "Datum narození neznámé"
+
+# PAT_NO_GENDER
+#: PAT_NO_GENDER
+msgid "(no stated gender)"
+msgstr "(pohlaví není uvedeno)"
+
+# PAT_NO_NAME
+#: PAT_NO_NAME
+msgid "Anonymous Patient"
+msgstr "Anonymní pacient"
+
+# PAT_ORG
+#: PAT_ORG
+msgid "Organization:"
+msgstr "Organizace:"
+
+# PAT_OTHER_ID
+#: PAT_OTHER_ID
+msgid "Other Id:"
+msgid_plural "Other Ids:"
+msgstr[0] "Jiné Id:"
+msgstr[1] "Jiná Id:"
+
+# PAT_OTHER_ID_HINT
+#: PAT_OTHER_ID_HINT
+msgid "Other Id (see the one above)"
+msgid_plural "Other Ids (see the one above)"
+msgstr[0] "Jiné Id (viz výše uvedené)"
+msgstr[1] "Jiná Id (viz výše uvedené)"
+
+# PAT_PERIOD
+#: PAT_PERIOD
+msgid "Valid Period:"
+msgstr "Období platnosti:"
+
+# PAT_PHOTO
+#: PAT_PHOTO
+msgid "Patient Photo"
+msgstr "Fotografie pacienta"
+
+# PAT_RELN
+#: PAT_RELN
+msgid "Relationships:"
+msgstr "Vztahy:"
+
+# PROF_DRIV_ERR_GEN_NARR
+#: PROF_DRIV_ERR_GEN_NARR
+msgid "Error Generating Narrative for"
+msgstr "Chyba při generování narativu pro"
+
+# PROF_DRIV_EXCP
+#: PROF_DRIV_EXCP
+msgid "Exception Generating Narrative: {0}"
+msgstr "Výjimka při generování narativu: {0}"
+
+# PROF_DRIV_FEXCP
+#: PROF_DRIV_FEXCP
+msgid "Cannot find definition for {0}"
+msgstr "Nelze najít definici pro {0}"
+
+# PROF_DRIV_GEN_NARR
+#: PROF_DRIV_GEN_NARR
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+# PROF_DRIV_GEN_NARR_TECH
+#: PROF_DRIV_GEN_NARR_TECH
+msgid "Generated Narrative: {0} {1}"
+msgstr "Generovaný narativ: {0} {1}"
+
+# PROF_DRIV_SUMM
+#: PROF_DRIV_SUMM
+msgctxt "PROF_DRIV_SUMM"
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+# PROF_DRIV_SUMM_PROP
+#: PROF_DRIV_SUMM_PROP
+msgid "{0} = {1}"
+msgstr "{0} = {1}"
+
+# PROV_ACT
+#: PROV_ACT
+msgid "Activity"
+msgstr "Aktivita"
+
+# PROV_AGE
+#: PROV_AGE
+msgid "Agents"
+msgstr "Agenti"
+
+# PROV_BEHALF
+#: PROV_BEHALF
+msgid "On Behalf Of"
+msgstr "Jménem"
+
+# PROV_FOR
+#: PROV_FOR
+msgid "Provenance for {0}"
+msgstr "Provenience pro {0}"
+
+# PROV_OCC
+#: PROV_OCC
+msgid "Occurrence"
+msgstr "Výskyt"
+
+# PROV_POL
+#: PROV_POL
+msgid "Policy"
+msgstr "Zásady"
+
+# PROV_PROV
+#: PROV_PROV
+msgid "Provenance for"
+msgstr "Provenience pro"
+
+# PROV_PROVE
+#: PROV_PROVE
+msgid "Provenance for:"
+msgstr "Provenience pro:"
+
+# PROV_REC
+#: PROV_REC
+msgid "Recorded"
+msgstr "Zaznamenáno"
+
+# PROV_REFERENCE
+#: PROV_REFERENCE
+msgid "This {0} is referenced from the following provenance resources:"
+msgstr "Tento {0} je odkazován z následujících zdrojů provenience:"
+
+# PROV_ROLE
+#: PROV_ROLE
+msgctxt "PROV_ROLE"
+msgid "Role"
+msgstr "Role"
+
+# PROV_WHO
+#: PROV_WHO
+msgid "who"
+msgstr "kdo"
+
+# QUEST_ADD_INFO
+#: QUEST_ADD_INFO
+msgid "Additional information about the item"
+msgstr "Další informace o položce"
+
+# QUEST_ALLOWED
+#: QUEST_ALLOWED
+msgid "Allowed Answers"
+msgstr "Povolené odpovědi"
+
+# QUEST_ANSW
+#: QUEST_ANSW
+msgid "Answer options for {0}"
+msgstr "Možnosti odpovědí pro {0}"
+
+# QUEST_ANSWER
+#: QUEST_ANSWER
+msgid "Answer"
+msgstr "Odpověď"
+
+# QUEST_ANSWERS
+#: QUEST_ANSWERS
+msgid "Answers"
+msgstr "Odpovědi"
+
+# QUEST_APP
+#: QUEST_APP
+msgid "Approval Date"
+msgstr "Datum schválení"
+
+# QUEST_ARE_TRUE
+#: QUEST_ARE_TRUE
+msgid "?? are true:"
+msgstr "?? jsou pravdivé:"
+
+# QUEST_ATTRIBUTES
+#: QUEST_ATTRIBUTES
+msgid "Other attributes of the item"
+msgstr "Další atributy položky"
+
+# QUEST_CALC
+#: QUEST_CALC
+msgid "Calculated Value"
+msgstr "Vypočtená hodnota"
+
+# QUEST_CAND
+#: QUEST_CAND
+msgid "Candidates"
+msgstr "Kandidáti"
+
+# QUEST_CAT
+#: QUEST_CAT
+msgid "Category: {0}"
+msgstr "Kategorie: {0}"
+
+# QUEST_CONT
+#: QUEST_CONT
+msgid "Context"
+msgstr "Kontext"
+
+# QUEST_DERIVED
+#: QUEST_DERIVED
+msgctxt "QUEST_DERIVED"
+msgid "Derived From"
+msgstr "Odvozeno od"
+
+# QUEST_DISPLAY
+#: QUEST_DISPLAY
+msgid "Is optional to display"
+msgstr "Zobrazení je volitelné"
+
+# QUEST_DISPLAY_CAT
+#: QUEST_DISPLAY_CAT
+msgid "Display Category"
+msgstr "Kategorie zobrazení"
+
+# QUEST_EFF_PERIOD
+#: QUEST_EFF_PERIOD
+msgid "Effective Period"
+msgstr "Období účinnosti"
+
+# QUEST_EN
+#: QUEST_EN
+msgid "Enable When"
+msgstr "Povolit, když"
+
+# QUEST_ENABLE
+#: QUEST_ENABLE
+msgid "Enable When:"
+msgstr "Povolit, když:"
+
+# QUEST_EXP
+#: QUEST_EXP
+msgid "Expressions:"
+msgstr "Výrazy:"
+
+# QUEST_GROUP
+#: QUEST_GROUP
+msgid "Group"
+msgstr "Skupina"
+
+# QUEST_HIDDEN
+#: QUEST_HIDDEN
+msgid "Is a hidden item"
+msgstr "Je skrytá položka"
+
+# QUEST_HIDDEN_ITEM
+#: QUEST_HIDDEN_ITEM
+msgid "Hidden Item"
+msgstr "Skrytá položka"
+
+# QUEST_ID
+#: QUEST_ID
+msgid "Link Id"
+msgstr "Id odkazu"
+
+# QUEST_INITIAL
+#: QUEST_INITIAL
+msgid "Initial Value:"
+msgstr "Počáteční hodnota:"
+
+# QUEST_INITIALLY
+#: QUEST_INITIALLY
+msgid "(initially selected)"
+msgstr "(zpočátku vybráno)"
+
+# QUEST_INITIAL_ANSWER
+#: QUEST_INITIAL_ANSWER
+msgid "Initial Answer"
+msgstr "Počáteční odpověď"
+
+# QUEST_INT
+#: QUEST_INT
+msgid "Initial Values"
+msgstr "Počáteční hodnoty"
+
+# QUEST_ITEM
+#: QUEST_ITEM
+msgid "Item"
+msgstr "Položka"
+
+# QUEST_ITEM_CONT
+#: QUEST_ITEM_CONT
+msgid "Item Context"
+msgstr "Kontext položky"
+
+# QUEST_LINK
+#: QUEST_LINK
+msgid "The linkID for the item"
+msgstr "linkID položky"
+
+# QUEST_LINKED
+#: QUEST_LINKED
+msgid "Is linked to an observation"
+msgstr "Je propojeno s pozorováním"
+
+# QUEST_LINKID
+#: QUEST_LINKID
+msgid "LinkID"
+msgstr "LinkID"
+
+# QUEST_MAND
+#: QUEST_MAND
+msgid "Mandatory"
+msgstr "Povinné"
+
+# QUEST_MAX_LENGTH
+#: QUEST_MAX_LENGTH
+msgid "Max Length"
+msgstr "Max. délka"
+
+# QUEST_NLM
+#: QUEST_NLM
+msgid "NLM Forms Library"
+msgstr "Knihovna formulářů NLM"
+
+# QUEST_NONE_SPEC
+#: QUEST_NONE_SPEC
+msgid "None specified"
+msgstr "Nic neurčeno"
+
+# QUEST_OBSERVATION
+#: QUEST_OBSERVATION
+msgid "Observation Link Period"
+msgstr "Období odkazu na pozorování"
+
+# QUEST_OPT
+#: QUEST_OPT
+msgid "Options Sets"
+msgstr "Sady možností"
+
+# QUEST_OPTIONS
+#: QUEST_OPTIONS
+msgid "Options:"
+msgstr "Možnosti:"
+
+# QUEST_ORIENTATION
+#: QUEST_ORIENTATION
+msgid "Orientation: {0}"
+msgstr "Orientace: {0}"
+
+# QUEST_PREFIX
+#: QUEST_PREFIX
+msgid "Prefix"
+msgstr "Prefix"
+
+# QUEST_PUB
+#: QUEST_PUB
+msgid "Publication Date"
+msgstr "Datum publikace"
+
+# QUEST_QUEST
+#: QUEST_QUEST
+msgid "Questionnaire"
+msgstr "Dotazník"
+
+# QUEST_QUESTION
+#: QUEST_QUESTION
+msgid "Questionnaire:"
+msgstr "Dotazník:"
+
+# QUEST_READONLY
+#: QUEST_READONLY
+msgid "Is Read Only"
+msgstr "Je pouze pro čtení"
+
+# QUEST_READ_ONLY
+#: QUEST_READ_ONLY
+msgid "Read Only"
+msgstr "Pouze pro čtení"
+
+# QUEST_REP
+#: QUEST_REP
+msgid "Repeats"
+msgstr "Opakuje se"
+
+# QUEST_RESP_ROOT
+#: QUEST_RESP_ROOT
+msgid "QuestionnaireResponseRoot"
+msgstr "QuestionnaireResponseRoot"
+
+# QUEST_REV_DATE
+#: QUEST_REV_DATE
+msgid "Last Review Date"
+msgstr "Datum poslední revize"
+
+# QUEST_ROOT
+#: QUEST_ROOT
+msgid "QuestionnaireRoot"
+msgstr "QuestionnaireRoot"
+
+# QUEST_STRUCT
+#: QUEST_STRUCT
+msgid "Structure"
+msgstr "Struktura"
+
+# QUEST_SUBJECT
+#: QUEST_SUBJECT
+msgid "Can change the subject of the questionnaire"
+msgstr "Může změnit subjekt dotazníku"
+
+# QUEST_SUB_TYPE
+#: QUEST_SUB_TYPE
+msgid "Subject Type"
+msgstr "Typ subjektu"
+
+# QUEST_SUMMARY
+#: QUEST_SUMMARY
+msgid "Response to Questionnaire ''{0}'' about ''{1}''"
+msgstr "Odpověď na dotazník ''{0}'' o ''{1}''"
+
+# QUEST_TEXT
+#: QUEST_TEXT
+msgid "Text"
+msgstr "Text"
+
+# QUEST_TEXTFOR
+#: QUEST_TEXTFOR
+msgid "Text for the item"
+msgstr "Text položky"
+
+# QUEST_TIMES
+#: QUEST_TIMES
+msgid "Minimum and Maximum # of times the item can appear in the instance"
+msgstr "Minimální a maximální počet výskytů položky v instanci"
+
+# QUEST_TRUE
+#: QUEST_TRUE
+msgid "are true:"
+msgstr "jsou pravdivé:"
+
+# QUEST_TRY
+#: QUEST_TRY
+msgid "Try this questionnaire out:"
+msgstr "Vyzkoušet tento dotazník:"
+
+# QUEST_TRY_QUEST
+#: QUEST_TRY_QUEST
+msgid "Try this QuestionnaireResponse out:"
+msgstr "Vyzkoušet tuto QuestionnaireResponse:"
+
+# QUEST_TYPE_ITEM
+#: QUEST_TYPE_ITEM
+msgid "The type of the item"
+msgstr "Typ položky"
+
+# QUEST_UNKNOWN_MODE
+#: QUEST_UNKNOWN_MODE
+msgid "Unknown QuestionnaireResponse Renderer Mode"
+msgstr "Neznámý režim rendereru QuestionnaireResponse"
+
+# QUEST_UNSPECIFIED_QUESTIONNAIRE
+#: QUEST_UNSPECIFIED_QUESTIONNAIRE
+msgid "Unspecified Questionnaire"
+msgstr "Nespecifikovaný dotazník"
+
+# QUEST_UNSPECIFIED_SUBJECT
+#: QUEST_UNSPECIFIED_SUBJECT
+msgctxt "QUEST_UNSPECIFIED_SUBJECT"
+msgid "Unspecified Subject"
+msgstr "Nespecifikovaný subjekt"
+
+# QUEST_VALUE
+#: QUEST_VALUE
+msgid "Value Set:"
+msgstr "Sada hodnot:"
+
+# R44B_DERIVES_FROM
+#: R44B_DERIVES_FROM
+msgid "derives from"
+msgstr "odvozuje se od"
+
+# R44B_HAS_TARGET
+#: R44B_HAS_TARGET
+msgid "has target"
+msgstr "má cíl"
+
+# R44B_HAS_TYPE
+#: R44B_HAS_TYPE
+msgid "has type"
+msgstr "má typ"
+
+# R44B_NOT_COMP
+#: R44B_NOT_COMP
+msgid "This is an {0} IG that is not compatible with {1}\" because"
+msgstr "Toto je IG {0}, které není kompatibilní s {1}\" protože"
+
+# R44B_NOT_IN
+#: R44B_NOT_IN
+msgid "The following resources are not in the {0} version"
+msgstr "Následující zdroje nejsou ve verzi {0}"
+
+# R44B_ONLY_IN
+#: R44B_ONLY_IN
+msgid "The following resources are only in the {0} version"
+msgstr "Následující zdroje jsou pouze ve verzi {0}"
+
+# R44B_PACKAGE_REF
+#: R44B_PACKAGE_REF
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
+msgstr "Balíčky pro <a href=\"{0}\">R4 ({1}.r4)</a> i <a href=\"{2}\">R4B ({3}.r4b)</a> jsou dostupné."
+
+# R44B_PROBLEMS
+#: R44B_PROBLEMS
+msgid "While checking for {0} compatibility, the following {1} problems were found"
+msgstr "Při kontrole kompatibility s {0} byly nalezeny následující problémy ({1})"
+
+# R44B_REFERS_TO
+#: R44B_REFERS_TO
+msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
+msgstr "<a href=\"{0}\">{1}}</a> odkazuje na kanonický typ na {2}"
+
+# R44B_USE_OK
+#: R44B_USE_OK
+msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1} systems."
+msgstr "Toto je IG {0}. Žádná z funkcí, které používá, se v {1} nemění, takže jej lze použít se systémy {1} beze změn."
+
+# R44B_WRONG_MSG
+#: R44B_WRONG_MSG
+msgid "Something went wrong with the cross-version analysis because"
+msgstr "Při analýze napříč verzemi došlo k chybě, protože"
+
+# REND_ADDED
+#: REND_ADDED
+msgid "Added:"
+msgstr "Přidáno:"
+
+# REND_CHANGED
+#: REND_CHANGED
+msgid "Changed:"
+msgstr "Změněno:"
+
+# REND_REMOVED
+#: REND_REMOVED
+msgid "Removed:"
+msgstr "Odstraněno:"
+
+# REND_ROW_CHANGED_SINCE_WAS
+#: REND_ROW_CHANGED_SINCE_WAS
+msgid "This row of content has been changed since {0} (was ''{1}'')"
+msgstr "Tento řádek obsahu byl změněn od {0} (byl ''{1}'')"
+
+# REND_ROW_SINCE
+#: REND_ROW_SINCE
+msgid "This row of content has been added since {0}"
+msgstr "Tento řádek obsahu byl přidán od {0}"
+
+# REND_SINCE_ADDED
+#: REND_SINCE_ADDED
+msgid "This content has been added since {0}"
+msgstr "Tento obsah byl přidán od {0}"
+
+# REND_SINCE_CHANGED
+#: REND_SINCE_CHANGED
+msgid "This content has been changed since {0}"
+msgstr "Tento obsah byl změněn od {0}"
+
+# REND_SINCE_CHANGED_WAS
+#: REND_SINCE_CHANGED_WAS
+msgid "This content has been changed since {0} (was ''{1}'')"
+msgstr "Tento obsah byl změněn od {0} (byl ''{1}'')"
+
+# REND_STANDARDS
+#: REND_STANDARDS
+msgid "Standards Status = {0}"
+msgstr "Stav standardu = {0}"
+
+# REQ_ACTOR
+#: REQ_ACTOR
+msgid "These requirements apply to the actor"
+msgstr "Tyto požadavky se vztahují na aktéra"
+
+# REQ_DERIVE
+#: REQ_DERIVE
+msgid "These requirements derive from"
+msgstr "Tyto požadavky jsou odvozeny od"
+
+# REQ_DERIVED
+#: REQ_DERIVED
+msgid "Derived From:"
+msgstr "Odvozeno od:"
+
+# REQ_FOLLOWING_ACTOR
+#: REQ_FOLLOWING_ACTOR
+msgid "These requirements apply to the following actors:"
+msgstr "Tyto požadavky se vztahují na následující aktéry:"
+
+# REQ_FOLLOWING_REQ
+#: REQ_FOLLOWING_REQ
+msgid "These requirements are derived from the following requirements:"
+msgstr "Tyto požadavky jsou odvozeny od následujících požadavků:"
+
+# REQ_LINKS
+#: REQ_LINKS
+msgctxt "REQ_LINKS"
+msgid "Links:"
+msgstr "Odkazy:"
+
+# REQ_SATISFIED
+#: REQ_SATISFIED
+msgid "Satisfied By:"
+msgstr "Splněno pomocí:"
+
+# RESOURCE_COPYRIGHT
+#: RESOURCE_COPYRIGHT
+msgid "Copyright Statement:"
+msgstr "Prohlášení o autorských právech:"
+
+# RES_REND_ACT
+#: RES_REND_ACT
+msgid "Active"
+msgstr "Aktivní"
+
+# RES_REND_COND_REF
+#: RES_REND_COND_REF
+msgid "Conditional Reference:"
+msgstr "Podmíněná reference:"
+
+# RES_REND_DESC
+#: RES_REND_DESC
+msgid ". Description: (todo)"
+msgstr ". Popis: (k dokončení)"
+
+# RES_REND_DRAFT
+#: RES_REND_DRAFT
+msgid "draft"
+msgstr "návrh"
+
+# RES_REND_ERROR
+#: RES_REND_ERROR
+msgid "Error rendering: {0}"
+msgstr "Chyba při vykreslování: {0}"
+
+# RES_REND_INFO_SOURCE
+#: RES_REND_INFO_SOURCE
+msgid "Information Source: <param name=\"source\"/>"
+msgstr "Zdroj informací: <param name=\"source\"/>"
+
+# RES_REND_LANGUAGE
+#: RES_REND_LANGUAGE
+msgid "Language: {0}"
+msgstr "Jazyk: {0}"
+
+# RES_REND_RET
+#: RES_REND_RET
+msgid "retired"
+msgstr "vyřazeno"
+
+# RES_REND_SEE_ON_THIS_PAGE
+#: RES_REND_SEE_ON_THIS_PAGE
+msgid "See on this page:"
+msgstr "Viz na této stránce:"
+
+# RES_REND_SPEC_RULES
+#: RES_REND_SPEC_RULES
+msgid "Special rules apply: {0}!"
+msgstr "Platí zvláštní pravidla: {0}!"
+
+# RES_REND_TAG
+#: RES_REND_TAG
+msgid "Tag"
+msgstr "Štítek"
+
+# RES_REND_TEMPLATE_ID
+#: RES_REND_TEMPLATE_ID
+msgid "templateId: {0}"
+msgstr "templateId: {0}"
+
+# RES_REND_UNKNOWN
+#: RES_REND_UNKNOWN
+msgid "Unknown"
+msgstr "Neznámé"
+
+# RES_REND_UPDATED
+#: RES_REND_UPDATED
+msgid "Last updated: {0}"
+msgstr "Naposledy aktualizováno: {0}"
+
+# RES_REND_VER
+#: RES_REND_VER
+msgid "version: {0}"
+msgstr "verze: {0}"
+
+# SDR_ALL_ELEM
+#: SDR_ALL_ELEM
+msgid "**ALL** elements"
+msgstr "**VŠECHNY** elementy"
+
+# SDR_ALL_EXT
+#: SDR_ALL_EXT
+msgid "**ALL** extensions"
+msgstr "**VŠECHNA** rozšíření"
+
+# SDR_ANY_ORDER
+#: SDR_ANY_ORDER
+msgid "// sliced by {0} in any order"
+msgstr "// rozděleno podle {0} v libovolném pořadí"
+
+# SDR_BP
+#: SDR_BP
+msgid "best practice"
+msgstr "osvědčený postup"
+
+# SDR_CAPSTMT
+#: SDR_CAPSTMT
+msgid "CapabilityStatements using this {0}"
+msgstr "CapabilityStatements používající tento {0}"
+
+# SDR_CH_DET
+#: SDR_CH_DET
+msgid "New Content"
+msgstr "Nový obsah"
+
+# SDR_CH_NO
+#: SDR_CH_NO
+msgid "No changes"
+msgstr "Žádné změny"
+
+# SDR_CLICK_COPY
+#: SDR_CLICK_COPY
+msgid "Click to copy URL"
+msgstr "Kliknutím zkopírujete URL"
+
+# SDR_CODE_FROM
+#: SDR_CODE_FROM
+msgid "(a valid code from {0})"
+msgstr "(platný kód z {0})"
+
+# SDR_COMPLY
+#: SDR_COMPLY
+msgid "Comply with this profile {0}"
+msgstr "Vyhovuje tomuto profilu {0}"
+
+# SDR_CONCEPT_DOMAIN
+#: SDR_CONCEPT_DOMAIN
+msgid "Concept Domain"
+msgstr "Doména konceptu"
+
+# SDR_CONT_CH_DET_CS
+#: SDR_CONT_CH_DET_CS
+msgid "The list of codes defined by the code system has changed"
+msgstr "Seznam kódů definovaných systémem kódů se změnil"
+
+# SDR_CONT_CH_DET_SD
+#: SDR_CONT_CH_DET_SD
+msgid "The data elements list has changed"
+msgstr "Seznam datových elementů se změnil"
+
+# SDR_CONT_CH_DET_VS
+#: SDR_CONT_CH_DET_VS
+msgid "The logical definition of the value set has changed"
+msgstr "Logická definice sady hodnot se změnila"
+
+# SDR_CONT_CH_NO
+#: SDR_CONT_CH_NO
+msgid "Unable to evaluate changes to content"
+msgstr "Nelze vyhodnotit změny obsahu"
+
+# SDR_DEFN_CH_DET_CS
+#: SDR_DEFN_CH_DET_CS
+msgctxt "SDR_DEFN_CH_DET_CS"
+msgid "One or more text definitions/displays have changed"
+msgstr "Jedna nebo více textových definic/zobrazení se změnila"
+
+# SDR_DEFN_CH_DET_SD
+#: SDR_DEFN_CH_DET_SD
+msgid "One or more text definitions, invariants or bindings have changed"
+msgstr "Jedna nebo více textových definic, invariantů nebo vazeb se změnila"
+
+# SDR_DEFN_CH_DET_VS
+#: SDR_DEFN_CH_DET_VS
+msgctxt "SDR_DEFN_CH_DET_VS"
+msgid "One or more text definitions/displays have changed"
+msgstr "Jedna nebo více textových definic/zobrazení se změnila"
+
+# SDR_DEFN_CH_NO
+#: SDR_DEFN_CH_NO
+msgid "Unable to evaluate changes to definitions"
+msgstr "Nelze vyhodnotit změny definic"
+
+# SDR_DERIVED
+#: SDR_DERIVED
+msgid "Derived from this {0}"
+msgstr "Odvozeno z tohoto {0}"
+
+# SDR_DRAFT
+#: SDR_DRAFT
+msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
+msgstr "Toto je návrh definice rozšíření; komise žádá zpětnou vazbu z implementace a definice nebo obsah rozšíření se mohou v budoucích verzích změnit"
+
+# SDR_DRAW_IN
+#: SDR_DRAW_IN
+msgid "Draw in Obligations & Additional Bindings from this {0}"
+msgstr "Převzít povinnosti a další vazby z tohoto {0}"
+
+# SDR_EXAMPLE
+#: SDR_EXAMPLE
+msgid "Examples for this {0}"
+msgstr "Příklady pro tento {0}"
+
+# SDR_EXPERIMENTAL
+#: SDR_EXPERIMENTAL
+msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
+msgstr "Toto je experimentální definice rozšíření; definice je určena pro testovací, vzdělávací nebo hodnoticí účely a neočekává se, že dozraje do stavu určeného pro skutečné použití."
+
+# SDR_EXTENSION_SUMMARY
+#: SDR_EXTENSION_SUMMARY
+msgid "Simple Extension with the type {0}: {1}"
+msgstr "Jednoduché rozšíření s typem {0}: {1}"
+
+# SDR_EXTENSION_SUMMARY_MODIFIER
+#: SDR_EXTENSION_SUMMARY_MODIFIER
+msgid "Simple <b>Modifier</b> Extension with the type {0}: {1}"
+msgstr "Jednoduché <b>modifikující</b> rozšíření s typem {0}: {1}"
+
+# SDR_EXT_ANY
+#: SDR_EXT_ANY
+msgid "This extension does not specify which elements it should be used on"
+msgstr "Toto rozšíření neuvádí, u kterých elementů má být použito"
+
+# SDR_EXT_CHANGED
+#: SDR_EXT_CHANGED
+msgid "The extension is represented a little differently in {0}"
+msgstr "Rozšíření je v {0} reprezentováno trochu jinak"
+
+# SDR_EXT_CTXT_PATH
+#: SDR_EXT_CTXT_PATH
+msgid "In addition, the extension can only be used when this FHIRPath expression is true"
+msgstr "Navíc lze rozšíření použít pouze tehdy, když je tento výraz FHIRPath pravdivý"
+
+# SDR_EXT_CTXT_PATHS
+#: SDR_EXT_CTXT_PATHS
+msgid "In addition, the extension can only be used when these FHIRPath expressions are true"
+msgstr "Navíc lze rozšíření použít pouze tehdy, když jsou tyto výrazy FHIRPath pravdivé"
+
+# SDR_EXT_DEPR
+#: SDR_EXT_DEPR
+msgid "This extension is deprecated and should no longer be used"
+msgstr "Toto rozšíření je zastaralé a již by se nemělo používat"
+
+# SDR_EXT_ELEM
+#: SDR_EXT_ELEM
+msgid "This extension may be used on the following element(s)"
+msgstr "Toto rozšíření lze použít u následujících elementů"
+
+# SDR_EXT_ELEM_ID
+#: SDR_EXT_ELEM_ID
+msgid "Element ID"
+msgstr "ID elementu"
+
+# SDR_EXT_EXT
+#: SDR_EXT_EXT
+msgctxt "SDR_EXT_EXT"
+msgid "Extension"
+msgstr "Rozšíření"
+
+# SDR_EXT_MOD
+#: SDR_EXT_MOD
+msgid "This extension is a modifier extension."
+msgstr "Toto rozšíření je modifikující rozšíření."
+
+# SDR_EXT_PATH
+#: SDR_EXT_PATH
+msgctxt "SDR_EXT_PATH"
+msgid "Path"
+msgstr "Cesta"
+
+# SDR_EXT_UNCHANGED
+#: SDR_EXT_UNCHANGED
+msgid "The extension is unchanged in {0}"
+msgstr "Rozšíření je v {0} beze změny"
+
+# SDR_EXT_VER_PFX
+#: SDR_EXT_VER_PFX
+msgid "This extension is allowed for use with"
+msgstr "Toto rozšíření je povoleno pro použití s"
+
+# SDR_EXT_VER_SFX
+#: SDR_EXT_VER_SFX
+msgid "."
+msgstr "."
+
+# SDR_FIXED_VALUE
+#: SDR_FIXED_VALUE
+msgctxt "SDR_FIXED_VALUE"
+msgid "Fixed Value: {0}"
+msgstr "Pevná hodnota: {0}"
+
+# SDR_FROM
+#: SDR_FROM
+msgid "From {0}"
+msgstr "Z {0}"
+
+# SDR_FROM_ELEM
+#: SDR_FROM_ELEM
+msgid "// from Element: <a href=\"{0}\">extension</a>"
+msgstr "// z elementu: <a href=\"{0}\">rozšíření</a>"
+
+# SDR_GUIDANCE_HERE
+#: SDR_GUIDANCE_HERE
+msgid "here"
+msgstr "zde"
+
+# SDR_GUIDANCE_PFX
+#: SDR_GUIDANCE_PFX
+msgid "Guidance on how to interpret the contents of this table can be found"
+msgstr "Pokyny k interpretaci obsahu této tabulky najdete"
+
+# SDR_GUIDANCE_SFX
+#: SDR_GUIDANCE_SFX
+msgctxt "SDR_GUIDANCE_SFX"
+msgid "-- no content: do not translate #1 --"
+msgstr ""
+
+# SDR_IMPOSE
+#: SDR_IMPOSE
+msgid "Impose this profile {0}"
+msgstr "Vynutit tento profil {0}"
+
+# SDR_INTRP_CH_DET_VS
+#: SDR_INTRP_CH_DET_VS
+msgid "The expansion has changed"
+msgstr "Expanze se změnila"
+
+# SDR_INTRP_CH_NO_VS
+#: SDR_INTRP_CH_NO_VS
+msgid "Unable to evaluate changes to the expansion"
+msgstr "Nelze vyhodnotit změny expanze"
+
+# SDR_LIMITED_ONE
+#: SDR_LIMITED_ONE
+msgid "This element is an array in the base standard, but the profile only allows one element"
+msgstr "Tento element je v základním standardu pole, ale profil povoluje pouze jeden element"
+
+# SDR_META_CH_DET
+#: SDR_META_CH_DET
+msgid "The resource metadata has changed ({0})"
+msgstr "Metadata zdroje se změnila ({0})"
+
+# SDR_META_CH_NO
+#: SDR_META_CH_NO
+msgid "Unable to evaluate changes to metadata"
+msgstr "Nelze vyhodnotit změny metadat"
+
+# SDR_MOD
+#: SDR_MOD
+msgid "(this element modifies the meaning of other elements)"
+msgstr "(tento element mění význam jiných elementů)"
+
+# SDR_MOD_SUPP
+#: SDR_MOD_SUPP
+msgid "(this element modifies the meaning of other elements, and must be supported)"
+msgstr "(tento element mění význam jiných elementů a musí být podporován)"
+
+# SDR_MULTIPLE_PROFILES
+#: SDR_MULTIPLE_PROFILES
+msgid "Multiple profiles are not supported at this time"
+msgstr "Více profilů není v tuto chvíli podporováno"
+
+# SDR_NOT_DONE_CC
+#: SDR_NOT_DONE_CC
+msgid "Error describing concept - not done yet (no codings, no text)"
+msgstr "Chyba při popisu konceptu - zatím není hotovo (žádná kódování, žádný text)"
+
+# SDR_NOT_GEN
+#: SDR_NOT_GEN
+msgid "Generating text summary of fixed value not yet done for type {0}"
+msgstr "Generování textového souhrnu pevné hodnoty zatím není hotovo pro typ {0}"
+
+# SDR_NOT_HANDLED_EXT
+#: SDR_NOT_HANDLED_EXT
+msgid "Not handled yet: complex extension ''{0}''"
+msgstr "Zatím nezpracováno: komplexní rozšíření ''{0}''"
+
+# SDR_NOT_USED
+#: SDR_NOT_USED
+msgid "This {0} is not used by any profiles in this Implementation Guide"
+msgstr "Tento {0} nepoužívá žádný profil v této implementační příručce"
+
+# SDR_OFF_URL
+#: SDR_OFF_URL
+msgid "The official URL for this profile is"
+msgstr "Oficiální URL tohoto profilu je"
+
+# SDR_ONE_OF
+#: SDR_ONE_OF
+msgid "One of these {0}"
+msgstr "Jeden z těchto {0}"
+
+# SDR_ONLY_ONE
+#: SDR_ONLY_ONE
+msgid "Only One!"
+msgstr "Pouze jeden!"
+
+# SDR_PATTERN_VALUE
+#: SDR_PATTERN_VALUE
+msgctxt "SDR_PATTERN_VALUE"
+msgid "Pattern Value: {0}"
+msgstr "Hodnota vzoru: {0}"
+
+# SDR_PRIM_VALUE
+#: SDR_PRIM_VALUE
+msgid "Primitive Value {0}"
+msgstr "Primitivní hodnota {0}"
+
+# SDR_REFER
+#: SDR_REFER
+msgid "Refer to this {0}"
+msgstr "Odkázat na tento {0}"
+
+# SDR_REQUIRED
+#: SDR_REQUIRED
+msgid "This element is required"
+msgstr "Tento element je povinný"
+
+# SDR_SEARCH
+#: SDR_SEARCH
+msgid "Search Parameters using this {0}"
+msgstr "Vyhledávací parametry používající tento {0}"
+
+# SDR_SORTED
+#: SDR_SORTED
+msgid "// sliced by {0} in the specified order {1}"
+msgstr "// rozděleno podle {0} v určeném pořadí {1}"
+
+# SDR_SRC_FHIR
+#: SDR_SRC_FHIR
+msgid "FHIR Std."
+msgstr "FHIR Std."
+
+# SDR_SRC_IG
+#: SDR_SRC_IG
+msgid "This IG"
+msgstr "Tento IG"
+
+# SDR_SUPP
+#: SDR_SUPP
+msgid "(this element must be supported)"
+msgstr "(tento element musí být podporován)"
+
+# SDR_UNK_EXT
+#: SDR_UNK_EXT
+msgid "Not handled yet: unknown extension ''{0}''"
+msgstr "Zatím nezpracováno: neznámé rozšíření ''{0}''"
+
+# SDR_USAGE
+#: SDR_USAGE
+msgid "Usages"
+msgstr "Použití"
+
+# SDR_USE
+#: SDR_USE
+msgid "Use this {0}"
+msgstr "Použít tento {0}"
+
+# SDR_VER_BEF
+#: SDR_VER_BEF
+msgid "For versions until {0}"
+msgstr "Pro verze do {0}"
+
+# SDR_VER_FOR
+#: SDR_VER_FOR
+msgid "For version {0}"
+msgstr "Pro verzi {0}"
+
+# SDR_VER_FROM_PFX
+#: SDR_VER_FROM_PFX
+msgctxt "SDR_VER_FROM_PFX"
+msgid "FHIR versions"
+msgstr "Verze FHIR"
+
+# SDR_VER_FROM_SFX
+#: SDR_VER_FROM_SFX
+msgid "and after"
+msgstr "a novější"
+
+# SDR_VER_ON
+#: SDR_VER_ON
+msgid "For versions {0} onwards"
+msgstr "Pro verze {0} a novější"
+
+# SDR_VER_RANGE
+#: SDR_VER_RANGE
+msgid "For versions {0} to {1}"
+msgstr "Pro verze {0} až {1}"
+
+# SDR_VER_RANGE_MID
+#: SDR_VER_RANGE_MID
+msgctxt "SDR_VER_RANGE_MID"
+msgid "to"
+msgstr "až"
+
+# SDR_VER_RANGE_PFX
+#: SDR_VER_RANGE_PFX
+msgctxt "SDR_VER_RANGE_PFX"
+msgid "FHIR versions"
+msgstr "Verze FHIR"
+
+# SDR_VER_RANGE_SFX
+#: SDR_VER_RANGE_SFX
+msgctxt "SDR_VER_RANGE_SFX"
+msgid "-- no content: do not translate #2 --"
+msgstr ""
+
+# SDR_VER_TO_PFX
+#: SDR_VER_TO_PFX
+msgid "FHIR versions up to"
+msgstr "Verze FHIR do"
+
+# SDR_VER_TO_SFX
+#: SDR_VER_TO_SFX
+msgctxt "SDR_VER_TO_SFX"
+msgid "-- no content: do not translate #3 --"
+msgstr ""
+
+# SDR_VER_UNK
+#: SDR_VER_UNK
+msgid "For unknown versions"
+msgstr "Pro neznámé verze"
+
+# SDT_DEF
+#: SDT_DEF
+msgctxt "SDT_DEF"
+msgid "Definition"
+msgstr "Definice"
+
+# SDT_DT
+#: SDT_DT
+msgid "DataType"
+msgstr "Datový typ"
+
+# SDT_DT_PROF
+#: SDT_DT_PROF
+msgid "DataType Profile"
+msgstr "Profil datového typu"
+
+# SDT_EXTENSION
+#: SDT_EXTENSION
+msgctxt "SDT_EXTENSION"
+msgid "Extension"
+msgstr "Rozšíření"
+
+# SDT_LM
+#: SDT_LM
+msgctxt "SDT_LM"
+msgid "Logical Model"
+msgstr "Logický model"
+
+# SDT_LM_PROF
+#: SDT_LM_PROF
+msgid "Logical Model Profile"
+msgstr "Profil logického modelu"
+
+# SDT_OBLIGATION_PROFILE
+#: SDT_OBLIGATION_PROFILE
+msgid "Obligation Profile"
+msgstr "Profil povinností"
+
+# SDT_ORIGINAL_SOURCE
+#: SDT_ORIGINAL_SOURCE
+msgid "Original Source"
+msgstr "Původní zdroj"
+
+# SDT_PT
+#: SDT_PT
+msgid "Primitive Type"
+msgstr "Primitivní typ"
+
+# SDT_PT_PROF
+#: SDT_PT_PROF
+msgid "Primitive Type Profile"
+msgstr "Profil primitivního typu"
+
+# SDT_RES
+#: SDT_RES
+msgctxt "SDT_RES"
+msgid "Resource"
+msgstr "Zdroj"
+
+# SDT_RES_PROF
+#: SDT_RES_PROF
+msgctxt "SDT_RES_PROF"
+msgid "Profile"
+msgstr "Profil"
+
+# SD_COMP_HEAD_CARD_L
+#: SD_COMP_HEAD_CARD_L
+msgid "L Card."
+msgstr "L kard."
+
+# SD_COMP_HEAD_CARD_L_DESC
+#: SD_COMP_HEAD_CARD_L_DESC
+msgid "Minimum and Maximum # of times the element can appear in the instance - Left Structure"
+msgstr "Minimální a maximální počet výskytů elementu v instanci - levá struktura"
+
+# SD_COMP_HEAD_CARD_R
+#: SD_COMP_HEAD_CARD_R
+msgid "R Card."
+msgstr "P kard."
+
+# SD_COMP_HEAD_CARD_R_DESC
+#: SD_COMP_HEAD_CARD_R_DESC
+msgid "Minimum and Maximum # of times the element can appear in the instance - Right Structure"
+msgstr "Minimální a maximální počet výskytů elementu v instanci - pravá struktura"
+
+# SD_COMP_HEAD_COMP_DESC
+#: SD_COMP_HEAD_COMP_DESC
+msgid "Comments about the comparison"
+msgstr "Komentáře k porovnání"
+
+# SD_COMP_HEAD_DESC_L
+#: SD_COMP_HEAD_DESC_L
+msgid "L Description & Constraints"
+msgstr "L popis a omezení"
+
+# SD_COMP_HEAD_DESC_L_DESC
+#: SD_COMP_HEAD_DESC_L_DESC
+msgid "Additional information about the element - Left Structure"
+msgstr "Další informace o elementu - levá struktura"
+
+# SD_COMP_HEAD_DESC_R
+#: SD_COMP_HEAD_DESC_R
+msgid "R Description & Constraints"
+msgstr "P popis a omezení"
+
+# SD_COMP_HEAD_DESC_R_DESC
+#: SD_COMP_HEAD_DESC_R_DESC
+msgid "Additional information about the element - Right Structure"
+msgstr "Další informace o elementu - pravá struktura"
+
+# SD_COMP_HEAD_FLAGS_L
+#: SD_COMP_HEAD_FLAGS_L
+msgid "L Flags"
+msgstr "L příznaky"
+
+# SD_COMP_HEAD_FLAGS_L_DESC
+#: SD_COMP_HEAD_FLAGS_L_DESC
+msgid "Information about the use of the element - Left Structure"
+msgstr "Informace o použití elementu - levá struktura"
+
+# SD_COMP_HEAD_FLAGS_R
+#: SD_COMP_HEAD_FLAGS_R
+msgid "R Flags"
+msgstr "P příznaky"
+
+# SD_COMP_HEAD_FLAGS_R_DESC
+#: SD_COMP_HEAD_FLAGS_R_DESC
+msgid "Information about the use of the element - Right Structure"
+msgstr "Informace o použití elementu - pravá struktura"
+
+# SD_COMP_HEAD_TYPE_L
+#: SD_COMP_HEAD_TYPE_L
+msgid "L Type"
+msgstr "L typ"
+
+# SD_COMP_HEAD_TYPE_L_DESC
+#: SD_COMP_HEAD_TYPE_L_DESC
+msgid "Reference to the type of the element - Left Structure"
+msgstr "Reference na typ elementu - levá struktura"
+
+# SD_COMP_HEAD_TYPE_R
+#: SD_COMP_HEAD_TYPE_R
+msgid "R Type"
+msgstr "P typ"
+
+# SD_COMP_HEAD_TYPE_R_DESC
+#: SD_COMP_HEAD_TYPE_R_DESC
+msgid "Reference to the type of the element - Right Structure"
+msgstr "Reference na typ elementu - pravá struktura"
+
+# SD_DOCO
+#: SD_DOCO
+msgid "Documentation for this format"
+msgstr "Dokumentace pro tento formát"
+
+# SD_GRID_HEAD_CARD_DESC
+#: SD_GRID_HEAD_CARD_DESC
+msgid "Minimum and Maximum # of times the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
+msgstr "Minimální a maximální počet výskytů elementu v instanci. Horní indexy označují další omezení výskytu"
+
+# SD_GRID_HEAD_DESC
+#: SD_GRID_HEAD_DESC
+msgid "Constraints and Usage"
+msgstr "Omezení a použití"
+
+# SD_GRID_HEAD_DESC_DESC
+#: SD_GRID_HEAD_DESC_DESC
+msgid "Fixed values, length limits, vocabulary bindings and other usage notes"
+msgstr "Pevné hodnoty, limity délky, vazby na slovník a další poznámky k použití"
+
+# SD_GRID_HEAD_NAME_DESC
+#: SD_GRID_HEAD_NAME_DESC
+msgid "The name of the element (Slice name in brackets).  Mouse-over provides definition"
+msgstr "Název elementu (název řezu v závorkách). Definice se zobrazí při najetí myší"
+
+# SD_GRID_HEAD_TYPE_DESC
+#: SD_GRID_HEAD_TYPE_DESC
+msgid "Reference to the type of the element"
+msgstr "Reference na typ elementu"
+
+# SD_HEAD_CARD_DESC
+#: SD_HEAD_CARD_DESC
+msgctxt "SD_HEAD_CARD_DESC"
+msgid "Minimum and Maximum # of times the element can appear in the instance"
+msgstr "Minimální a maximální počet výskytů elementu v instanci"
+
+# SD_HEAD_DESC_DESC
+#: SD_HEAD_DESC_DESC
+msgid "Additional information about the element"
+msgstr "Další informace o elementu"
+
+# SD_HEAD_FLAGS_DESC
+#: SD_HEAD_FLAGS_DESC
+msgid "Information about the use of the element"
+msgstr "Informace o použití elementu"
+
+# SD_LEGEND
+#: SD_LEGEND
+msgid "Legend for this format"
+msgstr "Legenda pro tento formát"
+
+# SD_SLICING_INFO
+#: SD_SLICING_INFO
+msgid "{0}, {1} by {2}"
+msgstr "{0}, {1} podle {2}"
+
+# SD_SUMMARY_FIXED
+#: SD_SUMMARY_FIXED
+msgid "Fixed: {0} {1}"
+msgstr "Pevné: {0} {1}"
+
+# SD_SUMMARY_MANDATORY
+#: SD_SUMMARY_MANDATORY
+msgid "Mandatory: {0} {1}"
+msgstr "Povinné: {0} {1}"
+
+# SD_SUMMARY_MISSING_EXTENSION
+#: SD_SUMMARY_MISSING_EXTENSION
+msgid "Unable to summarise extension {0} (no extension found)"
+msgstr "Nelze shrnout rozšíření {0} (nenalezeno žádné rozšíření)"
+
+# SD_SUMMARY_MISSING_PROFILE
+#: SD_SUMMARY_MISSING_PROFILE
+msgid "Unable to summarise profile {0} (no profile found)"
+msgstr "Nelze shrnout profil {0} (nenalezen žádný profil)"
+
+# SD_SUMMARY_MUST_SUPPORT
+#: SD_SUMMARY_MUST_SUPPORT
+msgid "Must-Support: {0} {1}"
+msgstr "Musí být podporováno: {0} {1}"
+
+# SD_SUMMARY_NESTED_MANDATORY
+#: SD_SUMMARY_NESTED_MANDATORY
+msgid "({0} nested mandatory {1})"
+msgstr "({0} vnořených povinných {1})"
+
+# SD_SUMMARY_PROHIBITED
+#: SD_SUMMARY_PROHIBITED
+msgid "Prohibited: {0} {1}"
+msgstr "Zakázáno: {0} {1}"
+
+# SD_SUMMARY_PUBLICATION
+#: SD_SUMMARY_PUBLICATION
+msgid "This profile was published on {0} as a {1} by {2}"
+msgstr "Tento profil byl publikován dne {0} jako {1} vydavatelem {2}"
+
+# SD_SUMMARY_SLICE
+#: SD_SUMMARY_SLICE
+msgid "The element {0} is sliced based on the value of {1}"
+msgid_plural "The element {0} is sliced based on the values of {1}"
+msgstr[0] "Element {0} je rozdělen na řezy podle hodnoty {1}"
+msgstr[1] "Element {0} je rozdělen na řezy podle hodnot {1}"
+
+# SD_SUMMARY_SLICES
+#: SD_SUMMARY_SLICES
+msgid "This structure defines the following {0}Slices{1}"
+msgstr "Tato struktura definuje následující {0}řezy{1}"
+
+# SD_SUMMARY_SLICE_NONE
+#: SD_SUMMARY_SLICE_NONE
+msgid "There is a slice with no discriminator at {0}"
+msgstr "Na {0} je řez bez diskriminátoru"
+
+# SD_XIG_LINK
+#: SD_XIG_LINK
+msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">usages in the FHIR IG Statistics</a></p>"
+msgstr "<p>Můžete také zkontrolovat <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">použití ve statistikách FHIR IG</a></p>"
+
+# SEARCH_PAR_ALLOWED
+#: SEARCH_PAR_ALLOWED
+msgid "Allowed:"
+msgstr "Povoleno:"
+
+# SEARCH_PAR_CHAIN
+#: SEARCH_PAR_CHAIN
+msgid "Chains"
+msgstr "Řetězení"
+
+# SEARCH_PAR_EXP
+#: SEARCH_PAR_EXP
+msgid "Expression"
+msgstr "Výraz"
+
+# SEARCH_PAR_MULTIPLES
+#: SEARCH_PAR_MULTIPLES
+msgid "Multiples"
+msgstr "Násobnosti"
+
+# SEARCH_PAR_MULTIPLE_AND_APPEAR
+#: SEARCH_PAR_MULTIPLE_AND_APPEAR
+msgid "multipleAnd: The parameter may only appear once"
+msgstr "multipleAnd: Parametr se smí objevit pouze jednou"
+
+# SEARCH_PAR_MULTIPLE_AND_REPEAT
+#: SEARCH_PAR_MULTIPLE_AND_REPEAT
+msgid "multipleAnd: The parameter may repeat in order to specify multiple values that must all be true"
+msgstr "multipleAnd: Parametr se může opakovat pro určení více hodnot, které musí být všechny pravdivé"
+
+# SEARCH_PAR_MULTIPLE_AND_SERVER
+#: SEARCH_PAR_MULTIPLE_AND_SERVER
+msgid "multipleAnd: It''s up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
+msgstr "multipleAnd: Je na serveru, zda se parametr může opakovat pro určení více hodnot, které musí být všechny pravdivé"
+
+# SEARCH_PAR_MULTIPLE_OR_MULTIPLE
+#: SEARCH_PAR_MULTIPLE_OR_MULTIPLE
+msgid "multipleOr: The parameter may have multiple values (separated by comma) where at least one must be true"
+msgstr "multipleOr: Parametr může mít více hodnot (oddělených čárkou), z nichž alespoň jedna musí být pravdivá"
+
+# SEARCH_PAR_MULTIPLE_OR_ONE
+#: SEARCH_PAR_MULTIPLE_OR_ONE
+msgid "multipleOr: The parameter may only have one value (no comma separators)"
+msgstr "multipleOr: Parametr může mít pouze jednu hodnotu (bez oddělovačů čárkou)"
+
+# SEARCH_PAR_MULTIPLE_OR_SERVER
+#: SEARCH_PAR_MULTIPLE_OR_SERVER
+msgid "multipleOr: It''s up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
+msgstr "multipleOr: Je na serveru, zda parametr může mít více hodnot (oddělených čárkou), z nichž alespoň jedna musí být pravdivá"
+
+# SEARCH_PAR_NONE
+#: SEARCH_PAR_NONE
+msgctxt "SEARCH_PAR_NONE"
+msgid "(none)"
+msgstr "(žádné)"
+
+# SEARCH_PAR_PROC
+#: SEARCH_PAR_PROC
+msgid "Processing Mode"
+msgstr "Režim zpracování"
+
+# SEARCH_PAR_REND_TARGET
+#: SEARCH_PAR_REND_TARGET
+msgid "Target Resources"
+msgstr "Cílové zdroje"
+
+# SEARCH_PAR_RES
+#: SEARCH_PAR_RES
+msgid "All Resources"
+msgstr "Všechny zdroje"
+
+# STATUS_MSG_AUTOBUILD
+#: STATUS_MSG_AUTOBUILD
+msgid "{0}, published by {1}. This guide is not an authorized publication; it is the continuous build for version {2}  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href=''{3}''>{3}</a> and changes regularly. See the <a href=''{4}/history.html''>Directory of published versions</a>"
+msgstr "{0}, vydal {1}. Tato příručka není autorizovanou publikací; jde o průběžné sestavení verze {2}, vytvořené CI sestavením FHIR (HL7&reg; FHIR&reg; Standard). Tato verze vychází z aktuálního obsahu <a href=''{3}''>{3}</a> a pravidelně se mění. Viz <a href=''{4}/history.html''>adresář publikovaných verzí</a>"
+
+# STATUS_MSG_LOCAL_BUILD
+#: STATUS_MSG_LOCAL_BUILD
+msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
+msgstr "{0} - lokální vývojové sestavení (v{1}) vytvořené nástroji FHIR (HL7® FHIR® Standard) Build Tools. Viz <a href=''{2}/history.html''>adresář publikovaných verzí</a>"
+
+# STATUS_MSG_PUBLICATION_HOLDER
+#: STATUS_MSG_PUBLICATION_HOLDER
+msgid "Publication Build: This will be filled in by the publication tooling"
+msgstr "Publikační sestavení: toto bude doplněno publikačními nástroji"
+
+# STRUC_DEF_ABSTRACT
+#: STRUC_DEF_ABSTRACT
+msgid "This is an abstract"
+msgstr "Toto je abstraktní definice"
+
+# STRUC_DEF_ACT
+#: STRUC_DEF_ACT
+msgid "Obligations that apply to the actor {0}"
+msgstr "Povinnosti vztahující se na aktéra {0}"
+
+# STRUC_DEF_AFFECT_CONSTRAINTS
+#: STRUC_DEF_AFFECT_CONSTRAINTS
+msgid "This element has or is affected by constraints ("
+msgstr "Tento element má nebo je ovlivněn omezeními ("
+
+# STRUC_DEF_ALLOWED
+#: STRUC_DEF_ALLOWED
+msgid "Allowed Units"
+msgstr "Povolené jednotky"
+
+# STRUC_DEF_ALL_ACTORS
+#: STRUC_DEF_ALL_ACTORS
+msgid "All Actors"
+msgstr "Všichni aktéři"
+
+# STRUC_DEF_ALL_SLICES
+#: STRUC_DEF_ALL_SLICES
+msgid ":All Slices"
+msgstr ":Všechny řezy"
+
+# STRUC_DEF_ALL_TYPES
+#: STRUC_DEF_ALL_TYPES
+msgid "All Types"
+msgstr "Všechny typy"
+
+# STRUC_DEF_ALT_NAME
+#: STRUC_DEF_ALT_NAME
+msgid "Alternate Names"
+msgstr "Alternativní názvy"
+
+# STRUC_DEF_AND
+#: STRUC_DEF_AND
+msgctxt "STRUC_DEF_AND"
+msgid "and"
+msgstr "a"
+
+# STRUC_DEF_APPROP_CON
+#: STRUC_DEF_APPROP_CON
+msgid "Concepts must come from this value set if appropriate concept is in this value set"
+msgstr "Koncepty musí pocházet z této sady hodnot, pokud se v ní vhodný koncept nachází"
+
+# STRUC_DEF_AS_SHOWN
+#: STRUC_DEF_AS_SHOWN
+msgid "As shown"
+msgstr "Jak je zobrazeno"
+
+# STRUC_DEF_BECAUSE
+#: STRUC_DEF_BECAUSE
+msgid "because"
+msgstr "protože"
+
+# STRUC_DEF_BINDINGS
+#: STRUC_DEF_BINDINGS
+msgid "Binding:"
+msgstr "Vazba:"
+
+# STRUC_DEF_BINDING_STYLE
+#: STRUC_DEF_BINDING_STYLE
+msgid "binding style"
+msgstr "styl vazby"
+
+# STRUC_DEF_BLACK
+#: STRUC_DEF_BLACK
+msgid "black"
+msgstr "černá"
+
+# STRUC_DEF_BUSINESS_ID
+#: STRUC_DEF_BUSINESS_ID
+msgid "This is a business identifier, not a resource identifier (see"
+msgstr "Toto je obchodní identifikátor, nikoli identifikátor zdroje (viz"
+
+# STRUC_DEF_BUSINESS_VERID
+#: STRUC_DEF_BUSINESS_VERID
+msgid "This is a business version Id, not a resource version Id (see"
+msgstr "Toto je obchodní ID verze, nikoli ID verze zdroje (viz"
+
+# STRUC_DEF_CAND
+#: STRUC_DEF_CAND
+msgid "Candidate"
+msgstr "Kandidát"
+
+# STRUC_DEF_CAND_SUB
+#: STRUC_DEF_CAND_SUB
+msgid "This value set is a candidate to substitute for the overall conformance value set in some situations; usually these are defined in the documentation"
+msgstr "Tato sada hodnot je kandidátem na náhradu celkové sady hodnot shody v některých situacích; obvykle jsou tyto situace definovány v dokumentaci"
+
+# STRUC_DEF_CANNOT_TARGET
+#: STRUC_DEF_CANNOT_TARGET
+msgid "Instances of this logical model cannot be the target of a Reference"
+msgstr "Instance tohoto logického modelu nemohou být cílem Reference"
+
+# STRUC_DEF_CANT_FIND
+#: STRUC_DEF_CANT_FIND
+msgid "getElementByName: can''t find {0} in {1} from {2}"
+msgstr "getElementByName: nelze najít {0} v {1} z {2}"
+
+# STRUC_DEF_CAN_TARGET
+#: STRUC_DEF_CAN_TARGET
+msgid "Instances of this logical model can be the target of a Reference"
+msgstr "Instance tohoto logického modelu mohou být cílem Reference"
+
+# STRUC_DEF_CAP
+#: STRUC_DEF_CAP
+msgid "CAP Code"
+msgstr "Kód CAP"
+
+# STRUC_DEF_CDA
+#: STRUC_DEF_CDA
+msgid "This property is represented as CDA Text in the XML."
+msgstr "Tato vlastnost je v XML reprezentována jako text CDA."
+
+# STRUC_DEF_CHILD
+#: STRUC_DEF_CHILD
+msgid "Child"
+msgstr "Potomek"
+
+# STRUC_DEF_CHOICE
+#: STRUC_DEF_CHOICE
+msgid "(Choice of one)"
+msgstr "(Výběr jednoho)"
+
+# STRUC_DEF_CHOICE_DATA_TYPE
+#: STRUC_DEF_CHOICE_DATA_TYPE
+msgid "Choice of Data Types"
+msgstr "Výběr datových typů"
+
+# STRUC_DEF_CHOICE_GRP
+#: STRUC_DEF_CHOICE_GRP
+msgid "Choice Group"
+msgstr "Skupina výběru"
+
+# STRUC_DEF_CHOICE_OF
+#: STRUC_DEF_CHOICE_OF
+msgid "Choice of:"
+msgstr "Výběr z:"
+
+# STRUC_DEF_CLOSED
+#: STRUC_DEF_CLOSED
+msgid "Closed"
+msgstr "Uzavřené"
+
+# STRUC_DEF_COMMENT
+#: STRUC_DEF_COMMENT
+msgid "Comments:"
+msgstr "Komentáře:"
+
+# STRUC_DEF_COMPLEX
+#: STRUC_DEF_COMPLEX
+msgid "Complex"
+msgstr "Komplexní"
+
+# STRUC_DEF_COMPLEXBRACK
+#: STRUC_DEF_COMPLEXBRACK
+msgid "(Complex)"
+msgstr "(Komplexní)"
+
+# STRUC_DEF_COMP_DOC
+#: STRUC_DEF_COMP_DOC
+msgid "This value set is a component of the base value set. Usually this is called out so that documentation can be written about a portion of the value set"
+msgstr "Tato sada hodnot je komponentou základní sady hodnot. Obvykle je to uvedeno proto, aby bylo možné napsat dokumentaci k části sady hodnot"
+
+# STRUC_DEF_COMP_EX
+#: STRUC_DEF_COMP_EX
+msgid "(Complex Extension)"
+msgstr "(Komplexní rozšíření)"
+
+# STRUC_DEF_COMP_PROF
+#: STRUC_DEF_COMP_PROF
+msgid "Complies with Profile"
+msgstr "Vyhovuje profilu"
+
+# STRUC_DEF_CONC_SET
+#: STRUC_DEF_CONC_SET
+msgid "Concepts must come from this value set"
+msgstr "Koncepty musí pocházet z této sady hodnot"
+
+# STRUC_DEF_CONSTRAINING
+#: STRUC_DEF_CONSTRAINING
+msgid "Slice Constraining"
+msgstr "Omezování řezu"
+
+# STRUC_DEF_CONSTRAINTS
+#: STRUC_DEF_CONSTRAINTS
+msgctxt "STRUC_DEF_CONSTRAINTS"
+msgid "Constraints"
+msgstr "Omezení"
+
+# STRUC_DEF_CONTROL
+#: STRUC_DEF_CONTROL
+msgid "Control"
+msgstr "Řízení"
+
+# STRUC_DEF_CONT_RULE
+#: STRUC_DEF_CONT_RULE
+msgid "Content/Rules for all slices"
+msgstr "Obsah/pravidla pro všechny řezy"
+
+# STRUC_DEF_CONT_TYPE
+#: STRUC_DEF_CONT_TYPE
+msgid "Content/Rules for all Types"
+msgstr "Obsah/pravidla pro všechny typy"
+
+# STRUC_DEF_COPY_CODING
+#: STRUC_DEF_COPY_CODING
+msgid "Click to Copy as Coding"
+msgstr "Kliknutím zkopírovat jako Coding"
+
+# STRUC_DEF_COPY_URL
+#: STRUC_DEF_COPY_URL
+msgid "Click to Copy URL"
+msgstr "Kliknutím zkopírovat URL"
+
+# STRUC_DEF_CURR
+#: STRUC_DEF_CURR
+msgctxt "STRUC_DEF_CURR"
+msgid "Current"
+msgstr "Aktuální"
+
+# STRUC_DEF_CURR_RULE
+#: STRUC_DEF_CURR_RULE
+msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
+msgstr "Nové záznamy musí používat tuto sadu hodnot, ale starší záznamy mohou používat jiné kódy. Definice ''nového záznamu'' je obtížná, protože systémy často vytvářejí nové záznamy na základě již existujících dat. ''Aktuální'' vazby jsou obvykle nařízeny externí autoritou, která pro ně stanoví jasná pravidla"
+
+# STRUC_DEF_DATE
+#: STRUC_DEF_DATE
+msgid "Date Format: {0}"
+msgstr "Formát data: {0}"
+
+# STRUC_DEF_DATE_FORM
+#: STRUC_DEF_DATE_FORM
+msgid "Date Format"
+msgstr "Formát data"
+
+# STRUC_DEF_DEFAULT_TYPE
+#: STRUC_DEF_DEFAULT_TYPE
+msgid "Default Type"
+msgstr "Výchozí typ"
+
+# STRUC_DEF_DEFAULT_VALUE
+#: STRUC_DEF_DEFAULT_VALUE
+msgid "Default Value"
+msgstr "Výchozí hodnota"
+
+# STRUC_DEF_DEF_CODES
+#: STRUC_DEF_DEF_CODES
+msgid "Definitional Codes"
+msgstr "Definiční kódy"
+
+# STRUC_DEF_DERIVED_PROFILE
+#: STRUC_DEF_DERIVED_PROFILE
+msgid "In this IG, the following structures are derived from this profile:"
+msgstr "V tomto IG jsou z tohoto profilu odvozeny následující struktury:"
+
+# STRUC_DEF_DESCRIM
+#: STRUC_DEF_DESCRIM
+msgid ", and can be differentiated using the following discriminators:"
+msgstr ", a lze je rozlišit pomocí následujících diskriminátorů:"
+
+# STRUC_DEF_DESC_PROF
+#: STRUC_DEF_DESC_PROF
+msgid "Description of the profile"
+msgstr "Popis profilu"
+
+# STRUC_DEF_DISCUSSION
+#: STRUC_DEF_DISCUSSION
+msgid "discussion"
+msgstr "diskuse"
+
+# STRUC_DEF_ELE
+#: STRUC_DEF_ELE
+msgid "This primitive element must have a value"
+msgstr "Tento primitivní element musí mít hodnotu"
+
+# STRUC_DEF_ELEMENT
+#: STRUC_DEF_ELEMENT
+msgid "element"
+msgstr "element"
+
+# STRUC_DEF_ELEMENTS
+#: STRUC_DEF_ELEMENTS
+msgid "Elements defined in Ancestors:"
+msgstr "Elementy definované v předcích:"
+
+# STRUC_DEF_ELE_AFFECTED
+#: STRUC_DEF_ELE_AFFECTED
+msgid "This element has or is affected by constraints ( {0} {1}"
+msgstr "Tento element má nebo je ovlivněn omezeními ( {0} {1}"
+
+# STRUC_DEF_ELE_INCLUDED
+#: STRUC_DEF_ELE_INCLUDED
+msgid "This element is included in summaries"
+msgstr "Tento element je zahrnut v souhrnech"
+
+# STRUC_DEF_ELE_MUST_SUPP
+#: STRUC_DEF_ELE_MUST_SUPP
+msgid "This element must be supported"
+msgstr "Tento element musí být podporován"
+
+# STRUC_DEF_ELE_READ
+#: STRUC_DEF_ELE_READ
+msgid "When this element is read"
+msgstr "Když je tento element čten"
+
+# STRUC_DEF_ERROR
+#: STRUC_DEF_ERROR
+msgid "Unknown structure mode"
+msgstr "Neznámý režim struktury"
+
+# STRUC_DEF_ERR_DESC
+#: STRUC_DEF_ERR_DESC
+msgid "Error describing concept- not done yet (no codings, no text)"
+msgstr "Chyba při popisu konceptu - zatím není hotovo (žádná kódování, žádný text)"
+
+# STRUC_DEF_EXAM
+#: STRUC_DEF_EXAM
+msgid "example"
+msgstr "příklad"
+
+# STRUC_DEF_EXT
+#: STRUC_DEF_EXT
+msgctxt "STRUC_DEF_EXT"
+msgid "Extensible"
+msgstr "Rozšiřitelná"
+
+# STRUC_DEF_EXTENSIBLE
+#: STRUC_DEF_EXTENSIBLE
+msgid "extensible"
+msgstr "rozšiřitelné"
+
+# STRUC_DEF_EXTENSIONS
+#: STRUC_DEF_EXTENSIONS
+msgid "Extensions"
+msgstr "Rozšíření"
+
+# STRUC_DEF_EXT_JSON
+#: STRUC_DEF_EXT_JSON
+msgid "This element can be extended by named JSON elements"
+msgstr "Tento element lze rozšířit pojmenovanými elementy JSON"
+
+# STRUC_DEF_EXT_STYLE
+#: STRUC_DEF_EXT_STYLE
+msgid "Extension Style"
+msgstr "Styl rozšíření"
+
+# STRUC_DEF_EX_CODE
+#: STRUC_DEF_EX_CODE
+msgid "For example codes, see"
+msgstr "Příklady kódů viz"
+
+# STRUC_DEF_EX_DESC
+#: STRUC_DEF_EX_DESC
+msgid "Instances are not expected or even encouraged to draw from the specified value set. The value set merely provides examples of the types of concepts intended to be included."
+msgstr "Neočekává se ani se nedoporučuje, aby instance čerpaly ze zadané sady hodnot. Sada hodnot pouze poskytuje příklady typů konceptů, které mají být zahrnuty."
+
+# STRUC_DEF_EX_TYPE
+#: STRUC_DEF_EX_TYPE
+msgid "(Extension Type:"
+msgstr "(Typ rozšíření:"
+
+# STRUC_DEF_EX_URL
+#: STRUC_DEF_EX_URL
+msgid "Extension URL = {0}"
+msgstr "URL rozšíření = {0}"
+
+# STRUC_DEF_FHIR
+#: STRUC_DEF_FHIR
+msgid "Base FHIR {0}"
+msgstr "Základní FHIR {0}"
+
+# STRUC_DEF_FHIR_EXCEP
+#: STRUC_DEF_FHIR_EXCEP
+msgid "Unable to retrieve StructureDefinition with URL {0}"
+msgstr "Nelze načíst StructureDefinition s URL {0}"
+
+# STRUC_DEF_FII
+#: STRUC_DEF_FII
+msgid "Formal Invariant Identifier"
+msgstr "Formální identifikátor invariantu"
+
+# STRUC_DEF_FIXED
+#: STRUC_DEF_FIXED
+msgid "Fixed Value"
+msgstr "Pevná hodnota"
+
+# STRUC_DEF_FIXED_VALUE
+#: STRUC_DEF_FIXED_VALUE
+msgid "Fixed Value:"
+msgstr "Pevná hodnota:"
+
+# STRUC_DEF_FOR_CODE
+#: STRUC_DEF_FOR_CODE
+msgid "For codes, see"
+msgstr "Kódy viz"
+
+# STRUC_DEF_FURTHER_INFO
+#: STRUC_DEF_FURTHER_INFO
+msgid "for further information about how to use [x]"
+msgstr "další informace o použití [x]"
+
+# STRUC_DEF_GRADE
+#: STRUC_DEF_GRADE
+msgid "Grade"
+msgstr "Stupeň"
+
+# STRUC_DEF_ID
+#: STRUC_DEF_ID
+msgctxt "STRUC_DEF_ID"
+msgid "Id"
+msgstr "Id"
+
+# STRUC_DEF_ID_EXPECT
+#: STRUC_DEF_ID_EXPECT
+msgid "ID Expectation"
+msgstr "Očekávání ID"
+
+# STRUC_DEF_ID_IS
+#: STRUC_DEF_ID_IS
+msgid "Id may or not be present (this is the default for elements but not resources)"
+msgstr "Id může, ale nemusí být přítomno (toto je výchozí pro elementy, ale ne pro zdroje)"
+
+# STRUC_DEF_ID_MAY
+#: STRUC_DEF_ID_MAY
+msgid "Id is required to be present (this is the default for resources but not elements)"
+msgstr "Id musí být přítomno (toto je výchozí pro zdroje, ale ne pro elementy)"
+
+# STRUC_DEF_ID_NOT_ALLOW
+#: STRUC_DEF_ID_NOT_ALLOW
+msgid "An id is not allowed in this context"
+msgstr "V tomto kontextu není id povoleno"
+
+# STRUC_DEF_IF
+#: STRUC_DEF_IF
+msgid "If"
+msgstr "Pokud"
+
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
+msgstr "Implementovaná rozhraní"
+
+# STRUC_DEF_IMPOSE_PROFILE
+#: STRUC_DEF_IMPOSE_PROFILE
+msgid "Impose Profile"
+msgstr "Vynutit profil"
+
+# STRUC_DEF_INFERRED_JSON
+#: STRUC_DEF_INFERRED_JSON
+msgid "The type of this element is inferred from the JSON type in the instance"
+msgstr "Typ tohoto elementu je odvozen z typu JSON v instanci"
+
+# STRUC_DEF_INVAR
+#: STRUC_DEF_INVAR
+msgid "Invariants"
+msgstr "Invarianty"
+
+# STRUC_DEF_INVARIANT
+#: STRUC_DEF_INVARIANT
+msgid "This element is affected by the following invariants:"
+msgstr "Tento element je ovlivněn následujícími invarianty:"
+
+# STRUC_DEF_JSON_ARRAY
+#: STRUC_DEF_JSON_ARRAY
+msgid "JSON: This element may be present as a JSON Array even when there are no items in the instance"
+msgstr "JSON: Tento element může být přítomen jako pole JSON i tehdy, když v instanci nejsou žádné položky"
+
+# STRUC_DEF_JSON_CAN_NAME
+#: STRUC_DEF_JSON_CAN_NAME
+msgid "This type can appear in JSON with the property name"
+msgstr "Tento typ se může v JSON objevit s názvem vlastnosti"
+
+# STRUC_DEF_JSON_CHILD
+#: STRUC_DEF_JSON_CHILD
+msgid "child"
+msgstr "potomek"
+
+# STRUC_DEF_JSON_EXT
+#: STRUC_DEF_JSON_EXT
+msgid "(in elements using named extensions)"
+msgstr "(v elementech používajících pojmenovaná rozšíření)"
+
+# STRUC_DEF_JSON_FORM
+#: STRUC_DEF_JSON_FORM
+msgid "JSON Format"
+msgstr "Formát JSON"
+
+# STRUC_DEF_JSON_IF
+#: STRUC_DEF_JSON_IF
+msgid "JSON: If"
+msgstr "JSON: Pokud"
+
+# STRUC_DEF_JSON_INFERRED
+#: STRUC_DEF_JSON_INFERRED
+msgid "JSON: The type of this element is inferred from the JSON type in the instance"
+msgstr "JSON: Typ tohoto elementu je odvozen z typu JSON v instanci"
+
+# STRUC_DEF_JSON_IS
+#: STRUC_DEF_JSON_IS
+msgid "This element is present as a JSON Array even when there are no items in the instance"
+msgstr "Tento element je přítomen jako pole JSON i tehdy, když v instanci nejsou žádné položky"
+
+# STRUC_DEF_JSON_MAY
+#: STRUC_DEF_JSON_MAY
+msgid "This element may be present as a JSON Array even when there are no items in the instance"
+msgstr "Tento element může být přítomen jako pole JSON i tehdy, když v instanci nejsou žádné položky"
+
+# STRUC_DEF_JSON_MAY_PRESENT
+#: STRUC_DEF_JSON_MAY_PRESENT
+msgid "The JSON Array for this property may be present even when there are no items in the instance (e.g. may be present as an empty array)"
+msgstr "Pole JSON pro tuto vlastnost může být přítomno i tehdy, když v instanci nejsou žádné položky (např. může být přítomno jako prázdné pole)"
+
+# STRUC_DEF_JSON_NAME
+#: STRUC_DEF_JSON_NAME
+msgid "JSON Property Name"
+msgstr "Název vlastnosti JSON"
+
+# STRUC_DEF_JSON_NOT_PRESENT
+#: STRUC_DEF_JSON_NOT_PRESENT
+msgid "The JSON Array for this property is not present when there are no items in the instance (e.g. never as an empty array)"
+msgstr "Pole JSON pro tuto vlastnost není přítomno, pokud v instanci nejsou žádné položky (např. nikdy jako prázdné pole)"
+
+# STRUC_DEF_JSON_NULL
+#: STRUC_DEF_JSON_NULL
+msgid "JSON: This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
+msgstr "JSON: Tento objekt může být ve struktuře JSON reprezentován jako null (což se pro účely kardinality počítá jako ''přítomné'')"
+
+# STRUC_DEF_JSON_PRESENT
+#: STRUC_DEF_JSON_PRESENT
+msgid "The JSON Array for this property is present even when there are no items in the instance (e.g. as an empty array)"
+msgstr "Pole JSON pro tuto vlastnost je přítomno i tehdy, když v instanci nejsou žádné položky (např. jako prázdné pole)"
+
+# STRUC_DEF_JSON_PROPERTY_NAME
+#: STRUC_DEF_JSON_PROPERTY_NAME
+msgid "This property appears in JSON with the property name"
+msgstr "Tato vlastnost se v JSON objeví s názvem vlastnosti"
+
+# STRUC_DEF_JSON_SINGLE
+#: STRUC_DEF_JSON_SINGLE
+msgid "This repeating object is represented as a single JSON object with named properties. The name of the property (key) is the value of the"
+msgstr "Tento opakující se objekt je reprezentován jako jeden objekt JSON s pojmenovanými vlastnostmi. Název vlastnosti (klíč) je hodnota"
+
+# STRUC_DEF_JSON_TYPE
+#: STRUC_DEF_JSON_TYPE
+msgid "JSON Property Name for Type"
+msgstr "Název vlastnosti JSON pro typ"
+
+# STRUC_DEF_LABEL
+#: STRUC_DEF_LABEL
+msgid "Label"
+msgstr "Popisek"
+
+# STRUC_DEF_LEAST_FOLLOW
+#: STRUC_DEF_LEAST_FOLLOW
+msgid "At least the following"
+msgstr "Alespoň následující"
+
+# STRUC_DEF_LOGICAL
+#: STRUC_DEF_LOGICAL
+msgctxt "STRUC_DEF_LOGICAL"
+msgid "Logical Model"
+msgstr "Logický model"
+
+# STRUC_DEF_LOGICAL_CONT
+#: STRUC_DEF_LOGICAL_CONT
+msgid "Logical Container"
+msgstr "Logický kontejner"
+
+# STRUC_DEF_LOINC
+#: STRUC_DEF_LOINC
+msgid "LOINC Code"
+msgstr "Kód LOINC"
+
+# STRUC_DEF_LOINC_CODE
+#: STRUC_DEF_LOINC_CODE
+msgid "LOINC code"
+msgstr "kód LOINC"
+
+# STRUC_DEF_MAX
+#: STRUC_DEF_MAX
+msgid "Maximum"
+msgstr "Maximum"
+
+# STRUC_DEF_MAX_MIN
+#: STRUC_DEF_MAX_MIN
+msgctxt "STRUC_DEF_MAX_MIN"
+msgid "Minimum and Maximum # of times the element can appear in the instance"
+msgstr "Minimální a maximální počet výskytů elementu v instanci"
+
+# STRUC_DEF_MAX_VALUE
+#: STRUC_DEF_MAX_VALUE
+msgid "Max Value"
+msgstr "Max. hodnota"
+
+# STRUC_DEF_MEAN_MISS
+#: STRUC_DEF_MEAN_MISS
+msgid "Meaning if Missing"
+msgstr "Význam při absenci"
+
+# STRUC_DEF_MIN
+#: STRUC_DEF_MIN
+msgid "Minimum"
+msgstr "Minimum"
+
+# STRUC_DEF_MIN_VALUE
+#: STRUC_DEF_MIN_VALUE
+msgid "Min Value"
+msgstr "Min. hodnota"
+
+# STRUC_DEF_MISSING_LINK
+#: STRUC_DEF_MISSING_LINK
+msgid "missing link"
+msgstr "chybějící odkaz"
+
+# STRUC_DEF_MOD
+#: STRUC_DEF_MOD
+msgid "This element is a modifier element"
+msgstr "Tento element je modifikující element"
+
+# STRUC_DEF_MODIF
+#: STRUC_DEF_MODIF
+msgid "Modifier"
+msgstr "Modifikátor"
+
+# STRUC_DEF_MODIFIER
+#: STRUC_DEF_MODIFIER
+msgid "Is Modifier"
+msgstr "Je modifikátor"
+
+# STRUC_DEF_MODIFIER_EXT
+#: STRUC_DEF_MODIFIER_EXT
+msgid "This is a modifier extension"
+msgstr "Toto je modifikující rozšíření"
+
+# STRUC_DEF_MUST_SUPPORT
+#: STRUC_DEF_MUST_SUPPORT
+msgid "Must Support"
+msgstr "Musí být podporováno"
+
+# STRUC_DEF_MUST_SUPPORT_TYPES
+#: STRUC_DEF_MUST_SUPPORT_TYPES
+msgid "Must Support Types"
+msgstr "Typy, které musí být podporovány"
+
+# STRUC_DEF_NAMESPACE
+#: STRUC_DEF_NAMESPACE
+msgid "In the XML format, this property has the namespace"
+msgstr "Ve formátu XML má tato vlastnost jmenný prostor"
+
+# STRUC_DEF_NOTE_X
+#: STRUC_DEF_NOTE_X
+msgid "[x] Note"
+msgstr "Poznámka [x]"
+
+# STRUC_DEF_NOT_MARK
+#: STRUC_DEF_NOT_MARK
+msgid "Instances of this logical model are not marked to be the target of a Reference"
+msgstr "Instance tohoto logického modelu nejsou označeny jako cíl Reference"
+
+# STRUC_DEF_NO_DESCRIM
+#: STRUC_DEF_NO_DESCRIM
+msgid ", and defines no disciminators to differentiate the slices"
+msgstr ", a nedefinuje žádné diskriminátory pro rozlišení řezů"
+
+# STRUC_DEF_NO_MAPPINGS
+#: STRUC_DEF_NO_MAPPINGS
+msgid "No Mappings"
+msgstr "Žádná mapování"
+
+# STRUC_DEF_NO_MUST_SUPPORT
+#: STRUC_DEF_NO_MUST_SUPPORT
+msgid "No must-support rules about the choice of types/profiles"
+msgstr "Žádná pravidla must-support pro výběr typů/profilů"
+
+# STRUC_DEF_NO_SUMMARY
+#: STRUC_DEF_NO_SUMMARY
+msgid "No Summary, as this profile has no differential"
+msgstr "Žádný souhrn, protože tento profil nemá diferenciál"
+
+# STRUC_DEF_NULL_JSON
+#: STRUC_DEF_NULL_JSON
+msgid "This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
+msgstr "Tento objekt může být ve struktuře JSON reprezentován jako null (což se pro účely kardinality počítá jako ''přítomné'')"
+
+# STRUC_DEF_OBLIG
+#: STRUC_DEF_OBLIG
+msgid "This element has obligations"
+msgstr "Tento element má povinnosti"
+
+# STRUC_DEF_OBLIG_ADD
+#: STRUC_DEF_OBLIG_ADD
+msgid "This is an obligation profile that only contains obligations and additional bindings"
+msgstr "Toto je profil povinností, který obsahuje pouze povinnosti a další vazby"
+
+# STRUC_DEF_OBLIG_ALL
+#: STRUC_DEF_OBLIG_ALL
+msgid "Obligations that apply to all actors"
+msgstr "Povinnosti vztahující se na všechny aktéry"
+
+# STRUC_DEF_OBLIG_FROM
+#: STRUC_DEF_OBLIG_FROM
+msgid "This profile picks up obligations and additional bindings from"
+msgstr "Tento profil přebírá povinnosti a další vazby z"
+
+# STRUC_DEF_OBLIG_SUPP
+#: STRUC_DEF_OBLIG_SUPP
+msgid "This element has obligations and must be supported"
+msgstr "Tento element má povinnosti a musí být podporován"
+
+# STRUC_DEF_ONE_OF
+#: STRUC_DEF_ONE_OF
+msgid "One of:"
+msgstr "Jeden z:"
+
+# STRUC_DEF_OPEN
+#: STRUC_DEF_OPEN
+msgid "Open"
+msgstr "Otevřené"
+
+# STRUC_DEF_OPEN_END
+#: STRUC_DEF_OPEN_END
+msgid "Open At End"
+msgstr "Otevřené na konci"
+
+# STRUC_DEF_ORDERED
+#: STRUC_DEF_ORDERED
+msgid "Ordered"
+msgstr "Uspořádané"
+
+# STRUC_DEF_PATH
+#: STRUC_DEF_PATH
+msgctxt "STRUC_DEF_PATH"
+msgid "Path"
+msgstr "Cesta"
+
+# STRUC_DEF_PATHS
+#: STRUC_DEF_PATHS
+msgid "Path(s)"
+msgstr "Cesty"
+
+# STRUC_DEF_PATT_VALUE
+#: STRUC_DEF_PATT_VALUE
+msgid "Pattern Value"
+msgstr "Hodnota vzoru"
+
+# STRUC_DEF_PREFERRED
+#: STRUC_DEF_PREFERRED
+msgid "preferred"
+msgstr "preferované"
+
+# STRUC_DEF_PREFIXED
+#: STRUC_DEF_PREFIXED
+msgid "is prefixed to the value before validation"
+msgstr "se před validací přidá jako prefix k hodnotě"
+
+# STRUC_DEF_PREF_CONT
+#: STRUC_DEF_PREF_CONT
+msgid "This is the value set that is preferred in a given context (documentation should explain why)"
+msgstr "Toto je sada hodnot preferovaná v daném kontextu (dokumentace by měla vysvětlit proč)"
+
+# STRUC_DEF_PRIMITIVE
+#: STRUC_DEF_PRIMITIVE
+msgid "Primitive Value"
+msgstr "Primitivní hodnota"
+
+# STRUC_DEF_PRIM_ELE
+#: STRUC_DEF_PRIM_ELE
+msgid "This primitive element may be present, or absent, or replaced by an extension"
+msgstr "Tento primitivní element může být přítomen, nepřítomen nebo nahrazen rozšířením"
+
+# STRUC_DEF_PRIM_TYPE_PRESENT
+#: STRUC_DEF_PRIM_TYPE_PRESENT
+msgid "This primitive type may be present, or absent if replaced by one of the following extensions:"
+msgstr "Tento primitivní typ může být přítomen, nebo nepřítomen, pokud je nahrazen jedním z následujících rozšíření:"
+
+# STRUC_DEF_PRIM_TYPE_VALUE
+#: STRUC_DEF_PRIM_TYPE_VALUE
+msgid "This primitive type must have a value (the value must be present, and cannot be replaced by an extension)"
+msgstr "Tento primitivní typ musí mít hodnotu (hodnota musí být přítomna a nemůže být nahrazena rozšířením)"
+
+# STRUC_DEF_PROFILED
+#: STRUC_DEF_PROFILED
+msgid "profiled by"
+msgstr "profilováno pomocí"
+
+# STRUC_DEF_PROFILE_BUILDS
+#: STRUC_DEF_PROFILE_BUILDS
+msgid "This profile builds on"
+msgstr "Tento profil staví na"
+
+# STRUC_DEF_PROF_COMP
+#: STRUC_DEF_PROF_COMP
+msgid "This profile complies with the profile"
+msgstr "Tento profil vyhovuje profilu"
+
+# STRUC_DEF_PROF_REQ
+#: STRUC_DEF_PROF_REQ
+msgid "This profile also requires that the instance also conform this additional profile:"
+msgstr "Tento profil také vyžaduje, aby instance vyhovovala tomuto dalšímu profilu:"
+
+# STRUC_DEF_PROF_RES
+#: STRUC_DEF_PROF_RES
+msgid "A profiled resource"
+msgstr "Profilovaný zdroj"
+
+# STRUC_DEF_PROF_SUPP
+#: STRUC_DEF_PROF_SUPP
+msgid "This profile must be supported"
+msgstr "Tento profil musí být podporován"
+
+# STRUC_DEF_PROPERTY
+#: STRUC_DEF_PROPERTY
+msgid "Property"
+msgstr "Vlastnost"
+
+# STRUC_DEF_REFERS_EXT
+#: STRUC_DEF_REFERS_EXT
+msgid "This structure refers to these extensions"
+msgstr "Tato struktura odkazuje na tato rozšíření"
+
+# STRUC_DEF_REFER_PROFILE
+#: STRUC_DEF_REFER_PROFILE
+msgid "In this IG, the following structures refer to this profile:"
+msgstr "V tomto IG odkazují na tento profil následující struktury:"
+
+# STRUC_DEF_REND_UNABLE_RES
+#: STRUC_DEF_REND_UNABLE_RES
+msgid "Unable to resolve StructureDefinition {0} resolving content reference {1}"
+msgstr "Nelze vyřešit StructureDefinition {0} při řešení reference na obsah {1}"
+
+# STRUC_DEF_REPEAT
+#: STRUC_DEF_REPEAT
+msgid "This is a repeating choice group that does not appear directly in the instance"
+msgstr "Toto je opakující se skupina výběru, která se v instanci neobjevuje přímo"
+
+# STRUC_DEF_REPEAT_ELE
+#: STRUC_DEF_REPEAT_ELE
+msgid "This repeating element order: {0}"
+msgstr "Pořadí tohoto opakujícího se elementu: {0}"
+
+# STRUC_DEF_REQUIRED
+#: STRUC_DEF_REQUIRED
+msgid "required"
+msgstr "povinné"
+
+# STRUC_DEF_REQUIRED_PATT
+#: STRUC_DEF_REQUIRED_PATT
+msgid "Required Pattern:"
+msgstr "Povinný vzor:"
+
+# STRUC_DEF_REQUIREMENTS
+#: STRUC_DEF_REQUIREMENTS
+msgid "Requirements"
+msgstr "Požadavky"
+
+# STRUC_DEF_REQ_BIND
+#: STRUC_DEF_REQ_BIND
+msgid "A required binding for additional codes, for us when the binding strength is ''extensible'' or ''preferred''"
+msgstr "Povinná vazba pro další kódy, pro použití v případech, kdy je síla vazby ''extensible'' nebo ''preferred''"
+
+# STRUC_DEF_REQ_PATT
+#: STRUC_DEF_REQ_PATT
+msgid "Required Pattern"
+msgstr "Povinný vzor"
+
+# STRUC_DEF_ROOT
+#: STRUC_DEF_ROOT
+msgid "The root class that contains instances of this class"
+msgstr "Kořenová třída, která obsahuje instance této třídy"
+
+# STRUC_DEF_SEE
+#: STRUC_DEF_SEE
+msgid "See"
+msgstr "Viz"
+
+# STRUC_DEF_SET_ARE
+#: STRUC_DEF_SET_ARE
+msgid ". The slices are"
+msgstr ". Řezy jsou"
+
+# STRUC_DEF_SET_SLICES
+#: STRUC_DEF_SET_SLICES
+msgid "This element introduces a set of slices on"
+msgstr "Tento element zavádí sadu řezů na"
+
+# STRUC_DEF_SHALL_CODE
+#: STRUC_DEF_SHALL_CODE
+msgid "The codes SHALL be taken from"
+msgstr "Kódy MUSÍ být převzaty z"
+
+# STRUC_DEF_SHORT
+#: STRUC_DEF_SHORT
+msgid "Short"
+msgstr "Krátký popis"
+
+# STRUC_DEF_SHOULD_CODE
+#: STRUC_DEF_SHOULD_CODE
+msgid "The codes SHOULD be taken from"
+msgstr "Kódy BY MĚLY být převzaty z"
+
+# STRUC_DEF_SINGLE_JSON_OBJECTS
+#: STRUC_DEF_SINGLE_JSON_OBJECTS
+msgid "JSON: Represented as a single JSON Object with named properties using the value of the {0} child as the key"
+msgstr "JSON: Reprezentováno jako jeden objekt JSON s pojmenovanými vlastnostmi, kde se jako klíč použije hodnota potomka {0}"
+
+# STRUC_DEF_SLIC
+#: STRUC_DEF_SLIC
+msgid "Slices"
+msgstr "Řezy"
+
+# STRUC_DEF_SLICE
+#: STRUC_DEF_SLICE
+msgid "Slice"
+msgstr "Řez"
+
+# STRUC_DEF_SLICES
+#: STRUC_DEF_SLICES
+msgid "Slice:"
+msgstr "Řez:"
+
+# STRUC_DEF_SLICE_FOR
+#: STRUC_DEF_SLICE_FOR
+msgid "Slices for {0}"
+msgstr "Řezy pro {0}"
+
+# STRUC_DEF_SLICE_NAME
+#: STRUC_DEF_SLICE_NAME
+msgid "Slice Name"
+msgstr "Název řezu"
+
+# STRUC_DEF_SLICE_PAR
+#: STRUC_DEF_SLICE_PAR
+msgid "Slice {0}"
+msgstr "Řez {0}"
+
+# STRUC_DEF_SNOMED
+#: STRUC_DEF_SNOMED
+msgid "SNOMED-CT"
+msgstr "SNOMED-CT"
+
+# STRUC_DEF_SNOMED_CODE
+#: STRUC_DEF_SNOMED_CODE
+msgid "SNOMED-CT Code"
+msgstr "Kód SNOMED-CT"
+
+# STRUC_DEF_STAND_STAT
+#: STRUC_DEF_STAND_STAT
+msgid "Standard Status"
+msgstr "Stav standardu"
+
+# STRUC_DEF_STAND_STATUS
+#: STRUC_DEF_STAND_STATUS
+msgid "Standards Status ="
+msgstr "Stav standardu ="
+
+# STRUC_DEF_STRING_FORM
+#: STRUC_DEF_STRING_FORM
+msgid "String Format"
+msgstr "Formát řetězce"
+
+# STRUC_DEF_STRUCTURES
+#: STRUC_DEF_STRUCTURES
+msgid "Structures"
+msgstr "Struktury"
+
+# STRUC_DEF_SUIT_SHALL_CODE
+#: STRUC_DEF_SUIT_SHALL_CODE
+msgid "Unless not suitable, these codes SHALL be taken from"
+msgstr "Pokud to není nevhodné, tyto kódy MUSÍ být převzaty z"
+
+# STRUC_DEF_TARG_SUPP
+#: STRUC_DEF_TARG_SUPP
+msgid "This target must be supported"
+msgstr "Tento cíl musí být podporován"
+
+# STRUC_DEF_TEMPLATEID
+#: STRUC_DEF_TEMPLATEID
+msgid "Instance of this type are validated by templateId"
+msgstr "Instance tohoto typu jsou validovány pomocí templateId"
+
+# STRUC_DEF_TERM_BIND
+#: STRUC_DEF_TERM_BIND
+msgid "Terminology Bindings (Differential)"
+msgstr "Terminologické vazby (diferenciál)"
+
+# STRUC_DEF_TERM_BINDS
+#: STRUC_DEF_TERM_BINDS
+msgid "Terminology Bindings"
+msgstr "Terminologické vazby"
+
+# STRUC_DEF_THEN_TYPE
+#: STRUC_DEF_THEN_TYPE
+msgid "then the type is"
+msgstr "pak je typ"
+
+# STRUC_DEF_THIS_REFERS
+#: STRUC_DEF_THIS_REFERS
+msgid "This structure refers to these other structures"
+msgstr "Tato struktura odkazuje na tyto další struktury"
+
+# STRUC_DEF_TYPE_BOUND
+#: STRUC_DEF_TYPE_BOUND
+msgid "This type can be bound to a value set using the {0}"
+msgstr "Tento typ lze navázat na sadu hodnot pomocí {0}"
+
+# STRUC_DEF_TYPE_PARAMETER
+#: STRUC_DEF_TYPE_PARAMETER
+msgid "Type Parameter"
+msgstr "Parametr typu"
+
+# STRUC_DEF_TYPE_SET
+#: STRUC_DEF_TYPE_SET
+msgid "This type can be bound to a value set using the"
+msgstr "Tento typ lze navázat na sadu hodnot pomocí"
+
+# STRUC_DEF_TYPE_SPEC
+#: STRUC_DEF_TYPE_SPEC
+msgid "Type Specifier"
+msgstr "Specifikátor typu"
+
+# STRUC_DEF_TYPE_SUPP
+#: STRUC_DEF_TYPE_SUPP
+msgid "This type must be supported"
+msgstr "Tento typ musí být podporován"
+
+# STRUC_DEF_UI
+#: STRUC_DEF_UI
+msgctxt "STRUC_DEF_UI"
+msgid "UI"
+msgstr "UI"
+
+# STRUC_DEF_UI_CONT
+#: STRUC_DEF_UI_CONT
+msgid "This value set is provided for user look up in a given context. Typically, these valuesets only include a subset of codes relevant for input in a context"
+msgstr "Tato sada hodnot je poskytnuta pro uživatelské vyhledávání v daném kontextu. Tyto sady hodnot obvykle obsahují pouze podmnožinu kódů relevantních pro vstup v daném kontextu"
+
+# STRUC_DEF_UNADORNED
+#: STRUC_DEF_UNADORNED
+msgid "In the XML format, this property is represented as unadorned text."
+msgstr "Ve formátu XML je tato vlastnost reprezentována jako neozdobený text."
+
+# STRUC_DEF_UNDEF_ACT
+#: STRUC_DEF_UNDEF_ACT
+msgid "Obligations that apply to the undefined actor {0}"
+msgstr "Povinnosti vztahující se na nedefinovaného aktéra {0}"
+
+# STRUC_DEF_UNKNOWN_APPROACH
+#: STRUC_DEF_UNKNOWN_APPROACH
+msgid "Instances of this type are validated using an unknown approach: {0}"
+msgstr "Instance tohoto typu jsou validovány neznámým přístupem: {0}"
+
+# STRUC_DEF_UNKNOWN_REF
+#: STRUC_DEF_UNKNOWN_REF
+msgid "Unknown reference to {0}"
+msgstr "Neznámá reference na {0}"
+
+# STRUC_DEF_UNORDERED
+#: STRUC_DEF_UNORDERED
+msgid "Unordered"
+msgstr "Neuspořádané"
+
+# STRUC_DEF_UNSPECIFIED
+#: STRUC_DEF_UNSPECIFIED
+msgid "Unspecified"
+msgstr "Nespecifikováno"
+
+# STRUC_DEF_URLS
+#: STRUC_DEF_URLS
+msgid "URL:"
+msgstr "URL:"
+
+# STRUC_DEF_VALID
+#: STRUC_DEF_VALID
+msgid "Validation"
+msgstr "Validace"
+
+# STRUC_DEF_VALUESET
+#: STRUC_DEF_VALUESET
+msgid "ValueSet"
+msgstr "ValueSet"
+
+# STRUC_DEF_VALUESET_CODE
+#: STRUC_DEF_VALUESET_CODE
+msgid "ValueSet / Code"
+msgstr "ValueSet / kód"
+
+# STRUC_DEF_VALUE_ALT
+#: STRUC_DEF_VALUE_ALT
+msgid "Value Alternatives"
+msgstr "Alternativy hodnoty"
+
+# STRUC_DEF_VALUE_REQ
+#: STRUC_DEF_VALUE_REQ
+msgid "Value Required"
+msgstr "Hodnota povinná"
+
+# STRUC_DEF_WHAT
+#: STRUC_DEF_WHAT
+msgid "What goes here"
+msgstr "Co sem patří"
+
+# STRUC_DEF_XHTML
+#: STRUC_DEF_XHTML
+msgid "This property is represented as XHTML Text in the XML."
+msgstr "Tato vlastnost je v XML reprezentována jako text XHTML."
+
+# STRUC_DEF_XML_ACTUAL
+#: STRUC_DEF_XML_ACTUAL
+msgid "In the XML format, this property has the actual name"
+msgstr "Ve formátu XML má tato vlastnost skutečný název"
+
+# STRUC_DEF_XML_ATTRIBUTE
+#: STRUC_DEF_XML_ATTRIBUTE
+msgid "In the XML format, this property is represented as an attribute."
+msgstr "Ve formátu XML je tato vlastnost reprezentována jako atribut."
+
+# STRUC_DEF_XML_ELE
+#: STRUC_DEF_XML_ELE
+msgid "XML Element Name"
+msgstr "Název elementu XML"
+
+# STRUC_DEF_XML_FORM
+#: STRUC_DEF_XML_FORM
+msgid "XML Format"
+msgstr "Formát XML"
+
+# STRUC_DEF_XML_NAME
+#: STRUC_DEF_XML_NAME
+msgid "XML Namespace"
+msgstr "Jmenný prostor XML"
+
+# STRUC_DEF_XSI
+#: STRUC_DEF_XSI
+msgid "The type of this property is determined using the"
+msgstr "Typ této vlastnosti se určuje pomocí"
+
+# SUB_TOPIC_CREATE
+#: SUB_TOPIC_CREATE
+msgid "* create result = {0}"
+msgstr "* výsledek create = {0}"
+
+# SUB_TOPIC_CURR
+#: SUB_TOPIC_CURR
+msgid "* current = {0}"
+msgstr "* aktuální = {0}"
+
+# SUB_TOPIC_DELETE
+#: SUB_TOPIC_DELETE
+msgid "* delete result = {0}"
+msgstr "* výsledek delete = {0}"
+
+# SUB_TOPIC_EVENT
+#: SUB_TOPIC_EVENT
+msgid "Event"
+msgstr "Událost"
+
+# SUB_TOPIC_FHIR_PATH
+#: SUB_TOPIC_FHIR_PATH
+msgid "FHIR Path"
+msgstr "FHIR Path"
+
+# SUB_TOPIC_FILT_DEF
+#: SUB_TOPIC_FILT_DEF
+msgid "Filter Definition"
+msgstr "Definice filtru"
+
+# SUB_TOPIC_FILT_PAR
+#: SUB_TOPIC_FILT_PAR
+msgid "Filter Parameter"
+msgstr "Parametr filtru"
+
+# SUB_TOPIC_INCL
+#: SUB_TOPIC_INCL
+msgid "Includes"
+msgstr "Zahrnuje"
+
+# SUB_TOPIC_INT
+#: SUB_TOPIC_INT
+msgid "Interactions"
+msgstr "Interakce"
+
+# SUB_TOPIC_PREV
+#: SUB_TOPIC_PREV
+msgid "* previous = {0}"
+msgstr "* předchozí = {0}"
+
+# SUB_TOPIC_REQ
+#: SUB_TOPIC_REQ
+msgid "* require both = {0}"
+msgstr "* vyžadovat obojí = {0}"
+
+# SUB_TOPIC_RES_TRIG
+#: SUB_TOPIC_RES_TRIG
+msgid "Resource Triggers"
+msgstr "Spouštěče zdroje"
+
+# SUB_TOPIC_REV_INCL
+#: SUB_TOPIC_REV_INCL
+msgid "Reverse Includes"
+msgstr "Reverzní zahrnutí"
+
+# TERMINOLOGY_LVL
+#: TERMINOLOGY_LVL
+msgid "Lvl"
+msgstr "Úr."
+
+# TERM_REND_COPY
+#: TERM_REND_COPY
+msgid "Copy {0} Format to clipboard"
+msgstr "Kopírovat formát {0} do schránky"
+
+# TEST_PLAN_ASS
+#: TEST_PLAN_ASS
+msgid "Assertion"
+msgstr "Tvrzení"
+
+# TEST_PLAN_ASSERTION
+#: TEST_PLAN_ASSERTION
+msgid "Assertion {0}"
+msgstr "Tvrzení {0}"
+
+# TEST_PLAN_CASE
+#: TEST_PLAN_CASE
+msgid "Test Case"
+msgstr "Testovací případ"
+
+# TEST_PLAN_CASE_SEQ
+#: TEST_PLAN_CASE_SEQ
+msgid "Test Case - Sequence {0}"
+msgstr "Testovací případ - sekvence {0}"
+
+# TEST_PLAN_CATEGORY
+#: TEST_PLAN_CATEGORY
+msgid "Category:"
+msgstr "Kategorie:"
+
+# TEST_PLAN_DATA
+#: TEST_PLAN_DATA
+msgid "Test Data"
+msgstr "Testovací data"
+
+# TEST_PLAN_DEP
+#: TEST_PLAN_DEP
+msgid "Test Plan Dependency:"
+msgstr "Závislost testovacího plánu:"
+
+# TEST_PLAN_DEPEN
+#: TEST_PLAN_DEPEN
+msgid "Test Plan Dependencies:"
+msgstr "Závislosti testovacího plánu:"
+
+# TEST_PLAN_DESC
+#: TEST_PLAN_DESC
+msgid "Dependency - no description"
+msgstr "Závislost - bez popisu"
+
+# TEST_PLAN_LANG
+#: TEST_PLAN_LANG
+msgid "Language"
+msgstr "Jazyk"
+
+# TEST_PLAN_RESULT
+#: TEST_PLAN_RESULT
+msgid "Result"
+msgstr "Výsledek"
+
+# TEST_PLAN_RUN
+#: TEST_PLAN_RUN
+msgid "Test Run"
+msgstr "Běh testu"
+
+# TEST_PLAN_SCOPE
+#: TEST_PLAN_SCOPE
+msgid "Test Plan Scope:"
+msgstr "Rozsah testovacího plánu:"
+
+# TEST_PLAN_SCOPES
+#: TEST_PLAN_SCOPES
+msgid "Test Plan Scopes:"
+msgstr "Rozsahy testovacího plánu:"
+
+# TEST_PLAN_SOURCE
+#: TEST_PLAN_SOURCE
+msgid "Source[x]"
+msgstr "Source[x]"
+
+# TEST_PLAN_TEST_DATA
+#: TEST_PLAN_TEST_DATA
+msgid "Test Data {0}"
+msgstr "Testovací data {0}"
+
+# TEST_PLAN_TEST_RUN
+#: TEST_PLAN_TEST_RUN
+msgid "Test Run {0}"
+msgstr "Běh testu {0}"
+
+# TEXT_ICON_CHOICE
+#: TEXT_ICON_CHOICE
+msgid "Choice of Types"
+msgstr "Výběr typů"
+
+# TEXT_ICON_DATATYPE
+#: TEXT_ICON_DATATYPE
+msgid "Data Type"
+msgstr "Datový typ"
+
+# TEXT_ICON_ELEMENT
+#: TEXT_ICON_ELEMENT
+msgid "Element"
+msgstr "Element"
+
+# TEXT_ICON_EXTENSION_COMPLEX
+#: TEXT_ICON_EXTENSION_COMPLEX
+msgid "Complex Extension"
+msgstr "Komplexní rozšíření"
+
+# TEXT_ICON_EXTENSION_SIMPLE
+#: TEXT_ICON_EXTENSION_SIMPLE
+msgid "Simple Extension"
+msgstr "Jednoduché rozšíření"
+
+# TEXT_ICON_KEY
+#: TEXT_ICON_KEY
+msgid "JSON Key Value"
+msgstr "Hodnota klíče JSON"
+
+# TEXT_ICON_OBJECT_BOX
+#: TEXT_ICON_OBJECT_BOX
+msgid "Object"
+msgstr "Objekt"
+
+# TEXT_ICON_PRIMITIVE
+#: TEXT_ICON_PRIMITIVE
+msgid "Primitive Data Type"
+msgstr "Primitivní datový typ"
+
+# TEXT_ICON_REFERENCE
+#: TEXT_ICON_REFERENCE
+msgid "Reference to another Resource"
+msgstr "Reference na jiný zdroj"
+
+# TEXT_ICON_REUSE
+#: TEXT_ICON_REUSE
+msgid "Reference to another Element"
+msgstr "Reference na jiný element"
+
+# TEXT_ICON_SLICE
+#: TEXT_ICON_SLICE
+msgid "Slice Definition"
+msgstr "Definice řezu"
+
+# TEXT_ICON_SLICE_ITEM
+#: TEXT_ICON_SLICE_ITEM
+msgid "Slice Item"
+msgstr "Položka řezu"
+
+# TX_DISPLAY
+#: TX_DISPLAY
+msgid "Display"
+msgstr "Zobrazení"
+
+# TX_DISPLAY_LANG
+#: TX_DISPLAY_LANG
+msgid "Display ({0})"
+msgstr "Zobrazení ({0})"
+
+# VALUE_ES_ES
+#: VALUE_ES_ES
+msgid "Spanish National Edition"
+msgstr "Španělská národní edice"
+
+# VALUE_SET_ADD_DESIG
+#: VALUE_SET_ADD_DESIG
+msgid "Additional Designations and Language Displays"
+msgstr "Další označení a jazyková zobrazení"
+
+# VALUE_SET_ALL_CODE
+#: VALUE_SET_ALL_CODE
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"
+msgstr "Toto zahrnutí určuje hierarchii pro generování sad hodnot pro použití v uživatelském rozhraní. Expanze obsahuje všechny kódy a také tuto strukturu:"
+
+# VALUE_SET_ALL_CODES_DEF
+#: VALUE_SET_ALL_CODES_DEF
+msgid "all codes defined in"
+msgstr "všechny kódy definované v"
+
+# VALUE_SET_AND
+#: VALUE_SET_AND
+msgctxt "VALUE_SET_AND"
+msgid "and"
+msgstr "a"
+
+# VALUE_SET_AR
+#: VALUE_SET_AR
+msgid "Argentinian Edition"
+msgstr "Argentinská edice"
+
+# VALUE_SET_AT
+#: VALUE_SET_AT
+msgid "Austrian Edition"
+msgstr "Rakouská edice"
+
+# VALUE_SET_AUS
+#: VALUE_SET_AUS
+msgid "Australian Edition"
+msgstr "Australská edice"
+
+# VALUE_SET_BE
+#: VALUE_SET_BE
+msgid "Belgian Edition"
+msgstr "Belgická edice"
+
+# VALUE_SET_CA
+#: VALUE_SET_CA
+msgid "Canadian Edition"
+msgstr "Kanadská edice"
+
+# VALUE_SET_CA_EN
+#: VALUE_SET_CA_EN
+msgid "Canadian English Edition"
+msgstr "Kanadská anglická edice"
+
+# VALUE_SET_CH
+#: VALUE_SET_CH
+msgid "Swiss Edition"
+msgstr "Švýcarská edice"
+
+# VALUE_SET_CODES_FROM
+#: VALUE_SET_CODES_FROM
+msgid "codes from"
+msgstr "kódy z"
+
+# VALUE_SET_CODE_ITEM
+#: VALUE_SET_CODE_ITEM
+msgid "The code for the item"
+msgstr "Kód položky"
+
+# VALUE_SET_CODE_SELEC
+#: VALUE_SET_CODE_SELEC
+msgid "This value set cannot be fully expanded, but a selection ({0} codes) of the whole set of codes is shown here."
+msgstr "Tuto sadu hodnot nelze plně expandovat, ale je zde zobrazena vybraná část ({0} kódů) z celé sady kódů."
+
+# VALUE_SET_COMMA
+#: VALUE_SET_COMMA
+msgid ","
+msgstr ","
+
+# VALUE_SET_CONT
+#: VALUE_SET_CONT
+msgid "Value Set Contents"
+msgstr "Obsah sady hodnot"
+
+# VALUE_SET_CONTAINS
+#: VALUE_SET_CONTAINS
+msgid "This value set contains {0} concepts"
+msgstr "Tato sada hodnot obsahuje {0} konceptů"
+
+# VALUE_SET_CONTAINS_AT_LEAST
+#: VALUE_SET_CONTAINS_AT_LEAST
+msgid "This value set contains at least {0} concepts"
+msgstr "Tato sada hodnot obsahuje alespoň {0} konceptů"
+
+# VALUE_SET_CONT_STRUC
+#: VALUE_SET_CONT_STRUC
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:"
+msgstr "Toto zahrnutí určuje hierarchii pro generování sad hodnot pro použití v uživatelském rozhraní. Expanze obsahuje tuto strukturu:"
+
+# VALUE_SET_DANISH
+#: VALUE_SET_DANISH
+msgid "Danish"
+msgstr "Dánština"
+
+# VALUE_SET_DE
+#: VALUE_SET_DE
+msgid "German Edition"
+msgstr "Německá edice"
+
+# VALUE_SET_DESCENDENTOF
+#: VALUE_SET_DESCENDENTOF
+msgid "descends from"
+msgstr "je potomkem"
+
+# VALUE_SET_DESIG
+#: VALUE_SET_DESIG
+msgid "Additional Designations"
+msgstr "Další označení"
+
+# VALUE_SET_DISPLAY_ITEM
+#: VALUE_SET_DISPLAY_ITEM
+msgid "The display for the item"
+msgstr "Zobrazení položky"
+
+# VALUE_SET_DOESNT_EXIST
+#: VALUE_SET_DOESNT_EXIST
+msgid "doesn''t exist"
+msgstr "neexistuje"
+
+# VALUE_SET_DUTCH
+#: VALUE_SET_DUTCH
+msgid "Dutch"
+msgstr "Nizozemština"
+
+# VALUE_SET_EE
+#: VALUE_SET_EE
+msgid "Estonian Edition"
+msgstr "Estonská edice"
+
+# VALUE_SET_EQUAL
+#: VALUE_SET_EQUAL
+msgid "="
+msgstr "="
+
+# VALUE_SET_ERROR
+#: VALUE_SET_ERROR
+msgid "Error Expanding ValueSet: {0}"
+msgstr "Chyba při expanzi ValueSet: {0}"
+
+# VALUE_SET_EXCL
+#: VALUE_SET_EXCL
+msgid "Exclude"
+msgstr "Vyloučit"
+
+# VALUE_SET_EXCLUDED_FROM
+#: VALUE_SET_EXCLUDED_FROM
+msgid "Excluded from"
+msgstr "Vyloučeno z"
+
+# VALUE_SET_EXISTS
+#: VALUE_SET_EXISTS
+msgid "exists"
+msgstr "existuje"
+
+# VALUE_SET_EXP
+#: VALUE_SET_EXP
+msgid "Expansion based on example code system"
+msgstr "Expanze založená na ukázkovém systému kódů"
+
+# VALUE_SET_EXPANSION
+#: VALUE_SET_EXPANSION
+msgid "Expansion based on"
+msgstr "Expanze založená na"
+
+# VALUE_SET_EXPANSIONS
+#: VALUE_SET_EXPANSIONS
+msgid "Expansion based on:"
+msgstr "Expanze založená na:"
+
+# VALUE_SET_EXPANSIONS_INTERNAL
+#: VALUE_SET_EXPANSIONS_INTERNAL
+msgid "Expansion performed internally based on:"
+msgstr "Interně provedená expanze založená na:"
+
+# VALUE_SET_EXPANSIONS_SRVR
+#: VALUE_SET_EXPANSIONS_SRVR
+msgid "Expansion from {0} based on:"
+msgstr "Expanze z {0} založená na:"
+
+# VALUE_SET_EXPANSION_INTERNAL
+#: VALUE_SET_EXPANSION_INTERNAL
+msgid "Expansion performed internally based on"
+msgstr "Interně provedená expanze založená na"
+
+# VALUE_SET_EXPANSION_SRVR
+#: VALUE_SET_EXPANSION_SRVR
+msgid "Expansion from {0} based on"
+msgstr "Expanze z {0} založená na"
+
+# VALUE_SET_EXP_FRAG
+#: VALUE_SET_EXP_FRAG
+msgid "Expansion based on code system fragment"
+msgstr "Expanze založená na fragmentu systému kódů"
+
+# VALUE_SET_FI
+#: VALUE_SET_FI
+msgid "Finnish Edition"
+msgstr "Finská edice"
+
+# VALUE_SET_GENERALIZES
+#: VALUE_SET_GENERALIZES
+msgid "generalizes"
+msgstr "generalizuje"
+
+# VALUE_SET_HAS
+#: VALUE_SET_HAS
+msgid "This value set has {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
+msgstr "Tato sada hodnot obsahuje {0} kódů. Aby velikost publikace zůstala zvládnutelná, je zobrazena pouze vybraná část ({1} kódů) z celé sady kódů."
+
+# VALUE_SET_HAS_AT_LEAST
+#: VALUE_SET_HAS_AT_LEAST
+msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
+msgstr "Tato sada hodnot obsahuje alespoň {0} kódů. Aby velikost publikace zůstala zvládnutelná, je zobrazena pouze vybraná část ({1} kódů) z celé sady kódů."
+
+# VALUE_SET_IE
+#: VALUE_SET_IE
+msgid "Irish Edition"
+msgstr "Irská edice"
+
+# VALUE_SET_IMPORT
+#: VALUE_SET_IMPORT
+msgid "Import all the codes that are contained in"
+msgid_plural "Import all the codes that are contained in the intersection of"
+msgstr[0] "Importovat všechny kódy obsažené v"
+msgstr[1] "Importovat všechny kódy obsažené v průniku"
+
+# VALUE_SET_IN
+#: VALUE_SET_IN
+msgid "in"
+msgstr "v"
+
+# VALUE_SET_INACT
+#: VALUE_SET_INACT
+msgid "inactive"
+msgstr "neaktivní"
+
+# VALUE_SET_INACTIVE
+#: VALUE_SET_INACTIVE
+msgid "Inactive"
+msgstr "Neaktivní"
+
+# VALUE_SET_INC
+#: VALUE_SET_INC
+msgid "Include"
+msgstr "Zahrnout"
+
+# VALUE_SET_INCLUDED_INTO
+#: VALUE_SET_INCLUDED_INTO
+msgid "Included into"
+msgstr "Zahrnuto do"
+
+# VALUE_SET_INT
+#: VALUE_SET_INT
+msgid "International"
+msgstr "Mezinárodní"
+
+# VALUE_SET_ISA
+#: VALUE_SET_ISA
+msgid "is-a"
+msgstr "is-a"
+
+# VALUE_SET_ISNOTA
+#: VALUE_SET_ISNOTA
+msgid "is-not-a"
+msgstr "is-not-a"
+
+# VALUE_SET_KR
+#: VALUE_SET_KR
+msgid "Republic of Korea Edition (South Korea)"
+msgstr "Edice Korejské republiky (Jižní Korea)"
+
+# VALUE_SET_LEVEL
+#: VALUE_SET_LEVEL
+msgid "Level"
+msgstr "Úroveň"
+
+# VALUE_SET_LOINCV
+#: VALUE_SET_LOINCV
+msgid "Loinc v"
+msgstr "Loinc v"
+
+# VALUE_SET_NEEDS_SUPPL
+#: VALUE_SET_NEEDS_SUPPL
+msgid "This ValueSet requires the Code system Supplement"
+msgid_plural "This ValueSet requires the Code system Supplements"
+msgstr[0] "Tento ValueSet vyžaduje doplněk systému kódů"
+msgstr[1] "Tento ValueSet vyžaduje doplňky systému kódů"
+
+# VALUE_SET_NO
+#: VALUE_SET_NO
+msgid "Norwegian Edition"
+msgstr "Norská edice"
+
+# VALUE_SET_NOTE
+#: VALUE_SET_NOTE
+msgid "Note: {0}"
+msgstr "Poznámka: {0}"
+
+# VALUE_SET_NOTIN
+#: VALUE_SET_NOTIN
+msgid "not in"
+msgstr "není v"
+
+# VALUE_SET_NOT_DEF
+#: VALUE_SET_NOT_DEF
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined"
+msgstr "Toto zahrnutí určuje hierarchii pro generování sad hodnot pro použití v uživatelském rozhraní, ale pravidla nejsou správně definována"
+
+# VALUE_SET_NOT_FOUND
+#: VALUE_SET_NOT_FOUND
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:"
+msgstr "Toto zahrnutí určuje hierarchii pro generování sad hodnot pro použití v uživatelském rozhraní. Expanze obsahuje tuto strukturu a všechny kódy, které ve struktuře nebyly nalezeny:"
+
+# VALUE_SET_NO_VER
+#: VALUE_SET_NO_VER
+msgid "(no version)"
+msgstr "(bez verze)"
+
+# VALUE_SET_NO_VERSION
+#: VALUE_SET_NO_VERSION
+msgid "(no version) ("
+msgstr "(bez verze) ("
+
+# VALUE_SET_NULL
+#: VALUE_SET_NULL
+msgid "null"
+msgstr "null"
+
+# VALUE_SET_NULLS
+#: VALUE_SET_NULLS
+msgid "?ngen-13?"
+msgstr "?ngen-13?"
+
+# VALUE_SET_NUMBER_CONCEPTS
+#: VALUE_SET_NUMBER_CONCEPTS
+msgid "This value set expansion contains {0} concepts."
+msgstr "Tato expanze sady hodnot obsahuje {0} konceptů."
+
+# VALUE_SET_NZ
+#: VALUE_SET_NZ
+msgid "New Zealand Edition"
+msgstr "Novozélandská edice"
+
+# VALUE_SET_OTHER_DISPLAY
+#: VALUE_SET_OTHER_DISPLAY
+msgid "Other Display ({0})"
+msgstr "Jiné zobrazení ({0})"
+
+# VALUE_SET_REGEX
+#: VALUE_SET_REGEX
+msgid "matches (by regex)"
+msgstr "odpovídá (podle regulárního výrazu)"
+
+# VALUE_SET_RULES_EXC
+#: VALUE_SET_RULES_EXC
+msgid "This value set excludes codes based on the following rules:"
+msgstr "Tato sada hodnot vylučuje kódy na základě následujících pravidel:"
+
+# VALUE_SET_RULES_INC
+#: VALUE_SET_RULES_INC
+msgid "This value set includes codes based on the following rules:"
+msgstr "Tato sada hodnot zahrnuje kódy na základě následujících pravidel:"
+
+# VALUE_SET_SEL
+#: VALUE_SET_SEL
+msgid "This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown"
+msgstr "Tato sada hodnot obsahuje >1000 kódů. Aby velikost publikace zůstala zvládnutelná, je zobrazena pouze vybraná část (1000 kódů) z celé sady kódů"
+
+# VALUE_SET_SNOMED
+#: VALUE_SET_SNOMED
+msgid "SNOMED CT {0} edition"
+msgstr "Edice SNOMED CT {0}"
+
+# VALUE_SET_SNOMED_ADD
+#: VALUE_SET_SNOMED_ADD
+msgid "SNOMED CT {0} edition {1}"
+msgstr "Edice SNOMED CT {0} {1}"
+
+# VALUE_SET_SPAN
+#: VALUE_SET_SPAN
+msgid "Spanish"
+msgstr "Španělština"
+
+# VALUE_SET_SPEC_NAME
+#: VALUE_SET_SPEC_NAME
+msgid "Fully specified name"
+msgstr "Plně specifikovaný název"
+
+# VALUE_SET_SWEDISH
+#: VALUE_SET_SWEDISH
+msgid "Swedish"
+msgstr "Švédština"
+
+# VALUE_SET_SYNONYM
+#: VALUE_SET_SYNONYM
+msgid "Synonym"
+msgstr "Synonymum"
+
+# VALUE_SET_SYSTEM
+#: VALUE_SET_SYSTEM
+msgid "System"
+msgstr "Systém"
+
+# VALUE_SET_THESE_CODES_DEF
+#: VALUE_SET_THESE_CODES_DEF
+msgid "these codes as defined in"
+msgstr "tyto kódy, jak jsou definovány v"
+
+# VALUE_SET_TOO_COSTLY
+#: VALUE_SET_TOO_COSTLY
+msgid "This value set cannot be expanded because the terminology server(s) deemed it too costly to do so"
+msgstr "Tuto sadu hodnot nelze expandovat, protože terminologické servery to vyhodnotily jako příliš nákladné"
+
+# VALUE_SET_UK
+#: VALUE_SET_UK
+msgid "United Kingdom"
+msgstr "Spojené království"
+
+# VALUE_SET_UK_CLIN
+#: VALUE_SET_UK_CLIN
+msgid "UK Clinical Edition"
+msgstr "Britská klinická edice"
+
+# VALUE_SET_US
+#: VALUE_SET_US
+msgid "United States"
+msgstr "Spojené státy"
+
+# VALUE_SET_USED_ELSEWHERE
+#: VALUE_SET_USED_ELSEWHERE
+msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr "Tato sada hodnot se zde nepoužívá; může být použita jinde (např. ve specifikacích a/nebo implementacích, které tento obsah používají)"
+
+# VALUE_SET_US_ICD10CM
+#: VALUE_SET_US_ICD10CM
+msgid "US Edition (with ICD-10-CM maps)"
+msgstr "Americká edice (s mapami ICD-10-CM)"
+
+# VALUE_SET_UY
+#: VALUE_SET_UY
+msgid "Uruguay Edition"
+msgstr "Uruguayská edice"
+
+# VALUE_SET_WHERE
+#: VALUE_SET_WHERE
+msgid "where"
+msgstr "kde"
+
+# VALUE_SET_WHERE_CODES
+#: VALUE_SET_WHERE_CODES
+msgid ", where the codes are contained in"
+msgstr ", kde jsou kódy obsaženy v"
+
+# VSR_LOGICAL
+#: VSR_LOGICAL
+msgid "Logical Definition (CLD)"
+msgstr "Logická definice (CLD)"
+
+# VSR_NO_DEF
+#: VSR_NO_DEF
+msgid "No formal definition provided for this value set"
+msgstr "Pro tuto sadu hodnot není poskytnuta žádná formální definice"
+
+# VSR_TRIGGER
+#: VSR_TRIGGER
+msgid "Used as a trigger criteria in"
+msgstr "Použito jako kritérium spouštěče v"
+
+# VS_ABSTRACT_CODE_HINT
+#: VS_ABSTRACT_CODE_HINT
+msgid "This code is not selectable (''Abstract'')"
+msgstr "Tento kód nelze vybrat (''abstraktní'')"
+
+# VS_VERSION_BY_PACKAGE
+#: VS_VERSION_BY_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to {0}, the version found through the package references"
+msgstr "Verze není výslovně uvedena, což znamená, že je pevně nastavena na {0}, verzi nalezenou přes reference balíčků"
+
+# VS_VERSION_FOUND
+#: VS_VERSION_FOUND
+msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
+msgstr "Verze není výslovně uvedena. Při sestavení této specifikace byla použita nejnovější verze {0}"
+
+# VS_VERSION_NONE
+#: VS_VERSION_NONE
+msgid "Version is not explicitly stated, and the target {0} has no stated version either"
+msgstr "Verze není výslovně uvedena a cíl {0} také nemá uvedenou verzi"
+
+# VS_VERSION_NOTHING
+#: VS_VERSION_NOTHING
+msgid "Version is not explicitly stated. No matching {0} found"
+msgstr "Verze není výslovně uvedena. Nebyl nalezen žádný odpovídající {0}"
+
+# VS_VERSION_NOTHING_TEXT
+#: VS_VERSION_NOTHING_TEXT
+msgid "Not State"
+msgstr "Neuvedeno"
+
+# VS_VERSION_STATED
+#: VS_VERSION_STATED
+msgid "Version is explicitly stated to be {0}"
+msgstr "Verze je výslovně uvedena jako {0}"
+
+# VS_VERSION_THIS_PACKAGE
+#: VS_VERSION_THIS_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to the version provided in this specification"
+msgstr "Verze není výslovně uvedena, což znamená, že je pevně nastavena na verzi poskytnutou v této specifikaci"
+
+# VS_VERSION_WILDCARD
+#: VS_VERSION_WILDCARD
+msgid "Version is stated to be {0}. When building this specification, the most recent matching version {1} has been used"
+msgstr "Verze je uvedena jako {0}. Při sestavení této specifikace byla použita nejnovější odpovídající verze {1}"
+
+# VS_VERSION_WILDCARD_BY_PACKAGE
+#: VS_VERSION_WILDCARD_BY_PACKAGE
+msgid "Version is stated to be {0}, which means it is fixed to {1}, the version found through the package references"
+msgstr "Verze je uvedena jako {0}, což znamená, že je pevně nastavena na {1}, verzi nalezenou přes reference balíčků"
+
+# _NA
+#: _NA
+msgid "n/a"
+msgstr "není k dispozici"

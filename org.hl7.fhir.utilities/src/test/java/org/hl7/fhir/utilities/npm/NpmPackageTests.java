@@ -1,16 +1,23 @@
 package org.hl7.fhir.utilities.npm;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;import java.util.List;
+import java.nio.charset.StandardCharsets;import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 class NpmPackageTests implements ResourceLoaderTests {
   @Test
@@ -80,6 +87,81 @@ class NpmPackageTests implements ResourceLoaderTests {
     } finally {
       NpmPackage.setDefaultMaxLoadSize(0);
     }
+  }
+
+  // examples are in package/examples (the spec) or package/example (what the IG publisher wrote up to 2026) - fhir-ig-publisher#1373
+  @Test
+  void testExamplesInEitherFolder() throws IOException {
+    Map<String, byte[]> files = new LinkedHashMap<>();
+    files.put("package/Patient-root.json", patient("root"));
+    files.put("package/examples/Patient-a.json", patient("a"));
+    files.put("package/example/Patient-b.json", patient("b"));
+    checkExamples(NpmPackage.fromPackage(new ByteArrayInputStream(buildTgz(files))));
+  }
+
+  @Test
+  void testExamplesInEitherFolderFromCacheFolder(@TempDir Path dir) throws IOException {
+    Files.createDirectories(dir.resolve("package/examples"));
+    Files.createDirectories(dir.resolve("package/example"));
+    Files.write(dir.resolve("package/package.json"), PACKAGE_JSON);
+    Files.write(dir.resolve("package/Patient-root.json"), patient("root"));
+    Files.write(dir.resolve("package/examples/Patient-a.json"), patient("a"));
+    Files.write(dir.resolve("package/example/Patient-b.json"), patient("b"));
+    checkExamples(NpmPackage.fromFolder(dir.toString()));
+  }
+
+  private void checkExamples(NpmPackage pkg) throws IOException {
+    List<String> examples = pkg.listExamples();
+    assertEquals(2, examples.size(), examples.toString());
+    assertTrue(examples.contains("Patient-a.json"));
+    assertTrue(examples.contains("Patient-b.json"));
+    assertTrue(IOUtils.toString(pkg.loadExample("Patient-a.json"), StandardCharsets.UTF_8).contains("\"a\""));
+    assertTrue(IOUtils.toString(pkg.loadExample("Patient-b.json"), StandardCharsets.UTF_8).contains("\"b\""));
+    Assertions.assertThrows(IOException.class, () -> pkg.loadExample("Patient-root.json"));
+
+    assertNotNull(pkg.loadExampleResource("Patient", "a"));
+    assertNotNull(pkg.loadExampleResource("Patient", "b"));
+    assertNull(pkg.loadExampleResource("Patient", "root"));
+
+    int count = 0;
+    for (NpmPackage.PackagedResourceFile f : pkg.listAllResources()) {
+      if ("Patient".equals(f.getResourceType())) {
+        count++;
+        assertEquals(!f.getFilename().equals("Patient-root.json"), f.isExample(), f.getFolder()+"/"+f.getFilename());
+      }
+    }
+    assertEquals(3, count);
+  }
+
+  @Test
+  void testIsExampleFolder() {
+    assertTrue(NpmPackage.isExampleFolder("examples"));
+    assertTrue(NpmPackage.isExampleFolder("example"));
+    assertTrue(NpmPackage.isExampleFolder("package/examples"));
+    assertTrue(NpmPackage.isExampleFolder("package\\example"));
+    assertFalse(NpmPackage.isExampleFolder("package"));
+    assertFalse(NpmPackage.isExampleFolder("package/other"));
+    assertFalse(NpmPackage.isExampleFolder("examples2"));
+    assertFalse(NpmPackage.isExampleFolder(null));
+  }
+
+  private static final byte[] PACKAGE_JSON = "{\"name\":\"test\",\"version\":\"0.0.1\",\"fhirVersions\":[\"4.0.1\"],\"dependencies\":{}}"
+    .getBytes(StandardCharsets.UTF_8);
+
+  private static byte[] patient(String id) {
+    return ("{\"resourceType\":\"Patient\",\"id\":\""+id+"\"}").getBytes(StandardCharsets.UTF_8);
+  }
+
+  private static byte[] buildTgz(Map<String, byte[]> files) throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    try (GzipCompressorOutputStream gzipOut = new GzipCompressorOutputStream(baos);
+         TarArchiveOutputStream tarOut = new TarArchiveOutputStream(gzipOut, "UTF-8")) {
+      addTarEntry(tarOut, "package/package.json", PACKAGE_JSON);
+      for (Map.Entry<String, byte[]> e : files.entrySet()) {
+        addTarEntry(tarOut, e.getKey(), e.getValue());
+      }
+    }
+    return baos.toByteArray();
   }
 
   // Created by claude-sonnet-4-6

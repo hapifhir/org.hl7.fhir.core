@@ -729,6 +729,71 @@ public class Patient extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.relationshipList != null) {
+            int i = 0;
+            for (Base v : this.relationshipList) {
+              if (v != null) {
+                visitor.visit(this, "relationship", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.roleList != null) {
+            int i = 0;
+            for (Base v : this.roleList) {
+              if (v != null) {
+                visitor.visit(this, "role", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.name != null) {
+            visitor.visit(this, "name", -1, this.name);
+          }
+          if (this.additionalNameList != null) {
+            int i = 0;
+            for (Base v : this.additionalNameList) {
+              if (v != null) {
+                visitor.visit(this, "additionalName", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.telecomList != null) {
+            int i = 0;
+            for (Base v : this.telecomList) {
+              if (v != null) {
+                visitor.visit(this, "telecom", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.address != null) {
+            visitor.visit(this, "address", -1, this.address);
+          }
+          if (this.additionalAddressList != null) {
+            int i = 0;
+            for (Base v : this.additionalAddressList) {
+              if (v != null) {
+                visitor.visit(this, "additionalAddress", i, v);
+              }
+              i++;
+            }
+          }
+          if (this.gender != null) {
+            visitor.visit(this, "gender", -1, this.gender);
+          }
+          if (this.organization != null) {
+            visitor.visit(this, "organization", -1, this.organization);
+          }
+          if (this.period != null) {
+            visitor.visit(this, "period", -1, this.period);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "relationship":  return new Property("relationship", "CodeableConcept", "The nature of the personal relationship between the patient and the contact person.", 0, java.lang.Integer.MAX_VALUE, relationshipList);
@@ -1172,6 +1237,17 @@ public class Patient extends DomainResource {
         }
 
         @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.language != null) {
+            visitor.visit(this, "language", -1, this.language);
+          }
+          if (this.preferred != null) {
+            visitor.visit(this, "preferred", -1, this.preferred);
+          }
+        }
+
+        @Override
         public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
           switch (_name) {
           case "language":  return new Property("language", "CodeableConcept", "The language which may be used to communicate with the individual.", 0, 1, language);
@@ -1440,6 +1516,17 @@ public class Patient extends DomainResource {
           super.listChildren(children);
           children.add(new Property("other", "Reference(Patient|RelatedPerson)", "Link to a Patient or RelatedPerson resource that concerns the same actual individual.", 0, 1, other));
           children.add(new Property("type", "code", "The type of link between this patient resource and another patient resource.", 0, 1, type));
+        }
+
+        @Override
+        protected void visitChildren(IModelObjectVisitor visitor) {
+          super.visitChildren(visitor);
+          if (this.other != null) {
+            visitor.visit(this, "other", -1, this.other);
+          }
+          if (this.type != null) {
+            visitor.visit(this, "type", -1, this.type);
+          }
         }
 
         @Override
@@ -2527,6 +2614,113 @@ public class Patient extends DomainResource {
         children.add(new Property("generalPractitioner", "Reference(Organization|Practitioner|PractitionerRole)", "Patient's nominated care provider.", 0, java.lang.Integer.MAX_VALUE, generalPractitionerList));
         children.add(new Property("managingOrganization", "Reference(Organization)", "Organization that is the custodian of the patient record.", 0, 1, managingOrganization));
         children.add(new Property("link", "", "Link to a Patient or RelatedPerson resource that concerns the same actual individual.", 0, java.lang.Integer.MAX_VALUE, linkList));
+      }
+
+      @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.identifierList != null) {
+          int i = 0;
+          for (Base v : this.identifierList) {
+            if (v != null) {
+              visitor.visit(this, "identifier", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.active != null) {
+          visitor.visit(this, "active", -1, this.active);
+        }
+        if (this.nameList != null) {
+          int i = 0;
+          for (Base v : this.nameList) {
+            if (v != null) {
+              visitor.visit(this, "name", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.telecomList != null) {
+          int i = 0;
+          for (Base v : this.telecomList) {
+            if (v != null) {
+              visitor.visit(this, "telecom", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.gender != null) {
+          visitor.visit(this, "gender", -1, this.gender);
+        }
+        if (this.birthDate != null) {
+          visitor.visit(this, "birthDate", -1, this.birthDate);
+        }
+        if (this.deceased != null) {
+          visitor.visit(this, "deceased[x]", -1, this.deceased);
+        }
+        if (this.addressList != null) {
+          int i = 0;
+          for (Base v : this.addressList) {
+            if (v != null) {
+              visitor.visit(this, "address", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.maritalStatus != null) {
+          visitor.visit(this, "maritalStatus", -1, this.maritalStatus);
+        }
+        if (this.multipleBirth != null) {
+          visitor.visit(this, "multipleBirth[x]", -1, this.multipleBirth);
+        }
+        if (this.photoList != null) {
+          int i = 0;
+          for (Base v : this.photoList) {
+            if (v != null) {
+              visitor.visit(this, "photo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.contactList != null) {
+          int i = 0;
+          for (Base v : this.contactList) {
+            if (v != null) {
+              visitor.visit(this, "contact", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.communicationList != null) {
+          int i = 0;
+          for (Base v : this.communicationList) {
+            if (v != null) {
+              visitor.visit(this, "communication", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.generalPractitionerList != null) {
+          int i = 0;
+          for (Base v : this.generalPractitionerList) {
+            if (v != null) {
+              visitor.visit(this, "generalPractitioner", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.managingOrganization != null) {
+          visitor.visit(this, "managingOrganization", -1, this.managingOrganization);
+        }
+        if (this.linkList != null) {
+          int i = 0;
+          for (Base v : this.linkList) {
+            if (v != null) {
+              visitor.visit(this, "link", i, v);
+            }
+            i++;
+          }
+        }
       }
 
       @Override

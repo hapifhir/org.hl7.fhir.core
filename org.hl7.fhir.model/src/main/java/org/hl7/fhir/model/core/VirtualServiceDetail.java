@@ -395,6 +395,32 @@ public class VirtualServiceDetail extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.channelType != null) {
+          visitor.visit(this, "channelType", -1, this.channelType);
+        }
+        if (this.address != null) {
+          visitor.visit(this, "address[x]", -1, this.address);
+        }
+        if (this.additionalInfoList != null) {
+          int i = 0;
+          for (Base v : this.additionalInfoList) {
+            if (v != null) {
+              visitor.visit(this, "additionalInfo", i, v);
+            }
+            i++;
+          }
+        }
+        if (this.maxParticipants != null) {
+          visitor.visit(this, "maxParticipants", -1, this.maxParticipants);
+        }
+        if (this.sessionKey != null) {
+          visitor.visit(this, "sessionKey", -1, this.sessionKey);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "channelType":  return new Property("channelType", "Coding", "The type of virtual service to connect to (i.e. Teams, Zoom, Specific VMR technology, WhatsApp).", 0, 1, channelType);

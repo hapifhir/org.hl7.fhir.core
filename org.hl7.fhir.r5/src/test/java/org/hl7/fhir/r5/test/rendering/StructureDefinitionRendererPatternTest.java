@@ -110,8 +110,8 @@ public class StructureDefinitionRendererPatternTest {
     generateSnapshot(sd);
 
     String html = render(sd, false, false);
-    assertTrue(html.contains("Fixed Value"));
-    assertTrue(html.contains("(Complex)"));
+    assertTrue(html.contains("Required Pattern"));
+    assertTrue(html.contains("class=\"json\""));
     assertTrue(html.contains("http://fhir.de/CodeSystem/identifier-type-de-basis"));
     assertTrue(html.contains("KVZ10"));
     assertFalse(html.contains("Identifier.type.coding"));
@@ -133,7 +133,7 @@ public class StructureDefinitionRendererPatternTest {
 
     String html = render(sd, true, false);
     assertTrue(html.contains("Required Pattern"));
-    assertTrue(html.contains(">coding<"));
+    assertTrue(html.contains("class=\"json\""));
     assertTrue(html.contains("http://fhir.de/CodeSystem/identifier-type-de-basis"));
     assertTrue(html.contains("KVZ10"));
   }

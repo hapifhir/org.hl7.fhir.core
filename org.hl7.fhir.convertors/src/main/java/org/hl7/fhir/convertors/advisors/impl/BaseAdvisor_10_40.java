@@ -22,15 +22,13 @@ public class BaseAdvisor_10_40 extends BaseAdvisor40<org.hl7.fhir.dstu2.model.Ex
   }
 
   @Override
-  public boolean ignoreExtension(@Nonnull String path,
-                                 @Nonnull String url) {
+  public boolean ignoreExtension(@Nonnull String url) {
     // no globally ignored extensions here.
     return false;
   }
 
   @Override
-  public boolean ignoreType(@Nonnull String path,
-                            @Nonnull Type type) {
+  public boolean ignoreType(@Nonnull Type type) {
     return ignoredExtensionTypes.contains(type.getClass());
   }
 }

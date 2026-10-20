@@ -17,6 +17,17 @@ public class ValueSet50_N {
       return null;
     org.hl7.fhir.model.core.ValueSet tgt = new org.hl7.fhir.model.core.ValueSet();
     ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyDomainResource(src, tgt);
+    // ValueSet.scope was removed in R6 - it's carried by the valueset-scope extension
+    if (src.hasScope() && (src.getScope().hasInclusionCriteria() || src.getScope().hasExclusionCriteria())) {
+      org.hl7.fhir.model.core.Extension ext = new org.hl7.fhir.model.core.Extension(org.hl7.fhir.convertors.VersionConvertorConstants.EXT_VS_SCOPE);
+      if (src.getScope().hasInclusionCriteria()) {
+        ext.addExtension("inclusionCriteria", new org.hl7.fhir.model.core.StringType(src.getScope().getInclusionCriteria()));
+      }
+      if (src.getScope().hasExclusionCriteria()) {
+        ext.addExtension("exclusionCriteria", new org.hl7.fhir.model.core.StringType(src.getScope().getExclusionCriteria()));
+      }
+      tgt.addExtension(ext);
+    }
     if (src.hasUrl())
       tgt.setUrlElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Uri50_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
@@ -82,7 +93,18 @@ public class ValueSet50_N {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ValueSet tgt = new org.hl7.fhir.r5.model.ValueSet();
-    ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyDomainResource(src, tgt);
+    ConversionContext50_N.INSTANCE.getVersionConvertor_50_N().copyDomainResource(src, tgt, org.hl7.fhir.convertors.VersionConvertorConstants.EXT_VS_SCOPE);
+    if (src.hasExtension(org.hl7.fhir.convertors.VersionConvertorConstants.EXT_VS_SCOPE)) {
+      org.hl7.fhir.model.core.Extension ext = src.getExtensionByUrl(org.hl7.fhir.convertors.VersionConvertorConstants.EXT_VS_SCOPE);
+      org.hl7.fhir.model.core.Extension inc = ext.getExtensionByUrl("inclusionCriteria");
+      if (inc != null && inc.hasValue()) {
+        tgt.getScope().setInclusionCriteria(inc.getValue().primitiveValue());
+      }
+      org.hl7.fhir.model.core.Extension exc = ext.getExtensionByUrl("exclusionCriteria");
+      if (exc != null && exc.hasValue()) {
+        tgt.getScope().setExclusionCriteria(exc.getValue().primitiveValue());
+      }
+    }
     if (src.hasUrl())
       tgt.setUrlElement(org.hl7.fhir.convertors.conv50_N.datatypes50_N.primitive50_N.Uri50_N.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.model.core.Identifier t : src.getIdentifierList())

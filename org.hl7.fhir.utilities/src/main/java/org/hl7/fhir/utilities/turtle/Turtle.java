@@ -819,6 +819,9 @@ public class Turtle {
 
   private Map<TTLURL, TTLComplex> objects = new HashMap<TTLURL, Turtle.TTLComplex>();
 
+  private static final int MAX_TTL_DEPTH = 500;
+  private int parseDepth = 0;
+
   private Object base;
 
 	public enum LexerTokenType {
@@ -1233,57 +1236,77 @@ public class Turtle {
 
 
   private TTLComplex parseComplex(Lexer lexer) throws FHIRFormatError {
-		TTLComplex result = new TTLComplex(lexer.startLine, lexer.startCol);
+    parseDepth++;
+    try {
+      // guard against unbounded recursion in parseComplex (self-recursive on nested "[ ... ]"
+      // blank-node objects) on deeply nested Turtle/RDF documents, which would otherwise cause a
+      // StackOverflowError.
+      if (parseDepth > MAX_TTL_DEPTH) {
+        throw lexer.error("Turtle nesting depth exceeds maximum of " + MAX_TTL_DEPTH);
+      }
+      TTLComplex result = new TTLComplex(lexer.startLine, lexer.startCol);
 
-		boolean done = lexer.peek(LexerTokenType.TOKEN, "]");
-		while (!done) {
-			String uri = null;
-			if (lexer.peekType() == LexerTokenType.URI)
-				uri = lexer.uri();
-			else {
-				String t = lexer.peekType() == LexerTokenType.WORD ? lexer.word() : null;
-				if (lexer.type == LexerTokenType.TOKEN && lexer.token.equals(":")) {
-					lexer.token(":");
-					if (!prefixes.containsKey(t))
-            throw new FHIRFormatError("unknown prefix "+t);
-					uri = prefixes.get(t)+lexer.word();
-				} else if (t != null && t.equals("a"))
-					uri = RDF_TYPE;
-				else
-					throw lexer.error("unexpected token");
-			}
-
-			boolean rpt = false;
-			do {
-        if (!lexer.peek(LexerTokenType.TOKEN, ";")) {
-          result.addPredicate(uri, parseObject(lexer));
+      boolean done = lexer.peek(LexerTokenType.TOKEN, "]");
+      while (!done) {
+        String uri = null;
+        if (lexer.peekType() == LexerTokenType.URI)
+          uri = lexer.uri();
+        else {
+          String t = lexer.peekType() == LexerTokenType.WORD ? lexer.word() : null;
+          if (lexer.type == LexerTokenType.TOKEN && lexer.token.equals(":")) {
+            lexer.token(":");
+            if (!prefixes.containsKey(t))
+              throw new FHIRFormatError("unknown prefix " + t);
+            uri = prefixes.get(t) + lexer.word();
+          } else if (t != null && t.equals("a"))
+            uri = RDF_TYPE;
+          else
+            throw lexer.error("unexpected token");
         }
-					rpt = lexer.peek(LexerTokenType.TOKEN, ",");
-					if (rpt)
+
+        boolean rpt = false;
+        do {
+          if (!lexer.peek(LexerTokenType.TOKEN, ";")) {
+            result.addPredicate(uri, parseObject(lexer));
+          }
+          rpt = lexer.peek(LexerTokenType.TOKEN, ",");
+          if (rpt)
             lexer.readNext(false);
-			} while (rpt);
+        } while (rpt);
 
-			if (lexer.peek(LexerTokenType.TOKEN, ";")) {
-        while ((lexer.peek(LexerTokenType.TOKEN, ";"))) {
-          lexer.token(";");
+        if (lexer.peek(LexerTokenType.TOKEN, ";")) {
+          while ((lexer.peek(LexerTokenType.TOKEN, ";"))) {
+            lexer.token(";");
+          }
+          done = lexer.peek(LexerTokenType.TOKEN, ".") || lexer.peek(LexerTokenType.TOKEN, "]");
+        } else {
+          done = true;
         }
-        done = lexer.peek(LexerTokenType.TOKEN, ".") || lexer.peek(LexerTokenType.TOKEN, "]");
-			} else {
-				done = true;
-			}
-		}
-		return result;
-	}
+      }
+      return result;
+    } finally {
+      parseDepth--;
+    }
+  }
 
-	private TTLList parseList(Lexer lexer) throws FHIRFormatError {
-		TTLList result = new TTLList(lexer.startLine, lexer.startCol);
-		lexer.token("(");
-		while (!lexer.peek(LexerTokenType.TOKEN, ")")) {
-			result.list.add(parseObject(lexer));
-		}
-		lexer.token(")");
-		return result;
-	}
+  private TTLList parseList(Lexer lexer) throws FHIRFormatError {
+    parseDepth++;
+    try {
+      // nested collections recurse through parseObject without passing through parseComplex
+      if (parseDepth > MAX_TTL_DEPTH) {
+        throw lexer.error("Turtle nesting depth exceeds maximum of " + MAX_TTL_DEPTH);
+      }
+      TTLList result = new TTLList(lexer.startLine, lexer.startCol);
+      lexer.token("(");
+      while (!lexer.peek(LexerTokenType.TOKEN, ")")) {
+        result.list.add(parseObject(lexer));
+      }
+      lexer.token(")");
+      return result;
+    } finally {
+      parseDepth--;
+    }
+  }
 
 	private TTLObject parseObject(Lexer lexer) throws FHIRFormatError {
 		if (lexer.peek(LexerTokenType.TOKEN, "(")) {

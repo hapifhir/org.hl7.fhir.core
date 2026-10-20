@@ -151,6 +151,17 @@ public class Ratio extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.numerator != null) {
+          visitor.visit(this, "numerator", -1, this.numerator);
+        }
+        if (this.denominator != null) {
+          visitor.visit(this, "denominator", -1, this.denominator);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "numerator":  return new Property("numerator", "Quantity", "The value of the numerator.", 0, 1, numerator);

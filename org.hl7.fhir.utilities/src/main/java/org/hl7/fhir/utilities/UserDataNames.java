@@ -162,6 +162,9 @@ public class UserDataNames {
   public static final String VS_EXPANSION_VERSION_MAP = "VS_EXPANSION_VERSION_MAP";
   public static final String CS_SUPPLEMENT_LIST = "CS_SUPPLEMENT_LIST";
   public static final String CONTAINED_RESOURCE = "CONTAINED_RESOURCE";
+  // on a contained resource returned by a #id lookup: the resource that contains it, so that a #id
+  // inside the contained resource can be resolved against its siblings
+  public static final String CONTAINER_RESOURCE = "CONTAINER_RESOURCE";
   public static final String CACHED_UUID = "CACHED_UUID";
   public static final String EXPANSION = "expansion";
 

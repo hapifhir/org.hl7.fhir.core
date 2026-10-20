@@ -198,6 +198,9 @@ public class {{jname}}XmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       throw new IOException("prefix == null!");
     } else if (xpp == null) {
       throw new IOException("xpp == null!");
+    } else if (!xpp.getName().startsWith(prefix)) {
+      // all the names below start with the prefix, so if this one does not, there is no need to try them
+      return false;
 {{check-type}}
     } else if (xpp.getName().equals(prefix+"Date")) {
       return true;

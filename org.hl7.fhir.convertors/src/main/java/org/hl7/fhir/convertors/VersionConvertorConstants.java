@@ -68,6 +68,11 @@ public class VersionConvertorConstants {
   public static final String EXT_NAMINGSYSTEM_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url";
   public static final String EXT_NAMINGSYSTEM_VERSION = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version";
   public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
+  // The R3-R4B equivalences that come back unchanged from the R5 relationship they convert to. Only the
+  // others (equal, subsumes, specializes, inexact) need EXT_OLD_CONCEPTMAP_EQUIVALENCE to round-trip;
+  // adding the modifier extension for these five only makes the R5 resource harder to use. (unmatched
+  // never gets here: it becomes element.noMap before any relationship is converted.)
+  public static final java.util.Set<String> CONCEPTMAP_EQUIVALENCES_KEPT_BY_RELATIONSHIP = java.util.Set.of("relatedto", "equivalent", "wider", "narrower", "disjoint");
   public static final String EXT_OPDEF_ORIGINAL_TYPE = "http://hl7.org/fhir/4.0/StructureDefinition/extension-OperationDefinition.parameter.type";
   public static final String EXT_PAT_ANIMAL = "http://hl7.org/fhir/StructureDefinition/patient-animal";
   public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = ExtensionDefinitions.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL;
@@ -85,6 +90,8 @@ public class VersionConvertorConstants {
   public static final String EXT_DOC_REF_CREATED = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DocumentReference.created";
   public static final String EXT_DIA_REP_PERFORMER = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DiagnosticReport.performer.role";
   public static final String EXT_VERSION_ALGORITHM = "http://hl7.org/fhir/5.0/StructureDefinition/extension-CanonicalResource.versionAlgorithm";
+  // ValueSet.scope (trial use in R5, removed in R6) is represented by this extension in other versions
+  public static final String EXT_VS_SCOPE = "http://hl7.org/fhir/StructureDefinition/valueset-scope";
   public static final String EXT_CS_FILTER_OPERATOR = "http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.filter.operator"; // for operators introduced in R6 (property-value-of)
   public static final String EXT_CS_FILTER_OPERATOR_R5 = "http://hl7.org/fhir/5.0/StructureDefinition/extension-CodeSystem.filter.operator"; // for operators introduced in R5 (child-of, descendent-leaf)
   public static final String EXT_CS_DESIGNATION_ADDITIONAL_USE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-CodeSystem.concept.designation.additionalUse"; // additionalUse was introduced in R5

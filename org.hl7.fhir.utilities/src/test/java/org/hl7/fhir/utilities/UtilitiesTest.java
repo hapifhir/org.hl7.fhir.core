@@ -27,6 +27,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 class UtilitiesTest {
@@ -210,6 +211,22 @@ class UtilitiesTest {
     assertEquals(1, Utilities.getDecimalPrecision("1.0"));
     assertEquals(1, Utilities.getDecimalPrecision("-1.0"));
     assertEquals(4, Utilities.getDecimalPrecision("-1.0200"));
+  }
+
+  @ParameterizedTest(name = "highBoundary({0}, {1}) = {2}")
+  @CsvSource({
+    "9.95, 1, 10.0",
+    "0.994, 1, 1.0",
+    "0.996, 1, 1.0",
+    "99.96, 1, 100.0",
+    "9, 0, 10",
+    "-9.96, 1, -9.9",
+    "0.55, 1, 0.6",
+    "1.587, 2, 1.59",
+    "0.0034, 1, 0.0"
+  })
+  void testHighBoundaryForDecimalCarry(String value, int precision, String expected) {
+    assertEquals(expected, Utilities.highBoundaryForDecimal(value, precision));
   }
   
   public static Stream<Arguments> windowsRootPaths() {

@@ -741,6 +741,9 @@ public class Turtle {
 
   private Map<TTLURL, TTLComplex> objects = new HashMap<TTLURL, Turtle.TTLComplex>();
 
+  private static final int MAX_TTL_DEPTH = 500;
+  private int parseDepth = 0;
+
   private Object base;
 
   public enum LexerTokenType {
@@ -1143,6 +1146,14 @@ public class Turtle {
   }
 
   private TTLComplex parseComplex(Lexer lexer) throws FHIRFormatError {
+    parseDepth++;
+    try {
+      // guard against unbounded recursion in parseComplex (self-recursive on nested "[ ... ]"
+      // blank-node objects) on deeply nested Turtle/RDF documents, which would otherwise cause a
+      // StackOverflowError.
+      if (parseDepth > MAX_TTL_DEPTH) {
+        throw lexer.error("Turtle nesting depth exceeds maximum of " + MAX_TTL_DEPTH);
+      }
     TTLComplex result = new TTLComplex(lexer.startLine, lexer.startCol);
 
     boolean done = lexer.peek(LexerTokenType.TOKEN, "]");
@@ -1249,6 +1260,9 @@ public class Turtle {
       }
     }
     return result;
+    } finally {
+      parseDepth--;
+    }
   }
 
   public Map<TTLURL, TTLComplex> getObjects() {

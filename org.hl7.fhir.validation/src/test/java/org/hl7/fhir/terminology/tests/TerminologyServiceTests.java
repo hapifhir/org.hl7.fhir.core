@@ -128,6 +128,15 @@ private static TxTestData testData;
     }
     String reqFile = setup.getTest().asString("request");
     Resource req = reqFile == null ? null : loadResource(reqFile);
+    // a server sees every tx-resource in the request, not just the value set being operated on:
+    // load them all, so that references from it (an imported or excluded value set) resolve
+    if (req instanceof org.hl7.fhir.model.core.Parameters) {
+      for (org.hl7.fhir.model.core.Parameters.ParametersParameterComponent pp : ((org.hl7.fhir.model.core.Parameters) req).getParameterList()) {
+        if ("tx-resource".equals(pp.getName()) && pp.hasResource()) {
+          engine.seeResource(pp.getResource());
+        }
+      }
+    }
     // The test case's lenient-display property is carried to the server as the
     // lenient-display-validation parameter (see TxTester.runTest, which does the same for
     // the HTTP path). It only means anything for the two $validate-code operations.

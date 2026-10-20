@@ -529,6 +529,23 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
 
+  /**
+   * the worker context for a published version of FHIR (major.minor): this one, or one loaded once per session
+   */
+  private IWorkerContext getContextForVersion(String v) throws IOException {
+    if (v.equals(VersionUtilities.getMajMin(context.getFHIRVersion()))) { // v is major.minor only
+      return context;
+    }
+    if (!session.getOtherVersions().containsKey(v)) {
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
+      NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(v));
+      SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(context.getModelContext()).withAllowLoadingDuplicates(true)
+        .fromPackage(npm, ValidatorUtils.loaderForVersion(context.getModelContext(), v), false);
+      session.getOtherVersions().put(v, swc);
+    }
+    return session.getOtherVersions().get(v);
+  }
+
   private boolean checkElementDefinition(List<ValidationMessage> errors, NodeStack n, Element ec, String path) throws IOException {
     boolean ok = true;
     String startVer;
@@ -553,19 +570,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
     List<String> versionList = VersionUtilities.iterateCorePublishedVersions(startVer, endVer);
     for (String v : versionList) {
-      IWorkerContext ctxt;
-      if (v.equals(VersionUtilities.getMajMin(context.getFHIRVersion()))) { // v is major.minor only
-        ctxt = context;
-      } else {
-        if (!session.getOtherVersions().containsKey(v)) {
-          FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-          NpmPackage npm = pcm.loadPackage(VersionUtilities.packageForVersion(v));
-          SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder(context.getModelContext()).withAllowLoadingDuplicates(true)
-            .fromPackage(npm, ValidatorUtils.loaderForVersion(context.getModelContext(), v), false);
-          session.getOtherVersions().put(v, swc);
-        }
-        ctxt = session.getOtherVersions().get(v);
-      }
+      IWorkerContext ctxt = getContextForVersion(v);
       try {
         String pp = (path.contains("#") ? path.substring(path.indexOf("#") + 1) : path);
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
@@ -673,6 +678,10 @@ public class StructureDefinitionValidator extends BaseValidator {
     ok = rule(errors, "2023-05-22", IssueType.NOTFOUND, stack.getLiteralPath(), snapshot || !constraint || !element.hasChild("meaningWhenMissing", false) || meaningWhenMissingAllowed(element), I18nConstants.SD_ELEMENT_NOT_IN_CONSTRAINT, "meaningWhenMissing", path) && ok;
     if (!snapshot && !path.contains(".")) {
       ok = validateRootElement(errors, element, stack, path, logical, constraint, "Extension".equals(typeName), base) && ok;
+    }
+    // in a constraint, the snapshot generator checks the differential against the base (including the types)
+    if (path.contains(".") && (snapshot || !constraint)) {
+      ok = checkChildIsDefinedByType(errors, elements, element, stack, path) && ok;
     }
 
     List<Element> types = element.getChildrenByName("type");
@@ -1178,7 +1187,12 @@ public class StructureDefinitionValidator extends BaseValidator {
                 if (settings.isDebug()) {
                   e.printStackTrace();
                 }
-                ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
+                String id = determineId(stack.getLiteralPath(), invariant);
+                if (id == null) {
+                  ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
+                } else {
+                  ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR_WITH_ID, key, expression, e.getMessage(), id) && ok;
+                }
               }         
             }        
           }
@@ -1307,7 +1321,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             e.printStackTrace();
           }
           ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_CONTEXT_INVARIANT_EXPRESSION_ERROR, expression, e.getMessage()) && ok;
-        }         
+        }
     }        
     return ok;
   }
@@ -1423,16 +1437,104 @@ public class StructureDefinitionValidator extends BaseValidator {
     return types;
   }
 
+  /**
+   * true if any element after this one in the list (before the list leaves this element) is a descendant of it.
+   * Slices of the element itself have the same path, so they're skipped over, and their children count
+   */
   private boolean hasChildren(Element element, List<Element> elements) {
-    int i = elements.indexOf(element);
-    String path = element.getNamedChildValue("path", false)+".";
-    while (i < elements.size()) {
-      String p = elements.get(i).getNamedChildValue("path", false)+".";
-      if (p.startsWith(path)) {
+    String path = element.getNamedChildValue("path", false);
+    for (int i = elements.indexOf(element) + 1; i > 0 && i < elements.size(); i++) {
+      String p = elements.get(i).getNamedChildValue("path", false);
+      if (p == null || !(p.equals(path) || p.startsWith(path+"."))) {
+        return false;
+      }
+      if (!p.equals(path)) {
         return true;
       }
     }
     return false;
+  }
+
+  /**
+   * The children of an element are interpreted in light of the element's type. If the type is abstract (BackboneElement,
+   * Element, Base etc), the children define a new anonymous type, so they can be anything. If the type is concrete,
+   * the children are an anonymous profile on that type, so they can only be elements that the type already defines
+   */
+  private boolean checkChildIsDefinedByType(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, String path) {
+    Element parent = getParent(elements, element);
+    String name = tail(path);
+    if (parent == null || !path.equals(parent.getNamedChildValue("path", false)+"."+name)) {
+      return true; // the parent isn't in the list (a gap in a differential), so there's no type to check against here
+    }
+    List<StructureDefinition> types = new ArrayList<>();
+    for (Element type : parent.getChildrenByName("type")) {
+      String tc = type.getChildValue("code");
+      if (type.hasExtension(ExtensionDefinitions.EXT_FHIR_TYPE)) {
+        Base tcv = type.getExtensionValue(ExtensionDefinitions.EXT_FHIR_TYPE);
+        if (tcv != null) {
+          tc = tcv.primitiveValue();
+        }
+      }
+      if (Utilities.noString(tc)) {
+        return true;
+      }
+      StructureDefinition tsd = context.fetchTypeDefinition(tc);
+      if (tsd == null || tsd.getAbstract()) {
+        return true; // unknown types are reported elsewhere; abstract types mean the children are an anonymous type
+      }
+      types.add(tsd);
+    }
+    List<String> missing = new ArrayList<>();
+    for (StructureDefinition tsd : types) {
+      Boolean defined = typeDefinesChild(tsd, name, 0);
+      if (defined == null) {
+        hint(errors, "2026-10-07", IssueType.INFORMATIONAL, stack.getLiteralPath(), false, I18nConstants.SD_CHILD_TYPE_UNCHECKABLE, path, tsd.getVersionedUrl());
+      } else if (!defined) {
+        missing.add(tsd.getTypeName());
+      }
+    }
+    return rule(errors, "2026-10-07", IssueType.INVALID, stack.getLiteralPath(), missing.isEmpty(), I18nConstants.SD_CHILD_NOT_IN_TYPE, path, CommaSeparatedStringBuilder.join(", ", missing), parent.getNamedChildValue("path", false));
+  }
+
+  /**
+   * true if the type defines an element with this name, false if it doesn't, null if that can't be determined
+   */
+  private Boolean typeDefinesChild(StructureDefinition tsd, String name, int depth) {
+    if (depth > 20) {
+      return null; // a circular chain of base definitions
+    }
+    List<ElementDefinition> list = tsd.hasSnapshot() ? tsd.getSnapshot().getElementList() : tsd.getDifferential().getElementList();
+    if (!list.isEmpty()) {
+      String root = list.get(0).getPath();
+      if (root.contains(".")) {
+        root = root.substring(0, root.indexOf("."));
+      }
+      for (ElementDefinition ed : list) {
+        String p = ed.getPath();
+        if (p.startsWith(root+".") && p.indexOf('.', root.length()+1) < 0) {
+          String n = p.substring(root.length()+1);
+          if (n.equals(name)) {
+            return true;
+          }
+          // a type specific name for a choice element e.g. valueQuantity for value[x]
+          if (n.endsWith("[x]")) {
+            String stem = n.substring(0, n.length()-3);
+            if (name.length() > stem.length() && name.startsWith(stem) && Character.isUpperCase(name.charAt(stem.length()))) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    if (tsd.hasSnapshot()) {
+      return false;
+    }
+    // no snapshot: the differential only has what is new or changed, so the element might be inherited from the base
+    if (!tsd.hasBaseDefinition()) {
+      return null;
+    }
+    StructureDefinition bsd = context.fetchResource(StructureDefinition.class, tsd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(tsd.getBaseDefinitionElement()));
+    return bsd == null ? null : typeDefinesChild(bsd, name, depth+1);
   }
 
   private boolean isAbstractType(String t) {
@@ -1765,7 +1867,12 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
         profiles = type.getChildrenByName("targetProfile");
         for (Element profile : profiles) {
-          ok = validateTargetProfile(errors, profile, code, stack.push(profile, -1, null, null), path, logical) && ok;
+          if (isForThisVersion(profile)) {
+            ok = validateTargetProfile(errors, profile, code, stack.push(profile, -1, null, null), path, logical) && ok;
+          } else {
+            // e.g. Media, which only exists in R4/R4B: it can't be resolved in this version
+            validateTargetProfileInOtherVersions(errors, profile, stack.push(profile, -1, null, null));
+          }
         }
       }
     }
@@ -1875,6 +1982,40 @@ public class StructureDefinitionValidator extends BaseValidator {
     return t.getSnapshot().getElementFirstRep().getIsModifier();
   }
 
+  /**
+   * a target profile marked with version-specific-use that doesn't apply to this version of FHIR: all
+   * that can be checked is that it exists in (at least one of) the versions it does apply to
+   */
+  private void validateTargetProfileInOtherVersions(List<ValidationMessage> errors, Element profile, NodeStack stack) {
+    String p = profile.primitiveValue();
+    Element ext = profile.getExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE);
+    String endVer = ext.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END) ? ext.getExtensionString(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END) : null;
+    String startVer = ext.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START) ? ext.getExtensionString(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START) : null;
+    if (endVer == null) {
+      endVer = settings.getMaxVersion() != null ? settings.getMaxVersion() : startVer;
+    }
+    if (startVer == null) {
+      startVer = settings.getMinVersion() != null ? settings.getMinVersion() : endVer;
+    }
+    if (startVer == null || endVer == null) {
+      return;
+    }
+    boolean found = false;
+    for (String v : VersionUtilities.iterateCorePublishedVersions(startVer, endVer)) {
+      try {
+        IWorkerContext ctxt = getContextForVersion(v);
+        if (ctxt.fetchResource(StructureDefinition.class, p, ElementModelUtilities.getVersionResolutionRules(profile)) != null) {
+          found = true;
+          break;
+        }
+      } catch (Exception e) {
+        // can't load that version: nothing to check against
+        found = true;
+      }
+    }
+    warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), found, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p);
+  }
+
   private boolean validateTargetProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path, boolean logical) {
     boolean ok = true;
     String p = profile.primitiveValue();
@@ -1909,13 +2050,23 @@ public class StructureDefinitionValidator extends BaseValidator {
     if (VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains(type)) {
       return true;
     }
-    StructureDefinition sd = context.fetchTypeDefinition(type);
-    while (sd != null) {
+    return isCanonicalResource(context.fetchTypeDefinition(type), new HashSet<>());
+  }
+
+  private boolean isCanonicalResource(StructureDefinition sd, Set<String> visited) {
+    while (sd != null && visited.add(sd.getVersionedUrl())) {
       if ("CanonicalResource".equals(sd.getType())) {
         return true;
       }
-      if ("http://hl7.org/fhir/StructureDefinition/CanonicalResource".equals(ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS))) {
-        return true;
+      for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
+        String implemented = ext.hasValue() ? ext.getValue().primitiveValue() : null;
+        if ("http://hl7.org/fhir/StructureDefinition/CanonicalResource".equals(implemented)) {
+          return true;
+        }
+        // an implemented interface such as MetadataResource can itself implement CanonicalResource
+        if (implemented != null && isCanonicalResource(context.fetchResource(StructureDefinition.class, implemented), visited)) {
+          return true;
+        }
       }
       sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
     }

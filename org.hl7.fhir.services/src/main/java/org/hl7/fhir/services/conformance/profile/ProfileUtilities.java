@@ -51,6 +51,7 @@ import org.hl7.fhir.model.core.Parameters;
 import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
 import org.hl7.fhir.services.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.services.fhirpath.ExpressionNode.Operation;
@@ -64,7 +65,6 @@ import org.hl7.fhir.model.core.Enumerations.PublicationStatus;
 import org.hl7.fhir.model.core.StructureDefinition.*;
 import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.model.core.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.model.tools.ExtensionConstants;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -764,6 +764,7 @@ public class ProfileUtilities {
 
       try {
         checkDifferential(derived.getDifferential().getElementList(), derived.getTypeName(), derived.getUrl());
+        checkDifferentialSliceNames(derived.getDifferential().getElementList(), derived.getUrl());
         checkDifferentialBaseType(derived);
 
           log.debug("Differential: ");
@@ -814,6 +815,7 @@ public class ProfileUtilities {
         ProfilePathProcessor.processPaths(this, base, derived, url, webUrl, diff, baseSnapshot, mappingDetails);
 
         checkGroupConstraints(derived);
+        removeTargetProfilesForOtherVersions(derived);
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
           int i = 0;
           for (ElementDefinition e : diff.getElementList()) {
@@ -858,6 +860,11 @@ public class ProfileUtilities {
           throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_SNAPSHOT_ELEMENT_FOR__IN__FROM_, derived.getSnapshot().getElementFirstRep().getPath(), derived.getUrl(), base.getUrl()));
         mappingDetails.update();
 
+        if ("Extension".equals(derived.getTypeName()) && derived.getContextList().isEmpty()) {
+          for (StructureDefinitionContextComponent context : base.getContextList()) {
+            derived.getContextList().add(context.copy(Base.COPY_DATA));
+          }
+        }
         setIds(derived, false);
 
           log.debug("Differential: ");
@@ -1104,7 +1111,7 @@ public class ProfileUtilities {
       }
       if (ed.hasSliceName() && slices.containsKey(ed.getPath())) {
         if (!slices.get(ed.getPath()).count(ed, ed.getSliceName())) {
-          String msg = "Duplicate slice name "+ed.getSliceName()+" on "+ed.getId()+" (["+i+"])";
+          String msg = context.formatMessage(I18nConstants.SNAPSHOT_DUPLICATE_SLICE_NAME, ed.getSliceName(), ed.getId(), Integer.toString(i));
           addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE,
               "StructureDefinition.snapshot.element["+i+"]", msg, IssueSeverity.ERROR).setIgnorableError(true));
         }
@@ -1192,7 +1199,7 @@ public class ProfileUtilities {
   }
 
   private void findInheritedObligationProfiles(StructureDefinition derived) {
-    List<Extension> list = derived.getExtensionsByUrl(ExtensionConstants.EXT_INHERIT_OBLIGATIONS, ExtensionDefinitions.EXT_OBLIGATION_INHERITS_OLD);
+    List<Extension> list = derived.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_INHERITS_NEW, ExtensionDefinitions.EXT_OBLIGATION_INHERITS_OLD);
     for (Extension ext : list) {
       StructureDefinition op = findProfile(ext.getValueCanonicalType(), derived);
       if (op != null && ExtensionUtilities.readBoolExtension(op, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
@@ -1327,6 +1334,43 @@ public class ProfileUtilities {
   }
 
 
+  /**
+   * A target profile can carry the version-specific-use extension, when the target only exists in
+   * some versions of FHIR (e.g. Media, R4/R4B only). The differential keeps it (that's how the
+   * definition is authored, and what other versions are converted from), but the snapshot is
+   * for this version of FHIR, and validation against it can't refer to a type this version
+   * doesn't have
+   */
+  private void removeTargetProfilesForOtherVersions(StructureDefinition derived) {
+    String version = context.getFHIRVersion();
+    for (ElementDefinition ed : derived.getSnapshot().getElementList()) {
+      for (TypeRefComponent tr : ed.getTypeList()) {
+        tr.getTargetProfileList().removeIf(tp -> !isApplicableToVersion(tp, version));
+      }
+    }
+  }
+
+  /**
+   * whether an element (a context, a target profile, a search parameter base...) applies to the given
+   * version of FHIR, according to the version-specific-use extension on it: absent means all versions;
+   * start and end are each optional and inclusive, and are compared at major.minor
+   */
+  public static boolean isApplicableToVersion(Element e, String version) {
+    Extension ext = e.getExtensionByUrl(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE);
+    if (ext == null || version == null) {
+      return true;
+    }
+    String start = ExtensionUtilities.readStringExtension(ext, ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START);
+    if (!Utilities.noString(start) && !VersionUtilities.isThisOrLater(start, version, VersionUtilities.VersionPrecision.MINOR)) {
+      return false;
+    }
+    String end = ExtensionUtilities.readStringExtension(ext, ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END);
+    if (!Utilities.noString(end) && !VersionUtilities.isThisOrLater(version, end, VersionUtilities.VersionPrecision.MINOR)) {
+      return false;
+    }
+    return true;
+  }
+
   private void checkGroupConstraints(StructureDefinition derived) {
     List<ElementDefinition> toRemove = new ArrayList<>();
 //    List<ElementDefinition> processed = new ArrayList<>();
@@ -1407,6 +1451,27 @@ public class ProfileUtilities {
    * @param type
    * @param url
    */
+  /**
+   * A slice name can only be used once for an element in a differential: a second slice with the same name would be a
+   * different slice that can't be told apart from the first (in the snapshot they'd have the same id)
+   */
+  private void checkDifferentialSliceNames(List<ElementDefinition> elements, String url) {
+    Set<String> seen = new HashSet<>();
+    List<String[]> stack = new ArrayList<>(); // [path, key] for the element's ancestors
+    for (ElementDefinition ed : elements) {
+      String p = ed.getPath();
+      while (!stack.isEmpty() && !p.startsWith(stack.get(stack.size()-1)[0]+".")) {
+        stack.remove(stack.size()-1);
+      }
+      // the key is the element's id: the closest ancestor's key, plus the rest of the path (the differential can skip levels)
+      String key = (stack.isEmpty() ? p : stack.get(stack.size()-1)[1] + p.substring(stack.get(stack.size()-1)[0].length())) + (ed.hasSliceName() ? ":"+ed.getSliceName() : "");
+      if (ed.hasSliceName() && !seen.add(key)) {
+        throw new FHIRException(context.formatMessage(I18nConstants.SNAPSHOT_DIFF_DUPLICATE_SLICE_NAME, ed.getSliceName(), p, url));
+      }
+      stack.add(new String[] {p, key});
+    }
+  }
+
   private void checkDifferential(List<ElementDefinition> elements, String type, String url) {
     boolean first = true;
     String t = urlTail(type);
@@ -1828,7 +1893,8 @@ public class ProfileUtilities {
           } else if (isPrimitive(Utilities.uncapitalize(s))) {
             typeList.add(new TypeSlice(ed, Utilities.uncapitalize(s)));
           } else {
-            String tn = ed.getSliceName().substring(n.length());
+            // a type slice that doesn't state its type: the slice name says what it is (valueQuantity -> Quantity)
+            String tn = ed.getSliceName().startsWith(rn) ? ed.getSliceName().substring(rn.length()) : ed.getSliceName();
             if (isDataType(tn)) {
               typeList.add(new TypeSlice(ed, tn));
             } else if (isPrimitive(Utilities.uncapitalize(tn))) {
@@ -2733,6 +2799,104 @@ public class ProfileUtilities {
   }
 
   
+  /**
+   * A fixed value or pattern in the differential has to be consistent with the fixed value or pattern the element
+   * inherits, since an instance that meets this profile has to meet the base profile too. So a fixed value has to be
+   * the same as an inherited fixed value, a pattern has to be met by an inherited fixed value, and either has to meet
+   * an inherited pattern (a pattern can add content to the pattern it inherits, but not change it)
+   */
+  private void checkFixedOrPatternAgainstBase(ElementDefinition derived, ElementDefinition base, String pn) {
+    DataType value = derived.hasFixed() ? derived.getFixed() : derived.getPattern();
+    String kind = derived.hasFixed() ? "fixed" : "pattern";
+    if (base.hasFixed()) {
+      if (derived.hasFixed() ? !sameValue(base.getFixed(), value) : !meetsPattern(base.getFixed(), value)) {
+        addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), context.formatMessage(I18nConstants.SNAPSHOT_DIFF_FIXED_CONFLICT, kind, describeElement(derived), describeValue(value), describeValue(base.getFixed())), IssueSeverity.ERROR));
+      }
+    } else if (base.hasPattern()) {
+      if (!meetsPattern(value, base.getPattern())) {
+        addMessage(new ValidationMessage(Source.ProfileValidator, IssueType.BUSINESSRULE, pn+"."+derived.getPath(), context.formatMessage(I18nConstants.SNAPSHOT_DIFF_PATTERN_CONFLICT, kind, describeElement(derived), describeValue(value), describeValue(base.getPattern())), IssueSeverity.ERROR));
+      }
+    }
+  }
+
+  /**
+   * a compact rendering of a fixed value or pattern for messages: the primitive value, or the properties that have values
+   */
+  private String describeValue(Base value) {
+    if (value == null) {
+      return "(none)";
+    }
+    if (value.isPrimitive() && value.hasPrimitiveValue()) {
+      return value.primitiveValue();
+    }
+    StringBuilder b = new StringBuilder();
+    for (org.hl7.fhir.model.Property p : value.getChildren()) {
+      if (p.hasValues()) {
+        b.append(b.length() == 0 ? "" : ", ").append(p.getName()).append(": ");
+        if (p.getValues().size() == 1) {
+          b.append(describeValue(p.getValues().get(0)));
+        } else {
+          b.append("[");
+          for (int i = 0; i < p.getValues().size(); i++) {
+            b.append(i == 0 ? "" : ", ").append(describeValue(p.getValues().get(i)));
+          }
+          b.append("]");
+        }
+      }
+    }
+    return "{" + b.toString() + "}";
+  }
+
+  private String describeElement(ElementDefinition ed) {
+    return ed.hasId() ? ed.getId() : ed.getPath();
+  }
+
+  private boolean sameValue(Base v1, Base v2) {
+    if (v1.isPrimitive() && v2.isPrimitive()) {
+      // e.g. a uri and a canonical with the same value
+      return Utilities.stringsEqual(v1.primitiveValue(), v2.primitiveValue());
+    }
+    return v1.equalsDeep(v2);
+  }
+
+  /**
+   * true if value meets pattern: every value in the pattern is in the value (for a repeating property, each of the
+   * pattern's values matches one of the value's values)
+   */
+  private boolean meetsPattern(Base value, Base pattern) {
+    if (value == null) {
+      return false;
+    }
+    if (pattern.isPrimitive()) {
+      if (pattern.hasPrimitiveValue() && (!value.isPrimitive() || !Utilities.stringsEqual(pattern.primitiveValue(), value.primitiveValue()))) {
+        return false;
+      }
+    } else if (!pattern.fhirType().equals(value.fhirType())) {
+      return false;
+    }
+    for (org.hl7.fhir.model.Property pp : pattern.getChildren()) {
+      if (pp.hasValues()) {
+        org.hl7.fhir.model.Property vp = value.getChildByName(pp.getName());
+        if (vp == null || !vp.hasValues()) {
+          return false;
+        }
+        for (Base pv : pp.getValues()) {
+          boolean found = false;
+          for (Base vv : vp.getValues()) {
+            if (meetsPattern(vv, pv)) {
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
   protected void updateFromDefinition(ElementDefinition dest, ElementDefinition source, String pn, boolean trimDifferential, String purl, StructureDefinition srcSD, StructureDefinition derivedSrc, String path, MappingAssistant mappings, boolean fromSlicer) throws DefinitionException, FHIRException {
     source.setUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT, dest);
     // we start with a clone of the base profile ('dest') and we copy from the profile ('source')
@@ -2928,6 +3092,10 @@ public class ProfileUtilities {
           derived.setMaxElement(null);
         else
           derived.getMaxElement().setUserData(UserDataNames.SNAPSHOT_DERIVATION_EQUALS, true);
+      }
+
+      if (derived.hasFixed() || derived.hasPattern()) {
+        checkFixedOrPatternAgainstBase(derived, base, pn);
       }
 
       if (derived.hasFixed()) {

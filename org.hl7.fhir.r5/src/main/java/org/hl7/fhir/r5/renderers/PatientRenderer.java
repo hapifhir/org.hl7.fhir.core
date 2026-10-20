@@ -3,26 +3,20 @@ package org.hl7.fhir.r5.renderers;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.FileUtilities;
 
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
-public class PatientRenderer extends ResourceRenderer {
+public class PatientRenderer extends ParticipantRendererBase {
 
 
   public PatientRenderer(RenderingContext context) { 
@@ -91,7 +85,6 @@ public class PatientRenderer extends ResourceRenderer {
   //  }
 
 
-  private static final int MAX_IMAGE_LENGTH = 2*1024*1024;
   private static final boolean SHORT = false;
 
 
@@ -142,225 +135,20 @@ public class PatientRenderer extends ResourceRenderer {
       // banner
       makeBanner(x.para(), pat).tx(buildSummary(pat));
       x.hr();
-      XhtmlNode tbl;
-      if (hasRenderablePhoto(pat)) {
-        tbl = x.table(null, true).markGenerated(!context.forValidResource());
-        XhtmlNode tr = tbl.tr();
-        tbl = tr.td().table("grid", false).markGenerated(!context.forValidResource());
-        renderPhoto(tr.td(), pat);
-      } else {
-        tbl = x.table("grid", false).markGenerated(!context.forValidResource());
-      }
+      XhtmlNode tbl = startTable(x, pat, "patient photo", context.formatPhrase(RenderingI18nContext.PAT_PHOTO));
 
       // the table has 4 columns
       addStatus(status, tbl, pat);
       addIdentifiers(status, tbl, pat);
       addNames(status, tbl, pat);
-      addComms(status, tbl, pat);
+      addComms(status, tbl, pat, context.formatPhrase(RenderingI18nContext.PAT_CONTACT_HINT));
       addLangs(status, tbl, pat);
       addNOKs(status, tbl, pat);
       addLinks(status, tbl, pat);
       addExtensions(status, tbl, pat);
-      if (tbl.isEmpty()) {
-        x.remove(tbl);
-      }
-      if (pat.has("contained") && context.isTechnicalMode()) {
-        x.hr();
-        x.para().b().tx(context.formatMessagePlural(pat.children("contained").size(), RenderingContext.PAT_CONTAINED));
-        addContained(status, x, pat.children("contained"));
-      }
+      finishNarrative(status, x, tbl, pat);
     }
   }
-
-  private ResourceWrapper chooseId(ResourceWrapper oldId, ResourceWrapper newId) {
-    if (oldId == null) {
-      return newId;
-    }
-    if (newId == null) {
-      return oldId;
-    }
-    return isPreferredId(newId.primitiveValue("use"), oldId.primitiveValue("use")) ? newId : oldId;
-  }
-
-  private boolean isPreferredId(String newUse, String oldUse) {
-    if (newUse == null && oldUse == null || newUse == oldUse) {
-      return false;
-    }
-    if (newUse == null) {
-      return true;
-    }
-    switch (newUse) {
-    case "official": return !Utilities.existsInList(oldUse, "usual");
-    case "old": return !Utilities.existsInList(oldUse, "official", "secondary", "usual");
-    case "secondary": return !Utilities.existsInList(oldUse, "official", "usual");
-    case "temp": return !Utilities.existsInList(oldUse, "official", "secondary", "usual");
-    case "usual": return true;
-    default: return false;
-    }
-  }
-
-  private ResourceWrapper chooseName(ResourceWrapper oldName, ResourceWrapper newName) {
-    if (oldName == null) {
-      return newName;
-    }
-    if (newName == null) {
-      return oldName;
-    }
-    return isPreferredName(newName.primitiveValue("use"), oldName.primitiveValue("use")) ? newName : oldName;
-  }
-
-
-  private boolean isPreferredName(String newUse, String oldUse) {
-    if (newUse == null && oldUse == null || newUse == oldUse) {
-      return false;
-    }
-    if (newUse == null) {
-      return true;
-    }
-    if (oldUse == null) {
-      return Utilities.existsInList(newUse, "official", "usual");
-    }
-    switch (oldUse) {
-    case "anonymous": return Utilities.existsInList(newUse, "official", "usual");
-    case "maiden": return Utilities.existsInList(newUse, "official", "usual");
-    case "nickname": return Utilities.existsInList(newUse, "official", "usual");
-    case "official": return Utilities.existsInList(newUse, "usual");
-    case "old": return Utilities.existsInList(newUse, "official", "usual");
-    case "temp": return Utilities.existsInList(newUse, "official", "usual");
-    case "usual": return false; 
-    }
-    return false;
-  }
-
-  private void addExtensions(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
-    Map<String, List<ResourceWrapper>> extensions = new HashMap<>();
-    List<ResourceWrapper> pw = r.children("extension");
-    for (ResourceWrapper t : pw) {  
-      String url = t.primitiveValue("url");
-      if (!extensions.containsKey(url)) {
-        extensions.put(url, new ArrayList<>());
-      }
-      extensions.get(url).add(t);
-    }
-
-    for (String url : extensions.keySet()) {
-      StructureDefinition sd = findCanonical(StructureDefinition.class, url, r);
-      if (sd != null) {
-        List<ResourceWrapper> list = extensions.get(url);
-        boolean anyComplex = false;
-        for (ResourceWrapper ext : list) {
-          anyComplex = anyComplex || ext.has("extension");
-        }
-        if (!anyComplex) {
-          XhtmlNode tr = tbl.tr();
-          nameCell(tr, getContext().getTranslated(sd.getTitleElement()), sd.getDescription(), sd.getWebPath());
-          XhtmlNode td = tr.td();
-          td.colspan("3");
-          if (list.size() != 1) {
-            XhtmlNode ul = td.ul();
-            for (ResourceWrapper s : list) {
-              XhtmlNode li = ul.li();
-              renderDataType(status, xlinkNarrative(li, s.child("value")), s.child("value"));
-            }
-          } else {
-            renderDataType(status, xlinkNarrative(td, list.get(0).child("value")), list.get(0).child("value"));
-          }
-        } else {
-          for (ResourceWrapper ext : list) {
-            XhtmlNode tr = tbl.tr();
-            nameCell(tr, sd.getTitle()+":", sd.getDescription());
-            XhtmlNode td = tr.td();
-            td.colspan("3");
-            if (ext.has("extension")) {
-              XhtmlNode ul = td.ul();
-              for (ResourceWrapper s : ext.extensions()) {
-                XhtmlNode li = ul.li();
-                li.tx(s.primitiveValue("url")+": ");
-                if (s.has("extension")) {
-                  boolean first = true;
-                  for (ResourceWrapper t : s.extensions()) {
-                    if (first) first = false; else li.tx("; ");
-                    li.tx(t.primitiveValue("url")+"=");
-                    renderDataType(status, xlinkNarrative(li, t.child("value")), t.child("value"));
-                  }
-                } else {
-                  renderDataType(status, xlinkNarrative(li, s.child("value")), s.child("value"));
-                }
-              }
-            } else {
-              renderDataType(status, xlinkNarrative(td, ext.child("value")), ext.child("value"));
-            }
-          }
-        }
-      }
-    }
-
-
-  }
-
-  private void addIdentifiers(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
-    List<ResourceWrapper> ids = r.children("identifier");
-    ResourceWrapper id = null;
-    for (ResourceWrapper i : ids) {
-      id = chooseId(id, i);
-    }
-    if (id != null) {
-      ids.remove(id);
-    };
-    if (ids.size() > 0) {
-      XhtmlNode tr = tbl.tr();
-      nameCell(tr, context.formatMessagePlural(ids.size(), RenderingContext.PAT_OTHER_ID),context.formatMessagePlural(ids.size(), RenderingContext.PAT_OTHER_ID_HINT));
-      XhtmlNode td = tr.td();
-      td.colspan("3");
-      if (ids.size() == 1) {
-        renderDataType(status, xlinkNarrative(td, ids.get(0)), ids.get(0));
-      } else { 
-        XhtmlNode ul = td.ul();
-        for (ResourceWrapper i : ids) {
-          renderDataType(status, xlinkNarrative(ul.li(), i), i);
-        }
-      }
-    }
-  }
-
-  private void addLangs(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
-    List<ResourceWrapper> langs = new ArrayList<ResourceWrapper>();
-    List<ResourceWrapper> comms = r.children("communication");
-    ResourceWrapper prefLang = null;
-    for (ResourceWrapper t : comms) {
-      ResourceWrapper lang = t.child("language");
-      if (lang != null) {
-        langs.add(lang);
-        ResourceWrapper l = t.child("preferred");
-        if (l != null && "true".equals(l.primitiveValue())) {
-          prefLang = lang;
-        }
-      }
-    }
-    if (langs.size() > 0) {
-      XhtmlNode tr = tbl.tr();
-      nameCell(tr, context.formatMessagePlural(langs.size(), RenderingContext.PAT_LANG), context.formatMessagePlural(langs.size(), RenderingContext.PAT_LANG_HINT));
-      XhtmlNode td = tr.td();
-      td.colspan("3");
-      if (langs.size() == 1) {
-        renderDataType(status, xlinkNarrative(td, langs.get(0)), langs.get(0));
-        if (prefLang != null) {
-          td.tx(" "+context.formatPhrase(RenderingI18nContext.PAT_LANG_PREFERRED));
-        }
-      } else if (langs.size() > 1) {
-        XhtmlNode ul = td.ul();
-        for (ResourceWrapper i : langs) {
-          XhtmlNode li = ul.li();
-          renderDataType(status, xlinkNarrative(li, i), i);
-          if (i == prefLang) {
-            li.tx(" "+context.formatPhrase(RenderingI18nContext.PAT_LANG_PREFERRED));;
-          }
-        }
-      }
-    }
-  }
-
-
 
   public class NamedReferance {
 
@@ -502,57 +290,6 @@ public class PatientRenderer extends ResourceRenderer {
     }
   }
 
-  private void addNames(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
-    List<ResourceWrapper> names = r.children("name");
-    ResourceWrapper name = null;
-    for (ResourceWrapper n : names) {
-      name = chooseName(name, n);
-    }
-    if (name != null) {
-      names.remove(name);
-    };
-    if (names.size() == 1) {
-      XhtmlNode tr = tbl.tr();
-      nameCell(tr, context.formatPhrase(RenderingI18nContext.PAT_ALT_NAME), context.formatPhrase(RenderingI18nContext.PAT_ALT_NAME_HINT));
-      XhtmlNode td = tr.td();
-      td.colspan("3");
-      if (names.size() == 1) {
-        renderDataType(status, xlinkNarrative(td, names.get(0)), names.get(0));
-      } else {
-        XhtmlNode ul = td.ul();
-        for (ResourceWrapper n : names) {
-          renderDataType(status,xlinkNarrative(ul.li(), n), n);
-        }
-      }
-    }
-  }
-
-  private void addComms(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
-    List<ResourceWrapper> tels = r.children("telecom");
-    List<ResourceWrapper> adds = r.children("address");
-    if (tels.size() + adds.size() > 0) {
-      XhtmlNode tr = tbl.tr();
-      nameCell(tr, context.formatPhrase(RenderingI18nContext.PAT_CONTACT), context.formatPhrase(RenderingI18nContext.PAT_CONTACT_HINT));
-      XhtmlNode td = tr.td();
-      td.colspan("3");
-      if (tels.size() + adds.size() == 1) {
-        if (adds.isEmpty()) {
-          renderDataType(status, xlinkNarrative(td, tels.get(0)), tels.get(0));
-        } else {
-          renderDataType(status, xlinkNarrative(td, adds.get(0)), adds.get(0));
-        }
-      } else {
-        XhtmlNode ul = td.ul();
-        for (ResourceWrapper n : tels) {
-          renderDataType(status, xlinkNarrative(ul.li(), n), n);
-        }
-        for (ResourceWrapper n : adds) {
-          renderDataType(status, xlinkNarrative(ul.li(), n), n);
-        }
-      }
-    }
-  }
-
   private void addStatus(RenderingStatus status, XhtmlNode tbl, ResourceWrapper r) throws FHIRFormatError, DefinitionException, UnsupportedEncodingException, FHIRException, IOException {
     // TODO Auto-generated method stub
     int count = 0;
@@ -628,80 +365,5 @@ public class PatientRenderer extends ResourceRenderer {
     }  
   }
 
-  private void nameCell(XhtmlNode tr, String text, String title) {
-    XhtmlNode td = tr.td();
-    td.setAttribute("title", title);
-    td.tx(text);
-    td.style("background-color: #f3f5da");
-    markBoilerplate(td);
-  }
 
-  private void nameCell(XhtmlNode tr, String text, String title, String link) {
-    XhtmlNode td = tr.td();
-    td.setAttribute("title", title);
-    if (link != null) {
-      td.ah(context.prefixLocalHref(link)).tx(text); 
-    } else {
-      td.tx(text);
-    }
-    td.style("background-color: #f3f5da");
-    markBoilerplate(td);
-  }
-
-  private void renderPhoto(XhtmlNode td, ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
-    if (r.has("photo")) {
-      List<ResourceWrapper> a = r.children("photo");
-      for (ResourceWrapper att : a) {
-        String ct = att.primitiveValue("contentType");
-        byte[] cnt = att.has("data") ? Utilities.decodeBase64(att.primitiveValue("data"), true) : null;
-        if (ct.startsWith("image/") &&
-            cnt != null && (!context.isInlineGraphics() || (cnt.length > 0 && cnt.length < MAX_IMAGE_LENGTH))) {
-          String ext = extensionForType(ct);
-          if (context.isInlineGraphics() || Utilities.noString(context.getDestDir()) || ext == null) {
-            td.img("data:"+ct+";base64,"+att.primitiveValue("data"), "patient photo");
-          } else {
-            String n = context.getRandomName(r.getId())+ext;
-            FileUtilities.bytesToFile(cnt, ManagedFileAccess.file(Utilities.path(context.getDestDir(), n)));
-            context.registerFile(n);
-            td.img(n, context.formatPhrase(RenderingI18nContext.PAT_PHOTO));            
-          }
-          return;
-        } 
-      }
-    }      
-    return;
-  }
-
-  private String extensionForType(String contentType) {
-    if (contentType.equals("image/gif")) {
-      return ".gif";
-    }
-    if (contentType.equals("image/png")) {
-      return ".png";
-    }
-    if (contentType.equals("image/jpeg")) {
-      return ".jpg";
-    }
-    return null;
-  }
-
-  private boolean hasRenderablePhoto(ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
-    if (r.has("photo")) {
-      List<ResourceWrapper> a = r.children("photo");
-      for (ResourceWrapper att : a) {
-        if (att.has("contentType") && att.primitiveValue("contentType").startsWith("image/") &&
-            att.has("data") && (!context.isInlineGraphics() || (att.primitiveValue("data").length() > 0 && 
-                att.primitiveValue("data").length() < MAX_IMAGE_LENGTH))) {
-          return true;
-        } 
-      }
-    }      
-    return false;
-  }
-
-  private XhtmlNode makeBanner(XhtmlNode para, ResourceWrapper res) {
-    para.style("border: 1px #661aff solid; background-color: #e6e6ff; padding: 10px;");
-    xlinkNarrative(para, res);
-    return para;
-  }
 }

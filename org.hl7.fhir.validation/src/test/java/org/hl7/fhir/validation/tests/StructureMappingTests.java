@@ -166,15 +166,20 @@ public class StructureMappingTests {
   }  
   @Test
   void testGetSourceResourceFromStructureMapDefinitionException() {
+    // Test that the transform method throws a DefinitionException when there are multiple source inputs
     StructureMap r = new StructureMap().setUrl("testGetSourceResourceFromStructureMapDefinitionException");      
+    String targetUrl = "http://example.org/StructureDefinition/testGetSourceResourceFromStructureMapDefinitionExceptionTarget";
     StructureMap.StructureMapGroupComponent g = r.addGroup();
     g.addInput().setMode(StructureMap.StructureMapInputMode.SOURCE).setType("input");
     g.addInput().setMode(StructureMap.StructureMapInputMode.SOURCE).setType("input");
+    // needs to have at least 1 output parameter to pass the check for those, which returen FHIRException, not DefinitionException
+    g.addInput().setMode(StructureMap.StructureMapInputMode.TARGET).setType("input");
     r.addStructure()
       .setMode(StructureMap.StructureMapModelMode.TARGET)
-      .setUrl("testGetSourceResourceFromStructureMapDefinitionExceptionTarget");
+      .setUrl(targetUrl)
+      .setAlias("input"); // since this isn't an actual type defintion, give it an alias so that it can link to the structure definition
     context.cacheResource(r);
-    StructureDefinition structureDefinition = new StructureDefinition().setUrl("testGetSourceResourceFromStructureMapDefinitionExceptionTarget");
+    StructureDefinition structureDefinition = new StructureDefinition().setUrl(targetUrl);
     structureDefinition.getSnapshot().addElement().setPath("testGetSourceResourceFromStructureMapDefinitionExceptionTarget");
     context.cacheResource(structureDefinition);
     ByteProvider byteSource = ByteProvider.forBytes("testGetSourceResourceFromStructureMapDefinitionException".getBytes());

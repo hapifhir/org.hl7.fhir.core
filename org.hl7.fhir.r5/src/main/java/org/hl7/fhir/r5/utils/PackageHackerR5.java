@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.utils;
 
+import java.util.List;
+
 import org.hl7.fhir.r5.context.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
@@ -15,6 +17,7 @@ import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.UriType;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -155,10 +158,56 @@ public class PackageHackerR5 {
        }
      }
    }
+   // quantity-confidenceInterval doesn't fix the url of its sub-extensions, so they don't identify an extension
+   // (SNAPSHOT_EXTENSION_SLICE_UNIDENTIFIED). Fixed in the extensions source 2026-10-01 - remove this once all
+   // the versions of hl7.fhir.uv.extensions in use have been republished
+   if ("http://hl7.org/fhir/StructureDefinition/quantity-confidenceInterval".equals(r.getUrl()) && packageInfo != null && packageInfo.getId() != null && packageInfo.getId().startsWith("hl7.fhir.uv.extensions")) {
+     StructureDefinition sd = (StructureDefinition) r.getResource();
+     fixSubExtensionUrl(sd, "confidence");
+     fixSubExtensionUrl(sd, "interval");
+   }
+
    if (r.hasUrl() && r.getUrl().contains("|")) {
      assert false;
    }
    
+  }
+
+  /**
+   * make sure that the sub-extension slice Extension.extension:{name} fixes its url to {name}, in both the
+   * differential (adding the url element if it's missing) and the snapshot
+   */
+  static void fixSubExtensionUrl(StructureDefinition sd, String name) {
+    String sliceId = "Extension.extension:"+name;
+    String urlId = sliceId+".url";
+    List<ElementDefinition> diff = sd.getDifferential().getElement();
+    int slice = -1;
+    ElementDefinition url = null;
+    for (int i = 0; i < diff.size(); i++) {
+      if (sliceId.equals(diff.get(i).getId())) {
+        slice = i;
+      }
+      if (urlId.equals(diff.get(i).getId())) {
+        url = diff.get(i);
+      }
+    }
+    if (slice > -1) {
+      if (url == null) {
+        url = new ElementDefinition("Extension.extension.url");
+        url.setId(urlId);
+        // straight after the slice. url comes after the slice's own extension element, but the sub-extensions
+        // of quantity-confidenceInterval don't constrain that, so the next thing in the slice is value[x]
+        diff.add(slice+1, url);
+      }
+      if (!url.hasFixed()) {
+        url.setFixed(new UriType(name));
+      }
+    }
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      if (urlId.equals(ed.getId()) && !ed.hasFixed()) {
+        ed.setFixed(new UriType(name));
+      }
+    }
   }
 
   /**

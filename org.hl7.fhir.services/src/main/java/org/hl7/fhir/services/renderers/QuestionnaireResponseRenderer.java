@@ -35,10 +35,15 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   
   @Override
   public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return buildSummary(r, 0);
+  }
+
+  @Override
+  public String buildSummary(ResourceWrapper r, int recursionCount) throws UnsupportedEncodingException, IOException {
     ResourceWrapper q = r.child("questionnaire");
     String qd = q == null ? context.formatPhrase(RenderingI18nContext.QUEST_UNSPECIFIED_QUESTIONNAIRE) : displayCanonical(q);
     ResourceWrapper s = r.child("subject");
-    String sd = s == null ? context.formatPhrase(RenderingI18nContext.QUEST_UNSPECIFIED_SUBJECT) : displayReference(s);
+    String sd = s == null ? context.formatPhrase(RenderingI18nContext.QUEST_UNSPECIFIED_SUBJECT) : displayReference(s, recursionCount);
     return context.formatPhrase(RenderingI18nContext.QUEST_SUMMARY, qd, sd);
   }
 
@@ -84,7 +89,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     for (ResourceWrapper i : items) {
       renderTreeItem(status, gen, row.getSubRows(), qr, i);
     }
-    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
+    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), true, null);
     x.addChildNode(xn);
   }
 

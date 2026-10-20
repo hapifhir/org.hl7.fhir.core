@@ -151,6 +151,17 @@ public class Range extends DataType implements ICompositeType {
       }
 
       @Override
+      protected void visitChildren(IModelObjectVisitor visitor) {
+        super.visitChildren(visitor);
+        if (this.low != null) {
+          visitor.visit(this, "low", -1, this.low);
+        }
+        if (this.high != null) {
+          visitor.visit(this, "high", -1, this.high);
+        }
+      }
+
+      @Override
       public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
         switch (_name) {
         case "low":  return new Property("low", "Quantity", "The low limit. The boundary is inclusive.", 0, 1, low);

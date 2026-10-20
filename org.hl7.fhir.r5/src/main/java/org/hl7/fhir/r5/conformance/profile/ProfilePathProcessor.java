@@ -1219,7 +1219,10 @@ public class ProfilePathProcessor {
           break;
         }
       }
-      if (t.getPath().length() < ed.getPath().length()) {
+      // stop once we've gone back above the level of ed. This has to compare depth, not length: the children of a
+      // choice element (e.g. value[x].id) can have shorter paths than the renamed choice (valueQuantity), and stopping
+      // there missed the slicer that was already added, so a second one was added
+      if (pathDepth(t.getPath()) < pathDepth(ed.getPath())) {
         break;
       }
       i--;
@@ -1238,6 +1241,10 @@ public class ProfilePathProcessor {
 //        log.error("checkToSeeIfSlicingExists: "+ed.getPath()+":"+ed.getSliceName()+" is not sliced");
       }
     }
+  }
+
+  private int pathDepth(String path) {
+    return Utilities.charCount(path, '.');
   }
 
   private boolean isJumpingIntoTypeSlicing(ElementDefinition ed, ElementDefinition template) {
@@ -1749,7 +1756,7 @@ public class ProfilePathProcessor {
                 int start = cursors.diffCursor;
                 while (getDifferential().getElement().size() > cursors.diffCursor && profileUtilities.pathStartsWith(getDifferential().getElement().get(cursors.diffCursor).getPath(), diffMatches.get(0).getPath() + "."))
                   cursors.diffCursor++;
-                ProfilePathProcessorState nc = new ProfilePathProcessorState(childSource, childBase, baseStart, start - 1,
+                ProfilePathProcessorState nc = new ProfilePathProcessorState(childSource, childBase, baseStart, start,
                     cursors.contextName, cursors.resultPathBase);
                 ProfilePathProcessor childProcessor = this.incrementDebugIndent().withBaseLimit(baseMax - 1)
                     .withDiffLimit(cursors.diffCursor - 1)
@@ -1776,7 +1783,7 @@ public class ProfilePathProcessor {
                 while (getDifferential().getElement().size() > cursors.diffCursor && profileUtilities.pathStartsWith(getDifferential().getElement().get(cursors.diffCursor).getPath(), diffMatches.get(0).getPath() + "."))
                   cursors.diffCursor++;
                 /* starting again on the data type, but skip the root */
-                ProfilePathProcessorState nc = new ProfilePathProcessorState(dt, dt.getSnapshot(), 1 /* starting again on the data type, but skip the root */, start - 1,
+                ProfilePathProcessorState nc = new ProfilePathProcessorState(dt, dt.getSnapshot(), 1 /* starting again on the data type, but skip the root */, start,
                     cursors.contextName, cursors.resultPathBase);
                   this
                     .incrementDebugIndent()
@@ -1784,7 +1791,9 @@ public class ProfilePathProcessor {
                     .withDiffLimit(cursors.diffCursor - 1)
                     .withWebUrl(profileUtilities.getWebUrl(dt, getWebUrl()))
                     .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, 0))
-                    .withContextPathSource(diffMatches.get(0).getPath()).withContextPathTarget(outcome.getPath()).withSlicing(new PathSlicingParams())
+                    .withContextPathSource(diffMatches.get(0).getPath()).withContextPathTarget(outcome.getPath())
+                    // The content-reference redirection has already been applied to these paths.
+                    .withRedirector(new ArrayList<ElementRedirection>()).withSlicing(new PathSlicingParams())
                     .processPaths(nc, mapHelper, null);
               }
             }

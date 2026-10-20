@@ -51,6 +51,11 @@ public class SearchParameterValidator extends BaseValidator {
     if (cs.hasChild("expression", false)) {
       List<String> bases = new ArrayList<>();
       for (Element b : cs.getChildrenByName("base")) {
+        if (!isForThisVersion(b)) {
+          // e.g. DeviceUseStatement (to R4B) and DeviceUsage (R5 on) on one parameter: only the
+          // bases that apply to the version being validated exist in the context
+          continue;
+        }
         if (b.hasExtension(ExtensionDefinitions.EXT_SEARCH_PARAMETER_BASE)) {
           bases.add(b.getExtensionValue(ExtensionDefinitions.EXT_SEARCH_PARAMETER_BASE).primitiveValue());
         } else {
@@ -68,13 +73,18 @@ public class SearchParameterValidator extends BaseValidator {
         // base must be in the master list of base
         List<Element> bl = cs.getChildren("base");
         for (Element b : bl) {
+          if (!isForThisVersion(b)) {
+            continue;
+          }
           ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE,stack.getLiteralPath(), sp.hasBase(b.primitiveValue()) || sp.hasBase("Resource"), I18nConstants.SEARCHPARAMETER_BASE_WRONG, master, b.primitiveValue()) && ok;
         }
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE,stack.getLiteralPath(), !cs.hasChild("type", false) || sp.getType().toCode().equals(cs.getNamedChildValue("type", false)), I18nConstants.SEARCHPARAMETER_TYPE_WRONG, master, sp.getType().toCode(), cs.getNamedChildValue("type", false)) && ok;
         if (sp.hasExpression() && cs.hasChild("expression", false) && !sp.getExpression().equals(cs.getNamedChildValue("expression", false))) {
           List<String> bases = new ArrayList<>();
           for (Element b : cs.getChildren("base")) {
-            bases.add(b.primitiveValue());
+            if (isForThisVersion(b)) {
+              bases.add(b.primitiveValue());
+            }
           }
           String expThis = canonicalise(cs.getNamedChildValue("expression", false), bases);
           String expOther = canonicalise(sp.getExpression(), bases); 

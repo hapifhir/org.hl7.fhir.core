@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r4b.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r4b.comparison.ValueSetComparer.ValueSetComparison;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities.UnusedTracker;
@@ -39,6 +38,7 @@ import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.BackgroundColorCode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
@@ -1037,7 +1037,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     TableModel model = gen.initComparisonTable(corePath, id);
     genElementComp(null /* oome back to this later */, gen, model.getRows(), comp.combined, corePath, prefix, null,
         true);
-    return gen.generate(model, prefix, 0, null);
+    return gen.generate(model, prefix, false, null);
   }
 
   private void genElementComp(String defPath, HierarchicalTableGenerator gen, List<Row> rows,
@@ -1095,8 +1095,8 @@ public class ProfileComparer extends CanonicalResourceComparer {
       sName = sName + ":" + sn;
     UnusedTracker used = new UnusedTracker();
     Cell nc;
-    String leftColor = !combined.hasLeft() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
-    String rightColor = !combined.hasRight() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
+    BackgroundColorCode leftColor = !combined.hasLeft() ? BackgroundColorCode.COLOR_NO_ROW_LEFT : combined.hasErrors() ? BackgroundColorCode.COLOR_DIFFERENT : null;
+    BackgroundColorCode rightColor = !combined.hasRight() ? BackgroundColorCode.COLOR_NO_ROW_LEFT : combined.hasErrors() ? BackgroundColorCode.COLOR_DIFFERENT : null;
     if (combined.hasLeft()) {
       nc = utilsRight.genElementNameCell(gen, combined.getLeft().getDef(), "??", true, corePath, prefix, root, false,
           false, combined.getLeft().getSrc(), typesRow, row, false, ext, used, ref, sName, null);
@@ -1127,15 +1127,14 @@ public class ProfileComparer extends CanonicalResourceComparer {
     }
   }
 
-  private void frame(List<Cell> cells, String color) {
+  private void frame(List<Cell> cells, BackgroundColorCode color) {
     for (Cell cell : cells) {
       if (color != null) {
-        cell.setStyle("background-color: " + color);
+        cell.setBackgroundColor(color);
       }
     }
-    cells.get(0).setStyle("border-left: 1px grey solid" + (color == null ? "" : "; background-color: " + color));
-    cells.get(cells.size() - 1)
-        .setStyle("border-right: 1px grey solid" + (color == null ? "" : "; background-color: " + color));
+    cells.get(0).setLeftLine(true);
+    cells.get(cells.size() - 1).setRightLine(true);
   }
 
   private List<Cell> spacers(Row row, int count, HierarchicalTableGenerator gen) {

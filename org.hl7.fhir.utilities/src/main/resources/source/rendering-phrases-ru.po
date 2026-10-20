@@ -3325,18 +3325,18 @@ msgstr "Что-то пошло не так с кросс-версионным а
 
 # REND_ADDED
 #: REND_ADDED
-msgid "Added:"
-msgstr "Добавлено:"
+msgid "Added"
+msgstr "Добавлено"
 
 # REND_CHANGED
 #: REND_CHANGED
-msgid "Changed:"
-msgstr "Изменено:"
+msgid "Changed"
+msgstr "Изменено"
 
 # REND_REMOVED
 #: REND_REMOVED
-msgid "Removed:"
-msgstr "Убрано:"
+msgid "Removed"
+msgstr "Убрано"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS
