@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.special;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -12,6 +13,7 @@ import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestCompon
 import org.hl7.fhir.model.core.CapabilityStatement.CapabilityStatementRestResourceComponent;
 import org.hl7.fhir.model.core.CodeType;
 import org.hl7.fhir.model.core.Extension;
+import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -71,5 +73,15 @@ class TxTesterFeaturesTests {
   void nothingDeclaredNoFeatures() {
     assertEquals(Set.of(), TxTester.featuresFor(new CapabilityStatement()));
     assertEquals(Set.of(), TxTester.featuresFor(null));
+  }
+
+  @Test
+  void testNeededFeatures() {
+    assertEquals(List.of(), TxTester.neededFeatures(null));
+    assertEquals(List.of(), TxTester.neededFeatures(new JsonObject()));
+    assertEquals(List.of(), TxTester.neededFeatures(new JsonObject().add("feature", "")));
+    assertEquals(List.of("closure"), TxTester.neededFeatures(new JsonObject().add("feature", "closure")));
+    assertEquals(List.of("expand", "tx-resource"), TxTester.neededFeatures(new JsonObject().add("feature", " expand , tx-resource ")));
+    assertEquals(List.of("expand", "validate"), TxTester.neededFeatures(new JsonObject().add("feature", ",expand,,validate,")));
   }
 }

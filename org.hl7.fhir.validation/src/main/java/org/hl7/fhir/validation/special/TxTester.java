@@ -560,13 +560,22 @@ public class TxTester implements ITerminologyRequestIdProvider {
   }
 
   /** The features a suite or test needs: its "feature", a comma separated list. */
-  private static List<String> neededFeatures(JsonObject obj) {
+  static List<String> neededFeatures(JsonObject obj) {
     List<String> res = new ArrayList<>();
     if (obj != null && obj.has("feature")) {
-      for (String f : obj.asString("feature").split(",")) {
-        if (!f.trim().isEmpty()) {
-          res.add(f.trim());
+      // a plain comma scan - no regex
+      String src = obj.asString("feature");
+      int start = 0;
+      while (start <= src.length()) {
+        int end = src.indexOf(',', start);
+        if (end < 0) {
+          end = src.length();
         }
+        String f = src.substring(start, end).trim();
+        if (!f.isEmpty()) {
+          res.add(f);
+        }
+        start = end + 1;
       }
     }
     return res;

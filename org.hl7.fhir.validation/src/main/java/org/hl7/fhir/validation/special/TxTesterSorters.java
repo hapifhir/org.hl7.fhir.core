@@ -272,34 +272,46 @@ public class TxTesterSorters {
     return b.length() == 0 ? null : b.toString();
   }
 
+  /**
+   * the lower-cased primitive value of the named part, or "" if there isn't one - never null,
+   * so a missing part sorts first rather than throwing
+   */
+  private static String partSortValue(ParametersParameterComponent p, String name) {
+    ParametersParameterComponent part = p.getPart(name);
+    String v = part != null && part.hasValue() ? part.getValue().primitiveValue() : null;
+    return v == null ? "" : v.toLowerCase();
+  }
+
   public static class ParameterSorter implements Comparator<ParametersParameterComponent> {
 
     @Override
     public int compare(ParametersParameterComponent o1, ParametersParameterComponent o2) {
       // the parts (and extensions) are already sorted - see sortParameterList
       if (o1.getName().equals(o2.getName()) && (o1.getName().equals("property") || o1.getName().equals("subproperty"))) {
-        String code1 = o1.getPart("code").getValue().primitiveValue().toLowerCase();
-        String code2 = o2.getPart("code").getValue().primitiveValue().toLowerCase();
-        if (code1 != null && code2 != null && !code1.equals(code2)) {
-          return code1.compareTo(code2);          
-        }           
+        String code1 = partSortValue(o1, "code");
+        String code2 = partSortValue(o2, "code");
+        if (!code1.equals(code2)) {
+          return code1.compareTo(code2);
+        }
         String v1 = propertySortValue(o1);
         String v2 = propertySortValue(o2);
-        if (v1 != null && v2 != null && !v1.equals(v2)) {
-          return v1.compareTo(v2);          
+        v1 = v1 == null ? "" : v1;
+        v2 = v2 == null ? "" : v2;
+        if (!v1.equals(v2)) {
+          return v1.compareTo(v2);
         }
       }
       if (o1.getName().equals(o2.getName()) && o1.getName().equals("designation")) {
-        String code1 = o1.hasPart("language") && o1.getPart("language").hasValue() && o1.getPart("language").getValue().primitiveValue() != null ? o1.getPart("language").getValue().primitiveValue().toLowerCase() : "";
-        String code2 = o2.hasPart("language") && o2.getPart("language").hasValue() && o2.getPart("language").getValue().primitiveValue() != null ? o2.getPart("language").getValue().primitiveValue().toLowerCase() : "";
-        if (code1 != null && code2 != null && !code1.equals(code2)) { 
-          return code1.compareTo(code2);          
-        }           
-        String v1 = o1.getPart("value") != null && o1.getPart("value").hasPrimitiveValue() ? o1.getPart("value").getValue().primitiveValue().toLowerCase() : null;
-        String v2 = o2.getPart("value") != null && o2.getPart("value").hasPrimitiveValue() ? o2.getPart("value").getValue().primitiveValue().toLowerCase() : null;
-        if (v1 != null && v2 != null && !v1.equals(v2)) {
-          return v1.compareTo(v2);          
-        }           
+        String code1 = partSortValue(o1, "language");
+        String code2 = partSortValue(o2, "language");
+        if (!code1.equals(code2)) {
+          return code1.compareTo(code2);
+        }
+        String v1 = partSortValue(o1, "value");
+        String v2 = partSortValue(o2, "value");
+        if (!v1.equals(v2)) {
+          return v1.compareTo(v2);
+        }
       }
       return o1.getName().compareTo(o2.getName());
     }
