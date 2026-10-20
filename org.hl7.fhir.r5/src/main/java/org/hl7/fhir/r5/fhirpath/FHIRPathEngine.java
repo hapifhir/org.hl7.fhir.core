@@ -3564,7 +3564,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       try {
         d1 = new Decimal(l.primitiveValue());
         Decimal d2 = new Decimal(r.primitiveValue());
-        result.add(new DecimalType(d1.divide(d2).asDecimal()));
+        if (!d2.isZero()) {
+          result.add(new DecimalType(d1.divide(d2).asDecimal()));
+        }
       } catch (UcumException e) {
         // just return nothing
       }
@@ -3615,7 +3617,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       try {
         d1 = new Decimal(l.primitiveValue());
         Decimal d2 = new Decimal(r.primitiveValue());
-        result.add(new IntegerType(d1.divInt(d2).asDecimal()));
+        if (!d2.isZero()) {
+          result.add(new IntegerType(d1.divInt(d2).asDecimal()));
+        }
       } catch (UcumException e) {
         // just return nothing
       }
@@ -3655,7 +3659,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       try {
         d1 = new Decimal(l.primitiveValue());
         Decimal d2 = new Decimal(r.primitiveValue());
-        result.add(new DecimalType(d1.modulo(d2).asDecimal()));
+        if (!d2.isZero()) {
+          result.add(new DecimalType(d1.modulo(d2).asDecimal()));
+        }
       } catch (UcumException e) {
         throw new PathEngineException(e);
       }
@@ -6926,7 +6932,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
 
     List<Base> result = new ArrayList<Base>();
-    for (int i = i1; i < focus.size(); i++) {
+    for (int i = Math.max(i1, 0); i < focus.size(); i++) {
       result.add(focus.get(i));
     } 
     return result;
@@ -7113,7 +7119,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private List<Base> funcItem(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     String s = convertToString(execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true));
-    if (Utilities.isInteger(s) && Integer.parseInt(s) < focus.size()) {
+    if (Utilities.isInteger(s) && Integer.parseInt(s) >= 0 && Integer.parseInt(s) < focus.size()) {
       result.add(focus.get(Integer.parseInt(s)));
     } 
     return result;
