@@ -23,7 +23,7 @@ jobs:
             path: $(MAVEN_CACHE_FOLDER)
             cacheHitVar: MAVEN_CACHE_RESTORED
 
-        - script: |
+        - bash: |
             if [ "$MAVEN_CACHE_RESTORED" != "true" ]; then
               echo "##vso[task.logissue type=warning]Required maven cache was not restored."
               exit 0
@@ -33,12 +33,12 @@ jobs:
           parameters:
             modules:
               - ${{variables.module}}
-        - script: |
+        - bash: |
             if [ "$TARGET_CACHE_RESTORED" != "true" ]; then
               echo "##vso[task.logissue type=warning]Required target cache was not restored."
               exit 0
             fi
-          displayName: Verify Maven Cache Exists
+          displayName: Verify Target Cache Exists
           # Runs 'mvn install'
         - task: Maven@4
           inputs:
