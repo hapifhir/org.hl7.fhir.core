@@ -111,11 +111,11 @@ public class CLI {
     }
 
     newArgs = insertCodeGenIfNecessary(newArgs);
-    newArgs = addAdditionalParamsForIpsParam(newArgs);
+    newArgs = addAdditionalParamsForPreset(newArgs);
     return newArgs;
   }
 
-  private static String[] addAdditionalParamsForIpsParam(String[] args) {
+  private static String[] addAdditionalParamsForPreset(String[] args) {
     List<String> res = new ArrayList<>();
     for (String a : args) {
       if (a.equals("-ips")) {
@@ -123,7 +123,7 @@ public class CLI {
         res.add("4.0");
         res.add("-check-ips-codes");
         res.add("-ig");
-        res.add("hl7.fhir.uv.ips#2.0.0-ballot");
+        res.add("hl7.fhir.uv.ips#2.0.1");
         res.add("-profile");
         res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
         res.add("-extension");
@@ -174,12 +174,12 @@ public class CLI {
         res.add("-version");
         res.add("5.0");
         res.add("-ig");
-        res.add("hl7.cda.uv.core#2.0.1-sd");
+        res.add("hl7.cda.uv.core#2.0.3-sd");
       } else if (a.equals("-ccda")) {
         res.add("-version");
         res.add("5.0");
         res.add("-ig");
-        res.add("hl7.cda.us.ccda#4.0.0");
+        res.add("hl7.cda.us.ccda#5.0.0");
       } else if (a.equals("-view-definition")) {
         res.add("-version");
         res.add("5.0");
