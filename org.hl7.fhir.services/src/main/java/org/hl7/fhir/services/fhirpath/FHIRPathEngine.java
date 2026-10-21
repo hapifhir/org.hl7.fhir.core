@@ -2250,7 +2250,11 @@ public class FHIRPathEngine {
           break;
         case 'u':
           i++;
-          int uc = Integer.parseInt(s.substring(i, i+4), 16);
+          String hex = s.substring(i, Math.min(i+4, s.length()-1));
+          if (!hex.matches("[0-9a-fA-F]{4}")) {
+            throw lexer.error("Invalid FHIRPath unicode escape \\u"+hex);
+          }
+          int uc = Integer.parseInt(hex, 16);
           b.append(Character.toString(uc));
           i = i + 3;
           break;
