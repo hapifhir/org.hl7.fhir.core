@@ -2034,43 +2034,14 @@ public class StructureDefinitionValidator extends BaseValidator {
         StructureDefinition t = determineBaseType(sd);
         if (t == null) {
           ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p) && ok;
-        } else if (!VersionUtilities.isR5Plus(context.getFHIRVersion())) {
-          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains(t.getType()) || "Resource".equals(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
         } else {
-          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), Utilities.existsInList(t.getType(), "Resource", "CanonicalResource") || isCanonicalResource(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), Utilities.existsInList(t.getType(), "Resource", "CanonicalResource") || cu.isCanonicalResource(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
         }  
       }
     } else {
       ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_NO_TARGET_PROFILE, code) && ok;
     }
     return ok;
-  }
-
-  private boolean isCanonicalResource(String type) {
-    if (VersionUtilities.getCanonicalResourceNames(context.getFHIRVersion()).contains(type)) {
-      return true;
-    }
-    return isCanonicalResource(context.fetchTypeDefinition(type), new HashSet<>());
-  }
-
-  private boolean isCanonicalResource(StructureDefinition sd, Set<String> visited) {
-    while (sd != null && visited.add(sd.getVersionedUrl())) {
-      if ("CanonicalResource".equals(sd.getType())) {
-        return true;
-      }
-      for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
-        String implemented = ext.hasValue() ? ext.getValue().primitiveValue() : null;
-        if ("http://hl7.org/fhir/StructureDefinition/CanonicalResource".equals(implemented)) {
-          return true;
-        }
-        // an implemented interface such as MetadataResource can itself implement CanonicalResource
-        if (implemented != null && isCanonicalResource(context.fetchResource(StructureDefinition.class, implemented), visited)) {
-          return true;
-        }
-      }
-      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
-    }
-    return false;
   }
 
   private boolean isReferenceableTarget(StructureDefinition t) {

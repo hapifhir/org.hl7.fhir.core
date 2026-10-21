@@ -366,25 +366,6 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return lang; 
   } 
 
-  private boolean isCanonical(String path) { 
-    if (!path.endsWith(".url"))  
-      return false; 
-    String t = path.substring(0, path.length()-4); 
-    StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(t); 
-    if (sd == null) 
-      return false; 
-    if (VersionUtilities.getCanonicalResourceNames(getContext().getWorker().getFHIRVersion()).contains(t)) {
-      return true; 
-    } 
-    if (Utilities.existsInList(t,  
-        "ActivityDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CodeSystem", 
-        "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable", 
-        "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "PlanDefinition" 
-        )) 
-      return true; 
-    return false; 
-  } 
-
   // -- 4. Language support ------------------------------------------------------ 
 
   public String gt(@SuppressWarnings("rawtypes") PrimitiveType value) { 

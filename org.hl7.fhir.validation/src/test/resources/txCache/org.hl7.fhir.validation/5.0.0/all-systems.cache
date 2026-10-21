@@ -3869,3 +3869,29 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "canonical"
+}, "url": "http://hl7.org/fhir/ValueSet/elementdefinition-types", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "canonical",
+  "code" : "canonical",
+  "system" : "http://hl7.org/fhir/fhir-types",
+  "version" : "5.0.0",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/ValueSet/elementdefinition-types|5.0.0: Analysing http://hl7.org/fhir/ValueSet/elementdefinition-types|5.0.0 for validation purposes\n2ms http://hl7.org/fhir/ValueSet/elementdefinition-types|5.0.0: Parameters: disp-lang=en-US, generate-narrative\n2ms http://hl7.org/fhir/ValueSet/elementdefinition-types|5.0.0: Prepare include[0]: \"(http://hl7.org/fhir/CodeSystem/fhirpath-types)\"\n3ms http://hl7.org/fhir/ValueSet/elementdefinition-types|5.0.0: CodeSystem found: \"http://hl7.org/fhir/CodeSystem/fhirpath-types|5.0.0\"\n3ms http://hl7.org/fhir/ValueSet/elementdefinition-types|5.0.0: Prepare include[1]: \"(^http://hl7.org/fhir/ValueSet/fhir-types|5.0.0)\"\n3ms http://hl7.org/fhir/ValueSet/fhir-types|5.0.0: Analysing http://hl7.org/fhir/ValueSet/fhir-types|5.0.0 for validation purposes\n3ms http://hl7.org/fhir/ValueSet/fhir-types|5.0.0: Prepare include[0]: \"(http://hl7.org/fhir/fhir-types)\"\n3ms http://hl7.org/fhir/ValueSet/fhir-types|5.0.0: CodeSystem found: \"http://hl7.org/fhir/fhir-types|5.0.0\"\n3ms http://hl7.org/fhir/ValueSet/elementdefinition-types|5.0.0: Validate \"[undefined#canonical (\"undefined\")]\" and infer system\n3ms http://hl7.org/fhir/ValueSet/elementdefinition-types|5.0.0: Check \"undefined#canonical\"\n4ms start working\n4ms compose #1\n4ms compose #2\n4ms add whole code system\n5ms import value set http://hl7.org/fhir/ValueSet/fhir-types|5.0.0\n5ms start working\n5ms compose #1\n5ms compose #2\n5ms add whole code system\n20ms finish up\n28ms finish up\n30ms http://hl7.org/fhir/ValueSet/elementdefinition-types|5.0.0: Inferred CodeSystem = \"http://hl7.org/fhir/fhir-types\"\n30ms http://hl7.org/fhir/ValueSet/elementdefinition-types|5.0.0: Include for http://hl7.org/fhir/CodeSystem/fhirpath-types|5.0.0 not considered for \"http://hl7.org/fhir/fhir-types\"\n30ms http://hl7.org/fhir/ValueSet/elementdefinition-types|5.0.0: Check included value set http://hl7.org/fhir/ValueSet/fhir-types|5.0.0\n30ms http://hl7.org/fhir/ValueSet/fhir-types|5.0.0: Check \"http://hl7.org/fhir/fhir-types#canonical\"\n30ms http://hl7.org/fhir/ValueSet/fhir-types|5.0.0: CodeSystem found: http://hl7.org/fhir/fhir-types|5.0.0 for http://hl7.org/fhir/fhir-types|5.0.0\n30ms http://hl7.org/fhir/ValueSet/fhir-types|5.0.0: check code in (http://hl7.org/fhir/fhir-types) at \n30ms http://hl7.org/fhir/ValueSet/fhir-types|5.0.0: Code \"canonical\" found in http://hl7.org/fhir/fhir-types|5.0.0",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

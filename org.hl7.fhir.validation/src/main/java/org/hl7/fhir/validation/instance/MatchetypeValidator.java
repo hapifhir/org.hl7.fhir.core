@@ -377,7 +377,7 @@ public class MatchetypeValidator {
       } else if (expectedJsonString.startsWith("$external:")) {
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //single literal character split
-        String[] cmd = expectedJsonString.substring(1, expectedJsonString.length() - 1).split("\\:");
+        String[] cmd = expectedJsonString.substring(1, expectedJsonString.length() - 1).split(":", 3);
         if (externals != null) {
           String s = externals.asString(cmd[1]);
           return actualJsonString.equals(s);
@@ -503,10 +503,12 @@ public class MatchetypeValidator {
       } else if (expected.startsWith("$external:")) {
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //single literal character split
-        String[] cmd = expected.substring(1, expected.length() - 1).split(":");
+        String[] cmd = expected.substring(1, expected.length() - 1).split(":", 3);
         if (externals != null) {
           String s = externals.asString(cmd[1]);
           return "'"+s+"' (Ext)";
+        } else if (cmd.length <= 2) {
+          return "Any string (because no external string provided for "+cmd[1]+")";
         } else {
           List<String> fragments = readChoices(cmd[2]);
           return "Contains all of "+fragments.toString()+" (because no external string provided for "+cmd[1]+")";
