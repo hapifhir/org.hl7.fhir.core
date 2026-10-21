@@ -174,7 +174,7 @@ private static TxTestData testData;
       subsumes(setup.getTest().str("name"), engine, req, resp, fp, ext);
     } else if (Utilities.existsInList(setup.getTest().asString("operation"), "lookup", "translate", "metadata", "term-caps")) {
       Assertions.assertTrue(true); // we don't test these for the internal server
-    } else if (!Utilities.existsInList(setup.getTest().asString("operation"), "batch-validate")) { // the internal terminology server doesn't implement this method
+    } else if (!Utilities.existsInList(setup.getTest().asString("operation"), "batch-validate", "closure")) { // the internal terminology server doesn't implement this method
       Assertions.fail("Unknown Operation "+ setup.getTest().asString("operation"));
     }
     return true;
