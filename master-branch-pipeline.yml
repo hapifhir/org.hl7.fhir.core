@@ -179,7 +179,9 @@ jobs:
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.17'
           jdkArchitectureOption: 'x64'
-          goals: 'surefire:test'
+          # test-compile is a no-op when the target cache from the setup job was restored,
+          # but rebuilds the test classes when it wasn't (otherwise surefire finds no tests and fails)
+          goals: 'test-compile surefire:test'
         displayName: 'Run i18n coverage test to generate csv'
 
       - task: PythonScript@0
