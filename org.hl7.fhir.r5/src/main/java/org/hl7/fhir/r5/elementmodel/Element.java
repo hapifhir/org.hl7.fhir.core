@@ -1701,8 +1701,10 @@ public class Element extends Base implements NamedItem {
   }
 
   public String getBasePath() {
-    if (property.getStructure().hasExtension(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
-      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ExtensionUtilities.readStringExtension(property.getStructure(), ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS), IWorkerContext.VersionResolutionRules.defaultRule());
+    // a resource can implement more than one interface: use the first one that defines this element
+    for (org.hl7.fhir.r5.model.Extension ext : property.getStructure().getExtensionsByUrl(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
+      String implemented = ext.hasValue() ? ext.getValue().primitiveValue() : null;
+      StructureDefinition sd = implemented == null ? null : property.getContext().fetchResource(StructureDefinition.class, implemented, IWorkerContext.VersionResolutionRules.defaultRule());
       if (sd != null) {
         ElementDefinition ed = sd.getSnapshot().getElementByPath(property.getDefinition().getPath().replace(property.getStructure().getType(), sd.getType()));
         if (ed != null) {

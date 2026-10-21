@@ -5,3 +5,4 @@ steps:
     inputs:
       key: maven | $(Build.BuildId) | targets | "${{ value }}"
       path: $(System.DefaultWorkingDirectory)/${{ value }}/
+      cacheHitVar: TARGET_CACHE_RESTORED

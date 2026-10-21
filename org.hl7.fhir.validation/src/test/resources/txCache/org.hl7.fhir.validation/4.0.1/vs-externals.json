@@ -1,5 +1,7 @@
 {
+  "http://loinc.org|2.76" : null,
   "http://hl7.org/fhir/ValueSet/birthDate" : null,
+  "http://snomed.info/sct|http://snomed.info/sct/32506021000036107" : null,
   "http://fhir.ch/ig/ch-ig/ValueSet/ch-ig-example" : null,
   "http://hl7.org/fhir/us/qicore/ValueSet/qicore-negation-reason" : null,
   "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType" : null,
@@ -9,6 +11,7 @@
   "#c1" : null,
   "http://something/something" : null,
   "http://hl7.org/fhir/CodeSystem/c1" : null,
+  "http://snomed.info/sct|http://snomed.info/sct/731000124108" : null,
   "https://valueset.x12.org/x217/005010/request/2000E/UM/1/01/00/1525" : null,
   "http://snomed.info/sct" : null,
   "http://hl7.org/a/1" : null,

@@ -2735,7 +2735,7 @@ public class FHIRPathEngine {
       if (!(left.hasCode() && right.hasCode()) || !left.getCode().equals(right.getCode())) {
         return null;
       }
-    } else if (!left.hasUnit() || right.hasUnit()) {
+    } else if (left.hasUnit() || right.hasUnit()) {
       if (!(left.hasUnit() && right.hasUnit()) || !left.getUnit().equals(right.getUnit())) {
         return null;
       }
@@ -2811,7 +2811,7 @@ public class FHIRPathEngine {
       if (!(left.hasCode() && right.hasCode()) || !left.getCode().equals(right.getCode())) {
         return false;
       }
-    } else if (!left.hasUnit() || right.hasUnit()) {
+    } else if (left.hasUnit() || right.hasUnit()) {
       if (!(left.hasUnit() && right.hasUnit()) || !left.getUnit().equals(right.getUnit())) {
         return false;
       }

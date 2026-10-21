@@ -228,6 +228,50 @@ class UtilitiesTest {
   void testHighBoundaryForDecimalCarry(String value, int precision, String expected) {
     assertEquals(expected, Utilities.highBoundaryForDecimal(value, precision));
   }
+
+  @ParameterizedTest(name = "lowBoundary({0}, {1}) = {2}")
+  @CsvSource({
+    // a negative low boundary is the negated high boundary of the magnitude, so it carries too
+    "-9.96, 1, -10.0",
+    "-9.95, 1, -10.0",
+    "-99.96, 1, -100.0",
+    "-9, 0, -10",
+    // borrowing from the first digit must not leave a leading zero
+    "10, 0, 9",
+    "10, 1, 9.5",
+    "100, 2, 99.50",
+    "1000, 0, 999",
+    "9.95, 1, 9.9"
+  })
+  void testLowBoundaryForDecimalCarry(String value, int precision, String expected) {
+    assertEquals(expected, Utilities.lowBoundaryForDecimal(value, precision));
+  }
+
+  @ParameterizedTest(name = "{0}Boundary({1}, {2}) = {3}")
+  @CsvSource({
+    // the precision is in the mantissa; the result has no exponent
+    "high, 9.5e2, 0, 955",
+    "low, 9.5e2, 0, 945",
+    "high, 9.5e2, 8, 955.00000000",
+    "low, 9.5e2, 8, 945.00000000",
+    "high, -9.5e2, 0, -945",
+    "low, -9.5e2, 0, -955",
+    "high, 1e2, 0, 150",
+    "low, 1e2, 0, 50",
+    "high, 1.5e-3, 8, 0.00155000",
+    "low, 1.5e-3, 8, 0.00145000",
+    "high, -1.5e-3, 8, -0.00145000",
+    "high, 1.5E2, 1, 155.0",
+    "low, 1.5E2, 1, 145.0",
+    "high, 1.5e+2, 0, 155",
+    "high, 9.95e1, 1, 99.6",
+    "high, 9.95e-1, 1, 1.0",
+    "low, 1.0e0, 1, 0.9",
+    "high, 1.0e0, 1, 1.1"
+  })
+  void testBoundaryForDecimalWithExponent(String boundary, String value, int precision, String expected) {
+    assertEquals(expected, "high".equals(boundary) ? Utilities.highBoundaryForDecimal(value, precision) : Utilities.lowBoundaryForDecimal(value, precision));
+  }
   
   public static Stream<Arguments> windowsRootPaths() {
     return Stream.of(
