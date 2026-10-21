@@ -3,7 +3,6 @@ package org.hl7.fhir.validation;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,7 +40,6 @@ import org.hl7.fhir.services.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.services.fml.StructureMapTools;
 import org.hl7.fhir.services.liquid.BaseTableWrapper;
 import org.hl7.fhir.services.liquid.GlobalObject.GlobalObjectRandomFunction;
-import org.hl7.fhir.services.liquid.LiquidEngine;
 import org.hl7.fhir.model.core.DateTimeType;
 import org.hl7.fhir.model.core.DateType;
 import org.hl7.fhir.model.core.StringType;
@@ -118,7 +116,6 @@ import org.hl7.fhir.validation.instance.MatchetypeValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 import org.slf4j.LoggerFactory;
-import org.thymeleaf.model.IModel;
 import org.xml.sax.SAXException;
 
 import lombok.Getter;
@@ -685,6 +682,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     InstanceValidator validator = getValidator(cntType, instanceValidatorParameters);
 
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(instanceValidatorParameters.getProfiles()));
+    ValidationLevel.removeMessagesBelowLevel(messages, instanceValidatorParameters.getLevel());
+    if (validator.validatedContent != null) {
+      for (var vf : validator.validatedContent) {
+        ValidationLevel.removeMessagesBelowLevel(vf.getErrors(), instanceValidatorParameters.getLevel());
+      }
+    }
     return new ValidatedFragments(validator.validatedContent,
       ValidationTime.fromTimeTracker(validator.timeTracker));
   }
@@ -708,6 +711,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     InstanceValidator validator = getValidator(cntType, instanceValidatorParameters);
 
     Element res = validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(instanceValidatorParameters.getProfiles()));
+    ValidationLevel.removeMessagesBelowLevel(messages, instanceValidatorParameters.getLevel());
     boolean first = true;
     for (String fn : matchetypes) {
       if (first) {

@@ -254,7 +254,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         readTests(tests, loader.version());
         versions.add(new StringPair(loader.code(), loader.version()));
         for (JsonObject suiteObj : tests.getJsonObjects("suites")) {
-          if ((!suiteObj.has("mode") || modes.contains(suiteObj.asString("mode"))) && passesVersion(suiteObj)) {
+          if ((!suiteObj.has("mode") || modes.contains(suiteObj.asString("mode"))) && passesVersion(suiteObj) && passesFeatures(suiteObj)) {
             if (suiteObj.asBoolean("disabled")) {
               // ok = true;
             } else if (suite == null || suite.equals(suiteObj.asString("name"))) {
@@ -457,7 +457,165 @@ public class TxTester implements ITerminologyRequestIdProvider {
       }
     }
     terminologyCapabilities = client().getTerminologyCapabilities();
+    features = featuresFor(capabilityStatement);
+    log.info("  Server Features: "+(features.isEmpty() ? "(none)" : String.join(", ", features)));
+    for (String f : features) {
+      testReport.addParameter().setName(f);
+    }
     return true;
+  }
+
+  // ---- features ------------------------------------------------------------------------------
+  //
+  // A suite or test can say "feature" : "a,b": it only runs when the server declares all of
+  // them. Unlike modes, which the person running the tests chooses, features come from what the
+  // server says about itself in its CapabilityStatement (see featuresFor).
+
+  public static final String FEATURE_EXTENSION = "http://hl7.org/fhir/uv/application-feature/StructureDefinition/feature";
+  public static final String CODESYSTEM_AS_PARAMETER = "http://hl7.org/fhir/uv/tx-ecosystem/FeatureDefinition/CodeSystemAsParameter";
+
+  // operation name -> the feature declaring it gives
+  private static final String[][] OPERATION_FEATURES = {
+    { "expand", "expand" },
+    { "validate-code", "validate" },
+    { "lookup", "lookup" },
+    { "subsumes", "subsumes" },
+    { "translate", "translate" },
+    { "closure", "closure" },
+    { "related", "related" }
+  };
+
+  /** The features a suite or test can name. */
+  public static final Set<String> KNOWN_FEATURES = Collections.unmodifiableSet(new TreeSet<>(Arrays.asList(
+    "expand", "validate", "lookup", "subsumes", "translate", "closure", "related", "tx-resource")));
+
+  private Set<String> features = new TreeSet<>();
+  private final Set<String> warnedFeatures = Collections.synchronizedSet(new HashSet<>());
+
+  public Set<String> getFeatures() {
+    return features;
+  }
+
+  /**
+   * The features a server declares in its CapabilityStatement:
+   * - an operation (expand, validate, lookup, subsumes, translate, closure, related) when it
+   *   declares that operation anywhere - at system level, or on any resource - by name, or by an
+   *   OperationDefinition whose id ends with it (ValueSet-expand, CodeSystem-validate-code...)
+   * - tx-resource when it declares the CodeSystemAsParameter feature, with the value true
+   */
+  public static Set<String> featuresFor(CapabilityStatement cs) {
+    Set<String> res = new TreeSet<>();
+    if (cs == null) {
+      return res;
+    }
+    List<org.hl7.fhir.model.core.Extension> exts = new ArrayList<>();
+    exts.addAll(cs.getExtensionsByUrl(FEATURE_EXTENSION));
+    for (CapabilityStatement.CapabilityStatementRestComponent rest : cs.getRestList()) {
+      exts.addAll(rest.getExtensionsByUrl(FEATURE_EXTENSION));
+      for (CapabilityStatement.CapabilityStatementRestResourceOperationComponent op : rest.getOperationList()) {
+        exts.addAll(op.getExtensionsByUrl(FEATURE_EXTENSION));
+        addOperationFeature(res, op.getName(), op.getDefinition());
+      }
+      for (CapabilityStatement.CapabilityStatementRestResourceComponent r : rest.getResourceList()) {
+        exts.addAll(r.getExtensionsByUrl(FEATURE_EXTENSION));
+        for (CapabilityStatement.CapabilityStatementRestResourceOperationComponent op : r.getOperationList()) {
+          exts.addAll(op.getExtensionsByUrl(FEATURE_EXTENSION));
+          addOperationFeature(res, op.getName(), op.getDefinition());
+        }
+      }
+    }
+    for (org.hl7.fhir.model.core.Extension ext : exts) {
+      String d = null;
+      org.hl7.fhir.model.core.DataType value = null;
+      for (org.hl7.fhir.model.core.Extension sub : ext.getExtension()) {
+        if ("definition".equals(sub.getUrl()) && sub.getValue() != null) {
+          d = sub.getValue().primitiveValue();
+        } else if ("value".equals(sub.getUrl())) {
+          value = sub.getValue();
+        }
+      }
+      if (d != null && d.contains("|")) {
+        d = d.substring(0, d.indexOf("|"));
+      }
+      if (CODESYSTEM_AS_PARAMETER.equals(d) && value instanceof org.hl7.fhir.model.core.BooleanType
+          && ((org.hl7.fhir.model.core.BooleanType) value).getValue() != null
+          && ((org.hl7.fhir.model.core.BooleanType) value).booleanValue()) {
+        res.add("tx-resource");
+      }
+    }
+    return res;
+  }
+
+  private static void addOperationFeature(Set<String> res, String name, String definition) {
+    String tail = null;
+    if (definition != null) {
+      tail = definition.contains("|") ? definition.substring(0, definition.indexOf("|")) : definition;
+      tail = tail.substring(tail.lastIndexOf("/") + 1);
+    }
+    for (String[] of : OPERATION_FEATURES) {
+      if (of[0].equals(name) || (tail != null && (tail.equals(of[0]) || tail.endsWith("-" + of[0])))) {
+        res.add(of[1]);
+      }
+    }
+  }
+
+  /** The features a suite or test needs: its "feature", a comma separated list. */
+  static List<String> neededFeatures(JsonObject obj) {
+    List<String> res = new ArrayList<>();
+    if (obj != null && obj.has("feature")) {
+      // a plain comma scan - no regex
+      String src = obj.asString("feature");
+      int start = 0;
+      while (start <= src.length()) {
+        int end = src.indexOf(',', start);
+        if (end < 0) {
+          end = src.length();
+        }
+        String f = src.substring(start, end).trim();
+        if (!f.isEmpty()) {
+          res.add(f);
+        }
+        start = end + 1;
+      }
+    }
+    return res;
+  }
+
+  /**
+   * Whether the server declares every feature the suite or test needs. A feature that isn't one
+   * of KNOWN_FEATURES (a typo in the test cases, say) is never declared, so the test doesn't run -
+   * and that is logged, once per feature, so that it doesn't just quietly disappear.
+   */
+  private boolean passesFeatures(JsonObject obj) {
+    for (String f : neededFeatures(obj)) {
+      if (!KNOWN_FEATURES.contains(f) && warnedFeatures.add(f)) {
+        log.warn("Unknown feature '"+f+"' in the test cases (known features: "+String.join(", ", KNOWN_FEATURES)+") - tests that need it will not run");
+      }
+      if (!features.contains(f)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Why a test doesn't run because of its features: what it needs, and what the server declares.
+   * Null if it isn't stopped by features.
+   */
+  public String describeFeatureGate(JsonObject suite, JsonObject test) {
+    List<String> missing = new ArrayList<>();
+    List<String> needed = new ArrayList<>(neededFeatures(suite));
+    needed.addAll(neededFeatures(test));
+    for (String f : needed) {
+      if (!features.contains(f) && !missing.contains(f)) {
+        missing.add(f);
+      }
+    }
+    if (missing.isEmpty()) {
+      return null;
+    }
+    return "it needs the feature(s) [" + String.join(", ", missing) + "], and the server only declares ["
+      + String.join(", ", features) + "]";
   }
 
   private JsonObject loadTests(ITxTesterLoader loader) throws JsonException, IOException {
@@ -652,6 +810,9 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return c;
   }
 
+  /** What executeTest returns for a test that didn't run because the server lacks a feature it needs. */
+  public static final String NOT_RUN_FEATURES = "n/a:features";
+
   public String executeTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, Set<String> modes) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
     return executeTest(loader, suite, test, modes, null);
   }
@@ -677,6 +838,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
     // fetches the capability statement. Worker threads construct their own
     // client lazily via client() inside the operation helpers.
     initialise(modes);
+    // features come from the server's CapabilityStatement, so they can only be checked once
+    // initialise has read it
+    if (!passesFeatures(suite) || !passesFeatures(test)) {
+      return NOT_RUN_FEATURES;
+    }
     List<Resource> setup = loadSetupResources(loader, suite);
     TestReportTestComponent tr = getTestReportTest(suite, test);
 
@@ -712,7 +878,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       // setup (lazily started on first use per thread); we just pass the setup.
       for (JsonObject test : suite.getJsonObjects("tests")) {
         TestReportTestComponent tr = getTestReportTest(suite, test);
-        if ((!test.has("mode") || modes.contains(test.asString("mode"))) && passesVersion(test)) {
+        if ((!test.has("mode") || modes.contains(test.asString("mode"))) && passesVersion(test) && passesFeatures(test)) {
           if (test.asBoolean("disabled")) {
             ok = true;
           } else {
@@ -834,6 +1000,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
         if (fo.exists()) {
           fo.delete();
         }
+        fo = ManagedFileAccess.file(Utilities.path(base, "comparison", fn));
+        if (fo.exists()) {
+          fo.delete();
+        }
+        currentOutput.set(new String[] { base, fn });
 
         JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
@@ -887,6 +1058,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         recordResult(tr, TestReportActionResultValueSet.ERROR, e.getMessage(), start);
         return new ResultInformation(e.getMessage());
       } finally {
+        currentOutput.remove();
         // Reset headers on this thread's client so the next test run on the
         // same worker starts with a clean slate. This only matters if this
         // test set any; a plain client has no headers to clear.
@@ -912,15 +1084,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
     TxTesterSorters.sortCapStmt(cs);
     String csj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(cs);
 
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(csj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, csj, modes, diff != null);
     return diff;
   }
 
@@ -929,15 +1096,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
     TxTesterScrubbers.scrubTermCaps(cs, tight);
     TxTesterSorters.sortTermCaps(cs);
     String csj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(cs);
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(csj, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(resp, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, csj, modes, diff != null);
     return diff;
   }
 
@@ -1052,15 +1214,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1087,15 +1244,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1131,15 +1283,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1166,15 +1313,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1210,15 +1352,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, vsj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(vsj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, vsj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1257,15 +1394,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1297,15 +1429,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1348,15 +1475,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1388,15 +1510,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, pj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
@@ -1435,21 +1552,84 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       bj = new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    CompareUtilities c = new CompareUtilities(modes, ext, vars()).setCollectAll(true);
     String diff = c.checkJsonSrcIsSame(id, resp, bj, false);
     warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(bj, actFn);
-    }
+    writeTestOutput(expFn, resp, actFn, bj, modes, diff != null);
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
     }
     return diff;
   }
 
+
+  // where the test running on this thread writes its output: { base folder, response file name }
+  private final ThreadLocal<String[]> currentOutput = new ThreadLocal<>();
+  // the comparison copy of the externals file, by base folder
+  private final Map<String, JsonObject> comparisonMessages = new HashMap<>();
+  // the name of the externals file, which its comparison copy is given so that it can be compared
+  // with the original; the tx-ecosystem default when the caller doesn't say
+  private String externalsName = "messages-tx.fhir.org.json";
+
+  public TxTester setExternalsName(String name) {
+    if (name != null) {
+      String n = name.replace('\\', '/');
+      this.externalsName = n.substring(n.lastIndexOf('/') + 1);
+    }
+    return this;
+  }
+
+  // TEMPORARY: write the comparison for every test, passed or not. Set to false to only write it
+  // for failed tests, alongside the expected and actual files
+  private static final boolean COMPARISON_FOR_ALL_TESTS = true;
+
+  /**
+   * When a test fails, write the expected and actual responses, and the comparison form of the
+   * actual response - the actual response with what the expected response only matches by
+   * pattern ($external$, $uuid$, $instant$...) put back as those patterns, so that a diff of
+   * expected against comparison only shows what matters. The server's wording of the $external$
+   * messages goes into comparison/{externals file name}, a copy of the externals file (if there is
+   * one) with this test's messages set to what the server said.
+   */
+  private void writeTestOutput(String expFn, String expected, String actFn, String actual, Set<String> modes, boolean failed) throws IOException {
+    if (failed) {
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(expected, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(actual, actFn);
+    } else if (!COMPARISON_FOR_ALL_TESTS) {
+      return;
+    }
+
+    String[] output = currentOutput.get();
+    if (output == null) {
+      return;
+    }
+    try {
+      TxTesterComparison comparison = new TxTesterComparison(modes, vars());
+      org.hl7.fhir.utilities.json.model.JsonElement normalised = comparison.normalise(JsonParser.parse(expected), JsonParser.parse(actual));
+      String cmpFn = Utilities.path(output[0], "comparison", output[1]);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(cmpFn));
+      FileUtilities.stringToFile(JsonParser.compose(normalised, true), cmpFn);
+      if (!comparison.getMessages().isEmpty()) {
+        recordComparisonMessages(output[0], output[1], comparison.getMessages());
+      }
+    } catch (Exception e) {
+      // the comparison is only a convenience; the expected and actual files are written
+      log.warn("Unable to write the comparison for " + output[1] + ": " + e.getMessage());
+    }
+  }
+
+  private synchronized void recordComparisonMessages(String base, String fn, Map<String, String> messages) throws IOException {
+    JsonObject all = comparisonMessages.computeIfAbsent(base, b -> externals == null ? new JsonObject() : externals.deepCopy());
+    JsonObject entry = all.forceObject(fn);
+    for (Map.Entry<String, String> m : messages.entrySet()) {
+      entry.set(m.getKey(), m.getValue());
+    }
+    String fn2 = Utilities.path(base, "comparison", externalsName);
+    FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fn2));
+    FileUtilities.stringToFile(JsonParser.compose(all, true), fn2);
+  }
 
   private Map<String, String> vars() throws URISyntaxException, IOException {
     Map<String, String> vars = new HashMap<String, String>();
