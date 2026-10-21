@@ -173,9 +173,9 @@ public class TxTester implements ITerminologyRequestIdProvider {
   private final ThreadLocal<Map<String, String>> suiteCaches = ThreadLocal.withInitial(HashMap::new);
   // Every closure test names the same closure table, so two runs against one server at
   // the same time would add to, and reset, each other's table and fail on the versions.
-  // Each run uses its own table instead: this suffix goes on the name the requests carry.
-  // The expected responses don't check the name.
-  private final String closureRunSuffix = UUID.randomUUID().toString().substring(0, 8);
+  // Each run uses its own table instead: a fresh UUID, because servers may require closure
+  // table names to be UUIDs. The expected responses don't check the name.
+  private final String closureTableName = UUID.randomUUID().toString();
   private TxTesterConversionLogger conversionLogger;
   private TestReport testReport;
   // who ran the tests: the start of TestReport.tester, which goes on to list the modes
@@ -1113,26 +1113,25 @@ public class TxTester implements ITerminologyRequestIdProvider {
    * stateful - each builds on the table the previous one left - so their suite is marked
    * "sequential" and the runners run it in order on one thread, after everything else.
    */
-  // tx.fhir.org refuses a closure table name longer than this
-  static final int CLOSURE_NAME_MAX_LENGTH = 64;
+  /** The closure table this run uses. */
+  String closureTableName() {
+    return closureTableName;
+  }
 
   /**
-   * Point a $closure request at this run's own closure table, by putting the run's suffix on the
-   * table name it carries, cutting the name short where it would otherwise be too long for a
-   * server. See closureRunSuffix.
+   * Point a $closure request at this run's own closure table: replace the table name it carries
+   * with the run's name. See closureTableName.
    */
-  static void useRunClosureTable(Parameters p, String suffix) {
+  static void useRunClosureTable(Parameters p, String tableName) {
     for (Parameters.ParametersParameterComponent pp : p.getParameterList()) {
       if ("name".equals(pp.getName()) && pp.hasValue()) {
-        String name = pp.getValue().primitiveValue();
-        int keep = Math.min(name.length(), CLOSURE_NAME_MAX_LENGTH - suffix.length() - 1);
-        pp.setValue(new StringType(name.substring(0, keep) + "-" + suffix));
+        pp.setValue(new StringType(tableName));
       }
     }
   }
 
   private String closure(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
-    useRunClosureTable(p, closureRunSuffix);
+    useRunClosureTable(p, closureTableName);
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
