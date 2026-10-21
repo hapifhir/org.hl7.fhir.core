@@ -21,15 +21,29 @@ jobs:
           inputs:
             key: maven | $(Build.BuildId) | artifacts
             path: $(MAVEN_CACHE_FOLDER)
+            cacheHitVar: MAVEN_CACHE_RESTORED
+
+        - bash: |
+            if [ "$MAVEN_CACHE_RESTORED" != "true" ]; then
+              echo "##vso[task.logissue type=warning]Required maven cache was not restored."
+              exit 0
+            fi
+          displayName: Verify Maven Cache Exists
         - template: cache-target-tasks-template.yml
           parameters:
             modules:
               - ${{variables.module}}
+        - bash: |
+            if [ "$TARGET_CACHE_RESTORED" != "true" ]; then
+              echo "##vso[task.logissue type=warning]Required target cache was not restored."
+              exit 0
+            fi
+          displayName: Verify Target Cache Exists
           # Runs 'mvn install'
         - task: Maven@4
           inputs:
             mavenPomFile: 'pom.xml'
-            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl ${{variables.module}} -Djacoco.skip=${{unit.skipJaCoCo}} -P JACOCO'
+            options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl ${{variables.module}} -am -Djacoco.skip=${{unit.skipJaCoCo}} -P JACOCO'
             mavenOptions: '-Xmx768m -Dmaven.resolver.transport=wagon'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '${{unit.jdkVersion}}'
