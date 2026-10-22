@@ -5769,6 +5769,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcTake(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> n1 = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
+    if (n1.isEmpty()) {
+      return new ArrayList<Base>();
+    }
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
 
     List<Base> result = new ArrayList<Base>();
@@ -6918,6 +6921,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private List<Base> funcSkip(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> n1 = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
+    if (n1.isEmpty()) {
+      return new ArrayList<Base>();
+    }
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
 
     List<Base> result = new ArrayList<Base>();
