@@ -631,8 +631,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
 
   private boolean valueSetDependsOn(String system, String version) {
+    if (system == null) {
+      return false;
+    }
     for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
-      if (system.equals(inc.getSystem()) && (version == null || inc.getVersion() == null || version.equals(inc.getVersion()))) {
+      if (Objects.equals(system, inc.getSystem()) && (version == null || inc.getVersion() == null || version.equals(inc.getVersion()))) {
         return true;
       }
     }
@@ -1505,12 +1508,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private ConceptReferencePair findValueSetRef(String system, String code) {
-    if (valueset == null)
+    if (valueset == null || system == null)
       return null;
     // if it has an expansion
     for (ValueSetExpansionContainsComponent exp : valueset.getExpansion().getContains()) {
       opContext.deadCheck("findValueSetRef "+exp.toString());
-      if (system.equals(exp.getSystem()) && code.equals(exp.getCode())) {
+      if (Objects.equals(system, exp.getSystem()) && code.equals(exp.getCode())) {
         ConceptReferenceComponent cc = new ConceptReferenceComponent();
         cc.setDisplay(exp.getDisplay());
         cc.setDesignation(exp.getDesignation());
@@ -1518,7 +1521,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     }
     for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
-      if (system.equals(inc.getSystem())) {
+      if (Objects.equals(system, inc.getSystem())) {
         for (ConceptReferenceComponent cc : inc.getConcept()) {
           if (cc.getCode().equals(code)) {
             return new ConceptReferencePair(valueset, cc);
@@ -1540,7 +1543,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
    */
   private boolean checkSystem(List<ValueSetExpansionContainsComponent> containsList, String system) {
     for (ValueSetExpansionContainsComponent contains : containsList) {
-      if (!contains.getSystem().equals(system) || (contains.hasContains() && !checkSystem(contains.getContains(), system))) {
+      if (!Objects.equals(contains.getSystem(), system) || (contains.hasContains() && !checkSystem(contains.getContains(), system))) {
         return false;
       }
     }
@@ -1878,7 +1881,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private boolean hasMatchForVersion(List<ConceptSetComponent> includes, String system, String version) {
     for (ConceptSetComponent inc : includes) {
-      if (system.equals(inc.getSystem()) && version.equals(inc.getVersion())) {
+      if (Objects.equals(system, inc.getSystem()) && version.equals(inc.getVersion())) {
         return true;
       }
     }
@@ -2028,7 +2031,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       Set<String> impliedVersions = new HashSet<>();
       Set<Element> impliedElements = new HashSet<>();
       for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
-        if (system.equals(inc.getSystem()) && inc.hasVersion()) {
+        if (Objects.equals(system, inc.getSystem()) && inc.hasVersion()) {
           impliedVersions.add(inc.getVersion());
           impliedElements.add(inc);
         }
@@ -2039,7 +2042,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       if (impliedElements.isEmpty()) { // now we're just trying to find a relevant source for rules tracking
         for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
-          if (system.equals(inc.getSystem())) {
+          if (Objects.equals(system, inc.getSystem())) {
             vssrc.setElement(inc);
           }
         }

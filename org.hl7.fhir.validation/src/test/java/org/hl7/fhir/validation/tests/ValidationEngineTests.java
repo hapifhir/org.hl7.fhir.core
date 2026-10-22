@@ -1,9 +1,11 @@
 package org.hl7.fhir.validation.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -153,6 +155,22 @@ public class ValidationEngineTests {
         System.out.print(i + "/" + j+", ");
         assertEquals(testCodes[i][j], outcomes[i].getIssueList().get(j).getCode().toCode());
       }
+    }
+  }
+
+  @Test
+  void graphDefinitionResourceTypeBindingDoesNotReportNullSystemException() throws Exception {
+    String graphDefinition = "{\"resourceType\":\"GraphDefinition\",\"name\":\"G\",\"status\":\"draft\",\"node\":[{\"nodeId\":\"n1\",\"type\":\"Account\"}]}";
+    ValidationEngine ve = TestUtilities.getValidationEngineNoTxServer("hl7.fhir.r5.core#5.0.0", "5.0.0");
+
+    OperationOutcome outcome = ve.validate(FhirFormat.JSON,
+        new ByteArrayInputStream(graphDefinition.getBytes(StandardCharsets.UTF_8)), null);
+
+    for (OperationOutcomeIssueComponent issue : outcome.getIssueList()) {
+      String details = issue.hasDetails() ? issue.getDetails().getText() : "";
+      assertFalse(details.contains("Cannot invoke") || details.contains("NullPointerException"), details);
+      assertFalse("error".equals(issue.getSeverity().toCode())
+          && issue.toString().contains("GraphDefinition.node[0].type"), issue.toString());
     }
   }
 
