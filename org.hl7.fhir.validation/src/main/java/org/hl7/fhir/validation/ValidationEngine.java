@@ -34,6 +34,7 @@ import org.hl7.fhir.services.elementmodel.Manager;
 import org.hl7.fhir.services.elementmodel.ObjectConverter;
 import org.hl7.fhir.services.elementmodel.ParserBase;
 import org.hl7.fhir.services.elementmodel.SHCParser;
+import org.hl7.fhir.services.elementmodel.TurtleParser;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.services.fhirpath.ExpressionNode;
@@ -827,8 +828,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public void convert(String source, String output) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false, true);
+    FhirFormat outputFormat = convertOutputFormat(output);
+    if ((cnt.getCntType() == FhirFormat.TURTLE || outputFormat == FhirFormat.TURTLE) && !TurtleParser.supportsVersion(context.getFHIRVersion())) {
+      throw new FHIRException("Turtle conversion supports FHIR R4, R5 and R6 but the loaded version is " + context.getFHIRVersion() + ".");
+    }
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
-    Manager.compose(context, e, ManagedFileAccess.outStream(output), convertOutputFormat(output), OutputStyle.PRETTY, null);
+    Manager.compose(context, e, ManagedFileAccess.outStream(output), outputFormat, OutputStyle.PRETTY, null);
   }
 
   public static FhirFormat convertOutputFormat(String output) {

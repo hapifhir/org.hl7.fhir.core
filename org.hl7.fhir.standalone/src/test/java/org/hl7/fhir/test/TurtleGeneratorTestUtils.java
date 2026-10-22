@@ -1,5 +1,6 @@
 package org.hl7.fhir.test;
 
+import com.google.gson.JsonElement;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.utilities.formats.FhirFormat;
@@ -14,7 +15,10 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.turtle.Turtle;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.junit.jupiter.api.Assertions;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -105,6 +109,17 @@ public final class TurtleGeneratorTestUtils {
 
     public void composeResource(Element element, OutputStream stream, FhirFormat format) throws IOException {
       parserFor(format).compose(element, stream, OutputStyle.PRETTY, null);
+    }
+
+    /** Parses with {@link #parseStrictResource}. */
+    public Element parse(String source, FhirFormat format) throws IOException {
+      return parseStrictResource(new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8)), format);
+    }
+
+    public String compose(Element element, FhirFormat format) throws IOException {
+      ByteArrayOutputStream output = new ByteArrayOutputStream();
+      composeResource(element, output, format);
+      return output.toString(StandardCharsets.UTF_8);
     }
 
     private ParserBase parserFor(FhirFormat format) {
@@ -293,6 +308,43 @@ public final class TurtleGeneratorTestUtils {
       return properties;
   }
     
+  /**
+  * Compares JSON ignoring object key order, but not array order, primitive kinds or numeric value.
+  */
+  public static void assertJsonEquals(JsonElement expected, JsonElement actual) {
+    assertJsonEquals(expected, actual, "$");
+  }
+
+  private static void assertJsonEquals(JsonElement expected, JsonElement actual, String path) {
+    if (expected.isJsonObject()) {
+      Assertions.assertTrue(actual.isJsonObject(), path);
+      Assertions.assertEquals(expected.getAsJsonObject().keySet(), actual.getAsJsonObject().keySet(), path);
+      for (String key : expected.getAsJsonObject().keySet()) {
+        assertJsonEquals(expected.getAsJsonObject().get(key), actual.getAsJsonObject().get(key), path + "." + key);
+      }
+    } else if (expected.isJsonArray()) {
+      Assertions.assertTrue(actual.isJsonArray(), path);
+      Assertions.assertEquals(expected.getAsJsonArray().size(), actual.getAsJsonArray().size(), path);
+      for (int index = 0; index < expected.getAsJsonArray().size(); index++) {
+        assertJsonEquals(expected.getAsJsonArray().get(index), actual.getAsJsonArray().get(index), path + "[" + index + "]");
+      }
+    } else if (expected.isJsonPrimitive()) {
+      Assertions.assertTrue(actual.isJsonPrimitive(), path);
+      var expectedValue = expected.getAsJsonPrimitive();
+      var actualValue = actual.getAsJsonPrimitive();
+      Assertions.assertEquals(expectedValue.isNumber(), actualValue.isNumber(), path);
+      Assertions.assertEquals(expectedValue.isBoolean(), actualValue.isBoolean(), path);
+      Assertions.assertEquals(expectedValue.isString(), actualValue.isString(), path);
+      if (expectedValue.isNumber()) {
+        Assertions.assertEquals(0, expectedValue.getAsBigDecimal().compareTo(actualValue.getAsBigDecimal()), path);
+      } else {
+        Assertions.assertEquals(expectedValue, actualValue, path);
+      }
+    } else {
+      Assertions.assertEquals(expected, actual, path);
+    }
+  }
+
   /**
   * Clones the default shared test context and overrides only its reported FHIR version.
   */

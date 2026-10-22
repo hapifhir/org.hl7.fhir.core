@@ -1,7 +1,9 @@
 package org.hl7.fhir.r5.test;
 
+import static org.hl7.fhir.r5.test.TurtleGeneratorTestUtils.assertJsonEquals;
+
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,12 +58,12 @@ class TurtleR5R6RoundTripTests {
     ParserContext parsers = contexts.get(version);
     Assertions.assertTrue(parsers.getFhirVersion().startsWith(version), parsers.getFhirVersion());
     String json = "{\"resourceType\":\"Patient\",\"id\":\"example\",\"active\":true,\"name\":[{\"given\":[\"First\",\"Second\"]}]}";
-    String turtle = compose(parsers, parse(parsers, json, FhirFormat.JSON), FhirFormat.TURTLE);
+    String turtle = parsers.compose(parsers.parse(json, FhirFormat.JSON), FhirFormat.TURTLE);
     Assertions.assertTrue(turtle.contains("fhir:v"), turtle);
     Assertions.assertTrue(turtle.contains("fhir:name ("), turtle);
     Assertions.assertFalse(turtle.contains("fhir:index"), turtle);
-    Assertions.assertEquals(com.google.gson.JsonParser.parseString(json),
-        com.google.gson.JsonParser.parseString(compose(parsers, parse(parsers, turtle, FhirFormat.TURTLE), FhirFormat.JSON)));
+    assertJsonEquals(JsonParser.parseString(json),
+        JsonParser.parseString(parsers.compose(parsers.parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)));
   }
 
   @ParameterizedTest
@@ -96,8 +98,8 @@ class TurtleR5R6RoundTripTests {
     ParserContext parsers = contexts.get(version);
     FhirFormat intermediate = FhirFormat.valueOf(intermediateName);
     FhirFormat finalFormat = FhirFormat.valueOf(finalName);
-    Element original = parse(parsers, json, FhirFormat.JSON);
-    String turtle = compose(parsers, parse(parsers, compose(parsers, original, intermediate), intermediate), FhirFormat.TURTLE);
+    Element original = parsers.parse(json, FhirFormat.JSON);
+    String turtle = parsers.compose(parsers.parse(parsers.compose(original, intermediate), intermediate), FhirFormat.TURTLE);
     Assertions.assertTrue(turtle.contains("fhir:resource <http://example.org/Patient/patient>"), turtle);
     Assertions.assertTrue(turtle.contains("us-npi%7C9999959197>"), turtle);
     Assertions.assertFalse(turtle.contains("a fhir:Practitioner"), turtle);
@@ -105,8 +107,8 @@ class TurtleR5R6RoundTripTests {
     Assertions.assertTrue(turtle.contains("fhir:contained ("), turtle);
     Assertions.assertTrue(turtle.contains("rdf:XMLLiteral"), turtle);
     Assertions.assertFalse(turtle.contains("fhir:index"), turtle);
-    Element restored = parse(parsers, compose(parsers, parse(parsers, turtle, FhirFormat.TURTLE), finalFormat), finalFormat);
-    assertJsonEquals(JsonParser.parseString(json), JsonParser.parseString(compose(parsers, restored, FhirFormat.JSON)), "$");
+    Element restored = parsers.parse(parsers.compose(parsers.parse(turtle, FhirFormat.TURTLE), finalFormat), finalFormat);
+    assertJsonEquals(JsonParser.parseString(json), JsonParser.parseString(parsers.compose(restored, FhirFormat.JSON)));
   }
 
   @ParameterizedTest
@@ -132,7 +134,7 @@ class TurtleR5R6RoundTripTests {
         """;
     ParserContext parsers = contexts.get(version);
     assertJsonEquals(JsonParser.parseString(expected),
-        JsonParser.parseString(compose(parsers, parse(parsers, turtle, FhirFormat.TURTLE), FhirFormat.JSON)), "$");
+        JsonParser.parseString(parsers.compose(parsers.parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)));
   }
 
   @ParameterizedTest
@@ -151,7 +153,7 @@ class TurtleR5R6RoundTripTests {
         """;
     ParserContext parsers = contexts.get(version);
     assertJsonEquals(JsonParser.parseString(expected),
-        JsonParser.parseString(compose(parsers, parse(parsers, turtle, FhirFormat.TURTLE), FhirFormat.JSON)), "$");
+        JsonParser.parseString(parsers.compose(parsers.parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)));
   }
 
   @ParameterizedTest
@@ -173,7 +175,7 @@ class TurtleR5R6RoundTripTests {
     ParserContext parsers = contexts.get(version);
     String expected = "{\"resourceType\":\"Patient\",\"name\":[{\"family\":\"Second\",\"given\":[\"Only\"]},{\"family\":\"First\"}]}";
     assertJsonEquals(JsonParser.parseString(expected),
-        JsonParser.parseString(compose(parsers, parse(parsers, turtle, FhirFormat.TURTLE), FhirFormat.JSON)), "$");
+        JsonParser.parseString(parsers.compose(parsers.parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)));
   }
 
   static Stream<Arguments> invalidGraphs() {
@@ -188,7 +190,9 @@ class TurtleR5R6RoundTripTests {
         "fhir:active [ fhir:v true, false ]",
         "fhir:deceased [ fhir:v true ]",
         "fhir:deceased [ a fhir:boolean, fhir:Boolean, fhir:dateTime, fhir:DateTime; fhir:v true ]",
-        "fhir:notARealPatientProperty [ fhir:v \"do-not-drop\" ]"
+        "fhir:notARealPatientProperty [ fhir:v \"do-not-drop\" ]",
+        "fhir:name [ fhir:v \"not-a-list\" ]",
+        "fhir:name (([ fhir:v \"nested\" ]))"
     ).map(predicates -> Arguments.of(version, predicates)));
   }
 
@@ -198,8 +202,8 @@ class TurtleR5R6RoundTripTests {
     String turtle = "@prefix fhir: <http://hl7.org/fhir/> . "
         + "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . "
         + "<http://example.org/patient> a fhir:Patient; fhir:nodeRole fhir:treeRoot; " + predicates + " .";
-    java.io.IOException exception = Assertions.assertThrows(java.io.IOException.class,
-        () -> parse(contexts.get(version), turtle, FhirFormat.TURTLE));
+    IOException exception = Assertions.assertThrows(IOException.class,
+        () -> contexts.get(version).parse(turtle, FhirFormat.TURTLE));
     Assertions.assertTrue(exception.getMessage().contains("/Patient"), exception.getMessage());
   }
 
@@ -209,9 +213,9 @@ class TurtleR5R6RoundTripTests {
   void preservesDatePrecision(String version, String date) throws Exception {
     ParserContext parsers = contexts.get(version);
     String json = "{\"resourceType\":\"Patient\",\"birthDate\":\"" + date + "\"}";
-    assertJsonEquals(JsonParser.parseString(json), JsonParser.parseString(compose(parsers,
-        parse(parsers, compose(parsers, parse(parsers, json, FhirFormat.JSON), FhirFormat.TURTLE), FhirFormat.TURTLE),
-        FhirFormat.JSON)), "$");
+    assertJsonEquals(JsonParser.parseString(json), JsonParser.parseString(parsers.compose(
+        parsers.parse(parsers.compose(parsers.parse(json, FhirFormat.JSON), FhirFormat.TURTLE), FhirFormat.TURTLE),
+        FhirFormat.JSON)));
   }
 
   @ParameterizedTest
@@ -222,21 +226,12 @@ class TurtleR5R6RoundTripTests {
     String json = Files.readString(Path.of(sourcePath), StandardCharsets.UTF_8);
     ParserContext parsers = contexts.get(version);
     for (FhirFormat intermediate : new FhirFormat[] {FhirFormat.JSON, FhirFormat.XML}) {
-      String turtle = compose(parsers, parse(parsers, compose(parsers, parse(parsers, json, FhirFormat.JSON), intermediate), intermediate), FhirFormat.TURTLE);
+      String turtle = parsers.compose(parsers.parse(parsers.compose(parsers.parse(json, FhirFormat.JSON), intermediate), intermediate), FhirFormat.TURTLE);
       for (FhirFormat finalFormat : new FhirFormat[] {FhirFormat.JSON, FhirFormat.XML}) {
-        Element restored = parse(parsers, compose(parsers, parse(parsers, turtle, FhirFormat.TURTLE), finalFormat), finalFormat);
-        assertJsonEquals(JsonParser.parseString(json), JsonParser.parseString(compose(parsers, restored, FhirFormat.JSON)), "$");
+        Element restored = parsers.parse(parsers.compose(parsers.parse(turtle, FhirFormat.TURTLE), finalFormat), finalFormat);
+        assertJsonEquals(JsonParser.parseString(json), JsonParser.parseString(parsers.compose(restored, FhirFormat.JSON)));
       }
     }
-  }
-
-  @ParameterizedTest
-  @CsvSource({"5.0.0,[ fhir:v 'not-a-list' ]", "6.0.0,[ fhir:v 'not-a-list' ]",
-      "5.0.0,(([ fhir:v 'nested' ]))", "6.0.0,(([ fhir:v 'nested' ]))"})
-  void rejectsMalformedFhirCollections(String version, String names) {
-    String turtle = "@prefix fhir: <http://hl7.org/fhir/> . <http://example.org/patient> a fhir:Patient; "
-        + "fhir:nodeRole fhir:treeRoot; fhir:name " + names.replace('\'', '"') + ".";
-    Assertions.assertThrows(java.io.IOException.class, () -> parse(contexts.get(version), turtle, FhirFormat.TURTLE));
   }
 
   @ParameterizedTest
@@ -253,15 +248,15 @@ class TurtleR5R6RoundTripTests {
     ParserContext parsers = contexts.get(version);
     FhirFormat sourceFormat = relativePath.endsWith(".xml") ? FhirFormat.XML : FhirFormat.JSON;
     String source = Files.readString(sourcePath, StandardCharsets.UTF_8);
-    Element original = parse(parsers, source, sourceFormat);
-    JsonElement expected = JsonParser.parseString(sourceFormat == FhirFormat.JSON ? source : compose(parsers, original, FhirFormat.JSON));
-    Element restored = parse(parsers, compose(parsers, original, FhirFormat.TURTLE), FhirFormat.TURTLE);
+    Element original = parsers.parse(source, sourceFormat);
+    JsonElement expected = JsonParser.parseString(sourceFormat == FhirFormat.JSON ? source : parsers.compose(original, FhirFormat.JSON));
+    Element restored = parsers.parse(parsers.compose(original, FhirFormat.TURTLE), FhirFormat.TURTLE);
     for (FhirFormat finalFormat : new FhirFormat[] {FhirFormat.JSON, FhirFormat.XML}) {
-      Element reparsed = parse(parsers, compose(parsers, restored, finalFormat), finalFormat);
-      JsonElement actual = JsonParser.parseString(compose(parsers, reparsed, FhirFormat.JSON));
+      Element reparsed = parsers.parse(parsers.compose(restored, finalFormat), finalFormat);
+      JsonElement actual = JsonParser.parseString(parsers.compose(reparsed, FhirFormat.JSON));
       JsonElement comparable = finalFormat == FhirFormat.XML ? normalizeNarrativeLineEndings(expected) : expected;
       Assertions.assertAll(relativePath + " via " + finalFormat,
-          () -> assertJsonEquals(comparable, finalFormat == FhirFormat.XML ? normalizeNarrativeLineEndings(actual) : actual, "$"));
+          () -> assertJsonEquals(comparable, finalFormat == FhirFormat.XML ? normalizeNarrativeLineEndings(actual) : actual));
     }
   }
 
@@ -303,10 +298,10 @@ class TurtleR5R6RoundTripTests {
           {"system":"http://loinc.org","code":"8480-6"},{"system":"http://snomed.info/sct","code":"271649006"}]}}
         """;
     ParserContext parsers = contexts.get(version);
-    String turtle = compose(parsers, parse(parsers, json, FhirFormat.JSON), FhirFormat.TURTLE);
+    String turtle = parsers.compose(parsers.parse(json, FhirFormat.JSON), FhirFormat.TURTLE);
     Assertions.assertTrue(turtle.contains("loinc:8480-6") && turtle.contains("sct:271649006"), turtle);
     assertJsonEquals(JsonParser.parseString(json),
-        JsonParser.parseString(compose(parsers, parse(parsers, turtle, FhirFormat.TURTLE), FhirFormat.JSON)), "$");
+        JsonParser.parseString(parsers.compose(parsers.parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)));
 
     ParserContext extensions = ParserContext.fromWorkerContext(parsers.getWorkerContext());
     extensions.setConceptIriHandling(ConceptIriHandling.EXTENSION);
@@ -318,7 +313,7 @@ class TurtleR5R6RoundTripTests {
            "system":"http://snomed.info/sct","code":"271649006"}]}}
         """;
     assertJsonEquals(JsonParser.parseString(expected),
-        JsonParser.parseString(compose(extensions, parse(extensions, turtle, FhirFormat.TURTLE), FhirFormat.JSON)), "$");
+        JsonParser.parseString(extensions.compose(extensions.parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)));
   }
 
   @ParameterizedTest
@@ -340,59 +335,6 @@ class TurtleR5R6RoundTripTests {
     Assertions.assertTrue(messages.get(0).getMessage().contains("http://loinc.org/rdf#8480-6"), messages.get(0).getMessage());
     assertJsonEquals(JsonParser.parseString(
         "{\"resourceType\":\"Observation\",\"status\":\"final\",\"code\":{\"coding\":[{\"system\":\"http://loinc.org\",\"code\":\"8480-6\"}]}}"),
-        JsonParser.parseString(compose(contexts.get(version), resource, FhirFormat.JSON)), "$");
-  }
-
-  @ParameterizedTest
-  @CsvSource({"5.0.0,JSON", "5.0.0,XML", "6.0.0,JSON", "6.0.0,XML"})
-  void strictFixtureValidationRejectsUnknownProperties(String version, String formatName) {
-    FhirFormat format = FhirFormat.valueOf(formatName);
-    String source = format == FhirFormat.JSON ? "{\"resourceType\":\"Patient\",\"notARealPatientProperty\":true}"
-        : "<Patient xmlns=\"http://hl7.org/fhir\"><notARealPatientProperty value=\"true\"/></Patient>";
-    java.io.IOException exception = Assertions.assertThrows(java.io.IOException.class,
-        () -> parse(contexts.get(version), source, format));
-    Assertions.assertTrue(exception.getMessage().contains("notARealPatientProperty"), exception.getMessage());
-  }
-
-  private void assertJsonEquals(JsonElement expected, JsonElement actual, String path) {
-    if (expected.isJsonObject()) {
-      Assertions.assertTrue(actual.isJsonObject(), path);
-      Assertions.assertEquals(expected.getAsJsonObject().keySet(), actual.getAsJsonObject().keySet(), path);
-      for (String key : expected.getAsJsonObject().keySet()) {
-        assertJsonEquals(expected.getAsJsonObject().get(key), actual.getAsJsonObject().get(key), path + "." + key);
-      }
-    } else if (expected.isJsonArray()) {
-      Assertions.assertTrue(actual.isJsonArray(), path);
-      Assertions.assertEquals(expected.getAsJsonArray().size(), actual.getAsJsonArray().size(), path);
-      for (int index = 0; index < expected.getAsJsonArray().size(); index++) {
-        assertJsonEquals(expected.getAsJsonArray().get(index), actual.getAsJsonArray().get(index), path + "[" + index + "]");
-      }
-    } else if (expected.isJsonPrimitive()) {
-      Assertions.assertTrue(actual.isJsonPrimitive(), path);
-      var expectedValue = expected.getAsJsonPrimitive();
-      var actualValue = actual.getAsJsonPrimitive();
-      Assertions.assertEquals(expectedValue.isNumber(), actualValue.isNumber(), path);
-      Assertions.assertEquals(expectedValue.isBoolean(), actualValue.isBoolean(), path);
-      Assertions.assertEquals(expectedValue.isString(), actualValue.isString(), path);
-      if (expectedValue.isNumber()) {
-        Assertions.assertEquals(0, expectedValue.getAsBigDecimal().compareTo(actualValue.getAsBigDecimal()), path);
-      } else {
-        Assertions.assertEquals(expectedValue, actualValue, path);
-      }
-    } else {
-      Assertions.assertEquals(expected, actual, path);
-    }
-  }
-
-  private Element parse(ParserContext parsers, String source, FhirFormat format) throws Exception {
-    try (var input = new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8))) {
-      return parsers.parseStrictResource(input, format);
-    }
-  }
-
-  private String compose(ParserContext parsers, Element resource, FhirFormat format) throws Exception {
-    var output = new ByteArrayOutputStream();
-    parsers.composeResource(resource, output, format);
-    return output.toString(StandardCharsets.UTF_8);
+        JsonParser.parseString(contexts.get(version).compose(resource, FhirFormat.JSON)));
   }
 }

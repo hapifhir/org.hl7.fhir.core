@@ -123,6 +123,11 @@ public class TurtleParser extends TurtleParserBase {
     return this;
   }
 
+  /** Versions with a Turtle reader; compose() would otherwise fall back to R5-style output. */
+  public static boolean supportsVersion(String fhirVersion) {
+    return VersionUtilities.isR4Ver(fhirVersion) || VersionUtilities.isR5Ver(fhirVersion) || VersionUtilities.isR6Ver(fhirVersion);
+  }
+
   @Override
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
     // Redirect cross-version parsing

@@ -1,7 +1,8 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import static org.hl7.fhir.r5.test.TurtleGeneratorTestUtils.assertJsonEquals;
+
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,13 +42,13 @@ class TurtleR4RoundTripTests {
         + "<text><status value=\"generated\"/>" + narrative + "</text><active value=\"true\"/>"
         + "<name><family value=\"Example\"/><given value=\"First\"/><given value=\"Second\"/></name></Patient>";
     FhirFormat format = FhirFormat.valueOf(formatName);
-    Element original = parse(format == FhirFormat.JSON ? json : xml, format);
-    String turtle = compose(original, FhirFormat.TURTLE);
+    Element original = parsers.parse(format == FhirFormat.JSON ? json : xml, format);
+    String turtle = parsers.compose(original, FhirFormat.TURTLE);
     Assertions.assertTrue(turtle.contains("fhir:Patient.name"), turtle);
     Assertions.assertTrue(turtle.contains("fhir:value"), turtle);
-    Element reversed = parse(turtle, FhirFormat.TURTLE);
-    Element reparsed = parse(compose(reversed, format), format);
-    assertJsonEquals(JsonParser.parseString(json), JsonParser.parseString(compose(reparsed, FhirFormat.JSON)), "$");
+    Element reversed = parsers.parse(turtle, FhirFormat.TURTLE);
+    Element reparsed = parsers.parse(parsers.compose(reversed, format), format);
+    assertJsonEquals(JsonParser.parseString(json), JsonParser.parseString(parsers.compose(reparsed, FhirFormat.JSON)));
   }
 
   @ParameterizedTest
@@ -72,7 +73,7 @@ class TurtleR4RoundTripTests {
          "contained":[{"resourceType":"Organization","id":"first"},{"resourceType":"Organization","id":"second"}]}
         """;
     assertJsonEquals(JsonParser.parseString(expected),
-        JsonParser.parseString(compose(parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)), "$");
+        JsonParser.parseString(parsers.compose(parsers.parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)));
   }
 
   @ParameterizedTest
@@ -99,15 +100,15 @@ class TurtleR4RoundTripTests {
             "valueQuantity":{"value":107.125,"unit":"mmHg","system":"http://unitsofmeasure.org","code":"mm[Hg]"}}}]}
         """;
     FhirFormat format = FhirFormat.valueOf(formatName);
-    Element original = parse(json, FhirFormat.JSON);
-    String source = format == FhirFormat.JSON ? json : compose(original, format);
-    String turtle = compose(parse(source, format), FhirFormat.TURTLE);
+    Element original = parsers.parse(json, FhirFormat.JSON);
+    String source = format == FhirFormat.JSON ? json : parsers.compose(original, format);
+    String turtle = parsers.compose(parsers.parse(source, format), FhirFormat.TURTLE);
     Assertions.assertTrue(turtle.contains("fhir:Bundle.entry.resource <http://example.org/Patient/patient>"), turtle);
     Assertions.assertTrue(turtle.contains("us-npi%7C9999959197>"), turtle);
     Assertions.assertFalse(turtle.contains("a fhir:Practitioner"), turtle);
     Assertions.assertFalse(turtle.contains("fhir:Organization?"), turtle);
-    Element restored = parse(compose(parse(turtle, FhirFormat.TURTLE), format), format);
-    assertJsonEquals(JsonParser.parseString(json), JsonParser.parseString(compose(restored, FhirFormat.JSON)), "$");
+    Element restored = parsers.parse(parsers.compose(parsers.parse(turtle, FhirFormat.TURTLE), format), format);
+    assertJsonEquals(JsonParser.parseString(json), JsonParser.parseString(parsers.compose(restored, FhirFormat.JSON)));
   }
 
   @ParameterizedTest
@@ -122,7 +123,7 @@ class TurtleR4RoundTripTests {
     String turtle = "@prefix fhir: <http://hl7.org/fhir/> . "
         + "<http://example.org/patient> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> fhir:Patient; "
         + "fhir:nodeRole fhir:treeRoot; fhir:Patient.name " + names + ".";
-    java.io.IOException exception = Assertions.assertThrows(java.io.IOException.class, () -> parse(turtle, FhirFormat.TURTLE));
+    IOException exception = Assertions.assertThrows(IOException.class, () -> parsers.parse(turtle, FhirFormat.TURTLE));
     Assertions.assertTrue(exception.getMessage().contains("fhir:index"), exception.getMessage());
     Assertions.assertTrue(exception.getMessage().contains("/Patient/name"), exception.getMessage());
   }
@@ -137,7 +138,7 @@ class TurtleR4RoundTripTests {
             [ fhir:HumanName.family [ fhir:value "First" ] ].
         """;
     assertJsonEquals(JsonParser.parseString("{\"resourceType\":\"Patient\",\"name\":[{\"family\":\"Second\"},{\"family\":\"First\"}]}"),
-        JsonParser.parseString(compose(parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)), "$");
+        JsonParser.parseString(parsers.compose(parsers.parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)));
   }
 
   @Test
@@ -145,9 +146,9 @@ class TurtleR4RoundTripTests {
     for (String[] pair : new String[][] {{"true", "\"true\""}, {"1", "\"1\""}, {"[1,2]", "[2,1]"},
         {"9007199254740992", "9007199254740993"}, {"1.00000000000000001", "1.00000000000000002"}}) {
       Assertions.assertThrows(AssertionError.class,
-          () -> assertJsonEquals(JsonParser.parseString(pair[0]), JsonParser.parseString(pair[1]), "$"));
+          () -> assertJsonEquals(JsonParser.parseString(pair[0]), JsonParser.parseString(pair[1])));
     }
-    assertJsonEquals(JsonParser.parseString("1.0"), JsonParser.parseString("1.00"), "$");
+    assertJsonEquals(JsonParser.parseString("1.0"), JsonParser.parseString("1.00"));
   }
 
   @Test
@@ -155,8 +156,8 @@ class TurtleR4RoundTripTests {
     String sourcePath = System.getProperty("r4RoundTripJson");
     Assumptions.assumeTrue(sourcePath != null, "Set r4RoundTripJson to check an external R4 JSON resource");
     String source = Files.readString(Path.of(sourcePath), StandardCharsets.UTF_8);
-    Element restored = parse(compose(parse(source, FhirFormat.JSON), FhirFormat.TURTLE), FhirFormat.TURTLE);
-    assertJsonEquals(JsonParser.parseString(source), JsonParser.parseString(compose(restored, FhirFormat.JSON)), "$");
+    Element restored = parsers.parse(parsers.compose(parsers.parse(source, FhirFormat.JSON), FhirFormat.TURTLE), FhirFormat.TURTLE);
+    assertJsonEquals(JsonParser.parseString(source), JsonParser.parseString(parsers.compose(restored, FhirFormat.JSON)));
   }
 
   @ParameterizedTest
@@ -170,12 +171,12 @@ class TurtleR4RoundTripTests {
     Path sourcePath = TurtleGeneratorTestUtils.getResourcePath(Path.of(resourceName));
     FhirFormat sourceFormat = relativePath.endsWith(".xml") ? FhirFormat.XML : FhirFormat.JSON;
     String source = Files.readString(sourcePath, StandardCharsets.UTF_8);
-    Element original = parse(source, sourceFormat);
-    JsonElement expected = JsonParser.parseString(sourceFormat == FhirFormat.JSON ? source : compose(original, FhirFormat.JSON));
-    Element restored = parse(compose(original, FhirFormat.TURTLE), FhirFormat.TURTLE);
+    Element original = parsers.parse(source, sourceFormat);
+    JsonElement expected = JsonParser.parseString(sourceFormat == FhirFormat.JSON ? source : parsers.compose(original, FhirFormat.JSON));
+    Element restored = parsers.parse(parsers.compose(original, FhirFormat.TURTLE), FhirFormat.TURTLE);
     for (FhirFormat finalFormat : new FhirFormat[] {FhirFormat.JSON, FhirFormat.XML}) {
-      Element reparsed = parse(compose(restored, finalFormat), finalFormat);
-      assertJsonEquals(expected, JsonParser.parseString(compose(reparsed, FhirFormat.JSON)), "$");
+      Element reparsed = parsers.parse(parsers.compose(restored, finalFormat), finalFormat);
+      assertJsonEquals(expected, JsonParser.parseString(parsers.compose(reparsed, FhirFormat.JSON)));
     }
   }
 
@@ -185,9 +186,9 @@ class TurtleR4RoundTripTests {
         {"resourceType":"Observation","status":"final","code":{"coding":[
           {"system":"http://loinc.org","code":"8480-6"},{"system":"http://snomed.info/sct","code":"271649006"}]}}
         """;
-    String turtle = compose(parse(json, FhirFormat.JSON), FhirFormat.TURTLE);
+    String turtle = parsers.compose(parsers.parse(json, FhirFormat.JSON), FhirFormat.TURTLE);
     Assertions.assertTrue(turtle.contains("loinc:8480-6") && turtle.contains("sct:271649006"), turtle);
-    assertJsonEquals(JsonParser.parseString(json), JsonParser.parseString(compose(parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)), "$");
+    assertJsonEquals(JsonParser.parseString(json), JsonParser.parseString(parsers.compose(parsers.parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)));
 
     parsers.setConceptIriHandling(ConceptIriHandling.EXTENSION);
     try {
@@ -198,7 +199,7 @@ class TurtleR4RoundTripTests {
             {"extension":[{"url":"http://hl7.org/fhir/StructureDefinition/rdf-concept-iri","valueUri":"http://snomed.info/id/271649006"}],
              "system":"http://snomed.info/sct","code":"271649006"}]}}
           """;
-      assertJsonEquals(JsonParser.parseString(expected), JsonParser.parseString(compose(parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)), "$");
+      assertJsonEquals(JsonParser.parseString(expected), JsonParser.parseString(parsers.compose(parsers.parse(turtle, FhirFormat.TURTLE), FhirFormat.JSON)));
     } finally {
       parsers.setConceptIriHandling(ConceptIriHandling.DROP);
     }
@@ -210,52 +211,7 @@ class TurtleR4RoundTripTests {
     FhirFormat format = FhirFormat.valueOf(formatName);
     String source = format == FhirFormat.JSON ? "{\"resourceType\":\"Patient\",\"notARealPatientProperty\":true}"
         : "<Patient xmlns=\"http://hl7.org/fhir\"><notARealPatientProperty value=\"true\"/></Patient>";
-    java.io.IOException exception = Assertions.assertThrows(java.io.IOException.class, () -> parse(source, format));
+    IOException exception = Assertions.assertThrows(IOException.class, () -> parsers.parse(source, format));
     Assertions.assertTrue(exception.getMessage().contains("notARealPatientProperty"), exception.getMessage());
-  }
-
-  private void assertJsonEquals(JsonElement expected, JsonElement actual, String path) {
-    if ("$".equals(path) && expected.isJsonObject() && expected.getAsJsonObject().has("resourceType")) {
-      Assertions.assertDoesNotThrow(() -> parse(expected.toString(), FhirFormat.JSON), "Invalid expected FHIR fixture");
-    }
-    if (expected.isJsonObject()) {
-      Assertions.assertTrue(actual.isJsonObject(), path);
-      Assertions.assertEquals(expected.getAsJsonObject().keySet(), actual.getAsJsonObject().keySet(), path);
-      for (String key : expected.getAsJsonObject().keySet()) {
-        assertJsonEquals(expected.getAsJsonObject().get(key), actual.getAsJsonObject().get(key), path + "." + key);
-      }
-    } else if (expected.isJsonArray()) {
-      Assertions.assertTrue(actual.isJsonArray(), path);
-      Assertions.assertEquals(expected.getAsJsonArray().size(), actual.getAsJsonArray().size(), path);
-      for (int index = 0; index < expected.getAsJsonArray().size(); index++) {
-        assertJsonEquals(expected.getAsJsonArray().get(index), actual.getAsJsonArray().get(index), path + "[" + index + "]");
-      }
-    } else if (expected.isJsonPrimitive()) {
-      Assertions.assertTrue(actual.isJsonPrimitive(), path);
-      var expectedValue = expected.getAsJsonPrimitive();
-      var actualValue = actual.getAsJsonPrimitive();
-      Assertions.assertEquals(expectedValue.isNumber(), actualValue.isNumber(), path);
-      Assertions.assertEquals(expectedValue.isBoolean(), actualValue.isBoolean(), path);
-      Assertions.assertEquals(expectedValue.isString(), actualValue.isString(), path);
-      if (expectedValue.isNumber()) {
-        Assertions.assertEquals(0, expectedValue.getAsBigDecimal().compareTo(actualValue.getAsBigDecimal()), path);
-      } else {
-        Assertions.assertEquals(expectedValue, actualValue, path);
-      }
-    } else {
-      Assertions.assertEquals(expected, actual, path);
-    }
-  }
-
-  private Element parse(String source, FhirFormat format) throws Exception {
-    try (var input = new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8))) {
-      return parsers.parseStrictResource(input, format);
-    }
-  }
-
-  private String compose(Element resource, FhirFormat format) throws Exception {
-    var output = new ByteArrayOutputStream();
-    parsers.composeResource(resource, output, format);
-    return output.toString(StandardCharsets.UTF_8);
   }
 }
