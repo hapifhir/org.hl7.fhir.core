@@ -207,6 +207,7 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
         org.hl7.fhir.utilities.json.model.JsonObject testCases = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(txtests.load("test-cases.json"));
         org.hl7.fhir.utilities.json.model.JsonObject externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(txtests.load(externalFile));
         tester = new ServerTxTester(new ServerTxTesterLoader(txtests, version), server, true, testCases, externals);
+        tester.setExternalsName(externalFile);
         fhirValidatorHttpService.getTxTesters().put(server, tester);
       }
 
@@ -224,6 +225,11 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
         String err = tester.executeTest(tester.loader, suite, test, modes, label);
         if (err == null) {
           outcome = OperationOutcomeUtilities.createSuccess("Test passed");
+        } else if (TxTester.NOT_RUN_FEATURES.equals(err)) {
+          // The test never ran: it needs features the server doesn't declare in its
+          // CapabilityStatement. Like a mode gate, that is neither a pass nor a failure.
+          outcome = OperationOutcomeUtilities.createError("Test '" + suiteName + "/" + testName
+              + "' did not run: " + tester.describeFeatureGate(suite, test));
         } else if ("n/a".equals(err)) {
           // The test never ran: it is gated on a mode that was not asked for. That is neither
           // a pass nor a failure of the server, and reporting it as the bare "n/a" that

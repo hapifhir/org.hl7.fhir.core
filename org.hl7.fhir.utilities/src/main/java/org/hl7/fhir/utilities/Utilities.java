@@ -1689,21 +1689,7 @@ public class Utilities {
     if (Utilities.noString(value)) {
       throw new FHIRException("Unable to calculate lowBoundary for a null decimal string");
     }
-    String e = value.contains("e") ? value.substring(value.indexOf("e")+1) : null;
-    if (value.contains("e")) {
-      value = value.substring(0, value.indexOf("e"));
-    }    
-    if (isZero(value)) {
-      return applyPrecision("-0.5000000000000000000000000", precision, true);
-    } else if (value.startsWith("-")) {
-      return "-"+highBoundaryForDecimal(value.substring(1), precision)+(e == null ? "" : e);
-    } else {
-      if (value.contains(".")) {
-        return applyPrecision(minusOne(value)+"50000000000000000000000000000", precision, true)+(e == null ? "" : e);
-      } else {
-        return applyPrecision(minusOne(value)+".50000000000000000000000000000", precision, true)+(e == null ? "" : e);
-      }
-    }
+    return boundaryForDecimal(value, precision, false);
   }
 
   private static String applyPrecision(String v, int p, boolean down) {
@@ -1772,21 +1758,67 @@ public class Utilities {
     if (Utilities.noString(value)) {
       throw new FHIRException("Unable to calculate highBoundary for a null decimal string");
     }
-    String e = value.contains("e") ? value.substring(value.indexOf("e")+1) : null;
-    if (value.contains("e")) {
-      value = value.substring(0, value.indexOf("e"));
+    return boundaryForDecimal(value, precision, true);
+  }
+
+  /**
+   * The boundary is worked out from the digits as presented, since they carry the precision. If the value has an
+   * exponent (9.5e2), that's done on the mantissa, and then the decimal point is moved, so 9.5e2 has the boundaries
+   * 945 and 955 (to the requested precision). The result never has an exponent.
+   */
+  private static String boundaryForDecimal(String value, int precision, boolean high) {
+    int exponent = 0;
+    int e = Math.max(value.indexOf('e'), value.indexOf('E'));
+    if (e > -1) {
+      exponent = Integer.parseInt(value.substring(e+1));
+      value = value.substring(0, e);
     }
     if (isZero(value)) {
-      return applyPrecision("0.50000000000000000000000000000", precision, false);
+      return high ? applyPrecision("0.50000000000000000000000000000", precision, false) : applyPrecision("-0.5000000000000000000000000", precision, true);
     } else if (value.startsWith("-")) {
-      return "-"+lowBoundaryForDecimal(value.substring(1), precision)+(e == null ? "" : e);
+      // the high boundary of a negative number is the negative of the low boundary of its magnitude, and vice versa
+      return "-"+boundaryForPositiveDecimal(value.substring(1), exponent, precision, !high);
     } else {
-      if (value.contains(".")) {
-        return applyPrecision(value+"50000000000000000000000000000", precision, false)+(e == null ? "" : e);
-      } else {
-        return applyPrecision(value+".50000000000000000000000000000", precision, false)+(e == null ? "" : e);
-      }
+      return boundaryForPositiveDecimal(value, exponent, precision, high);
     }
+  }
+
+  private static String boundaryForPositiveDecimal(String value, int exponent, int precision, boolean high) {
+    String v = value.contains(".") ? value : value+".";
+    String boundary = (high ? v : minusOne(v))+"50000000000000000000000000000";
+    return applyPrecision(stripLeadingZeros(moveDecimalPoint(boundary, exponent)), precision, !high);
+  }
+
+  /**
+   * moves the decimal point (which must be present) by places (right if positive, left if negative). The result always
+   * has at least one digit on each side of the point
+   */
+  private static String moveDecimalPoint(String value, int places) {
+    if (places == 0) {
+      return value;
+    }
+    int dp = value.indexOf('.');
+    String digits = value.substring(0, dp)+value.substring(dp+1);
+    int ndp = dp+places;
+    if (ndp < 1) {
+      digits = padLeft("", '0', 1-ndp)+digits;
+      ndp = 1;
+    }
+    if (ndp >= digits.length()) {
+      digits = digits+padLeft("", '0', ndp+1-digits.length());
+    }
+    return digits.substring(0, ndp)+"."+digits.substring(ndp);
+  }
+
+  /**
+   * minusOne leaves a leading zero behind when it borrows from the first digit (10 to 09)
+   */
+  private static String stripLeadingZeros(String value) {
+    int i = 0;
+    while (i < value.length()-1 && value.charAt(i) == '0' && value.charAt(i+1) != '.') {
+      i++;
+    }
+    return value.substring(i);
   }
 
   private static boolean isZero(String value) {

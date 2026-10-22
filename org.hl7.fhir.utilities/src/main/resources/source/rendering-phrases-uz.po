@@ -142,6 +142,83 @@ msgstr "Validatorlar ushbu bog''lashni tekshiradi (kuchi = majburiy)"
 msgid "This value set is a component of the base value set"
 msgstr "Ushbu qiymat to''plami asosiy qiymat to''plamining tarkibiy qismidir"
 
+# ADM_ALIAS
+#: ADM_ALIAS
+msgid "Alias:"
+msgstr ""
+
+# ADM_ALIAS_HINT
+#: ADM_ALIAS_HINT
+msgid "Other names this is known by"
+msgstr ""
+
+# ADM_AVAIL
+#: ADM_AVAIL
+msgctxt "ADM_AVAIL"
+msgid "Availability:"
+msgstr ""
+
+# ADM_CONTACT_HINT
+#: ADM_CONTACT_HINT
+msgid "Ways to make contact"
+msgstr ""
+
+# ADM_DESC
+#: ADM_DESC
+msgctxt "ADM_DESC"
+msgid "Description:"
+msgstr ""
+
+# ADM_ENDPOINT
+#: ADM_ENDPOINT
+msgctxt "ADM_ENDPOINT"
+msgid "Endpoint:"
+msgstr ""
+
+# ADM_ENDPOINT_HINT
+#: ADM_ENDPOINT_HINT
+msgid "Technical endpoints providing access to services"
+msgstr ""
+
+# ADM_LOCATION
+#: ADM_LOCATION
+msgctxt "ADM_LOCATION"
+msgid "Location:"
+msgstr ""
+
+# ADM_LOCATION_HINT
+#: ADM_LOCATION_HINT
+msgid "The locations where the services are provided"
+msgstr ""
+
+# ADM_SERVICE
+#: ADM_SERVICE
+msgctxt "ADM_SERVICE"
+msgid "Healthcare Service:"
+msgstr ""
+
+# ADM_SERVICE_HINT
+#: ADM_SERVICE_HINT
+msgid "The healthcare services that are provided"
+msgstr ""
+
+# ADM_SPECIALTY
+#: ADM_SPECIALTY
+msgctxt "ADM_SPECIALTY"
+msgid "Specialty:"
+msgstr ""
+
+# ADM_SPECIALTY_HINT
+#: ADM_SPECIALTY_HINT
+msgid "The specialties of the services that are provided"
+msgstr ""
+
+# ADM_TYPE
+#: ADM_TYPE
+msgctxt "ADM_TYPE"
+msgid "Type:"
+msgstr ""
+
 # BUNDLE_DOCUMENT_CONTENT
 #: BUNDLE_DOCUMENT_CONTENT
 msgid "Document Content"
@@ -1014,6 +1091,7 @@ msgstr ""
 
 # CONSENT_HTABLE_WHAT
 #: CONSENT_HTABLE_WHAT
+msgctxt "CONSENT_HTABLE_WHAT"
 msgid "What"
 msgstr ""
 
@@ -1302,6 +1380,11 @@ msgstr ""
 msgid "Not Stated (use latest from terminology server)"
 msgstr "Ko‘rsatilmagan (terminologiya serveridagi eng so‘nggi ma’lumot ishlatiladi)"
 
+# DATA_REND_ABSENT_BECAUSE
+#: DATA_REND_ABSENT_BECAUSE
+msgid "Absent because:"
+msgstr ""
+
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
 msgid "Afternoon"
@@ -1403,6 +1486,11 @@ msgstr "uyqudan oldin"
 msgid "By"
 msgstr "Tomonidan"
 
+# DATA_REND_CALC_BY
+#: DATA_REND_CALC_BY
+msgid "Value calculated by:"
+msgstr ""
+
 # DATA_REND_CODES
 #: DATA_REND_CODES
 msgid "Codes:"
@@ -1487,6 +1575,11 @@ msgstr "Hodisalar: {0}"
 #: DATA_REND_EXCEPTION
 msgid "Exception"
 msgstr "Istisno"
+
+# DATA_REND_EXT_TEXT
+#: DATA_REND_EXT_TEXT
+msgid "Text:"
+msgstr ""
 
 # DATA_REND_FACT
 #: DATA_REND_FACT
@@ -1578,6 +1671,16 @@ msgstr "[ko‘rsatilmagan]"
 msgid "No display for {0}"
 msgstr "{0} uchun ko‘rsatiladigan qiymat mavjud emas"
 
+# DATA_REND_NO_VALUE
+#: DATA_REND_NO_VALUE
+msgid "(no value)"
+msgstr ""
+
+# DATA_REND_NULL_BECAUSE
+#: DATA_REND_NULL_BECAUSE
+msgid "Null because:"
+msgstr ""
+
 # DATA_REND_ONCE
 #: DATA_REND_ONCE
 msgid "Once"
@@ -1607,6 +1710,31 @@ msgstr "davr:"
 #: DATA_REND_PHONE
 msgid "Phone: {0}"
 msgstr "Telefon: {0}"
+
+# DATA_REND_REL_AFTER
+#: DATA_REND_REL_AFTER
+msgid "after"
+msgstr ""
+
+# DATA_REND_REL_AT
+#: DATA_REND_REL_AT
+msgid "at"
+msgstr ""
+
+# DATA_REND_REL_BEFORE
+#: DATA_REND_REL_BEFORE
+msgid "before"
+msgstr ""
+
+# DATA_REND_REL_EVENT
+#: DATA_REND_REL_EVENT
+msgid "the event"
+msgstr ""
+
+# DATA_REND_REL_RELATIVE
+#: DATA_REND_REL_RELATIVE
+msgid "relative to"
+msgstr ""
 
 # DATA_REND_RXNORM
 #: DATA_REND_RXNORM
@@ -1779,6 +1907,129 @@ msgstr "Subyekt aniqlanmagan"
 #: DOCUMENT_SUMMARY
 msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
 msgstr "<param name=\"status\"/> Hujjat <param name=\"date\"/> sanada <param name=\"author\"/> tomonidan <param name=\"subject\"/> uchun <if test=\"has-encounter = true\"> uchrashuvda <param name=\"encounter\"/></if>"
+
+# EP_ADDRESS
+#: EP_ADDRESS
+msgctxt "EP_ADDRESS"
+msgid "Address:"
+msgstr ""
+
+# EP_ADDRESS_HINT
+#: EP_ADDRESS_HINT
+msgid "The technical base address for connecting to this endpoint"
+msgstr ""
+
+# EP_AVAIL_HINT
+#: EP_AVAIL_HINT
+msgid "When the endpoint is (and is not) expected to be available"
+msgstr ""
+
+# EP_CONN_TYPE
+#: EP_CONN_TYPE
+msgid "Connection Type:"
+msgstr ""
+
+# EP_CONN_TYPE_HINT
+#: EP_CONN_TYPE_HINT
+msgid "The protocol, profile or standard used to connect to the endpoint"
+msgstr ""
+
+# EP_CONTACT_HINT
+#: EP_CONTACT_HINT
+msgid "Contact details for a human to contact about the endpoint"
+msgstr ""
+
+# EP_DESC_HINT
+#: EP_DESC_HINT
+msgid "Additional details about the endpoint"
+msgstr ""
+
+# EP_ENV
+#: EP_ENV
+msgid "Environment:"
+msgstr ""
+
+# EP_ENV_HINT
+#: EP_ENV_HINT
+msgid "The type of environment(s) exposed at this endpoint (e.g. production, test)"
+msgstr ""
+
+# EP_HEADER
+#: EP_HEADER
+msgid "Header:"
+msgstr ""
+
+# EP_HEADER_HINT
+#: EP_HEADER_HINT
+msgid "Headers to use when connecting to the endpoint"
+msgstr ""
+
+# EP_MANAGER
+#: EP_MANAGER
+msgctxt "EP_MANAGER"
+msgid "Managed By:"
+msgstr ""
+
+# EP_MANAGER_HINT
+#: EP_MANAGER_HINT
+msgid "The organization that manages this endpoint"
+msgstr ""
+
+# EP_MIME_TYPE
+#: EP_MIME_TYPE
+msgid "Mime Type:"
+msgstr ""
+
+# EP_MIME_TYPE_HINT
+#: EP_MIME_TYPE_HINT
+msgid "The mime types that can be sent to and/or received from the endpoint"
+msgstr ""
+
+# EP_NO_NAME
+#: EP_NO_NAME
+msgid "Unnamed Endpoint"
+msgstr ""
+
+# EP_PAYLOAD
+#: EP_PAYLOAD
+msgid "Payload:"
+msgstr ""
+
+# EP_PAYLOAD_HINT
+#: EP_PAYLOAD_HINT
+msgid "The set of payloads that are provided/available at this endpoint"
+msgstr ""
+
+# EP_PAYLOAD_TYPE
+#: EP_PAYLOAD_TYPE
+msgid "Payload Type:"
+msgstr ""
+
+# EP_PAYLOAD_TYPE_HINT
+#: EP_PAYLOAD_TYPE_HINT
+msgid "The type of content that may be used at this endpoint"
+msgstr ""
+
+# EP_PERIOD_HINT
+#: EP_PERIOD_HINT
+msgid "The interval during which the endpoint is expected to be operational"
+msgstr ""
+
+# EP_PROFILE
+#: EP_PROFILE
+msgid "Profile:"
+msgstr ""
+
+# EP_STATUS
+#: EP_STATUS
+msgctxt "EP_STATUS"
+msgid "Status:"
+msgstr ""
+
+# EP_STATUS_HINT
+#: EP_STATUS_HINT
+msgid "The status of the endpoint"
+msgstr ""
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
@@ -2293,6 +2544,7 @@ msgstr "Foydalanish"
 
 # GENERAL_VALUE
 #: GENERAL_VALUE
+msgctxt "GENERAL_VALUE"
 msgid "Value"
 msgstr "Qiymat"
 
@@ -2332,10 +2584,412 @@ msgstr "versiya"
 msgid "XML"
 msgstr "XML"
 
+# GROUP_CHAR
+#: GROUP_CHAR
+msgid "Characteristic"
+msgstr ""
+
+# GROUP_CHARS
+#: GROUP_CHARS
+msgid "Characteristics"
+msgstr ""
+
+# GROUP_CODE
+#: GROUP_CODE
+msgid "Kind:"
+msgstr ""
+
+# GROUP_CODE_HINT
+#: GROUP_CODE_HINT
+msgid "The kind of members of the group, beyond the basic type"
+msgstr ""
+
+# GROUP_COMB_METHOD
+#: GROUP_COMB_METHOD
+msgid "Combination:"
+msgstr ""
+
+# GROUP_COMB_METHOD_HINT
+#: GROUP_COMB_METHOD_HINT
+msgid "How the characteristics are combined to decide whether something is a member"
+msgstr ""
+
+# GROUP_COMB_THRESHOLD
+#: GROUP_COMB_THRESHOLD
+msgid "Threshold:"
+msgstr ""
+
+# GROUP_COMB_THRESHOLD_HINT
+#: GROUP_COMB_THRESHOLD_HINT
+msgid "The number of characteristics that must be met, for the at-least and at-most combination methods"
+msgstr ""
+
+# GROUP_DEFINITIONAL
+#: GROUP_DEFINITIONAL
+msgid "definitional"
+msgstr ""
+
+# GROUP_DESC
+#: GROUP_DESC
+msgctxt "GROUP_DESC"
+msgid "Description:"
+msgstr ""
+
+# GROUP_DESC_HINT
+#: GROUP_DESC_HINT
+msgid "Explanation of what the group is"
+msgstr ""
+
+# GROUP_DETAILS
+#: GROUP_DETAILS
+msgctxt "GROUP_DETAILS"
+msgid "Details"
+msgstr ""
+
+# GROUP_DETERMINER
+#: GROUP_DETERMINER
+msgid "Determined By:"
+msgstr ""
+
+# GROUP_DURATION
+#: GROUP_DURATION
+msgid "Duration:"
+msgstr ""
+
+# GROUP_ENUMERATED
+#: GROUP_ENUMERATED
+msgid "enumerated"
+msgstr ""
+
+# GROUP_EXCLUDE
+#: GROUP_EXCLUDE
+msgctxt "GROUP_EXCLUDE"
+msgid "Exclude"
+msgstr ""
+
+# GROUP_EXCLUDED
+#: GROUP_EXCLUDED
+msgid "excluded"
+msgstr ""
+
+# GROUP_FORMULA
+#: GROUP_FORMULA
+msgid "Formula:"
+msgstr ""
+
+# GROUP_INACTIVE
+#: GROUP_INACTIVE
+msgctxt "GROUP_INACTIVE"
+msgid "Inactive"
+msgstr ""
+
+# GROUP_INSTANCES
+#: GROUP_INSTANCES
+msgid "Instances:"
+msgstr ""
+
+# GROUP_INVOLVEMENT
+#: GROUP_INVOLVEMENT
+msgid "Involvement"
+msgstr ""
+
+# GROUP_MANAGER
+#: GROUP_MANAGER
+msgctxt "GROUP_MANAGER"
+msgid "Managed By:"
+msgstr ""
+
+# GROUP_MANAGER_HINT
+#: GROUP_MANAGER_HINT
+msgid "The entity responsible for the group"
+msgstr ""
+
+# GROUP_MEMBER
+#: GROUP_MEMBER
+msgid "Member"
+msgstr ""
+
+# GROUP_MEMBERS
+#: GROUP_MEMBERS
+msgid "Members"
+msgstr ""
+
+# GROUP_MEMBERSHIP
+#: GROUP_MEMBERSHIP
+msgid "Membership:"
+msgstr ""
+
+# GROUP_MEMBERSHIP_HINT
+#: GROUP_MEMBERSHIP_HINT
+msgid "Whether the members are listed (enumerated), or the group is a definition of what could be a member (definitional)"
+msgstr ""
+
+# GROUP_MEMBERS_MORE
+#: GROUP_MEMBERS_MORE
+msgid "Showing the first {0} of {1} members"
+msgstr ""
+
+# GROUP_MEMBER_COUNT
+#: GROUP_MEMBER_COUNT
+msgid "{0} member"
+msgid_plural "{0} members"
+msgstr[0] ""
+msgstr[1] ""
+
+# GROUP_METHOD
+#: GROUP_METHOD
+msgid "Method:"
+msgstr ""
+
+# GROUP_NO_NAME
+#: GROUP_NO_NAME
+msgid "Unnamed Group"
+msgstr ""
+
+# GROUP_OFFSET
+#: GROUP_OFFSET
+msgid "Offset:"
+msgstr ""
+
+# GROUP_PERIOD
+#: GROUP_PERIOD
+msgctxt "GROUP_PERIOD"
+msgid "Period"
+msgstr ""
+
+# GROUP_PURPOSE
+#: GROUP_PURPOSE
+msgid "Purpose:"
+msgstr ""
+
+# GROUP_PURPOSE_HINT
+#: GROUP_PURPOSE_HINT
+msgid "Why the group exists"
+msgstr ""
+
+# GROUP_QUANTITY
+#: GROUP_QUANTITY
+msgid "Quantity:"
+msgstr ""
+
+# GROUP_QUANTITY_HINT
+#: GROUP_QUANTITY_HINT
+msgid "The number of members in the group"
+msgstr ""
+
+# GROUP_TIMING
+#: GROUP_TIMING
+msgid "Timing:"
+msgstr ""
+
+# GROUP_TYPE
+#: GROUP_TYPE
+msgctxt "GROUP_TYPE"
+msgid "Type:"
+msgstr ""
+
+# GROUP_TYPE_HINT
+#: GROUP_TYPE_HINT
+msgid "The kind of things that are members of the group"
+msgstr ""
+
+# GROUP_VALUE
+#: GROUP_VALUE
+msgctxt "GROUP_VALUE"
+msgid "Value"
+msgstr ""
+
+# HS_APPT
+#: HS_APPT
+msgid "Appointment Required:"
+msgstr ""
+
+# HS_APPT_HINT
+#: HS_APPT_HINT
+msgid "Whether an appointment is required to access this service"
+msgstr ""
+
+# HS_AVAIL_HINT
+#: HS_AVAIL_HINT
+msgid "When the service is (and is not) available"
+msgstr ""
+
+# HS_BY
+#: HS_BY
+msgid "by {0}"
+msgstr ""
+
+# HS_CATEGORY
+#: HS_CATEGORY
+msgctxt "HS_CATEGORY"
+msgid "Category:"
+msgstr ""
+
+# HS_CATEGORY_HINT
+#: HS_CATEGORY_HINT
+msgid "Broad category of service being performed or delivered"
+msgstr ""
+
+# HS_CHAR
+#: HS_CHAR
+msgctxt "HS_CHAR"
+msgid "Characteristic:"
+msgstr ""
+
+# HS_CHAR_HINT
+#: HS_CHAR_HINT
+msgid "Collection of characteristics (attributes) of the service"
+msgstr ""
+
+# HS_COMMENT
+#: HS_COMMENT
+msgid "Comment:"
+msgstr ""
+
+# HS_COMMENT_HINT
+#: HS_COMMENT_HINT
+msgid "Additional description and/or any specific issues not covered elsewhere"
+msgstr ""
+
+# HS_COVERAGE
+#: HS_COVERAGE
+msgid "Coverage Area:"
+msgstr ""
+
+# HS_COVERAGE_HINT
+#: HS_COVERAGE_HINT
+msgid "The locations that the service is available to"
+msgstr ""
+
+# HS_ELIGIBILITY
+#: HS_ELIGIBILITY
+msgid "Eligibility:"
+msgstr ""
+
+# HS_ELIGIBILITY_HINT
+#: HS_ELIGIBILITY_HINT
+msgid "Specific eligibility requirements required to use the service"
+msgstr ""
+
+# HS_EXTRA
+#: HS_EXTRA
+msgid "Extra Details:"
+msgstr ""
+
+# HS_EXTRA_HINT
+#: HS_EXTRA_HINT
+msgid "Extra details about the service that can''t be placed in the other fields"
+msgstr ""
+
+# HS_NO_NAME
+#: HS_NO_NAME
+msgid "Unnamed Healthcare Service"
+msgstr ""
+
+# HS_OFFERED_IN
+#: HS_OFFERED_IN
+msgid "Offered In:"
+msgstr ""
+
+# HS_OFFERED_IN_HINT
+#: HS_OFFERED_IN_HINT
+msgid "The service within which this service is offered"
+msgstr ""
+
+# HS_PROGRAM
+#: HS_PROGRAM
+msgid "Program:"
+msgstr ""
+
+# HS_PROGRAM_HINT
+#: HS_PROGRAM_HINT
+msgid "Programs that this service is applicable to"
+msgstr ""
+
+# HS_PROVIDED_BY
+#: HS_PROVIDED_BY
+msgid "Provided By:"
+msgstr ""
+
+# HS_PROVIDED_BY_HINT
+#: HS_PROVIDED_BY_HINT
+msgid "The organization that provides this service"
+msgstr ""
+
+# HS_PROVISION
+#: HS_PROVISION
+msgid "Provision Conditions:"
+msgstr ""
+
+# HS_PROVISION_HINT
+#: HS_PROVISION_HINT
+msgid "The conditions under which the service is available/offered (e.g. free, discounts)"
+msgstr ""
+
+# HS_REFERRAL
+#: HS_REFERRAL
+msgid "Referral Required:"
+msgstr ""
+
+# HS_REFERRAL_HINT
+#: HS_REFERRAL_HINT
+msgid "Whether a referral is required to access this service"
+msgstr ""
+
+# HS_REFERRAL_METHOD
+#: HS_REFERRAL_METHOD
+msgid "Referral Method:"
+msgstr ""
+
+# HS_REFERRAL_METHOD_HINT
+#: HS_REFERRAL_METHOD_HINT
+msgid "Ways that the service accepts referrals"
+msgstr ""
+
+# HS_TYPE_HINT
+#: HS_TYPE_HINT
+msgid "The type of service that may be delivered or performed"
+msgstr ""
+
 # IMP_GUIDE_URL
 #: IMP_GUIDE_URL
 msgid "The official URL for this implementation guide is:"
 msgstr "Ushbu implementatsiya bo‘yicha qo‘llanmaning rasmiy URL manzili:"
+
+# IND_DOB
+#: IND_DOB
+msgid "Date of Birth:"
+msgstr ""
+
+# IND_DOB_HINT
+#: IND_DOB_HINT
+msgid "Date of birth"
+msgstr ""
+
+# IND_GENDER
+#: IND_GENDER
+msgid "Gender:"
+msgstr ""
+
+# IND_GENDER_HINT
+#: IND_GENDER_HINT
+msgid "Administrative gender"
+msgstr ""
+
+# IND_PERIOD_HINT
+#: IND_PERIOD_HINT
+msgid "The period during which this record applies"
+msgstr ""
+
+# IND_PHOTO
+#: IND_PHOTO
+msgid "Photo"
+msgstr ""
+
+# IND_PHOTO_TOO_BIG
+#: IND_PHOTO_TOO_BIG
+msgid "Photo not shown: the {0} image ({1} bytes) is too big to include in the page"
+msgstr ""
 
 # IP_INTRO
 #: IP_INTRO
@@ -2391,6 +3045,11 @@ msgstr "Muharrir"
 #: LIB_REND_END
 msgid "Endorser"
 msgstr "Ma’qullovchi"
+
+# LIB_REND_IMG_TOO_BIG
+#: LIB_REND_IMG_TOO_BIG
+msgid "Image not shown: the {0} image ({1} bytes) is too big to include in the page"
+msgstr ""
 
 # LIB_REND_NOCONT
 #: LIB_REND_NOCONT
@@ -2494,6 +3153,182 @@ msgctxt "LIST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
 msgstr "Subyekt aniqlanmagan"
 
+# LOC_ADDRESS
+#: LOC_ADDRESS
+msgctxt "LOC_ADDRESS"
+msgid "Address:"
+msgstr ""
+
+# LOC_ADDRESS_HINT
+#: LOC_ADDRESS_HINT
+msgid "Physical location"
+msgstr ""
+
+# LOC_ALTITUDE
+#: LOC_ALTITUDE
+msgid "(altitude {0})"
+msgstr ""
+
+# LOC_CHAR
+#: LOC_CHAR
+msgctxt "LOC_CHAR"
+msgid "Characteristic:"
+msgstr ""
+
+# LOC_CHAR_HINT
+#: LOC_CHAR_HINT
+msgid "Collection of characteristics (attributes) of the location"
+msgstr ""
+
+# LOC_CODE
+#: LOC_CODE
+msgid "Code:"
+msgstr ""
+
+# LOC_CODE_HINT
+#: LOC_CODE_HINT
+msgid "Codes that identify the location"
+msgstr ""
+
+# LOC_CONTACT_HINT
+#: LOC_CONTACT_HINT
+msgid "Ways to make contact with the location"
+msgstr ""
+
+# LOC_DESC_HINT
+#: LOC_DESC_HINT
+msgid "Additional details about the location that could be displayed as further information to identify it"
+msgstr ""
+
+# LOC_FORM
+#: LOC_FORM
+msgid "Form:"
+msgstr ""
+
+# LOC_FORM_HINT
+#: LOC_FORM_HINT
+msgid "The physical form of the location (e.g. building, room, vehicle, road)"
+msgstr ""
+
+# LOC_HOURS
+#: LOC_HOURS
+msgid "Hours:"
+msgstr ""
+
+# LOC_HOURS_HINT
+#: LOC_HOURS_HINT
+msgid "When the location is (and is not) open"
+msgstr ""
+
+# LOC_LAT_LONG
+#: LOC_LAT_LONG
+msgid "{0}, {1}"
+msgstr ""
+
+# LOC_MANAGER
+#: LOC_MANAGER
+msgctxt "LOC_MANAGER"
+msgid "Managed By:"
+msgstr ""
+
+# LOC_MANAGER_HINT
+#: LOC_MANAGER_HINT
+msgid "The organization responsible for the provisioning and upkeep of the location"
+msgstr ""
+
+# LOC_MODE
+#: LOC_MODE
+msgid "Mode:"
+msgstr ""
+
+# LOC_MODE_HINT
+#: LOC_MODE_HINT
+msgid "Whether this describes a specific location, or a class of locations"
+msgstr ""
+
+# LOC_NO_NAME
+#: LOC_NO_NAME
+msgid "Unnamed Location"
+msgstr ""
+
+# LOC_OP_STATUS
+#: LOC_OP_STATUS
+msgid "Operational Status:"
+msgstr ""
+
+# LOC_OP_STATUS_HINT
+#: LOC_OP_STATUS_HINT
+msgid "The operational status of the location (typically only for a bed/room)"
+msgstr ""
+
+# LOC_PART_OF
+#: LOC_PART_OF
+msgctxt "LOC_PART_OF"
+msgid "Part Of:"
+msgstr ""
+
+# LOC_PART_OF_HINT
+#: LOC_PART_OF_HINT
+msgid "Another location this one is physically a part of"
+msgstr ""
+
+# LOC_POSITION
+#: LOC_POSITION
+msgid "Position:"
+msgstr ""
+
+# LOC_POSITION_HINT
+#: LOC_POSITION_HINT
+msgid "The latitude and longitude of the location (WGS84)"
+msgstr ""
+
+# LOC_STATUS
+#: LOC_STATUS
+msgctxt "LOC_STATUS"
+msgid "Status:"
+msgstr ""
+
+# LOC_STATUS_HINT
+#: LOC_STATUS_HINT
+msgid "The status of the location"
+msgstr ""
+
+# LOC_TYPE_HINT
+#: LOC_TYPE_HINT
+msgid "The type of function performed at the location"
+msgstr ""
+
+# LOC_VIRTUAL
+#: LOC_VIRTUAL
+msgid "Virtual Service:"
+msgstr ""
+
+# LOC_VIRTUAL_HINT
+#: LOC_VIRTUAL_HINT
+msgid "Connection details of a virtual service (e.g. conference call)"
+msgstr ""
+
+# LOC_VS_ADDRESS
+#: LOC_VS_ADDRESS
+msgctxt "LOC_VS_ADDRESS"
+msgid "Address:"
+msgstr ""
+
+# LOC_VS_INFO
+#: LOC_VS_INFO
+msgid "More Information:"
+msgstr ""
+
+# LOC_VS_KEY
+#: LOC_VS_KEY
+msgid "Session Key:"
+msgstr ""
+
+# LOC_VS_MAX
+#: LOC_VS_MAX
+msgid "Maximum Participants:"
+msgstr ""
+
 # MAP_DEFAULT_COMMENT
 #: MAP_DEFAULT_COMMENT
 msgid "This element was not defined prior to R5"
@@ -2529,6 +3364,58 @@ msgstr "Identifikatorlar"
 #: NAME_SYS_PER
 msgctxt "NAME_SYS_PER"
 msgid "Period"
+msgstr ""
+
+# OA_CODE
+#: OA_CODE
+msgctxt "OA_CODE"
+msgid "Role:"
+msgstr ""
+
+# OA_CODE_HINT
+#: OA_CODE_HINT
+msgid "The role(s) the participating organization provides in this affiliation"
+msgstr ""
+
+# OA_FOR
+#: OA_FOR
+msgid "for {0}"
+msgstr ""
+
+# OA_NETWORK
+#: OA_NETWORK
+msgid "Network:"
+msgstr ""
+
+# OA_NETWORK_HINT
+#: OA_NETWORK_HINT
+msgid "The health insurance provider network(s) in which the participating organization provides these services"
+msgstr ""
+
+# OA_NO_ORG
+#: OA_NO_ORG
+msgid "(no organization)"
+msgstr ""
+
+# OA_ORG
+#: OA_ORG
+msgctxt "OA_ORG"
+msgid "Organization:"
+msgstr ""
+
+# OA_ORG_HINT
+#: OA_ORG_HINT
+msgid "The organization where the participating organization provides the services"
+msgstr ""
+
+# OA_PARTICIPANT
+#: OA_PARTICIPANT
+msgid "Participating Organization:"
+msgstr ""
+
+# OA_PARTICIPANT_HINT
+#: OA_PARTICIPANT_HINT
+msgid "The organization that provides/performs the role(s)"
 msgstr ""
 
 # OBLIGATION_SOURCE
@@ -2612,6 +3499,37 @@ msgstr "OperationOutcome (Xatolar aniqlanmadi)"
 #: OP_OUT_SUMM_NOHINT
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s))"
 msgstr "OperationOutcome ({0} xato(lar), {1} ogohlantirish(lar))"
+
+# ORG_CONTACT_HINT
+#: ORG_CONTACT_HINT
+msgid "Ways to contact the organization"
+msgstr ""
+
+# ORG_DESC_HINT
+#: ORG_DESC_HINT
+msgid "Additional details about the organization"
+msgstr ""
+
+# ORG_NO_NAME
+#: ORG_NO_NAME
+msgid "Unnamed Organization"
+msgstr ""
+
+# ORG_PART_OF
+#: ORG_PART_OF
+msgctxt "ORG_PART_OF"
+msgid "Part Of:"
+msgstr ""
+
+# ORG_PART_OF_HINT
+#: ORG_PART_OF_HINT
+msgid "The organization of which this organization forms a part"
+msgstr ""
+
+# ORG_TYPE_HINT
+#: ORG_TYPE_HINT
+msgid "The kind(s) of organization that this is"
+msgstr ""
 
 # PARS_SUMMARY_LIST
 #: PARS_SUMMARY_LIST
@@ -2787,6 +3705,7 @@ msgstr "Anonim bemor"
 
 # PAT_ORG
 #: PAT_ORG
+msgctxt "PAT_ORG"
 msgid "Organization:"
 msgstr "Tashkilot:"
 
@@ -2818,6 +3737,47 @@ msgstr "Bemorning fotosurati"
 #: PAT_RELN
 msgid "Relationships:"
 msgstr "Munosabatlar:"
+
+# PRAC_CONTACT_HINT
+#: PRAC_CONTACT_HINT
+msgid "Ways to contact the Practitioner"
+msgstr ""
+
+# PRAC_DECEASED_HINT
+#: PRAC_DECEASED_HINT
+msgid "Known status of the Practitioner"
+msgstr ""
+
+# PRAC_NO_NAME
+#: PRAC_NO_NAME
+msgid "Anonymous Practitioner"
+msgstr ""
+
+# PRAC_QUAL
+#: PRAC_QUAL
+msgid "Qualification:"
+msgstr ""
+
+# PRAC_QUAL_HINT
+#: PRAC_QUAL_HINT
+msgid "Certification, licensure, or training pertaining to the provision of care"
+msgstr ""
+
+# PRAC_QUAL_ID
+#: PRAC_QUAL_ID
+msgid "Identifier:"
+msgstr ""
+
+# PRAC_QUAL_ISSUER
+#: PRAC_QUAL_ISSUER
+msgid "Issued By:"
+msgstr ""
+
+# PRAC_QUAL_STATUS
+#: PRAC_QUAL_STATUS
+msgctxt "PRAC_QUAL_STATUS"
+msgid "Status:"
+msgstr ""
 
 # PROF_DRIV_ERR_GEN_NARR
 #: PROF_DRIV_ERR_GEN_NARR
@@ -2865,10 +3825,35 @@ msgstr "Faoliyat"
 msgid "Agents"
 msgstr "Agentlar"
 
+# PROV_AUTHORIZATION
+#: PROV_AUTHORIZATION
+msgid "Authorization"
+msgstr ""
+
+# PROV_BASED_ON
+#: PROV_BASED_ON
+msgid "Based On"
+msgstr ""
+
 # PROV_BEHALF
 #: PROV_BEHALF
 msgid "On Behalf Of"
 msgstr "Nomidan"
+
+# PROV_ENCOUNTER
+#: PROV_ENCOUNTER
+msgid "Encounter"
+msgstr ""
+
+# PROV_ENT
+#: PROV_ENT
+msgid "Entities"
+msgstr ""
+
+# PROV_ENT_MORE
+#: PROV_ENT_MORE
+msgid "Showing the first {0} of {1} entities"
+msgstr ""
 
 # PROV_FOR
 #: PROV_FOR
@@ -2895,6 +3880,11 @@ msgstr "Kelib chiqish ma’lumotlari"
 msgid "Provenance for:"
 msgstr "Kelib chiqish ma’lumotlari:"
 
+# PROV_REASON
+#: PROV_REASON
+msgid "Reason"
+msgstr ""
+
 # PROV_REC
 #: PROV_REC
 msgid "Recorded"
@@ -2911,10 +3901,149 @@ msgctxt "PROV_ROLE"
 msgid "Role"
 msgstr ""
 
+# PROV_WHAT
+#: PROV_WHAT
+msgctxt "PROV_WHAT"
+msgid "What"
+msgstr ""
+
 # PROV_WHO
 #: PROV_WHO
 msgid "who"
 msgstr "kim"
+
+# PROV_WHY
+#: PROV_WHY
+msgid "Why"
+msgstr ""
+
+# PRR_ALL_DAY
+#: PRR_ALL_DAY
+msgid "all day"
+msgstr ""
+
+# PRR_AT
+#: PRR_AT
+msgid "at {0}"
+msgstr ""
+
+# PRR_AVAIL
+#: PRR_AVAIL
+msgctxt "PRR_AVAIL"
+msgid "Availability:"
+msgstr ""
+
+# PRR_AVAIL_EXC
+#: PRR_AVAIL_EXC
+msgid "Exceptions:"
+msgstr ""
+
+# PRR_AVAIL_HINT
+#: PRR_AVAIL_HINT
+msgid "When the practitioner is (and is not) available in this role"
+msgstr ""
+
+# PRR_CHAR
+#: PRR_CHAR
+msgctxt "PRR_CHAR"
+msgid "Characteristic:"
+msgstr ""
+
+# PRR_CHAR_HINT
+#: PRR_CHAR_HINT
+msgid "Characteristics (attributes) of the role"
+msgstr ""
+
+# PRR_CODE
+#: PRR_CODE
+msgctxt "PRR_CODE"
+msgid "Role:"
+msgstr ""
+
+# PRR_CODE_HINT
+#: PRR_CODE_HINT
+msgid "Roles which this practitioner is authorized to perform for the organization"
+msgstr ""
+
+# PRR_CONTACT_HINT
+#: PRR_CONTACT_HINT
+msgid "Ways to contact the practitioner in this role"
+msgstr ""
+
+# PRR_ENDPOINT
+#: PRR_ENDPOINT
+msgctxt "PRR_ENDPOINT"
+msgid "Endpoint:"
+msgstr ""
+
+# PRR_ENDPOINT_HINT
+#: PRR_ENDPOINT_HINT
+msgid "Technical endpoints providing access to services operated for the practitioner in this role"
+msgstr ""
+
+# PRR_LOCATION
+#: PRR_LOCATION
+msgctxt "PRR_LOCATION"
+msgid "Location:"
+msgstr ""
+
+# PRR_LOCATION_HINT
+#: PRR_LOCATION_HINT
+msgid "The locations at which the practitioner provides care"
+msgstr ""
+
+# PRR_NOT_AVAIL
+#: PRR_NOT_AVAIL
+msgid "Not available:"
+msgstr ""
+
+# PRR_NO_PRACT
+#: PRR_NO_PRACT
+msgid "(no practitioner)"
+msgstr ""
+
+# PRR_ORG
+#: PRR_ORG
+msgctxt "PRR_ORG"
+msgid "Organization:"
+msgstr ""
+
+# PRR_ORG_HINT
+#: PRR_ORG_HINT
+msgid "The organization where the practitioner performs the roles"
+msgstr ""
+
+# PRR_PRACT
+#: PRR_PRACT
+msgid "Practitioner:"
+msgstr ""
+
+# PRR_PRACT_HINT
+#: PRR_PRACT_HINT
+msgid "The practitioner who is able to provide the services in this role"
+msgstr ""
+
+# PRR_SERVICE
+#: PRR_SERVICE
+msgctxt "PRR_SERVICE"
+msgid "Healthcare Service:"
+msgstr ""
+
+# PRR_SERVICE_HINT
+#: PRR_SERVICE_HINT
+msgid "The healthcare services provided in this role"
+msgstr ""
+
+# PRR_SPECIALTY
+#: PRR_SPECIALTY
+msgctxt "PRR_SPECIALTY"
+msgid "Specialty:"
+msgstr ""
+
+# PRR_SPECIALTY_HINT
+#: PRR_SPECIALTY_HINT
+msgid "The specialties of the practitioner in this role"
+msgstr ""
 
 # QUEST_ADD_INFO
 #: QUEST_ADD_INFO
@@ -3308,6 +4437,11 @@ msgstr "Qo''shildi"
 msgid "Changed"
 msgstr "Oʻzgartirildi"
 
+# REND_CHANGE_KINDS
+#: REND_CHANGE_KINDS
+msgid "Kinds of change: M = metadata, D = definitions, C = content, I = interpretation"
+msgstr ""
+
 # REND_REMOVED
 #: REND_REMOVED
 msgid "Removed"
@@ -3347,6 +4481,16 @@ msgstr "Standartlar holati = {0}"
 #: REQ_ACTOR
 msgid "These requirements apply to the actor"
 msgstr "Ushbu talablar ishtirokchiga tatbiq etiladi"
+
+# REQ_CONDITIONAL
+#: REQ_CONDITIONAL
+msgid "conditional"
+msgstr ""
+
+# REQ_CONDITIONAL_HINT
+#: REQ_CONDITIONAL_HINT
+msgid "This requirement only applies in some situations (the requirement text says when)"
+msgstr ""
 
 # REQ_DERIVE
 #: REQ_DERIVE
@@ -3473,6 +4617,47 @@ msgstr "versiya: {0}"
 #: RES_REND_VER_NAME
 msgctxt "RES_REND_VER_NAME"
 msgid "Version"
+msgstr ""
+
+# RP_CONTACT_HINT
+#: RP_CONTACT_HINT
+msgid "Ways to contact the Related Person"
+msgstr ""
+
+# RP_NO_NAME
+#: RP_NO_NAME
+msgid "Anonymous Related Person"
+msgstr ""
+
+# RP_PATIENT
+#: RP_PATIENT
+msgid "Patient:"
+msgstr ""
+
+# RP_PATIENT_HINT
+#: RP_PATIENT_HINT
+msgid "The patient this person is related to"
+msgstr ""
+
+# RP_RELN
+#: RP_RELN
+msgid "Relationship:"
+msgstr ""
+
+# RP_RELN_HINT
+#: RP_RELN_HINT
+msgid "The nature of the relationship between the patient and the related person"
+msgstr ""
+
+# RP_ROLE
+#: RP_ROLE
+msgctxt "RP_ROLE"
+msgid "Role:"
+msgstr ""
+
+# RP_ROLE_HINT
+#: RP_ROLE_HINT
+msgid "The functional role this person plays for the patient"
 msgstr ""
 
 # SDR_ALL_ELEM
@@ -3687,18 +4872,17 @@ msgstr "// Elementdan: <a href=\"{0}\">extension</a>"
 
 # SDR_GUIDANCE_HERE
 #: SDR_GUIDANCE_HERE
-msgid "here"
-msgstr "bu yerda"
+msgid "documentation"
+msgstr "!!bu yerda"
 
 # SDR_GUIDANCE_PFX
 #: SDR_GUIDANCE_PFX
-msgid "Guidance on how to interpret the contents of this table can be found"
-msgstr "Ushbu jadval mazmunini qanday talqin qilish bo‘yicha ko‘rsatmalarni bu yerdan topish mumkin"
+msgid "See the"
+msgstr "!!Ushbu jadval mazmunini qanday talqin qilish bo‘yicha ko‘rsatmalarni bu yerdan topish mumkin"
 
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
-msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #131 --"
+msgid "on how to interpret the contents of this table"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3730,6 +4914,11 @@ msgstr "Resurs metama’lumotlari o‘zgargan ({0})"
 #: SDR_META_CH_NO
 msgid "Unable to evaluate changes to metadata"
 msgstr "Metama’lumotlardagi o‘zgarishlarni baholab bo‘lmadi"
+
+# SDR_META_CH_ONLY
+#: SDR_META_CH_ONLY
+msgid "Only the resource metadata has changed ({0})"
+msgstr ""
 
 # SDR_MOD
 #: SDR_MOD
@@ -3882,7 +5071,7 @@ msgstr "FHIR versiyalari"
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #132 --"
+msgid "-- no content: do not translate #121 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3893,7 +5082,7 @@ msgstr "FHIR versiyalarigacha"
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #133 --"
+msgid "-- no content: do not translate #122 --"
 msgstr ""
 
 # SDR_VER_UNK
@@ -4270,6 +5459,21 @@ msgstr "Bu abstrakt obyekt"
 msgid "Obligations that apply to the actor {0}"
 msgstr "{0} ishtirokchisiga tatbiq etiladigan majburiyatlar"
 
+# STRUC_DEF_ADDITIONAL_RESOURCE
+#: STRUC_DEF_ADDITIONAL_RESOURCE
+msgid "Additional Resource"
+msgstr ""
+
+# STRUC_DEF_ADDITIONAL_RESOURCE_LINK
+#: STRUC_DEF_ADDITIONAL_RESOURCE_LINK
+msgid "additional resource"
+msgstr ""
+
+# STRUC_DEF_ADDITIONAL_RESOURCE_PREFIX
+#: STRUC_DEF_ADDITIONAL_RESOURCE_PREFIX
+msgid "This resource is an"
+msgstr ""
+
 # STRUC_DEF_AFFECT_CONSTRAINTS
 #: STRUC_DEF_AFFECT_CONSTRAINTS
 msgid "This element has or is affected by constraints ("
@@ -4462,6 +5666,12 @@ msgstr "Cheklovlar"
 msgid "Control"
 msgstr "Boshqaruv"
 
+# STRUC_DEF_CONT_PROFILE
+#: STRUC_DEF_CONT_PROFILE
+msgctxt "STRUC_DEF_CONT_PROFILE"
+msgid "profiled by"
+msgstr ""
+
 # STRUC_DEF_CONT_RULE
 #: STRUC_DEF_CONT_RULE
 msgid "Content/Rules for all slices"
@@ -4609,6 +5819,11 @@ msgstr "kengaytiriladigan"
 msgid "Extensions"
 msgstr "Kengaytmalar"
 
+# STRUC_DEF_EXT_ALLOWED
+#: STRUC_DEF_EXT_ALLOWED
+msgid "(extensions allowed)"
+msgstr ""
+
 # STRUC_DEF_EXT_JSON
 #: STRUC_DEF_EXT_JSON
 msgid "This element can be extended by named JSON elements"
@@ -4714,6 +5929,11 @@ msgstr "If"
 #: STRUC_DEF_IMPLEMENTS
 msgid "Interfaces Implemented"
 msgstr "Amalga oshirilgan interfeyslar"
+
+# STRUC_DEF_IMPLIED_SLICES_NOT_SHOWN
+#: STRUC_DEF_IMPLIED_SLICES_NOT_SHOWN
+msgid "Other type slices that contain no new information are not shown in this view"
+msgstr ""
 
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
@@ -4937,6 +6157,11 @@ msgstr "Ushbu mantiqiy model instansiyalari Reference uchun maqsad sifatida belg
 msgid ", and defines no disciminators to differentiate the slices"
 msgstr "va slicesni farqlash uchun diskriminatorlar belgilanmaydi"
 
+# STRUC_DEF_NO_EXT_ALLOWED
+#: STRUC_DEF_NO_EXT_ALLOWED
+msgid "(no extensions allowed)"
+msgstr ""
+
 # STRUC_DEF_NO_MAPPINGS
 #: STRUC_DEF_NO_MAPPINGS
 msgid "No Mappings"
@@ -5055,6 +6280,7 @@ msgstr "Ushbu primitiv tur qiymatga ega bo‘lishi shart (qiymat mavjud bo‘lis
 
 # STRUC_DEF_PROFILED
 #: STRUC_DEF_PROFILED
+msgctxt "STRUC_DEF_PROFILED"
 msgid "profiled by"
 msgstr "profillangan"
 
@@ -5188,6 +6414,11 @@ msgstr "Slices"
 msgid "Slice"
 msgstr "Slice"
 
+# STRUC_DEF_SLICER_RULES_APPLY
+#: STRUC_DEF_SLICER_RULES_APPLY
+msgid "The rules on this element (including its children) apply to all the slices, but are not repeated in them"
+msgstr ""
+
 # STRUC_DEF_SLICES
 #: STRUC_DEF_SLICES
 msgid "Slice:"
@@ -5207,6 +6438,11 @@ msgstr "Slice nomi"
 #: STRUC_DEF_SLICE_PAR
 msgid "Slice {0}"
 msgstr "Slice {0}"
+
+# STRUC_DEF_SLICING_NOTE
+#: STRUC_DEF_SLICING_NOTE
+msgid "Slicing Note"
+msgstr ""
 
 # STRUC_DEF_SNOMED
 #: STRUC_DEF_SNOMED
@@ -5272,6 +6508,21 @@ msgstr "u holda turi"
 #: STRUC_DEF_THIS_REFERS
 msgid "This structure refers to these other structures"
 msgstr "Ushbu tuzilma quyidagi boshqa tuzilmalarga murojaat qiladi"
+
+# STRUC_DEF_TP_NONE
+#: STRUC_DEF_TP_NONE
+msgid "The constraints on the root of this type profile have not been applied to this element in the snapshot. Check the type profile directly as well"
+msgstr ""
+
+# STRUC_DEF_TP_PARTIAL
+#: STRUC_DEF_TP_PARTIAL
+msgid "Only some of the constraints on the root of this type profile have been applied to this element in the snapshot. Check the type profile directly as well"
+msgstr ""
+
+# STRUC_DEF_TP_UNMARKED
+#: STRUC_DEF_TP_UNMARKED
+msgid "The snapshot does not say whether the constraints on the root of this type profile have been applied to this element, so assume they have not. Check the type profile directly as well"
+msgstr ""
 
 # STRUC_DEF_TRANSLATABLE
 #: STRUC_DEF_TRANSLATABLE
@@ -5516,6 +6767,7 @@ msgstr "Test holati — ketma-ketlik {0}"
 
 # TEST_PLAN_CATEGORY
 #: TEST_PLAN_CATEGORY
+msgctxt "TEST_PLAN_CATEGORY"
 msgid "Category:"
 msgstr "Kategoriya:"
 
@@ -5881,6 +7133,7 @@ msgstr "ValueSet’ni kengaytirishda xatolik: {0}"
 
 # VALUE_SET_EXCL
 #: VALUE_SET_EXCL
+msgctxt "VALUE_SET_EXCL"
 msgid "Exclude"
 msgstr "Chiqarib tashlash"
 
@@ -5978,6 +7231,7 @@ msgstr "faol emas"
 
 # VALUE_SET_INACTIVE
 #: VALUE_SET_INACTIVE
+msgctxt "VALUE_SET_INACTIVE"
 msgid "Inactive"
 msgstr "Faol emas"
 
