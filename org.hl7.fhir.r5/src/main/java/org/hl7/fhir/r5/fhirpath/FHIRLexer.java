@@ -499,7 +499,7 @@ public class FHIRLexer {
         case 'u':
           i++;
           String hex = s.substring(i, Math.min(i+4, s.length()-1));
-          if (!hex.matches("[0-9a-fA-F]{4}")) {
+          if (hex.length() != 4 || !hex.chars().allMatch(c -> c < 128 && Character.digit(c, 16) >= 0)) {
             throw error("Invalid FHIRPath unicode escape \\u"+hex);
           }
           int uc = Integer.parseInt(hex, 16);
