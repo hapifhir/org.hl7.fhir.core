@@ -649,7 +649,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     setUnknownCodeSystemsCauseErrors(parameters.isUnknownCodeSystemsCauseErrors());
     setNoExperimentalContent(parameters.isNoExperimentalContent());
-    setCheckIPSCodes(parameters.isCheckIPSCodes());
     getSettings().setCodeSystemValidationSizeLimit(parameters.getCodeSystemValidationSizeLimit());
     setMaxMessages(parameters.getMaxValidationMessages());
     setTimeout(parameters.getTimeout());
@@ -9485,15 +9484,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setLogProgress(boolean logProgress) {
     this.logProgress = logProgress;
-  }
-
-
-  public boolean isCheckIPSCodes() {
-    return codingObserver.isCheckIPSCodes();
-  }
-
-  public void setCheckIPSCodes(boolean checkIPSCodes) {
-    codingObserver.setCheckIPSCodes(checkIPSCodes);
   }
 
   public boolean isTestMode() {

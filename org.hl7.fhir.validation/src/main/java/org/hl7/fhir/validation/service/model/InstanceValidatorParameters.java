@@ -53,7 +53,6 @@ public class InstanceValidatorParameters {
     this.profiles = new ArrayList<>(instanceValidatorParameters.profiles);
     this.doImplicitFHIRPathStringConversion = instanceValidatorParameters.doImplicitFHIRPathStringConversion;
     this.allowDoubleQuotesInFHIRPath = instanceValidatorParameters.allowDoubleQuotesInFHIRPath;
-    this.checkIPSCodes = instanceValidatorParameters.checkIPSCodes;
     this.bundleValidationRules = new ArrayList<>(instanceValidatorParameters.bundleValidationRules);
     this.jurisdiction = instanceValidatorParameters.jurisdiction;
     this.timeout = instanceValidatorParameters.timeout;
@@ -557,24 +556,6 @@ public class InstanceValidatorParameters {
     return this;
   }
 
-  @JsonProperty("checkIPSCodes")
-  @SerializedName("checkIPSCodes")
-  private
-  boolean checkIPSCodes;
-
-  @SerializedName("checkIPSCodes")
-  @JsonProperty("checkIPSCodes")
-  public boolean isCheckIPSCodes() {
-    return checkIPSCodes;
-  }
-
-  @SerializedName("checkIPSCodes")
-  @JsonProperty("checkIPSCodes")
-  public InstanceValidatorParameters setCheckIPSCodes(boolean checkIPSCodes) {
-    this.checkIPSCodes = checkIPSCodes;
-    return this;
-  }
-
   @JsonProperty("bundleValidationRules")
   @SerializedName("bundleValidationRules")
   private
@@ -718,7 +699,6 @@ public class InstanceValidatorParameters {
       && showTerminologyRouting == that.showTerminologyRouting
       && doImplicitFHIRPathStringConversion == that.doImplicitFHIRPathStringConversion
       && allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath
-      && checkIPSCodes == that.checkIPSCodes
       && Objects.equals(htmlOutput, that.htmlOutput)
       && Objects.equals(outputStyle, that.outputStyle)
       && Objects.equals(r5BundleRelativeReferencePolicy, that.r5BundleRelativeReferencePolicy)
@@ -742,7 +722,7 @@ public class InstanceValidatorParameters {
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, usages, launchContexts, timeout, checkDisplay, resourceIdRule,maxValidationMessages, codeSystemValidationSizeLimit);
+    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, bundleValidationRules, jurisdiction, usages, launchContexts, timeout, checkDisplay, resourceIdRule,maxValidationMessages, codeSystemValidationSizeLimit);
   }
 
   @Override
@@ -776,7 +756,6 @@ public class InstanceValidatorParameters {
       ", profiles=" + profiles +
       ", doImplicitFHIRPathStringConversion=" + doImplicitFHIRPathStringConversion +
       ", allowDoubleQuotesInFHIRPath=" + allowDoubleQuotesInFHIRPath +
-      ", checkIPSCodes=" + checkIPSCodes +
       ", bundleValidationRules=" + bundleValidationRules +
       ", jurisdiction='" + jurisdiction + '\'' +
       ", timeout=" + timeout +

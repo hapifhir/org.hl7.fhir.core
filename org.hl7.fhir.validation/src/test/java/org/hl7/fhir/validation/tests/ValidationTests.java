@@ -438,7 +438,6 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
 
     StructureDefinition sd = null;
     if (content.has("ips")) {
-      val.setCheckIPSCodes(true);
       val.getContext().getManager().loadFromPackage(loadPackage("hl7.fhir.uv.ips#1.1.0"), ValidatorUtils.loaderForVersion(currentEngine.getContext().getModelContext(), "4.0.1"));
       if (content.get("ips").getAsString().equals("uv")) {
         sd = val.getContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips", VersionResolutionRules.defaultRule());

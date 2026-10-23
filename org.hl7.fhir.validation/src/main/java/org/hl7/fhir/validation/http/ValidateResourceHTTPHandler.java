@@ -171,9 +171,6 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
         case ParamNames.ALLOW_DOUBLE_QUOTES_IN_FHIR_PATH:
           params.setAllowDoubleQuotesInFHIRPath(Boolean.parseBoolean(pair.getValue()));
           break;
-        case ParamNames.CHECK_IPS_CODES:
-          params.setCheckIPSCodes(Boolean.parseBoolean(pair.getValue()));
-          break;
         case ParamNames.CHECK_DISPLAY:
           CheckDisplayOption checkDisplayOption = CheckDisplayOption.valueOf(pair.getValue());
           params.setCheckDisplay(checkDisplayOption);

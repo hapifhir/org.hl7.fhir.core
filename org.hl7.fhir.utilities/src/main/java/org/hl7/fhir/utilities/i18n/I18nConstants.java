@@ -200,7 +200,6 @@ public class I18nConstants {
   public static final String CONCEPTMAP_QUALITY_TOO_MANY_CHECKS = "CONCEPTMAP_QUALITY_TOO_MANY_CHECKS";
   public static final String CONTAINED_ORPHAN_DOM3 = "CONTAINED_ORPHAN_DOM3";
   public static final String CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_ = "Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_";
-  public static final String CS_SCT_IPS_NOT_IPS = "CS_SCT_IPS_NOT_IPS";
   public static final String Could_not_match_discriminator_for_slice_in_profile = "Could_not_match_discriminator_for_slice_in_profile";
   public static final String DEFINED_IN_THE_PROFILE = "defined_in_the_profile";
   public static final String DELIMITED_VERSIONS_HAVE_EXACT_MATCH_FOR_DELIMITER____VS_ = "Delimited_versions_have_exact_match_for_delimiter____vs_";
