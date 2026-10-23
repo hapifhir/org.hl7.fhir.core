@@ -36,25 +36,44 @@ import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+/**
+ * STU3 definitions require R3ToR5Loader, which cannot be a dependency of this module.
+ * See org.hl7.fhir.convertors.TurtleRoundTripSTU3Tests for STU3 tests.
+ */
 class TurtleRoundTripTests {
   private static final String R4 = "4.0.1";
+  private static final String R4B = "4.3.0";
   private static final String R5 = "5.0.0";
   // Lookup key only. The R6 definitions actually loaded are R6_CORE_VERSION.
   private static final String R6 = "6.0.0";
   // Matches VersionUtilities.getCurrentVersion and the standalone TestingUtilities default.
   private static final String R6_CORE_VERSION = "6.0.0-snapshot1";
-  private static final List<String> VERSIONS = List.of(R4, R5, R6);
+  private static final List<String> VERSIONS = List.of(R4, R4B, R5, R6);
+  private static final List<String> R4_FORMAT_VERSIONS = List.of(R4, R4B);
   private static final List<FhirFormat> JSON_AND_XML = List.of(FhirFormat.JSON, FhirFormat.XML);
   private static final Map<String, String> EXTERNAL_JSON_PROPERTIES =
-      Map.of(R4, "r4RoundTripJson", R5, "r5RoundTripJson", R6, "r6RoundTripJson");
+      Map.of(R4, "r4RoundTripJson", R4B, "r4bRoundTripJson", R5, "r5RoundTripJson", R6, "r6RoundTripJson");
   private static final Map<String, ParserContext> contexts = new HashMap<>();
+
+  @ParameterizedTest
+  @CsvSource({
+      "1.0.2, false", "1.4.0, false", "3.0.1, true", "3.0.2, true",
+      "4.0.1, true", "4.3.0, true", "5.0.0, true", "6.0.0-ballot3, true",
+      "6.0.0-snapshot1, true", "7.0.0, false"
+  })
+  void identifiesSupportedVersions(String version, boolean supported) {
+    Assertions.assertEquals(supported, TurtleParser.supportsVersion(version));
+    Assertions.assertEquals("STU3 (3.0), R4 (4.0), R4B (4.3), R5, R6", TurtleParser.supportedVersionsDescription());
+  }
 
   @BeforeAll
   static void setup() throws Exception {
     contexts.put(R4, ParserContext.fromWorkerContext(TestingUtilities.getSharedWorkerContext(R4)));
+    contexts.put(R4B, ParserContext.fromWorkerContext(TestingUtilities.getSharedWorkerContext(R4B)));
     contexts.put(R5, ParserContext.fromWorkerContext(TestingUtilities.getSharedWorkerContext(R5)));
     var r6Core = new FilesystemPackageCacheManager.Builder().build().loadPackage("hl7.fhir.r6.core", R6_CORE_VERSION);
     contexts.put(R6, ParserContext.fromWorkerContext(TestingUtilities.getWorkerContext(r6Core)));
@@ -114,10 +133,10 @@ class TurtleRoundTripTests {
             "effectiveDateTime":"2012-09-17T12:34:56.012300+10:00",
             "valueQuantity":{"value":107.12500000000000001,"unit":"mmHg","system":"http://unitsofmeasure.org","code":"mm[Hg]"},
             "component":[{"code":{"text":"First"},"valueString":"one"},
-              {"code":{"text":"Second"},"valueBoolean":true}]}}]}
+              {"code":{"text":"Second"},"valueDateTime":"2020-02-03"}]}}]}
         """;
     ParserContext parsers = contexts.get(version);
-    boolean r4 = R4.equals(version);
+    boolean r4 = R4_FORMAT_VERSIONS.contains(version);
     Element original = parsers.parse(json, FhirFormat.JSON);
     String turtle = parsers.compose(roundTrip(parsers, original, beforeTurtle), FhirFormat.TURTLE);
     List<String> expectedFragments = r4
@@ -205,11 +224,13 @@ class TurtleRoundTripTests {
         """;
     String expandedCollectionsExpected = "{\"resourceType\":\"Patient\",\"name\":[{\"family\":\"Second\",\"given\":[\"Only\"]},{\"family\":\"First\"}]}";
     List<Arguments> graphs = new ArrayList<>();
-    for (String typePredicate : List.of("rdf:type", "a", "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>")) {
-      graphs.add(graph(R4, "indexed named and anonymous repetitions, typed with " + typePredicate,
-          r4Indexed.replace("rdf:type", typePredicate), r4IndexedExpected));
+    for (String version : R4_FORMAT_VERSIONS) {
+      for (String typePredicate : List.of("rdf:type", "a", "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>")) {
+        graphs.add(graph(version, "indexed named and anonymous repetitions, typed with " + typePredicate,
+            r4Indexed.replace("rdf:type", typePredicate), r4IndexedExpected));
+      }
+      graphs.add(graph(version, "encounter order of unindexed repetitions", r4Unindexed, r4UnindexedExpected));
     }
-    graphs.add(graph(R4, "encounter order of unindexed repetitions", r4Unindexed, r4UnindexedExpected));
     for (String version : List.of(R5, R6)) {
       graphs.add(graph(version, "named nodes and collection order", namedNodes, namedNodesExpected));
       graphs.add(graph(version, "legacy one-item resource lists", legacyOneItemLists, legacyOneItemListsExpected));
@@ -282,8 +303,10 @@ class TurtleRoundTripTests {
     String unknownXmlProperty = "<Patient xmlns=\"http://hl7.org/fhir\"><notARealPatientProperty value=\"true\"/></Patient>";
 
     List<Arguments> inputs = new ArrayList<>();
-    for (String[] names : r4InvalidNames) {
-      inputs.add(invalid(R4, FhirFormat.TURTLE, names[0], patientTurtle("fhir:Patient.name " + names[1]), names[2]));
+    for (String version : R4_FORMAT_VERSIONS) {
+      for (String[] names : r4InvalidNames) {
+        inputs.add(invalid(version, FhirFormat.TURTLE, names[0], patientTurtle("fhir:Patient.name " + names[1]), names[2]));
+      }
     }
     for (String version : List.of(R5, R6)) {
       for (String[] predicates : r5r6InvalidPredicates) {
@@ -311,7 +334,7 @@ class TurtleRoundTripTests {
 
   static Stream<Arguments> datesOfEachPrecision() {
     List<Arguments> dates = new ArrayList<>();
-    for (String version : List.of(R5, R6)) {
+    for (String version : VERSIONS) {
       for (String date : List.of("2020", "2020-02", "2020-02-03")) {
         dates.add(Arguments.of(version, date));
       }
@@ -357,6 +380,9 @@ class TurtleRoundTripTests {
     String[][] examples = {{R4, "xml/examples/expected/R4/patient-example-f201-roel.xml"},
         {R4, "xml/examples/expected/R4/AllergyIntolerance-example.xml"},
         {R4, "json/examples/expected/R4/structuredefinition-us-core-patient.json"},
+        {R4B, "xml/examples/expected/R4/patient-example-f201-roel.xml"},
+        {R4B, "xml/examples/expected/R4/AllergyIntolerance-example.xml"},
+        {R4B, "json/examples/expected/R4/structuredefinition-us-core-patient.json"},
         {R5, "xml/examples/expected/R5/patient-example-f201-roel.xml"},
         {R5, "xml/examples/expected/R5/patient.profile.xml"},
         {R5, "json/examples/expected/R5/StructureDefinition-patient-eu.json"},
@@ -420,7 +446,7 @@ class TurtleRoundTripTests {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {R4, R5, R6})
+  @ValueSource(strings = {R4, R4B, R5, R6})
   void conceptIrisAreDroppedByDefaultOrKeptAsCodingExtensions(String version) throws Exception {
     String json = """
         {"resourceType":"Observation","status":"final","code":{"coding":[

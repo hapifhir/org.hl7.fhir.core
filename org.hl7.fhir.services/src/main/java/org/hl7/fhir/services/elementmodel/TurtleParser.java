@@ -41,10 +41,29 @@ import org.hl7.fhir.utilities.turtle.Turtle.Section;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 
 public class TurtleParser extends TurtleParserBase {
+
+  private enum SupportedVersion {
+    STU3("STU3 (3.0)", VersionUtilities::isR3Ver),
+    R4("R4 (4.0)", VersionUtilities::isR4Ver),
+    R4B("R4B (4.3)", VersionUtilities::isR4BVer),
+    R5("R5", VersionUtilities::isR5Ver),
+    R6("R6", VersionUtilities::isR6Ver);
+
+    private final String displayName;
+    private final Predicate<String> matches;
+
+    SupportedVersion(String displayName, Predicate<String> matches) {
+      this.displayName = displayName;
+      this.matches = matches;
+    }
+  }
 
   private boolean deriveConceptIriFromNamingSystem;
 
@@ -125,7 +144,11 @@ public class TurtleParser extends TurtleParserBase {
 
   /** Versions with a Turtle reader; compose() would otherwise fall back to R5-style output. */
   public static boolean supportsVersion(String fhirVersion) {
-    return VersionUtilities.isR4Ver(fhirVersion) || VersionUtilities.isR5Ver(fhirVersion) || VersionUtilities.isR6Ver(fhirVersion);
+    return Arrays.stream(SupportedVersion.values()).anyMatch(version -> version.matches.test(fhirVersion));
+  }
+
+  public static String supportedVersionsDescription() {
+    return Arrays.stream(SupportedVersion.values()).map(version -> version.displayName).collect(Collectors.joining(", "));
   }
 
   @Override
@@ -135,7 +158,7 @@ public class TurtleParser extends TurtleParserBase {
     if ( VersionUtilities.isR6Ver(fhirVersion) ) {
       return r6Parser().parse(inStream); 
     }
-    if ( VersionUtilities.isR4Ver(fhirVersion) ) {
+    if (usesR4Turtle(fhirVersion)) {
       return r4Parser().parse(inStream);
     }
 
@@ -143,7 +166,7 @@ public class TurtleParser extends TurtleParserBase {
       return super.parse(inStream);
     }
 
-    throw new FHIRException("Turtle parsing for versions under R4 is not supported in this module. Use the appropriate module. (DSTU3, etc)");
+    throw new FHIRException("Turtle parsing for this version is not supported in this module: " + fhirVersion);
   }
 
   @Override
@@ -170,7 +193,7 @@ public class TurtleParser extends TurtleParserBase {
   /** Returns the cross-version delegate to use for compose(), or {@code null} for native R5 (default). */
   private TurtleParserBase composeDelegate() {
     String fhirVersion = context.getFHIRVersion();
-    if (VersionUtilities.isR4Ver(fhirVersion)) {
+    if (usesR4Turtle(fhirVersion)) {
       return r4Parser();
     }
     if (VersionUtilities.isR6Ver(fhirVersion)) {
@@ -178,6 +201,10 @@ public class TurtleParser extends TurtleParserBase {
     }
     // Default to R5
     return null;
+  }
+
+  private static boolean usesR4Turtle(String version) {
+    return VersionUtilities.isR3Ver(version) || VersionUtilities.isR4Ver(version) || VersionUtilities.isR4BVer(version);
   }
 
   @Override

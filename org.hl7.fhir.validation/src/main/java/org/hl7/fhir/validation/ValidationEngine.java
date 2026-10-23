@@ -828,22 +828,23 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public void convert(String source, String output) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false, true);
-    FhirFormat outputFormat = convertOutputFormat(output);
-    if ((cnt.getCntType() == FhirFormat.TURTLE || outputFormat == FhirFormat.TURTLE) && !TurtleParser.supportsVersion(context.getFHIRVersion())) {
-      throw new FHIRException("Turtle conversion supports FHIR R4, R5 and R6 but the loaded version is " + context.getFHIRVersion() + ".");
-    }
+    FhirFormat outputFormat = convertSupportedOutputFormat(cnt.getCntType(), output, context.getFHIRVersion());
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
     Manager.compose(context, e, ManagedFileAccess.outStream(output), outputFormat, OutputStyle.PRETTY, null);
   }
 
-  public static FhirFormat convertOutputFormat(String output) {
+  public static FhirFormat convertSupportedOutputFormat(FhirFormat input, String output, String fhirVersion) {
+    FhirFormat outputFormat = FhirFormat.XML;
     if (output.endsWith(".json")) {
-      return FhirFormat.JSON;
+      outputFormat = FhirFormat.JSON;
     }
     if (output.endsWith(".ttl")) {
-      return FhirFormat.TURTLE;
+      outputFormat = FhirFormat.TURTLE;
     }
-    return FhirFormat.XML;
+    if ((input == FhirFormat.TURTLE || outputFormat == FhirFormat.TURTLE) && !TurtleParser.supportsVersion(fhirVersion)) {
+      throw new FHIRException("Turtle conversion supports FHIR " + TurtleParser.supportedVersionsDescription() + " but the loaded version is " + fhirVersion + ".");
+    }
+    return outputFormat;
   }
 
   public String evaluateFhirPath(String source, String expression) throws FHIRException, IOException {
