@@ -65,6 +65,8 @@ public abstract class TurtleParserBase extends ParserBase {
   protected String base;
   /** Type of the resource currently being composed; set in {@link #compose(Element, Turtle, String)}. */
   protected String resourceType;
+  /** IRI of the resource whose contained resources "#id" names; null if that resource has no IRI. */
+  protected String containerIri;
   private OutputStyle style;
 
   public static String FHIR_URI_BASE = "http://hl7.org/fhir/";
@@ -336,6 +338,7 @@ public abstract class TurtleParserBase extends ParserBase {
       }
     }
     String subjId = genSubjectId(e);
+    containerIri = subjId.isEmpty() ? null : subjId.substring(1, subjId.length() - 1);
 
     Subject subject;
     if (hasModifierExtension(e)) 
@@ -387,6 +390,10 @@ public abstract class TurtleParserBase extends ParserBase {
   protected void composeResourceMetadata(Subject subject, Element resource) throws FHIRException {
   }
 
+  protected boolean namesContainedResources() {
+    return false;
+  }
+
   private boolean hasModifierExtension(Element e) {
     return e.getChildList().stream().anyMatch(p -> p.getName().equals("modifierExtension"));
   }
@@ -394,8 +401,8 @@ public abstract class TurtleParserBase extends ParserBase {
   protected String getURIType(String uri) {
     if (uri.startsWith("<" + FHIR_URI_BASE)) {
       int slash = uri.indexOf('/', FHIR_URI_BASE.length() + 1);
-      // A conditional reference (Type?search) identifies a search, not a resource of that type
-      if (slash > 0 && uri.lastIndexOf('?', slash) < 0)
+      // A conditional reference (Type?search) identifies a search, and a fragment a contained resource, not a resource of that type
+      if (slash > 0 && uri.lastIndexOf('?', slash) < 0 && uri.indexOf('#') < 0)
         return uri.substring(FHIR_URI_BASE.length() + 1, slash);
     }
     return null;
@@ -483,6 +490,10 @@ public abstract class TurtleParserBase extends ParserBase {
       String url = bundleResourceUrls.get(element);
       ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, url, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.isList());
       t = section.subject(url);
+    } else if (element.getSpecial() == SpecialElement.CONTAINED && namesContainedResources() && element.getChildValue("id") != null) {
+      String url = iri((containerIri == null ? "" : containerIri) + "#" + element.getChildValue("id"));
+      ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, url, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.isList());
+      t = section.subject(url);
     } else {
       t = ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.isList());
     }
@@ -532,9 +543,14 @@ public abstract class TurtleParserBase extends ParserBase {
 
     String previousBase = base;
     String previousResourceType = resourceType;
+    String previousContainerIri = containerIri;
     try {
       if (element.getSpecial() != null) {
         resourceType = element.fhirType();
+      }
+      if (element.getSpecial() != null && element.getSpecial() != SpecialElement.CONTAINED && element.isResource()) {
+        String url = bundleResourceUrls.get(element);
+        containerIri = url == null ? null : url.substring(1, url.length() - 1);
       }
       if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY && parent != null) {
         String fullUrl = parent.getChildValue("fullUrl");
@@ -549,6 +565,7 @@ public abstract class TurtleParserBase extends ParserBase {
     } finally {
       base = previousBase;
       resourceType = previousResourceType;
+      containerIri = previousContainerIri;
     }
   }
 

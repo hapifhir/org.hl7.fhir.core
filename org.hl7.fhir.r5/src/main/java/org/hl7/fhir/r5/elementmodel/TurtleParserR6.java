@@ -68,7 +68,9 @@ public class TurtleParserR6 extends TurtleParserBase {
   }
 
   protected String getReferenceURI(String ref) {
-    if (ref != null && (ref.startsWith("#") || hasScheme(ref)))
+    if (ref != null && ref.startsWith("#") && containerIri != null)
+      return iri(ref.length() == 1 ? containerIri : containerIri + ref);
+    else if (ref != null && (ref.startsWith("#") || hasScheme(ref)))
       return iri(ref);
     else if (base != null && ref != null && ref.contains("/"))
       return iri(Utilities.appendForwardSlash(base) + ref);
@@ -89,6 +91,11 @@ public class TurtleParserR6 extends TurtleParserBase {
   @Override
   protected String getReferencePredicate() {
     return FHIR_BASE_PREFIX + "l";
+  }
+
+  @Override
+  protected boolean namesContainedResources() {
+    return true;
   }
 
   @Override

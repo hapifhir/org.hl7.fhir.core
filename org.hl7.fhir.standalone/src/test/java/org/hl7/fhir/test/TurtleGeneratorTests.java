@@ -381,6 +381,42 @@ public class TurtleGeneratorTests {
     new Turtle().parse(turtle);
   }
 
+  @Test
+  void testR6ContainedResourcesAreNamedFromTheirContainer() throws Exception {
+    String turtle = generateR6TurtleFromXml(observationWithContainedPatient("<id value=\"o1\"/>"));
+    assertThat(turtle).contains("fhir:contained ( <http://hl7.org/fhir/Observation/o1#p1> )",
+        "<http://hl7.org/fhir/Observation/o1#p1> a fhir:Patient",
+        "fhir:l <http://hl7.org/fhir/Observation/o1#p1>");
+    assertThat(turtle).doesNotContain("<http://hl7.org/fhir/Observation/o1#p1> a fhir:Observation");
+    new Turtle().parse(turtle);
+
+    String anonymous = generateR6TurtleFromXml(observationWithContainedPatient(""));
+    assertThat(anonymous).contains("fhir:contained ( <#p1> )", "fhir:l <#p1>");
+
+    String bundled = generateR6TurtleFromXml("<Bundle xmlns=\"http://hl7.org/fhir\"><type value=\"collection\"/>"
+        + "<entry><fullUrl value=\"http://example.org/fhir/Observation/o1\"/><resource>"
+        + observationWithContainedPatient("<id value=\"o1\"/>").replace(" xmlns=\"http://hl7.org/fhir\"", "")
+        + "</resource></entry></Bundle>");
+    assertThat(bundled).contains("fhir:contained ( <http://example.org/fhir/Observation/o1#p1> )",
+        "fhir:l <http://example.org/fhir/Observation/o1#p1>");
+    new Turtle().parse(bundled);
+  }
+
+  @Test
+  void testR5ContainedResourcesStayAnonymous() throws Exception {
+    TurtleGeneratorTestUtils.ParserContext parserContext = TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(
+        TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("5.0.0"));
+    String turtle = generateTurtleFromXml(parserContext, observationWithContainedPatient("<id value=\"o1\"/>"));
+    assertThat(turtle).doesNotContain("#p1>");
+  }
+
+  private String observationWithContainedPatient(String id) {
+    return "<Observation xmlns=\"http://hl7.org/fhir\">" + id
+        + "<contained><Patient><id value=\"p1\"/></Patient></contained>"
+        + "<status value=\"final\"/><code><text value=\"x\"/></code>"
+        + "<subject><reference value=\"#p1\"/></subject></Observation>";
+  }
+
   @ParameterizedTest
   @ValueSource(strings = {R4_VERSION, "5.0.0"})
   void testR4R5LinksEncodeVerticalBar(String version) throws Exception {
