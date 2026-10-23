@@ -23,8 +23,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /*
@@ -317,6 +320,8 @@ public abstract class TurtleParserBase extends ParserBase {
       e.populatePaths(null);
     }
     resourceType = e.getType();
+    Map<Element, String> bundleResourceUrls = new IdentityHashMap<>();
+    collectBundleResourceUrls(e, bundleResourceUrls);
 
     ttl.prefix("fhir", FHIR_URI_BASE);
     ttl.prefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
@@ -343,7 +348,39 @@ public abstract class TurtleParserBase extends ParserBase {
     subject.linkedPredicate(FHIR_BASE_PREFIX + "nodeRole", FHIR_BASE_PREFIX + "treeRoot", linkResolver == null ? null : linkResolver.resolvePage("rdf.html#tree-root"), null);
 
     for (Element child : e.getChildList()) {
-      composeElement(section, subject, child, null);
+      composeElement(section, subject, child, null, bundleResourceUrls);
+    }
+  }
+
+  private void collectBundleResourceUrls(Element element, Map<Element, String> urls) {
+    if ("Bundle".equals(element.fhirType())) {
+      Map<String, List<Element>> entriesByUrl = new HashMap<>();
+      for (Element entry : element.getChildrenByName("entry")) {
+        String fullUrl = entry.getChildValue("fullUrl");
+        Element resource = entry.getNamedChild("resource");
+        if (fullUrl != null && resource != null) {
+          entriesByUrl.computeIfAbsent(fullUrl, key -> new ArrayList<>()).add(resource);
+        }
+      }
+      for (Map.Entry<String, List<Element>> group : entriesByUrl.entrySet()) {
+        Set<String> versions = new HashSet<>();
+        for (Element resource : group.getValue()) {
+          String url = group.getKey();
+          if (group.getValue().size() > 1) {
+            Element meta = resource.getNamedChild("meta");
+            String version = meta == null ? null : meta.getChildValue("versionId");
+            if (Utilities.noString(version) || !versions.add(version)) {
+              throw new FHIRException("Cannot compose Turtle Bundle: duplicate fullUrl " + url
+                  + " requires a distinct meta.versionId on every resource");
+            }
+            url += "/_history/" + version;
+          }
+          urls.put(resource, "<" + url + ">");
+        }
+      }
+    }
+    for (Element child : element.getChildList()) {
+      collectBundleResourceUrls(child, urls);
     }
   }
 
@@ -409,7 +446,7 @@ public abstract class TurtleParserBase extends ParserBase {
     return b.toString();
   }
 
-  private void composeElement(Section section, Complex ctxt, Element element, Element parent) throws FHIRException {
+  private void composeElement(Section section, Complex ctxt, Element element, Element parent, Map<Element, String> bundleResourceUrls) throws FHIRException {
     //    "Extension".equals(element.getType())?
     //            (element.getProperty().getDefinition().getIsModifier()? "modifierExtension" : "extension") ; 
 
@@ -425,11 +462,11 @@ public abstract class TurtleParserBase extends ParserBase {
     }
     Complex t;
     if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY && parent != null && parent.getNamedChildValue("fullUrl") != null) {
-      String url = "<"+parent.getNamedChildValue("fullUrl")+">";
-      ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, url, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
+      String url = bundleResourceUrls.get(element);
+      ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, url, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.isList());
       t = section.subject(url);
     } else {
-      t = ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
+      t = ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.isList());
     }
     if (element.getProperty().getName().endsWith("[x]")) {
       t.linkedPredicate("a", FHIR_BASE_PREFIX+className(element.fhirType()), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
@@ -475,8 +512,25 @@ public abstract class TurtleParserBase extends ParserBase {
       }
     }
 
-    for (Element child : element.getChildList()) {
-      composeElement(section, t, child, element);
+    String previousBase = base;
+    String previousResourceType = resourceType;
+    try {
+      if (element.getSpecial() != null) {
+        resourceType = element.fhirType();
+      }
+      if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY && parent != null) {
+        String fullUrl = parent.getChildValue("fullUrl");
+        String suffix = "/" + element.fhirType() + "/" + element.getChildValue("id");
+        if (fullUrl != null && (fullUrl.startsWith("http://") || fullUrl.startsWith("https://")) && fullUrl.endsWith(suffix)) {
+          base = fullUrl.substring(0, fullUrl.length() - suffix.length()) + "/";
+        }
+      }
+      for (Element child : element.getChildList()) {
+        composeElement(section, t, child, element, bundleResourceUrls);
+      }
+    } finally {
+      base = previousBase;
+      resourceType = previousResourceType;
     }
   }
 

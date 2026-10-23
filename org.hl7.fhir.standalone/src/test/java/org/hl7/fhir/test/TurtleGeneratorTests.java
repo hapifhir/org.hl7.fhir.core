@@ -1,6 +1,7 @@
 package org.hl7.fhir.test;
 
 import org.fhir.ucum.UcumException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.standalone.context.SimpleWorkerContext;
 import org.hl7.fhir.services.elementmodel.ParserBase;
@@ -18,6 +19,8 @@ import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.turtle.Turtle;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -302,6 +305,62 @@ public class TurtleGeneratorTests {
     assertThat(turtle).doesNotContain("@prefix loinc:");
     // Coding itself must still be emitted
     assertThat(turtle).contains("29463-7");
+  }
+
+  @Test
+  void testR6BundleDisambiguatesVersionsAndResolvesRelativeReferences() throws Exception {
+    String turtle = generateR6TurtleFromXml(bundleWithPatients("1", "2", true));
+    assertThat(turtle).contains("fhir:resource <http://example.org/fhir/Patient/45/_history/1>",
+        "fhir:resource <http://example.org/fhir/Patient/45/_history/2>",
+        "fhir:resource <http://example.org/fhir/Observation/47>",
+        "fhir:l <http://example.org/fhir/Patient/45/_history/2>");
+    assertThat(turtle).doesNotContain("fhir:resource (", "<http://hl7.org/fhir/Patient/45/_history/2>");
+    assertThat(turtle).contains("fhir:v \"http://example.org/fhir/Patient/45\"");
+    new Turtle().parse(turtle);
+  }
+
+  @Test
+  void testR6BundleKeepsUniqueFullUrlUnversioned() throws Exception {
+    String turtle = generateR6TurtleFromXml(bundleWithPatients("1", null, false));
+    assertThat(turtle).contains("fhir:resource <http://example.org/fhir/Patient/45>");
+    assertThat(turtle).doesNotContain("/_history/", "fhir:resource (");
+    new Turtle().parse(turtle);
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"", "1"})
+  void testR6BundleRejectsAmbiguousDuplicateFullUrls(String secondVersion) {
+    Assertions.assertThrows(FHIRException.class,
+        () -> generateR6TurtleFromXml(bundleWithPatients("1", secondVersion, true)));
+  }
+
+  private String generateR6TurtleFromXml(String xml) throws IOException, UcumException {
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    getVersionOverrideParsers(R6_VERSION).generateTurtleFromXmlStream(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), output);
+    return output.toString(StandardCharsets.UTF_8);
+  }
+
+  private String bundleWithPatients(String firstVersion, String secondVersion, boolean includeObservation) {
+    String entries = patientEntry(firstVersion);
+    if (secondVersion != null) {
+      entries += patientEntry(secondVersion);
+    }
+    if (includeObservation) {
+      entries += """
+          <entry><fullUrl value="http://example.org/fhir/Observation/47"/><resource>
+            <Observation><id value="47"/><status value="final"/>
+              <subject><reference value="Patient/45/_history/2"/></subject>
+            </Observation>
+          </resource></entry>
+          """;
+    }
+    return "<Bundle xmlns=\"http://hl7.org/fhir\"><type value=\"collection\"/>" + entries + "</Bundle>";
+  }
+
+  private String patientEntry(String version) {
+    String meta = version.isEmpty() ? "" : "<meta><versionId value=\"" + version + "\"/></meta>";
+    return "<entry><fullUrl value=\"http://example.org/fhir/Patient/45\"/><resource>"
+        + "<Patient><id value=\"45\"/>" + meta + "</Patient></resource></entry>";
   }
 
   @Disabled("Not critical")
