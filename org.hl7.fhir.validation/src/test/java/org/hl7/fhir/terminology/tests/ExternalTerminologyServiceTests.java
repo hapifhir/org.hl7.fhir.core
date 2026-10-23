@@ -236,6 +236,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     initModes.add("snomed");
     initModes.add("mimetypes");
     initModes.add("icd-11");
+    initModes.add("icf");
     initModes.add("closure");
     // Loader only uses the static txtests field, so a throwaway instance is fine.
     tester = new TxTester(new ExternalTerminologyServiceTests("init", null), SERVER, true, externals, "5.0.0");
@@ -269,6 +270,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     modes.add("general");
     modes.add("snomed");
     modes.add("mimetypes");
+    modes.add("icf");
     modes.add("closure");
   }
 
