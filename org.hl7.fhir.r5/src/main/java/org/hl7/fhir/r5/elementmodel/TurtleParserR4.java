@@ -104,8 +104,10 @@ public class TurtleParserR4 extends TurtleParserBase {
   @Override
   protected String getURIType(String uri) {
     if (uri.startsWith("<" + FHIR_URI_BASE)) {
-      if (uri.substring(FHIR_URI_BASE.length() + 1).contains("/")) {
-        return uri.substring(FHIR_URI_BASE.length() + 1, uri.indexOf('/', FHIR_URI_BASE.length() + 1));
+      int slash = uri.indexOf('/', FHIR_URI_BASE.length() + 1);
+      // A conditional reference (Type?search) identifies a search, not a resource of that type
+      if (slash > 0 && uri.lastIndexOf('?', slash) < 0) {
+        return uri.substring(FHIR_URI_BASE.length() + 1, slash);
       }
     }
     return null;
@@ -114,9 +116,9 @@ public class TurtleParserR4 extends TurtleParserBase {
   @Override
   protected String getReferenceURI(String ref) {
     if (ref != null && (ref.startsWith("http://") || ref.startsWith("https://"))) {
-      return "<" + ref + ">";
+      return iri(ref);
     } else if (base != null && ref != null && ref.contains("/")) {
-      return "<" + Utilities.appendForwardSlash(base) + ref + ">";
+      return iri(Utilities.appendForwardSlash(base) + ref);
     } else {
       return null;
     }
@@ -132,7 +134,7 @@ public class TurtleParserR4 extends TurtleParserBase {
   }
 
   protected void decorateCanonical(Complex t, Element canonical) {
-    String refURI = getReferenceURI(canonical.primitiveValue());
+    String refURI = getReferenceURI(versionedCanonicalToIriForm(canonical.primitiveValue()));
     if (refURI != null) {
       t.linkedPredicate("fhir:link", refURI,
           linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
