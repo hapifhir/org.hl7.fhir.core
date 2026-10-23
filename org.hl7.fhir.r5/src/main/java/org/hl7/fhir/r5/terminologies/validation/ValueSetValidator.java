@@ -243,6 +243,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   public ValidationResult validateCode(String path, CodeableConcept code) throws FHIRException {
     opContext.deadCheck("validate "+code.toString());
     checkValueSetOptions();
+    unknownSystemError = null;
 
     // first, we validate the codings themselves
     ValidationProcessInfo info = new ValidationProcessInfo();
@@ -740,6 +741,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   public ValidationResult validateCode(String path, Coding code) throws FHIRException {
     opContext.deadCheck("validate "+code.toString());
     checkValueSetOptions();
+    unknownSystemError = null;
     
     String warningMessage = null;
     // first, we validate the concept itself
