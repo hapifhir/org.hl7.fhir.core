@@ -370,13 +370,6 @@ public abstract class TurtleParserBase extends ParserBase {
     return e.getChildren().stream().anyMatch(p -> p.getName().equals("modifierExtension"));
   }
 
-  protected String getURIType(String uri) {
-    if(uri.startsWith("<" + FHIR_URI_BASE))
-      if(uri.substring(FHIR_URI_BASE.length() + 1).contains("/"))
-        return uri.substring(FHIR_URI_BASE.length() + 1, uri.indexOf('/', FHIR_URI_BASE.length() + 1));
-    return null;
-  }
-
   protected String getReferenceURI(String ref) {
     if (ref != null && (ref.startsWith("http://") || ref.startsWith("https://")))
       return "<" + ref + ">";
@@ -479,24 +472,6 @@ public abstract class TurtleParserBase extends ParserBase {
 
     if (Utilities.existsInList(element.getType(), "Reference"))
       decorateReference(t, element);
-
-    if("canonical".equals(element.getType())) {
-      String refURI = element.primitiveValue();
-      if (refURI != null) {
-        String uriType = getURIType(refURI);
-        if(uriType != null && !section.hasSubject(refURI))
-          section.triple(refURI, "a", FHIR_BASE_PREFIX + className(uriType));
-      }
-    }
-
-    if("Reference".equals(element.getType())) {
-      String refURI = getReferenceURI(element.getChildValue("reference"));
-      if (refURI != null) {
-        String uriType = getURIType(refURI);
-        if(uriType != null && !section.hasSubject(refURI))
-          section.triple(refURI, "a", FHIR_BASE_PREFIX + className(uriType));
-      }
-    }
 
     for (Element child : element.getChildren()) {
       composeElement(section, t, child, element);

@@ -182,9 +182,9 @@ public class ShexGeneratorTests {
 
     assertThat(getShape(schema, "<ActivityDefinition> EXTENDS @<DomainResource> CLOSED {"))
       .contains("fhir:library @<OneOrMore_Canonical_Library>?;")
-      .contains("fhir:profile @<Canonical> AND {fhir:l \n    \t\t\t(@<StructureDefinition> OR CLOSED {a [fhir:StructureDefinition]?}) ?}?;");
+      .contains("fhir:profile @<Canonical> AND {fhir:l \n    \t\t\t@<StructureDefinition> ?}?;");
     assertThat(getShape(schema, "<OneOrMore_Canonical_Library> CLOSED {"))
-      .contains("rdf:first @<Canonical> AND {fhir:l \n\t\t\t(@<Library> OR CLOSED {a [fhir:Library]?}) ?}")
+      .contains("rdf:first @<Canonical> AND {fhir:l \n\t\t\t@<Library> ?}")
       .contains("rdf:rest [rdf:nil] OR @<OneOrMore_Canonical_Library>");
     // EXTENDS @<Canonical> would let the inherited fhir:l IRI? absorb the link and skip the target check
     assertThat(schema).doesNotContain("<Canonical_Library> EXTENDS");
@@ -195,14 +195,15 @@ public class ShexGeneratorTests {
   @Test
   void testCodeableReferenceTargetRestrictionsR6() throws IOException {
     String schema = generateCompleteModel(r6WorkerContext);
-    String locationLink = "{fhir:reference @<Reference> AND {fhir:l \n    \t\t\t(@<Location> OR CLOSED {a [fhir:Location]?}) ?} ?}";
+    String locationLink = "{fhir:reference @<Reference> AND {fhir:l \n    \t\t\t@<Location> ?} ?}";
 
     assertThat(getShape(schema, "<ActivityDefinition> EXTENDS @<DomainResource> CLOSED {"))
       .contains("fhir:location @<CodeableReference> AND " + locationLink + "?;");
     assertThat(getShape(schema, "<ServiceRequest> EXTENDS @<DomainResource> CLOSED {"))
       .contains("fhir:location @<OneOrMore_CodeableReference_Location>?;");
     assertThat(getShape(schema, "<OneOrMore_CodeableReference_Location> CLOSED {"))
-      .contains("rdf:first @<CodeableReference> AND {fhir:reference @<Reference> AND {fhir:l \n\t\t\t(@<Location> OR CLOSED {a [fhir:Location]?}) ?} ?}");
+      .contains("rdf:first @<CodeableReference> AND {fhir:reference @<Reference> AND {fhir:l \n\t\t\t@<Location> ?} ?}");
+    assertThat(schema).doesNotContain("OR CLOSED {a [fhir:");
   }
 
   @Test
