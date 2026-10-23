@@ -149,7 +149,11 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   private File cacheFile;
   private String usage;
 
+  // the ecosystem coordination server (tx-reg) - see setMasterClient. null when there is no ecosystem
   private String monitorServiceURL;
+
+  // the registry the persisted resolutions in system-map.json were made against (see setCache)
+  private String cacheRegistryURL;
 
   private boolean useEcosystem;
 
@@ -188,6 +192,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     resMap.putAll(other.resMap);
     useEcosystem = other.useEcosystem;
     monitorServiceURL = other.monitorServiceURL;
+    cacheRegistryURL = other.cacheRegistryURL;
     factory = other.factory;
     usage = other.usage;
     internalLog = other.internalLog;
@@ -685,8 +690,18 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     }
   }
 
-  public TerminologyClientContext setMasterClient(ITerminologyClientN client, boolean useEcosystem) throws IOException {
-    this.useEcosystem = useEcosystem;
+  /**
+   * Set the terminology server this manager talks to, and the ecosystem coordination
+   * server (tx-reg) it consults for routing. The two are independent: the ecosystem
+   * is typically https://ecosystem.hl7.org/tx-reg (FhirSettings.getTxEcosystem())
+   * whichever terminology server is in use, and null means that no ecosystem is
+   * consulted - all requests go to the master server. When an ecosystem is in use
+   * with a server other than tx.fhir.org, that server stands in for tx.fhir.org in
+   * the ecosystem's answers (see findServerForSystem)
+   */
+  public TerminologyClientContext setMasterClient(ITerminologyClientN client, String ecosystemUrl) throws IOException {
+    this.monitorServiceURL = ecosystemUrl;
+    this.useEcosystem = ecosystemUrl != null;
     TerminologyClientContext terminologyClientContext = new TerminologyClientContext(client, cache, true, logger);
     // Note: the cleared contexts are deliberately NOT released here. Releasing one
     // that turned out to be the last holder would end its cache - and if it shared
@@ -697,7 +712,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     serverList.clear();
     serverList.add(terminologyClientContext);
     serverMap.put(client.getAddress(), terminologyClientContext);
-    monitorServiceURL = Utilities.pathURL(Utilities.getDirectoryForURL(client.getAddress()), "tx-reg");
+    checkRegistryMatches();
     return terminologyClientContext;
   }
   
@@ -731,6 +746,7 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         cacheFile = ManagedFileAccess.file(Utilities.path(cache.getFolder(), "system-map.json"));
         if (cacheFile.exists()) {
           JsonObject json = JsonParser.parseObject(cacheFile);
+          cacheRegistryURL = json.asString("registry");
           for (JsonObject pair : json.getJsonObjects("systems")) {
             String url = pair.asString("url");
             if (url != null) {
@@ -751,11 +767,30 @@ public class TerminologyClientManager implements ITerminologyClientManager {
         e.printStackTrace();
       }
     }
+    if (hasClient()) {
+      checkRegistryMatches();
+    }
+  }
+
+  /**
+   * Resolutions are only meaningful for the registry that made them, so the
+   * registry is recorded in system-map.json and the persisted resolutions are
+   * discarded if this manager is talking to a different one (or none). setCache
+   * and setMasterClient can happen in either order, so both call this.
+   */
+  private void checkRegistryMatches() {
+    if (!Objects.equals(cacheRegistryURL, monitorServiceURL)) {
+      resMap.clear();
+      cacheRegistryURL = monitorServiceURL;
+    }
   }
 
   private void save() {
     if (cacheFile != null && cache.getFolder() != null) {
       JsonObject json = new JsonObject();
+      if (monitorServiceURL != null) {
+        json.add("registry", monitorServiceURL);
+      }
       for (String s : Utilities.sorted(resMap.keySet())) {
         ServerOptionList sol = resMap.get(s);
         if (sol.authoritative.isEmpty() && sol.candidates.isEmpty()) {
@@ -786,6 +821,9 @@ public class TerminologyClientManager implements ITerminologyClientManager {
     return serverMap;
   }
 
+  /**
+   * The ecosystem coordination server (tx-reg) in use, or null if there is none
+   */
   public String getMonitorServiceURL() {
     return monitorServiceURL;
   }
@@ -872,7 +910,11 @@ public class TerminologyClientManager implements ITerminologyClientManager {
           logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
           ecosystemfailCount++;
           if (ecosystemfailCount > 3) {
+            // the ecosystem server is independent of the terminology server, so it can be
+            // down (or blocked) while the terminology server is fine: stop asking, and send
+            // everything to the master server for the rest of this run
             useEcosystem = false;
+            logger.logMessage("The terminology ecosystem server at "+monitorServiceURL+" is not responding; all terminology requests will go to "+getMasterClient().getAddress()+" from now on");
           }
           server = getMasterClient().getAddress();
         }

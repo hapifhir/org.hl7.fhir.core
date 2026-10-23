@@ -3382,12 +3382,6 @@
       "code" : "http://snomed.info/sct/900000000000207008/version/20240201"
     },
     {
-      "code" : "http://snomed.info/sct/2011000195101/version/20230607"
-    },
-    {
-      "code" : "http://snomed.info/sct/554471000005108/version/20260331"
-    },
-    {
       "code" : "http://snomed.info/sct/827022005/version/20241216"
     },
     {
@@ -10001,7 +9995,7 @@
   {
     "uri" : "http://www.whocc.no/atc",
     "version" : [{
-      "code" : "2025"
+      "code" : "2026"
     }],
     "content" : "complete"
   },

@@ -269,7 +269,7 @@ public class BaseWorkerContextTests {
     Mockito.doReturn(DUMMY_URL).when(terminologyClient).getAddress();
     context.initTxCache(terminologyCache);
     context.setExpansionParameters(new AtomicReference<>(expParameters));
-    context.getTerminologyClientManager().setMasterClient(terminologyClient, false);
+    context.getTerminologyClientManager().setMasterClient(terminologyClient, null);
     context.setTxLog(txLog);
   }
 

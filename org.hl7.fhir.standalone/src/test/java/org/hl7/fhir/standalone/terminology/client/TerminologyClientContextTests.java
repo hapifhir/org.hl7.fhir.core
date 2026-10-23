@@ -253,7 +253,7 @@ public class TerminologyClientContextTests {
 
   private TerminologyClientManager managerFor(ITerminologyClientN client) throws IOException {
     TerminologyClientManager mgr = newManager();
-    mgr.setMasterClient(client, false);
+    mgr.setMasterClient(client, null);
     return mgr;
   }
 

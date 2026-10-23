@@ -60,6 +60,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class NarrativeGenerationTests {
 
@@ -259,7 +260,7 @@ public class NarrativeGenerationTests {
   @BeforeAll
   static void setUp() throws IOException {
     var simpleContext = TestingUtilities.getSharedWorkerContext("5.0.0");
-    simpleContext.connectToTSServer(new TerminologyClient5R5.TerminologyClientR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
+    simpleContext.connectToTSServer(new TerminologyClient5R5.TerminologyClientR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), FhirSettings.getTxEcosystem());
     context = simpleContext;
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");

@@ -23,6 +23,7 @@ import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.logging.ILoggingService;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 /**
  * Follow up to {@link SnomedExpressionFinder}: takes the csv it produces, and for each 
@@ -118,7 +119,7 @@ public class SnomedExpressionValidator {
     TerminologyClientFactory factory = new TerminologyClientFactory(fhirVersion);
     manager = new TerminologyClientManager(factory, logger);
     ITerminologyClient5 master = factory.makeClientR5("tx-server", tx, "fhir/snomed-expression-validator", null);
-    manager.setMasterClient(master, true);
+    manager.setMasterClient(master, FhirSettings.getTxEcosystem());
 
     CSVReader csv = new CSVReader(ManagedFileAccess.inStream(in));
     String[] headers = csv.readHeaders();

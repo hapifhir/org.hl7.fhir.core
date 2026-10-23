@@ -161,6 +161,18 @@ public class FhirSettings {
       ? FhirSettingsPOJO.TX_SERVER_LOCAL
       : instance.fhirSettingsPOJO.getTxFhirLocal();
   }
+
+  /**
+   * The terminology ecosystem coordination server (the tx-reg registry) that the
+   * terminology client consults to find which server is authoritative for a code
+   * system or value set. This is independent of the terminology server itself.
+   */
+  public static String getTxEcosystem() {
+    getInstance();
+    return instance.fhirSettingsPOJO.getTxEcosystem() == null
+      ? FhirSettingsPOJO.TX_ECOSYSTEM
+      : instance.fhirSettingsPOJO.getTxEcosystem();
+  }
   
   private static FhirSettings instance = null;
 

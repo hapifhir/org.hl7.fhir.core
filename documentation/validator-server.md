@@ -35,7 +35,8 @@ java -jar validator_cli.jar server 8080 -version 4.0 \
 | `-allowNetworkAccess` | Bind to all interfaces instead of loopback only. See [Security](#security). |
 | `-version` | FHIR version to load (`4.0`, `4.3`, `5.0`, ...). If not given, it is inferred. |
 | `-ig` | IG, package, folder or URL to load at start up. Repeatable. |
-| `-tx` | Terminology server to use; `n/a` for no terminology server. |
+| `-tx` | Terminology server to use; `n/a` for no terminology server. Nominating a server turns the terminology ecosystem off unless `-ecosystem` is given too. |
+| `-ecosystem` | Terminology ecosystem coordination server (tx-reg) to consult for routing; `n/a` to turn the ecosystem off. Default `https://ecosystem.hl7.org/tx-reg`. |
 | instance validator options | `-profile`, `-level`, `-best-practice`, `-check-display`, ... - these become the *defaults* for every request, and each can be overridden per request by a query parameter. |
 
 Any remaining positional arguments after the port are treated as sources, but in server mode

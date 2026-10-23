@@ -46,6 +46,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 
 class FhirValidatorHttpServiceTest {
 
@@ -128,7 +129,7 @@ class FhirValidatorHttpServiceTest {
       validationEngine.getContext().setAllowLoadingDuplicates(true);
 
       // Connect to terminology server
-      validationEngine.connectToTSServer("https://tx.fhir.org/r4", null, FhirPublication.fromCode(validationEngine.getVersion()), true);
+      validationEngine.connectToTSServer("https://tx.fhir.org/r4", null, FhirPublication.fromCode(validationEngine.getVersion()), FhirSettings.getTxEcosystem());
       service = new FhirValidatorHttpService(validationEngine, true, TEST_PORT);
       service.startServer();
       httpClient = HttpClient.newBuilder()
