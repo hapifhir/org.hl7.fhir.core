@@ -667,6 +667,38 @@ class FhirValidatorHttpServiceTest {
     }
 
     @Test
+    @DisplayName("TestData - requiredOnly keeps only the elements the profile makes mandatory")
+    void testTestDataRequiredOnly() throws Exception {
+      setUpService(getValidationEngine());
+
+      String body = "{\n" +
+        "  \"profile\": \"http://hl7.org/fhir/StructureDefinition/bp\",\n" +
+        "  \"data\": [{\"name\": \"test\"}],\n" +
+        "  \"requiredOnly\": true\n" +
+        "}";
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/testdata"))
+        .POST(HttpRequest.BodyPublishers.ofString(body))
+        .header("Content-Type", "application/json")
+        .header("Accept", "application/fhir+json")
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode());
+      String json = response.body();
+      // the bp profile makes these mandatory
+      assertTrue(json.contains("\"status\""), json);
+      assertTrue(json.contains("\"code\""), json);
+      assertTrue(json.contains("\"category\""), json);
+      // and these are optional at the top level, so requiredOnly leaves them out
+      assertFalse(json.contains("\"identifier\""), json);
+      assertFalse(json.contains("\"note\""), json);
+      assertFalse(json.contains("\"performer\""), json);
+    }
+
+    @Test
     @DisplayName("TestData - Missing profile returns 400")
     void testTestDataMissingProfile() throws Exception {
       setUpService(getValidationEngine());
