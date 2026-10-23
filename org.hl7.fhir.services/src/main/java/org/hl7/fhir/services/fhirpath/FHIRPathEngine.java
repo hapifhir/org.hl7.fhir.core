@@ -2647,8 +2647,9 @@ public class FHIRPathEngine {
       // != is true. A logical model type with a value (e.g. CDA ST) counts as primitive here
       return false;
     } else if (left.hasType("date", "dateTime", "instant") && right.hasType("date", "dateTime", "instant")) { 
-      var leftDate = new DateTimeType(left.primitiveValue());
-      var rightDate = new DateTimeType(right.primitiveValue());
+      // a dateTime is used as it is: its string can have minute precision, which the parser rejects
+      var leftDate = left instanceof DateTimeType ? (DateTimeType) left : new DateTimeType(left.primitiveValue());
+      var rightDate = right instanceof DateTimeType ? (DateTimeType) right : new DateTimeType(right.primitiveValue());
       return datesEqual(leftDate, rightDate);
     } else if (left.hasType("decimal") || right.hasType("decimal")) { 
       return decEqual(left.primitiveValue(), right.primitiveValue());
