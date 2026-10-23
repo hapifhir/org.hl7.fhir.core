@@ -693,13 +693,22 @@ public class FHIRPathEngine {
       return left.equalsUsingFhirPathRules(right) == Boolean.TRUE ? 0 : 1;
     }
 
+    // compareTimes needs both values in UTC: convert copies, because left and right can be values in the resource
     if (left.getPrecision().ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
-      left.setTimeZoneZulu(true);
+      left = utcCopy(left);
     }
     if (right.getPrecision().ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
-      right.setTimeZoneZulu(true);
+      right = utcCopy(right);
     }
     return BaseDateTimeType.compareTimes(left, right, null);
+  }
+
+  private DateTimeType utcCopy(DateTimeType value) {
+    DateTimeType copy = new DateTimeType();
+    copy.setValue(value.getValue());
+    copy.setPrecision(value.getPrecision());
+    copy.setTimeZoneZulu(true);
+    return copy;
   }
 
   private Integer compareTimeElements(Base theL, Base theR, boolean theEquivalenceTest) {
@@ -2250,7 +2259,11 @@ public class FHIRPathEngine {
           break;
         case 'u':
           i++;
-          int uc = Integer.parseInt(s.substring(i, i+4), 16);
+          String hex = s.substring(i, Math.min(i+4, s.length()-1));
+          if (hex.length() != 4 || !hex.chars().allMatch(c -> c < 128 && Character.digit(c, 16) >= 0)) {
+            throw lexer.error("Invalid FHIRPath unicode escape \\u"+hex);
+          }
+          int uc = Integer.parseInt(hex, 16);
           b.append(Character.toString(uc));
           i = i + 3;
           break;

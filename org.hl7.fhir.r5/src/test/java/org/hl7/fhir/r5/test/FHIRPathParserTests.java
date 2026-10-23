@@ -4,12 +4,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.fhirpath.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class FHIRPathParserTests {
 
@@ -349,4 +352,9 @@ public class FHIRPathParserTests {
     Assertions.assertEquals(8, constantNode.getEnd().getColumn());
   }
 
+  @ParameterizedTest
+  @ValueSource(strings = {"'\\u'", "'\\u00'", "'\\u004'", "'\\uZZZZ'", "'\\u-041'", "'\\u+041'"})
+  void testInvalidUnicodeEscapeIsALexerError(String expression) {
+    Assertions.assertThrows(FHIRLexerException.class, () -> fp.parse(expression));
+  }
 }
