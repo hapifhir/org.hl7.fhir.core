@@ -23,6 +23,8 @@ import java.util.List;
 
 public class ConsentRenderer extends ResourceRenderer {
 
+  // R5 Consent.decision as cross-version modifierExtension in R4 / R4B
+  private static final String EXT_CONSENT_DECISION = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Consent.decision";
 
   public ConsentRenderer(RenderingContext context) {
     super(context); 
@@ -203,18 +205,22 @@ public class ConsentRenderer extends ResourceRenderer {
   private boolean determineBasePermit(ResourceWrapper consent) {
     if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion())) {
       return "permit".equals(consent.primitiveValue("decision"));
-    } else if (VersionUtilities.isR4Plus(context.getContext().getFHIRVersion())) {
-      return true;
+    } else if (consent.hasExtension(EXT_CONSENT_DECISION)) {
+      return "permit".equals(consent.extensionString(EXT_CONSENT_DECISION));
     } else {
       return true;
     }
   }
 
   private boolean determineItemPermit(ResourceWrapper consent, ResourceWrapper item, boolean parentPermit) {
-    if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion())) {
+    if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion()) || consent.hasExtension(EXT_CONSENT_DECISION)) {
+      // R5 semantics: each provision is an exception to its parent
       return !parentPermit;
-    } else {
+    } else if (item.has("type")) {
       return "permit".equals(item.primitiveValue("type"));
+    } else {
+      // R4: the root rule has no type
+      return parentPermit;
     }
   }
 
