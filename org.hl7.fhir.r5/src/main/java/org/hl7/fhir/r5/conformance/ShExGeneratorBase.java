@@ -196,6 +196,7 @@ public abstract class ShExGeneratorBase {
   private static String SIMPLEQUANTITY =
     "\n<$restriction$> EXTENDS @<$base$> CLOSED {   " +
       "\n    a [fhir:$restriction$]?;" +
+      "\n} AND {" +
       "\n    fhir:comparator . {0}" +
       "\n} \n";
 
