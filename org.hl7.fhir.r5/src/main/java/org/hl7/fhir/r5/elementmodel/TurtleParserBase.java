@@ -690,7 +690,7 @@ public abstract class TurtleParserBase extends ParserBase {
 
     String en = getFormalName(element);
 
-    if (!wantCompose(parent == null ? "" : parent.getPath(), element)) {
+    if (element.isEmpty() || !wantCompose(parent == null ? "" : parent.getPath(), element)) {
       return;
     }
 

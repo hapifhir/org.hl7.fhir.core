@@ -22,6 +22,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.fhir.ucum.UcumException;
+import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.ParserBase;
@@ -185,6 +187,30 @@ public class TurtleGeneratorTests {
 
   // TODO add R6 JSON example from somewhere
 
+
+  @Test
+  void testR6OmitsEmptyElements() throws Exception {
+    String turtle = composeR6Xml("""
+        <Observation xmlns="http://hl7.org/fhir">
+          <status value="final"/>
+          <code><coding/></code>
+          <subject/>
+          <interpretation/>
+          <interpretation><coding><code value="normal"/></coding></interpretation>
+          <note><text/></note>
+          <valueString><extension url="http://example.org/absent"><valueBoolean value="true"/></extension></valueString>
+        </Observation>
+        """);
+    assertThat(turtle).doesNotContain("fhir:subject", "fhir:note", "[]", "[ ]");
+    assertThat(turtle).contains("normal", "http://example.org/absent", "true");
+    new Turtle().parse(turtle);
+  }
+
+  private String composeR6Xml(String xml) throws Exception {
+    ParserContext parserContext = getVersionOverrideParsers(R6_VERSION);
+    Element resource = parserContext.parseResource(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), FhirFormat.XML);
+    return parserContext.compose(resource, FhirFormat.TURTLE);
+  }
 
   @Test
   public void testR6ClassNameHandlesEmptyInput() {
