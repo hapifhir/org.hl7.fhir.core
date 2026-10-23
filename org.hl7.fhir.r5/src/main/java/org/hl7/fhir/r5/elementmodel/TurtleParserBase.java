@@ -447,7 +447,14 @@ public abstract class TurtleParserBase extends ParserBase {
     } else {
       t = ctxt.linkedPredicate(FHIR_BASE_PREFIX+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment, element.getProperty().isList());
     }
-    if (element.getProperty().getName().endsWith("[x]")) {
+    // A value[x] (choice) element is typed in FHIR RDF only when the chosen type is a
+    // complex type (e.g. "a fhir:Quantity"); a primitive choice carries only fhir:v with
+    // its xsd datatype and NO rdf:type (per the published FHIR RDF). The element's type is
+    // pre-set here in capitalised choice-suffix form (e.g. "Canonical"), so uncapitalize
+    // before the primitive test. Emitting "a fhir:Canonical" breaks every CLOSED primitive
+    // shape in the generated schema's value[x] OR.
+    if (element.getProperty().getName().endsWith("[x]")
+        && !element.getProperty().isPrimitive(Utilities.uncapitalize(element.fhirType()))) {
       t.linkedPredicate("a", FHIR_BASE_PREFIX+className(element.fhirType()), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
     }
     if (element.getSpecial() != null)
@@ -531,7 +538,7 @@ public abstract class TurtleParserBase extends ParserBase {
     if (type.equals("boolean"))
       quote = false;
     else if (type.equals("integer"))
-      quote = false;
+      xst = "^^xsd:int";  // FHIR integer is a 32-bit int (datatypes.html#integer); a bare Turtle integer is xsd:integer
     else if (type.equals("integer64"))
       xst = "^^xsd:long";	  
     else if (type.equals("unsignedInt"))
