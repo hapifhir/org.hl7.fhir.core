@@ -1870,7 +1870,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private boolean shouldUseThisVersion(ConceptSetComponent vsi, String system, String version) {
-    if (version == null || version.equals(vsi.getVersion())) {
+    // an include with no system (one that only imports value sets) plays no part in choosing a code
+    // system version - the imported value sets choose their own - so it is always used
+    if (version == null || system == null || version.equals(vsi.getVersion())) {
       return true;
     }
     return !hasMatchForVersion(valueset.getCompose().getInclude(), system, version);
