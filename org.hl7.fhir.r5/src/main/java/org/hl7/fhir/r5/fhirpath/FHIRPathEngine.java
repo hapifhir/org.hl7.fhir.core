@@ -704,13 +704,22 @@ public class FHIRPathEngine {
       return left.equalsUsingFhirPathRules(right) == Boolean.TRUE ? 0 : 1;
     }
 
+    // compareTimes needs both values in UTC: convert copies, because left and right can be values in the resource
     if (left.getPrecision().ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
-      left.setTimeZoneZulu(true);
+      left = utcCopy(left);
     }
     if (right.getPrecision().ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
-      right.setTimeZoneZulu(true);
+      right = utcCopy(right);
     }
     return BaseDateTimeType.compareTimes(left, right, null);
+  }
+
+  private DateTimeType utcCopy(DateTimeType value) {
+    DateTimeType copy = new DateTimeType();
+    copy.setValue(value.getValue());
+    copy.setPrecision(value.getPrecision());
+    copy.setTimeZoneZulu(true);
+    return copy;
   }
 
   private Integer compareTimeElements(Base theL, Base theR, boolean theEquivalenceTest) {
