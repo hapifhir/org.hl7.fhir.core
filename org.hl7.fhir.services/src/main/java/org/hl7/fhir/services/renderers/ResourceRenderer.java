@@ -466,12 +466,32 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx("Identifier: ");
       renderIdentifier(status, x, id);
     } else {
-      x.tx("?rref?");
+      ResourceWrapper alternate = getAlternateReference(type);
+      if (alternate != null) {
+        renderReference(status, x, alternate);
+      } else {
+        x.tx("?rref?");
+      }
     }
     checkRenderExtensions(status, x, type);
   }
   
  
+  /**
+   * The target of a reference whose type is not allowed by the element, see http://hl7.org/fhir/StructureDefinition/alternate-reference
+   */
+  private ResourceWrapper getAlternateReference(ResourceWrapper reference) {
+    if ("Reference".equals(reference.fhirType())) {
+      for (ResourceWrapper ext : reference.extensions(ExtensionDefinitions.EXT_ALTERNATE_REFERENCE)) {
+        ResourceWrapper value = ext.child("value");
+        if (value != null && "Reference".equals(value.fhirType())) {
+          return value;
+        }
+      }
+    }
+    return null;
+  }
+
   private boolean isLocalReference(String url) {
     if (url == null) {
       return false;
