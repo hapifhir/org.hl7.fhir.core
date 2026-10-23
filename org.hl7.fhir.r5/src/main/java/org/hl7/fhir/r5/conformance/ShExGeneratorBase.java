@@ -1526,7 +1526,9 @@ public abstract class ShExGeneratorBase {
       }
 
 
-      if (ed.hasType() && (ed.getType().get(0).getWorkingCode().equals("Reference"))) {
+      if (ed.hasType() && (ed.getType().get(0).getWorkingCode().equals("Reference")
+          || ed.getType().get(0).getWorkingCode().equals("CodeableReference")
+          || ed.getType().get(0).getWorkingCode().equals("canonical"))) {
         if (ed.getType().get(0).hasTargetProfile()) {
 
           ed.getType().get(0).getTargetProfile().forEach((CanonicalType tps) -> {
@@ -1603,8 +1605,8 @@ public abstract class ShExGeneratorBase {
       }
     } else {
       if (!refChoices.isEmpty()) {
-        defn += " AND {" + getLinkPredicate() + " \n\t\t\t" +
-          relaxRefTargets("@<" + refChoices.replace("_OR_", "> OR \n\t\t\t@<") + ">") + " ?}";
+        defn += " AND " + targetConstraint(typ, "{" + getLinkPredicate() + " \n\t\t\t" +
+          relaxRefTargets("@<" + refChoices.replace("_OR_", "> OR \n\t\t\t@<") + ">") + " ?}");
       }
     }
 
@@ -1614,6 +1616,13 @@ public abstract class ShExGeneratorBase {
     addComment(element_def, ed);
 
     return element_def.render();
+  }
+
+  /** CodeableReference target profiles apply to its .reference, not the CodeableReference node itself. */
+  private String targetConstraint(String type, String linkConstraint) {
+    if ("CodeableReference".equals(type))
+      return "{fhir:reference @<" + getClassName("Reference") + "> AND " + linkConstraint + " ?}";
+    return linkConstraint;
   }
 
   private boolean changeShortName(StructureDefinition sd, ElementDefinition ed){
@@ -1930,7 +1939,8 @@ public abstract class ShExGeneratorBase {
       }
 
       if (!refValues.isEmpty())
-        choiceEntries.add("(" + entry + " AND {" + getLinkPredicate() + " " + relaxRefTargets(StringUtils.join(refValues, " OR \n\t\t\t ")) + " ?}) ");
+        choiceEntries.add("(" + entry + " AND " + targetConstraint(typ.getWorkingCode(),
+          "{" + getLinkPredicate() + " " + relaxRefTargets(StringUtils.join(refValues, " OR \n\t\t\t ")) + " ?}") + ") ");
       else
         choiceEntries.add(entry);
     }
@@ -1996,10 +2006,10 @@ public abstract class ShExGeneratorBase {
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //ONE_OR_MORE_CHOICES is a literal string constant; safe
       String[] choicesParts = StringUtils.splitByWholeSeparator(oneOrMoreType, ONE_OR_MORE_CHOICES);
-      origType = choicesParts[0];
+      origType = choicesParts[0].replace(ONE_OR_MORE_PREFIX, "");
       String choices = choicesParts[1];
-      restriction = "AND {" + getLinkPredicate() + " \n\t\t\t"
-          + relaxRefTargets("@<" + choices.replace("_OR_", "> OR \n\t\t\t@<") + ">") + " ?}";
+      restriction = "AND " + targetConstraint(origType, "{" + getLinkPredicate() + " \n\t\t\t"
+          + relaxRefTargets("@<" + choices.replace("_OR_", "> OR \n\t\t\t@<") + ">") + " ?}");
     }
 
     origType = origType.replace(ONE_OR_MORE_PREFIX, "");
