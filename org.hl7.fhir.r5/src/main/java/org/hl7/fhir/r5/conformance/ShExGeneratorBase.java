@@ -717,14 +717,17 @@ public abstract class ShExGeneratorBase {
    */
   private String genShapeDefinition(StructureDefinition sd, boolean top_level) {
     if("xhtml".equals(sd.getName())) {
+      String primitiveType = getClassName("PrimitiveType");
+      addImport("<" + primitiveType + ">");
       return tmplt(SHAPE_DEFINITION_TEMPLATE)
         .add("abstract", sd.getAbstract() ? "ABSTRACT " : "")
-        .add("id", getClassName(getExtendedType(sd)))
+        .add("id", getClassName(sd.getId()) + "> EXTENDS @<" + primitiveType)
         .add("fhirType", "")
         .add("resourceDecl", "")
-        .add("elements", "fhir:v " + tmplt(XHTML_TYPE_TEMPLATE).render() + ";\nfhir:extension . {0};")
+        .add("elements", "fhir:v " + tmplt(XHTML_TYPE_TEMPLATE).render() + ";")
         .add("comment", "")
-        .add("constraints", "")
+        // xhtml cannot carry an id or extensions, unlike other primitives
+        .add("constraints", "AND {  \n    fhir:id . {0};\n    fhir:extension . {0};\n}")
         .render();
     }
 
