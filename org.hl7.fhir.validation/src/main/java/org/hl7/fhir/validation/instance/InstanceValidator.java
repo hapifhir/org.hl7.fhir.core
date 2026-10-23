@@ -554,6 +554,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noBindingMsgSuppressed;
   private Map<String, Element> fetchCache = new HashMap<>();
   private HashMap<Element, ResourceValidationTracker> resourceTracker = new HashMap<>();
+  private final Set<ContentReferenceValidation> activeContentReferenceValidations = new HashSet<>();
   long time = 0;
   long start = 0;
   long lastlog = 0;
@@ -1117,6 +1118,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     fetchCache.clear();
     fetchCache.put(element.fhirType() + "/" + element.getIdBase(), element);
     resourceTracker.clear();
+    activeContentReferenceValidations.clear();
     trackedMessages.clear();
     messagesToRemove.clear();
     executionId = UUID.randomUUID().toString();
@@ -6274,21 +6276,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private ElementDefinition resolveElementReference(String location, String sourceProfile, String contentProfile) {
-    String profile = contentProfile.startsWith("#") ? contentProfile.substring(1) : sourceProfile;
-    String element = contentProfile.substring(contentProfile.indexOf("#") + 1);
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, profile);
-    if (sd == null) {
-      throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_PROFILE__AT_, profile, location));
-    }
-    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
-      if (element.equals(ed.getId())) {
-        return ed;
-      }
-    }
-    throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT_WITH_ID_, element));
-  }
-
   private ElementDefinition resolveNameReference(StructureDefinitionSnapshotComponent snapshot, String contentReference) {
     for (ElementDefinition ed : snapshot.getElementList())
       if (contentReference.equals("#" + ed.getId()))
@@ -7779,6 +7766,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     // check type invariants (after we've sliced the children)
     ok = checkInvariants(valContext, errors, profile, definition, resource, element, stack, false) && ok;
+
+    // Snapshot expansion can replace a contentReference with BackboneElement while
+    // retaining contentReferenceProfile. Apply these additional constraints in both
+    // representations, without replacing the constraints on the referencing element.
+    if (definition.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE)) {
+      ok = validateContentReferenceProfile(valContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, extensionUrl, pct, mode) && ok;
+    }
     
     vi.setValid(ok);    
 
@@ -7801,6 +7795,50 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     
     return ok;
   }
+
+  /**
+   * The element has been validated against its own definition. When that definition carries
+   * contentReferenceProfile, validate the element against the referenced definition as well, so
+   * that both sets of constraints apply. A reference that cannot be resolved is a problem in the
+   * profile. StructureDefinitionValidator reports it against the profile; here it is reported against
+   * the element instead of stopping the validation, for profiles that were only loaded.
+   */
+  private boolean validateContentReferenceProfile(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition, Element resource, Element element,
+                                                   String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException, TimeoutException {
+    String reference = ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_CONTENT_PROFILE);
+    // a canonical URL for the profile, followed by '#' and the element id. A value without the
+    // canonical is not resolved against the current profile: it is invalid
+    int separator = reference == null ? -1 : reference.indexOf('#');
+    if (separator <= 0 || separator == reference.length() - 1) {
+      return rule(errors, "2026-10-15", IssueType.INVALID, stack, false, I18nConstants.CONTENT_REFERENCE_PROFILE_INVALID, reference, definition.getId(), profile.getVersionedUrl());
+    }
+    String url = reference.substring(0, separator);
+    StructureDefinition targetProfile = url.equals(profile.getUrl()) || url.equals(profile.getVersionedUrl()) ? profile : profileUtilities.findProfileStr(url, profile);
+    if (targetProfile == null) {
+      return rule(errors, "2026-10-15", IssueType.NOTFOUND, stack, false, I18nConstants.CONTENT_REFERENCE_PROFILE_UNKNOWN_PROFILE, reference, definition.getId(), profile.getVersionedUrl(), url);
+    }
+    String id = reference.substring(separator + 1);
+    ElementDefinition target = targetProfile.getSnapshot().getElementById(id);
+    if (target == null) {
+      return rule(errors, "2026-10-15", IssueType.NOTFOUND, stack, false, I18nConstants.CONTENT_REFERENCE_PROFILE_UNKNOWN_ELEMENT, reference, definition.getId(), profile.getVersionedUrl(), id, targetProfile.getVersionedUrl());
+    }
+    // Only an active reference chain is a cycle. A completed validation may have failed
+    // in another profile candidate (with its own error list), or in an earlier execution.
+    ContentReferenceValidation source = new ContentReferenceValidation(element, profile, definition);
+    boolean added = activeContentReferenceValidations.add(source);
+    try {
+      if (activeContentReferenceValidations.contains(new ContentReferenceValidation(element, targetProfile, target))) {
+        return true;
+      }
+      return validateElement(valContext, errors, targetProfile, target, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, extensionUrl, pct, mode);
+    } finally {
+      if (added) {
+        activeContentReferenceValidations.remove(source);
+      }
+    }
+  }
+
+  private record ContentReferenceValidation(Element element, StructureDefinition profile, ElementDefinition definition) { }
 
   private SourcedChildDefinitions mergeChildLists(SourcedChildDefinitions source, SourcedChildDefinitions additional, String masterPath, String typePath) {
     SourcedChildDefinitions res = new SourcedChildDefinitions(additional.getSource(), new ArrayList<>());
@@ -7968,13 +8006,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTYPE, ei.getName(), describeTypes(checkDefn.getTypeList())) && ok;
       }
     } else if (checkDefn.getContentReference() != null) {
-      if (checkDefn.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE)) {
-        String uri = ExtensionUtilities.readStringExtension(checkDefn, ExtensionDefinitions.EXT_CONTENT_PROFILE);
-        typeDefn = resolveElementReference(checkDefn.getPath(), profile.getVersionedUrl(), uri);
-        checkDefn = typeDefn;
-      } else {
-        typeDefn = resolveNameReference(profile.getSnapshot(), checkDefn.getContentReference());
-      }
+      typeDefn = resolveNameReference(profile.getSnapshot(), checkDefn.getContentReference());
       
     } else if (checkDefn.getTypeList().size() == 1 && ("Element".equals(checkDefn.getTypeList().get(0).getWorkingCode()) || "BackboneElement".equals(checkDefn.getTypeList().get(0).getWorkingCode()))) {
       if (checkDefn.getTypeList().get(0).hasProfile()) {
