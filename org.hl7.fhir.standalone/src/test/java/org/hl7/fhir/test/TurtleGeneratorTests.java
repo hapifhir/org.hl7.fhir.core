@@ -20,6 +20,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.turtle.Turtle;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
@@ -334,9 +335,112 @@ public class TurtleGeneratorTests {
         () -> generateR6TurtleFromXml(bundleWithPatients("1", secondVersion, true)));
   }
 
+  @ParameterizedTest
+  @CsvSource(delimiter = ' ', value = {
+      "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999947796 <http://hl7.org/fhir/Practitioner?identifier=http://hl7.org/fhir/sid/us-npi%7C9999947796>",
+      "Patient?identifier=123456 <http://hl7.org/fhir/Patient?identifier=123456>"
+  })
+  void testR6IdentifierReferenceLinksWithoutTypingTarget(String reference, String link) throws Exception {
+    String turtle = generateR6TurtleFromXml("""
+        <Observation xmlns="http://hl7.org/fhir">
+          <status value="final"/>
+          <subject><reference value="%s"/></subject>
+        </Observation>
+        """.formatted(reference));
+    assertThat(turtle).contains("fhir:l " + link);
+    assertThat(turtle).doesNotContain(link + " a ", "fhir:Patient?");
+    new Turtle().parse(turtle);
+  }
+
+  @Test
+  void testR6VerticalBarIsVersionOnlyInCanonical() throws Exception {
+    String turtle = generateR6TurtleFromXml("""
+        <StructureDefinition xmlns="http://hl7.org/fhir">
+          <url value="http://example.org/StructureDefinition/account"/>
+          <identifier><system value="http://example.org/system|1"/><value value="x"/></identifier>
+          <name value="AccountProfile"/>
+          <status value="active"/>
+          <kind value="resource"/>
+          <abstract value="false"/>
+          <type value="Account"/>
+          <derivation value="constraint"/>
+          <differential>
+            <element>
+              <id value="Account.status"/>
+              <path value="Account.status"/>
+              <binding>
+                <strength value="required"/>
+                <valueSet value="http://hl7.org/fhir/ValueSet/account-status|6.0.0"/>
+              </binding>
+            </element>
+          </differential>
+        </StructureDefinition>
+        """);
+    assertThat(turtle).contains("fhir:l <http://hl7.org/fhir/ValueSet/account-status?version=6.0.0>",
+        "fhir:l <http://example.org/system%7C1>");
+    new Turtle().parse(turtle);
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {R4_VERSION, "5.0.0"})
+  void testR4R5LinksEncodeVerticalBar(String version) throws Exception {
+    TurtleGeneratorTestUtils.ParserContext parserContext = TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(
+        TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(version));
+    String reference = generateTurtleFromXml(parserContext, """
+        <Observation xmlns="http://hl7.org/fhir">
+          <status value="final"/>
+          <subject><reference value="Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999947796"/></subject>
+        </Observation>
+        """);
+    assertThat(reference).contains("fhir:link <http://hl7.org/fhir/Practitioner?identifier=http://hl7.org/fhir/sid/us-npi%7C9999947796>");
+    assertThat(reference).doesNotContain("a fhir:Practitioner");
+    new Turtle().parse(reference);
+
+    String canonical = generateTurtleFromXml(parserContext, """
+        <StructureDefinition xmlns="http://hl7.org/fhir">
+          <url value="http://example.org/StructureDefinition/account"/>
+          <name value="AccountProfile"/>
+          <status value="active"/>
+          <kind value="resource"/>
+          <abstract value="false"/>
+          <type value="Account"/>
+          <derivation value="constraint"/>
+          <differential>
+            <element>
+              <id value="Account.status"/>
+              <path value="Account.status"/>
+              <binding>
+                <strength value="required"/>
+                <valueSet value="http://hl7.org/fhir/ValueSet/account-status|6.0.0"/>
+              </binding>
+            </element>
+          </differential>
+        </StructureDefinition>
+        """);
+    assertThat(canonical).contains("fhir:link <http://hl7.org/fhir/ValueSet/account-status?version=6.0.0>");
+    new Turtle().parse(canonical);
+  }
+
+  @Test
+  void testR6MailtoUriLinksAsIri() throws Exception {
+    String turtle = generateR6TurtleFromXml("""
+        <Endpoint xmlns="http://hl7.org/fhir">
+          <status value="active"/>
+          <address value="mailto:MARTIN.SMIETANKA@directnppes.com"/>
+        </Endpoint>
+        """);
+    assertThat(turtle).contains("fhir:l <mailto:MARTIN.SMIETANKA@directnppes.com>");
+    assertThat(turtle).doesNotContain("fhir:mailto:");
+    new Turtle().parse(turtle);
+  }
+
   private String generateR6TurtleFromXml(String xml) throws IOException, UcumException {
+    return generateTurtleFromXml(getVersionOverrideParsers(R6_VERSION), xml);
+  }
+
+  private String generateTurtleFromXml(TurtleGeneratorTestUtils.ParserContext parserContext, String xml) throws IOException, UcumException {
     ByteArrayOutputStream output = new ByteArrayOutputStream();
-    getVersionOverrideParsers(R6_VERSION).generateTurtleFromXmlStream(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), output);
+    parserContext.generateTurtleFromXmlStream(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), output);
     return output.toString(StandardCharsets.UTF_8);
   }
 

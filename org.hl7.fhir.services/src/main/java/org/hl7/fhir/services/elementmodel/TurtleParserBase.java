@@ -392,18 +392,36 @@ public abstract class TurtleParserBase extends ParserBase {
   }
 
   protected String getURIType(String uri) {
-    if(uri.startsWith("<" + FHIR_URI_BASE))
-      if(uri.substring(FHIR_URI_BASE.length() + 1).contains("/"))
-        return uri.substring(FHIR_URI_BASE.length() + 1, uri.indexOf('/', FHIR_URI_BASE.length() + 1));
+    if (uri.startsWith("<" + FHIR_URI_BASE)) {
+      int slash = uri.indexOf('/', FHIR_URI_BASE.length() + 1);
+      // A conditional reference (Type?search) identifies a search, not a resource of that type
+      if (slash > 0 && uri.lastIndexOf('?', slash) < 0)
+        return uri.substring(FHIR_URI_BASE.length() + 1, slash);
+    }
     return null;
   }
 
   protected String getReferenceURI(String ref) {
     if (ref != null && (ref.startsWith("http://") || ref.startsWith("https://")))
-      return "<" + ref + ">";
+      return iri(ref);
     else if (base != null && ref != null && ref.contains("/"))
-      return "<" + Utilities.appendForwardSlash(base) + ref + ">";
+      return iri(Utilities.appendForwardSlash(base) + ref);
     else return null;
+  }
+
+  // "|" is not a legal IRI character
+  protected static String iri(String value) {
+    return "<" + value.replace("|", "%7C") + ">";
+  }
+
+  // Only in a canonical does "|" mark a version
+  protected static String versionedCanonicalToIriForm(String value) {
+    int bar = value == null ? -1 : value.indexOf('|');
+    if (bar < 0) {
+      return value;
+    }
+    String url = value.substring(0, bar);
+    return url + (url.contains("?") ? "&" : "?") + "version=" + value.substring(bar + 1);
   }
 
   protected String getReferencePredicate() {
@@ -418,7 +436,7 @@ public abstract class TurtleParserBase extends ParserBase {
 
   protected void decoratePrimitiveValue(Complex t, Element element) {
     if (Utilities.existsInList(element.getType(), "canonical")) {
-      String refURI = getReferenceURI(element.primitiveValue());
+      String refURI = getReferenceURI(versionedCanonicalToIriForm(element.primitiveValue()));
       if (refURI != null) {
         t.linkedPredicate(getReferencePredicate(), refURI, linkResolver == null ? null : linkResolver.resolvePage("rdf.html#reference"), null);
       }
