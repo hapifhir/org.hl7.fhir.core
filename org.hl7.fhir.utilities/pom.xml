@@ -77,6 +77,12 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Signed client assertions for OAuth private_key_jwt -->
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+        </dependency>
+
         <!-- XML Utilities -->
         <dependency>
             <groupId>org.codelibs</groupId>
@@ -173,6 +179,12 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>mockwebserver</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp-tls</artifactId>
             <scope>test</scope>
         </dependency>
 

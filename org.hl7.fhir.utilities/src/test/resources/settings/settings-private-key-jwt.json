@@ -1,0 +1,18 @@
+{
+  "servers": [
+    {
+      "url": "https://tx.example.org/fhir",
+      "type": "fhir",
+      "authenticationType": "oauth_client_credentials",
+      "oauthClientCredentials": {
+        "clientId": "my-client-id",
+        "clientAuthMethod": "private_key_jwt",
+        "privateKeyFile": "/keys/client.pem",
+        "keyId": "my-key",
+        "signingAlgorithm": "ES384",
+        "scope": "system/*.rs",
+        "tokenEndpoint": "https://auth.example.org/token"
+      }
+    }
+  ]
+}
