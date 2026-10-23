@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,17 +73,38 @@ public class OIDUtilities {
   }
 
 
-  private final Map<String, OIDInfo> oidMap = new HashMap<>();
+  /**
+   * The registry is read-only once loaded, so it is loaded once and shared by every instance. Loading it costs
+   * several milliseconds, and an instance is made for every InstanceValidator.
+   */
+  private static volatile Map<String, OIDInfo> registry;
+
+  private final Map<String, OIDInfo> oidMap;
 
 
   public OIDUtilities() {
-    loadOIDsFromCSV();
+    oidMap = getRegistry();
   }
 
-  private void loadOIDsFromCSV() throws FHIRException {
+  private static Map<String, OIDInfo> getRegistry() throws FHIRException {
+    Map<String, OIDInfo> retVal = registry;
+    if (retVal == null) {
+      synchronized (OIDUtilities.class) {
+        retVal = registry;
+        if (retVal == null) {
+          retVal = Collections.unmodifiableMap(loadOIDsFromCSV());
+          registry = retVal;
+        }
+      }
+    }
+    return retVal;
+  }
+
+  private static Map<String, OIDInfo> loadOIDsFromCSV() throws FHIRException {
+    Map<String, OIDInfo> oidMap = new HashMap<>();
     try {
 
-      try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("oidregistry.csv");
+      try (InputStream inputStream = OIDUtilities.class.getClassLoader().getResourceAsStream("oidregistry.csv");
           BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 
         String line;
@@ -112,6 +134,7 @@ public class OIDUtilities {
     } catch (Exception e) {
       throw new FHIRException(e);
     }
+    return oidMap;
   }
 
   /*
