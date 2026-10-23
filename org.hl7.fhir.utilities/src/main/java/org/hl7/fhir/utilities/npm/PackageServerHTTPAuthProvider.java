@@ -41,7 +41,7 @@ public class PackageServerHTTPAuthProvider implements IHTTPAuthenticationProvide
   }
 
   @Override
-  public Map<String, String> getHeaders(URL url) {
+  public Map<String, String> getHeaders(URL url) throws java.io.IOException {
     if (!ManagedWebAccessUtils.urlMatchesOrigin( url, this.url)) {
       // We should not get here unless there is an error in the client using this provider
       throw new IllegalArgumentException(("Unexpected request for access headers for " + this.url + " with a request for " + url));

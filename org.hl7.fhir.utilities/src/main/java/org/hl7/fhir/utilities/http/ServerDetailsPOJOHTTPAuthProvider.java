@@ -1,7 +1,9 @@
 package org.hl7.fhir.utilities.http;
 
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,6 +15,8 @@ import java.util.Map;
  * for the first matching entry will be used.
  */
 public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationProvider {
+
+  private static final String BEARER_PREFIX = "Bearer ";
 
   private final Iterable<ServerDetailsPOJO> servers;
 
@@ -46,8 +50,11 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
   }
 
   @Override
-  public Map<String, String> getHeaders(URL url) {
+  public Map<String, String> getHeaders(URL url) throws IOException {
     ServerDetailsPOJO serverDetails = getServerDetails(url);
+    if (serverDetails == null) {
+      return Collections.emptyMap();
+    }
     HTTPAuthenticationMode authenticationMode = getHTTPAuthenticationMode(serverDetails);
 
     if (authenticationMode == null) {
@@ -68,6 +75,17 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
         String providedAPIKey = serverDetails.getApikey();
         headers.put("Api-Key", providedAPIKey);
       }
+      case OAUTH_CLIENT_CREDENTIALS -> {
+        // A token-fetch failure - or incomplete configuration - propagates as IOException, so
+        // callers that already handle a failed web request handle this too, and the request is
+        // never sent without its credentials.
+        String problem = FhirSettings.findClientCredentialsProblem(serverDetails);
+        if (problem != null) {
+          throw new IOException("Server " + serverDetails.getUrl() + " uses oauth_client_credentials but " + problem);
+        }
+        headers.put("Authorization", BEARER_PREFIX + HTTPTokenManager.getToken(serverDetails.getOauthClientCredentials(),
+          Boolean.TRUE.equals(serverDetails.getAllowPrivateNetwork())));
+      }
       default -> { /* do nothing */ }
 
   }
@@ -83,10 +101,16 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
       return HTTPAuthenticationMode.NONE;
     }
 
-    return switch (serverDetails.getAuthenticationType()) {
+    String type = serverDetails.getAuthenticationType();
+    if (type == null) {
+      return HTTPAuthenticationMode.NONE;
+    }
+
+    return switch (type) {
       case "basic" -> HTTPAuthenticationMode.BASIC;
       case "token" -> HTTPAuthenticationMode.TOKEN;
       case "apikey" -> HTTPAuthenticationMode.APIKEY;
+      case "oauth_client_credentials" -> HTTPAuthenticationMode.OAUTH_CLIENT_CREDENTIALS;
       default -> HTTPAuthenticationMode.NONE;
     };
   }
@@ -101,5 +125,21 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
    */
   private ServerDetailsPOJO getServerDetails(URL url) {
     return ManagedWebAccessUtils.getServer(url.toString(), servers);
+  }
+
+  @Override
+  public boolean canRefreshCredentials(URL url) {
+    ServerDetailsPOJO serverDetails = getServerDetails(url);
+    return serverDetails != null
+      && getHTTPAuthenticationMode(serverDetails) == HTTPAuthenticationMode.OAUTH_CLIENT_CREDENTIALS;
+  }
+
+  @Override
+  public boolean invalidateCachedCredentials(URL url, String rejectedAuthorization) {
+    if (!canRefreshCredentials(url) || rejectedAuthorization == null || !rejectedAuthorization.startsWith(BEARER_PREFIX)) {
+      return false;
+    }
+    return HTTPTokenManager.invalidateToken(getServerDetails(url).getOauthClientCredentials(),
+      rejectedAuthorization.substring(BEARER_PREFIX.length()));
   }
 }

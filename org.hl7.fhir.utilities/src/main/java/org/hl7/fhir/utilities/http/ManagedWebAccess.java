@@ -254,6 +254,9 @@ public class ManagedWebAccess {
     setUserAgent("hapi-fhir-tooling-client");
     serverDetailsList = new ArrayList<>(settings.getServers() == null ? Collections.emptyList() : settings.getServers());
     defaultAuthenticationProvider = new ServerDetailsPOJOHTTPAuthProvider(serverDetailsList);
+    // Tokens minted under the previous settings must not outlive them - a rotated or revoked
+    // client secret should take effect on reload, not when the old token happens to expire.
+    HTTPTokenManager.clearCache();
   }
 
   /**

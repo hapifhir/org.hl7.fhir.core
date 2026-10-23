@@ -23,13 +23,12 @@ class ManagedWebAccessUtilsTests {
   public static final String DUMMY_TOKEN = "dummy_token";
 
   public static ServerDetailsPOJO getServerDetailsPOJO(String urlString) {
-    return new ServerDetailsPOJO(
-      urlString,
-      "token",
-      "web",
-      null,
-      null,
-      DUMMY_TOKEN + "for " + urlString, null, null, null, null);
+    return ServerDetailsPOJO.builder()
+      .url(urlString)
+      .authenticationType("token")
+      .type("web")
+      .token(DUMMY_TOKEN + "for " + urlString)
+      .build();
   }
 
   // Created by claude-sonnet-4-6
@@ -100,7 +99,10 @@ class ManagedWebAccessUtilsTests {
       Arguments.of(List.of(exampleOrg), "https://packages.fhir.org", null),
 
       // Server list combinations - empty list
-      Arguments.of(List.of(), "https://packages.fhir.org", null)
+      Arguments.of(List.of(), "https://packages.fhir.org", null),
+
+      // An entry with no url is skipped rather than failing every lookup
+      Arguments.of(List.of(getServerDetailsPOJO(null), fhirOrg), "https://packages.fhir.org", fhirOrg)
     );
   }
 
