@@ -57,7 +57,10 @@ public class ExpressionNode {
     Encode, Decode, Escape, Unescape, Trim, Split, Join, LowBoundary, HighBoundary, Precision,
     
     // Local extensions to FHIRPath
-    HtmlChecks1, HtmlChecks2, Comparable, hasTemplateIdOf;
+    HtmlChecks1, HtmlChecks2, Comparable, hasTemplateIdOf,
+
+    // Document functions (see DocumentFunctions) - local extensions too
+    Section, Entry, EntryIn, Resources, ResourcesIn;
 
     public static Function fromCode(String name) {
       if (name.equals("empty")) return Function.Empty;
@@ -119,6 +122,11 @@ public class ExpressionNode {
       if (name.equals("htmlchecks")) return Function.HtmlChecks1; // support change of care from R3
       if (name.equals("htmlChecks2")) return Function.HtmlChecks2;
       if (name.equals("comparable")) return Function.Comparable;
+      if (name.equals("section")) return Function.Section;
+      if (name.equals("entry")) return Function.Entry;
+      if (name.equals("entryIn")) return Function.EntryIn;
+      if (name.equals("resources")) return Function.Resources;
+      if (name.equals("resourcesIn")) return Function.ResourcesIn;
       if (name.equals("encode")) return Function.Encode;
       if (name.equals("decode")) return Function.Decode;      
       if (name.equals("escape")) return Function.Escape;
@@ -230,6 +238,11 @@ public class ExpressionNode {
       case HtmlChecks1 : return "htmlChecks";
       case HtmlChecks2 : return "htmlChecks2";
       case Comparable : return "comparable";
+      case Section : return "section";
+      case Entry : return "entry";
+      case EntryIn : return "entryIn";
+      case Resources : return "resources";
+      case ResourcesIn : return "resourcesIn";
       case OfType : return "ofType";
       case Type : return "type";
       case ToInteger : return "toInteger";

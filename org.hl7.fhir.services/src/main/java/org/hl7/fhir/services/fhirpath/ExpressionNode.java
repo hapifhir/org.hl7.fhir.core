@@ -58,7 +58,10 @@ public class ExpressionNode {
     Encode, Decode, Escape, Unescape, Trim, Split, Join, LowBoundary, HighBoundary, Precision, Sort, Coalesce,
     
     // Local extensions to FHIRPath
-    HtmlChecks1, HtmlChecks2, Comparable, hasTemplateIdOf, Debug, Section, Entry;
+    HtmlChecks1, HtmlChecks2, Comparable, hasTemplateIdOf, Debug,
+
+    // Document functions (see DocumentFunctions) - local extensions too
+    Section, Entry, EntryIn, Resources, ResourcesIn;
 
     public static Function fromCode(String name) {
       if (name.equals("empty")) return Function.Empty;
@@ -164,6 +167,9 @@ public class ExpressionNode {
       if (name.equals("debug")) return Function.Debug;
       if (name.equals("section")) return Function.Section;
       if (name.equals("entry")) return Function.Entry;
+      if (name.equals("entryIn")) return Function.EntryIn;
+      if (name.equals("resources")) return Function.Resources;
+      if (name.equals("resourcesIn")) return Function.ResourcesIn;
 
       return null;
     }
@@ -272,6 +278,9 @@ public class ExpressionNode {
         case Debug: return "debug";
         case Section: return "section";
         case Entry: return "entry";
+        case EntryIn: return "entryIn";
+        case Resources: return "resources";
+        case ResourcesIn: return "resourcesIn";
       default: return "?custom?";
       }
     }

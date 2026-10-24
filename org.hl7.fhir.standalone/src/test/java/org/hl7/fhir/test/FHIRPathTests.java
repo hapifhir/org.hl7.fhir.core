@@ -188,7 +188,8 @@ public class FHIRPathTests {
     } else if ("execution".equals(XMLUtil.getNamedChild(test, "expression").getAttribute("invalid"))) {
       fail = TestResultType.EXECUTION;      
     };
-    fp.setAllowPolymorphicNames("lenient/polymorphics".equals(test.getAttribute("mode")));
+    String mode = testMode(test);
+    fp.setAllowPolymorphicNames("lenient/polymorphics".equals(mode));
     // context: a FHIRPath expression evaluated first, as a preparatory filter; the test expression is evaluated on its (single) result
     // contextType: the type(s) to use as the focus when checking the expression - overrides context for type checking
     String context = test.getAttribute("context");
@@ -215,7 +216,7 @@ public class FHIRPathTests {
       if (!Utilities.noString(input)) {
         res = resources.get(input);
         if (res == null) {
-          if ("cda".equals(test.getAttribute("mode"))) {
+          if ("cda".equals(mode)) {
             res = Manager.makeParser(fp.getWorker(), FhirFormat.XML).parseSingle(TestingUtilities.loadTestResourceStream("r6", input), null);
           } else if (input.endsWith(".json")) {
             res = new JsonParser(this.context.getModelContext()).parse(TestingUtilities.loadTestResourceStream("r6", input));
@@ -249,7 +250,7 @@ public class FHIRPathTests {
     
     if (node != null) {
       try {
-        if ("element".equals(test.getAttribute("mode"))) {
+        if ("element".equals(mode)) {
           List<ValidatedFragment> e = Manager.parse(fp.getWorker(), TestingUtilities.loadTestResourceStream("r6", input), input.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML);
           outcome = evaluateInContext(e.get(0).getElement(), context, node);
         } else {
@@ -319,6 +320,18 @@ public class FHIRPathTests {
         }
       }
     }
+  }
+
+  /**
+   * the test's mode, or else its group's. A group with mode="custom" holds tests of functions that aren't
+   * part of FHIRPath (see the group's description) - this engine implements them, so it runs them
+   */
+  private static String testMode(Element test) {
+    if (test.hasAttribute("mode")) {
+      return test.getAttribute("mode");
+    }
+    Node p = test.getParentNode();
+    return p instanceof Element && ((Element) p).hasAttribute("mode") ? ((Element) p).getAttribute("mode") : null;
   }
 
   /**

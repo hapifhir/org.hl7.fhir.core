@@ -539,3 +539,62 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://hl7.org/fhir/sid/cvx",
+    "code" : "197",
+    "display" : "Influenza, high-dose, quadrivalent, PF"
+  }],
+  "text" : "Influenza, high-dose, quadrivalent, PF"
+}, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "useValueSetDisplays":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Influenza, high-dose, split virus, quadrivalent, injectable, preservative free",
+  "code" : "197",
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#197 (\"Influenza, high-dose, quadrivalent, PF\")]\"\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#197\"\n4ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n4ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n4ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"197\" found in http://hl7.org/fhir/sid/cvx|20250715",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "code" : "197",
+  "display" : "Influenza, high-dose, quadrivalent, PF"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Influenza, high-dose, split virus, quadrivalent, injectable, preservative free",
+  "code" : "197",
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "version" : "20250715",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#197 (\"Influenza, high-dose, quadrivalent, PF\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#197\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at Coding\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"197\" found in http://hl7.org/fhir/sid/cvx|20250715",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

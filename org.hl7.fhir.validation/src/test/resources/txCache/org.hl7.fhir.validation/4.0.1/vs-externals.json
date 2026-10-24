@@ -19,6 +19,10 @@
   "http://hl7.org/fhir/us/davinci-hrex/ValueSet/hrex-endpoint-name" : null,
   "http://hl7.org/fhir/test/CodeSystem/big" : null,
   "#f3b2bd36-199b-4591-b4db-f49db0912b62" : null,
+  "http://phinvads.cdc.gov/fhir/ValueSet/2.16.840.1.113883.3.88.12.3221.6.2" : {
+    "server" : "http://tx-dev.fhir.org/r4",
+    "filename" : "vs-05996b65-7355-41cb-b972-f783fe04d55e.json"
+  },
   "https://valueset.x12.org/x217/005010/request/2000F/UM/1/03/00/1365" : null,
   "https://valueset.x12.org/x217/005010/request/2000F/UM/1/02/00/1322" : null,
   "#options-1" : null,

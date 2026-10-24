@@ -276,7 +276,7 @@ public class HierarchicalTableGenerator {
       return this;
     }
 
-    private Piece addStyleXHTOK(String style) {
+    public Piece addStyleXHTOK(String style) {
       if (this.style != null)
         this.style = this.style+"; "+style;
       else

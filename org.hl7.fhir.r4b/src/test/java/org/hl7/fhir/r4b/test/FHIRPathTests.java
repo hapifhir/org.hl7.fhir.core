@@ -160,6 +160,18 @@ public class FHIRPathTests {
     return s;
   }
 
+  /**
+   * the test's mode, or else its group's. A group with mode="custom" holds tests of functions that aren't
+   * part of FHIRPath (see the group's description) - this engine implements them, so it runs them
+   */
+  private static String testMode(Element test) {
+    if (test.hasAttribute("mode")) {
+      return test.getAttribute("mode");
+    }
+    Node p = test.getParentNode();
+    return p instanceof Element && ((Element) p).hasAttribute("mode") ? ((Element) p).getAttribute("mode") : null;
+  }
+
   @SuppressWarnings("deprecation")
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
@@ -182,7 +194,8 @@ public class FHIRPathTests {
       fail = TestResultType.EXECUTION;
     }
     ;
-    fp.setAllowPolymorphicNames("lenient/polymorphics".equals(test.getAttribute("mode")));
+    String mode = testMode(test);
+    fp.setAllowPolymorphicNames("lenient/polymorphics".equals(mode));
     Resource res = null;
 
     List<Base> outcome = new ArrayList<Base>();
