@@ -1526,4 +1526,25 @@ public class CanonicalResourceManagerTests {
     Assertions.assertEquals("4.0.1", copy.get("http://hl7.org/fhir/encounter-status").getVersion());
   }
 
+
+  @Test
+  void droppingOneVersionUpdatesIdIndexAndPreservesOtherVersions() {
+    CanonicalResourceManager<CodeSystem> manager = new CanonicalResourceManager<>(false, false);
+    String url = "http://standardterms.edqm.eu";
+    CodeSystem local = new CodeSystem().setUrl(url).setVersion("1.0");
+    local.setId("edqm");
+    CodeSystem external = new CodeSystem().setUrl(url).setVersion("2.0");
+    external.setId("edqm");
+    manager.see(local, null);
+    manager.see(external, null);
+    var entry = manager.getCachedList().stream().filter(e -> e.getResource() == external).findFirst().orElseThrow();
+    manager.drop(entry);
+    Assertions.assertSame(local, manager.get("edqm"));
+    Assertions.assertSame(local, manager.get(url, "1.0"));
+    Assertions.assertNull(manager.get(url, "2.0"));
+    manager.see(external, null);
+    manager.drop("edqm");
+    Assertions.assertEquals(0, manager.size());
+    Assertions.assertNull(manager.get("edqm"));
+  }
 }

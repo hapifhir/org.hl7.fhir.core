@@ -527,8 +527,15 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public void drop(CachedCanonicalResource<T> cr) {
     while (indexedResources.values().remove(cr));
-    while (listForId.values().remove(cr)); // FIXME SpotBugs issue: GC_UNRELATED_TYPES listForId.values().remove(cr) is always false (values() is Collection<List<CachedCanonicalResource<T>>>); fix to listForId.get(cr.getId()).remove(cr)
-    while (listForUrl.values().remove(cr)); // FIXME SpotBugs issue: GC_UNRELATED_TYPES listForUrl.values().remove(cr) is always false (same type mismatch); fix to listForUrl.get(cr.getUrl()).remove(cr)
+    List<CachedCanonicalResource<T>> byId = listForId.get(cr.getId());
+    if (byId != null) {
+      byId.remove(cr);
+      if (byId.isEmpty()) {
+        listForId.remove(cr.getId());
+      } else if (!indexedResources.containsKey(cr.getId())) {
+        indexedResources.put(cr.getId(), byId.get(byId.size() - 1));
+      }
+    }
     String surl = cr.supplements();
     if (surl != null) {
       supplements.get(surl).remove(cr);
@@ -538,7 +545,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     if (set != null) { // it really should be
       boolean last = set.indexOf(cr) == set.size()-1;
       set.remove(cr);
-      if (!set.isEmpty()) {
+      if (set.isEmpty()) {
+        listForUrl.remove(cr.getUrl());
+      } else {
         CachedCanonicalResource<T> crl = set.get(set.size()-1);
         if (last) {
           indexedResources.put(crl.getUrl(), crl);
@@ -568,7 +577,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     } else {
       List<CachedCanonicalResource<T>> set = listForId.get(id);
       if (set != null) { // it really should be
-        for (CachedCanonicalResource<T> i : set) {
+        for (CachedCanonicalResource<T> i : new ArrayList<>(set)) {
           drop(i);
           if (masterDefinitions.containsKey(i.getUrl())) {
             masterDefinitions.remove(i.getUrl());

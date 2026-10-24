@@ -24,6 +24,9 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.standalone.terminology.client.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
@@ -797,5 +800,33 @@ public class BaseWorkerContextTests {
     });
     assertThat(exceptions).isEmpty();
     assertThat(successCount.get()).isEqualTo(numberOfThreads);
+  }
+
+  @ParameterizedTest
+  @NullSource
+  @ValueSource(strings = "1.0")
+  void externalLookupPreservesOptionalVersion(String version) {
+    assertExternalLookupVersion(version, false);
+  }
+
+  @ParameterizedTest
+  @NullSource
+  @ValueSource(strings = "1.0")
+  void externalLookupWithSourcePreservesOptionalVersion(String version) {
+    assertExternalLookupVersion(version, true);
+  }
+
+  private void assertExternalLookupVersion(String version, boolean withSource) {
+    String url = "http://example.org/CodeSystem/versioned";
+    String canonical = version == null ? url : url + "|" + version;
+    CodeSystem cs = new CodeSystem().setUrl(url).setVersion(version);
+    Mockito.when(terminologyCache.hasCodeSystem(canonical)).thenReturn(true);
+    Mockito.when(terminologyCache.getCodeSystem(canonical))
+        .thenReturn(new TerminologyCache.SourcedCodeSystem("https://tx.example.org/r4", cs));
+    CodeSystem result = withSource
+        ? context.findTxResource(CodeSystem.class, url, VersionResolutionRules.defaultRule(), version, new ValueSet())
+        : context.findTxResource(CodeSystem.class, url, VersionResolutionRules.defaultRule(), version);
+    assertSame(cs, result);
+    Mockito.verify(terminologyCache).getCodeSystem(canonical);
   }
 }
