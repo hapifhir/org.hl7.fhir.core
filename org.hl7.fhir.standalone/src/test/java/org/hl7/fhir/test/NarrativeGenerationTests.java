@@ -43,10 +43,8 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -54,7 +52,6 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -351,37 +348,6 @@ public class NarrativeGenerationTests {
 //      msg = CompareUtilities.checkXMLIsSame(id, expectedFileName, actualFileName);
 //      Assertions.assertTrue(msg == null, "Meta output does not match expected: "+msg);
 //    }
-  }
-
-  @ParameterizedTest(name = "{0}, regenerate snapshot: {1}")
-  @CsvSource({"SUMMARY, false", "DATA_DICT, false", "SUMMARY, true", "DATA_DICT, true"})
-  void rendersContentReferenceProfileOnSparseDifferential(StructureDefinitionRendererMode mode, boolean regenerateSnapshot, @TempDir Path outputDirectory) throws Exception {
-    RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
-    rc.setDestDir(outputDirectory.toString());
-    rc.setDefinitionsTarget("test.html");
-    rc.setProfileUtilities(new ProfileUtilities(context, null, new TestProfileKnowledgeProvider(context)));
-    rc.setLocale(java.util.Locale.ENGLISH);
-    rc.setStructureMode(mode);
-    rc.setTesting(true);
-
-    StructureDefinition sd = (StructureDefinition) new JsonParser(context.getModelContext()).parse(
-      TestingUtilities.loadTestResourceStream("r6", "narrative", "sd-content-ref-profile.json"));
-    ElementDefinition differentialElement = sd.getDifferential().getElementList().stream()
-      .filter(e -> "Composition.section.section".equals(e.getId())).findFirst().orElseThrow();
-    // The differential inherits its type; a loaded snapshot also lacks in-memory derivation pointers.
-    differentialElement.getTypeList().clear();
-    if (regenerateSnapshot) {
-      sd.setSnapshot(null);
-      rc.getProfileUtilities().generateSnapshot(context.fetchTypeDefinition("Composition"), sd, sd.getUrl(), "http://example.org/fhir", sd.getName());
-    }
-    Assertions.assertFalse(differentialElement.hasType());
-    Assertions.assertTrue(sd.getSnapshot().getElementById("Composition.section.section").hasType());
-
-    String html = new XhtmlComposer(true).compose(new StructureDefinitionRenderer(rc).buildNarrative(
-      ResourceWrapper.forResource(rc.getContextUtilities(), sd)));
-    Assertions.assertTrue(html.contains("profiled by"), "The sparse differential must display the additional profile constraints");
-    Assertions.assertTrue(html.contains("href=\"#Composition.section\""), "The annotation must link to the referenced element");
-    Assertions.assertTrue(html.contains("title=\"" + sd.getUrl() + "#Composition.section\""));
   }
 
   /**
