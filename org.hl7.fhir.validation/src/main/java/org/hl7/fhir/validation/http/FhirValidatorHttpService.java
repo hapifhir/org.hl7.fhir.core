@@ -29,7 +29,8 @@ public class FhirValidatorHttpService {
   private final boolean loopbackOnly;
   private final int port;
 
-  private Map<String, TxTestHTTPHandler.ServerTxTester> txTesters = new HashMap<>();
+  // the terminology test runs in progress (see TxTestHTTPHandler), by session id
+  private final Map<String, TxTestHTTPHandler.ServerTxTester> txTesters = new java.util.concurrent.ConcurrentHashMap<>();
 
   public FhirValidatorHttpService(ValidationEngine validationEngine, boolean loopBackOnly, int port) {
     this.validationEngine = validationEngine;

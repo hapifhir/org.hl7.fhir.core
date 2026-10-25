@@ -1,6 +1,8 @@
 ## Validator Changes
 
 * The terminology ecosystem coordination server (tx-reg) is now independent of the terminology server: by default it is https://ecosystem.hl7.org/tx-reg (configurable as txEcosystem in fhir-settings.json), and the new -ecosystem parameter nominates a different one ('n/a' for none). As before, nominating a terminology server with -tx turns the ecosystem off unless -ecosystem is given too, and -tx n/a turns both off
+* Server mode terminology tests: new POST /txTest/setup and POST /txTest/teardown bracket a run of GET /txTest calls. Setup fixes the server, the test-version (no longer always the dev package), the externals (as content, not a package file name), the output folder and the tester; the FHIR version comes from the server. Teardown returns (and writes) test-results.json and report.json, as the command line does. Tests that don't run - now including disabled tests and FHIR version gated tests - return an error but aren't counted. The default modes no longer include tx.fhir.org (or closure, which is a feature now). The old server= form still works
+* The terminology tests report the version of the test package they ran (it was always 1.9.3, read from the frozen tests/history.json)
 
 ## Other code changes
 

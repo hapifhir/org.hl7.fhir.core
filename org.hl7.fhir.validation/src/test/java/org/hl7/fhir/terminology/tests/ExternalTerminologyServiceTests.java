@@ -299,7 +299,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     }
     String err = tester.executeTest(this, setup.suite, setup.test, modes);
     if (err != null) {
-      if ("n/a".equals(err) || TxTester.NOT_RUN_FEATURES.equals(err)) {
+      if (TxTester.isNotRun(err)) {
         skipped.incrementAndGet();
         err = null;
       } else {

@@ -232,10 +232,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     testReport.addParticipant().setType(TestReportParticipantTypeValueSet.SERVER).setUri(server);
     log.info("  External Strings: "+(externals != null));
     log.info("  Test  Exec Modes: "+modes.toString());
-    List<String> modeList = Utilities.sorted(modes);
-    testReport.setTester(testerName+" (modes "+String.join(", ", modeList)+")");
-    testReport.addParticipant().setType(TestReportParticipantTypeValueSet.TESTENGINE).setUri(TEST_ENGINE_URL)
-      .setVersion(VersionUtil.getBaseVersion()).setDisplay("HL7 Ecosystem Test Runner (modes "+String.join("+", modeList)+")");
+    describeRunner(modes);
 
     if (filter != null) {
       log.info("  Filter Parameter: "+filter);
@@ -271,13 +268,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       }
       FileUtilities.stringToFile(JsonParser.compose(json, true), Utilities.path(outputDir, "test-results.json"));
 
-      // TestReport.score is the percentage of tests passed (0..100), not a fraction. Kept to
-      // two decimal places, so a single failure in a large run doesn't round away to 100
-      int total = counter.intValue();
-      double score = total == 0 ? 0 : Math.round((total - errCount.intValue()) * 10000.0 / total) / 100.0;
-      testReport.setScore(score);
-      testReport.setResult(errCount.intValue() == 0 ? TestReportResultValueSet.PASS : TestReportResultValueSet.FAIL);
-      testReport.setIssuedElement(instant(System.currentTimeMillis()));
+      completeReport(counter.intValue(), errCount.intValue());
 
       if (filter == null && suite == null) {
         String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join("+", modes);
@@ -395,6 +386,26 @@ public class TxTester implements ITerminologyRequestIdProvider {
   public TxTester setTesterName(String testerName) {
     this.testerName = testerName;
     return this;
+  }
+
+  /** Who ran the tests, and with which modes: TestReport.tester and the test engine participant. */
+  private void describeRunner(Set<String> modes) {
+    List<String> modeList = Utilities.sorted(modes);
+    testReport.setTester(testerName+" (modes "+String.join(", ", modeList)+")");
+    testReport.addParticipant().setType(TestReportParticipantTypeValueSet.TESTENGINE).setUri(TEST_ENGINE_URL)
+      .setVersion(VersionUtil.getBaseVersion()).setDisplay("HL7 Ecosystem Test Runner (modes "+String.join("+", modeList)+")");
+  }
+
+  /**
+   * The overall outcome on the TestReport, once every test has run. TestReport.score is the
+   * percentage of tests passed (0..100), not a fraction. Kept to two decimal places, so a single
+   * failure in a large run doesn't round away to 100
+   */
+  private void completeReport(int total, int errors) {
+    double score = total == 0 ? 0 : Math.round((total - errors) * 10000.0 / total) / 100.0;
+    testReport.setScore(score);
+    testReport.setResult(errors == 0 ? TestReportResultValueSet.PASS : TestReportResultValueSet.FAIL);
+    testReport.setIssuedElement(instant(System.currentTimeMillis()));
   }
 
   /** A dateTime to the millisecond, in UTC - the default precision is only seconds. */
@@ -836,7 +847,12 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw new FHIRException("Invalid test label: " + err);
       }
     }
+    if (suite.asBoolean("disabled") || test.asBoolean("disabled")) {
+      recordNotRun(suite, test, modes);
+      return NOT_RUN_DISABLED;
+    }
     if (!passesModes(suite, modes) || !passesModes(test, modes)) {
+      recordNotRun(suite, test, modes);
       return "n/a";
     }
 
@@ -844,16 +860,205 @@ public class TxTester implements ITerminologyRequestIdProvider {
     // fetches the capability statement. Worker threads construct their own
     // client lazily via client() inside the operation helpers.
     initialise(modes);
-    // features come from the server's CapabilityStatement, so they can only be checked once
-    // initialise has read it
+    // features come from the server's CapabilityStatement, and the server's FHIR version from
+    // connecting to it, so these can only be checked once initialise has run
     if (!passesFeatures(suite) || !passesFeatures(test)) {
+      recordNotRun(suite, test, modes);
       return NOT_RUN_FEATURES;
     }
+    if (!passesVersion(suite) || !passesVersion(test)) {
+      recordNotRun(suite, test, modes);
+      return NOT_RUN_VERSION;
+    }
     List<Resource> setup = loadSetupResources(loader, suite);
-    TestReportTestComponent tr = getTestReportTest(suite, test);
+    TestReportTestComponent tr = run != null ? run.reportTest(suite, test) : getTestReportTest(suite, test);
 
     ResultInformation ri = runTest(loader, suite, test, setup, modes, "*", null, new AtomicInteger(), tr, label);
+    if (run != null) {
+      run.record(suite, test, modes, ri.message);
+    }
     return ri.message;
+  }
+
+  /** What executeTest returns for a test that didn't run because it, or its suite, is disabled. */
+  public static final String NOT_RUN_DISABLED = "n/a:disabled";
+
+  /** What executeTest returns for a test that didn't run because the server's FHIR version is excluded by a version gate. */
+  public static final String NOT_RUN_VERSION = "n/a:version";
+
+  /**
+   * Whether a result from executeTest means that the test did not run at all - it is gated on a
+   * mode that wasn't asked for, a feature the server doesn't declare, or a FHIR version the server
+   * isn't, or it is disabled - as opposed to having passed (null) or failed (the failure message).
+   */
+  public static boolean isNotRun(String result) {
+    return result != null && (result.equals("n/a") || result.startsWith("n/a:"));
+  }
+
+  /** Why a test doesn't run because of its version gate. Null if it isn't stopped by one. */
+  public String describeVersionGate(JsonObject suite, JsonObject test) {
+    for (JsonObject o : new JsonObject[] { suite, test }) {
+      if (!passesVersion(o)) {
+        return "it is gated on FHIR version '" + o.asString("version") + "', and the server is FHIR version " + serverVersion;
+      }
+    }
+    return null;
+  }
+
+  // ---- runs made one test at a time ----------------------------------------------------------
+  //
+  // execute() runs everything and writes test-results.json and report.json at the end. A caller
+  // that runs the tests one at a time through executeTest() - the validator's server mode - gets
+  // the same two reports by bracketing its calls with startRun() and finishRun(). Tests that did
+  // not run (disabled, or stopped by a mode, feature or version gate) are not counted as passes
+  // or failures, just as a whole run doesn't count them; a test run more than once counts once,
+  // with its last result.
+
+  private TestRun run;
+
+  private class TestRun {
+    private final String date = new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime()) + timezone();
+    private final Set<String> modes = new TreeSet<>();
+    // suite name -> test name -> failure message (null: passed), in the order first run
+    private final Map<String, Map<String, String>> results = new LinkedHashMap<>();
+    private final Map<String, TestReportTestComponent> reportTests = new HashMap<>();
+    private final Set<String> notRun = new TreeSet<>();
+
+    private String key(JsonObject suite, JsonObject test) {
+      return suite.asString("name") + "/" + test.asString("name");
+    }
+
+    private synchronized TestReportTestComponent reportTest(JsonObject suite, JsonObject test) {
+      TestReportTestComponent t = reportTests.get(key(suite, test));
+      if (t == null) {
+        t = getTestReportTest(suite, test);
+        reportTests.put(key(suite, test), t);
+      }
+      return t;
+    }
+
+    private synchronized void record(JsonObject suite, JsonObject test, Set<String> testModes, String message) {
+      modes.addAll(testModes);
+      notRun.remove(key(suite, test));
+      results.computeIfAbsent(suite.asString("name"), k -> new LinkedHashMap<>()).put(test.asString("name"), message);
+    }
+
+    private synchronized void recordNotRun(JsonObject suite, JsonObject test, Set<String> testModes) {
+      modes.addAll(testModes);
+      if (!results.containsKey(suite.asString("name")) || !results.get(suite.asString("name")).containsKey(test.asString("name"))) {
+        notRun.add(key(suite, test));
+        // getTestReportTest leaves a new entry as a skip
+        reportTest(suite, test);
+      }
+    }
+  }
+
+  private void recordNotRun(JsonObject suite, JsonObject test, Set<String> modes) {
+    if (run != null) {
+      run.recordNotRun(suite, test, modes);
+    }
+  }
+
+  public boolean isRunStarted() {
+    return run != null;
+  }
+
+  /**
+   * Start a run that will be made one test at a time with executeTest(): connect to the server
+   * (which decides the FHIR version the tests are run in) and read the test cases, so that
+   * finishRun() can produce the same reports that execute() does.
+   */
+  public void startRun() throws URISyntaxException, IOException {
+    if (run != null) {
+      throw new FHIRException("A run has already been started");
+    }
+    run = new TestRun();
+    log.info("Run terminology service Tests, one test at a time");
+    log.info("  Source for tests: "+loaders.get(0).describe());
+    log.info("  Term Service Url: "+server);
+    log.info("  External Strings: "+(externals != null));
+    testReport.addParticipant().setType(TestReportParticipantTypeValueSet.SERVER).setUri(server);
+    for (ITxTesterLoader loader : loaders) {
+      readTests(loadTests(loader), loader.version());
+    }
+    initialise(new HashSet<>());
+    log.info("  Output Directory: "+outputRoot());
+    log.info("  FHIR Version    : "+serverVersion);
+  }
+
+  /**
+   * Finish a run started with startRun(): write test-results.json and report.json to the output
+   * directory, exactly as execute() does, and return test-results.json. The TestReport is
+   * getTestReport().
+   */
+  public JsonObject finishRun() throws IOException, URISyntaxException {
+    if (run == null) {
+      throw new FHIRException("No run has been started");
+    }
+    try {
+      JsonObject json = new JsonObject();
+      int total = 0;
+      List<String> failed = new ArrayList<>();
+      synchronized (run) {
+        json.add("date", run.date);
+        for (Map.Entry<String, Map<String, String>> se : run.results.entrySet()) {
+          JsonObject so = new JsonObject();
+          json.forceArray("suites").add(so);
+          so.add("name", se.getKey());
+          for (Map.Entry<String, String> te : se.getValue().entrySet()) {
+            JsonObject to = new JsonObject();
+            so.forceArray("tests").add(to);
+            to.add("name", te.getKey());
+            to.add("status", te.getValue() == null ? "pass" : "fail");
+            if (te.getValue() != null) {
+              to.add("message", te.getValue());
+              failed.add(se.getKey() + "/" + te.getKey());
+            }
+            total++;
+          }
+        }
+      }
+      describeRunner(run.modes);
+      completeReport(total, failed.size());
+
+      String outputDir = outputRoot();
+      FileUtilities.createDirectory(outputDir);
+      FileUtilities.stringToFile(JsonParser.compose(json, true), Utilities.path(outputDir, "test-results.json"));
+      FileUtilities.stringToFile(new org.hl7.fhir.model.core.formats.JsonParser(context).setOutputStyle(OutputStyle.PRETTY).composeString(testReport),
+        Utilities.path(outputDir, "report.json"));
+
+      List<String> versions = new ArrayList<>();
+      for (ITxTesterLoader loader : loaders) {
+        versions.add(loader == loaders.get(0) ? loader.version() : loader.code()+":"+loader.version());
+      }
+      String m = run.modes.isEmpty() ? "[none]" : String.join("+", run.modes);
+      String nr = run.notRun.isEmpty() ? "" : "; "+run.notRun.size()+" did not run";
+      String detail = Utilities.pluralize("mode", run.modes.size())+" "+m+", tests v"+String.join(",", versions)+", runner v"+VersionUtil.getBaseVersion();
+      if (failed.isEmpty()) {
+        log.info(software+" passed all "+total+" HL7 terminology service tests run ("+detail+nr+")");
+      } else {
+        log.info(software+" failed "+failed.size()+" of "+total+" HL7 terminology service tests run ("+detail+nr+")");
+        log.info("Failed Tests: "+String.join(",", failed));
+      }
+      return json;
+    } finally {
+      TxTesterLogFile.stop();
+    }
+  }
+
+  /** The URL of the server under test. */
+  public String getServer() {
+    return server;
+  }
+
+  /** The FHIR version of the server under test, once connected. */
+  public String getServerVersion() {
+    return serverVersion;
+  }
+
+  /** The server's software name and version from its CapabilityStatement, once connected (the server's URL if it doesn't say). */
+  public String getSoftware() {
+    return software;
   }
 
   private boolean passesModes(JsonObject obj, Set<String> modes) {

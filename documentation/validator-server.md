@@ -104,7 +104,9 @@ the HTTP status.
 | POST | `/narrative` | Generate the narrative for a resource |
 | POST | `/transform` | Run a StructureMap over a resource |
 | GET | `/compile` | Fetch a StructureMap by canonical URL |
-| GET | `/txTest` | Run one terminology ecosystem test against a server |
+| POST | `/txTest/setup` | Start a run of the terminology ecosystem tests against a server |
+| GET | `/txTest` | Run one terminology ecosystem test in a run |
+| POST | `/txTest/teardown` | End a run, and get its reports |
 | POST | `/stop` | Shut the server down |
 | GET | `/openapi.json` | The OpenAPI description of this API |
 | GET | `/docs` | Swagger UI over `/openapi.json` |
@@ -262,27 +264,63 @@ curl 'http://localhost:8080/compile?url=http://example.org/StructureMap/Example'
 
 `/compile` does not check the HTTP method, so POST and other methods behave the same as GET.
 
-### GET /txTest
+### Terminology ecosystem tests: /txTest
 
-Runs one test from the terminology ecosystem test suite against a terminology server. The test
-package (`hl7.fhir.uv.tx-ecosystem#dev`) is downloaded on first use.
+These run the terminology ecosystem tests (the `hl7.fhir.uv.tx-ecosystem` package) against a
+terminology server one test at a time, so that your own test framework can report a result per
+test. A run has three steps.
+
+**`POST /txTest/setup`** starts a run. The body is a JSON object with the things that can't change
+during it:
+
+| Property | Required | Default |
+| --- | --- | --- |
+| `server` | yes | - |
+| `test-version` | no | `current` - the version of the test cases (e.g. `1.9.6`), not a FHIR version |
+| `externals` | no | none - the *content* of an externals file, as a JSON object, not a file name |
+| `folder` | no | the server's host name - the run's folder in the temporary directory |
+| `tester` | no | `HL7 Ecosystem Test Runner` - for `TestReport.tester` |
+
+The test cases are loaded and the server is connected to at this point. The server's FHIR
+version (from `$versions`, or `/metadata`) decides the version the tests run in; it is not a
+setting. The response gives the `session` id, along with the test version that was loaded, the
+server's FHIR version, software and declared features, and the output folder.
 
 ```sh
-curl 'http://localhost:8080/txTest?suite=SuiteName&test=TestName&server=https://tx.fhir.org/r4'
+curl -X POST http://localhost:8080/txTest/setup -H 'Content-Type: application/json' \
+  -d '{"server": "https://tx.fhir.org/r4", "test-version": "1.9.6"}'
+```
+
+**`GET /txTest`** runs one test, and returns an `OperationOutcome`: no error-severity issue means
+the test passed, otherwise `details.text` is the failure message.
+
+```sh
+curl 'http://localhost:8080/txTest?session={id}&suite=SuiteName&test=TestName&modes=general,snomed'
 ```
 
 | Parameter | Required | Default |
 | --- | --- | --- |
+| `session` | yes | - |
 | `suite` | yes | - |
 | `test` | yes | - |
-| `server` | yes | - |
-| `version` | no | `5.0` |
-| `externals` | no | `messages-tx.fhir.org.json` (`.json` appended if missing) |
-| `modes` | no | `tx.fhir.org,omop,general,snomed` |
+| `modes` | no | `general,snomed,omop,mimetypes,icd-11,icf` (everything except `tx.fhir.org`) |
+| `label` | no | none - a subfolder of the run's folder for this test's expected/actual files |
 
-A tester is created per `server` value and cached for the life of the process, so `version` and
-`externals` only take effect on the first call for a given server. A disabled suite or test
-reports success without running. Missing parameters and lookup failures both come back as `500`.
+A test that doesn't run - it is disabled, or gated on a mode that wasn't asked for, a feature the
+server doesn't declare, or a FHIR version the server isn't - is an error to ask for, and the
+outcome says why; but it is not counted in the run's results. Passing a parameter that setup fixes
+(`server`, `test-version`, `externals`, `folder`, or `version`) with a session is a `400`; an
+unknown session, suite or test is a `404`.
+
+**`POST /txTest/teardown?session={id}`** ends the run, and returns the two reports the command line
+writes, as `{"session", "output", "test-results", "report"}`: `test-results.json`, and
+`report.json` - a FHIR `TestReport` with a score and an overall pass/fail. Both are written to the
+run's output folder as well. A test run more than once counts once, with its last result.
+
+The older form of `GET /txTest`, with `server` in place of `session` (and optionally `externals`,
+naming a file in the test package, and `folder`), still works: the first call for a server makes
+an implicit run for it with the `current` test cases, and `POST /txTest/teardown?server=...` ends
+it. Runs that are never torn down last for the life of the process.
 
 ### POST /stop
 

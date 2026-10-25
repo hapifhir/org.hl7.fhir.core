@@ -702,68 +702,259 @@ paths:
           content:
             application/fhir+json:
               schema: { $ref: '#/components/schemas/OperationOutcome' }
-  /txTest:
-    get:
-      tags: [Testing]
-      summary: Run one terminology ecosystem test case against a terminology server
+  /txTest/setup:
+    post:
+      tags:
+      - Testing
+      summary: >-
+        Start a run of the terminology ecosystem tests against a terminology server
       description: >-
-        Runs a single test from the terminology ecosystem test suite
-        (`hl7.fhir.uv.tx-ecosystem#dev`, downloaded on first use) against the nominated
-        terminology server. A tester is created per `server` value and cached for the life of the
-        process, so `version` and `externals` only take effect on the first call for a given
-        server. A disabled suite or test reports success without running.
-      parameters:
-        - name: suite
-          in: query
-          required: true
-          description: Name of the test suite.
-          schema: { type: string }
-        - name: test
-          in: query
-          required: true
-          description: Name of the test within the suite.
-          schema: { type: string }
-        - name: server
-          in: query
-          required: true
-          description: Base URL of the terminology server under test.
-          schema: { type: string, format: uri }
-          example: https://tx.fhir.org/r4
-        - name: version
-          in: query
-          description: FHIR version the test data is loaded for.
-          schema: { type: string, default: '5.0' }
-        - name: externals
-          in: query
-          description: >-
-            Name of the externals file in the test package. `.json` is appended when missing.
-          schema: { type: string, default: messages-tx.fhir.org.json }
-        - name: modes
-          in: query
-          description: >-
-            Comma separated list of test modes. Defaults to
-            `tx.fhir.org,omop,general,snomed`.
-          schema: { type: string }
-          example: general,snomed
+        Starts a session for running the terminology ecosystem tests (`hl7.fhir.uv.tx-ecosystem`)
+        one at a time with `GET /txTest`. The body holds the things that can't change during a run.
+        The server is connected to now, and its FHIR version (from `$versions`, or `/metadata`)
+        decides the FHIR version the tests are run in - it is not a setting. End the run with `POST
+        /txTest/teardown`, which returns the reports. Sessions that are never torn down last for
+        the life of the process.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - server
+              properties:
+                server:
+                  type: string
+                  format: uri
+                  description: Base URL of the terminology server under test.
+                  example: https://tx.fhir.org/r4
+                test-version:
+                  type: string
+                  default: current
+                  description: >-
+                    Which published version of the test cases to run, e.g. `1.9.6` - a version of
+                    the tx-ecosystem IG, not a FHIR version. `current` is the ci-build, which changes
+                    whenever the tests do: pin a version in a pipeline.
+                  example: 1.9.6
+                externals:
+                  type: object
+                  description: >-
+                    The content of an externals file (in the format of `tests/messages-tx.fhir.org.json`),
+                    which lets the server use its own wording for messages. The JSON itself, not
+                    a file name. Without it, messages are checked against the fragments in the expected
+                    responses.
+                  additionalProperties: true
+                folder:
+                  type: string
+                  description: >-
+                    Names the run's output folder inside the validator's temporary directory - a
+                    simple name, not a path. Defaults to the server's host name.
+                tester:
+                  type: string
+                  description: >-
+                    Who is running the tests, for `TestReport.tester` (default `HL7 Ecosystem Test
+                    Runner`). The modes are added after it.
       responses:
         '200':
+          description: The run has started.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  session:
+                    type: string
+                    description: Pass this to `GET /txTest` and `POST /txTest/teardown`.
+                  server:
+                    type: string
+                  test-version:
+                    type: string
+                    description: The version of the test cases that was loaded.
+                  fhirVersion:
+                    type: string
+                    description: The server's FHIR version, which the tests run in.
+                  software:
+                    type: string
+                    description: The server's software and version, from its CapabilityStatement.
+                  features:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      The features the server declares, which decide which suites and tests with
+                      a `feature` run.
+                  output:
+                    type: string
+                    description: The folder the run writes to.
+        '400':
           description: >-
-            The test ran. An information-severity `OperationOutcome` means it passed (or was
-            disabled); an error-severity outcome carries the failure message.
+            The body is not a JSON object, a required parameter is missing, or a parameter is invalid.
           content:
             application/fhir+json:
-              schema: { $ref: '#/components/schemas/OperationOutcome' }
-            application/fhir+xml:
-              schema: { type: string }
+              schema:
+                $ref: '#/components/schemas/OperationOutcome'
         '405':
           $ref: '#/components/responses/MethodNotAllowed'
         '500':
           description: >-
-            A required parameter was missing, the suite or test was not found, or the test
-            harness failed.
+            The test cases could not be loaded, or the server could not be connected to (or its
+            FHIR version determined).
           content:
             application/fhir+json:
-              schema: { $ref: '#/components/schemas/OperationOutcome' }
+              schema:
+                $ref: '#/components/schemas/OperationOutcome'
+  /txTest:
+    get:
+      tags:
+      - Testing
+      summary: Run one terminology ecosystem test case
+      description: >-
+        Runs one test in a session started with `POST /txTest/setup`. The test cases and the suite's
+        setup resources are loaded once, and reused. A test that doesn't run - it is disabled, or
+        gated on a mode that wasn't requested, a feature the server doesn't declare, or a FHIR version
+        the server isn't - returns an error saying why, but is not counted in the run's results.
+
+
+        The older form, with `server` (and optionally `externals`, naming a file in the test package,
+        and `folder`) in place of `session`, still works: it makes an implicit session for that
+        server, with the `current` test cases, on its first call. That session can be ended with
+        `POST /txTest/teardown?server=...`.
+      parameters:
+      - name: session
+        in: query
+        description: The session id from `POST /txTest/setup`.
+        schema:
+          type: string
+      - name: suite
+        in: query
+        required: true
+        description: Name of the test suite.
+        schema:
+          type: string
+      - name: test
+        in: query
+        required: true
+        description: Name of the test within the suite.
+        schema:
+          type: string
+      - name: modes
+        in: query
+        description: >-
+          Comma separated list of test modes. Pass every mode the server supports: a test gated
+          on a mode that isn't passed doesn't run. Defaults to `general,snomed,omop,mimetypes,icd-11,icf`
+          - everything except the tx.fhir.org specific tests.
+        schema:
+          type: string
+        example: general,snomed
+      - name: label
+        in: query
+        description: >-
+          Names a subfolder of the run's output folder for this test's expected/actual files, so
+          that a test run more than one way keeps each run's diffs. A simple name, not a path.
+        schema:
+          type: string
+      - name: server
+        in: query
+        description: 'Legacy: the server under test, in place of `session`.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: >-
+            The call completed. An information-severity `OperationOutcome` means the test passed;
+            an error-severity outcome carries the failure message, or why the test did not run.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/OperationOutcome'
+            application/fhir+xml:
+              schema:
+                type: string
+        '400':
+          description: >-
+            A required parameter is missing or invalid, or a parameter that setup fixes was passed
+            with a session.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/OperationOutcome'
+        '404':
+          description: The session, suite or test is not known.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/OperationOutcome'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '500':
+          description: The test harness failed.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/OperationOutcome'
+  /txTest/teardown:
+    post:
+      tags:
+      - Testing
+      summary: End a run, and get its reports
+      description: >-
+        Ends the session, and returns the two reports a command line run writes: `test-results.json`
+        and `report.json` (a FHIR `TestReport`, with a score and an overall pass/fail). Both are
+        also written to the run's output folder. Tests that did not run are not counted; a test
+        run more than once counts once, with its last result.
+      parameters:
+      - name: session
+        in: query
+        description: The session id from `POST /txTest/setup`.
+        schema:
+          type: string
+      - name: server
+        in: query
+        description: 'Legacy: ends the implicit session for this server.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The run's reports.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  session:
+                    type: string
+                  output:
+                    type: string
+                    description: The folder the reports were written to.
+                  test-results:
+                    type: object
+                    description: >-
+                      test-results.json: the date of the run, and every suite and test that ran,
+                      with its status and, for failures, the message.
+                  report:
+                    type: object
+                    description: 'report.json: the run as a FHIR TestReport.'
+        '400':
+          description: No session was given.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/OperationOutcome'
+        '404':
+          description: The session is not known (or has already been torn down).
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/OperationOutcome'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '500':
+          description: The reports could not be written.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/OperationOutcome'
   /stop:
     post:
       tags: [Configuration]
