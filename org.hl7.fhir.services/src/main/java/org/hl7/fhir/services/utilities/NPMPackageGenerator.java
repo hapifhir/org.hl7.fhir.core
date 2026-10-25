@@ -33,6 +33,7 @@ package org.hl7.fhir.services.utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.archivers.tar.TarConstants;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.eclipse.jgit.ignore.IgnoreNode;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -53,6 +54,7 @@ import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -345,9 +347,17 @@ public class NPMPackageGenerator {
     indexer.start(indexdb);
   }
 
+  /**
+   * TarArchiveOutputStream rejects names of TarConstants.NAMELEN (100) bytes or more unless a
+   * long file mode is set.
+   */
+  static boolean tooLongForTar(String path) {
+    return path.getBytes(StandardCharsets.UTF_8).length >= TarConstants.NAMELEN;
+  }
+
   public boolean hasFile(Category cat, String name) throws IOException {
     String path = cat.getDirectory()+name;
-    if (path.length() > 100) {
+    if (tooLongForTar(path)) {
       name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString()+".json";
       path = cat.getDirectory()+name;      
     }
@@ -357,7 +367,7 @@ public class NPMPackageGenerator {
   
   public void addFile(Category cat, String name, byte[] content) throws IOException {
     String path = cat.getDirectory()+name;
-    if (path.length() > 100) {
+    if (tooLongForTar(path)) {
       name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString()+".json";
       path = cat.getDirectory()+name;      
     }
@@ -382,7 +392,7 @@ public class NPMPackageGenerator {
       folder = "package/"+folder;
     }
     String path = folder+"/"+name;
-    if (path.length() > 100) {
+    if (tooLongForTar(path)) {
       name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString()+".json";
       path = folder+"/"+name;      
     }
