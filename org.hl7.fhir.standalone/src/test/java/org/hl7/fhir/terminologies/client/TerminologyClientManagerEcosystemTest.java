@@ -150,8 +150,8 @@ public class TerminologyClientManagerEcosystemTest {
     assumeLanguageAwareEcosystem();
     TerminologyClientManager mgr = makeManager();
     TerminologyClientContext tc = mgr.chooseServer(null, systems(), false, "cs");
-    assertEquals(CZ_SERVER, tc.getAddress(),
-        "a Czech-language EDQM request should route to the server with the Czech language claim");
+    assertEquals("a Czech-language EDQM request should route to the server with the Czech language claim",
+        CZ_SERVER, tc.getAddress());
     assertTrue(routedAuthoritatively(mgr), "the Czech server should be chosen via its authoritative (language) claim");
   }
 
