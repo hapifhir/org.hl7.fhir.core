@@ -835,10 +835,30 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return t;
   }
 
+  /**
+   * @return true if the supplement applies to this code system: CodeSystem.supplements names either
+   * the code system's url (so it applies to every version) or its url|version - the same rule as
+   * CanonicalResourceManager.getSupplements(url, version)
+   */
+  public static boolean supplementApplies(CodeSystem supplement, CodeSystem cs) {
+    return supplement.hasSupplements() && Utilities.existsInList(supplement.getSupplements(), cs.getUrl(), cs.getVersionedUrl());
+  }
+
+  /**
+   * @return true if mergeSupplements has already merged this supplement into the code system
+   */
+  public static boolean isSupplementMerged(CodeSystem cs, CodeSystem supplement) {
+    String merged = cs.getUserString(UserDataNames.tx_known_supplements);
+    return merged != null && Utilities.existsInList(supplement.getVersionedUrl(), merged.split(","));
+  }
+
   public static CodeSystem mergeSupplements(@Nonnull CodeSystem cs, @Nonnull List<CodeSystem> supplements) {
     CodeSystem ret = cs.copy();
     ret.setUserData(UserDataNames.CS_SUPPLEMENT_LIST, supplements);
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    // readers (ValueSetValidator.resolveCodeSystem, ValueSetExpander) split this on "," alone, so the
+    // separator must be a bare comma: the default ", " left every supplement after the first with a
+    // leading space, and so never matched the url it was required by (useSupplement)
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(",");
     for (CodeSystem sup : supplements) {
       b.append(sup.getVersionedUrl());      
     }
