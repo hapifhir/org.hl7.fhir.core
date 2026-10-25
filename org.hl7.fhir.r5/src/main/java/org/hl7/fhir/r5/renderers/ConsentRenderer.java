@@ -213,11 +213,13 @@ public class ConsentRenderer extends ResourceRenderer {
   }
 
   private boolean determineItemPermit(ResourceWrapper consent, ResourceWrapper item, boolean parentPermit) {
-    if (VersionUtilities.isR5Plus(context.getContext().getVersion()) || consent.hasExtension(EXT_CONSENT_DECISION)) {
-      // R5 semantics: each provision is an exception to its parent
+    if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
       return !parentPermit;
     } else if (item.has("type")) {
       return "permit".equals(item.primitiveValue("type"));
+    } else if (consent.hasExtension(EXT_CONSENT_DECISION)) {
+      // R5 semantics: each provision is an exception to its parent
+      return !parentPermit;
     } else {
       // R4: the root rule has no type
       return parentPermit;
