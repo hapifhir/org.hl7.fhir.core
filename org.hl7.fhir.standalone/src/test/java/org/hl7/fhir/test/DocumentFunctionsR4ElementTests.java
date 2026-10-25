@@ -39,7 +39,8 @@ class DocumentFunctionsR4ElementTests {
   static Stream<Arguments> data() {
     return Stream.of(
       Arguments.of("Bundle.section('http://loinc.org', '11450-4').entry('http://snomed.info/sct', '38341003').id", "c1"),
-      Arguments.of("Bundle.section('http://loinc.org', '11450-4').entry('http://snomed.info/sct', '44054006').id", "c2"),
+      // relative, and the Composition's fullUrl is a urn:uuid, so it doesn't resolve (as BaseValidator.resolveInBundle)
+      Arguments.of("Bundle.section('http://loinc.org', '11450-4').entry('http://snomed.info/sct', '44054006').empty()", "true"),
       Arguments.of("Bundle.section('http://loinc.org', '10160-0').entry('http://snomed.info/sct', '108774000').id", "m1"),
       Arguments.of("Bundle.section('http://loinc.org', '10160-0').entry('http://snomed.info/sct', '387207008').id", "med2"),
       Arguments.of("Bundle.section('http://loinc.org', '8716-3').entry('http://loinc.org', '8480-6').id", "o1"),

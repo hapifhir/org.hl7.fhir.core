@@ -1983,6 +1983,22 @@ public class TxTester implements ITerminologyRequestIdProvider {
       }
     }
 
+    private InternalTxLoader(IModelContext context) {
+      this.context = context;
+    }
+
+    /**
+     * Load the test cases from the hl7.fhir.uv.tx-ecosystem package, and only from the package:
+     * unlike the constructor, a version that happens to be the name of a local folder is not
+     * read from that folder. For callers that take the version from someone else - the
+     * validator's server mode - who must not be able to point it at the server's file system.
+     */
+    public static InternalTxLoader fromPackage(IModelContext context, String version) throws IOException {
+      InternalTxLoader loader = new InternalTxLoader(context);
+      loader.load(version);
+      return loader;
+    }
+
     public InternalTxLoader(String source, boolean additional) throws IOException {
       this.additional = additional;
       File f = ManagedFileAccess.file(source);

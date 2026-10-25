@@ -240,7 +240,8 @@ public class ValidationEngineParameters {
 
   /**
    * The ecosystem coordination server (tx-reg) to consult when routing terminology
-   * requests. null means the default (FhirSettings.getTxEcosystem()); ignored when
+   * requests. null means the default: the default ecosystem when txServer is the default
+   * server, and none when it isn't (FhirSettings.getDefaultTxEcosystemFor()); ignored when
    * noEcosystem is set
    */
   @JsonProperty("ecosystem")
@@ -263,13 +264,15 @@ public class ValidationEngineParameters {
 
   /**
    * The ecosystem server to actually use, after noEcosystem and the default are
-   * taken into account - null when no ecosystem is to be consulted
+   * taken into account - null when no ecosystem is to be consulted. A txServer other
+   * than the default means no ecosystem unless one is set explicitly, so that requests
+   * meant for a server of the caller's own aren't routed on to other servers
    */
   public String getEffectiveEcosystem() {
     if (noEcosystem) {
       return null;
     }
-    return ecosystem != null ? ecosystem : FhirSettings.getTxEcosystem();
+    return ecosystem != null ? ecosystem : FhirSettings.getDefaultTxEcosystemFor(txServer);
   }
 
   @JsonProperty("txLog")

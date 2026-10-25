@@ -206,7 +206,7 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
         throw new RequestException(400, "Invalid 'folder' parameter: " + err);
       }
     }
-    TxTester.InternalTxLoader loader = new TxTester.InternalTxLoader(context, testVersion);
+    TxTester.InternalTxLoader loader = TxTester.InternalTxLoader.fromPackage(context, testVersion);
     JsonObject testCases = JsonParser.parseObject(loader.loadContent(loader.testFileName()));
     ServerTxTester tester = new ServerTxTester(loader, server, testCases, externals);
     tester.setExternalsName(externalsName);
@@ -326,7 +326,7 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
         externalFile = externalFile + ".json";
       }
       // the old form names an externals file in the test package
-      TxTester.InternalTxLoader probe = new TxTester.InternalTxLoader(context, "current");
+      TxTester.InternalTxLoader probe = TxTester.InternalTxLoader.fromPackage(context, "current");
       if (!probe.hasContent(externalFile)) {
         throw new RequestException(400, "The externals file '" + externalFile + "' is not in the test package");
       }

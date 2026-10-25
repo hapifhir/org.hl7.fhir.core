@@ -688,11 +688,12 @@ public class TerminologyClientManager implements ITerminologyClientManager {
   /**
    * @deprecated use {@link #setMasterClient(ITerminologyClient5, String)}: the ecosystem
    * registry is no longer located relative to the terminology server. true means the
-   * default ecosystem from FhirSettings; false means no ecosystem
+   * default ecosystem if the server is the default one, and none otherwise
+   * (FhirSettings.getDefaultTxEcosystemFor()); false means no ecosystem
    */
   @Deprecated
   public TerminologyClientContext setMasterClient(ITerminologyClient5 client, boolean useEcosystem) throws IOException {
-    return setMasterClient(client, useEcosystem ? FhirSettings.getTxEcosystem() : null);
+    return setMasterClient(client, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(client.getAddress()) : null);
   }
 
   /**

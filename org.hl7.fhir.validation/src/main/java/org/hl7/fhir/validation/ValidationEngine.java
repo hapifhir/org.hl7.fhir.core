@@ -372,11 +372,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     /**
      * @deprecated use {@link #withTxServer(String, String, FhirPublication, String)} - true means
-     * the default ecosystem (FhirSettings.getTxEcosystem()), false means none
+     * the default ecosystem if the server is the default one, and none otherwise (FhirSettings.getDefaultTxEcosystemFor()); false means none
      */
     @Deprecated
     public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem) {
-      return withTxServer(txServer, txLog, txVersion, useEcosystem ? FhirSettings.getTxEcosystem() : null);
+      return withTxServer(txServer, txLog, txVersion, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(txServer) : null);
     }
 
     /**
@@ -562,20 +562,20 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   /**
    * @deprecated use {@link #connectToTSServer(String, String, FhirPublication, String)} - true means
-   * the default ecosystem (FhirSettings.getTxEcosystem()), false means none
+   * the default ecosystem if the server is the default one, and none otherwise (FhirSettings.getDefaultTxEcosystemFor()); false means none
    */
   @Deprecated
   public String connectToTSServer(String url, String log, FhirPublication version, boolean useEcosystem) throws URISyntaxException, IOException, FHIRException {
-    return connectToTSServer(url, log, null, version, useEcosystem ? FhirSettings.getTxEcosystem() : null);
+    return connectToTSServer(url, log, null, version, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(url) : null);
   }
 
   /**
    * @deprecated use {@link #connectToTSServer(String, String, String, FhirPublication, String)} - true means
-   * the default ecosystem (FhirSettings.getTxEcosystem()), false means none
+   * the default ecosystem if the server is the default one, and none otherwise (FhirSettings.getDefaultTxEcosystemFor()); false means none
    */
   @Deprecated
   public String connectToTSServer(String url, String log, String txCachePath, FhirPublication version, boolean useEcosystem) throws URISyntaxException, IOException, FHIRException {
-    return connectToTSServer(url, log, txCachePath, version, useEcosystem ? FhirSettings.getTxEcosystem() : null);
+    return connectToTSServer(url, log, txCachePath, version, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(url) : null);
   }
 
   /**
@@ -1321,11 +1321,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   /**
    * @deprecated use {@link #setTerminologyServer(String, String, FhirPublication, String)} - true means
-   * the default ecosystem (FhirSettings.getTxEcosystem()), false means none
+   * the default ecosystem if the server is the default one, and none otherwise (FhirSettings.getDefaultTxEcosystemFor()); false means none
    */
   @Deprecated
   public String setTerminologyServer(String src, String log, FhirPublication version, boolean useEcosystem) throws FHIRException, URISyntaxException, IOException {
-    return connectToTSServer(src, log, version, useEcosystem ? FhirSettings.getTxEcosystem() : null);
+    return connectToTSServer(src, log, version, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(src) : null);
   }
 
   public String setTerminologyServer(String src, String log, FhirPublication version, String ecosystem) throws FHIRException, URISyntaxException, IOException {

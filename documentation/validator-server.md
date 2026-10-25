@@ -67,6 +67,17 @@ from the server's file system (`/loadIG` with a path) or make outbound calls (`/
 package or URL, `/txTest`). If you expose the port beyond localhost, securing it is entirely
 your responsibility.
 
+The server is intended for a closed environment - a build pipeline, or a developer's machine. If
+it has to be reachable from anywhere else, don't expose it directly: put it behind nginx (or an
+equivalent reverse proxy or API gateway) that provides TLS, authentication, and rate and request
+size limits, and restrict which endpoints are reachable to the ones you need.
+
+Outbound requests go through the validator's managed web access, so SSRF protection applies
+(non-https requests and non-public hosts are blocked) unless it has been turned off - which you
+may have to do to point `/txTest` at a terminology server on `localhost` or your own network. With
+SSRF protection off, anyone who can reach the server can make it send requests to any host it can
+reach, and see some of what comes back. See [SECURITY.md](../SECURITY.md).
+
 ## Request and response conventions
 
 **Input format** comes from `Content-Type`: a media type containing `xml` means XML, anything
@@ -321,6 +332,11 @@ The older form of `GET /txTest`, with `server` in place of `session` (and option
 naming a file in the test package, and `folder`), still works: the first call for a server makes
 an implicit run for it with the `current` test cases, and `POST /txTest/teardown?server=...` ends
 it. Runs that are never torn down last for the life of the process.
+
+Run one session at a time. Sessions are kept apart in memory, but not on disk: each run's
+`test.log` captures everything the process logs (including other sessions) until any run is torn
+down, and two runs against the same host - or given the same `folder` - write to the same output
+folder, so the last teardown's reports overwrite the others.
 
 ### POST /stop
 

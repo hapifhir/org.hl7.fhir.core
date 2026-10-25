@@ -370,11 +370,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   /**
    * @deprecated use {@link #connectToTSServer(ITerminologyClientFactory5, ITerminologyClient5, String)} -
-   * true means the default ecosystem (FhirSettings.getTxEcosystem()), false means none
+   * true means the default ecosystem if the server is the default one, and none otherwise
+   * (FhirSettings.getDefaultTxEcosystemFor()); false means none
    */
   @Deprecated
   public void connectToTSServer(ITerminologyClientFactory5 factory, ITerminologyClient5 client, boolean useEcosystem) {
-    connectToTSServer(factory, client, useEcosystem ? FhirSettings.getTxEcosystem() : null);
+    connectToTSServer(factory, client, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(client.getAddress()) : null);
   }
 
   /**
@@ -408,11 +409,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   
   /**
    * @deprecated use {@link #connectToTSServer(ITerminologyClientFactory5, String, String, String, String)} -
-   * true means the default ecosystem (FhirSettings.getTxEcosystem()), false means none
+   * true means the default ecosystem if the server is the default one, and none otherwise
+   * (FhirSettings.getDefaultTxEcosystemFor()); false means none
    */
   @Deprecated
   public void connectToTSServer(ITerminologyClientFactory5 factory, String address, String software, String log, boolean useEcosystem) {
-    connectToTSServer(factory, address, software, log, useEcosystem ? FhirSettings.getTxEcosystem() : null);
+    connectToTSServer(factory, address, software, log, useEcosystem ? FhirSettings.getDefaultTxEcosystemFor(address) : null);
   }
 
   /**
