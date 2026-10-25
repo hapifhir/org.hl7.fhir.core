@@ -13,16 +13,14 @@
   "http://hl7.org/fhir/CodeSystem/c1" : null,
   "http://snomed.info/sct|http://snomed.info/sct/731000124108" : null,
   "https://valueset.x12.org/x217/005010/request/2000E/UM/1/01/00/1525" : null,
-  "http://snomed.info/sct" : null,
   "http://hl7.org/a/1" : null,
   "http://example.org/invalid-valueset-canonical" : null,
   "http://hl7.org/fhir/us/davinci-hrex/ValueSet/hrex-endpoint-name" : null,
-  "http://hl7.org/fhir/test/CodeSystem/big" : null,
-  "#f3b2bd36-199b-4591-b4db-f49db0912b62" : null,
   "http://phinvads.cdc.gov/fhir/ValueSet/2.16.840.1.113883.3.88.12.3221.6.2" : {
     "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "vs-05996b65-7355-41cb-b972-f783fe04d55e.json"
+    "filename" : "vs-4cc0618a-2006-4a2a-9baf-1802c3c77797.json"
   },
+  "#f3b2bd36-199b-4591-b4db-f49db0912b62" : null,
   "https://valueset.x12.org/x217/005010/request/2000F/UM/1/03/00/1365" : null,
   "https://valueset.x12.org/x217/005010/request/2000F/UM/1/02/00/1322" : null,
   "#options-1" : null,
@@ -30,7 +28,7 @@
   "http://hl7.org/fhir/smart-app-launch/ValueSet/user-access-category" : null,
   "https://healthterminologies.gov.au/fhir/ValueSet/australian-immunisation-register-vaccine-1" : {
     "server" : "https://tx.hl7.org.au/fhir",
-    "filename" : "vs-0dba21e6-694e-4761-aff9-ac856cb894f2.json"
+    "filename" : "vs-05af3ef7-33c8-43a2-a729-6c3c52201b44.json"
   },
   "https://sqlonfhir-ci2.azurewebsites.net/fhir/ValueSet/hcxdir-locality" : null,
   "#f3b2bd36-199b-4591-b4db-f49db0912b6" : null

@@ -3013,7 +3013,7 @@
     }],
     "uri" : "http://loinc.org",
     "version" : [{
-      "value" : "2.82"
+      "value" : "2.83"
     },
     {
       "value" : "2.77"

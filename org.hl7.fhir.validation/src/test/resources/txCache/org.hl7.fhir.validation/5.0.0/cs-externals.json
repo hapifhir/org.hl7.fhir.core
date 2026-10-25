@@ -1,5 +1,4 @@
 {
-  "http://hl7.org/fhir/ValueSet/FHIR-version" : null,
   "#vs-marital" : null,
   "#vs-gender-subset" : null,
   "http://hl7.org/fhir/test/CodeSystem/supplement-loinc" : null,
