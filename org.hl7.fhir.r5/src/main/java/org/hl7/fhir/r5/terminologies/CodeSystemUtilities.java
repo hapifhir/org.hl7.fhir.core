@@ -849,7 +849,13 @@ public class CodeSystemUtilities extends TerminologyUtilities {
    */
   public static boolean isSupplementMerged(CodeSystem cs, CodeSystem supplement) {
     String merged = cs.getUserString(UserDataNames.tx_known_supplements);
-    return merged != null && Utilities.existsInList(supplement.getVersionedUrl(), merged.split(","));
+    if (merged == null) {
+      return false;
+    }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] mergedList = merged.split(",");
+    return Utilities.existsInList(supplement.getVersionedUrl(), mergedList);
   }
 
   public static CodeSystem mergeSupplements(@Nonnull CodeSystem cs, @Nonnull List<CodeSystem> supplements) {
