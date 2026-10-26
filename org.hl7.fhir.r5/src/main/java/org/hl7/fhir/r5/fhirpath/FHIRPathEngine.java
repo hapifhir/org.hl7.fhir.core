@@ -2340,7 +2340,8 @@ public class FHIRPathEngine {
     } else if (left.isPrimitive() && right.isPrimitive()) {
       return Base.equals(left.primitiveValue(), right.primitiveValue());
     } else {
-      return Base.compareDeep(left, right, false);
+      // the same element is equal to itself: dom-6, as fixed by the validator, compares a resource with itself
+      return left == right || Base.compareDeep(left, right, false);
     }
   }
 
@@ -5585,6 +5586,27 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
   
 
+  // funcOfType's type lookups, remembered for the engine's life
+  private final Map<String, Boolean> knownTypes = new java.util.concurrent.ConcurrentHashMap<>();
+  private final Map<String, Boolean> specialisations = new java.util.concurrent.ConcurrentHashMap<>();
+
+  /**
+   * Whether a type, or a type it specialises, is the named type. Remembered, so that each item that does not match
+   * does not walk the type hierarchy again.
+   */
+  private boolean isSpecialisationOf(String theType, String theTypeName) {
+    return specialisations.computeIfAbsent(theType + "|" + theTypeName, k -> {
+      StructureDefinition sd = worker.fetchTypeDefinition(theType);
+      while (sd != null) {
+        if (theTypeName.equals(sd.getType())) {
+          return true;
+        }
+        sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinitionElement(), sd);
+      }
+      return false;
+    });
+  }
+
   private List<Base> funcOfType(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     List<Base> result = new ArrayList<Base>();
     String tn;
@@ -5593,7 +5615,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     } else {
       tn = "FHIR."+expr.getParameters().get(0).getName();
     }
-    if (!isKnownType(tn)) {
+    // remembered, as the definitions do not change during the engine's life
+    if (!knownTypes.computeIfAbsent(tn, this::isKnownType)) {
       throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_INVALID_TYPE, tn), I18nConstants.FHIRPATH_INVALID_TYPE); 
     }
 
@@ -5610,15 +5633,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         String tnp = tn.substring(5);
         if (b.fhirType().equals(tnp)) {
           result.add(b);          
-        } else {
-          StructureDefinition sd = worker.fetchTypeDefinition(b.fhirType());
-          while (sd != null) {
-            if (tnp.equals(sd.getType())) {
-              result.add(b);
-              break;
-            }
-            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinitionElement(), sd);
-          }
+        } else if (isSpecialisationOf(b.fhirType(), tnp)) {
+          result.add(b);
         }
       } else if (tn.startsWith("CDA.")) {
         String tnp = Utilities.pathURL(Constants.NS_CDA_ROOT, "StructureDefinition", tn.substring(4));
