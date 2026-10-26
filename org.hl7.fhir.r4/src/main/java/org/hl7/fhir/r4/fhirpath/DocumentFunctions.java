@@ -32,6 +32,8 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  *   resource in the document whose code has a coding with that system and code, and is of the
  *   type, when one is given.</li>
  *   <li><b>resourcesIn(valueSet [, type])</b> - as resources(), with a code in the value set.</li>
+ *   <li><b>sameSubject([other])</b> - whether the focus resource has the same subject (or patient) as other, or
+ *   without other, as the document's Composition: see {@link #sameSubject}.</li>
  * </ul>
  *
  * min and max are both given, or neither: with neither, there's no constraint; max may be '*'.
@@ -269,6 +271,68 @@ class DocumentFunctions {
       }
     }
     return result;
+  }
+
+  /**
+   * sameSubject([other]): whether the focus resource is about the same subject as other - or, without other, as the
+   * Composition of the document the evaluation is on. The subject of a resource is its subject or its patient (no
+   * resource has both). Empty if the focus or other isn't a single resource, if either has no subject (or more than
+   * one), or, without other, if the evaluation isn't on a document (a Bundle of type document with a Composition).
+   * Otherwise true when the references are identical strings - when both have one; else when both have an identifier,
+   * when the identifiers' system and value are identical; otherwise false. Exact matching, without resolving: outside
+   * the document, the context might treat two different references differently
+   */
+  Boolean sameSubject(Base root, Base focusResource, List<Base> focus, List<Base> other) {
+    if (focus.size() != 1 || focus.get(0) == null) {
+      return null;
+    }
+    Base o;
+    if (other != null) {
+      if (other.size() != 1) {
+        return null;
+      }
+      o = other.get(0);
+    } else {
+      Base doc = document(root, focusResource);
+      o = doc != null && "document".equals(primitive(doc, "type")) ? composition(doc) : null;
+    }
+    Base a = subjectOf(focus.get(0));
+    Base b = o == null ? null : subjectOf(o);
+    if (a == null || b == null) {
+      return null;
+    }
+    String refA = primitive(a, "reference");
+    String refB = primitive(b, "reference");
+    if (!isEmpty(refA) && !isEmpty(refB)) {
+      return refA.equals(refB);
+    }
+    Base idA = single(a, "identifier");
+    Base idB = single(b, "identifier");
+    if (idA != null && idB != null) {
+      String valueA = primitive(idA, "value");
+      return !isEmpty(valueA) && valueA.equals(primitive(idB, "value")) && sameString(primitive(idA, "system"), primitive(idB, "system"));
+    }
+    return false;
+  }
+
+  /** a resource's subject or patient - null if it has neither, or more than one (R5+ Composition.subject repeats) */
+  private Base subjectOf(Base resource) {
+    if (resource.isPrimitive()) {
+      return null;
+    }
+    List<Base> list = children(resource, "subject");
+    if (list.isEmpty()) {
+      list = children(resource, "patient");
+    }
+    return list.size() == 1 ? list.get(0) : null;
+  }
+
+  private static boolean isEmpty(String s) {
+    return s == null || s.isEmpty();
+  }
+
+  private static boolean sameString(String a, String b) {
+    return a == null ? b == null : a.equals(b);
   }
 
   // --- documents ---------------------------------------------------------------------------

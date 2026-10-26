@@ -7,7 +7,7 @@
 ## Other code changes
 
 * Fix R4/R4B to R6 conversion of Immunization.protocolApplied.doseNumber[x] and seriesDoses[x]: keep the original positiveInt type and the primitive's extensions, e.g. a data absent reason on a value-less dose number (HL7/fhir-ig-publisher#1362)
-* FHIRPath: implement the document functions section(), entry(), entryIn(), resources() and resourcesIn() (local extensions, R4, R4B, R5 and R6) - for rules about what a document (e.g. an IPS) contains. Tests are in the fhirpath test suites, in a group marked mode="custom". In a document, section entries are resolved the way the validator resolves references in a Bundle, and only in the document
+* FHIRPath: implement the document functions section(), entry(), entryIn(), resources(), resourcesIn() and sameSubject() (local extensions, R4, R4B, R5 and R6) - for rules about what a document (e.g. an IPS) contains. Tests are in the fhirpath test suites, in a group marked mode="custom". In a document, section entries are resolved the way the validator resolves references in a Bundle, and only in the document
 * FHIRPath: lowBoundary() and highBoundary() now handle decimals with exponents (9.5e2), and no longer leave a leading zero (10.lowBoundary(0) gave 09)
 * FHIRPath: fix = and ~ for quantities with no UCUM code - two quantities without units were never equal, and the unit was ignored when only the left side had one
 * no changes

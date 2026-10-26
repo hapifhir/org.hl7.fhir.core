@@ -1480,6 +1480,7 @@ public class FHIRPathEngine {
       case EntryIn: return checkParamCountOneOf(lexer, location, exp, 1, 3);
       case Resources: return checkParamCount(lexer, location, exp, 2, 3);
       case ResourcesIn: return checkParamCount(lexer, location, exp, 1, 2);
+      case SameSubject: return checkParamCount(lexer, location, exp, 0, 1);
     case Comparable: return checkParamCount(lexer, location, exp, 1);
     case ToInteger: return checkParamCount(lexer, location, exp, 0);
     case ToDecimal: return checkParamCount(lexer, location, exp, 0);
@@ -4040,6 +4041,9 @@ public class FHIRPathEngine {
           new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
         return new TypeDetails(CollectionStatus.ORDERED, documentResourceType(exp, 1));
       }
+      case SameSubject: {
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+      }
     case Comparable : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Encode:
@@ -4423,6 +4427,7 @@ public class FHIRPathEngine {
       case EntryIn: return funcEntryIn(context, focus, exp);
       case Resources: return funcResources(context, focus, exp);
       case ResourcesIn: return funcResourcesIn(context, focus, exp);
+      case SameSubject: return funcSameSubject(context, focus, exp);
     case Comparable : return funcComparable(context, focus, exp);
     case ToInteger : return funcToInteger(context, focus, exp);
     case ToDecimal : return funcToDecimal(context, focus, exp);
@@ -5098,6 +5103,11 @@ public class FHIRPathEngine {
     String vs = df.valueSet("resourcesIn", docParam(context, expr, 0));
     return df.resourcesIn(context.appInfo, terminologyServiceOptions, context.rootResource, context.focusResource, focus, "resourcesIn", vs,
       df.resourceType("resourcesIn", docParam(context, expr, 1)));
+  }
+
+  private List<Base> funcSameSubject(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    Boolean same = new DocumentFunctions(this).sameSubject(context.rootResource, context.focusResource, focus, docParam(context, expr, 0));
+    return same == null ? new ArrayList<Base>() : makeBoolean(same);
   }
 
   private List<Base> funcComparable(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {

@@ -21,6 +21,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  * The document functions (section(), entry(), entryIn(), resources(), resourcesIn()) in the R6 engine,
  * on an R4 document parsed into the element model - as the validator does it. R4 and R5+ differ in
  * where a medication's code is (medicationCodeableConcept vs medication.concept, a CodeableReference).
+ * sameSubject() reads subject or patient, and R4 Composition.subject is a single Reference.
  * The FHIRPath test suite (tests-fhir-r6.xml, group documentFunctions) covers the R6 content.
  */
 class DocumentFunctionsR4ElementTests {
@@ -49,7 +50,12 @@ class DocumentFunctionsR4ElementTests {
       Arguments.of("Bundle.resources('http://snomed.info/sct', '195967001').id", "c3"),
       Arguments.of("Bundle.section('http://loinc.org', '11450-4').entryIn('http://hl7.org/fhir/ValueSet/data-absent-reason').id", "c4"),
       Arguments.of("Bundle.resourcesIn('http://hl7.org/fhir/ValueSet/data-absent-reason').id", "c4"),
-      Arguments.of("Bundle.section('http://loinc.org', '11450-4', 2, '*').exists()", "false")
+      Arguments.of("Bundle.section('http://loinc.org', '11450-4', 2, '*').exists()", "false"),
+      Arguments.of("Bundle.entry.resource.ofType(Condition).where(id = 'c1').sameSubject()", "true"),
+      Arguments.of("Bundle.entry.resource.ofType(Condition).where(id = 'c5').sameSubject()", "false"),
+      Arguments.of("Bundle.entry.resource.ofType(AllergyIntolerance).sameSubject()", "true"),
+      Arguments.of("Bundle.entry.resource.ofType(Observation).where(id = 'o2').sameSubject(%resource.entry.resource.ofType(Observation).where(id = 'o3'))", "true"),
+      Arguments.of("Bundle.entry.resource.ofType(Observation).where(id = 'o2').sameSubject()", "false")
     );
   }
 

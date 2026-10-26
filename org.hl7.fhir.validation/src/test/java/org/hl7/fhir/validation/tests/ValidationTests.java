@@ -1093,7 +1093,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       val.validate(appContext, valerrors, (Resource) item, url);
       boolean ok = true;
       for (ValidationMessage v : valerrors)
-        ok = ok && v.getLevel().isError();
+        ok = ok && !v.getLevel().isError();
       return ok;
     }
     throw new NotImplementedException("Not done yet (IGPublisherHostServices.conformsToProfile), when item is element");

@@ -804,7 +804,7 @@ public class LiquidEngine implements IHostApplicationServices {
     if (externalHostServices == null)
       return false;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
-    return conformsToProfile(engine, ctxt.externalContext, item, url);
+    return externalHostServices.conformsToProfile(engine, ctxt.externalContext, item, url);
   }
 
   @Override
